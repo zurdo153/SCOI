@@ -1,0 +1,29 @@
+
+Los fallos que hemos tenidos se encuentran aqui solucionados:
+
+1 - JTextFiel no muestra valores al asignarlos 
+	
+	1- Cuando tenemos una cadena de caracteres y no la muestra en un JTextField posiblemente 
+	   sea la longitud que sobrepasa a la de JTextField para solucionarla solo aplicamos la 
+	   funcion x.trim(); donde x es la cadena a la que se le van a quitar los espacios que se
+	   encuentren al principio y al final de la cadena, ignorando los espacios del medio. 
+		   
+	   	funciones relacionadas: 
+	   		y = x.trim() da y es "hola mundo". Quita los espacios primero y ultimo,	
+   			y = x.replaceAll(" ", "") da y= "holamundo". quita todos los espacios,
+   			y = x.replaceAll(" +", " ") da y= " hola mundo ". Cambia N espacios por un espacio,
+			y = x.replaceAll(" +", " ").trim() da y = "hola mundo" Quita los espacios primero y ultimo, 
+			mantiene un unico espacio al medio 
+			
+2 - JTable no pone las columnas en no editables
+	
+	2- Cuando tenemos una tabla y no podemos hacer que las columnas no se editen solo es necesario
+	   colocar donde se declara el DefaultTableModel model = new DefaultTableModel(); lo siguiente.
+	   
+	   	DefaultTableModel model = new DefaultTableModel(){
+			public boolean isCellEditable(int fila, int columna){
+				if(columna < 0)
+					return true;
+				return false;
+			}
+		};
