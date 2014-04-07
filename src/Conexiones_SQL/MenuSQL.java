@@ -26,14 +26,14 @@ public class MenuSQL {
 	public Vector getMenusNivel(){
 		Vector vec = new Vector();
 		String query = "select "+ 
-							" tb_menus1.nivel as nivel, "+
-							" tb_menus1.folio as folio, "+
-							" tb_menus1.nombre as nombre, "+
-							" isNull((select x.folio from tb_menus1 x where x.folio = tb_menus1.menu_referencia), '0') as Dependiente_Id, "+
-							" isNull((select x.nombre from tb_menus1 x where x.folio = tb_menus1.menu_referencia), '0') as Dependiente "+
+							" tb_menu.nivel as nivel, "+
+							" tb_menu.folio as folio, "+
+							" tb_menu.nombre as nombre, "+
+							" isNull((select x.folio from tb_menu x where x.folio = tb_menu.menu_referencia), '0') as Dependiente_Id, "+
+							" isNull((select x.nombre from tb_menu x where x.folio = tb_menu.menu_referencia), '0') as Dependiente "+
 						" from tb_menu "
 						+ "where status = 1 "+
-						" order by tb_menus1.nivel, tb_menus1.nombre";
+						" order by tb_menu.nivel, tb_menu.nombre";
 		try {				
 			Statement s = new Connexion().conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
@@ -86,12 +86,12 @@ public class MenuSQL {
 	public Vector getSubMenus(int key){
 		Vector vec = new Vector();
 		String query = "select "+ 
-							"tb_menus1.nombre as Menu, "+ 
-							"tb_submens1.nombre as SubMenu "+ 
+							"tb_menu.nombre as Menu, "+ 
+							"tb_submenu.nombre as SubMenu "+ 
 					   "from tb_submenu "+ 
-					   		"inner join tb_menus1 on tb_menus1.folio = tb_submens1.menu_id "+
-					   "where tb_submens1.menu_id =" + key +
-					   " order by tb_submens1.nombre";
+					   		"inner join tb_menu on tb_menu.folio = tb_submenu.menu_id "+
+					   "where tb_submenu.menu_id =" + key +
+					   " order by tb_submenu.nombre";
 		
 		try {				
 			Statement s = new Connexion().conexion().createStatement();
