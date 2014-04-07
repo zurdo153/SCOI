@@ -41,11 +41,13 @@ import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Nomina;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
 import Obj_Lista_de_Raya.Obj_Sueldos;
+import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
@@ -2221,4 +2223,78 @@ public class ActualizarSQL {
 				}		
 				return true;
 			}
+		
+	public boolean Grupo_Vacaciones(Obj_Grupo_De_Vacaciones grupo, int folio){
+		String query = "update tb_grupo_de_vacaciones set descripcion=?, status=? where folio=" + folio;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, grupo.getDescripcion().toUpperCase());
+			pstmt.setInt(2, (grupo.isStatus())?1:0);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Actualizar_Grupo_De_Vacaciones(Obj_Tabla_De_Vacaciones grupo_vacacionesObj,String grupo_vacaciones,int anios,int dias,int prima){
+		String query = "exec sp_update_tabla_grupos_de_vacaciones ?,?,?,?,?,?,?,?;";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			int i=1;
+			pstmt.setString(i,	grupo_vacacionesObj.getGrupo().toUpperCase().trim());
+			pstmt.setInt(i+=1, 	grupo_vacacionesObj.getAnios_trabajados());
+			pstmt.setInt(i+=1,	grupo_vacacionesObj.getDias_correspondientes());
+			pstmt.setInt(i+=1,	grupo_vacacionesObj.getPrima_vacacional());
+			
+			pstmt.setString(i+=1,	grupo_vacaciones.toUpperCase().trim());
+			pstmt.setInt(i+=1, 		anios);
+			pstmt.setInt(i+=1,		dias);
+			pstmt.setInt(i+=1,		prima);
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 }

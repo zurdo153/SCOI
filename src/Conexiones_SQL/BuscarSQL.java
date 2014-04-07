@@ -50,6 +50,7 @@ import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
 import Obj_Evaluaciones.Obj_Temporada;
+import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
@@ -59,10 +60,12 @@ import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
 import Obj_Lista_de_Raya.Obj_Sueldos;
+import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
@@ -4875,5 +4878,182 @@ public class BuscarSQL {
 		}
 			
 		return permiso;
+	}
+	
+	public boolean Buscar_Grupo_De_Vacaciones(Obj_Tabla_De_Vacaciones grupo_vacacionesObj){
+		String query = "exec sp_existe_tabla_grupos_de_vacaciones "+grupo_vacacionesObj.getGrupo().toUpperCase().trim()+","+
+				grupo_vacacionesObj.getAnios_trabajados()+","+grupo_vacacionesObj.getDias_correspondientes()+","+
+				grupo_vacacionesObj.getPrima_vacacional()+";";
+		
+		boolean existe = false;
+		Statement s;
+		ResultSet rs;
+		
+		try {				
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				existe = Boolean.valueOf(rs.getString("existe").trim());
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return existe;
+	}
+	
+	public Obj_Grupo_De_Vacaciones Grupo_Nuevo() throws SQLException{
+		Obj_Grupo_De_Vacaciones grupo = new Obj_Grupo_De_Vacaciones();
+		String query = "select max(folio) as 'Maximo' from tb_grupo_de_vacaciones";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				grupo.setFolio(rs.getInt("Maximo"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return grupo;
+	}
+	
+	public Obj_Grupo_De_Vacaciones Grupo(int folio) throws SQLException{
+		Obj_Grupo_De_Vacaciones grupo = new Obj_Grupo_De_Vacaciones();
+		String query = "select * from tb_grupo_de_vacaciones where folio ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				grupo.setFolio(rs.getInt("folio"));
+				grupo.setDescripcion(rs.getString("descripcion").trim());
+				grupo.setStatus(rs.getBoolean("status"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return grupo;
+	}
+	
+	public Obj_Alimentacion_De_Vacaciones Empleado_En_Vacaciones(int folio) throws SQLException{
+		Obj_Alimentacion_De_Vacaciones alimentacion_vacaciones = new Obj_Alimentacion_De_Vacaciones();
+		String query = "exec sp_select_empleado_en_vacaciones "+ folio;
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+//				datos empleado	
+				alimentacion_vacaciones.setFolio_vacaciones(rs.getInt("folio_vacaciones"));
+				alimentacion_vacaciones.setFolio_empleado(rs.getInt("folio_empleado"));
+				alimentacion_vacaciones.setEmpleado(rs.getString("empleado").trim());
+				alimentacion_vacaciones.setEstablecimiento(rs.getString("establecimiento").trim());
+				alimentacion_vacaciones.setPuesto(rs.getString("puesto").trim());
+				alimentacion_vacaciones.setFecha_ingreso(rs.getString("fecha_ingreso").trim());
+				alimentacion_vacaciones.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss").trim());
+				alimentacion_vacaciones.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
+				alimentacion_vacaciones.setGrupo_vacacional(rs.getString("tipo_de_vacaciones"));
+				
+				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+				FileOutputStream fos = new FileOutputStream(photo);
+				
+		            byte[] buffer = new byte[1];
+		            InputStream is = rs.getBinaryStream("foto");
+		            while (is.read(buffer) > 0) {
+		                fos.write(buffer);
+		            }
+		            fos.close();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return alimentacion_vacaciones;
+	}
+	
+	public Obj_Alimentacion_De_Vacaciones calcular_vacaciones(int folio_empleado, int anios_disfritar, String fecha_inicio) throws SQLException{
+		Obj_Alimentacion_De_Vacaciones alimentacion_vacaciones = new Obj_Alimentacion_De_Vacaciones();
+		String query = "exec sp_select_empleado_en_vacaciones "+ folio_empleado;
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+//				datos empleado	
+				alimentacion_vacaciones.setFolio_vacaciones(rs.getInt("folio_vacaciones"));
+				alimentacion_vacaciones.setFolio_empleado(rs.getInt("folio_empleado"));
+				alimentacion_vacaciones.setEmpleado(rs.getString("empleado").trim());
+				alimentacion_vacaciones.setEstablecimiento(rs.getString("establecimiento").trim());
+				alimentacion_vacaciones.setPuesto(rs.getString("puesto").trim());
+				alimentacion_vacaciones.setFecha_ingreso(rs.getString("fecha_ingreso").trim());
+				alimentacion_vacaciones.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss").trim());
+				alimentacion_vacaciones.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
+				alimentacion_vacaciones.setGrupo_vacacional(rs.getString("tipo_de_vacaciones"));
+				
+				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+				FileOutputStream fos = new FileOutputStream(photo);
+				
+		            byte[] buffer = new byte[1];
+		            InputStream is = rs.getBinaryStream("foto");
+		            while (is.read(buffer) > 0) {
+		                fos.write(buffer);
+		            }
+		            fos.close();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return alimentacion_vacaciones;
+	}
+	
+	public Obj_Alimentacion_De_Vacaciones empleado_para_ultimas_vacaciones(int folio_empleado) throws SQLException{
+		Obj_Alimentacion_De_Vacaciones alimentacion_vacaciones = new Obj_Alimentacion_De_Vacaciones();
+		String query = "exec sp_select_empleado_para_vacaciones_pasadas "+ folio_empleado;
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+//				datos empleado	
+				alimentacion_vacaciones.setFolio_empleado(rs.getInt("folio_empleado"));
+				alimentacion_vacaciones.setEmpleado(rs.getString("empleado").trim());
+				alimentacion_vacaciones.setEstablecimiento(rs.getString("establecimiento").trim());
+				alimentacion_vacaciones.setPuesto(rs.getString("puesto").trim());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return alimentacion_vacaciones;
 	}
 }

@@ -45,6 +45,7 @@ import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
 import Obj_Evaluaciones.Obj_Temporada;
+import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
@@ -52,11 +53,13 @@ import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Nomina;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
 import Obj_Lista_de_Raya.Obj_Sueldos;
+import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
@@ -2706,4 +2709,154 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			}		
 			return true;
 		}
+		
+	public boolean Guardar_Grupo_De_Vacaciones(Obj_Grupo_De_Vacaciones grupo){
+		String query = "exec sp_insert_grupo_de_vacaciones ?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, grupo.getFolio());
+			pstmt.setString(2, grupo.getDescripcion().toUpperCase());
+			pstmt.setString(3, (grupo.isStatus())?"1":"0");
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Grupo_De_Vacaciones(Obj_Tabla_De_Vacaciones grupo_vacaciones){
+//		cambiar procedimiento ( crear uno nuevo sp )
+		String query = "exec sp_insert_tabla_grupos_de_vacaciones ?,?,?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+
+			int i=1;
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(i,		grupo_vacaciones.getGrupo().toUpperCase().trim());
+			pstmt.setInt(i+=1, 	grupo_vacaciones.getAnios_trabajados());
+			pstmt.setInt(i+=1,	grupo_vacaciones.getDias_correspondientes());
+			pstmt.setInt(i+=1,	grupo_vacaciones.getPrima_vacacional());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Remover_Grupo_De_Vacaciones(Obj_Tabla_De_Vacaciones grupo_vacaciones){
+
+		String query = "exec sp_delete_tabla_grupos_de_vacaciones ?,?,?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+
+			int i=1;
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(i,		grupo_vacaciones.getGrupo().toUpperCase().trim());
+			pstmt.setInt(i+=1, 	grupo_vacaciones.getAnios_trabajados());
+			pstmt.setInt(i+=1,	grupo_vacaciones.getDias_correspondientes());
+			pstmt.setInt(i+=1,	grupo_vacaciones.getPrima_vacacional());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Vacaciones_Pasadas(Obj_Alimentacion_De_Vacaciones alimentacion){
+		String query = "exec sp_insert_departamento ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, alimentacion.getFolio_empleado());
+			pstmt.setString(2, alimentacion.getFecha_inicio());
+			pstmt.setString(3, alimentacion.getFecha_final());
+			pstmt.setInt(4, alimentacion.getProximas_vacaciones());
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 }

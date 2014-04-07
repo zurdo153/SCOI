@@ -8,7 +8,7 @@ public class MenuSQL {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Vector getMenus(){
 		Vector vec = new Vector();
-		String query = "select folio, nombre, nivel from tb_menus1 where nivel = 1 order by nombre";
+		String query = "select folio, nombre, nivel from tb_menu where nivel = 1 order by nombre";
 		try {				
 			Statement s = new Connexion().conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
@@ -31,7 +31,7 @@ public class MenuSQL {
 							" tb_menus1.nombre as nombre, "+
 							" isNull((select x.folio from tb_menus1 x where x.folio = tb_menus1.menu_referencia), '0') as Dependiente_Id, "+
 							" isNull((select x.nombre from tb_menus1 x where x.folio = tb_menus1.menu_referencia), '0') as Dependiente "+
-						" from tb_menus1 "
+						" from tb_menu "
 						+ "where status = 1 "+
 						" order by tb_menus1.nivel, tb_menus1.nombre";
 		try {				
@@ -51,7 +51,7 @@ public class MenuSQL {
 	public Vector getSubMenusNivel(){
 		Vector vec = new Vector();
 		
-		String query = "select * from tb_submens1 order by menu_id, nombre";
+		String query = "select * from tb_submenu order by menu_id, nombre";
 		try {				
 			Statement s = new Connexion().conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
@@ -67,7 +67,7 @@ public class MenuSQL {
 	
 	public int getMaxNivel(){
 		int vec = 0;
-		String query = "select max(nivel)as nivel  from tb_menus1";
+		String query = "select max(nivel)as nivel  from tb_menu";
 		try {				
 			Statement s = new Connexion().conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
@@ -88,7 +88,7 @@ public class MenuSQL {
 		String query = "select "+ 
 							"tb_menus1.nombre as Menu, "+ 
 							"tb_submens1.nombre as SubMenu "+ 
-					   "from tb_submens1 "+ 
+					   "from tb_submenu "+ 
 					   		"inner join tb_menus1 on tb_menus1.folio = tb_submens1.menu_id "+
 					   "where tb_submens1.menu_id =" + key +
 					   " order by tb_submens1.nombre";
