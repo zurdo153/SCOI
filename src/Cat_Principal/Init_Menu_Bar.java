@@ -8,20 +8,27 @@ import java.util.Vector;
 import javax.swing.*;
 
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
+import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.*;
 
 @SuppressWarnings("serial")
-public class Init_Menu_Bar extends JFrame{
-	public Container cont = getContentPane();
-	public JLayeredPane panel = new JLayeredPane();
+public class Init_Menu_Bar extends Init_Login{
+	
+	
+
 	public ArrayList<WP_Relation> relacion = new ArrayList<WP_Relation>();
+	
+	
+
+	JMenuBar Barra = new JMenuBar();
+	
 	
 	public Init_Menu_Bar(){
 		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.0.0");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/layers_1_icon&16.png"));
-		
-		this.setJMenuBar(miMenuTop());
+		btnAceptar.addActionListener(opLogin);
+		btnSalir.addActionListener(opSalir);
 		
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -31,17 +38,19 @@ public class Init_Menu_Bar extends JFrame{
 	}	
 	
 	@SuppressWarnings("rawtypes")
+	
 	public JMenuBar miMenuTop(){
-		JMenuBar Barra = new JMenuBar();
 		
-		Vector MenuVector = new Obj_Menus().getMenusNivel();
+
+		
+		Vector MenuVector = new Obj_Menus().getMenusNivel (Integer.parseInt(txtFolio.getText()));
 		ArrayList<WP_Menu> lsMenus = new ArrayList<WP_Menu>();
 		for(int i=0; i<MenuVector.size(); i++){
 			String[] tmpSTR = String.valueOf(MenuVector.get(i)).split(",");
 			lsMenus.add(new WP_Menu(tmpSTR[0], tmpSTR[1], tmpSTR[2], tmpSTR[3], tmpSTR[4]));
 		}
 		
-		Vector SubMenuVector = new Obj_Menus().getSubmenuNivel();
+		Vector SubMenuVector = new Obj_Menus().getSubmenuNivel (Integer.parseInt(txtFolio.getText()));
 		ArrayList<WP_Submenu> lsSubMenus = new ArrayList<WP_Submenu>();
 		for(int i=0; i<SubMenuVector.size(); i++){
 			String[] tmpSTR = String.valueOf(SubMenuVector.get(i)).split(",");
@@ -189,7 +198,38 @@ public class Init_Menu_Bar extends JFrame{
 			}
 		}
 	}
-	
+    ActionListener opLogin = new ActionListener(){
+		@SuppressWarnings({ "deprecation", "static-access" })
+		public void actionPerformed(ActionEvent arg0) {
+			if(txtContrasena.getText().length() != 0){
+				Obj_MD5 algoritmo = new Obj_MD5();
+				Obj_Usuario user = new Obj_Usuario().buscar(Integer.parseInt(txtFolio.getText()));
+
+				if(!algoritmo.cryptMD5(txtContrasena.getText(), "izagar").trim().toLowerCase().equals(user.getContrasena().trim().toLowerCase())){
+					
+					JOptionPane.showMessageDialog(null, "La contraseña no es válida...","Aviso",JOptionPane.WARNING_MESSAGE);
+					txtContrasena.setText("");
+					txtContrasena.requestFocus(true);
+													
+					
+					return;
+				}else{
+					btnCambiarContrasena.setVisible(true); 
+					cargar_usuariotrue();
+					setJMenuBar(miMenuTop());
+					
+//					init_subMenus();
+					user.Session();
+					txtContrasena.setEnabled(false);
+				}
+			}else{
+				JOptionPane.showMessageDialog(null, "La contraseña está vacía...","Aviso",JOptionPane.WARNING_MESSAGE);
+				txtContrasena.requestFocus(true);
+				return;
+			}
+		}
+		
+	};
 	ActionListener Opciones = new ActionListener(){
 		@SuppressWarnings("rawtypes")
 		public void actionPerformed(ActionEvent e){
@@ -221,6 +261,162 @@ public class Init_Menu_Bar extends JFrame{
 			}
 		}
 	};
+	ActionListener opSalir = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+						
+			txtFolio.setText("");
+			txtUsuario.setText("");
+			txtContrasena.setText("");
+						
+			btnAceptar.setVisible(true);
+			btnAceptar.setEnabled(false);
+			btnBuscar.setEnabled(true);
+            btnBanco.setEnabled(false);
+			btnInasistencia.setEnabled(false);
+			btnCaja.setEnabled(false);
+			btnFsRH.setEnabled(false);
+			btnFsAux.setEnabled(false);
+			btnPExtras.setEnabled(false);
+			btnPrestamo.setEnabled(false);
+			btnAltaEmp.setEnabled(false);
+			btnPuesto.setEnabled(false);
+			btnSueldo.setEnabled(false);
+			btnListaRaya.setEnabled(false);
+			btnListaFirma.setEnabled(false);
+			btnListaComparacion.setEnabled(false);
+			btnCambiarContrasena.setVisible(false);
+			deshabilitarCambiarContrasena ();
+			cargar_usuariotrue();
+			dispose();
+			new Init_Menu_Bar().setVisible(true);
+			
+			
+//							setJMenuBar(null);
+          			
+			
+			
+//		   	/* AUDITORIA */	
+//			    Reporte_de_Movimientos_Operados.setEnabled(false); 
+//				Captura_Cortes.setEnabled(false);
+//			
+//			/* CATALOGO */
+//			    Catalogo_Departamento.setEnabled(false);
+//				Catalogo_Empleado.setEnabled(false);
+//				Catalogo_Establecimiento.setEnabled(false);
+//				Catalogo_Puesto.setEnabled(false);
+//				Catalogo_Rango_Prestamo.setEnabled(false);
+//				Catalogo_Sueldo.setEnabled(false);
+//				Catalogo_Tipo_Banco.setEnabled(false);
+//				Catalogo_Turno.setEnabled(false);
+//				
+//			/* CONFIGURACION */
+//				Configuracion_Asistencia_Puntualidad.setEnabled(false);
+//				Configuracion_ConexionBD.setEnabled(false);
+//				Configuracion_Bono.setEnabled(false);
+//				Configuracion_Denominaciones.setEnabled(false);
+//				Configuracion_Divisas.setEnabled(false);
+//				Configuracion_Mantenimiento.setEnabled(false);
+//				Configuracion_Sistema.setEnabled(false);
+//				Configuracion_Usuario.setEnabled(false);
+//		
+//			/* CONTABILIDAD */			
+//				Importar_Auxiliar.setEnabled(false);
+//				Importar_Cheques.setEnabled(false);
+//				Importar_Consiliacion.setEnabled(false);
+//				Importar_Voucher.setEnabled(false);
+//				Egresos_Reporte_de_apartados_y_abonos.setEnabled(false);
+//
+//			/* CUADRANTES 
+//			*		ALIMENTACION */
+//				Cuadrantes_Catalogo_Actividades.setEnabled(false);
+//				Cuadrantes_Alimentacion_Actividades_Cuadrantes.setEnabled(false);
+//				Cuadrantes_Catalogo_Telefono.setEnabled(false);
+//				Cuadrantes_Alimentacion_Cuadrante.setEnabled(false);
+//				Cuadrantes_Alimentacion_Empleados_Cuadrantes.setEnabled(false);
+//				Cuadrantes_Alimentacion_Asignacion_Actividades_Nivel_Jerarquico.setEnabled(false);
+//				
+//			/* CUADRANTES 
+//			*		CATALOGO */
+//				Cuadrantes_Catalogo_Atributos.setEnabled(false);
+//				Cuadrantes_Catalogo_Equipo_Trabajo.setEnabled(false);
+//				Cuadrantes_Catalogo_Jefatura.setEnabled(false);
+//				Cuadrantes_Catalogo_Nivel_Critico.setEnabled(false);
+//				Cuadrantes_Catalogo_Nivel_Jerarquico.setEnabled(false);
+//				Cuadrantes_Catalogo_Respuesta_Multiple.setEnabled(false);
+//				Cuadrantes_Catalogo_Ponderacion.setEnabled(false);
+//				Cuadrantes_Catalogo_Respuesta.setEnabled(false);
+//				
+//			/* CUADRANTES 
+//			*		REPORTE */
+//				Impresion_Cuadrante_Personal.setEnabled(false);
+//				Cuadrantes_Reportes_Directivo.setEnabled(false);
+//				Cuadrantes_Reportes_Jefatura.setEnabled(false);
+//				Cuadrantes_Reportes_Usuario.setEnabled(false);
+//
+//			/* LISTA DE RAYA 
+//			* 		ALIMENTACION */
+//				Alimentacion_Bancos.setEnabled(false);
+//				Alimentacion_Cajeras_de_Fuente_Sodas.setEnabled(false);
+//				Alimentacion_Captura_Totales_Nomina.setEnabled(false);
+//				Alimentacion_Deducciones_Asistencia.setEnabled(false);
+//				Alimentacion_Diferencia_Cortes.setEnabled(false);
+//				Alimentacion_Fuente_Sodas_auxf.setEnabled(false);
+//				Alimentacion_FS_auxf_seleccionable.setEnabled(false);
+//				Alimentacion_Fuente_Sodas_rh.setEnabled(false);
+//				Alimentacion_FS_dh_seleccionable.setEnabled(false);
+//				Alimentacion_Percepciones_Extra.setEnabled(false);
+//				Alimentacion_Prestamos.setEnabled(false);
+//				
+//			/* LISTA DE RAYA 
+//			* 		AUTORIZACIONES */
+//				Autorizacion_Auditoria.setEnabled(false);
+//				Autorizacion_Finanzas.setEnabled(false);
+//				
+//			/* LISTA DE RAYA 
+//			* 		CHECADORES */
+//				Asignacion_Horario_Temporada.setEnabled(false);
+//				Checador_Menu.setEnabled(true);
+//				Dias_Inhabiles.setEnabled(false);
+//				Generacion_Gafetes_Empleados.setEnabled(false);
+//				Horarios.setEnabled(false);
+//				Mensajes_Personales.setEnabled(false);
+//				Permisos_Empleados.setEnabled(false);
+//
+//			/* LISTA DE RAYA 
+//			* 		COMPARACIONES */
+//				Comparaciones_Listas_Fuente_Sodas.setEnabled(false);
+//				Comparaciones_Listas_Raya.setEnabled(false);
+//				
+//			/* LISTA DE RAYA 
+//			* 		DEPARTAMENTO DE CORTES */
+//					Departamento_Cortes_Alimentacion.setEnabled(false);
+//					
+//			/* LISTA DE RAYA 
+//			* 		REPORTES */
+//					Reportes_del_Dia.setEnabled(false);
+//					Reportes_Checador_Gral.setEnabled(false);
+//					Reporte_de_Plantilla_de_Personal_con_Horario.setEnabled(false);
+//				Reporte_Deducciones_Inasistencia.setEnabled(false);
+//				Reporte_Bancos.setEnabled(false);
+//				Reporte_Fuente_Sodas.setEnabled(false);
+//				Reporte_Lista_Firma.setEnabled(false);
+//				Reporte_Lista_Raya.setEnabled(false);
+//				Reporte_Prestamos.setEnabled(false);
+//				
+//		   /*SOLICITUDES*/	
+//				Revision_de_Consejo.setEnabled(false);
+//				Revision_de_Jefe_de_Operaciones.setEnabled(false);
+//				Solicitud_de_Empleados.setEnabled(false);
+//				
+//		   /*VACACIONES*/	
+//				Grupos_de_Vacaciones.setEnabled(false);
+		    txtFolio.setEditable(true);
+			txtContrasena.setEditable(true);
+			txtFolio.requestFocus();
+						
+		}
+	};
+
 	
 	
 	public static void main(String args[]){

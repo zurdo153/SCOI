@@ -7,25 +7,27 @@ public class Obj_Menus {
 	
 	public Obj_Menus(){}
 	
+
 	@SuppressWarnings("rawtypes")
-	public Vector getMenus(){
-		return new MenuSQL().getMenus();
+	public Vector getMenusNivel (int folio){
+		return new MenuSQL().getMenusNivel(folio);
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public Vector getMenusNivel(){
-		return new MenuSQL().getMenusNivel();
+	public Vector getSubmenuNivel (int folio){
+		return new MenuSQL().getSubMenusNivel(folio);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public Vector getSubmenuNivel(){
-		return new MenuSQL().getSubMenusNivel();
-	}
-	public int getMaxNivel(){
-		return new MenuSQL().getMaxNivel();
-	}
-	@SuppressWarnings("rawtypes")
-	public Vector getSubMenus(int key){
-		return new MenuSQL().getSubMenus(key);
-	}
+//	@SuppressWarnings("rawtypes")
+//	public Vector getMenus(){
+//		return new MenuSQL().getMenus();
+//	}
+	
+//	public int getMaxNivel(){
+//		return new MenuSQL().getMaxNivel();
+//	}
+//	@SuppressWarnings("rawtypes")
+//	public Vector getSubMenus(int key){
+//		return new MenuSQL().getSubMenus(key);
+//	}
 }

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
 
+
+
 public class GuardarTablasModel {
 	public boolean tabla_model_bancos(Object[][] tabla){
 		String query_delete = "exec sp_borrado_empleados_dif_1";
@@ -890,4 +892,105 @@ public boolean IZAGAR_insert_valores_por_tasa_todas(Object[][] tabla){
 	}		
 	return true;
 }
+public boolean IZAGAR_insert_Netos_Nominas_Temp(Object[][] tabla){
+	String query = "exec IZAGAR_insert_Netos_Nominas_Temp ?,?,?";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		
+		for(int i=0; i<tabla.length; i++){
+			pstmt.setString(1, tabla[i][0].toString().trim());
+			pstmt.setString(2, tabla[i][1].toString().trim());
+			pstmt.setString(3, tabla[i][2].toString().trim());
+			;
+		pstmt.executeUpdate();
+		}
+				
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+public boolean IZAGAR_insert_Netos_Nominas_Temp_individual(int folio_empleado,int nomina,float neto){
+	String query = "exec IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual "+folio_empleado+","+nomina+","+neto+";";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+public boolean IZAGAR_insert_totales_deposito_nomina_bancos(){
+	String query = "exec sp_traspaso_de_totales_a_depositos_nomina_bancos;";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
 }
+
+

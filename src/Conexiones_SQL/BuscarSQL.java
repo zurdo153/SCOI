@@ -1312,7 +1312,7 @@ public class BuscarSQL {
 	
 	public Obj_Usuario Usuario(int folio) throws SQLException{
 		Obj_Usuario usuario = new Obj_Usuario();
-		String query = "select * from tb_usuario where folio ="+folio;
+		String query = "exec sp_select_usuario_login "+folio;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();

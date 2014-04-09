@@ -829,7 +829,7 @@ public class Cargar_Combo {
 		String query = "select nombre from " + tabla + " order by nombre asc";
 		Statement stmt = null;
 		try {
-			stmt = new Connexion().conexionDB_DOS().createStatement();
+			stmt = new Connexion().conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			int j=0;
 			while(rs.next()){

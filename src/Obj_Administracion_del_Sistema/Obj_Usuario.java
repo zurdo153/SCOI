@@ -166,6 +166,11 @@ public class Obj_Usuario {
 		new GuardarSQL().Guardar_Sesion(this);
 	}
 	
+	public boolean CambiarContrasena(int folio_empleado ,String nuevacontrasena){
+		return new ActualizarSQL().GuardaNuevaContrasena(folio_empleado,nuevacontrasena);
+		
+	}
+	
 	public Obj_Usuario LeerSession()
     {
     	try{

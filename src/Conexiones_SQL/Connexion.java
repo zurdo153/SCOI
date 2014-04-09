@@ -28,7 +28,7 @@ public class Connexion {
 		return conn;
 	}
 	
-	public Connection conexionDB_DOS(){
+	public Connection conexion_IZAGAR(){
 		Connection conn = null;	
 		try{
 							

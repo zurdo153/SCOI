@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Plantilla de Horarios" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ca0ec92-4868-4f8f-ac47-7bfb7cd837f3">
 	<property name="ireport.zoom" value="2.5937424601000147"/>
-	<property name="ireport.x" value="668"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="97"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -150,6 +150,9 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 	<variable name="Cantidad_Departamentos" class="java.lang.Integer" resetType="Group" resetGroup="Establecimiento" calculation="DistinctCount">
 		<variableExpression><![CDATA[$F{Departamento}]]></variableExpression>
 	</variable>
+	<variable name="Empleados_por_Departamento" class="java.lang.Integer" resetType="Group" resetGroup="Departamento" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{Nombre}]]></variableExpression>
+	</variable>
 	<group name="Establecimiento" footerPosition="StackAtBottom">
 		<groupExpression><![CDATA[$F{Establecimiento}]]></groupExpression>
 		<groupHeader>
@@ -186,7 +189,7 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 		<groupHeader>
 			<band height="20">
 				<textField>
-					<reportElement uuid="939561f0-a589-491a-a75b-07fb74411266" positionType="Float" x="2" y="0" width="299" height="20" forecolor="#000000"/>
+					<reportElement uuid="939561f0-a589-491a-a75b-07fb74411266" positionType="Float" x="2" y="0" width="200" height="20" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Times New Roman" size="16" isBold="false"/>
 					</textElement>
@@ -243,6 +246,15 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 				</staticText>
 			</band>
 		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<textField>
+					<reportElement uuid="6a658763-ee55-4143-9950-735098c6f6c5" x="2" y="0" width="278" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA["Cantidad de Empleados del Departamento:"+$V{Empleados_por_Departamento}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>

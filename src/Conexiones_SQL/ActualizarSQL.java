@@ -1182,6 +1182,40 @@ public class ActualizarSQL {
 		return true;
 	}
 		
+	public boolean GuardaNuevaContrasena(int folio_empleado ,String nuevacontrasena){
+		String query = "update tb_empleado set contrasena = '"+ nuevacontrasena +"' where folio=" + folio_empleado;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			System.out.println(nuevacontrasena);
+			System.out.println(folio_empleado);
+			
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException en GuardaNuevaContrasena: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción GuardaNuevaContrasena ha sido abortada :");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 	public boolean Actualizar(Obj_Nomina nomina, String Establecimiento, int Folio){
 		String update = "update tb_nomina set nomina = ?, pago_linea = ?, cheque_nomina = ?, lista_raya = ?, diferecia = ? where establecimiento = '"+Establecimiento+"' and folio_lista ="+Folio;
 		
@@ -2255,6 +2289,7 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
+	
 	
 	public boolean Actualizar_Grupo_De_Vacaciones(Obj_Tabla_De_Vacaciones grupo_vacacionesObj,String grupo_vacaciones,int anios,int dias,int prima){
 		String query = "exec sp_update_tabla_grupos_de_vacaciones ?,?,?,?,?,?,?,?;";
