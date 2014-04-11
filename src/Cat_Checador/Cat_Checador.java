@@ -22,6 +22,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -37,11 +38,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import Obj_Checador.Obj_Entosal;
+import Obj_Checador.Obj_JTextFieldLimit;
 import Obj_Checador.Obj_Traer_Checador;
+
+
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Puestos;
-import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
 public class Cat_Checador extends JFrame {
@@ -92,7 +95,7 @@ public class Cat_Checador extends JFrame {
                 JScrollPane panelScroll = new JScrollPane(tabla);
                 
                 JLabel lblClave = new JLabel("Clave:");
-                JPasswordField txtClaveReal = new Componentes().textPassword(new JPasswordField(), "Clave Real", 100);
+                JPasswordField txtClaveReal = new JPasswordField();
                 
                 JButton btnEmplorar = new JButton("");
                 
@@ -163,6 +166,8 @@ public class Cat_Checador extends JFrame {
                 
                 Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
                 btnFoto.setIcon(iconoFoto);
+                
+                txtClaveReal.setDocument(new Obj_JTextFieldLimit(100));
                 
 //                btnExaminar.addActionListener(opExaminar);
                 
@@ -686,7 +691,7 @@ public class Cat_Checador extends JFrame {
                 }
     }
 
-        @SuppressWarnings("rawtypes")
+        @SuppressWarnings({ "rawtypes", "unused" })
         public static Object[] fila2(int folio_empleado,String tipo_entrada,int tipo_salida_comer){
                 
 //metodo para llenar vector para checador2--------------------------------------
@@ -718,6 +723,33 @@ public class Cat_Checador extends JFrame {
                                         fila[8] = lista_tabla[i][8]+"";
                                         tabla_model.addRow(fila);
                                 }
+                                
+                                                        
+                                Object [] vectormensaje = new Object[5];
+                                
+                                Vector fila_mensaje=new Obj_Entosal().Obj_Mensaje_respuesta(folio_empleado);
+                                
+                                if(fila_mensaje.get(0).toString().trim().equals("true")){
+                                	
+                               //   apartado para configurar el uso de la pantalla de avisos--------------------------------
+                                    JDialog frame = new JDialog();
+                                String ruta=fila_mensaje.get(3).toString().trim();
+                                    
+                        		    frame.setUndecorated(true);
+                        		    new Cat_Avisos_Checador(frame,ruta);
+                              
+                        		    frame.setVisible(true);
+                                	System.out.println(fila_mensaje);
+                                	
+                                }
+                                              
+                                
+
+
+                                
+// -------------------------------------------------------------------------------------------
+                                
+                                
                 }else{
                 	lblSemaforoRojo.setEnabled(true);
                     lblSemaforoVerde.setEnabled(false);

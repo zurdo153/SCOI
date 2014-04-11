@@ -3,6 +3,7 @@ package Obj_Checador;
 import java.sql.SQLException;
 import java.util.Vector;
 
+
 import Conexiones_SQL.BuscarSQL;
 
 public class Obj_Entosal {
@@ -77,7 +78,18 @@ public class Obj_Entosal {
 			return false;
 		}
 	}
-	
+	@SuppressWarnings("rawtypes")
+	public Vector Obj_Mensaje_respuesta(int folio) {
+		try {
 
-	
-}
+			return new BuscarSQL().obtener_mensaje_checador(folio);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+
+	}
+
+

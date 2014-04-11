@@ -183,7 +183,7 @@ public class Init_Login extends JFrame{
 		public void actionPerformed(ActionEvent arg0) {
 			
 //			if(arg0.getSource().equals(btnBanco))
-//				new Cat_Bancos().setVisible(true);
+//				new Cat_Depositos_A_Bancos().setVisible(true);
 //			if(arg0.getSource().equals(btnInasistencia))
 //				new Cat_Deduccion_Inasistencia().setVisible(true);
 //			if(arg0.getSource().equals(btnCaja))

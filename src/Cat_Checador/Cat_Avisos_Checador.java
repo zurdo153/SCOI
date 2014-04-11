@@ -25,10 +25,12 @@ public class Cat_Avisos_Checador extends JComponent {
 		private Image background;
 		
 		JLabel lblAviso = new JLabel();
-		String fileFoto = System.getProperty("user.dir")+"/Imagen/aviso.png";
+		String fileFoto = System.getProperty("user.dir")+"/Imagen/avisos/aviso.png";
+		
 		ImageIcon tmpIconAuxFoto = new ImageIcon(fileFoto);
 
-		public Cat_Avisos_Checador(final JDialog frame) {
+		public Cat_Avisos_Checador(final JDialog frame,String ruta) {
+			//fileFoto=ruta;
 			
 			frame.setModal(true);
 			updateBackground( );

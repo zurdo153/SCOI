@@ -37,9 +37,12 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
+import Obj_Checador.Obj_JTextFieldLimit;
+
+
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
-import Obj_Principal.Componentes;
+
 
 import com.toedter.calendar.JDateChooser;
 
@@ -60,10 +63,8 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 	JButton btnSiguiente = new JButton("Siguiente");
 	JButton btnAnterior = new JButton("Anterior");
 	
-	JTextArea txaMensaje = new Componentes().textArea(new JTextArea(), "Mensaje", 800);
+	JTextArea txaMensaje = new JTextArea();
 	JScrollPane Mensaje = new JScrollPane(txaMensaje);
-	
-	
 	
 	JTextField txtAsunto = new JTextField();
 	JCheckBox chStatus = new JCheckBox("Status",true);
@@ -143,6 +144,7 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 		
 		txaMensaje.setLineWrap(true); 
 		txaMensaje.setWrapStyleWord(true);
+		txaMensaje.setDocument(new Obj_JTextFieldLimit(800));
 		
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
 		tabla.getColumnModel().getColumn(0).setMinWidth(50);
@@ -440,8 +442,9 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 		String todos1 = "exec sp_select_empleado_mensaje "+folio;
 		Statement stmt = null;
 		ResultSet rs;
+		Connexion con = new Connexion();
 		try {
-			stmt = new Connexion().conexion().createStatement();
+			stmt = con.conexion().createStatement();
 			rs = stmt.executeQuery(todos1);
 			Object[] vector = new Object[2];
 			while(rs.next()){
@@ -730,7 +733,7 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 		};
 		
 	   	public Object[][] getTabla(){
-			String todos = "exec sp_compara_empleados_con_cuadrante";
+			String todos = "select folio, nombre+' '+ap_paterno+' '+ap_materno from tb_empleado where status=1";
 			Statement s;
 			ResultSet rs;
 			try {
@@ -1029,10 +1032,6 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 		if(fechaNullFin.equals("null"))error += "Fecha de Fin\n";
 		if (txaMensaje.getText().equals("")){error+="Mensaje\n";}
 		return error;
-	}
-	
-	public static void main(String args[]){
-		new Cat_Mensajes_Personales_para_Empleados().setVisible(true);
 	}
 	
 }

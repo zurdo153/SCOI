@@ -5056,4 +5056,32 @@ public class BuscarSQL {
 		}
 		return alimentacion_vacaciones;
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Vector obtener_mensaje_checador(int folio) throws SQLException{
+		Vector fila = new Vector();
+		String query = "sp_select_existe_mensaje_empleado_checador "+folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+		    
+			while(rs.next()){
+				fila.add(rs.getObject(1));
+				fila.add(rs.getObject(2));
+				fila.add(rs.getObject(3));
+				fila.add(rs.getObject(4));
+				fila.add(rs.getObject(5));
+						
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			return null;
+		}
+		finally{
+			 if (stmt != null) { stmt.close(); }
+		}
+		return fila;
+	}
 }
