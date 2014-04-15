@@ -9,6 +9,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Vector;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,21 +24,27 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
 import Cat_Checador.Cat_Checador;
+import Cat_Lista_de_Raya.Cat_Empleados;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
+import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
+import Obj_Principal.Obj_Menus;
 
 
 
 @SuppressWarnings("serial")
 public class Init_Login extends JFrame{
+
+	
 	public Container cont = getContentPane();
 	public JLayeredPane panel = new JLayeredPane();
 	
-	/* BOTON BANCO */
+	/* BOTON DEPOSITOS A BANCO */
 	JButton btnBanco= new JButton(new ImageIcon("imagen/banco.png"));
-	JLabel lblBanco= new JLabel("Banco");
+	JLabel lblBanco= new JLabel("Depositos");
+	JLabel lblBanco2= new JLabel("Bancos");
 	
 	/* BOTON INASISTENCIA */
 	JButton btnInasistencia= new JButton(new ImageIcon("imagen/inasistencia.png"));
@@ -69,13 +80,9 @@ public class Init_Login extends JFrame{
 	JLabel lblAltaEmp2= new JLabel("Alta");
 	JLabel lblAltaEmp3= new JLabel("Empleados");
 	
-	/* BOTON PUESTO */
-	JButton btnPuesto= new JButton(new ImageIcon("imagen/puesto.png"));
-	JLabel lblPuesto2= new JLabel("Puesto");
-	
-	/* BOTON SUELDOS */
-	JButton btnSueldo= new JButton(new ImageIcon("imagen/sueldo.png"));
-	JLabel lblSueldo2= new JLabel("Sueldo");
+	/* BOTON SOLICITUDES */
+	JButton btnSolicitudes= new JButton(new ImageIcon("imagen/Solicitud-64.png"));
+	JLabel lblSolicitudes= new JLabel("Solicitudes");
 	
 	/* BOTON LISTA DE RAYA */
 	JButton btnListaRaya= new JButton(new ImageIcon("imagen/listaR.png"));
@@ -93,10 +100,30 @@ public class Init_Login extends JFrame{
 	JLabel lblListaComparacion3= new JLabel("Comparacion FS");
 	
 	/* BOTON CHECADOR */
-	
 	JButton btnChecador= new JButton(new ImageIcon("imagen/checador.png"));
 	JLabel lblListaChecador2= new JLabel("Checador");
 	
+	/*BOTON SALIR DE SCOI*/
+	JButton btnCerrar= new JButton(new ImageIcon("imagen/salir_Scoi-3964-64.png"));
+	JLabel lblListaCerrar= new JLabel("Cerrar SCOI");
+	
+	
+	/* BOTON CAPTURA DE CUADRANTE PERSONAL */
+	JButton btnCuadrantepersonal= new JButton(new ImageIcon("imagen/cuadrante_personal-64.png"));
+	JLabel lblCuadrantepersonal = new JLabel("Captura de");
+	JLabel lblCuadrantepersonal2 = new JLabel("Cuadrante Personal");
+	
+	/* BOTON CAPTURA DE CUADRANTE EQUIPO */
+    JButton btnCuadranteequipo = new JButton(new ImageIcon("imagen/cuadrante_equipo-64.png"));
+	JLabel lblCuadranteequipo = new JLabel("Captura de");
+	JLabel lblCuadranteequipo2 = new JLabel("Cuadrante Equipo");
+	
+	/* BOTON CAPTURA DE FUENTE DE SODAS CAJERAS */
+	JButton btnFuenteSodasCajeras= new JButton(new ImageIcon("imagen/captura_fuente_de_Sodas_64.png"));
+	JLabel lblFuente_sodascajeras = new JLabel("Captura Fsodas");
+	JLabel lblFuente_sodascajeras2 = new JLabel("por Cajeras");
+	
+	/* BOTONES,ETIQUETAS Y TEXTFIELDS DEL LOGIN*/
     JLabel lblfolio=new JLabel("Folio:");
     JLabel lblusuario=new JLabel("Usuario:");	
     JLabel lblcontrasena=new JLabel("Contraseña:");	
@@ -123,14 +150,22 @@ public class Init_Login extends JFrame{
 	
 	JLabel lblLogo = new JLabel(new ImageIcon("imagen/LogPrincipal.png"));
 	
+	// DECLARAMOS EL OBJETO RUNTIME PARA EJECUTAR APLICACIONES DE WINDOWS
+	Runtime R = Runtime.getRuntime();
+	
 	public Init_Login(){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		
+//      asigna el foco al JTextField deseado al arrancar la ventana
+        this.addWindowListener(new WindowAdapter() {
+                public void windowOpened( WindowEvent e ){
+                txtFolio.requestFocus();
+             }
+        });
+		
 		/* MANEJO DE LA RESOLUCIONES */ 
 		Resolucion(ancho, alto);
-		
-		
 		
 		btnBuscar.addActionListener(opBuscar);
 		txtFolio.addKeyListener(enterBuscar);
@@ -142,26 +177,27 @@ public class Init_Login extends JFrame{
 		
 		btnCambiarContrasena.addActionListener(opCambiarContrasena);
 		btnValidarContrasena.addActionListener(opValidarContrasena);
-
 		btnGuardarContrasena.addActionListener(opGuardarContrasena);
-		
 		txtUsuario.setEditable(false);
 		btnAceptar.setEnabled(false);
 		
 		btnBanco.addActionListener(Opciones);
 		btnInasistencia.addActionListener(Opciones);
+		btnSolicitudes.addActionListener(Opciones);
 		btnCaja.addActionListener(Opciones);
 		btnFsRH.addActionListener(Opciones);
 		btnFsAux.addActionListener(Opciones);
 		btnPExtras.addActionListener(Opciones);
 		btnPrestamo.addActionListener(Opciones);
 		btnAltaEmp.addActionListener(Opciones);
-		btnPuesto.addActionListener(Opciones);
-		btnSueldo.addActionListener(Opciones);
+		btnCuadrantepersonal.addActionListener(Opciones);
+		btnCuadranteequipo.addActionListener(Opciones);
 		btnListaRaya.addActionListener(Opciones);
 		btnListaFirma.addActionListener(Opciones);
+		btnFuenteSodasCajeras.addActionListener(Opciones);
 		btnListaComparacion.addActionListener(Opciones);
 		btnChecador.addActionListener(Opciones);
+		btnCerrar.addActionListener(Opciones);
 		
 		btnBanco.setEnabled(false);
 		btnInasistencia.setEnabled(false);
@@ -171,634 +207,348 @@ public class Init_Login extends JFrame{
 		btnPExtras.setEnabled(false);
 		btnPrestamo.setEnabled(false);
 		btnAltaEmp.setEnabled(false);
-		btnPuesto.setEnabled(false);
-		btnSueldo.setEnabled(false);
+		btnSolicitudes.setEnabled(false);
 		btnListaRaya.setEnabled(false);
 		btnListaFirma.setEnabled(false);
 		btnListaComparacion.setEnabled(false);
+		btnCuadrantepersonal.setEnabled(false);
+		btnCuadranteequipo.setEnabled(false);
+		btnFuenteSodasCajeras.setEnabled(false);
 		btnChecador.setEnabled(true);
+		
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	ActionListener Opciones = new ActionListener(){
-		public void actionPerformed(ActionEvent arg0) {
-			
-//			if(arg0.getSource().equals(btnBanco))
-//				new Cat_Depositos_A_Bancos().setVisible(true);
-//			if(arg0.getSource().equals(btnInasistencia))
-//				new Cat_Deduccion_Inasistencia().setVisible(true);
-//			if(arg0.getSource().equals(btnCaja))
-//				new Cat_Filtro_Diferiencia_Cortes().setVisible(true);
-//			if(arg0.getSource().equals(btnFsAux))
-//				new Cat_Filtro_Fue_Soda_Auxf().setVisible(true);
-//			if(arg0.getSource().equals(btnFsRH))
-//				new Cat_Filtro_Fue_Soda_Rh().setVisible(true);
-//			if(arg0.getSource().equals(btnPExtras))
-//				new Cat_Percepciones_Extra().setVisible(true);
-//			if(arg0.getSource().equals(btnPrestamo))
-//				new Cat_Filtro_Prestamo().setVisible(true);
-//			if(arg0.getSource().equals(btnAltaEmp))
-//				new Cat_Empleado().setVisible(true);
-//			if(arg0.getSource().equals(btnPuesto))
-//				new Cat_Puesto().setVisible(true);
-//			if(arg0.getSource().equals(btnSueldo))
-//				new Cat_Sueldo().setVisible(true);
-//			if(arg0.getSource().equals(btnListaRaya))
-//				new Cat_Revision_Lista_Raya().setVisible(true);
-//			if(arg0.getSource().equals(btnListaFirma))
-//				new Cat_Lista_Pago().setVisible(true);
-//			if(arg0.getSource().equals(btnListaComparacion))
-//				new Cat_Comprobar_Fuente_Sodas_RH().setVisible(true);
-//			if(arg0.getSource().equals(btnChecador))
-//				new Cat_Checador().setVisible(true);
-
-		}
 		
+		public void actionPerformed(ActionEvent click) {
+			
+
+//			btnBanco.addActionListener(Opciones);
+//			btnInasistencia.addActionListener(Opciones);
+//			btnSolicitudes.addActionListener(Opciones);
+//			btnCaja.addActionListener(Opciones);
+//			btnFsRH.addActionListener(Opciones);
+//			btnFsAux.addActionListener(Opciones);
+//			btnPExtras.addActionListener(Opciones);
+//			btnPrestamo.addActionListener(Opciones);
+//			btnAltaEmp.addActionListener(Opciones);
+//			btnCuadrantepersonal.addActionListener(Opciones);
+//			btnCuadranteequipo.addActionListener(Opciones);
+//			btnListaRaya.addActionListener(Opciones);
+//			btnListaFirma.addActionListener(Opciones);
+//			btnFuenteSodasCajeras.addActionListener(Opciones);
+//			btnListaComparacion.addActionListener(Opciones);
+
+			
+			if(click.getSource().equals(btnAltaEmp))
+				new Cat_Empleados().setVisible(true);
+
+			
+			if(click.getSource().equals(btnChecador))
+				new Cat_Checador().setVisible(true);
+			
+			/*SALIR DE SCOI*/
+			if(click.getSource().equals(btnCerrar)){
+				dispose();			
+			try {
+				R.exec("taskkill /f /im javaw.exe");
+			} catch (Exception e2){}
+			}
+		}
 	};
 	
 	public void Resolucion(int ancho, int alto){
-		if(ancho >= 1360){
-			panel.add(lblLogo).setBounds(980,0,400,218);
-			int x = 30, y = 40, z = 65;
-			int yl = 60, zl = 120;
+		if(ancho >= 1280){
+			panel.add(lblLogo).setBounds(920,0,400,218);
+			int   x = 30  ,y = 40, z = 65;
+			int  zl = 120 ,w = 20;
 					
-			/* FILA 1 */
-			panel.add(btnBanco).setBounds( x, y, z, z);
-			panel.add(btnPExtras).setBounds(220, y, z, z);
-			panel.add(btnAltaEmp).setBounds(405, y, z, z);
-			panel.add(btnListaRaya).setBounds(594, y, z, z);
-			
-			panel.add(lblBanco).setBounds(112, yl, zl, 20);
-			panel.add(lblPExtras1).setBounds(300, yl, zl, 20);
-			panel.add(lblPExtras2).setBounds(300, yl+10, zl, 20);
-			panel.add(lblAltaEmp2).setBounds(488, yl, zl, 20);
-			panel.add(lblAltaEmp3).setBounds(488, yl+10, zl, 20);
-			panel.add(lblListaRaya2).setBounds(676, yl, zl, 20);
-			panel.add(lblListaRaya3).setBounds(676, yl+10, zl, 20);
-			
-			/* FILA 2 */
-			panel.add(btnInasistencia).setBounds(x, y+=134, z, z);
-			panel.add(btnPrestamo).setBounds(220, y, z, z);
-			panel.add(btnPuesto).setBounds(405, y, z, z);
-			panel.add(btnListaFirma).setBounds(594, y, z, z);
-			
-			panel.add(lblInasistencia2).setBounds(112, y+=20, zl, 20);
-			panel.add(lblInasistencia3).setBounds(112, y+10, zl, 20);
-			panel.add(lblPrestamo2).setBounds(300, y, zl, 20);
-			panel.add(lblPuesto2).setBounds(488, y, zl, 20);
-			panel.add(lblListaFirma2).setBounds(676, y, zl, 20);
-			panel.add(lblListaFirma3).setBounds(676, y+10, zl, 20);
-			
-			/* FILA 3 */
-			panel.add(btnCaja).setBounds(x, y+=115, z, z);
-			panel.add(btnSueldo).setBounds(405, y, z, z);
-			panel.add(btnListaComparacion).setBounds(594, y, z, z);
-			
-			panel.add(lblCaja2).setBounds(112, y+=20, zl, 20);
-			panel.add(lblCaja3).setBounds(112, y+10, zl, 20);
-			panel.add(lblSueldo2).setBounds(488, y, zl, 20);
-			panel.add(lblListaComparacion2).setBounds(676, y, zl, 20);
-			panel.add(lblListaComparacion3).setBounds(676, y+10, zl, 20);
-			
-			/* FILA 4 */
-			panel.add(btnFsRH).setBounds(x, y+=115, z, z);
+			/* COLUMNA 1 *//////////////////////////////////////////////////////
+			panel.add(btnFuenteSodasCajeras).setBounds   (x     ,y     ,z,z);
+			panel.add(btnFsAux).setBounds                (x     ,y+=115,z,z);	
+			panel.add(btnFsRH).setBounds                 (x     ,y+=115,z,z);
+			panel.add(btnInasistencia).setBounds         (x     ,y+=115,z,z);
+			panel.add(btnPExtras).setBounds              (x     ,y+=115,z,z);
 
-			panel.add(lblFsRH2).setBounds(112, y+=20, zl, 20);
-			panel.add(lblFsRH3).setBounds(112, y+10, zl, 20);
+			y = 60;
+			panel.add(lblFuente_sodascajeras).setBounds  (x+=75 ,y     ,zl,w);
+			panel.add(lblFuente_sodascajeras2).setBounds (x     ,y+10  ,zl,w);
+			panel.add(lblFsAux2).setBounds               (x     ,y+=115,zl,w);
+			panel.add(lblFsAux3).setBounds               (x     ,y+10  ,zl,w);
+			panel.add(lblFsRH2).setBounds                (x     ,y+=115,zl,w);
+			panel.add(lblFsRH3).setBounds                (x     ,y+10  ,zl,w);
+			panel.add(lblInasistencia2).setBounds        (x     ,y+=115,zl,w);
+			panel.add(lblInasistencia3).setBounds        (x     ,y+10  ,zl,w);
+			panel.add(lblPExtras1).setBounds             (x     ,y+=115,zl,w);
+			panel.add(lblPExtras2).setBounds             (x     ,y+10  ,zl,w);
 			
-			/* FILA 5 */
-			panel.add(btnFsAux).setBounds(x, y+=115, z, z);		
-			panel.add(btnChecador).setBounds(594, y, z, z);
+			/* COLUMNA 2 *//////////////////////////////////////////////////////
+			y=40;			
+			panel.add(btnBanco).setBounds                (x+=140,y     ,z,z);
+			panel.add(btnCaja).setBounds                 (x     ,y+=115,z,z);
+			panel.add(btnPrestamo).setBounds             (x     ,y+=115,z,z);
+			panel.add(btnListaComparacion).setBounds     (x     ,y+=115,z,z);
+			panel.add(btnListaRaya).setBounds            (x     ,y+=115,z,z);
 			
-			panel.add(lblFsAux2).setBounds(112, y+=20, zl, 20);
-			panel.add(lblFsAux3).setBounds(112, y+10, zl, 20);
-			panel.add(lblListaChecador2).setBounds(676, y+10, zl, 20);
+			y = 60;		
+			panel.add(lblBanco).setBounds                (x+=75 ,y     ,zl,w);
+			panel.add(lblBanco2).setBounds               (x     ,y+10  ,zl,w);
+			panel.add(lblCaja2).setBounds                (x     ,y+=115,zl,w);
+			panel.add(lblCaja3).setBounds                (x     ,y+10  ,zl,w);
+			panel.add(lblPrestamo2).setBounds            (x     ,y+=115,zl,w);
+			panel.add(lblListaComparacion2).setBounds    (x     ,y+=115,zl,w);
+			panel.add(lblListaComparacion3).setBounds    (x     ,y+10  ,zl,w);
+			panel.add(lblListaRaya2).setBounds           (x     ,y+=115,zl,w);
+			panel.add(lblListaRaya3).setBounds           (x     ,y+10  ,zl,w);
 			
+			/* COLUMNA 3 *///////////////////////////////////////////////////////
+			y=40;			
+			panel.add(btnAltaEmp).setBounds              (x+=140, y    ,z,z);
+			panel.add(btnSolicitudes).setBounds          (x     ,y+=115,z,z);
+			panel.add(btnCuadrantepersonal).setBounds    (x     ,y+=115,z,z);
+			panel.add(btnCuadranteequipo).setBounds      (x     ,y+=115,z,z);
+			panel.add(btnChecador).setBounds             (x     ,y+=115,z,z);
+			
+			y = 60;	
+			panel.add(lblAltaEmp3).setBounds             (x+=75 ,y     ,zl,w);
+			panel.add(lblSolicitudes).setBounds          (x     ,y+=115,zl,w);
+			panel.add(lblCuadrantepersonal).setBounds    (x     ,y+=115,zl,w);
+			panel.add(lblCuadrantepersonal2).setBounds   (x     ,y+10  ,zl,w);
+			panel.add(lblCuadranteequipo).setBounds      (x     ,y+=115,zl,w);
+			panel.add(lblCuadranteequipo2).setBounds     (x     ,y+10  ,zl,w);
+			panel.add(lblListaChecador2).setBounds       (x     ,y+=115,zl,w);
 
-			
-			panel.add(lblfolio).setBounds(1000, 490, 80, 20);
-			panel.add(lblcontrasena_Actual).setBounds(1000, 490, 80, 20);
-			panel.add(txtFolio).setBounds(1060, 490, 220, 20);
-			panel.add(txtContrasenaActual).setBounds(1060, 490, 220, 20);
-			
-			panel.add(lblusuario).setBounds(1000, 520, 80, 20);
-			panel.add(lblcontrasena_Nueva).setBounds(1000, 520, 80, 20);
-			panel.add(txtUsuario).setBounds(1060, 520, 220, 20);
-			panel.add(txtContrasenaNueva).setBounds(1060, 520, 220, 20);
-			
-			panel.add(lblcontrasena).setBounds(980, 550, 100, 20);
-			panel.add(lblcontrasena_Confirmar).setBounds(980, 550, 100, 20);
-			panel.add(txtContrasena).setBounds(1060, 550, 220, 20);
-			
-			panel.add(txtContrasenaConfirmar).setBounds(1060, 550, 220, 20);
-			panel.add(btnBuscar).setBounds(1290, 490, 30, 20);
-			panel.add(btnSalir).setBounds(1215, 580, 65, 20);
-			
-			panel.add(btnCambiarContrasena).setBounds(1060,580,130,20);
-			panel.add(btnGuardarContrasena).setBounds(1060, 580,150, 20);
-			panel.add(btnValidarContrasena).setBounds(1060, 580,150, 20);
-			panel.add(btnAceptar).setBounds(1150, 580, 65, 20);
+			/* COLUMNA 4 *///////////////////////////////////////////////////////
+			y=40;
+			panel.add(btnCerrar).setBounds               (x+=140,y     ,z,z);
+
+			y = 60;
+			panel.add(lblListaCerrar).setBounds          (x+=75 ,y     ,zl,w);
+						
+			/*LOGIN*////////////////////////////////////////////////////////////
+			y=490;
+			panel.add(lblfolio).setBounds                (x+=200,y     ,100,w);
+			panel.add(lblcontrasena_Actual).setBounds    (x     ,y     ,100,w);
+			panel.add(lblusuario).setBounds              (x     ,y+=30 ,100,w);
+			panel.add(lblcontrasena_Nueva).setBounds     (x     ,y     ,100,w);
+			panel.add(lblcontrasena).setBounds           (x     ,y+=30 ,100,w);
+			panel.add(lblcontrasena_Confirmar).setBounds (x     ,y     ,100,w);
 			
 			
+			y=490;
+			panel.add(txtFolio).setBounds                (x+=60  ,y    ,220,w);
+			panel.add(txtContrasenaActual).setBounds     (x     ,y     ,220,w);
+			panel.add(txtUsuario).setBounds              (x     ,y+=30 ,220,w);
+			panel.add(txtContrasenaNueva).setBounds      (x     ,y     ,220,w);
+			panel.add(txtContrasena).setBounds           (x     ,y+=30 ,220,w);
+			panel.add(txtContrasenaConfirmar).setBounds  (x     ,y     ,220,w);
+			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,150,w);
+			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,150,w);
+			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,150,w);
+			panel.add(btnSalir).setBounds                (x+=155,y     ,65 ,w);
+			
+			y=490;
+			panel.add(btnBuscar).setBounds               (x+70  ,y     ,30,w);
+					
 			cont.add(panel);
-			
 			this.setSize(ancho,alto);
-
 		}
-		if(ancho == 1280){
-			switch(alto){
-				case 768 : 
-					panel.add(new JLabel(new ImageIcon("imagen/LogPrincipal.png"))).setBounds(780,0,400,218);
-					int x = 30, y = 40, z = 65;
-					int yl = 60, zl = 120;
-							
-					/* FILA 1 */
-					panel.add(btnBanco).setBounds( x, y, z, z);
-					panel.add(btnPExtras).setBounds(220, y, z, z);
-					panel.add(btnAltaEmp).setBounds(405, y, z, z);
-					panel.add(btnListaRaya).setBounds(594, y, z, z);
-					
-					panel.add(lblBanco).setBounds(112, yl, zl, 20);
-					panel.add(lblPExtras1).setBounds(300, yl, zl, 20);
-					panel.add(lblPExtras2).setBounds(300, yl+10, zl, 20);
-					panel.add(lblAltaEmp2).setBounds(488, yl, zl, 20);
-					panel.add(lblAltaEmp3).setBounds(488, yl+10, zl, 20);
-					panel.add(lblListaRaya2).setBounds(676, yl, zl, 20);
-					panel.add(lblListaRaya3).setBounds(676, yl+10, zl, 20);
-					
-					/* FILA 2 */
-					panel.add(btnInasistencia).setBounds(x, y+=134, z, z);
-					panel.add(btnPrestamo).setBounds(220, y, z, z);
-					panel.add(btnPuesto).setBounds(405, y, z, z);
-					panel.add(btnListaFirma).setBounds(594, y, z, z);
-					
-					panel.add(lblInasistencia2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblInasistencia3).setBounds(112, y+10, zl, 20);
-					panel.add(lblPrestamo2).setBounds(300, y, zl, 20);
-					panel.add(lblPuesto2).setBounds(488, y, zl, 20);
-					panel.add(lblListaFirma2).setBounds(676, y, zl, 20);
-					panel.add(lblListaFirma3).setBounds(676, y+10, zl, 20);
-					
-					/* FILA 3 */
-					panel.add(btnCaja).setBounds(x, y+=115, z, z);
-					panel.add(btnSueldo).setBounds(405, y, z, z);
-					panel.add(btnListaComparacion).setBounds(594, y, z, z);
-					
-					panel.add(lblCaja2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblCaja3).setBounds(112, y+10, zl, 20);
-					panel.add(lblSueldo2).setBounds(488, y, zl, 20);
-					panel.add(lblListaComparacion2).setBounds(676, y, zl, 20);
-					panel.add(lblListaComparacion3).setBounds(676, y+10, zl, 20);
-					
-					/* FILA 4 */
-					panel.add(btnFsRH).setBounds(x, y+=115, z, z);
 
-					panel.add(lblFsRH2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblFsRH3).setBounds(112, y+10, zl, 20);
-					
-					/* FILA 5 */
-					panel.add(btnFsAux).setBounds(x, y+=115, z, z);		
-					panel.add(btnChecador).setBounds(594, y+=10, z, z);
-					
-					panel.add(lblFsAux2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblFsAux3).setBounds(112, y+10, zl, 20);
-					panel.add(lblListaChecador2).setBounds(676, y, zl, 20);
-					
-					panel.add(lblfolio).setBounds(880, 470, 80, 20);
-					panel.add(lblcontrasena_Actual).setBounds(880, 470, 80, 20);
-					panel.add(lblusuario).setBounds(880, 500, 80, 20);
-					panel.add(lblcontrasena_Nueva).setBounds(880, 500, 80, 20);
-					panel.add(lblcontrasena).setBounds(880, 530, 100, 20);
-					panel.add(lblcontrasena_Confirmar).setBounds(880, 530, 100, 20);
-					
-					panel.add(txtFolio).setBounds(960, 470, 220, 20);
-					panel.add(txtContrasenaActual).setBounds(960, 470, 220, 20);
-					panel.add(txtUsuario).setBounds(960, 500, 220, 20);
-					panel.add(txtContrasenaNueva).setBounds(960, 500, 220, 20);
-					panel.add(txtContrasena).setBounds(960, 530, 220, 20);
-					panel.add(txtContrasenaConfirmar).setBounds(960, 530, 220, 20);
-				
-				
-					panel.add(btnBuscar).setBounds(1190, 470, 30, 20);
-					panel.add(btnSalir).setBounds(1115, 560, 65, 20);
-					panel.add(btnCambiarContrasena).setBounds(960,560,130,20);
-					panel.add(btnGuardarContrasena).setBounds(960, 560,150, 20);
-					panel.add(btnValidarContrasena).setBounds(960, 560,150, 20);
-					panel.add(btnAceptar).setBounds(1115, 560, 65, 20);
-					
-					cont.add(panel);		
-					this.setSize(ancho,alto);
-					
-				break;
-				case 720 : 
-					
-					panel.add(new JLabel(new ImageIcon("imagen/LogPrincipal.png"))).setBounds(870,0,400,218);
-					 x = 30; y = 30; z = 65;
-					 yl = 50; zl = 120;
-							
-					/* FILA 1 */
-					panel.add(btnBanco).setBounds( x, y, z, z);
-					panel.add(btnPExtras).setBounds(220, y, z, z);
-					panel.add(btnAltaEmp).setBounds(405, y, z, z);
-					panel.add(btnListaRaya).setBounds(594, y, z, z);
-					
-					panel.add(lblBanco).setBounds(112, yl, zl, 20);
-					panel.add(lblPExtras1).setBounds(300, yl, zl, 20);
-					panel.add(lblPExtras2).setBounds(300, yl+10, zl, 20);
-					panel.add(lblAltaEmp2).setBounds(488, yl, zl, 20);
-					panel.add(lblAltaEmp3).setBounds(488, yl+10, zl, 20);
-					panel.add(lblListaRaya2).setBounds(676, yl, zl, 20);
-					panel.add(lblListaRaya3).setBounds(676, yl+10, zl, 20);
-					
-					/* FILA 2 */
-					panel.add(btnInasistencia).setBounds(x, y+=125, z, z);
-					panel.add(btnPrestamo).setBounds(220, y, z, z);
-					panel.add(btnPuesto).setBounds(405, y, z, z);
-					panel.add(btnListaFirma).setBounds(594, y, z, z);
-					
-					panel.add(lblInasistencia2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblInasistencia3).setBounds(112, y+10, zl, 20);
-					panel.add(lblPrestamo2).setBounds(300, y, zl, 20);
-					panel.add(lblPuesto2).setBounds(488, y, zl, 20);
-					panel.add(lblListaFirma2).setBounds(676, y, zl, 20);
-					panel.add(lblListaFirma3).setBounds(676, y+10, zl, 20);
-					
-					/* FILA 3 */
-					panel.add(btnCaja).setBounds(x, y+=105, z, z);
-					panel.add(btnSueldo).setBounds(405, y, z, z);
-					panel.add(btnListaComparacion).setBounds(594, y, z, z);
-					
-					panel.add(lblCaja2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblCaja3).setBounds(112, y+10, zl, 20);
-					panel.add(lblSueldo2).setBounds(488, y, zl, 20);
-					panel.add(lblListaComparacion2).setBounds(676, y, zl, 20);
-					panel.add(lblListaComparacion3).setBounds(676, y+10, zl, 20);
-					
-					/* FILA 4 */
-					panel.add(btnFsRH).setBounds(x, y+=105, z, z);
-
-					panel.add(lblFsRH2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblFsRH3).setBounds(112, y+10, zl, 20);
-					
-					/* FILA 5 */
-					panel.add(btnFsAux).setBounds(x, y+=105, z, z);	
-					panel.add(btnChecador).setBounds(594, y+=10, z, z);
-					
-					panel.add(lblFsAux2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblFsAux3).setBounds(112, y+10, zl, 20);
-					panel.add(lblListaChecador2).setBounds(676, y, zl, 20);
-					
-					panel.add(lblfolio).setBounds(880, 470, 80, 20);
-					panel.add(lblcontrasena_Actual).setBounds(880, 470, 80, 20);
-					panel.add(lblusuario).setBounds(880, 500, 80, 20);
-					panel.add(lblcontrasena_Nueva).setBounds(880, 500, 80, 20);
-					panel.add(lblcontrasena).setBounds(880, 530, 100, 20);
-					panel.add(lblcontrasena_Confirmar).setBounds(880, 530, 100, 20);
-
-					panel.add(txtFolio).setBounds(960, 470, 220, 20);
-					panel.add(txtContrasenaActual).setBounds(960, 470, 220, 20);
-					panel.add(txtUsuario).setBounds(960, 500, 220, 20);
-					panel.add(txtContrasenaNueva).setBounds(960, 500, 220, 20);
-					panel.add(txtContrasena).setBounds(960, 530, 220, 20);
-					panel.add(txtContrasenaConfirmar).setBounds(960, 530, 220, 20);
-								
-					panel.add(btnBuscar).setBounds(1190, 470, 30, 20);
-					panel.add(btnSalir).setBounds(1115, 560, 65, 20);
-					panel.add(btnCambiarContrasena).setBounds(960,560,130,20);
-					panel.add(btnGuardarContrasena).setBounds(960, 560,150, 20);
-					panel.add(btnValidarContrasena).setBounds(960, 560,150, 20);
-					panel.add(btnAceptar).setBounds(1115, 560, 65, 20);
-					
-				
-					
-					cont.add(panel);
-					
-					this.setSize(ancho,alto);
-
-				break;
-				case 600 : 
-				
-					panel.add(new JLabel(new ImageIcon("imagen/LogPrincipal.png"))).setBounds(870,0,400,218);
-					 x = 10; y = 10; z = 65;
-					 yl = 50; zl = 120;
-							
-					/* FILA 1 */
-					panel.add(btnBanco).setBounds( x, y, z, z);
-					panel.add(btnPExtras).setBounds(220, y, z, z);
-					panel.add(btnAltaEmp).setBounds(405, y, z, z);
-					panel.add(btnListaRaya).setBounds(594, y, z, z);
-					
-					panel.add(lblBanco).setBounds(112, yl, zl, 20);
-					panel.add(lblPExtras1).setBounds(300, yl, zl, 20);
-					panel.add(lblPExtras2).setBounds(300, yl+10, zl, 20);
-					panel.add(lblAltaEmp2).setBounds(488, yl, zl, 20);
-					panel.add(lblAltaEmp3).setBounds(488, yl+10, zl, 20);
-					panel.add(lblListaRaya2).setBounds(676, yl, zl, 20);
-					panel.add(lblListaRaya3).setBounds(676, yl+10, zl, 20);
-					
-					/* FILA 2 */
-					panel.add(btnInasistencia).setBounds(x, y+=100, z, z);
-					panel.add(btnPrestamo).setBounds(220, y, z, z);
-					panel.add(btnPuesto).setBounds(405, y, z, z);
-					panel.add(btnListaFirma).setBounds(594, y, z, z);
-					
-					panel.add(lblInasistencia2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblInasistencia3).setBounds(112, y+10, zl, 20);
-					panel.add(lblPrestamo2).setBounds(300, y, zl, 20);
-					panel.add(lblPuesto2).setBounds(488, y, zl, 20);
-					panel.add(lblListaFirma2).setBounds(676, y, zl, 20);
-					panel.add(lblListaFirma3).setBounds(676, y+10, zl, 20);
-					
-					/* FILA 3 */
-					panel.add(btnCaja).setBounds(x, y+=80, z, z);
-					panel.add(btnSueldo).setBounds(405, y, z, z);
-					panel.add(btnListaComparacion).setBounds(594, y, z, z);
-					
-					panel.add(lblCaja2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblCaja3).setBounds(112, y+10, zl, 20);
-					panel.add(lblSueldo2).setBounds(488, y, zl, 20);
-					panel.add(lblListaComparacion2).setBounds(676, y, zl, 20);
-					panel.add(lblListaComparacion3).setBounds(676, y+10, zl, 20);
-					
-					/* FILA 4 */
-					panel.add(btnFsRH).setBounds(x, y+=80, z, z);
-
-					panel.add(lblFsRH2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblFsRH3).setBounds(112, y+10, zl, 20);
-					
-					/* FILA 5 */
-					panel.add(btnFsAux).setBounds(x, y+=80, z, z);	
-					panel.add(btnChecador).setBounds(594, y+80, z, z);
-		
-					panel.add(lblFsAux2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblFsAux3).setBounds(112, y+10, zl, 20);
-					panel.add(lblListaChecador2).setBounds(676, y, zl, 20);
-
-					
-					panel.add(new JLabel("Folio:")).setBounds(880, 370, 80, 20);
-					panel.add(new JLabel("Usuario:")).setBounds(880, 400, 80, 20);
-					panel.add(new JLabel("Contraseña:")).setBounds(880, 430, 100, 20);
-					
-					panel.add(txtFolio).setBounds(960, 370, 220, 20);
-					panel.add(txtUsuario).setBounds(960, 400, 220, 20);
-					panel.add(txtContrasena).setBounds(960, 430, 220, 20);
-				
-					panel.add(btnBuscar).setBounds(1190, 370, 30, 20);
-					panel.add(btnSalir).setBounds(1050, 460, 65, 20);
-					panel.add(btnAceptar).setBounds(1115, 460, 65, 20);
-					
-					cont.add(panel);
-					
-					this.setSize(ancho,alto);
-					
-				break;
-				default :
-					panel.add(new JLabel(new ImageIcon("imagen/LogPrincipal.png"))).setBounds(870,0,400,218);
-					 x = 10; y = 10; z = 65;
-					 yl = 50; zl = 120;
-							
-					/* FILA 1 */
-					panel.add(btnBanco).setBounds( x, y, z, z);
-					panel.add(btnPExtras).setBounds(220, y, z, z);
-					panel.add(btnAltaEmp).setBounds(405, y, z, z);
-					panel.add(btnListaRaya).setBounds(594, y, z, z);
-					
-					panel.add(lblBanco).setBounds(112, yl, zl, 20);
-					panel.add(lblPExtras1).setBounds(300, yl, zl, 20);
-					panel.add(lblPExtras2).setBounds(300, yl+10, zl, 20);
-					panel.add(lblAltaEmp2).setBounds(488, yl, zl, 20);
-					panel.add(lblAltaEmp3).setBounds(488, yl+10, zl, 20);
-					panel.add(lblListaRaya2).setBounds(676, yl, zl, 20);
-					panel.add(lblListaRaya3).setBounds(676, yl+10, zl, 20);
-					
-					/* FILA 2 */
-					panel.add(btnInasistencia).setBounds(x, y+=100, z, z);
-					panel.add(btnPrestamo).setBounds(220, y, z, z);
-					panel.add(btnPuesto).setBounds(405, y, z, z);
-					panel.add(btnListaFirma).setBounds(594, y, z, z);
-					
-					panel.add(lblInasistencia2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblInasistencia3).setBounds(112, y+10, zl, 20);
-					panel.add(lblPrestamo2).setBounds(300, y, zl, 20);
-					panel.add(lblPuesto2).setBounds(488, y, zl, 20);
-					panel.add(lblListaFirma2).setBounds(676, y, zl, 20);
-					panel.add(lblListaFirma3).setBounds(676, y+10, zl, 20);
-					
-					/* FILA 3 */
-					panel.add(btnCaja).setBounds(x, y+=80, z, z);
-					panel.add(btnSueldo).setBounds(405, y, z, z);
-					panel.add(btnListaComparacion).setBounds(594, y, z, z);
-					
-					panel.add(lblCaja2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblCaja3).setBounds(112, y+10, zl, 20);
-					panel.add(lblSueldo2).setBounds(488, y, zl, 20);
-					panel.add(lblListaComparacion2).setBounds(676, y, zl, 20);
-					panel.add(lblListaComparacion3).setBounds(676, y+10, zl, 20);
-					
-					/* FILA 4 */
-					panel.add(btnFsRH).setBounds(x, y+=80, z, z);
-
-					panel.add(lblFsRH2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblFsRH3).setBounds(112, y+10, zl, 20);
-					
-					/* FILA 5 */
-					panel.add(btnFsAux).setBounds(x, y+=80, z, z);		
-
-					panel.add(lblFsAux2).setBounds(112, y+=20, zl, 20);
-					panel.add(lblFsAux3).setBounds(112, y+10, zl, 20);
-
-					
-					panel.add(new JLabel("Folio:")).setBounds(880, 370, 80, 20);
-					panel.add(new JLabel("Usuario:")).setBounds(880, 400, 80, 20);
-					panel.add(new JLabel("Contraseña:")).setBounds(880, 430, 100, 20);
-					
-					panel.add(txtFolio).setBounds(960, 370, 220, 20);
-					panel.add(txtUsuario).setBounds(960, 400, 220, 20);
-					panel.add(txtContrasena).setBounds(960, 430, 220, 20);
-				
-					panel.add(btnBuscar).setBounds(1190, 370, 30, 20);
-					panel.add(btnSalir).setBounds(1050, 460, 65, 20);
-					panel.add(btnAceptar).setBounds(1115, 460, 65, 20);
-					
-					cont.add(panel);
-					
-					this.setSize(ancho,alto);
-					
-				break;
-			}
-		}
-		
 		if(ancho == 1024){
 			ImageIcon tmpIconAux = new ImageIcon("imagen/LogPrincipal.png");
-			panel.add(new JLabel(new ImageIcon(tmpIconAux.getImage().getScaledInstance(150,150, Image.SCALE_DEFAULT)))).setBounds(680,0,400,218);
-			
-//			getImage().getScaledInstance(230, 195, Image.SCALE_DEFAULT)
-			int x = 10, y = 10, z = 65;
-			int yl = 50, zl = 120;
+			panel.add(new JLabel(new ImageIcon(tmpIconAux.getImage().getScaledInstance(150,150, Image.SCALE_DEFAULT)))).setBounds(690,0,400,218);
 					
-			/* FILA 1 */
-			panel.add(btnBanco).setBounds( x, y, z, z);
-			panel.add(btnPExtras).setBounds(220, y, z, z);
-			panel.add(btnAltaEmp).setBounds(405, y, z, z);
-			panel.add(btnListaRaya).setBounds(594, y, z, z);
-			
-			panel.add(lblBanco).setBounds(112, yl, zl, 20);
-			panel.add(lblPExtras1).setBounds(300, yl, zl, 20);
-			panel.add(lblPExtras2).setBounds(300, yl+10, zl, 20);
-			panel.add(lblAltaEmp2).setBounds(488, yl, zl, 20);
-			panel.add(lblAltaEmp3).setBounds(488, yl+10, zl, 20);
-			panel.add(lblListaRaya2).setBounds(676, yl, zl, 20);
-			panel.add(lblListaRaya3).setBounds(676, yl+10, zl, 20);
-			
-			/* FILA 2 */
-			panel.add(btnInasistencia).setBounds(x, y+=100, z, z);
-			panel.add(btnPrestamo).setBounds(220, y, z, z);
-			panel.add(btnPuesto).setBounds(405, y, z, z);
-			panel.add(btnListaFirma).setBounds(594, y, z, z);
-			
-			panel.add(lblInasistencia2).setBounds(112, y+=20, zl, 20);
-			panel.add(lblInasistencia3).setBounds(112, y+10, zl, 20);
-			panel.add(lblPrestamo2).setBounds(300, y, zl, 20);
-			panel.add(lblPuesto2).setBounds(488, y, zl, 20);
-			panel.add(lblListaFirma2).setBounds(676, y, zl, 20);
-			panel.add(lblListaFirma3).setBounds(676, y+10, zl, 20);
-			
-			/* FILA 3 */
-			panel.add(btnCaja).setBounds(x, y+=80, z, z);
-			panel.add(btnSueldo).setBounds(405, y, z, z);
-			panel.add(btnListaComparacion).setBounds(594, y, z, z);
-			
-			panel.add(lblCaja2).setBounds(112, y+=20, zl, 20);
-			panel.add(lblCaja3).setBounds(112, y+10, zl, 20);
-			panel.add(lblSueldo2).setBounds(488, y, zl, 20);
-			panel.add(lblListaComparacion2).setBounds(676, y, zl, 20);
-			panel.add(lblListaComparacion3).setBounds(676, y+10, zl, 20);
-			
-			/* FILA 4 */
-			panel.add(btnFsRH).setBounds(x, y+=80, z, z);
+			int   x = 10  ,y = 10, z = 65;
+			int  zl = 120 ,w = 20;
+					
+			/* COLUMNA 1 *//////////////////////////////////////////////////////
+			panel.add(btnFuenteSodasCajeras).setBounds   (x     ,y     ,z,z);
+			panel.add(btnFsAux).setBounds                (x     ,y+=115,z,z);	
+			panel.add(btnFsRH).setBounds                 (x     ,y+=115,z,z);
+			panel.add(btnInasistencia).setBounds         (x     ,y+=115,z,z);
+			panel.add(btnPExtras).setBounds              (x     ,y+=115,z,z);
 
-			panel.add(lblFsRH2).setBounds(112, y+=20, zl, 20);
-			panel.add(lblFsRH3).setBounds(112, y+20, zl, 20);
+			y = 30;
+			panel.add(lblFuente_sodascajeras).setBounds  (x+=75 ,y     ,zl,w);
+			panel.add(lblFuente_sodascajeras2).setBounds (x     ,y+10  ,zl,w);
+			panel.add(lblFsAux2).setBounds               (x     ,y+=115,zl,w);
+			panel.add(lblFsAux3).setBounds               (x     ,y+10  ,zl,w);
+			panel.add(lblFsRH2).setBounds                (x     ,y+=115,zl,w);
+			panel.add(lblFsRH3).setBounds                (x     ,y+10  ,zl,w);
+			panel.add(lblInasistencia2).setBounds        (x     ,y+=115,zl,w);
+			panel.add(lblInasistencia3).setBounds        (x     ,y+10  ,zl,w);
+			panel.add(lblPExtras1).setBounds             (x     ,y+=115,zl,w);
+			panel.add(lblPExtras2).setBounds             (x     ,y+10  ,zl,w);
 			
-			/* FILA 5 */
-			panel.add(btnFsAux).setBounds(x, y+=80, z, z);	
-
-			panel.add(lblFsAux2).setBounds(112, y, zl, 20);
-			panel.add(lblFsAux3).setBounds(112, y+10, zl, 20);
+			/* COLUMNA 2 *//////////////////////////////////////////////////////
+			y=10;			
+			panel.add(btnBanco).setBounds                (x+=140,y     ,z,z);
+			panel.add(btnCaja).setBounds                 (x     ,y+=115,z,z);
+			panel.add(btnPrestamo).setBounds             (x     ,y+=115,z,z);
+			panel.add(btnListaComparacion).setBounds     (x     ,y+=115,z,z);
+			panel.add(btnListaRaya).setBounds            (x     ,y+=115,z,z);
 			
-			panel.add(btnChecador).setBounds(x,y+=80, z, z);
-			panel.add(lblListaChecador2).setBounds(112, y+10, zl, 20);
+			y = 30;		
+			panel.add(lblBanco).setBounds                (x+=75 ,y     ,zl,w);
+			panel.add(lblBanco2).setBounds               (x     ,y+10  ,zl,w);
+			panel.add(lblCaja2).setBounds                (x     ,y+=115,zl,w);
+			panel.add(lblCaja3).setBounds                (x     ,y+10  ,zl,w);
+			panel.add(lblPrestamo2).setBounds            (x     ,y+=115,zl,w);
+			panel.add(lblListaComparacion2).setBounds    (x     ,y+=115,zl,w);
+			panel.add(lblListaComparacion3).setBounds    (x     ,y+10  ,zl,w);
+			panel.add(lblListaRaya2).setBounds           (x     ,y+=115,zl,w);
+			panel.add(lblListaRaya3).setBounds           (x     ,y+10  ,zl,w);
+			
+			/* COLUMNA 3 *///////////////////////////////////////////////////////
+			y=10;			
+			panel.add(btnAltaEmp).setBounds              (x+=140, y    ,z,z);
+			panel.add(btnSolicitudes).setBounds          (x     ,y+=115,z,z);
+			panel.add(btnCuadrantepersonal).setBounds    (x     ,y+=115,z,z);
+			panel.add(btnCuadranteequipo).setBounds      (x     ,y+=115,z,z);
+			panel.add(btnChecador).setBounds             (x     ,y+=115,z,z);
+			
+			y = 30;	
+			panel.add(lblAltaEmp3).setBounds             (x+=75 ,y     ,zl,w);
+			panel.add(lblSolicitudes).setBounds          (x     ,y+=115,zl,w);
+			panel.add(lblCuadrantepersonal).setBounds    (x     ,y+=115,zl,w);
+			panel.add(lblCuadrantepersonal2).setBounds   (x     ,y+10  ,zl,w);
+			panel.add(lblCuadranteequipo).setBounds      (x     ,y+=115,zl,w);
+			panel.add(lblCuadranteequipo2).setBounds     (x     ,y+10  ,zl,w);
+			panel.add(lblListaChecador2).setBounds       (x     ,y+=115,zl,w);
 
-			panel.add(lblfolio).setBounds(580, 470, 80, 20);
-			panel.add(lblcontrasena_Actual).setBounds(580, 470, 80, 20);
-			panel.add(lblusuario).setBounds(580, 500, 80, 20);
-			panel.add(lblcontrasena_Nueva).setBounds(580, 500, 80, 20);
-			panel.add(lblcontrasena).setBounds(580, 530, 100, 20);
-			panel.add(lblcontrasena_Confirmar).setBounds(580, 530, 100, 20);
+			/* COLUMNA 4 *///////////////////////////////////////////////////////
+			y=10;
+			panel.add(btnCerrar).setBounds               (x+=140,y     ,z,z);
 
-			panel.add(txtFolio).setBounds(660, 470, 220, 20);
-			panel.add(txtContrasenaActual).setBounds(660, 470, 220, 20);
-			panel.add(txtUsuario).setBounds(660, 500, 220, 20);
-			panel.add(txtContrasenaNueva).setBounds(660, 500, 220, 20);
-			panel.add(txtContrasena).setBounds(660, 530, 220, 20);
-			panel.add(txtContrasenaConfirmar).setBounds(660, 530, 220, 20);
+			y = 30;
+			panel.add(lblListaCerrar).setBounds          (x+=75 ,y     ,zl,w);
 						
-			panel.add(btnBuscar).setBounds(890, 470, 30, 20);
-			panel.add(btnSalir).setBounds(820, 560, 65, 20);
-			panel.add(btnCambiarContrasena).setBounds(660,560,130,20);
-			panel.add(btnGuardarContrasena).setBounds(660, 560,150, 20);
-			panel.add(btnValidarContrasena).setBounds(660, 560,150, 20);
-			panel.add(btnAceptar).setBounds(815, 560, 65, 20);
+			/*LOGIN*////////////////////////////////////////////////////////////
+			y=400; x=650;
 			
+			panel.add(lblfolio).setBounds                (x     ,y     ,100,w);
+			panel.add(lblcontrasena_Actual).setBounds    (x     ,y     ,100,w);
+			panel.add(lblusuario).setBounds              (x     ,y+=30 ,100,w);
+			panel.add(lblcontrasena_Nueva).setBounds     (x     ,y     ,100,w);
+			panel.add(lblcontrasena).setBounds           (x     ,y+=30 ,100,w);
+			panel.add(lblcontrasena_Confirmar).setBounds (x     ,y     ,100,w);
+			
+			y=400;
+			panel.add(txtFolio).setBounds                (x+=60  ,y    ,220,w);
+			panel.add(txtContrasenaActual).setBounds     (x     ,y     ,220,w);
+			panel.add(txtUsuario).setBounds              (x     ,y+=30 ,220,w);
+			panel.add(txtContrasenaNueva).setBounds      (x     ,y     ,220,w);
+			panel.add(txtContrasena).setBounds           (x     ,y+=30 ,220,w);
+			panel.add(txtContrasenaConfirmar).setBounds  (x     ,y     ,220,w);
+			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,150,w);
+			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,150,w);
+			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,150,w);
+			panel.add(btnSalir).setBounds                (x+=155,y     ,65 ,w);
+			
+			y=400;
+			panel.add(btnBuscar).setBounds               (x+70  ,y     ,30 ,w);
 			
 			cont.add(panel);
-			
 			this.setSize(ancho,alto);
-			
 		}
 		if(ancho == 800){
 			ImageIcon tmpIconAux = new ImageIcon("imagen/LogPrincipal.png");
 			panel.add(new JLabel(new ImageIcon(tmpIconAux.getImage().getScaledInstance(150,150, Image.SCALE_DEFAULT)))).setBounds(500,0,400,218);
 			
 //			getImage().getScaledInstance(230, 195, Image.SCALE_DEFAULT)
-			int x = 10, y = 10, z = 55;
-			int yl = 30, zl = 120;
+			int   x = 10  ,y = 10, z = 65;
+			int  zl = 120 ,w = 20;
 					
-			/* FILA 1 */
-			panel.add(btnBanco).setBounds( x, y, z, z);
-			panel.add(btnPExtras).setBounds(180, y, z, z);
-			panel.add(btnAltaEmp).setBounds(350, y, z, z);
-			panel.add(btnListaRaya).setBounds(490, y, z, z);
-			
-			panel.add(lblBanco).setBounds(70, yl, zl, 20);
-			panel.add(lblPExtras1).setBounds(248, yl, zl, 20);
-			panel.add(lblPExtras2).setBounds(248, yl+10, zl, 20);
-			panel.add(lblAltaEmp2).setBounds(418, yl, zl, 20);
-			panel.add(lblAltaEmp3).setBounds(418, yl+10, zl, 20);
-			panel.add(lblListaRaya2).setBounds(560, yl, zl, 20);
-			panel.add(lblListaRaya3).setBounds(560, yl+10, zl, 20);
-			
-			/* FILA 2 */
-			panel.add(btnInasistencia).setBounds(x, y+=70, z, z);
-			panel.add(btnPrestamo).setBounds(180, y, z, z);
-			panel.add(btnPuesto).setBounds(350, y, z, z);
-			panel.add(btnListaFirma).setBounds(490, y, z, z);
-			
-			panel.add(lblInasistencia2).setBounds(70, y+=20, zl, 20);
-			panel.add(lblInasistencia3).setBounds(70, y+10, zl, 20);
-			panel.add(lblPrestamo2).setBounds(248, y, zl, 20);
-			panel.add(lblPuesto2).setBounds(418, y, zl, 20);
-			panel.add(lblListaFirma2).setBounds(560, y, zl, 20);
-			panel.add(lblListaFirma3).setBounds(560, y+10, zl, 20);
-			
-			/* FILA 3 */
-			panel.add(btnCaja).setBounds(x, y+=50, z, z);
-			panel.add(btnSueldo).setBounds(350, y, z, z);
-			panel.add(btnListaComparacion).setBounds(490, y, z, z);
-			
-			panel.add(lblCaja2).setBounds(70, y+=20, zl, 20);
-			panel.add(lblCaja3).setBounds(70, y+10, zl, 20);
-			panel.add(lblSueldo2).setBounds(418, y, zl, 20);
-			panel.add(lblListaComparacion2).setBounds(560, y, zl, 20);
-			panel.add(lblListaComparacion3).setBounds(560, y+10, zl, 20);
-			
-			/* FILA 4 */
-			panel.add(btnFsRH).setBounds(x, y+=50, z, z);
+			/* COLUMNA 1 *//////////////////////////////////////////////////////
+			panel.add(btnFuenteSodasCajeras).setBounds   (x     ,y     ,z,z);
+			panel.add(btnFsAux).setBounds                (x     ,y+=90,z,z);	
+			panel.add(btnFsRH).setBounds                 (x     ,y+=90,z,z);
+			panel.add(btnInasistencia).setBounds         (x     ,y+=90,z,z);
+			panel.add(btnPExtras).setBounds              (x     ,y+=90,z,z);
 
-			panel.add(lblFsRH2).setBounds(70, y+=20, zl, 20);
-			panel.add(lblFsRH3).setBounds(70, y+10, zl, 20);
+			y = 20;
+			panel.add(lblFuente_sodascajeras).setBounds  (x+=65 ,y     ,zl,w);
+			panel.add(lblFuente_sodascajeras2).setBounds (x     ,y+10  ,zl,w);
+			panel.add(lblFsAux2).setBounds               (x     ,y+=90,zl,w);
+			panel.add(lblFsAux3).setBounds               (x     ,y+10  ,zl,w);
+			panel.add(lblFsRH2).setBounds                (x     ,y+=90,zl,w);
+			panel.add(lblFsRH3).setBounds                (x     ,y+10  ,zl,w);
+			panel.add(lblInasistencia2).setBounds        (x     ,y+=90,zl,w);
+			panel.add(lblInasistencia3).setBounds        (x     ,y+10  ,zl,w);
+			panel.add(lblPExtras1).setBounds             (x     ,y+=90,zl,w);
+			panel.add(lblPExtras2).setBounds             (x     ,y+10  ,zl,w);
 			
-			/* FILA 5 */
-			panel.add(btnFsAux).setBounds(x, y+=50, z, z);		
-
-			panel.add(lblFsAux2).setBounds(70, y+=20, zl, 20);
-			panel.add(lblFsAux3).setBounds(70, y+10, zl, 20);
-
+			/* COLUMNA 2 *//////////////////////////////////////////////////////
+			y=10;			
+			panel.add(btnBanco).setBounds                (x+=100,y     ,z,z);
+			panel.add(btnCaja).setBounds                 (x     ,y+=90,z,z);
+			panel.add(btnPrestamo).setBounds             (x     ,y+=90,z,z);
+			panel.add(btnListaComparacion).setBounds     (x     ,y+=90,z,z);
+			panel.add(btnListaRaya).setBounds            (x     ,y+=90,z,z);
 			
-			panel.add(lblfolio).setBounds(380, 340, 80, 20);
-			panel.add(lblcontrasena_Actual).setBounds(380, 340, 80, 20);
-			panel.add(lblusuario).setBounds(380, 370, 80, 20);
-			panel.add(lblcontrasena_Nueva).setBounds(380, 370, 80, 20);
-			panel.add(lblcontrasena).setBounds(380, 400, 100, 20);
-			panel.add(lblcontrasena_Confirmar).setBounds(380, 400, 100, 20);
+			y = 20;		
+			panel.add(lblBanco).setBounds                (x+=65 ,y     ,zl,w);
+			panel.add(lblBanco2).setBounds               (x     ,y+10  ,zl,w);
+			panel.add(lblCaja2).setBounds                (x     ,y+=90,zl,w);
+			panel.add(lblCaja3).setBounds                (x     ,y+10  ,zl,w);
+			panel.add(lblPrestamo2).setBounds            (x     ,y+=90,zl,w);
+			panel.add(lblListaComparacion2).setBounds    (x     ,y+=90,zl,w);
+			panel.add(lblListaComparacion3).setBounds    (x     ,y+10  ,zl,w);
+			panel.add(lblListaRaya2).setBounds           (x     ,y+=90,zl,w);
+			panel.add(lblListaRaya3).setBounds           (x     ,y+10  ,zl,w);
+			
+			/* COLUMNA 3 *///////////////////////////////////////////////////////
+			y=10;			
+			panel.add(btnAltaEmp).setBounds              (x+=100, y    ,z,z);
+			panel.add(btnSolicitudes).setBounds          (x     ,y+=90,z,z);
+			panel.add(btnCuadrantepersonal).setBounds    (x     ,y+=90,z,z);
+			panel.add(btnCuadranteequipo).setBounds      (x     ,y+=90,z,z);
+			panel.add(btnChecador).setBounds             (x     ,y+=90,z,z);
+			
+			y = 20;	
+			panel.add(lblAltaEmp3).setBounds             (x+=65 ,y     ,zl,w);
+			panel.add(lblSolicitudes).setBounds          (x     ,y+=90,zl,w);
+			panel.add(lblCuadrantepersonal).setBounds    (x     ,y+=90,zl,w);
+			panel.add(lblCuadrantepersonal2).setBounds   (x     ,y+10  ,zl,w);
+			panel.add(lblCuadranteequipo).setBounds      (x     ,y+=90,zl,w);
+			panel.add(lblCuadranteequipo2).setBounds     (x     ,y+10  ,zl,w);
+			panel.add(lblListaChecador2).setBounds       (x     ,y+=90,zl,w);
 
-			panel.add(txtFolio).setBounds(460, 340, 220, 20);
-			panel.add(txtContrasenaActual).setBounds(460, 340, 220, 20);
-			panel.add(txtUsuario).setBounds(460, 370, 220, 20);
-			panel.add(txtContrasenaNueva).setBounds(460, 370, 220, 20);
-			panel.add(txtContrasena).setBounds(460, 400, 220, 20);
-			panel.add(txtContrasenaConfirmar).setBounds(460, 400, 220, 20);
+			/* COLUMNA 4 *///////////////////////////////////////////////////////
+			y=10;
+			panel.add(btnCerrar).setBounds               (x+=100,y     ,z,z);
+
+			y = 20;
+			panel.add(lblListaCerrar).setBounds          (x+=65 ,y     ,zl,w);
 						
-			panel.add(btnBuscar).setBounds(690, 340, 30, 20);
-			panel.add(btnSalir).setBounds(550, 430, 65, 20);
-			panel.add(btnCambiarContrasena).setBounds(660,560,130,20);
-			panel.add(btnGuardarContrasena).setBounds(660, 560,150, 20);
-			panel.add(btnValidarContrasena).setBounds(660, 560,150, 20);
-			panel.add(btnAceptar).setBounds(815, 560, 65, 20);
+			/*LOGIN*////////////////////////////////////////////////////////////
+			y=350; x=500;
 			
+			panel.add(lblfolio).setBounds                (x     ,y     ,100,w);
+			panel.add(lblcontrasena_Actual).setBounds    (x     ,y     ,100,w);
+			panel.add(lblusuario).setBounds              (x     ,y+=30 ,100,w);
+			panel.add(lblcontrasena_Nueva).setBounds     (x     ,y     ,100,w);
+			panel.add(lblcontrasena).setBounds           (x     ,y+=30 ,100,w);
+			panel.add(lblcontrasena_Confirmar).setBounds (x     ,y     ,100,w);
+			
+			y=350;
+			panel.add(txtFolio).setBounds                (x+=60  ,y    ,220,w);
+			panel.add(txtContrasenaActual).setBounds     (x     ,y     ,220,w);
+			panel.add(txtUsuario).setBounds              (x     ,y+=30 ,220,w);
+			panel.add(txtContrasenaNueva).setBounds      (x     ,y     ,220,w);
+			panel.add(txtContrasena).setBounds           (x     ,y+=30 ,220,w);
+			panel.add(txtContrasenaConfirmar).setBounds  (x     ,y     ,220,w);
+			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,150,w);
+			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,150,w);
+			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,150,w);
+			panel.add(btnSalir).setBounds                (x+=155,y     ,65 ,w);
+			
+			y=325;
+			panel.add(btnBuscar).setBounds               (x+35  ,y     ,30 ,w);
+
 			cont.add(panel);
-			
 			this.setSize(ancho,alto);
-			
 		}
 		lblLogo.addMouseListener ( new  MouseAdapter ()  
 		{  
@@ -918,9 +668,11 @@ public class Init_Login extends JFrame{
 			txtContrasenaConfirmar.setEnabled(true);
 			txtContrasenaNueva.requestFocus(true);
 			
+			
 			btnValidarContrasena.setVisible(false);
 			btnGuardarContrasena.setVisible(true);			
 			btnGuardarContrasena.setEnabled(true);
+			
 	
 			}
 		
@@ -992,7 +744,529 @@ public class Init_Login extends JFrame{
 			txtContrasena.requestFocus(true);
 			btnBuscar.setEnabled(true);
 			btnAceptar.setEnabled(true);
+			txtFolio.requestFocus(true);
 			
 					};
+					
+			
+	@SuppressWarnings("rawtypes")
+	public void subMenusbotones(){
+		Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
+		Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
+					
+		boolean auditoriaBoolean = auditoria.isAutorizar();
+		boolean finanzasBoolean = finanzas.isAutorizar();
+						
+		if((auditoriaBoolean == false)  || (finanzasBoolean == true)){
+			
+			Vector SubMenuVector = new Obj_Menus().getSubmenuNivel (Integer.parseInt(txtFolio.getText()));
+			ArrayList<Submenusbtns> lsSubMenus = new ArrayList<Submenusbtns>();
+			for(int i=0; i<SubMenuVector.size(); i++){
+				String[] tmpSTR = String.valueOf(SubMenuVector.get(i)).split(",");
+				lsSubMenus.add(new Submenusbtns(tmpSTR[0], tmpSTR[1], tmpSTR[2]));
+				
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 14)
+					btnAltaEmp.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 25)
+					btnCuadrantepersonal.setEnabled(true);
 
+					}
+				    
+			     {			   
+			}
+		}
+
+	}
+
+	
+public class Submenusbtns{
+	public int Folio;
+	public String Nombre;
+	public int Menu_Id;
+	public Submenusbtns(String folio, String nombre, String menu_id){
+		this.Folio = Integer.valueOf(folio);
+		this.Nombre = nombre;
+		this.Menu_Id = Integer.valueOf(menu_id);
+	}
 }
+					
+			
+				
+//								for(int i=0; i<SubMenuVectorbtn.length; i++){
+//					               /*AUDITORIA*/
+//									if(permisos[i].equals("Reporte de Movimientos Operados"))
+//										Reporte_de_Movimientos_Operados.setEnabled(true);
+//									
+//									if(permisos[i].equals("Captura de Cortes de Cajeras"))
+//										Captura_Cortes .setEnabled(true);
+//									
+//									
+//									/* CATALOGO */
+//									if(permisos[i].equals("Nuevo Departamento")){
+//										Catalogo_Departamento.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Nuevo Empleado")){
+//										Catalogo_Empleado.setEnabled(false);
+//										btnAltaEmp.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Nuevo Establecimiento"))
+//										Catalogo_Establecimiento.setEnabled(true);
+//									if(permisos[i].equals("Nuevo Puesto")){
+//										Catalogo_Puesto.setEnabled(true);
+//										btnPuesto.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Nuevo Rango de Prestamo"))
+//										Catalogo_Rango_Prestamo.setEnabled(true);
+//									if(permisos[i].equals("Nuevo Sueldo")){
+//										Catalogo_Sueldo.setEnabled(false);
+//										btnSueldo.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Nuevo Tipos de Bancos"))
+//										Catalogo_Tipo_Banco.setEnabled(true);
+//									if(permisos[i].equals("Nuevo Turno"))
+//										Catalogo_Turno.setEnabled(true);
+//									
+//									/* CONFIGURACION */
+//									if(permisos[i].equals("Configuración de Asistencia y Puntualidad"))
+//										Configuracion_Asistencia_Puntualidad.setEnabled(false);
+//									if(permisos[i].equals("Configuración de Base de Datos"))
+//										Configuracion_ConexionBD.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Bono"))
+//										Configuracion_Bono.setEnabled(false);
+//									if(permisos[i].equals("Configuración de Denominaciones"))
+//										Configuracion_Denominaciones.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Divisas y Tipo de Cambio"))
+//										Configuracion_Divisas.setEnabled(true);
+//									if(permisos[i].equals("Configuración Mantenimiento Base de Datos"))
+//										Configuracion_Mantenimiento.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Sistema"))
+//										Configuracion_Sistema.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Usuarios"))
+//										Configuracion_Usuario.setEnabled(true);
+//									
+//									/* CONTABILIDAD */
+//									if(permisos[i].equals("Importar Auxiliar"))
+//										Importar_Auxiliar.setEnabled(true);
+//									if(permisos[i].equals("Importar Cheques"))
+//										Importar_Cheques.setEnabled(true);
+//									if(permisos[i].equals("Importar Conciliación AuxF"))
+//										Importar_Consiliacion.setEnabled(true);
+//									if(permisos[i].equals("Importar Voucher"))
+//										Importar_Voucher.setEnabled(true);
+//									if(permisos[i].equals("Reporte de Apartados y Abonos en una Asignacion"))
+//										Egresos_Reporte_de_apartados_y_abonos.setEnabled(true);
+//																	
+//								
+//									/* CUADRANTES 
+//									*		ALIMENTACION */
+//									if(permisos[i].equals("Alimentación de Cuadrantes"))
+//										Cuadrantes_Alimentacion_Actividades_Cuadrantes.setEnabled(true);
+//									if(permisos[i].equals("Cuadrante"))
+//										Cuadrantes_Alimentacion_Cuadrante.setEnabled(true);
+//									if(permisos[i].equals("Empleados en Cuadrantes"))
+//										Cuadrantes_Alimentacion_Empleados_Cuadrantes.setEnabled(true);	
+//									if(permisos[i].equals("Asignación de Actividades por Nivel Jerarquico"))
+//										Cuadrantes_Alimentacion_Asignacion_Actividades_Nivel_Jerarquico.setEnabled(true);
+//									
+//									/* CUADRANTES
+//									 * 		CATALOGO */
+//									if(permisos[i].equals("Actividades"))
+//										Cuadrantes_Catalogo_Actividades.setEnabled(true);
+//									if(permisos[i].equals("Asignación de Telefonos"))
+//										Cuadrantes_Catalogo_Telefono.setEnabled(true);
+//									if(permisos[i].equals("Atributos"))
+//										Cuadrantes_Catalogo_Atributos.setEnabled(true);
+//									if(permisos[i].equals("Equipo de Trabajo"))
+//										Cuadrantes_Catalogo_Equipo_Trabajo.setEnabled(true);
+//									if(permisos[i].equals("Jefatura"))
+//										Cuadrantes_Catalogo_Jefatura.setEnabled(true);
+//									if(permisos[i].equals("Nivel Crítico"))
+//										Cuadrantes_Catalogo_Nivel_Critico.setEnabled(true);
+//									if(permisos[i].equals("Nivel Jerarquico"))
+//										Cuadrantes_Catalogo_Nivel_Jerarquico.setEnabled(true);
+//									if(permisos[i].equals("Opciones de Respuesta"))
+//										Cuadrantes_Catalogo_Respuesta.setEnabled(true);
+//									if(permisos[i].equals("Opciones Múltiple de Respuesta"))
+//										Cuadrantes_Catalogo_Respuesta_Multiple.setEnabled(true);
+//									if(permisos[i].equals("Ponderacion"))
+//										Cuadrantes_Catalogo_Ponderacion.setEnabled(true);
+//									/* CUADRANTES
+//									*		REPORTE */
+//								
+//								    if(permisos[i].equals("Impresion de Cuadrante Personal"));
+//									 Impresion_Cuadrante_Personal.setEnabled(true);
+//								    if(permisos[i].equals("Reportes Directivo"))
+//										Cuadrantes_Reportes_Directivo.setEnabled(true);
+//									if(permisos[i].equals("Reporte Dinamico de Cuadrantes"))
+//										
+//										Cuadrantes_Reportes_Dinamico.setEnabled(true);
+//									if(permisos[i].equals("Reportes Usuario"))
+//										Cuadrantes_Reportes_Usuario.setEnabled(true);
+//													
+//									/* LISTA DE RAYA 
+//									*		ALIMENTACION */
+//									if(permisos[i].equals("Alimentación Bancos")){
+//										Alimentacion_Bancos.setEnabled(false);
+//										btnBanco.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Alimentación de Fuente de Sodas Por Cajeras"))
+//										Alimentacion_Cajeras_de_Fuente_Sodas.setEnabled(true);
+//									
+//									if(permisos[i].equals("Alimentación de Totales de Nómina"))
+//										Alimentacion_Captura_Totales_Nomina.setEnabled(false);
+//									if(permisos[i].equals("Alimentación Deducción por Inasistencia")){
+//										Alimentacion_Deducciones_Asistencia.setEnabled(false);
+//										btnInasistencia.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Alimentación Diferencia de Cortes")){
+//										Alimentacion_Diferencia_Cortes.setEnabled(false);
+//										btnCaja.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Alimentación Fuente de Sodas AUXF")){
+//										Alimentacion_Fuente_Sodas_auxf.setEnabled(false);
+//										btnFsAux.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Alimentación Fuente de Sodas AUXF Selecionable")){
+//										Alimentacion_FS_auxf_seleccionable.setEnabled(false);
+//										btnFsAux.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Alimentación Fuente de Sodas DH")){
+//										Alimentacion_Fuente_Sodas_rh.setEnabled(false);
+//										btnFsRH.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Alimentación Fuente de Sodas DH Selecionable")){
+//										Alimentacion_FS_dh_seleccionable.setEnabled(false);
+//										btnFsRH.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Alimentación Percepciones Extras")){
+//										Alimentacion_Percepciones_Extra.setEnabled(false);
+//										btnPExtras.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Alimentación Prestamos")){
+//										Alimentacion_Prestamos.setEnabled(false);
+//										btnPrestamo.setEnabled(false);
+//									}
+//									/* LISTA DE RAYA 	
+//									*		AUTORIZACIONES */
+//									if(permisos[i].equals("Autorizacion Auditoria"))
+//										Autorizacion_Auditoria.setEnabled(true);
+//									if(permisos[i].equals("Autorizacion Finanzas"))
+//										Autorizacion_Finanzas.setEnabled(true);
+//									/* LISTA DE RAYA 	
+//									*		COMPARACIONES */
+//									if(permisos[i].equals("Lista de Comparación FS.")){
+//										Comparaciones_Listas_Fuente_Sodas.setEnabled(false);
+//										btnListaComparacion.setEnabled(false);
+//									}
+//									if(permisos[i].equals("Lista de Raya")){
+//										Comparaciones_Listas_Raya.setEnabled(true);
+//										btnListaRaya.setEnabled(true);
+//									}
+//									/* LISTA DE RAYA 	
+//									*		CHECADOR */
+//									if(permisos[i].equals("Asignacion de Horario de Temporada")){
+//										Asignacion_Horario_Temporada.setEnabled(true);
+//									   }
+//									if(permisos[i].equals("Checador")){
+//										Checador_Menu.setEnabled(true);
+//									   }
+//									if(permisos[i].equals("Dias Inhabiles")){
+//										Dias_Inhabiles.setEnabled(false);
+//												}
+//									if(permisos[i].equals("Generacion de Gafetes de Empleados")){
+//										Generacion_Gafetes_Empleados.setEnabled(true);
+//												}
+//									if(permisos[i].equals("Horarios")){
+//										Horarios.setEnabled(true);
+//												}
+//									if(permisos[i].equals("Mensajes Personales a Empleados")){
+//										Mensajes_Personales.setEnabled(true);
+//												}
+//									if(permisos[i].equals("Permisos a Empleados")){
+//										Permisos_Empleados.setEnabled(true);
+//												}
+//									/* LISTA DE RAYA 
+//									*		DEPARTAMENTO DE CORTES */
+//									if(permisos[i].equals("Alimentación de Cortes"))
+//										Departamento_Cortes_Alimentacion.setEnabled(false);
+//									/* LISTA DE RAYA 
+//									*		REPORTES */
+//									if(permisos[i].equals("Reportes de Asistencia y Retardos del Dia")){
+//										Reportes_del_Dia.setEnabled(true);
+//												}
+//									if(permisos[i].equals("Reporte General de Asistencia")){
+//										Reportes_Checador_Gral.setEnabled(true);}
+//									if(permisos[i].equals("Reporte Deducciones Por Inasistencia"))
+//										Reporte_Deducciones_Inasistencia.setEnabled(true);
+//									if(permisos[i].equals("Reporte de  Plantilla de Personal con Horario"))
+//										Reporte_de_Plantilla_de_Personal_con_Horario.setEnabled(true);
+//									
+//									
+//									if(permisos[i].equals("Reporte Depositos A Bancos"))
+//										Reporte_Bancos.setEnabled(true);
+//									if(permisos[i].equals("Reporte Fuente Sodas"))
+//										Reporte_Fuente_Sodas.setEnabled(true);
+//									if(permisos[i].equals("Reporte Lista de Firmas")){
+//										Reporte_Lista_Firma.setEnabled(true);
+//										btnListaFirma.setEnabled(true);	}
+//									if(permisos[i].equals("Reporte Lista de Raya"))
+//										Reporte_Lista_Raya.setEnabled(true);
+//					
+//									if(permisos[i].equals("Reporte Prestamos"))
+//										Reporte_Prestamos.setEnabled(true);
+//									
+//									/*SOLICITUDES*/	
+//									if(permisos[i].equals("Revisión de Solicitudes por Consejo"))
+//										Revision_de_Consejo.setEnabled(true);
+//									if(permisos[i].equals("Revisión de Solicitudes por Jefe de Operaciones"))
+//										Revision_de_Jefe_de_Operaciones.setEnabled(true);
+//									if(permisos[i].equals("Solicitud de Empleados"))
+//										Solicitud_de_Empleados.setEnabled(true);
+//									/*VACACIONES*/
+//									if(permisos[i].equals("Grupos de Vacaciones"))
+//										Grupos_de_Vacaciones.setEnabled(true);
+//								}
+//							}else{
+//								Object[] permisos = new Obj_Principal.Obj_Submenus_Login().Permisos (Integer.valueOf(txtFolio.getText()));
+//								for(int i=0; i<permisos.length; i++){
+									
+//						           /*AUDITORIA*/
+//								    if(permisos[i].equals("Reporte de Movimientos Operados"))
+//											Reporte_de_Movimientos_Operados.setEnabled(true);
+//									if(permisos[i].equals("Captura de Cortes de Cajeras"))
+//											Captura_Cortes .setEnabled(true);
+//									
+//									/* CATALOGO */
+//									if(permisos[i].equals("Nuevo Departamento")){
+//										Catalogo_Departamento.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Nuevo Empleado")){
+//										Catalogo_Empleado.setEnabled(true);
+//										btnAltaEmp.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Nuevo Establecimiento"))
+//										Catalogo_Establecimiento.setEnabled(true);
+//									if(permisos[i].equals("Nuevo Puesto")){
+//										Catalogo_Puesto.setEnabled(true);
+//										btnPuesto.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Nuevo Rango de Prestamo"))
+//										Catalogo_Rango_Prestamo.setEnabled(true);
+//									if(permisos[i].equals("Nuevo Sueldo")){
+//										Catalogo_Sueldo.setEnabled(true);
+//										btnSueldo.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Nuevo Tipos de Bancos"))
+//										Catalogo_Tipo_Banco.setEnabled(true);
+//									if(permisos[i].equals("Nuevo Turno"))
+//										Catalogo_Turno.setEnabled(true);
+//									
+//									/* CONFIGURACION */
+//									if(permisos[i].equals("Configuración de Asistencia y Puntualidad"))
+//										Configuracion_Asistencia_Puntualidad.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Base de Datos"))
+//										Configuracion_ConexionBD.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Bono"))
+//										Configuracion_Bono.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Denominaciones"))
+//										Configuracion_Denominaciones.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Divisas y Tipo de Cambio"))
+//										Configuracion_Divisas.setEnabled(true);
+//									if(permisos[i].equals("Configuración Mantenimiento Base de Datos"))
+//										Configuracion_Mantenimiento.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Sistema"))
+//										Configuracion_Sistema.setEnabled(true);
+//									if(permisos[i].equals("Configuración de Usuarios"))
+//										Configuracion_Usuario.setEnabled(true);
+//									
+//									/* CONTABILIDAD */
+//									if(permisos[i].equals("Importar Auxiliar"))
+//										Importar_Auxiliar.setEnabled(true);
+//									if(permisos[i].equals("Importar Cheques"))
+//										Importar_Cheques.setEnabled(true);
+//									if(permisos[i].equals("Importar Conciliación AuxF"))
+//										Importar_Consiliacion.setEnabled(true);
+//									if(permisos[i].equals("Importar Voucher"))
+//										Importar_Voucher.setEnabled(true);
+//									if(permisos[i].equals("Reporte de Apartados y Abonos en una Asignacion"))
+//										Egresos_Reporte_de_apartados_y_abonos.setEnabled(true);
+//									if(permisos[i].equals("Reporte de Apartados y Abonos en una Asignacion"))
+//										Egresos_Reporte_de_apartados_y_abonos.setEnabled(true);
+//
+//								
+//											
+//									/* CUADRANTES 
+//									*		ALIMENTACION */
+//								    if(permisos[i].equals("Impresion de Cuadrante Personal"));
+//									 Impresion_Cuadrante_Personal.setEnabled(true);
+//									if(permisos[i].equals("Alimentación de Cuadrantes"))
+//										Cuadrantes_Alimentacion_Actividades_Cuadrantes.setEnabled(true);
+//									if(permisos[i].equals("Cuadrante"))
+//										Cuadrantes_Alimentacion_Cuadrante.setEnabled(true);
+//									if(permisos[i].equals("Empleados en Cuadrantes"))
+//										Cuadrantes_Alimentacion_Empleados_Cuadrantes.setEnabled(true);	
+//									if(permisos[i].equals("Asignación de Actividades por Nivel Jerarquico"))
+//										Cuadrantes_Alimentacion_Asignacion_Actividades_Nivel_Jerarquico.setEnabled(true);	
+//									
+//							
+//									/* CUADRANTES
+//									 * 		CATALOGO */
+//									if(permisos[i].equals("Actividades"))
+//										Cuadrantes_Catalogo_Actividades.setEnabled(true);
+//									if(permisos[i].equals("Asignación de Telefonos"))
+//										Cuadrantes_Catalogo_Telefono.setEnabled(true);
+//									if(permisos[i].equals("Atributos"))
+//										Cuadrantes_Catalogo_Atributos.setEnabled(true);
+//									if(permisos[i].equals("Equipo de Trabajo"))
+//										Cuadrantes_Catalogo_Equipo_Trabajo.setEnabled(true);
+//									if(permisos[i].equals("Jefatura"))
+//										Cuadrantes_Catalogo_Jefatura.setEnabled(true);
+//									if(permisos[i].equals("Nivel Crítico"))
+//										Cuadrantes_Catalogo_Nivel_Critico.setEnabled(true);
+//									if(permisos[i].equals("Nivel Jerarquico"))
+//										Cuadrantes_Catalogo_Nivel_Jerarquico.setEnabled(true);
+//									if(permisos[i].equals("Opciones de Respuesta"))
+//										Cuadrantes_Catalogo_Respuesta.setEnabled(true);
+//									if(permisos[i].equals("Opciones Múltiple de Respuesta"))
+//										Cuadrantes_Catalogo_Respuesta_Multiple.setEnabled(true);
+//									if(permisos[i].equals("Ponderacion"))
+//										Cuadrantes_Catalogo_Ponderacion.setEnabled(true);
+//									/* CUADRANTES
+//									*		REPORTE */
+//									if(permisos[i].equals("Reportes Directivo"))
+//										Cuadrantes_Reportes_Directivo.setEnabled(true);
+//									 if(permisos[i].equals("Reporte Dinamico de Cuadrantes"))
+//										 Cuadrantes_Reportes_Dinamico.setEnabled(true);
+//									if(permisos[i].equals("Reportes Usuario"))
+//										Cuadrantes_Reportes_Usuario.setEnabled(true);
+//													
+//									/* LISTA DE RAYA 
+//									*		ALIMENTACION */
+//									if(permisos[i].equals("Alimentación Bancos")){
+//										Alimentacion_Bancos.setEnabled(true);
+//										btnBanco.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Alimentación de Fuente de Sodas Por Cajeras"))
+//										Alimentacion_Cajeras_de_Fuente_Sodas.setEnabled(true);
+//									
+//									if(permisos[i].equals("Alimentación de Totales de Nómina"))
+//										Alimentacion_Captura_Totales_Nomina.setEnabled(true);
+//									if(permisos[i].equals("Alimentación Deducción por Inasistencia")){
+//										Alimentacion_Deducciones_Asistencia.setEnabled(true);
+//										btnInasistencia.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Alimentación Diferencia de Cortes")){
+//										Alimentacion_Diferencia_Cortes.setEnabled(true);
+//										btnCaja.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Alimentación Fuente de Sodas AUXF")){
+//										Alimentacion_Fuente_Sodas_auxf.setEnabled(true);
+//										btnFsAux.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Alimentación Fuente de Sodas AUXF Selecionable")){
+//										Alimentacion_FS_auxf_seleccionable.setEnabled(true);
+//										btnFsAux.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Alimentación Fuente de Sodas DH")){
+//										Alimentacion_Fuente_Sodas_rh.setEnabled(true);
+//										btnFsRH.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Alimentación Fuente de Sodas DH Selecionable")){
+//										Alimentacion_FS_dh_seleccionable.setEnabled(true);
+//										btnFsRH.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Alimentación Percepciones Extras")){
+//										Alimentacion_Percepciones_Extra.setEnabled(true);
+//										btnPExtras.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Alimentación Prestamos")){
+//										Alimentacion_Prestamos.setEnabled(true);
+//										btnPrestamo.setEnabled(true);
+//									}
+//									/* LISTA DE RAYA 	
+//									*		AUTORIZACIONES */
+//									if(permisos[i].equals("Autorizacion Auditoria"))
+//										Autorizacion_Auditoria.setEnabled(true);
+//									if(permisos[i].equals("Autorizacion Finanzas"))
+//										Autorizacion_Finanzas.setEnabled(true);
+//									/* LISTA DE RAYA 	
+//									*		COMPARACIONES */
+//									if(permisos[i].equals("Lista de Comparación FS.")){
+//										Comparaciones_Listas_Fuente_Sodas.setEnabled(true);
+//										btnListaComparacion.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Lista de Raya")){
+//										Comparaciones_Listas_Raya.setEnabled(true);
+//										btnListaRaya.setEnabled(true);
+//									}
+//									/* LISTA DE RAYA 	
+//									*		CHECADOR */
+//									if(permisos[i].equals("Asignacion de Horario de Temporada")){
+//										Asignacion_Horario_Temporada.setEnabled(true);
+//									   }
+//									if(permisos[i].equals("Checador")){
+//										Checador_Menu.setEnabled(true);
+//									   }
+//									if(permisos[i].equals("Dias Inhabiles")){
+//										Dias_Inhabiles.setEnabled(true);
+//									}
+//									if(permisos[i].equals("Generacion de Gafetes de Empleados")){
+//										Generacion_Gafetes_Empleados.setEnabled(true);
+//												}
+//									if(permisos[i].equals("Horarios")){
+//										Horarios.setEnabled(true);
+//												}
+//									if(permisos[i].equals("Mensajes Personales a Empleados")){
+//										Mensajes_Personales.setEnabled(true);
+//												}
+//									if(permisos[i].equals("Permisos a Empleados")){
+//										Permisos_Empleados.setEnabled(true);
+//									            }
+//
+//									/* LISTA DE RAYA 
+//									*		DEPARTAMENTO DE CORTES */
+//									if(permisos[i].equals("Alimentación de Cortes"))
+//										Departamento_Cortes_Alimentacion.setEnabled(true);
+//									/* LISTA DE RAYA 
+//									*		REPORTES */
+//									if(permisos[i].equals("Reportes de Asistencia y Retardos del Dia")){
+//										Reportes_del_Dia.setEnabled(true); 	}  
+//									if(permisos[i].equals("Reporte General de Asistencia")){
+//										Reportes_Checador_Gral.setEnabled(true);}
+//									if(permisos[i].equals("Reporte Deducciones Por Inasistencia"))
+//										Reporte_Deducciones_Inasistencia.setEnabled(true);
+//									if(permisos[i].equals("Reporte de  Plantilla de Personal con Horario"))
+//										Reporte_de_Plantilla_de_Personal_con_Horario.setEnabled(true);				
+//									
+//									if(permisos[i].equals("Reporte Depositos A Bancos"))
+//										Reporte_Bancos.setEnabled(true);
+//									if(permisos[i].equals("Reporte Fuente Sodas"))
+//										Reporte_Fuente_Sodas.setEnabled(true);
+//									if(permisos[i].equals("Reporte Lista de Firmas")){
+//										Reporte_Lista_Firma.setEnabled(true);
+//										btnListaFirma.setEnabled(true);	}
+//									if(permisos[i].equals("Reporte Lista de Raya"))
+//										Reporte_Lista_Raya.setEnabled(true);
+//									if(permisos[i].equals("Reporte Prestamos"))
+//										Reporte_Prestamos.setEnabled(true);
+//									/*SOLICITUDES*/	
+//									if(permisos[i].equals("Revisión de Solicitudes por Consejo"))
+//										Revision_de_Consejo.setEnabled(true);
+//									if(permisos[i].equals("Revisión de Solicitudes por Jefe de Operaciones"))
+//										Revision_de_Jefe_de_Operaciones.setEnabled(true);
+//									if(permisos[i].equals("Solicitud de Empleados"))
+//										Solicitud_de_Empleados.setEnabled(true);
+//									/*VACACIONES*/
+//									if(permisos[i].equals("Grupos de Vacaciones"))
+//										Grupos_de_Vacaciones.setEnabled(true);
+								
+	
+
+
+
+
+			
+		
+}
+
+

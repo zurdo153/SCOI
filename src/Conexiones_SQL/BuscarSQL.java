@@ -2646,28 +2646,7 @@ public class BuscarSQL {
 		}
 		return resultado; 
 	}
-	
-	public Object[] Permisos(String nombre_completo){
-		String query = "exec sp_select_usuario_permisos_false '"+nombre_completo+"'";
-		String[] permisos = new String[getFilas(query)];
-		Statement s;
-		ResultSet rs;
-		
-		try {				
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(query);
-			int i=0;
-			while(rs.next()){
-				permisos[i] = rs.getString(1);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return permisos;
-	}
-	
+
 	public boolean ActividadExiste(int actividad){
 		String query = "exec sp_folio_actividad "+actividad;
 		
