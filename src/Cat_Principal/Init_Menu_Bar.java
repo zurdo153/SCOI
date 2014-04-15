@@ -55,6 +55,8 @@ public class Init_Menu_Bar extends Init_Login{
 		for(int i=0; i<SubMenuVector.size(); i++){
 			String[] tmpSTR = String.valueOf(SubMenuVector.get(i)).split(",");
 			lsSubMenus.add(new WP_Submenu(tmpSTR[0], tmpSTR[1], tmpSTR[2]));
+			
+			System.out.println(tmpSTR[0]);
 		}
 		
 		for(WP_Menu me: lsMenus)
@@ -68,6 +70,9 @@ public class Init_Menu_Bar extends Init_Login{
 			}
 		}
 		
+		for(WP_Submenu as : lsSubMenus){
+			
+		}
 		for(WP_Menu tmp : lsMenus){
 			for(WP_Relation tmps : relacion){
 				if(tmp.Nivel == 1 && tmps.Id.getActionCommand().equalsIgnoreCase(tmp.Name)){

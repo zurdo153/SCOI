@@ -1038,7 +1038,7 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Configurar_Sistema(Obj_Configuracion_Sistema configs){
+	public boolean Configurar_Sistema(Obj_Configuracion_Del_Sistema configs){
 		String query = "update tb_configuracion_sistema set bono_10_12=?, bono_dia_extra=?, guardar_horario=?, guardar_departamento=?";
 				
 		System.out.println(query);

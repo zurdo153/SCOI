@@ -28,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import Conexiones_SQL.Obj_Configuracion_Sistema;
+import Conexiones_SQL.Obj_Configuracion_Del_Sistema;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Principal.Componentes;
 
@@ -247,7 +247,7 @@ public class Cat_Departamento extends JFrame{
 	};
 	
 	public void botonNuevoDepartamento(){
-		Obj_Configuracion_Sistema configs2 = new Obj_Configuracion_Sistema().buscar2();
+		Obj_Configuracion_Del_Sistema configs2 = new Obj_Configuracion_Del_Sistema().buscar2();
 		if(configs2.isGuardar_departamento()==true){
 			btnNuevo.setEnabled(true);
 		}else{

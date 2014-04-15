@@ -2077,8 +2077,8 @@ public class BuscarSQL {
 //	}
 	
 	
-	public Obj_Configuracion_Sistema Configuracion_sistema() throws SQLException{
-		Obj_Configuracion_Sistema configs = new Obj_Configuracion_Sistema();
+	public Obj_Configuracion_Del_Sistema Configuracion_sistema() throws SQLException{
+		Obj_Configuracion_Del_Sistema configs = new Obj_Configuracion_Del_Sistema();
 		String query ="select count(bono_10_12) as 'Couns' from tb_configuracion_sistema";
 		Statement stmt = null;
 		try {
@@ -2100,8 +2100,8 @@ public class BuscarSQL {
 		return configs;
 	}
 	
-	public Obj_Configuracion_Sistema Configuracion_sistema2() throws SQLException{
-		Obj_Configuracion_Sistema configs = new Obj_Configuracion_Sistema();
+	public Obj_Configuracion_Del_Sistema Configuracion_sistema2() throws SQLException{
+		Obj_Configuracion_Del_Sistema configs = new Obj_Configuracion_Del_Sistema();
 		String query ="select * from tb_configuracion_sistema";
 		Statement stmt = null;
 		try {
