@@ -26,7 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import Conexiones_SQL.Obj_Configuracion_Sistema;
+import Conexiones_SQL.Obj_Configuracion_Del_Sistema;
 import Obj_Checador.Obj_Horarios;
 
 @SuppressWarnings("serial")
@@ -983,7 +983,7 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 	}
 	
 	public void botonNuevoHorario(){
-		Obj_Configuracion_Sistema configs2 = new Obj_Configuracion_Sistema().buscar2();
+		Obj_Configuracion_Del_Sistema configs2 = new Obj_Configuracion_Del_Sistema().buscar2();
 		if(configs2.isGuardar_horario()==true){
 			btnNuevo.setEnabled(true);
 		}else{

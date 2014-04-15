@@ -1449,7 +1449,7 @@ public class GuardarSQL {
 		}return true;
 	}
 	
-	public boolean Guardar(Obj_Configuracion_Sistema configs){
+	public boolean Guardar(Obj_Configuracion_Del_Sistema configs){
 		String query = "exec sp_config_sistema ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
