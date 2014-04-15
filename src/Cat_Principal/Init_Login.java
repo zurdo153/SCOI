@@ -25,8 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import Cat_Checador.Cat_Checador;
-import Cat_Principal.Init_Menu_Bar.WP_Relation;
-import Cat_Principal.Init_Menu_Bar.WP_Submenu;
+import Cat_Lista_de_Raya.Cat_Empleados;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
@@ -225,33 +224,27 @@ public class Init_Login extends JFrame{
 		public void actionPerformed(ActionEvent click) {
 			
 
+//			btnBanco.addActionListener(Opciones);
+//			btnInasistencia.addActionListener(Opciones);
+//			btnSolicitudes.addActionListener(Opciones);
+//			btnCaja.addActionListener(Opciones);
+//			btnFsRH.addActionListener(Opciones);
+//			btnFsAux.addActionListener(Opciones);
+//			btnPExtras.addActionListener(Opciones);
+//			btnPrestamo.addActionListener(Opciones);
+//			btnAltaEmp.addActionListener(Opciones);
+//			btnCuadrantepersonal.addActionListener(Opciones);
+//			btnCuadranteequipo.addActionListener(Opciones);
+//			btnListaRaya.addActionListener(Opciones);
+//			btnListaFirma.addActionListener(Opciones);
+//			btnFuenteSodasCajeras.addActionListener(Opciones);
+//			btnListaComparacion.addActionListener(Opciones);
+
 			
-//			if(arg0.getSource().equals(btnBanco))
-//				new Cat_Depositos_A_Bancos().setVisible(true);
-//			if(arg0.getSource().equals(btnInasistencia))
-//				new Cat_Deduccion_Inasistencia().setVisible(true);
-//			if(arg0.getSource().equals(btnCaja))
-//				new Cat_Filtro_Diferiencia_Cortes().setVisible(true);
-//			if(arg0.getSource().equals(btnFsAux))
-//				new Cat_Filtro_Fue_Soda_Auxf().setVisible(true);
-//			if(arg0.getSource().equals(btnFsRH))
-//				new Cat_Filtro_Fue_Soda_Rh().setVisible(true);
-//			if(arg0.getSource().equals(btnPExtras))
-//				new Cat_Percepciones_Extra().setVisible(true);
-//			if(arg0.getSource().equals(btnPrestamo))
-//				new Cat_Filtro_Prestamo().setVisible(true);
-//			if(arg0.getSource().equals(btnAltaEmp))
-//				new Cat_Empleado().setVisible(true);
-//			if(arg0.getSource().equals(btnPuesto))
-//				new Cat_Puesto().setVisible(true);
-//			if(arg0.getSource().equals(btnSueldo))
-//				new Cat_Sueldo().setVisible(true);
-//			if(arg0.getSource().equals(btnListaRaya))
-//				new Cat_Revision_Lista_Raya().setVisible(true);
-//			if(arg0.getSource().equals(btnListaFirma))
-//				new Cat_Lista_Pago().setVisible(true);
-//			if(arg0.getSource().equals(btnListaComparacion))
-//				new Cat_Comprobar_Fuente_Sodas_RH().setVisible(true);
+			if(click.getSource().equals(btnAltaEmp))
+				new Cat_Empleados().setVisible(true);
+
+			
 			if(click.getSource().equals(btnChecador))
 				new Cat_Checador().setVisible(true);
 			
@@ -774,6 +767,8 @@ public class Init_Login extends JFrame{
 				
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 14)
 					btnAltaEmp.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 25)
+					btnCuadrantepersonal.setEnabled(true);
 
 					}
 				    
