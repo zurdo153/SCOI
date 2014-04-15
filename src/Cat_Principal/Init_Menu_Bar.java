@@ -216,6 +216,7 @@ public class Init_Menu_Bar extends Init_Login{
 					btnCambiarContrasena.setVisible(true); 
 					cargar_usuariotrue();
 					setJMenuBar(miMenuTop());
+					subMenusbotones();
 					
 //					init_subMenus();
 					user.Session();
