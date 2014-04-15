@@ -729,6 +729,25 @@ public boolean Guardar_Folio_de_Empleado_Imprimir_Cuadrante(int Folio) {
 		}
 	    return matriz; 
 	}
+	
+	public Object[][] tabla_model_lay_out(String tipo_banco,String fecha_mov){
+		String query_lista = "exec sp_select_lay_out_banorte '"+tipo_banco+"','"+fecha_mov+"';";
+		Object[][] matriz = new Object[get_filas(query_lista)][1];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] = "   "+rs.getString(1);
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
 }
 
 

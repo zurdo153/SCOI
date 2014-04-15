@@ -240,6 +240,7 @@ public class Init_Login extends JFrame{
 //			btnListaFirma.addActionListener(Opciones);
 //			btnFuenteSodasCajeras.addActionListener(Opciones);
 //			btnListaComparacion.addActionListener(Opciones);
+
 			if(click.getSource().equals(btnAltaEmp))
 				new Cat_Empleados().setVisible(true);
 			
@@ -249,6 +250,7 @@ public class Init_Login extends JFrame{
 			if(click.getSource().equals(btnCuadrantepersonal))
 				new Cat_Captura_Del_Cuadrante_Personal(txtUsuario.getText()).setVisible(true);
 			
+
 			if(click.getSource().equals(btnChecador))
 				new Cat_Checador().setVisible(true);
 
