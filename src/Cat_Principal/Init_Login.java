@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import Cat_Checador.Cat_Checador;
+import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
 import Cat_Lista_de_Raya.Cat_Empleados;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -232,23 +233,22 @@ public class Init_Login extends JFrame{
 //			btnFsAux.addActionListener(Opciones);
 //			btnPExtras.addActionListener(Opciones);
 //			btnPrestamo.addActionListener(Opciones);
-//			btnAltaEmp.addActionListener(Opciones);
 //			btnCuadrantepersonal.addActionListener(Opciones);
 //			btnCuadranteequipo.addActionListener(Opciones);
 //			btnListaRaya.addActionListener(Opciones);
 //			btnListaFirma.addActionListener(Opciones);
 //			btnFuenteSodasCajeras.addActionListener(Opciones);
 //			btnListaComparacion.addActionListener(Opciones);
-
+			
+			if(click.getSource().equals(btnCuadrantepersonal))
+				new Cat_Captura_Del_Cuadrante_Personal(txtUsuario.getText()).setVisible(true);
 			
 			if(click.getSource().equals(btnAltaEmp))
 				new Cat_Empleados().setVisible(true);
 
-			
 			if(click.getSource().equals(btnChecador))
 				new Cat_Checador().setVisible(true);
-			
-			/*SALIR DE SCOI*/
+
 			if(click.getSource().equals(btnCerrar)){
 				dispose();			
 			try {
