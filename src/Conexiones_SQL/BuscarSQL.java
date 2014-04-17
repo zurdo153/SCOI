@@ -1336,9 +1336,9 @@ public class BuscarSQL {
 		return usuario;
 	}
 	
-	public Obj_Usuario BuscarUsuarios(String Nombre_Completo) throws SQLException{
+	public Obj_Usuario BuscarUsuarios(int folio_empleado) throws SQLException{
 		Obj_Usuario usuario = new Obj_Usuario();
-		String query = "select * from tb_usuario where nombre_completo ='"+Nombre_Completo+"'";
+		String query = "select folio,nombre+''+ap_paterno+''+ap_materno as nombre_completo,case when contrasena='' then '0' else contrasena end as contrasena,status from tb_empleado where folio="+folio_empleado;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -1347,12 +1347,8 @@ public class BuscarSQL {
 				usuario.setFolio(rs.getInt("folio"));
 				usuario.setNombre_completo(rs.getString("nombre_completo").trim());
 				usuario.setContrasena(rs.getString("contrasena").trim());
-				usuario.setFecha_alta(rs.getString("fecha").trim());
-				usuario.setFecha_alta(rs.getString("fecha_actu").trim());
-				usuario.setSesion(rs.getString("sesion"));
 				usuario.setStatus(rs.getInt("status"));
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -1363,11 +1359,10 @@ public class BuscarSQL {
 		return usuario;
 	}
 	
-	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Vector returnPermiso(String Nombre_Completo, int menu) throws SQLException{
+	public Vector returnPermiso(int folio_empleado, int menu) throws SQLException{
 		Vector prueba = new Vector();
-		String query = "exec sp_get_permisos '"+ Nombre_Completo +"', "+menu ;
+		String query = "exec sp_obtener_status_de_permisos "+ folio_empleado +" , "+menu ;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -1386,9 +1381,9 @@ public class BuscarSQL {
 		return prueba;
 	}
 	
-	public boolean existeUsuario(String Nombre_Completo) throws SQLException{
+	public boolean existeUsuario(int folio) throws SQLException{
 		boolean existe;
-		int filas = getFilas("select * from tb_permisos where nombre_completo ='"+Nombre_Completo+"'");
+		int filas = getFilas("select * from tb_permisos_submenus_usuarios where folio_empleado= "+folio);
 		if(filas > 1){
 			existe = true;
 		}else{
@@ -2211,31 +2206,10 @@ public class BuscarSQL {
 		return auditoria;
 	}
 	
-//	public Obj_Revision_De_Lista_Raya Lista_Exist_Emp(int folio) throws SQLException{
-//		Obj_Revision_De_Lista_Raya lista = new Obj_Revision_De_Lista_Raya();
-//		String query = "select folio_empleado from tb_pre_listaraya where status=1 and folio_empleado ="+ folio;
-//		Statement stmt = null;
-//		try {
-//			stmt = con.conexion().createStatement();
-//			ResultSet rs = stmt.executeQuery(query);
-//			while(rs.next()){
-//				lista.setFolio_empleado(rs.getInt("folio_empleado"));
-//				
-//			}
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//		finally{
-//			if(stmt!=null){stmt.close();}
-//		}
-//		return lista;
-//	}
-	
+
 	public String[][] getUsuarioPermisos(){
-		String datos = "exec lista_usuario_permisos";
-		String[][] Matriz = new String[getFilas(datos)][3];
+		String datos = "exec sp_lista_usuarios_para_administracion_permisos";
+		String[][] Matriz = new String[getFilas(datos)][4];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -2246,6 +2220,7 @@ public class BuscarSQL {
 				Matriz[i][0] = rs.getString(1);
 				Matriz[i][1] = rs.getString(2);
 				Matriz[i][2] = rs.getString(3);
+				Matriz[i][2] = rs.getString(4);
 				i++;
 			}
 		} catch (SQLException e1) {

@@ -128,9 +128,9 @@ public class Obj_Usuario {
 	}
 	
 	
-	public boolean ExisteUsuario(String Nombre_Completo){ 
+	public boolean ExisteUsuario(int folio){ 
 		try {
-			return new BuscarSQL().existeUsuario(Nombre_Completo);
+			return new BuscarSQL().existeUsuario(folio);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -138,14 +138,14 @@ public class Obj_Usuario {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public boolean actualizar(String Nombre_Completo, Vector Permisos) {
-		return new ActualizarSQL().PermisoUsuario(Nombre_Completo, Permisos); 
+	public boolean actualizar(int folio_empleado, Vector Permisos) {
+		return new ActualizarSQL().PermisoUsuario(folio_empleado, Permisos); 
 	}
 	
 	
-	public Obj_Usuario BuscarUsuario(String Nombre_Completo){
+	public Obj_Usuario BuscarUsuario(int folio_empleado){
 		try {
-			return new BuscarSQL().BuscarUsuarios(Nombre_Completo);
+			return new BuscarSQL().BuscarUsuarios(folio_empleado);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -153,9 +153,9 @@ public class Obj_Usuario {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public Vector returnPermisos(String Nombre_Completo, int menu){
+	public Vector returnPermisos(int folio_empleado, int menu){
 		try {
-			return new BuscarSQL().returnPermiso(Nombre_Completo,menu);
+			return new BuscarSQL().returnPermiso(folio_empleado,menu);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

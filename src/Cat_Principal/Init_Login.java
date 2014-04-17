@@ -638,7 +638,6 @@ public class Init_Login extends JFrame{
 			JOptionPane.showMessageDialog(null, "La contraseña no es válida...","Aviso",JOptionPane.WARNING_MESSAGE);
 			
 			}else{
-				
 			txtContrasenaActual.setEnabled(false);	
 			txtContrasenaNueva.setEnabled(true);
 			txtContrasenaConfirmar.setEnabled(true);

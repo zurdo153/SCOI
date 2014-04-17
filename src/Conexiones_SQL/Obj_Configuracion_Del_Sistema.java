@@ -88,9 +88,6 @@ public class Obj_Configuracion_Del_Sistema {
 		return null; 
 	}
 	
-//	public boolean buscar_permiso(){
-//		return new BuscarSQL().permiso_nuevo(); 
-//	}
 	public Obj_Configuracion_Del_Sistema buscar2() {
 		try {
 			return new BuscarSQL().Configuracion_sistema2();

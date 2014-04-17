@@ -1143,9 +1143,11 @@ public class ActualizarSQL {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public boolean PermisoUsuario(String Nombre_Completo, Vector Permisos){
-		String update = "update tb_permisos set status_submenu = ? " +
-				" where nombre_completo = '"+Nombre_Completo+"' and nombre_submenu = ?";
+	public boolean PermisoUsuario(int folio_empleado, Vector Permisos){
+		String update ="update tb_permisos_submenus_usuarios set acceso= ? " +
+				"from tb_permisos_submenus_usuarios inner join tb_submenu on tb_submenu.folio=tb_permisos_submenus_usuarios.folio_submenu " +
+				"where folio_empleado="+folio_empleado+" and  nombre=?";
+
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
