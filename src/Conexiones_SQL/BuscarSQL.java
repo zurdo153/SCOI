@@ -26,11 +26,11 @@ import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Por_Denominacion;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
+import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Entosal;
 import Obj_Checador.Obj_Gen_Code_Bar;
 import Obj_Checador.Obj_Horarios;
-import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Base_De_Solicitud_De_Empleado;
 import Obj_Checador.Obj_Encargado_De_Solicitudes;
 import Obj_Checador.Obj_Horario_Empleado;
@@ -2102,7 +2102,7 @@ public class BuscarSQL {
 	
 	public Obj_Configuracion_Del_Sistema Configuracion_sistema2() throws SQLException{
 		Obj_Configuracion_Del_Sistema configs = new Obj_Configuracion_Del_Sistema();
-		String query ="select * from tb_configuracion_sistema";
+		String query ="exec sp_select_configuracion_del_sistema";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -2112,6 +2112,8 @@ public class BuscarSQL {
 				configs.setBono_dia_extra(rs.getBoolean("bono_dia_extra"));
 				configs.setGuardar_horario(rs.getBoolean("guardar_horario"));
 				configs.setGuardar_departamento(rs.getBoolean("guardar_departamento"));
+				configs.setPorcentaje_fs(rs.getInt("porcentaje_fuente_sodas"));
+				configs.setFechaLR(rs.getString("fecha_lista_raya_pasada"));
 			}
 			
 		} catch (Exception e) {
@@ -3646,10 +3648,11 @@ public class BuscarSQL {
 				permisoChecador.setFecha(rs.getString("fecha_permiso"));
 				
 				permisoChecador.setTipo_de_permiso(rs.getInt("tipo_de_permiso"));
+				permisoChecador.setDescanso(rs.getInt("trabajar_como_el_dia"));
+				permisoChecador.setTiempo_comida(rs.getString("tiempo_comida"));
 				permisoChecador.setMotivo(rs.getString("motivo"));
 				
 				permisoChecador.setStatus(rs.getInt("status")==1?true:false);
-				
 			}
 			
 		} catch (Exception e) {

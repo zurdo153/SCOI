@@ -196,7 +196,8 @@ public class Cat_Horarios extends Cat_Horario_base
 //		se asigna hora cero al spinner y se le indica ke muestre solo la hora 
 		horasdefault();
 		
-		botonNuevoHorario();
+		Obj_Configuracion_Del_Sistema configs2 = new Obj_Configuracion_Del_Sistema().buscar2();
+		btnNuevo.setEnabled(configs2.isGuardar_horario());
 		
 ButtonGroup botonesAgrupados = new ButtonGroup();
 		botonesAgrupados.add(btnDomingo);
@@ -980,15 +981,6 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		spSabado4.setEditor(des4);
 		spSabado5.setValue(new Time(Integer.parseInt(recesoDefault[0]),Integer.parseInt(recesoDefault[1]),Integer.parseInt(recesoDefault[2])));
 		spSabado5.setEditor(des5);
-	}
-	
-	public void botonNuevoHorario(){
-		Obj_Configuracion_Del_Sistema configs2 = new Obj_Configuracion_Del_Sistema().buscar2();
-		if(configs2.isGuardar_horario()==true){
-			btnNuevo.setEnabled(true);
-		}else{
-			btnNuevo.setEnabled(false);
-		}
 	}
 	
 	public void camposTrue(){

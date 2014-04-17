@@ -24,9 +24,9 @@ import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
+import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
-import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
@@ -1917,7 +1917,7 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Permiso_Checador(Obj_Alimentacion_De_Permisos_A_Empleados Permiso){
-		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?";
+		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -1931,7 +1931,8 @@ public class GuardarSQL {
 			pstmt.setInt(4, Permiso.getTipo_de_permiso());
 			pstmt.setString(5, Permiso.getMotivo().toUpperCase().trim());
 			pstmt.setInt(6, (Permiso.isStatus())? 1: 0);
-			
+			pstmt.setInt(7,Permiso.getDescanso());
+			pstmt.setString(8,Permiso.getTiempo_comida());
 			pstmt.executeUpdate();
 		
 			con.commit();

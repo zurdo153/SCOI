@@ -15,14 +15,24 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 	int tipo_de_permiso;
 	String motivo;
 	boolean status;
-	
-	public Obj_Alimentacion_De_Permisos_A_Empleados(){
-		
-		this.folio=0;	this.folio_empleado=0;	this.nombre_empleado="";	this.folio_usuario=0;	
-		this.fecha="";	this.tipo_de_permiso=0;	this.motivo="";				this.status=false;			
-		
+	int descanso;
+	String tiempo_comida;
+
+	public Obj_Alimentacion_De_Permisos_A_Empleados() {
+
+		this.folio = 0;
+		this.folio_empleado = 0;
+		this.nombre_empleado = "";
+		this.folio_usuario = 0;
+		this.fecha = "";
+		this.tipo_de_permiso = 0;
+		this.motivo = "";
+		this.status = false;
+		this.descanso = 0;
+		this.tiempo_comida = "";
+
 	}
-	
+
 	public int getFolio() {
 		return folio;
 	}
@@ -87,29 +97,49 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 		this.status = status;
 	}
 
-	public Obj_Alimentacion_De_Permisos_A_Empleados buscar(int folio){
+	public int getDescanso() {
+		return descanso;
+	}
+
+	public void setDescanso(int descanso) {
+		this.descanso = descanso;
+	}
+
+	public String getTiempo_comida() {
+		return tiempo_comida;
+	}
+
+	public void setTiempo_comida(String tiempo_comida) {
+		this.tiempo_comida = tiempo_comida;
+	}
+
+	public Obj_Alimentacion_De_Permisos_A_Empleados buscar(int folio) {
 		try {
 			return new BuscarSQL().buscar_permiso(folio);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null; 
+		return null;
 	}
-	
-	public Obj_Alimentacion_De_Permisos_A_Empleados ComparacionFecha(String fecha){
+
+	public Obj_Alimentacion_De_Permisos_A_Empleados ComparacionFecha(String fecha) {
 		try {
 			return new BuscarSQL().comparacionDeFecha(fecha);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null; 
+		return null;
 	}
-	
-	public boolean guardar_permiso(){ return new GuardarSQL().Guardar_Permiso_Checador(this); }
-	
-	public boolean actualizar(int folio){ return new ActualizarSQL().permiso(this,folio); }
-	
-	public int nuevoPermiso(){
+
+	public boolean guardar_permiso() {
+		return new GuardarSQL().Guardar_Permiso_Checador(this);
+	}
+
+	public boolean actualizar(int folio) {
+		return new ActualizarSQL().permiso(this, folio);
+	}
+
+	public int nuevoPermiso() {
 		try {
 			return new BuscarSQL().NuevoPermisoChecador();
 		} catch (SQLException e) {
@@ -117,6 +147,7 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 		}
 		return 1;
 	}
-	
-//	public boolean buscarYborraPermiso(int folio){ return new GuardarSQL().buscarBorrarPermiso(folio); }
+
+	// public boolean buscarYborraPermiso(int folio){ return new
+	// GuardarSQL().buscarBorrarPermiso(folio); }
 }
