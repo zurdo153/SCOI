@@ -64,6 +64,7 @@ import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 
+
 public class GuardarSQL {
 	String Qbitacora ="exec sp_insert_bitacora ?,?,?,?,?";
 	PreparedStatement pstmtb = null;
@@ -1904,23 +1905,21 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Permiso_Checador(Obj_Alimentacion_De_Permisos_A_Empleados Permiso){
-		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?";
+		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
-			
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-
 			pstmt.setInt (1, Permiso.getFolio_empleado());
 			pstmt.setInt(2, Permiso.getFolio_usuario());
 			pstmt.setString(3,Permiso.getFecha());
 			pstmt.setInt(4, Permiso.getTipo_de_permiso());
 			pstmt.setString(5, Permiso.getMotivo().toUpperCase().trim());
 			pstmt.setInt(6, (Permiso.isStatus())? 1: 0);
-			
+			pstmt.setInt(7,Permiso.getDescanso());
+			pstmt.setString(8,Permiso.getTiempo_comida());
 			pstmt.executeUpdate();
-		
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());

@@ -3605,7 +3605,7 @@ public class BuscarSQL {
 	
 	public Obj_Alimentacion_De_Permisos_A_Empleados buscar_permiso(int folio) throws SQLException{
 		Obj_Alimentacion_De_Permisos_A_Empleados permisoChecador = new Obj_Alimentacion_De_Permisos_A_Empleados();
-		String query = "exec sp_select_permiso_checador "+ folio;
+            String query = "exec sp_select_permiso_checador "+ folio;
 		
 		Statement stmt = null;
 		try {
@@ -3619,12 +3619,11 @@ public class BuscarSQL {
 				permisoChecador.setNombre_empleado(rs.getString("nombre_empleado"));
 				permisoChecador.setFolio_usuario(rs.getInt("folio_usuario"));
 				permisoChecador.setFecha(rs.getString("fecha_permiso"));
-				
 				permisoChecador.setTipo_de_permiso(rs.getInt("tipo_de_permiso"));
+				permisoChecador.setDescanso(rs.getInt("trabajar_como_el_dia"));
+				permisoChecador.setTiempo_comida(rs.getString("tiempo_comida"));
 				permisoChecador.setMotivo(rs.getString("motivo"));
-				
 				permisoChecador.setStatus(rs.getInt("status")==1?true:false);
-				
 			}
 			
 		} catch (Exception e) {
@@ -3639,8 +3638,7 @@ public class BuscarSQL {
 	
 	public Obj_Alimentacion_De_Permisos_A_Empleados comparacionDeFecha(String fecha) throws SQLException{
 		Obj_Alimentacion_De_Permisos_A_Empleados permisoChecador = new Obj_Alimentacion_De_Permisos_A_Empleados();
-		
-		String query = "exec sp_comparar_fecha_permiso "+ "'"+fecha+"'";
+        String query = "exec sp_comparar_fecha_permiso "+ "'"+fecha+"'";
 		
 		Statement stmt = null;
 		try {
@@ -3650,7 +3648,6 @@ public class BuscarSQL {
 			while(rs.next()){
 				permisoChecador.setFecha(rs.getString("trae_fecha"));
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -3660,7 +3657,6 @@ public class BuscarSQL {
 		}
 		return permisoChecador;
 	}
-	
 	
 	public int NuevoEmpleadoCuadrante() throws SQLException{
 		int folio = 0;
