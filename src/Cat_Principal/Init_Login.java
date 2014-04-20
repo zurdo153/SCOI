@@ -15,15 +15,16 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 import Cat_Checador.Cat_Checador;
 import Cat_Checador.Cat_Solicitud_De_Empleados;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
@@ -40,6 +41,7 @@ import Cat_Lista_de_Raya.Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF;
 import Cat_Lista_de_Raya.Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Principal.Componentes;
 import Obj_Principal.Obj_Menus;
 
 
@@ -142,13 +144,13 @@ public class Init_Login extends JFrame{
     JLabel lblcontrasena_Nueva=new JLabel("Nueva:");	
     JLabel lblcontrasena_Confirmar=new JLabel("Confirmar:");	
 	
-	JTextField txtFolio = new JTextField("");
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 50, "Int");
 	JTextField txtUsuario = new JTextField("");
-	JPasswordField txtContrasena = new JPasswordField("");
-	
-	JPasswordField txtContrasenaActual=new JPasswordField("");
-	JPasswordField txtContrasenaNueva=new JPasswordField("");
-	JPasswordField txtContrasenaConfirmar=new JPasswordField("");
+	JPasswordField txtContrasena = new Componentes().textPassword(new JPasswordField(), "Contraseña", 50);
+ 	
+	JPasswordField txtContrasenaActual = new Componentes().textPassword(new JPasswordField(), "Contraseña Actual", 50); 
+	JPasswordField txtContrasenaNueva = new Componentes().textPassword(new JPasswordField(), "Contraseña Nueva", 50);
+	JPasswordField txtContrasenaConfirmar = new Componentes().textPassword(new JPasswordField(), "Confirmar Contraseña", 50);
 	
 	JButton btnSalir = new JButton("Salir");
 	JButton btnAceptar = new JButton("Entrar");
