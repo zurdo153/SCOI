@@ -11,7 +11,7 @@ import javax.swing.*;
 public class Componentes {
 	
 	public static void main(String args[]){
-		File f = new File(System.getProperty("user.dir")+"/src");
+		File f = new File(System.getProperty("user.dir")+"/bin");
 		File[] ficheros = f.listFiles();
 		for(File fich : ficheros){
 			if(fich.isDirectory() && !fich.getName().startsWith(".") && fich.getName().startsWith("Cat")){
