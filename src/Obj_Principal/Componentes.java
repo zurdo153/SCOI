@@ -5,13 +5,10 @@ import java.awt.event.*;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.*;
 
 public class Componentes {
-	public Pattern patron = Pattern.compile("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})");
 	
 	public static void main(String args[]){
 		File f = new File(System.getProperty("user.dir")+"/src");
