@@ -49,6 +49,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+
 import Conexiones_SQL.Connexion;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Principal.Componentes;
@@ -69,7 +70,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	JLabel lblUsuario = new JLabel("Usuario: ");
 	JLabel lblEmpleado = new JLabel("Empleado: ");
 	
-	JTextField txtFolio =new JTextField();
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio Permiso", 8, "String");
 	JTextField txtFolioEmpleado = new JTextField();
 	
 	JDateChooser txtFechaPermiso = new JDateChooser();
@@ -105,8 +106,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	  JSpinner spComida = new JSpinner(scom);                                         
 	  	JSpinner.DateEditor  com = new JSpinner.DateEditor(spComida,"H:mm"); 
 	 
-//	JTextArea txaMotivo = new Componentes().textArea(new JTextArea(), "Motivo", 400);
-	JTextArea txaMotivo = new JTextArea();
+	JTextArea txaMotivo = new Componentes().textArea(new JTextArea(), "Motivo", 400);
 	JScrollPane Observasiones = new JScrollPane(txaMotivo);
 	
 	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
@@ -365,7 +365,8 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 						JOptionPane.showMessageDialog(null, "No Puede Asignar Permiso A Una Fecha Que Ya Paso", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 						return;
 					}else{
-							Obj_Alimentacion_De_Permisos_A_Empleados Permiso = new Obj_Alimentacion_De_Permisos_A_Empleados().buscar(Integer.parseInt(txtFolio.getText()));
+
+						Obj_Alimentacion_De_Permisos_A_Empleados Permiso = new Obj_Alimentacion_De_Permisos_A_Empleados().buscar(Integer.parseInt(txtFolio.getText()));
 							
 							permisoChecador();
 							 dia_selecionado_p_descanso();
@@ -630,9 +631,10 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		chbP_noAsistir2.setEnabled(false);
 
 		chbP_cambiodescanso.setEnabled(false);
+		
 		lblP_cambiodescanso.setEnabled(false);
-	
 		cmbDias.setEnabled(false);
+		
 		chbP_doblarExtra.setEnabled(false);
 		
 		chbP_tiempoComida.setEnabled(false);
@@ -715,6 +717,7 @@ public class Filtro_Permisos_Checador extends JFrame{
 	private TableRowSorter trsfiltro;
 	
 	JLabel lblBuscar = new JLabel("BUSCAR : ");
+
 	JTextField txtBuscar =  new Componentes().text(new JTextField(), "Buscar", 100, "String");
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

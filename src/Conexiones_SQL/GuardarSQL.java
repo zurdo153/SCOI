@@ -64,6 +64,7 @@ import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 
+
 public class GuardarSQL {
 	String Qbitacora ="exec sp_insert_bitacora ?,?,?,?,?";
 	PreparedStatement pstmtb = null;
@@ -988,34 +989,22 @@ public class GuardarSQL {
 	
 	@SuppressWarnings("rawtypes")
 	public boolean Guardar_Usuario(Obj_Usuario usuario,Vector permisos){
-		String query = "exec sp_insert_permiso ?,?,?,?,?";
-		String insert_usuario = "exec sp_insert_usuario3 ?,?,?,?,?,?,?";
+		String query = " exec sp_insert_permisos_submenus_usuario_nuevo ?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
-		PreparedStatement insert_usuariopstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			insert_usuariopstmt = con.prepareStatement(insert_usuario);
-			insert_usuariopstmt.setString(1, usuario.getNombre_completo());
-			insert_usuariopstmt.setString(2, usuario.getContrasena());
-			insert_usuariopstmt.setInt(3, 0);
-			insert_usuariopstmt.setString(4,  new Date().toString());
-			insert_usuariopstmt.setString(5, "");
-			insert_usuariopstmt.setInt(6, 1);
-			insert_usuariopstmt.setInt(7, 0);
 			
 			for(int i=0; i<permisos.size(); i++){
 				pstmt.setInt(1, usuario.getFolio());
-				pstmt.setString(2, usuario.getNombre_completo());
 				String[] arreglo = permisos.get(i).toString().split("/");
-				pstmt.setString(3, arreglo[0]);
-				pstmt.setString(4, arreglo[1]);
-				pstmt.setInt(5, getMenuId(arreglo[0].toString().trim()));
+				pstmt.setString(2, arreglo[0]);
+				pstmt.setString(3, arreglo[1]);
+//				pstmt.setInt(5, getMenuId(arreglo[0].toString().trim()));
 				pstmt.execute();
+				System.out.println(usuario.getFolio());
 			}
-			
-			insert_usuariopstmt.execute();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+ e.getMessage());
@@ -1031,7 +1020,6 @@ public class GuardarSQL {
 		}finally{
 			try {
 				pstmt.close();
-				insert_usuariopstmt.close();
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
@@ -1921,10 +1909,8 @@ public class GuardarSQL {
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
-			
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-
 			pstmt.setInt (1, Permiso.getFolio_empleado());
 			pstmt.setInt(2, Permiso.getFolio_usuario());
 			pstmt.setString(3,Permiso.getFecha());
@@ -1934,7 +1920,6 @@ public class GuardarSQL {
 			pstmt.setInt(7,Permiso.getDescanso());
 			pstmt.setString(8,Permiso.getTiempo_comida());
 			pstmt.executeUpdate();
-		
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());

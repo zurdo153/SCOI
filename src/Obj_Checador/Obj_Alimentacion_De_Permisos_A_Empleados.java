@@ -6,6 +6,7 @@ import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
+
 public class Obj_Alimentacion_De_Permisos_A_Empleados {
 	int folio;
 	int folio_empleado;
@@ -17,9 +18,9 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 	boolean status;
 	int descanso;
 	String tiempo_comida;
-
-	public Obj_Alimentacion_De_Permisos_A_Empleados() {
-
+	
+	public Obj_Alimentacion_De_Permisos_A_Empleados(){
+		
 		this.folio = 0;
 		this.folio_empleado = 0;
 		this.nombre_empleado = "";

@@ -37,11 +37,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
-import Obj_Checador.Obj_JTextFieldLimit;
 
 
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
+import Obj_Principal.Componentes;
 
 
 import com.toedter.calendar.JDateChooser;
@@ -63,7 +63,7 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 	JButton btnSiguiente = new JButton("Siguiente");
 	JButton btnAnterior = new JButton("Anterior");
 	
-	JTextArea txaMensaje = new JTextArea();
+	JTextArea txaMensaje = new Componentes().textArea(new JTextArea(),"Mensaje",800);
 	JScrollPane Mensaje = new JScrollPane(txaMensaje);
 	
 	JTextField txtAsunto = new JTextField();
@@ -144,7 +144,6 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 		
 		txaMensaje.setLineWrap(true); 
 		txaMensaje.setWrapStyleWord(true);
-		txaMensaje.setDocument(new Obj_JTextFieldLimit(800));
 		
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
 		tabla.getColumnModel().getColumn(0).setMinWidth(50);

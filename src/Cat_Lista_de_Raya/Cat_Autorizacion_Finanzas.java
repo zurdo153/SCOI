@@ -7,10 +7,12 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+
 
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 
@@ -23,15 +25,18 @@ public class Cat_Autorizacion_Finanzas extends JFrame{
 	Obj_Autorizacion_Finanzas autori = new Obj_Autorizacion_Finanzas().buscar();
 	boolean autorizar = autori.isAutorizar();
 	
-	JLabel lblAutorizar = new JLabel(new ImageIcon("imagen/Aplicar.png"));
+	JLabel lblAutorizar = new JLabel(new ImageIcon("imagen/ok-firma-icono-6722-64.png"));
+	// DECLARAMOS EL OBJETO RUNTIME PARA EJECUTAR APLICACIONES DE WINDOWS
+		Runtime R = Runtime.getRuntime();
 	
 	public Cat_Autorizacion_Finanzas(){
 		this.setTitle("Autorización Lista Raya");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Aplicar.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("-"));
 		
-		panel.add(new JLabel("Autorizar Lista Raya")).setBounds(15,30,120,25);
-		panel.add(lblAutorizar).setBounds(160,30,20,20);
+		panel.add(new JLabel("Autorizar Lista Raya Por Auditoria")).setBounds(40,30,190,25);
+
+		panel.add(lblAutorizar).setBounds(85,80,65,65);
 		
 		lblAutorizar.setEnabled(autorizar);
 		lblAutorizar.addMouseListener(opAutorizar);
@@ -50,12 +55,17 @@ public class Cat_Autorizacion_Finanzas extends JFrame{
 		public void mousePressed(MouseEvent arg0) {
 			
 			if(autorizar != true){
-				if(JOptionPane.showConfirmDialog(null, "¿Desea autorizar la lista de raya?") == 0){
+				if(JOptionPane.showConfirmDialog(null, "¿Desea autorizar la lista de raya? al  aceptar se autorizara por Finanzas y se cerrara SCOI") == 0){
 					Obj_Autorizacion_Finanzas prue = new Obj_Autorizacion_Finanzas();
 					autorizar = true;
 					lblAutorizar.setEnabled(true);
 					prue.setAutorizar(autorizar);
 					prue.actualizar();
+					dispose();			
+					try {
+						R.exec("taskkill /f /im javaw.exe");
+					} catch (Exception e2){}
+				
 				}else{
 					return;
 				}
@@ -80,5 +90,6 @@ public class Cat_Autorizacion_Finanzas extends JFrame{
 		public void mouseClicked(MouseEvent arg0) {
 		}
 	};
+	
 
 }

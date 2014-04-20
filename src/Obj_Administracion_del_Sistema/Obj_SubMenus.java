@@ -17,112 +17,114 @@ public class Obj_SubMenus {
 	public void setNombre(String nombre) {
 		this.nombre = nombre.toString();
 	}
-	
-	public String[] SubMenuCatalogo() {
+	public String[] Relacion_de_SubMenus(int menu_pricipal) {
 		try {
-			return new SubMenusSQL().Catalogo();
+			return new SubMenusSQL().Relacion_de_SubMenus(menu_pricipal);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null; 
 	}
-	public String[] SubMenuConfiguracion() {
-		try {
-			return new SubMenusSQL().Configuracion();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	public String[] SubMenuContabilidad_Conciliacion_Auxiliar_Finanzas() {
-		try {
-			return new SubMenusSQL().Contabilidad_Conciliacion_Auxiliar_Finanzas();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	public String[] SubMenuCuadrantes_Alimentacion() {
-		try {
-			return new SubMenusSQL().Cuadrantes_Alimentacion();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
-	public String[] SubMenuCuadrantes_Catalogo() {
-		try {
-			return new SubMenusSQL().Cuadrantes_Catalogo();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
-	public String[] SubMenuCuadrantes_Reportes() {
-		try {
-			return new SubMenusSQL().Cuadrantes_Reportes();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
-	public String[] SubMenuLista_Raya_Alimentacion () {
-		try {
-			return new SubMenusSQL().Lista_Raya_Alimentacion ();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
-	public String[] SubMenuLista_Raya_Comparaciones() {
-		try {
-			return new SubMenusSQL().Lista_Raya_Comparaciones();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
-	public String[] SubMenuLista_Raya_Autorizaciones() {
-		try {
-			return new SubMenusSQL().Lista_Raya_Autorizaciones();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
-	public String[] SubMenuLista_Raya_Departamento_Cortes() {
-		try {
-			return new SubMenusSQL().Lista_Raya_Departamento_Cortes();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
-	public String[] SubMenuLista_Raya_Reportes() {
-		try {
-			return new SubMenusSQL().Lista_Raya_Reportes();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	public String[] SubMenuchecador() {
-		try {
-			return new SubMenusSQL().Checador();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
 	public String[][] UsuarioMatriz(){
 		return new BuscarSQL().getUsuarioPermisos();
 	}
+	
+//	public String[] SubMenuAdministracion_del_sistema() {
+//		try {
+//			return new SubMenusSQL().Administracion_del_Sistema();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+//	public String[] SubMenuAuditoria() {
+//		try {
+//			return new SubMenusSQL().Auditoria();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+
+//	public String[] SubMenuCuadrantes_Alimentacion() {
+//		try {
+//			return new SubMenusSQL().Cuadrantes_Alimentacion();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+//	
+//	public String[] SubMenuCuadrantes_Catalogo() {
+//		try {
+//			return new SubMenusSQL().Cuadrantes_Catalogo();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+//	
+//	public String[] SubMenuCuadrantes_Reportes() {
+//		try {
+//			return new SubMenusSQL().Cuadrantes_Reportes();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+//	
+//	public String[] SubMenuLista_Raya_Alimentacion () {
+//		try {
+//			return new SubMenusSQL().Lista_Raya_Alimentacion ();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+//	
+//	public String[] SubMenuLista_Raya_Comparaciones() {
+//		try {
+//			return new SubMenusSQL().Lista_Raya_Comparaciones();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+//	
+//	public String[] SubMenuLista_Raya_Autorizaciones() {
+//		try {
+//			return new SubMenusSQL().Lista_Raya_Autorizaciones();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+//	
+//	public String[] SubMenuLista_Raya_Departamento_Cortes() {
+//		try {
+//			return new SubMenusSQL().Lista_Raya_Departamento_Cortes();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+//	
+//	public String[] SubMenuLista_Raya_Reportes() {
+//		try {
+//			return new SubMenusSQL().Lista_Raya_Reportes();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+//	public String[] SubMenuchecador() {
+//		try {
+//			return new SubMenusSQL().Checador();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null; 
+//	}
+	
+
 }

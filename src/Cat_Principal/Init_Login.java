@@ -25,13 +25,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import Cat_Checador.Cat_Checador;
+import Cat_Checador.Cat_Solicitud_De_Empleados;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
+import Cat_Lista_de_Raya.Cat_Captura_De_Fuente_De_Sodas_De_Cajeras;
+import Cat_Lista_de_Raya.Cat_Deducciones_Por_Inasistencia;
 import Cat_Lista_de_Raya.Cat_Depositos_A_Bancos;
+import Cat_Lista_de_Raya.Cat_Diferencia_De_Cortes;
 import Cat_Lista_de_Raya.Cat_Empleados;
+import Cat_Lista_de_Raya.Cat_Lista_De_Comparacion_De_Fuente_De_Sodas;
+import Cat_Lista_de_Raya.Cat_Percepciones_Extras;
+import Cat_Lista_de_Raya.Cat_Prestamos;
+import Cat_Lista_de_Raya.Cat_Revision_De_Lista_Raya;
+import Cat_Lista_de_Raya.Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF;
+import Cat_Lista_de_Raya.Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
-import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Principal.Obj_Menus;
 
 
@@ -165,6 +173,8 @@ public class Init_Login extends JFrame{
                 txtFolio.requestFocus();
              }
         });
+        
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		/* MANEJO DE LA RESOLUCIONES */ 
 		Resolucion(ancho, alto);
@@ -182,6 +192,7 @@ public class Init_Login extends JFrame{
 		btnGuardarContrasena.addActionListener(opGuardarContrasena);
 		txtUsuario.setEditable(false);
 		btnAceptar.setEnabled(false);
+		btnBuscar.setEnabled(true);
 		
 		btnBanco.addActionListener(Opciones);
 		btnInasistencia.addActionListener(Opciones);
@@ -221,47 +232,7 @@ public class Init_Login extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
-	ActionListener Opciones = new ActionListener(){
-		
-		public void actionPerformed(ActionEvent click) {
-			
-
-//			btnBanco.addActionListener(Opciones);
-//			btnInasistencia.addActionListener(Opciones);
-//			btnSolicitudes.addActionListener(Opciones);
-//			btnCaja.addActionListener(Opciones);
-//			btnFsRH.addActionListener(Opciones);
-//			btnFsAux.addActionListener(Opciones);
-//			btnPExtras.addActionListener(Opciones);
-//			btnPrestamo.addActionListener(Opciones);
-//			btnCuadrantepersonal.addActionListener(Opciones);
-//			btnCuadranteequipo.addActionListener(Opciones);
-//			btnListaRaya.addActionListener(Opciones);
-//			btnListaFirma.addActionListener(Opciones);
-//			btnFuenteSodasCajeras.addActionListener(Opciones);
-//			btnListaComparacion.addActionListener(Opciones);
-
-			if(click.getSource().equals(btnAltaEmp))
-				new Cat_Empleados().setVisible(true);
-			
-			if(click.getSource().equals(btnBanco))
-				new Cat_Depositos_A_Bancos().setVisible(true);
-						
-			if(click.getSource().equals(btnCuadrantepersonal))
-				new Cat_Captura_Del_Cuadrante_Personal(txtUsuario.getText()).setVisible(true);
-			
-
-			if(click.getSource().equals(btnChecador))
-				new Cat_Checador().setVisible(true);
-
-			if(click.getSource().equals(btnCerrar)){
-				dispose();			
-			try {
-				R.exec("taskkill /f /im javaw.exe");
-			} catch (Exception e2){}
-			}
-		}
-	};
+	
 	
 	public void Resolucion(int ancho, int alto){
 		if(ancho >= 1280){
@@ -487,25 +458,25 @@ public class Init_Login extends JFrame{
 			/* COLUMNA 2 *//////////////////////////////////////////////////////
 			y=10;			
 			panel.add(btnBanco).setBounds                (x+=100,y     ,z,z);
-			panel.add(btnCaja).setBounds                 (x     ,y+=90,z,z);
-			panel.add(btnPrestamo).setBounds             (x     ,y+=90,z,z);
-			panel.add(btnListaComparacion).setBounds     (x     ,y+=90,z,z);
-			panel.add(btnListaRaya).setBounds            (x     ,y+=90,z,z);
+			panel.add(btnCaja).setBounds                 (x     ,y+=90 ,z,z);
+			panel.add(btnPrestamo).setBounds             (x     ,y+=90 ,z,z);
+			panel.add(btnListaComparacion).setBounds     (x     ,y+=90 ,z,z);
+			panel.add(btnListaRaya).setBounds            (x     ,y+=90 ,z,z);
 			
 			y = 20;		
 			panel.add(lblBanco).setBounds                (x+=65 ,y     ,zl,w);
 			panel.add(lblBanco2).setBounds               (x     ,y+10  ,zl,w);
-			panel.add(lblCaja2).setBounds                (x     ,y+=90,zl,w);
+			panel.add(lblCaja2).setBounds                (x     ,y+=90 ,zl,w);
 			panel.add(lblCaja3).setBounds                (x     ,y+10  ,zl,w);
-			panel.add(lblPrestamo2).setBounds            (x     ,y+=90,zl,w);
-			panel.add(lblListaComparacion2).setBounds    (x     ,y+=90,zl,w);
+			panel.add(lblPrestamo2).setBounds            (x     ,y+=90 ,zl,w);
+			panel.add(lblListaComparacion2).setBounds    (x     ,y+=90 ,zl,w);
 			panel.add(lblListaComparacion3).setBounds    (x     ,y+10  ,zl,w);
-			panel.add(lblListaRaya2).setBounds           (x     ,y+=90,zl,w);
+			panel.add(lblListaRaya2).setBounds           (x     ,y+=90 ,zl,w);
 			panel.add(lblListaRaya3).setBounds           (x     ,y+10  ,zl,w);
 			
 			/* COLUMNA 3 *///////////////////////////////////////////////////////
 			y=10;			
-			panel.add(btnAltaEmp).setBounds              (x+=100, y    ,z,z);
+			panel.add(btnAltaEmp).setBounds              (x+=100,y    ,z,z);
 			panel.add(btnSolicitudes).setBounds          (x     ,y+=90,z,z);
 			panel.add(btnCuadrantepersonal).setBounds    (x     ,y+=90,z,z);
 			panel.add(btnCuadranteequipo).setBounds      (x     ,y+=90,z,z);
@@ -513,12 +484,12 @@ public class Init_Login extends JFrame{
 			
 			y = 20;	
 			panel.add(lblAltaEmp3).setBounds             (x+=65 ,y     ,zl,w);
-			panel.add(lblSolicitudes).setBounds          (x     ,y+=90,zl,w);
-			panel.add(lblCuadrantepersonal).setBounds    (x     ,y+=90,zl,w);
+			panel.add(lblSolicitudes).setBounds          (x     ,y+=90 ,zl,w);
+			panel.add(lblCuadrantepersonal).setBounds    (x     ,y+=90 ,zl,w);
 			panel.add(lblCuadrantepersonal2).setBounds   (x     ,y+10  ,zl,w);
-			panel.add(lblCuadranteequipo).setBounds      (x     ,y+=90,zl,w);
+			panel.add(lblCuadranteequipo).setBounds      (x     ,y+=90 ,zl,w);
 			panel.add(lblCuadranteequipo2).setBounds     (x     ,y+10  ,zl,w);
-			panel.add(lblListaChecador2).setBounds       (x     ,y+=90,zl,w);
+			panel.add(lblListaChecador2).setBounds       (x     ,y+=90 ,zl,w);
 
 			/* COLUMNA 4 *///////////////////////////////////////////////////////
 			y=10;
@@ -667,7 +638,6 @@ public class Init_Login extends JFrame{
 			JOptionPane.showMessageDialog(null, "La contraseña no es válida...","Aviso",JOptionPane.WARNING_MESSAGE);
 			
 			}else{
-				
 			txtContrasenaActual.setEnabled(false);	
 			txtContrasenaNueva.setEnabled(true);
 			txtContrasenaConfirmar.setEnabled(true);
@@ -747,23 +717,15 @@ public class Init_Login extends JFrame{
 			lblcontrasena.setVisible(true);
 			txtContrasena.setText("");
 			txtContrasena.requestFocus(true);
-			btnBuscar.setEnabled(true);
 			btnAceptar.setEnabled(true);
 			txtFolio.requestFocus(true);
+			btnBuscar.setEnabled(false);
 			
 					};
 					
-			
+//CARGA BOTONES EN TRUE
 	@SuppressWarnings("rawtypes")
 	public void subMenusbotones(){
-		Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
-		Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
-					
-		boolean auditoriaBoolean = auditoria.isAutorizar();
-		boolean finanzasBoolean = finanzas.isAutorizar();
-						
-		if((auditoriaBoolean == false)  || (finanzasBoolean == true)){
-			
 			Vector SubMenuVector = new Obj_Menus().getSubmenuNivel (Integer.parseInt(txtFolio.getText()));
 			ArrayList<Submenusbtns> lsSubMenus = new ArrayList<Submenusbtns>();
 			for(int i=0; i<SubMenuVector.size(); i++){
@@ -776,15 +738,83 @@ public class Init_Login extends JFrame{
 					btnBanco.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 25)
 					btnCuadrantepersonal.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 41)
+					btnFuenteSodasCajeras.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 44)
+					btnFsAux.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 45)
+					btnFsRH.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 46)
+					btnListaComparacion.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 47)
+					btnInasistencia.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 48)
+					btnCaja.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 49)
+					btnPExtras.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 50)
+					btnPrestamo.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 51)
+					btnListaRaya.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 79)
+					btnSolicitudes.setEnabled(true);
+		                                            }
+	}
+	
+ActionListener Opciones = new ActionListener(){
+		
+		public void actionPerformed(ActionEvent click) {
+			
+			if(click.getSource().equals(btnAltaEmp))
+				new Cat_Empleados().setVisible(true);
+			
+			if(click.getSource().equals(btnBanco))
+				new Cat_Depositos_A_Bancos().setVisible(true);
+						
+			if(click.getSource().equals(btnCuadrantepersonal))
+				new Cat_Captura_Del_Cuadrante_Personal(txtUsuario.getText()).setVisible(true);
+			
+			if(click.getSource().equals(btnFuenteSodasCajeras))
+				new Cat_Captura_De_Fuente_De_Sodas_De_Cajeras().setVisible(true);
+			
+			if(click.getSource().equals(btnFsAux))
+				new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().setVisible(true);
 
+			if(click.getSource().equals(btnFsRH))
+				new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH().setVisible(true);
+			
+			if(click.getSource().equals(btnListaComparacion))
+				new Cat_Lista_De_Comparacion_De_Fuente_De_Sodas().setVisible(true);
 
-					}
-				    
-			     {			   
+			if(click.getSource().equals(btnInasistencia))
+				new Cat_Deducciones_Por_Inasistencia().setVisible(true);
+			
+			if(click.getSource().equals(btnCaja))
+				new Cat_Diferencia_De_Cortes().setVisible(true);
+			
+			if(click.getSource().equals(btnPExtras))
+				new Cat_Percepciones_Extras().setVisible(true);
+			
+			if(click.getSource().equals(btnPrestamo))
+				new Cat_Prestamos().setVisible(true);
+			
+			if(click.getSource().equals(btnListaRaya))
+				new Cat_Revision_De_Lista_Raya().setVisible(true);
+			
+			if(click.getSource().equals(btnSolicitudes))
+				new Cat_Solicitud_De_Empleados().setVisible(true);
+	
+			if(click.getSource().equals(btnChecador))
+				new Cat_Checador().setVisible(true);
+
+			if(click.getSource().equals(btnCerrar)){
+				dispose();			
+			try {
+				R.exec("taskkill /f /im javaw.exe");
+			} catch (Exception e2){}
 			}
 		}
-
-	}
+	};
 
 	
 public class Submenusbtns{
