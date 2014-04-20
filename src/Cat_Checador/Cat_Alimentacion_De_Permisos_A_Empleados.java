@@ -52,7 +52,7 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
-import Obj_Checador.Obj_JTextFieldLimit;
+import Obj_Principal.Componentes;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -70,7 +70,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	JLabel lblUsuario = new JLabel("Usuario: ");
 	JLabel lblEmpleado = new JLabel("Empleado: ");
 	
-	JTextField txtFolio =new JTextField();
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio Permiso", 8, "String");
 	JTextField txtFolioEmpleado = new JTextField();
 	
 	JDateChooser txtFechaPermiso = new JDateChooser();
@@ -106,7 +106,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	  JSpinner spComida = new JSpinner(scom);                                         
 	  	JSpinner.DateEditor  com = new JSpinner.DateEditor(spComida,"H:mm"); 
 	 
-	JTextArea txaMotivo = new JTextArea();
+	JTextArea txaMotivo = new Componentes().textArea(new JTextArea(), "Motivo", 400);
 	JScrollPane Observasiones = new JScrollPane(txaMotivo);
 	
 	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
@@ -117,6 +117,8 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	JButton btnLimpiar = new JButton("Limpiar");
 	JButton btnEditar = new JButton("Editar");
 	JButton btnSalir = new JButton("Salir");
+	
+	
 	
 	Border border = LineBorder.createGrayLineBorder();
 	
@@ -191,7 +193,6 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		spComida.setEditor(com);
 		
 		txaMotivo.setLineWrap(true);
-		txaMotivo.setDocument(new Obj_JTextFieldLimit(400));
 		
 		grupo.add(chbP_trabajarCorrido);
 		grupo.add(chbP_salirTemprano);
@@ -364,6 +365,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 						JOptionPane.showMessageDialog(null, "No Puede Asignar Permiso A Una Fecha Que Ya Paso", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 						return;
 					}else{
+
 						Obj_Alimentacion_De_Permisos_A_Empleados Permiso = new Obj_Alimentacion_De_Permisos_A_Empleados().buscar(Integer.parseInt(txtFolio.getText()));
 							
 							permisoChecador();
@@ -603,9 +605,10 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 			txtFechaPermiso.setDate(null);
 			txaMotivo.setText("");
 			
+			Campos_False();
+			
 			btnBuscar.setEnabled(true);
 			btnFiltro.setEnabled(true);
-			Campos_False();
 			txtFolio.setEditable(true);
 			txtFolio.requestFocus();
 			
@@ -714,12 +717,12 @@ public class Filtro_Permisos_Checador extends JFrame{
 	private TableRowSorter trsfiltro;
 	
 	JLabel lblBuscar = new JLabel("BUSCAR : ");
-	JTextField txtBuscar = new JTextField();
+
+	JTextField txtBuscar =  new Componentes().text(new JTextField(), "Buscar", 100, "String");
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Filtro_Permisos_Checador()	{
 		this.setTitle("Filtro Permisos");
-		txtBuscar.setDocument(new Obj_JTextFieldLimit(10));
 		
 		txtBuscar.addKeyListener(new KeyAdapter() { 
 			public void keyReleased(final KeyEvent e) { 
@@ -869,12 +872,11 @@ public class Filtro_Permiso_Empleado extends JFrame{
 	private TableRowSorter trsfiltro;
 	
 	JLabel lblBuscar = new JLabel("BUSCAR : ");
-	JTextField txtBuscar = new JTextField();
+	JTextField txtBuscar = new Componentes().text(new JTextField(), "Buscar", 130, "String");
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Filtro_Permiso_Empleado()	{
 		this.setTitle("Filtro Empleados");
-		txtBuscar.setDocument(new Obj_JTextFieldLimit(130));
 		
 		txtBuscar.addKeyListener(new KeyAdapter() { 
 			public void keyReleased(final KeyEvent e) { 

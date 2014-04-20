@@ -148,6 +148,7 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 		}
 		return 1;
 	}
-	
-//	public boolean buscarYborraPermiso(int folio){ return new GuardarSQL().buscarBorrarPermiso(folio); }
+
+	// public boolean buscarYborraPermiso(int folio){ return new
+	// GuardarSQL().buscarBorrarPermiso(folio); }
 }

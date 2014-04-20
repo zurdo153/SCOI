@@ -38,13 +38,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import Obj_Checador.Obj_Entosal;
-import Obj_Checador.Obj_JTextFieldLimit;
 import Obj_Checador.Obj_Traer_Checador;
 
 
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Puestos;
+import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
 public class Cat_Checador extends JFrame {
@@ -95,7 +95,8 @@ public class Cat_Checador extends JFrame {
                 JScrollPane panelScroll = new JScrollPane(tabla);
                 
                 JLabel lblClave = new JLabel("Clave:");
-                JPasswordField txtClaveReal = new JPasswordField();
+                
+                JPasswordField txtClaveReal = new Componentes().textPassword(new JPasswordField(), "Clave", 30);
                 
                 JButton btnEmplorar = new JButton("");
                 
@@ -166,8 +167,6 @@ public class Cat_Checador extends JFrame {
                 
                 Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
                 btnFoto.setIcon(iconoFoto);
-                
-                txtClaveReal.setDocument(new Obj_JTextFieldLimit(100));
                 
 //                btnExaminar.addActionListener(opExaminar);
                 

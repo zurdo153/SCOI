@@ -24,9 +24,9 @@ import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
+import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
-import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
@@ -2812,7 +2812,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 	}
 	
 	public boolean Guardar_Vacaciones_Pasadas(Obj_Alimentacion_De_Vacaciones alimentacion){
-		String query = "exec sp_insert_departamento ?,?,?,?";
+		String query = "exec sp_insert_alimentacion_de_ultimas_vacaciones ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -2821,7 +2821,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			pstmt.setInt(1, alimentacion.getFolio_empleado());
 			pstmt.setString(2, alimentacion.getFecha_inicio());
 			pstmt.setString(3, alimentacion.getFecha_final());
-			pstmt.setInt(4, alimentacion.getProximas_vacaciones());
+			pstmt.setInt(4, alimentacion.getAnios_a_disfrutar());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
