@@ -5066,4 +5066,24 @@ public class BuscarSQL {
 		}
 		return fila;
 	}
+	
+	public boolean Buscar_Si_Cuenta_Con_Vacaciones(int folio){
+		String query = "exec sp_existe_empleado_con_vacaciones "+folio+";";
+		
+		boolean existe = false;
+		Statement s;
+		ResultSet rs;
+		
+		try {				
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				existe = Boolean.valueOf(rs.getString("existe").trim());
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return existe;
+	}
 }

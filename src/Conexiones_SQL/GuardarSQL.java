@@ -2827,7 +2827,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 	}
 	
 	public boolean Guardar_Vacaciones_Pasadas(Obj_Alimentacion_De_Vacaciones alimentacion){
-		String query = "exec sp_insert_departamento ?,?,?,?";
+		String query = "exec sp_insert_alimentacion_de_ultimas_vacaciones ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -2836,7 +2836,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			pstmt.setInt(1, alimentacion.getFolio_empleado());
 			pstmt.setString(2, alimentacion.getFecha_inicio());
 			pstmt.setString(3, alimentacion.getFecha_final());
-			pstmt.setInt(4, alimentacion.getProximas_vacaciones());
+			pstmt.setInt(4, alimentacion.getAnios_a_disfrutar());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {

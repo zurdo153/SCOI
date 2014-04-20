@@ -748,6 +748,28 @@ public boolean Guardar_Folio_de_Empleado_Imprimir_Cuadrante(int Folio) {
 		}
 	    return matriz; 
 	}
+	
+	public Object[][] tabla_model_empleados_vacaciones(){
+		String query = "exec sp_select_filtro_empleados_para_vacaciones";
+		Object[][] matriz = new Object[get_filas(query)][4];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] =rs.getString(1);
+				matriz[i][1] = "   "+rs.getString(2);
+				matriz[i][2] = "   "+rs.getString(3);
+				matriz[i][3] = "   "+rs.getString(4);
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
 }
 
 
