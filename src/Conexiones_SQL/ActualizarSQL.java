@@ -5,8 +5,9 @@ import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -53,7 +54,7 @@ import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 
 public class ActualizarSQL {
-	String Qbitacora ="exec sp_insert_bitacora ?,?,?,?,?";
+	String Qbitacora ="exec sp_insert_empleado_en_bitacora ?,?,?,?,?";
 	PreparedStatement pstmtb = null;
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
@@ -72,8 +73,8 @@ public class ActualizarSQL {
 			pstmtb.setString(1, pc);
 			pstmtb.setString(2, ip);
 			pstmtb.setInt(3, usuario.getFolio());
-			pstmtb.setString(4, "sp_insert_empleado alta "+empleado.getNombre().toUpperCase()+empleado.getAp_paterno().toUpperCase()+empleado.getAp_materno().toUpperCase());
-			pstmtb.setString(5, "Empleados Nuevo");
+			pstmtb.setInt(4, folio);
+			pstmtb.setString(5, "Empleados sp_update_alta_empleado");
 			pstmtb.executeUpdate();
 			
 //			private String telefono_cuadrante;
@@ -145,6 +146,7 @@ public class ActualizarSQL {
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion Empleado  procedimiento almacenado sp_update_alta_empleado SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
@@ -191,6 +193,7 @@ public class ActualizarSQL {
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Denom ]  SQLException: "+e.getMessage()+" "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -222,6 +225,7 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Establecimiento ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 				}
@@ -232,47 +236,50 @@ public class ActualizarSQL {
 				con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				
 			}
 		}		
 		return true;
 	}
 	
 	
-	public boolean Usuario(Obj_Usuario usuario, int folio){
-		String query = "update tb_usuario set nombre_completo=?,contrasena=?, permiso_id=?, fecha_actu=?, status=? where folio=" + folio;
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, usuario.getNombre_completo().toUpperCase());
-			pstmt.setString(2, usuario.getContrasena());
-			pstmt.setInt(3, usuario.getPermiso_id());
-			String fecha = new Date().toString();
-			pstmt.setString(4, fecha);
-			pstmt.setInt(5, usuario.getStatus());
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
+//	public boolean Usuario(Obj_Usuario usuario, int folio){
+//		String query = "update tb_usuario set nombre_completo=?,contrasena=?, permiso_id=?, fecha_actu=?, status=? where folio=" + folio;
+//		Connection con = new Connexion().conexion();
+//		PreparedStatement pstmt = null;
+//		try {
+//			con.setAutoCommit(false);
+//			pstmt = con.prepareStatement(query);
+//			pstmt.setString(1, usuario.getNombre_completo().toUpperCase());
+//			pstmt.setString(2, usuario.getContrasena());
+//			pstmt.setInt(3, usuario.getPermiso_id());
+//			String fecha = new Date().toString();
+//			pstmt.setString(4, fecha);
+//			pstmt.setInt(5, usuario.getStatus());
+//			pstmt.executeUpdate();
+//			con.commit();
+//		} catch (Exception e) {
+//			System.out.println("SQLException: "+e.getMessage());
+//			if(con != null){
+//				try{
+//					System.out.println("La transacción ha sido abortada");
+//					con.rollback();
+//					
+//					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Usuario ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//				}catch(SQLException ex){
+//					System.out.println(ex.getMessage());
+//				}
+//			}
+//			return false;
+//		}finally{
+//			try {
+//				con.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}		
+//		return true;
+//	}
 	
 	public boolean Bono(Obj_Bono_Complemento_Sueldo bono, int folio){
 		String query = "update tb_bono set bono=?, abreviatura=?, status=? where folio=" + folio;
@@ -292,6 +299,7 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Bono ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 				}
@@ -325,6 +333,7 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Puesto ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 				}
@@ -349,7 +358,6 @@ public class ActualizarSQL {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, diaIA.getFecha());
 			pstmt.setString(2, diaIA.getDescripcion().toUpperCase());
-//			pstmt.setString(3, (puesto.getStatus())?"1":"0");
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -358,6 +366,7 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ DiaInHabil ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 				}
@@ -391,8 +400,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Atributos ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Atributos ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -423,8 +434,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Jefatura ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Jefatura ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -455,8 +468,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Eq_Trabajo ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Eq_Trabajo ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -498,8 +513,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Ponderacion ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Ponderacion ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -531,8 +548,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Nivel ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Nivel ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -553,11 +572,9 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			
 			pstmt.setString(1, banck.getBanco().toUpperCase());
 			pstmt.setString(2, banck.getAbreviatura().toUpperCase());
 			pstmt.setString(3, (banck.getStatus())?"1":"0");
-			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -566,8 +583,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Tipo_Banco ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Tipo_Banco ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -589,7 +608,6 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-
 			pstmt.setString(1, divisas.getNombre().toUpperCase());
 			pstmt.setFloat(2, divisas.getValor());
 			pstmt.setString(3, (divisas.getStatus())?"1":"0");
@@ -601,8 +619,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Divisas ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Divisas ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -634,8 +654,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Denominaciones ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Denominaciones ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -666,8 +688,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Sueldo ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Sueldo ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -697,8 +721,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ eliminarListaFuenteSodas ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ eliminarListaFuenteSodas ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -728,8 +754,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ eliminarListaFuenteSodas_auxf ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ eliminarListaFuenteSodas_auxf ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -758,8 +786,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ eliminarPrestamo ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ eliminarPrestamo ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -790,8 +820,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -807,14 +839,12 @@ public class ActualizarSQL {
 	
 	public boolean fuente_sodas_Rh(){
 		String query = "update tb_fuente_sodas_rh set status_ticket=? where status=?; update tb_fuente_sodas_auxf set status_ticket=? where status=?; UPDATE tb_autorizaciones SET autorizar_comparacion_fuente_sodas = 'false' ";
-
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-	
 			pstmt.setString(1, "1");
 			pstmt.setInt(2, 1);
 			pstmt.setString(3, "1");
@@ -827,8 +857,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas_Rh ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas_Rh ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -859,8 +891,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas_auxf ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas_auxf ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -893,8 +927,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ prestamo ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ prestamo ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -927,8 +963,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Rango_Prestamos ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Rango_Prestamos ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -960,8 +998,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Asistecia_Puntualidad ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Asistecia_Puntualidad ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -994,8 +1034,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1027,8 +1069,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Departamento ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Departamento ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1051,12 +1095,10 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-		
 			pstmt.setString(1, (configs.isBono_10_12())? "true" : "false");
 			pstmt.setString(2, (configs.isBono_dia_extra())? "true" : "false");
 			pstmt.setString(3, (configs.isGuardar_horario())? "true" : "false");
 			pstmt.setString(4, (configs.isGuardar_departamento())? "true" : "false");
-						
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1065,8 +1107,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Configurar_Sistema ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Configurar_Sistema ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1079,8 +1123,6 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
-
-	
 	
 	public boolean Auditoria(Obj_Autorizacion_Auditoria auditoria){
 		String query = "update tb_autorizaciones set autorizar_auditoria=? ";
@@ -1090,7 +1132,6 @@ public class ActualizarSQL {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, (auditoria.isAutorizar())? "true" : "false");
-			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1099,8 +1140,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Auditoria ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Auditoria ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1122,7 +1165,6 @@ public class ActualizarSQL {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, (auditoria.isAutorizar())? "true" : "false");
-			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1131,8 +1173,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizar_Finanzas ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizar_Finanzas ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1151,21 +1195,17 @@ public class ActualizarSQL {
 		String update ="update tb_permisos_submenus_usuarios set acceso= ? " +
 				"from tb_permisos_submenus_usuarios inner join tb_submenu on tb_submenu.folio=tb_permisos_submenus_usuarios.folio_submenu " +
 				"where folio_empleado="+folio_empleado+" and  nombre=?";
-
-		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(update);
-		
 			for(int i=0; i<Permisos.size(); i++){
 				String[] arreglo = Permisos.get(i).toString().split("/");
 				pstmt.setString(1, arreglo[1]);
 				pstmt.setString(2, arreglo[0]);
 				pstmt.execute();
 			}
-			
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
@@ -1173,8 +1213,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ PermisoUsuario ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ PermisoUsuario ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1195,10 +1237,8 @@ public class ActualizarSQL {
 		try {
 			System.out.println(nuevacontrasena);
 			System.out.println(folio_empleado);
-			
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1207,8 +1247,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción GuardaNuevaContrasena ha sido abortada :");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ GuardaNuevaContrasena ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ GuardaNuevaContrasena ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1224,19 +1266,16 @@ public class ActualizarSQL {
 	
 	public boolean Actualizar(Obj_Nomina nomina, String Establecimiento, int Folio){
 		String update = "update tb_nomina set nomina = ?, pago_linea = ?, cheque_nomina = ?, lista_raya = ?, diferecia = ? where establecimiento = '"+Establecimiento+"' and folio_lista ="+Folio;
-		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(update);
-			
 			pstmt.setString(1, nomina.getNomina());
 			pstmt.setString(2, nomina.getPago_linea());
 			pstmt.setString(3, nomina.getCheque_nomina());
 			pstmt.setString(4, nomina.getLista_raya());
 			pstmt.setString(5, nomina.getDiferencia());
-			
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
@@ -1244,8 +1283,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1267,13 +1308,11 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-		
 			pstmt.setString(1, temporada.getDescripcion());
 			pstmt.setString(2, temporada.getFecha_in());
 			pstmt.setString(3, temporada.getFecha_fin());
 			pstmt.setString(4, temporada.getDia());
 			pstmt.setInt(5, temporada.isStatus() ? 1 : 0);
-							
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1282,8 +1321,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ TemporadaActualizar ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ TemporadaActualizar ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1297,7 +1338,6 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-//*Agregando update para telefonos*///
 	public boolean ActualizarTelefono(Obj_Directorios directorio, int folio){
 		String query = "update tb_direccion_telefonicos set numero=? where folio_empleado=" + folio;
 		
@@ -1317,8 +1357,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ ActualizarTelefono ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ ActualizarTelefono ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1331,8 +1373,6 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
-	
-	/*Actualizar nivel gerarquico*/
 	
 	public boolean NivelG(Obj_Nivel_Jerarquico pond, int folio){
 		String query = "update tb_nivel_gerarquico set descripcion=?, puestoprincipal=?, puestodependiente=?, status=? where folio=" + folio;
@@ -1354,8 +1394,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ NivelG ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ NivelG ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1372,13 +1414,11 @@ public class ActualizarSQL {
 	public boolean Actualizar_Actividad(Obj_Actividad actividad, int folio){
 		
 		String query = "exec sp_update_actividad ?,?,?,?,?,?,?,?,?";
-		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			
 			pstmt.setString(1, actividad.getActividad().toUpperCase());
 			pstmt.setString(2, actividad.getDescripcion().toUpperCase());
 			pstmt.setString(3, actividad.getRespuesta());
@@ -1388,9 +1428,6 @@ public class ActualizarSQL {
 			pstmt.setInt(7, actividad.isCarga()? 1 : 0);
 			pstmt.setInt(8, actividad.getRepetir());
 			pstmt.setInt(9, folio);
-			
-			
-			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1399,8 +1436,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1417,15 +1456,12 @@ public class ActualizarSQL {
 	public boolean Actualizar_Actividad_Nivel_Jerarquico(Obj_Actividad_Asignadas_Nivel_Jerarquico actividad, int folio, String nombre){
 		
 		String query = "exec sp_update_actividad_nivel_jerarquico ?,?,?,?,?,?,?,?,?,?,?";
-				
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			
 			System.out.println(actividad.getDescripcion().toUpperCase());
-					
 			pstmt.setString(1, actividad.getActividad().toUpperCase());
 			pstmt.setString(2, actividad.getDescripcion().toUpperCase());
 			pstmt.setString(3, actividad.getRespuesta());
@@ -1437,7 +1473,6 @@ public class ActualizarSQL {
 			pstmt.setInt(9, folio);
 			pstmt.setString(10, nombre);
 			pstmt.setInt(11, actividad.isStatus()? 1:0);
-			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1446,8 +1481,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad_Nivel_Jerarquico ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad_Nivel_Jerarquico ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1465,9 +1502,7 @@ public class ActualizarSQL {
 		String queryDelete ="delete tb_tabla_relacion_actividad where folio_proyecto = ?";
 		String query = "exec sp_update_relacion_actividad ?,?,?,?,?";
 		String querytabla = "exec sp_insert_tabla_relacion_actividad ?,?,?,?,?";
-		
 		Connection con = new Connexion().conexion();
-		
 		PreparedStatement pstmtDelete = null;
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmtTabla = null;
@@ -1477,32 +1512,25 @@ public class ActualizarSQL {
 			
 			// Elimina primero la lista de cuadrante
 			pstmtDelete = con.prepareStatement(queryDelete);
-			
 			pstmtDelete.setInt(1, relacion.getFolio());
 			pstmtDelete.execute();
-			
 			// Actualiza el Cuadrante
 			pstmt = con.prepareStatement(query);
-			
 			pstmt.setInt(1, relacion.getFolio());
 			pstmt.setString(2, relacion.getProyecto().toUpperCase().trim());
 			pstmt.setString(3, relacion.getDescripcion().toUpperCase().trim());
 			pstmt.setString(4, relacion.getNivel_critico().trim());
 			pstmt.setInt(5, relacion.getStatus());
-			
 			pstmt.execute();
-			
 			// Inserta valores a la tabla
 			pstmtTabla = con.prepareStatement(querytabla);
 			
 			for(int i=0; i<tabla.length; i++){
-				
 				pstmtTabla.setInt(1, relacion.getFolio());
 				pstmtTabla.setInt(2, Integer.parseInt(tabla[i][0].toString().trim()));
 				pstmtTabla.setString(3, tabla[i][3].toString().trim().toUpperCase());
 				pstmtTabla.setString(4, tabla[i][4].toString().trim());
 				pstmtTabla.setInt(5, Boolean.parseBoolean(tabla[i][2]) ? 1 : 0);
-				
 				pstmtTabla.executeUpdate();
 			}
 
@@ -1513,8 +1541,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada Actualizar - Actividad relacionada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Relacion_Actividad ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Relacion_Actividad ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1532,9 +1562,7 @@ public class ActualizarSQL {
 		String queryDelete ="delete tb_tabla_proyecto_cuadrante where folio_proyecto = ?";
 		String query = "exec sp_update_proyecto ?,?,?,?,?,?,?";
 		String querytabla = "exec sp_insert_tabla_proyecto ?,?,?,?,?";
-		
 		Connection con = new Connexion().conexion();
-		
 		PreparedStatement pstmtDelete = null;
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmtTabla = null;
@@ -1544,13 +1572,11 @@ public class ActualizarSQL {
 			
 			// Elimina primero la lista de cuadrante
 			pstmtDelete = con.prepareStatement(queryDelete);
-			
 			pstmtDelete.setInt(1, proyect.getFolio());
 			pstmtDelete.execute();
 			
 			// Actualiza el Cuadrante
 			pstmt = con.prepareStatement(query);
-			
 			pstmt.setInt(1, proyect.getFolio());
 			pstmt.setString(2, proyect.getProyecto().toUpperCase().trim());
 			pstmt.setString(3, proyect.getDescripcion().toUpperCase().trim());
@@ -1558,20 +1584,17 @@ public class ActualizarSQL {
 			pstmt.setInt(5, proyect.getStatus());
 			pstmt.setString(6, proyect.getFecha_inicial());
 			pstmt.setString(7, proyect.getFecha_final());
-			
 			pstmt.execute();
 			
 			// Inserta valores a la tabla
 			pstmtTabla = con.prepareStatement(querytabla);
 			
 			for(int i=0; i<tabla.length; i++){
-				
 				pstmtTabla.setInt(1, proyect.getFolio());
 				pstmtTabla.setInt(2, Integer.parseInt(tabla[i][0].toString().trim()));
 				pstmtTabla.setString(3, tabla[i][3].toString().trim().toUpperCase());
 				pstmtTabla.setString(4, tabla[i][4].toString().trim());
 				pstmtTabla.setInt(5, Boolean.parseBoolean(tabla[i][2]) ? 1 : 0);
-				
 				pstmtTabla.executeUpdate();
 			}
 
@@ -1582,8 +1605,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada Actualizar - Proyecto");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proyecto ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proyecto ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1603,23 +1628,19 @@ public class ActualizarSQL {
 		String querytabla = "exec sp_insert_tabla_cuadrante ?,?,?,?,?,?,?,?";
 		
 		Connection con = new Connexion().conexion();
-		
 		PreparedStatement pstmtDelete = null;
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmtTabla = null;
-		
 		try {
 			con.setAutoCommit(false);
 			
 			// Elimina primero la lista de cuadrante
 			pstmtDelete = con.prepareStatement(queryDelete);
-			
 			pstmtDelete.setInt(1, cuadrante.getFolio());
 			pstmtDelete.execute();
 			
 			// Actualiza el Cuadrante
 			pstmt = con.prepareStatement(query);
-			
 			pstmt.setString(1, cuadrante.getCuadrante().toUpperCase());
 			pstmt.setString(2, cuadrante.getPerfil().toUpperCase());
 			pstmt.setString(3, cuadrante.getJefatura());
@@ -1635,7 +1656,6 @@ public class ActualizarSQL {
 			pstmt.setInt(13, cuadrante.getSabado());
 			pstmt.setInt(14, cuadrante.getStatus());
 			pstmt.setInt(15, cuadrante.getFolio());
-			
 			pstmt.execute();
 			
 			// Inserta valores a la tabla
@@ -1650,10 +1670,8 @@ public class ActualizarSQL {
 				pstmtTabla.setString(6, tabla[i][4]);
 				pstmtTabla.setString(7, tabla[i][5]);
 				pstmtTabla.setString(8, tabla[i][6]);
-				
 				pstmtTabla.execute();
 			}
-
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
@@ -1661,8 +1679,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada Actualizar - Cuadrante");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cuadrante ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cuadrante ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1680,23 +1700,17 @@ public class ActualizarSQL {
 		 
 		String queryDEP = "exec sp_update_mensaje_personal  ?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
-		
 		PreparedStatement pstmtabla = null;
-		
 		try {
-			con.setAutoCommit(false);
-			
-			pstmtabla = con.prepareStatement(queryDEP);
-			
+			    con.setAutoCommit(false);
+  			    pstmtabla = con.prepareStatement(queryDEP);
 				pstmtabla.setInt (1, folio);
 				pstmtabla.setString (2, msjPersonal.getFechaInicial());
 				pstmtabla.setString (3, msjPersonal.getFechaFin());
 				pstmtabla.setString (4, msjPersonal.getAsunto());
 				pstmtabla.setString (5, msjPersonal.getMensaje());
 				pstmtabla.setString (6,(msjPersonal.getStatus())?"1":"0");
-				
 				pstmtabla.executeUpdate();
-
 				con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
@@ -1704,8 +1718,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1737,7 +1753,6 @@ public class ActualizarSQL {
 			pstmtabla.setInt(8, Permiso.getDescanso());
 			pstmtabla.setString(9, Permiso.getTiempo_comida());
 			pstmtabla.executeUpdate();
-
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
@@ -1745,8 +1760,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ permiso ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ permiso ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1764,31 +1781,20 @@ public class ActualizarSQL {
 		
 		String queryDelete="delete from tb_tabla_nivel_jerarquico where tb_tabla_nivel_jerarquico.folio_tb_nivel_jerarquico = "+niv.getFolio();
 		String query = "exec sp_insert_tabla_nivel_jerarquico ?,?,?";
-		
 		Connection con = new Connexion().conexion();
-		
 		PreparedStatement pstmtDelete = null;
 		PreparedStatement pstmtabla = null;
-		
 		try {
 			con.setAutoCommit(false);
-			
 			pstmtDelete= con.prepareStatement(queryDelete);
 			pstmtDelete.executeUpdate();
-			
-			
 			pstmtabla = con.prepareStatement(query);
-			
 			for (int i = 0; i < tabla.length; i++) {
-
 				pstmtabla.setInt (1, niv.getFolio());
-				
 				System.out.print(tabla[i][0] +"   ");	System.out.println(tabla[i][1]);
-				
 				pstmtabla.setString (2, tabla[i][0]);
 				pstmtabla.setString (3, tabla[i][1]);
 				pstmtabla.executeUpdate();
-				
 			}
 			con.commit();
 		} catch (Exception e) {
@@ -1797,8 +1803,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ nivelGerarquico2 ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ nivelGerarquico2 ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1819,21 +1827,15 @@ public class ActualizarSQL {
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmtabla = null;
-		
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(queryClear);
 			pstmtabla = con.prepareStatement(query);
-			
 			pstmt.executeUpdate();
-			
 			for (int i = 0; i < tabla.length; i++) {
-
 				pstmtabla.setInt (1, msjPersonal.getFolioMensaje());
 				pstmtabla.setString (2, tabla[i]);
-				
 				pstmtabla.executeUpdate();
-				
 			}
 			con.commit();
 		} catch (Exception e) {
@@ -1842,8 +1844,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal2 ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal2 ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1868,24 +1872,18 @@ public class ActualizarSQL {
 		PreparedStatement pstmtTabla = null;
 		try {
 			con.setAutoCommit(false);
-			
 			pstmtDelete = con.prepareStatement(queryClear);
 			pstmtDelete.executeUpdate();
-			
 			pstmtUpdate = con.prepareStatement(queryUpdate);
 	    	pstmtUpdate.setString(1, empleado_cuadrante.getCuadrante());
 			pstmtUpdate.setInt(2, empleado_cuadrante.isStatus() ? 1 : 0);
 			pstmtUpdate.setInt(3, empleado_cuadrante.getFolio());
-			
 			pstmtUpdate.executeUpdate();
-			
 			pstmtTabla = con.prepareStatement(querytabla);
-
 			for(int i=0; i<tabla.length; i++){
 				System.out.println(empleado_cuadrante.getCuadrante().toUpperCase().trim());
 				System.out.println(Integer.parseInt(tabla[i]));
 				System.out.println(empleado_cuadrante.getFolio());
-				
 				pstmtTabla.setString(1, empleado_cuadrante.getCuadrante().toUpperCase().trim());
 				pstmtTabla.setInt(2, Integer.parseInt(tabla[i]));
 				pstmtTabla.executeUpdate();
@@ -1898,8 +1896,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ EmpleadoCuadrante ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ EmpleadoCuadrante ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1921,12 +1921,10 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-		
 			pstmt.setString(1, respuesta.getNombre().toUpperCase().trim());
 			pstmt.setInt(2, respuesta.getTipo_opcion().equals("Opción Libre") ? 0 : 1);
 			pstmt.setInt(3, respuesta.isStatus() ? 1 : 0);
 			pstmt.setInt(4, folio);
-				
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1935,8 +1933,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ opcion_respuesta ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ opcion_respuesta ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1950,7 +1950,6 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	//*Agregando update para mensajes*///
 			public boolean ActualizarMensajes(Obj_Mensajes msj, int folio){
 				String query = "update tb_mensajes set mensaje=? where folio=" + folio;
 				
@@ -1959,9 +1958,7 @@ public class ActualizarSQL {
 				try {
 					con.setAutoCommit(false);
 					pstmt = con.prepareStatement(query);
-				
 					pstmt.setString(1, msj.getMensaje());
-									
 					pstmt.executeUpdate();
 					con.commit();
 				} catch (Exception e) {
@@ -1970,8 +1967,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ ActualizarMensajes ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ ActualizarMensajes ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -1985,7 +1984,6 @@ public class ActualizarSQL {
 				return true;
 			}
 	
-			//*Agregando update para asignacion de mensajes*///
 			public boolean ActualizarAsignacion(Obj_Asignacion_Mensajes msj, int folio){
 				String query = "update tb_asignacion_mensaje set mensaje=?,mensajearea=?,puesto=?,equipo=?,jefatura=?,empleado=? where folio=" + folio;
 				
@@ -1994,14 +1992,12 @@ public class ActualizarSQL {
 				try {
 					con.setAutoCommit(false);
 					pstmt = con.prepareStatement(query);
-					
 					pstmt.setInt(1,msj.getNo_mensajes());
 					pstmt.setString(2, msj.getMensaje());
 					pstmt.setString(3,msj.getPuesto());
 					pstmt.setString(4,msj.getEquipo());
 					pstmt.setString(5,msj.getJefatura());
 					pstmt.setString(6, msj.getEmpleado());
-									
 					pstmt.executeUpdate();
 					con.commit();
 				} catch (Exception e) {
@@ -2010,8 +2006,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ ActualizarAsignacion ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ ActualizarAsignacion ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -2040,14 +2038,12 @@ public class ActualizarSQL {
 					pstmt = con.prepareStatement(query);
 								
 					int i=1;	
-					
 					pstmt.setInt(i, folio);
 					pstmt.setString(i+=1, horario_emp.getNombre());
 					pstmt.setInt(i+=1, horario_emp.getDescanso());
 					pstmt.setInt(i+=1, horario_emp.getDiaDobla());
 					pstmt.setInt(i+=1, horario_emp.getDiaDobla2());
 					pstmt.setInt(i+=1, horario_emp.getDiaDobla3());
-					
 
 					//////////////////////////////////////////////////////////////
 //					pstmt.setString(i+=1, "DOMINGO");
@@ -2098,10 +2094,8 @@ public class ActualizarSQL {
 					pstmt.setString(i+=1, horario_emp.getSabado3());
 					pstmt.setString(i+=1, horario_emp.getSabado4());
 					pstmt.setString(i+=1, horario_emp.getSabado5());
-					
 					pstmt.setInt(i+=1, horario_emp.getRecesoDiarioExtra());
 					pstmt.setInt(i+=1, horario_emp.getHorarioDeposito());
-					
 					pstmt.executeUpdate();
 					con.commit();
 				} catch (Exception e) {
@@ -2110,8 +2104,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Horario ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Horario ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -2125,7 +2121,7 @@ public class ActualizarSQL {
 				return true;
 			}
 			
-			public boolean Actualizar_Alimentacion_denominacio(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
+			public boolean Actualizar_Alimentacion_denominacion(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
 				
 				String query_delete = "delete from tb_alimentacion_denominaciones where folio_corte ='"+alim_denom.getEstablecimiento()+"'";
 				String query ="exec sp_insert_denominaciones ?,?,?,?,?,?,?,?";
@@ -2134,25 +2130,20 @@ public class ActualizarSQL {
 				try {
 					PreparedStatement pstmtDelete = con.prepareStatement(query_delete);
 					PreparedStatement pstmt = con.prepareStatement(query);
-
 					con.setAutoCommit(false);
-					
 //					pstmtDelete.setString(1, alimentacion.getNombre());
 					pstmtDelete.executeUpdate();
 					
 					for(int i=0; i<tabla.length; i++){
-						
 						pstmt.setString(1, alim_denom.getAsignacion().toUpperCase());
 						pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
 						pstmt.setString(3, alim_denom.getFecha());
 						pstmt.setString(4, alim_denom.getEstablecimiento().toUpperCase());
-						
 						pstmt.setInt(5, Integer.parseInt(tabla[i][0].toString().trim()));
 //						pstmt.setString(6, tabla[i][1].toString().trim());
 						pstmt.setFloat(6, Float.parseFloat(tabla[i][2].toString().trim()));
 						pstmt.setFloat(7,Float.parseFloat(tabla[i][3].toString().trim()));
 						pstmt.setFloat(8,Float.parseFloat(tabla[i][4].toString().trim()));
-						
 						pstmt.executeUpdate();
 					}
 							
@@ -2163,8 +2154,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_denominacion ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_denominacio ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -2187,22 +2180,15 @@ public class ActualizarSQL {
 				try {
 					PreparedStatement pstmtDelete = con.prepareStatement(query_delete);
 					PreparedStatement pstmt = con.prepareStatement(query);
-
 					con.setAutoCommit(false);
-					
 					pstmtDelete.executeUpdate();
-					
 					for(int i=0; i<tabla.length; i++){
-						
 						pstmt.setString(1, alim_denom.getEstablecimiento().toUpperCase().trim());
 						pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
-						
 						pstmt.setString(3, tabla[i][0].toString().trim());
 						pstmt.setFloat (4, Float.parseFloat(tabla[i][1].toString().trim()));
-						
 						pstmt.executeUpdate();
 					}
-							
 					con.commit();
 				} catch (Exception e) {
 					System.out.println("SQLException: "+e.getMessage());
@@ -2210,8 +2196,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_deposito ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_deposito ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -2227,7 +2215,6 @@ public class ActualizarSQL {
 	
 		public boolean status_solicitud_empleados(int folioSolicitud,int status){
 				String query = "exec sp_update_solicitud_empleados "+folioSolicitud+","+status+";";
-
 				Connection con = new Connexion().conexion();
 				PreparedStatement pstmt = null;
 				try {
@@ -2237,15 +2224,16 @@ public class ActualizarSQL {
 //					pstmt.setInt   (i,		folio);
 					pstmt.executeUpdate();
 					con.commit();
-					
 				} catch (Exception e) {
 					System.out.println("SQLException: "+e.getMessage());
 					if(con != null){
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ status_solicitud_empleados ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ status_solicitud_empleados ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -2276,8 +2264,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Grupo_Vacaciones ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Grupo_Vacaciones ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -2291,7 +2281,6 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	
 	public boolean Actualizar_Grupo_De_Vacaciones(Obj_Tabla_De_Vacaciones grupo_vacacionesObj,String grupo_vacaciones,int anios,int dias,int prima){
 		String query = "exec sp_update_tabla_grupos_de_vacaciones ?,?,?,?,?,?,?,?;";
 		Connection con = new Connexion().conexion();
@@ -2299,18 +2288,15 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			
 			int i=1;
 			pstmt.setString(i,	grupo_vacacionesObj.getGrupo().toUpperCase().trim());
 			pstmt.setInt(i+=1, 	grupo_vacacionesObj.getAnios_trabajados());
 			pstmt.setInt(i+=1,	grupo_vacacionesObj.getDias_correspondientes());
 			pstmt.setInt(i+=1,	grupo_vacacionesObj.getPrima_vacacional());
-			
 			pstmt.setString(i+=1,	grupo_vacaciones.toUpperCase().trim());
 			pstmt.setInt(i+=1, 		anios);
 			pstmt.setInt(i+=1,		dias);
 			pstmt.setInt(i+=1,		prima);
-			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -2319,8 +2305,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Grupo_De_Vacaciones ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Grupo_De_Vacaciones ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;

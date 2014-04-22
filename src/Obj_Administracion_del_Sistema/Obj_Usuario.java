@@ -111,7 +111,7 @@ public class Obj_Usuario {
 		return null; 
 	}
 	
-	public boolean actualizar(int folio){ return new ActualizarSQL().Usuario(this,folio); }
+//	public boolean actualizar(int folio){ return new ActualizarSQL().Usuario(this,folio); }
 		
 	public Obj_Usuario buscarMaximo() {
 		try {

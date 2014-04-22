@@ -186,7 +186,7 @@ public class Componentes {
 			Class instance = Class.forName(claseRoot);
 			return claseRoot;
 		}catch(ClassNotFoundException e){
-			JOptionPane.showMessageDialog(null, "No se ha creado la clase [" + nombre + "]", "Avisa al Administrador", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "No se ha creado la clase [" + nombre + "] Error en Obj_Principal.Componentes.classExiste  ", "Avisa al Administrador", JOptionPane.INFORMATION_MESSAGE);
 			return "";
 		}
 	}

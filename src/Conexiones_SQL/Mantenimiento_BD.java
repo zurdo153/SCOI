@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 public class Mantenimiento_BD {
 	//se declara la funcion que sera carga en el objeto
 	public boolean reducir_log(){
@@ -51,26 +53,29 @@ public class Mantenimiento_BD {
 		return true;
 	}
 	
-	public boolean agregar_submenus_nuevos(){
+	public boolean agregar_submenus_nuevos(String nombre_submenu, int menu_id, int menuPrincipal){
 	
-		String query = "exec sp_insert_submenu_nuevo ";
+		String query = "exec sp_insert_submenu_nuevo '"+nombre_submenu+"',"+menu_id+","+menuPrincipal;
 		Connection con = new Connexion().conexion();
      	PreparedStatement pstmt = null;
 			
-			
 		try {
-	    	
+				    	
 			con.setAutoCommit(false);
 		    pstmt = con.prepareStatement(query);
 			pstmt.execute();
  			con.commit();
-		
+ 			JOptionPane.showMessageDialog(null,"Se Guardo Correctamente el Submenu: "+nombre_submenu+"  y se guardo en los Usuarios No Olvides agregar en el Cat_Usuarios  new Obj_CheckBoxNode(SUBMENUS X[POSICION NUEVO SUBMENU], false)","Aviso",JOptionPane.INFORMATION_MESSAGE);
+ 		 				
 		} catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
 				try {
-					System.out.println("La transacción ha sido abortada");
+					System.out.println("La transacción agregar_submenus_nuevos ha sido abortada");
+					
 					con.rollback();
+				JOptionPane.showMessageDialog(null,"La transacción agregar_submenus_nuevos ha sido abortada ,procedimiento almacenado sp_insert_submenu_nuevo: SQLException: "+e.getMessage(),"Error al Guardar",JOptionPane.ERROR_MESSAGE);
+		
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
 				}

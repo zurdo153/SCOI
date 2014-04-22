@@ -12,7 +12,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-
 import Obj_Administracion_del_Sistema.Obj_Mantenimiento_Base_de_Datos;
 import Obj_Principal.Componentes;
 
@@ -94,12 +93,6 @@ public class Cat_Mantenimiento_Base_de_Datos extends JFrame {
 				 JOptionPane.showMessageDialog(null,"Se Redujo el log Satisfactoriamente","Aviso",JOptionPane.INFORMATION_MESSAGE); }
 			else{JOptionPane.showMessageDialog(null,"No se Pudo Ejecutar la Reduccion","Aviso",JOptionPane.ERROR_MESSAGE);
 			
-			if(new Obj_Mantenimiento_Base_de_Datos().agregar_submenus_nuevos()==true ){
-			  JOptionPane.showMessageDialog(null,"Se Cargaron Satisfactoriamente","Aviso",JOptionPane.INFORMATION_MESSAGE); }
-			else{JOptionPane.showMessageDialog(null,"No se Pudo Ejecutar El Procedimiento","Aviso",JOptionPane.ERROR_MESSAGE);
-			
-			}
-			
 			}
 			
 		}
@@ -120,7 +113,9 @@ public class Cat_Mantenimiento_Base_de_Datos extends JFrame {
    		  txtMenu_id.setEditable(false);
    		  txtMenu_Principal.setEditable(false);
    		  btn_Guardar.setEnabled(false);
-   		
+   		  new Obj_Mantenimiento_Base_de_Datos().agregar_submenus_nuevos(txtNombreSubmenu.getText().toLowerCase().toString(),Integer.valueOf(txtMenu_id.getText()),Integer.valueOf(txtMenu_Principal.getText()) );
+   		  
+   		  
 			
 		}
 		
