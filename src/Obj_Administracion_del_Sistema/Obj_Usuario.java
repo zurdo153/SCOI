@@ -171,6 +171,11 @@ public class Obj_Usuario {
 		
 	}
 	
+	public boolean Clonar_permisos(int folio_empleado ,String empleado_de_clonar){
+		return new ActualizarSQL().GuardarOpciones_Clonadas(folio_empleado,empleado_de_clonar);
+		
+	}
+	
 	public Obj_Usuario LeerSession()
     {
     	try{

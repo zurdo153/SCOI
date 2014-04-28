@@ -1264,6 +1264,40 @@ public class ActualizarSQL {
 		return true;
 	}
 	
+	public boolean GuardarOpciones_Clonadas(int folio_empleado ,String empleado_de_clonar){
+		String query = "exec sp_clonar_permisos_submenus_usuarios "+folio_empleado+",'"+empleado_de_clonar+"'";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			System.out.println(empleado_de_clonar);
+			System.out.println(folio_empleado);
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException en GuardarOpciones_Clonadas: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción GuardaNuevaContrasena ha sido abortada :");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ GuardarOpciones_Clonadas ] update  SQLException:sp_clonar_permisos_submenus_usuarios "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ GuardarOpciones_Clonadas ] update  SQLException:sp_clonar_permisos_submenus_usuarios "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 	public boolean Actualizar(Obj_Nomina nomina, String Establecimiento, int Folio){
 		String update = "update tb_nomina set nomina = ?, pago_linea = ?, cheque_nomina = ?, lista_raya = ?, diferecia = ? where establecimiento = '"+Establecimiento+"' and folio_lista ="+Folio;
 		Connection con = new Connexion().conexion();
@@ -1436,10 +1470,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad ]   SQLException: sp_update_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad ]   SQLException: sp_update_actividad "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1481,10 +1515,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad_Nivel_Jerarquico ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad_Nivel_Jerarquico ] update  SQLException: sp_update_actividad_nivel_jerarquico "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad_Nivel_Jerarquico ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad_Nivel_Jerarquico ] update  SQLException: sp_update_actividad_nivel_jerarquico "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1541,10 +1575,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada Actualizar - Actividad relacionada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Relacion_Actividad ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Relacion_Actividad ] update  SQLException: sp_update_relacion_actividad,sp_insert_tabla_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Relacion_Actividad ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Relacion_Actividad ] update  SQLException: sp_update_relacion_actividad,sp_insert_tabla_relacion_actividad "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1605,10 +1639,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada Actualizar - Proyecto");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proyecto ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proyecto ] update  SQLException: sp_update_proyecto,sp_insert_tabla_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proyecto ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proyecto ] update  SQLException: sp_update_proyecto,sp_insert_tabla_proyecto "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1679,10 +1713,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada Actualizar - Cuadrante");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cuadrante ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cuadrante ] update  SQLException: sp_update_cuadrante,sp_insert_tabla_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cuadrante ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cuadrante ] update  SQLException: sp_update_cuadrante,sp_insert_tabla_cuadrante "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1718,10 +1752,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: sp_update_mensaje_personal "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: sp_update_mensaje_personal "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1760,10 +1794,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ permiso ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ permiso ] update  SQLException: sp_update_permiso_checador "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ permiso ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ permiso ] update  SQLException: sp_update_permiso_checador "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1803,10 +1837,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ nivelGerarquico2 ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ nivelGerarquico2 ] update  SQLException: sp_insert_tabla_nivel_jerarquico "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ nivelGerarquico2 ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ nivelGerarquico2 ] update  SQLException: sp_insert_tabla_nivel_jerarquico "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1844,10 +1878,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal2 ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal2 ] update  SQLException: sp_insert_tabla_empleado_mensaje "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal2 ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal2 ] update  SQLException: sp_insert_tabla_empleado_mensaje "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1896,10 +1930,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ EmpleadoCuadrante ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ EmpleadoCuadrante ] update  SQLException: sp_borrar_empleados_en_cuadrantes,sp_update_tb_empleado_cuadrante,sp_insert_tabla_empleado_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ EmpleadoCuadrante ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ EmpleadoCuadrante ] update  SQLException: sp_borrar_empleados_en_cuadrantes,sp_update_tb_empleado_cuadrante,sp_insert_tabla_empleado_cuadrante "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1933,10 +1967,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ opcion_respuesta ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ opcion_respuesta ] update  SQLException: sp_update_opcion_respuesta "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ opcion_respuesta ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ opcion_respuesta ] update  SQLException: sp_update_opcion_respuesta "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -2104,10 +2138,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Horario ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Horario ] update  SQLException: sp_update_horarios "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Horario ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Horario ] update  SQLException: sp_update_horarios "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -2154,10 +2188,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_denominacion ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_denominacion ] update  SQLException: sp_insert_denominaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_denominacio ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_denominacio ] update  SQLException: sp_insert_denominaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -2196,10 +2230,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_deposito ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_deposito ] update  SQLException: sp_insert_deposito "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_deposito ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_deposito ] update  SQLException: sp_insert_deposito "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -2230,10 +2264,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ status_solicitud_empleados ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ status_solicitud_empleados ] update  SQLException: sp_update_solicitud_empleados "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ status_solicitud_empleados ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ status_solicitud_empleados ] update  SQLException: sp_update_solicitud_empleados "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					return false;
@@ -2305,10 +2339,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Grupo_De_Vacaciones ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Grupo_De_Vacaciones ] update  SQLException: sp_update_tabla_grupos_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Grupo_De_Vacaciones ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Grupo_De_Vacaciones ] update  SQLException: sp_update_tabla_grupos_de_vacaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;

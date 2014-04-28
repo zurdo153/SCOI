@@ -1843,7 +1843,7 @@ public class Cat_Empleados extends JFrame{
 		}
 		
 		if(cmbSueldo.getSelectedItem().equals("Selecciona un Sueldo")) error += "Sueldo\n";
-		if(cmbTipoBancos.getSelectedItem().equals("Selecciona un Banco")) error += "Tipo de Banco\n";
+//		if(cmbTipoBancos.getSelectedItem().equals("Selecciona un Banco")) error += "Tipo de Banco\n";
 		if(cmbBono.getSelectedItem().equals("Selecciona un Bono")) error += "Bono\n";
 		if(cmbPrestamos.getSelectedItem().equals("Selecciona un Rango de Prestamo")) error += "Rango de Prestamo\n";
 		if(fechaNull.equals("null"))error+= "Fecha de Nacimiento\n";	

@@ -679,4 +679,8 @@ public class Cat_Imprimir_Lista_De_Raya extends Cat_Root{
 		public void keyReleased(KeyEvent e){}
 								
 	};
+	
+	public static void main (String [] arg){
+		new Cat_Imprimir_Lista_De_Raya().setVisible(true);
+	}
 }

@@ -14,6 +14,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -24,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.RowFilter;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -207,6 +209,10 @@ public class Cat_Usuarios extends JFrame{
 	JButton btnNoEsUsuario = new JButton(new ImageIcon("imagen/usuario-icono-noes_usuario9131-64.png"));
 	JButton btnNuevo  = new JButton(new ImageIcon("imagen/usuario-icono-editar8476-64.png"));
 	JButton btnGuardar = new JButton("Guardar");
+	
+	String establecimiento[] = new Obj_SubMenus().Combo_Usuarios();
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbempleado_usuario = new JComboBox(establecimiento);
 
 	@SuppressWarnings("unchecked")
 	public Cat_Usuarios(){
@@ -228,16 +234,18 @@ public class Cat_Usuarios extends JFrame{
 		tabla.getColumnModel().getColumn(1).setMaxWidth(210);
 		tabla.getColumnModel().getColumn(1).setMinWidth(210);
 		
-		int y = 430;
+		int y = 415;
 		campo.add(new JLabel("Folio:")).setBounds(120,y,90,20);
 		campo.add(txtFolio).setBounds(170,y,100,20);
+		campo.add(new JLabel("Clonar Permisos del Usuario:")).setBounds(470,y,210,20);
 		campo.add(new JLabel("Usuario:")).setBounds(120,y+=25,90,20);
-		campo.add(btnGuardar).setBounds(390,y,105,20);
 		campo.add(txtNombre_Completo).setBounds(170,y,210,20);
-
-		campo.add(btnNoEsUsuario).setBounds(40,420,64,64);
-		campo.add(btnUsuariovigente).setBounds(40,420,64,64);
-		campo.add(btnNuevo).setBounds(40,420,64,64);
+		campo.add(cmbempleado_usuario).setBounds(470, y, 300, 20);
+		campo.add(btnGuardar).setBounds(300,y+=25,80,20);
+		
+		campo.add(btnNoEsUsuario).setBounds(40,415,64,64);
+		campo.add(btnUsuariovigente).setBounds(40,415,64,64);
+		campo.add(btnNuevo).setBounds(40,415,64,64);
 		
 		btnNuevo.setVisible(true);
 		btnNoEsUsuario.setVisible(false);
@@ -369,18 +377,46 @@ public class Cat_Usuarios extends JFrame{
 			                      } else{ Obj_Usuario usuario = new Obj_Usuario().BuscarUsuario(Integer.valueOf(txtFolio.getText()));
 										  Vector subMenus = vectorComponentes(tree);
 												if(new Obj_Usuario().ExisteUsuario(Integer.valueOf(txtFolio.getText())) == false){
-													    usuario.setFolio(Integer.parseInt(txtFolio.getText()));
+													
+													if(cmbempleado_usuario.getSelectedIndex()==0){
+														usuario.setFolio(Integer.parseInt(txtFolio.getText()));
 												    	usuario.guardarPermisos(subMenus);
-											    		JOptionPane.showMessageDialog(null,"El usuario nuevo se guardó de forma segura con contraseña 1234567890","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+												    	JOptionPane.showMessageDialog(null,"El usuario nuevo se guardó de forma segura con contraseña 1234567890","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
 														dispose();
 														new Cat_Usuarios().setVisible(true);
-										        	} else{
-														if(JOptionPane.showConfirmDialog(null, "El usuario existe, ¿desea actualizarlo?") == 0){
-																		usuario.actualizar(Integer.valueOf(txtFolio.getText()), subMenus);
-																		JOptionPane.showMessageDialog(null,"El usuario se actualizó correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
-																		dispose();
-																		new Cat_Usuarios().setVisible(true);
-													     }else{   	return;       	}
+													
+													}else{
+														String empleado_de_clonar = cmbempleado_usuario.getSelectedItem().toString().toUpperCase();
+														int folio_empleado = Integer.parseInt(txtFolio.getText());
+														usuario.Clonar_permisos(folio_empleado, empleado_de_clonar);
+														JOptionPane.showMessageDialog(null,"Al usuario nuevo se clonaron las opciones de forma segura con contraseña 1234567890","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+														dispose();
+														new Cat_Usuarios().setVisible(true);
+														}
+													
+													    
+										   	} else{									        		
+										          if(cmbempleado_usuario.getSelectedIndex()==0){
+										        	  		  			if(JOptionPane.showConfirmDialog(null, "El usuario existe, ¿desea actualizarlo?") == 0){
+																				usuario.actualizar(Integer.valueOf(txtFolio.getText()), subMenus);
+																				JOptionPane.showMessageDialog(null,"El usuario se actualizó correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+																				dispose();
+																				new Cat_Usuarios().setVisible(true);
+										        	  		  			}
+													                               	}else{
+													                               		if(JOptionPane.showConfirmDialog(null, "El usuario existe, ¿desea actualizarlo?") == 0){ 
+																							String empleado_de_clonar = cmbempleado_usuario.getSelectedItem().toString().toUpperCase();
+																							int folio_empleado = Integer.parseInt(txtFolio.getText());
+																							usuario.Clonar_permisos(folio_empleado, empleado_de_clonar);
+																							JOptionPane.showMessageDialog(null,"Se Clonaron las Opciones del Usuario Selecionado","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+																							dispose();
+																							new Cat_Usuarios().setVisible(true);
+													                               		}
+														     
+																		  			
+														
+										          }
+										          
 		                 }
 		             }
 		      }
@@ -435,5 +471,11 @@ public class Cat_Usuarios extends JFrame{
 		if(txtFolio.getText().equals("")) 			error+= "Folio\n";
 		if(txtNombre_Completo.getText().equals("")) error+= "Nombre Completo\n";
 		return error;
+	}
+	public static void main(String args[]){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Usuarios().setVisible(true);
+		}catch(Exception e){}
 	}
 }
