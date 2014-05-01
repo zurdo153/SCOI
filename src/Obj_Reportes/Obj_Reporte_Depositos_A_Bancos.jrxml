@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte  de Depositos Bancos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d877fc95-687e-432b-bc71-4ca9584c39f8">
 	<property name="ireport.callouts" value="callouts.1.fg=0,0,0\n callouts.1.bg=255,255,0\n "/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -12,6 +11,9 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB_ADAPTER"/>
+	<property name="ireport.zoom" value="1.9487171000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="28"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -41,6 +43,15 @@ order by tb_bancos.establecimiento,tb_bancos.nombre_completo]]>
 	</variable>
 	<variable name="Suma_Banorte" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
 		<variableExpression><![CDATA[$F{banorte}]]></variableExpression>
+	</variable>
+	<variable name="Total_Banorte" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{banorte}]]></variableExpression>
+	</variable>
+	<variable name="Total_Banamex" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{banamex}]]></variableExpression>
+	</variable>
+	<variable name="Total Global" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{Total_Banorte}+$V{Total_Banamex}]]></variableExpression>
 	</variable>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{establecimiento}]]></groupExpression>
@@ -87,7 +98,7 @@ order by tb_bancos.establecimiento,tb_bancos.nombre_completo]]>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{Suma_Banamex}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="¤ #,##0.00">
 					<reportElement uuid="fb8a67e2-8303-490a-be1d-f98a261240b3" stretchType="RelativeToTallestObject" x="445" y="0" width="95" height="17"/>
 					<box>
 						<topPen lineWidth="0.7" lineStyle="Solid" lineColor="#000000"/>
@@ -189,4 +200,50 @@ order by tb_bancos.establecimiento,tb_bancos.nombre_completo]]>
 			</frame>
 		</band>
 	</pageFooter>
+	<summary>
+		<band height="65">
+			<textField evaluationTime="Report" pattern="¤ #,##0.00">
+				<reportElement uuid="994d9da3-00d9-4a38-9774-5443a96d0f12" x="452" y="21" width="89" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_Banorte}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="192ece11-c518-48eb-a4d1-13b63b15cde9" x="452" y="1" width="89" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_Banamex}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5810de28-5fdb-45ef-b310-196606b61b37" x="364" y="1" width="98" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Banamex:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e68d30ae-8713-49b8-a555-61cb82f8b905" x="364" y="21" width="98" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Banorte :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="531d65ff-6179-4fbd-be7c-766e1404493a" x="364" y="41" width="88" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Global :]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="b513d1ba-9243-4f2c-b63f-ca1b30223982" x="452" y="41" width="89" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total Global}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>

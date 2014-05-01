@@ -1,4 +1,4 @@
-package Cat_Lista_de_Raya;
+package Cat_IZAGAR;
 
 
 import java.awt.Container;

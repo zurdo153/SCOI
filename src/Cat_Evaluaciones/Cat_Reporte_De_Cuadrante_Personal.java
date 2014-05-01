@@ -4,6 +4,9 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.HashMap;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -18,11 +21,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Reportes.Cat_Reporte_Impresion_De_Cuadrantes;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+
+import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Imprimir_Cuadrante;
 
 @SuppressWarnings("serial")
@@ -32,6 +43,7 @@ public class Cat_Reporte_De_Cuadrante_Personal extends JFrame{
 	JLayeredPane campo = new JLayeredPane();
 		
 	int folio_empleado=0;
+	String nombre_completo="";
 	DefaultTableModel modeloFiltro = new DefaultTableModel(new Obj_Imprimir_Cuadrante().Obj_Obtener_Empleados_Cuadrantes(),
 			new String[]{"Folio", "Nombre","Establecimiento","Puesto","Cuadrante",""}
 			){
@@ -84,7 +96,7 @@ public class Cat_Reporte_De_Cuadrante_Personal extends JFrame{
 		campo.setBorder(BorderFactory.createTitledBorder("Seleccion de Empleado Para Impresion"));
 		trsfiltro = new TableRowSorter(modeloFiltro); 
 		tablaFiltro.setRowSorter(trsfiltro);  
-	
+		
 		setSize(1024,425);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -227,29 +239,31 @@ public class Cat_Reporte_De_Cuadrante_Personal extends JFrame{
 		tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(render);
 		tablaFiltro.getColumnModel().getColumn(4).setCellRenderer(render);
 		tablaFiltro.getColumnModel().getColumn(5).setCellRenderer(render);
-		btnGenerar.addActionListener(opAgregar);
+		btnGenerar.addActionListener(opimprimircuadrante);
 		btnGenerarreportecaptura.addActionListener(opReporteCaptura);
 		btnGenerarcaptura7.addActionListener(opReporteCaptura7);
+		
 	}
 
-	ActionListener opAgregar = new ActionListener() {
-		@SuppressWarnings({ })
-		public void actionPerformed(ActionEvent arg0) {
-			
-			txtFolio.setText("");
-			txtNombre_Completo.setText("");
-						
-						if(tablaFiltro.isEditing()){
-							tablaFiltro.getCellEditor().stopCellEditing();
-						}
 	
-						if(valida_cantidad_seleccion ()==1){
-					  		new Cat_Reporte_Impresion_De_Cuadrantes();
-						}
-						else{JOptionPane.showMessageDialog(null,"Debe de Seleccionar Un Empleado","Aviso",JOptionPane.NO_OPTION);
-			}				
-		}
-		
+	ActionListener opimprimircuadrante = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(valida_cantidad_seleccion ()==1){
+			String query = "exec sp_Reporte_Impresion_Cuadrante_del_dia '"+folio_empleado+"'" ;
+				Statement stmt = null;
+				try {
+					stmt =  new Connexion().conexion().createStatement();
+				    ResultSet rs = stmt.executeQuery(query);
+					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_Impresion_De_Cuadrante.jrxml");
+					JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+					@SuppressWarnings({ "rawtypes", "unchecked" })
+					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+					JasperViewer.viewReport(print, false);
+				} catch (Exception e1) {
+					System.out.println(e1.getMessage());
+				}
+				}
+			}
 	};
 
 	ActionListener opReporteCaptura = new ActionListener() {
@@ -317,9 +331,18 @@ public class Cat_Reporte_De_Cuadrante_Personal extends JFrame{
 			if(Boolean.parseBoolean(modeloFiltro.getValueAt(y,5).toString().trim())){
 				i=i+1;
 				folio_empleado= Integer.valueOf(modeloFiltro.getValueAt(y, 0).toString());
+				
 			}
 		}
 		return i;	
+	}
+	public void obtieneNombre_empleado(){
+		
+		for (int y=0; y<tablaFiltro.getRowCount(); y=y+1){
+			if(Boolean.parseBoolean(modeloFiltro.getValueAt(y,5).toString().trim())){
+					nombre_completo= modeloFiltro.getValueAt(y, 1).toString().trim();
+				}
+		}
 	}
 		
 	public  int [] Obtener_empleados_seleccionados (){
@@ -335,6 +358,11 @@ public class Cat_Reporte_De_Cuadrante_Personal extends JFrame{
 		return vector_seleccionados;
 	}
 
+	public static void main(String args[]){
+		try{			
+			new Cat_Reporte_De_Cuadrante_Personal().setVisible(true);
+		}catch(Exception e){}
+	}
 }
 
 	

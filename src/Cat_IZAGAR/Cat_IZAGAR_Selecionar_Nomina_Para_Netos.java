@@ -1,4 +1,4 @@
-package Cat_Lista_de_Raya;
+package Cat_IZAGAR;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -15,6 +15,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+
 
 @SuppressWarnings("serial")
 public class Cat_IZAGAR_Selecionar_Nomina_Para_Netos extends JFrame{

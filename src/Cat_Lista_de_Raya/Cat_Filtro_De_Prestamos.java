@@ -174,7 +174,7 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 		rangoIn  = uno;
 		rangoFin = dos;
 								
-		String[][] Tabla = getMatriz(txtNombre_Completo.getText());
+		String[][] Tabla = getMatriz(Integer.parseInt(txtFolio_Empleado.getText()));
 		Object[] fila = new Object[tabla.getColumnCount()];
 		for(int i=0; i<Tabla.length; i++){
 			modelo.addRow(fila); 
@@ -324,7 +324,7 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 								filas--;
 							}
 										
-							String[][] Tabla = getMatriz(txtNombre_Completo.getText());
+							String[][] Tabla = getMatriz(Integer.parseInt(txtFolio_Empleado.getText()));
 							Object[] fila = new Object[tabla.getColumnCount()]; 
 							for(int i=0; i<Tabla.length; i++){
 								modelo.addRow(fila); 
@@ -471,8 +471,9 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 		return error;
 	}
 
-	public String[][] getMatriz(String NombreCompleto){
-		String qry = "exec sp_select_prestamo '"+NombreCompleto+"'";
+	public String[][] getMatriz(int folio_empleado){
+		
+		String qry = "exec sp_select_prestamo "+folio_empleado;
 		System.out.println(qry);
 		
 		String[][] Matriz = new String[getFilas(qry)][7];

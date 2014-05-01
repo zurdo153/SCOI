@@ -838,26 +838,21 @@ public class ActualizarSQL {
 	}
 	
 	public boolean fuente_sodas_Rh(){
-		String query = "update tb_fuente_sodas_rh set status_ticket=? where status=?; update tb_fuente_sodas_auxf set status_ticket=? where status=?; UPDATE tb_autorizaciones SET autorizar_comparacion_fuente_sodas = 'false' ";
-		
+        String query = "exec sp_update_comprobacion_fuente_de_sodas";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, "1");
-			pstmt.setInt(2, 1);
-			pstmt.setString(3, "1");
-			pstmt.setInt(4, 1);
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas_Rh ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas_Rh ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas_Rh ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
@@ -869,11 +864,12 @@ public class ActualizarSQL {
 				con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas_Rh ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
 	}
-	
+		
 	public boolean fuente_sodas_auxf(Obj_Fue_Sodas_AUXF ftsds, int folio){
 		String query = "update tb_fuente_sodas_auxf set fecha=?, cantidad=? where folio="+folio;
 		Connection con = new Connexion().conexion();

@@ -326,6 +326,8 @@ public class BuscarSQL {
 		return bono;
 	}
 	
+	
+	
 	public Obj_Bono_Complemento_Sueldo BonoValor(float valor) throws SQLException{
 		Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo();
 		String query = "select * from tb_bono where bono = "+ valor;
@@ -625,6 +627,29 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return corte;
+	}
+	
+	public Object Obj_Obtener_Folio_Empleado (String nombre) throws SQLException{
+		int folio=0;
+				
+		String query = "select folio from tb_empleado where RTRIM(LTRIM(nombre))+' '+RTRIM(LTRIM(ap_paterno))+' '+RTRIM(LTRIM(ap_materno))='"+ nombre+"'";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+
+                folio=(rs.getInt("folio"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return folio;
 	}
 	
 	public Obj_Alimentacion_Cortes Corte(String asignacion) throws SQLException{

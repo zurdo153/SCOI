@@ -78,13 +78,13 @@ public class Cat_Plantilla_Tabla_Cuadrante {
 		
 		this.tablaPlantillaLibre.getTableHeader().setReorderingAllowed(false);
 		this.tablaPlantillaLibre.getColumnModel().getColumn(0).setMaxWidth(60);
-		this.tablaPlantillaLibre.getColumnModel().getColumn(0).setMinWidth(60);
-		this.tablaPlantillaLibre.getColumnModel().getColumn(1).setMaxWidth(260);
-		this.tablaPlantillaLibre.getColumnModel().getColumn(1).setMinWidth(260);
-		this.tablaPlantillaLibre.getColumnModel().getColumn(2).setMaxWidth(270);
-		this.tablaPlantillaLibre.getColumnModel().getColumn(2).setMinWidth(270);
+		this.tablaPlantillaLibre.getColumnModel().getColumn(0).setMinWidth(20);
+		this.tablaPlantillaLibre.getColumnModel().getColumn(1).setMaxWidth(860);
+		this.tablaPlantillaLibre.getColumnModel().getColumn(1).setMinWidth(500);
+		this.tablaPlantillaLibre.getColumnModel().getColumn(2).setMaxWidth(100);
+		this.tablaPlantillaLibre.getColumnModel().getColumn(2).setMinWidth(90);
 		this.tablaPlantillaLibre.getColumnModel().getColumn(3).setMaxWidth(270);
-		this.tablaPlantillaLibre.getColumnModel().getColumn(3).setMinWidth(270);
+		this.tablaPlantillaLibre.getColumnModel().getColumn(3).setMinWidth(250);
 		
 		TableCellRenderer renderPlantillaLibre = new TableCellRenderer() { 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -115,13 +115,13 @@ public class Cat_Plantilla_Tabla_Cuadrante {
 		
 		this.tablaPlantillaMultiple.getTableHeader().setReorderingAllowed(false);
 		this.tablaPlantillaMultiple.getColumnModel().getColumn(0).setMaxWidth(60);
-		this.tablaPlantillaMultiple.getColumnModel().getColumn(0).setMinWidth(60);
-		this.tablaPlantillaMultiple.getColumnModel().getColumn(1).setMaxWidth(350);
-		this.tablaPlantillaMultiple.getColumnModel().getColumn(1).setMinWidth(350);
-		this.tablaPlantillaMultiple.getColumnModel().getColumn(2).setMaxWidth(150);
-		this.tablaPlantillaMultiple.getColumnModel().getColumn(2).setMinWidth(150);
-		this.tablaPlantillaMultiple.getColumnModel().getColumn(3).setMaxWidth(300);
-		this.tablaPlantillaMultiple.getColumnModel().getColumn(3).setMinWidth(300);
+		this.tablaPlantillaMultiple.getColumnModel().getColumn(0).setMinWidth(20);
+		this.tablaPlantillaMultiple.getColumnModel().getColumn(1).setMaxWidth(860);
+		this.tablaPlantillaMultiple.getColumnModel().getColumn(1).setMinWidth(500);
+		this.tablaPlantillaMultiple.getColumnModel().getColumn(2).setMaxWidth(100);
+		this.tablaPlantillaMultiple.getColumnModel().getColumn(2).setMinWidth(90);
+		this.tablaPlantillaMultiple.getColumnModel().getColumn(3).setMaxWidth(270);
+		this.tablaPlantillaMultiple.getColumnModel().getColumn(3).setMinWidth(250);
 		
 		TableCellRenderer renderPlantillaMultiple = new TableCellRenderer() { 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 

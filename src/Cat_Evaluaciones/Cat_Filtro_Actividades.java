@@ -108,11 +108,14 @@ public class Cat_Filtro_Actividades extends JFrame {
 	@SuppressWarnings({ "unchecked" })
 	public void init_tabla(){
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(70);
-    	this.tabla.getColumnModel().getColumn(0).setMinWidth(70);		
-    	this.tabla.getColumnModel().getColumn(1).setMaxWidth(300);
-    	this.tabla.getColumnModel().getColumn(1).setMinWidth(300);
-    	this.tabla.getColumnModel().getColumn(2).setMaxWidth(425);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(425);
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(40);		
+    	this.tabla.getColumnModel().getColumn(1).setMaxWidth(1500);
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(600);
+    	this.tabla.getColumnModel().getColumn(2).setMaxWidth(1500);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(125);
+    	
+    	this.tabla.getTableHeader().setReorderingAllowed(false) ;
+    	this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     	
 		TableCellRenderer render = new TableCellRenderer() { 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 

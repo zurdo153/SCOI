@@ -157,14 +157,14 @@ public class GuardarSQL {
 			
 		} catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Guardar_Empleado ] Insert  SQLException: sp_insert_empleado "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Empleado ] Insert  SQLException: sp_insert_empleado "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Guardar_Empleado ] Insert  SQLException: sp_insert_empleado "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Empleado ] Insert  SQLException: sp_insert_empleado "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			} 
 			return false;
@@ -179,10 +179,6 @@ public class GuardarSQL {
 		return true;
 	}
 	
-//	public boolean generar_gafete(){
-////		string query = "exec sp_insert_"
-//	}
-		
 	public boolean Guardar_Establecimiento(Obj_Establecimiento establecimiento){
 		String query = "exec sp_insert_establecimiento ?,?,?";
 		Connection con = new Connexion().conexion();
@@ -203,6 +199,8 @@ public class GuardarSQL {
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 				}
 			} 
 			return false;
@@ -212,6 +210,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -231,12 +230,16 @@ public class GuardarSQL {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Puesto ] Insert  SQLException: sp_insert_puesto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Puesto ] Insert  SQLException: sp_insert_puesto "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 				}
 			}
 			return false;
@@ -245,6 +248,8 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Puesto ] Insert  SQLException: sp_insert_puesto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			}
 		}		
 		return true;
@@ -263,12 +268,14 @@ public class GuardarSQL {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Dia_Inhabil ] Insert  SQLException: sp_insert_diaInHabil "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Dia_Inhabil ] Insert  SQLException: sp_insert_diaInHabil "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -277,6 +284,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Dia_Inhabil ] Insert  SQLException: sp_insert_diaInHabil "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -296,12 +304,14 @@ public class GuardarSQL {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Atributos ] Insert  SQLException: sp_insert_atributo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Atributos ] Insert  SQLException: sp_insert_atributo "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -310,6 +320,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Atributos ] Insert  SQLException: sp_insert_atributo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -328,12 +339,14 @@ public class GuardarSQL {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Jefatura ] Insert  SQLException: sp_insert_jefatura "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Jefatura ] Insert  SQLException: sp_insert_jefatura "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -342,6 +355,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Jefatura ] Insert  SQLException: sp_insert_jefatura "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -360,12 +374,14 @@ public class GuardarSQL {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Eq_Trabajo ] Insert  SQLException: sp_insert_equipo_trabajo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Eq_Trabajo ] Insert  SQLException: sp_insert_equipo_trabajo "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -374,6 +390,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Eq_Trabajo ] Insert  SQLException: sp_insert_equipo_trabajo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -384,7 +401,6 @@ public class GuardarSQL {
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
-			
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, pond.getDescripcion().toUpperCase());
@@ -399,17 +415,18 @@ public class GuardarSQL {
 			pstmt.setString(10,pond.isViernes()?"1":"0");
 			pstmt.setString(11,pond.isSabado()?"1":"0");
 			pstmt.setString(12, pond.getStatus()?"1":"0");
-			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ponderacion ] Insert  SQLException: sp_insert_ponderacion "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ponderacion ] Insert  SQLException: sp_insert_ponderacion "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -418,6 +435,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ponderacion ] Insert  SQLException: sp_insert_ponderacion "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -437,12 +455,14 @@ public class GuardarSQL {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel ] Insert  SQLException: sp_insert_nivel_critico "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel ] Insert  SQLException: sp_insert_nivel_critico "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -451,6 +471,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel ] Insert  SQLException: sp_insert_nivel_critico "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -462,25 +483,24 @@ public class GuardarSQL {
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
-			
 			pstmt = con.prepareStatement(query);
-			
 			pstmt.setInt	(1, relacion.getFolio());
 			pstmt.setString	(2, relacion.getProyecto().toUpperCase().trim());
 			pstmt.setString	(3, relacion.getDescripcion().toUpperCase().trim());
 			pstmt.setString	(4, relacion.getNivel_critico().trim());
 			pstmt.setInt	(5, relacion.getStatus());
-				
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Actividades ] Insert  SQLException: sp_insert_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Actividades ] Insert  SQLException: sp_insert_relacion_actividad "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -489,6 +509,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Actividades ] Insert  SQLException: sp_insert_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -521,9 +542,11 @@ public class GuardarSQL {
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada Guardar_Proyecto_Tabla");
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Tabla ] Insert  SQLException: sp_insert_tabla_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Tabla ] Insert  SQLException: sp_insert_tabla_relacion_actividad "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -532,6 +555,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Tabla ] Insert  SQLException: sp_insert_tabla_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -543,9 +567,7 @@ public class GuardarSQL {
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
-			
 			pstmt = con.prepareStatement(query);
-			
 			pstmt.setInt	(1, proyec.getFolio());
 			pstmt.setString	(2, proyec.getProyecto().toUpperCase().trim());
 			pstmt.setString	(3, proyec.getDescripcion().toUpperCase().trim());
@@ -553,7 +575,6 @@ public class GuardarSQL {
 			pstmt.setInt	(5, proyec.getStatus());
 			pstmt.setString	(6, proyec.getFecha_inicial());
 			pstmt.setString	(7, proyec.getFecha_final());
-				
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -561,9 +582,11 @@ public class GuardarSQL {
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto ] Insert  SQLException: sp_insert_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto ] Insert  SQLException: sp_insert_proyecto "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -572,6 +595,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto ] Insert  SQLException: sp_insert_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -579,34 +603,31 @@ public class GuardarSQL {
 	
 	public boolean Guardar_Proyecto_Tabla(Obj_Actividades_Por_Proyecto proyect, String[][] tabla){
 		String querytabla = "exec sp_insert_tabla_proyecto ?,?,?,?,?";
-				
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmtTabla = null;
 		try {
 			con.setAutoCommit(false);
-			
 			pstmtTabla = con.prepareStatement(querytabla);
-				
 			for(int i=0; i<tabla.length; i++){
-				
 				pstmtTabla.setInt(1, proyect.getFolio());
 				pstmtTabla.setInt(2, Integer.parseInt(tabla[i][0].toString().trim()));
 				pstmtTabla.setString(3, tabla[i][3].toString().trim().toUpperCase());
 				pstmtTabla.setString(4, tabla[i][4].toString().trim());
 				pstmtTabla.setInt(5, Boolean.parseBoolean(tabla[i][2]) ? 1 : 0);
-				
 				pstmtTabla.executeUpdate();
 			}
-			
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto_Tabla ] Insert  SQLException: sp_insert_tabla_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada Guardar_Proyecto_Tabla");
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto_Tabla ] Insert  SQLException: sp_insert_tabla_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto_Tabla ] Insert  SQLException: sp_insert_tabla_proyecto "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -615,6 +636,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto_Tabla ] Insert  SQLException: sp_insert_tabla_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -626,9 +648,7 @@ public class GuardarSQL {
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
-			
 			pstmt = con.prepareStatement(query);
-			
 			pstmt.setString(1, cuadrante.getCuadrante().toUpperCase());
 			pstmt.setString(2, cuadrante.getPerfil().toUpperCase());
 			pstmt.setString(3, cuadrante.getJefatura());
@@ -643,17 +663,18 @@ public class GuardarSQL {
 			pstmt.setInt(12, cuadrante.getViernes());
 			pstmt.setInt(13, cuadrante.getSabado());
 			pstmt.setInt(14, cuadrante.getStatus());
-				
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] Insert  SQLException: sp_insert_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] Insert  SQLException: sp_insert_cuadrante "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -662,6 +683,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] Insert  SQLException: sp_insert_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -687,19 +709,21 @@ public class GuardarSQL {
 				pstmtTabla.setString(6, tabla[i][4]);
 				pstmtTabla.setString(7, tabla[i][5]);
 				pstmtTabla.setString(8, tabla[i][6]);
-				
 				pstmtTabla.executeUpdate();
 			}
 			
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante_Tabla ] Insert  SQLException: sp_insert_tabla_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada Guardar_Cuadrante_Tabla");
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante_Tabla ] Insert  SQLException: sp_insert_tabla_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante_Tabla ] Insert  SQLException: sp_insert_tabla_cuadrante "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -708,6 +732,8 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante_Tabla ] Insert  SQLException: sp_insert_tabla_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			}
 		}		
 		return true;
@@ -2530,7 +2556,6 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				String pc_nombre =	InetAddress.getLocalHost().getHostName();
 				String pc_ip = 		InetAddress.getLocalHost().getHostAddress();
 				
-				
 				pstmt.setString(1, sodas.getClave().toUpperCase().trim());
 				pstmt.setString(2, sodas.getEstablecimiento().toUpperCase().trim());
 				pstmt.setString(3, sodas.getPuesto().toUpperCase().trim());
@@ -2549,9 +2574,11 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				if (con != null){
 					try {
 						System.out.println("La transacción ha sido abortada");
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Guardar_Fuente_Sodas  procedimiento almacenado sp_insert_captura_fuente_sodas SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						con.rollback();
 					} catch(SQLException ex) {
 						System.out.println(ex.getMessage());
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Guardar_Fuente_Sodas  procedimiento almacenado sp_insert_captura_fuente_sodas SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					}
 				} 
 				return false;
@@ -2561,6 +2588,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 					con.close();
 				} catch(SQLException e){
 					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Guardar_Fuente_Sodas  procedimiento almacenado sp_insert_captura_fuente_sodas SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}		
 			return true;

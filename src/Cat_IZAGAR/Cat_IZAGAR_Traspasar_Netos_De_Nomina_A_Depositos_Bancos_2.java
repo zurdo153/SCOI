@@ -307,12 +307,10 @@ public class Cat_IZAGAR_Traspasar_Netos_De_Nomina_A_Depositos_Bancos_2  extends 
 			
 			Obj_IZAGAR_Netos_Nominas guardar_netos_nomina = new Obj_IZAGAR_Netos_Nominas();
 							if(guardar_netos_nomina.guardar_netos_nominas_temp(tabla_guardar_nomina_temp())){
-							System.out.println("se guardo AUTO");
 							
 							while(tablanomina.getRowCount()>0){
 								modelonomina.removeRow(0); }
 							preconciliacion_automatica( folio_nomina);
-							
 							
 //							llenado tabla exportacion de bm completa despues de guardarlos en scoi
 							Object[][] getTablaNomina = getTablanetosnomina_guardados_scoi(folio_nomina);
@@ -449,7 +447,6 @@ public class Cat_IZAGAR_Traspasar_Netos_De_Nomina_A_Depositos_Bancos_2  extends 
 		ResultSet rs2;
 
 		try {
-			System.out.println("coneccion bm con nomina:"+folio_nomina);
 			
 			s = new Connexion().conexion_IZAGAR().createStatement();
 			rs2 = s.executeQuery(todos);
@@ -496,7 +493,6 @@ public class Cat_IZAGAR_Traspasar_Netos_De_Nomina_A_Depositos_Bancos_2  extends 
 				MatrizFiltro[i][0] = "   "+rs.getString(1).trim();
 				MatrizFiltro[i][1] = "   "+rs.getString(2).trim();
 				MatrizFiltro[i][2] = "   "+rs.getString(3).trim();
-//				MatrizFiltro[i][3] = Boolean.valueOf(rs.getString(4).trim());
 				MatrizFiltro[i][3] = false;
 				i++;
 			}
