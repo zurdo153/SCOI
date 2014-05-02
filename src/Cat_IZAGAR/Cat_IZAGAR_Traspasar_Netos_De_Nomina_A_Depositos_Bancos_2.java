@@ -163,6 +163,7 @@ public class Cat_IZAGAR_Traspasar_Netos_De_Nomina_A_Depositos_Bancos_2  extends 
 //		llenar arreglo desde funcion
 		Object[][] getTablaNomina = getTablanetosnominaBMS(folio_nomina);
 		Object[] fila = new Object[4];
+		
 //		 llenar tablanomina
          for(int i=0; i<getTablaNomina.length; i++){
                  fila[0] = getTablaNomina[i][0]+"";
