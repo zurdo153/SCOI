@@ -4898,9 +4898,12 @@ public class BuscarSQL {
 		return grupo;
 	}
 	
+//	busca los empleados para posteriormente calcularle sus vacaciones-------------------------------
+//	se le envia el folio del empleado y el parametro 1 para indicarle al procedimiento que 
+//  se generara  un registro nuevo
 	public Obj_Alimentacion_De_Vacaciones Empleado_En_Vacaciones(int folio) throws SQLException{
 		Obj_Alimentacion_De_Vacaciones alimentacion_vacaciones = new Obj_Alimentacion_De_Vacaciones();
-		String query = "exec sp_select_empleado_en_vacaciones "+ folio;
+		String query = "exec sp_select_empleado_para_vacaciones_nuevas "+ folio;
 		Statement stmt = null;
 
 		try {
@@ -4917,7 +4920,8 @@ public class BuscarSQL {
 				alimentacion_vacaciones.setFecha_ingreso(rs.getString("fecha_ingreso").trim());
 				alimentacion_vacaciones.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss").trim());
 				alimentacion_vacaciones.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
-				alimentacion_vacaciones.setGrupo_vacacional(rs.getString("tipo_de_vacaciones"));
+				alimentacion_vacaciones.setGrupo_vacacional(rs.getString("grupo"));
+				alimentacion_vacaciones.setProximas_vacaciones(rs.getInt("proximas_vacaciones")+1);//trae los años de las ultimas vacaciones disfrutadas y le suma 1 que corresponde a las vacaciones siguientes
 				
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);
@@ -4940,9 +4944,10 @@ public class BuscarSQL {
 		return alimentacion_vacaciones;
 	}
 	
-	public Obj_Alimentacion_De_Vacaciones calcular_vacaciones(int folio_empleado, int anios_disfritar, String fecha_inicio) throws SQLException{
+//	calcular las vacaciones correspondientes a los años
+	public Obj_Alimentacion_De_Vacaciones calcular_vacaciones(int folio_empleado, String fecha_inicio) throws SQLException{
 		Obj_Alimentacion_De_Vacaciones alimentacion_vacaciones = new Obj_Alimentacion_De_Vacaciones();
-		String query = "exec sp_select_empleado_en_vacaciones "+ folio_empleado;
+		String query = "exec sp_calculo_de_vacaciones "+ folio_empleado + ",'" + fecha_inicio+"';";
 		Statement stmt = null;
 
 		try {
@@ -4950,26 +4955,17 @@ public class BuscarSQL {
 			ResultSet rs = stmt.executeQuery(query);
 
 			while(rs.next()){
-//				datos empleado	
-				alimentacion_vacaciones.setFolio_vacaciones(rs.getInt("folio_vacaciones"));
-				alimentacion_vacaciones.setFolio_empleado(rs.getInt("folio_empleado"));
-				alimentacion_vacaciones.setEmpleado(rs.getString("empleado").trim());
-				alimentacion_vacaciones.setEstablecimiento(rs.getString("establecimiento").trim());
-				alimentacion_vacaciones.setPuesto(rs.getString("puesto").trim());
-				alimentacion_vacaciones.setFecha_ingreso(rs.getString("fecha_ingreso").trim());
-				alimentacion_vacaciones.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss").trim());
-				alimentacion_vacaciones.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
-				alimentacion_vacaciones.setGrupo_vacacional(rs.getString("tipo_de_vacaciones"));
 				
-				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-				FileOutputStream fos = new FileOutputStream(photo);
-				
-		            byte[] buffer = new byte[1];
-		            InputStream is = rs.getBinaryStream("foto");
-		            while (is.read(buffer) > 0) {
-		                fos.write(buffer);
-		            }
-		            fos.close();
+//				alimentacion de vacaciones
+				alimentacion_vacaciones.setFecha_final(rs.getString("dias_correspondientes"));//se optienen los dias que le corresponden al empleado con respecto al tiempo trabajado
+				alimentacion_vacaciones.setVacaciones(rs.getFloat("vacaciones_nc"));
+				alimentacion_vacaciones.setPrima_vacacional(rs.getFloat("prima_vacacional_nc"));
+				alimentacion_vacaciones.setSueldo_semana(rs.getFloat("sueldo_semana"));
+				alimentacion_vacaciones.setPrestamo(rs.getFloat("descuento_prestamo"));
+				alimentacion_vacaciones.setPension_alimenticia(rs.getFloat("pension_alimenticia"));
+				alimentacion_vacaciones.setInfonavit(rs.getFloat("descuento_infonavit"));
+				alimentacion_vacaciones.setFuente_de_sodas(rs.getFloat("descuento_fuente_de_sodas"));
+				alimentacion_vacaciones.setCorte_de_caja(rs.getFloat("descuento_corte_de_cajas"));
 			}
 			
 		} catch (Exception e) {
@@ -4982,6 +4978,7 @@ public class BuscarSQL {
 		return alimentacion_vacaciones;
 	}
 	
+//	busca empleado para asignarle sus ultimas vacaciones --------------------------------------------------------------
 	public Obj_Alimentacion_De_Vacaciones empleado_para_ultimas_vacaciones(int folio_empleado) throws SQLException{
 		Obj_Alimentacion_De_Vacaciones alimentacion_vacaciones = new Obj_Alimentacion_De_Vacaciones();
 		String query = "exec sp_select_empleado_para_vacaciones_pasadas "+ folio_empleado;
@@ -5008,6 +5005,28 @@ public class BuscarSQL {
 		}
 		return alimentacion_vacaciones;
 	}
+	
+//	funcion utilizada para dar de alta solo un registro por empleado en el catalogo de alimentacion de ultimas vacaciones
+	public boolean Buscar_Si_Cuenta_Con_Vacaciones(int folio){
+		String query = "exec sp_existe_empleado_con_vacaciones "+folio+";";
+		
+		boolean existe = false;
+		Statement s;
+		ResultSet rs;
+		
+		try {				
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				existe = Boolean.valueOf(rs.getString("existe").trim());
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return existe;
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Vector obtener_mensaje_checador(int folio) throws SQLException{
 		Vector fila = new Vector();
@@ -5037,8 +5056,67 @@ public class BuscarSQL {
 		return fila;
 	}
 	
-	public boolean Buscar_Si_Cuenta_Con_Vacaciones(int folio){
-		String query = "exec sp_existe_empleado_con_vacaciones "+folio+";";
+	public Obj_Alimentacion_De_Vacaciones vacaciones_guardadas(int folio_empleado) throws SQLException{
+		Obj_Alimentacion_De_Vacaciones vacaciones = new Obj_Alimentacion_De_Vacaciones();
+		
+		String query = "exec sp_select_empleado_en_vacaciones "+ folio_empleado;
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+
+				vacaciones.setFolio_vacaciones(rs.getInt("folio_vacaciones"));
+				vacaciones.setFolio_empleado(rs.getInt("folio_empleado"));
+				vacaciones.setEmpleado(rs.getString("empleado"));
+				vacaciones.setEstablecimiento(rs.getString("establecimiento"));
+				vacaciones.setPuesto(rs.getString("puesto"));
+				vacaciones.setFecha_ingreso(rs.getString("fecha_ingreso"));
+				vacaciones.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss"));
+				vacaciones.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
+				vacaciones.setGrupo_vacacional(rs.getString("grupo"));
+				vacaciones.setProximas_vacaciones(rs.getInt("proximas_vacaciones"));
+
+				vacaciones.setFecha_inicio(rs.getString("fecha_inicio"));
+				vacaciones.setFecha_final(rs.getString("fecha_final"));
+				vacaciones.setVacaciones(rs.getFloat("vacaciones"));
+				vacaciones.setPrima_vacacional(rs.getFloat("prima_vacacional"));
+				vacaciones.setInfonavit(rs.getFloat("infonavit"));
+				vacaciones.setSueldo_semana(rs.getFloat("sueldo_semana"));
+				vacaciones.setCorte_de_caja(rs.getFloat("corte_de_caja"));
+				vacaciones.setFuente_de_sodas(rs.getFloat("fuente_de_sodas"));
+				vacaciones.setPrestamo(rs.getFloat("prestamo"));
+				vacaciones.setPension_alimenticia(rs.getFloat("pension_alimenticia"));
+				vacaciones.setTotal(rs.getFloat("total"));
+//				System.out.println(rs.getBoolean("status"));
+				vacaciones.setStatus(rs.getBoolean("status"));
+				
+				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+				FileOutputStream fos = new FileOutputStream(photo);
+				
+		            byte[] buffer = new byte[1];
+		            InputStream is = rs.getBinaryStream("foto");
+		            while (is.read(buffer) > 0) {
+		                fos.write(buffer);
+		            }
+		            fos.close();
+		            
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return vacaciones;
+	}
+	
+	public boolean validacion_de_vacaciones_para_btnGuardar(int folio_vacaciones){
+		String query = "exec sp_existe_folio_vacaciones "+folio_vacaciones+";";
 		
 		boolean existe = false;
 		Statement s;
@@ -5055,5 +5133,24 @@ public class BuscarSQL {
 			e1.printStackTrace();
 		}
 		return existe;
+	}
+	
+	public String trae_fecha(){
+		String fecha_actian = "select convert(varchar(20),getdate(),103)";
+		String resultado = "";
+		Statement s;
+		ResultSet rs;
+		try {		
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(fecha_actian);
+			
+			while(rs.next()){
+				resultado = rs.getString(1);
+				
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return resultado; 
 	}
 }

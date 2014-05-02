@@ -172,7 +172,6 @@ public class Cat_Alimentacion_De_Ultimas_Vacaciones extends JFrame{
 					return;
 				}else{	
                     
-                        		 
 					if(new BuscarSQL().Buscar_Si_Cuenta_Con_Vacaciones(Integer.valueOf(txtFolioEmpleado.getText())) == true/*si existen registros del empleado en la tabla alimentacion de vacaciones avisar joptionpane*/){
 						
 						JOptionPane.showMessageDialog(null, "No Puede Realizar La Operacion Por Que El Empleado\nYa Tiene Vacaciones Registradas", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));

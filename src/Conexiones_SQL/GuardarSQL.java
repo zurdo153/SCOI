@@ -70,7 +70,6 @@ public class GuardarSQL {
 	PreparedStatement pstmtb = null;
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
-				
 	public boolean Guardar_Empleado(Obj_Empleados empleado){
 		String query = "exec sp_insert_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		
@@ -2845,4 +2844,52 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 		return true;
 	}
 	
+	public boolean Guardar_Vacaciones_Calculadas(Obj_Alimentacion_De_Vacaciones alimentacion){
+//		cambiar procedimiento, agregar todos los campos
+		String query = "exec sp_insert_alimentacion_de_vacaciones_calculadas ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		
+		int i=1;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt			(i, 	alimentacion.getFolio_empleado());
+			pstmt.setString			(i+=1, alimentacion.getFecha_inicio());
+			pstmt.setString			(i+=1, alimentacion.getFecha_final());
+			pstmt.setInt			(i+=1, alimentacion.getAnios_a_disfrutar());
+			
+			pstmt.setFloat			(i+=1, alimentacion.getVacaciones());
+			pstmt.setFloat			(i+=1, alimentacion.getPrima_vacacional());
+			pstmt.setFloat			(i+=1, alimentacion.getInfonavit());
+			pstmt.setFloat			(i+=1, alimentacion.getSueldo_semana());
+			pstmt.setFloat			(i+=1, alimentacion.getCorte_de_caja());
+			pstmt.setFloat			(i+=1, alimentacion.getFuente_de_sodas());
+			pstmt.setFloat			(i+=1, alimentacion.getPrestamo());
+			pstmt.setFloat			(i+=1, alimentacion.getPension_alimenticia());
+			pstmt.setFloat			(i+=1, alimentacion.getTotal());
+			pstmt.setInt			(i+=1, alimentacion.isStatus()?1:0);
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 }

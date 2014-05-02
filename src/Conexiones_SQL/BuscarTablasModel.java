@@ -770,6 +770,29 @@ public boolean Guardar_Folio_de_Empleado_Imprimir_Cuadrante(int Folio) {
 		}
 	    return matriz; 
 	}
+	
+	public Object[][] tabla_de_vacaciones_disfrutadas(int folio_empleado){
+		String query_lista = "exec sp_select_tabla_de_vacaciones_disfrutadas "+folio_empleado;
+		Object[][] matriz = new Object[get_filas(query_lista)][4];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] = "   "+rs.getString(1);
+				matriz[i][1] = "   "+rs.getString(2);
+				matriz[i][2] = "   "+rs.getString(3);
+				matriz[i][3] = "   "+rs.getString(4);
+
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
 }
 
 
