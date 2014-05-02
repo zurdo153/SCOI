@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -70,7 +71,7 @@ public class Cat_Filtro_De_Cuadrante_De_Empleados_Dependientes extends JFrame {
 		campo.add(txtNombre_Completo).setBounds(64,20,229,20);
 		campo.add(cmbEstablecimientos).setBounds(295,20, 148, 20);
 		
-		agregar(tabla);
+		tabla.addMouseListener(opListenerTable);
 		
 		cont.add(campo);
 		
@@ -84,19 +85,21 @@ public class Cat_Filtro_De_Cuadrante_De_Empleados_Dependientes extends JFrame {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
-    private void agregar(final JTable tbl) {
-        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-	        public void mouseClicked(MouseEvent e) {
-	        	if(e.getClickCount() == 2){
-	    			int fila = tabla.getSelectedRow();
-	    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
-	    			Object Nombre = tabla.getValueAt(fila,1).toString().trim();
-	    			dispose();
-	    			new Cat_Cuadrante_Nivel_Jerarquico(String.valueOf(Nombre), Integer.parseInt(folio.toString())).setVisible(true);
-	        	}
-	        }
-        });
-    }
+    MouseListener opListenerTable = new MouseListener() {
+		public void mouseReleased(MouseEvent arg0) {}
+		public void mousePressed(MouseEvent arg0) {}
+		public void mouseExited(MouseEvent arg0) {}
+		public void mouseEntered(MouseEvent arg0) {}
+		public void mouseClicked(MouseEvent e) {
+			if(e.getClickCount() == 2){
+    			int fila = tabla.getSelectedRow();
+    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
+    			Object Nombre = tabla.getValueAt(fila,1).toString().trim();
+    			dispose();
+    			new Cat_Cuadrante_Nivel_Jerarquico(String.valueOf(Nombre), Integer.parseInt(folio.toString())).setVisible(true);
+        	}
+		}
+	};
     
  	private JScrollPane getPanelTabla()	{		
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");

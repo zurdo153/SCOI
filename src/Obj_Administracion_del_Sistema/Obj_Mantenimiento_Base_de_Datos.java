@@ -9,8 +9,8 @@ public class Obj_Mantenimiento_Base_de_Datos {
 	 	return new Mantenimiento_BD().reducir_log();
 		                             }
        
-	  public boolean agregar_submenus_nuevos(){
-    	 return new Mantenimiento_BD().agregar_submenus_nuevos();
+	  public boolean agregar_submenus_nuevos(String Nombre_submenu,int Menu_id,int MenuPrincipal){
+    	 return new Mantenimiento_BD().agregar_submenus_nuevos(Nombre_submenu,Menu_id,MenuPrincipal);
     	
                                                 }
 

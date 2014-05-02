@@ -111,7 +111,7 @@ public class Obj_Usuario {
 		return null; 
 	}
 	
-	public boolean actualizar(int folio){ return new ActualizarSQL().Usuario(this,folio); }
+//	public boolean actualizar(int folio){ return new ActualizarSQL().Usuario(this,folio); }
 		
 	public Obj_Usuario buscarMaximo() {
 		try {
@@ -168,6 +168,11 @@ public class Obj_Usuario {
 	
 	public boolean CambiarContrasena(int folio_empleado ,String nuevacontrasena){
 		return new ActualizarSQL().GuardaNuevaContrasena(folio_empleado,nuevacontrasena);
+		
+	}
+	
+	public boolean Clonar_permisos(int folio_empleado ,String empleado_de_clonar){
+		return new ActualizarSQL().GuardarOpciones_Clonadas(folio_empleado,empleado_de_clonar);
 		
 	}
 	

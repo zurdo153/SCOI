@@ -40,6 +40,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
+import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
 public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
@@ -49,7 +50,9 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	
 	JPasswordField txtClave = new JPasswordField();
 	JTextField txtTicket = new JTextField();
-	JTextField txtImporte = new JTextField();
+
+	JTextField txtImporte = new Componentes().text(new JTextField (),"Importe Total del Ticket", 50, "Double");
+	
 	JPasswordField txtConfirmarCompra = new JPasswordField();
 	
 	JButton btnImprimir = new JButton("Imprimir autorizacion");
@@ -369,9 +372,12 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 			}else{
 				
 				if(txtConfirmarCompra.getText().toUpperCase().equals(txtClave.getText().toUpperCase())){
+					txtClave.setEnabled(false);
 					
 					Obj_Captura_Fuente_Sodas sodas = new Obj_Captura_Fuente_Sodas();
-				
+					
+					    
+					    
 						sodas.setClave(txtClave.getText().toUpperCase().trim());
 						sodas.setEstablecimiento(lblEstablecimiento_Empleado.getText());
 						sodas.setPuesto(lblPuesto_Empleado.getText());
@@ -380,32 +386,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 						sodas.setUsuario(lblUsuario.getText());
 							
 						if(sodas.Guardar()){
-							
-//							 while(tabla_model.getRowCount()>0){
-//							        tabla_model.removeRow(0);
-//							    }
-							
-//							 new Reporte_Ticket_Fuente_Sodas(txtClave.getText().toUpperCase().trim());
 							 new Imprime_Ticket_Captura_Fuente_Sodas(txtClave.getText().toUpperCase()).setVisible(true);
-							
-//							ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.jpg");
-//							lblFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(lblFoto.getWidth(),lblFoto.getHeight(), Image.SCALE_DEFAULT)));	
-//							
-//								txtClave.setEnabled(true);
-//								txtTicket.setEnabled(false);
-//								txtImporte.setEnabled(false);
-//								txtConfirmarCompra.setEnabled(false);
-//								
-//							 	txtClave.setText("");
-//								txtTicket.setText("");
-//								txtImporte.setText("");
-//								txtConfirmarCompra.setText("");
-//								
-//								lblFoto.setText("");
-//								lblNombre_Empleado.setText("");
-//								lblEstablecimiento_Empleado.setText("");
-//								lblPuesto_Empleado.setText("");
-//								lblSaldo.setText("");
 					}else{
 						JOptionPane.showMessageDialog(null, "La clave no coincide!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
 						return;
@@ -660,6 +641,31 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 			this.setSize(260, 400);
 			this.setLocationRelativeTo(null);
 			container.add(panel2);
+			txtConfirmarCompra.setEnabled(false);
+			txtClave.setText("");
+			txtTicket.setText("");
+			txtImporte.setText("");
+			txtConfirmarCompra.setText("");
+			
+			lblFoto.setText("");
+			lblNombre_Empleado.setText("");
+			lblEstablecimiento_Empleado.setText("");
+			lblPuesto_Empleado.setText("");
+			lblSaldo.setText("");
+			
+			txtClave.setEnabled(true);
+			txtTicket.setEnabled(false);
+			txtImporte.setEnabled(false);
+			txtConfirmarCompra.setEnabled(false);
+			txtClave.requestFocus();
+			btnGuardar.setEnabled(false);
+			
+			ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.jpg");
+		    lblFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(lblFoto.getWidth(),lblFoto.getHeight(), Image.SCALE_DEFAULT)));	
+			
+			    while(tabla.getRowCount()>0){
+	                tabla_model.removeRow(0);}
+			
 		}
 		
 		ActionListener opImprimir = new ActionListener() {

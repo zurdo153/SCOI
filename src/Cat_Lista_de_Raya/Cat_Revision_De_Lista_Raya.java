@@ -530,7 +530,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	@SuppressWarnings("unchecked")
 	public void init_tabla(){
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
-		
 		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		this.tabla.getColumnModel().getColumn(0).setMaxWidth(16);

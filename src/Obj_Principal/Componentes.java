@@ -11,7 +11,7 @@ import javax.swing.*;
 public class Componentes {
 	
 	public static void main(String args[]){
-		File f = new File(System.getProperty("user.dir")+"/src");
+		File f = new File(System.getProperty("user.dir")+"/bin");
 		File[] ficheros = f.listFiles();
 		for(File fich : ficheros){
 			if(fich.isDirectory() && !fich.getName().startsWith(".") && fich.getName().startsWith("Cat")){
@@ -186,7 +186,7 @@ public class Componentes {
 			Class instance = Class.forName(claseRoot);
 			return claseRoot;
 		}catch(ClassNotFoundException e){
-			JOptionPane.showMessageDialog(null, "No se ha creado la clase [" + nombre + "]", "Avisa al Administrador", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "No se ha creado la clase [" + nombre + "] Error en Obj_Principal.Componentes.classExiste  ", "Avisa al Administrador", JOptionPane.INFORMATION_MESSAGE);
 			return "";
 		}
 	}

@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -30,8 +31,15 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableColumn;
 
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
+import Obj_Evaluaciones.Obj_Imprimir_Cuadrante;
 
 
 @SuppressWarnings("serial")
@@ -50,6 +58,9 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 	JButton btnGuardarMultiple = new JButton("Guardar");
 	JButton btnGuardarMultipleConts = new JButton("Guardar");
 	JButton btnEditarMultipleConts = new JButton("Editar");
+	JButton btnGenerar = new JButton(" Imprimir Actividades del Cuadrante de Hoy");
+	JButton btnGenerarreportecaptura = new JButton(" Imprimir Captura del Cuadrante de Hoy");
+	JButton btnGenerarcaptura7= new JButton(" Imprimir Captura del Cuadrante Ultimos 7 Dias");
 	
 	/* OPCION MEDIA MULTIPLE JERARQUICA */
 	Cat_Plantilla_Tabla_Cuadrante plantillaMultipleJerarquica = new Cat_Plantilla_Tabla_Cuadrante();
@@ -102,14 +113,14 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 		this.plantillaMultipleContestada.tablaPlantillaMultiple.getColumnModel().getColumn(1).setHeaderValue("Actividades Contestadas por Cuadrante");
 		
 		this.plantillaLibreJerarquica.tablaPlantillaLibre.getColumnModel().getColumn(1).setHeaderValue("Actividades por Avance por Nivel Jerarquico");
-		this.plantillaLibreJerarquica.tablaPlantillaLibre.getColumnModel().getColumn(1).setMaxWidth(300);
+		this.plantillaLibreJerarquica.tablaPlantillaLibre.getColumnModel().getColumn(1).setMaxWidth(500);
 		this.plantillaLibreJerarquica.tablaPlantillaLibre.getColumnModel().getColumn(1).setMinWidth(300);
 		this.plantillaLibre.tablaPlantillaLibre.getColumnModel().getColumn(1).setHeaderValue("Actividades por Avance por Cuadrante");
 		this.plantillaLibre.tablaPlantillaLibre.getColumnModel().getColumn(1).setMaxWidth(300);
 		this.plantillaLibre.tablaPlantillaLibre.getColumnModel().getColumn(1).setMinWidth(300);
 		
 		this.plantillaLibreJerarquicaConts.tablaPlantillaLibre.getColumnModel().getColumn(1).setHeaderValue("Actividades Contestadas de Avance por Nivel Jerarquico");
-		this.plantillaLibreJerarquicaConts.tablaPlantillaLibre.getColumnModel().getColumn(1).setMaxWidth(300);
+		this.plantillaLibreJerarquicaConts.tablaPlantillaLibre.getColumnModel().getColumn(1).setMaxWidth(500);
 		this.plantillaLibreJerarquicaConts.tablaPlantillaLibre.getColumnModel().getColumn(1).setMinWidth(300);
 		this.plantillaLibreContestada.tablaPlantillaLibre.getColumnModel().getColumn(1).setHeaderValue("Actividades Contestadas de Avance por Cuadrante");
 		this.plantillaLibreContestada.tablaPlantillaLibre.getColumnModel().getColumn(1).setMaxWidth(300);
@@ -118,12 +129,20 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 		this.panel.add(new JLabel("Nombre:")).setBounds(40,30,50,20);
 		this.panel.add(txtNombre_Completo).setBounds(150,30,250,20);
 		
-		this.panel.add(btnTerminarCaptura).setBounds(750,30,200,20);
-		this.panel.add(btnSalir).setBounds(750,60,100,20);
+		
+		this.panel.add(btnGenerar).setBounds(690,30,260,20);
+		this.panel.add(btnGenerarcaptura7).setBounds(690,60,260,20);
+		this.panel.add(btnGenerarreportecaptura).setBounds(690,90,260,20);
+		
+		
+		this.panel.add(btnTerminarCaptura).setBounds(690,150,260,20);
+		this.panel.add(btnSalir).setBounds(690,180,260,20);
+		
+		
+		
 		
 		this.panel.add(new JLabel("Puesto:")).setBounds(40,60,50,20);
 		this.panel.add(txtPuesto).setBounds(150,60,250,20);
-		
 		this.panel.add(new JLabel("Establecimiento:")).setBounds(40,90,80,20);
 		this.panel.add(txtEstablecimiento).setBounds(150,90,250,20);
 		
@@ -142,7 +161,7 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 		this.panel.add(new JLabel("Cuadrante:")).setBounds(40,210,60,20);
 		this.panel.add(txtCuadrante).setBounds(150,210,250,20);
 	
-		this.panel.add(btnFoto).setBounds(470,30,235,200);
+		this.panel.add(btnFoto).setBounds(430,30,235,200);
 		
 		this.panel.add(lblCuadranteLleno).setBounds(530,230,235,20);
 	
@@ -186,6 +205,9 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 		this.btnGuardarLibreConts.addActionListener(op_guardar_libre_contestada);
 		this.btnEditarLibreConts.addActionListener(op_editar_libre_conts);
 		
+		this.btnGenerar.addActionListener(opimprimircuadrante);
+		this.btnGenerarcaptura7.addActionListener(opReporteCaptura7);
+		this.btnGenerarreportecaptura.addActionListener(opReporteCaptura);
 		this.CamposEnabled(false);
 		
 		this.init(Nombre_Usuario);
@@ -761,9 +783,64 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 		txtCuadrante.setEditable(variable);
 	}
 	
+	ActionListener opimprimircuadrante = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String query = "exec sp_Reporte_Impresion_Cuadrante_del_dia '"+txtNombre_Completo.getText().toUpperCase().trim()+"'" ;
+					Statement stmt = null;
+					try {
+						stmt =  new Connexion().conexion().createStatement();
+					    ResultSet rs = stmt.executeQuery(query);
+						JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_Impresion_De_Cuadrante.jrxml");
+						JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+						@SuppressWarnings({ "rawtypes", "unchecked" })
+						JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+						JasperViewer.viewReport(print, false);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
+				}
+		};
+
+	ActionListener opReporteCaptura = new ActionListener() {
+		
+		public void actionPerformed(ActionEvent arg0) {
+			int folio_empleado = (int) new Obj_Imprimir_Cuadrante().Obj_Obtener_folio_empleado_buscar(txtNombre_Completo.getText().toUpperCase().trim());
+			
+	  System.out.println(folio_empleado);
+			
+					new Cat_Reporte_De_Cuadrantes("scoi", "scoif",
+							   0, "0",
+							1,"(''" +folio_empleado+"'')",
+							0,"0",
+							0,"0",
+							0,"0",
+							0,"0",
+							0,"0",
+							0);
+	
+		}
+	};
+	ActionListener opReporteCaptura7 = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			int folio_empleado = (int) new Obj_Imprimir_Cuadrante().Obj_Obtener_folio_empleado_buscar(txtNombre_Completo.getText().toUpperCase().trim());
+				new Cat_Reporte_De_Cuadrantes("scoi7", "scoif7",
+						0, "0",
+						1,"(''" +folio_empleado+"'')",
+						0,"0",
+						0,"0",
+						0,"0",
+						0,"0",
+						0,"0",
+				0);
+		}
+	};
+	
 	ActionListener salir = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0)  {
 			dispose();
 		}
 	};
+	public void obtener_folio(){
+		
+	}
 }

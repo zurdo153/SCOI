@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 
 import Cat_Checador.Cat_Checador;
 import Cat_Checador.Cat_Solicitud_De_Empleados;
+import Cat_Evaluaciones.Cat_Captura_De_Cuadrante_Por_Nivel_Jerarquico;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
 import Cat_Lista_de_Raya.Cat_Captura_De_Fuente_De_Sodas_De_Cajeras;
 import Cat_Lista_de_Raya.Cat_Deducciones_Por_Inasistencia;
@@ -128,7 +129,7 @@ public class Init_Login extends JFrame{
 	/* BOTON CAPTURA DE CUADRANTE EQUIPO */
     JButton btnCuadranteequipo = new JButton(new ImageIcon("imagen/cuadrante_equipo-64.png"));
 	JLabel lblCuadranteequipo = new JLabel("Captura de");
-	JLabel lblCuadranteequipo2 = new JLabel("Cuadrante Equipo");
+	JLabel lblCuadranteequipo2 = new JLabel("Cuadrante De Equipo");
 	
 	/* BOTON CAPTURA DE FUENTE DE SODAS CAJERAS */
 	JButton btnFuenteSodasCajeras= new JButton(new ImageIcon("imagen/captura_fuente_de_Sodas_64.png"));
@@ -213,6 +214,7 @@ public class Init_Login extends JFrame{
 		btnListaComparacion.addActionListener(Opciones);
 		btnChecador.addActionListener(Opciones);
 		btnCerrar.addActionListener(Opciones);
+		btnCuadranteequipo.addActionListener(Opciones);
 		
 		btnBanco.setEnabled(false);
 		btnInasistencia.setEnabled(false);
@@ -760,6 +762,8 @@ public class Init_Login extends JFrame{
 					btnListaRaya.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 79)
 					btnSolicitudes.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 80)
+					btnCuadranteequipo.setEnabled(true);
 		                                            }
 	}
 	
@@ -805,6 +809,9 @@ ActionListener Opciones = new ActionListener(){
 			
 			if(click.getSource().equals(btnSolicitudes))
 				new Cat_Solicitud_De_Empleados().setVisible(true);
+			
+			if(click.getSource().equals(btnCuadranteequipo))
+				new Cat_Captura_De_Cuadrante_Por_Nivel_Jerarquico().setVisible(true);
 	
 			if(click.getSource().equals(btnChecador))
 				new Cat_Checador().setVisible(true);

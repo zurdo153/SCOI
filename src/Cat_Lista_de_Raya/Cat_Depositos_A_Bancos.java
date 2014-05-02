@@ -26,6 +26,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import Cat_IZAGAR.Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos;
+import Cat_IZAGAR.Cat_IZAGAR_Selecionar_Nomina_Para_Netos;
 import IZAGAR_Obj.Obj_IZAGAR_Netos_Nominas;
 import Obj_Lista_de_Raya.Obj_Depositos_A_Bancos;
 

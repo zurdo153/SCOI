@@ -64,7 +64,7 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
 		trsfiltro = new TableRowSorter(model); 
 		tabla.setRowSorter(trsfiltro);  
 		
-		campo.add(getPanelTabla()).setBounds(10,100,420,450);
+		campo.add(getPanelTabla()).setBounds(10,100,720,450);
 		
 		agregar(tabla);
 		
@@ -73,7 +73,7 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
 		
 		cont.add(campo);
 		
-		this.setSize(450,600);
+		this.setSize(750,600);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -105,15 +105,19 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
 		
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
 		tabla.getColumnModel().getColumn(0).setMaxWidth(70);
-		tabla.getColumnModel().getColumn(0).setMinWidth(70);
+		tabla.getColumnModel().getColumn(0).setMinWidth(20);
 		tabla.getColumnModel().getColumn(1).setHeaderValue("Descripcion");
-		tabla.getColumnModel().getColumn(1).setMaxWidth(185);
-		tabla.getColumnModel().getColumn(1).setMinWidth(185);
+		tabla.getColumnModel().getColumn(1).setMaxWidth(600);
+		tabla.getColumnModel().getColumn(1).setMinWidth(400);
 		tabla.getColumnModel().getColumn(2).setHeaderValue("Nivel Jerarquico");
-		tabla.getColumnModel().getColumn(2).setMaxWidth(150);
-		tabla.getColumnModel().getColumn(2).setMinWidth(150);
+		tabla.getColumnModel().getColumn(2).setMaxWidth(500);
+		tabla.getColumnModel().getColumn(2).setMinWidth(250);
 		
+    	tabla.getTableHeader().setReorderingAllowed(false) ;
+    	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    	
 		TableCellRenderer render = new TableCellRenderer() 
+
 		{ 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
 			boolean hasFocus, int row, int column) { 
