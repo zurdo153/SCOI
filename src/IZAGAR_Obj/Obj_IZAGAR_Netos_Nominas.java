@@ -17,6 +17,11 @@ public class Obj_IZAGAR_Netos_Nominas {
 		return new Conexiones_SQL.GuardarTablasModel().IZAGAR_Remove_Netos_Nominas_Temp_individual(folio_empleado, nomina);
 	}
 	
+//	update status de tabla IZAGAR_netos_de_nomina_por_empleado_pre_conciliados
+	public void update_IZAGAR_netos_de_nomina_por_empleado_pre_conciliados(){
+		new Conexiones_SQL.GuardarTablasModel().update_IZAGAR_netos_de_nomina();
+	}
+	
 //	pasar a bancos
 	public boolean guardar_totales_deposito_nomina_bancos(){
 		return new Conexiones_SQL.GuardarTablasModel().IZAGAR_insert_totales_deposito_nomina_bancos();

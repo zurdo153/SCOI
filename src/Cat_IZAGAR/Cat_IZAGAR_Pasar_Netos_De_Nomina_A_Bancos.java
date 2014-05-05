@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -233,6 +235,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 		setLocationRelativeTo(null);
 		btnAgregar.addActionListener(OpAgregar);
 		btnRemover.addActionListener(OpRemover);
+		this.addWindowListener(op_cerrar);
 		
 		guarda_auto_netos_nomina_po_empleado_temp(folio_nomina);
 
@@ -244,6 +247,20 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
         tablaconciliados.addMouseListener(opTablaConciliadosSeleccion);
         
 	}
+	
+    WindowListener op_cerrar = new WindowListener() {
+		public void windowOpened(WindowEvent e) {}
+		public void windowIconified(WindowEvent e) {}
+		public void windowDeiconified(WindowEvent e) {}
+		public void windowDeactivated(WindowEvent e) {}
+		public void windowClosing(WindowEvent e) {
+//			if(JOptionPane.showConfirmDialog(null, "¿Desea guardar antes de cerrar?", "Aviso!", JOptionPane.YES_NO_OPTION) == 0){
+				new Obj_IZAGAR_Netos_Nominas().update_IZAGAR_netos_de_nomina_por_empleado_pre_conciliados();
+//			}
+		}
+		public void windowClosed(WindowEvent e) {}
+		public void windowActivated(WindowEvent e) {}
+	};
 	
 	MouseListener opTablaFiltroSeleccion = new MouseListener() {
 		public void mousePressed(MouseEvent e) {
@@ -370,6 +387,8 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
         
         if(getTablaFiltro.length == 0){
         	btnAplicar.setEnabled(true);
+        }else{
+        	btnAplicar.setEnabled(false);
         }
 	}
 	

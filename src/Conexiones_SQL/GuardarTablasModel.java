@@ -1001,6 +1001,36 @@ public boolean IZAGAR_Remove_Netos_Nominas_Temp_individual(int folio_empleado,in
 	return true;
 	}
 
+public void update_IZAGAR_netos_de_nomina(){
+//	cambiar procedimiento borrar registro de la tabla conciliodos
+	String query = "update IZAGAR_netos_de_nomina_por_empleado_pre_conciliados set status = 0 ;";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+			}
+		}
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	}
+
 public boolean IZAGAR_insert_totales_deposito_nomina_bancos(){
 	String query = "exec sp_traspaso_de_totales_a_depositos_nomina_bancos;";
 	Connection con = new Connexion().conexion();
