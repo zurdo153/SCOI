@@ -8,6 +8,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -62,7 +64,7 @@ public class Cat_Imprimir_Lista_De_Raya extends Cat_Root{
 		this.btn_refrescar.setVisible(false);
 		
 		new Obj_Imprimir_Lista_De_Raya().Imprimir();
-
+		update_autorizar_finanzas();
 
 		int largo = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
 		int ancho = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
@@ -679,6 +681,38 @@ public class Cat_Imprimir_Lista_De_Raya extends Cat_Root{
 		public void keyReleased(KeyEvent e){}
 								
 	};
+	public void update_autorizar_finanzas(){
+		String todos = "update tb_autorizaciones set autorizar_finanzas='true' ";
+		PreparedStatement pstmt = null;
+		Connection con = new Connexion().conexion();
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(todos);
+		
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en Cat_Imprimir_Lista_de_Raya  en la funcion [ update_autorizar_finanzas ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en Cat_Imprimir_Lista_de_Raya  en la funcion [ update_autorizar_finanzas ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en Cat_Imprimir_Lista_de_Raya  en la funcion [ update_autorizar_finanzas ] SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+
+	}
 	
 	public static void main (String [] arg){
 		new Cat_Imprimir_Lista_De_Raya().setVisible(true);

@@ -38,8 +38,6 @@ public class Cat_IZAGAR_Selecionar_Nomina_Para_Netos extends JDialog{
 		campo.add(txtFolionomina).setBounds(80,30,100,20);
 		txtFolionomina.addKeyListener(valida_numerico);
 		cont.add(campo);
-//    	btnconsultanomina.addActionListener(buscar);
-//    	txtFolionomina.addActionListener(buscar);
 	}
   	
 	KeyListener valida_numerico = new KeyListener() {
@@ -55,22 +53,6 @@ public class Cat_IZAGAR_Selecionar_Nomina_Para_Netos extends JDialog{
 		@Override
 		public void keyReleased(KeyEvent e){}
 	};
-	
-//	public ActionListener buscar = new ActionListener(){
-//		public void actionPerformed(ActionEvent e){
-//			if(txtFolionomina.getText().equals("")){
-//				JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Error",JOptionPane.WARNING_MESSAGE);
-//				return;
-//			}else{
-//				try {				 	
-//					new Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos(txtFolionomina.getText()).setVisible(true);
-//					dispose();
-//				} catch (NumberFormatException e1) {
-//					e1.printStackTrace(); 
-//				} 			
-//			}
-//		}
-//	};
 	
 	public static void main(String args[]){
 		try{
