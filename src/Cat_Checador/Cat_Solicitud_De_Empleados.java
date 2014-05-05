@@ -836,7 +836,7 @@ public class Cat_Solicitud_De_Empleados extends JFrame {
 		Obj_Solicitud_De_Empleados solicitud = new Obj_Solicitud_De_Empleados();
 		
 		solicitud.setFolio_empleado(Integer.valueOf(txtFolio_Empleado.getText()));
-		solicitud.setUsuario(lblNombre_Encargado.getText());
+		solicitud.setUsuario(lblNombre_Encargado.getText().toUpperCase().trim());
 		
 		switch(lblMovimiento.getText()){
 			case "1.-Trabajar corrido":
@@ -996,8 +996,9 @@ public class Cat_Solicitud_De_Empleados extends JFrame {
 				JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Error",JOptionPane.WARNING_MESSAGE);
 				return;
 			}else{
-				Obj_Encargado_De_Solicitudes encargado= new Obj_Encargado_De_Solicitudes().buscar(lblEncargado.getText());
+				Obj_Encargado_De_Solicitudes encargado= new Obj_Encargado_De_Solicitudes().buscar(lblNombre_Encargado.getText());
 				Obj_Empleados re = new Obj_Empleados().buscar(Integer.parseInt(txtFolio_Empleado.getText()));
+				
 				if(re.getFolio() != 0){
 					if(re.getEstablecimiento()==encargado.getEstablecimiento()){
 						
@@ -1300,7 +1301,7 @@ public class Cat_Solicitud_De_Empleados extends JFrame {
 			ResultSet rs;
 			try {
 				s = con.conexion().createStatement();
-				rs = s.executeQuery("exec sp_select_filtro_empleados_solicitudes '"+lblNombre_Encargado.getText()+"';");
+				rs = s.executeQuery("exec sp_select_filtro_empleados_solicitudes '"+lblNombre_Encargado.getText().toUpperCase().trim()+"';");
 				
 				while (rs.next())
 				{ 

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
+
 
 
 public class GuardarTablasModel {
@@ -911,12 +913,15 @@ public boolean IZAGAR_insert_Netos_Nominas_Temp(Object[][] tabla){
 		con.commit();
 	} catch (Exception e) {
 		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Empleado  procedimiento almacenado IZAGAR_insert_Netos_Nominas_Temp SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		if(con != null){
 			try{
 				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Empleado  procedimiento almacenado IZAGAR_insert_Netos_Nominas_Temp SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				con.rollback();
 			}catch(SQLException ex){
 				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Empleado  procedimiento almacenado IZAGAR_insert_Netos_Nominas_Temp SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return false;
@@ -942,12 +947,15 @@ public boolean IZAGAR_insert_Netos_Nominas_Temp_individual(int folio_empleado,in
 		con.commit();
 	} catch (Exception e) {
 		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Empleado  procedimiento almacenado IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		if(con != null){
 			try{
 				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Empleado  procedimiento almacenado IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				con.rollback();
 			}catch(SQLException ex){
 				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Empleado  procedimiento almacenado IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return false;

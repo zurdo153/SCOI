@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -28,7 +28,7 @@ import Conexiones_SQL.Connexion;
 import IZAGAR_Obj.Obj_IZAGAR_Netos_Nominas;
 
 @SuppressWarnings("serial")
-public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JFrame{
+public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
@@ -143,9 +143,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JFrame{
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos(String folio_nomina) {
-		
-	  
-		
+		this.setModal(true);
 		lblTablaSCOI.setFont(new Font("arial", Font.BOLD, 16));	
 		lblTablaNomina.setFont(new Font("arial", Font.BOLD, 16));	
 		lblTablaConciliados.setFont(new Font("arial", Font.BOLD, 16));	
