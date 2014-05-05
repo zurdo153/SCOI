@@ -490,11 +490,14 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 
 		public asignarBancos(String folio_nomina) {
 			super(folio_nomina);
-			this.btnAplicar.addActionListener(optAplicar);
+			System.out.println("actionlsitener aplicar");
+			btnAplicar.addActionListener(optAplicar);
+			
 		}
 		
 		ActionListener optAplicar = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("SubClase");
 				
 				if(new Obj_IZAGAR_Netos_Nominas().guardar_totales_deposito_nomina_bancos()){
 					dispose();
@@ -517,5 +520,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 				}
 			}
 		};
+		
 	}
+	
 }
