@@ -190,13 +190,28 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 				return;
 			}else{
 				if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de bancos?") == 0){
+					
 					Obj_Depositos_A_Bancos banco = new Obj_Depositos_A_Bancos();
+					
 					if(banco.guardar(tabla_guardar())){
-						txtBanamex.setText("$ "+returnBanamex());
-						txtBanorte.setText("$ "+returnBanorte());
-						txtTotales.setText("$ "+returnTotales());
-						JOptionPane.showMessageDialog(null, "La tabla bancos se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
-						return;
+						
+						while(tabla.getRowCount()>0){
+							tabla_model.removeRow(0);
+						}
+						
+						Object [][] lista = new Obj_Depositos_A_Bancos().get_tabla_model();
+						
+						for(Object[] ps : lista){
+							tabla_model.addRow(ps);
+						}
+						
+							txtBanamex.setText("$ "+returnBanamex());
+							txtBanorte.setText("$ "+returnBanorte());
+							txtTotales.setText("$ "+returnTotales());
+							
+							JOptionPane.showMessageDialog(null, "La tabla bancos se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							return;
+							
 					}else{
 						JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
 						return;
@@ -221,9 +236,13 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		};
 	
 		public Object[][] tabla_guardar(){
+			
 			Object[][] matriz = new Object[tabla.getRowCount()][6];
+			
 			for(int i=0; i<tabla.getRowCount(); i++){
+				
 				for(int j=0; j<tabla.getColumnCount()-1; j++){
+					
 					switch(j){
 						case 0: 
 							matriz[i][j] = Integer.parseInt(tabla_model.getValueAt(i,j).toString().trim());
@@ -255,9 +274,13 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		}
 	
 		public String valida_tabla(){
+			
 			String error = "";
+			
 			for(int i=0; i<tabla.getRowCount(); i++){
+				
 				for(int j=3; j<tabla.getColumnCount()-1; j++){
+					
 					try{
 						if(!isNumeric(tabla_model.getValueAt(i,j).toString())){
 							switch(j){
@@ -279,6 +302,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		
     @SuppressWarnings({ "unchecked", "static-access" })
 	public void init_tabla(){
+    	
     	this.tabla.getTableHeader().setReorderingAllowed(false) ;
     	
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(72);
@@ -294,30 +318,32 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
     	this.tabla.getColumnModel().getColumn(5).setMaxWidth(130);
     	this.tabla.getColumnModel().getColumn(5).setMinWidth(130);
     	
-		TableCellRenderer render = new TableCellRenderer() { 
+		TableCellRenderer render = new TableCellRenderer() {
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-				boolean hasFocus, int row, int column) { 
-					JLabel lbl = new JLabel(value == null? "": value.toString());
-					if(row%2==0){
-							lbl.setOpaque(true); 
-							lbl.setBackground(new java.awt.Color(177,177,177));
+					boolean hasFocus, int row, int column) {
+					
+							JLabel lbl = new JLabel(value == null? "": value.toString());
+							
+							if(row%2==0){
+									lbl.setOpaque(true); 
+									lbl.setBackground(new java.awt.Color(177,177,177));
+							} 
+							
+							if(table.getSelectedRow() == row){
+								lbl.setOpaque(true); 
+								lbl.setBackground(new java.awt.Color(186,143,73));
+							}
+							
+							switch(column){
+								case 0 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+								case 1 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
+								case 2 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
+								case 3 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+								case 4 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+								case 5 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+							}
+							return lbl; 
 					} 
-					
-					if(table.getSelectedRow() == row){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(186,143,73));
-					}
-					
-					switch(column){
-						case 0 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-						case 1 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-						case 2 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-						case 3 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-						case 4 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-						case 5 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-					}
-				return lbl; 
-				} 
 			}; 
 
 		for(int x = 0; x<tabla.getColumnCount(); x++){
@@ -351,7 +377,9 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
 		}
 		public void keyTyped(KeyEvent arg0) {
+			
 			char caracter = arg0.getKeyChar();
+			
 			if(((caracter < '0') ||
 				(caracter > '9')) &&
 			    (caracter != KeyEvent.VK_BACK_SPACE)){
@@ -359,7 +387,6 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 			}	
 		}
 		public void keyPressed(KeyEvent arg0) {}
-		
 	};
 	
 	KeyListener op_filtro_nombre = new KeyListener(){
@@ -417,6 +444,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	}
 	
 	public float returnTotales(){
+		
 		float valor = 0;
 		for(int i=0; i<tabla.getRowCount(); i++){
 			if(tabla_model.getValueAt(i,3).toString().length() != 0){
@@ -434,10 +462,13 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	}
 	
 	public class filtroSeleccion extends Cat_IZAGAR_Selecionar_Nomina_Para_Netos{
+		
 		public filtroSeleccion(){
-			this.btnconsultanomina.removeActionListener(buscar);
+//			this.btnconsultanomina.removeActionListener(buscar);
+			this.txtFolionomina.addActionListener(optBuscar);
 			this.btnconsultanomina.addActionListener(optBuscar);
 		}
+		
 		ActionListener optBuscar = new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				if(txtFolionomina.getText().equals("")){
@@ -448,7 +479,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 						new asignarBancos(txtFolionomina.getText()).setVisible(true);
 						dispose();
 					}catch (NumberFormatException e1){
-						
+						e1.getStackTrace();
 					}
 				}
 			}
@@ -461,32 +492,29 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 			super(folio_nomina);
 			this.btnAplicar.addActionListener(optAplicar);
 		}
+		
 		ActionListener optAplicar = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				
-			if(new Obj_IZAGAR_Netos_Nominas().guardar_totales_deposito_nomina_bancos()){
-				dispose();
-				
-				while(tabla.getRowCount()>0){
-					tabla_model.removeRow(0);
+				if(new Obj_IZAGAR_Netos_Nominas().guardar_totales_deposito_nomina_bancos()){
+					dispose();
+					
+					while(tabla.getRowCount()>0){
+						tabla_model.removeRow(0);
+					}
+					
+					Object [][] lista = new Obj_Depositos_A_Bancos().get_tabla_model();
+					
+					for(Object[] ps : lista){
+						tabla_model.addRow(ps);
+					}
+					JOptionPane.showMessageDialog(null,"El Transpaso Se a Realizado Exitosamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+					return;
+					
+				}else{
+					JOptionPane.showMessageDialog(null,"No Se A Realizado El Transpaso", "Error", JOptionPane.WARNING_MESSAGE);
+					return;
 				}
-				
-				Object [][] lista = new Obj_Depositos_A_Bancos().get_tabla_model();
-				
-				for(Object[] ps : lista){
-					tabla_model.addRow(ps);
-				}
-				JOptionPane.showMessageDialog(null,"El Transpaso Se a Realizado Exitosamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-				return;
-				
-		}else{
-			JOptionPane.showMessageDialog(null,"No Se A Realizado El Transpaso", "Error", JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-				
-				
-				
-				
 			}
 		};
 	}

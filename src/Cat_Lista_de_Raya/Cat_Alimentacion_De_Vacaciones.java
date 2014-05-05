@@ -459,9 +459,6 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 								vacaciones.setTotal(Float.valueOf(lblTotal.getText()));
 								vacaciones.setStatus(chbStatus.isSelected());
 								
-//							System.out.println("estos que es "+new BuscarSQL().trae_fecha());
-			  	             
-			  	                
 				  	             try {
 									Date fecha_hoy = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().trae_fecha());
 									
@@ -471,7 +468,6 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 					  	              
 					  	            long diferienciaEnDias = tiempoDB-tiempocalendario;
 					  	            long margen_en_dias = diferienciaEnDias/tiempo;
-//					  	            System.out.println("estos que es "+margen_en_dias);
 					  	            
 					  	            if(margen_en_dias <= 15){
 					  	            	if(vacaciones.actualizar(Integer.valueOf(txtFolioVacaciones.getText()))){
