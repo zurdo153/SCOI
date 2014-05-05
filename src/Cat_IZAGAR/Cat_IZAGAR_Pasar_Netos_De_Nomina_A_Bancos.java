@@ -37,6 +37,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 	Object[][] Matriz_Conciliados;
 	JButton btnAgregar = new JButton("Traspaso Por Nombre");
 	public JButton btnAplicar = new JButton("Aplicar");
+	JButton btnRemover = new JButton("Remover");
 
 	
 //TABLA PENDIENTES DE CONCILIAR SCOI-----------------------------------------------------------------------------------------
@@ -223,7 +224,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		campo.add(btnAgregar).setBounds(225,30,140,20);
 		campo.add(btnAplicar).setBounds(375,30,80,20);
-		
+		campo.add(btnRemover).setBounds(830, 375, 80, 20);
 		btnAplicar.setEnabled(false);
 		
 		cont.add(campo);
@@ -231,6 +232,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 		setResizable(false);
 		setLocationRelativeTo(null);
 		btnAgregar.addActionListener(OpAgregar);
+		btnRemover.addActionListener(OpRemover);
 		
 		guarda_auto_netos_nomina_po_empleado_temp(folio_nomina);
 
@@ -240,6 +242,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
         tablanomina.addMouseListener(opTablaNominaSeleccion);
 //		funcion para seleccionar solo un registro a la ves en la tabla CONCILIADOS-------------------------------------------------------
         tablaconciliados.addMouseListener(opTablaConciliadosSeleccion);
+        
 	}
 	
 	MouseListener opTablaFiltroSeleccion = new MouseListener() {
@@ -630,6 +633,44 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 					}
 				}else{
 					JOptionPane.showMessageDialog(null,"Debe Seleccionar Un Registro En Tabla SCOI\ny Uno De La Tabla NOMINA", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+			}
+		};
+		
+	 	ActionListener OpRemover = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				boolean filaSeleccionadaConciliados=false;
+				int numeroFilaConciliados=0;
+				
+				for(int i=0; i<tablaconciliados.getRowCount(); i++){
+					if(tablaconciliados.getValueAt(i, 5).toString().trim().equals("true")){
+						filaSeleccionadaConciliados=true;
+						numeroFilaConciliados=i;
+						break;
+					}
+				}
+				
+				if(filaSeleccionadaConciliados){
+					
+					int folio_empleado = Integer.valueOf(tablaconciliados.getValueAt(numeroFilaConciliados, 0).toString().trim());
+					int nomina = Integer.valueOf(tablanomina.getValueAt(0, 0).toString().trim());
+//					float neto = 0;Float.valueOf(tablanomina.getValueAt(numeroFilaConciliados, 2).toString().trim());
+
+					if(new Obj_IZAGAR_Netos_Nominas().remover_netos_nominas_temp_individual(folio_empleado,nomina)){
+						RefreshTablas(nomina+"");
+						for(int i=0; i<=tablanomina.getRowCount()-1; i++){
+							tablanomina.setValueAt(false, i, 3);
+						}
+						JOptionPane.showMessageDialog(null,"El Registro Se Removio Con Exito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}else{
+						JOptionPane.showMessageDialog(null,"El Registro No Pudo Ser Removido", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
+				}else{
+					JOptionPane.showMessageDialog(null,"Debe Seleccionar Un Registro En La Tabla CONCILIADOS", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
 			}
