@@ -709,6 +709,7 @@ public class Init_Login extends JFrame{
 		
 		};
 		
+		
 		public void cargar_usuariotrue(){
 			txtContrasena.setVisible(true);
 			txtContrasena.setEnabled(false);

@@ -144,6 +144,8 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos(String folio_nomina) {
 		
+	  
+		
 		lblTablaSCOI.setFont(new Font("arial", Font.BOLD, 16));	
 		lblTablaNomina.setFont(new Font("arial", Font.BOLD, 16));	
 		lblTablaConciliados.setFont(new Font("arial", Font.BOLD, 16));	
@@ -231,6 +233,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JFrame{
 		setResizable(false);
 		setLocationRelativeTo(null);
 		btnAgregar.addActionListener(OpAgregar);
+
 		
 		guarda_auto_netos_nomina_po_empleado_temp(folio_nomina);
 

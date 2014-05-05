@@ -34,7 +34,7 @@ public class Cat_Autorizacion_Finanzas extends JFrame{
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Aplicar.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("-"));
 		
-		panel.add(new JLabel("Autorizar Lista Raya Por Auditoria")).setBounds(40,30,190,25);
+		panel.add(new JLabel("Autorizar Lista Raya Por Finanzas")).setBounds(40,30,190,25);
 
 		panel.add(lblAutorizar).setBounds(85,80,65,65);
 		

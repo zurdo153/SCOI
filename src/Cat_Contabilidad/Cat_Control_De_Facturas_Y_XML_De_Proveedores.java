@@ -55,7 +55,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	JScrollPane panelScroll = new JScrollPane(tabla);
 	
 	JTextField txtFolioFiltro = new JTextField();
-	JTextField txtPuestoFiltro = new JTextField();
+	JTextField txtProveedorFiltro = new JTextField();
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
 	
@@ -84,9 +84,9 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
 		txtFolioFiltro.setToolTipText("Filtro Por Cod. Prov");
-		txtPuestoFiltro.setToolTipText("Filtro Por Proveedor");
-		panel.add(txtFolioFiltro).setBounds(20,175,71,20);
-		panel.add(txtPuestoFiltro).setBounds(95,175,260,20);
+		txtProveedorFiltro.setToolTipText("Filtro Por Proveedor");
+		panel.add(txtFolioFiltro).setBounds(20,175,50,20);
+		panel.add(txtProveedorFiltro).setBounds(70,175,210,20);
 		panel.add(getPanelTabla()).setBounds(20,200,720,520);
 				
 		panel.add(chStatus).setBounds(380,30,70,20);
@@ -135,7 +135,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		btnGuardar.setEnabled(false);
 		
 		txtFolioFiltro.addKeyListener(opFiltroFolio);
-		txtPuestoFiltro.addKeyListener(opFiltroNombre);
+		txtProveedorFiltro.addKeyListener(opFiltroNombre);
 		
 		cont.add(panel);
 		seleccionar_click(tabla);
@@ -166,7 +166,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	KeyListener opFiltroNombre = new KeyListener(){
 		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtPuestoFiltro.getText().toUpperCase().trim(), 1));
+			trsfiltro.setRowFilter(RowFilter.regexFilter(txtProveedorFiltro.getText().toUpperCase().trim(), 1));
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
