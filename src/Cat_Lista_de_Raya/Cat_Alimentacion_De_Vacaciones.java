@@ -735,7 +735,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	  				txtPrima.setText(vacaciones.getPrima_vacacional()+"");
 	  				txtInfonavit.setText(vacaciones.getInfonavit()+"");
 	  				txtSueldoSemana.setText(vacaciones.getSueldo_semana()+"");
-	  				txtCorteCaja.setText(vacaciones.getSueldo_semana()+"");
+	  				txtCorteCaja.setText(vacaciones.getCorte_de_caja()+"");
 	  				txtFSodas.setText(vacaciones.getFuente_de_sodas()+"");
 	  				txtPrestamo.setText(vacaciones.getPrestamo()+"");
 	  				txtPension.setText(vacaciones.getPension_alimenticia()+"");
