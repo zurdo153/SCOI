@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
@@ -25,11 +26,14 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
+import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
+import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Persecciones_Extra;
 
 @SuppressWarnings("serial")
 public class Cat_Percepciones_Extras extends Cat_Root {
-	
+
+	Runtime R = Runtime.getRuntime();
 	private JCheckBox chb_habilitar = new JCheckBox("Habilitar");
 	private JCheckBox chb_todos = new JCheckBox("Seleccionar");
     
@@ -143,6 +147,20 @@ public class Cat_Percepciones_Extras extends Cat_Root {
     ActionListener op_guardar = new ActionListener() {
 		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
+			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
+			Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
+			
+			boolean auditoriaBoolean = auditoria.isAutorizar();
+			boolean finanzasBoolean = finanzas.isAutorizar();
+			
+			if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
+				
+				JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ninguna Percepcion Extra  .."
+				       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<Al dar Click en Aceptar SCOI se Cerrará>>","Aviso",JOptionPane.WARNING_MESSAGE);
+				
+				try {	R.exec("taskkill /f /im javaw.exe"); } catch (IOException e1) {	e1.printStackTrace(); }		
+				
+			}else{
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
@@ -170,6 +188,7 @@ public class Cat_Percepciones_Extras extends Cat_Root {
 				}
 			}
 		}
+	}	
 	};
 	
 	private Object[][] tabla_guardar(){

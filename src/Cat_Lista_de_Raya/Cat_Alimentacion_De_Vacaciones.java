@@ -48,6 +48,7 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
+import Obj_Principal.Componentes;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -87,14 +88,14 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	
 	JCheckBox chbStatus = new JCheckBox("Status",true);
 	
-	JTextField txtVacaciones = new JTextField();
-	JTextField txtPrima = new JTextField();
-	JTextField txtSueldoSemana = new JTextField();
-	JTextField txtInfonavit = new JTextField();
-	JTextField txtPrestamo = new JTextField();
-	JTextField txtCorteCaja = new JTextField();
-	JTextField txtFSodas = new JTextField();
-	JTextField txtPension = new JTextField();
+	JTextField txtVacaciones = new Componentes().text( new JTextField(), "Vacaciones", 15, "Double");
+	JTextField txtPrima = new Componentes().text( new JTextField(), "Prima Vacacional", 15, "Double");
+	JTextField txtSueldoSemana = new Componentes().text( new JTextField(), "Sueldo Semana", 15, "Double");
+	JTextField txtInfonavit = new Componentes().text( new JTextField(), "Infonavit", 15, "Double");
+	JTextField txtPrestamo = new Componentes().text( new JTextField(), "Prestamo", 15, "Double");
+	JTextField txtCorteCaja = new Componentes().text( new JTextField(), "Corte Caja", 15, "Double");
+	JTextField txtFSodas = new Componentes().text( new JTextField(), "Fuente de Sodas", 15, "Double");
+	JTextField txtPension = new Componentes().text( new JTextField(), "Pension Alimenticia", 15, "Double");
 	
 	JLabel lblSigno = new JLabel("Pagar $");
 	JLabel lblTotal = new JLabel("00000.00");
@@ -441,7 +442,10 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 						
 						if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
 							if(validaCamposAlGuardar()!="") {
+								btnCalcular.setEnabled(true);
+								btnGuardar.setEnabled(false);
 								JOptionPane.showMessageDialog(null, "Los siguientes campos fueron modificados despues de calcularlos:\n "+validaCamposAlGuardar()+"Para guardar las vacaciones primero debe calcularlas", "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+
 								return;
 							}else{
 
@@ -486,7 +490,8 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 											return;
 										}
 					  	            }else{
-					  	            	JOptionPane.showMessageDialog(null,"El registro no se puede modificar,\nya que pasaron 15 dias de averse\ngenerado estas vacaciones","Aviso",JOptionPane.ERROR_MESSAGE);
+					  	            	limpiarPantalla();
+					  	            	JOptionPane.showMessageDialog(null,"El registro no se puede modificar,\nya que pasaron 15 dias de haberse\ngenerado estas vacaciones","Aviso",JOptionPane.ERROR_MESSAGE);
 										return;
 					  	            }
 								} catch (ParseException e) {
@@ -499,6 +504,9 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 					}else{
 						
 						if(validaCamposAlGuardar()!="") {
+							btnCalcular.setEnabled(true);
+							btnGuardar.setEnabled(false);
+							
 							JOptionPane.showMessageDialog(null, "Los siguientes campos fueron modificados despues de calcularlos:\n "+validaCamposAlGuardar()+"Para guardar las vacaciones primero debe calcularlas", "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 							return;
 						}else{
@@ -653,7 +661,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   			@SuppressWarnings({ "rawtypes", "unchecked" })
   			public Filtro_Ultimas_Vacaciones_De_Empleado()	{
   				this.setModal(true);
-  				this.setTitle("Filtro Empleados");
+  				this.setTitle("Filtro de Vacaciones de Empleados");
   				txtBuscar.addKeyListener(new KeyAdapter() { 
   					public void keyReleased(final KeyEvent e) { 
   		                filtro(); 

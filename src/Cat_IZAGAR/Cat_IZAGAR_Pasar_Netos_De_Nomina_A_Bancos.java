@@ -405,21 +405,6 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 	}
 	
 	
-//	private Object[][] tabla_guardar(){
-//
-//		Object[][] matriz = new Object[tablaFiltro.getRowCount()][8];
-//		for(int i=0; i<tablaFiltro.getRowCount(); i++){
-//			
-//				matriz[i][0] = modeloFiltro.getValueAt(i,0).toString().trim();
-//				matriz[i][1] = modeloFiltro.getValueAt(i,1).toString().trim();
-//				matriz[i][2] = modeloFiltro.getValueAt(i,2).toString().trim();
-//				matriz[i][3] = modeloFiltro.getValueAt(i,3).toString().trim();
-//
-//				
-//		}
-//		return matriz;
-//	}
-	
 	
 	
 
@@ -434,8 +419,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 		try {
 			s = new Connexion().conexion().createStatement();
 			rs = s.executeQuery(todos);
-			System.out.println("Consulta Scoi empleados_preconcialiados:"+folio_nomina);
-			
+					
 			MatrizFiltro = new Object[getFilasSCOI(todos)][4];
 			int i=0;
 			while(rs.next()){
@@ -543,8 +527,6 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 			ResultSet rs;
 
 			try {
-				System.out.println("carga de conciliados :"+folio_nomina);
-				
 				s = new Connexion().conexion().createStatement();
 				rs = s.executeQuery(todos);
 				Matriz_Conciliados = new Object[getFilasConciliados(todos)][6];
@@ -573,11 +555,8 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 			} catch (SQLException e1) {	e1.printStackTrace();}
 			return filas;
 			}
-	 	
 
-	   	
-	 	
-//	 	PRE CONCILIACION AUTOMATICA
+	 	//	 	PRE CONCILIACION AUTOMATICA
 	 	public void preconciliacion_automatica(String folio_nomina){
 			String todos = "exec IZAGAR_traspaso_automatico_a_empleados_pre_conciliados_los_netos_de_nomina '"+folio_nomina+"'";
 			PreparedStatement pstmt = null;
@@ -694,13 +673,4 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 				}
 			}
 		};
-		
-//	public static void main(String args[]){
-//		try{
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//			new Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos(title).setVisible(true);
-//		}catch(Exception e){
-//			
-//		}
-//	}
 }

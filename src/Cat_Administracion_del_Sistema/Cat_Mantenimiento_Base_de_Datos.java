@@ -113,7 +113,7 @@ public class Cat_Mantenimiento_Base_de_Datos extends JFrame {
    		  txtMenu_id.setEditable(false);
    		  txtMenu_Principal.setEditable(false);
    		  btn_Guardar.setEnabled(false);
-   		  new Obj_Mantenimiento_Base_de_Datos().agregar_submenus_nuevos(txtNombreSubmenu.getText().toLowerCase().toString(),Integer.valueOf(txtMenu_id.getText()),Integer.valueOf(txtMenu_Principal.getText()) );
+   		  new Obj_Mantenimiento_Base_de_Datos().agregar_submenus_nuevos(txtNombreSubmenu.getText().toString(),Integer.valueOf(txtMenu_id.getText()),Integer.valueOf(txtMenu_Principal.getText()) );
    		  
    		  
 			

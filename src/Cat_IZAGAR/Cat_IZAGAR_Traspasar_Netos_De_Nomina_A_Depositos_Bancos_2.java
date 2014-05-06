@@ -520,8 +520,6 @@ public class Cat_IZAGAR_Traspasar_Netos_De_Nomina_A_Depositos_Bancos_2  extends 
 			ResultSet rs;
 
 			try {
-				System.out.println("carga de conciliados :"+folio_nomina);
-				
 				s = new Connexion().conexion().createStatement();
 				rs = s.executeQuery(todos);
 				Matriz_Conciliados = new Object[getFilasConciliados(todos)][6];

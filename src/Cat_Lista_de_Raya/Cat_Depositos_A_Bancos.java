@@ -29,10 +29,14 @@ import javax.swing.table.TableRowSorter;
 import Cat_IZAGAR.Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos;
 import Cat_IZAGAR.Cat_IZAGAR_Selecionar_Nomina_Para_Netos;
 import IZAGAR_Obj.Obj_IZAGAR_Netos_Nominas;
+import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
+import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Depositos_A_Bancos;
 
 @SuppressWarnings("serial")
 public class Cat_Depositos_A_Bancos extends Cat_Root {
+	Runtime R = Runtime.getRuntime();
+	
 	public static JCheckBox chbHabilitarBanamex = new JCheckBox("Habilitar");	
 	public static JCheckBox chbHabilitarBanorte = new JCheckBox("Habilitar");
 	public JCheckBox chbNegativos = new JCheckBox("Valores Negativos");
@@ -171,6 +175,18 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
     ActionListener op_guardar = new ActionListener() {
 		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
+			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
+			Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
+			
+			boolean auditoriaBoolean = auditoria.isAutorizar();
+			boolean finanzasBoolean = finanzas.isAutorizar();
+			
+			if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
+				JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Deposito a Bancos......"
+				       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria ","Aviso",JOptionPane.WARNING_MESSAGE);
+				
+			}else{
+				
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
@@ -220,6 +236,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 					return;
 				}
 			}
+		 }
 		}
 	};
 	
@@ -497,7 +514,19 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		
 		ActionListener optAplicar = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("SubClase");
+				
+			
+				Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
+				Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
+				
+				boolean auditoriaBoolean = auditoria.isAutorizar();
+				boolean finanzasBoolean = finanzas.isAutorizar();
+				
+				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
+					JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Deposito a Bancos......"
+					       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria ","Aviso",JOptionPane.WARNING_MESSAGE);
+					
+				}else{
 				
 				if(new Obj_IZAGAR_Netos_Nominas().guardar_totales_deposito_nomina_bancos()){
 					dispose();
@@ -518,7 +547,8 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 					JOptionPane.showMessageDialog(null,"No Se A Realizado El Transpaso", "Error", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-			}
+		 	}
+		  }	
 		};
 		
 	}

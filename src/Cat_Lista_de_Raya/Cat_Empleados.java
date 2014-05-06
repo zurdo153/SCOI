@@ -85,6 +85,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+
 import Cat_Checador.Cat_Horarios;
 import Cat_Reportes.Cat_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Empleados_No_Contratables;
@@ -92,6 +93,8 @@ import Cat_Reportes.Cat_Horarios_Provisionales;
 import Cat_Reportes.Cat_Personal_Con_Horario;
 import Conexiones_SQL.Connexion;
 import Obj_Checador.Obj_Horario_Empleado;
+import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
+import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Empleados;
@@ -106,7 +109,9 @@ import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Empleados extends JFrame{
-
+	
+	Runtime R = Runtime.getRuntime();
+	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
@@ -1016,6 +1021,22 @@ public class Cat_Empleados extends JFrame{
 	ActionListener guardar = new ActionListener(){
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e){
+		
+			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
+			Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
+			
+			boolean auditoriaBoolean = auditoria.isAutorizar();
+			boolean finanzasBoolean = finanzas.isAutorizar();
+			
+			if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
+				
+				JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Empleado .."
+				       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<Al dar Click en Aceptar SCOI se Cerrará>>","Aviso",JOptionPane.WARNING_MESSAGE);
+				
+				try {	R.exec("taskkill /f /im javaw.exe"); } catch (IOException e1) {	e1.printStackTrace(); }		
+				
+			}else{
+			
 			if(txtFolioEmpleado.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "El folio es requerido \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 			}else{			
@@ -1402,6 +1423,7 @@ public class Cat_Empleados extends JFrame{
 				}
 			}			
 		}
+		}	
 	};
 	
 	ActionListener filtro = new ActionListener(){
