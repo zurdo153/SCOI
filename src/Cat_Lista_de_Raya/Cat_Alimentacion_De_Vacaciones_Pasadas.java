@@ -40,7 +40,7 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
-public class Cat_Alimentacion_De_Ultimas_Vacaciones extends JFrame{
+public class Cat_Alimentacion_De_Vacaciones_Pasadas extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -59,7 +59,7 @@ public class Cat_Alimentacion_De_Ultimas_Vacaciones extends JFrame{
 	JButton btnGuardar = new JButton("Guardar");
 	JButton btnLimpiar = new JButton("Limpiar");
 	
-	public Cat_Alimentacion_De_Ultimas_Vacaciones(){
+	public Cat_Alimentacion_De_Vacaciones_Pasadas(){
 		this.setTitle("Alimentacion De Ultimas Vacaciones");
 		
 		this.fechaInicio.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
@@ -248,7 +248,7 @@ public class Cat_Alimentacion_De_Ultimas_Vacaciones extends JFrame{
 	public static void main(String [] arg){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Alimentacion_De_Ultimas_Vacaciones().setVisible(true);
+			new Cat_Alimentacion_De_Vacaciones_Pasadas().setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}
