@@ -210,5 +210,4 @@ public class Cat_Filtro_Cuadrante extends JFrame {
 			}
 		}
 	};
-	
 }

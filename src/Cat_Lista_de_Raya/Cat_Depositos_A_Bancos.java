@@ -512,45 +512,43 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 			
 		}
 		
-		ActionListener optAplicar = new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
+			ActionListener optAplicar = new ActionListener(){
+				public void actionPerformed(ActionEvent arg0) {
+					
 				
-			
-				Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
-				Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
-				
-				boolean auditoriaBoolean = auditoria.isAutorizar();
-				boolean finanzasBoolean = finanzas.isAutorizar();
-				
-				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
-					JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Deposito a Bancos......"
-					       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria ","Aviso",JOptionPane.WARNING_MESSAGE);
+					Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
+					Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
 					
-				}else{
-				
-				if(new Obj_IZAGAR_Netos_Nominas().guardar_totales_deposito_nomina_bancos()){
-					dispose();
+					boolean auditoriaBoolean = auditoria.isAutorizar();
+					boolean finanzasBoolean = finanzas.isAutorizar();
 					
-					while(tabla.getRowCount()>0){
-						tabla_model.removeRow(0);
-					}
+					if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
+						JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Deposito a Bancos......"
+						       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria ","Aviso",JOptionPane.WARNING_MESSAGE);
+						
+					}else{
 					
-					Object [][] lista = new Obj_Depositos_A_Bancos().get_tabla_model();
-					
-					for(Object[] ps : lista){
-						tabla_model.addRow(ps);
-					}
-					JOptionPane.showMessageDialog(null,"El Transpaso Se a Realizado Exitosamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-					return;
-					
-				}else{
-					JOptionPane.showMessageDialog(null,"No Se A Realizado El Transpaso", "Error", JOptionPane.WARNING_MESSAGE);
-					return;
-				}
-		 	}
-		  }	
+							if(new Obj_IZAGAR_Netos_Nominas().guardar_totales_deposito_nomina_bancos()){
+								dispose();
+								
+								while(tabla.getRowCount()>0){
+									tabla_model.removeRow(0);
+								}
+								
+								Object [][] lista = new Obj_Depositos_A_Bancos().get_tabla_model();
+								
+								for(Object[] ps : lista){
+									tabla_model.addRow(ps);
+								}
+								JOptionPane.showMessageDialog(null,"El Transpaso Se a Realizado Exitosamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+								return;
+								
+							}else{
+								JOptionPane.showMessageDialog(null,"No Se A Realizado El Transpaso", "Error", JOptionPane.WARNING_MESSAGE);
+								return;
+							}
+				 	}
+			  }	
 		};
-		
 	}
-	
 }

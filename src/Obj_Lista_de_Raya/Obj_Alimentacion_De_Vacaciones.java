@@ -39,6 +39,11 @@ public class Obj_Alimentacion_De_Vacaciones {
 	
 	boolean status;	
 	
+	float vacaciones_c;
+	float prima_vacacional_c;
+	float sueldo_semana_c;
+	float gratificacion;
+	
 	public Obj_Alimentacion_De_Vacaciones() {
 
 //		datos del empleado
@@ -52,6 +57,9 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.prima_vacacional=0;	this.infonavit=0;			this.sueldo_semana=0;
 		this.corte_de_caja=0;		this.fuente_de_sodas=0;		this.prestamo=0;
 		this.pension_alimenticia=0;	this.total=0;
+		
+//		alimentacion de vacaciones c.
+		this.vacaciones_c=0;	this.prima_vacacional_c=0;	this.sueldo_semana_c=0;	this.gratificacion=0;
 	}
 
 	public int getFolio_vacaciones() {
@@ -246,7 +254,39 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.anios_a_disfrutar = anios_a_disfrutar;
 	}
 	
-//	resive parametro del filtro para un nuevo regitro y lo busca aqui solo alimenta la informacion del empleado
+	public float getVacaciones_c() {
+		return vacaciones_c;
+	}
+
+	public void setVacaciones_c(float vacaciones_c) {
+		this.vacaciones_c = vacaciones_c;
+	}
+
+	public float getPrima_vacacional_c() {
+		return prima_vacacional_c;
+	}
+
+	public void setPrima_vacacional_c(float prima_vacacional_c) {
+		this.prima_vacacional_c = prima_vacacional_c;
+	}
+
+	public float getSueldo_semana_c() {
+		return sueldo_semana_c;
+	}
+
+	public void setSueldo_semana_c(float sueldo_semana_c) {
+		this.sueldo_semana_c = sueldo_semana_c;
+	}
+
+	public float getGratificacion() {
+		return gratificacion;
+	}
+
+	public void setGratificacion(float gratificacion) {
+		this.gratificacion = gratificacion;
+	}
+
+	//	resive parametro del filtro para un nuevo regitro y lo busca aqui solo alimenta la informacion del empleado
 	public Obj_Alimentacion_De_Vacaciones buscar(int folio){ 
 		try {
 			return new BuscarSQL().Empleado_En_Vacaciones(folio);

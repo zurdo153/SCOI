@@ -4991,6 +4991,11 @@ public class BuscarSQL {
 				alimentacion_vacaciones.setInfonavit(rs.getFloat("descuento_infonavit"));
 				alimentacion_vacaciones.setFuente_de_sodas(rs.getFloat("descuento_fuente_de_sodas"));
 				alimentacion_vacaciones.setCorte_de_caja(rs.getFloat("descuento_corte_de_cajas"));
+				
+				alimentacion_vacaciones.setVacaciones_c(rs.getFloat("vacaciones_c"));
+				alimentacion_vacaciones.setPrima_vacacional_c(rs.getFloat("prima_vacacional_c"));
+				alimentacion_vacaciones.setSueldo_semana_c(rs.getFloat("sueldo_semana_c"));
+				alimentacion_vacaciones.setGratificacion(rs.getFloat("gratificacion"));
 			}
 			
 		} catch (Exception e) {
