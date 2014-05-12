@@ -97,6 +97,17 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				
 				cont.add(campo);
 				
+				configuracionTabla();
+				
+				btnAgregar.addActionListener(opAgregar);
+				
+				setSize(415,450);
+				setResizable(false);
+				setLocationRelativeTo(null);
+			}
+			
+			public void configuracionTabla(){
+				
 				tablaFiltro.getColumnModel().getColumn(0).setMaxWidth(100);
 				tablaFiltro.getColumnModel().getColumn(0).setMinWidth(100);
 				tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(150);
@@ -186,12 +197,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				tablaFiltro.getColumnModel().getColumn(1).setCellRenderer(render);
 				tablaFiltro.getColumnModel().getColumn(2).setCellRenderer(render);
 				tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(render);
-				
-				btnAgregar.addActionListener(opAgregar);
-				
-				setSize(415,450);
-				setResizable(false);
-				setLocationRelativeTo(null);
 			}
 			
 			ActionListener opAgregar = new ActionListener() {

@@ -176,7 +176,6 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		this.setLocationRelativeTo(null);
 		this.addWindowListener(op_cerrar);
-		
 	}
     
     WindowListener op_cerrar = new WindowListener() {
@@ -312,11 +311,11 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		}
 	
 		public String valida_tabla(){
-			
+		
 			String error = "";
 			
 			for(int i=0; i<tabla.getRowCount(); i++){
-				
+			
 				for(int j=3; j<tabla.getColumnCount()-1; j++){
 					
 					try{
@@ -324,10 +323,10 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 							switch(j){
 								case 3: 
 									error += "   La celda de la columna Banamex no es un número en el [Folio: "+tabla_model.getValueAt(i,0)+"]\t\n";
-								break;
+									break;
 								case 4:
 									error += "   La celda de la columna Banorte no es un número en el [Folio: "+tabla_model.getValueAt(i,0)+"]\t\n";
-								break;
+									break;
 							}
 						}
 					} catch(Exception e){
@@ -335,8 +334,8 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 					}
 				}
 			}
-			return error;
-		}
+		return error;
+	}
 		
     @SuppressWarnings({ "unchecked", "static-access" })
 	public void init_tabla(){
@@ -393,7 +392,6 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.txtBanamex.setText("$ "+returnBanamex());
 		this.txtBanorte.setText("$ "+returnBanorte());
 		this.txtTotales.setText("$ "+returnTotales());
-				
     }
     
     public static boolean isNumeric(String cadena){
@@ -502,7 +500,6 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	public class filtroSeleccion extends Cat_IZAGAR_Selecionar_Nomina_Para_Netos{
 		
 		public filtroSeleccion(){
-//			this.btnconsultanomina.removeActionListener(buscar);
 			this.txtFolionomina.addActionListener(optBuscar);
 			this.btnconsultanomina.addActionListener(optBuscar);
 		}
@@ -572,16 +569,25 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 					
 							if(new Obj_IZAGAR_Netos_Nominas().guardar_totales_deposito_nomina_bancos()){
 								dispose();
-								
-								while(tabla.getRowCount()>0){
-									tabla_model.removeRow(0);
-								}
-								
+//	borrar la tabla							
+//	busca los valores y carga la tabla de nuevo		
+//	carga la tabla nuevamente	
+								while(tabla.getRowCount()>0){tabla_model.removeRow(0);}
 								Object [][] lista = new Obj_Depositos_A_Bancos().get_tabla_model();
-								
-								for(Object[] ps : lista){
-									tabla_model.addRow(ps);
-								}
+									for(Object[] ps : lista){tabla_model.addRow(ps);}
+//  ace un guardado de la tabla automatico
+//	borra la tabla nuevamente
+//	busca la tabla nuevamente por los posibles cambios 
+//	carga la tabla nuevamente				
+								new Obj_Depositos_A_Bancos().guardar(tabla_guardar());
+								while(tabla.getRowCount()>0){tabla_model.removeRow(0);}
+								Object [][] lista2 = new Obj_Depositos_A_Bancos().get_tabla_model();
+									for(Object[] ps : lista2){tabla_model.addRow(ps);}
+// se calculan los totales nuevamente
+										txtBanamex.setText("$ "+returnBanamex());
+										txtBanorte.setText("$ "+returnBanorte());
+										txtTotales.setText("$ "+returnTotales());
+											
 								JOptionPane.showMessageDialog(null,"El Transpaso Se a Realizado Exitosamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 								return;
 								

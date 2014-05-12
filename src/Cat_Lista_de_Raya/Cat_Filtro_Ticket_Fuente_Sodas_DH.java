@@ -101,6 +101,17 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				
 				cont.add(campo);
 				
+				configuracionTabla();
+				
+				btnAgregar.addActionListener(opAgregar);
+				
+				setSize(455,450);
+				setResizable(false);
+				setLocationRelativeTo(null);
+			}
+			
+			public void configuracionTabla(){
+				
 				tablaFiltro.getColumnModel().getColumn(0).setMaxWidth(100);
 				tablaFiltro.getColumnModel().getColumn(0).setMinWidth(100);
 				tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(150);
@@ -109,8 +120,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				tablaFiltro.getColumnModel().getColumn(2).setMinWidth(80);
 				tablaFiltro.getColumnModel().getColumn(3).setMaxWidth(40);
 				tablaFiltro.getColumnModel().getColumn(3).setMinWidth(40);
-				tablaFiltro.getColumnModel().getColumn(4).setMaxWidth(40);
-				tablaFiltro.getColumnModel().getColumn(4).setMinWidth(40);
 				
 				TableCellRenderer render = new TableCellRenderer() { 
 					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -129,10 +138,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 									((JComponent) componente).setOpaque(true); 
 									componente.setBackground(new java.awt.Color(186,143,73));
 								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,4).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(166,160,131));
-								}
 								if(table.getSelectedRow() == row){
 									((JComponent) componente).setOpaque(true); 
 									componente.setBackground(new java.awt.Color(186,143,73));
@@ -148,10 +153,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
 									((JComponent) componente).setOpaque(true); 
 									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,4).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(166,160,131));
 								}
 								if(table.getSelectedRow() == row){
 									((JComponent) componente).setOpaque(true); 
@@ -169,10 +170,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 									((JComponent) componente).setOpaque(true); 
 									componente.setBackground(new java.awt.Color(186,143,73));
 								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,4).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(166,160,131));
-								}
 								if(table.getSelectedRow() == row){
 									((JComponent) componente).setOpaque(true); 
 									componente.setBackground(new java.awt.Color(186,143,73));
@@ -189,30 +186,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 									((JComponent) componente).setOpaque(true); 
 									componente.setBackground(new java.awt.Color(186,143,73));
 								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,4).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(166,160,131));
-								}
-								if(table.getSelectedRow() == row){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
-								break;
-							case 4: 
-								componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-								if(row%2==0){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(177,177,177));	
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,4).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(166,160,131));
-								}
 								if(table.getSelectedRow() == row){
 									((JComponent) componente).setOpaque(true); 
 									componente.setBackground(new java.awt.Color(186,143,73));
@@ -228,13 +201,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				tablaFiltro.getColumnModel().getColumn(1).setCellRenderer(render);
 				tablaFiltro.getColumnModel().getColumn(2).setCellRenderer(render);
 				tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(render);
-				tablaFiltro.getColumnModel().getColumn(4).setCellRenderer(render);
-				
-				btnAgregar.addActionListener(opAgregar);
-				
-				setSize(455,450);
-				setResizable(false);
-				setLocationRelativeTo(null);
 			}
 			
 			ActionListener opAgregar = new ActionListener() {

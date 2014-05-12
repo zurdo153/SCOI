@@ -1113,6 +1113,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		    			dispose();
 		    			
 		    			llenarDatosEmpleado(Integer.valueOf(folio));
+		    			fechaInicio.transferFocus();
 		        	}
 		        }
 	        });
