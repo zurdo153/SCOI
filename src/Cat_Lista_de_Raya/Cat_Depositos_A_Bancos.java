@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,8 +27,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+
 import Cat_IZAGAR.Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos;
 import Cat_IZAGAR.Cat_IZAGAR_Selecionar_Nomina_Para_Netos;
+import Cat_Reportes.Cat_Reporte_Depositos_A_Bancos;
+import Conexiones_SQL.Connexion;
 import IZAGAR_Obj.Obj_IZAGAR_Netos_Nominas;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
@@ -91,6 +100,8 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	
 	JButton btn_lay_out = new JButton();
 	JButton btn_cargar_nomina = new JButton();
+	JButton btn_IDepositosBancLimpio  = new JButton();
+	JButton btn_IDepositosBancP_Estab = new JButton();
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(tabla_model); 
@@ -109,6 +120,10 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.panel.add(new JLabel("Generar Lay Out")).setBounds(1150,170,130,20);
 		this.panel.add(btn_cargar_nomina).setBounds(1085,210,40,40);
 		this.panel.add(new JLabel("Cargar Nomina")).setBounds(1150,220,130,20);
+		this.panel.add(btn_IDepositosBancLimpio).setBounds(1085,260,40,40);
+		this.panel.add(new JLabel("Imprimir Reporte Para Exportar a Excel")).setBounds(1150,270,250,20);
+		this.panel.add(btn_IDepositosBancP_Estab).setBounds(1085,310,40,40);
+		this.panel.add(new JLabel("Imprimir Reporte Por Establecimiento")).setBounds(1150,320,250,20);
 		
 		this.panel.add(new JLabel("Total Banamex:")).setBounds(1080,70,100,20);
 		this.panel.add(txtBanamex).setBounds(1160,70,120,20);
@@ -129,7 +144,12 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		ImageIcon imagnomina = new ImageIcon(System.getProperty("user.dir")+"/Iconos/TAR5.png");
 		btn_cargar_nomina.setIcon(new ImageIcon(imagnomina.getImage().getScaledInstance(btn_cargar_nomina.getWidth()-4,btn_cargar_nomina.getHeight()-4, Image.SCALE_DEFAULT)));	
 		
+		ImageIcon imaglimpio = new ImageIcon(System.getProperty("user.dir")+"/Iconos/hoja-de-calculo-excel-icono-8804-48.png");
+	    btn_IDepositosBancLimpio.setIcon(new ImageIcon(imaglimpio.getImage().getScaledInstance(btn_lay_out.getWidth()-4,btn_lay_out.getHeight()-4, Image.SCALE_DEFAULT)));	
 		
+	    ImageIcon imagCompleto = new ImageIcon(System.getProperty("user.dir")+"/Iconos/hoja-de-calculo-excel-invoice-icono-5449-48.png");
+	    btn_IDepositosBancP_Estab.setIcon(new ImageIcon(imagCompleto.getImage().getScaledInstance(btn_lay_out.getWidth()-4,btn_lay_out.getHeight()-4, Image.SCALE_DEFAULT)));	
+	    
 		this.txtTotales.setEditable(false);
 		this.txtTotales.setFont(new Font("",0,14));
 		
@@ -140,6 +160,8 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.btn_guardar.addActionListener(op_guardar);
 		this.btn_lay_out.addActionListener(op_lay_out);
 		this.btn_cargar_nomina.addActionListener(op_123);
+		this.btn_IDepositosBancLimpio.addActionListener(Reporte_Depositos_Bancos_limpio);
+		this.btn_IDepositosBancP_Estab.addActionListener(Reporte_Depositos_Bancos_);
 		
 		this.btn_refrescar.setVisible(false);
 			
@@ -154,7 +176,6 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		this.setLocationRelativeTo(null);
 		this.addWindowListener(op_cerrar);
-//		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 	}
     
@@ -502,6 +523,27 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 			}
 		};
 	}
+	
+	ActionListener Reporte_Depositos_Bancos_ = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+				new Cat_Reporte_Depositos_A_Bancos();
+		}
+	};
+	
+	ActionListener Reporte_Depositos_Bancos_limpio = new ActionListener(){
+		@SuppressWarnings("rawtypes")
+		public void actionPerformed(ActionEvent e){
+				try {
+					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_Depositos_A_Bancos_Para_Exportar.jrxml");
+					@SuppressWarnings("unchecked")
+					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
+					JasperViewer.viewReport(print, false);
+				} catch (Exception e1) {
+					System.out.println(e1.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en Cat_Depositos_A_Bancos  en la funcion [ ActionListener Reporte_Depositos_Bancos_limpio ]   SQLException:  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+		}
+	};
 	
 	public class asignarBancos extends Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos{
 

@@ -11,8 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.ResultSet;
@@ -47,6 +46,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -172,7 +172,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	float fuenteSodas = 0;
 	float gratificacion = 0;
 	
-	boolean guardar_actualizar= false;
+	
     
 	public Cat_Alimentacion_De_Vacaciones(){
 		
@@ -344,14 +344,13 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
         btnGuardar.addActionListener(opGuardar);
         btnReporte.addActionListener(opReporte);
         
-        this.addWindowListener(op_cerrar);
         
 //    	FUNCION PARA AGREGAR UNA ACCION AL SELECCIONAR UNA FECHA
         fechaInicio.getDateEditor().addPropertyChangeListener(opCalcularAutomaticoConFechaIn);
 
 		cont.add(panel);
 		this.setSize(700,600);
-		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	
 	}
 	
 	public void init_tabla(){
@@ -477,6 +476,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   	    };
 	
   	  ActionListener opCalcular = new ActionListener() {
+		
 			public void actionPerformed(ActionEvent arg0) {
 
 				if(validaCampos() != ""){
@@ -493,24 +493,24 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 			  	     infonavit = Float.valueOf(txtInfonavit.getText());
 			  	     fuenteSodas = Float.valueOf(txtFSodas.getText());
 			  	     
-			  	     gratificacion = Float.valueOf(txtGratificacion.getText());
+			  	     
 			  	        
 			  	     float total = ((vacaciones+primaVac+sueldoSem)-(corteCaja+prestamo+pension+infonavit+fuenteSodas));
 			  	  	
 			  	     lblTotal.setText(DF.format(total)+"");
 // -------------------------------------------------------------------------------------------------------------------------
+	  	           	Obj_Alimentacion_De_Vacaciones calculo = new Obj_Alimentacion_De_Vacaciones().buscar_vacaciones(Integer.valueOf(txtFolioEmpleado.getText()),fechaInicio.getDate());
+
 			  	     
-			  	     
-  	                txtVacacionesC.setText("1111");
-  	                txtPrimaC.setText("1111");
-  	                txtSueldoSemanaC.setText("1111");
+  	                txtVacacionesC.setText(DF.format(calculo.getVacaciones_c()));
+  	                txtPrimaC.setText(DF.format(calculo.getPrima_vacacional_c()));
+  	                txtSueldoSemanaC.setText(DF.format(calculo.getSueldo_semana_c()));
   	                txtCorteCajaC.setText(txtCorteCaja.getText());
   	                txtPrestamoC.setText(txtPrestamo.getText());
   	                txtPensionC.setText(txtPension.getText());
   	                txtInfonavitC.setText(txtInfonavit.getText());
   	                txtFSodasC.setText(txtFSodas.getText());
-  	                txtGratificacion.setText("1111");
-	  	            	
+  	                txtGratificacion.setText(DF.format(calculo.getGratificacion()));
 			  	     
 			  	     btnGuardar.setEnabled(true);
 			  	     btnCalcular.setEnabled(false);
@@ -527,29 +527,35 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   		        limpiarPantalla();
   			}
   		};
-  		
   		ActionListener opReporte = new ActionListener() {
-  			@SuppressWarnings({ "unchecked", "rawtypes" })
-			public void actionPerformed(ActionEvent arg0) {
+  			
+  			public void actionPerformed(ActionEvent e) {
+  				String query = "exec sp_Reporte_De_Impresion_De_Vacaciones "+Integer.valueOf(txtFolioVacaciones.getText());
+  					Statement stmt = null;
+  					try {
+  						stmt =  new Connexion().conexion().createStatement();
+  					    ResultSet rs = stmt.executeQuery(query);
+					btnBuscar.setEnabled(true);
+  	  		        btnNuevo.setEnabled(true);
+  	  		        btnReporte.setEnabled(false);
+  	  		       
+  	  		        limpiarPantalla();
+  					    
+  						JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Impresion_De_Vacaciones.jrxml");
+  						JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+  						@SuppressWarnings({ "rawtypes", "unchecked" })
+  						JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+  						JasperViewer.viewReport(print, false);
+  					} catch (Exception e1) {
+  						System.out.println(e1.getMessage());
+  						
+  					}
+  				}
   				
-  				btnBuscar.setEnabled(true);
-  		        btnNuevo.setEnabled(true);
-  		        btnReporte.setEnabled(false);
-  		        
-  		        guardar_actualizar=false;
-  		        limpiarPantalla();
-  		        
-  		      try {
-  				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Cumpleanios_Del_Mes.jrxml");
-  				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
-  				JasperViewer.viewReport(print, false);
-  			} catch (Exception e) {
-  				System.out.println(e.getMessage());
-  			}
-//  		      JOptionPane.showMessageDialog(null,"falta llamar el reporte","Aviso",JOptionPane.INFORMATION_MESSAGE);
-//				return;
-  			}
+  			
   		};
+  		
+
   		
   		ActionListener opGuardar = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -584,6 +590,10 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 								vacaciones.setPension_alimenticia(Float.valueOf(txtPension.getText()));
 								vacaciones.setTotal(Float.valueOf(lblTotal.getText()));
 								vacaciones.setStatus(chbStatus.isSelected());
+								vacaciones.setVacaciones_c(Float.valueOf(txtVacacionesC.getText()));
+								vacaciones.setPrima_vacacional_c(Float.valueOf(txtPrimaC.getText()));
+								vacaciones.setSueldo_semana_c(Float.valueOf(txtSueldoSemanaC.getText()));
+								vacaciones.setGratificacion(Float.valueOf(txtGratificacion.getText()));
 								
 				  	             try {
 									Date fecha_hoy = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().trae_fecha());
@@ -597,7 +607,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 					  	            
 					  	            if(margen_en_dias <= 15){
 					  	            	if(vacaciones.actualizar(Integer.valueOf(txtFolioVacaciones.getText()))){
-					  	            		guardar_actualizar=true;
+					  	            	
 											btnBuscar.setEnabled(true);
 									        btnNuevo.setEnabled(true);
 									        btnGuardar.setEnabled(false);
@@ -649,9 +659,13 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 							vacaciones.setPension_alimenticia(Float.valueOf(txtPension.getText()));
 							vacaciones.setTotal(Float.valueOf(lblTotal.getText()));
 							vacaciones.setStatus(chbStatus.isSelected());
+							vacaciones.setVacaciones_c(Float.valueOf(txtVacacionesC.getText()));
+							vacaciones.setPrima_vacacional_c(Float.valueOf(txtPrimaC.getText()));
+							vacaciones.setSueldo_semana_c(Float.valueOf(txtSueldoSemanaC.getText()));
+							vacaciones.setGratificacion(Float.valueOf(txtGratificacion.getText()));
 							
 							if(vacaciones.guardar_vacaciones_calculadas()){
-								guardar_actualizar=true;
+					
 								btnBuscar.setEnabled(true);
 						        btnNuevo.setEnabled(true);
 						        btnGuardar.setEnabled(false);
@@ -770,23 +784,6 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
             }
   		}
   		
-  	    WindowListener op_cerrar = new WindowListener() {
-  			public void windowOpened(WindowEvent e) {}
-  			public void windowIconified(WindowEvent e) {}
-  			public void windowDeiconified(WindowEvent e) {}
-  			public void windowDeactivated(WindowEvent e) {}
-  			public void windowClosing(WindowEvent e) {
-  					if(guardar_actualizar){
-  						JOptionPane.showMessageDialog(null,"Debe Generar El Reporte Despues De Guardar\nPara Poder Cerrar La Ventana","Aviso",JOptionPane.INFORMATION_MESSAGE);
-						return;
-  					}else{
-  						dispose();
-  					}
-  			}
-  			public void windowClosed(WindowEvent e) {}
-  			public void windowActivated(WindowEvent e) {}
-  		};
-  		
  //Filtro Empleado para buscar y ediatar sus ultimas vacacioenes----------------------------------------------------------------------------
   		public class Filtro_Ultimas_Vacaciones_De_Empleado extends JDialog{
   			
@@ -845,6 +842,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   			        		
   			        		int fila = tabla.getSelectedRow();
   			    			String folio =  tabla.getValueAt(fila, 0).toString().trim();
+  			    			btnReporte.setEnabled(true);
   			    			dispose();
   			    			
   			    			llenarDatosEmpleado(Integer.valueOf(folio));
@@ -901,6 +899,15 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	  				txtPension.setText(vacaciones.getPension_alimenticia()+"");
 	  				lblTotal.setText(vacaciones.getTotal()+"");
 	  				chbStatus.setSelected(vacaciones.isStatus());
+	  				txtVacacionesC.setText(vacaciones.getVacaciones_c()+"");
+	  				txtPrimaC.setText(vacaciones.getPrima_vacacional_c()+"");
+	  				txtInfonavitC.setText(vacaciones.getInfonavit()+"");
+	  				txtSueldoSemanaC.setText(vacaciones.getSueldo_semana_c()+"");
+	  				txtCorteCajaC.setText(vacaciones.getCorte_de_caja()+"");
+	  				txtFSodasC.setText(vacaciones.getFuente_de_sodas()+"");
+	  				txtPrestamoC.setText(vacaciones.getPrestamo()+"");
+	  				txtPensionC.setText(vacaciones.getPension_alimenticia()+"");
+	  				txtGratificacion.setText(vacaciones.getGratificacion()+"");
 	  				
 	  				ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 	  		        Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
@@ -1032,6 +1039,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   						
   					btnBuscar.doClick();
   					dispose();
+  					
   					}
   				}
   				@Override

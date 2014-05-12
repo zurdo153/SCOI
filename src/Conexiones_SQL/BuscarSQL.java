@@ -16,6 +16,8 @@ import java.text.DecimalFormat;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -36,6 +38,7 @@ import Obj_Checador.Obj_Encargado_De_Solicitudes;
 import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
+import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Atributos;
@@ -4958,9 +4961,9 @@ public class BuscarSQL {
 		            }
 		            fos.close();
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Empleado_En_Vacaciones en el procedimiento sp_select_empleado_para_vacaciones_nuevas SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -4991,7 +4994,6 @@ public class BuscarSQL {
 				alimentacion_vacaciones.setInfonavit(rs.getFloat("descuento_infonavit"));
 				alimentacion_vacaciones.setFuente_de_sodas(rs.getFloat("descuento_fuente_de_sodas"));
 				alimentacion_vacaciones.setCorte_de_caja(rs.getFloat("descuento_corte_de_cajas"));
-				
 				alimentacion_vacaciones.setVacaciones_c(rs.getFloat("vacaciones_c"));
 				alimentacion_vacaciones.setPrima_vacacional_c(rs.getFloat("prima_vacacional_c"));
 				alimentacion_vacaciones.setSueldo_semana_c(rs.getFloat("sueldo_semana_c"));
@@ -5000,6 +5002,7 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion calcular_vacaciones en el procedimiento sp_calculo_de_vacaciones SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -5028,6 +5031,7 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion empleado_para_ultimas_vacaciones en el procedimiento sp_select_empleado_para_vacaciones_pasadas SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -5053,6 +5057,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Buscar_Si_Cuenta_Con_Vacaciones en el procedimiento sp_existe_empleado_con_vacaciones SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return existe;
 	}
@@ -5072,12 +5077,11 @@ public class BuscarSQL {
 				fila.add(rs.getObject(3));
 				fila.add(rs.getObject(4));
 				fila.add(rs.getObject(5));
-						
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion obtener_mensaje_checador en el procedimiento sp_select_existe_mensaje_empleado_checador SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -5132,11 +5136,10 @@ public class BuscarSQL {
 		                fos.write(buffer);
 		            }
 		            fos.close();
-		            
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion vacaciones_guardadas en el procedimiento sp_select_empleado_en_vacaciones SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -5161,6 +5164,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion validacion_de_vacaciones_para_btnGuardar SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return existe;
 	}
@@ -5179,8 +5183,33 @@ public class BuscarSQL {
 				
 			}
 		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion trae_fecha SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}
 		return resultado; 
+	}
+	public Obj_Proveedores Buscar_factura_proveedor_control_xml(String folio_factura,String cod_prv) throws SQLException{
+		Obj_Proveedores facturas_control = new Obj_Proveedores();
+		String query = "select * from tb_control_de_facturas_y_xml where cod_prv='"+cod_prv +"' and folio_factura= '"+folio_factura+"'";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				facturas_control.setFolio_factura(rs.getString("folio_factura"));
+				facturas_control.setCod_prv(rs.getString("cod_prv").trim());
+				facturas_control.setProveedor(rs.getString("proveedor").trim());
+				facturas_control.setStatus((rs.getString("status").equals("1"))?true:false);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Buscar_factura_proveedor_control_xml SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return facturas_control;
 	}
 }

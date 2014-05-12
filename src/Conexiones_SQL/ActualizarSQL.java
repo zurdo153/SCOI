@@ -21,6 +21,7 @@ import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
+import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Atributos;
@@ -2354,7 +2355,7 @@ public class ActualizarSQL {
 	}
 	
 	public boolean Actualizar_Vacaciones(Obj_Alimentacion_De_Vacaciones alimentacion,int folio_vacaciones){
-		String query = "exec sp_update_vacaciones "+folio_vacaciones+",?,?,?,?,?,?,?,?,?,?,?,?;";
+		String query = "exec sp_update_vacaciones "+folio_vacaciones+",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?;";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -2376,6 +2377,10 @@ public class ActualizarSQL {
 			pstmt.setFloat			(i+=1, alimentacion.getPension_alimenticia());
 			pstmt.setFloat			(i+=1, alimentacion.getTotal());
 			pstmt.setInt			(i+=1, alimentacion.isStatus()?1:0);
+			pstmt.setFloat          (i+=1, alimentacion.getVacaciones_c());
+			pstmt.setFloat          (i+=1, alimentacion.getPrima_vacacional_c());
+			pstmt.setFloat          (i+=1, alimentacion.getSueldo_semana_c());
+			pstmt.setFloat          (i+=1, alimentacion.getGratificacion()); 
 			
 			pstmt.executeUpdate();
 			con.commit();
@@ -2390,7 +2395,45 @@ public class ActualizarSQL {
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Vacaciones ] update  SQLException: sp_update_vacaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	public boolean Factura_Provedores_xml(Obj_Proveedores Proveedores, String folio_factura){
+		String query = "update tb_control_de_facturas_y_xml set folio_factura=?, fecha_factura=?, status=? , fecha_modificacion=getdate() where folio_factura='" + folio_factura+"' and cod_prv='"+Proveedores.getCod_prv()+"'";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			System.out.println(Proveedores.getFolio_factura().toUpperCase());
+			System.out.println(Proveedores.getCod_prv());
+			System.out.println(Proveedores.getFecha().toUpperCase());
+			System.out.println(query);
+			
+			
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, Proveedores.getFolio_factura().toUpperCase());
+			pstmt.setString(2, Proveedores.getFecha().toUpperCase());
+			pstmt.setInt(3, Proveedores.getStatus()?1:0);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Puesto ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
 				}
 			}
 			return false;

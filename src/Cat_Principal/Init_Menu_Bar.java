@@ -14,19 +14,17 @@ import Obj_Principal.*;
 
 @SuppressWarnings("serial")
 public class Init_Menu_Bar extends Init_Login{
-
 	public ArrayList<WP_Relation> relacion = new ArrayList<WP_Relation>();
 
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.0.5");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.0.6");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/layers_1_icon&16.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
 		
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
-		
 		this.setSize(ancho,alto);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		

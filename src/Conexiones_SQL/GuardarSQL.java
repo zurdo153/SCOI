@@ -33,6 +33,7 @@ import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
 import Obj_Contabilidad.Obj_Importar_Voucher;
+import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Atributos;
@@ -2671,24 +2672,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 
 				String pc_nombre = InetAddress.getLocalHost().getHostName();
 				String pc_ip = InetAddress.getLocalHost().getHostAddress();
-
-//				System.out.println(solicitud.getFolio_empleado());
-//				System.out.println(solicitud.getUsuario());
-//				System.out.println(solicitud.getFolio_permiso());
-//				System.out.println(solicitud.getFolio_solicitud());
-//				System.out.println(solicitud.getFolio_cambio());
-//				System.out.println(solicitud.getCambio_a());
-//				System.out.println(solicitud.getFecha_solicitada());
-//				System.out.println(solicitud.getTemp_fijo());
-//				System.out.println(solicitud.getCantidad_solicitada());
-//				System.out.println(solicitud.getPuntualidad_y_asistencia());
-//				System.out.println(solicitud.getCumplimiento_de_tareas());
-//				System.out.println(solicitud.getDiciplina());
-//				System.out.println(solicitud.getRespeto_y_trato_general());
-//				System.out.println(solicitud.getMotivo());
-//				System.out.println(pc_nombre);
-//				System.out.println(pc_ip);
-				
+			
 				int i=1;
 				pstmt.setInt (i,solicitud.getFolio_empleado());
 				pstmt.setString (i+=1,solicitud.getUsuario().toLowerCase().trim());
@@ -2711,12 +2695,15 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				con.commit();
 			} catch (Exception e) {
 				System.out.println("SQLException: " + e.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud ]   SQLException: sp_insert_solicitud_empleado "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				if (con != null){
 					try {
 						System.out.println("La transacción ha sido abortada");
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud ]   SQLException: sp_insert_solicitud_empleado "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						con.rollback();
 					} catch(SQLException ex) {
 						System.out.println(ex.getMessage());
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud ]   SQLException: sp_insert_solicitud_empleado "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					}
 				} 
 				return false;
@@ -2726,6 +2713,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 					con.close();
 				} catch(SQLException e){
 					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud ]   SQLException: sp_insert_solicitud_empleado "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}		
 			return true;
@@ -2745,12 +2733,15 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Grupo_De_Vacaciones ]   SQLException: sp_insert_grupo_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Grupo_De_Vacaciones ]   SQLException: sp_insert_grupo_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Grupo_De_Vacaciones ]   SQLException: sp_insert_grupo_de_vacaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -2759,6 +2750,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Grupo_De_Vacaciones ]   SQLException: sp_insert_grupo_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -2785,12 +2777,15 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			
 		} catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Grupo_De_Vacaciones ]   SQLException: sp_insert_tabla_grupos_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Grupo_De_Vacaciones ]   SQLException: sp_insert_tabla_grupos_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Grupo_De_Vacaciones ]   SQLException: sp_insert_tabla_grupos_de_vacaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			} 
 			return false;
@@ -2800,6 +2795,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Grupo_De_Vacaciones ]   SQLException: sp_insert_tabla_grupos_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -2826,12 +2822,15 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			
 		} catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Remover_Grupo_De_Vacaciones ]   SQLException: sp_delete_tabla_grupos_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Remover_Grupo_De_Vacaciones ]   SQLException: sp_delete_tabla_grupos_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Remover_Grupo_De_Vacaciones ]   SQLException: sp_delete_tabla_grupos_de_vacaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			} 
 			return false;
@@ -2841,6 +2840,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Remover_Grupo_De_Vacaciones ]   SQLException: sp_delete_tabla_grupos_de_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -2861,12 +2861,15 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Pasadas ]   SQLException: sp_insert_alimentacion_de_ultimas_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Pasadas ]   SQLException: sp_insert_alimentacion_de_ultimas_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Pasadas ]   SQLException: sp_insert_alimentacion_de_ultimas_vacaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -2882,9 +2885,10 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 	
 	public boolean Guardar_Vacaciones_Calculadas(Obj_Alimentacion_De_Vacaciones alimentacion){
 //		cambiar procedimiento, agregar todos los campos
-		String query = "exec sp_insert_alimentacion_de_vacaciones_calculadas ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_alimentacion_de_vacaciones_calculadas ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
+		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 		
 		int i=1;
 		try {
@@ -2894,7 +2898,6 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			pstmt.setString			(i+=1, alimentacion.getFecha_inicio());
 			pstmt.setString			(i+=1, alimentacion.getFecha_final());
 			pstmt.setInt			(i+=1, alimentacion.getAnios_a_disfrutar());
-			
 			pstmt.setFloat			(i+=1, alimentacion.getVacaciones());
 			pstmt.setFloat			(i+=1, alimentacion.getPrima_vacacional());
 			pstmt.setFloat			(i+=1, alimentacion.getInfonavit());
@@ -2905,17 +2908,69 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			pstmt.setFloat			(i+=1, alimentacion.getPension_alimenticia());
 			pstmt.setFloat			(i+=1, alimentacion.getTotal());
 			pstmt.setInt			(i+=1, alimentacion.isStatus()?1:0);
+			pstmt.setFloat          (i+=1, alimentacion.getVacaciones_c());
+			pstmt.setFloat          (i+=1, alimentacion.getPrima_vacacional_c());
+			pstmt.setFloat          (i+=1, alimentacion.getSueldo_semana_c());
+			pstmt.setFloat          (i+=1, alimentacion.getGratificacion()); 
+			pstmt.setInt            (i+=1, usuario.getFolio());
+			
 			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Control_Factura_xml(Obj_Proveedores fact_xml_proveedores){
+//		cambiar procedimiento, agregar todos los campos
+		String query = "exec sp_insert_factura_para_control_xml ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+		
+		int i=1;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString			(i,    fact_xml_proveedores.getFolio_factura());
+			pstmt.setString			(i+=1, fact_xml_proveedores.getFecha());
+			pstmt.setString			(i+=1, fact_xml_proveedores.getCod_prv());
+			pstmt.setString			(i+=1, fact_xml_proveedores.getProveedor());
+			pstmt.setInt            (i+=1, usuario.getFolio());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;

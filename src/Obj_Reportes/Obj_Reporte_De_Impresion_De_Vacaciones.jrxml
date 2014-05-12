@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_De_Impresion_De_Vacaciones" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cea9c111-1192-433c-b61e-7057342881f8">
-	<property name="ireport.zoom" value="2.1435888100000065"/>
-	<property name="ireport.x" value="1"/>
-	<property name="ireport.y" value="962"/>
+	<property name="ireport.zoom" value="1.4641000000000044"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<queryString>
 		<![CDATA[declare @dia_descanso int,@horario int,@contador_ciclo int,@dias_de_los_anios_vacaciones int,@folio_empleado int
 
@@ -120,9 +120,6 @@ where folio_vacaciones=@folio_vacaciones]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
-			<frame>
-				<reportElement uuid="1976b3d4-1471-4750-b983-1e4a699a2a41" mode="Opaque" x="0" y="0" width="71" height="70" backcolor="#FF9900"/>
-			</frame>
 			<staticText>
 				<reportElement uuid="fc6971ad-3c32-4b09-b00d-bffc568ef0d9" x="164" y="1" width="210" height="41"/>
 				<textElement>
@@ -299,140 +296,140 @@ where folio_vacaciones=@folio_vacaciones]]>
 				<textFieldExpression><![CDATA[$F{dias_totales_inc_descansos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="c325f7ad-6f3d-49d4-aae3-8ea5eef6e611" x="308" y="302" width="99" height="17"/>
+				<reportElement uuid="c325f7ad-6f3d-49d4-aae3-8ea5eef6e611" x="308" y="276" width="99" height="17"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe_vacaciones}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="beaaa6c4-88a8-4358-9896-ee148d39aeed" x="308" y="319" width="99" height="17"/>
+				<reportElement uuid="beaaa6c4-88a8-4358-9896-ee148d39aeed" x="308" y="293" width="99" height="17"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe_prima_vacacional}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="4d75d795-6e9e-4a60-bb98-cf4bbd7a766c" x="308" y="353" width="99" height="17"/>
+				<reportElement uuid="4d75d795-6e9e-4a60-bb98-cf4bbd7a766c" x="308" y="327" width="99" height="17"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe_infonavit}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="71a98866-f522-4d85-95d9-c52eafdf5485" x="308" y="336" width="99" height="17"/>
+				<reportElement uuid="71a98866-f522-4d85-95d9-c52eafdf5485" x="308" y="310" width="99" height="17"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sueldo_semana}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="28ac18b2-0785-4b18-9c2b-01bb65b851cd" x="308" y="404" width="99" height="17"/>
+				<reportElement uuid="28ac18b2-0785-4b18-9c2b-01bb65b851cd" x="308" y="378" width="99" height="17"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{corte_de_caja}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="aed34390-f225-4e34-94e2-5cfa4c19cb15" x="308" y="421" width="99" height="17"/>
+				<reportElement uuid="aed34390-f225-4e34-94e2-5cfa4c19cb15" x="308" y="395" width="99" height="17"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fuente_de_sodas}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="d26fdf5f-c9cc-4067-9e39-c7fe94798dad" x="308" y="387" width="99" height="17"/>
+				<reportElement uuid="d26fdf5f-c9cc-4067-9e39-c7fe94798dad" x="308" y="361" width="99" height="17"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{prestamo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="be633c63-3e2f-49b2-b525-bcdb1093e229" x="308" y="370" width="99" height="17"/>
+				<reportElement uuid="be633c63-3e2f-49b2-b525-bcdb1093e229" x="308" y="344" width="99" height="17"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pension_alimenticia}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="8da7ef55-e691-4f01-a8e7-f91c70678c68" x="142" y="302" width="151" height="17"/>
+				<reportElement uuid="8da7ef55-e691-4f01-a8e7-f91c70678c68" x="142" y="276" width="151" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[IMPORTE VACACIONES :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="446d761d-77b0-4984-be2f-924170806ffc" x="142" y="319" width="164" height="17"/>
+				<reportElement uuid="446d761d-77b0-4984-be2f-924170806ffc" x="142" y="293" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[IMPORTE PRIMA VACACIONAL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9bcbf289-a3ef-42bb-b94d-f714f453877e" x="142" y="336" width="164" height="17"/>
+				<reportElement uuid="9bcbf289-a3ef-42bb-b94d-f714f453877e" x="142" y="310" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[IMPORTE SUELDO SEMANA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8f4583d5-e382-4ff0-b051-e9f56bb7607f" x="142" y="353" width="164" height="17"/>
+				<reportElement uuid="8f4583d5-e382-4ff0-b051-e9f56bb7607f" x="142" y="327" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[(-) INFONAVIT:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0893444d-0390-4d1e-908c-58e615a32c9e" x="142" y="370" width="164" height="17"/>
+				<reportElement uuid="0893444d-0390-4d1e-908c-58e615a32c9e" x="142" y="344" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[(-)PENSION ALIMENTICIA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a4207067-5f0b-45c4-becd-dcd9415c94c3" x="142" y="387" width="164" height="17"/>
+				<reportElement uuid="a4207067-5f0b-45c4-becd-dcd9415c94c3" x="142" y="361" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[(-)PENSION PRESTAMO:]]></text>
+				<text><![CDATA[(-)PRESTAMO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="aa906a92-ed03-4844-b584-091a3c95555e" x="142" y="404" width="164" height="17"/>
+				<reportElement uuid="aa906a92-ed03-4844-b584-091a3c95555e" x="142" y="378" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[(-)CORTE DE CAJA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9b78d70d-d86a-47a5-99d6-e32b683b5493" x="142" y="421" width="164" height="17"/>
+				<reportElement uuid="9b78d70d-d86a-47a5-99d6-e32b683b5493" x="142" y="395" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[(-)FUENTE DE SODAS:]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.0000">
-				<reportElement uuid="4e255b66-20bf-49be-b174-05bf685f10af" x="308" y="275" width="100" height="17"/>
+				<reportElement uuid="4e255b66-20bf-49be-b174-05bf685f10af" x="308" y="249" width="100" height="17"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sueldo_diario}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="07102875-a2a3-4c29-acb8-8c45133f4988" x="213" y="275" width="93" height="17"/>
+				<reportElement uuid="07102875-a2a3-4c29-acb8-8c45133f4988" x="213" y="249" width="93" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[SUELDO DIARIO:]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="e9b14a58-bd58-4c2e-ac84-13caf2d9c157" x="308" y="441" width="100" height="17"/>
+				<reportElement uuid="e9b14a58-bd58-4c2e-ac84-13caf2d9c157" x="308" y="415" width="100" height="17"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="c896f703-c251-4145-9cd0-ff163b178b93" x="265" y="441" width="41" height="17"/>
+				<reportElement uuid="c896f703-c251-4145-9cd0-ff163b178b93" x="265" y="415" width="41" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
@@ -460,80 +457,157 @@ where folio_vacaciones=@folio_vacaciones]]>
 				<textFieldExpression><![CDATA[$F{fecha_regreso_de_vacaciones}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="3b928cf8-d457-479a-abc7-d2956f36d56e" x="213" y="481" width="93" height="17"/>
+				<reportElement uuid="3b928cf8-d457-479a-abc7-d2956f36d56e" x="213" y="444" width="93" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[SUELDO DIARIO C:]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="834d4b01-3091-4c6a-8c25-5ba7581bcb87" x="308" y="481" width="100" height="17"/>
-				<textElement/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="834d4b01-3091-4c6a-8c25-5ba7581bcb87" x="308" y="444" width="100" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{sueldo_diario_c}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="04a623ef-ff97-48d8-bd6f-6af03023a199" x="142" y="498" width="151" height="17"/>
+				<reportElement uuid="04a623ef-ff97-48d8-bd6f-6af03023a199" x="142" y="461" width="151" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[IMPORTE VACACIONES :]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="4905ef37-a2e5-4d4d-9961-1c1c6912d1a8" x="308" y="498" width="100" height="17"/>
-				<textElement/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="4905ef37-a2e5-4d4d-9961-1c1c6912d1a8" x="308" y="461" width="100" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{importe_vacacionesc}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="aa3e2aa8-98f2-46d9-8e9d-085fb3bf41a0" x="142" y="515" width="164" height="17"/>
+				<reportElement uuid="aa3e2aa8-98f2-46d9-8e9d-085fb3bf41a0" x="142" y="478" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[IMPORTE PRIMA VACACIONAL:]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="642c9b4e-ee60-431f-a7f3-a759b58d68ff" x="308" y="515" width="100" height="17"/>
-				<textElement/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="642c9b4e-ee60-431f-a7f3-a759b58d68ff" x="308" y="478" width="100" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{importe_prima_vacacionalc}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="1227a4d1-2676-4ad2-a2b0-9b9653fe0842" x="142" y="532" width="164" height="17"/>
+				<reportElement uuid="1227a4d1-2676-4ad2-a2b0-9b9653fe0842" x="142" y="495" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[IMPORTE SUELDO SEMANA:]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="775ba680-69d8-4131-a9f1-d0d281854b2b" x="308" y="532" width="100" height="17"/>
-				<textElement/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="775ba680-69d8-4131-a9f1-d0d281854b2b" x="308" y="495" width="100" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{importe_sueldo_semanac}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="5e5b01ef-64c3-46c3-9958-f033cc41ee32" x="142" y="549" width="164" height="17"/>
+				<reportElement uuid="5e5b01ef-64c3-46c3-9958-f033cc41ee32" x="142" y="512" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[(-) INFONAVIT:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bbbcfa76-b990-4b98-92b0-01d4169532ea" x="142" y="566" width="164" height="17"/>
+				<reportElement uuid="bbbcfa76-b990-4b98-92b0-01d4169532ea" x="142" y="529" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[(-)PENSION ALIMENTICIA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ee7517e0-3576-4ae8-9a08-6057e7ac17f7" x="142" y="583" width="164" height="17"/>
+				<reportElement uuid="ee7517e0-3576-4ae8-9a08-6057e7ac17f7" x="142" y="546" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[(-)PENSION PRESTAMO:]]></text>
+				<text><![CDATA[(-)PRESTAMO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="efdd8184-a3c3-4206-b125-1635f435eb95" x="142" y="600" width="164" height="17"/>
+				<reportElement uuid="efdd8184-a3c3-4206-b125-1635f435eb95" x="142" y="563" width="164" height="17"/>
 				<textElement>
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[(-)CORTE DE CAJA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="24dd7149-d8d0-42d7-989a-0cd2b637432a" x="281" y="647" width="268" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["D.H.:"+$F{usuario_creacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="8879aeda-a758-4b8c-9eea-7bd690398f2f" x="308" y="512" width="100" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe_infonavit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="73eecbd7-d28d-49ac-a804-2800f6f03a49" x="308" y="529" width="100" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pension_alimenticia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="22faa4ac-3678-41ca-9025-ad7a2ecab91a" x="308" y="546" width="100" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prestamo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="9bf411f0-d029-4118-96ae-26bb837f6456" x="308" y="563" width="100" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{corte_de_caja}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="b04d3039-6187-4d7a-8b2d-62957fdbb33d" x="308" y="580" width="100" height="17"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gratificacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5d2ee537-3e37-4246-bea4-ac4bc4992e8d" x="142" y="580" width="164" height="17"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[(+)GRATIFICACION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fc12caa4-2a92-440e-8484-b7048bbc08b1" x="265" y="597" width="41" height="17"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="a578f79c-44c4-46b7-80a3-592985df8d4c" x="281" y="645" width="268" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="094ab2db-333f-44e2-b9f6-25d3e66421ec" x="0" y="645" width="213" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="3a9fdfc9-4db0-4451-9a7f-ba89f9c01b26" x="0" y="647" width="213" height="17"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[REVISO CONTABILIDAD]]></text>
 			</staticText>
 		</band>
 	</title>

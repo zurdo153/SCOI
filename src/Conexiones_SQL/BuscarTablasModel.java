@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JOptionPane;
+
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 public class BuscarTablasModel {
@@ -272,7 +274,7 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
-	public Object[][] tabla_model_filtro_cuadrante(){
+	public Object[][] tabla_model_filtro_cuadrant(){
 		String query_lista = "exec sp_select_filtro_relacion_empleados_en_cuadrantes";
 		
 		Object[][] matriz = new Object[get_filas(query_lista)][2];
@@ -753,6 +755,33 @@ public class BuscarTablasModel {
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
+	
+	public Object[][] tabla_model_proveedores_guardados(){
+		String query_lista = ("SELECT cod_prv,proveedor,folio_factura,convert (varchar(20),[fecha_factura],103)as fecha_factura,convert(varchar(20),[fecha_modificacion],103)as fecha_modificacion "+
+                ",(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico,Status FROM tb_control_de_facturas_y_xml");
+		Object[][] matriz = new Object[get_filas(query_lista)][6];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] = "   "+rs.getString(1);
+				matriz[i][1] = "   "+rs.getString(2);
+				matriz[i][2] = "   "+rs.getString(3);
+				matriz[i][3] = "   "+rs.getString(4);
+				matriz[i][4] = "   "+rs.getString(5);
+				matriz[i][5] = "   "+rs.getString(6);
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel en la funcion tabla_model_proveedores_guardados  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 		}
 	    return matriz; 
 	}
