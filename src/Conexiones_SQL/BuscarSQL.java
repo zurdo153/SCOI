@@ -26,6 +26,7 @@ import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Por_Denominacion;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
+import Obj_Auditoria.Obj_Movimiento_De_Asignacion;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Entosal;
@@ -5182,5 +5183,50 @@ public class BuscarSQL {
 			e1.printStackTrace();
 		}
 		return resultado; 
+	}
+	
+	public Obj_Movimiento_De_Asignacion buscar_asignacion_para_asignar(int folio_empleado,String establecimiento) throws SQLException{
+		Obj_Movimiento_De_Asignacion alimentacion_vacaciones = new Obj_Movimiento_De_Asignacion();
+		String query = "exec sp_select_asignacion_de_cajero "+folio_empleado+",'"+establecimiento+"';";
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				alimentacion_vacaciones.setEmpleado(rs.getString("empleado").trim());
+				alimentacion_vacaciones.setAsignacion(rs.getString("asignacion").trim());
+				alimentacion_vacaciones.setFechaIn(rs.getString("fecha_inicio").trim());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return alimentacion_vacaciones;
+	}
+	
+	public boolean buscar_emp_vigente_en_asignacion(int folio_empleado, String establecimiento){
+		String query = "exec sp_verificar_status_de_asignacion " + folio_empleado + ",'" + establecimiento + "';";
+		
+		boolean existe = false;
+		Statement s;
+		ResultSet rs;
+		
+		try {				
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				existe = Boolean.valueOf(rs.getString("existe_status_asignacion").trim());
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return existe;
 	}
 }
