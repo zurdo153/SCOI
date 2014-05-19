@@ -14,6 +14,7 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
+import Obj_Auditoria.Obj_Clientes;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
@@ -1770,7 +1771,7 @@ public class ActualizarSQL {
 	
 	public boolean permiso(Obj_Alimentacion_De_Permisos_A_Empleados Permiso, int folio){
 
-		String queryDEP = "exec sp_update_permiso_checador  ?,?,?,?,?,?,?,?,?";
+		String queryDEP = "exec sp_update_permiso_checador  ?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmtabla = null;
 		try {
@@ -1785,6 +1786,7 @@ public class ActualizarSQL {
 			pstmtabla.setBoolean(7, (Permiso.isStatus())? true: false);
 			pstmtabla.setInt(8, Permiso.getDescanso());
 			pstmtabla.setString(9, Permiso.getTiempo_comida());
+			pstmtabla.setInt(10, Permiso.getFolio_empleado_optener_turno());
 			pstmtabla.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -2447,6 +2449,63 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
+	
+	public boolean Cliente(Obj_Clientes cliente){
+		String query = "exec sp_update_alta_cliente ?,?,?,?,?,?";
+
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			
+//			// insert bitacora
+//			String pc = InetAddress.getLocalHost().getHostName();
+//			String ip = InetAddress.getLocalHost().getHostAddress();
+//			pstmtb = con.prepareStatement(Qbitacora);
+//			pstmtb.setString(1, pc);
+//			pstmtb.setString(2, ip);
+//			pstmtb.setInt(3, usuario.getFolio());
+//			pstmtb.setInt(4, folio);
+//			pstmtb.setString(5, "Empleados sp_update_alta_empleado");
+//			pstmtb.executeUpdate();
+			
+//			private String telefono_cuadrante;
+			int i=1;
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt   (i,		cliente.getFolio_cliente());
+			pstmt.setString(i+=1,	cliente.getNombre().toUpperCase().trim());
+			pstmt.setString(i+=1,	cliente.getAp_paterno().toUpperCase().trim());
+			pstmt.setString(i+=1,	cliente.getAp_materno().toUpperCase().trim());
+			pstmt.setString(i+=1,	cliente.getDireccion().toUpperCase().trim());
+			pstmt.setString(i+=1, 	cliente.getTelefono().trim());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			
+		}catch(SQLException ex){
+			
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cliente ] update  SQLException: sp_update_alta_cliente "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex1){
+					System.out.println(ex1.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cliente ] update  SQLException: sp_update_alta_cliente "+ex1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cliente ] update  SQLException: sp_update_alta_cliente "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+			}
+		return true;
+	}	
+			
 	public boolean marcar_c_recibido_factura(String cod_prov_recibido, String folio_factura_recibido){
 		 
 		String query = "update tb_control_de_facturas_y_xml set status=2,fecha_recibido=getdate() where cod_prv='"+cod_prov_recibido+"' and folio_factura='"+folio_factura_recibido+"'";
@@ -2463,10 +2522,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: sp_update_mensaje_personal "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ marcar_c_recibido_factura ] update  SQLException: tb_control_de_facturas_y_xml "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: sp_update_mensaje_personal "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ marcar_c_recibido_factura ] update  SQLException: tb_control_de_facturas_y_xml "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -2475,7 +2534,7 @@ public class ActualizarSQL {
 				con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: sp_update_mensaje_personal "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ marcar_c_recibido_factura ] update  SQLException: tb_control_de_facturas_y_xml "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 			}
 		return true;

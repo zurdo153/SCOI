@@ -787,6 +787,29 @@ public class BuscarTablasModel {
 		}
 	    return matriz; 
 	}
+	
+	public Object[][] tabla_model_cliente(){
+//		cambiar consulta
+		String query_lista = "select folio_cliente,nombre+' '+ap_paterno+' '+ap_materno as empleado,direccion from tb_clientes where status = 1";
+		Object[][] matriz = new Object[get_filas(query_lista)][3];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] = rs.getString(1)+"   ";
+				matriz[i][1] = "   "+rs.getString(2);
+				matriz[i][2] = "   "+rs.getString(3);
+				
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
 }
 
 

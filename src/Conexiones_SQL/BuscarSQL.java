@@ -26,6 +26,7 @@ import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Por_Denominacion;
+import Obj_Auditoria.Obj_Clientes;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Auditoria.Obj_Movimiento_De_Asignacion;
@@ -3668,6 +3669,7 @@ public class BuscarSQL {
 				permisoChecador.setTiempo_comida(rs.getString("tiempo_comida"));
 				permisoChecador.setMotivo(rs.getString("motivo"));
 				permisoChecador.setStatus(rs.getInt("status")==1?true:false);
+				permisoChecador.setFolio_empleado_optener_turno(rs.getInt("folio_empleado_usar_turno"));
 			}
 			
 		} catch (Exception e) {
@@ -5319,5 +5321,79 @@ public class BuscarSQL {
 			e1.printStackTrace();
 		}
 		return existe;
+	}
+	
+	public Obj_Clientes Cliente_Nuevo() throws SQLException{
+		Obj_Clientes cliente = new Obj_Clientes();
+		String query = "exec sp_nuevo_cliente";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				cliente.setFolio_cliente(rs.getInt("Maximo"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return cliente;
+	}
+	
+	public Obj_Clientes Cliente(int folio_cliente) throws SQLException{
+		Obj_Clientes cliente = new Obj_Clientes();
+		
+		String query = "select folio_cliente,nombre,ap_paterno,ap_materno,direccion,telefono from tb_clientes where folio_cliente = "+folio_cliente;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				cliente.setFolio_cliente(rs.getInt("folio_cliente"));
+				cliente.setNombre(rs.getString("nombre"));
+				cliente.setAp_paterno(rs.getString("ap_paterno"));
+				cliente.setAp_materno(rs.getString("ap_materno"));
+				cliente.setDireccion(rs.getString("direccion"));
+				cliente.setTelefono(rs.getString("telefono"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return cliente;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Vector obtener_empleado_y_turno(int folio) throws SQLException{
+		Vector fila = new Vector();
+		String query = "exec sp_buscar_empleado_a_copiarle_turno "+folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+		    
+			while(rs.next()){
+				fila.add(rs.getObject(1));
+				fila.add(rs.getObject(2));
+				fila.add(rs.getObject(3));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion obtener_empleado_y_turno en el procedimiento sp_buscar_empleado_a_copiarle_turno SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			 if (stmt != null) { stmt.close(); }
+		}
+		return fila;
 	}
 }
