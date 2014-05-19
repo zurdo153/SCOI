@@ -37,7 +37,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
-public class Cat_Filtro_Proveedores extends JDialog {
+public class Cat_Control_De_Facturas_De_Proveedores extends JDialog {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
@@ -78,7 +78,7 @@ public class Cat_Filtro_Proveedores extends JDialog {
 	public TableRowSorter trsfiltro = new TableRowSorter(tabla_Proveedores); 
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	
-	public Cat_Filtro_Proveedores(){
+	public Cat_Control_De_Facturas_De_Proveedores(){
 		
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
@@ -272,7 +272,7 @@ Object[] fila = new Object[4];
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Filtro_Proveedores().setVisible(true);
+				new Cat_Control_De_Facturas_De_Proveedores().setVisible(true);
 			}catch(Exception e){	}
 		}
 	

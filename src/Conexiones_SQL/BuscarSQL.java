@@ -2315,6 +2315,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getNomina store procedure sp_select_nomina: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return Matriz; 
 	}
@@ -2332,6 +2333,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion MaximoListaRaya en select	max(numero_lista)+1 from tb_lista_raya: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return valor; 
 	}
@@ -2350,6 +2352,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion MaximoListaNomina en select max(lista_raya) from tb_captura_totales_nomina: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return valor; 
 	}
@@ -2377,6 +2380,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getTotalesNomina store procedure sp_total_nomina: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return Matriz; 
 	}
@@ -2400,6 +2404,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getTotalesCheque1 store procedure sp_total_cheque_1_super: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return Matriz; 
 	}
@@ -2423,6 +2428,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getTotalesCheque1Ferre store procedure sp_total_cheque_1_ferreteria: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return Matriz; 
 	}
@@ -2446,6 +2452,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getTotalesCheque1Izacel store procedure sp_total_cheque_1_izacel: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return Matriz; 
 	}
@@ -2472,6 +2479,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getNominaChequeABC store procedure sp_total_cheques: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return Matriz; 
 	}
@@ -2491,6 +2499,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getNominaIndividual store procedure sp_return_nomina_value: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return resultado; 
 	}
@@ -2510,6 +2519,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getBancosIndividual store procedure sp_return_bancos_value: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return resultado; 
 	}
@@ -2529,6 +2539,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getListaRayaIndividual store procedure sp_return_lista_raya_value: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return resultado; 
 	}
@@ -2548,6 +2559,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getDiferenciaIndividual store procedure sp_return_diferencia_value: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return resultado; 
 	}
@@ -2567,6 +2579,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getMaximoNomina store procedure sp_maximo_nomina: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return resultado; 
 	}
@@ -4304,6 +4317,7 @@ public class BuscarSQL {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Vector buscar_entosal  store procedure sp_select_entosal: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -4321,11 +4335,10 @@ public class BuscarSQL {
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				entosal.setClave(rs.getString("keyCheckMaster"));
-				
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Obj_Entosal  select * from tb_key_check_master: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -4345,8 +4358,8 @@ public class BuscarSQL {
 			while(rs.next()){
 				existe = rs.getBoolean("valor");
 			}
-			
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion existeColisionTiempo buscar_entosal  store procedure sp_valida_hora_recurrente_minuto: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 			return false;
 		}
@@ -4370,6 +4383,7 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion IntentaChecarDiaDescanso store procedure sp_valida_checada_dia_descanso: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		finally{
@@ -4391,6 +4405,7 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion obtener_checadas_dia_dobla store procedure sp_valida_cantidad_de_checadas_en_dia_dobla: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		finally{
@@ -4412,6 +4427,7 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion valida_si_dobla_y_esta_saliendo_a_comer store procedure sp_valida_checadas_vs_dia_dobla: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		finally{
@@ -4493,6 +4509,7 @@ public class BuscarSQL {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Obj_Horarios store procedure sp_select_horarios: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -4508,17 +4525,15 @@ public class BuscarSQL {
 		boolean existe = false;
 		Statement s;
 		ResultSet rs;
-		
 		try {				
 			s = con.conexion().createStatement();
 			rs = s.executeQuery(query);
-			
 			while(rs.next()){
 				existe = Boolean.parseBoolean(rs.getString("Existe").trim());
 			}
-			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion HorarioExiste store procedure sp_folio_horario: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 			
 		return existe;
@@ -4537,6 +4552,7 @@ public class BuscarSQL {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Obj_Horarios store procedure select max(folio) as 'Maximo' from tb_horarios: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -4663,6 +4679,49 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 	}
+	
+	public void Generar_2_Gafetes(String listas) throws SQLException{
+		String insertIds = "exec sp_insert_ids_2 "+listas.substring(0, listas.length()-1)+";";
+		System.out.println(listas.substring(0, listas.length()-1));
+		String query =  "exec sp_genera_clave_checador_2_gafetes "+listas.substring(0, listas.length()-1)+";";
+
+		Statement stmt = null;
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(insertIds);
+			pstmt.execute();
+			con.commit();
+			
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j = 1;
+			while(rs.next()){
+				new Obj_Gen_Code_Bar().Generar_Code(rs.getString("codigo"),j+"".trim());
+				File photo = new File(System.getProperty("user.dir")+"/AssetGafete/Users_Images/"+j+".png");
+				FileOutputStream fos = new FileOutputStream(photo);
+
+				byte[] buffer = new byte[1];
+		            InputStream is = rs.getBinaryStream("foto");
+		            while (is.read(buffer) > 0) {
+		                fos.write(buffer);
+		            }
+		            fos.close();
+		    	j++;
+		           
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+	}
+	
 	
 	public String[][] tabla_libre_jerarquico(String nomgbre){
 		String datos = "exec sp_select_tabla_alimentacion_jerarquico_libre '"+nomgbre+"';";

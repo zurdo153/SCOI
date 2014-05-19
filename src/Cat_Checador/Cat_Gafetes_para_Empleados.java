@@ -10,12 +10,14 @@ import java.awt.event.KeyListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -25,12 +27,19 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Reportes.Cat_Impresion_De_Gafetes;
-import Cat_Reportes.Cat_Impresion_De_Gafetes_2;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+
+
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Checador.Obj_Gen_Code_Bar;
 import Obj_Checador.Obj_Reporte_Impresion_Gafetes;
@@ -114,17 +123,49 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 			new Obj_Gen_Code_Bar().Reset_Code();
 			new Obj_Gen_Code_Bar().Reset_Users();
 			new Obj_Reporte_Impresion_Gafetes().buscar_masivo(list_folios().trim());
-			new Cat_Impresion_De_Gafetes();
+			Impresion_De_4_Gafetes();
 		}
 	};
+	public void Impresion_De_4_Gafetes() {
+		try {
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Impresion_De_4_Gafetes.jrxml");
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
+			JasperViewer.viewReport(print, false);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	
 	ActionListener op_generar_2 = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			new Obj_Gen_Code_Bar().Reset_Code();
 			new Obj_Gen_Code_Bar().Reset_Users();
-			new Obj_Reporte_Impresion_Gafetes().buscar_masivo(list_folios().trim());
-			new Cat_Impresion_De_Gafetes_2();
+			buscar_2_gafetes(list_folios().trim());
+			 Impresion_De_2_Gafetes();
 		}
 	};
+	
+	public void buscar_2_gafetes(String lista){
+		try {
+			new BuscarSQL().Generar_2_Gafetes(lista);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void Impresion_De_2_Gafetes() {
+		try {
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Impresion_De_2_Gafetes.jrxml");
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
+			JasperViewer.viewReport(print, false);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
 
 	public String list_folios(){
 		String lista = "";
@@ -136,11 +177,13 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 		return lista;
 	}
 
+	
 	ActionListener op_filtro = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			new Cat_Filtro_Empleado().setVisible(true);
 		}
 	};
+	
 	class Cat_Filtro_Empleado extends JFrame {
 
 		Container cont = getContentPane();
@@ -512,5 +555,9 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 			public void keyReleased(KeyEvent e){}
 									
 		};
+	}
+	public static void main(String argStrings[]){
+		
+		new Cat_Gafetes_para_Empleados().setVisible(true);
 	}
 }

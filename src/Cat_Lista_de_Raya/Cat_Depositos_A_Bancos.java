@@ -35,6 +35,7 @@ import net.sf.jasperreports.view.JasperViewer;
 
 import Cat_IZAGAR.Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos;
 import Cat_IZAGAR.Cat_IZAGAR_Selecionar_Nomina_Para_Netos;
+import Cat_Reportes.Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos;
 import Cat_Reportes.Cat_Reporte_Depositos_A_Bancos;
 import Conexiones_SQL.Connexion;
 import IZAGAR_Obj.Obj_IZAGAR_Netos_Nominas;
@@ -57,10 +58,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	public static DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Depositos_A_Bancos().get_tabla_model(),
             new String[]{"Folio", "Nombre Completo", "Establecimientos", "Banamex", "Banorte", "Total a Pagar" }
 			){
-//		@SuppressWarnings({ "unchecked", "rawtypes" })
-//		public Class getColumnClass(int columnIndex) {
-//			return types[columnIndex];
-//		}
+
         public boolean isCellEditable(int fila, int columna){
         	switch(columna){
         		case 0 : return false; 
@@ -102,6 +100,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	JButton btn_cargar_nomina = new JButton();
 	JButton btn_IDepositosBancLimpio  = new JButton();
 	JButton btn_IDepositosBancP_Estab = new JButton();
+	JButton btn_EmpleadosS_Dep = new JButton ();
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(tabla_model); 
@@ -124,6 +123,8 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.panel.add(new JLabel("Imprimir Reporte Para Exportar a Excel")).setBounds(1150,270,250,20);
 		this.panel.add(btn_IDepositosBancP_Estab).setBounds(1085,310,40,40);
 		this.panel.add(new JLabel("Imprimir Reporte Por Establecimiento")).setBounds(1150,320,250,20);
+		this.panel.add(btn_EmpleadosS_Dep).setBounds(1085,360,40,40);
+		this.panel.add(new JLabel("Reportes de Empleados Sin Depositos A Bancos")).setBounds(1150,370,300,20);
 		
 		this.panel.add(new JLabel("Total Banamex:")).setBounds(1080,70,100,20);
 		this.panel.add(txtBanamex).setBounds(1160,70,120,20);
@@ -150,6 +151,9 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	    ImageIcon imagCompleto = new ImageIcon(System.getProperty("user.dir")+"/Iconos/hoja-de-calculo-excel-invoice-icono-5449-48.png");
 	    btn_IDepositosBancP_Estab.setIcon(new ImageIcon(imagCompleto.getImage().getScaledInstance(btn_lay_out.getWidth()-4,btn_lay_out.getHeight()-4, Image.SCALE_DEFAULT)));	
 	    
+	    ImageIcon imagempleadoSinBanco = new ImageIcon(System.getProperty("user.dir")+"/Imagen/usuario-de-alerta-icono-4069-64.png");
+	    btn_EmpleadosS_Dep.setIcon(new ImageIcon(imagempleadoSinBanco.getImage().getScaledInstance(btn_lay_out.getWidth()-4,btn_lay_out.getHeight()-4, Image.SCALE_DEFAULT)));
+	    
 		this.txtTotales.setEditable(false);
 		this.txtTotales.setFont(new Font("",0,14));
 		
@@ -162,6 +166,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.btn_cargar_nomina.addActionListener(op_123);
 		this.btn_IDepositosBancLimpio.addActionListener(Reporte_Depositos_Bancos_limpio);
 		this.btn_IDepositosBancP_Estab.addActionListener(Reporte_Depositos_Bancos_);
+		this.btn_EmpleadosS_Dep.addActionListener(Reporte_Empleados_Sin_Depositos_A_Bancos_);
 		
 		this.btn_refrescar.setVisible(false);
 			
@@ -523,7 +528,13 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	
 	ActionListener Reporte_Depositos_Bancos_ = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				new Cat_Reporte_Depositos_A_Bancos();
+				new Cat_Reporte_Depositos_A_Bancos().setVisible(true);
+		}
+	};
+	
+	ActionListener Reporte_Empleados_Sin_Depositos_A_Bancos_ = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+				new Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos().setVisible(true);
 		}
 	};
 	

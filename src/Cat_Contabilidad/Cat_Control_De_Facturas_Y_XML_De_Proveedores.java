@@ -2,6 +2,7 @@ package Cat_Contabilidad;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,9 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -59,15 +59,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	
 	Connexion con = new Connexion();
 	
-//	DefaultTableModel modelo       = new DefaultTableModel(0,7)	{
-//		public boolean isCellEditable(int fila, int columna){
-//			if(columna < 0)
-//				return true;
-//			return false;
-//		}
-//	};
-//	JTable tabla = new JTable(modelo);
-//	JScrollPane panelScroll = new JScrollPane(tabla);
+
 
 	
 	DefaultTableModel modelo = new DefaultTableModel(null,
@@ -96,14 +88,17 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
         	 	case 4 : return false;
         	 	case 5 : return false;
         	 	case 6 : return true;
+        	 	
         	 } 				
  			return false;
  		}
+
 	};
+	
 	
     JTable tabla = new JTable(modelo);
     JScrollPane scrollAsignado = new JScrollPane(tabla);
-	JTextField txtFolioFiltro = new JTextField();
+	JTextField txtFoliofacturaFiltro = new JTextField();
 	JTextField txtProveedorFiltro = new JTextField();
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
@@ -121,11 +116,14 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	JButton btnDeshacer = new JButton("Deshacer");
 	JButton btnGuardar = new JButton("Guardar");
 	JButton btnEditar = new JButton("Editar");
-	JButton btnNuevo = new JButton("Agregar");
+	JButton btnNuevo = new JButton("Nuevo");
+	JButton btnRecibido = new JButton("Recibido");
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
-
 	String folio_factura_editada=""; 
+	String cod_prvrecibido = " ";
+	String cod_factura_recibido  = "";
+	String proveedor_recibido ="";
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Control_De_Facturas_Y_XML_De_Proveedores(String folio, String proveedor){
@@ -136,63 +134,69 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
-		txtFolioFiltro.setToolTipText("Filtro Por Cod. Prov");
+		txtFoliofacturaFiltro.setToolTipText("Filtro Por Folio de Factura del Proveedor");
 		txtProveedorFiltro.setToolTipText("Filtro Por Proveedor");
-		panel.add(txtFolioFiltro).setBounds(20,175,50,20);
-		panel.add(txtProveedorFiltro).setBounds(70,175,210,20);
-		panel.add(getPanelTabla()).setBounds(20,200,720,520);
+		panel.add(txtFoliofacturaFiltro).setBounds(20,153,50,20);
+		panel.add(txtProveedorFiltro).setBounds(70,153,205,20);
+		panel.add(getPanelTabla()).setBounds(20,175,720,520);
 				
-		panel.add(chStatus).setBounds(360,30,60,20);
-		chStatus.setEnabled(true);
-		
-		panel.add(new JLabel("Folio Factura:")).setBounds(20,30,100,20);
-		panel.add(txtFolioFactura).setBounds(105,30,250,20);
-		txtFolioFactura.setEditable(false);
-				
-		panel.add(new JLabel("Fecha Factura:")).setBounds(20,60,100,20);
-		panel.add(txtFecha).setBounds(105,60,250,20);
-		txtFecha.setEnabled(false);
-		
-		panel.add(new JLabel("Cod. Proveedor:")).setBounds(20,90,100,20);
-		panel.add(txtFolioProveedor).setBounds(105,90,250,20);
+//		panel.add(chStatus).setBounds(360,150,60,20);
+//		chStatus.setEnabled(true);
+//		
+		panel.add(new JLabel("Cod. Proveedor:")).setBounds(20,30,100,20);
+		panel.add(txtFolioProveedor).setBounds(105,30,270,20);
 		txtFolioProveedor.setEditable(false);
 		txtFolioProveedor.setText(folio);
 		
-		panel.add(new JLabel("Nom. Proveedor:")).setBounds(20,120,100,20);
-		panel.add(txtProveedor).setBounds(105,120,250,20);
+		panel.add(new JLabel("Nom. Proveedor:")).setBounds(20,60,100,20);
+		panel.add(txtProveedor).setBounds(105,60,270,20);
 		txtProveedor.setEditable(false);
 		txtProveedor.setText(proveedor);
 		
-		panel.add(btnCambProveedorr).setBounds(440,30,170,20);
-		panel.add(btnNuevo).setBounds(620,30,100,20);
-		panel.add(btnEditar).setBounds(440,60,80,20);
-		panel.add(btnDeshacer).setBounds(540,60,80,20);
-		panel.add(btnGuardar).setBounds(640,60,80,20);
+		panel.add(new JLabel("Folio Factura:")).setBounds(390,30,80,20);
+		panel.add(txtFolioFactura).setBounds(470,30,270,20);
+		txtFolioFactura.setEditable(false);
+				
+		panel.add(new JLabel("Fecha Factura:")).setBounds(390,60,80,20);
+		panel.add(txtFecha).setBounds(470,60,270,20);
+		txtFecha.setEnabled(false);
+		
+		panel.add(btnCambProveedorr).setBounds(105,90,170,20);
+		
+		panel.add(btnEditar).setBounds(300,90,80,20);
+		
+		panel.add(btnNuevo).setBounds(470,90,80,20);
+		panel.add(btnDeshacer).setBounds(565,90,80,20);
+		panel.add(btnGuardar).setBounds(660,90,80,20);
+		
+		panel.add(btnRecibido).setBounds(640,153,80,20);
+		
 
 		btnEditar.setEnabled(false);
 		btnGuardar.setEnabled(false);
+		btnRecibido.setEnabled(false);
 		
 		btnCambProveedorr.setToolTipText("<F2> Tecla Directa");
 		btnEditar.setToolTipText("<ENTER> Despues De Selecionar 1 de La Tabla");
 		btnDeshacer.setToolTipText("<ESC> Tecla Directa");
-		btnGuardar.setToolTipText("<F12> Tecla Directa");
+		btnGuardar.setToolTipText("<CTRL+G> Tecla Directa");
+		btnRecibido.setToolTipText("<CTRL+R> Guardar Como Recibido la Factura Selecionada");
 		
 		btnGuardar.addActionListener(guardar);
 		btnCambProveedorr.addActionListener(Cambio_de_Proveedor);
 		btnDeshacer.addActionListener(deshacer);
 		btnNuevo.addActionListener(nuevo);
 		btnEditar.addActionListener(editar);
+		btnRecibido.addActionListener(OpAgregar);
 
 //     autofiltros de la tabla
-		txtFolioFiltro.addKeyListener(opFiltroFolio);
+		txtFoliofacturaFiltro.addKeyListener(opFiltroFolio);
 		txtProveedorFiltro.addKeyListener(opFiltroNombre);
 		tabla.addMouseListener(opTablaFiltroSeleccion);
 		seleccionar_click(tabla);
 		
-		
 		txtFolioFactura.addKeyListener(enterpasarafecha);
-		txtFecha.addKeyListener(enter_volver_folio_factura);
-		
+
 		
 //      asigna el foco al JTextField folio_factura al arrancar la ventana y agrega al proveedor como nuevo
         this.addWindowListener(new WindowAdapter() {
@@ -213,17 +217,24 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
           	    }
         });
         
-        ///guardar con f12
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+        ///guardar con control+G
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
              getRootPane().getActionMap().put("guardar", new AbstractAction(){
                  public void actionPerformed(ActionEvent e)
                  {                 	    btnGuardar.doClick();
                	    }
              });
              
-             ///guardar con f12
-             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+       ///recibido de factura  con control+R
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_R,Event.CTRL_MASK),"recibido");
+             getRootPane().getActionMap().put("recibido", new AbstractAction(){
+                 public void actionPerformed(ActionEvent e)
+                  {                 	    btnRecibido.doClick();
+                  	    }
+                  });
+             
+             ///deshacer con escape
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                      KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
                   getRootPane().getActionMap().put("escape", new AbstractAction(){
                       public void actionPerformed(ActionEvent e)
@@ -233,7 +244,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
              
         
         this.cont.add(panel);
-		this.setSize(760,768);
+		this.setSize(765,740);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -241,76 +252,169 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	}
 
 	private JScrollPane getPanelTabla()	{		
-
-		tabla.getColumnModel().getColumn(0).setHeaderValue("Cod. P");
-		tabla.getColumnModel().getColumn(0).setMaxWidth(50);
-		tabla.getColumnModel().getColumn(0).setMinWidth(90);
-		tabla.getColumnModel().getColumn(1).setHeaderValue("Proveedor");
-		tabla.getColumnModel().getColumn(1).setMaxWidth(460);
-		tabla.getColumnModel().getColumn(1).setMinWidth(140);
-		tabla.getColumnModel().getColumn(2).setHeaderValue("Factura");
-		tabla.getColumnModel().getColumn(2).setMaxWidth(350);
-		tabla.getColumnModel().getColumn(2).setMinWidth(90);
-		tabla.getColumnModel().getColumn(3).setHeaderValue("Fecha Factura");
-		tabla.getColumnModel().getColumn(3).setMaxWidth(100);
-		tabla.getColumnModel().getColumn(3).setMinWidth(60);
-		tabla.getColumnModel().getColumn(4).setHeaderValue("Fecha Ult Mod");
-		tabla.getColumnModel().getColumn(4).setMaxWidth(100);
-		tabla.getColumnModel().getColumn(4).setMinWidth(60);
-		tabla.getColumnModel().getColumn(5).setHeaderValue("Modifico");
-		tabla.getColumnModel().getColumn(5).setMaxWidth(350);
-		tabla.getColumnModel().getColumn(5).setMinWidth(90);
-		tabla.getColumnModel().getColumn(6).setHeaderValue("");
-		tabla.getColumnModel().getColumn(6).setMaxWidth(18);
-		tabla.getColumnModel().getColumn(6).setMinWidth(18);
-		
-		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-		tcr.setHorizontalAlignment(SwingConstants.LEFT);
-		
-		tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(1).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(2).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(3).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(4).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(5).setCellRenderer(tcr);
-		
-		TableCellRenderer render = new TableCellRenderer() 
-		{ 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-		
-				if(row%2==0){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-			return lbl; 
-			} 
-		}; 
-						tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
+	
+	tabla.getColumnModel().getColumn(0).setMaxWidth(50);
+	tabla.getColumnModel().getColumn(0).setMinWidth(90);
+	tabla.getColumnModel().getColumn(1).setMaxWidth(460);
+	tabla.getColumnModel().getColumn(1).setMinWidth(140);
+	tabla.getColumnModel().getColumn(2).setMaxWidth(350);
+	tabla.getColumnModel().getColumn(2).setMinWidth(90);
+	tabla.getColumnModel().getColumn(3).setMaxWidth(100);
+	tabla.getColumnModel().getColumn(3).setMinWidth(60);
+	tabla.getColumnModel().getColumn(4).setMaxWidth(100);
+	tabla.getColumnModel().getColumn(4).setMinWidth(60);
+	tabla.getColumnModel().getColumn(5).setMaxWidth(350);
+	tabla.getColumnModel().getColumn(5).setMinWidth(90);
+	tabla.getColumnModel().getColumn(6).setMaxWidth(17);
+	tabla.getColumnModel().getColumn(6).setMinWidth(17);
+	
+	TableCellRenderer render = new TableCellRenderer() { 
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+		boolean hasFocus, int row, int column) { 
+			
+			Component componente = null;
+			
+			switch(column){
+				case 0: 
+					componente = new JLabel(value == null? "": value.toString());
+					if(row %2 == 0){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(177,177,177));	
+					}
+					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					if(table.getSelectedRow() == row){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+					break;
+				case 1: 
+					componente = new JLabel(value == null? "": value.toString());
+					if(row %2 == 0){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(177,177,177));	
+					}
+					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					if(table.getSelectedRow() == row){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+					break;
+				case 2: 
+					componente = new JLabel(value == null? "": value.toString());
+					if(row %2 == 0){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(177,177,177));	
+					}
+					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					if(table.getSelectedRow() == row){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+					break;
+				case 3: 
+					componente = new JLabel(value == null? "": value.toString());
+					if(row %2 == 0){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(177,177,177));	
+					}
+					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					if(table.getSelectedRow() == row){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+					break;
+				case 4: 
+					componente = new JLabel(value == null? "": value.toString());
+					if(row %2 == 0){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(177,177,177));	
+					}
+					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					if(table.getSelectedRow() == row){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+					break;
+				case 5: 
+					componente = new JLabel(value == null? "": value.toString());
+					if(row %2 == 0){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(177,177,177));	
+					}
+					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					if(table.getSelectedRow() == row){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+					break;
+				case 6: 
+					componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
+					if(row%2==0){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(177,177,177));	
+					}
+					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					if(table.getSelectedRow() == row){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
+					break;
+			}
+			return componente;
+		} 
+	}; 
+	
+		            	tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
 						tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
 						tabla.getColumnModel().getColumn(2).setCellRenderer(render);
 						tabla.getColumnModel().getColumn(3).setCellRenderer(render);
 						tabla.getColumnModel().getColumn(4).setCellRenderer(render);
 						tabla.getColumnModel().getColumn(5).setCellRenderer(render);
-
-						
+						tabla.getColumnModel().getColumn(6).setCellRenderer(render);
 		Statement s;
 		ResultSet rs;
 		try {
 			s = con.conexion().createStatement();
 			rs = s.executeQuery("SELECT cod_prv,proveedor,folio_factura,convert (varchar(20),[fecha_factura],103)as fecha_factura,convert(varchar(20),[fecha_modificacion],103)as fecha_modificacion "+
-				                        ",(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico,Status FROM tb_control_de_facturas_y_xml");
+				                        ",(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico,Status FROM tb_control_de_facturas_y_xml where status=1");
 			while (rs.next())
 			{ 
-			   String [] fila = new String[6];
+			   String [] fila = new String[7];
 			   fila[0] = rs.getString(1).trim();
 			   fila[1] = rs.getString(2).trim();
 			   fila[2] = rs.getString(3).trim(); 
 			   fila[3] = rs.getString(4).trim(); 
 			   fila[4] = rs.getString(5).trim(); 
 			   fila[5] = rs.getString(6).trim(); 
-			   
+			   fila[6] = "false";
 			   modelo.addRow(fila); 
 			}	
 		} catch (SQLException e1) {
@@ -324,19 +428,17 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	private void seleccionar_click(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-	        	if(e.getClickCount()==1){
+	        	if(e.getClickCount()==2){
 					        	    	int fila = tabla.getSelectedRow();
 					          	    	Object id = tabla.getValueAt(fila,2);
 				
 					        		    txtFolioFactura.setText(id.toString().trim());
-					        		    
 										try {
 											Date fecha = new SimpleDateFormat("dd/mm/yyyy").parse(tabla.getValueAt(fila,3).toString().trim());
 											txtFecha.setDate(fecha);
 										} catch (ParseException e1) {
 											e1.printStackTrace();
 										}
-										
 										txtFolioProveedor.setText(tabla.getValueAt(fila,0).toString().trim());
 										txtProveedor.setText(tabla.getValueAt(fila,1).toString().trim());
 										folio_factura_editada=id.toString().trim();
@@ -350,104 +452,275 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
         });
     }
 	
+//	ActionListener guardar = new ActionListener(){
+//		public void actionPerformed(ActionEvent e){
+//			if(txtFolioFactura.getText().equals("")){
+//				JOptionPane.showMessageDialog(null, "El folio es requerido \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//			}else{	
+//		       Obj_Proveedores proveedor = new Obj_Proveedores().buscar(txtFolioFactura.getText().toUpperCase().trim(),txtFolioProveedor.getText().toUpperCase().trim()) ;
+//
+//		       if(proveedor.getFolio_factura().equals(txtFolioFactura.getText().toUpperCase().trim())){
+//		    	    if(folio_factura_editada.equals("")){
+//		   			JOptionPane.showMessageDialog(null, "La Factura con el Proveedor Selecionado Ya Existe, \n Si Desea Modificarla Seleccionela de la tabla inferior y Editela", "Avisa al Administrador", JOptionPane.WARNING_MESSAGE);
+//		    		   return;
+//     		       }else{
+//				
+//					if(JOptionPane.showConfirmDialog(null, "La Factura En El Proveedor Ya Existe, ¿Desea Actualizarla?") == 0){
+//						
+//						if(validaCampos()!="") {
+//							JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//							return;
+//						}else{
+//							
+//							proveedor.setFolio_factura(txtFolioFactura.getText().toUpperCase().trim());
+//							proveedor.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFecha.getDate()));
+//							proveedor.setCod_prv(txtFolioProveedor.getText().toUpperCase().trim());
+//							proveedor.setProveedor(txtProveedor.getText().toUpperCase().trim());
+//
+//						}
+//						if(proveedor.actualizar(folio_factura_editada)){
+//							
+//							while(tabla.getRowCount()>0){
+//								modelo.removeRow(0);  }
+//	                    Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
+//	                    String[] fila = new String[7];
+//	                            for(int i=0; i<lista_proveedores.length; i++){
+//	                                    fila[0] = lista_proveedores[i][0]+"";
+//	                                    fila[1] = lista_proveedores[i][1]+"";
+//	                                    fila[2] = lista_proveedores[i][2]+"";
+//	                                    fila[3] = lista_proveedores[i][3]+"";
+//	                                    fila[4] = lista_proveedores[i][4]+"";
+//	                                    fila[5] = lista_proveedores[i][5]+"";
+//	                                    fila[6] = "false";
+//	                                    modelo.addRow(fila);}
+//						JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+//						}else{
+//							JOptionPane.showMessageDialog(null,"Error al Actualizar","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//							return;
+//						}					
+//						}else{
+//						return;
+//					}}
+//				}else{
+//					if(validaCampos()!="") {
+//						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//						return;
+//					}else{
+//						proveedor.setFolio_factura(txtFolioFactura.getText().toUpperCase().trim());
+//						proveedor.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFecha.getDate()));
+//						proveedor.setCod_prv(txtFolioProveedor.getText().toUpperCase().trim());
+//						proveedor.setProveedor(txtProveedor.getText().toUpperCase().trim());
+//						btnRecibido.setEnabled(true);
+//						txtFolioFactura.setText("");
+//						txtFolioFactura.requestFocus();
+//                       if(proveedor.guardar()){
+//							while(tabla.getRowCount()>0){
+//								modelo.removeRow(0);  }
+//			                    Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
+//			                    String[] fila = new String[7];
+//			                            for(int i=0; i<lista_proveedores.length; i++){
+//			                                    fila[0] = lista_proveedores[i][0]+"";
+//			                                    fila[1] = lista_proveedores[i][1]+"";
+//			                                    fila[2] = lista_proveedores[i][2]+"";
+//			                                    fila[3] = lista_proveedores[i][3]+"";
+//			                                    fila[4] = lista_proveedores[i][4]+"";
+//			                                    fila[5] = lista_proveedores[i][5]+"";
+//			                                    fila[6] = "false";
+//			                                    modelo.addRow(fila);}
+//			                            
+//						JOptionPane.showMessageDialog(null,"El registró se Guardo Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+//						}else{
+//							JOptionPane.showMessageDialog(null,"Error al Guardar","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//							return;
+//                            }
+//					}
+//				}
+//			}			
+//		}
+//	};
+	
+	
 	ActionListener guardar = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			if(txtFolioFactura.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "El folio es requerido \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-			}else{	
-		       Obj_Proveedores proveedor = new Obj_Proveedores().buscar(txtFolioFactura.getText().toUpperCase().trim(),txtFolioProveedor.getText().toUpperCase().trim()) ;
-
-		       if(proveedor.getFolio_factura().equals(txtFolioFactura.getText().toUpperCase().trim())){
-		    	   if(folio_factura_editada.equals("")){
-		   			JOptionPane.showMessageDialog(null, "La Factura con el Proveedor Selecionado Ya Existe, \n Si Desea Modificarla Seleccionela de la tabla inferior y Editela", "Avisa al Administrador", JOptionPane.WARNING_MESSAGE);
-		    		   return;
-     		       }else{
-				
-					if(JOptionPane.showConfirmDialog(null, "La Factura En El Proveedor Ya Existe, ¿Desea Actualizarla?") == 0){
-						
-						if(validaCampos()!="") {
-							JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-							return;
-						}else{
-							
-							proveedor.setFolio_factura(txtFolioFactura.getText().toUpperCase().trim());
-							proveedor.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFecha.getDate()));
-							proveedor.setCod_prv(txtFolioProveedor.getText().toUpperCase().trim());
-							proveedor.setProveedor(txtProveedor.getText().toUpperCase().trim());
-
-						}
-						if(proveedor.actualizar(folio_factura_editada)){
-							
-							while(tabla.getRowCount()>0){
-								modelo.removeRow(0);  }
-	                    Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
-	                    String[] fila = new String[6];
-	                            for(int i=0; i<lista_proveedores.length; i++){
-	                                    fila[0] = lista_proveedores[i][0]+"";
-	                                    fila[1] = lista_proveedores[i][1]+"";
-	                                    fila[2] = lista_proveedores[i][2]+"";
-	                                    fila[3] = lista_proveedores[i][3]+"";
-	                                    fila[4] = lista_proveedores[i][4]+"";
-	                                    fila[5] = lista_proveedores[i][5]+"";
-//	                                    fila[6] = lista_proveedores[i][6]+"";
-	                                    modelo.addRow(fila);}
-						JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
-						}else{
-							JOptionPane.showMessageDialog(null,"Error al Actualizar","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-							return;
-						}					
-						}else{
-						return;
-					}}
-				}else{
-					if(validaCampos()!="") {
-						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-						return;
-					}else{
-						
-						System.out.println("Recibio Informacion GUARDADO");
-						proveedor.setFolio_factura(txtFolioFactura.getText().toUpperCase().trim());
-						proveedor.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFecha.getDate()));
-						proveedor.setCod_prv(txtFolioProveedor.getText().toUpperCase().trim());
-						proveedor.setProveedor(txtProveedor.getText().toUpperCase().trim());
-						txtFolioFactura.setText("");
-						txtFolioFactura.requestFocus();
-                       if(proveedor.guardar()){
-							while(tabla.getRowCount()>0){
-								modelo.removeRow(0);  }
-			                    Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
-			                    String[] fila = new String[6];
-			                            for(int i=0; i<lista_proveedores.length; i++){
-			                                    fila[0] = lista_proveedores[i][0]+"";
-			                                    fila[1] = lista_proveedores[i][1]+"";
-			                                    fila[2] = lista_proveedores[i][2]+"";
-			                                    fila[3] = lista_proveedores[i][3]+"";
-			                                    fila[4] = lista_proveedores[i][4]+"";
-			                                    fila[5] = lista_proveedores[i][5]+"";
-//			                                    fila[6] = false+"";
-			                                    modelo.addRow(fila);}
-			                            
-						JOptionPane.showMessageDialog(null,"El registró se Guardo Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
-						}else{
-							JOptionPane.showMessageDialog(null,"Error al Guardar","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-							return;
-                            }
-					}
-				}
-			}			
-		}
-	};
+	public void actionPerformed(ActionEvent e){
+		
+	    if(validaCampos()!="") {
+	    	                     JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+			                   	 return;
+	    } else{
+			    Obj_Proveedores proveedor = new Obj_Proveedores().buscar(txtFolioFactura.getText().toUpperCase().trim(),txtFolioProveedor.getText().toUpperCase().trim()) ;
+			    System.out.println("txtfactura"+txtFolioFactura.getText().toUpperCase().trim());
+			    System.out.println("objeto proveedor:"+proveedor.getFolio_factura() );
+							            
+			                            if(proveedor.getFolio_factura().equals(txtFolioFactura.getText().toUpperCase().trim())){
+			                            	System.out.println("Status"+proveedor.getStatus());
+			                            	      if(proveedor.getStatus().equals(false)){
+			                            		 	    JOptionPane.showMessageDialog(null, "La Factura con el Proveedor Selecionado Ya Existe con Status de Recibida \n  no puede haber dos facturas con el mismo folio del mismo proveedor", "Aviso", JOptionPane.WARNING_MESSAGE);
+			                            	      }else{ 
+												 	    JOptionPane.showMessageDialog(null, "La Factura con el Proveedor Selecionado Ya Existe con Status de No Recibida \n  En caso de Desear Modificarla Seleccionela de la tabla inferior y Editela", "Aviso", JOptionPane.WARNING_MESSAGE);
+											      return; }
+										}else{
+											      if(folio_factura_editada!=""){
+														if(JOptionPane.showConfirmDialog(null, "Esta Seguro de guardar los cambios en la factura:"+folio_factura_editada+" \n  del proveedor:"+txtFolioFactura.getText().toUpperCase().trim()) == 0){
+																				proveedor.setFolio_factura(txtFolioFactura.getText().toUpperCase().trim());
+																				proveedor.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFecha.getDate()));
+																				proveedor.setCod_prv(txtFolioProveedor.getText().toUpperCase().trim());
+																				proveedor.setProveedor(txtProveedor.getText().toUpperCase().trim());
+																				proveedor.setStatus(chStatus.isSelected());
+																				
+																	if(proveedor.actualizar(folio_factura_editada)){
+																	        	while(tabla.getRowCount()>0){	
+																			              modelo.removeRow(0);  }
+															                    Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
+															                    String[] fila = new String[7];
+															                            for(int i=0; i<lista_proveedores.length; i++){
+															                                    fila[0] = lista_proveedores[i][0]+"";
+															                                    fila[1] = lista_proveedores[i][1]+"";
+															                                    fila[2] = lista_proveedores[i][2]+"";
+															                                    fila[3] = lista_proveedores[i][3]+"";
+															                                    fila[4] = lista_proveedores[i][4]+"";
+															                                    fila[5] = lista_proveedores[i][5]+"";
+															                                    fila[6] = "false";
+															                                    modelo.addRow(fila);}
+															                      btnDeshacer.doClick(); 
+																    	JOptionPane.showMessageDialog(null,"El registró se actualizó correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+																	}else{
+																		JOptionPane.showMessageDialog(null,"Error al Actualizar la Factura","Avise al Administrador del Sistema", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+																		return;
+																	}					
+																	}else{
+																	return;}
+											       }else{
+																proveedor.setFolio_factura(txtFolioFactura.getText().toUpperCase().trim());
+						  									    proveedor.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFecha.getDate()));
+																proveedor.setCod_prv(txtFolioProveedor.getText().toUpperCase().trim());
+											  				    proveedor.setProveedor(txtProveedor.getText().toUpperCase().trim());
+									                   if(proveedor.guardar()){
+														       while(tabla.getRowCount()>0){
+															      modelo.removeRow(0);  }
+														       Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
+									 	                        String[] fila = new String[7];
+												                for(int i=0; i<lista_proveedores.length; i++){
+												                               fila[0] = lista_proveedores[i][0]+"";
+												                               fila[1] = lista_proveedores[i][1]+"";
+													                           fila[2] = lista_proveedores[i][2]+"";
+													                           fila[3] = lista_proveedores[i][3]+"";
+													                           fila[4] = lista_proveedores[i][4]+"";
+													                           fila[5] = lista_proveedores[i][5]+"";
+													                           fila[6] = "false";
+													                       modelo.addRow(fila);}
+																      txtFolioFactura.setText("");
+																      txtFolioFactura.requestFocus();
+                                                                      btnRecibido.setEnabled(false); 
+                                                                      
+																JOptionPane.showMessageDialog(null,"El registró se Guardo Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+														}else{
+														  JOptionPane.showMessageDialog(null,"Error al Guardar","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+														return;}
+											       }
+										  	 }
+			                         }
+		                       }			
+};
 	
 	private String validaCampos(){
 		String error="";
-		
 		String fechanull = txtFecha.getDate()+"";
-		
 		if(txtFolioFactura.getText().equals("")) error+="Folio Factura\n";
 		if(fechanull.equals("null")) 			error+= "Fecha de Factura\n";
 		if(txtProveedor.getText().equals(""))		error+= "Proveedor\n";
 		return error;
-	}
+	};
+	
+ 	ActionListener OpAgregar = new ActionListener() {
+		@SuppressWarnings("unused")
+		public void actionPerformed(ActionEvent e) {
+			
+			if(JOptionPane.showConfirmDialog(null,"De El Proveedor:"+proveedor_recibido+" La Factura:"+cod_factura_recibido+" \n Va Hacer Marcada Como Recibida: Confirmar?") == 0){
+				boolean proveedorr = new Obj_Proveedores().marcar_recibido_factura(cod_prvrecibido.trim(), cod_factura_recibido.trim());
+				
+			while(tabla.getRowCount()>0){
+					modelo.removeRow(0);  }
+            Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
+            String[] fila = new String[7];
+                    for(int i=0; i<lista_proveedores.length; i++){
+                            fila[0] = lista_proveedores[i][0]+"";
+                            fila[1] = lista_proveedores[i][1]+"";
+                            fila[2] = lista_proveedores[i][2]+"";
+                            fila[3] = lista_proveedores[i][3]+"";
+                            fila[4] = lista_proveedores[i][4]+"";
+                            fila[5] = lista_proveedores[i][5]+"";
+                            fila[6] = "false";
+                            modelo.addRow(fila);}
+			JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+			}else{
+				JOptionPane.showMessageDialog(null,"Se Cancelo La Marcacion De La Factura","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				return;
+			}					
+		}
+	};
+	
+	ActionListener deshacer = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			txtFolioFactura.setText("");
+			txtFolioFactura.setEditable(false);
+			txtFecha.setDate(null);
+			txtFecha.setEnabled(false);
+			btnNuevo.setEnabled(true);
+			btnGuardar.setEnabled(false);
+			btnEditar.setEnabled(false);
+			chStatus.setSelected(true);
+			folio_factura_editada="";
+            btnRecibido.setEnabled(false);
+			
+			while(tabla.getRowCount()>0){
+				modelo.removeRow(0);  }
+        Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
+        String[] fila = new String[7];
+                for(int i=0; i<lista_proveedores.length; i++){
+                        fila[0] = lista_proveedores[i][0]+"";
+                        fila[1] = lista_proveedores[i][1]+"";
+                        fila[2] = lista_proveedores[i][2]+"";
+                        fila[3] = lista_proveedores[i][3]+"";
+                        fila[4] = lista_proveedores[i][4]+"";
+                        fila[5] = lista_proveedores[i][5]+"";
+                        fila[6] = "false";
+                        modelo.addRow(fila);}
+		}
+	};
+	
+	ActionListener Cambio_de_Proveedor = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+		    btnDeshacer.doClick();
+		    dispose();
+			new Cat_Control_De_Facturas_De_Proveedores().setVisible(true);
+		}
+	};
+	
+	ActionListener nuevo = new ActionListener(){
+		public void actionPerformed(ActionEvent e) {
+			    txtFolioFactura.setText("");
+			    txtFecha.setDate(null);
+			    chStatus.setSelected(true);
+			    txtFecha.setEnabled(true);
+			   	txtFolioFactura.setEditable(true);
+				txtFolioFactura.requestFocus();
+				btnGuardar.setEnabled(true); 
+				btnEditar.setEnabled(false);
+				btnNuevo.setEnabled(false);
+				folio_factura_editada="";
+		}
+	};
+	
+	ActionListener editar = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			btnGuardar.setEnabled(true);
+			txtFolioFactura.setEditable(true);
+			txtFecha.setEnabled(true);
+			btnEditar.setEnabled(false);
+			btnNuevo.setEnabled(false);
+			txtFolioFactura.requestFocus();
+		}		
+	};
 	
 	MouseListener opTablaFiltroSeleccion = new MouseListener() {
 		public void mousePressed(MouseEvent e) {
@@ -459,6 +732,12 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 					tabla.setValueAt(false, i, 6);
 				}
 				tabla.setValueAt(true, fila, columna);
+				
+				cod_prvrecibido = (String)tabla.getValueAt(fila, 0);
+				cod_factura_recibido  =(String) tabla.getValueAt(fila, 2);
+				proveedor_recibido =(String) tabla.getValueAt(fila, 1);
+				
+				btnRecibido.setEnabled(true);
 				}
 			}
 			public void mouseClicked(MouseEvent e) {}
@@ -467,21 +746,13 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 			public void mouseReleased(MouseEvent e) {}
 	};
 	
-	
 	KeyListener opFiltroFolio = new KeyListener(){
 		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioFiltro.getText(), 0));
+			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFoliofacturaFiltro.getText(), 2));
 		}
-		public void keyTyped(KeyEvent arg0) {
-			char caracter = arg0.getKeyChar();
-			if(((caracter < '0') ||
-				(caracter > '9')) &&
-			    (caracter != KeyEvent.VK_BACK_SPACE)){
-				arg0.consume(); 
-			}	
-		}
-		public void keyPressed(KeyEvent arg0) {}		
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}	
 	    };
 	
 	KeyListener opFiltroNombre = new KeyListener(){
@@ -502,68 +773,11 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 			}
 		}
 	};
-	
-	KeyListener enter_volver_folio_factura = new KeyListener() {
-		public void keyTyped(KeyEvent e){}
-		public void keyReleased(KeyEvent e) {}
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				txtFecha.transferFocusBackward();
-			}
-		}
-	};
-	
-	ActionListener Cambio_de_Proveedor = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-		    btnDeshacer.doClick();
-		    dispose();
-			new Cat_Filtro_Proveedores().setVisible(true);
-		}
-	};
-	
-	ActionListener nuevo = new ActionListener(){
-		public void actionPerformed(ActionEvent e) {
-			    txtFolioFactura.setText("");
-			    txtFecha.setDate(null);
-			    chStatus.setSelected(true);
-			    txtFecha.setEnabled(true);
-			   	txtFolioFactura.setEditable(true);
-				txtFolioFactura.requestFocus();
-				btnGuardar.setEnabled(true); 
-				btnEditar.setEnabled(false);
-				btnNuevo.setEnabled(false);
-		}
-	};
-	
-	ActionListener deshacer = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			txtFolioFactura.setText("");
-			txtFecha.setDate(null);
-			txtFolioFactura.setEditable(true);
-			txtFolioFactura.requestFocus();
-			btnNuevo.setEnabled(true);
-			btnGuardar.setEnabled(false);
-			btnEditar.setEnabled(false);
-			chStatus.setSelected(true);
-			
-		}
-	};
-	
-	ActionListener editar = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			btnGuardar.setEnabled(true);
-			txtFolioFactura.setEditable(true);
-			txtFecha.setEnabled(true);
-			btnEditar.setEnabled(false);
-			btnNuevo.setEnabled(false);
-			txtFolioFactura.requestFocus();
-		}		
-	};
 
-	public static void main(String args[]){
-		try{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Control_De_Facturas_Y_XML_De_Proveedores("1253","ELDORADO").setVisible(true);
-		}catch(Exception e){	}
-	}
+//	public static void main(String args[]){
+//		try{
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//			new Cat_Control_De_Facturas_Y_XML_De_Proveedores("1253","ELDORADO").setVisible(true);
+//		}catch(Exception e){	}
+//	}
 }

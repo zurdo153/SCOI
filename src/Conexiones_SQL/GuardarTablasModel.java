@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 public class GuardarTablasModel {
 	public boolean tabla_model_bancos(Object[][] tabla){
 		String query_delete = "exec sp_borrado_empleados_dif_1";
-		String query = "exec sp_insert_bancos ?,?,?,?,?,?";
+		String query = "exec sp_insert_bancos ?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -27,23 +27,24 @@ public class GuardarTablasModel {
 			for(int i=0; i<tabla.length; i++){
 				
 				pstmt.setInt(1, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmt.setString(2, tabla[i][1].toString().trim());
-				pstmt.setString(3, tabla[i][2].toString().trim());
-				pstmt.setFloat(4, Float.parseFloat(tabla[i][3].toString()));
-				pstmt.setFloat(5, Float.parseFloat(tabla[i][4].toString()));
-				pstmt.setString(6, "1");
+				pstmt.setFloat(2, Float.parseFloat(tabla[i][3].toString()));
+				pstmt.setFloat(3, Float.parseFloat(tabla[i][4].toString()));
 				pstmt.executeUpdate();
 			}
 		
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion tabla_model_bancos  procedimiento almacenado sp_insert_bancos SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion tabla_model_bancos  procedimiento almacenado sp_insert_bancos SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion tabla_model_bancos  procedimiento almacenado sp_insert_bancos SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -51,6 +52,7 @@ public class GuardarTablasModel {
 			try {
 				con.close();
 			} catch(SQLException e){
+				JOptionPane.showMessageDialog(null, "Error en GuaradarSQL  en la funcion tabla_model_bancos  procedimiento almacenado sp_insert_bancos SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 		}		

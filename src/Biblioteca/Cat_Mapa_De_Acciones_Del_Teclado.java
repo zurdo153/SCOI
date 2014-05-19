@@ -49,7 +49,7 @@ public class Cat_Mapa_De_Acciones_Del_Teclado extends JFrame{
 	KeyStroke ctrl_O = KeyStroke.getKeyStroke(KeyEvent.VK_O,Event.CTRL_MASK);
 
 	// CTRL + C, CTRL + V
-	KeyStroke ctrl_C = KeyStroke.getKeyStroke(KeyEvent.VK_C,Event.CTRL_MASK, true);
+	KeyStroke ctrl_G = KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK, true);
 	KeyStroke ctrl_V = KeyStroke.getKeyStroke(KeyEvent.VK_V,Event.CTRL_MASK, true);
 
 	//Key Actions
@@ -59,7 +59,7 @@ public class Cat_Mapa_De_Acciones_Del_Teclado extends JFrame{
 	map.put(ctrl_O , "accion_ctrl_o");
 	mapaAccion.put("accion_ctrl_o",Accion_CTRLO());
 
-	map.put(ctrl_C , "accion_ctrl_C");
+	map.put(ctrl_G , "accion_ctrl_C");
 	mapaAccion.put("accion_ctrl_C",Accion_CTRLC());
 
 	map.put(ctrl_V , "accion_ctrl_V");

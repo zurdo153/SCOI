@@ -32,9 +32,9 @@ public class BuscarTablasModel {
 				matriz[i][5] = total == Float.parseFloat("0.0") ? "" : total ;
 				i++;
 			}
-
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_bancos  procedimiento almacenado sp_lista_banco SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return matriz; 
 	}
@@ -61,9 +61,9 @@ public class BuscarTablasModel {
 				matriz[i][10] = Float.parseFloat(rs.getString(11)) == 0 ? "":Float.parseFloat(rs.getString(11));
 				i++;
 			}
-
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_deduccion_inasistencia  procedimiento almacenado sp_buscar_deduccion_inasistencia SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return matriz; 
 	}
@@ -88,6 +88,7 @@ public class BuscarTablasModel {
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_persecciones  procedimiento almacenado sp_lista_persecciones SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return matriz; 
 	}
@@ -132,6 +133,7 @@ public class BuscarTablasModel {
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_lista_raya  procedimiento almacenado sp_get_lista_raya SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return matriz; 
 	}
@@ -540,6 +542,8 @@ public class BuscarTablasModel {
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_checador store procedure sp_select_tabla_checador  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 		}
 	    return matriz; 
 	}
@@ -685,7 +689,6 @@ public class BuscarTablasModel {
 			while(rs.next()){
 				matriz[i][0] = "   "+rs.getString(1);
 				matriz[i][1] = "   "+rs.getString(2);
-//				matriz[i][2] = "   "+rs.getString(3);
 				i++;
 			}
 
@@ -729,9 +732,9 @@ public class BuscarTablasModel {
 				matriz[i][3] = "   "+rs.getString(4);
 				i++;
 			}
-
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en tabla_model_empleados_vacaciones en la funcion sp_select_filtro_empleados_para_vacaciones  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return matriz; 
 	}
@@ -749,19 +752,19 @@ public class BuscarTablasModel {
 				matriz[i][1] = "   "+rs.getString(2);
 				matriz[i][2] = "   "+rs.getString(3);
 				matriz[i][3] = "   "+rs.getString(4);
-
 				i++;
 			}
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en tabla_de_vacaciones_disfrutadas en la funcion sp_select_tabla_de_vacaciones_disfrutadas  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return matriz; 
 	}
 	
 	public Object[][] tabla_model_proveedores_guardados(){
 		String query_lista = ("SELECT cod_prv,proveedor,folio_factura,convert (varchar(20),[fecha_factura],103)as fecha_factura,convert(varchar(20),[fecha_modificacion],103)as fecha_modificacion "+
-                ",(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico,Status FROM tb_control_de_facturas_y_xml");
+                ",(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico,Status FROM tb_control_de_facturas_y_xml where status=1");
 		Object[][] matriz = new Object[get_filas(query_lista)][6];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
@@ -781,7 +784,6 @@ public class BuscarTablasModel {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel en la funcion tabla_model_proveedores_guardados  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-
 		}
 	    return matriz; 
 	}
