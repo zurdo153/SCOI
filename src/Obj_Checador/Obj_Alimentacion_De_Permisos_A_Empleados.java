@@ -1,6 +1,7 @@
 package Obj_Checador;
 
 import java.sql.SQLException;
+import java.util.Vector;
 
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
@@ -18,7 +19,7 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 	boolean status;
 	int descanso;
 	String tiempo_comida;
-	
+	int folio_empleado_optener_turno;
 	public Obj_Alimentacion_De_Permisos_A_Empleados(){
 		
 		this.folio = 0;
@@ -31,6 +32,7 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 		this.status = false;
 		this.descanso = 0;
 		this.tiempo_comida = "";
+		this.folio_empleado_optener_turno=0;
 
 	}
 
@@ -114,6 +116,14 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 		this.tiempo_comida = tiempo_comida;
 	}
 
+	public int getFolio_empleado_optener_turno() {
+		return folio_empleado_optener_turno;
+	}
+
+	public void setFolio_empleado_optener_turno(int folio_empleado_optener_turno) {
+		this.folio_empleado_optener_turno = folio_empleado_optener_turno;
+	}
+
 	public Obj_Alimentacion_De_Permisos_A_Empleados buscar(int folio) {
 		try {
 			return new BuscarSQL().buscar_permiso(folio);
@@ -149,6 +159,16 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 		return 1;
 	}
 
+	@SuppressWarnings("rawtypes")
+	public Vector Obj_Mensaje_respuesta(int folio) {
+		try {
+
+			return new BuscarSQL().obtener_empleado_y_turno(folio);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	// public boolean buscarYborraPermiso(int folio){ return new
 	// GuardarSQL().buscarBorrarPermiso(folio); }
 }

@@ -25,6 +25,7 @@ public class GuardarTablasModel {
 			pstmtDelete.executeUpdate();
 			
 			for(int i=0; i<tabla.length; i++){
+				
 				pstmt.setInt(1, Integer.parseInt(tabla[i][0].toString().trim()));
 				pstmt.setString(2, tabla[i][1].toString().trim());
 				pstmt.setString(3, tabla[i][2].toString().trim());

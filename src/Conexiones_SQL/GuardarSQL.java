@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
@@ -25,6 +24,7 @@ import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
+import Obj_Auditoria.Obj_Clientes;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Auditoria.Obj_Movimiento_De_Asignacion;
@@ -1941,7 +1941,7 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Permiso_Checador(Obj_Alimentacion_De_Permisos_A_Empleados Permiso){
-		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -1955,6 +1955,7 @@ public class GuardarSQL {
 			pstmt.setInt(6, (Permiso.isStatus())? 1: 0);
 			pstmt.setInt(7,Permiso.getDescanso());
 			pstmt.setString(8,Permiso.getTiempo_comida());
+			pstmt.setInt(9, Permiso.getFolio_empleado_optener_turno());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -3031,6 +3032,61 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			} catch(SQLException e){
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Asignacion_De_Cajero ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Cliente(Obj_Clientes cliente){
+		String query = "exec sp_insert_cliente ?,?,?,?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			
+//			// insert bitacora
+//			String pc = InetAddress.getLocalHost().getHostName();
+//			String ip = InetAddress.getLocalHost().getHostAddress();
+//			pstmtb = con.prepareStatement(Qbitacora);
+//			pstmtb.setString(1, pc);
+//			pstmtb.setString(2, ip);
+//			pstmtb.setInt(3, usuario.getFolio());
+//			pstmtb.setString(4, "sp_insert_cliente alta "+cliente.getNombre().toUpperCase()+cliente.getAp_paterno().toUpperCase()+cliente.getAp_materno().toUpperCase());
+//			pstmtb.setString(5, "Cliente Nuevo");
+//			pstmtb.executeUpdate();
+//			
+			
+//			private String telefono_cuadrante;
+			int i=1;
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(i,	 	cliente.getNombre().toUpperCase());
+			pstmt.setString(i+=1,	cliente.getAp_paterno().toUpperCase());
+			pstmt.setString(i+=1,	cliente.getAp_materno().toUpperCase());
+			pstmt.setString(i+=1,	cliente.getDireccion().toUpperCase());
+			pstmt.setString(i+=1, 	cliente.getTelefono().toUpperCase());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cliente ] Insert  SQLException: sp_insert_cliente "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Empleado ] Insert  SQLException: sp_insert_empleado "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
 			}
 		}		
 		return true;
