@@ -991,6 +991,7 @@ public class Filtro_Permiso_Empleado extends JFrame{
 	}
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+	        
 			public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 2){
 	        		
