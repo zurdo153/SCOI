@@ -1182,6 +1182,7 @@ public class Cat_Checador extends JFrame {
     			new Cat_Checador().setVisible(true);
     		}catch(Exception e){
     			System.err.println("Error :"+ e.getMessage());
+    			
     		}
     	}
 }

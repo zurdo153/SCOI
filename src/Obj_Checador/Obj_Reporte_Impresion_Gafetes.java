@@ -13,4 +13,5 @@ public class Obj_Reporte_Impresion_Gafetes {
 			e.printStackTrace();
 		}
 	}
+	
 }

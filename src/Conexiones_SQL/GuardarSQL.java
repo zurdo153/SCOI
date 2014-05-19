@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
@@ -188,8 +187,8 @@ public class GuardarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, establecimiento.getNombre().toUpperCase());
-			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase());
+			pstmt.setString(1, establecimiento.getNombre().toUpperCase().trim());
+			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
 			pstmt.setString(3, (establecimiento.getStatus())?"1":"0");
 			pstmt.executeUpdate();
 			con.commit();
@@ -225,8 +224,8 @@ public class GuardarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, puesto.getPuesto().toUpperCase());
-			pstmt.setString(2, puesto.getAbreviatura().toUpperCase());
+			pstmt.setString(1, puesto.getPuesto().toUpperCase().trim());
+			pstmt.setString(2, puesto.getAbreviatura().toUpperCase().trim());
 			pstmt.setString(3, (puesto.getStatus())?"1":"0");
 			pstmt.executeUpdate();
 			con.commit();
@@ -1398,8 +1397,8 @@ public class GuardarSQL {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, departamento.getFolio());
-			pstmt.setString(2, departamento.getDepartamento().toUpperCase());
-			pstmt.setString(3, departamento.getAbreviatura().toUpperCase());
+			pstmt.setString(2, departamento.getDepartamento().toUpperCase().trim());
+			pstmt.setString(3, departamento.getAbreviatura().toUpperCase().trim());
 			pstmt.setString(4, (departamento.isStatus())?"1":"0");
 			pstmt.executeUpdate();
 			con.commit();
@@ -2511,7 +2510,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 }
 
 	public boolean Insert_Empleado_Comida(int folio, String t_entrada, int tipo_salida_comer) {
-		String insert ="exec sp_insert_entosal_2 "+folio+",?,?,?,?";
+		String insert ="exec sp_insert_entosal "+folio+",?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		
@@ -2533,12 +2532,15 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			
 		}catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Insert_Empleado_Comida  sp sp_insert_entosal "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Insert_Empleado_Comida  sp sp_insert_entosal "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 				}
 			} 
 			return false;

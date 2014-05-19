@@ -80,7 +80,7 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] Departamento(String tabla) throws SQLException{
-		String query = "select departamento from " + tabla + " where status = 1 order by departamento asc";
+		String query = "select ltrim(rtrim(departamento)) as departamento from " + tabla + " where status = 1 order by departamento asc";
 		
 		Statement stmt = null;
 		try {

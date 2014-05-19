@@ -19,27 +19,6 @@ public class Obj_Proveedores {
 	 public Obj_Proveedores(){
 		this.folio_factura=""; this.fecha=""; this.cod_prv ="";this.proveedor=""; this.status=false;
 	}
-
-
-//	public String[] Combo_Jefatura(){ 
-//		try {
-//			return new Cargar_Combo().jefatu("tb_Jefatura");
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null; 
-//	}
-//	
-//	
-//	
-//	public String[] Combo_Puesto(){ 
-//		try {
-//			return new Cargar_Combo().Puesto("tb_puesto");
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null; 
-//	}
 	
 	public String getFolio_factura() {
 		return folio_factura;
@@ -102,35 +81,15 @@ public class Obj_Proveedores {
 	}
 	
 	public boolean guardar(){
-		return new GuardarSQL().Guardar_Control_Factura_xml(this); }
-	
-//	public Obj_Proveedores buscar_nuevo(){
-//		try {
-//			return new BuscarSQL().Puesto_Nuevo();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null; 
-//	}
+		return new GuardarSQL().Guardar_Control_Factura_xml(this);
+		}
 	
 	public boolean actualizar(String folio_Factura_Editada){
-		return new ActualizarSQL().Factura_Provedores_xml(this,folio_Factura_Editada); }
+		return new ActualizarSQL().Factura_Provedores_xml(this,folio_Factura_Editada); 
+		}
 	
-//	public Obj_Proveedores buscar_pues(String nombre){
-//		try{
-//			return new BuscarSQL().Pues_buscar(nombre); 
-//		} catch(SQLException e){
-//			
-//		}
-//		return null;
-//	}	
+	public boolean marcar_recibido_factura(String cod_prov_recibido, String folio_factura_recibido){
+		return new ActualizarSQL().marcar_c_recibido_factura(cod_prov_recibido, folio_factura_recibido); 
+		}
 	
-//	public Obj_Proveedores buscar_pues(int folio){
-//		try{
-//			return new BuscarSQL().Pues_buscar(folio); 
-//		} catch(SQLException e){
-//			
-//		}
-//		return null;
-//	}	
 }

@@ -216,8 +216,8 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, establecimiento.getNombre().toUpperCase());
-			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase());
+			pstmt.setString(1, establecimiento.getNombre().toUpperCase().trim());
+			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
 			pstmt.setString(3, (establecimiento.getStatus())?"1":"0");
 			pstmt.executeUpdate();
 			con.commit();
@@ -324,8 +324,8 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, puesto.getPuesto().toUpperCase());
-			pstmt.setString(2, puesto.getAbreviatura().toUpperCase());
+			pstmt.setString(1, puesto.getPuesto().toUpperCase().trim());
+			pstmt.setString(2, puesto.getAbreviatura().toUpperCase().trim());
 			pstmt.setString(3, (puesto.getStatus())?"1":"0");
 			pstmt.executeUpdate();
 			con.commit();
@@ -1056,8 +1056,8 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, departamento.getDepartamento().toUpperCase());
-			pstmt.setString(2, departamento.getAbreviatura().toUpperCase());
+			pstmt.setString(1, departamento.getDepartamento().toUpperCase().trim());
+			pstmt.setString(2, departamento.getAbreviatura().toUpperCase().trim());
 			pstmt.setString(3, (departamento.isStatus())?"1":"0");
 			pstmt.executeUpdate();
 			con.commit();
@@ -1762,6 +1762,7 @@ public class ActualizarSQL {
 				con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: sp_update_mensaje_personal "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 			}
 		return true;
@@ -2444,6 +2445,39 @@ public class ActualizarSQL {
 				e.printStackTrace();
 			}
 		}		
+		return true;
+	}
+	public boolean marcar_c_recibido_factura(String cod_prov_recibido, String folio_factura_recibido){
+		 
+		String query = "update tb_control_de_facturas_y_xml set status=2,fecha_recibido=getdate() where cod_prv='"+cod_prov_recibido+"' and folio_factura='"+folio_factura_recibido+"'";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmtabla = null;
+		try {
+			    con.setAutoCommit(false);
+  			    pstmtabla = con.prepareStatement(query);
+				pstmtabla.executeUpdate();
+				con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: sp_update_mensaje_personal "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: sp_update_mensaje_personal "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ mensajePersonal ] update  SQLException: sp_update_mensaje_personal "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+			}
 		return true;
 	}
 }

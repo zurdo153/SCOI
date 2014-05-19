@@ -50,14 +50,12 @@ public class Cat_Mantenimiento_Base_de_Datos extends JFrame {
      		  this.panel.add(btn_rbd).setBounds(20,30,300,20);
      		  this.panel.add(btn_asubmenus).setBounds(20,60,300,20);
      		  this.panel.add(btn_Guardar).setBounds(120,320,80,20);
-     		  
     		  this.panel.add(lblsubmenu).setBounds(30,150,300,20);
     		  this.panel.add(txtNombreSubmenu).setBounds(20,170,300,20);
     		  this.panel.add(lblmenu_id).setBounds(30,200,300,20);
     		  this.panel.add(txtMenu_id).setBounds(20,220,300,20);
     		  this.panel.add(lblmenu_principal).setBounds(30,250,300,20);
      		  this.panel.add(txtMenu_Principal).setBounds(20,270,300,20);
-     		  
      		  
      		  txtNombreSubmenu.setEditable(false);
      		  txtMenu_id.setEditable(false);

@@ -13,7 +13,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB_ADAPTER"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="28"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -26,14 +26,17 @@
 	</style>
 	<queryString>
 		<![CDATA[select  tb_bancos.folio_empleado
-       ,tb_bancos.establecimiento
-       ,tb_bancos.nombre_completo
+       ,tb_establecimiento.nombre as establecimiento
+       ,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as nombre_completo
        ,tb_bancos.banamex
        ,tb_bancos.banorte
-from tb_bancos where tb_bancos.banamex>0 or tb_bancos.banorte>0 and tb_bancos.status=1
-
-order by tb_bancos.establecimiento,tb_bancos.nombre_completo]]>
+from tb_bancos
+inner join tb_empleado on tb_bancos.folio_empleado = tb_empleado.folio
+inner join tb_establecimiento on tb_establecimiento.folio=tb_empleado.establecimiento_id
+ where tb_bancos.banamex>0 or tb_bancos.banorte>0 and tb_bancos.status=1
+order by establecimiento,nombre_completo]]>
 	</queryString>
+	<field name="folio_empleado" class="java.lang.Integer"/>
 	<field name="establecimiento" class="java.lang.String"/>
 	<field name="nombre_completo" class="java.lang.String"/>
 	<field name="banamex" class="java.math.BigDecimal"/>
