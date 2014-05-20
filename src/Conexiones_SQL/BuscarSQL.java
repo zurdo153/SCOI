@@ -5396,4 +5396,44 @@ public class BuscarSQL {
 		}
 		return fila;
 	}
+	
+	public int buscar_si_dobla(int folio_empleado){
+		String query = "exec sp_select_existe_doblada " + folio_empleado+";";
+		
+		int valor = 0;
+		Statement s;
+		ResultSet rs;
+		
+		try {				
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				valor = Integer.valueOf(rs.getString("dobladas").trim());
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return valor;
+	}
+	
+	public boolean buscar_si_dobla_default(int folio_empleado){
+		String query = "exec sp_select_existe_doblada_default " + folio_empleado+";";
+		
+		boolean existe = false;
+		Statement s;
+		ResultSet rs;
+		
+		try {				
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				existe = Boolean.valueOf(rs.getString("doblada_default").trim());
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return existe;
+	}
 }

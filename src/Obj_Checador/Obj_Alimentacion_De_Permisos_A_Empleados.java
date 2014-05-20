@@ -142,8 +142,8 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 		return null;
 	}
 
-	public boolean guardar_permiso() {
-		return new GuardarSQL().Guardar_Permiso_Checador(this);
+	public boolean guardar_permiso(int tiene_dia_dobla) {
+		return new GuardarSQL().Guardar_Permiso_Checador(this,tiene_dia_dobla);
 	}
 
 	public boolean actualizar(int folio) {
@@ -169,6 +169,16 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 			return null;
 		}
 	}
+//	busca cuantos dias a doblar tiene
+	public int buscar_doblada(int folio) {
+			return new BuscarSQL().buscar_si_dobla(folio);
+	}
+	
+//	busca si tiene la doblada default
+	public boolean b_doblada(int folio) {
+		return new BuscarSQL().buscar_si_dobla_default(folio);
+	}
+	
 	// public boolean buscarYborraPermiso(int folio){ return new
 	// GuardarSQL().buscarBorrarPermiso(folio); }
 }

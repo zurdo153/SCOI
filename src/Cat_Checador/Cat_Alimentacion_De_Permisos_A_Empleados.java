@@ -29,6 +29,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -53,7 +54,7 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
-import Obj_Checador.Obj_Entosal;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 
 import com.toedter.calendar.JDateChooser;
@@ -378,9 +379,155 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		}
 	}
 	
-	ActionListener guardar = new ActionListener(){
-		@SuppressWarnings("deprecation")
-		public void actionPerformed(ActionEvent e){
+//	ActionListener guardar = new ActionListener(){
+//		@SuppressWarnings("deprecation")
+//		public void actionPerformed(ActionEvent e){
+//			
+//			if(txtFolio.getText().equals("")){
+//				JOptionPane.showMessageDialog(null, "El Folio Es Requerido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//				return;
+//			}else{
+//				if(ValidaCampos().equals("")){
+//					
+//					Obj_Alimentacion_De_Permisos_A_Empleados conpararFecha = new Obj_Alimentacion_De_Permisos_A_Empleados().ComparacionFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
+//					
+//					if(conpararFecha.getFecha().trim().equals("FECHA_PASADA")){
+//						JOptionPane.showMessageDialog(null, "No Puede Asignar Permiso A Una Fecha Que Ya Paso", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//						return;
+//					}else{
+//
+//						Obj_Alimentacion_De_Permisos_A_Empleados Permiso = new Obj_Alimentacion_De_Permisos_A_Empleados().buscar(Integer.parseInt(txtFolio.getText()));
+//							
+//							permisoChecador();
+//							 dia_selecionado_p_descanso();
+//							 if(chbP_cambiodescanso.isSelected() && descanso==0){
+//								 JOptionPane.showMessageDialog(null,"Seleccione dia como el que trabajara","Aviso",JOptionPane.WARNING_MESSAGE);
+//								 return;
+//							 }
+//							 if(chbCambio_turno.isSelected() && txtFolioEmpleadoCambio.getText().equals("")){
+//								 JOptionPane.showMessageDialog(null,"Seleccione el empleado del cual optendra el turno","Aviso",JOptionPane.WARNING_MESSAGE);
+//								 return;
+//							 }else{
+//								 
+//								 if(Permiso.getFolio() == Integer.parseInt(txtFolio.getText())){
+//										if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
+//											
+//											Permiso.setFolio(Integer.parseInt(txtFolio.getText()));
+//											Permiso.setFolio_empleado(Integer.parseInt(txtFolioEmpleado.getText()));
+//											Permiso.setFolio_usuario(folio_usuario);
+//											Permiso.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
+//											
+//											Permiso.setTipo_de_permiso(permiso);
+//											Permiso.setDescanso(descanso);
+//											
+//											SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
+//											Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
+//											
+//											Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
+//											
+//											Permiso.setStatus(chb_status.isSelected());
+//											Permiso.setMotivo(txaMotivo.getText().toUpperCase());
+//				
+//											if(Permiso.actualizar(Integer.parseInt(txtFolio.getText()))){
+//												
+//												cmbDias.setSelectedIndex(0);
+//												spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
+//												
+//												lblEmpleado.setText("Empleado:");
+//												btnGuardar.setEnabled(false);
+//												btnEditar.setEnabled(true);
+//												txtFolio.setText("");
+//												txtFolioEmpleado.setText("");
+//												txtFechaPermiso.setDate(null);
+//												txaMotivo.setText("");
+//												
+//												Campos_False();
+//												txtFolio.setEditable(true);
+//												txtFolio.requestFocus();
+//													JOptionPane.showMessageDialog(null,"El Registro se actualizo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+//													return;
+//											}else{
+//												JOptionPane.showMessageDialog(null,"El Registro no se a actualizado!","Error",JOptionPane.ERROR_MESSAGE);
+//												return;
+//											}
+//										}
+//								}else{
+//									
+//									Permiso.setFolio(Integer.parseInt(txtFolio.getText()));
+//									Permiso.setFolio_empleado(Integer.parseInt(txtFolioEmpleado.getText()));
+//									Permiso.setFolio_usuario(folio_usuario);
+//									Permiso.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
+//									
+//									Permiso.setTipo_de_permiso(permiso);
+//									Permiso.setStatus(chb_status.isSelected());
+//									Permiso.setDescanso(descanso);
+//									
+//									Permiso.setMotivo(txaMotivo.getText().toUpperCase());
+//									
+//									SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
+//									Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
+//									
+//									Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
+//
+//									if(Permiso.guardar_permiso(tiene_dia_dobla)){
+//										
+//										cmbDias.setSelectedIndex(0);
+//										spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
+//										
+//										lblEmpleado.setText("Empleado:");
+//										btnGuardar.setEnabled(false);
+//										btnEditar.setEnabled(true);
+//										Campos_False();
+//										txtFolio.setText("");
+//										txtFolioEmpleado.setText("");
+//										txtFechaPermiso.setDate(null);
+//										txaMotivo.setText("");
+//										txtFolio.setEditable(true);
+//										txtFolio.requestFocus();
+//												JOptionPane.showMessageDialog(null,"El Registro se guardo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+//												return;
+//											}else{
+//										JOptionPane.showMessageDialog(null,"El Registro no se a guardado!","Error",JOptionPane.ERROR_MESSAGE);
+//										return;
+//									}
+//								}
+//							}
+//						}
+//				}else{
+//					JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos: \n"+ValidaCampos(),"Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//					return;
+//				}
+// 			}
+//		}
+//	};
+	
+	ActionListener guardar = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("entro");
+			if(permiso==7){
+				System.out.println("permiso 7");
+				if(new Obj_Alimentacion_De_Permisos_A_Empleados().buscar_doblada(Integer.parseInt(txtFolioEmpleado.getText()))==2){
+					
+						JOptionPane.showMessageDialog(null,"El Empleado Ya Uso Todos Sus Dias De Dobla!","Aviso",JOptionPane.WARNING_MESSAGE); 
+						return;
+					
+				}else{
+					
+						if(new Obj_Alimentacion_De_Permisos_A_Empleados().b_doblada(Integer.parseInt(txtFolioEmpleado.getText()))){
+							System.out.println("guardar con 1");
+							guardado(1);
+						}else{
+							System.out.println("abrir catalogo");
+							new Cat_SeleccionDeDobla().setVisible(true);
+						}
+					
+				}
+			}
+		}
+	};
+	
+	 @SuppressWarnings("deprecation")
+	public void guardado(int dia_dobla){
 			
 			if(txtFolio.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "El Folio Es Requerido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
@@ -430,7 +577,6 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 											if(Permiso.actualizar(Integer.parseInt(txtFolio.getText()))){
 												
 												cmbDias.setSelectedIndex(0);
-												spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
 												
 												lblEmpleado.setText("Empleado:");
 												btnGuardar.setEnabled(false);
@@ -468,7 +614,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 									
 									Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
 
-									if(Permiso.guardar_permiso()){
+									if(Permiso.guardar_permiso(dia_dobla)){
 										
 										cmbDias.setSelectedIndex(0);
 										spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
@@ -496,9 +642,9 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 					JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos: \n"+ValidaCampos(),"Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 					return;
 				}
- 			}
-		}
-	};
+			}
+		
+	 }
 	
 	ActionListener opBuscar = new ActionListener() {
 		@SuppressWarnings("deprecation")
@@ -992,7 +1138,6 @@ public class Filtro_Permiso_Empleado extends JFrame{
 	}
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-	        @SuppressWarnings({ "unused", "rawtypes" })
 			public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 2){
 	        		
@@ -1142,15 +1287,75 @@ public class Filtro_Permiso_Empleado extends JFrame{
 		public void keyReleased(KeyEvent e){}
 								
 	};
-	
-	
 }
-public static void main(String [] args){
-	try{
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		new Cat_Alimentacion_De_Permisos_A_Empleados().setVisible(true);
-	}catch(Exception e){
-		System.err.println("Error :"+ e.getMessage());
+
+	public static void main(String [] args){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Alimentacion_De_Permisos_A_Empleados().setVisible(true);
+		}catch(Exception e){
+			System.err.println("Error :"+ e.getMessage());
+		}
 	}
-}
+	
+	public class Cat_SeleccionDeDobla extends JDialog {
+		Container cont = getContentPane();
+		JLayeredPane panel = new JLayeredPane();
+		
+		String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+		
+		JButton btnDobla1 = new JButton();
+		JButton btnDobla2 = new JButton();
+		
+		String filtro_establecimiento ="";
+		
+		public Cat_SeleccionDeDobla(){
+			this.setModal(true);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/user_icon&16.png"));
+			this.setTitle("Reportes de Asistencia y Retardos del Dia");
+			panel.setBorder(BorderFactory.createTitledBorder("Seleccion de Reporte"));
+
+
+			btnDobla1.setSelected(true);
+			btnDobla1.setText(	"<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk>" +
+											"		<p>DOBLARA DE 7:00 A 23:00</p>" +
+											"		<p>CON 2 HORAS DE COMIDA Y</p>" +
+											"		<p>UN RECESO DE 15 MINUTOS.</p></FONT>" +
+											"</html>"); 
+			
+			btnDobla2.setSelected(true);
+			btnDobla2.setText(	"<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk>" +
+											"		<p>DOBLARA DE 6:00 A 23:00</p>" +
+											"		<p>CON 3 HORAS DE COMIDA Y</p>" +
+											"		<p>UN RECESO DE 15 MINUTOS.</p></FONT>" +
+											"</html>"); 
+			
+			panel.add(cmbEstablecimiento).setBounds(270, 20, 170, 20);
+			panel.add(btnDobla1).setBounds(20, 50, 300, 75);
+			panel.add(btnDobla2).setBounds(140, 135, 300, 75);
+			
+			this.btnDobla1.addActionListener(op1);
+			this.btnDobla2.addActionListener(op2);
+			
+			cont.add(panel);
+			this.setSize(470, 300);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		}
+		
+		ActionListener op1 = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				guardado(2);
+			}
+		};
+		
+		ActionListener op2 = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				guardado(3);
+			}
+		};
+	}
 }
