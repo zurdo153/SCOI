@@ -16,7 +16,6 @@ import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -32,7 +31,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
-import Obj_Auditoria.Obj_Clientes;
 import Obj_Principal.Componentes;
 
 import com.toedter.calendar.JDateChooser;
