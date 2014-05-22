@@ -145,6 +145,9 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 //	o si lo asignara al campo de empleado del turno
 	int tipo_filtro_empleado=0;
 	
+// se utiliza cuando es un permiso 7  para los dias dobla
+	int tiene_dia_dobla=0;
+	
 	@SuppressWarnings("deprecation")
 	public void getConstructor(){
 
@@ -500,151 +503,310 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 // 			}
 //		}
 //	};
-	
-	ActionListener guardar = new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("entro");
-			if(permiso==7){
-				System.out.println("permiso 7");
-				if(new Obj_Alimentacion_De_Permisos_A_Empleados().buscar_doblada(Integer.parseInt(txtFolioEmpleado.getText()))==2){
+//	
+//	ActionListener guardar = new ActionListener() {
+//		public void actionPerformed(ActionEvent arg0) {
+//			System.out.println("entro");
+//			if(permiso==7){
+//				System.out.println("permiso 7");
+//				if(new Obj_Alimentacion_De_Permisos_A_Empleados().buscar_doblada(Integer.parseInt(txtFolioEmpleado.getText()))==2){
+//					
+//						JOptionPane.showMessageDialog(null,"El Empleado Ya Uso Todos Sus Dias De Dobla!","Aviso",JOptionPane.WARNING_MESSAGE); 
+//						return;
+//					
+//				}else{
+//					
+//						if(new Obj_Alimentacion_De_Permisos_A_Empleados().b_doblada(Integer.parseInt(txtFolioEmpleado.getText()))){
+//							System.out.println("guardar con 1");
+//							guardado(1);
+//						}else{
+//							System.out.println("abrir catalogo");
+//							new Cat_SeleccionDeDobla().setVisible(true);
+//						}
+//					
+//				}
+//			}
+//		}
+//	};
+//	
+//	 @SuppressWarnings("deprecation")
+//	public void guardado(int dia_dobla){
+//			
+//			if(txtFolio.getText().equals("")){
+//				JOptionPane.showMessageDialog(null, "El Folio Es Requerido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//				return;
+//			}else{
+//				if(ValidaCampos().equals("")){
+//					
+//					Obj_Alimentacion_De_Permisos_A_Empleados conpararFecha = new Obj_Alimentacion_De_Permisos_A_Empleados().ComparacionFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
+//					
+//					if(conpararFecha.getFecha().trim().equals("FECHA_PASADA")){
+//						JOptionPane.showMessageDialog(null, "No Puede Asignar Permiso A Una Fecha Que Ya Paso", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//						return;
+//					}else{
+//
+//						Obj_Alimentacion_De_Permisos_A_Empleados Permiso = new Obj_Alimentacion_De_Permisos_A_Empleados().buscar(Integer.parseInt(txtFolio.getText()));
+//							
+//							permisoChecador();
+//							 dia_selecionado_p_descanso();
+//							 if(chbP_cambiodescanso.isSelected() && descanso==0){
+//								 JOptionPane.showMessageDialog(null,"Seleccione dia como el que trabajara","Aviso",JOptionPane.WARNING_MESSAGE);
+//								 return;
+//							 }
+//							 if(chbCambio_turno.isSelected() && txtFolioEmpleadoCambio.getText().equals("")){
+//								 JOptionPane.showMessageDialog(null,"Seleccione el empleado del cual optendra el turno","Aviso",JOptionPane.WARNING_MESSAGE);
+//								 return;
+//							 }else{
+//								 
+//								 if(Permiso.getFolio() == Integer.parseInt(txtFolio.getText())){
+//										if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
+//											
+//											Permiso.setFolio(Integer.parseInt(txtFolio.getText()));
+//											Permiso.setFolio_empleado(Integer.parseInt(txtFolioEmpleado.getText()));
+//											Permiso.setFolio_usuario(folio_usuario);
+//											Permiso.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
+//											
+//											Permiso.setTipo_de_permiso(permiso);
+//											Permiso.setDescanso(descanso);
+//											
+//											SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
+//											Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
+//											
+//											Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
+//											
+//											Permiso.setStatus(chb_status.isSelected());
+//											Permiso.setMotivo(txaMotivo.getText().toUpperCase());
+//				
+//											if(Permiso.actualizar(Integer.parseInt(txtFolio.getText()))){
+//												
+//												cmbDias.setSelectedIndex(0);
+//												
+//												lblEmpleado.setText("Empleado:");
+//												btnGuardar.setEnabled(false);
+//												btnEditar.setEnabled(true);
+//												txtFolio.setText("");
+//												txtFolioEmpleado.setText("");
+//												txtFechaPermiso.setDate(null);
+//												txaMotivo.setText("");
+//												
+//												Campos_False();
+//												txtFolio.setEditable(true);
+//												txtFolio.requestFocus();
+//													JOptionPane.showMessageDialog(null,"El Registro se actualizo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+//													return;
+//											}else{
+//												JOptionPane.showMessageDialog(null,"El Registro no se a actualizado!","Error",JOptionPane.ERROR_MESSAGE);
+//												return;
+//											}
+//										}
+//								}else{
+//									
+//									Permiso.setFolio(Integer.parseInt(txtFolio.getText()));
+//									Permiso.setFolio_empleado(Integer.parseInt(txtFolioEmpleado.getText()));
+//									Permiso.setFolio_usuario(folio_usuario);
+//									Permiso.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
+//									
+//									Permiso.setTipo_de_permiso(permiso);
+//									Permiso.setStatus(chb_status.isSelected());
+//									Permiso.setDescanso(descanso);
+//									
+//									Permiso.setMotivo(txaMotivo.getText().toUpperCase());
+//									
+//									SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
+//									Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
+//									
+//									Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
+//
+//									if(Permiso.guardar_permiso(dia_dobla)){
+//										
+//										cmbDias.setSelectedIndex(0);
+//										spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
+//										
+//										lblEmpleado.setText("Empleado:");
+//										btnGuardar.setEnabled(false);
+//										btnEditar.setEnabled(true);
+//										Campos_False();
+//										txtFolio.setText("");
+//										txtFolioEmpleado.setText("");
+//										txtFechaPermiso.setDate(null);
+//										txaMotivo.setText("");
+//										txtFolio.setEditable(true);
+//										txtFolio.requestFocus();
+//												JOptionPane.showMessageDialog(null,"El Registro se guardo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+//												return;
+//											}else{
+//										JOptionPane.showMessageDialog(null,"El Registro no se a guardado!","Error",JOptionPane.ERROR_MESSAGE);
+//										return;
+//									}
+//								}
+//							}
+//						}
+//				}else{
+//					JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos: \n"+ValidaCampos(),"Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//					return;
+//				}
+//			}
+//		
+//	 }
+	 
+	 
+	 
+	 
+	 
+
+
+
+		 
+  ActionListener guardar = new ActionListener() {
+	public void actionPerformed(ActionEvent arg0) {
+		        Obj_Alimentacion_De_Permisos_A_Empleados Permiso = new Obj_Alimentacion_De_Permisos_A_Empleados().buscar(Integer.parseInt(txtFolio.getText()));
+		        
+		        
+		        if (tiene_dia_dobla==0){
 					
-						JOptionPane.showMessageDialog(null,"El Empleado Ya Uso Todos Sus Dias De Dobla!","Aviso",JOptionPane.WARNING_MESSAGE); 
-						return;
-					
+				if(txtFolio.getText().equals("")){
+					JOptionPane.showMessageDialog(null, "El Folio Es Requerido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+					return;
 				}else{
-					
-						if(new Obj_Alimentacion_De_Permisos_A_Empleados().b_doblada(Integer.parseInt(txtFolioEmpleado.getText()))){
-							System.out.println("guardar con 1");
-							guardado(1);
+					if(ValidaCampos().equals("")){
+						
+						Obj_Alimentacion_De_Permisos_A_Empleados conpararFecha = new Obj_Alimentacion_De_Permisos_A_Empleados().ComparacionFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
+						
+						if(conpararFecha.getFecha().trim().equals("FECHA_PASADA")){
+							JOptionPane.showMessageDialog(null, "No Puede Asignar Permiso A Una Fecha Que Ya Paso", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							return;
 						}else{
-							System.out.println("abrir catalogo");
-							new Cat_SeleccionDeDobla().setVisible(true);
-						}
-					
-				}
-			}
-		}
-	};
-	
-	 @SuppressWarnings("deprecation")
-	public void guardado(int dia_dobla){
-			
-			if(txtFolio.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "El Folio Es Requerido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-				return;
-			}else{
-				if(ValidaCampos().equals("")){
-					
-					Obj_Alimentacion_De_Permisos_A_Empleados conpararFecha = new Obj_Alimentacion_De_Permisos_A_Empleados().ComparacionFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
-					
-					if(conpararFecha.getFecha().trim().equals("FECHA_PASADA")){
-						JOptionPane.showMessageDialog(null, "No Puede Asignar Permiso A Una Fecha Que Ya Paso", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-						return;
-					}else{
-
-						Obj_Alimentacion_De_Permisos_A_Empleados Permiso = new Obj_Alimentacion_De_Permisos_A_Empleados().buscar(Integer.parseInt(txtFolio.getText()));
-							
-							permisoChecador();
-							 dia_selecionado_p_descanso();
-							 if(chbP_cambiodescanso.isSelected() && descanso==0){
-								 JOptionPane.showMessageDialog(null,"Seleccione dia como el que trabajara","Aviso",JOptionPane.WARNING_MESSAGE);
-								 return;
-							 }
-							 if(chbCambio_turno.isSelected() && txtFolioEmpleadoCambio.getText().equals("")){
-								 JOptionPane.showMessageDialog(null,"Seleccione el empleado del cual optendra el turno","Aviso",JOptionPane.WARNING_MESSAGE);
-								 return;
-							 }else{
-								 
-								 if(Permiso.getFolio() == Integer.parseInt(txtFolio.getText())){
-										if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
-											
-											Permiso.setFolio(Integer.parseInt(txtFolio.getText()));
-											Permiso.setFolio_empleado(Integer.parseInt(txtFolioEmpleado.getText()));
-											Permiso.setFolio_usuario(folio_usuario);
-											Permiso.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
-											
-											Permiso.setTipo_de_permiso(permiso);
-											Permiso.setDescanso(descanso);
-											
-											SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
-											Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
-											
-											Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
-											
-											Permiso.setStatus(chb_status.isSelected());
-											Permiso.setMotivo(txaMotivo.getText().toUpperCase());
-				
-											if(Permiso.actualizar(Integer.parseInt(txtFolio.getText()))){
+								permisoChecador();
+								 dia_selecionado_p_descanso();
+								 if(chbP_cambiodescanso.isSelected() && descanso==0){
+									 JOptionPane.showMessageDialog(null,"Seleccione dia como el que trabajara","Aviso",JOptionPane.WARNING_MESSAGE);
+									 return;
+								 }
+								 if(chbCambio_turno.isSelected() && txtFolioEmpleadoCambio.getText().equals("")){
+									 JOptionPane.showMessageDialog(null,"Seleccione el empleado del cual optendra el turno","Aviso",JOptionPane.WARNING_MESSAGE);
+									 return;
+								 }else{
+									 
+									 if(Permiso.getFolio() == Integer.parseInt(txtFolio.getText())){
+											if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
 												
-												cmbDias.setSelectedIndex(0);
+												Permiso.setFolio(Integer.parseInt(txtFolio.getText()));
+												Permiso.setFolio_empleado(Integer.parseInt(txtFolioEmpleado.getText()));
+												Permiso.setFolio_usuario(folio_usuario);
+												Permiso.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
+												Permiso.setTipo_de_permiso(permiso);
+												Permiso.setDescanso(descanso);
+												SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
+												Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
+												if (permiso==9){
+													Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
+													}
+												Permiso.setStatus(chb_status.isSelected());
+												Permiso.setMotivo(txaMotivo.getText().toUpperCase());
 												
-												lblEmpleado.setText("Empleado:");
-												btnGuardar.setEnabled(false);
-												btnEditar.setEnabled(true);
-												txtFolio.setText("");
-												txtFolioEmpleado.setText("");
-												txtFechaPermiso.setDate(null);
-												txaMotivo.setText("");
-												
-												Campos_False();
-												txtFolio.setEditable(true);
-												txtFolio.requestFocus();
-													JOptionPane.showMessageDialog(null,"El Registro se actualizo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+												if(Permiso.actualizar(Integer.parseInt(txtFolio.getText()))){
+													
+													cmbDias.setSelectedIndex(0);
+													
+													lblEmpleado.setText("Empleado:");
+													btnGuardar.setEnabled(false);
+													btnEditar.setEnabled(true);
+													txtFolio.setText("");
+													txtFolioEmpleado.setText("");
+													txtFechaPermiso.setDate(null);
+													txaMotivo.setText("");
+													
+													Campos_False();
+													tiene_dia_dobla=0;
+													txtFolio.setEditable(true);
+													txtFolio.requestFocus();
+														JOptionPane.showMessageDialog(null,"El Registro se actualizo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+														return;
+												}else{
+													JOptionPane.showMessageDialog(null,"El Registro no se a actualizado!","Error",JOptionPane.ERROR_MESSAGE);
 													return;
-											}else{
-												JOptionPane.showMessageDialog(null,"El Registro no se a actualizado!","Error",JOptionPane.ERROR_MESSAGE);
-												return;
+												}
 											}
-										}
-								}else{
-									
-									Permiso.setFolio(Integer.parseInt(txtFolio.getText()));
-									Permiso.setFolio_empleado(Integer.parseInt(txtFolioEmpleado.getText()));
-									Permiso.setFolio_usuario(folio_usuario);
-									Permiso.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
-									
-									Permiso.setTipo_de_permiso(permiso);
-									Permiso.setStatus(chb_status.isSelected());
-									Permiso.setDescanso(descanso);
-									
-									Permiso.setMotivo(txaMotivo.getText().toUpperCase());
-									
-									SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
-									Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
-									
-									Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
-
-									if(Permiso.guardar_permiso(dia_dobla)){
+									}else{
+										if(permiso!=7){
+													  guardar();
+													  return;
+										              } else{
+																if(permiso==7){
+																		if(new Obj_Alimentacion_De_Permisos_A_Empleados().buscar_doblada(Integer.parseInt(txtFolioEmpleado.getText()))==2){
+																			
+																				JOptionPane.showMessageDialog(null,"El Empleado Ya Uso Sus 2 Dias De Dobla Extra!","Aviso",JOptionPane.WARNING_MESSAGE); 
+																				return;
+																				}else{
+																			
+																							if(new Obj_Alimentacion_De_Permisos_A_Empleados().b_doblada(Integer.parseInt(txtFolioEmpleado.getText()))){
+																						//////////guardado dia dobla extra copiado del dia que dobla
+																								tiene_dia_dobla=1;
+																								guardar();
+																							}else{	
+																								  new Cat_SeleccionDeDobla().setVisible(true); 
+																							     }
+																                     }
+																              }
+										              }
 										
-										cmbDias.setSelectedIndex(0);
-										spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
-										
-										lblEmpleado.setText("Empleado:");
-										btnGuardar.setEnabled(false);
-										btnEditar.setEnabled(true);
-										Campos_False();
-										txtFolio.setText("");
-										txtFolioEmpleado.setText("");
-										txtFechaPermiso.setDate(null);
-										txaMotivo.setText("");
-										txtFolio.setEditable(true);
-										txtFolio.requestFocus();
-												JOptionPane.showMessageDialog(null,"El Registro se guardo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
-												return;
-											}else{
-										JOptionPane.showMessageDialog(null,"El Registro no se a guardado!","Error",JOptionPane.ERROR_MESSAGE);
-										return;
-									}
+									   }
 								}
 							}
-						}
-				}else{
-					JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos: \n"+ValidaCampos(),"Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-					return;
+					}else{
+						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos: \n"+ValidaCampos(),"Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+						return;
+					}
 				}
+				}else{
+					//////////guardado dia dobla extra seleccionado de boton
+					guardar();
+					
+	          }
+	        }     
+		 };
+		 
+		 @SuppressWarnings("deprecation")
+		public void guardar(){
+		 
+	        Obj_Alimentacion_De_Permisos_A_Empleados Permiso = new Obj_Alimentacion_De_Permisos_A_Empleados().buscar(Integer.parseInt(txtFolio.getText()));
+			Permiso.setFolio(Integer.parseInt(txtFolio.getText()));
+			Permiso.setFolio_empleado(Integer.parseInt(txtFolioEmpleado.getText()));
+			Permiso.setFolio_usuario(folio_usuario);
+			Permiso.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaPermiso.getDate()));
+			Permiso.setTipo_de_permiso(permiso);
+			Permiso.setStatus(chb_status.isSelected());
+			Permiso.setDescanso(descanso);
+			Permiso.setMotivo(txaMotivo.getText().toUpperCase());
+			SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
+			Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
+			if (permiso==9){
+			Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
 			}
-		
-	 }
+			
+			if(Permiso.guardar_permiso(tiene_dia_dobla)){
+				cmbDias.setSelectedIndex(0);
+				spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
+				lblEmpleado.setText("Empleado:");
+				btnGuardar.setEnabled(false);
+				btnEditar.setEnabled(true);
+				Campos_False();
+				txtFolio.setText("");
+				txtFolioEmpleado.setText("");
+				txtFechaPermiso.setDate(null);
+				txaMotivo.setText("");
+				tiene_dia_dobla=0;
+				txtFolio.setEditable(true);
+				txtFolio.requestFocus();
+						JOptionPane.showMessageDialog(null,"El Permiso se guardo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}else{
+				JOptionPane.showMessageDialog(null,"El Registro no se a guardado avise al Administrador del Sistema!","Error",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+		 }
+		 
 	
 	ActionListener opBuscar = new ActionListener() {
 		@SuppressWarnings("deprecation")
@@ -1314,8 +1476,8 @@ public class Filtro_Permiso_Empleado extends JFrame{
 		public Cat_SeleccionDeDobla(){
 			this.setModal(true);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/user_icon&16.png"));
-			this.setTitle("Reportes de Asistencia y Retardos del Dia");
-			panel.setBorder(BorderFactory.createTitledBorder("Seleccion de Reporte"));
+			this.setTitle("Seleccion de Tiempo de Dobla por No Tener Dia Que Dobla");
+			panel.setBorder(BorderFactory.createTitledBorder("Seleccion de Opcion de Tiempo"));
 
 
 			btnDobla1.setSelected(true);
@@ -1332,7 +1494,6 @@ public class Filtro_Permiso_Empleado extends JFrame{
 											"		<p>UN RECESO DE 15 MINUTOS.</p></FONT>" +
 											"</html>"); 
 			
-			panel.add(cmbEstablecimiento).setBounds(270, 20, 170, 20);
 			panel.add(btnDobla1).setBounds(20, 50, 300, 75);
 			panel.add(btnDobla2).setBounds(140, 135, 300, 75);
 			
@@ -1343,18 +1504,21 @@ public class Filtro_Permiso_Empleado extends JFrame{
 			this.setSize(470, 300);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
-			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		}
 		
 		ActionListener op1 = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				guardado(2);
+				tiene_dia_dobla=2;
+				btnGuardar.doClick();
+				dispose();
 			}
 		};
 		
 		ActionListener op2 = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				guardado(3);
+				tiene_dia_dobla=3;
+				btnGuardar.doClick();
+				dispose();
 			}
 		};
 	}
