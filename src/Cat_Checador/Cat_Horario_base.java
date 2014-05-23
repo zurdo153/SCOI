@@ -263,4 +263,14 @@ public class Cat_Horario_base  extends JFrame
 	JLabel lblSintaxis = new JLabel("(Puesto   Establecimiento   ");
 	JLabel lblSintaxis2 = new JLabel("Mat/Vesp   ");
 	JLabel lblSintaxis3 = new JLabel("am-pm   C:Comida(hrs)   D:Descanso   DB:Dobla)");
+	
+	JLabel lblMarcoDoblaExtra1 = new JLabel();
+	JLabel lblMarcoDoblaExtra2 = new JLabel();
+	
+	JTextField txtEntradaExtra1 = new JTextField("");
+	JTextField txtSalidaExtra1 = new JTextField("");
+	JTextField txtEntradaExtra2 = new JTextField("");
+	JTextField txtSalidaExtra2 = new JTextField("");
+	JTextField txtComida1 = new JTextField("");
+	JTextField txtComida2 = new JTextField("");
 }

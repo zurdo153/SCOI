@@ -25,6 +25,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
 
 import Conexiones_SQL.Obj_Configuracion_Del_Sistema;
 import Obj_Checador.Obj_Horarios;
@@ -32,7 +34,12 @@ import Obj_Checador.Obj_Horarios;
 @SuppressWarnings("serial")
 public class Cat_Horarios extends Cat_Horario_base
 {
+	Border blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+	
 	public void getContenedor(){
+		
+		this.lblMarcoDoblaExtra1.setBorder(BorderFactory.createTitledBorder(blackline," Dobla Extra 1 "));
+		this.lblMarcoDoblaExtra2.setBorder(BorderFactory.createTitledBorder(blackline," Dobla Extra 2 "));
 		
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/reloj.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Horario"));
@@ -75,97 +82,97 @@ public class Cat_Horarios extends Cat_Horario_base
 		horario1.add(btnSabado).setBounds		(20,300,90,20);
 		horario1.add(btnSD).setBounds			(20,340,90,20);
 		
-		horario1.add(lblLimi).setBounds(130,70,100,20);
-		horario1.add(lblTrabajo).setBounds(310+x,70,60,20);
-		horario1.add(lblComida).setBounds(490+x,70,90,20);
+		horario1.add(lblLimi).setBounds(130,80,100,20);
+		horario1.add(lblTrabajo).setBounds(285+x,80,60,20);
+		horario1.add(lblComida).setBounds(410+x,80,90,20);
 		
 		horario1.add(lblInicio).setBounds(130,90,50,20);
 		horario1.add(lblFin).setBounds(210,90,50,20);
 		
-		horario1.add(lblEntrada).setBounds(310+x,90,60,20);
-		horario1.add(lblSalida).setBounds(390+x,90,60,20);
+		horario1.add(lblEntrada).setBounds(250+x,90,60,20);
+		horario1.add(lblSalida).setBounds(330+x,90,60,20);
 		
-		horario1.add(lblReceso).setBounds(505+x,90,50,20);
+		horario1.add(lblReceso).setBounds(410+x,90,50,20);
 		
-		horario1.add(lblDobla).setBounds(575+x,90,80,20);
-		horario1.add(lblDobla2).setBounds(645+x,85,80,20);
-		horario1.add(lblDobla21).setBounds(645+x,95,80,20);
-		horario1.add(lblDobla3).setBounds(715+x,85,80,20);
-		horario1.add(lblDobla31).setBounds(715+x,95,80,20);
+		horario1.add(lblDobla).setBounds(490+x,90,80,20);
+		horario1.add(lblDobla2).setBounds(560+x,85,80,20);
+		horario1.add(lblDobla21).setBounds(560+x,95,80,20);
+		horario1.add(lblDobla3).setBounds(630+x,85,80,20);
+		horario1.add(lblDobla31).setBounds(630+x,95,80,20);
 
 		horario1.add(spDomingo1).setBounds(130,120,70,20);
 		horario1.add(spDomingo2).setBounds(210,120,70,20);
-		horario1.add(spDomingo3).setBounds(310+x,120,70,20);
-		horario1.add(spDomingo4).setBounds(390+x,120,70,20);
-		horario1.add(spDomingo5).setBounds(490+x,120,70,20);
+		horario1.add(spDomingo3).setBounds(250+x,120,70,20);
+		horario1.add(spDomingo4).setBounds(330+x,120,70,20);
+		horario1.add(spDomingo5).setBounds(410+x,120,70,20);
 		
-		horario1.add(rbDomingo).setBounds(585+x,120,18,18);
-		horario1.add(rbDomingo2).setBounds(655+x,120,18,18);
-		horario1.add(rbDomingo3).setBounds(725+x,120,18,18);
+		horario1.add(rbDomingo).setBounds(505+x,120,18,18);
+		horario1.add(rbDomingo2).setBounds(575+x,120,18,18);
+		horario1.add(rbDomingo3).setBounds(645+x,120,18,18);
 		
 		horario1.add(spLunes1).setBounds(130,150,70,20);
 		horario1.add(spLunes2).setBounds(210,150,70,20);
-		horario1.add(spLunes3).setBounds(310+x,150,70,20);
-		horario1.add(spLunes4).setBounds(390+x,150,70,20);
-		horario1.add(spLunes5).setBounds(490+x,150,70,20);
+		horario1.add(spLunes3).setBounds(250+x,150,70,20);
+		horario1.add(spLunes4).setBounds(330+x,150,70,20);
+		horario1.add(spLunes5).setBounds(410+x,150,70,20);
 		
-		horario1.add(rbLunes).setBounds(585+x,150,18,18);
-		horario1.add(rbLunes2).setBounds(655+x,150,18,18);
-		horario1.add(rbLunes3).setBounds(725+x,150,18,18);
+		horario1.add(rbLunes).setBounds(505+x,150,18,18);
+		horario1.add(rbLunes2).setBounds(575+x,150,18,18);
+		horario1.add(rbLunes3).setBounds(645+x,150,18,18);
 
 		horario1.add(spMartes1).setBounds(130,180,70,20);
 		horario1.add(spMartes2).setBounds(210,180,70,20);
-		horario1.add(spMartes3).setBounds(310+x,180,70,20);
-		horario1.add(spMartes4).setBounds(390+x,180,70,20);
-		horario1.add(spMartes5).setBounds(490+x,180,70,20);
+		horario1.add(spMartes3).setBounds(250+x,180,70,20);
+		horario1.add(spMartes4).setBounds(330+x,180,70,20);
+		horario1.add(spMartes5).setBounds(410+x,180,70,20);
 		
-		horario1.add(rbMartes).setBounds(585+x,180,18,18);
-		horario1.add(rbMartes2).setBounds(655+x,180,18,18);
-		horario1.add(rbMartes3).setBounds(725+x,180,18,18);
+		horario1.add(rbMartes).setBounds(505+x,180,18,18);
+		horario1.add(rbMartes2).setBounds(575+x,180,18,18);
+		horario1.add(rbMartes3).setBounds(645+x,180,18,18);
 		
 		horario1.add(spMiercoles1).setBounds(130,210,70,20);
 		horario1.add(spMiercoles2).setBounds(210,210,70,20);
-		horario1.add(spMiercoles3).setBounds(310+x,210,70,20);
-		horario1.add(spMiercoles4).setBounds(390+x,210,70,20);
-		horario1.add(spMiercoles5).setBounds(490+x,210,70,20);
+		horario1.add(spMiercoles3).setBounds(250+x,210,70,20);
+		horario1.add(spMiercoles4).setBounds(330+x,210,70,20);
+		horario1.add(spMiercoles5).setBounds(410+x,210,70,20);
 		
-		horario1.add(rbMiercoles).setBounds(585+x,210,18,18);
-		horario1.add(rbMiercoles2).setBounds(655+x,210,18,18);
-		horario1.add(rbMiercoles3).setBounds(725+x,210,18,18);
+		horario1.add(rbMiercoles).setBounds(505+x,210,18,18);
+		horario1.add(rbMiercoles2).setBounds(575+x,210,18,18);
+		horario1.add(rbMiercoles3).setBounds(645+x,210,18,18);
 
 		horario1.add(spJueves1).setBounds(130,240,70,20);
 		horario1.add(spJueves2).setBounds(210,240,70,20);
-		horario1.add(spJueves3).setBounds(310+x,240,70,20);
-		horario1.add(spJueves4).setBounds(390+x,240,70,20);
-		horario1.add(spJueves5).setBounds(490+x,240,70,20);
+		horario1.add(spJueves3).setBounds(250+x,240,70,20);
+		horario1.add(spJueves4).setBounds(330+x,240,70,20);
+		horario1.add(spJueves5).setBounds(410+x,240,70,20);
 		
-		horario1.add(rbJueves).setBounds(585+x,240,18,18);
-		horario1.add(rbJueves2).setBounds(655+x,240,18,18);
-		horario1.add(rbJueves3).setBounds(725+x,240,18,18);
+		horario1.add(rbJueves).setBounds(505+x,240,18,18);
+		horario1.add(rbJueves2).setBounds(575+x,240,18,18);
+		horario1.add(rbJueves3).setBounds(645+x,240,18,18);
 		
 		horario1.add(spViernes1).setBounds(130,270,70,20);
 		horario1.add(spViernes2).setBounds(210,270,70,20);
-		horario1.add(spViernes3).setBounds(310+x,270,70,20);
-		horario1.add(spViernes4).setBounds(390+x,270,70,20);
-		horario1.add(spViernes5).setBounds(490+x,270,70,20);
+		horario1.add(spViernes3).setBounds(250+x,270,70,20);
+		horario1.add(spViernes4).setBounds(330+x,270,70,20);
+		horario1.add(spViernes5).setBounds(410+x,270,70,20);
 		
-		horario1.add(rbViernes).setBounds(585+x,270,18,18);
-		horario1.add(rbViernes2).setBounds(655+x,270,18,18);
-		horario1.add(rbViernes3).setBounds(725+x,270,18,18);
+		horario1.add(rbViernes).setBounds(505+x,270,18,18);
+		horario1.add(rbViernes2).setBounds(575+x,270,18,18);
+		horario1.add(rbViernes3).setBounds(645+x,270,18,18);
 
 		horario1.add(spSabado1).setBounds(130,300,70,20);
 		horario1.add(spSabado2).setBounds(210,300,70,20);
-		horario1.add(spSabado3).setBounds(310+x,300,70,20);
-		horario1.add(spSabado4).setBounds(390+x,300,70,20);
-		horario1.add(spSabado5).setBounds(490+x,300,70,20);
+		horario1.add(spSabado3).setBounds(250+x,300,70,20);
+		horario1.add(spSabado4).setBounds(330+x,300,70,20);
+		horario1.add(spSabado5).setBounds(410+x,300,70,20);
 		
-		horario1.add(rbSabado).setBounds(585+x,300,18,18);
-		horario1.add(rbSabado2).setBounds(655+x,300,18,18);
-		horario1.add(rbSabado3).setBounds(725+x,300,18,18);
+		horario1.add(rbSabado).setBounds(505+x,300,18,18);
+		horario1.add(rbSabado2).setBounds(575+x,300,18,18);
+		horario1.add(rbSabado3).setBounds(645+x,300,18,18);
 		
-		horario1.add(rbNoDobla).setBounds(585+x,340,18,18);
-		horario1.add(rbNoDobla2).setBounds(655+x,340,18,18);
-		horario1.add(rbNoDobla3).setBounds(725+x,340,18,18);
+		horario1.add(rbNoDobla).setBounds(505+x,340,18,18);
+		horario1.add(rbNoDobla2).setBounds(575+x,340,18,18);
+		horario1.add(rbNoDobla3).setBounds(645+x,340,18,18);
 
 		horario1.add(btnNuevo).setBounds(150,5,70,20);
 		horario1.add(btnFiltro).setBounds(220,5,70,20);
@@ -184,14 +191,39 @@ public class Cat_Horarios extends Cat_Horario_base
 		horario1.add(lblSintaxis2).setBounds(205,50,60,20);
 		horario1.add(lblSintaxis3).setBounds(260,50,250,20);
 		
-		horario1.add(btnAceptar).setBounds(190,340,80,20);
-		horario1.add(btnDeshacer).setBounds(285,340,80,20);
-		horario1.add(btnEditar).setBounds(380,340,80,20);
-		horario1.add(btnCancelar).setBounds(475,340,80,20);
-		horario1.add(lblNoDobla).setBounds(770,340,70,20);
+		horario1.add(btnAceptar).setBounds(130,340,80,20);
+		horario1.add(btnDeshacer).setBounds(225,340,80,20);
+		horario1.add(btnEditar).setBounds(320,340,80,20);
+		horario1.add(btnCancelar).setBounds(415,340,80,20);
+		horario1.add(lblNoDobla).setBounds(720,340,70,20);
+		
+		horario1.add(lblMarcoDoblaExtra1).setBounds(675+x,105,100,120);
+		horario1.add(new JLabel("Entrada:")).setBounds(685+x,115,80,20);
+		horario1.add(txtEntradaExtra1).setBounds(685+x,130,80,20);
+		horario1.add(new JLabel("Salida:")).setBounds(685+x,148,80,20);
+		horario1.add(txtSalidaExtra1).setBounds(685+x,163,80,20);
+		horario1.add(new JLabel("T Comida:")).setBounds(685+x,181,80,20);
+		horario1.add(txtComida1).setBounds(685+x,196,80,20);
+		
+		horario1.add(lblMarcoDoblaExtra2).setBounds(675+x,222,100,120);
+		horario1.add(new JLabel("Entrada:")).setBounds(685+x,233,80,20);
+		horario1.add(txtEntradaExtra2).setBounds(685+x,251,80,20);
+		horario1.add(new JLabel("salida:")).setBounds(685+x,266,80,20);
+		horario1.add(txtSalidaExtra2).setBounds(685+x,281,80,20);
+		horario1.add(new JLabel("T Comida:")).setBounds(685+x,299,80,20);
+		horario1.add(txtComida2).setBounds(685+x,314,80,20);
 		
 		panel.add(paneles).setBounds(10,20,825,400);
 		paneles.addTab("Horario 1", horario1);
+		
+		spDomingo1.setForeground(Color.blue);
+		
+		txtEntradaExtra1.setEditable(false);
+		txtEntradaExtra2.setEditable(false);
+		txtSalidaExtra1.setEditable(false);
+		txtSalidaExtra2.setEditable(false);
+		txtComida1.setEnabled(false);
+		txtComida2.setEnabled(false);
 		
 //		se asigna hora cero al spinner y se le indica ke muestre solo la hora 
 		horasdefault();
@@ -1832,4 +1864,13 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 			}
 		}
 	};
+	
+	public static void main(String args[]){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Horarios().setVisible(true);
+		}catch(Exception e){
+			System.err.println("Error :"+ e.getMessage());
+		}
+	}
 }
