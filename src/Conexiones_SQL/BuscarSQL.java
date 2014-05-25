@@ -4507,6 +4507,13 @@ public class BuscarSQL {
 				
 				horaa.setHorarioDeposito(rs.getInt("horario_deposito"));
 				horaa.setRecesoDiarioExtra(rs.getInt("receso_extra_diario"));
+				
+				horaa.setEntrada_doblada_extra1(rs.getString("entrada_doblada_extra1"));
+				horaa.setSalida_doblada_extra1(rs.getString("salida_doblada_extra1"));
+				horaa.setComida_doblada_extra1(rs.getString("comida_doblada_extra1"));
+				horaa.setEntrada_doblada_extra2(rs.getString("entrada_doblada_extra2"));
+				horaa.setSalida_doblada_extra2(rs.getString("salida_doblada_extra2"));
+				horaa.setComida_doblada_extra2(rs.getString("comida_doblada_extra2"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
