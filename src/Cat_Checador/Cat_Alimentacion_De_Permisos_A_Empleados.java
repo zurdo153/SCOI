@@ -732,7 +732,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 													  guardar();
 													  return;
 										              } else{
-																if(permiso==7){
+//																if(permiso==7){
 																		if(new Obj_Alimentacion_De_Permisos_A_Empleados().buscar_doblada(Integer.parseInt(txtFolioEmpleado.getText()))==2){
 																			
 																				JOptionPane.showMessageDialog(null,"El Empleado Ya Uso Sus 2 Dias De Dobla Extra!","Aviso",JOptionPane.WARNING_MESSAGE); 
@@ -746,7 +746,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 																							}else{	
 																								  new Cat_SeleccionDeDobla().setVisible(true); 
 																							     }
-																                     }
+//																                     }
 																              }
 										              }
 										
@@ -798,6 +798,8 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 				tiene_dia_dobla=0;
 				txtFolio.setEditable(true);
 				txtFolio.requestFocus();
+				btnFiltro.setEnabled(true);
+				btnBuscar.setEnabled(true);
 						JOptionPane.showMessageDialog(null,"El Permiso se guardo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}else{
@@ -888,7 +890,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 				btnGuardar.setEnabled(true);
 				btnEditar.setEnabled(false);
 				txaMotivo.requestFocus();
-				
+				btnFiltroEmpleado.setEnabled(false);
 				if(chbP_cambiodescanso.isSelected()){cmbDias.setEnabled(true);}
 				if(chbP_tiempoComida.isSelected()){spComida.setEnabled(true);}
 				
