@@ -222,8 +222,8 @@ public class Cat_Horarios extends Cat_Horario_base
 		txtEntradaExtra2.setEditable(false);
 		txtSalidaExtra1.setEditable(false);
 		txtSalidaExtra2.setEditable(false);
-		txtComida1.setEnabled(false);
-		txtComida2.setEnabled(false);
+		txtComida1.setEditable(false);
+		txtComida2.setEditable(false);
 		
 //		se asigna hora cero al spinner y se le indica ke muestre solo la hora 
 		horasdefault();
@@ -398,6 +398,14 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 
 			txtFolio.setText(buscar_horario.getFolio()+"");
 			txtNombre.setText(buscar_horario.getNombre());
+			
+			txtEntradaExtra1.setText(buscar_horario.getEntrada_doblada_extra1());
+			txtComida1.setText(buscar_horario.getComida_doblada_extra1());
+			txtSalidaExtra1.setText(buscar_horario.getSalida_doblada_extra1());
+			
+			txtEntradaExtra2.setText(buscar_horario.getEntrada_doblada_extra2());
+			txtComida2.setText(buscar_horario.getComida_doblada_extra2());
+			txtSalidaExtra2.setText(buscar_horario.getSalida_doblada_extra2());
 			
 //			ASIGNAR AL BOTON SELECCIONADO Y OCULTAR SU CAMPOS DE DIA DE DESCANSO
 			switch(buscar_horario.getDescanso()){
@@ -582,6 +590,7 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		pintarChb();
 		getContenedor();
 		camposFalse();
+		resestTextFieldDobladasExtras();
 		
 		btnAceptar.setEnabled(false);
 		btnEditar.setEnabled(false);
@@ -906,6 +915,7 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 			horasdefault();
 			resetear();
 			camposFalse();
+			resestTextFieldDobladasExtras();
 		}
 	};
 	
@@ -1193,6 +1203,16 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		spSabado3.setEnabled(false);
 		spSabado4.setEnabled(false);
 		spSabado5.setEnabled(false);
+	}
+	
+	public void resestTextFieldDobladasExtras(){
+	txtEntradaExtra1.setText("00:00:00");
+	txtComida1.setText("00:00:00");
+	txtSalidaExtra1.setText("00:00:00");
+	
+	txtEntradaExtra2.setText("00:00:00");
+	txtComida2.setText("00:00:00");
+	txtSalidaExtra2.setText("00:00:00");
 	}
 	
 	ActionListener Guardar = new ActionListener() {

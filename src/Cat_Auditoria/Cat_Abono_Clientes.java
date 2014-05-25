@@ -169,7 +169,8 @@ public class Cat_Abono_Clientes extends JFrame{
 			if(txtFolioTiket.getText().equals("")){
 				new Cat_Filtro_Clientes().setVisible(true);
 			}else{
-				System.out.println("buscar el tiket directo");
+//				ingresar folio_cliente directo
+				buscar_cliente(Integer.valueOf(txtFolioTiket.getText()));
 			}
 			
 		}
@@ -182,6 +183,10 @@ public class Cat_Abono_Clientes extends JFrame{
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}
+	}
+	
+	public void buscar_cliente(int folio_cliente){
+		
 	}
 	
 	//Filtro Clientes
@@ -250,6 +255,9 @@ public class Cat_Abono_Clientes extends JFrame{
 		    			
 		    			txtFolioTiket.setText(folio);
 		    			txtCliente.setText(nombre);
+		    			
+//		    			buscar cliente para abonos
+		    			buscar_cliente(Integer.valueOf(folio));
 		        	}
 		        }
 	        });

@@ -26,6 +26,8 @@ public class Obj_Horarios
 	int horarioDeposito;
 	int recesoDiarioExtra;
 	
+	String entrada_doblada_extra1,salida_doblada_extra1,comida_doblada_extra1,entrada_doblada_extra2,salida_doblada_extra2,comida_doblada_extra2;
+	
 	public Obj_Horarios()
 	{
 		this.folio=0;
@@ -89,6 +91,12 @@ public class Obj_Horarios
 		this.horarioDeposito=0;
 		this.recesoDiarioExtra=0;
 		
+		this.entrada_doblada_extra1="";
+		this.salida_doblada_extra1="";
+		this.comida_doblada_extra1="";
+		this.entrada_doblada_extra2="";
+		this.salida_doblada_extra2="";
+		this.comida_doblada_extra2="";
 	}
 	
 
@@ -492,6 +500,54 @@ public class Obj_Horarios
 
 	public void setRecesoDiarioExtra(int recesoDiarioExtra) {
 		this.recesoDiarioExtra = recesoDiarioExtra;
+	}
+
+	public String getEntrada_doblada_extra1() {
+		return entrada_doblada_extra1;
+	}
+
+	public void setEntrada_doblada_extra1(String entrada_doblada_extra1) {
+		this.entrada_doblada_extra1 = entrada_doblada_extra1;
+	}
+
+	public String getSalida_doblada_extra1() {
+		return salida_doblada_extra1;
+	}
+
+	public void setSalida_doblada_extra1(String salida_doblada_extra1) {
+		this.salida_doblada_extra1 = salida_doblada_extra1;
+	}
+
+	public String getComida_doblada_extra1() {
+		return comida_doblada_extra1;
+	}
+
+	public void setComida_doblada_extra1(String comida_doblada_extra1) {
+		this.comida_doblada_extra1 = comida_doblada_extra1;
+	}
+
+	public String getEntrada_doblada_extra2() {
+		return entrada_doblada_extra2;
+	}
+
+	public void setEntrada_doblada_extra2(String entrada_doblada_extra2) {
+		this.entrada_doblada_extra2 = entrada_doblada_extra2;
+	}
+
+	public String getSalida_doblada_extra2() {
+		return salida_doblada_extra2;
+	}
+
+	public void setSalida_doblada_extra2(String salida_doblada_extra2) {
+		this.salida_doblada_extra2 = salida_doblada_extra2;
+	}
+
+	public String getComida_doblada_extra2() {
+		return comida_doblada_extra2;
+	}
+
+	public void setComida_doblada_extra2(String comida_doblada_extra2) {
+		this.comida_doblada_extra2 = comida_doblada_extra2;
 	}
 
 	//buscar horario
