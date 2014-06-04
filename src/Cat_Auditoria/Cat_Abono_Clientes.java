@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -41,8 +42,42 @@ public class Cat_Abono_Clientes extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-    public static DefaultTableModel tabla_model_abonos = new DefaultTableModel(/*new Obj_Clientes().get_tabla_model()*/null,
-            new String[]{"Folio", "Usuario", "Abonos", "Fecha"}){
+	int fila = 0;
+	int columna = 2;
+	
+	 static String[][] matriz = new String[3][4];
+     static Object[][] data = {
+             {"pesos",new Integer(1), new Integer(5), new Boolean(false)},
+             {"dolar",new Double(12.5), new Integer(3), new Boolean(true)},
+         };
+    public static DefaultTableModel tabla_model_cobro = new DefaultTableModel(/*new Obj_Clientes().get_tabla_model()null*/data,
+            new String[]{"Efectivo", "Valor", "Pago", "Importe"}){
+                    
+			@SuppressWarnings({ "rawtypes" })
+			Class[] types = new Class[]{
+                       java.lang.Object.class,
+                       java.lang.Object.class, 
+                       java.lang.Object.class, 
+                       java.lang.Object.class
+                        
+        };
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+                    return types[columnIndex];
+            }
+        public boolean isCellEditable(int fila, int columna){
+                    switch(columna){
+                            case 0  : return false; 
+                            case 1  : return false; 
+                            case 2  : return true; 
+                            case 3  : return false; 
+                    }
+                     return false;
+             }
+    };
+	
+    public static DefaultTableModel tabla_model_ticket = new DefaultTableModel(/*new Obj_Clientes().get_tabla_model()*/null,
+            new String[]{"Ticket", "Fecha Inicial", "Fecha Limite", "Saldo"}){
                     
 			@SuppressWarnings({ "rawtypes" })
 			Class[] types = new Class[]{
@@ -66,71 +101,210 @@ public class Cat_Abono_Clientes extends JFrame{
                      return false;
              }
     };
+    
+    public static DefaultTableModel tabla_model_abonos = new DefaultTableModel(/*new Obj_Clientes().get_tabla_model()*/null,
+            new String[]{"Cantidad", "Fecha De Abono", "Establecimiento", "Recibio"}){
+                    
+			@SuppressWarnings({ "rawtypes" })
+			Class[] types = new Class[]{
+                       java.lang.Object.class,
+                       java.lang.Object.class, 
+                       java.lang.Object.class, 
+                       java.lang.Object.class
+                        
+        };
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+                    return types[columnIndex];
+            }
+        public boolean isCellEditable(int fila, int columna){
+                    switch(columna){
+                            case 0  : return false; 
+                            case 1  : return false; 
+                            case 2  : return false; 
+                            case 3  : return false;
+                    }
+                     return false;
+             }
+    };
+    
+    JTable tabla_cobros = new JTable(tabla_model_cobro);
+	JScrollPane panelScroll_cobros = new JScrollPane(tabla_cobros);
 	
-	JTable tabla_abonos = new JTable(tabla_model_abonos);
+    JTable tabla_ticket = new JTable(tabla_model_ticket);
+	JScrollPane panelScroll_ticket = new JScrollPane(tabla_ticket);
+	
+    JTable tabla_abonos = new JTable(tabla_model_abonos);
 	JScrollPane panelScroll_abonos = new JScrollPane(tabla_abonos);
+
+	JTextField txtAsignacion = new JTextField();
+	JTextField txtCajera = new JTextField();
+	
+	JTextField txtFolioCliente = new JTextField();
+	JTextField txtCliente = new JTextField();
+	JTextField txtDomicilio = new JTextField();
 	
 	JTextField txtFolioTiket = new JTextField();
-	JTextField txtCliente = new JTextField();
 	JTextField txtAbono = new JTextField();
 	
 	JDateChooser fecha = new JDateChooser();
 	
-	JButton btnGuardarAbono = new JButton("Guardar");
 	JButton btnBuscar = new JButton("");
+	JButton btnGuardarAbono = new JButton("Guardar");
+	JButton btnNuevaCuenta = new JButton("Cuenten Nueva");
 	
-	JLabel lblSigno = new JLabel("$");
-	JLabel lblTotal = new JLabel("0000.00");
+	JLabel lblSignoCambio = new JLabel("Su Cambio: $");
+	JLabel lblCambio = new JLabel("0000.00");
+	
+	JLabel lblSignoSaldo = new JLabel("Saldo: $");
+	JLabel lblSaldo = new JLabel("0000.00");
 	
 	public Cat_Abono_Clientes(){
 		this.setTitle("Abonos Clientes");
 		
-		lblSigno.setFont(new Font("arial", Font.BOLD, 50));
-		lblTotal.setFont(new Font("arial", Font.BOLD, 50));
+    	
 		
-		lblSigno.setForeground(new Color(105,105,105));
-		lblTotal.setForeground(new Color(105,105,105));
+		tabla_cobros.setFont(new Font("arial", Font.BOLD, 25));
+    	tabla_cobros.setRowHeight(30);//tamaño de fila
+
+		lblSignoCambio.setFont(new Font("arial", Font.BOLD, 35));
+		lblCambio.setFont(new Font("arial", Font.BOLD, 35));
+		
+		lblSignoSaldo.setFont(new Font("arial", Font.BOLD, 35));
+		lblSaldo.setFont(new Font("arial", Font.BOLD, 35));
+		
+		lblSignoCambio.setForeground(new Color(105,105,105));
+		lblCambio.setForeground(new Color(105,105,105));
+		
+		lblSignoSaldo.setForeground(new Color(105,105,105));
+		lblSaldo.setForeground(new Color(105,105,105));
 		
 		init_tabla();
 		
 		int x=20; int y=15; int ancho=80;
 		
-		panel.add(new JLabel("Folio: ")).setBounds(x, y, ancho, 20);
-		panel.add(txtFolioTiket).setBounds(x+50,y,ancho,20);
-		panel.add(btnBuscar).setBounds(x+130,y,30,20);
+		JTextField txtCajera = new JTextField();
 		
-		panel.add(new JLabel("Fecha Limite: ")).setBounds(x+165, y, ancho, 20);
-		panel.add(fecha).setBounds(x+250,y,ancho+20,20);
+		JTextField txtFolioCliente = new JTextField();
+		final JTextField txtCliente = new JTextField();
+		JTextField txtDomicilio = new JTextField();
 		
-		panel.add(lblSigno).setBounds(x+360,y,ancho,60);
-		panel.add(lblTotal).setBounds(x+390,y,ancho*3,60);
+		JTextField txtFolioTiket = new JTextField();
+		final JTextField txtAbono = new JTextField();
 		
-		panel.add(new JLabel("Cliente: ")).setBounds(x, y+=25, ancho, 20);
-		panel.add(txtCliente).setBounds(x+50,y,ancho*3+60,20);
+		JDateChooser fecha = new JDateChooser();
+		
+		JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
+		JButton btnGuardarAbono = new JButton("Guardar");
+		JButton btnNuevaCuenta = new JButton("Cuenten Nueva");
+		
+		panel.add(lblSignoCambio).setBounds(x+610, 15, ancho*3+20, 40);
+		panel.add(lblCambio).setBounds(x+850,15,ancho*2+30,40);
+		
+		panel.add(lblSignoSaldo).setBounds(x+610, 60, ancho*3+20, 40);
+		panel.add(lblSaldo).setBounds(x+760,60,ancho*2+30,40);
+		
+		panel.add(new JLabel("Asignacion: ")).setBounds(x, y, ancho, 20);
+		panel.add(txtAsignacion).setBounds(x+70,y,ancho,20);
+		
+		panel.add(new JLabel("Cajera (o): ")).setBounds(x+195, y, ancho, 20);
+		panel.add(txtCajera).setBounds(x+260,y,(ancho*4)+20,20);
+		
+		panel.add(new JLabel("Folio Cliente: ")).setBounds(x, y+=25, ancho, 20);
+		panel.add(txtFolioCliente).setBounds(x+70,y,ancho,20);
+		panel.add(btnBuscar).setBounds(x+150,y,30,20);
+		
+		panel.add(new JLabel("Cliente: ")).setBounds(x+195, y, ancho, 20);
+		panel.add(txtCliente).setBounds(x+260,y,(ancho*4)+20,20);
+		
+		panel.add(new JLabel("Ticket: ")).setBounds(x, y+=25, ancho, 20);
+		panel.add(txtFolioTiket).setBounds(x+70,y,ancho,20);
+		
+		panel.add(new JLabel("Domicilio: ")).setBounds(x+195, y, ancho, 20);
+		panel.add(txtDomicilio).setBounds(x+260,y,(ancho*4)+20,20);
 		
 		panel.add(new JLabel("Abono: ")).setBounds(x, y+=25, ancho, 20);
-		panel.add(txtAbono).setBounds(x+50,y,ancho,20);
-		panel.add(btnGuardarAbono).setBounds(x+150, y, ancho, 20);
+		panel.add(txtAbono).setBounds(x+70,y,ancho,20);
 		
-		panel.add(panelScroll_abonos).setBounds(x, y+=30, 600, 300);
+		panel.add(new JLabel("Fecha Limite: ")).setBounds(x+195, y, ancho, 20);
+		panel.add(fecha).setBounds(x+260, y, ancho+20, 20);
+		panel.add(btnGuardarAbono).setBounds(x+365,y,ancho+20,20);
+		panel.add(btnNuevaCuenta).setBounds(x+470,y,ancho+50,20);
 		
+		panel.add(panelScroll_cobros).setBounds(x, y+=40, 970, 200);
+		panel.add(panelScroll_ticket).setBounds(x, y+=220, 970, 120);
+		panel.add(panelScroll_abonos).setBounds(x, y+=140, 970, 200);
+		
+		txtAsignacion.setEditable(false);
+		txtCajera.setEditable(false);
 		txtCliente.setEditable(false);
+		txtDomicilio.setEditable(false);
+		
+		
+
+		txtAbono.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				if(txtAbono.getText().equals("")){
+//					aviso
+				}else{
+//					validar ke tenga cantidad en txtAbono
+					tabla_cobros.editCellAt(fila, columna);
+					Component aComp=tabla_cobros.getEditorComponent();
+					aComp.requestFocus();
+				}
+			}
+		});
+		
+		tabla_cobros.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+						
+				int cantidadDeFilas = tabla_cobros.getRowCount();
+				fila+=1;
+				
+				if(fila == cantidadDeFilas){
+					fila=0;
+				}
+				
+				tabla_cobros.editCellAt(fila, columna);
+				Component aComp=tabla_cobros.getEditorComponent();
+				aComp.requestFocus();
+
+				
+//				if(fila<tabla_cobros.getRowCount()){
+//					fila=fila+1;
+//				}else{
+//					fila=0;
+//				}
+//				tabla_cobros.requestFocus();
+//				tabla_cobros.editCellAt(fila, columna);
+			}
+			@Override
+			public void keyPressed(KeyEvent arg0) {}
+		});
 		
 		btnBuscar.addActionListener(opBuscar);
 		cont.add(panel);
-		this.setSize(650,450);
+		this.setSize(1024,768);
 	}
 	
 	public void init_tabla(){
     	
-    	this.tabla_abonos.getTableHeader().setReorderingAllowed(false) ;
+		int x=250;
+    	this.tabla_cobros.getTableHeader().setReorderingAllowed(false) ;
     	
-    	this.tabla_abonos.getColumnModel().getColumn(0).setMaxWidth(72);
-    	this.tabla_abonos.getColumnModel().getColumn(0).setMinWidth(72);		
-    	this.tabla_abonos.getColumnModel().getColumn(1).setMaxWidth(360);
-    	this.tabla_abonos.getColumnModel().getColumn(1).setMinWidth(360);
-    	this.tabla_abonos.getColumnModel().getColumn(2).setMaxWidth(210);
-    	this.tabla_abonos.getColumnModel().getColumn(2).setMinWidth(210);
+    	this.tabla_cobros.getColumnModel().getColumn(0).setMaxWidth(x);
+    	this.tabla_cobros.getColumnModel().getColumn(0).setMinWidth(x);		
+    	this.tabla_cobros.getColumnModel().getColumn(1).setMaxWidth(x);
+    	this.tabla_cobros.getColumnModel().getColumn(1).setMinWidth(x);
+    	this.tabla_cobros.getColumnModel().getColumn(2).setMaxWidth(x);
+    	this.tabla_cobros.getColumnModel().getColumn(2).setMinWidth(x);
+    	this.tabla_cobros.getColumnModel().getColumn(3).setMaxWidth(x);
+    	this.tabla_cobros.getColumnModel().getColumn(3).setMinWidth(x);
 
     	TableCellRenderer render = new TableCellRenderer() {
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -138,28 +312,48 @@ public class Cat_Abono_Clientes extends JFrame{
 					
 							JLabel lbl = new JLabel(value == null? "": value.toString());
 							
+							lbl.setFont(new Font("arial", Font.BOLD, 25));
+							
 							if(row%2==0){
 									lbl.setOpaque(true); 
 									lbl.setBackground(new java.awt.Color(177,177,177));
 							} 
 							
-							if(table.getSelectedRow() == row){
-								lbl.setOpaque(true); 
+//							alinear los valores de la celda dependiendo el tipo de dato que contenga
+							if(value instanceof Integer){ 
+								lbl.setText(""+(Integer)value);   
+								lbl.setHorizontalAlignment(SwingConstants.CENTER); 
+					        }
+							if(value instanceof Double){ 
+								lbl.setText(""+(Double)value);   
+								lbl.setHorizontalAlignment(SwingConstants.CENTER); 
+					        }
+							if(value instanceof Float){ 
+								lbl.setText(""+(Float)value);   
+								lbl.setHorizontalAlignment(SwingConstants.CENTER); 
+					        }
+							if (value instanceof String){ 
+					            lbl.setText((String)value); 
+					            lbl.setHorizontalAlignment(SwingConstants.LEFT); 
+							}
+//							si esta seleccionara pinta color naranja
+							if(isSelected){ 
+								lbl.setOpaque(true);
 								lbl.setBackground(new java.awt.Color(186,143,73));
-							}
+								}	
 							
-							switch(column){
-								case 0 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-								case 1 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-								case 2 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-								case 3 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-							}
 							return lbl; 
 					} 
 			}; 
 
-		for(int x = 0; x<tabla_abonos.getColumnCount(); x++){
-			this.tabla_abonos.getColumnModel().getColumn(x).setCellRenderer(render); 
+		for(int i = 0; i<tabla_cobros.getColumnCount(); i++){
+			this.tabla_cobros.getColumnModel().getColumn(i).setCellRenderer(render); 
+		}
+		for(int i = 0; i<tabla_ticket.getColumnCount(); i++){
+			this.tabla_ticket.getColumnModel().getColumn(i).setCellRenderer(render); 
+		}
+		for(int i = 0; i<tabla_abonos.getColumnCount(); i++){
+			this.tabla_abonos.getColumnModel().getColumn(i).setCellRenderer(render); 
 		}
     }
 	
@@ -172,7 +366,6 @@ public class Cat_Abono_Clientes extends JFrame{
 //				ingresar folio_cliente directo
 				buscar_cliente(Integer.valueOf(txtFolioTiket.getText()));
 			}
-			
 		}
 	};
 	
@@ -240,7 +433,6 @@ public class Cat_Abono_Clientes extends JFrame{
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
-//			tabla.addKeyListener(seleccionEmpleadoconteclado);
 			
 		}
 		private void agregar(final JTable tbl) {
@@ -274,8 +466,6 @@ public class Cat_Abono_Clientes extends JFrame{
 			tcr.setHorizontalAlignment(SwingConstants.CENTER);
 			
 			tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
-			
-
 			
 			tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
 			tabla.getColumnModel().getColumn(0).setMaxWidth(70);
@@ -370,27 +560,5 @@ public class Cat_Abono_Clientes extends JFrame{
 			public void keyReleased(KeyEvent e){}
 									
 		};
-		
-//		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
-//			@SuppressWarnings("static-access")
-//			@Override
-//			public void keyTyped(KeyEvent e) {
-//				char caracter = e.getKeyChar();
-//				
-//				if(caracter==e.VK_ENTER){
-//				int fila=tabla.getSelectedRow()-1;
-//				String folio = tabla.getValueAt(fila,0).toString().trim();
-//					
-//				txtFolioTiket.setText(folio);
-//				btnBuscar.doClick();
-//				dispose();
-//				}
-//			}
-//			@Override
-//			public void keyPressed(KeyEvent e){}
-//			@Override
-//			public void keyReleased(KeyEvent e){}
-//									
-//		};
 	}
 }
