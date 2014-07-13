@@ -102,9 +102,9 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 	
 	public Cat_Captura_Del_Cuadrante_Personal(String Nombre_Usuario) {
 		NOMBRECOMPLETO = Nombre_Usuario;
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/cuadrante_captura_icon&16.png"));
-		this.setTitle("Alimentación de Cuadrante");
-		this.panel.setBorder(BorderFactory.createTitledBorder("Alimentación de Cuadrante"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/cuadrante_personal-64.png"));
+		this.setTitle("Captura de Cuadrante Personal");
+		this.panel.setBorder(BorderFactory.createTitledBorder("Alimentación de Cuadrante Personal"));
 
 		this.plantillaMultipleJerarquica.tablaPlantillaMultiple.getColumnModel().getColumn(1).setHeaderValue("Actividades Asignadas por Nivel Jerarquico");
 		this.plantillaMultiple.tablaPlantillaMultiple.getColumnModel().getColumn(1).setHeaderValue("Actividades Asignadas por Cuadrante");

@@ -78,11 +78,9 @@ public class Cat_Cuadrante extends Cat_Cuadrante_Base {
 		this.btnDeshacer.addActionListener(opDeshacer);
 		this.btnEditar.addActionListener(opEditar);
 		this.btnBuscar.addActionListener(opBuscar);
-		
 		this.btnSimilar.addActionListener(opSimilar);
 		this.btnizquierda.addActionListener(opleft);
 		this.btnderecha.addActionListener(oprigth);
-		
 		this.btnSimilar.setEnabled(false);
 		
 		txtFolio.addKeyListener(valida);

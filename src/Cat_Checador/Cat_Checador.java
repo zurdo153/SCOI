@@ -169,6 +169,8 @@ public class Cat_Checador extends JFrame {
                 btnFoto.setIcon(iconoFoto);
                 
 //                btnExaminar.addActionListener(opExaminar);
+                this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/checador.png"));
+                this.setTitle("Checador");
                 
                 txtClaveReal.addKeyListener(action_registrar_entrada);
                 btnChecar.addActionListener(opChecar);

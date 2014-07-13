@@ -37,6 +37,7 @@ import Cat_IZAGAR.Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos;
 import Cat_IZAGAR.Cat_IZAGAR_Selecionar_Nomina_Para_Netos;
 import Cat_Reportes.Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos;
 import Cat_Reportes.Cat_Reporte_Depositos_A_Bancos;
+import Cat_Reportes.Cat_Reportes_De_Empleados_Con_Deposito_En_Bancos_Excedido;
 import Conexiones_SQL.Connexion;
 import IZAGAR_Obj.Obj_IZAGAR_Netos_Nominas;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
@@ -101,6 +102,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	JButton btn_IDepositosBancLimpio  = new JButton();
 	JButton btn_IDepositosBancP_Estab = new JButton();
 	JButton btn_EmpleadosS_Dep = new JButton ();
+	JButton btn_Empleados_Pagar_Negativo =new JButton ();
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(tabla_model); 
@@ -125,6 +127,8 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.panel.add(new JLabel("Imprimir Reporte Por Establecimiento")).setBounds(1150,320,250,20);
 		this.panel.add(btn_EmpleadosS_Dep).setBounds(1085,360,40,40);
 		this.panel.add(new JLabel("Reportes de Empleados Sin Depositos A Bancos")).setBounds(1150,370,300,20);
+		this.panel.add(btn_Empleados_Pagar_Negativo).setBounds(1085,410,40,40);
+		this.panel.add(new JLabel("Reportes de Empleados Con Deposito Excedido")).setBounds(1150,420,300,20);
 		
 		this.panel.add(new JLabel("Total Banamex:")).setBounds(1080,70,100,20);
 		this.panel.add(txtBanamex).setBounds(1160,70,120,20);
@@ -154,6 +158,10 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	    ImageIcon imagempleadoSinBanco = new ImageIcon(System.getProperty("user.dir")+"/Imagen/usuario-de-alerta-icono-4069-64.png");
 	    btn_EmpleadosS_Dep.setIcon(new ImageIcon(imagempleadoSinBanco.getImage().getScaledInstance(btn_lay_out.getWidth()-4,btn_lay_out.getHeight()-4, Image.SCALE_DEFAULT)));
 	    
+	    ImageIcon imagempleadoExcedido = new ImageIcon(System.getProperty("user.dir")+"/Imagen/rebicionTotales.png");
+	    btn_Empleados_Pagar_Negativo.setIcon(new ImageIcon(imagempleadoExcedido.getImage().getScaledInstance(btn_lay_out.getWidth()-4,btn_lay_out.getHeight()-4, Image.SCALE_DEFAULT)));
+	    
+	    
 		this.txtTotales.setEditable(false);
 		this.txtTotales.setFont(new Font("",0,14));
 		
@@ -167,7 +175,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.btn_IDepositosBancLimpio.addActionListener(Reporte_Depositos_Bancos_limpio);
 		this.btn_IDepositosBancP_Estab.addActionListener(Reporte_Depositos_Bancos_);
 		this.btn_EmpleadosS_Dep.addActionListener(Reporte_Empleados_Sin_Depositos_A_Bancos_);
-		
+		this.btn_Empleados_Pagar_Negativo.addActionListener(Reporte_Empleados_Con_Depositos_A_Bancos_Excedido);
 		this.btn_refrescar.setVisible(false);
 			
 		btn_lay_out.setToolTipText("Generar Lay Out");
@@ -272,7 +280,12 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	};
 	
 	   ActionListener op_123 = new ActionListener() {
+			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent arg0) {
+				txtFolio.setText("");
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
+				txtNombre_Completo.setText("");
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
 				new filtroSeleccion().setVisible(true);
 			}
 		};
@@ -535,6 +548,12 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	ActionListener Reporte_Empleados_Sin_Depositos_A_Bancos_ = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 				new Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos().setVisible(true);
+		}
+	};
+	
+	ActionListener Reporte_Empleados_Con_Depositos_A_Bancos_Excedido = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+				new Cat_Reportes_De_Empleados_Con_Deposito_En_Bancos_Excedido().setVisible(true);
 		}
 	};
 	

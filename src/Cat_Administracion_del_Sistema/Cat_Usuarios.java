@@ -174,8 +174,16 @@ public class Cat_Usuarios extends JFrame{
 	@SuppressWarnings("rawtypes")
 	Vector Lista_de_RayaVector = new Obj_NombreVector("Lista De Raya", Lista_de_Raya);
 		
+	// MENU PRINCIPAL REPORTES ESPECIALES (7)
+		String[] Sub_Reportes_Especiales = new Obj_SubMenus().Relacion_de_SubMenus(7);
+		Obj_CheckBoxNode Reportes_Especiales[] = {
+			new Obj_CheckBoxNode(Sub_Reportes_Especiales[0], false),
+		};
+		@SuppressWarnings("rawtypes")
+		Vector ReportesEspecialesVector = new Obj_NombreVector("Reportes Especiales", Reportes_Especiales);
+		
 	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ContabilidadVector, EvaluacionesVector, 
-			Lista_de_RayaVector};
+			Lista_de_RayaVector,ReportesEspecialesVector};
 	    
 	@SuppressWarnings("rawtypes")
 	Vector rootVector = new Obj_NombreVector("Permisos", rootNodos);
@@ -270,7 +278,7 @@ public class Cat_Usuarios extends JFrame{
 		txtNombre_Completo.setEditable(false);
 	
 		this.setSize(800,540);
-		this.setResizable(true);
+		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
@@ -334,6 +342,15 @@ public class Cat_Usuarios extends JFrame{
 	        			Lista_de_Raya[i].setSelected(Boolean.parseBoolean(lista_de_Raya.get(i).toString()));
 	        		}
 	        		tree.collapseRow(5);
+	        		
+	        		Vector reportes_especiales = new Obj_Usuario().returnPermisos(folio_empleado, 7);
+	        		for(int i = 0; i<Reportes_Especiales.length; i ++){
+	        			Reportes_Especiales[i].setSelected(Boolean.parseBoolean(reportes_especiales.get(i).toString()));
+	        		}
+	        		tree.collapseRow(6);
+	        		
+	        		
+	        		
 				}else{
 					btnNoEsUsuario.setVisible(true);
 					
@@ -366,6 +383,10 @@ public class Cat_Usuarios extends JFrame{
 	        		for(int i = 0; i<Lista_de_Raya.length; i ++){
 	        			Lista_de_Raya[i].setSelected(false);
 	        		}
+	        		for(int i = 0; i<Reportes_Especiales.length; i ++){
+	        			Reportes_Especiales[i].setSelected(false);
+	        		}
+	        		
 	        		tree.collapseRow(5);
 	        		
 				}        		
@@ -374,8 +395,10 @@ public class Cat_Usuarios extends JFrame{
 	};
 	
 	ActionListener opguardar = new ActionListener(){
-		@SuppressWarnings("rawtypes")
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void actionPerformed(ActionEvent e){
+			trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
+			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 			if(validaCampos()!="") {
 				JOptionPane.showMessageDialog(null, "Necesita Selecionar Un Empleado\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 				        return;

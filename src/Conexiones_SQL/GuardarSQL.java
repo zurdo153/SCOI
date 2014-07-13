@@ -1037,9 +1037,8 @@ public class GuardarSQL {
 				String[] arreglo = permisos.get(i).toString().split("/");
 				pstmt.setString(2, arreglo[0]);
 				pstmt.setString(3, arreglo[1]);
-//				pstmt.setInt(5, getMenuId(arreglo[0].toString().trim()));
 				pstmt.execute();
-				System.out.println(usuario.getFolio());
+//				System.out.println(usuario.getFolio());
 			}
 			con.commit();
 		} catch (Exception e) {
@@ -1610,15 +1609,19 @@ public class GuardarSQL {
 			pstmt.setString(20, importar.getLote2());
 			
 			pstmt.executeUpdate();
+			System.out.println("Guardo");
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en Guardar SQL en la funcion Importar GuardarImportarVoucher \n en el procedimiento almacenado sp_insert_voucher_importado " + e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en Guardar SQL en la funcion Importar GuardarImportarVoucher \n en el procedimiento almacenado sp_insert_voucher_importado " + ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 				}
 			} 
 			return false;
@@ -2895,7 +2898,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 	
 	public boolean Guardar_Vacaciones_Calculadas(Obj_Alimentacion_De_Vacaciones alimentacion){
 //		cambiar procedimiento, agregar todos los campos
-		String query = "exec sp_insert_alimentacion_de_vacaciones_calculadas ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_alimentacion_de_vacaciones_calculadas ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
@@ -2916,6 +2919,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			pstmt.setFloat			(i+=1, alimentacion.getFuente_de_sodas());
 			pstmt.setFloat			(i+=1, alimentacion.getPrestamo());
 			pstmt.setFloat			(i+=1, alimentacion.getPension_alimenticia());
+			pstmt.setFloat          (i+=1, alimentacion.getDias_descanso_vacaciones()); 
 			pstmt.setFloat			(i+=1, alimentacion.getTotal());
 			pstmt.setInt			(i+=1, alimentacion.isStatus()?1:0);
 			pstmt.setFloat          (i+=1, alimentacion.getVacaciones_c());

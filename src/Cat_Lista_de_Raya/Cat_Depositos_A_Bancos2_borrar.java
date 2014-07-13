@@ -26,7 +26,7 @@ import javax.swing.table.TableRowSorter;
 import Obj_Lista_de_Raya.Obj_Depositos_A_Bancos;
 
 @SuppressWarnings("serial")
-public class Cat_Depositos_A_Bancos2 extends Cat_Root {
+public class Cat_Depositos_A_Bancos2_borrar extends Cat_Root {
 
 	private JCheckBox chbHabilitarBanamex = new JCheckBox("Habilitar");
 	private JCheckBox chbHabilitarBanorte = new JCheckBox("Habilitar");
@@ -93,7 +93,7 @@ public class Cat_Depositos_A_Bancos2 extends Cat_Root {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(tabla_model); 
 		
-    public Cat_Depositos_A_Bancos2(){
+    public Cat_Depositos_A_Bancos2_borrar(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/money_icon&16.png"));
 		this.setTitle("Bancos");
 			

@@ -18,8 +18,9 @@ public class Init_Menu_Bar extends Init_Login{
 
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.0.9");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/layers_1_icon&16.png"));
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.2.0");
+		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
 		
@@ -32,8 +33,6 @@ public class Init_Menu_Bar extends Init_Login{
 	
 	@SuppressWarnings("rawtypes")
 	public JMenuBar miMenuTop(){
-		
-
 		
 		Vector MenuVector = new Obj_Menus().getMenusNivel (Integer.parseInt(txtFolio.getText()));
 		ArrayList<WP_Menu> lsMenus = new ArrayList<WP_Menu>();
@@ -77,7 +76,7 @@ public class Init_Menu_Bar extends Init_Login{
 		public String Name;
 		public int Dependiente_id;
 		public String Name_Dependiente;
-		
+
 		public WP_Menu(String nivel, String folio, String name, String dependiente_id, String name_dependiente){
 			this.Nivel = Integer.valueOf(nivel);
 			this.Folio = Integer.valueOf(folio);
@@ -169,7 +168,6 @@ public class Init_Menu_Bar extends Init_Login{
 							}
 							tmp.add(tmp1);
 						}
-						
 					}
 					for(WP_Submenu su: depSub){
 						if(me.Folio == su.Menu_Id){
@@ -211,8 +209,6 @@ public class Init_Menu_Bar extends Init_Login{
 					subMenusbotones();
 					user.Session();
 					txtContrasena.setEnabled(false);
-					
-					
 				}
 			}else{
 				JOptionPane.showMessageDialog(null, "La contraseña está vacía...","Aviso",JOptionPane.WARNING_MESSAGE);
@@ -227,7 +223,6 @@ public class Init_Menu_Bar extends Init_Login{
 		public void actionPerformed(ActionEvent e){
 			if(! new Componentes().classExiste(e.getActionCommand()).equalsIgnoreCase("")){
 				try {
-					
 					if(e.getActionCommand().equalsIgnoreCase("Captura Del Cuadrante Personal")){
 						Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 						Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal datos_cuadrante = new Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal().buscarEmpleado( new Componentes().getTextProcesa(usuario.getNombre_completo()));
@@ -262,7 +257,6 @@ public class Init_Menu_Bar extends Init_Login{
 		    txtFolio.setEditable(true);
 			txtContrasena.setEditable(true);
 			txtFolio.requestFocus();
-						
 			btnAceptar.setVisible(true);
 			btnAceptar.setEnabled(false);
 			btnBuscar.setEnabled(true);
@@ -277,6 +271,7 @@ public class Init_Menu_Bar extends Init_Login{
 			btnListaRaya.setEnabled(false);
 			btnListaFirma.setEnabled(false);
 			btnListaComparacion.setEnabled(false);
+			btnChecador.setEnabled(false);
 			btnCambiarContrasena.setVisible(false);
 			deshabilitarCambiarContrasena ();
 			cargar_usuariotrue();
@@ -284,8 +279,6 @@ public class Init_Menu_Bar extends Init_Login{
 			new Init_Menu_Bar().setVisible(true);
 		}
 	};
-
-	
 	
 	public static void main(String args[]){
 		try{

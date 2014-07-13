@@ -81,6 +81,7 @@ public class Cat_Horario_base  extends JFrame
 	JButton btnDeshacer = new JButton("Deshacer");  
 	JButton btnFiltro = new JButton("Filtro");
 	JButton btnEditar = new JButton("Editar");
+	JButton btnReportes = new JButton ("Reportes de Horarios");
 
 	JCheckBox chbHorarioDeposito = new JCheckBox("Horario Deposito");
 	JCheckBox chbRecesoExtraDiario = new JCheckBox("Receso extra diario (15 min)");

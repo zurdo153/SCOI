@@ -124,7 +124,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	public void getContenedor()
 	{
 		init_tabla();
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/sun_icon&16.png"));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/captura_fuente_de_Sodas_64.png"));
 		this.setTitle("Captura de fuente de sodas");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Captura de fuente de sodas"));
 		

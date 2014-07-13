@@ -950,15 +950,15 @@ public boolean IZAGAR_insert_Netos_Nominas_Temp_individual(int folio_empleado,in
 		con.commit();
 	} catch (Exception e) {
 		System.out.println("SQLException: "+e.getMessage());
-		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Empleado  procedimiento almacenado IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_insert_Netos_Nominas_Temp_individual  procedimiento almacenado IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		if(con != null){
 			try{
 				System.out.println("La transacción ha sido abortada");
-				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Empleado  procedimiento almacenado IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_insert_Netos_Nominas_Temp_individual  procedimiento almacenado IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				con.rollback();
 			}catch(SQLException ex){
 				System.out.println(ex.getMessage());
-				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Empleado  procedimiento almacenado IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_insert_Netos_Nominas_Temp_individual  procedimiento almacenado IZAGAR_insert_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return false;
@@ -988,9 +988,11 @@ public boolean IZAGAR_Remove_Netos_Nominas_Temp_individual(int folio_empleado,in
 		if(con != null){
 			try{
 				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual  procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				con.rollback();
 			}catch(SQLException ex){
 				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual  procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return false;
@@ -1041,7 +1043,6 @@ public boolean IZAGAR_insert_totales_deposito_nomina_bancos(){
 	try {
 		PreparedStatement pstmt = con.prepareStatement(query);
 		con.setAutoCommit(false);
-		
 		pstmt.executeUpdate();
 		con.commit();
 	} catch (Exception e) {
@@ -1049,9 +1050,54 @@ public boolean IZAGAR_insert_totales_deposito_nomina_bancos(){
 		if(con != null){
 			try{
 				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_insert_totales_deposito_nomina_bancos  procedimiento almacenado sp_traspaso_de_totales_a_depositos_nomina_bancos SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				con.rollback();
 			}catch(SQLException ex){
 				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_insert_totales_deposito_nomina_bancos  procedimiento almacenado sp_traspaso_de_totales_a_depositos_nomina_bancos SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+public boolean Guarda_tabla_de_vouchers_cargados_desde_fecha_automatico(Object[][] tabla){
+	String query = "exec sp_insert_vouchers_importados_automatico_desde_una_fecha_determinada ?,?,?,?,?,?,?,? ";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.length; i++){
+			pstmt.setString(1, tabla[i][0].toString().trim());
+			pstmt.setString(2, tabla[i][1].toString().trim());
+			pstmt.setString(3, tabla[i][2].toString().trim());
+			pstmt.setFloat(4,  Float.valueOf(tabla[i][3].toString().trim()));
+			pstmt.setString(5, tabla[i][4].toString().trim());
+			pstmt.setString(6, tabla[i][5].toString().trim());
+			pstmt.setString(7, tabla[i][6].toString().trim());
+			pstmt.setString(8, tabla[i][7].toString().trim());
+			
+		pstmt.executeUpdate();
+		}
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_de_vouchers_cargados_desde_fecha_automatico /n procedimiento almacenado sp_insert_vouchers_importados_automatico_desde_una_fecha_determinada SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_de_vouchers_cargados_desde_fecha_automatico /n procedimiento almacenado sp_insert_vouchers_importados_automatico_desde_una_fecha_determinada SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_de_vouchers_cargados_desde_fecha_automatico /n procedimiento almacenado sp_insert_vouchers_importados_automatico_desde_una_fecha_determinada SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return false;

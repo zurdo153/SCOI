@@ -17,7 +17,7 @@ import Obj_Contabilidad.Obj_Importar_Voucher;
 
 @SuppressWarnings("serial")
 public class Cat_Importar_Voucher extends JFrame{
-	
+	String vueltacadena = "";
 	@SuppressWarnings({ "unused", "rawtypes", "unchecked", "resource" })
 	public Cat_Importar_Voucher(){
 		FileDialog file = new FileDialog(new Frame());
@@ -45,16 +45,18 @@ public class Cat_Importar_Voucher extends JFrame{
 					archivo = new FileReader(ruta);
 					BufferedReader bufferedWriter = new BufferedReader(archivo);
 					String cadena = "";
+					Obj_Importar_Voucher importar = new Obj_Importar_Voucher();
+
+					
 					while((cadena = bufferedWriter.readLine()) != null){
 						if(escape != 0){
 							System.out.println("Cadena del txt: " + cadena);
+							vueltacadena = cadena;
 							
 							StringTokenizer token = new StringTokenizer(cadena,"|");
 							while(token.hasMoreTokens()){
 								myVector.add(token.nextToken());
 							}
-							Obj_Importar_Voucher importar = new Obj_Importar_Voucher();
-							
 							importar.setContrato(Integer.parseInt(myVector.get(0).toString()));
 							importar.setF_transaccion(myVector.get(1).toString());
 							importar.setH_transaccion(myVector.get(2).toString());
@@ -72,26 +74,31 @@ public class Cat_Importar_Voucher extends JFrame{
 							importar.setQ6(Float.parseFloat(myVector.get(14).toString().replace("$","").replace(",", "")));
 							importar.setImporta_cash_back(Float.parseFloat(myVector.get(15).toString().replace("$","").replace(",", "")));
 							importar.setEci(Float.parseFloat(myVector.get(16).toString().replace("$","").replace(",", "")));
+//							if (myVector.get(16).toString()!=("")){
+//							importar.setReferencia_3(myVector.get(16).toString());
+//							}else{importar.setEci(Float.parseFloat(myVector.get(16).toString().replace("$","").replace(",", "")));	}
+							
 							importar.setControl_interno_comercio(myVector.get(17).toString());
 							importar.setLote1(myVector.get(18).toString());
 							importar.setLote2(myVector.get(19).toString());
 							
 							importar.Guardar();
-						
 							myVector.clear();
 
 							escape++;
 						}else{
 							escape++;
 						}
-				
 					}
-						
+					
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error en Cat_Importar_Vouchers  en la funcion Importar Voucher en la fila \n "+ vueltacadena, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				} catch (IOException e) {
 					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error en Cat_Importar_Vouchers  en la funcion Importar Voucher en la fila \n "+ vueltacadena, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
+				
 				dispose();
 			}
 		}

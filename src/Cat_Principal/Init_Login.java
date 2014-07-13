@@ -231,7 +231,7 @@ public class Init_Login extends JFrame{
 		btnCuadrantepersonal.setEnabled(false);
 		btnCuadranteequipo.setEnabled(false);
 		btnFuenteSodasCajeras.setEnabled(false);
-		btnChecador.setEnabled(true);
+		btnChecador.setEnabled(false);
 		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -617,8 +617,7 @@ public class Init_Login extends JFrame{
 				txtContrasenaActual.setEnabled(true);
 				txtContrasenaNueva.setEnabled(false);
 				txtContrasenaConfirmar.setEnabled(false);
-				
-				
+
 				btnValidarContrasena.setVisible(true);						
 				txtContrasenaActual.requestFocus(true);					
 				btnValidarContrasena.setEnabled(true);
@@ -647,12 +646,9 @@ public class Init_Login extends JFrame{
 			txtContrasenaConfirmar.setEnabled(true);
 			txtContrasenaNueva.requestFocus(true);
 			
-			
 			btnValidarContrasena.setVisible(false);
 			btnGuardarContrasena.setVisible(true);			
 			btnGuardarContrasena.setEnabled(true);
-			
-	
 			}
 		
 			}else{
@@ -667,24 +663,18 @@ public class Init_Login extends JFrame{
 				
 		@SuppressWarnings({ "deprecation", "static-access", "unused" })
 		public void actionPerformed(ActionEvent arg0) {
-		
 			if(txtContrasenaNueva.getText().trim().toLowerCase().equals(txtContrasenaConfirmar.getText().trim().toLowerCase())) {
-				
 			String nuevacontrasena = algoritmo.cryptMD5(txtContrasenaNueva.getText().trim().toLowerCase(), "izagar").trim().toLowerCase();
 			boolean user = new Obj_Usuario().CambiarContrasena( Integer.valueOf(txtFolio.getText()),nuevacontrasena);
-			
 			System.out.println("valido"+nuevacontrasena);
 			txtContrasenaActual.setText("");
 			txtContrasenaNueva.setText("");
 			txtContrasenaConfirmar.setText("");
-			
-			
 			deshabilitarCambiarContrasena();
 			cargar_usuariotrue();
 			btnCambiarContrasena.setVisible(true);
 
 			}else{
-				
 				JOptionPane.showMessageDialog(null, "Las contraseñas son diferentes...","Aviso",JOptionPane.WARNING_MESSAGE);
 				txtContrasenaNueva.setText("");
 				txtContrasenaConfirmar.setText("");
@@ -706,9 +696,7 @@ public class Init_Login extends JFrame{
 	lblcontrasena_Actual.setVisible(false);
 	lblcontrasena_Nueva.setVisible(false);
 	lblcontrasena_Confirmar.setVisible(false);
-		
 		};
-		
 		
 		public void cargar_usuariotrue(){
 			txtContrasena.setVisible(true);
@@ -725,7 +713,6 @@ public class Init_Login extends JFrame{
 			btnAceptar.setEnabled(true);
 			txtFolio.requestFocus(true);
 			btnBuscar.setEnabled(false);
-			
 					};
 					
 //CARGA BOTONES EN TRUE
@@ -739,6 +726,8 @@ public class Init_Login extends JFrame{
 				
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 14)
 					btnAltaEmp.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 19)
+					btnChecador.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 24)
 					btnBanco.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 25)
@@ -765,13 +754,13 @@ public class Init_Login extends JFrame{
 					btnSolicitudes.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 80)
 					btnCuadranteequipo.setEnabled(true);
+
 		                                            }
 	}
 	
 ActionListener Opciones = new ActionListener(){
 		
 		public void actionPerformed(ActionEvent click) {
-			
 			if(click.getSource().equals(btnAltaEmp))
 				new Cat_Empleados().setVisible(true);
 			
