@@ -22,6 +22,7 @@ import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Arduino.Obj_Arduino;
+import Obj_Auditoria.Obj_Abono_Clientes;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_Cortes;
@@ -5443,5 +5444,62 @@ public class BuscarSQL {
 			e1.printStackTrace();
 		}
 		return existe;
+	}
+	
+	public String nuevo_ticket(String cavecera){
+//		cambiar sp
+//		sp_select_nuevo_ticket
+		String query = "exec sp_select_ticket_nuevo " + cavecera+";";
+		
+		String cadena = "";
+		Statement s;
+		ResultSet rs;
+		
+		try {				
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				cadena = rs.getString("nuevo_ticket").trim();
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return cadena;
+	}
+	
+	public Obj_Abono_Clientes CapturaAbonoCliente_UltimiAbono(String ticket) throws SQLException{
+		Obj_Abono_Clientes empleado = new Obj_Abono_Clientes();
+
+		//		cambiar procedimiento almacenado
+		
+		String query = "exec sp_reporte_ultimo_ticket_por_empleado '"+ticket+"';";
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+//				datos personales	
+				
+//				empleado.setUsuario(rs.getString("usuario"));
+//				empleado.setFecha(rs.getString("fecha"));
+//				empleado.setEmpleado(rs.getString("empleado"));
+//				empleado.setEstablecimiento(rs.getString("establecimiento"));
+//				empleado.setPuesto(rs.getString("puesto"));
+//				empleado.setTicket(rs.getString("ticket"));
+//				empleado.setImporte(rs.getFloat("importe"));
+		            
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return empleado;
 	}
 }

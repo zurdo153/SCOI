@@ -12,10 +12,12 @@ public class Obj_Movimiento_De_Asignacion {
 	String asignacion;
 	String fechaIn;
 	String fechaFin;
+	int status;
 	
 	public Obj_Movimiento_De_Asignacion(){
 		this.folio_empleado=0;	this.empleado="";	this.establecimiento="";
 		this.asignacion="";		this.fechaIn="";	this.fechaFin="";
+		this.status=0;
 	}
 	
 	public int getFolio_empleado() {
@@ -64,6 +66,14 @@ public class Obj_Movimiento_De_Asignacion {
 
 	public void setFechaFin(String fechaFin) {
 		this.fechaFin = fechaFin;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public Obj_Movimiento_De_Asignacion buscarAsignacion(int folio_empleado,String establecimiento){

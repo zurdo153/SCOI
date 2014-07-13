@@ -171,15 +171,15 @@ public class Cat_Clientes extends JDialog{
 					}
 	        	}
 				
-	        	if(e.getClickCount() == 2){
-
-	        		int fila = tabla.getSelectedRow();
-	        		int folio =  Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
-	        		
-	        		System.out.println("cerrar y buscar tiket de ese cliente si es 1 tiket mandarlo a la pantalla de abono, si son mas abrir filtro de tiket por empleado y seleccionar uno");
-	        		new Cat_Abono_Clientes().txtFolioTiket.setText(folio+"");
-	        		dispose();
-	        	}
+//	        	if(e.getClickCount() == 2){
+//
+//	        		int fila = tabla.getSelectedRow();
+//	        		int folio =  Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
+//	        		
+//	        		System.out.println("cerrar y buscar tiket de ese cliente si es 1 tiket mandarlo a la pantalla de abono, si son mas abrir filtro de tiket por empleado y seleccionar uno");
+//	        		new Cat_Abono_Clientes().txtTiket.setText(folio+"");
+//	        		dispose();
+//	        	}
 	        	
 	        }
         });
