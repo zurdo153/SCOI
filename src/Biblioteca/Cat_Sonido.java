@@ -18,7 +18,7 @@ public static void main(String a[] ){
    //para que suene
    sonido.play();
    //como el programa se ejecuta muy rapido el audio no se alcanza a escuchar
-//   Thread.currentThread().sleep(5000);
+   Thread.currentThread().sleep(8000);
    //si fuese una ventana no fuese necesario esa linea
   }catch (Exception ex) {
    System.out.println (ex);

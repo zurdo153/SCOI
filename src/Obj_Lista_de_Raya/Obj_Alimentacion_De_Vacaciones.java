@@ -35,6 +35,7 @@ public class Obj_Alimentacion_De_Vacaciones {
 	float fuente_de_sodas;
 	float prestamo;
 	float pension_alimenticia;
+	float dias_descanso_vacaciones;
 	float total;
 	
 	boolean status;	
@@ -53,13 +54,21 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.proximas_vacaciones=0;		this.imagen=null;					this.status=false;
 		
 //		alimentacion de vacaciones
-		this.fecha_inicio="";		this.fecha_final="";		this.vacaciones=0;
-		this.prima_vacacional=0;	this.infonavit=0;			this.sueldo_semana=0;
-		this.corte_de_caja=0;		this.fuente_de_sodas=0;		this.prestamo=0;
-		this.pension_alimenticia=0;	this.total=0;
+		this.fecha_inicio="";		this.fecha_final="";		      this.vacaciones=0;
+		this.prima_vacacional=0;	this.infonavit=0;			      this.sueldo_semana=0;
+		this.corte_de_caja=0;		this.fuente_de_sodas=0;		      this.prestamo=0;
+		this.pension_alimenticia=0;	this.dias_descanso_vacaciones=0;  this.total=0;
 		
 //		alimentacion de vacaciones c.
 		this.vacaciones_c=0;	this.prima_vacacional_c=0;	this.sueldo_semana_c=0;	this.gratificacion=0;
+	}
+
+	public float getDias_descanso_vacaciones() {
+		return dias_descanso_vacaciones;
+	}
+
+	public void setDias_descanso_vacaciones(float dias_descanso_vacaciones) {
+		this.dias_descanso_vacaciones = dias_descanso_vacaciones;
 	}
 
 	public int getFolio_vacaciones() {
@@ -328,25 +337,7 @@ public class Obj_Alimentacion_De_Vacaciones {
 	
 	public boolean actualizar(int folio_vacaciones){ return new ActualizarSQL().Actualizar_Vacaciones(this,folio_vacaciones); }
 
-//	mandar folio vacaciones para modificar sus ultimas vacacioenes
-//	public Obj_Alimentacion_De_Vacaciones buscar_vacaciones_para_update2(int folio_vacaciones){
-//		try {
-//			return new BuscarSQL().validacion_de_vacaciones_para_btnGuardar(folio_vacaciones);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	return null;
-//	}
-	
-////	buscar empleado para editar sus ultimas vacaciones
-//	public Obj_Alimentacion_De_Vacaciones buscar_ultimas_vacaciones(int folio){ 
-//		try {
-//			return new BuscarSQL().ultimas_vacaciones_por_empleado(folio);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	return null; 
-//	}
+
 	
 //	buscar empleado para alimentar ultimas vacaciones
 	public Obj_Alimentacion_De_Vacaciones buscar_empleado_para_vacaciones(int folio_empleado){ 
@@ -362,4 +353,6 @@ public class Obj_Alimentacion_De_Vacaciones {
 	public boolean guardar_ultimas_vacaciones(){
 		return new GuardarSQL().Guardar_Vacaciones_Pasadas(this); 
 	}
+
+
 }

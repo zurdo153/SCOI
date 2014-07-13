@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -200,7 +201,8 @@ public class Cat_Solicitud_De_Empleados extends JFrame {
 	Border blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 	Border border = LineBorder.createGrayLineBorder();
 	public Cat_Solicitud_De_Empleados(){
-		setTitle("Solicitud de empleados");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/Solicitud-64.png"));
+		this.setTitle("Solicitud de empleados");
 		lblFoto.setBorder(LineBorder.createGrayLineBorder());
 		
 		this.filtro.setBorder(BorderFactory.createTitledBorder(blackline,"Filtro"));

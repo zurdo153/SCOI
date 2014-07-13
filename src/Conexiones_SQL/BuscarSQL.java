@@ -5057,15 +5057,17 @@ public class BuscarSQL {
 				
 //				alimentacion de vacaciones
 				alimentacion_vacaciones.setFecha_final(rs.getString("dias_correspondientes"));//se optienen los dias que le corresponden al empleado con respecto al tiempo trabajado
-				alimentacion_vacaciones.setVacaciones(rs.getFloat("vacaciones_nc"));
-				alimentacion_vacaciones.setPrima_vacacional(rs.getFloat("prima_vacacional_nc"));
-				alimentacion_vacaciones.setSueldo_semana(rs.getFloat("sueldo_semana"));
+				alimentacion_vacaciones.setVacaciones(rs.getFloat("importe_vacaciones_nc"));
+				alimentacion_vacaciones.setPrima_vacacional(rs.getFloat("importe_prima_vacacional_nc"));
+				alimentacion_vacaciones.setSueldo_semana(rs.getFloat("importe_sueldo_semana_nc"));
 				alimentacion_vacaciones.setPrestamo(rs.getFloat("descuento_prestamo"));
 				alimentacion_vacaciones.setPension_alimenticia(rs.getFloat("pension_alimenticia"));
 				alimentacion_vacaciones.setInfonavit(rs.getFloat("descuento_infonavit"));
 				alimentacion_vacaciones.setFuente_de_sodas(rs.getFloat("descuento_fuente_de_sodas"));
 				alimentacion_vacaciones.setCorte_de_caja(rs.getFloat("descuento_corte_de_cajas"));
+				alimentacion_vacaciones.setDias_descanso_vacaciones(rs.getFloat("dias_descanso_vacaciones"));
 				alimentacion_vacaciones.setVacaciones_c(rs.getFloat("vacaciones_c"));
+				System.out.println(rs.getFloat("descuento_prestamo"));
 				alimentacion_vacaciones.setPrima_vacacional_c(rs.getFloat("prima_vacacional_c"));
 				alimentacion_vacaciones.setSueldo_semana_c(rs.getFloat("sueldo_semana_c"));
 				alimentacion_vacaciones.setGratificacion(rs.getFloat("gratificacion"));
@@ -5180,24 +5182,26 @@ public class BuscarSQL {
 				vacaciones.setPuesto(rs.getString("puesto"));
 				vacaciones.setFecha_ingreso(rs.getString("fecha_ingreso"));
 				vacaciones.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss"));
-				vacaciones.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
+				vacaciones.setSalario_diario_integrado(rs.getFloat("salario_diarioc"));
 				vacaciones.setGrupo_vacacional(rs.getString("grupo"));
 				vacaciones.setProximas_vacaciones(rs.getInt("proximas_vacaciones"));
-
 				vacaciones.setFecha_inicio(rs.getString("fecha_inicio"));
 				vacaciones.setFecha_final(rs.getString("fecha_final"));
-				vacaciones.setVacaciones(rs.getFloat("vacaciones"));
-				vacaciones.setPrima_vacacional(rs.getFloat("prima_vacacional"));
-				vacaciones.setInfonavit(rs.getFloat("infonavit"));
-				vacaciones.setSueldo_semana(rs.getFloat("sueldo_semana"));
-				vacaciones.setCorte_de_caja(rs.getFloat("corte_de_caja"));
-				vacaciones.setFuente_de_sodas(rs.getFloat("fuente_de_sodas"));
-				vacaciones.setPrestamo(rs.getFloat("prestamo"));
-				vacaciones.setPension_alimenticia(rs.getFloat("pension_alimenticia"));
+				vacaciones.setVacaciones(rs.getFloat("importe_vacaciones_nc"));
+				vacaciones.setPrima_vacacional(rs.getFloat("importe_prima_vacacional_nc"));
+				vacaciones.setDias_descanso_vacaciones(rs.getFloat("importe_dias_descanso_vacaciones_nc"));
+				vacaciones.setInfonavit(rs.getFloat("importe_infonavit"));
+				vacaciones.setSueldo_semana(rs.getFloat("importe_sueldo_semana_nc"));
+				vacaciones.setCorte_de_caja(rs.getFloat("importe_corte_de_caja"));
+				vacaciones.setFuente_de_sodas(rs.getFloat("importe_fuente_de_sodas"));
+				vacaciones.setPrestamo(rs.getFloat("importe_prestamo"));
+				vacaciones.setPension_alimenticia(rs.getFloat("importe_pension_alimenticia"));
 				vacaciones.setTotal(rs.getFloat("total"));
-//				System.out.println(rs.getBoolean("status"));
 				vacaciones.setStatus(rs.getBoolean("status"));
-				
+				vacaciones.setVacaciones_c(rs.getFloat("importe_vacacionesc"));
+				vacaciones.setPrima_vacacional_c(rs.getFloat("importe_prima_vacacionalc")) ;
+				vacaciones.setSueldo_semana_c(rs.getFloat("importe_sueldo_semanac"));
+				vacaciones.setGratificacion(rs.getFloat("gratificacion"));
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);
 				

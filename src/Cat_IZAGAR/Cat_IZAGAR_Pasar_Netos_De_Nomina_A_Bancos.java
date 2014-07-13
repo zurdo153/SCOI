@@ -37,8 +37,9 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 	Object[][] MatrizFiltro ;
 	Object[][] Matriz_nomina_neto_bms ;
 	Object[][] Matriz_Conciliados;
+	Object[][] Matriz_Mal_Clasificados_SCOI;
 	JButton btnAgregar = new JButton("Traspaso Por Nombre");
-	public JButton btnAplicar = new JButton("Aplicar");
+	public JButton btnAplicar = new JButton("Aplicar Nomina a Depositos Banco");
 	JButton btnRemover = new JButton("Remover");
 
 	
@@ -137,12 +138,46 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 	
     JTable tablaconciliados = new JTable(modeloconciliados);
     JScrollPane scrollconciliados = new JScrollPane(tablaconciliados);
-    @SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsconciliados;
+    
+  //TABLA MAL CLASIFICADOS EN SCOI------------------------------------------------------------------------------
+  	DefaultTableModel modelomal_clasificados_SCOI= new DefaultTableModel(null,
+              new String[]{"Folio Empleado", "Nombre Empleado Nomina","Neto","Nomina"}
+  			){
+  	
+		@SuppressWarnings("rawtypes")
+		Class[] types = new Class[]{
+  	    	java.lang.String.class,
+  	    	java.lang.String.class,
+  	    	java.lang.String.class,
+  	    	java.lang.String.class
+                                      };
+  	    
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Class getColumnClass(int columnIndex) {
+               return types[columnIndex];
+           }
+           public boolean isCellEditable(int fila, int columna){
+          	 switch(columna){
+          	 	case 0 : return false; 
+          	 	case 1 : return false; 
+          	 	case 2 : return false;
+          	 	case 3 : return false;
+          	 } 				
+   			return false;
+   		}
+  	};
+  	
+      JTable tablamalclasificadosSCOI = new JTable(modelomal_clasificados_SCOI);
+      JScrollPane scrollmalclasificadosSCOIs = new JScrollPane(tablamalclasificadosSCOI);
+  	@SuppressWarnings({ "rawtypes" })
+	private TableRowSorter trsmalclasificadosSCOI;
 	
 	JLabel lblTablaSCOI = new JLabel("Tabla SCOI");
 	JLabel lblTablaNomina = new JLabel("Tabla Nomina");
-	JLabel lblTablaConciliados = new JLabel("Tabla Conciliados");
+	JLabel lblTablaConciliados = new JLabel("Tabla De Empleados Conciliados Que Se Les Aplicara El Deposito de La Nomina");
+	JLabel lblTablamalclasificadosSCOI = new JLabel("Tabla De Empledos En SCOI Que No Se Les Aplicara El Deposito De La Nomina");
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos(String folio_nomina) {
@@ -150,16 +185,34 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 		lblTablaSCOI.setFont(new Font("arial", Font.BOLD, 16));	
 		lblTablaNomina.setFont(new Font("arial", Font.BOLD, 16));	
 		lblTablaConciliados.setFont(new Font("arial", Font.BOLD, 16));	
+		lblTablamalclasificadosSCOI.setFont(new Font("arial", Font.BOLD, 16));
 		
 		lblTablaSCOI.setForeground(new java.awt.Color(0,57,163));
 		lblTablaNomina.setForeground(new java.awt.Color(0,57,163));
 		lblTablaConciliados.setForeground(new java.awt.Color(0,57,163));
+		lblTablamalclasificadosSCOI.setForeground(new java.awt.Color(0,57,163));
 
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
 		setTitle("Traspaso de Netos de Nomina a Bancos");
 		campo.setBorder(BorderFactory.createTitledBorder("Traspaso de Netos a Bancos"));
 		
 /////////////////LLENADO DE TABLAS/////////////////////////////////////////////////////////////////////////////
+
+         
+        trsfiltro = new TableRowSorter(modeloFiltro); 
+		tablaFiltro.setRowSorter(trsfiltro); 
+		
+		tablaFiltro.getColumnModel().getColumn(0).setMaxWidth(45);
+		tablaFiltro.getColumnModel().getColumn(0).setMinWidth(45);
+		tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(250);
+		tablaFiltro.getColumnModel().getColumn(1).setMinWidth(250);
+		tablaFiltro.getColumnModel().getColumn(2).setMaxWidth(105);
+		tablaFiltro.getColumnModel().getColumn(2).setMinWidth(105);
+		tablaFiltro.getColumnModel().getColumn(3).setMaxWidth(40);
+		tablaFiltro.getColumnModel().getColumn(3).setMinWidth(40);
+		
+		
+		
 //		limpiar tablanomina
 		while(tablanomina.getRowCount()>0){	modelonomina.removeRow(0);	}
 //		llenar arreglo desde funcion
@@ -172,20 +225,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
                  fila[2] = getTablaNomina[i][2]+"";
                  fila[3] = getTablaNomina[i][3];
                  modelonomina.addRow(fila); }
-
-        trsfiltro = new TableRowSorter(modeloFiltro); 
-		tablaFiltro.setRowSorter(trsfiltro); 
-		
-		tablaFiltro.getColumnModel().getColumn(0).setMaxWidth(45);
-		tablaFiltro.getColumnModel().getColumn(0).setMinWidth(45);
-		tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(230);
-		tablaFiltro.getColumnModel().getColumn(1).setMinWidth(230);
-		tablaFiltro.getColumnModel().getColumn(2).setMaxWidth(105);
-		tablaFiltro.getColumnModel().getColumn(2).setMinWidth(105);
-		tablaFiltro.getColumnModel().getColumn(3).setMaxWidth(40);
-		tablaFiltro.getColumnModel().getColumn(3).setMinWidth(40);
-		
-		
+         
 		trsfiltroAsignado = new TableRowSorter(modelonomina ); 
 		tablanomina.setRowSorter(trsfiltroAsignado);
 		
@@ -215,22 +255,35 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 		tablaconciliados.getColumnModel().getColumn(5).setMaxWidth(40);
 		tablaconciliados.getColumnModel().getColumn(5).setMinWidth(40);
 		
-		campo.add(lblTablaSCOI).setBounds(15, 45, 150, 35);
-    	campo.add(scroll).setBounds(15,70,440,300);
-    	campo.add(lblTablaNomina).setBounds(470, 45, 150, 35);
-		campo.add(scrollAsignado).setBounds(470,70,440,300);
-		campo.add(lblTablaConciliados).setBounds(15, 375, 150, 35);
-		campo.add(scrollconciliados).setBounds(15,400,895,300);
-	
+		trsmalclasificadosSCOI = new TableRowSorter(modelomal_clasificados_SCOI ); 
+		tablamalclasificadosSCOI.setRowSorter(trsmalclasificadosSCOI);
+		
+		tablamalclasificadosSCOI.getColumnModel().getColumn(0).setMaxWidth(105);
+		tablamalclasificadosSCOI.getColumnModel().getColumn(0).setMinWidth(105);
+		tablamalclasificadosSCOI.getColumnModel().getColumn(1).setMaxWidth(300);
+		tablamalclasificadosSCOI.getColumnModel().getColumn(1).setMinWidth(300);
+		tablamalclasificadosSCOI.getColumnModel().getColumn(2).setMaxWidth(115);
+		tablamalclasificadosSCOI.getColumnModel().getColumn(2).setMinWidth(115);
+		tablamalclasificadosSCOI.getColumnModel().getColumn(3).setMaxWidth(115);
+		tablamalclasificadosSCOI.getColumnModel().getColumn(3).setMinWidth(115);
+		
+		campo.add(lblTablaSCOI).setBounds(15, 10, 150, 35);
+    	campo.add(scroll).setBounds(15,35,440,250);
+    	campo.add(lblTablaNomina).setBounds(470, 10, 150, 35);
+		campo.add(scrollAsignado).setBounds(470,35,440,250);
+		campo.add(lblTablaConciliados).setBounds(15, 285,630, 35);
+		campo.add(scrollconciliados).setBounds(15,310,895,250);
+		campo.add(lblTablamalclasificadosSCOI).setBounds(15,560, 650, 35);
+		campo.add(scrollmalclasificadosSCOIs).setBounds(15,585,630,150);
      	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		campo.add(btnAgregar).setBounds(225,30,140,20);
-		campo.add(btnAplicar).setBounds(375,30,80,20);
-		campo.add(btnRemover).setBounds(830, 375, 80, 20);
+		campo.add(btnAgregar).setBounds(710,10,200,20);
+		campo.add(btnAplicar).setBounds(710,710,200,20);
+		campo.add(btnRemover).setBounds(830, 290, 80, 20);
 		btnAplicar.setEnabled(false);
 		
 		cont.add(campo);
-		setSize(935,735);
+		setSize(935,768);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		btnAgregar.addActionListener(OpAgregar);
@@ -245,7 +298,6 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
         tablanomina.addMouseListener(opTablaNominaSeleccion);
 //		funcion para seleccionar solo un registro a la ves en la tabla CONCILIADOS-------------------------------------------------------
         tablaconciliados.addMouseListener(opTablaConciliadosSeleccion);
-        
 	}
 	
     WindowListener op_cerrar = new WindowListener() {
@@ -373,6 +425,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 //                fila2[5] = Boolean.valueOf(getTablaNomina[i][5].toString().trim());
                 modeloconciliados.addRow(fila2);} 
         
+        
 // 		llenado tabla faltantes de conciliar
      	Object[][] getTablaFiltro = getTablaempleadoscoi(folio_nom);
      	Object[] fila1 = new Object[4];
@@ -384,6 +437,22 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 //                fila1[3] = Boolean.valueOf(getTablaNomina[i][3].toString().trim());
                 fila1[3] = false;
                 modeloFiltro.addRow(fila1);    }
+        
+		
+//		limpiar tablamalclasificados
+		while(tablamalclasificadosSCOI.getRowCount()>0)
+		{	modelomal_clasificados_SCOI.removeRow(0);	}
+//		llenar arreglo desde funcion
+		Object[][] getTablamalclasificados = getTablamalclasificados_SCOI(folio_nom);
+		Object[] fila11 = new Object[4];
+//		 llenar tablamalclasificados
+         for(int i=0; i<getTablamalclasificados.length; i++){
+                 fila11[0] = getTablamalclasificados[i][0]+"";
+                 fila11[1] = getTablamalclasificados[i][1]+"";
+                 fila11[2] = getTablamalclasificados[i][2]+"";
+                 fila11[3] = getTablamalclasificados[i][3]+"";
+                 modelomal_clasificados_SCOI.addRow(fila11); }
+         
         
         if(getTablaFiltro.length == 0){
         	btnAplicar.setEnabled(true);
@@ -537,12 +606,12 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 					Matriz_Conciliados[i][2] = "   "+rs.getString(3).trim();
 					Matriz_Conciliados[i][3] = "   "+rs.getString(4).trim();
 					Matriz_Conciliados[i][4] = "   "+rs.getString(5).trim();
-//					Matriz_Conciliados[i][5] = Boolean.valueOf(rs.getString(6).trim());
 					Matriz_Conciliados[i][5] = false;
 									i++;
 				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en CAT_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  en la funcion getTablaconciliados  procedimiento almacenado IZAGAR_select_empleados_scoi_pre_conciliados SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		    return Matriz_Conciliados; 
 		}
@@ -555,8 +624,46 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 			} catch (SQLException e1) {	e1.printStackTrace();}
 			return filas;
 			}
+	 	
+/////////DATOS TABLA MAL CLASIFICADOS SCOI
+	   	public Object[][] getTablamalclasificados_SCOI(String folio_nomina){
+	   		String todos = "exec IZAGAR_select_empleados_en_nomina_que_no_estan_bien_clasificados_en_scoi '" +folio_nomina+"'";
+			Statement s;
+			ResultSet rs;
+			try {
+				s = new Connexion().conexion().createStatement();
+				rs = s.executeQuery(todos);
+				Matriz_Mal_Clasificados_SCOI = new Object[getFilasmalClasificados_SCOI(todos)][4];
+				int i=0;
+				while(rs.next()){
+					Matriz_Mal_Clasificados_SCOI[i][0] = "   "+rs.getString(1).trim();
+					Matriz_Mal_Clasificados_SCOI[i][1] = "   "+rs.getString(2).trim();
+					Matriz_Mal_Clasificados_SCOI[i][2] = "   "+rs.getString(3).trim();
+					Matriz_Mal_Clasificados_SCOI[i][3] = "   "+rs.getString(4).trim();
+									i++;
+					}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en CAT_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  en la funcion getTablamalclasificados_SCOI /n procedimiento almacenado IZAGAR_select_empleados_en_nomina_que_no_estan_bien_clasificados_en_scoi SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 
-	 	//	 	PRE CONCILIACION AUTOMATICA
+			}
+		    return Matriz_Mal_Clasificados_SCOI; 
+		
+		}
+	   	
+	 	public int getFilasmalClasificados_SCOI(String qry){
+			int filas=0;
+			Statement stmt = null;
+			try {stmt = new Connexion().conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(qry);
+				while(rs.next()){filas++;}
+			} catch (SQLException e1) {	e1.printStackTrace();}
+			return filas;
+			}
+	   	
+
+
+/////////////PRE CONCILIACION AUTOMATICA
 	 	public void preconciliacion_automatica(String folio_nomina){
 			String todos = "exec IZAGAR_traspaso_automatico_a_empleados_pre_conciliados_los_netos_de_nomina '"+folio_nomina+"'";
 			PreparedStatement pstmt = null;
@@ -630,7 +737,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 						return;
 					}
 				}else{
-					JOptionPane.showMessageDialog(null,"Debe Seleccionar Un Registro En Tabla SCOI\ny Uno De La Tabla NOMINA", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Debe Seleccionar Un Registro En Tabla SCOI\n y Uno De La Tabla NOMINA", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
 			}
@@ -673,4 +780,10 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 				}
 			}
 		};
+//		public static void main(String args[]){
+//			try{
+//				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//				new Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos("1461").setVisible(true);
+//			}catch(Exception e){	}
+//		}
 }

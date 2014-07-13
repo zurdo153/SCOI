@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.ParseException;
@@ -128,16 +130,10 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.init_component();
 		txtCalendario.setEnabled(false);
 		
-		this.btn_guardar.addActionListener(op_guardar);
-		
-		
-		if((new Obj_Fue_Sodas_DH().busquedaautoizacionfs().isStatus_autorizacion()))
-		{
 		btn_imprimir.setEnabled(false);
-		} else { 
-			btn_imprimir.setEnabled(true);
-					}
+		tabla.addMouseListener(opTablaFiltroSeleccion);
 		
+		this.btn_guardar.addActionListener(op_guardar);
 		this.btn_imprimir.addActionListener(op_imprimir);
 		this.btn_nomina.addActionListener(op_nomina);
 		this.btn_refrescar.addActionListener(op_refrescar);
@@ -457,6 +453,12 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista pre-raya?") == 0){
 					Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
 					if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
+						if((new Obj_Fue_Sodas_DH().busquedaautoizacionfs().isStatus_autorizacion()))
+						{
+						btn_imprimir.setEnabled(false);
+						} else { 
+							btn_imprimir.setEnabled(true);
+									}
 						JOptionPane.showMessageDialog(null, "La tabla pre-raya se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}else{
@@ -473,7 +475,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	ActionListener op_imprimir = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
 			
-			
+			btn_guardar.doClick();
 			new Cat_Imprimir_Lista_De_Raya().setVisible(true);
 		}
 	};
@@ -909,6 +911,17 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				
     }
 	
+	MouseListener opTablaFiltroSeleccion = new MouseListener() {
+		public void mousePressed(MouseEvent e) {
+
+				btn_imprimir.setEnabled(false);
+			}
+			public void mouseClicked(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+	};
+	
 	KeyListener op_filtro_folio = new KeyListener(){
 		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
@@ -923,7 +936,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			}	
 		}
 		public void keyPressed(KeyEvent arg0) {}
-		
 	};
 	
 	KeyListener op_filtro_nombre = new KeyListener(){

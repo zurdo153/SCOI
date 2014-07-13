@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import Cat_Reportes.Cat_Reportes_De_Horarios;
 import Conexiones_SQL.Obj_Configuracion_Del_Sistema;
 import Obj_Checador.Obj_Horarios;
 
@@ -180,6 +181,7 @@ public class Cat_Horarios extends Cat_Horario_base
 		
 		horario1.add(lblFolio).setBounds(20,5,50,20);
 		horario1.add(txtFolio).setBounds(70,5,70,20);
+		horario1.add(btnReportes).setBounds(655,5,160,20); 
 		
 		horario1.add(new JLabel("Nombre:")).setBounds(20,35,50,20);
 		horario1.add(txtNombre).setBounds(70,35,580,20);
@@ -289,6 +291,7 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 	
 //		btnTurno.addActionListener(turno);
 		btnCancelar.addActionListener(cancelar);
+		btnReportes.addActionListener(Reportes);
 		btnIgual.addActionListener(igualar);
 		btnAceptar.addActionListener(Guardar);
 		btnDeshacer.addActionListener(deshacer);
@@ -1781,6 +1784,11 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		public void actionPerformed(ActionEvent arg0) 
 		{
 			dispose();
+		}
+	};
+	ActionListener Reportes = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) 
+		{			new Cat_Reportes_De_Horarios().setVisible(true);
 		}
 	};
 	
