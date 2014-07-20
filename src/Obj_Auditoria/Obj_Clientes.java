@@ -74,7 +74,7 @@ public class Obj_Clientes {
 	
 	public Obj_Clientes buscar_nuevo() throws SQLException{ return new BuscarSQL().Cliente_Nuevo(); }
 	
-	public Obj_Clientes buscar(int folio_empleado) throws SQLException{ return new BuscarSQL().Cliente(folio_empleado); }
+	public Obj_Clientes buscar(int folio_cliente) throws SQLException{ return new BuscarSQL().Cliente(folio_cliente); }
 	
 	public boolean guardar(){ return new GuardarSQL().Guardar_Cliente(this); }
 	

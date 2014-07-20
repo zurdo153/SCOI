@@ -18,24 +18,24 @@ import javax.swing.KeyStroke;
 public class Cat_Mapa_De_Acciones_Del_Teclado extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	
+
 	JTextField txt = new JTextField();
-	
+
 	public Cat_Mapa_De_Acciones_Del_Teclado()	{
-		
+
 		panel.add(txt).setBounds( 25, 15, 80, 20);
 		cont.add(panel);
-		
+
 		mapeoTeclas();
-		
+
 		this.setSize(180,100);
 		this.setLocationRelativeTo(null);
 	}
-	
+
 	public static void main(String args[]){
 			new Cat_Mapa_De_Acciones_Del_Teclado().setVisible(true);
 	}
-	
+
 	// ACCIONES
 	public void mapeoTeclas(){
 
@@ -70,7 +70,7 @@ public class Cat_Mapa_De_Acciones_Del_Teclado extends JFrame{
 	return new AbstractAction() { public void actionPerformed(ActionEvent e) { txt.setText("CTRL + O"); } };
 	}
 	public AbstractAction Accion_CTRLC(){
-	return new AbstractAction() { public void actionPerformed(ActionEvent e) { txt.setText("CTRL + C"); } };
+	return new AbstractAction() { public void actionPerformed(ActionEvent e) { txt.setText("CTRL + G"); } };
 	}
 	public AbstractAction Accion_CTRLV(){
 	return new AbstractAction() { public void actionPerformed(ActionEvent e) { txt.setText("CTRL + V"); } };

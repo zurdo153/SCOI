@@ -10,7 +10,7 @@ public class Cat_Sonido{
 public static void main(String a[] ){
   try {
    //archivo de audio
-   File f=new File("M:\\SISTEMA DE CONTROL OPERATIVO IZAGAR\\SCOI\\voz\\Ximena.wav");
+   File f=new File("C:\\pato_juan.wav");
    //lo convertimos a url
    URL u=f.toURL();
    //Bueno de la AudioClip no se puede instancias por eso esto

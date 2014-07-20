@@ -264,7 +264,7 @@ public class Cat_Empleados extends JFrame{
 	
 	//declaracion de Bordes
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
-	TitledBorder title4;
+//	TitledBorder title4;
 	
 	int seleccion_de_asignacion_de_Horario1Horario2Horario3;
 	

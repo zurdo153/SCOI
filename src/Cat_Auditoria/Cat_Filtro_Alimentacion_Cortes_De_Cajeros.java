@@ -152,7 +152,7 @@ public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
 			s = con.conexion().createStatement();
 			rs = s.executeQuery("select tb_empleado.folio as Folio," +
 					"			tb_empleado.nombre + ' ' +	tb_empleado.ap_paterno + ' ' +  tb_empleado.ap_materno as NombreCompleto" +
-					" from tb_empleado where tb_empleado.status=1" );
+					" from tb_empleado where tb_empleado.status=1 and tb_empleado.puesto_id =32 order by tb_empleado.nombre" );
 			
 			while (rs.next())
 			{ 
