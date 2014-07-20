@@ -1,6 +1,7 @@
 package Cat_Evaluaciones;
 
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,11 +9,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.StringTokenizer;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -21,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 
@@ -78,7 +82,7 @@ public class Cat_Actividades extends JDialog {
 	
 	JButton btnNuevo = new JButton("Nuevo");
 	JButton btnSalir = new JButton("Salir");
-	JButton btnLimpiar = new JButton("Limpiar");
+	JButton btnDeshacer = new JButton("Limpiar");
 	JButton btnGuardar = new JButton("Guardar");
 	JButton btnModificar = new JButton("Modificar");
 	JButton btnSimilar = new JButton("Similar");
@@ -187,14 +191,14 @@ public class Cat_Actividades extends JDialog {
 		this.panel.add(spRepetir).setBounds(290,y,50,20);
 			
 		this.panel.add(btnSalir).setBounds(15,y+=45,90,20);
-		this.panel.add(btnLimpiar).setBounds(133,y,90,20);
+		this.panel.add(btnDeshacer).setBounds(133,y,90,20);
 		this.panel.add(btnGuardar).setBounds(250,y,90,20);
 		
 		this.cont.add(panel);
 		
 		this.chbCajaDeTrabajo.addActionListener(opRepetir);
 		this.btnNuevo.addActionListener(opNuevo);
-		this.btnLimpiar.addActionListener(opLimpiar);
+		this.btnDeshacer.addActionListener(opLimpiar);
 		this.btnGuardar.addActionListener(opGuardar);
 		this.btnSalir.addActionListener(opSalir);
 		this.btnBuscar.addActionListener(opBuscar);
@@ -203,6 +207,54 @@ public class Cat_Actividades extends JDialog {
 		this.btnSimilar.addActionListener(op_similar);
 		this.btnizquierda.addActionListener(opLeft);
 		this.btnderecha.addActionListener(opRigth);
+		
+		
+          ///abrir filtro
+					     getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscar");
+					     getRootPane().getActionMap().put("buscar", new AbstractAction(){
+					         public void actionPerformed(ActionEvent e)
+					         {                 	    btnBuscar.doClick();
+					      	    }
+                         });
+
+		
+          ///deshacer con escape
+			             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+			             getRootPane().getActionMap().put("escape", new AbstractAction(){
+			                 public void actionPerformed(ActionEvent e)
+			                 {                 	    btnDeshacer.doClick();
+			               	    }
+			             });
+          ///guardar con control+G
+			             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+			                  getRootPane().getActionMap().put("guardar", new AbstractAction(){
+			                      public void actionPerformed(ActionEvent e)
+			                      {                 	    btnGuardar.doClick();
+			                    	    }
+			                 });
+		    ///guardar con F12
+				              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+				                  getRootPane().getActionMap().put("guardar", new AbstractAction(){
+				                      public void actionPerformed(ActionEvent e)
+				                      {                 	    btnGuardar.doClick();
+					                    	    }
+				                 });
+			                  
+			///nuevo con F9
+			              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
+			                  getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+			                      public void actionPerformed(ActionEvent e)
+			                      {                 	    btnNuevo.doClick();
+				                    	    }
+			                 });
+			                  
+			 ///nuevo con control+N
+			              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
+			                   getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+			                       public void actionPerformed(ActionEvent e)
+			                       {                 	    btnNuevo.doClick();
+				                    	    }
+			                 });
 		
 		
 	}

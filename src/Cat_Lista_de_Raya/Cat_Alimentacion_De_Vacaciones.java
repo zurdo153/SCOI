@@ -193,7 +193,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		
 		int y=15;
 //		campos de datos de empleado
-		panel.add(lblMargenEmpleado).setBounds(3, 0, 675, 195);
+		panel.add(lblMargenEmpleado).setBounds(3, 0, 675, 167);
 		panel.add(new JLabel("Folio Vacaciones: ")).setBounds(20, y, 110, 20);
 		panel.add(txtFolioVacaciones).setBounds(130, y, 60, 20);
 		
@@ -201,44 +201,44 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		panel.add(btnNuevo).setBounds(240, y, 80, 20);
 		panel.add(btnDeshacer).setBounds(330, y, 80, 20);
 		
+		
 		panel.add(new JLabel("Empleado: ")).setBounds(20, y+=25, 110, 20);
 		panel.add(txtFolioEmpleado).setBounds(130, y, 50, 20);
 		panel.add(txtEmpleado).setBounds(181, y, 319, 20);
 		
 		panel.add(new JLabel("Establecimiento: ")).setBounds(20, y+=25, 110, 20);
 		panel.add(txtEstablecimiento).setBounds(130, y, 190, 20);
+		panel.add(chbStatus).setBounds(360, y, 80, 20);
 		
 		panel.add(new JLabel("Puesto: ")).setBounds(20, y+=25, 60, 20);
 		panel.add(txtPuesto).setBounds(130, y, 370, 20);
 		
 		panel.add(new JLabel("Fecha Ingreso: ")).setBounds(20, y+=25, 130, 20);
-		panel.add(txtFechaIngreso).setBounds(150, y, 100, 20);
+		panel.add(txtFechaIngreso).setBounds(125, y, 100, 20);
 		
 		panel.add(new JLabel("Grupo De Vacaciones: ")).setBounds(290, y, 140, 20);
 		panel.add(txtGrupoDeVacaciones).setBounds(400, y, 100, 20);
 		
 		panel.add(new JLabel("Fecha Ingreso IMSS: ")).setBounds(20, y+=25, 120, 20);
-		panel.add(txtFechaIngresoIMSS).setBounds(150, y, 100, 20);
+		panel.add(txtFechaIngresoIMSS).setBounds(125, y, 100, 20);
 		
 		panel.add(new JLabel("Proximas Vacaciones: ")).setBounds(290, y, 140, 20);
 		panel.add(txtProximasVacaciones).setBounds(400, y, 100, 20);
 		
-		panel.add(new JLabel("Salario Diario: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtSalarioDiarioIn).setBounds(150, y, 100, 20);
+
 		
-		panel.add(btnFoto).setBounds(510, 30, 150, 150);
+		panel.add(btnFoto).setBounds(523, 11, 150, 150);
 
 //		campo de vacaciones de empleados
-		panel.add(lblMargenVacaciones).setBounds(3, 195, 675, 145);
+		panel.add(lblMargenVacaciones).setBounds(3, 165, 675, 150);
 		
-		panel.add(new JLabel("Fecha Inicial: ")).setBounds(20, y+=45, 140, 20);
-		panel.add(fechaInicio).setBounds(125, y, 100, 20);
 		
-		panel.add(new JLabel("Fecha Final: ")).setBounds(235, y, 140, 20);
-		panel.add(fechaFin).setBounds(340, y, 100, 20);
+		panel.add(new JLabel("Fecha Inicial: ")).setBounds(235, y+=40, 140, 20);
+		panel.add(fechaInicio).setBounds(340, y, 100, 20);
+		
+		panel.add(new JLabel("Fecha Final: ")).setBounds(450, y, 140, 20);
+		panel.add(fechaFin).setBounds(560, y, 100, 20);
 
-		panel.add(chbStatus).setBounds(560, y, 80, 20);
-		
 		panel.add(new JLabel("Vacaciones: ")).setBounds(20, y+=25, 140, 20);
 		panel.add(txtVacaciones).setBounds(125, y, 100, 20);
 		
@@ -276,9 +276,12 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		panel.add(btnReporte).setBounds(235, y, 140, 20);
 		
 //		campo de vacaciones de empleados CONTABLES
-		panel.add(lblMargenVacacionesC).setBounds(3, 340, 675, 95);
+		panel.add(lblMargenVacacionesC).setBounds(3, 313, 675,125);
 		
-		panel.add(new JLabel("Vacaciones C. : ")).setBounds(20, y+=45, 140, 20);
+		panel.add(new JLabel("Salario Diario: ")).setBounds(20, y+=50, 140, 20);
+		panel.add(txtSalarioDiarioIn).setBounds(125, y, 100, 20);
+		
+		panel.add(new JLabel("Vacaciones C. : ")).setBounds(20, y+=25, 140, 20);
 		panel.add(txtVacacionesC).setBounds(125, y, 100, 20);
 		
 		panel.add(new JLabel("Prima Vacacional C. : ")).setBounds(235, y, 140, 20);

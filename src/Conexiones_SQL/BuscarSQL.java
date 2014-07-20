@@ -74,6 +74,9 @@ import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
+import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
+import Obj_Matrices.Obj_Etapas;
+import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 
 public class BuscarSQL {
 	
@@ -5448,4 +5451,68 @@ public class BuscarSQL {
 		}
 		return existe;
 	}
+	
+	public Obj_Etapas ExisteEtapa(int folio){
+		Obj_Etapas etapas = new Obj_Etapas();
+		String query = "select * from tb_etapas where folio_etapa ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				etapas.setFolio(rs.getInt("folio_etapa"));
+				etapas.setEtapa(rs.getString("etapa").trim());
+				etapas.setAbreviatura(rs.getString("abreviatura").trim());
+				etapas.setStatus(rs.getInt("status"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion ExisteEtapa en select * from tb_etapas where folio ="+ folio+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return etapas;
+	}
+	
+	public Obj_Aspectos_De_La_Etapa ExisteAspecto(int folio){
+		Obj_Aspectos_De_La_Etapa aspecto = new Obj_Aspectos_De_La_Etapa();
+		String query = "select * from tb_aspectos_de_la_etapa where folio_aspecto ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				aspecto.setFolio(rs.getInt("folio_aspecto"));
+				aspecto.setAspecto(rs.getString("aspecto_de_la_etapa").trim());
+				aspecto.setAbreviatura(rs.getString("abreviatura").trim());
+				aspecto.setStatus(rs.getInt("status"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion ExisteEtapa en select * from tb_aspectos_de_la_etapa where folio_aspecto ="+ folio+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return aspecto;
+	}
+	
+	public Obj_Unidades_de_Inspeccion ExisteUnidaddeInspeccion(int folio){
+		Obj_Unidades_de_Inspeccion unidad = new Obj_Unidades_de_Inspeccion();
+		String query = "select * from tb_unidades_de_inspeccion where folio_unidad_de_inspeccion ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				unidad.setFolio(rs.getInt("folio_unidad_de_inspeccion"));
+				unidad.setunidades_de_inspeccion(rs.getString("unidad_de_inspeccion").trim());
+				unidad.setAbreviatura(rs.getString("abreviatura").trim());
+				unidad.setStatus(rs.getInt("status"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion ExisteUnidaddeInspeccion en select * from tb_unidades_de_inspeccion where folio_unidad_de_inspeccion ="+ folio+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return unidad;
+	}
+
 }

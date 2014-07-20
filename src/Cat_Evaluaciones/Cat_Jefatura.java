@@ -2,6 +2,7 @@ package Cat_Evaluaciones;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,10 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -23,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -108,6 +112,51 @@ public class Cat_Jefatura extends JFrame{
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+              ///abrir filtro
+					     getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscar");
+					     getRootPane().getActionMap().put("buscar", new AbstractAction(){
+					         public void actionPerformed(ActionEvent e)
+					         {                 	    btnBuscar.doClick();
+					      	    }
+                       });
+              ///deshacer con escape
+			             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+			             getRootPane().getActionMap().put("escape", new AbstractAction(){
+			                 public void actionPerformed(ActionEvent e)
+			                 {                 	    btnDeshacer.doClick();
+			               	    }
+			             });
+             ///guardar con control+G
+			             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+			                  getRootPane().getActionMap().put("guardar", new AbstractAction(){
+			                      public void actionPerformed(ActionEvent e)
+			                      {                 	    btnGuardar.doClick();
+			                    	    }
+			                 });
+		    ///guardar con F12
+				              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+				                  getRootPane().getActionMap().put("guardar", new AbstractAction(){
+				                      public void actionPerformed(ActionEvent e)
+				                      {                 	    btnGuardar.doClick();
+					                    	    }
+				                 });
+			                  
+			///nuevo con F9
+			              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
+			                  getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+			                      public void actionPerformed(ActionEvent e)
+			                      {                 	    btnNuevo.doClick();
+				                    	    }
+			                 });
+			                  
+			 ///nuevo con control+N
+			              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
+			                   getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+			                       public void actionPerformed(ActionEvent e)
+			                       {                 	    btnNuevo.doClick();
+				                    	    }
+			                 });
 	}
 	
 	private JScrollPane getPanelTabla()	{		

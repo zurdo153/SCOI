@@ -10,6 +10,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,19 +30,22 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import Conexiones_SQL.Connexion;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Lista_de_Raya.Obj_Revision_De_Lista_Raya;
 
 @SuppressWarnings("serial")
 /** CTRL EN CAT_ROOT_LISTA_RAYA PARA AGREGAR BOTON **/
 public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
-	
+	 boolean acceso = null != null;
+		
 	private DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Revision_De_Lista_Raya().get_tabla_model(),
 		new String[]{"","Folio", "Nombre Completo", "Establecimiento", "Sueldo",
 			"P Bono complementario", "Saldo Prestamo Inicial", "Descuento Prestamo", "Saldo Final", "D Fuente Sodas",
 			"D Puntualidad", "D Faltas", "D Asistencia", "D Gafete", "D Cortes", 
 			"D Infonavit", "Pension", "D Banamex", "D Banorte", "D Extra", 
-			"P Día Extras", "P Bono Extra", "A Pagar", "Observasiones I", "Observasiones II" }){
+			"P Día Extras", "P Bono Extra", "A Pagar", "Observaciones D.H.", "Observaciones II" }){
 			
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -107,10 +113,12 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	       	 	case 21 : return false; 
 	       	 	case 22 : return false; 
 	       	 	case 23 : return true; 
-	       	 	case 24 : return true; 
+	       	 	case 24 : return acceso;
+	       	 	
 	       	 }
 	 		return false;
 	 	}
+	   
 	};
 		
 	private JTable tabla = new JTable(tabla_model);
@@ -139,11 +147,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.btn_refrescar.addActionListener(op_refrescar);
 		this.btn_generar.addActionListener(op_generar);
 
-		/*
-		 * LE AGREGA AL BOTON UN ACCION LISTENER QUE CARGARA EL EVENTO MOSTRADO ENTRE PARENTESIS
-		*/
 		this.btn_lista_raya_pasadas.addActionListener(op_consulta_lista);
-		
 		
 		this.txtFolio.addKeyListener(op_filtro_folio);
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
@@ -154,6 +158,12 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		this.addWindowListener(op_cerrar);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+		busqueda_Observaciones_auditoria();
+
+		
+			
+
 	}
 
 	/**
@@ -196,6 +206,40 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		public void windowActivated(WindowEvent e) {}
 	};
 	
+	
+	public boolean  busqueda_Observaciones_auditoria() {
+		Connexion con = new Connexion();
+		Obj_Usuario user = new Obj_Usuario().LeerSession();
+		 int folio= user.getFolio();
+		String query = "if(select departamento from tb_empleado where folio="+folio  + ")=(Select departamento_mod_observacion_II_lista_raya from tb_configuracion_sistema)"+
+                            " select 'true' as acceso   else   select 'false' as acceso ";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				 acceso =(rs.getBoolean(1));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en Cat_Revision_lista_de_Raya  en la funcion busqueda_Observaciones_auditoria"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		finally{
+			 if (stmt != null) { try {
+				stmt.close();
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Error en Cat_Revision_lista_de_Raya  en la funcion busqueda_Observaciones_auditoria"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			} }
+		}
+		return acceso;
+		
+	}
+	
+
 	ActionListener op_generar = new ActionListener() {
 		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
@@ -474,7 +518,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
 	ActionListener op_imprimir = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
-			
 			btn_guardar.doClick();
 			new Cat_Imprimir_Lista_De_Raya().setVisible(true);
 		}

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.Frame;
@@ -624,11 +625,48 @@ public class Cat_Empleados extends JFrame{
 	    getRootPane().getActionMap().put("horario", new AbstractAction(){
 	        @Override
 	        public void actionPerformed(ActionEvent e)
-	        {
-	    
+	        {    
 	        	btnHorarioNew.doClick();    	
 	        }
 	    });
+						  ///deshacer con escape
+						        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+						        getRootPane().getActionMap().put("escape", new AbstractAction(){
+						            public void actionPerformed(ActionEvent e)
+						            {                 	    btnDeshacer.doClick();
+						                                    txtFolioEmpleado.requestFocus(); 
+						          	    }
+						        });
+						///guardar con control+G
+						        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+						             getRootPane().getActionMap().put("guardar", new AbstractAction(){
+						                 public void actionPerformed(ActionEvent e)
+						                 {                 	    btnGuardar.doClick();
+						               	    }
+						            });
+						///guardar con F12
+						             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+						                 getRootPane().getActionMap().put("guardar", new AbstractAction(){
+						                     public void actionPerformed(ActionEvent e)
+						                     {                 	    btnGuardar.doClick();
+							                    	    }
+						                });
+						             
+						///nuevo con F9
+						         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
+						             getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+						                 public void actionPerformed(ActionEvent e)
+						                 {                 	    btnNuevo.doClick();
+						                   	    }
+						            });
+						             
+						///nuevo con control+N
+						         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
+						              getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+						                  public void actionPerformed(ActionEvent e)
+						                  {                 	    btnNuevo.doClick();
+						                   	    }
+						            });
 	    
 	  	}
 	

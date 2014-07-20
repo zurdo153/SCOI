@@ -126,6 +126,9 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Evaluaciones[16], false),
 		new Obj_CheckBoxNode(Sub_Evaluaciones[17], false),
 		new Obj_CheckBoxNode(Sub_Evaluaciones[18], false),
+		new Obj_CheckBoxNode(Sub_Evaluaciones[19], false),
+		new Obj_CheckBoxNode(Sub_Evaluaciones[20], false),
+		new Obj_CheckBoxNode(Sub_Evaluaciones[21], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector EvaluacionesVector = new Obj_NombreVector("Evaluaciones", Evaluaciones);
