@@ -214,15 +214,17 @@ public class ActualizarSQL {
 	}
 	
 	public boolean Establecimiento(Obj_Establecimiento establecimiento, int folio){
-		String query = "update tb_establecimiento set nombre=?, abreviatura=?, status=? where folio=" + folio;
+		String query = "update tb_establecimiento set nombre=?, abreviatura=?,serie=?, grupo_para_cheque=?, status=? where folio=" + folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, establecimiento.getNombre().toUpperCase().trim());
+			pstmt.setString(1, establecimiento.getEstablecimiento().toUpperCase().trim());
 			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
-			pstmt.setString(3, (establecimiento.getStatus())?"1":"0");
+			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
+			pstmt.setInt(4, establecimiento.getGrupo_cheque());
+			pstmt.setInt(5, establecimiento.getStatus());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {

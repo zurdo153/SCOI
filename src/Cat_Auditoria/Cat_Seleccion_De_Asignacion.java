@@ -75,6 +75,7 @@ import Obj_Principal.Componentes;
 	//							abrir filtri de asignaciones
 							}else{
 								
+								@SuppressWarnings("unused")
 								Obj_Movimiento_De_Asignacion asignacion = new Obj_Movimiento_De_Asignacion();
 								System.out.println(txtAsignacion.getText().substring(0,2));
 								

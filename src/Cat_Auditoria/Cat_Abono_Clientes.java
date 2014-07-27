@@ -1013,7 +1013,6 @@ public class Cat_Abono_Clientes extends JFrame{
 		String firma=" Firma: (  ";
 //-----------------------------------------------------------------------------------------------------------
 		JFrame frame = null;
-		@SuppressWarnings("deprecation")
 		public Imprime_Ticket_abono(String pass)
 		{
 			

@@ -468,8 +468,8 @@ public class Cat_Aspectos_De_La_Etapa extends JFrame{
 								JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 								return;
 							}else{
-								aspectos.setAspecto(txtAreaAspectoEtapa.getText().toLowerCase().toString());
-								aspectos.setAbreviatura(txtAbreviatura.getText().toLowerCase().toString());
+								aspectos.setAspecto(txtAreaAspectoEtapa.getText().toString().toUpperCase().trim());
+								aspectos.setAbreviatura(txtAbreviatura.getText().toString().toUpperCase().trim());
 									switch(cmb_status.getSelectedIndex()){
 															case 0: aspectos.setStatus(1); break;
 															case 1: aspectos.setStatus(0); break;	}
@@ -492,9 +492,9 @@ public class Cat_Aspectos_De_La_Etapa extends JFrame{
 						}
 					}else{
 						
-						aspectos.setFolio(Integer.parseInt(txtFolio.getText()));
-						aspectos.setAspecto(txtAreaAspectoEtapa.getText());
-						aspectos.setAbreviatura(txtAbreviatura.getText());
+						aspectos.setFolio(Integer.parseInt(txtFolio.getText().trim()));
+						aspectos.setAspecto(txtAreaAspectoEtapa.getText().toUpperCase().trim());
+						aspectos.setAbreviatura(txtAbreviatura.getText().toUpperCase().trim());
 							switch(cmb_status.getSelectedIndex()){
 							case 0: aspectos.setStatus(1); break;
 							case 1: aspectos.setStatus(0); break;	}

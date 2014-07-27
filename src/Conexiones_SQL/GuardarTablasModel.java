@@ -380,7 +380,7 @@ public class GuardarTablasModel {
 	}
 	
 	public boolean tabla_model_alimentacion_totales(Object[][] tabla){
-		String query = "exec sp_insert_costos_totales ?,?";
+		String query = "exec sp_insert_totales_de_nomina ?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -389,7 +389,7 @@ public class GuardarTablasModel {
 			
 			for(int i=0; i<tabla.length; i++){
 				pstmt.setString(1, tabla[i][0].toString().trim());
-				pstmt.setFloat(2, Float.parseFloat(tabla[i][1].toString().trim()));
+				pstmt.setFloat(2,(float) (Float.parseFloat(tabla[i][1].toString().trim())==0.0 ? 0.0001 : Float.parseFloat(tabla[i][1].toString().trim())));
 				pstmt.executeUpdate();
 			}
 		

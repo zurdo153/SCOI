@@ -458,7 +458,7 @@ public class Cat_Checador extends JFrame {
 	                                            lblNombre.setText(lblNombre.getText() + re.getNombre() + " "+re.getAp_paterno() + " "+re.getAp_materno());
 	                                            
 	                                            Obj_Establecimiento comboNombreEsta = new Obj_Establecimiento().buscar_estab(re.getEstablecimiento());
-	                                            lblEstablecimiento.setText(lblEstablecimiento.getText() + comboNombreEsta.getNombre());
+	                                            lblEstablecimiento.setText(lblEstablecimiento.getText() + comboNombreEsta.getEstablecimiento());
 	
 	                                            Obj_Puestos comboNombrePues = new Obj_Puestos().buscar_pues(re.getPuesto());
 	                                            lblPuesto.setText(lblPuesto.getText() + comboNombrePues.getPuesto());

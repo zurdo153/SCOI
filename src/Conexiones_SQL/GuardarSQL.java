@@ -186,15 +186,17 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Establecimiento(Obj_Establecimiento establecimiento){
-		String query = "exec sp_insert_establecimiento ?,?,?";
+		String query = "exec sp_insert_establecimiento ?,?,?,?,? ";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, establecimiento.getNombre().toUpperCase().trim());
+			pstmt.setString(1, establecimiento.getEstablecimiento().toUpperCase().trim());
 			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
-			pstmt.setString(3, (establecimiento.getStatus())?"1":"0");
+			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
+			pstmt.setInt(4, establecimiento.getGrupo_cheque());
+			pstmt.setInt(5, establecimiento.getStatus());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -3197,6 +3199,9 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			pstmt.setString(2, unidad_de_inspeccion.getunidades_de_inspeccion().toUpperCase().trim());
 			pstmt.setString(3, unidad_de_inspeccion.getAbreviatura().toUpperCase().trim());
 			pstmt.setInt(4, unidad_de_inspeccion.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidad_de_Inspeccion ] Insert  SQLException: sp_insert_unidades_de_inspeccion "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);

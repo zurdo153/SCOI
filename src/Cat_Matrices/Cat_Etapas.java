@@ -469,8 +469,8 @@ public class Cat_Etapas extends JFrame{
 								JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 								return;
 							}else{
-									Etapas.setEtapa(txtAreaEtapa.getText().toLowerCase().toString());
-									Etapas.setAbreviatura(txtAbreviatura.getText().toLowerCase().toString());
+									Etapas.setEtapa(txtAreaEtapa.getText().toString().toUpperCase().trim());
+									Etapas.setAbreviatura(txtAbreviatura.getText().toString().toUpperCase().trim());
 									switch(cmb_status.getSelectedIndex()){
 															case 0: Etapas.setStatus(1); break;
 															case 1: Etapas.setStatus(0); break;	}
@@ -494,8 +494,8 @@ public class Cat_Etapas extends JFrame{
 					}else{
 						
 							Etapas.setFolio(Integer.parseInt(txtFolio.getText()));
-							Etapas.setEtapa(txtAreaEtapa.getText());
-							Etapas.setAbreviatura(txtAbreviatura.getText());
+							Etapas.setEtapa(txtAreaEtapa.getText().toUpperCase().trim());
+							Etapas.setAbreviatura(txtAbreviatura.getText().toUpperCase().trim());
 							switch(cmb_status.getSelectedIndex()){
 							case 0: Etapas.setStatus(1); break;
 							case 1: Etapas.setStatus(0); break;	}

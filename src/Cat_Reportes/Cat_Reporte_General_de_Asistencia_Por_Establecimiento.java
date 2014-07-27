@@ -5,6 +5,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import Conexiones_SQL.Connexion;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -31,6 +32,8 @@ public class Cat_Reporte_General_de_Asistencia_Por_Establecimiento extends JFram
 			JasperViewer.viewReport(print, false);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en Cat_Reporte_General_de_Asistencia_Por_Establecimiento  en la funcion [ ActionListener Cat_Reporte_General_de_Asistencia_Por_Establecimiento ]   SQLException:  "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 		}
 	}
 

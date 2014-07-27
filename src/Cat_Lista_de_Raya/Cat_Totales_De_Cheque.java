@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
@@ -20,13 +19,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import Cat_Reportes.Cat_Reportes_De_Totales_De_Cheques_De_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Nomina;
 
 @SuppressWarnings("serial")
-public class Cat_Nomina extends Cat_Root {
+public class Cat_Totales_De_Cheque extends Cat_Root {
 	
 	public JButton btn_imprimir = new JButton(new ImageIcon("Iconos/print_icon&16.png"));
 	
@@ -66,7 +67,7 @@ public class Cat_Nomina extends Cat_Root {
 	JTable tabla = new JTable(model);
 	JScrollPane scroll = new JScrollPane(tabla);
 	
-	public Cat_Nomina(){
+	public Cat_Totales_De_Cheque(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/cat_nomina_icon&16.png"));
 		this.setTitle("Totales de Cheque");
 		
@@ -264,18 +265,7 @@ public class Cat_Nomina extends Cat_Root {
 	
 	ActionListener opImprimir = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			Calendar c = new GregorianCalendar();
-			
-			String dia = c.get(Calendar.DATE)+"";
-			String mes = (c.get(Calendar.MONTH)+1)+"";
-			String anio = c.get(Calendar.YEAR)+"";
-			MessageFormat encabezado = new MessageFormat("Totales De Cheque pag.[{0,number,integer}] FECHA: ["+dia+"-"+mes+"-"+anio+"]");
-			
-			try {
-				tabla.print(JTable.PrintMode.NORMAL, encabezado, null);
-			} catch (java.awt.print.PrinterException e1) {
-				JOptionPane.showMessageDialog(null, "No se encontro la impresora!","Aviso",JOptionPane.WARNING_MESSAGE);
-			}
+			new Cat_Reportes_De_Totales_De_Cheques_De_Lista_De_Raya().setVisible(true);
 		}
 	};
 	
@@ -354,10 +344,10 @@ public class Cat_Nomina extends Cat_Root {
 							
 						miVector.clear();
 					}
-					JOptionPane.showMessageDialog(null, "La nomina se guardó exitosamente!","Aviso",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Los Totales de Cheque Se Guardaron exitosamente!","Aviso",JOptionPane.WARNING_MESSAGE);
 					dispose();
 				}else{
-					if(JOptionPane.showConfirmDialog(null, "La nomina ya existe, ¿desea actualizarla?") == 0){
+					if(JOptionPane.showConfirmDialog(null, "Los Totales de Cheque ya existen, ¿desea actualizarlos?") == 0){
 						for(int i=0; i<model.getRowCount(); i++){
 							for(int j=0; j<model.getColumnCount(); j++){
 								miVector.add(model.getValueAt(i,j));							
@@ -384,7 +374,7 @@ public class Cat_Nomina extends Cat_Root {
 								
 							miVector.clear();
 						}	
-						JOptionPane.showMessageDialog(null, "La nomina se actualizó exitosamente!","Aviso",JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Los Totales de Cheque Se Guardaron Exitosamente!","Aviso",JOptionPane.WARNING_MESSAGE);
 						dispose();
 					}else{
 						return;
@@ -393,5 +383,11 @@ public class Cat_Nomina extends Cat_Root {
 			}
 		}
 	}
+	public static void main(String args[]){
+	try{
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		new Cat_Totales_De_Cheque().setVisible(true);
+	}catch(Exception e){	}
+}
 	
 }

@@ -143,7 +143,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 		this.btn_guardar.addActionListener(op_guardar);
 		this.btn_imprimir.addActionListener(op_imprimir);
-		this.btn_nomina.addActionListener(op_nomina);
+		this.btn_nomina.addActionListener(op_totales_cheque);
 		this.btn_refrescar.addActionListener(op_refrescar);
 		this.btn_generar.addActionListener(op_generar);
 
@@ -523,10 +523,10 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		}
 	};
 	
-	ActionListener op_nomina = new ActionListener() {
+	ActionListener op_totales_cheque = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			if(new Obj_Revision_De_Lista_Raya().init_revision_totales()){
-				new Cat_Nomina().setVisible(true);
+				new Cat_Totales_De_Cheque().setVisible(true);
 			}else{
 				JOptionPane.showMessageDialog(null, "Se necesita que alimente los totales de nómina", "Error al visualizar la revisión de totales", JOptionPane.WARNING_MESSAGE);
 				return;

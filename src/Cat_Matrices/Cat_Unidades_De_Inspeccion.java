@@ -42,7 +42,7 @@ import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
-public class Cat_Unidades_De_Inspecion extends JFrame{
+public class Cat_Unidades_De_Inspeccion extends JFrame{
 	int foliosiguiente=0;
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -94,7 +94,7 @@ public class Cat_Unidades_De_Inspecion extends JFrame{
 		private TableRowSorter trsfiltro;
 		
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Unidades_De_Inspecion(){
+	public Cat_Unidades_De_Inspeccion(){
 		
 		
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/catalogo-de-libros-en-blanco-nota-icono-7791-32.png"));
@@ -205,7 +205,7 @@ public class Cat_Unidades_De_Inspecion extends JFrame{
 				                    	    }
 			                 });
 			                  
-		      ///nuevo con F10
+		      ///editar con F10
 				              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
 				                  getRootPane().getActionMap().put("editar", new AbstractAction(){
 				                      public void actionPerformed(ActionEvent e)
@@ -469,8 +469,8 @@ public class Cat_Unidades_De_Inspecion extends JFrame{
 								JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 								return;
 							}else{
-								Unidad_de_inspeccion.setunidades_de_inspeccion(txtAreaUnidad_de_Inspeccion.getText().toLowerCase().toString());
-								Unidad_de_inspeccion.setAbreviatura(txtAbreviatura.getText().toLowerCase().toString());
+								Unidad_de_inspeccion.setunidades_de_inspeccion(txtAreaUnidad_de_Inspeccion.getText().toUpperCase().toString().trim());
+								Unidad_de_inspeccion.setAbreviatura(txtAbreviatura.getText().toString().toUpperCase().trim());
 									switch(cmb_status.getSelectedIndex()){
 															case 0: Unidad_de_inspeccion.setStatus(1); break;
 															case 1: Unidad_de_inspeccion.setStatus(0); break;	}
@@ -494,8 +494,8 @@ public class Cat_Unidades_De_Inspecion extends JFrame{
 					}else{
 						
 						Unidad_de_inspeccion.setFolio(Integer.parseInt(txtFolio.getText()));
-						Unidad_de_inspeccion.setunidades_de_inspeccion(txtAreaUnidad_de_Inspeccion.getText());
-						Unidad_de_inspeccion.setAbreviatura(txtAbreviatura.getText());
+						Unidad_de_inspeccion.setunidades_de_inspeccion(txtAreaUnidad_de_Inspeccion.getText().toUpperCase().trim());
+						Unidad_de_inspeccion.setAbreviatura(txtAbreviatura.getText().toUpperCase().trim());
 							switch(cmb_status.getSelectedIndex()){
 							case 0: Unidad_de_inspeccion.setStatus(1); break;
 							case 1: Unidad_de_inspeccion.setStatus(0); break;	}
@@ -590,7 +590,7 @@ public class Cat_Unidades_De_Inspecion extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Unidades_De_Inspecion().setVisible(true);
+			new Cat_Unidades_De_Inspeccion().setVisible(true);
 		}catch(Exception e){	}
 	}
 	

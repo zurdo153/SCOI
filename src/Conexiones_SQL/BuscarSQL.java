@@ -135,14 +135,17 @@ public class BuscarSQL {
 		    ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				establecimiento.setFolio(rs.getInt("folio"));
-				establecimiento.setNombre(rs.getString("nombre").trim());
+				establecimiento.setEstablecimiento(rs.getString("nombre").trim());
 				establecimiento.setAbreviatura(rs.getString("abreviatura").trim());
-				establecimiento.setStatus((rs.getString("status").equals("1"))?true:false);
+				establecimiento.setSerie(rs.getString("serie").trim());
+				establecimiento.setGrupo_cheque(rs.getInt("grupo_para_cheque"));
+				establecimiento.setStatus(rs.getInt("status"));
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Establecimiento ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -243,27 +246,6 @@ public class BuscarSQL {
 			return null;
 		}
 		return alimentacion;
-	}
-	
-	public Obj_Establecimiento Establecimiento_Nuevo() throws SQLException{
-		Obj_Establecimiento establecimiento = new Obj_Establecimiento();
-		String query = "select max(folio) as 'Maximo' from tb_establecimiento";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				establecimiento.setFolio(rs.getInt("Maximo"));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			 if (stmt != null) { stmt.close(); }
-		}
-		return establecimiento;
 	}
 	
 	public Obj_Sueldos Sueldo(int folio) throws SQLException{
@@ -1735,19 +1717,22 @@ public class BuscarSQL {
 			
 	}
 	
-	public Obj_Establecimiento Establ_buscar(String nombre) throws SQLException{
+	public Obj_Establecimiento buscar_nombre_establecimiento(String nombre) throws SQLException{
 		Obj_Establecimiento estab = new Obj_Establecimiento();
-		String query = "select folio from tb_establecimiento where nombre='"+nombre+"'";
+		String query = "if(select top 1 folio from tb_establecimiento where nombre='"+nombre+"' )is null select 0 as folio,0 as nombre"+
+		               "     else (select top 1 folio,nombre from tb_establecimiento where nombre='"+nombre+"')";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
+				estab.setEstablecimiento(rs.getString("nombre"));
 				estab.setFolio(rs.getInt("folio"));
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_nombre_establecimiento SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -1755,6 +1740,58 @@ public class BuscarSQL {
 		}
 		return estab;
 	}
+	
+	public Obj_Establecimiento buscar_existe_abreviatura_establecimiento(String abreviatura) throws SQLException{
+		Obj_Establecimiento Abreviatura = new Obj_Establecimiento();
+		String query = "if(select top 1 folio from tb_establecimiento where abreviatura='"+abreviatura+"' )is null select 0 as folio,0 as nombre,0 as abreviatura"+
+	               "     else (select top 1 folio,nombre,abreviatura from tb_establecimiento where abreviatura='"+abreviatura+"')";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Abreviatura.setFolio(rs.getInt("folio"));
+				Abreviatura.setEstablecimiento(rs.getString("nombre"));
+				Abreviatura.setAbreviatura(rs.getString("abreviatura"));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_existe_abreviatura_establecimiento SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return Abreviatura;
+	}
+	
+	public Obj_Establecimiento buscar_existe_serie_establecimiento(String serie) throws SQLException{
+		Obj_Establecimiento Serie = new Obj_Establecimiento();
+		String query = "if(select top 1 folio from tb_establecimiento where serie='"+serie+"' )is null select 0 as folio,0 as nombre,0 as abreviatura,0 as serie"+
+	               "     else (select top 1 folio,nombre,abreviatura,serie from tb_establecimiento where serie='"+serie+"')";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Serie.setFolio(rs.getInt("folio"));
+				Serie.setEstablecimiento(rs.getString("nombre"));
+				Serie.setAbreviatura(rs.getString("abreviatura"));
+				Serie.setSerie(rs.getString("serie"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_existe_serie_establecimiento SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return Serie;
+	}
+	
+	
 	
 	public Obj_Horarios Horario_buscar(String nombre) throws SQLException{
 		Obj_Horarios horario = new Obj_Horarios();
@@ -1936,7 +1973,9 @@ public class BuscarSQL {
 		return turno3;
 	}
 	
-	public Obj_Establecimiento Establ_buscar_folio(int folio) throws SQLException{
+
+	
+	public Obj_Establecimiento Establ_buscar_nombre(int folio) throws SQLException{
 		Obj_Establecimiento estab = new Obj_Establecimiento();
 		String query = "select nombre from tb_establecimiento where folio="+folio;
 		Statement stmt = null;
@@ -1944,11 +1983,34 @@ public class BuscarSQL {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				estab.setNombre(rs.getString("nombre"));
+				estab.setEstablecimiento(rs.getString("nombre"));
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return estab;
+	}
+	
+	public Obj_Establecimiento Establecimiento_buscar_folio_por_nombre(String nombre) throws SQLException{
+		Obj_Establecimiento estab = new Obj_Establecimiento();
+		String query = "select folio from tb_establecimiento where nombre='"+nombre+"'";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				estab.setFolio(rs.getInt("folio"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Establecimiento_buscar_folio_por_nombre en select folio from tb_establecimiento where nombre= SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			return null;
 		}
 		finally{

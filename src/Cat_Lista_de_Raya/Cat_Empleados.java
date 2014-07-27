@@ -80,7 +80,6 @@ import javax.swing.LayoutStyle;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -667,6 +666,21 @@ public class Cat_Empleados extends JFrame{
 						                  {                 	    btnNuevo.doClick();
 						                   	    }
 						            });
+						              
+						///editar con F10
+						              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
+						                  getRootPane().getActionMap().put("editar", new AbstractAction(){
+						                      public void actionPerformed(ActionEvent e)
+						                      {                 	    btnEditar.doClick();
+							                    	    }
+						                 });
+					    ///editar con Ctrl+E
+						              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,Event.CTRL_MASK), "editar");
+						                  getRootPane().getActionMap().put("editar", new AbstractAction(){
+						                      public void actionPerformed(ActionEvent e)
+						                      {                 	    btnEditar.doClick();
+							                    	    }
+						                 });
 	    
 	  	}
 	
@@ -985,7 +999,7 @@ public class Cat_Empleados extends JFrame{
 					txtNumeroInfonavit.setText(re.getNumero_infonavit()+"");
 					
 					Obj_Establecimiento comboNombreEsta = new Obj_Establecimiento().buscar_estab(re.getEstablecimiento());
-					cmbEstablecimiento.setSelectedItem(comboNombreEsta.getNombre());
+					cmbEstablecimiento.setSelectedItem(comboNombreEsta.getEstablecimiento());
 					
 					Obj_Puestos comboNombrePues = new Obj_Puestos().buscar_pues(re.getPuesto());
 					cmbPuesto.setSelectedItem(comboNombrePues.getPuesto());
@@ -1181,8 +1195,10 @@ public class Cat_Empleados extends JFrame{
 							empleado.setStatus_imss(cmbActivo_Inactivo.getSelectedIndex());
 							empleado.setNumero_infonavit(txtNumeroInfonavit.getText()+"");
 							
+							
 							Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
 							empleado.setEstablecimiento(comboFolioEsta.getFolio());
+
 							
 							Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
 							empleado.setPuesto(comboFolioPues.getFolio());
