@@ -274,7 +274,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							return;
 						}
 					}else{
-						JOptionPane.showMessageDialog(null, "Antes de generar la lista de raya tiene que guardar la Nomina","Aviso",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Antes de generar la lista de raya tiene que guardar los Totales de Cheque","Aviso",JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 				}else{

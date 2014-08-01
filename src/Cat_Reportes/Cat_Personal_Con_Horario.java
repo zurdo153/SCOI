@@ -1,12 +1,12 @@
 package Cat_Reportes;
 
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,7 +33,7 @@ public class Cat_Personal_Con_Horario extends JFrame{
 	
 	public Cat_Personal_Con_Horario(){
 	
-//		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/user_icon&16.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/plan-icono-5073-16.png"));
 		this.setTitle("Reporte de Plantilla");
 		
 		Container cont = getContentPane();

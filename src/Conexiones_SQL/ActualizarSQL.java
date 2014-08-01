@@ -46,7 +46,7 @@ import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
-import Obj_Lista_de_Raya.Obj_Nomina;
+import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
@@ -1302,8 +1302,8 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Actualizar(Obj_Nomina nomina, String Establecimiento, int Folio){
-		String update = "update tb_nomina set nomina = ?, pago_linea = ?, cheque_nomina = ?, lista_raya = ?, diferecia = ? where establecimiento = '"+Establecimiento+"' and folio_lista ="+Folio;
+	public boolean Actualizar(Obj_Totales_De_Cheque nomina, String Establecimiento, int Folio){
+		String update = "update tb_totales_cheques_lista_raya set nomina = ?, pago_linea = ?, cheque_nomina = ?, lista_raya = ?, diferecia = ? where establecimiento = '"+Establecimiento+"' and folio_lista ="+Folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {

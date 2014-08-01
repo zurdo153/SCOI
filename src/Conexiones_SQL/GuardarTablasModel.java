@@ -227,6 +227,7 @@ public class GuardarTablasModel {
 		
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
+			
 
 			con.setAutoCommit(false);
 			
@@ -241,17 +242,22 @@ public class GuardarTablasModel {
 				pstmt.setString(8, "1");
 				
 				pstmt.executeUpdate();
+				
+				System.out.println(tabla[i][2].toString().trim());
 			}
 					
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tablaTicketFuenteSodas_dh store procedure sp_insert_fuente_soda_dh_de_seleccion_de_ticket  "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tablaTicketFuenteSodas_dh store procedure sp_insert_fuente_soda_dh_de_seleccion_de_ticket  "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -456,12 +462,14 @@ public class GuardarTablasModel {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tabla_model_lista_raya_generar  procedimiento almacenado sp_insert_lista_raya SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tabla_model_lista_raya_generar  procedimiento almacenado sp_insert_lista_raya SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -470,6 +478,7 @@ public class GuardarTablasModel {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tabla_model_lista_raya_generar  procedimiento almacenado sp_insert_lista_raya SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

@@ -37,6 +37,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
 import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
 import Obj_Evaluaciones.Obj_Imprimir_Cuadrante;
@@ -61,6 +62,7 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 	JButton btnGenerar = new JButton(" Imprimir Actividades del Cuadrante de Hoy");
 	JButton btnGenerarreportecaptura = new JButton(" Imprimir Captura del Cuadrante de Hoy");
 	JButton btnGenerarcaptura7= new JButton(" Imprimir Captura del Cuadrante Ultimos 7 Dias");
+	JButton btnAsistenciaEmpleado= new JButton("Reporte De Asistencia del Empleado");
 	
 	/* OPCION MEDIA MULTIPLE JERARQUICA */
 	Cat_Plantilla_Tabla_Cuadrante plantillaMultipleJerarquica = new Cat_Plantilla_Tabla_Cuadrante();
@@ -133,10 +135,11 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 		this.panel.add(btnGenerar).setBounds(690,30,260,20);
 		this.panel.add(btnGenerarcaptura7).setBounds(690,60,260,20);
 		this.panel.add(btnGenerarreportecaptura).setBounds(690,90,260,20);
+		this.panel.add(btnAsistenciaEmpleado).setBounds(690,120,260,20);
 		
 		
-		this.panel.add(btnTerminarCaptura).setBounds(690,150,260,20);
-		this.panel.add(btnSalir).setBounds(690,180,260,20);
+		this.panel.add(btnTerminarCaptura).setBounds(690,180,260,20);
+		this.panel.add(btnSalir).setBounds(690,210,260,20);
 		
 		
 		
@@ -208,6 +211,8 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 		this.btnGenerar.addActionListener(opimprimircuadrante);
 		this.btnGenerarcaptura7.addActionListener(opReporteCaptura7);
 		this.btnGenerarreportecaptura.addActionListener(opReporteCaptura);
+		this.btnAsistenciaEmpleado.addActionListener(opReporteAsistencia);
+		
 		this.CamposEnabled(false);
 		
 		this.init(Nombre_Usuario);
@@ -820,6 +825,18 @@ public class Cat_Captura_Del_Cuadrante_Personal extends JFrame {
 	
 		}
 	};
+	
+	ActionListener opReporteAsistencia = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0){
+			int folio_empleado = (int) new Obj_Imprimir_Cuadrante().Obj_Obtener_folio_empleado_buscar(txtNombre_Completo.getText().toUpperCase().trim());
+			
+			
+			new Cat_Reporte_De_Asistencia_Por_Empleado(String.valueOf(folio_empleado+""),txtNombre_Completo.getText(),txtEstablecimiento.getText(),"Selecciona un Departamento").setVisible(true);
+	
+		}
+		
+	};
+	
 	ActionListener opReporteCaptura7 = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			int folio_empleado = (int) new Obj_Imprimir_Cuadrante().Obj_Obtener_folio_empleado_buscar(txtNombre_Completo.getText().toUpperCase().trim());

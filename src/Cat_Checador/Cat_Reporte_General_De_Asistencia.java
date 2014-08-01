@@ -13,10 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import Cat_Reportes.Cat_Reporte_De_Permisos_A_Empleados;
 import Cat_Reportes.Cat_Reporte_General_de_Asistencia_Por_Establecimiento;
-import Cat_Reportes.Cat_Reporte_General_de_Asistencia_Por_Establecimiento_Mas_Registros_Faltantes;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 
@@ -40,7 +40,6 @@ public class Cat_Reporte_General_De_Asistencia extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento = new JComboBox(departamento);
 
-	JButton btn_generar_Asistencia = new JButton("Reporte de Asistencia Sin Faltas");
 	JButton btn_generar_Completo = new JButton  ("Reporte de Asistencia Completo");
 	JButton btn_generar_Permisos = new JButton  ("Reporte de Permisos a Empleados");
 	
@@ -56,10 +55,8 @@ public class Cat_Reporte_General_De_Asistencia extends JFrame {
 		this.panel.add(cmbEstablecimiento).setBounds(280,25,170,20);
 		this.panel.add(new JLabel("Departamento:")).setBounds(200,55,150,20);
 		this.panel.add(cmbDepartamento).setBounds(280,55,170,20);
-		this.btn_generar_Asistencia.addActionListener(op_generar);
-		this.btn_generar_Completo.addActionListener(op_generar_cregistros);
+		this.btn_generar_Completo.addActionListener(op_generar);
 		this.btn_generar_Permisos.addActionListener(op_generar_permisos);
-		this.panel.add(btn_generar_Asistencia).setBounds(140,100,210,20);
 		this.panel.add(btn_generar_Completo).setBounds(140,130,210,20);
 		this.panel.add(btn_generar_Permisos).setBounds(140,160,210,20);
 		this.cont.add(panel);
@@ -73,31 +70,12 @@ public class Cat_Reporte_General_De_Asistencia extends JFrame {
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
 				String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
-				
-				if(c_inicio.getDate().before(c_final.getDate())){
-					new Cat_Reporte_General_de_Asistencia_Por_Establecimiento(fecha_inicio, fecha_final,Establecimiento);
-				}else{
-					JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
-					return;
-				}
-				
-			}else{
-				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-		}
-		
-	};
-	ActionListener op_generar_cregistros = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			if(validar_fechas().equals("")){
-				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
-				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
-				String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+				String Departamento = cmbDepartamento.getSelectedItem().toString();
+				String folios_empleados = "Selecciona un Empleado";
 
 				if(c_inicio.getDate().before(c_final.getDate())){
-					new Cat_Reporte_General_de_Asistencia_Por_Establecimiento_Mas_Registros_Faltantes(fecha_inicio, fecha_final,Establecimiento);
+					new Cat_Reporte_General_de_Asistencia_Por_Establecimiento(fecha_inicio, fecha_final,Establecimiento,Departamento,folios_empleados);
+					
 				}else{
 					JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
 					return;
@@ -110,6 +88,7 @@ public class Cat_Reporte_General_De_Asistencia extends JFrame {
 
 		}
 	};
+	
 	ActionListener op_generar_permisos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
@@ -139,6 +118,13 @@ public class Cat_Reporte_General_De_Asistencia extends JFrame {
 		if(fechafinalNull.equals("null"))error+= "Fecha Final\n";
 		
 		return error;
+	}
+	
+	public static void main(String args[]){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Reporte_General_De_Asistencia().setVisible(true);
+		}catch(Exception e){	}
 	}
 
 }

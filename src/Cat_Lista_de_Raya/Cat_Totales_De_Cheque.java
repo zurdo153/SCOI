@@ -5,13 +5,15 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -19,24 +21,23 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import Cat_Reportes.Cat_Reportes_De_Totales_De_Cheques_De_Lista_De_Raya;
-import Obj_Lista_de_Raya.Obj_Nomina;
+import Conexiones_SQL.Connexion;
+import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 
 @SuppressWarnings("serial")
 public class Cat_Totales_De_Cheque extends Cat_Root {
 	
 	public JButton btn_imprimir = new JButton(new ImageIcon("Iconos/print_icon&16.png"));
 	
-	public int folio = new Obj_Nomina().MaxListaRaya();
+	public int folio = new Obj_Totales_De_Cheque().MaxListaRaya();
 	
-	String[] espacio = {"","","","","",""};
-	String[][] Tabla = new Obj_Nomina().MatrizNomina(folio);
-	
-	DefaultTableModel model = new DefaultTableModel(Tabla, new String[]{"", "", "", "", "", ""}){
+	DefaultTableModel model = new DefaultTableModel(null, new String[]{"Establecimiento","Nomina", "Pago En Linea", "T.Cheque Nomina", "Lista Raya", "Diferencia"}){
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
 	    	java.lang.String.class,
@@ -75,198 +76,99 @@ public class Cat_Totales_De_Cheque extends Cat_Root {
 		this.txtNombre_Completo.setVisible(false);
 		this.btn_refrescar.setVisible(false);
 		
-		panel.add(scroll).setBounds(15,50,460,503);
+		panel.add(getPanelTabla()).setBounds(20,25,623,450);
 		
 		this.menu_toolbar.add(btn_imprimir);
 			this.btn_imprimir.setToolTipText("Imprimir");
 		
 		btn_imprimir.addActionListener(opImprimir);
 		this.btn_guardar.addActionListener(opGuardar);
+		btn_imprimir.setEnabled(false);
+		
 		
 		cont.add(panel);
 		
-		model.addRow(espacio);
-		
-		model.addRow(espacio);
-		
-		model.setValueAt("TOTALES", model.getRowCount()-1, 0);
-		model.setValueAt("$  "+retunrNomina()+"",model.getRowCount()-1, 1);
-		model.setValueAt("$  "+retunrPagoOnline()+"",model.getRowCount()-1, 2);
-		model.setValueAt("$  "+retunrDiferenciaBancos()+"",model.getRowCount()-1, 3);
-		model.setValueAt("$  "+retunrLista_apagar()+"",model.getRowCount()-1, 4);
-		model.setValueAt("$  "+retunrDiferencia()+"",model.getRowCount()-1, 5);
-		
-		model.addRow(espacio); 
-		model.addRow(espacio);
-		
-		model.setValueAt("CHEQUE SUPER (1)", model.getRowCount()-1, 0);
-		model.setValueAt("$  "+(retunrNomina()-returnNominaEstablecimiento("IZACEL")-returnNominaEstablecimiento("REFACCIONARIA")-returnNominaEstablecimiento("FERRETERIA")),model.getRowCount()-1, 1);
-		model.setValueAt("$  "+(retunrPagoOnline()-returnBancosEstablecimiento("IZACEL")-returnBancosEstablecimiento("REFACCIONARIA")-returnBancosEstablecimiento("FERRETERIA")),model.getRowCount()-1, 2);
-		model.setValueAt("$  "+((retunrNomina()-returnNominaEstablecimiento("IZACEL")-returnNominaEstablecimiento("REFACCIONARIA")-returnNominaEstablecimiento("FERRETERIA"))-(retunrPagoOnline()-returnBancosEstablecimiento("IZACEL")-returnBancosEstablecimiento("REFACCIONARIA")-returnBancosEstablecimiento("FERRETERIA"))), model.getRowCount()-1, 3);
-		model.setValueAt("CHEQUE SUPER´S + IZACEL (2)", model.getRowCount()-1, 4);
-		model.setValueAt("$  "+(retunrDiferencia()-returnDiferenciaEstablecimiento("FERRETERIA")-returnDiferenciaEstablecimiento("REFACCIONARIA")) , model.getRowCount()-1, 5);
-		
-		model.addRow(espacio); 
-		model.addRow(espacio);
-		
-		model.setValueAt("CHEQUE FERRE Y REFA (1)", model.getRowCount()-1, 0);
-		model.setValueAt("$  "+(returnNominaEstablecimiento("REFACCIONARIA")+returnNominaEstablecimiento("FERRETERIA")),model.getRowCount()-1, 1);
-		model.setValueAt("$  "+(returnBancosEstablecimiento("REFACCIONARIA")+returnBancosEstablecimiento("FERRETERIA")),model.getRowCount()-1, 2);
-		model.setValueAt("$  "+((returnNominaEstablecimiento("REFACCIONARIA")+returnNominaEstablecimiento("FERRETERIA"))-(returnBancosEstablecimiento("REFACCIONARIA")+returnBancosEstablecimiento("FERRETERIA"))), model.getRowCount()-1, 3);
-		model.setValueAt("CHEQUE FERRE Y REFA (2)", model.getRowCount()-1, 4);
-		model.setValueAt("$  "+(returnDiferenciaEstablecimiento("REFACCIONARIA")+returnDiferenciaEstablecimiento("FERRETERIA")), model.getRowCount()-1, 5);
-		
-		model.addRow(espacio); 
-		model.addRow(espacio);
-		
-		model.setValueAt("CHEQUE IZACEL (1)", model.getRowCount()-1, 0);
-		model.setValueAt("$  "+returnNominaEstablecimiento("IZACEL"),model.getRowCount()-1, 1);
-		model.setValueAt("$  "+returnBancosEstablecimiento("IZACEL"),model.getRowCount()-1, 2);
-		model.setValueAt("$  "+(returnNominaEstablecimiento("IZACEL")-returnBancosEstablecimiento("IZACEL")),model.getRowCount()-1, 3);
-
-		model.addRow(espacio); 
-		model.addRow(espacio);
-		
-		model.setValueAt("TOTALES", model.getRowCount()-1, 0);
-		model.setValueAt("$  "+retunrNomina()+"",model.getRowCount()-1, 1);
-		model.setValueAt("$  "+retunrPagoOnline()+"",model.getRowCount()-1, 2);
-		model.setValueAt("$  "+retunrDiferenciaBancos()+"",model.getRowCount()-1, 3);
-		model.setValueAt("TOTAL",model.getRowCount()-1, 4);
-		model.setValueAt("$  "+retunrDiferencia()+"",model.getRowCount()-1, 5);
-				
-		tabla.getColumnModel().getColumn(0).setMinWidth(90);
-		tabla.getColumnModel().getColumn(0).setMinWidth(90);
-		
-		tabla.getColumnModel().getColumn(1).setMinWidth(70);
-		tabla.getColumnModel().getColumn(1).setMinWidth(70);
-		
-		tabla.getColumnModel().getColumn(2).setMinWidth(60);
-		tabla.getColumnModel().getColumn(2).setMinWidth(60);
-		
-		tabla.getColumnModel().getColumn(3).setMinWidth(70);
-		tabla.getColumnModel().getColumn(3).setMinWidth(70);
-		
-		tabla.getColumnModel().getColumn(4).setMinWidth(60);
-		tabla.getColumnModel().getColumn(4).setMinWidth(60);
-		
-		tabla.getColumnModel().getColumn(5).setMinWidth(50);
-		tabla.getColumnModel().getColumn(5).setMinWidth(50);
-
-		DefaultTableCellRenderer render = new DefaultTableCellRenderer() {
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-				lbl.setFont(new java.awt.Font("",0,7));
-				if(row == 0){
-					lbl.setOpaque(true); 
-					lbl.setBackground(new java.awt.Color(214,214,214));
-				}
-				return lbl; 
-			} 
-		}; 
-		
-		tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-		tabla.getColumnModel().getColumn(1).setCellRenderer(render);
-		tabla.getColumnModel().getColumn(2).setCellRenderer(render);
-		tabla.getColumnModel().getColumn(3).setCellRenderer(render); 
-		tabla.getColumnModel().getColumn(4).setCellRenderer(render);
-		tabla.getColumnModel().getColumn(5).setCellRenderer(render); 
-		
-		this.setSize(505,620);
+		this.setSize(680,530);
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 	}
 	
-	public float retunrNomina(){
-		float valor = 0;
-		for(int i=0; i<Tabla.length; i++){
-			if(i!=0){
-				if(model.getValueAt(i,1).toString() != ""){
-					valor = Float.parseFloat(valor+"") + Float.parseFloat(model.getValueAt(i,1)+"");
-				}
-			}
-							
-		}
-		return valor;
-	}
-	
-	public float retunrPagoOnline(){
-		float valor = 0;
-		for(int i=0; i<Tabla.length; i++){
-			if(i!=0){
-				if(model.getValueAt(i,2).toString() != ""){
-					valor = Float.parseFloat(valor+"") + Float.parseFloat(model.getValueAt(i,2)+"");
-				}
-			}
-							
-		}
-		return valor;
-	}
-	public float retunrDiferenciaBancos(){
-		float valor = 0;
-		for(int i=0; i<Tabla.length; i++){
-			if(i!=0){
-				if(model.getValueAt(i,3).toString() != ""){
-					valor = Float.parseFloat(valor+"") + Float.parseFloat(model.getValueAt(i,3)+"");
-				}
-			}
-							
-		}
-		return valor;
-	}
-	
-	public float retunrLista_apagar(){
-		float valor = 0;
-		for(int i=0; i<Tabla.length; i++){
-			if(i!=0){
-				if(model.getValueAt(i,4).toString() != ""){
-					valor = Float.parseFloat(valor+"") + Float.parseFloat(model.getValueAt(i,4)+"");
-				}
-			}
-							
-		}
-		return valor;
-	}
-	
-	public float retunrDiferencia(){
-		float valor = 0;
-		for(int i=0; i<Tabla.length; i++){
-			if(i!=0){
-				if(model.getValueAt(i,5).toString() != ""){
-					valor = Float.parseFloat(valor+"") + Float.parseFloat(model.getValueAt(i,5)+"");
-				}
-			}
-							
-		}
-		return valor;
-	}
-	
-	public float returnNominaEstablecimiento(String Establecimiento){
-		return new Obj_Nomina().getNominaIndividual(Establecimiento,folio);
+	private JScrollPane getPanelTabla()	{	
 		
-	}
-	
-	public float returnBancosEstablecimiento(String Establecimiento){
-		return new Obj_Nomina().getBancosIndividual(Establecimiento,folio);
+		tabla.getTableHeader().setReorderingAllowed(false) ;
+		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
+	    this.tabla.getColumnModel().getColumn(0).setMinWidth(100);
+	    this.tabla.getColumnModel().getColumn(0).setMaxWidth(300);
+	    this.tabla.getColumnModel().getColumn(1).setMinWidth(100);
+	    this.tabla.getColumnModel().getColumn(1).setMaxWidth(300);
+	    this.tabla.getColumnModel().getColumn(2).setMinWidth(100);
+	    this.tabla.getColumnModel().getColumn(2).setMaxWidth(300);
+	    this.tabla.getColumnModel().getColumn(3).setMinWidth(100);
+	    this.tabla.getColumnModel().getColumn(3).setMaxWidth(300);
+	    this.tabla.getColumnModel().getColumn(4).setMinWidth(100);
+	    this.tabla.getColumnModel().getColumn(4).setMaxWidth(300);
+	    this.tabla.getColumnModel().getColumn(5).setMinWidth(100);
+	    this.tabla.getColumnModel().getColumn(5).setMaxWidth(300);
+					    
+					    TableCellRenderer render = new TableCellRenderer() { 
+							public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+							boolean hasFocus, int row, int column) { 
+					          		Component componente = null;
+										componente = new JLabel(value == null? "": value.toString());
+										if(row %2 == 0){
+											((JComponent) componente).setOpaque(true); 
+											componente.setBackground(new java.awt.Color(177,177,177));	
+										}
+										
+										if(table.getSelectedRow() == row){
+											((JComponent) componente).setOpaque(true); 
+											componente.setBackground(new java.awt.Color(186,143,73));
+										 }
+										((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+								return componente;
+							} 
+						}; 
+
+						for(int i=0; i<tabla.getColumnCount(); i++){
+						    this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
+						}
+						refrestabla();
+				 JScrollPane scrol = new JScrollPane(tabla);
+			    return scrol; 
+    
+    }
+private void refrestabla(){
+	Statement s;
+	ResultSet rs;
+	try {
+		Connexion con = new Connexion();
+		s = con.conexion().createStatement();
+		rs = s.executeQuery("exec sp_Reporte_De_Totales_De_Cheque_De_Lista_De_Raya_Actual");
+		while (rs.next())
+		{ 
+		   String [] fila = new String[6];
+		   fila[0] = rs.getString(2).trim();
+		   fila[1] = rs.getString(3).trim();
+		   fila[2] = rs.getString(4).trim(); 
+		   fila[3] = rs.getString(5).trim(); 
+		   fila[4] = rs.getString(6).trim(); 
+		   fila[5] = rs.getString(7).trim(); 
+		   model.addRow(fila); 
+		}	
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en Cat_Totales_De_Cheque en la funcion refrestabla  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 	}
-	
-	public float returnListaRayaEstablecimiento(String Establecimiento){
-		return new Obj_Nomina().getListaRayaIndividual(Establecimiento,folio);
-		
-	}
-	
-	public float returnDiferenciaEstablecimiento(String Establecimiento){
-		return new Obj_Nomina().getDiferenciaIndividual(Establecimiento,folio);
-		
-	}
+}
+
 	
 	ActionListener opImprimir = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			new Cat_Reportes_De_Totales_De_Cheques_De_Lista_De_Raya().setVisible(true);
-		}
+			}
 	};
 	
 	ActionListener opGuardar = new ActionListener(){
@@ -305,16 +207,11 @@ public class Cat_Totales_De_Cheque extends Cat_Root {
 		class Hilo implements Runnable {
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public void run() {
-				Calendar c = new GregorianCalendar();
-				
-				String dia = c.get(Calendar.DATE)+"";
-				String mes = (c.get(Calendar.MONTH)+1)+"";
-				String anio = c.get(Calendar.YEAR)+"";
 				
 				int total = model.getRowCount();
 				
 				Vector miVector = new Vector();
-				Obj_Nomina maximo = new Obj_Nomina();
+				Obj_Totales_De_Cheque maximo = new Obj_Totales_De_Cheque();
 				
 				if(folio != maximo.returnMaximo()){
 					for(int i=0; i<model.getRowCount(); i++){
@@ -322,20 +219,20 @@ public class Cat_Totales_De_Cheque extends Cat_Root {
 							miVector.add(model.getValueAt(i,j));							
 						}
 						
-						Obj_Nomina nomina = new Obj_Nomina();
+						Obj_Totales_De_Cheque Totales_cheques = new Obj_Totales_De_Cheque();
 							
-						nomina.setNumero_listaraya(folio);
-						nomina.setEstablecimiento(miVector.get(0).toString());
-						nomina.setNomina(miVector.get(1).toString());
-						nomina.setPago_linea(miVector.get(2).toString());
-						nomina.setCheque_nomina(miVector.get(3).toString());
-						nomina.setLista_raya(miVector.get(4).toString());
-						nomina.setDiferencia(miVector.get(5).toString());
-						nomina.setFecha(dia+"-"+mes+"-"+anio);
-						nomina.Guardar();
+						Totales_cheques.setNumero_listaraya(folio);
+						Totales_cheques.setEstablecimiento(miVector.get(0).toString());
+						Totales_cheques.setNomina(miVector.get(1).toString());
+						Totales_cheques.setPago_linea(miVector.get(2).toString());
+						Totales_cheques.setCheque_nomina(miVector.get(3).toString());
+						Totales_cheques.setLista_raya(miVector.get(4).toString());
+						Totales_cheques.setDiferencia(miVector.get(5).toString());
+						Totales_cheques.Guardar();
 							
 						int porcent = (i*100)/total;
 						barra.setValue(porcent+1);
+						btn_imprimir.setEnabled(true);
 						try {
 							Thread.sleep(0);
 						} catch (InterruptedException e) {
@@ -353,19 +250,18 @@ public class Cat_Totales_De_Cheque extends Cat_Root {
 								miVector.add(model.getValueAt(i,j));							
 							}
 							
-							Obj_Nomina nomina = new Obj_Nomina();
+							Obj_Totales_De_Cheque Totales_cheques = new Obj_Totales_De_Cheque();
 								
-							nomina.setNomina(miVector.get(1).toString());
-							nomina.setPago_linea(miVector.get(2).toString());
-							nomina.setCheque_nomina(miVector.get(3).toString());
-							nomina.setLista_raya(miVector.get(4).toString());
-							nomina.setDiferencia(miVector.get(5).toString());
-							nomina.setFecha(dia+"-"+mes+"-"+anio);
-							
-							nomina.Actualizar(miVector.get(0).toString(),folio);
+							Totales_cheques.setNomina(miVector.get(1).toString());
+							Totales_cheques.setPago_linea(miVector.get(2).toString());
+							Totales_cheques.setCheque_nomina(miVector.get(3).toString());
+							Totales_cheques.setLista_raya(miVector.get(4).toString());
+							Totales_cheques.setDiferencia(miVector.get(5).toString());
+							Totales_cheques.Actualizar(miVector.get(0).toString(),folio);
 								
 							int porcent = (i*100)/total;
 							barra.setValue(porcent+1);
+							btn_imprimir.setEnabled(true);
 							try {
 								Thread.sleep(0);
 							} catch (InterruptedException e) {
