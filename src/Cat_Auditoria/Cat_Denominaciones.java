@@ -74,6 +74,8 @@ public class Cat_Denominaciones extends JFrame{
 		
 		this.setTitle("Denominaciones");
 		
+//		cont.setBackground(new Color(86,161,85));
+		
 		int x = 15, y=30, ancho=100;
 		
 		panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);

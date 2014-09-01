@@ -71,6 +71,8 @@ public class Cat_Divisas_Y_Tipo_De_Cambio extends JFrame{
 		
 		this.setTitle("Divisa y Tipo de Cambio");
 		
+//		cont.setBackground(new Color(86,161,85));
+		
 		int x = 15, y=30, ancho=100;
 		
 		panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);

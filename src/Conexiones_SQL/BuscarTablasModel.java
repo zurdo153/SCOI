@@ -244,7 +244,29 @@ public class BuscarTablasModel {
 				matriz[i][1] = "   "+rs.getString(2);
 				matriz[i][2] = "   "+rs.getString(3);
 				matriz[i][3] = "   "+rs.getString(4);
-				matriz[i][4] = rs.getString(5).toString().trim().equals("0.00") ? "" : Float.parseFloat(rs.getString(5).trim());
+				matriz[i][4] = rs.getString(5).toString().trim().equals("0.0") ? "" : Float.parseFloat(rs.getString(5).trim());
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
+	
+	public Object[][] tabla_model_alimentacion_cheques(String folio_corte){
+		String query_lista = "exec sp_select_tabla_cheques '"+folio_corte+"'";
+		
+		Object[][] matriz = new Object[get_filas(query_lista)][10];
+		try {
+			Statement stmtl = new Connexion().conexion().createStatement();
+			
+			ResultSet rs = stmtl.executeQuery(query_lista);
+
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] = rs.getString(1);
+				matriz[i][1] = rs.getString(2);
 				i++;
 			}
 

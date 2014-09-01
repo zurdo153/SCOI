@@ -72,14 +72,13 @@ import Obj_Principal.Componentes;
 							return;
 					}else{
 							if(txtAsignacion.getText().equals("")){
-	//							abrir filtri de asignaciones
+								
+//							abrir filtri de asignaciones
+
 							}else{
 								
 								Obj_Movimiento_De_Asignacion asignacion = new Obj_Movimiento_De_Asignacion();
 								System.out.println(txtAsignacion.getText().substring(0,2));
-								
-								
-								
 								
 							}
 					}
