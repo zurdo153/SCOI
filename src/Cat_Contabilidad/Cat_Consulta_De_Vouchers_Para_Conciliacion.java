@@ -100,6 +100,7 @@ public class Cat_Consulta_De_Vouchers_Para_Conciliacion extends JFrame{
 	
     JTable tabla = new JTable(modelo);
     JScrollPane scrollAsignado = new JScrollPane(tabla);
+    
 	JTextField txtFoliofacturaFiltro = new JTextField();
 	JTextField txtProveedorFiltro = new JTextField();
 	@SuppressWarnings("rawtypes")

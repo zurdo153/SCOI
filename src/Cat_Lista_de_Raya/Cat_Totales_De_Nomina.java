@@ -1,17 +1,23 @@
 package Cat_Lista_de_Raya;
 
 import java.awt.Component;
+import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -22,7 +28,7 @@ import Obj_Lista_de_Raya.Obj_Totales_De_Nomina;
 public class Cat_Totales_De_Nomina extends Cat_Root {
 	
 	JTextField txtTotal = new JTextField();
-	
+	int fila=0;
 	DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Totales_De_Nomina().get_tabla_model(), new String[]{"Establecimiento", "Nómina"}) {
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -34,10 +40,13 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
 		public Class getColumnClass(int columnIndex) {
              return types[columnIndex];
          }
+	     
          public boolean isCellEditable(int fila, int columna){
         	 switch(columna){
+        	 
         	 	case 0 : return false; 
         	 	case 1 :
+        	 		
         	 		float suma = 0;
 	    			for(int i=0; i<tabla.getRowCount(); i++){
 	    				if(tabla_model.getValueAt(i,1).toString().length() == 0){
@@ -59,7 +68,7 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
 	
 	public Cat_Totales_De_Nomina(){
 		this.setTitle("Alimentación de Totales de Nomina");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/captura_nomina_icon&16.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-icono-8797-32.png"));
 		
 		this.txtFolio.setVisible(false);
 		this.txtNombre_Completo.setVisible(false);
@@ -83,13 +92,47 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		
+		this.addWindowListener(new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+        		tabla.editCellAt(fila, 1);
+				Component aComp=tabla.getEditorComponent();
+        		aComp.requestFocus();
+         }
+    });
+		
+        ///guardar con control+G
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+             getRootPane().getActionMap().put("guardar", new AbstractAction(){
+                 public void actionPerformed(ActionEvent e)
+                 {                 	    btn_guardar.doClick();
+               	    }
+            });
+///guardar con F12
+             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+                 getRootPane().getActionMap().put("guardar", new AbstractAction(){
+                     public void actionPerformed(ActionEvent e)
+                     {                 	    btn_guardar.doClick();
+	                    	    }
+                });
+
 	}
 	
 	KeyListener op_key = new KeyListener() {
 		public void keyTyped(KeyEvent e) {
 		}
 		public void keyReleased(KeyEvent e) {
+			
+	    	int cantidadDeFilas = tabla.getRowCount();
+	    	fila+=1;
+	    		if(fila == cantidadDeFilas){	fila=0;		}
+	    		tabla.editCellAt(fila, 1);
+	    		Component aComp=tabla.getEditorComponent();
+	    		aComp.requestFocus();	
+	    		
 			float suma = 0;
+			
 			for(int i=0; i<tabla.getRowCount(); i++){
 				
 				if(tabla_model.getValueAt(i,1).toString().equals("")){
@@ -122,13 +165,13 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
 				JOptionPane.showMessageDialog(null, "Las siguientes celdas están mal en su formato:\n"+valida_tabla(),"Error",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
-				if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de bancos?") == 0){
+				if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de Totales de Nomina?") == 0){
 					Obj_Totales_De_Nomina totales = new Obj_Totales_De_Nomina();
 					if(totales.guardar(tabla_guardar())){
-						JOptionPane.showMessageDialog(null, "La tabla bancos se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "La tabla Totales de Nomina se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}else{
-						JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la Tabla de Nominas","Error",JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 				}else{
@@ -154,6 +197,7 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
 	
 	private String valida_tabla(){
 		String error = "";
+		
 		for(int i=0; i<tabla.getRowCount(); i++){
 			try{
 				if(!isNumeric(tabla_model.getValueAt(i,1).toString())){
@@ -167,6 +211,7 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
 		return error;
 	}
 	
+		
 	public void init_tabla(){
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 		

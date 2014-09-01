@@ -9,50 +9,24 @@ import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Establecimiento {
 	private int folio;
-	private String nombre;
+	private String establecimiento;
 	private String abreviatura;
-	private boolean status;
+	private String serie;
+	public int grupo_cheque;
+	public int status;
+
+//	public Obj_Establecimiento(){
+//		folio=0;
+//		establecimiento="";
+//		abreviatura="";
+//		serie="";
+//		grupo_cheque="";
+//		status="";
+//	}
+
 	
-	public Obj_Establecimiento(){
-		folio=0;
-		nombre="";
-		abreviatura="";
-		status=false;
-	}
 
-	public int getFolio() {
-		return folio;
-	}
-
-	public void setFolio(int folio) {
-		this.folio = folio;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getAbreviatura() {
-		return abreviatura;
-	}
-
-	public void setAbreviatura(String abreviatura) {
-		this.abreviatura = abreviatura;
-	}
-
-	public boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean b) {
-		this.status = b;
-	}
-	
-	public String[] Combo_Establecimiento_Empleados() {
+		public String[] Combo_Establecimiento_Empleados() {
 		try {
 			return new Cargar_Combo().Establecimiento_Empleado("tb_establecimiento");
 		} catch (SQLException e) {
@@ -61,6 +35,54 @@ public class Obj_Establecimiento {
 		return null; 
 	}
 	
+	public int getFolio() {
+			return folio;
+		}
+
+		public void setFolio(int folio) {
+			this.folio = folio;
+		}
+
+		public String getEstablecimiento() {
+			return establecimiento;
+		}
+
+		public void setEstablecimiento(String establecimiento) {
+			this.establecimiento = establecimiento;
+		}
+
+		public String getAbreviatura() {
+			return abreviatura;
+		}
+
+		public void setAbreviatura(String abreviatura) {
+			this.abreviatura = abreviatura;
+		}
+
+		public String getSerie() {
+			return serie;
+		}
+
+		public void setSerie(String serie) {
+			this.serie = serie;
+		}
+
+		public int getGrupo_cheque() {
+			return grupo_cheque;
+		}
+
+		public void setGrupo_cheque(int grupo_cheque) {
+			this.grupo_cheque = grupo_cheque;
+		}
+
+		public int getStatus() {
+			return status;
+		}
+
+		public void setStatus(int status) {
+			this.status = status;
+		}
+
 	public String[] Combo_Establecimiento_Entysal() {
 		try {
 			return new Cargar_Combo().Establecimiento_Empleado_Entysal("establecimientos");
@@ -104,6 +126,27 @@ public class Obj_Establecimiento {
 		}
 	return null; }
 	
+	public Obj_Establecimiento buscar_estab(String nombre){
+		try{
+			return new BuscarSQL().Establecimiento_buscar_folio_por_nombre(nombre); 
+		} catch(SQLException e){
+			
+		}
+		return null;
+	}
+	
+	public Obj_Establecimiento buscar_estab(int folio){
+		try{
+			return new BuscarSQL().Establ_buscar_nombre(folio); 
+		} catch(SQLException e){
+			
+		}
+		return null;
+	}
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////
 	
 
 	public Obj_Establecimiento buscar(int folio) { 
@@ -115,34 +158,34 @@ public class Obj_Establecimiento {
 		return null; 
 	}
 	
-	public boolean actualizar(int folio){ return new ActualizarSQL().Establecimiento(this,folio); }
+	public Obj_Establecimiento buscar_existe_nombre_establecimiento(String nombre){
+		try{ return new BuscarSQL().buscar_nombre_establecimiento(nombre); 
+		         } catch(SQLException e){		}
+	  	return null;
+	}
 	
-	public boolean guardar(){ return new GuardarSQL().Guardar_Establecimiento(this); }
+	public Obj_Establecimiento buscar_existe_abreviatura_establecimiento(String abreviatura){
+		try{ return new BuscarSQL().buscar_existe_abreviatura_establecimiento(abreviatura); 
+		         } catch(SQLException e){		}
+	  	return null;
+	}
 	
-	public Obj_Establecimiento buscar_nuevo() { 
-		try {
-			return new BuscarSQL().Establecimiento_Nuevo();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}	
+	public Obj_Establecimiento buscar_existe_serie_establecimiento(String serie){
+		try{ return new BuscarSQL().buscar_existe_serie_establecimiento(serie); 
+		         } catch(SQLException e){		}
+	  	return null;
+	}
+	
+	
+	public boolean actualizar(int folio){ 
+		return new ActualizarSQL().Establecimiento(this,folio); }
+	
+	public boolean guardar(){
+		return new GuardarSQL().Guardar_Establecimiento(this); }
+	
 
-	public Obj_Establecimiento buscar_estab(String nombre){
-		try{
-			return new BuscarSQL().Establ_buscar(nombre); 
-		} catch(SQLException e){
-			
-		}
-		return null;
-	}
+
 	
-	public Obj_Establecimiento buscar_estab(int folio){
-		try{
-			return new BuscarSQL().Establ_buscar_folio(folio); 
-		} catch(SQLException e){
-			
-		}
-		return null;
-	}
+	
+	
 }

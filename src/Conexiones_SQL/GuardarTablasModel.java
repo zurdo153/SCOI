@@ -229,6 +229,7 @@ public class GuardarTablasModel {
 		
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
+			
 
 			con.setAutoCommit(false);
 			
@@ -243,17 +244,22 @@ public class GuardarTablasModel {
 				pstmt.setString(8, "1");
 				
 				pstmt.executeUpdate();
+				
+				System.out.println(tabla[i][2].toString().trim());
 			}
 					
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tablaTicketFuenteSodas_dh store procedure sp_insert_fuente_soda_dh_de_seleccion_de_ticket  "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tablaTicketFuenteSodas_dh store procedure sp_insert_fuente_soda_dh_de_seleccion_de_ticket  "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -416,7 +422,7 @@ public class GuardarTablasModel {
 		return true;
 	}
 	public boolean tabla_model_alimentacion_totales(Object[][] tabla){
-		String query = "exec sp_insert_costos_totales ?,?";
+		String query = "exec sp_insert_totales_de_nomina ?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -425,7 +431,7 @@ public class GuardarTablasModel {
 			
 			for(int i=0; i<tabla.length; i++){
 				pstmt.setString(1, tabla[i][0].toString().trim());
-				pstmt.setFloat(2, Float.parseFloat(tabla[i][1].toString().trim()));
+				pstmt.setFloat(2,(float) (Float.parseFloat(tabla[i][1].toString().trim())==0.0 ? 0.0001 : Float.parseFloat(tabla[i][1].toString().trim())));
 				pstmt.executeUpdate();
 			}
 		
@@ -492,12 +498,14 @@ public class GuardarTablasModel {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tabla_model_lista_raya_generar  procedimiento almacenado sp_insert_lista_raya SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tabla_model_lista_raya_generar  procedimiento almacenado sp_insert_lista_raya SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -506,6 +514,7 @@ public class GuardarTablasModel {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion tabla_model_lista_raya_generar  procedimiento almacenado sp_insert_lista_raya SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

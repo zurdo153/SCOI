@@ -710,7 +710,7 @@ public class Cat_Base_De_Solicitud_De_Empleado extends JFrame {
 						}
 						
 						Obj_Establecimiento comboNombreEsta = new Obj_Establecimiento().buscar_estab(re.getEstablecimiento());
-						txtEstablecimiento.setText(comboNombreEsta.getNombre());
+						txtEstablecimiento.setText(comboNombreEsta.getEstablecimiento());
 						
 						Obj_Puestos comboNombrePues = new Obj_Puestos().buscar_pues(re.getPuesto());
 						txtPuesto.setText(comboNombrePues.getPuesto());

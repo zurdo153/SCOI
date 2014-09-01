@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class PopupMenuFrame extends JFrame {
    private JPopupMenu popup;
 

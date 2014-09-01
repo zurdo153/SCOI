@@ -853,7 +853,7 @@ public class Cat_Reporte_De_Cuadrante_General extends JFrame {
 	
 	
 	
-//	FILTRO POR ENPLEADOS---------------------------------------------------------------------------------------------------------------------
+//	FILTRO POR 	EMPLEADOS---------------------------------------------------------------------------------------------------------------------
 	
 // ARMADO DE QUERY DE SELECCION DE ENPLEADO CON OPERADOR-------------------------------------------------------------------------------------
 	public class Cat_Condiciones_Empleados extends JDialog {

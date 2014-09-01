@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -26,6 +24,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Cat_Checador.Cat_Checador;
+import Cat_Checador.Cat_Reloj_Sincronizado_Servidor;
 import Cat_Checador.Cat_Solicitud_De_Empleados;
 import Cat_Evaluaciones.Cat_Captura_De_Cuadrante_Por_Nivel_Jerarquico;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
@@ -163,6 +162,8 @@ public class Init_Login extends JFrame{
 	
 	JLabel lblLogo = new JLabel(new ImageIcon("imagen/LogPrincipal.png"));
 	
+	
+	
 	// DECLARAMOS EL OBJETO RUNTIME PARA EJECUTAR APLICACIONES DE WINDOWS
 	Runtime R = Runtime.getRuntime();
 	
@@ -239,8 +240,16 @@ public class Init_Login extends JFrame{
 	
 	
 	public void Resolucion(int ancho, int alto){
+		
+		Cat_Reloj_Sincronizado_Servidor reloj =new Cat_Reloj_Sincronizado_Servidor();
+		
 		if(ancho >= 1280){
+			
+			reloj.lblHora.setFont(new java.awt.Font("Algerian",0,70));
+			panel.add(reloj.lblHora).setBounds(1030,230,400,100);
+			
 			panel.add(lblLogo).setBounds(920,0,400,218);
+			
 			int   x = 30  ,y = 40, z = 65;
 			int  zl = 120 ,w = 20;
 					
@@ -336,9 +345,13 @@ public class Init_Login extends JFrame{
 		}
 
 		if(ancho == 1024){
+			
 			ImageIcon tmpIconAux = new ImageIcon("imagen/LogPrincipal.png");
 			panel.add(new JLabel(new ImageIcon(tmpIconAux.getImage().getScaledInstance(150,150, Image.SCALE_DEFAULT)))).setBounds(690,0,400,218);
 					
+			reloj.lblHora.setFont(new java.awt.Font("Algerian",0,60));
+			panel.add(reloj.lblHora).setBounds(813,200,400,100);
+			
 			int   x = 10  ,y = 10, z = 65;
 			int  zl = 120 ,w = 20;
 					
@@ -436,6 +449,9 @@ public class Init_Login extends JFrame{
 			ImageIcon tmpIconAux = new ImageIcon("imagen/LogPrincipal.png");
 			panel.add(new JLabel(new ImageIcon(tmpIconAux.getImage().getScaledInstance(150,150, Image.SCALE_DEFAULT)))).setBounds(500,0,400,218);
 			
+			reloj.lblHora.setFont(new java.awt.Font("Algerian",0,50));
+			panel.add(reloj.lblHora).setBounds(638,190,400,100);
+			
 //			getImage().getScaledInstance(230, 195, Image.SCALE_DEFAULT)
 			int   x = 10  ,y = 10, z = 65;
 			int  zl = 120 ,w = 20;
@@ -526,17 +542,9 @@ public class Init_Login extends JFrame{
 			
 			y=325;
 			panel.add(btnBuscar).setBounds               (x+35  ,y     ,30 ,w);
-
 			cont.add(panel);
 			this.setSize(ancho,alto);
 		}
-		lblLogo.addMouseListener ( new  MouseAdapter ()  
-		{  
-			public void mouseReleased (MouseEvent e)  
-			{  
-	    		new Cat_Checador().setVisible(true);
-	    	}  
-		});
 	}
 	
 	KeyListener enterIn = new KeyListener() {

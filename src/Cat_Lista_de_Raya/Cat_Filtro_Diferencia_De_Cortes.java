@@ -143,7 +143,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		txtNombre_Completo.setText(re.getNombre()+" "+re.getAp_paterno()+" "+re.getAp_materno()+"");	
 		panelEnabledTrue();
 								
-		String[][] Tabla = getMatriz(txtNombre_Completo.getText());
+		String[][] Tabla = getMatriz(txtFolio_Empleado.getText());
 		Object[] fila = new Object[tabla.getColumnCount()];
 		for(int i=0; i<Tabla.length; i++){
 			modelo.addRow(fila); 
@@ -277,7 +277,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 									filas--;
 								}
 										
-								String[][] Tabla = getMatriz(txtNombre_Completo.getText());
+								String[][] Tabla = getMatriz(txtFolio_Empleado.getText());
 								Object[] fila = new Object[tabla.getColumnCount()]; 
 								for(int i=0; i<Tabla.length; i++){
 									modelo.addRow(fila); 
@@ -419,8 +419,8 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	}
 	
 	
-	public String[][] getMatriz(String NombreCompleto){
-		String qry = "exec sp_select_cortes '"+NombreCompleto+"'";
+	public String[][] getMatriz(String folio_empleado){
+		String qry = "exec sp_select_total_de_cortes_folio_empleado '"+folio_empleado+"'";
 		
 		String[][] Matriz = new String[getFilas(qry)][7];
 		Statement s;

@@ -58,7 +58,7 @@ public class Cat_Root_Lista_Raya extends JFrame {
 		this.menu_toolbar.add(btn_refrescar);
 			this.btn_refrescar.setToolTipText("Refrescar");
 		this.menu_toolbar.add(btn_nomina);
-			this.btn_nomina.setToolTipText("Totales de Nómina");
+			this.btn_nomina.setToolTipText("Totales de Cheque");
 		this.menu_toolbar.add(btn_generar);
 			this.btn_generar.setToolTipText("Generar");
 //	se le agrega la etiqueta al boton		

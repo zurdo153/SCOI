@@ -60,7 +60,7 @@ import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
-import Obj_Lista_de_Raya.Obj_Nomina;
+import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
@@ -69,6 +69,9 @@ import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
+import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
+import Obj_Matrices.Obj_Etapas;
+import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 
 
 
@@ -183,15 +186,17 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Establecimiento(Obj_Establecimiento establecimiento){
-		String query = "exec sp_insert_establecimiento ?,?,?";
+		String query = "exec sp_insert_establecimiento ?,?,?,?,? ";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, establecimiento.getNombre().toUpperCase().trim());
+			pstmt.setString(1, establecimiento.getEstablecimiento().toUpperCase().trim());
 			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
-			pstmt.setString(3, (establecimiento.getStatus())?"1":"0");
+			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
+			pstmt.setInt(4, establecimiento.getGrupo_cheque());
+			pstmt.setInt(5, establecimiento.getStatus());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1794,8 +1799,8 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar(Obj_Nomina nomina){
-		String query = "exec sp_insert_nomina ?,?,?,?,?,?,?,?";
+	public boolean guardar_total_cheques(Obj_Totales_De_Cheque nomina){
+		String query = "exec sp_insert_totales_cheques ?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -1808,11 +1813,12 @@ public class GuardarSQL {
 			pstmt.setString(5,nomina.getCheque_nomina());
 			pstmt.setString(6,nomina.getLista_raya());
 			pstmt.setString(7,nomina.getDiferencia());
-			pstmt.setString(8,nomina.getFecha());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Guardar en sp_insert_nomina "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
@@ -3106,15 +3112,15 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Control_Factura_xml ]   SQLException: sp_insert_factura_para_control_xml "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Control_Factura_xml ]   SQLException: sp_insert_factura_para_control_xml "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Control_Factura_xml ]   SQLException: sp_insert_factura_para_control_xml "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -3233,7 +3239,126 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 		return true;
 	}
 	
-	public boolean Guardar_Ticket(Obj_Abono_Clientes movimiento){
+	public boolean Guardar_Etapa(Obj_Etapas etapa){
+		String query = "exec sp_insert_etapa ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, etapa.getFolio());
+			pstmt.setString(2, etapa.getEtapa().toUpperCase().trim());
+			pstmt.setString(3, etapa.getAbreviatura().toUpperCase().trim());
+			pstmt.setInt(4, etapa.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Etapa ] Insert  SQLException: insert_etapa "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Etapa ] Insert  SQLException: insert_etapa "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Etapa ] Insert  SQLException: insert_etapa "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Aspecto_de_la_Etapa(Obj_Aspectos_De_La_Etapa aspecto){
+		String query = "exec sp_insert_aspectos_de_la_etapa ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, aspecto.getFolio());
+			pstmt.setString(2, aspecto.getAspecto().toUpperCase().trim());
+			pstmt.setString(3, aspecto.getAbreviatura().toUpperCase().trim());
+			pstmt.setInt(4, aspecto.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Aspecto_de_la_Etapa ] Insert  SQLException: insert_etapa "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Aspecto_de_la_Etapa ] Insert  SQLException: insert_etapa "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Aspecto_de_la_Etapa ] Insert  SQLException: insert_etapa "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Unidad_de_Inspeccion(Obj_Unidades_de_Inspeccion unidad_de_inspeccion){
+		String query = "exec sp_insert_unidades_de_inspeccion ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, unidad_de_inspeccion.getFolio());
+			pstmt.setString(2, unidad_de_inspeccion.getunidades_de_inspeccion().toUpperCase().trim());
+			pstmt.setString(3, unidad_de_inspeccion.getAbreviatura().toUpperCase().trim());
+			pstmt.setInt(4, unidad_de_inspeccion.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidad_de_Inspeccion ] Insert  SQLException: sp_insert_unidades_de_inspeccion "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidad_de_Inspeccion ] Insert  SQLException: sp_insert_unidades_de_inspeccion "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidad_de_Inspeccion ] Insert  SQLException: sp_insert_unidades_de_inspeccion "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+			
+			
+			
+			public boolean Guardar_Ticket(Obj_Abono_Clientes movimiento){
 		String query = "exec sp_abono_y_ticket_de_clientes ?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -3262,14 +3387,14 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Asignacion_De_Cajero ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Asignacion_De_Cajero ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -3278,7 +3403,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Asignacion_De_Cajero ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_unidades_de_inspeccion "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

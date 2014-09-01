@@ -126,6 +126,9 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Evaluaciones[16], false),
 		new Obj_CheckBoxNode(Sub_Evaluaciones[17], false),
 		new Obj_CheckBoxNode(Sub_Evaluaciones[18], false),
+		new Obj_CheckBoxNode(Sub_Evaluaciones[19], false),
+		new Obj_CheckBoxNode(Sub_Evaluaciones[20], false),
+		new Obj_CheckBoxNode(Sub_Evaluaciones[21], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector EvaluacionesVector = new Obj_NombreVector("Evaluaciones", Evaluaciones);
@@ -170,10 +173,13 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[34], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[35], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[36], false),
+		new Obj_CheckBoxNode(Sub_Lista_de_Raya[37], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Lista_de_RayaVector = new Obj_NombreVector("Lista De Raya", Lista_de_Raya);
 		
+	
+	
 	// MENU PRINCIPAL REPORTES ESPECIALES (7)
 		String[] Sub_Reportes_Especiales = new Obj_SubMenus().Relacion_de_SubMenus(7);
 		Obj_CheckBoxNode Reportes_Especiales[] = {
@@ -181,6 +187,11 @@ public class Cat_Usuarios extends JFrame{
 		};
 		@SuppressWarnings("rawtypes")
 		Vector ReportesEspecialesVector = new Obj_NombreVector("Reportes Especiales", Reportes_Especiales);
+		
+		
+		
+		
+		
 		
 	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ContabilidadVector, EvaluacionesVector, 
 			Lista_de_RayaVector,ReportesEspecialesVector};

@@ -4,7 +4,7 @@ import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
-public class Obj_Nomina {
+public class Obj_Totales_De_Cheque {
 	int numero_listaraya;
 	String establecimiento;
 	String nomina;
@@ -15,7 +15,7 @@ public class Obj_Nomina {
 	String fecha;
 	
 	
-	public Obj_Nomina(){
+	public Obj_Totales_De_Cheque(){
 		this.numero_listaraya=0; 		this.establecimiento="";
 		this.nomina="";		this.pago_linea="";
 		this.cheque_nomina="";		this.lista_raya="";
@@ -85,60 +85,17 @@ public class Obj_Nomina {
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
-
-	public String[][] MatrizNomina(int Folio){
-		return new BuscarSQL().getNomina(Folio);
-	}
 	
 	public int MaxListaRaya(){
 		return new BuscarSQL().MaximoListaRaya();
-	}
-	
-	public String[] getTotales(int Folio){
-		return new BuscarSQL().getTotalesNomina(Folio);
-	}
-	
-	public String[] getCheque1(int Folio){
-		return new BuscarSQL().getTotalesCheque1(Folio);
-	}
-	
-	public String[] getCheque1_ferre(int Folio){
-		return new BuscarSQL().getTotalesCheque1Ferre(Folio);
-	}
-	
-	public String[] getCheque1_izacel(int Folio){
-		return new BuscarSQL().getTotalesCheque1Izacel(Folio);
-	}
-	
-	public String[] getChequeABC(int Folio){
-		return new BuscarSQL().getNominaChequeABC(Folio);
-	}
-	
-	public float getNominaIndividual(String Establecimiento, int lista){
-		return new BuscarSQL().getNominaIndividual(Establecimiento, lista);
-	}
-	
-	public float getBancosIndividual(String Establecimiento, int lista){
-		return new BuscarSQL().getBancosIndividual(Establecimiento, lista);
-	}
-	
-	public float getListaRayaIndividual(String Establecimiento, int lista){
-		return new BuscarSQL().getListaRayaIndividual(Establecimiento, lista);
-	}
-	
-	public float getDiferenciaIndividual(String Establecimiento, int lista){
-		return new BuscarSQL().getDiferenciaIndividual(Establecimiento, lista);
 	}
 	
 	public int returnMaximo(){
 		return new BuscarSQL().getMaximoNomina();
 	}
 	
-	public boolean Guardar(){ return new GuardarSQL().Guardar(this); }
+	public boolean Guardar(){ return new GuardarSQL().guardar_total_cheques(this); }
 	
 	public boolean Actualizar(String Establecimiento, int Folio){ return new ActualizarSQL().Actualizar(this,Establecimiento,Folio); }
 	
-//	public boolean Guardar(){
-//		return new G
-//	}
 }

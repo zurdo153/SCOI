@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DecimalFormat;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -75,6 +74,9 @@ import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
+import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
+import Obj_Matrices.Obj_Etapas;
+import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 
 public class BuscarSQL {
 	
@@ -97,32 +99,6 @@ public class BuscarSQL {
 		return fs_autorizacion;
 	}
 	
-	/*
-	public Obj_Fue_Sodas_DH buscarautoizacionfs() throws SQLException{
-		Obj_Fue_Sodas_DH fs_autorizacion = new Obj_Fue_Sodas_DH();
-		String query = "select autorizar_comparacion_fuente_sodas from tb_autorizaciones ";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			
-			while(rs.next()){
-			fs_autorizacion.setStatus_autorizacion(Boolean.valueOf(rs.getString(1)));
-//				algo =  (Boolean.valueOf(rs.getString(1)));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-//			return false;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-//		return algo;
-		return fs_autorizacion;
-	}
-	*/
-	
 	public Obj_Establecimiento Establecimiento(int folio) throws SQLException{
 		Obj_Establecimiento establecimiento = new Obj_Establecimiento();
 		String query = "select * from tb_establecimiento where folio ="+ folio;
@@ -132,14 +108,17 @@ public class BuscarSQL {
 		    ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				establecimiento.setFolio(rs.getInt("folio"));
-				establecimiento.setNombre(rs.getString("nombre").trim());
+				establecimiento.setEstablecimiento(rs.getString("nombre").trim());
 				establecimiento.setAbreviatura(rs.getString("abreviatura").trim());
-				establecimiento.setStatus((rs.getString("status").equals("1"))?true:false);
+				establecimiento.setSerie(rs.getString("serie").trim());
+				establecimiento.setGrupo_cheque(rs.getInt("grupo_para_cheque"));
+				establecimiento.setStatus(rs.getInt("status"));
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Establecimiento ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -263,27 +242,6 @@ public class BuscarSQL {
 			return null;
 		}
 		return alimentacion;
-	}
-	
-	public Obj_Establecimiento Establecimiento_Nuevo() throws SQLException{
-		Obj_Establecimiento establecimiento = new Obj_Establecimiento();
-		String query = "select max(folio) as 'Maximo' from tb_establecimiento";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				establecimiento.setFolio(rs.getInt("Maximo"));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			 if (stmt != null) { stmt.close(); }
-		}
-		return establecimiento;
 	}
 	
 	public Obj_Sueldos Sueldo(int folio) throws SQLException{
@@ -1242,55 +1200,6 @@ public class BuscarSQL {
 		return empleado;
 	}
 	
-//	public Obj_Alimentacion_Denominacion Denom(String asignacion) throws SQLException{
-//		Obj_Alimentacion_Denominacion denom = new Obj_Alimentacion_Denominacion();
-//		String query = "select * from tb_alimentacion_denominaciones where asignacion ='"+ asignacion+"'";
-//		Statement stmt = null;
-//		try {
-//			stmt = con.conexion().createStatement();
-//			ResultSet rs = stmt.executeQuery(query);
-//			while(rs.next()){
-////				denom.setAsignacion(rs.getString("asignacion").trim());
-////				denom.setFolio_empleado(rs.getInt("folio_empleado"));
-////				denom.setFolio_denominacion(rs.getInt("folio_denominacion"));
-////				denom.setDenominacion(rs.getString("denominacion").trim());
-////				denom.setValor(rs.getFloat("valor"));
-////				denom.setCantidad(rs.getFloat("cantidad"));
-////				denom.setFecha(rs.getString("fecha").trim());
-//			}
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//		finally{
-//			if(stmt!=null){stmt.close();}
-//		}
-//		return denom;
-//	}
-	
-//	public Obj_Revision_De_Lista_Raya ListaR(int numero_lista) throws SQLException{
-//		Obj_Revision_De_Lista_Raya LR = new Obj_Revision_De_Lista_Raya();
-//		String query = "select * from tb_lista_raya where numero_lista ="+ numero_lista;
-//		Statement stmt = null;
-//		try {
-//			stmt = con.conexion().createStatement();
-//			ResultSet rs = stmt.executeQuery(query);
-//			while(rs.next()){
-//				LR.setNumero_lista(rs.getInt("numero_lista"));
-//				
-//			}
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//		finally{
-//			if(stmt!=null){stmt.close();}
-//		}
-//		return LR;
-//	}
-	
 	public Obj_Prestamos Prestamo(int folio) throws SQLException{
 		Obj_Prestamos pre = new Obj_Prestamos();
 		String query = "select * from tb_prestamo where folio_empleado ="+ folio;
@@ -1342,27 +1251,6 @@ public class BuscarSQL {
 		}
 		return empleado;
 	}
-	
-//	public Obj_Alimentacion_Cortes Corte_Nuevo() throws SQLException{
-//		Obj_Alimentacion_Cortes corte = new Obj_Alimentacion_Cortes();
-//		String query = "select max(folio_corte) as 'Maximo' from tb_alimentacion_cortes";
-//		Statement stmt = null;
-//		try {
-//			stmt = con.conexion().createStatement();
-//			ResultSet rs = stmt.executeQuery(query);
-//			while(rs.next()){
-//				corte.setFolio_corte(rs.getInt("Maximo"));
-//			}
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//		finally{
-//			if(stmt!=null){stmt.close();}
-//		}
-//		return corte;
-//	}
 	
 	public Obj_Usuario Usuario(int folio) throws SQLException{
 		Obj_Usuario usuario = new Obj_Usuario();
@@ -1755,19 +1643,22 @@ public class BuscarSQL {
 			
 	}
 	
-	public Obj_Establecimiento Establ_buscar(String nombre) throws SQLException{
+	public Obj_Establecimiento buscar_nombre_establecimiento(String nombre) throws SQLException{
 		Obj_Establecimiento estab = new Obj_Establecimiento();
-		String query = "select folio from tb_establecimiento where nombre='"+nombre+"'";
+		String query = "if(select top 1 folio from tb_establecimiento where nombre='"+nombre+"' )is null select 0 as folio,0 as nombre"+
+		               "     else (select top 1 folio,nombre from tb_establecimiento where nombre='"+nombre+"')";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
+				estab.setEstablecimiento(rs.getString("nombre"));
 				estab.setFolio(rs.getInt("folio"));
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_nombre_establecimiento SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -1775,6 +1666,58 @@ public class BuscarSQL {
 		}
 		return estab;
 	}
+	
+	public Obj_Establecimiento buscar_existe_abreviatura_establecimiento(String abreviatura) throws SQLException{
+		Obj_Establecimiento Abreviatura = new Obj_Establecimiento();
+		String query = "if(select top 1 folio from tb_establecimiento where abreviatura='"+abreviatura+"' )is null select 0 as folio,0 as nombre,0 as abreviatura"+
+	               "     else (select top 1 folio,nombre,abreviatura from tb_establecimiento where abreviatura='"+abreviatura+"')";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Abreviatura.setFolio(rs.getInt("folio"));
+				Abreviatura.setEstablecimiento(rs.getString("nombre"));
+				Abreviatura.setAbreviatura(rs.getString("abreviatura"));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_existe_abreviatura_establecimiento SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return Abreviatura;
+	}
+	
+	public Obj_Establecimiento buscar_existe_serie_establecimiento(String serie) throws SQLException{
+		Obj_Establecimiento Serie = new Obj_Establecimiento();
+		String query = "if(select top 1 folio from tb_establecimiento where serie='"+serie+"' )is null select 0 as folio,0 as nombre,0 as abreviatura,0 as serie"+
+	               "     else (select top 1 folio,nombre,abreviatura,serie from tb_establecimiento where serie='"+serie+"')";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Serie.setFolio(rs.getInt("folio"));
+				Serie.setEstablecimiento(rs.getString("nombre"));
+				Serie.setAbreviatura(rs.getString("abreviatura"));
+				Serie.setSerie(rs.getString("serie"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_existe_serie_establecimiento SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return Serie;
+	}
+	
+	
 	
 	public Obj_Horarios Horario_buscar(String nombre) throws SQLException{
 		Obj_Horarios horario = new Obj_Horarios();
@@ -1862,28 +1805,6 @@ public class BuscarSQL {
 		return divisas;
 	}
 	
-		
-//	public Obj_Denominaciones Denominaciones_buscar(String nombre) throws SQLException{
-//		Obj_Denominaciones denominaciones = new Obj_Denominaciones();
-//		String query = "select folio from tb_denominaciones where nombre='"+nombre+"'";
-//		Statement stmt = null;
-//		try {
-//			stmt = con.conexion().createStatement();
-//			ResultSet rs = stmt.executeQuery(query);
-//			while(rs.next()){
-//				denominaciones.setFolio(rs.getInt("folio"));
-//			}
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//		finally{
-//			if(stmt!=null){stmt.close();}
-//		}
-//		return denominaciones;
-//	}
-	
 	public Obj_Horario_Empleado Turn_buscar(String nombre) throws SQLException{
 		Obj_Horario_Empleado turno = new Obj_Horario_Empleado();
 		String query = "exec sp_select_horario_desc_dobla '"+nombre+"'";
@@ -1956,7 +1877,9 @@ public class BuscarSQL {
 		return turno3;
 	}
 	
-	public Obj_Establecimiento Establ_buscar_folio(int folio) throws SQLException{
+
+	
+	public Obj_Establecimiento Establ_buscar_nombre(int folio) throws SQLException{
 		Obj_Establecimiento estab = new Obj_Establecimiento();
 		String query = "select nombre from tb_establecimiento where folio="+folio;
 		Statement stmt = null;
@@ -1964,11 +1887,34 @@ public class BuscarSQL {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				estab.setNombre(rs.getString("nombre"));
+				estab.setEstablecimiento(rs.getString("nombre"));
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return estab;
+	}
+	
+	public Obj_Establecimiento Establecimiento_buscar_folio_por_nombre(String nombre) throws SQLException{
+		Obj_Establecimiento estab = new Obj_Establecimiento();
+		String query = "select folio from tb_establecimiento where nombre='"+nombre+"'";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				estab.setFolio(rs.getInt("folio"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Establecimiento_buscar_folio_por_nombre en select folio from tb_establecimiento where nombre= SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			return null;
 		}
 		finally{
@@ -2102,28 +2048,6 @@ public class BuscarSQL {
 		}
 		return turno3;
 	}
-	
-//	public Obj_Revision_De_Lista_Raya Lista_buscar_folio(int folio) throws SQLException{
-//		Obj_Revision_De_Lista_Raya lista = new Obj_Revision_De_Lista_Raya();
-//		String query = "select folio from tb_pre_listaraya where folio_empleado = "+folio+" and status = 1;";
-//		Statement stmt = null;
-//		try {
-//			stmt = con.conexion().createStatement();
-//		    ResultSet rs = stmt.executeQuery(query);
-//			while(rs.next()){
-//				lista.setFolio(rs.getInt("folio"));
-//			}
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			System.err.println("Error");
-//			return null;
-//		}
-//		finally{
-//			 if (stmt != null) { stmt.close(); }
-//		}
-//		return lista;
-//	}
 	
 	
 	public Obj_Configuracion_Del_Sistema Configuracion_sistema() throws SQLException{
@@ -2300,50 +2224,6 @@ public class BuscarSQL {
 		return filas;
 	}
 	
-	public String[][] getNomina(int Folio){
-		String datos = "exec sp_select_nomina "+Folio;
-		String[][] Matriz = new String[getFilas(datos)+1][6];
-		Statement s;
-		ResultSet rs;
-		try {		
-			DecimalFormat format = new DecimalFormat("#0.00");
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			int i=0;
-			
-			while(rs.next()){
-				if(i==0){
-					Matriz[i][0] = "Establecimiento";
-					Matriz[i][1] = "Nomina";
-					Matriz[i][2] = "Pago en Linea";
-					Matriz[i][3] = "Total Cheque Nomina";
-					Matriz[i][4] = "Lista de raya";
-					Matriz[i][5] = "Diferencia";
-					Matriz[i+1][0] = "   "+rs.getString(1);
-					Matriz[i+1][1] = format.format(rs.getFloat(2))+"";
-					Matriz[i+1][2] = format.format(rs.getFloat(3))+"";
-					Matriz[i+1][3] = format.format(rs.getFloat(4))+"";
-					Matriz[i+1][4] = format.format(rs.getFloat(5))+"";
-					Matriz[i+1][5] = format.format(rs.getFloat(6))+"";
-					i+=2;
-				}else{
-					Matriz[i][0] = "   "+rs.getString(1);
-					Matriz[i][1] = format.format(rs.getFloat(2))+"";
-					Matriz[i][2] = format.format(rs.getFloat(3))+"";
-					Matriz[i][3] = format.format(rs.getFloat(4))+"";
-					Matriz[i][4] = format.format(rs.getFloat(5))+"";
-					Matriz[i][5] = format.format(rs.getFloat(6))+"";
-					i++;
-				}
-				
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getNomina store procedure sp_select_nomina: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return Matriz; 
-	}
-	
 	public int MaximoListaRaya(){
 		String datos = "select	max(numero_lista)+1 from tb_lista_raya";
 		int valor = 0;
@@ -2382,214 +2262,9 @@ public class BuscarSQL {
 	}
 	
 	
-	public String[] getTotalesNomina(int Folio){
-		
-		String datos = "exec sp_total_nomina "+Folio;
-		String[] Matriz = new String[6];
-		Statement s;
-		ResultSet rs;
-		try {		
-			DecimalFormat format = new DecimalFormat("#0.00");
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			while(rs.next()){
-				Matriz[0] = "   "+rs.getString(1);
-				Matriz[1] = rs.getDouble(2)+"";
-				Matriz[2] = format.format(rs.getFloat(3))+"";
-				float totalChecke = rs.getFloat(4);
-				float listaRaya = rs.getFloat(5);
-				Matriz[3] = format.format(totalChecke)+"";
-				Matriz[4] = format.format(listaRaya)+"";
-				Matriz[5] = format.format(listaRaya-totalChecke)+"";
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getTotalesNomina store procedure sp_total_nomina: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return Matriz; 
-	}
-	
-	public String[] getTotalesCheque1(int Folio){
-		String datos = "exec sp_total_cheque_1_super "+Folio;
-		String[] Matriz = new String[6];
-		Statement s;
-		ResultSet rs;
-		try {		
-			DecimalFormat format = new DecimalFormat("#0.00");
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			while(rs.next()){
-				Matriz[0] = "   "+rs.getString(1);
-				Matriz[1] = format.format(rs.getFloat(2))+"";
-				Matriz[2] = format.format(rs.getFloat(3))+"";
-				Matriz[3] = format.format(rs.getFloat(4))+"";
-				Matriz[4] = "Cheque (2) super";
-				Matriz[5] = format.format(rs.getFloat(6))+"";
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getTotalesCheque1 store procedure sp_total_cheque_1_super: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return Matriz; 
-	}
-	
-	public String[] getTotalesCheque1Ferre(int Folio){
-		String datos = "exec sp_total_cheque_1_ferreteria "+Folio;
-		String[] Matriz = new String[6];
-		Statement s;
-		ResultSet rs;
-		try {		
-			DecimalFormat format = new DecimalFormat("#0.00");
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			while(rs.next()){
-				Matriz[0] = "   "+rs.getString(1);
-				Matriz[1] = format.format(rs.getFloat(2))+"";
-				Matriz[2] = format.format(rs.getFloat(3))+"";
-				Matriz[3] = format.format(rs.getFloat(4))+"";
-				Matriz[4] = "Cheque (2) ferre refa";
-				Matriz[5] = format.format(rs.getFloat(6))+"";
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getTotalesCheque1Ferre store procedure sp_total_cheque_1_ferreteria: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return Matriz; 
-	}
-	
-	public String[] getTotalesCheque1Izacel(int Folio){
-		String datos = "exec sp_total_cheque_1_izacel "+Folio;
-		String[] Matriz = new String[6];
-		Statement s;
-		ResultSet rs;
-		try {		
-			DecimalFormat format = new DecimalFormat("#0.00");
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			while(rs.next()){
-				Matriz[0] = "   "+rs.getString(1);
-				Matriz[1] = format.format(rs.getFloat(2))+"";
-				Matriz[2] = format.format(rs.getFloat(3))+"";
-				Matriz[3] = format.format(rs.getFloat(4))+"";
-				Matriz[4] = "";
-				Matriz[5] = "";
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getTotalesCheque1Izacel store procedure sp_total_cheque_1_izacel: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return Matriz; 
-	}
-	
-	public String[] getNominaChequeABC(int Folio){
-		String sp_total_cheques = "exec sp_total_cheques "+Folio;
-		String[] Matriz = new String[6];
-		Statement s;
-		ResultSet rs;
-		try {		
-			DecimalFormat format = new DecimalFormat("#0.00");
-			s = con.conexion().createStatement();
-			
-			rs = s.executeQuery(sp_total_cheques);
-			
-			while(rs.next()){
-				
-				Matriz[0] = "   "+rs.getString(1);
-				Matriz[1] = format.format(rs.getFloat(2))+"";
-				Matriz[2] = "   "+rs.getString(3);
-				Matriz[3] = format.format(rs.getFloat(4))+"";
-				Matriz[4] = "   "+rs.getString(5);
-				Matriz[5] = format.format(rs.getFloat(6))+"";
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getNominaChequeABC store procedure sp_total_cheques: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return Matriz; 
-	}
-	
-	public float getNominaIndividual(String Establecimiento, int lista){
-		String sp_total_cheques = "exec sp_return_nomina_value '"+Establecimiento+"',"+lista+";";
-		float resultado = 0;
-		Statement s;
-		ResultSet rs;
-		try {		
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(sp_total_cheques);
-			
-			while(rs.next()){
-				resultado = rs.getFloat(1);
-				
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getNominaIndividual store procedure sp_return_nomina_value: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return resultado; 
-	}
-	
-	public float getBancosIndividual(String Establecimiento, int lista){
-		String sp_total_cheques = "exec sp_return_bancos_value '"+Establecimiento+"',"+lista+";";
-		float resultado = 0;
-		Statement s;
-		ResultSet rs;
-		try {		
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(sp_total_cheques);
-			
-			while(rs.next()){
-				resultado = rs.getFloat(1);
-				
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getBancosIndividual store procedure sp_return_bancos_value: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return resultado; 
-	}
-	
-	public float getListaRayaIndividual(String Establecimiento, int lista){
-		String sp_total_cheques = "exec sp_return_lista_raya_value '"+Establecimiento+"',"+lista+";";
-		float resultado = 0;
-		Statement s;
-		ResultSet rs;
-		try {		
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(sp_total_cheques);
-			
-			while(rs.next()){
-				resultado = rs.getFloat(1);
-				
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getListaRayaIndividual store procedure sp_return_lista_raya_value: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return resultado; 
-	}
-	
-	public float getDiferenciaIndividual(String Establecimiento, int lista){
-		String sp_total_cheques = "exec sp_return_diferencia_value "+lista+",'"+Establecimiento+"';";
-		float resultado = 0;
-		Statement s;
-		ResultSet rs;
-		try {		
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(sp_total_cheques);
-			
-			while(rs.next()){
-				resultado = rs.getFloat(1);
-				
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getDiferenciaIndividual store procedure sp_return_diferencia_value: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-		return resultado; 
-	}
-	
 	public int getMaximoNomina(){
-		String sp_total_cheques = "exec sp_maximo_nomina";
+		String sp_total_cheques = "select  case when max(folio_lista) is null then 0  else max(folio_lista)	end  from  tb_totales_cheques_lista_raya";
+
 		int resultado = 0;
 		Statement s;
 		ResultSet rs;
@@ -2603,7 +2278,7 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getMaximoNomina store procedure sp_maximo_nomina: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getMaximoNomina \n en: select  case when max(folio_lista) is null then 0  else max(folio_lista)	end  from tb_nomina "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return resultado; 
 	}
@@ -3360,6 +3035,8 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en Buscarsql  en la funcion getTablaTicketFuenteSodas_dh store procedure sp_acumulado_ticket_fuente_de_sodas_por_empleado_dh  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 		}
 		
 		return Matriz;
@@ -5473,6 +5150,69 @@ public class BuscarSQL {
 		return existe;
 	}
 	
+	public Obj_Etapas ExisteEtapa(int folio){
+		Obj_Etapas etapas = new Obj_Etapas();
+		String query = "select * from tb_etapas where folio_etapa ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				etapas.setFolio(rs.getInt("folio_etapa"));
+				etapas.setEtapa(rs.getString("etapa").trim());
+				etapas.setAbreviatura(rs.getString("abreviatura").trim());
+				etapas.setStatus(rs.getInt("status"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion ExisteEtapa en select * from tb_etapas where folio ="+ folio+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return etapas;
+	}
+	
+	public Obj_Aspectos_De_La_Etapa ExisteAspecto(int folio){
+		Obj_Aspectos_De_La_Etapa aspecto = new Obj_Aspectos_De_La_Etapa();
+		String query = "select * from tb_aspectos_de_la_etapa where folio_aspecto ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				aspecto.setFolio(rs.getInt("folio_aspecto"));
+				aspecto.setAspecto(rs.getString("aspecto_de_la_etapa").trim());
+				aspecto.setAbreviatura(rs.getString("abreviatura").trim());
+				aspecto.setStatus(rs.getInt("status"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion ExisteEtapa en select * from tb_aspectos_de_la_etapa where folio_aspecto ="+ folio+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return aspecto;
+	}
+	
+	public Obj_Unidades_de_Inspeccion ExisteUnidaddeInspeccion(int folio){
+		Obj_Unidades_de_Inspeccion unidad = new Obj_Unidades_de_Inspeccion();
+		String query = "select * from tb_unidades_de_inspeccion where folio_unidad_de_inspeccion ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				unidad.setFolio(rs.getInt("folio_unidad_de_inspeccion"));
+				unidad.setunidades_de_inspeccion(rs.getString("unidad_de_inspeccion").trim());
+				unidad.setAbreviatura(rs.getString("abreviatura").trim());
+				unidad.setStatus(rs.getInt("status"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion ExisteUnidaddeInspeccion en select * from tb_unidades_de_inspeccion where folio_unidad_de_inspeccion ="+ folio+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return unidad;
+	}
+
 	public String nuevo_ticket(String cavecera){
 //		cambiar sp
 //		sp_select_nuevo_ticket

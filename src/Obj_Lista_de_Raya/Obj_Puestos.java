@@ -91,6 +91,7 @@ public class Obj_Puestos {
 	
 	public boolean actualizar(int folio){ return new ActualizarSQL().Puesto(this,folio); }
 	
+	
 	public Obj_Puestos buscar_pues(String nombre){
 		try{
 			return new BuscarSQL().Pues_buscar(nombre); 

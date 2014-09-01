@@ -303,6 +303,7 @@ public class Cat_Departamento extends JFrame{
 			}
 		}
 	};
+
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {

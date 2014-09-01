@@ -2,6 +2,7 @@ package Biblioteca;
 
 import java.lang.*; import java.awt.*; import java.awt.event.*;
 
+@SuppressWarnings("unused")
 public class prog18 {
 
 //declaracion, creacion e inicializacion de componentes, objetos y variables

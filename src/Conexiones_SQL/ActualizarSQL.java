@@ -47,7 +47,7 @@ import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
-import Obj_Lista_de_Raya.Obj_Nomina;
+import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
@@ -56,6 +56,9 @@ import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
+import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
+import Obj_Matrices.Obj_Etapas;
+import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 
 public class ActualizarSQL {
 	String Qbitacora ="exec sp_insert_empleado_en_bitacora ?,?,?,?,?";
@@ -212,15 +215,17 @@ public class ActualizarSQL {
 	}
 	
 	public boolean Establecimiento(Obj_Establecimiento establecimiento, int folio){
-		String query = "update tb_establecimiento set nombre=?, abreviatura=?, status=? where folio=" + folio;
+		String query = "update tb_establecimiento set nombre=?, abreviatura=?,serie=?, grupo_para_cheque=?, status=? where folio=" + folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, establecimiento.getNombre().toUpperCase().trim());
+			pstmt.setString(1, establecimiento.getEstablecimiento().toUpperCase().trim());
 			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
-			pstmt.setString(3, (establecimiento.getStatus())?"1":"0");
+			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
+			pstmt.setInt(4, establecimiento.getGrupo_cheque());
+			pstmt.setInt(5, establecimiento.getStatus());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -1298,8 +1303,8 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Actualizar(Obj_Nomina nomina, String Establecimiento, int Folio){
-		String update = "update tb_nomina set nomina = ?, pago_linea = ?, cheque_nomina = ?, lista_raya = ?, diferecia = ? where establecimiento = '"+Establecimiento+"' and folio_lista ="+Folio;
+	public boolean Actualizar(Obj_Totales_De_Cheque nomina, String Establecimiento, int Folio){
+		String update = "update tb_totales_cheques_lista_raya set nomina = ?, pago_linea = ?, cheque_nomina = ?, lista_raya = ?, diferecia = ? where establecimiento = '"+Establecimiento+"' and folio_lista ="+Folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -2588,6 +2593,117 @@ public class ActualizarSQL {
 				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ marcar_c_recibido_factura ] update  SQLException: tb_control_de_facturas_y_xml "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 			}
+		return true;
+	}
+	
+	public boolean Etapas(Obj_Etapas etapas, int folio){
+		String query = "update tb_etapas set etapa=?, abreviatura=?, status=?,ultima_modificacion=getdate() where folio_etapa=" + folio;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, etapas.getEtapa().toUpperCase().trim());
+			pstmt.setString(2, etapas.getAbreviatura().toUpperCase().trim());
+			pstmt.setInt(3, etapas.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ etapas ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ etapas ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Aspectos_de_la_Etapa(Obj_Aspectos_De_La_Etapa aspecto, int folio){
+		String query = "update tb_aspectos_de_la_etapa set aspecto_de_la_etapa=?, abreviatura=?, status=?,ultima_modificacion=getdate() where folio_aspecto=" + folio;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, aspecto.getAspecto().toUpperCase().trim());
+			pstmt.setString(2, aspecto.getAbreviatura().toUpperCase().trim());
+			pstmt.setInt(3, aspecto.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Aspectos_de_la_Etapa ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Aspectos_de_la_Etapa ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Unidades_de_Inspeccion(Obj_Unidades_de_Inspeccion unidades_de_inspeccion, int folio){
+		String query = "update tb_unidades_de_inspeccion set unidad_de_inspeccion=?, abreviatura=?, status=?,ultima_modificacion=getdate() where folio_unidad_de_inspeccion=" + folio;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, unidades_de_inspeccion.getunidades_de_inspeccion().toUpperCase().trim());
+			pstmt.setString(2, unidades_de_inspeccion.getAbreviatura().toUpperCase().trim());
+			pstmt.setInt(3, unidades_de_inspeccion.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Unidades_de_Inspeccion ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Unidades_de_Inspeccion ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
 		return true;
 	}
 }
