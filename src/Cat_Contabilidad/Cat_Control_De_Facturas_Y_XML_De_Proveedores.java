@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -45,6 +46,7 @@ import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
+import Cat_Reportes.Cat_Reportes_De_Control_Facturas_Y_XML_Recibidos;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Contabilidad.Obj_Proveedores;
@@ -112,12 +114,19 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	
 	JCheckBox chStatus = new JCheckBox("Status");
 	
-	JButton btnCambProveedorr = new JButton("Cambiar de Proveedor ");
-	JButton btnDeshacer = new JButton("Deshacer");
-	JButton btnGuardar = new JButton("Guardar");
-	JButton btnEditar = new JButton("Editar");
-	JButton btnNuevo = new JButton("Nuevo");
-	JButton btnRecibido = new JButton("Recibido");
+	JButton btnCambProveedorr = new JButton("Cambiar de Proveedor ",new ImageIcon("imagen/buscar.png"));
+	JButton btnReportes = new JButton("Reportes de Captura",new ImageIcon("imagen/orange-folder-saved-search-icone-8197-16.png"));
+	
+	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
+	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
+	JButton btnRecibido = new JButton("Recibido",new ImageIcon("imagen/Aplicar.png"));
+	
+	
+//	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
+
+	
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	String folio_factura_editada=""; 
@@ -128,7 +137,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Control_De_Facturas_Y_XML_De_Proveedores(String folio, String proveedor){
 		this.setTitle("Control De Facturas y XML De Proveedores");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Toolbox.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/control_facturas_y_xml.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Control De Facturas y XML De Proveedores"));
 		
@@ -138,11 +147,8 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		txtProveedorFiltro.setToolTipText("Filtro Por Proveedor");
 		panel.add(txtFoliofacturaFiltro).setBounds(20,153,50,20);
 		panel.add(txtProveedorFiltro).setBounds(70,153,205,20);
+		
 		panel.add(getPanelTabla()).setBounds(20,175,720,520);
-				
-//		panel.add(chStatus).setBounds(360,150,60,20);
-//		chStatus.setEnabled(true);
-//		
 		panel.add(new JLabel("Cod. Proveedor:")).setBounds(20,30,100,20);
 		panel.add(txtFolioProveedor).setBounds(105,30,270,20);
 		txtFolioProveedor.setEditable(false);
@@ -161,16 +167,16 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		panel.add(txtFecha).setBounds(470,60,270,20);
 		txtFecha.setEnabled(false);
 		
-		panel.add(btnCambProveedorr).setBounds(105,90,170,20);
+		panel.add(btnCambProveedorr).setBounds(20,90,170,20);
+		panel.add(btnReportes).setBounds(205,90,170,20);
 		
-		panel.add(btnEditar).setBounds(300,90,80,20);
+		panel.add(btnNuevo).setBounds(470,90,130,20);
+		panel.add(btnEditar).setBounds(610,90,130,20);
 		
-		panel.add(btnNuevo).setBounds(470,90,80,20);
-		panel.add(btnDeshacer).setBounds(565,90,80,20);
-		panel.add(btnGuardar).setBounds(660,90,80,20);
+		panel.add(btnDeshacer).setBounds(470,120,130,20);
+		panel.add(btnGuardar).setBounds(610,120,130,20);
 		
-		panel.add(btnRecibido).setBounds(640,153,80,20);
-		
+		panel.add(btnRecibido).setBounds(610,150,130,20);
 
 		btnEditar.setEnabled(false);
 		btnGuardar.setEnabled(false);
@@ -188,6 +194,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		btnNuevo.addActionListener(nuevo);
 		btnEditar.addActionListener(editar);
 		btnRecibido.addActionListener(OpAgregar);
+		btnReportes.addActionListener(Reportes);
 
 //     autofiltros de la tabla
 		txtFoliofacturaFiltro.addKeyListener(opFiltroFolio);
@@ -217,30 +224,66 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
           	    }
         });
         
-        ///guardar con control+G
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
-             getRootPane().getActionMap().put("guardar", new AbstractAction(){
-                 public void actionPerformed(ActionEvent e)
-                 {                 	    btnGuardar.doClick();
-               	    }
-             });
-             
-       ///recibido de factura  con control+R
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_R,Event.CTRL_MASK),"recibido");
-             getRootPane().getActionMap().put("recibido", new AbstractAction(){
+        		///recibido de factura  con control+R
+            	getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_R,Event.CTRL_MASK),"recibido");
+                getRootPane().getActionMap().put("recibido", new AbstractAction(){
                  public void actionPerformed(ActionEvent e)
                   {                 	    btnRecibido.doClick();
                   	    }
                   });
              
-             ///deshacer con escape
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                     KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+             	///deshacer con escape
+                getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
                   getRootPane().getActionMap().put("escape", new AbstractAction(){
+                 public void actionPerformed(ActionEvent e)
+                 {                 	    btnDeshacer.doClick();
+               	    }
+             });
+             	///guardar con control+G
+                 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+                   getRootPane().getActionMap().put("guardar", new AbstractAction(){
                       public void actionPerformed(ActionEvent e)
-                      {                 	    btnDeshacer.doClick();
+                      {                 	    btnGuardar.doClick();
                     	    }
-                  });
+                 });
+               ///guardar con F12
+	              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+	                  getRootPane().getActionMap().put("guardar", new AbstractAction(){
+	                      public void actionPerformed(ActionEvent e)
+	                      {                 	    btnGuardar.doClick();
+		                    	    }
+	                 });
+                  
+	            ///nuevo con F9
+                 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
+                  getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+                      public void actionPerformed(ActionEvent e)
+                      {                 	    btnNuevo.doClick();
+	                    	    }
+                 });
+                  
+                ///editar con F10
+	              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
+	                  getRootPane().getActionMap().put("editar", new AbstractAction(){
+	                      public void actionPerformed(ActionEvent e)
+	                      {                 	    btnEditar.doClick();
+		                    	    }
+	                 });
+                ///editar con Ctrl+E
+	              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,Event.CTRL_MASK), "editar");
+	                  getRootPane().getActionMap().put("editar", new AbstractAction(){
+	                      public void actionPerformed(ActionEvent e)
+	                      {                 	    btnEditar.doClick();
+		                    	    }
+	                 });
+                  
+              ///nuevo con control+N
+                 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
+                   getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+                           public void actionPerformed(ActionEvent e)
+                       {                 	    btnNuevo.doClick();
+	                    	    }
+                 });
              
         
         this.cont.add(panel);
@@ -610,6 +653,14 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		}
 	};
 	
+	ActionListener Reportes = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+		    btnDeshacer.doClick();
+			new Cat_Reportes_De_Control_Facturas_Y_XML_Recibidos().setVisible(true);
+		}
+	};
+	
+	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 			    txtFolioFactura.setText("");
@@ -688,10 +739,10 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		}
 	};
 
-//	public static void main(String args[]){
-//		try{
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//			new Cat_Control_De_Facturas_Y_XML_De_Proveedores("1253","ELDORADO").setVisible(true);
-//		}catch(Exception e){	}
-//	}
+	public static void main(String args[]){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Control_De_Facturas_Y_XML_De_Proveedores("1253","ELDORADO").setVisible(true);
+		}catch(Exception e){	}
+	}
 }

@@ -1757,7 +1757,7 @@ public class Cat_Empleados extends JFrame{
 	
 	ActionListener Reporte_De_Cumpleanios_Del_Mes = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				new Cat_Cumpleanios_Del_Mes();
+				new Cat_Cumpleanios_Del_Mes().setVisible(true);
 		}
 	};
 	

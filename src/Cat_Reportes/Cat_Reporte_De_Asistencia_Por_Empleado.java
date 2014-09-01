@@ -116,7 +116,6 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 		String fechafinalNull = c_final.getDate()+"";
 	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";
 		if(fechafinalNull.equals("null"))error+= "Fecha Final\n";
-		
 		return error;
 	}
 	

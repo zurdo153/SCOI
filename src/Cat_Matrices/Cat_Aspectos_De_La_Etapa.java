@@ -205,7 +205,7 @@ public class Cat_Aspectos_De_La_Etapa extends JFrame{
 				                    	    }
 			                 });
 			                  
-		      ///nuevo con F10
+		      ///editar con F10
 				              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
 				                  getRootPane().getActionMap().put("editar", new AbstractAction(){
 				                      public void actionPerformed(ActionEvent e)
