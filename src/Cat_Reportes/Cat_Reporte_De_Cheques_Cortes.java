@@ -21,15 +21,15 @@ public class Cat_Reporte_De_Cheques_Cortes extends JFrame {
 	public Cat_Reporte_De_Cheques_Cortes(String folio_corte) {
 			
 //-----------------------------		crear sp_select_reporte_cheques_de_cortes
-			String query_efectivo = "exec sp_select_reporte_deposito_de_cortes '"+folio_corte+"';";
+			String query_efectivo = "exec sp_select_reporte_cheques_de_cortes '"+folio_corte+"';";
 			Statement stmt_efectivo = null;
 			
 		try {	
 //			efectivo
 			stmt_efectivo =  new Connexion().conexion().createStatement();
 		    ResultSet rs_efectivo = stmt_efectivo.executeQuery(query_efectivo);
-//-------------------------------------------------------------------------------------crear reporte (Obj_Reporte_De_Cheques_Para_Cortes.jrxml)
-			JasperReport report_efectivo = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Depositos_Para_Cortes.jrxml");
+//-------------------------------------------------------------------------------------crear reporte (Obj_Reporte_De_Para_Cortes.jrxml)
+			JasperReport report_efectivo = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Cheques_Para_Cortes.jrxml");
 			JRResultSetDataSource resultSetDataSource_efectivo = new JRResultSetDataSource(rs_efectivo);
 			JasperPrint print_efectivo = JasperFillManager.fillReport(report_efectivo, new HashMap(), resultSetDataSource_efectivo);
 			JasperViewer.viewReport(print_efectivo, false);

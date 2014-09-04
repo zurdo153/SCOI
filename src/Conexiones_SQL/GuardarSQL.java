@@ -882,75 +882,33 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte, Object[][] tb_asignaciones,Object[][] tb_vauchers,Object[][] tb_totales_por_fecha){
-		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
+	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte, Object[][] tb_asignaciones,Object[][] tb_vauchers,Object[][] tb_totales_por_fecha,  Object[] lista_de_asignaciones_en_uso){
 		String query_asignacion = 		 "exec sp_insert_asignacion_para_cortes  ?,?,?,?,?,?,?,?,?";		// <-9		11 ->  tb_tabla_de_asignaciones_para_cortes 
 		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
+		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
 		
 		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt_corte = null;
+		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();
+		
 		PreparedStatement pstmt_asignacion = null;
 		PreparedStatement pstmt_vauchers = null;
 		PreparedStatement pstmt_total_por_fecha = null;
+		PreparedStatement pstmt_corte = null;
+		
+		PreparedStatement pstmt_ta_rluz = null;
+		
 		try {
 			
 			con.setAutoCommit(false);
-			pstmt_corte 		  = con.prepareStatement(query_corte);
 			pstmt_asignacion 	  = con.prepareStatement(query_asignacion);
 			pstmt_vauchers		  = con.prepareStatement(query_vauchers);
 			pstmt_total_por_fecha = con.prepareStatement(query_totales_por_fecha);
+			pstmt_corte 		  = con.prepareStatement(query_corte);
 			
-//			this.folio_establecimiento_de_corte=0;  
-//			this.fecha_de_corte="";         
-//			this.status=false;
-				
 			int i=1;
 			
-//			System.out.println("folio corte:"+corte.getFolio_corte());
-//			System.out.println("usuario: "+corte.getUsuario());
-//			System.out.println("folio empleado: "+corte.getFolio_empleado());
-//			System.out.println("estab "+corte.getFolio_establecimiento_de_corte());
-//			System.out.println("corte sist "+corte.getCorte_sistema());
-//			System.out.println("ta "+corte.getTiempo_aire());
-//			System.out.println("luz "+corte.getRecibo_luz());
-//			System.out.println("deposito "+corte.getDeposito());
-//			System.out.println("efectivo "+corte.getEfectivo());
-//			System.out.println("cheques "+ corte.getCheques());
-//			System.out.println("vaucher "+corte.getTotal_de_vauchers());
-//			System.out.println("dif corte "+corte.getDiferencia_corte());
-//			System.out.println("comentario "+ corte.getComentario().toUpperCase());
-			
-			System.out.println("");
-			
-			pstmt_corte.setString(i, corte.getFolio_corte().toUpperCase().trim());
-			pstmt_corte.setInt(i+=1, corte.getUsuario());
-			pstmt_corte.setInt(i+=1, corte.getFolio_empleado());
-			pstmt_corte.setString(i+=1, corte.getEstablecimiento_de_corte());
-			pstmt_corte.setFloat(i+=1, corte.getCorte_sistema());
-			pstmt_corte.setFloat(i+=1, corte.getTiempo_aire());
-			pstmt_corte.setFloat(i+=1, corte.getRecibo_luz());
-			pstmt_corte.setFloat(i+=1, corte.getDeposito());
-			pstmt_corte.setFloat(i+=1, corte.getEfectivo());
-			pstmt_corte.setFloat(i+=1, corte.getCheques());
-			pstmt_corte.setFloat(i+=1, corte.getTotal_de_vauchers());
-			pstmt_corte.setFloat(i+=1, corte.getDiferencia_corte());
-			pstmt_corte.setString(i+=1, corte.getComentario().toUpperCase());
-			pstmt_corte.executeUpdate();
-			
-			i=1;
 			for(int x= 0; x<tb_asignaciones.length; x++){
-				
-//				System.out.print(corte.getFolio_corte().toUpperCase().trim()+"    ");
-//				System.out.print(tb_asignaciones[x][0].toString().trim()+"    ");
-//				System.out.print(tb_asignaciones[x][1].toString().trim()+"    ");
-//				System.out.print(tb_asignaciones[x][2].toString().trim()+"    ");
-//				System.out.print(Float.valueOf(tb_asignaciones[x][3].toString().trim())+"    ");
-//				System.out.print(Integer.valueOf(tb_asignaciones[x][4].toString().trim())+"    ");
-//				System.out.print(tb_asignaciones[x][5].toString().trim()+"    ");
-//				System.out.print(tb_asignaciones[x][6].toString().trim()+"    ");
-//				System.out.println(tb_asignaciones[x][7].toString().trim());
-				
 				
 				pstmt_asignacion.setString(i, 		corte.getFolio_corte().toUpperCase().trim());
 				pstmt_asignacion.setString(i+=1,	tb_asignaciones[x][0].toString().trim());
@@ -967,23 +925,8 @@ public class GuardarSQL {
 				i=1;
 			}
 			
-//			System.out.println("");
-			
 			i=1;
 			for(int x= 0; x<tb_vauchers.length; x++){
-				
-//				System.out.print(corte.getFolio_corte().toUpperCase().trim()+"    ");
-//				System.out.print(tb_vauchers[x][0].toString().trim()+"    ");
-//				System.out.print(tb_vauchers[x][1].toString().trim()+"    ");
-//				System.out.print(tb_vauchers[x][2].toString().trim()+"    ");
-//				System.out.print(tb_vauchers[x][3].toString().trim()+"    ");
-//				System.out.print(Float.parseFloat(tb_vauchers[x][4].toString().trim())+"    ");
-//				System.out.print(tb_vauchers[x][5].toString().trim()+"    ");
-//				System.out.print(tb_vauchers[x][6].toString().trim()+"    ");
-//				System.out.print(tb_vauchers[x][7].toString().trim()+"    ");
-//				System.out.print(tb_vauchers[x][8].toString().trim()+"    ");
-//				System.out.println(Float.parseFloat(tb_vauchers[x][9].toString().trim()));
-				
 				
 				pstmt_vauchers.setString(i, 	corte.getFolio_corte().toUpperCase().trim());
 				pstmt_vauchers.setString(i+=1, tb_vauchers[x][0].toString().trim());
@@ -1007,11 +950,6 @@ public class GuardarSQL {
 			i=1;
 			for(int x= 0; x<tb_totales_por_fecha.length; x++){
 
-//				System.out.print(corte.getFolio_corte().toUpperCase().trim()+"    ");
-//				System.out.print(tb_totales_por_fecha[x][0].toString().trim()+"    ");
-//				System.out.print(tb_totales_por_fecha[x][1].toString().trim()+"    ");
-//				System.out.println(Float.parseFloat(tb_totales_por_fecha[x][2].toString().trim()));
-				
 				pstmt_total_por_fecha.setString(i, 	corte.getFolio_corte().toUpperCase().trim());
 				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][0].toString().trim());
 				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][1].toString().trim());
@@ -1021,6 +959,23 @@ public class GuardarSQL {
 				
 				i=1;
 			}
+			
+			i=1;
+			
+			pstmt_corte.setString(i, corte.getFolio_corte().toUpperCase().trim());
+			pstmt_corte.setInt(i+=1, corte.getUsuario());
+			pstmt_corte.setInt(i+=1, corte.getFolio_empleado());
+			pstmt_corte.setString(i+=1, corte.getEstablecimiento_de_corte());
+			pstmt_corte.setFloat(i+=1, corte.getCorte_sistema());
+			pstmt_corte.setFloat(i+=1, corte.getTiempo_aire());
+			pstmt_corte.setFloat(i+=1, corte.getRecibo_luz());
+			pstmt_corte.setFloat(i+=1, corte.getDeposito());
+			pstmt_corte.setFloat(i+=1, corte.getEfectivo());
+			pstmt_corte.setFloat(i+=1, corte.getCheques());
+			pstmt_corte.setFloat(i+=1, corte.getTotal_de_vauchers());
+			pstmt_corte.setFloat(i+=1, corte.getDiferencia_corte());
+			pstmt_corte.setString(i+=1, corte.getComentario().toUpperCase());
+			pstmt_corte.executeUpdate();
 			
 			con.commit();
 		} catch (Exception e) {

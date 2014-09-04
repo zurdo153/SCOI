@@ -16,6 +16,8 @@ import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -370,6 +372,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		btnEfectivo.addActionListener(opAlimentarDenominacion);
 		btnDeposito.addActionListener(opAlimentarDeposito);
 		btnCheques.addActionListener(opAlimentarCheques);
+		
 		txtCorteSistema.addKeyListener(validaNumericoConPunto);
 		txtDeposito.addKeyListener(validaNumericoConPunto2);
 		
@@ -413,6 +416,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		btnDeposito.setEnabled(false);
 		btnEfectivo.setEnabled(false);
+		btnCheques.setEnabled(false);
 		
 		this.setSize(940,590);
 		this.setResizable(true);
@@ -608,7 +612,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						}
 						
 //						si guarda entra y abre los reportes de impresion para cortes
-						if(corte.guardar(tabla_guardar_asignaciones(),tabla_guardar_vauchers(),tabla_guardar_totales_por_fecha())){
+						if(corte.guardar(tabla_guardar_asignaciones(),tabla_guardar_vauchers(),tabla_guardar_totales_por_fecha(), lista_de_asignaciones_en_uso())){
 							
 							new Cat_Reporte_De_Corte_De_Caja(lblFolio_Corte.getText().trim());
 							System.out.println("llego aki");
@@ -620,6 +624,40 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				}	
 			}
 	};
+	
+   	public int getFilasIZAGAR(String qry){
+		int filas=0;
+		Statement stmt = null;
+		try {
+			stmt = new Connexion().conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(qry);
+			while(rs.next()){
+				filas++;
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return filas;
+	}	
+   	
+	private Object[] lista_de_asignaciones_en_uso(){
+
+		Object[] vector = new Object[tabla_asignaciones.getRowCount()];
+		
+			for(int i=0; i<tabla_asignaciones.getRowCount(); i++){
+				
+				vector[i] = modelo_asignaciones.getValueAt(i,0).toString().trim();
+//				vector[i] = modelo_asignaciones.getValueAt(i,1).toString().trim();
+//				vector[i] = modelo_asignaciones.getValueAt(i,2).toString().trim();
+//				vector[i] = modelo_asignaciones.getValueAt(i,3).toString().trim();
+//				vector[i] = modelo_asignaciones.getValueAt(i,4).toString().trim();
+//				vector[i] = modelo_asignaciones.getValueAt(i,5).toString().trim();
+//				vector[i] = modelo_asignaciones.getValueAt(i,6).toString().trim();
+//				vector[i] = modelo_asignaciones.getValueAt(i,7).toString().trim();
+			}
+		return vector;
+	}
 	
 	private Object[][] tabla_guardar_asignaciones(){
 		Object[][] matriz = new Object[tabla_asignaciones.getRowCount()][8];
@@ -674,6 +712,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			
 					Obj_Alimentacion_Cortes folio_corte_denominacion = new Obj_Alimentacion_Cortes();
 						if(folio_corte_denominacion.eliminar(lblFolio_Corte.getText())){
+							
 							txtFechaCorte.setText("");
 							txtEfectivo.setText("");
 							lblDiferenciaCorte.setText("");
@@ -688,7 +727,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						}
 				}
 			};
-
 			
 	ActionListener opAsignacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -763,7 +801,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						}
 						
 //	    				procedimiento para llenar  (tabla_de_ventas_por_fecha)  con respecto a las asignaciones seleccionadas
-	    				llenar_ventar_de_asignaciones_por_fecha();
+	    				llenar_venta_de_asignaciones_por_fecha();
 	    				
 						calculoDinamico();
 				}
@@ -771,6 +809,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				if(tabla_asignaciones.getRowCount()==0){
 						btnDeposito.setEnabled(false);
 						btnEfectivo.setEnabled(false);
+						btnCheques.setEnabled(false);
 				}
 		}
 	};
@@ -949,7 +988,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			public void windowDeiconified(WindowEvent e) {}
 			public void windowDeactivated(WindowEvent e) {}
 			public void windowClosing(WindowEvent e) {
-							txtEfectivo.setText("");
+				if(!new Obj_Alimentacion_Cortes().buscar_folio_corte(lblFolio_Corte.getText())){
+					txtEfectivo.setText("");
+				}
 			}
 			public void windowClosed(WindowEvent e) {}
 			public void windowActivated(WindowEvent e) {}
@@ -1184,7 +1225,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		public void windowDeiconified(WindowEvent e) {}
 		public void windowDeactivated(WindowEvent e) {}
 		public void windowClosing(WindowEvent e) {
+			if(!new Obj_Alimentacion_Cortes().buscar_folio_corte_cheques(lblFolio_Corte.getText())){
 				txtCheques.setText("");
+			}
 		}
 		public void windowClosed(WindowEvent e) {}
 		public void windowActivated(WindowEvent e) {}
@@ -1885,6 +1928,18 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			}
 		};
 		
+		WindowListener op_limpiar = new WindowListener() {
+			public void windowOpened(WindowEvent e) {}
+			public void windowIconified(WindowEvent e) {}
+			public void windowDeiconified(WindowEvent e) {}
+			public void windowDeactivated(WindowEvent e) {}
+			public void windowClosing(WindowEvent e) {
+					txtDeposito.setText("");
+			}
+			public void windowClosed(WindowEvent e) {}
+			public void windowActivated(WindowEvent e) {}
+		};
+		
 		ActionListener op_modificar = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -2096,13 +2151,71 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	    			if(tabla_asignaciones.getRowCount()>0){
 	    				btnDeposito.setEnabled(true);
 	    				btnEfectivo.setEnabled(true);
+	    				btnCheques.setEnabled(true);
 	    				
-//	    				procedimiento para llenar  (tabla_de_ventas_por_fecha)  con respecto a las asignaciones seleccionadas
-	    				llenar_ventar_de_asignaciones_por_fecha();
+	    				llenar_venta_de_asignaciones_por_fecha();
 	    			}
 	    		dispose();
+	    		cargar_lista_de_asignaciones();
 			}
 		};
+		
+	 	public void cargar_lista_de_asignaciones(){
+	 		Connection con = new Connexion().conexion();
+			PreparedStatement pstmt_ta_rluz = null;
+			
+			for(int i=0; i<tabla_asignaciones.getRowCount(); i++){
+				String consulta_ta_rluz = "declare @t_aire money, @r_luz money, @asignacion varchar(50) " +
+										  "set @asignacion= '"+modelo_asignaciones.getValueAt(i,0).toString().trim()+"' " +
+										  "set @t_aire = (SELECT SUM(ta)as TA FROM " +
+										  "     (SELECT sum(entysal.total)as ta FROM facremtick AS f  with (nolock) " +
+										  "              INNER JOIN entysal on entysal.folio=f.folio  WHERE (f.folio_cajero = @asignacion and entysal.cod_prod='52401') " +
+										  "     union all " +
+										  "      SELECT isnull(sum(entysal.total*-1),0) as ta FROM facremtick AS f  with (nolock) " +
+										  "                     INNER JOIN entysal on entysal.folio=f.folio WHERE ( (f.status = 'C') AND (f.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52401' ) )t " +
+										  ") " +
+										  "set @r_luz = (SELECT SUM(rl)as RL FROM " +
+										  "     (SELECT sum(entysal.total)as rl FROM facremtick AS f  with (nolock) " +
+										  "              INNER JOIN entysal on entysal.folio=f.folio  WHERE (f.folio_cajero = @asignacion and entysal.cod_prod='52384') " +
+										  "     union all " +
+										  "      SELECT isnull(sum(entysal.total*-1),0) as ta FROM facremtick AS f  with (nolock) " +
+										  "                     INNER JOIN entysal on entysal.folio=f.folio WHERE ( (f.status = 'C') AND (f.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52384' ) )t " +
+										  ") " +
+										  "select @t_aire as TA, @r_luz as RL " ;
+				
+				String query_ta_rluz = "exec sp_insert_totales_de_tAire_rLuz ?,?,?,?";
+				
+				Statement s_IZAGAR;
+				ResultSet rs_IZAGAR;
+				
+				try {
+					s_IZAGAR = new Connexion().conexion_IZAGAR().createStatement();
+					rs_IZAGAR = s_IZAGAR.executeQuery(consulta_ta_rluz);
+					
+					while(rs_IZAGAR.next()){
+						
+						con.setAutoCommit(false);
+						pstmt_ta_rluz =  con.prepareStatement(query_ta_rluz);
+						
+						pstmt_ta_rluz.setString(1, 		lblFolio_Corte.getText().trim());
+						pstmt_ta_rluz.setString(2,	modelo_asignaciones.getValueAt(i,0).toString().trim());
+						pstmt_ta_rluz.setDouble(3,	rs_IZAGAR.getDouble(1));
+						pstmt_ta_rluz.setDouble(4, 	rs_IZAGAR.getDouble(2));
+						pstmt_ta_rluz.executeUpdate();
+							
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+			try {
+				con.commit();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
+	 	
+	 	
 		
 		private Object[][] cargar_tabla_asignaciones_de_filtro(){
 
@@ -2123,7 +2236,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		}
 	} 
 	
-	public void llenar_ventar_de_asignaciones_por_fecha(){
+	public void llenar_venta_de_asignaciones_por_fecha(){
 
 		while(tabla_totales_por_fecha.getRowCount()>0){
             modelo_totales_por_fecha.removeRow(0);
