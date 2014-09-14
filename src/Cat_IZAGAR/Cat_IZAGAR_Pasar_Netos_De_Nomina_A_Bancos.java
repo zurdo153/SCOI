@@ -447,6 +447,10 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 		Object[] fila11 = new Object[4];
 //		 llenar tablamalclasificados
          for(int i=0; i<getTablamalclasificados.length; i++){
+        	 if(Integer.valueOf(getTablamalclasificados[i][0].toString().trim())==0){
+        			JOptionPane.showMessageDialog(null, "Error en Nombre o Apellidos de el Empleado:"+getTablamalclasificados[i][1].toString().trim()," Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+              break;
+        	 }
                  fila11[0] = getTablamalclasificados[i][0]+"";
                  fila11[1] = getTablamalclasificados[i][1]+"";
                  fila11[2] = getTablamalclasificados[i][2]+"";
