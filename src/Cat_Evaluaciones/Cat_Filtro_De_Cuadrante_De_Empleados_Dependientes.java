@@ -162,7 +162,7 @@ public class Cat_Filtro_De_Cuadrante_De_Empleados_Dependientes extends JFrame {
 			String query = "exec sp_construir_in_filtro_nivel_jerarquico '"+usuario.getNombre_completo()+"'";
 			rs = s.executeQuery(query);
 			while (rs.next()) { 
-			   String [] fila = new String[7];
+			   Object [] fila = new Object[7];
 			   
 			   fila[0] = rs.getString(1)+"  ";
 			   fila[1] = "   "+rs.getString(2);

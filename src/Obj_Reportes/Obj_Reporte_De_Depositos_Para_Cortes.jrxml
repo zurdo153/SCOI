@@ -2,15 +2,15 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Efectivo_Para_Cortes" language="groovy" pageWidth="250" pageHeight="400" columnWidth="210" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="1f81344e-8124-4307-847f-1d49169f400a">
 	<property name="ireport.zoom" value="3.8906136901500075"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="423"/>
+	<property name="ireport.y" value="183"/>
 	<style name="Title" mode="Transparent" forecolor="#000000" backcolor="#000000" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
 	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<queryString>
 		<![CDATA[declare @folio_corte varchar(15)
---set @folio_corte = ('DPII89');
-select tb_alimentacion_deposito.fecha as fecha
+set @folio_corte = ('DPII19');
+select convert(varchar(20),tb_alimentacion_deposito.fecha,103)+' '+convert(varchar(20),tb_alimentacion_deposito.fecha,108) as fecha
 		,tb_alimentacion_deposito.folio_corte as folio_corte
 		,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as cajero
 		,tb_alimentacion_deposito.moneda as moneda
@@ -24,14 +24,14 @@ from tb_alimentacion_deposito
 inner join tb_empleado on tb_empleado.folio = tb_alimentacion_deposito.folio_empleado
 where tb_alimentacion_deposito.folio_corte = @folio_corte]]>
 	</queryString>
-	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="fecha" class="java.lang.String"/>
 	<field name="folio_corte" class="java.lang.String"/>
 	<field name="cajero" class="java.lang.String"/>
 	<field name="moneda" class="java.lang.String"/>
 	<field name="cantidad" class="java.math.BigDecimal"/>
 	<field name="total" class="java.math.BigDecimal"/>
 	<variable name="Total Depositos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
 	<group name="Group1">
 		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/15)]]></groupExpression>
@@ -121,8 +121,8 @@ where tb_alimentacion_deposito.folio_corte = @folio_corte]]>
 				<textFieldExpression><![CDATA["Folio De Corte: "+$F{folio_corte}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="2f37aac2-4a87-4d4f-a9e5-b791ef9b9156" x="98" y="-8" width="98" height="18"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement uuid="2f37aac2-4a87-4d4f-a9e5-b791ef9b9156" x="59" y="-8" width="137" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Fecha: "+$F{fecha}]]></textFieldExpression>
 			</textField>
 		</band>
