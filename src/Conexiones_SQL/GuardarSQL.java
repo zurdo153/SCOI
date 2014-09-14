@@ -889,14 +889,14 @@ public class GuardarSQL {
 		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
 		
 		Connection con = new Connexion().conexion();
-		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();
+//		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();
 		
 		PreparedStatement pstmt_asignacion = null;
 		PreparedStatement pstmt_vauchers = null;
 		PreparedStatement pstmt_total_por_fecha = null;
 		PreparedStatement pstmt_corte = null;
 		
-		PreparedStatement pstmt_ta_rluz = null;
+//		PreparedStatement pstmt_ta_rluz = null;
 		
 		try {
 			
@@ -950,6 +950,11 @@ public class GuardarSQL {
 			i=1;
 			for(int x= 0; x<tb_totales_por_fecha.length; x++){
 
+				System.out.println(corte.getFolio_corte().toUpperCase().trim());
+				System.out.println(tb_totales_por_fecha[x][0].toString().trim());
+				System.out.println(tb_totales_por_fecha[x][1].toString().trim());
+				System.out.println(tb_totales_por_fecha[x][2].toString().trim());
+				
 				pstmt_total_por_fecha.setString(i, 	corte.getFolio_corte().toUpperCase().trim());
 				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][0].toString().trim());
 				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][1].toString().trim());
