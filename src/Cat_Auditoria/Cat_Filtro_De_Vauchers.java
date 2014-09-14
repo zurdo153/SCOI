@@ -97,6 +97,8 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 		trsfiltro = new TableRowSorter(modelo_vaucher_filtro); 
 		tabla_vaucher_filtro.setRowSorter(trsfiltro); 
 				
+//		cont.setBackground(new Color(86,161,85));
+		
 		tablaRender();
 		
 		
@@ -376,17 +378,17 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 			MatrizFiltro = new Object[getFilasIZAGAR(todos)][11];
 			int i=0;
 			while(rs.next()){
-				MatrizFiltro[i][0] = "   "+rs.getString(1).trim();
-				MatrizFiltro[i][1] = "   "+rs.getString(2).trim();
-				MatrizFiltro[i][2] = "   "+rs.getString(3).trim();
-				MatrizFiltro[i][3] = "   "+rs.getString(4).trim();
-				MatrizFiltro[i][4] = "   "+rs.getString(5).trim();
-				MatrizFiltro[i][5] = "   "+rs.getString(6).trim();
-				MatrizFiltro[i][6] = "   "+rs.getString(7).trim();
-				MatrizFiltro[i][7] = "   "+rs.getString(8).trim();
-				MatrizFiltro[i][8] = "   "+rs.getString(9).trim()+"";
-				MatrizFiltro[i][9] = "   "+rs.getString(10).trim();
-				MatrizFiltro[i][10] = rs.getString(11).trim();
+				MatrizFiltro[i][0] = "   "+ (rs.getString(1).trim().equals("")?"-":rs.getString(1).trim());
+				MatrizFiltro[i][1] = "   "+ (rs.getString(2).trim().equals("")?"-":rs.getString(2).trim());
+				MatrizFiltro[i][2] = "   "+ (rs.getString(3).trim().equals("")?"-":rs.getString(3).trim());
+				MatrizFiltro[i][3] = "   "+ (rs.getString(4).trim().equals("")?"-":rs.getString(4).trim());;
+				MatrizFiltro[i][4] = "   "+ (rs.getString(5).trim().equals("")?"-":rs.getString(5).trim());;
+				MatrizFiltro[i][5] = "   "+ (rs.getString(6).trim().equals("")?"-":rs.getString(6).trim());;
+				MatrizFiltro[i][6] = "   "+ (rs.getString(7).trim().equals("")?"-":rs.getString(7).trim());;
+				MatrizFiltro[i][7] = "   "+ (rs.getString(8).trim().equals("")?"-":rs.getString(8).trim());;
+				MatrizFiltro[i][8] = "   "+ (rs.getString(9).trim().equals("")?"-":rs.getString(9).trim());;
+				MatrizFiltro[i][9] = "   "+ (rs.getString(10).trim().equals("")?"-":rs.getString(10).trim());;
+				MatrizFiltro[i][10] = 		(rs.getString(11).trim().equals("")?"-":rs.getString(11).trim());;
 				
 				i++;
 			}

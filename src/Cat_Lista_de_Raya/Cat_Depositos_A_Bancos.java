@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -476,12 +477,13 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		
 	};
     
+	DecimalFormat formato = new DecimalFormat("#0.00");
 	public float returnBanamex(){
 		float valor = 0;
 		
 		for(int i=0; i<tabla.getRowCount(); i++){
 			if(tabla_model.getValueAt(i, 3).toString().length() != 0){
-				valor = valor + Float.parseFloat(tabla_model.getValueAt(i,3)+"");
+				valor = valor + Float.parseFloat(formato.format(tabla_model.getValueAt(i,3))+"");
 			}				
 		}
 		return valor;
@@ -491,7 +493,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		float valor = 0;
 		for(int i=0; i<tabla.getRowCount(); i++){
 			if(tabla_model.getValueAt(i,4).toString().length() != 0){
-				valor = valor + Float.parseFloat(tabla_model.getValueAt(i,4)+"");
+				valor = valor + Float.parseFloat(formato.format(tabla_model.getValueAt(i,4))+"");
 			}				
 		}
 		return valor;
@@ -505,7 +507,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 				valor = valor + Float.parseFloat(tabla_model.getValueAt(i,3)+"");
 			}	
 			if(tabla_model.getValueAt(i,4).toString().length() != 0){
-				valor = valor + Float.parseFloat(tabla_model.getValueAt(i,4)+"");
+				valor = valor + Float.parseFloat(formato.format(tabla_model.getValueAt(i,4))+"");
 			}		
 		}
 		return valor;

@@ -882,29 +882,101 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte){
-		String query = "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
-				
+	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte, Object[][] tb_asignaciones,Object[][] tb_vauchers,Object[][] tb_totales_por_fecha,  Object[] lista_de_asignaciones_en_uso){
+		String query_asignacion = 		 "exec sp_insert_asignacion_para_cortes  ?,?,?,?,?,?,?,?,?";		// <-9		11 ->  tb_tabla_de_asignaciones_para_cortes 
+		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
+		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
+		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
+		
 		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
+		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();
+		
+		PreparedStatement pstmt_asignacion = null;
+		PreparedStatement pstmt_vauchers = null;
+		PreparedStatement pstmt_total_por_fecha = null;
+		PreparedStatement pstmt_corte = null;
+		
+		PreparedStatement pstmt_ta_rluz = null;
+		
 		try {
+			
 			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, corte.getFolio_corte().trim());
-			pstmt.setInt(2, corte.getFolio_empleado());
-			pstmt.setString(3,corte.getPuesto().toUpperCase());
-			pstmt.setString(4, corte.getEstablecimiento().toUpperCase());
-			pstmt.setString(5, corte.getAsignacion().toUpperCase());
-			pstmt.setFloat(6, corte.getCorte_sistema());
-			pstmt.setFloat(7, corte.getDeposito());
-			pstmt.setFloat(8, corte.getEfectivo());
-			pstmt.setFloat(9, corte.getDiferencia_corte());
-			pstmt.setString(10, corte.getFecha().toUpperCase());
-			pstmt.setInt(11, (corte.isStatus())?1:0);
-			pstmt.setString(12, corte.getComentario().toUpperCase());
-			pstmt.setFloat(13, corte.getTiempo_aire());
-			pstmt.setFloat(14, corte.getRecibo_luz());
-			pstmt.executeUpdate();
+			pstmt_asignacion 	  = con.prepareStatement(query_asignacion);
+			pstmt_vauchers		  = con.prepareStatement(query_vauchers);
+			pstmt_total_por_fecha = con.prepareStatement(query_totales_por_fecha);
+			pstmt_corte 		  = con.prepareStatement(query_corte);
+			
+			int i=1;
+			
+			for(int x= 0; x<tb_asignaciones.length; x++){
+				
+				pstmt_asignacion.setString(i, 		corte.getFolio_corte().toUpperCase().trim());
+				pstmt_asignacion.setString(i+=1,	tb_asignaciones[x][0].toString().trim());
+				pstmt_asignacion.setString(i+=1,	tb_asignaciones[x][1].toString().trim());
+				pstmt_asignacion.setString(i+=1,	tb_asignaciones[x][2].toString().trim());
+				pstmt_asignacion.setFloat(i+=1, 	Float.valueOf(tb_asignaciones[x][3].toString().trim()));
+				pstmt_asignacion.setInt(i+=1, 		Integer.valueOf(tb_asignaciones[x][4].toString().trim()));
+				pstmt_asignacion.setString(i+=1, 	tb_asignaciones[x][5].toString().trim());
+				pstmt_asignacion.setString(i+=1, 	tb_asignaciones[x][6].toString().trim());
+				pstmt_asignacion.setString(i+=1, 	tb_asignaciones[x][7].toString().trim());
+				
+				pstmt_asignacion.executeUpdate();
+				
+				i=1;
+			}
+			
+			i=1;
+			for(int x= 0; x<tb_vauchers.length; x++){
+				
+				pstmt_vauchers.setString(i, 	corte.getFolio_corte().toUpperCase().trim());
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][0].toString().trim());
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][1].toString().trim());
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][2].toString().trim());
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][3].toString().trim());
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][4].toString().trim());
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][5].toString().trim());
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][6].toString().trim());
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][7].toString().trim());
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][8].toString().trim());
+				pstmt_vauchers.setFloat(i+=1, Float.parseFloat(tb_vauchers[x][9].toString().trim()));
+				
+				pstmt_vauchers.executeUpdate();
+				
+				i=1;
+			}
+			
+			System.out.println("");
+			
+			i=1;
+			for(int x= 0; x<tb_totales_por_fecha.length; x++){
+
+				pstmt_total_por_fecha.setString(i, 	corte.getFolio_corte().toUpperCase().trim());
+				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][0].toString().trim());
+				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][1].toString().trim());
+				pstmt_total_por_fecha.setFloat(i+=1, Float.parseFloat(tb_totales_por_fecha[x][2].toString().trim()));
+				
+				pstmt_total_por_fecha.executeUpdate();
+				
+				i=1;
+			}
+			
+			i=1;
+			
+			pstmt_corte.setString(i, corte.getFolio_corte().toUpperCase().trim());
+			pstmt_corte.setInt(i+=1, corte.getUsuario());
+			pstmt_corte.setInt(i+=1, corte.getFolio_empleado());
+			pstmt_corte.setString(i+=1, corte.getEstablecimiento_de_corte());
+			pstmt_corte.setFloat(i+=1, corte.getCorte_sistema());
+			pstmt_corte.setFloat(i+=1, corte.getTiempo_aire());
+			pstmt_corte.setFloat(i+=1, corte.getRecibo_luz());
+			pstmt_corte.setFloat(i+=1, corte.getDeposito());
+			pstmt_corte.setFloat(i+=1, corte.getEfectivo());
+			pstmt_corte.setFloat(i+=1, corte.getCheques());
+			pstmt_corte.setFloat(i+=1, corte.getTotal_de_vauchers());
+			pstmt_corte.setFloat(i+=1, corte.getDiferencia_corte());
+			pstmt_corte.setString(i+=1, corte.getComentario().toUpperCase());
+			pstmt_corte.executeUpdate();
+			
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
@@ -914,6 +986,7 @@ public class GuardarSQL {
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Corte ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1268,7 +1341,7 @@ public class GuardarSQL {
 	
 	public boolean Guardar_Alimentacion_denominacio(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
 		
-		String query ="exec sp_insert_denominaciones ?,?,?,?,?,?,?,?";
+		String query ="exec sp_insert_denominaciones ?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -1278,15 +1351,24 @@ public class GuardarSQL {
 			
 			for(int i=0; i<tabla.length; i++){
 				
-				pstmt.setString(1, alim_denom.getAsignacion().toUpperCase());
-				pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
-				pstmt.setString(3, alim_denom.getFecha());
-				pstmt.setString(4, alim_denom.getEstablecimiento().toUpperCase());
+				System.out.println(alim_denom.getFolio_corte().toUpperCase());
+				System.out.println(alim_denom.getEmpleado().toUpperCase().trim());
+				System.out.println(alim_denom.getEstablecimiento().toUpperCase());
 				
-				pstmt.setInt(5, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmt.setFloat(6, Float.parseFloat(tabla[i][2].toString().trim()));
-				pstmt.setFloat(7,Float.parseFloat(tabla[i][3].toString().trim()));
-				pstmt.setFloat(8,Float.parseFloat(tabla[i][4].toString().trim()));
+				System.out.println(tabla[i][0].toString().trim());
+				System.out.println(tabla[i][2].toString().trim());
+				System.out.println(tabla[i][3].toString().trim());
+				System.out.println(tabla[i][4].toString().trim());
+				
+				
+				pstmt.setString(1, alim_denom.getFolio_corte().toUpperCase());
+				pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
+				pstmt.setString(3, "CEDIS"/*alim_denom.getEstablecimiento().toUpperCase()*/);
+				
+				pstmt.setInt(4, Integer.parseInt(tabla[i][0].toString().trim()));
+				pstmt.setFloat(5, Float.parseFloat(tabla[i][2].toString().trim()));
+				pstmt.setFloat(6,Float.parseFloat(tabla[i][3].toString().trim()));
+				pstmt.setFloat(7,Float.parseFloat(tabla[i][4].toString().trim()));
 				
 				pstmt.executeUpdate();
 			}
@@ -2648,7 +2730,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 		}
 		
 //		borrar alimentacion por denominaciones
-		public boolean Borrar_Alimentacion_Denominaciones(String folio_corte){
+		public boolean Borrar_Corte_completo(String folio_corte){
 			String query = "exec sp_delete_folio_corte '"+folio_corte+"';";
 			Connection con = new Connexion().conexion();
 			PreparedStatement pstmt = null;
@@ -2665,6 +2747,8 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				if(con != null){
 					try{
 						System.out.println("La transacción ha sido abortada");
+						JOptionPane.showMessageDialog(null, "Error en cancelacion  en la funcion [ Borrar_Corte_completo ]   SQLException: sp_delete_folio_corte "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 						con.rollback();
 					}catch(SQLException ex){
 						System.out.println(ex.getMessage());
@@ -3275,6 +3359,44 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			} catch(SQLException e){
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_unidades_de_inspeccion "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Folio_Corte(){
+		String query = "exec sp_insert_folio_corte_nuevo";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+//			int i=1;
+//			pstmt.setString(i, corte.getFolio_corte());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Folio_Corte ] Insert  SQLException: sp_insert_folio_corte_nuevo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Folio_Corte ] Insert  SQLException: sp_insert_folio_corte_nuevo "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Asignacion_De_Cajero ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

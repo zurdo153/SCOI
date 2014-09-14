@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Escribir_Ticket_Cortes {
+//	resive los valores del corte y genera un archivo de texto    (Ticket.txt)
+//	este archivo sera leido posteriormente para su impresion
 	public boolean escribirTicket(Obj_TicketCortes ex)
 	{
 		BufferedWriter bw = null;

@@ -63,6 +63,8 @@ public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
 	public Cat_Filtro_Alimentacion_Cortes_De_Cajeros()	{
 		this.setTitle("Filtro Cortes ");
 		
+//		cont.setBackground(new Color(86,161,85));
+		
 		txtBuscar.addKeyListener(new KeyAdapter() { 
 			public void keyReleased(final KeyEvent e) { 
                 filtro(); 
@@ -92,20 +94,33 @@ public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
+	        	
 	        	if(e.getClickCount() == 2){
+	        		
 	        		if(cmbEstablecimiento.getSelectedIndex()==0){
 	        			JOptionPane.showMessageDialog(null, "Seleccione un Establecimineto", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 	    				return;
 	        		}else{
-	        			int fila = tabla.getSelectedRow();
-	        			String estab = cmbEstablecimiento.getSelectedItem()+"";
 	        			
-	        			Obj_Alimentacion_Cortes buscarFolio = new Obj_Alimentacion_Cortes().buscar(estab);
-	        			String folio_corte = buscarFolio.getFolio_corte();
+		        			int fila = tabla.getSelectedRow();
+		        			String estab = cmbEstablecimiento.getSelectedItem()+"";
 	        			
-	        			Object folio =  tabla.getValueAt(fila, 0);
-	        			dispose();
-	        			new Cat_Alimentacion_Cortes(Integer.parseInt(folio+""),estab,folio_corte).setVisible(true);
+		        					Obj_Alimentacion_Cortes generarFolioCorteNuevo = new Obj_Alimentacion_Cortes();
+					        			
+		        					if(generarFolioCorteNuevo.generar_folio_corte()){
+					        				
+						        			
+						        			String folio_corte = generarFolioCorteNuevo.buscar(estab);
+						        			
+						        			Object folio =  tabla.getValueAt(fila, 0);
+						        			
+						        			dispose();
+						        			new Cat_Alimentacion_Cortes(Integer.parseInt(folio+""),estab,folio_corte).setVisible(true);
+						        			
+				        			}else{
+				        				JOptionPane.showMessageDialog(null, "No se genero el folio de corte correctamente", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+					    				return;
+				        			}
 	        		}
 	        	}
 	        }

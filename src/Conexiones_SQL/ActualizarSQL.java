@@ -13,6 +13,7 @@ import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
+import Obj_Auditoria.Obj_Alimentacion_De_Cheques;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
 import Obj_Auditoria.Obj_Clientes;
 import Obj_Auditoria.Obj_Denominaciones;
@@ -2163,27 +2164,26 @@ public class ActualizarSQL {
 			
 			public boolean Actualizar_Alimentacion_denominacion(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
 				
-				String query_delete = "delete from tb_alimentacion_denominaciones where folio_corte ='"+alim_denom.getEstablecimiento()+"'";
-				String query ="exec sp_insert_denominaciones ?,?,?,?,?,?,?,?";
+				String query_delete = "delete from tb_alimentacion_denominaciones where folio_corte ='"+alim_denom.getFolio_corte()+"'";
+				String query ="exec sp_insert_denominaciones ?,?,?,?,?,?,?";
 				Connection con = new Connexion().conexion();
 				
 				try {
 					PreparedStatement pstmtDelete = con.prepareStatement(query_delete);
 					PreparedStatement pstmt = con.prepareStatement(query);
 					con.setAutoCommit(false);
-//					pstmtDelete.setString(1, alimentacion.getNombre());
+//					pstmtDelete.setString(1, alim_denom.getAsignacion());
 					pstmtDelete.executeUpdate();
 					
 					for(int i=0; i<tabla.length; i++){
-						pstmt.setString(1, alim_denom.getAsignacion().toUpperCase());
+						pstmt.setString(1, alim_denom.getFolio_corte().toUpperCase());
 						pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
-						pstmt.setString(3, alim_denom.getFecha());
-						pstmt.setString(4, alim_denom.getEstablecimiento().toUpperCase());
-						pstmt.setInt(5, Integer.parseInt(tabla[i][0].toString().trim()));
+						pstmt.setString(3, alim_denom.getEstablecimiento().toUpperCase());
+						pstmt.setInt(4, Integer.parseInt(tabla[i][0].toString().trim()));
 //						pstmt.setString(6, tabla[i][1].toString().trim());
-						pstmt.setFloat(6, Float.parseFloat(tabla[i][2].toString().trim()));
-						pstmt.setFloat(7,Float.parseFloat(tabla[i][3].toString().trim()));
-						pstmt.setFloat(8,Float.parseFloat(tabla[i][4].toString().trim()));
+						pstmt.setFloat(5, Float.parseFloat(tabla[i][2].toString().trim()));
+						pstmt.setFloat(6,Float.parseFloat(tabla[i][3].toString().trim()));
+						pstmt.setFloat(7,Float.parseFloat(tabla[i][4].toString().trim()));
 						pstmt.executeUpdate();
 					}
 							
@@ -2249,6 +2249,57 @@ public class ActualizarSQL {
 					} catch(SQLException e){
 						e.printStackTrace();
 					}
+				}		
+				return true;
+				
+			}
+			
+			public boolean tabla_model_alimentacion_totales_De_Cheques(Obj_Alimentacion_De_Cheques cheques,Object[] tabla){
+				
+				
+//				cambiar procedimientos borrado e insercion de datos 
+				String query_delete = "delete from tb_tabla_de_cheques_para_cortes where folio_corte = '"+cheques.getFolio_corte().toUpperCase().trim()+"'";
+				String query = "exec sp_insert_cheques_de_cortes ?,?,?";
+				
+				Connection con = new Connexion().conexion();
+				
+				try{
+					
+					
+					con.setAutoCommit(false);
+					System.out.println(query_delete+" borrado xxxxx");
+					
+					PreparedStatement pstmtDelete = con.prepareStatement(query_delete);
+					pstmtDelete.executeUpdate();
+					
+					PreparedStatement pstmt = con.prepareStatement(query);
+						
+						for(int i = 0; i<tabla.length; i++){
+							pstmt.setString(1, cheques.getFolio_corte());
+							pstmt.setInt(2, cheques.getFolio_empleado());
+							pstmt.setFloat(3, Float.parseFloat(tabla[i].toString().trim()));
+							pstmt.executeUpdate();
+						}
+						con.commit();
+				} catch (Exception e) {
+							System.out.println("SQLException: "+e.getMessage());
+							if(con != null){
+								try{
+									System.out.println("La transacción ha sido abortada");
+									con.rollback();
+									JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_Cheques ] update  SQLException: sp_insert_cheques_de_cortes "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+								}catch(SQLException ex){
+									System.out.println(ex.getMessage());
+									JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_Cheques ] update  SQLException: sp_insert_cheques_de_cortes "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+								}
+							}
+							return false;
+				}finally{
+							try {
+								con.close();
+							} catch(SQLException e){
+								e.printStackTrace();
+							}
 				}		
 				return true;
 			}

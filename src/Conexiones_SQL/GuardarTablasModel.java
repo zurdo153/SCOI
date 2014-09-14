@@ -9,6 +9,8 @@ import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
+import Obj_Auditoria.Obj_Alimentacion_De_Cheques;
+
 
 
 public class GuardarTablasModel {
@@ -386,7 +388,41 @@ public class GuardarTablasModel {
 		}		
 		return true;
 	}
-	
+	public boolean tabla_model_alimentacion_totales_De_Cheques(Obj_Alimentacion_De_Cheques cheques,Object[] tabla){
+		String query = "exec sp_insert_cheques_de_cortes ?,?,?";
+		Connection con = new Connexion().conexion();
+		
+		try{
+				PreparedStatement pstmt = con.prepareStatement(query);
+				con.setAutoCommit(false);
+				
+				for(int i = 0; i<tabla.length; i++){
+					pstmt.setString(1, cheques.getFolio_corte());
+					pstmt.setInt(2, cheques.getFolio_empleado());
+					pstmt.setFloat(3, Float.parseFloat(tabla[i].toString().trim()));
+					pstmt.executeUpdate();
+				}
+				con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+					}
+				}
+				return false;
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
+	}
 	public boolean tabla_model_alimentacion_totales(Object[][] tabla){
 		String query = "exec sp_insert_totales_de_nomina ?,?";
 		Connection con = new Connexion().conexion();

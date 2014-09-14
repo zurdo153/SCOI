@@ -362,7 +362,6 @@ public class Cat_Abono_Clientes extends JFrame{
 						Component aComp=tabla_cobros.getEditorComponent();
 						aComp.requestFocus();
 					}
-					
 				}
 			}
 		});

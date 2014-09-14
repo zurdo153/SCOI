@@ -145,40 +145,44 @@ public class BuscarSQL {
 		return disponible;
 	}
 	
-	public Obj_Alimentacion_Cortes Folio_Nuevo(String establecimiento){
-		Obj_Alimentacion_Cortes folio = new Obj_Alimentacion_Cortes();
+	public String Folio_Nuevo(String establecimiento){
+		String folio_corte="";
+		
 		String query = "exec sp_select_folio_corte '" + establecimiento + "';";
 		try {				
 			Statement s = con.conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
 			
 			while(rs.next()){
-				folio.setFolio_corte(rs.getString("folio_corte"));
+				folio_corte = rs.getString("folio_corte");
+//				folio.setFolio_corte(rs.getString("folio_corte"));
 			}
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 			
-		return folio;
+		return folio_corte;
 	}
 	
-	public Obj_Alimentacion_Cortes Folio_Corte(String folio_corte){
-		Obj_Alimentacion_Cortes folio = new Obj_Alimentacion_Cortes();
+	public boolean Folio_Corte(String folio_corte){
 		String query = "exec sp_select_comprovar_folio_corte '" + folio_corte + "';";
+		boolean existe = false;
 		try {				
 			Statement s = con.conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
 			
 			while(rs.next()){
-				folio.setFolio_corte(rs.getString("folio_corte"));
+				existe = Boolean.valueOf(rs.getString("folio_corte"));
+//				folio.setFolio_corte(rs.getString("folio_corte"));
+//				System.out.print(rs.getString("folio_corte"));
 			}
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 			
-		return folio;
+		return existe;
 	}
 	
 	public Obj_Alimentacion_Cortes Folio_Corte_Deposito(String folio_corte){
@@ -197,6 +201,25 @@ public class BuscarSQL {
 		}
 			
 		return folio;
+	}
+	
+	public boolean Folio_Corte_Cheques(String folio_corte){
+//		Obj_Alimentacion_Cortes folio = new Obj_Alimentacion_Cortes();
+		boolean existe = false;
+		String query = "exec sp_select_comprovar_folio_corte_cheques '" + folio_corte + "';";
+		try {				
+			Statement s = con.conexion().createStatement();
+			ResultSet rs = s.executeQuery(query);
+			
+			while(rs.next()){
+			existe=Boolean.valueOf(rs.getString("folio_corte"));
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+			
+		return existe;
 	}
 	
 	public Obj_Alimentacion_Por_Denominacion Datos_Denominacion(String folio_corte){
@@ -574,12 +597,12 @@ public class BuscarSQL {
 				corte.setPuesto(rs.getString("nombre_empleado").trim());
 				corte.setPuesto(rs.getString("puesto").trim());
 				corte.setEstablecimiento(rs.getString("establecimiento").trim());
-				corte.setAsignacion(rs.getString("asignacion").trim());
+//				corte.setAsignacion(rs.getString("asignacion").trim());
 				corte.setCorte_sistema(rs.getFloat("corte_del_sistema"));
 				corte.setDeposito(rs.getFloat("deposito"));
 				corte.setEfectivo(rs.getFloat("efectivo"));
 				corte.setDiferencia_corte(rs.getFloat("diferencia_corte"));
-				corte.setFecha(rs.getString("fecha").trim());
+				corte.setFecha_de_corte(rs.getString("fecha").trim());
 				corte.setStatus((rs.getString("status").equals("1"))?true:false);
 			}
 			
@@ -626,15 +649,15 @@ public class BuscarSQL {
 			while(rs.next()){
 				corte.setFolio_corte(rs.getString("folio_corte"));
 				corte.setFolio_empleado(rs.getInt("folio_empleado"));
-				corte.setPuesto(rs.getString("nombre_empleado").trim());
+				corte.setNombre(rs.getString("nombre_empleado").trim());
 				corte.setPuesto(rs.getString("puesto").trim());
 				corte.setEstablecimiento(rs.getString("establecimiento").trim());
-				corte.setAsignacion(rs.getString("asignacion").trim());
+//				corte.setAsignacion(rs.getString("asignacion").trim());
 				corte.setCorte_sistema(rs.getFloat("corte_del_sistema"));
 				corte.setDeposito(rs.getFloat("deposito"));
 				corte.setEfectivo(rs.getFloat("efectivo"));
 				corte.setDiferencia_corte(rs.getFloat("diferencia_corte"));
-				corte.setFecha(rs.getString("fecha").trim());
+				corte.setFecha_de_corte(rs.getString("fecha").trim());
 				corte.setStatus((rs.getString("status").equals("1"))?true:false);
 			}
 			
