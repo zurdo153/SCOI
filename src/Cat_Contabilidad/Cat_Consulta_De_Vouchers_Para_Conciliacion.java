@@ -155,6 +155,7 @@ public class Cat_Consulta_De_Vouchers_Para_Conciliacion extends JFrame{
 		        
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
+		
 		txtFoliofacturaFiltro.setToolTipText("Filtro Por Folio de Factura del Proveedor");
 		txtProveedorFiltro.setToolTipText("Filtro Por Proveedor");
 		panel.add(txtFoliofacturaFiltro).setBounds(15,50,50,20);

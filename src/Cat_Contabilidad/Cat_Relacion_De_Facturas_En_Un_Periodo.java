@@ -5,17 +5,16 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -23,38 +22,30 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.Connexion;
-import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Contabilidad.Obj_Relacion_de_facturas_en_un_periodo;
+import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
 public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
-	
-//	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Empleado", 10, "String");
-	
-	JDateChooser c_inicio = new JDateChooser();
-	JDateChooser c_final = new JDateChooser();
-	
-	JButton btngenerar = new JButton("Buscar",new ImageIcon("imagen/buscar.png"));
-	
-	
 	DefaultTableModel modelo = new DefaultTableModel(null,
-            new String[]{"Folio", "CodCte","Cliente","Fecha Fact","Importe","Iva","IEPS","Costo","Contribucion","Total","C.E.","Establecimiento",
-			             "Folio_Origen","CP","N_Cond_Pago","Notas","CU","N Usuario","Tasa 0 Importe","Tasa 0 IVA","Tasa 0 IEPS","Tasa 0 Neto",
-			             "Tasa 16 Importe","Tasa 16 IVA","Tasa 16 IEPS","Tasa 16 Neto","Status","Fecha Cancelacion",""}
+            new String[]{"Folio","C.E.","Establecimiento","C.C.","Cliente","Fecha Factura","Importe","Iva","IEPS","Costo","Contribucion","Total",
+			             "Folio_Origen","CP","N_Cond_Pago","Notas","CU","N Usuario","Ts0 Importe","Ts0 IVA","Ts0 IEPS","Ts0 Neto",
+			             "Ts16 Importe","Ts16 IVA","Ts16 IEPS","Ts16 Neto","Status","Fecha Cancelacion",""}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -127,13 +118,27 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
  			return false;
  		}
 	};
-	
-	
     JTable tablaFacturas = new JTable(modelo);
     JScrollPane scrollAsignado = new JScrollPane(tablaFacturas);
+    
+    JTextField txtFoliofiltro = new Componentes().text(new JTextField(), "Folio de la Factura", 15, "String");
+    JTextField txtcod_estabfiltro = new Componentes().text(new JTextField(), "Codigo de Establecimiento", 2, "Integer");
+    JTextField txtEstablecimientofiltro = new Componentes().text(new JTextField(), "Establecimiento", 70, "String");
 	
+	JDateChooser c_inicio = new JDateChooser();
+	JDateChooser c_final = new JDateChooser();
+	JDateChooser c_dia_trabajo = new JDateChooser();
 	
+	JButton btngenerar = new JButton("Buscar",new ImageIcon("imagen/buscar.png"));
+	JButton btnagregar = new JButton("Pasar Selecionadas",new ImageIcon("imagen/Aplicar.png"));
+	JButton btnseleccionar_todo = new JButton("Seleccionar Todo",new ImageIcon("imagen/double-arrow-icone-3883-16.png"));
+	
+    @SuppressWarnings("rawtypes")
+	private TableRowSorter trsfiltro;
+    
     Border blackline, etched, raisedbevel, loweredbevel, empty;
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Relacion_De_Facturas_En_Un_Periodo(){
 		setSize(1024, 768);
 		panel.add(new JLabel("Fecha Inicio:")).setBounds(15,20,100,20);
@@ -141,12 +146,31 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 		panel.add(new JLabel("Fecha Final:")).setBounds(200,20,100,20);
 		panel.add(c_final).setBounds(260,20,100,20);		
 		panel.add(btngenerar).setBounds(400, 20, 100, 20);
-		panel.add(ObtenerPanelTabla()).setBounds(15,80,990,650);
 		
+		panel.add(txtFoliofiltro).setBounds(15,50,50,20);
+		panel.add(txtcod_estabfiltro).setBounds(65,50,31,20);
+		panel.add(txtEstablecimientofiltro).setBounds(96,50,123,20);
+		panel.add(new JLabel("Trabajo Del Dia:")).setBounds(520,50,120,20);
+		panel.add(c_dia_trabajo).setBounds(600,50,100,20);
+		panel.add(btnseleccionar_todo).setBounds(710, 50, 145, 20);
+		panel.add(btnagregar).setBounds(860, 50, 145, 20);
+		
+		panel.add(ObtenerPanelTabla()).setBounds(15,70,990,395);
 		
 		cont.add(panel);
 		
-		btngenerar.addActionListener(opGenerar);
+		btngenerar.addActionListener(Buscar);
+		btnagregar.addActionListener(Agregar);
+		btnseleccionar_todo.addActionListener(Seleccionar_Todo);
+		
+		btnagregar.setToolTipText("<CTRL+R> Guardar las Facturas Selecionadas");
+		
+		trsfiltro = new TableRowSorter(modelo); 
+		tablaFacturas.setRowSorter(trsfiltro);
+		
+		txtFoliofiltro.addKeyListener(filtrofolio);
+		txtcod_estabfiltro.addKeyListener(filtrocodestab);
+		txtEstablecimientofiltro.addKeyListener(filtroestablecimiento);
 		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/archivo-icono-8809-32.png"));
 		this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
@@ -156,257 +180,102 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
+	 
 	private JScrollPane ObtenerPanelTabla()	{	
-		tablaFacturas.getTableHeader().setReorderingAllowed(false) ;
-		tablaFacturas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		
+	tablaFacturas.getTableHeader().setReorderingAllowed(false) ;
+	tablaFacturas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	
+	tablaFacturas.getColumnModel().getColumn(0).setMaxWidth(50);	
 	tablaFacturas.getColumnModel().getColumn(0).setMinWidth(45);
-	tablaFacturas.getColumnModel().getColumn(0).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(1).setMinWidth(45);
-	tablaFacturas.getColumnModel().getColumn(1).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(2).setMinWidth(250);
-	tablaFacturas.getColumnModel().getColumn(2).setMaxWidth(900);
-	tablaFacturas.getColumnModel().getColumn(3).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(3).setMaxWidth(200);
-	tablaFacturas.getColumnModel().getColumn(4).setMaxWidth(80);
-	tablaFacturas.getColumnModel().getColumn(4).setMinWidth(120);
-	tablaFacturas.getColumnModel().getColumn(5).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(5).setMaxWidth(120);
-	tablaFacturas.getColumnModel().getColumn(6).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(6).setMaxWidth(120);
-	tablaFacturas.getColumnModel().getColumn(7).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(7).setMaxWidth(120);
-	tablaFacturas.getColumnModel().getColumn(8).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(8).setMaxWidth(120);
-	tablaFacturas.getColumnModel().getColumn(9).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(9).setMaxWidth(120);
-	tablaFacturas.getColumnModel().getColumn(10).setMinWidth(20);
-	tablaFacturas.getColumnModel().getColumn(10).setMaxWidth(40);
-	tablaFacturas.getColumnModel().getColumn(11).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(11).setMaxWidth(120);
-	tablaFacturas.getColumnModel().getColumn(12).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(12).setMaxWidth(120);
-	tablaFacturas.getColumnModel().getColumn(13).setMinWidth(20);
-	tablaFacturas.getColumnModel().getColumn(13).setMaxWidth(20);
+	tablaFacturas.getColumnModel().getColumn(1).setMaxWidth(32);
+	tablaFacturas.getColumnModel().getColumn(1).setMinWidth(20);
+	tablaFacturas.getColumnModel().getColumn(2).setMaxWidth(130);
+	tablaFacturas.getColumnModel().getColumn(2).setMinWidth(120);
+	tablaFacturas.getColumnModel().getColumn(3).setMaxWidth(42);
+	tablaFacturas.getColumnModel().getColumn(3).setMinWidth(32);
+	tablaFacturas.getColumnModel().getColumn(4).setMinWidth(250);
+	tablaFacturas.getColumnModel().getColumn(4).setMaxWidth(400);
+	tablaFacturas.getColumnModel().getColumn(5).setMinWidth(90);
+	tablaFacturas.getColumnModel().getColumn(5).setMaxWidth(150);
+	tablaFacturas.getColumnModel().getColumn(6).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(6).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(7).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(7).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(8).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(8).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(9).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(9).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(10).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(10).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(11).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(11).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(12).setMinWidth(60);
+	tablaFacturas.getColumnModel().getColumn(12).setMaxWidth(70);
+	tablaFacturas.getColumnModel().getColumn(13).setMinWidth(10);
+	tablaFacturas.getColumnModel().getColumn(13).setMaxWidth(10);
 	tablaFacturas.getColumnModel().getColumn(14).setMinWidth(50);
 	tablaFacturas.getColumnModel().getColumn(14).setMaxWidth(50);
 	tablaFacturas.getColumnModel().getColumn(15).setMinWidth(50);
-	tablaFacturas.getColumnModel().getColumn(15).setMaxWidth(500);
-	tablaFacturas.getColumnModel().getColumn(16).setMinWidth(20);
-	tablaFacturas.getColumnModel().getColumn(16).setMaxWidth(20);
-	tablaFacturas.getColumnModel().getColumn(17).setMinWidth(50);
-	tablaFacturas.getColumnModel().getColumn(17).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(18).setMinWidth(50);
-	tablaFacturas.getColumnModel().getColumn(18).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(19).setMinWidth(50);
-	tablaFacturas.getColumnModel().getColumn(19).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(20).setMinWidth(50);
-	tablaFacturas.getColumnModel().getColumn(20).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(21).setMinWidth(50);
-	tablaFacturas.getColumnModel().getColumn(21).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(22).setMinWidth(50);
-	tablaFacturas.getColumnModel().getColumn(22).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(23).setMinWidth(50);
-	tablaFacturas.getColumnModel().getColumn(23).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(24).setMinWidth(50);
-	tablaFacturas.getColumnModel().getColumn(24).setMaxWidth(50);
-	tablaFacturas.getColumnModel().getColumn(25).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(25).setMaxWidth(120);
-	tablaFacturas.getColumnModel().getColumn(26).setMinWidth(80);
-	tablaFacturas.getColumnModel().getColumn(26).setMaxWidth(120);
+	tablaFacturas.getColumnModel().getColumn(15).setMaxWidth(150);
+	tablaFacturas.getColumnModel().getColumn(16).setMinWidth(15);
+	tablaFacturas.getColumnModel().getColumn(16).setMaxWidth(15);
+	tablaFacturas.getColumnModel().getColumn(17).setMinWidth(70);
+	tablaFacturas.getColumnModel().getColumn(17).setMaxWidth(250);
+	tablaFacturas.getColumnModel().getColumn(18).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(18).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(19).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(19).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(20).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(20).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(21).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(21).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(22).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(22).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(23).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(23).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(24).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(24).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(25).setMinWidth(55);
+	tablaFacturas.getColumnModel().getColumn(25).setMaxWidth(65);
+	tablaFacturas.getColumnModel().getColumn(26).setMinWidth(15);
+	tablaFacturas.getColumnModel().getColumn(26).setMaxWidth(15);
 	tablaFacturas.getColumnModel().getColumn(27).setMinWidth(80);
 	tablaFacturas.getColumnModel().getColumn(27).setMaxWidth(120);
 	tablaFacturas.getColumnModel().getColumn(28).setMinWidth(20);
 	tablaFacturas.getColumnModel().getColumn(28).setMaxWidth(20);
 
+    TableCellRenderer render = new TableCellRenderer() { 
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+		boolean hasFocus, int row, int column) { 
+          		Component componente = null;
+				componente = new JLabel(value == null? "": value.toString());
+				
+				if (column<5){
+ 				 ((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+				}else{ ((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
+				}
+          		
+          		if(row %2 == 0){
+					((JComponent) componente).setOpaque(true); 
+					componente.setBackground(new java.awt.Color(177,177,177));	
+					}
+				if(table.getSelectedRow() == row){
+				((JComponent) componente).setOpaque(true); 
+				componente.setBackground(new java.awt.Color(186,143,73));
+				}
+			return componente;
+		} 
+	}; 
 	
-//	TableCellRenderer render = new TableCellRenderer() { 
-//		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-//		boolean hasFocus, int row, int column) { 
-//			
-//			Component componente = null;
-//			
-//			switch(column){
-//				case 0: 
-//					componente = new JLabel(value == null? "": value.toString());
-//					if(row %2 == 0){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(177,177,177));	
-//					}
-//					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					if(table.getSelectedRow() == row){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-//					break;
-//				case 1: 
-//					componente = new JLabel(value == null? "": value.toString());
-//					if(row %2 == 0){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(177,177,177));	
-//					}
-//					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					if(table.getSelectedRow() == row){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-//					break;
-//				case 2: 
-//					componente = new JLabel(value == null? "": value.toString());
-//					if(row %2 == 0){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(177,177,177));	
-//					}
-//					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					if(table.getSelectedRow() == row){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-//					break;
-//				case 3: 
-//					componente = new JLabel(value == null? "": value.toString());
-//					if(row %2 == 0){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(177,177,177));	
-//					}
-//					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					if(table.getSelectedRow() == row){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-//					break;
-//				case 4: 
-//					componente = new JLabel(value == null? "": value.toString());
-//					if(row %2 == 0){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(177,177,177));	
-//					}
-//					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					if(table.getSelectedRow() == row){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-//					break;
-//				case 5: 
-//					componente = new JLabel(value == null? "": value.toString());
-//					if(row %2 == 0){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(177,177,177));	
-//					}
-//					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					if(table.getSelectedRow() == row){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-//					break;
-//				case 6: 
-//					componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-//					if(row%2==0){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(177,177,177));	
-//					}
-//					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					if(table.getSelectedRow() == row){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(186,143,73));
-//					}
-//					((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
-//					break;
-//			}
-//			return componente;
-//		} 
-//	}; 
+	for(int i=0; i<tablaFacturas.getColumnCount()-1; i++){
+	    tablaFacturas.getColumnModel().getColumn(i).setCellRenderer(render); 
+	}
 	
-//		            	tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-//						tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-//						tabla.getColumnModel().getColumn(2).setCellRenderer(render);
-//						tabla.getColumnModel().getColumn(3).setCellRenderer(render);
-//						tabla.getColumnModel().getColumn(4).setCellRenderer(render);
-//						tabla.getColumnModel().getColumn(5).setCellRenderer(render);
-//						tabla.getColumnModel().getColumn(6).setCellRenderer(render);
-	
-//    TableCellRenderer render = new TableCellRenderer() { 
-//		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-//		boolean hasFocus, int row, int column) { 
-//          		Component componente = null;
-//					componente = new JLabel(value == null? "": value.toString());
-//				
-//					if (column==28){
-//						componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-//						if(row%2==0){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(177,177,177));	
-//						}
-//						if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
-//						if(table.getSelectedRow() == row){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
-//						
-//					}else{	
-//						
-//						componente = new JLabel(value == null? "": value.toString());
-//						if(row %2 == 0){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(177,177,177));	
-//						}
-//						if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
-//						if(table.getSelectedRow() == row){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
-//					}
-//					((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-//			return componente;
-					
-			
-			
-//		} 
-//	}; 
-
-//	for(int i=0; i<tablaFacturas.getColumnCount(); i++){
-//	    this.tablaFacturas.getColumnModel().getColumn(i).setCellRenderer(render); 
-//	}
-
-	refrestabla("30/08/2014 00:00:00","31/08/2014 23:59:59");
 		 JScrollPane scrol = new JScrollPane(tablaFacturas);
 	    return scrol; 
 	}
 	
-	private void refrestabla(String FI, String FF){
+private void refrestabla(String FI, String FF){
 		Statement s;
 		ResultSet rs;
 		Connexion con = new Connexion();
@@ -415,7 +284,7 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 			rs = s.executeQuery("exec sp_reporte_de_facturas_en_un_periodo_con_tasas '"+FI+"','"+FF+"'");
 			while (rs.next())
 			{ 
-			   String [] fila = new String[29];
+			   Object [] fila = new Object[29];
 			   fila[0] = rs.getString(1).trim();
 			   fila[1] = rs.getString(2).trim();
 			   fila[2] = rs.getString(3).trim(); 
@@ -444,7 +313,7 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 			   fila[25] = rs.getString(26).trim();
 			   fila[26] = rs.getString(27).trim();
 			   fila[27] = rs.getString(28).trim();
-//			   fila[28] = "true";
+			   fila[28] = false;
 			   modelo.addRow(fila); 
 			}	
 		} catch (SQLException e1) {
@@ -455,7 +324,7 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 	
 	
 	
-	ActionListener opGenerar = new ActionListener() {
+	ActionListener Buscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 
 		if(validar_fechas().equals("")){
@@ -465,8 +334,8 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 			if(c_inicio.getDate().before(c_final.getDate())){
 				while(tablaFacturas.getRowCount()>0){
 					modelo.removeRow(0);  }
+				refrestabla(fecha_inicio,fecha_final);
 				
-//				new Cat_Reporte_General_de_Asistencia_Por_Establecimiento(fecha_inicio,fecha_final,Establecimiento,Departamento,folio_empleado);
 			 }else{
 				JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
 				return;
@@ -478,14 +347,129 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 		}
 	};
 	
+	ActionListener Agregar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(validar_fecha_dia_trabajo().equals("")){
+			String dia_trabajo = new SimpleDateFormat("dd/MM/yyyy").format(c_dia_trabajo.getDate())+" 00:00:00";
+			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
+			
+			if(tablaFacturas.isEditing()){
+				tablaFacturas.getCellEditor().stopCellEditing();
+			}
+	  	        if(JOptionPane.showConfirmDialog(null,"Las Facturas Seleccionadas \n Van Hacer Pasadas Al Trabajo del Dia: Confirmar?") == 0){
+	  	    			Obj_Relacion_de_facturas_en_un_periodo facturas_en_un_periodo = new Obj_Relacion_de_facturas_en_un_periodo();
+	  	    				
+	  	    			
+				  	    	if(facturas_en_un_periodo.guardar(tabla_guardar(),dia_trabajo)){
+				  	    		
+				  	    	      while(tablaFacturas.getRowCount()>0){ modelo.removeRow(0);  }
+							      refrestabla(fecha_inicio,fecha_final);
+						     	  JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+				  	    	}else{
+								JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
+								return;
+				  	    	}
+		  	    }else{
+				 JOptionPane.showMessageDialog(null,"Se Cancelo El Traspaso De La Factura","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				 return;
+			    }	
+			}else{
+				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fecha_dia_trabajo(),"Aviso!", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+	};
+	
+	private Object[][] tabla_guardar(){
+		Object[][] matriz = new Object[tablaFacturas.getRowCount()][29];
+		for(int i=0; i<tablaFacturas.getRowCount()-1; i++){
+			
+			matriz[i][0] = tablaFacturas.getValueAt(i,0).toString().trim();                     //folio
+			matriz[i][1] = Integer.parseInt(tablaFacturas.getValueAt(i,1).toString().trim());   //cod_estab
+			matriz[i][2] = tablaFacturas.getValueAt(i,2).toString().trim();                     //Establecimiento
+			matriz[i][3] = tablaFacturas.getValueAt(i,3).toString().trim();                     //cod_cliente
+			matriz[i][4] = tablaFacturas.getValueAt(i,4).toString().trim();                     //cliente
+			matriz[i][5] = tablaFacturas.getValueAt(i,5).toString().trim();                     //Fecha_factura
+			matriz[i][6] = Float.parseFloat(tablaFacturas.getValueAt(i,6).toString().trim());   //importe
+            matriz[i][7] = Float.parseFloat(tablaFacturas.getValueAt(i,7).toString().trim());   //IVA	
+            matriz[i][8] = Float.parseFloat(tablaFacturas.getValueAt(i,8).toString().trim());   //IEPS
+            matriz[i][9] = Float.parseFloat(tablaFacturas.getValueAt(i,9).toString().trim());   //Costo
+            matriz[i][10] = Float.parseFloat(tablaFacturas.getValueAt(i,10).toString().trim()); //Contribucion
+            matriz[i][11] = Float.parseFloat(tablaFacturas.getValueAt(i,11).toString().trim()); //Total
+            matriz[i][12] = tablaFacturas.getValueAt(i,12).toString().trim();                   //Folio_Origen
+            matriz[i][13] = Integer.parseInt(tablaFacturas.getValueAt(i,13).toString().trim()); //Cod_Pago
+            matriz[i][14] = tablaFacturas.getValueAt(i,14).toString().trim();                   //Condicion_Pago
+            matriz[i][15] = tablaFacturas.getValueAt(i,15).toString().trim();                   //Notas
+            matriz[i][16] = Integer.parseInt(tablaFacturas.getValueAt(i,16).toString().trim()); //Cod_Usuario
+            matriz[i][17] = tablaFacturas.getValueAt(i,17).toString().trim();                   //Usuario
+            matriz[i][18] = Float.parseFloat(tablaFacturas.getValueAt(i,18).toString().trim()); //Ts0_Importe
+            matriz[i][19] = Float.parseFloat(tablaFacturas.getValueAt(i,19).toString().trim()); //Ts0_IVA
+            matriz[i][20] = Float.parseFloat(tablaFacturas.getValueAt(i,20).toString().trim()); //Ts0_IEPS
+            matriz[i][21] = Float.parseFloat(tablaFacturas.getValueAt(i,21).toString().trim()); //Ts0_Neto
+            matriz[i][22] = Float.parseFloat(tablaFacturas.getValueAt(i,22).toString().trim()); //Ts16_Importe
+            matriz[i][23] = Float.parseFloat(tablaFacturas.getValueAt(i,23).toString().trim()); //Ts16_IVA
+            matriz[i][24] = Float.parseFloat(tablaFacturas.getValueAt(i,24).toString().trim()); //Ts16_IEPS
+            matriz[i][25] = Float.parseFloat(tablaFacturas.getValueAt(i,25).toString().trim()); //Ts16_Neto
+            matriz[i][26] = tablaFacturas.getValueAt(i,26).toString().trim();                   //Status
+            matriz[i][27] = tablaFacturas.getValueAt(i,27).toString().trim();                   //Fecha_Cancelacion
+			matriz[i][28] = tablaFacturas.getValueAt(i, 28).toString().trim();                  //Boleano  
+		}
+		return matriz;
+	}
+	
+	public String validar_fecha_dia_trabajo(){
+		String error = "";
+		String fechadia_trabajoNull = c_dia_trabajo.getDate()+"";
+	    if(fechadia_trabajoNull.equals("null"))error+= "Fecha del >>Trabajo del Dia<<\n";
+		return error;
+	}
+	
 	public String validar_fechas(){
 		String error = "";
 		String fechainicioNull = c_inicio.getDate()+"";
 		String fechafinalNull = c_final.getDate()+"";
-	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";
-		if(fechafinalNull.equals("null"))error+= "Fecha Final\n";
+	    if(fechainicioNull.equals("null"))error+= ">>Fecha  inicio<<\n";
+		if(fechafinalNull.equals("null"))error+= ">>Fecha Final<<\n";
 		return error;
 	}
+	
+	ActionListener Seleccionar_Todo = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			for(int i=0; i<tablaFacturas.getRowCount(); i++){
+				
+				 modelo.setValueAt(Boolean.parseBoolean("true"), i, 28);
+			}
+		  }
+		};
+	
+		
+	KeyListener filtrofolio = new KeyListener(){
+			@SuppressWarnings("unchecked")
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFoliofiltro.getText(),0));
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}	
+		    };
+	    
+	KeyListener filtrocodestab = new KeyListener(){
+			@SuppressWarnings("unchecked")
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtcod_estabfiltro.getText(),1));
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}	
+		    };
+		    
+	KeyListener filtroestablecimiento = new KeyListener(){
+			@SuppressWarnings("unchecked")
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtEstablecimientofiltro.getText(),2));
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}	
+		    };
 	
 	public static void main(String args[]){
 		try{
