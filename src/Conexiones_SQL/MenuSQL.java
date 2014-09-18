@@ -39,7 +39,6 @@ public class MenuSQL {
 			s.close();
 		} catch (SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Error en MenusSQL  en la funcion getSubMenusNivel  procedimiento almacenado sp_obtener_sub_menus_de_usuario SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-
 			e1.printStackTrace();
 		}
 		return vec;

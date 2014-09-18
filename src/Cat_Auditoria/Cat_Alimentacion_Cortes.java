@@ -1019,7 +1019,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	ActionListener filtro = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			dispose();
-			new Cat_Filtro_Alimentacion_Cortes_De_Cajeros().setVisible(true);
+			new Cat_Cortes_De_Cajeros().setVisible(true);
 		}
 	};	
 	

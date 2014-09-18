@@ -32,7 +32,7 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings({ "serial", "unchecked" })
-public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
+public class Cat_Cortes_De_Cajeros extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
@@ -60,7 +60,7 @@ public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	@SuppressWarnings("rawtypes")
-	public Cat_Filtro_Alimentacion_Cortes_De_Cajeros()	{
+	public Cat_Cortes_De_Cajeros()	{
 		this.setTitle("Filtro Cortes ");
 		
 //		cont.setBackground(new Color(86,161,85));
@@ -223,6 +223,6 @@ public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
 	};
 	
 	public static void main(String args[]){
-		new Cat_Filtro_Alimentacion_Cortes_De_Cajeros().setVisible(true);
+		new Cat_Cortes_De_Cajeros().setVisible(true);
 	}
 }
