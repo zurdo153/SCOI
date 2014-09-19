@@ -2,14 +2,14 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Efectivo_Para_Cortes" language="groovy" pageWidth="250" pageHeight="400" columnWidth="210" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="1f81344e-8124-4307-847f-1d49169f400a">
 	<property name="ireport.zoom" value="2.1961500000000034"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="28"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" mode="Transparent" forecolor="#000000" backcolor="#000000" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
 	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<queryString>
 		<![CDATA[declare @folio_corte varchar(15)
---set @folio_corte = ('DPII1');
+--set @folio_corte = ('SII9');
 select convert(varchar(20),tb_alimentacion_denominaciones.fecha_mov,103)+' '+convert(varchar(20),tb_alimentacion_denominaciones.fecha_mov,108) as fecha
 
 		,tb_alimentacion_denominaciones.folio_corte as folio_corte
@@ -17,7 +17,7 @@ select convert(varchar(20),tb_alimentacion_denominaciones.fecha_mov,103)+' '+con
 		,tb_denominaciones.denominacion as denominacion
 		,tb_alimentacion_denominaciones.valor_denominacion as denominacion_con_numero
 		,tb_alimentacion_denominaciones.cantidad as cantidad
-		,(tb_alimentacion_denominaciones.valor_denominacion*tb_alimentacion_denominaciones.cantidad) as total
+		,(tb_alimentacion_denominaciones.valor_denominacion*tb_alimentacion_denominaciones.valor*tb_alimentacion_denominaciones.cantidad) as total
 from tb_alimentacion_denominaciones
 inner join tb_empleado on tb_empleado.folio = tb_alimentacion_denominaciones.folio_empleado
 inner join tb_denominaciones on tb_denominaciones.folio = tb_alimentacion_denominaciones.folio_denominacion
