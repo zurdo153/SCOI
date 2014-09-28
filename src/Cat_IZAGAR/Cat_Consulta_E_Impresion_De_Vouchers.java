@@ -112,6 +112,9 @@ public class Cat_Consulta_E_Impresion_De_Vouchers extends JFrame{
 	};
 	
 	public void Actualizar_Autorizaciones_Bancarias_de_Otros_Servidores(){
+		
+//		boolean actualizo = false;
+		
 		String query = "exec Actualizar_Autorizaciones_Bancarias";
 		PreparedStatement pstmt = null;
 		Connection con = new Connexion().conexion_IZAGAR();
@@ -120,6 +123,7 @@ public class Cat_Consulta_E_Impresion_De_Vouchers extends JFrame{
 			pstmt = con.prepareStatement(query);
 			pstmt.executeUpdate();
 			con.commit();
+//			actualizo = true;
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
 			JOptionPane.showMessageDialog(null, "Error en impresion voucher  en la funcion buscar  procedimiento almacenado Actualizar_Autorizaciones_Bancarias SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
@@ -141,7 +145,7 @@ public class Cat_Consulta_E_Impresion_De_Vouchers extends JFrame{
 				JOptionPane.showMessageDialog(null, "Error en impresion voucher  en la funcion buscar  procedimiento almacenado Actualizar_Autorizaciones_Bancarias SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
-
+//		return actualizo;
 	}
 	
 	public static void main(String args[]){

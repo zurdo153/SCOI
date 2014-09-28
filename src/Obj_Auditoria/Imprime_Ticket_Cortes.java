@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import Cat_Auditoria.Cat_Filtro_Alimentacion_Cortes_De_Cajeros;
+import Cat_Auditoria.Cat_Cortes_De_Cajeros;
 
 import java.util.*;
 
@@ -114,7 +114,7 @@ public class Imprime_Ticket_Cortes extends JFrame
 			g.dispose();
 			print.end();
 			dispose();
-			new Cat_Filtro_Alimentacion_Cortes_De_Cajeros().setVisible(true);
+			new Cat_Cortes_De_Cajeros().setVisible(true);
 			
 		}catch(Exception ee){
 			JOptionPane.showMessageDialog(null,"      Ha ocurrido un error\nNo se encontro La Impresora.");

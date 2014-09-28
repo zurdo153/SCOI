@@ -2706,4 +2706,42 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
+	
+	public boolean Actualizar_Voucherts_Con_Retiro(Object[][] tabla){
+		
+		String query ="exec sp_update_vouchers_con_retiros ?,?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			PreparedStatement pstmt = con.prepareStatement(query);
+			con.setAutoCommit(false);
+			for(int i=0; i<tabla.length; i++){
+				pstmt.setString(1, tabla[i][0].toString().trim());
+				pstmt.setFloat (2, Float.parseFloat(tabla[i][1].toString().trim()));
+				pstmt.executeUpdate();
+			}
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Voucherts_Con_Retiro ] update  SQLException: sp_insert_deposito "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Voucherts_Con_Retiro ] update  SQLException: sp_insert_deposito "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 }

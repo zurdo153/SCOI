@@ -9,7 +9,7 @@
 	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<queryString>
 		<![CDATA[declare @folio_corte varchar(15)
---set @folio_corte = ('DPII19');
+--set @folio_corte = ('SII9');
 select convert(varchar(20),tb_alimentacion_denominaciones.fecha_mov,103)+' '+convert(varchar(20),tb_alimentacion_denominaciones.fecha_mov,108) as fecha
 
 		,tb_alimentacion_denominaciones.folio_corte as folio_corte
@@ -17,7 +17,7 @@ select convert(varchar(20),tb_alimentacion_denominaciones.fecha_mov,103)+' '+con
 		,tb_denominaciones.denominacion as denominacion
 		,tb_alimentacion_denominaciones.valor_denominacion as denominacion_con_numero
 		,tb_alimentacion_denominaciones.cantidad as cantidad
-		,(tb_alimentacion_denominaciones.valor_denominacion*tb_alimentacion_denominaciones.cantidad) as total
+		,(tb_alimentacion_denominaciones.valor_denominacion*tb_alimentacion_denominaciones.valor*tb_alimentacion_denominaciones.cantidad) as total
 from tb_alimentacion_denominaciones
 inner join tb_empleado on tb_empleado.folio = tb_alimentacion_denominaciones.folio_empleado
 inner join tb_denominaciones on tb_denominaciones.folio = tb_alimentacion_denominaciones.folio_denominacion
@@ -185,7 +185,7 @@ order by tb_alimentacion_denominaciones.valor_denominacion desc]]>
 				<textElement textAlignment="Center">
 					<font size="7" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Firma"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Firma Cajero(a): "+$F{cajero}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="c5f2609c-6a9f-4fdf-8c80-5b3f7f2e1b74" x="62" y="-5" width="146" height="15"/>

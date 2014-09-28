@@ -12,6 +12,7 @@ import java.sql.Statement;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -32,7 +33,7 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings({ "serial", "unchecked" })
-public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
+public class Cat_Cortes_De_Cajeros extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
@@ -60,7 +61,7 @@ public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	@SuppressWarnings("rawtypes")
-	public Cat_Filtro_Alimentacion_Cortes_De_Cajeros()	{
+	public Cat_Cortes_De_Cajeros()	{
 		this.setTitle("Filtro Cortes ");
 		
 //		cont.setBackground(new Color(86,161,85));
@@ -149,13 +150,22 @@ public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
 		{ 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
 			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-		
-				if(row%2==0){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-			return lbl; 
+				
+					Component componente = null;
+					
+					componente = new JLabel(value == null? "": value.toString());
+					if(row %2 == 0){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(177,177,177));	
+					}
+					if(table.getSelectedRow() == row){
+						((JComponent) componente).setOpaque(true); 
+						componente.setBackground(new java.awt.Color(186,143,73));
+					}
+					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+					
+					return componente;
+				
 			} 
 		}; 
 						tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
@@ -165,9 +175,7 @@ public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
 		ResultSet rs;
 		try {
 			s = con.conexion().createStatement();
-			rs = s.executeQuery("select tb_empleado.folio as Folio," +
-					"			tb_empleado.nombre + ' ' +	tb_empleado.ap_paterno + ' ' +  tb_empleado.ap_materno as NombreCompleto" +
-					" from tb_empleado where tb_empleado.status=1 and tb_empleado.puesto_id =32 order by tb_empleado.nombre" );
+			rs = s.executeQuery("exec sp_select_empleados_en_cortes" );
 			
 			while (rs.next())
 			{ 
@@ -223,6 +231,6 @@ public class Cat_Filtro_Alimentacion_Cortes_De_Cajeros extends JFrame{
 	};
 	
 	public static void main(String args[]){
-		new Cat_Filtro_Alimentacion_Cortes_De_Cajeros().setVisible(true);
+		new Cat_Cortes_De_Cajeros().setVisible(true);
 	}
 }

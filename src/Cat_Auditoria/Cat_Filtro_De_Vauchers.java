@@ -350,9 +350,9 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 		
 	}
 	
-	 	public Object[][] getTablaFiltro(String cadenaAsignaciones){
+	 	public Object[][] getTablaFiltro(String cadenaAsignaciones, String cadena_de_vouchers_en_uso){
 //		String todos = "exec sp_Reporte_IZAGAR_de_Asignaciones_del_dia";
-	 		System.out.println(cadenaAsignaciones);
+//	 		System.out.println(cadenaAsignaciones);
 		String todos = "select  autorizaciones_bancarias.folio as Ticket " +
 						",equipos_perifericos.borrar as Afiliacion " +
 						",'************'+SUBSTRING(autorizaciones_bancarias.numero_tarjeta,4,4) as Numero_Tarjeta " +
@@ -367,7 +367,8 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 						"from autorizaciones_bancarias " +
 						"inner join equipos_perifericos_equipo_bms on equipos_perifericos_equipo_bms.equipo_bms=autorizaciones_bancarias.equipo " +
 						"inner join equipos_perifericos on equipos_perifericos.equipo_periferico=equipos_perifericos_equipo_bms.equipo_periferico " +
-						"where folio in(select folio from facremtick where folio_cajero in ("+cadenaAsignaciones+")) and equipos_perifericos.tipo_periferico='P'";		
+						"where folio in(select folio from facremtick where folio_cajero in ("+cadenaAsignaciones+")) and equipos_perifericos.tipo_periferico='P' " +
+						"and autorizaciones_bancarias.folio not in ("+cadena_de_vouchers_en_uso+")";		
 		System.out.println(todos);
 		Statement s;
 		ResultSet rs;
@@ -381,14 +382,14 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 				MatrizFiltro[i][0] = "   "+ (rs.getString(1).trim().equals("")?"-":rs.getString(1).trim());
 				MatrizFiltro[i][1] = "   "+ (rs.getString(2).trim().equals("")?"-":rs.getString(2).trim());
 				MatrizFiltro[i][2] = "   "+ (rs.getString(3).trim().equals("")?"-":rs.getString(3).trim());
-				MatrizFiltro[i][3] = "   "+ (rs.getString(4).trim().equals("")?"-":rs.getString(4).trim());;
-				MatrizFiltro[i][4] = "   "+ (rs.getString(5).trim().equals("")?"-":rs.getString(5).trim());;
-				MatrizFiltro[i][5] = "   "+ (rs.getString(6).trim().equals("")?"-":rs.getString(6).trim());;
-				MatrizFiltro[i][6] = "   "+ (rs.getString(7).trim().equals("")?"-":rs.getString(7).trim());;
-				MatrizFiltro[i][7] = "   "+ (rs.getString(8).trim().equals("")?"-":rs.getString(8).trim());;
-				MatrizFiltro[i][8] = "   "+ (rs.getString(9).trim().equals("")?"-":rs.getString(9).trim());;
-				MatrizFiltro[i][9] = "   "+ (rs.getString(10).trim().equals("")?"-":rs.getString(10).trim());;
-				MatrizFiltro[i][10] = 		(rs.getString(11).trim().equals("")?"-":rs.getString(11).trim());;
+				MatrizFiltro[i][3] = "   "+ (rs.getString(4).trim().equals("")?"-":rs.getString(4).trim());
+				MatrizFiltro[i][4] = "   "+ (rs.getString(5).trim().equals("")?"-":rs.getString(5).trim());
+				MatrizFiltro[i][5] = "   "+ (rs.getString(6).trim().equals("")?"-":rs.getString(6).trim());
+				MatrizFiltro[i][6] = "   "+ (rs.getString(7).trim().equals("")?"-":rs.getString(7).trim());
+				MatrizFiltro[i][7] = "   "+ (rs.getString(8).trim().equals("")?"-":rs.getString(8).trim());
+				MatrizFiltro[i][8] = "   "+ (rs.getString(9).trim().equals("")?"-":rs.getString(9).trim());
+				MatrizFiltro[i][9] = "   "+ (rs.getString(10).trim().equals("")?"-":rs.getString(10).trim());
+				MatrizFiltro[i][10] = 		(rs.getString(11).trim().equals("")?"-":rs.getString(11).trim());
 				
 				i++;
 			}
