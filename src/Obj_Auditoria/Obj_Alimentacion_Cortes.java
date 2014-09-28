@@ -1,5 +1,6 @@
 package Obj_Auditoria;
 
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
@@ -198,5 +199,7 @@ public class Obj_Alimentacion_Cortes {
 	public Obj_Alimentacion_Cortes buscar_folio_corte_deposito(String folio_corte) {return new BuscarSQL().Folio_Corte_Deposito(folio_corte);}
 	
 	public boolean buscar_folio_corte_cheques(String folio_corte){ return new BuscarSQL().Folio_Corte_Cheques(folio_corte); }
+	
+	public boolean actualizar(Object [][] tabla){ return new ActualizarSQL().Actualizar_Voucherts_Con_Retiro(tabla); }
 	
 }
