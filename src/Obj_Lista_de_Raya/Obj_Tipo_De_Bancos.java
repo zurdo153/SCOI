@@ -98,9 +98,9 @@ public class Obj_Tipo_De_Bancos {
 		return null;
 	}	
 	
-	public String[] Combo_Tipo_Banco(){ 
+	public String[] Combo_Tipo_Banco_Empleado(){ 
 		try {
-			return new Cargar_Combo().Tipo_Banco("tb_tipo_banco");
+			return new Cargar_Combo().Tipo_Banco_Empleado("tb_tipo_banco");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

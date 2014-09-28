@@ -39,8 +39,6 @@ import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
 public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
-	Container cont = getContentPane();
-	JLayeredPane panel = new JLayeredPane();
 	
 	DefaultTableModel modelo = new DefaultTableModel(null,
             new String[]{"Folio","C.E.","Establecimiento","C.C.","Cliente","Fecha Factura","Importe","Iva","IEPS","Costo","Contribucion","Total",
@@ -121,6 +119,66 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
     JTable tablaFacturas = new JTable(modelo);
     JScrollPane scrollAsignado = new JScrollPane(tablaFacturas);
     
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    DefaultTableModel modelotdd = new DefaultTableModel(null,
+            new String[]{"Tbj del Dia","C.E.","Establecimiento","IVA","IEPS","Costo","Contribucion","Total","Ts0 Importe","Ts0 IVA","Ts0 IEPS","Ts0 Neto"
+    	                 ,"Ts16 Importe","Ts16 IVA","Ts16 IEPS","Ts16 Neto"}
+			){
+	     @SuppressWarnings("rawtypes")
+		Class[] types = new Class[]{
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+                                    };
+	     @SuppressWarnings({ "rawtypes", "unchecked" })
+		public Class getColumnClass(int columnIndex) {
+             return types[columnIndex];
+         }
+         public boolean isCellEditable(int fila, int columna){
+        	 switch(columna){
+        	 	case 0 : return false; 
+        	 	case 1 : return false; 
+        	 	case 2 : return false;
+        	 	case 3 : return false;
+        	 	case 4 : return false;
+        	 	case 5 : return false;
+        	 	case 6 : return false;
+        	 	case 7 : return false;
+        	 	case 8 : return false;
+        	 	case 9 : return false;
+        	 	case 10 : return false;
+        	 	case 11 : return false;
+        	 	case 12 : return false;
+        	 	case 13 : return false;
+        	 	case 14 : return false;
+        	 	case 15 : return false;
+        	 } 				
+ 			return false;
+ 		}
+	};
+    JTable tabla_Trabajo_del_dia = new JTable(modelotdd);
+    JScrollPane scroll_trabajo_del_dia = new JScrollPane(tabla_Trabajo_del_dia);
+    
+    
+    
+    
+	Container cont = getContentPane();
+	JLayeredPane panel = new JLayeredPane();
+	
     JTextField txtFoliofiltro = new Componentes().text(new JTextField(), "Folio de la Factura", 15, "String");
     JTextField txtcod_estabfiltro = new Componentes().text(new JTextField(), "Codigo de Establecimiento", 2, "Integer");
     JTextField txtEstablecimientofiltro = new Componentes().text(new JTextField(), "Establecimiento", 70, "String");
@@ -140,7 +198,7 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Relacion_De_Facturas_En_Un_Periodo(){
-		setSize(1024, 768);
+		
 		panel.add(new JLabel("Fecha Inicio:")).setBounds(15,20,100,20);
 		panel.add(c_inicio).setBounds(80,20,100,20);
 		panel.add(new JLabel("Fecha Final:")).setBounds(200,20,100,20);
@@ -155,7 +213,9 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 		panel.add(btnseleccionar_todo).setBounds(710, 50, 145, 20);
 		panel.add(btnagregar).setBounds(860, 50, 145, 20);
 		
-		panel.add(ObtenerPanelTabla()).setBounds(15,70,990,395);
+		panel.add(ObtenerPanelTabla()).setBounds(15,70,990,350);
+		panel.add(ObtenerPanelTabla_Trabajos_del_dia()).setBounds(15,480,990,250);
+		refrestabla_Trabajo_del_dia();
 		
 		cont.add(panel);
 		
@@ -172,10 +232,12 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 		txtcod_estabfiltro.addKeyListener(filtrocodestab);
 		txtEstablecimientofiltro.addKeyListener(filtroestablecimiento);
 		
+		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/archivo-icono-8809-32.png"));
 		this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline,"Relacion De Facturas En Un Periodo Con Valores Por Tasas"));
 		this.setTitle("Relacion De Facturas En Un Periodo");
+		this.setSize(1024, 768);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -318,10 +380,114 @@ private void refrestabla(String FI, String FF){
 			}	
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en Cat_Relacion_De_Facturas_En_Un_Periodo en la funcion ObtenerPanelTabla  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en Cat_Relacion_De_Facturas_En_Un_Periodo en la funcion refrestabla  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
+private JScrollPane ObtenerPanelTabla_Trabajos_del_dia()	{	
+tabla_Trabajo_del_dia.getTableHeader().setReorderingAllowed(false) ;
+tabla_Trabajo_del_dia.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+tabla_Trabajo_del_dia.getColumnModel().getColumn(0).setMaxWidth(60);	
+tabla_Trabajo_del_dia.getColumnModel().getColumn(0).setMinWidth(60);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(1).setMaxWidth(20);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(1).setMinWidth(20);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(2).setMaxWidth(130);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(2).setMinWidth(120);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(3).setMaxWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(3).setMinWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(4).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(4).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(5).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(5).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(6).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(6).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(7).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(7).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(8).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(8).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(9).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(9).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(10).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(10).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(11).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(11).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(12).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(12).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(13).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(13).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(14).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(14).setMaxWidth(75);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(15).setMinWidth(70);
+tabla_Trabajo_del_dia.getColumnModel().getColumn(15).setMaxWidth(75);
+
+TableCellRenderer render_2 = new TableCellRenderer() { 
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+	boolean hasFocus, int row, int column) { 
+      		Component componente = null;
+			componente = new JLabel(value == null? "": value.toString());
+			
+			if (column<3){
+				 ((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+			}else{ ((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
+			}
+      		
+      		if(row %2 == 0){
+				((JComponent) componente).setOpaque(true); 
+				componente.setBackground(new java.awt.Color(177,177,177));	
+				}
+			if(table.getSelectedRow() == row){
+			((JComponent) componente).setOpaque(true); 
+			componente.setBackground(new java.awt.Color(186,143,73));
+			}
+		return componente;
+	} 
+}; 
+
+for(int i=0; i<tabla_Trabajo_del_dia.getColumnCount(); i++){
+	tabla_Trabajo_del_dia.getColumnModel().getColumn(i).setCellRenderer(render_2); 
+}
+
+	 JScrollPane scrol_2 = new JScrollPane(tabla_Trabajo_del_dia);
+    return scrol_2; 
+}
+private void refrestabla_Trabajo_del_dia(){
+	Statement s;
+	ResultSet rs;
+	Connexion con = new Connexion();
+	try {
+		s = con.conexion().createStatement();
+		rs = s.executeQuery("exec sp_listado_de_trabajos_de_dia_por_establecimiento");
+		while (rs.next())
+		{ 
+		   Object [] fila = new Object[16];
+		   
+		   fila[0] = rs.getString(1).trim();
+		   fila[1] = rs.getString(2).trim();
+		   fila[2] = rs.getString(3).trim(); 
+		   fila[3] = rs.getString(4).trim(); 
+		   fila[4] = rs.getString(5).trim(); 
+		   fila[5] = rs.getString(6).trim();
+		   fila[6] = rs.getString(7).trim();
+		   fila[7] = rs.getString(8).trim();
+		   fila[8] = rs.getString(9).trim();
+		   fila[9] = rs.getString(10).trim();
+		   fila[10] = rs.getString(11).trim();
+		   fila[11] = rs.getString(12).trim();
+		   fila[12] = rs.getString(13).trim();
+		   fila[13] = rs.getString(14).trim();
+		   fila[14] = rs.getString(15).trim();
+		   fila[15] = rs.getString(16).trim();
+		   modelotdd.addRow(fila); 
+		}	
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en Cat_Relacion_De_Facturas_En_Un_Periodo en la funcion refrestabla_Trabajo_del_dia  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+}
+
+
+
 	
 	
 	ActionListener Buscar = new ActionListener() {

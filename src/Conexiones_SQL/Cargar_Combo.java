@@ -656,6 +656,40 @@ public class Cargar_Combo {
 			
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String[] Tipo_Banco_Empleado(String tabla) throws SQLException{
+		String query = "select nombre from " + tabla+ " where status=1 and status_empleado=1";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona un Banco");
+				}
+				miVector.add(rs.getString("nombre"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public String[] Respuesta(String tabla) throws SQLException{

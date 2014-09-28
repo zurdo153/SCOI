@@ -171,6 +171,7 @@ public class Cat_Empleados extends JFrame{
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
+	
 	String puesto[] = new Obj_Puestos().Combo_Puesto();
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbPuesto = new JComboBox(puesto);
@@ -196,7 +197,7 @@ public class Cat_Empleados extends JFrame{
 	JTextField txtInfonavit = new Componentes().text(new JTextField(), "Descuento a Infonavit", 15, "Double");
 	JTextField txtTarjetaNomina = new Componentes().text(new JTextField(), "Tarjeta de Nómina", 19, "Int");
 	
-	String TipoBanco[] = new Obj_Tipo_De_Bancos().Combo_Tipo_Banco();
+	String TipoBanco[] = new Obj_Tipo_De_Bancos().Combo_Tipo_Banco_Empleado();
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbTipoBancos = new JComboBox(TipoBanco);
 	
