@@ -47,7 +47,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import Biblioteca.TapTapTap;
 import Cat_IZAGAR.Cat_Consulta_E_Impresion_De_Vouchers;
 import Cat_Reportes.Cat_Reporte_De_Cheques_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
