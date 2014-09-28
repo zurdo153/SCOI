@@ -871,14 +871,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				}else{
 					
 					
-//					new TapTapTap().createUI();
+//					new Cat_Consulta_E_Impresion_De_Vouchers().Actualizar_Autorizaciones_Bancarias_de_Otros_Servidores();
 					
-					new Cat_Consulta_E_Impresion_De_Vouchers().Actualizar_Autorizaciones_Bancarias_de_Otros_Servidores();
-//					ejecutar minireplica
-//					if(new Cat_Consulta_E_Impresion_De_Vouchers().Actualizar_Autorizaciones_Bancarias_de_Otros_Servidores()){
-//						
-//					}
-//					abrir filtro
 					new Cat_Filtrar_Vauchers().setVisible(true);
 				}
 		}
@@ -2735,9 +2729,4 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			lblDiferenciaCorte.setText("$ "+formato.format(diferienciaCorte));
 		}
 		
-//		public class splash extends TapTapTap{
-//			public splash(){
-//				
-//			}
-//		}
 	}
