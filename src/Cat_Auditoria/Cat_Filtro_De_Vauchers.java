@@ -39,10 +39,12 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 	Object[][] MatrizFiltro ;
 	
 	DefaultTableModel modelo_vaucher_filtro = new DefaultTableModel(null,
-            new String[]{"Ticket", "Afiliacion", "Numero De Targeta", "Fecha E.", "Cod. Aut.", "Tipo De Targeta", "Banco Emisor", "Tipo De Operacion", "Fecha Autorizacion", "Importe", "*"}
+            new String[]{"Ticket", "Afiliacion", "Numero De Targeta", "Fecha E.", "Cod. Aut.", "Tipo De Targeta", "Banco Emisor", "Tipo De Operacion", "Fecha Autorizacion", "Importe","Asignacion","Retiro cliente", "*"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
+	    	java.lang.String.class,
+	    	java.lang.String.class,
 	    	java.lang.String.class,
 	    	java.lang.String.class,
 	    	java.lang.String.class,
@@ -72,7 +74,9 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
         	 	case 7 : return false;
         	 	case 8 : return false;
         	 	case 9 : return false;
-        	 	case 10 : return true;
+        	 	case 10 : return false;
+        	 	case 11 : return false;
+        	 	case 12 : return true;
         	 	} 				
  			return false;
  		}
@@ -103,15 +107,15 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 		
 		
 		campo.add(txtFolioTicket).setBounds(10,38,90,20);
-		campo.add(btnCargar).setBounds(855,38,80,20);
+		campo.add(btnCargar).setBounds(915,38,80,20);
 		
-		campo.add(scroll).setBounds(10,60,925,320);
+		campo.add(scroll).setBounds(10,60,985,320);
 		
 		cont.add(campo);
 		
 		txtFolioTicket.addKeyListener(opFiltroAsignacion);
 		
-		setSize(960,430);
+		setSize(1014,430);
 		setResizable(false);
 		setLocationRelativeTo(null);
 	}
@@ -144,8 +148,12 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 		tabla_vaucher_filtro.getColumnModel().getColumn(8).setMinWidth(130);
 		tabla_vaucher_filtro.getColumnModel().getColumn(9).setMaxWidth(70);
 		tabla_vaucher_filtro.getColumnModel().getColumn(9).setMinWidth(70);
-		tabla_vaucher_filtro.getColumnModel().getColumn(10).setMaxWidth(25);
-		tabla_vaucher_filtro.getColumnModel().getColumn(10).setMinWidth(25);
+		tabla_vaucher_filtro.getColumnModel().getColumn(10).setMaxWidth(30);
+		tabla_vaucher_filtro.getColumnModel().getColumn(10).setMinWidth(30);
+		tabla_vaucher_filtro.getColumnModel().getColumn(11).setMaxWidth(30);
+		tabla_vaucher_filtro.getColumnModel().getColumn(11).setMinWidth(30);
+		tabla_vaucher_filtro.getColumnModel().getColumn(12).setMaxWidth(25);
+		tabla_vaucher_filtro.getColumnModel().getColumn(12).setMinWidth(25);
 
 		TableCellRenderer render = new TableCellRenderer() { 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -316,7 +324,39 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 						}
 						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
 						break;
-					case 10: 
+					case 10:
+						componente = new JLabel(value == null? "": value.toString());
+						if(row %2 == 0){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(177,177,177));	
+						}
+						if(Boolean.parseBoolean(modelo_vaucher_filtro.getValueAt(row,3).toString())){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(186,143,73));
+						}
+						if(table.getSelectedRow() == row){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(186,143,73));
+						}
+						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+						break;
+					case 11:
+						componente = new JLabel(value == null? "": value.toString());
+						if(row %2 == 0){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(177,177,177));	
+						}
+						if(Boolean.parseBoolean(modelo_vaucher_filtro.getValueAt(row,3).toString())){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(186,143,73));
+						}
+						if(table.getSelectedRow() == row){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(186,143,73));
+						}
+						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+						break;
+					case 12: 
 						componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
 						if(row%2==0){
 							((JComponent) componente).setOpaque(true); 
@@ -347,6 +387,8 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 		tabla_vaucher_filtro.getColumnModel().getColumn(8).setCellRenderer(render);
 		tabla_vaucher_filtro.getColumnModel().getColumn(9).setCellRenderer(render);
 		tabla_vaucher_filtro.getColumnModel().getColumn(10).setCellRenderer(render);
+		tabla_vaucher_filtro.getColumnModel().getColumn(11).setCellRenderer(render);
+		tabla_vaucher_filtro.getColumnModel().getColumn(12).setCellRenderer(render);
 		
 	}
 	
@@ -363,11 +405,15 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 						",autorizaciones_bancarias.tipo_operacion as Tipo_Operacion " +
 						",CONVERT(VARCHAR(20),autorizaciones_bancarias.fecha,103)+' '+CONVERT(VARCHAR(20),autorizaciones_bancarias.fecha,108) as Fecha_Autorizacion " +
 						",autorizaciones_bancarias.monto as Importe " +
+						",facremtick.folio_cajero as asignacion " +
+						",isnull(liquidaciones_tickets.importe,0) as retiro_cliente  " +
 						",'true' as selector " +
 						"from autorizaciones_bancarias " +
 						"inner join equipos_perifericos_equipo_bms on equipos_perifericos_equipo_bms.equipo_bms=autorizaciones_bancarias.equipo " +
 						"inner join equipos_perifericos on equipos_perifericos.equipo_periferico=equipos_perifericos_equipo_bms.equipo_periferico " +
-						"where folio in(select folio from facremtick where folio_cajero in ("+cadenaAsignaciones+")) and equipos_perifericos.tipo_periferico='P' " +
+						"inner join facremtick on facremtick.folio=autorizaciones_bancarias.folio " +
+						"left outer join liquidaciones_tickets on  liquidaciones_tickets.ticket=  autorizaciones_bancarias.folio and folio_documento = 'RetiroCte' " +
+						"where autorizaciones_bancarias.folio in(select folio from facremtick where folio_cajero in ("+cadenaAsignaciones+")) and equipos_perifericos.tipo_periferico='P' " +
 						"and autorizaciones_bancarias.folio not in ("+cadena_de_vouchers_en_uso+")";		
 		System.out.println(todos);
 		Statement s;
@@ -376,7 +422,7 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 			s = new Connexion().conexion_IZAGAR().createStatement();
 			rs = s.executeQuery(todos);
 			
-			MatrizFiltro = new Object[getFilasIZAGAR(todos)][11];
+			MatrizFiltro = new Object[getFilasIZAGAR(todos)][13];
 			int i=0;
 			while(rs.next()){
 				MatrizFiltro[i][0] = "   "+ (rs.getString(1).trim().equals("")?"-":rs.getString(1).trim());
@@ -389,7 +435,9 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 				MatrizFiltro[i][7] = "   "+ (rs.getString(8).trim().equals("")?"-":rs.getString(8).trim());
 				MatrizFiltro[i][8] = "   "+ (rs.getString(9).trim().equals("")?"-":rs.getString(9).trim());
 				MatrizFiltro[i][9] = "   "+ (rs.getString(10).trim().equals("")?"-":rs.getString(10).trim());
-				MatrizFiltro[i][10] = 		(rs.getString(11).trim().equals("")?"-":rs.getString(11).trim());
+				MatrizFiltro[i][10] = "   "+(rs.getString(11).trim().equals("")?"-":rs.getString(11).trim());
+				MatrizFiltro[i][11] = "   "+(rs.getString(10).trim().equals("")?"-":rs.getString(12).trim());
+				MatrizFiltro[i][12] = 		(rs.getString(11).trim().equals("")?"-":rs.getString(13).trim());
 				
 				i++;
 			}

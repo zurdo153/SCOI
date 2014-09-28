@@ -884,7 +884,7 @@ public class GuardarSQL {
 	
 	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte, Object[][] tb_asignaciones,Object[][] tb_vauchers,Object[][] tb_totales_por_fecha,  Object[] lista_de_asignaciones_en_uso){
 		String query_asignacion = 		 "exec sp_insert_asignacion_para_cortes  ?,?,?,?,?,?,?,?,?";		// <-9		11 ->  tb_tabla_de_asignaciones_para_cortes 
-		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
+		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
 		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
 		
@@ -939,6 +939,9 @@ public class GuardarSQL {
 				pstmt_vauchers.setString(i+=1, tb_vauchers[x][7].toString().trim());
 				pstmt_vauchers.setString(i+=1, tb_vauchers[x][8].toString().trim());
 				pstmt_vauchers.setFloat(i+=1, Float.parseFloat(tb_vauchers[x][9].toString().trim()));
+				
+				pstmt_vauchers.setString(i+=1, tb_vauchers[x][10].toString().trim());
+				pstmt_vauchers.setFloat(i+=1, Float.parseFloat(tb_vauchers[x][11].toString().trim()));
 				
 				pstmt_vauchers.executeUpdate();
 				

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -47,7 +48,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import Biblioteca.TapTapTap;
 import Cat_IZAGAR.Cat_Consulta_E_Impresion_De_Vouchers;
 import Cat_Reportes.Cat_Reporte_De_Cheques_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
@@ -174,10 +174,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JScrollPane scroll = new JScrollPane(tabla_asignaciones,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
 	DefaultTableModel modelo_vauchers = new DefaultTableModel(null,
-            new String[]{"Ticket", "Afiliacion", "Numero De Targeta",  "Fecha E.", "Cod. Aut.", "Tipo De Targeta", "Banco Emisor", "Tipo De Operacion", "Fecha Aut", "Importe"}
+            new String[]{"Ticket", "Afiliacion", "Numero De Targeta",  "Fecha E.", "Cod. Aut.", "Tipo De Targeta", "Banco Emisor", "Tipo De Operacion", "Fecha Aut", "Importe","Asignacion","Retiro cliente"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
+	    	java.lang.String.class,
+	    	java.lang.String.class,
 	    	java.lang.String.class,
 	    	java.lang.String.class,
 	    	java.lang.String.class,
@@ -206,6 +208,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
         	 	case 7 : return false;
         	 	case 8 : return false;
         	 	case 9 : return false;
+        	 	case 10 : return false;
+        	 	case 11 : return false;
         	 	} 				
  			return false;
  		}
@@ -275,11 +279,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	int filaDep = 0;
 	int columnaDep = 1;
-	int filaDepMod = 0;
+//	int filaDepMod = 0;
 	
 	int filaEfec = 0;
 	int columnaEfect = 4;
-	int filaEfecMod = 0;
+//	int filaEfecMod = 0;
 	
 	public Cat_Alimentacion_Cortes(int folio, String estab, String folio_corte) {
 		
@@ -531,6 +535,10 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		tabla_vauchers.getColumnModel().getColumn(8).setMinWidth(110);
 		tabla_vauchers.getColumnModel().getColumn(9).setMaxWidth(70);
 		tabla_vauchers.getColumnModel().getColumn(9).setMinWidth(70);
+		tabla_vauchers.getColumnModel().getColumn(10).setMaxWidth(70);
+		tabla_vauchers.getColumnModel().getColumn(10).setMinWidth(70);
+		tabla_vauchers.getColumnModel().getColumn(11).setMaxWidth(70);
+		tabla_vauchers.getColumnModel().getColumn(11).setMinWidth(70);
 		
 		TableCellRenderer render = new TableCellRenderer() { 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -576,6 +584,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		tabla_vauchers.getColumnModel().getColumn(7).setCellRenderer(render);
 		tabla_vauchers.getColumnModel().getColumn(8).setCellRenderer(render);
 		tabla_vauchers.getColumnModel().getColumn(9).setCellRenderer(render);
+		tabla_vauchers.getColumnModel().getColumn(10).setCellRenderer(render);
+		tabla_vauchers.getColumnModel().getColumn(11).setCellRenderer(render);
 		
 		tabla_totales_por_fecha.getColumnModel().getColumn(0).setCellRenderer(render); 
 		tabla_totales_por_fecha.getColumnModel().getColumn(1).setCellRenderer(render); 
@@ -671,7 +681,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							btnSalir.setEnabled(true);
 							btnFiltro.setEnabled(true);
 							
-							corte.actualizar(tabla_retiros());
+//							corte.actualizar(tabla_retiros());
 //							asigna 1 si guarda 
 							bandera_de_guardado=1;
 							
@@ -729,7 +739,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	}
 	
 	private Object[][] tabla_guardar_vauchers(){
-		Object[][] matriz = new Object[tabla_vauchers.getRowCount()][10];
+		Object[][] matriz = new Object[tabla_vauchers.getRowCount()][12];
 		for(int i=0; i<tabla_vauchers.getRowCount(); i++){
 			
 			matriz[i][0] = modelo_vauchers.getValueAt(i,0).toString().trim();
@@ -742,6 +752,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			matriz[i][7] = modelo_vauchers.getValueAt(i,7).toString().trim();
 			matriz[i][8] = modelo_vauchers.getValueAt(i,8).toString().trim();
 			matriz[i][9] = modelo_vauchers.getValueAt(i,9).toString().trim();
+			matriz[i][10] = modelo_vauchers.getValueAt(i,10).toString().trim();
+			matriz[i][11] = modelo_vauchers.getValueAt(i,11).toString().trim();
 			
 		}
 		return matriz;
@@ -874,11 +886,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					
 //					new TapTapTap().createUI();
 					
-					new Cat_Consulta_E_Impresion_De_Vouchers().Actualizar_Autorizaciones_Bancarias_de_Otros_Servidores();
-//					ejecutar minireplica
-//					if(new Cat_Consulta_E_Impresion_De_Vouchers().Actualizar_Autorizaciones_Bancarias_de_Otros_Servidores()){
-//						
-//					}
+//					new Cat_Consulta_E_Impresion_De_Vouchers().Actualizar_Autorizaciones_Bancarias_de_Otros_Servidores();
+					
 //					abrir filtro
 					new Cat_Filtrar_Vauchers().setVisible(true);
 				}
@@ -1034,7 +1043,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						btnCheques.setEnabled(false);
 				}
 				
-				cargar_cadena_de_vouchers_para_retiro_clientes();
+//				cargar_cadena_de_vouchers_para_retiro_clientes();
 		}
 	};
 	
@@ -1047,57 +1056,73 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		              return;
 				}else{
 					double cantidad =  Double.valueOf(tabla_vauchers.getValueAt(fila, 9).toString().trim());
+					double retiroClient =  Double.valueOf(tabla_vauchers.getValueAt(fila, 11).toString().trim());
 					
 					txtTotalVaucher.setText( formato.format((Double.valueOf(txtTotalVaucher.getText()) - cantidad))+"" );
+					txtTotalRetiros.setText( formato.format((Double.valueOf(txtTotalRetiros.getText()) - retiroClient))+"" );
 					
 					modelo_vauchers.removeRow(fila);
+					
+					while(tabla_retiro_de_clientes.getRowCount()>0){
+						modelo_retiro_de_clientes.removeRow(0);
+					}
+					
+					String[] retiro = new String[2];
+					for(int i=0; i <= tabla_vauchers.getRowCount(); i++){
+						if(Float.valueOf(tabla_vauchers.getValueAt(i, 11).toString().trim())>0){
+							retiro[0] = modelo_vauchers.getValueAt(i, 0).toString().trim();
+							retiro[1] = modelo_vauchers.getValueAt(i, 11).toString().trim();
+							modelo_retiro_de_clientes.addRow(retiro);
+						}
+					}
 					
 					calculoDinamico();
 				}
 		}
 	};
 	
-	String cadena_de_vouchers_para_retiro_clientes="";
-	public void cargar_cadena_de_vouchers_para_retiro_clientes(){
-		
-		
-		for(int i=0; i<tabla_asignaciones.getRowCount(); i++){
-			cadena_de_vouchers_para_retiro_clientes += "'"+tabla_asignaciones.getValueAt(i, 0).toString().trim()+"',";		
-		}
-		
-		if(cadena_de_vouchers_para_retiro_clientes.length()<2){
-			cadena_de_vouchers_para_retiro_clientes = "''";
-		}else{
-			cadena_de_vouchers_para_retiro_clientes = cadena_de_vouchers_para_retiro_clientes.substring(0,cadena_de_vouchers_para_retiro_clientes.length()-1);
-		}
-		
-		while(tabla_retiro_de_clientes.getRowCount()>0){
-            modelo_retiro_de_clientes.removeRow(0);
-        }
-		
-		Object[][] getTablaVauchersRetiroClientes = getTablaRetiroClientes(cadena_de_vouchers_para_retiro_clientes);
-		Object[] vectorDeRetiro_Cliente = new Object[2];
-		
-		
-		
-
-		double suma_total_retiros =0;
-		
-				for(int j=0; j<getTablaVauchersRetiroClientes.length; j++){
-					vectorDeRetiro_Cliente[0] = getTablaVauchersRetiroClientes[j][0]+"";
-					vectorDeRetiro_Cliente[1] = getTablaVauchersRetiroClientes[j][1]+"";
-                        modelo_retiro_de_clientes.addRow(vectorDeRetiro_Cliente);
-                        suma_total_retiros += (Double.valueOf(vectorDeRetiro_Cliente[1].toString().trim()));
-				}
-				
-		cadena_de_vouchers_para_retiro_clientes="";
-		txtTotalRetiros.setText(suma_total_retiros+"");
-		
-		suma_total_retiros =0;
-	}
+//	String cadena_de_vouchers_para_retiro_clientes="";
+//	public void cargar_cadena_de_vouchers_para_retiro_clientes(){
+//		
+//		
+//		for(int i=0; i<tabla_asignaciones.getRowCount(); i++){
+//			cadena_de_vouchers_para_retiro_clientes += "'"+tabla_asignaciones.getValueAt(i, 0).toString().trim()+"',";		
+//		}
+//		
+//		if(cadena_de_vouchers_para_retiro_clientes.length()<2){
+//			cadena_de_vouchers_para_retiro_clientes = "''";
+//		}else{
+//			cadena_de_vouchers_para_retiro_clientes = cadena_de_vouchers_para_retiro_clientes.substring(0,cadena_de_vouchers_para_retiro_clientes.length()-1);
+//		}
+//		
+//		while(tabla_retiro_de_clientes.getRowCount()>0){
+//            modelo_retiro_de_clientes.removeRow(0);
+//        }
+//		
+//		Object[][] getTablaVauchersRetiroClientes = getTablaRetiroClientes(cadena_de_vouchers_para_retiro_clientes);
+//		Object[] vectorDeRetiro_Cliente = new Object[2];
+//		
+//		
+//		
+//
+//		double suma_total_retiros =0;
+//		
+//				for(int j=0; j<getTablaVauchersRetiroClientes.length; j++){
+//					vectorDeRetiro_Cliente[0] = getTablaVauchersRetiroClientes[j][0]+"";
+//					vectorDeRetiro_Cliente[1] = getTablaVauchersRetiroClientes[j][1]+"";
+//                        modelo_retiro_de_clientes.addRow(vectorDeRetiro_Cliente);
+//                        suma_total_retiros += (Double.valueOf(vectorDeRetiro_Cliente[1].toString().trim()));
+//				}
+//				
+//		cadena_de_vouchers_para_retiro_clientes="";
+//		txtTotalRetiros.setText(suma_total_retiros+"");
+//		
+//		suma_total_retiros =0;
+//	}
 	
  	public Object[][] getTablaRetiroClientes(String cadena_de_vouchers_para_retiro_clientes){
 		
+ 		
  		String query ="select ticket,importe " +
  						" from liquidaciones_tickets with (nolock) " +
  						" where folio_asignacion in ("+cadena_de_vouchers_para_retiro_clientes+") " +
@@ -1270,6 +1295,10 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			this.btn_guardar.addActionListener(op_guardar);
 			this.addWindowListener(op_limpiar);
 			
+			filaEfec=0;
+			
+			 agregar(tabla_efectivo);
+			
 				//  guardar al presionar la tecla f2
 			    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 			       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "foco");
@@ -1281,6 +1310,15 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				        }
 			    });
 		}
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	filaEfec= tbl.getSelectedRow();
+//		        	filaEfecMod= tbl.getSelectedRow();
+		        }
+	        });
+	    }
 		
 		WindowListener op_limpiar = new WindowListener() {
 			public void windowOpened(WindowEvent e) {}
@@ -1387,6 +1425,26 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 													btnCancelar.setEnabled(true);
 													btnSalir.setEnabled(false);
 													
+//		calculo automatico sin dar enter ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+													float suma = 0;
+													for(int i=0; i<tabla_efectivo.getRowCount(); i++){
+														
+															if(tabla_model_efectivo.getValueAt(i,4).toString().equals("")){
+																	suma = suma + 0;
+															}else{
+																
+																	if(isNumeric(tabla_model_efectivo.getValueAt(i,4).toString().trim())){
+												    						suma += Float.parseFloat(tabla_model_efectivo.getValueAt(i,4).toString())*(Float.parseFloat(tabla_model_efectivo.getValueAt(i,2).toString())*Float.parseFloat(tabla_model_efectivo.getValueAt(i,3).toString()));
+																	}else{
+																			JOptionPane.showMessageDialog(null, "La nomina en el establecimiento "+tabla_model_efectivo.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
+																			tabla_model_efectivo.setValueAt("", i, 4);
+																	}
+															}
+													}
+													txtTotal.setText(suma+"");
+													txtEfectivo.setText(suma+"");
+//		----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 													calculoDinamico();
 													dispose();
 													
@@ -1406,6 +1464,26 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 													btnCancelar.setEnabled(true);
 													btnSalir.setEnabled(false);
 													
+//													calculo automatico sin dar enter ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+													
+													float suma = 0;
+													for(int i=0; i<tabla_efectivo.getRowCount(); i++){
+														
+															if(tabla_model_efectivo.getValueAt(i,4).toString().equals("")){
+																	suma = suma + 0;
+															}else{
+																
+																	if(isNumeric(tabla_model_efectivo.getValueAt(i,4).toString().trim())){
+												    						suma += Float.parseFloat(tabla_model_efectivo.getValueAt(i,4).toString())*(Float.parseFloat(tabla_model_efectivo.getValueAt(i,2).toString())*Float.parseFloat(tabla_model_efectivo.getValueAt(i,3).toString()));
+																	}else{
+																			JOptionPane.showMessageDialog(null, "La nomina en el establecimiento "+tabla_model_efectivo.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
+																			tabla_model_efectivo.setValueAt("", i, 4);
+																	}
+															}
+													}
+													txtTotal.setText(suma+"");
+													txtEfectivo.setText(suma+"");
+//		----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 													calculoDinamico();
 													dispose();
 													
@@ -1506,6 +1584,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
         this.tabla_cheques.addKeyListener(op_key);
 		this.btn_guardar.addActionListener(op_guardar);
 		this.addWindowListener(op_limpiar);
+		
 		
 		//  guardar al presionar la tecla f2
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -1618,12 +1697,30 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							boolean existe_folio_corte = new Obj_Alimentacion_Cortes().buscar_folio_corte_cheques(lblFolio_Corte.getText());
 							
 							if(existe_folio_corte){
-								System.out.println(existe_folio_corte+"  <<+++ actualizar o<+<");
 										if(Alim_cheqes.ActualizarTotalesDeCheques(tabla_guardar())){
 												
 												btnCancelar.setEnabled(true);
 												btnSalir.setEnabled(false);
 												
+//		calculo automatico de total sin dar enter ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+												float suma = 0;
+												for(int i=0; i<tabla_cheques.getRowCount(); i++){
+													
+														if(tabla_model_cheques.getValueAt(i,1).toString().equals("")){
+																suma = suma + 0;
+														}else{
+															
+																if(isNumeric(tabla_model_cheques.getValueAt(i,1).toString().trim())){
+											    						suma += Float.parseFloat(tabla_model_cheques.getValueAt(i,1).toString());
+																}else{
+																		JOptionPane.showMessageDialog(null, "La nomina en el establecimiento "+tabla_model_cheques.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
+																		tabla_model_cheques.setValueAt("", i, 1);
+																}
+														}
+												}
+												txtTotal.setText(suma+"");
+												txtCheques.setText(suma+"");
+//	 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 												calculoDinamico();
 												dispose();
 												
@@ -1638,12 +1735,30 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 										}
 								
 							}else{
-								System.out.println(existe_folio_corte+"  <<+++ guardar o<+<");
 										if(Alim_cheqes.GuardarTotalesDeCheques(tabla_guardar())){
 											
 												btnCancelar.setEnabled(true);
 												btnSalir.setEnabled(false);
 												
+//	calculo automatico de total sin dar enter ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+												float suma = 0;
+												for(int i=0; i<tabla_cheques.getRowCount(); i++){
+													
+														if(tabla_model_cheques.getValueAt(i,1).toString().equals("")){
+																suma = suma + 0;
+														}else{
+															
+																if(isNumeric(tabla_model_cheques.getValueAt(i,1).toString().trim())){
+											    						suma += Float.parseFloat(tabla_model_cheques.getValueAt(i,1).toString());
+																}else{
+																		JOptionPane.showMessageDialog(null, "La nomina en el establecimiento "+tabla_model_cheques.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
+																		tabla_model_cheques.setValueAt("", i, 1);
+																}
+														}
+												}
+												txtTotal.setText(suma+"");
+												txtCheques.setText(suma+"");
+//	 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 												calculoDinamico();
 												dispose();
 												
@@ -1835,12 +1950,23 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			        	btn_guardar.doClick();    	
 			        }
 		    });
+		    
+		    filaDep=0;
+		    agregar(tabla_depositos);
 			
 			this.setSize(450,550);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		}
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	filaDep= tbl.getSelectedRow();
+		        }
+	        });
+	    }
 		
 		WindowListener op_limpiar = new WindowListener() {
 			public void windowOpened(WindowEvent e) {}
@@ -1929,11 +2055,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				
 				if(tabla_depositos.isEditing()){
 					tabla_depositos.getCellEditor().stopCellEditing();
+					tabla_depositos.addKeyListener(op_key);
 				}
 				
 				if(valida_tabla() != ""){
 					txtTotal.setText("0.0");
-					JOptionPane.showMessageDialog(null, "Las siguientes celdas están mal en su formato:\n"+valida_tabla(),"Error",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Se a ingresado un valor no numerico en la tabla","Error",JOptionPane.ERROR_MESSAGE);
 					return;
 				}else{
 						
@@ -1950,6 +2077,28 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 								btnCancelar.setEnabled(true);
 								btnSalir.setEnabled(false);
 								
+//		calcula total sin dar enter (automatico)---------------------------------------------------------------------------------------------------------------
+								float suma = 0;
+								for(int i=0; i<tabla_depositos.getRowCount(); i++){
+									
+										if(tabla_model_depocitos.getValueAt(i,1).toString().equals("")){
+												suma = suma + 0;
+										}else{
+												if(tabla_model_depocitos.getValueAt(i,0).toString().equals("EFECTIVO EN CAJA")){
+						    							suma += Float.parseFloat(tabla_model_depocitos.getValueAt(i,1).toString());
+						    					}else{
+							    						if(isNumeric(tabla_model_depocitos.getValueAt(i,1).toString().trim())){
+									    						suma += Float.parseFloat(tabla_model_depocitos.getValueAt(i,0).toString())*Float.parseFloat(tabla_model_depocitos.getValueAt(i,1).toString());
+														}else{
+																JOptionPane.showMessageDialog(null, "La cantidad en la Moneda "+tabla_model_depocitos.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
+																tabla_model_depocitos.setValueAt("", i, 1);
+														}
+						    					}
+										}
+								}
+								txtTotal.setText(suma+"");
+								txtDeposito.setText(suma+"");
+//		---------------------------------------------------------------------------------------------------------------
 								calculoDinamico();
 								dispose();
 								
@@ -2172,6 +2321,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			
 			this.tabla_deposito.addKeyListener(op_key);
 			
+			filaDep=0;
+			 agregar(tabla_deposito);
+			
 			this.setSize(450,550);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
@@ -2188,6 +2340,14 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			        }
 		    });
 		}
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	filaDep= tbl.getSelectedRow();
+		        }
+	        });
+	    }
 		
 		KeyListener op_key = new KeyListener() {
 			public void keyTyped(KeyEvent e) {
@@ -2266,6 +2426,28 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 								btnCancelar.setEnabled(true);
 								btnSalir.setEnabled(false);
 								
+//								calcula total sin dar enter (automatico)---------------------------------------------------------------------------------------------------------------
+								float suma = 0;
+								for(int i=0; i<tabla_deposito.getRowCount(); i++){
+									
+										if(tabla_model.getValueAt(i,1).toString().equals("")){
+												suma = suma + 0;
+										}else{
+												if(tabla_model.getValueAt(i,0).toString().equals("EFECTIVO EN CAJA")){
+						    							suma += Float.parseFloat(tabla_model.getValueAt(i,1).toString());
+						    					}else{
+							    						if(isNumeric(tabla_model.getValueAt(i,1).toString().trim())){
+									    						suma += Float.parseFloat(tabla_model.getValueAt(i,0).toString())*Float.parseFloat(tabla_model.getValueAt(i,1).toString());
+														}else{
+																JOptionPane.showMessageDialog(null, "La cantidad en la Moneda "+tabla_model.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
+																tabla_model.setValueAt("", i, 1);
+														}
+						    					}
+										}
+								}
+								txtTotal.setText(suma+"");
+								txtDeposito.setText(suma+"");
+//		---------------------------------------------------------------------------------------------------------------
 								calculoDinamico();
 								dispose();
 								
@@ -2476,7 +2658,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				
 				calculoDinamico();
 
-				cargar_cadena_de_vouchers_para_retiro_clientes();
+//				cargar_cadena_de_vouchers_para_retiro_clientes();
 			}
 		};
 		
@@ -2605,7 +2787,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						
 			        limpiar_filtro();
 							
-					String[] fila = new String[11];
+					String[] fila = new String[13];
 					        while(tabla_vaucher_filtro.getRowCount()>0){
 					                modelo_vaucher_filtro.removeRow(0);
 					        }
@@ -2623,6 +2805,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			                        fila[8] = getTablaFiltroVauchers[i][8]+"";
 			                        fila[9] = getTablaFiltroVauchers[i][9]+"";
 			                        fila[10] = getTablaFiltroVauchers[i][10]+"";
+			                        fila[11] = getTablaFiltroVauchers[i][11]+"";
+			                        fila[12] = getTablaFiltroVauchers[i][12]+"";
 			                        modelo_vaucher_filtro.addRow(fila);
 			                }
 			                cadenaAsignacionesSeleccionadas="";
@@ -2644,11 +2828,14 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				limpiar_filtro();
 				
 				double suma_total =0;
-				String[] fila = new String[10];
+				String[] fila = new String[12];
+				
+				double suma_total_retiros =0;
+				String[] retiro = new String[2];
 				
 	    			for(int i=0; i<cargar_tabla_vauchers_de_filtro().length; i++){
 	    				
-	    				if(cargar_tabla_vauchers_de_filtro()[i][10].toString().trim().equals("true")){
+	    				if(cargar_tabla_vauchers_de_filtro()[i][12].toString().trim().equals("true")){
 	    					
 			    				 fila[0] = cargar_tabla_vauchers_de_filtro()[i][0].toString().trim();
                                  fila[1] = cargar_tabla_vauchers_de_filtro()[i][1].toString().trim();
@@ -2660,17 +2847,36 @@ public class Cat_Alimentacion_Cortes extends JFrame{
                                  fila[7] = cargar_tabla_vauchers_de_filtro()[i][7].toString().trim();
                                  fila[8] = cargar_tabla_vauchers_de_filtro()[i][8].toString().trim();
                                  fila[9] = cargar_tabla_vauchers_de_filtro()[i][9].toString().trim();
+                                 fila[10] = cargar_tabla_vauchers_de_filtro()[i][10].toString().trim();
+                                 fila[11] = cargar_tabla_vauchers_de_filtro()[i][11].toString().trim();
                                  modelo_vauchers.addRow(fila);
+                                 
+                                 if(Float.valueOf(cargar_tabla_vauchers_de_filtro()[i][11].toString().trim())>0){
+                                	 retiro[0] = cargar_tabla_vauchers_de_filtro()[i][0].toString().trim();
+                                	 retiro[1] = cargar_tabla_vauchers_de_filtro()[i][11].toString().trim();
+                                	 modelo_retiro_de_clientes.addRow(retiro);
+                                	 suma_total_retiros += Double.valueOf( cargar_tabla_vauchers_de_filtro()[i][11].toString().trim());
+                                 }
                                  
                                  suma_total += (Double.valueOf(cargar_tabla_vauchers_de_filtro()[i][9].toString().trim()));
 	    				}
 	    			}
+	    			
 	    			
 	    			if(txtTotalVaucher.getText().toString().trim().equals("")){
 	    				txtTotalVaucher.setText(formato.format(suma_total)+"");
 	    			}else{
 	    				txtTotalVaucher.setText(formato.format(Double.valueOf(txtTotalVaucher.getText().toString().trim())+suma_total)+"");
 	    			}
+	    			
+	    			
+	    			if(txtTotalRetiros.getText().toString().trim().equals("")){
+	    				txtTotalRetiros.setText(formato.format(suma_total_retiros)+"");
+	    			}else{
+	    				txtTotalRetiros.setText(formato.format(Double.valueOf(txtTotalRetiros.getText().toString().trim())+suma_total_retiros)+"");
+	    			}
+	    			
+	    			
 	    			calculoDinamico();
 	    		dispose();
 			}
@@ -2678,7 +2884,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		private Object[][] cargar_tabla_vauchers_de_filtro(){
 
-			Object[][] matriz = new Object[tabla_vaucher_filtro.getRowCount()][11];
+			Object[][] matriz = new Object[tabla_vaucher_filtro.getRowCount()][13];
 			
 				for(int i=0; i<tabla_vaucher_filtro.getRowCount(); i++){
 						matriz[i][0] = modelo_vaucher_filtro.getValueAt(i,0).toString().trim();
@@ -2692,6 +2898,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						matriz[i][8] = modelo_vaucher_filtro.getValueAt(i,8).toString().trim();
 						matriz[i][9] = modelo_vaucher_filtro.getValueAt(i,9).toString().trim();
 						matriz[i][10] = modelo_vaucher_filtro.getValueAt(i,10).toString().trim();
+						matriz[i][11] = modelo_vaucher_filtro.getValueAt(i,11).toString().trim();
+						matriz[i][12] = modelo_vaucher_filtro.getValueAt(i,12).toString().trim();
 				}
 			return matriz;
 		}
