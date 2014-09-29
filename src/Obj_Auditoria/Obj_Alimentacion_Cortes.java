@@ -200,6 +200,6 @@ public class Obj_Alimentacion_Cortes {
 	
 	public boolean buscar_folio_corte_cheques(String folio_corte){ return new BuscarSQL().Folio_Corte_Cheques(folio_corte); }
 	
-	public boolean actualizar(Object [][] tabla){ return new ActualizarSQL().Actualizar_Voucherts_Con_Retiro(tabla); }
+//	public boolean actualizar(Object [][] tabla){ return new ActualizarSQL().Actualizar_Voucherts_Con_Retiro(tabla); }
 	
 }

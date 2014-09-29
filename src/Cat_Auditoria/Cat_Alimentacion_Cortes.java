@@ -771,16 +771,16 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		return matriz;
 	}
 	
-	private Object[][] tabla_retiros(){
-		Object[][] matriz = new Object[tabla_retiro_de_clientes.getRowCount()][2];
-		for(int i=0; i<tabla_retiro_de_clientes.getRowCount(); i++){
-			
-			matriz[i][0] = modelo_retiro_de_clientes.getValueAt(i,0).toString().trim();
-			matriz[i][1] = modelo_retiro_de_clientes.getValueAt(i,1).toString().trim();
-			
-		}
-		return matriz;
-	}
+//	private Object[][] tabla_retiros(){
+//		Object[][] matriz = new Object[tabla_retiro_de_clientes.getRowCount()][2];
+//		for(int i=0; i<tabla_retiro_de_clientes.getRowCount(); i++){
+//			
+//			matriz[i][0] = modelo_retiro_de_clientes.getValueAt(i,0).toString().trim();
+//			matriz[i][1] = modelo_retiro_de_clientes.getValueAt(i,1).toString().trim();
+//			
+//		}
+//		return matriz;
+//	}
 	
 	ActionListener cancelar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -931,25 +931,65 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		PreparedStatement pstmt_ta_rluz = null;
 		
 		for(int i=0; i<tabla_asignaciones.getRowCount(); i++){
-				String consulta_ta_rluz = "declare @t_aire money, @r_luz money, @asignacion varchar(50) " +
-										  "set @asignacion= '"+modelo_asignaciones.getValueAt(i,0).toString().trim()+"' " +
-										  "set @t_aire = (SELECT SUM(ta)as TA FROM " +
-										  "     (SELECT sum(entysal.total)as ta FROM facremtick AS f  with (nolock) " +
-										  "              INNER JOIN entysal on entysal.folio=f.folio  WHERE (f.folio_cajero = @asignacion and entysal.cod_prod='52401') " +
-										  "     union all " +
-										  "      SELECT isnull(sum(entysal.total*-1),0) as ta FROM facremtick AS f  with (nolock) " +
-										  "                     INNER JOIN entysal on entysal.folio=f.folio WHERE ( (f.status = 'C') AND (f.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52401' ) )t " +
-										  ") " +
-										  "set @r_luz = (SELECT SUM(rl)as RL FROM " +
-										  "     (SELECT sum(entysal.total)as rl FROM facremtick AS f  with (nolock) " +
-										  "              INNER JOIN entysal on entysal.folio=f.folio  WHERE (f.folio_cajero = @asignacion and entysal.cod_prod='52384') " +
-										  "     union all " +
-										  "      SELECT isnull(sum(entysal.total*-1),0) as ta FROM facremtick AS f  with (nolock) " +
-										  "                     INNER JOIN entysal on entysal.folio=f.folio WHERE ( (f.status = 'C') AND (f.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52384' ) )t " +
-										  ") " +
-										  "select @t_aire as TA, @r_luz as RL " ;
+			
+			String consulta_ta_rluz = "declare @asignacion varchar(50) " +
+										" set @asignacion= '"+modelo_asignaciones.getValueAt(i,0).toString().trim()+"' " +
+										" 	SELECT '"+lblFolio_Corte.getText()+"' as folio_corte" +
+										"       ,'TA' as concepto " +
+										" 		,@asignacion as asignacion" +
+										"		,SUM(ta)as total " +
+										"		,fecha " +
+										"			FROM (SELECT sum(entysal.total)as ta " +
+										"							,convert(varchar(20),facremtick.fecha,103)as fecha " +
+										"						FROM facremtick with (nolock) " +
+										"						INNER JOIN entysal on entysal.folio=facremtick.folio  WHERE (facremtick.folio_cajero = @asignacion and entysal.cod_prod='52401') " +
+										"						GROUP BY convert(varchar(20),facremtick.fecha,103) " +
+										"				UNION all " +
+										"				SELECT isnull(sum(entysal.total*-1),0)as ta " +
+										"								,convert(varchar(20),facremtick.fecha,103)as fecha " +
+										"						FROM facremtick   with (nolock) " +
+										"						INNER JOIN entysal on entysal.folio=facremtick.folio WHERE ( (facremtick.status = 'C') AND (facremtick.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52401' ) " +
+										"						group by convert(varchar(20),facremtick.fecha,103))t " +
+										"		GROUP BY t.fecha " +
+										"	UNION ALL " +
+										"		SELECT '"+lblFolio_Corte.getText()+"' as folio_corte" +
+										"               ,'LUZ' as concepto " +
+										"				,@asignacion as asignacion" +
+										"				,SUM(ta)as total " +
+										"				,fecha " +
+										"			FROM (	SELECT sum(entysal.total)as ta " +
+										"							,convert(varchar(20),facremtick.fecha,103)as fecha " +
+										"						FROM facremtick with (nolock) " +
+										"						INNER JOIN entysal on entysal.folio=facremtick.folio  WHERE (facremtick.folio_cajero = @asignacion and entysal.cod_prod='52384') " +
+										"						GROUP BY convert(varchar(20),facremtick.fecha,103) " +
+										"        			UNION all " +
+										"		  			SELECT isnull(sum(entysal.total*-1),0)as ta " +
+										"								 ,convert(varchar(20),facremtick.fecha,103)as fecha" +
+										"						FROM facremtick   with (nolock) " +
+										"						INNER JOIN entysal on entysal.folio=facremtick.folio WHERE ( (facremtick.status = 'C') AND (facremtick.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52384' )" +
+										"						 group by convert(varchar(20),facremtick.fecha,103))rl " +
+										"	GROUP BY rl.fecha";
+			
+			
+//				String consulta_ta_rluz = "declare @t_aire money, @r_luz money, @asignacion varchar(50) " +
+//										  "set @asignacion= '"+modelo_asignaciones.getValueAt(i,0).toString().trim()+"' " +
+//										  "set @t_aire = (SELECT SUM(ta)as TA FROM " +
+//										  "     (SELECT sum(entysal.total)as ta FROM facremtick AS f  with (nolock) " +
+//										  "              INNER JOIN entysal on entysal.folio=f.folio  WHERE (f.folio_cajero = @asignacion and entysal.cod_prod='52401') " +
+//										  "     union all " +
+//										  "      SELECT isnull(sum(entysal.total*-1),0) as ta FROM facremtick AS f  with (nolock) " +
+//										  "                     INNER JOIN entysal on entysal.folio=f.folio WHERE ( (f.status = 'C') AND (f.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52401' ) )t " +
+//										  ") " +
+//										  "set @r_luz = (SELECT SUM(rl)as RL FROM " +
+//										  "     (SELECT sum(entysal.total)as rl FROM facremtick AS f  with (nolock) " +
+//										  "              INNER JOIN entysal on entysal.folio=f.folio  WHERE (f.folio_cajero = @asignacion and entysal.cod_prod='52384') " +
+//										  "     union all " +
+//										  "      SELECT isnull(sum(entysal.total*-1),0) as ta FROM facremtick AS f  with (nolock) " +
+//										  "                     INNER JOIN entysal on entysal.folio=f.folio WHERE ( (f.status = 'C') AND (f.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52384' ) )t " +
+//										  ") " +
+//										  "select @t_aire as TA, @r_luz as RL " ;
 				
-				String query_ta_rluz = "exec sp_insert_totales_de_tAire_rLuz ?,?,?,?";
+				String query_ta_rluz = "exec sp_insert_relacion_por_pagos_de_servicios ?,?,?,?,?";
 				
 				Statement s_IZAGAR;
 				ResultSet rs_IZAGAR;
@@ -963,10 +1003,17 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 								con.setAutoCommit(false);
 								pstmt_ta_rluz =  con.prepareStatement(query_ta_rluz);
 								
-								pstmt_ta_rluz.setString(1, 		lblFolio_Corte.getText().trim());
-								pstmt_ta_rluz.setString(2,	modelo_asignaciones.getValueAt(i,0).toString().trim());
-								pstmt_ta_rluz.setDouble(3,	rs_IZAGAR.getDouble(1));
-								pstmt_ta_rluz.setDouble(4, 	rs_IZAGAR.getDouble(2));
+								pstmt_ta_rluz.setString(1, 	rs_IZAGAR.getString(1));
+								pstmt_ta_rluz.setString(2, 	rs_IZAGAR.getString(2));
+								pstmt_ta_rluz.setString(3,	rs_IZAGAR.getString(3));
+								pstmt_ta_rluz.setDouble(4,	rs_IZAGAR.getDouble(4));
+								pstmt_ta_rluz.setString(5, 	rs_IZAGAR.getString(5));
+								
+//								pstmt_ta_rluz.setString(1, 		lblFolio_Corte.getText().trim());
+//								pstmt_ta_rluz.setString(2, 	rs_IZAGAR.getString(2));
+//								pstmt_ta_rluz.setString(3,	modelo_asignaciones.getValueAt(i,0).toString().trim());
+//								pstmt_ta_rluz.setDouble(4,	rs_IZAGAR.getDouble(1));
+//								pstmt_ta_rluz.setDouble(5, 	rs_IZAGAR.getDouble(2));
 								pstmt_ta_rluz.executeUpdate();
 								
 								registrado = true;
