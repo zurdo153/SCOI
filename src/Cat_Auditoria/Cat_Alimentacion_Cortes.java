@@ -48,7 +48,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import Cat_IZAGAR.Cat_Consulta_E_Impresion_De_Vouchers;
+
 import Cat_Reportes.Cat_Reporte_De_Cheques_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
 import Cat_Reportes.Cat_Reporte_De_Depositos_Cortes;
@@ -892,7 +892,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	};
 	
  	public boolean borrar_lista_de_asignaciones(){
-		String query_total_ta_rluz_por_folio_de_corte = "delete tb_tarluz where folio_corte = '" + lblFolio_Corte.getText() + "'";
+		String query_total_ta_rluz_por_folio_de_corte = "delete tb_relacion_por_pagos_de_servicios where folio_corte = '" + lblFolio_Corte.getText() + "'";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -902,12 +902,15 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en Cat_Alimentacion_Cortes en la funcion borrar_lista_de_asignaciones  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en Cat_Alimentacion_Cortes en la funcion borrar_lista_de_asignaciones  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 				}
 			}
 			return false;
@@ -1046,6 +1049,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				
 			} catch (SQLException e1) {
 				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error En Cat_Alimentacion_de_Cortes \n en la funcion obtener_totales_de_tAire_rLuz_por_folio_de_corte", "Error Avise al Administrador del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 			}
 	}
 	

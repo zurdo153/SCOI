@@ -2162,10 +2162,10 @@ public class ActualizarSQL {
 				return true;
 			}
 			
-			public boolean Actualizar_Alimentacion_denominacion(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
+			public boolean Actualizar_Alimentacion_Efectivo(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
 				
-				String query_delete = "delete from tb_alimentacion_denominaciones where folio_corte ='"+alim_denom.getFolio_corte()+"'";
-				String query ="exec sp_insert_denominaciones ?,?,?,?,?,?,?";
+				String query_delete = "delete from tb_alimentacion_efectivo_cortes where folio_corte ='"+alim_denom.getFolio_corte()+"'";
+				String query ="exec sp_insert_alimentacion_de_efectivo_cortes ?,?,?,?,?,?,?";
 				Connection con = new Connexion().conexion();
 				
 				try {
