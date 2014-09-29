@@ -89,7 +89,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			 new Cat_Reporte_De_Corte_De_Caja("CE1");
+			 new Cat_Reporte_De_Corte_De_Caja("DPII2");
 //		if(validar_fechas().equals("")){
 //			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 //			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";

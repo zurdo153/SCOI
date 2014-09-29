@@ -885,6 +885,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					
 //					new Cat_Consulta_E_Impresion_De_Vouchers().Actualizar_Autorizaciones_Bancarias_de_Otros_Servidores();
 					
+//					abrir filtro
 					new Cat_Filtrar_Vauchers().setVisible(true);
 				}
 		}
