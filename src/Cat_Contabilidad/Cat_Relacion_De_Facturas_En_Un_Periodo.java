@@ -173,9 +173,7 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
     JTable tabla_Trabajo_del_dia = new JTable(modelotdd);
     JScrollPane scroll_trabajo_del_dia = new JScrollPane(tabla_Trabajo_del_dia);
     
-    
-    
-    
+        
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	

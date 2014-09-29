@@ -30,7 +30,7 @@ public class Cat_Reporte_De_Corte_De_Caja extends JFrame {
 			
 			stmt =  new Connexion().conexion().createStatement();
 		    ResultSet rs = stmt.executeQuery(query_corte_caja);
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Corte_De_Caja_2.jrxml");
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Corte_De_Caja.jrxml");
 			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
 			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 			JasperViewer.viewReport(print, false);
@@ -46,13 +46,13 @@ public class Cat_Reporte_De_Corte_De_Caja extends JFrame {
 			
 			stmt1 =  new Connexion().conexion().createStatement();
 		    ResultSet rs = stmt1.executeQuery(query_corte_de_caja_por_dia);
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Corte_De_Caja_Sub_Por_Dia.jrxml");
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Corte_De_Caja_Por_Dia.jrxml");
 			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
 			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 			JasperViewer.viewReport(print, false);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja_Por_dia ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 		}
 		
 	}
