@@ -24,7 +24,7 @@ public class Cat_Reporte_De_Corte_De_Caja extends JFrame {
 
 		
 		
-		String query_corte_caja = "exec sp_select_reporte_corte_de_caja_2 '"+folio_corte+"';";
+		String query_corte_caja = "exec sp_select_reporte_corte_de_caja '"+folio_corte+"';";
 		Statement stmt = null;
 		try {
 			

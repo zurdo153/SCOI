@@ -4,16 +4,13 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
@@ -31,7 +28,8 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Empleado", 10, "String");
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Corte", 10, "String");
+	
 	JTextField txtNombreEmpleado = new Componentes().text(new JTextField(), "Nombre del Empleado",100, "String");
 	JTextField txtEstablecimiento = new Componentes().text(new JTextField(), "Establecimiento",100, "String");
 	JTextField txtDepartamento = new Componentes().text(new JTextField(), "Departamento",100, "String");
@@ -41,16 +39,16 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 	
-	public Cat_Reportes_De_Cortes(String Folio,String Nombre,String Establecimiento,String Departamento){
+	public Cat_Reportes_De_Cortes(){
 
 		
 		panel.setBorder(BorderFactory.createTitledBorder("Reporte De Cortes"));
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/archivo-icono-8809-32.png"));
 		this.setTitle("Reportes de Cortes");
 		
-		panel.add(txtFolio).setBounds(60,25,40,20);
-		txtFolio.setEnabled(false);
-		txtFolio.setText(Folio);
+		panel.add(txtFolio).setBounds(60,25,100,20);
+//		txtFolio.setEnabled(false);
+//		txtFolio.setText();
 				
 //		panel.add(new JLabel("Nombre:")).setBounds(15,25,50,20);
 //		panel.add(txtNombreEmpleado).setBounds(100,25,280,20);
@@ -89,7 +87,8 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			 new Cat_Reporte_De_Corte_De_Caja("DPII2");
+			 new Cat_Reporte_De_Corte_De_Caja(txtFolio.getText()+"");
+			 
 //		if(validar_fechas().equals("")){
 //			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 //			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
@@ -123,7 +122,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reportes_De_Cortes("1","MARCO ANTONIO BODART GUZMAN","SISTEMAS","SISTEMAS").setVisible(true);
+			new Cat_Reportes_De_Cortes().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

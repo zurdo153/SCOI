@@ -230,7 +230,7 @@ public class BuscarTablasModel {
 	}
 	
 	public Object[][] tabla_model_alimentacion_denominaciones_modificar(String folio_corte){
-		String query_lista = "exec sp_select_tabla_alimentacion_denominaciones "+folio_corte;
+		String query_lista = "exec sp_select_tabla_alimentacion_efectivo_cortes "+folio_corte;
 		
 		Object[][] matriz = new Object[get_filas(query_lista)][10];
 		try {

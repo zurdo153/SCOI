@@ -51,7 +51,7 @@ public class Obj_Alimentacion_Denominacion {
 	}
 //	denominacion	
 	public boolean actualizar(Object[][] tabla){ 
-		return new ActualizarSQL().Actualizar_Alimentacion_denominacion(this, tabla);
+		return new ActualizarSQL().Actualizar_Alimentacion_Efectivo(this, tabla);
 	}
 	
 //	deposito

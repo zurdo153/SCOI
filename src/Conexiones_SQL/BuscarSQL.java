@@ -166,7 +166,7 @@ public class BuscarSQL {
 	}
 	
 	public boolean Folio_Corte(String folio_corte){
-		String query = "exec sp_select_comprovar_folio_corte '" + folio_corte + "';";
+		String query = "exec sp_select_comprobar_folio_corte_efectivo '" + folio_corte + "';";
 		boolean existe = false;
 		try {				
 			Statement s = con.conexion().createStatement();
@@ -180,6 +180,7 @@ public class BuscarSQL {
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Folio_Corte ]   SQLException: sp_select_comprobar_folio_corte_efectivo "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 			
 		return existe;
@@ -187,7 +188,7 @@ public class BuscarSQL {
 	
 	public Obj_Alimentacion_Cortes Folio_Corte_Deposito(String folio_corte){
 		Obj_Alimentacion_Cortes folio = new Obj_Alimentacion_Cortes();
-		String query = "exec sp_select_comprovar_folio_corte_deposito '" + folio_corte + "';";
+		String query = "exec sp_select_comprobar_folio_corte_deposito '" + folio_corte + "';";
 		try {				
 			Statement s = con.conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
@@ -198,6 +199,7 @@ public class BuscarSQL {
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Obj_Alimentacion_Cortes ]   SQLException: sp_select_comprobar_folio_corte_deposito "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 			
 		return folio;
@@ -206,7 +208,7 @@ public class BuscarSQL {
 	public boolean Folio_Corte_Cheques(String folio_corte){
 //		Obj_Alimentacion_Cortes folio = new Obj_Alimentacion_Cortes();
 		boolean existe = false;
-		String query = "exec sp_select_comprovar_folio_corte_cheques '" + folio_corte + "';";
+		String query = "exec sp_select_comprobar_folio_corte_cheques '" + folio_corte + "';";
 		try {				
 			Statement s = con.conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
@@ -217,6 +219,7 @@ public class BuscarSQL {
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Folio_Corte_Cheques ]   SQLException: sp_select_comprobar_folio_corte_cheques "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 			
 		return existe;
