@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Corte_De_Caja" language="groovy" pageWidth="210" pageHeight="760" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="310da8fc-7048-4194-90f6-839ee095fa06">
 	<property name="template.type" value="columnar"/>
-	<property name="ireport.zoom" value="1.7715610000000057"/>
+	<property name="ireport.zoom" value="2.3579476910000086"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="180"/>
 	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -18,29 +18,41 @@
 		<defaultValueExpression><![CDATA["M:\\SISTEMA DE CONTROL OPERATIVO IZAGAR\\SCOI\\src\\Obj_Reportes\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[declare @folio_corte varchar(15)
---set @folio_corte = ('SV1');
-set @folio_corte = (select top 1 (folio_corte) from tb_alimentacion_de_cortes order by fecha_de_corte desc);
+		<![CDATA[declare  @dolares money,@vales money
+
+,@folio_corte varchar(15) set @folio_corte = ('CE11');
+
+
+set @dolares=(select tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor
+			 	   from tb_alimentacion_efectivo_cortes
+				        inner join tb_denominaciones on tb_denominaciones.folio=tb_alimentacion_efectivo_cortes.folio_denominacion
+					where folio_corte=@folio_corte and folio_denominacion=12)
+
+set @vales=(select tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor
+			 	   from tb_alimentacion_efectivo_cortes
+				        inner join tb_denominaciones on tb_denominaciones.folio=tb_alimentacion_efectivo_cortes.folio_denominacion
+					where folio_corte=@folio_corte and folio_denominacion=13)
+
+
 select convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,103)+' '+convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,108) as fecha
 		,tb_alimentacion_de_cortes.folio_corte as folio_corte
 		,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as cajero
 		,(select tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno
 		from tb_empleado where tb_empleado.folio	= tb_alimentacion_de_cortes.folio_usuario) 	as realizo_corte
-
+        ,tb_alimentacion_de_cortes.folio_corte
 		,tb_establecimiento.nombre as establecimiento_de_corte
 		,tb_alimentacion_de_cortes.corte_del_sistema
 		,tb_alimentacion_de_cortes.tiempo_aire
 		,tb_alimentacion_de_cortes.recibo_de_luz
 		,tb_alimentacion_de_cortes.deposito
-		,tb_alimentacion_de_cortes.efectivo
+		,tb_alimentacion_de_cortes.efectivo-@dolares-@vales as efectivo
+        ,@dolares as dolares
+        ,@vales as vales
 		,tb_alimentacion_de_cortes.cheques
 		,tb_alimentacion_de_cortes.total_de_vauchers
-,(	tb_alimentacion_de_cortes.corte_del_sistema - tb_alimentacion_de_cortes.tiempo_aire
-	-tb_alimentacion_de_cortes.recibo_de_luz
-	-tb_alimentacion_de_cortes.efectivo
-	-tb_alimentacion_de_cortes.cheques
-	-tb_alimentacion_de_cortes.total_de_vauchers) as diferiencia_de_corte
-,(select sum(tb_vauchers.retiro) from tb_vauchers where tb_vauchers.folio_corte = @folio_corte) as total_de_retiros
+        ,(	tb_alimentacion_de_cortes.corte_del_sistema - tb_alimentacion_de_cortes.tiempo_aire	-tb_alimentacion_de_cortes.recibo_de_luz
+				-tb_alimentacion_de_cortes.efectivo - tb_alimentacion_de_cortes.cheques - tb_alimentacion_de_cortes.total_de_vauchers) as diferiencia_de_corte
+		,(select sum(tb_vauchers.retiro) from tb_vauchers where tb_vauchers.folio_corte = @folio_corte) as total_de_retiros
 from tb_alimentacion_de_cortes
 inner join tb_empleado on tb_empleado.folio = tb_alimentacion_de_cortes.folio_empleado
 inner join tb_establecimiento on tb_establecimiento.folio = tb_alimentacion_de_cortes.folio_establecimiento_de_corte
@@ -56,6 +68,8 @@ where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
 	<field name="recibo_de_luz" class="java.math.BigDecimal"/>
 	<field name="deposito" class="java.math.BigDecimal"/>
 	<field name="efectivo" class="java.math.BigDecimal"/>
+	<field name="dolares" class="java.math.BigDecimal"/>
+	<field name="vales" class="java.math.BigDecimal"/>
 	<field name="cheques" class="java.math.BigDecimal"/>
 	<field name="total_de_vauchers" class="java.math.BigDecimal"/>
 	<field name="diferiencia_de_corte" class="java.math.BigDecimal"/>
@@ -63,102 +77,94 @@ where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
 	<group name="Group2">
 		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
 		<groupHeader>
-			<band height="18">
-				<textField isBlankWhenNull="true">
-					<reportElement uuid="8e829bc4-3d8f-493d-8430-6a5e24320000" positionType="Float" x="12" y="4" width="198" height="11" forecolor="#000000"/>
-					<textElement>
-						<font fontName="Times New Roman" size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Cajero(a): "+$F{cajero}]]></textFieldExpression>
-				</textField>
-			</band>
+			<band height="8"/>
 		</groupHeader>
 		<groupFooter>
-			<band height="136">
+			<band height="159">
 				<line>
-					<reportElement uuid="25cef62d-1a1a-4bcc-a2ac-f6256554cb54" positionType="FixRelativeToBottom" x="35" y="96" width="143" height="1"/>
+					<reportElement uuid="25cef62d-1a1a-4bcc-a2ac-f6256554cb54" positionType="FixRelativeToBottom" x="33" y="105" width="143" height="1"/>
 				</line>
-				<textField>
-					<reportElement uuid="e9eb1e9b-2fa0-42b9-9d9b-78d40654bc36" x="111" y="29" width="67" height="11"/>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement uuid="e9eb1e9b-2fa0-42b9-9d9b-78d40654bc36" x="109" y="16" width="67" height="11"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{corte_del_sistema}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="19f037a5-2135-4c51-a21a-647a6fd0710c" x="35" y="40" width="74" height="11"/>
+					<reportElement uuid="19f037a5-2135-4c51-a21a-647a6fd0710c" x="33" y="27" width="74" height="11"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[Tiempo_aire:]]></text>
 				</staticText>
-				<textField>
-					<reportElement uuid="b5d7bf58-61aa-49e2-a277-5298e00a1bcc" x="111" y="40" width="67" height="11"/>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement uuid="b5d7bf58-61aa-49e2-a277-5298e00a1bcc" x="109" y="27" width="67" height="11"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{tiempo_aire}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="c14ba38b-ee35-4085-9841-8856a6a49ec0" x="35" y="51" width="74" height="11"/>
+					<reportElement uuid="c14ba38b-ee35-4085-9841-8856a6a49ec0" x="33" y="38" width="74" height="11"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[Recibo_de_luz:]]></text>
 				</staticText>
-				<textField>
-					<reportElement uuid="fad0e3c4-cae5-4be5-a9e2-a0f884bea94c" x="111" y="51" width="67" height="11"/>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement uuid="fad0e3c4-cae5-4be5-a9e2-a0f884bea94c" x="109" y="38" width="67" height="11"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{recibo_de_luz}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="5e5fcf40-6349-4399-8170-e3388312a9c5" x="35" y="62" width="74" height="11"/>
+					<reportElement uuid="5e5fcf40-6349-4399-8170-e3388312a9c5" x="33" y="49" width="74" height="11"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[Efectivo:]]></text>
 				</staticText>
-				<textField>
-					<reportElement uuid="3f5f10a4-8159-4b53-8623-b36d8bb768e5" x="111" y="62" width="67" height="11"/>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement uuid="3f5f10a4-8159-4b53-8623-b36d8bb768e5" x="109" y="49" width="67" height="11"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{efectivo}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="5411a261-678e-4fa1-8179-f4f9cacd135c" x="35" y="73" width="74" height="11"/>
+					<reportElement uuid="5411a261-678e-4fa1-8179-f4f9cacd135c" x="33" y="82" width="74" height="11"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[Cheques:]]></text>
 				</staticText>
-				<textField>
-					<reportElement uuid="3dcb1546-b019-4031-8788-57bdfffc6f16" x="111" y="73" width="67" height="11"/>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement uuid="3dcb1546-b019-4031-8788-57bdfffc6f16" x="109" y="82" width="67" height="11"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cheques}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="ed6d529c-5c89-4eba-b8d1-a654ad6ab001" x="35" y="84" width="74" height="11"/>
+					<reportElement uuid="ed6d529c-5c89-4eba-b8d1-a654ad6ab001" x="33" y="93" width="74" height="11"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[Total_de_vauchers:]]></text>
 				</staticText>
-				<textField>
-					<reportElement uuid="8cd12cdb-71b2-4bf7-8f36-6b14de896502" x="111" y="84" width="67" height="11"/>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement uuid="8cd12cdb-71b2-4bf7-8f36-6b14de896502" x="109" y="93" width="67" height="11"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{total_de_vauchers}]]></textFieldExpression>
 				</textField>
 				<frame>
-					<reportElement uuid="211a9374-0867-45b0-bb8a-c512dac6541b" mode="Opaque" x="35" y="99" width="143" height="12" forecolor="#D0B48E" backcolor="#CCCCCC"/>
+					<reportElement uuid="211a9374-0867-45b0-bb8a-c512dac6541b" mode="Opaque" x="33" y="108" width="143" height="12" forecolor="#D0B48E" backcolor="#CCCCCC"/>
 					<staticText>
-						<reportElement uuid="3ff9ab4b-ec15-4d51-9072-ba19396b887e" x="0" y="0" width="89" height="11"/>
+						<reportElement uuid="3ff9ab4b-ec15-4d51-9072-ba19396b887e" x="0" y="1" width="89" height="11"/>
 						<textElement textAlignment="Left" verticalAlignment="Middle">
 							<font size="8" isBold="true"/>
 						</textElement>
@@ -173,66 +179,77 @@ where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
 					</textField>
 				</frame>
 				<staticText>
-					<reportElement uuid="d842af27-4cc9-4f1f-ab88-034ff6b2a842" x="35" y="29" width="74" height="11"/>
+					<reportElement uuid="d842af27-4cc9-4f1f-ab88-034ff6b2a842" x="33" y="16" width="74" height="11"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[Corte_del_sistema:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="9ab7a262-3dfb-4dc0-b31f-dcb1ace1b7d7" x="35" y="112" width="67" height="11"/>
+					<reportElement uuid="9ab7a262-3dfb-4dc0-b31f-dcb1ace1b7d7" x="33" y="134" width="67" height="11"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<text><![CDATA[Deposito:]]></text>
+					<text><![CDATA[Deposito En Caja:]]></text>
 				</staticText>
 				<textField>
-					<reportElement uuid="b9ede47e-1622-47f1-9b93-b827bd772ff8" x="124" y="112" width="54" height="11"/>
+					<reportElement uuid="b9ede47e-1622-47f1-9b93-b827bd772ff8" x="122" y="134" width="54" height="11"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{deposito}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement uuid="a9a611a3-c5e8-4c83-b32d-d9ff77493b98" positionType="FixRelativeToBottom" x="2" y="1" width="207" height="1"/>
+					<reportElement uuid="a9a611a3-c5e8-4c83-b32d-d9ff77493b98" positionType="FixRelativeToBottom" x="2" y="0" width="207" height="1"/>
 				</line>
-				<frame>
-					<reportElement uuid="5475a42b-749b-4877-a50c-b7f7277d6f4b" mode="Opaque" x="88" y="2" width="119" height="12" forecolor="#D0B48E" backcolor="#CCCCCC"/>
-				</frame>
-				<staticText>
-					<reportElement uuid="b830c01b-9d38-4ac4-974f-36d3654b543b" x="89" y="2" width="64" height="11"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Total de retiros: ]]></text>
-				</staticText>
 				<textField>
-					<reportElement uuid="0255b895-593e-4864-991a-5b8ca12c1be7" x="124" y="123" width="54" height="11"/>
+					<reportElement uuid="0255b895-593e-4864-991a-5b8ca12c1be7" x="122" y="145" width="54" height="11"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{total_de_retiros}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="e3de750e-4b02-49a4-b80a-f75bfb2f35d8" x="35" y="123" width="67" height="11"/>
+					<reportElement uuid="e3de750e-4b02-49a4-b80a-f75bfb2f35d8" x="33" y="145" width="101" height="11"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<text><![CDATA[Total de retiros:]]></text>
+					<text><![CDATA[Total de retiros del Cliente:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="285d0189-e2c8-4487-8827-fefcac58405f" stretchType="RelativeToTallestObject" x="12" y="15" width="179" height="12" backcolor="#FFFFFF"/>
+					<reportElement uuid="285d0189-e2c8-4487-8827-fefcac58405f" stretchType="RelativeToTallestObject" x="26" y="1" width="108" height="12" backcolor="#FFFFFF"/>
 					<textElement verticalAlignment="Top">
 						<font size="9" isBold="true" isItalic="false" isUnderline="true"/>
 					</textElement>
-					<text><![CDATA[Concentrado:]]></text>
+					<text><![CDATA[Concentrado del Corte:]]></text>
 				</staticText>
-				<textField>
-					<reportElement uuid="cf5f92bd-d7ce-4f6e-b7c6-78eabc4980c1" x="147" y="2" width="54" height="11"/>
+				<staticText>
+					<reportElement uuid="803af0fe-99cf-4165-b091-c6c0392ad941" x="33" y="60" width="74" height="11"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Dolares:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="3c6153ea-2a48-49de-8951-ab8675355ac1" x="33" y="71" width="74" height="11"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Vales:]]></text>
+				</staticText>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement uuid="d431b1ef-3922-460b-a1ce-2d64fa78ae4e" x="109" y="60" width="66" height="11"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{total_de_retiros}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{dolares}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement uuid="b16783d1-fbfa-4c74-979f-5f8ed9d5662c" x="109" y="71" width="66" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vales}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -241,42 +258,63 @@ where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="70" splitType="Stretch">
+		<band height="103" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="8c6e7c03-de08-42aa-a8ec-de55dc358a13" style="Title" x="0" y="1" width="211" height="33"/>
+				<reportElement uuid="8c6e7c03-de08-42aa-a8ec-de55dc358a13" style="Title" x="2" y="6" width="211" height="33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="28" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Corte de caja]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="98f3ce5c-ecbe-4e1e-855b-895a8336dcfd" x="72" y="35" width="129" height="17"/>
+				<reportElement uuid="98f3ce5c-ecbe-4e1e-855b-895a8336dcfd" x="72" y="39" width="131" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="13" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="e52e9387-7985-42b7-b8ea-78243db8e8b2" style="Title" x="15" y="35" width="63" height="17"/>
+				<reportElement uuid="e52e9387-7985-42b7-b8ea-78243db8e8b2" style="Title" x="9" y="39" width="63" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="13" isBold="true"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="fa2d9724-c048-4e5d-bc21-ccdbc1b3266b" x="88" y="51" width="122" height="17"/>
+				<reportElement uuid="fa2d9724-c048-4e5d-bc21-ccdbc1b3266b" x="94" y="74" width="109" height="17"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="10" isBold="true" isItalic="true"/>
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{establecimiento_de_corte}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="1a49efbf-1ca0-43b6-9b57-0e50b5624edb" style="Title" x="0" y="51" width="89" height="17"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+				<reportElement uuid="1a49efbf-1ca0-43b6-9b57-0e50b5624edb" style="Title" x="12" y="74" width="81" height="17"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Establecimiento: ]]></text>
 			</staticText>
+			<textField>
+				<reportElement uuid="4a3efc4b-acda-4268-8c87-b31cbee6f33d" x="87" y="57" width="116" height="17"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{folio_corte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a90e5f88-f447-4d54-b2b1-d5cad7b289d4" style="Title" x="12" y="57" width="75" height="17"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Folio de Corte: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8e829bc4-3d8f-493d-8430-6a5e24320000" positionType="Float" x="12" y="91" width="191" height="11" forecolor="#000000"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cajero(a): "+$F{cajero}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

@@ -2974,7 +2974,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			totalVauchers = txtTotalVaucher.getText().equals("")?0:Double.valueOf(txtTotalVaucher.getText());
 			cheque = txtCheques.getText().equals("")?0:Double.valueOf(txtCheques.getText());
 			
-			diferienciaCorte = (corteSistema-(efectivo/*+deposito*/+tiempoAire+resiboLuz+totalVauchers+cheque));
+			diferienciaCorte = (corteSistema-(efectivo/*+deposito+tiempoAire+resiboLuz*/+totalVauchers+cheque));
 			
 			if(diferienciaCorte < 0){
 					lblEtiquetaCorte.setText("Sobrante");

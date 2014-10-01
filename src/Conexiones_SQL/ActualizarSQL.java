@@ -2180,7 +2180,6 @@ public class ActualizarSQL {
 						pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
 						pstmt.setString(3, alim_denom.getEstablecimiento().toUpperCase());
 						pstmt.setInt(4, Integer.parseInt(tabla[i][0].toString().trim()));
-//						pstmt.setString(6, tabla[i][1].toString().trim());
 						pstmt.setFloat(5, Float.parseFloat(tabla[i][2].toString().trim()));
 						pstmt.setFloat(6,Float.parseFloat(tabla[i][3].toString().trim()));
 						pstmt.setFloat(7,Float.parseFloat(tabla[i][4].toString().trim()));
