@@ -2529,6 +2529,7 @@ public class ActualizarSQL {
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt   (i,		cliente.getFolio_cliente());
 			pstmt.setString(i+=1,	cliente.getNombre().toUpperCase().trim());
+			
 			pstmt.setString(i+=1,	cliente.getAp_paterno().toUpperCase().trim());
 			pstmt.setString(i+=1,	cliente.getAp_materno().toUpperCase().trim());
 			pstmt.setString(i+=1,	cliente.getDireccion().toUpperCase().trim());
@@ -2706,41 +2707,56 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-//	public boolean Actualizar_Voucherts_Con_Retiro(Object[][] tabla){
-//		
-//		String query ="exec sp_update_vouchers_con_retiros ?,?";
-//		Connection con = new Connexion().conexion();
-//		
-//		try {
-//			PreparedStatement pstmt = con.prepareStatement(query);
-//			con.setAutoCommit(false);
-//			for(int i=0; i<tabla.length; i++){
-//				pstmt.setString(1, tabla[i][0].toString().trim());
-//				pstmt.setFloat (2, Float.parseFloat(tabla[i][1].toString().trim()));
-//				pstmt.executeUpdate();
-//			}
-//			con.commit();
-//		} catch (Exception e) {
-//			System.out.println("SQLException: "+e.getMessage());
-//			if(con != null){
-//				try{
-//					System.out.println("La transacción ha sido abortada");
-//					con.rollback();
-//					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Voucherts_Con_Retiro ] update  SQLException: sp_insert_deposito "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//				}catch(SQLException ex){
-//					System.out.println(ex.getMessage());
-//					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Voucherts_Con_Retiro ] update  SQLException: sp_insert_deposito "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//				}
-//			}
-//			return false;
-//		}finally{
-//			try {
-//				con.close();
-//			} catch(SQLException e){
-//				e.printStackTrace();
-//			}
-//		}		
-//		return true;
-//	}
+	public boolean Actualizar_Captura_FS(String folio_corte, Object[][] tabla){
+		String queryReset ="exec sp_reset_captura_fs ?";
+		String query ="exec sp_update_captura_fs ?,?,?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			
+			con.setAutoCommit(false);
+			
+			PreparedStatement pstmtReset = con.prepareStatement(queryReset);
+			PreparedStatement pstmt = con.prepareStatement(query);
+			
+			pstmtReset.setString(1, folio_corte);
+			pstmtReset.executeUpdate();
+			
+			
+			for(int i=0; i<tabla.length; i++){
+				
+				System.out.print("conneccion "+folio_corte+"   ");
+				System.out.print(tabla[i][0].toString()+"   ");
+				System.out.println(tabla[i][1].toString());
+				
+				pstmt.setString(1, folio_corte);
+				pstmt.setString (2, tabla[i][0].toString());
+				pstmt.setString (3, tabla[i][1].toString());
+				pstmt.executeUpdate();
+			}
+			con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Captura_FS ] update  SQLException: sp_update_captura_fs "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Captura_FS ] update  SQLException: sp_update_captura_fs "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+					return false;
+					}	
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
 	
+	}	
+
 }

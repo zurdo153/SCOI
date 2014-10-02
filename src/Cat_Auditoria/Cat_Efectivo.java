@@ -98,7 +98,7 @@ public class Cat_Efectivo extends JDialog {
 	
 	public void Constructor(){
 		this.setModal(true);
-		this.setTitle("Alimentación de Denominaciones");
+		this.setTitle("Alimentación de Efectivo");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/captura_nomina_icon&16.png"));
 		
 		lblEmpleado.setForeground(Color.GRAY);
