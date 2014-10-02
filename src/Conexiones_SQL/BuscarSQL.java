@@ -3046,6 +3046,32 @@ public class BuscarSQL {
 		return Matriz;
 	}
 	
+	public String[][] getTicket_FS_Para_Cortes(int folio){
+		String[][] Matriz = null;
+		
+		String datosif = "exec sp_ticket_fuente_de_sodas_por_cajero "+folio;
+		
+		Matriz = new String[getFilas(datosif)][3];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(datosif);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		return Matriz;
+	}
+	
 	public Obj_Cuadrante Cuadrante(int folio) throws SQLException{
 		Obj_Cuadrante cuadrante = new Obj_Cuadrante();
 		String query = "exec sp_select_cuadrante_folio "+ folio;

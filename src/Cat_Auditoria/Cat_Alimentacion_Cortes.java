@@ -25,6 +25,7 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -53,6 +54,7 @@ import Cat_Reportes.Cat_Reporte_De_Cheques_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
 import Cat_Reportes.Cat_Reporte_De_Depositos_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Efectivo_Cortes;
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Auditoria.Obj_Alimentacion_Cortes;
@@ -116,9 +118,13 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	JTextField txtTotalRetiros = new JTextField("");
 	
+	JTextField txtTotalFS = new JTextField("");
+	
 	JButton btnEfectivo = new JButton("efe");
 	JButton btnDeposito = new JButton("dep");
 	JButton btnCheques	= new JButton("che");
+	
+	JButton btnFS = new JButton("fs");
 	
 	 Border border = LineBorder.createGrayLineBorder();
 //	    Icon warnIcon = MetalIconFactory.getTreeComputerIcon();
@@ -368,13 +374,17 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(new JLabel("Recibo de luz: ")).setBounds(x*10+50,y,ancho,20);
 		panel.add(txtReciboLuz).setBounds(ancho+x*10+30,y,ancho*2-190,20);
 		
-		panel.add(new JLabel("Total de retiros: ")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtTotalRetiros).setBounds(ancho-20,y,ancho*2-170,20);
+		panel.add(new JLabel("F. Sodas: ")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtTotalFS).setBounds(ancho-40,y,ancho-40,20);
+		panel.add(btnFS).setBounds(ancho*2-80,y,29,20);
 		
 		panel.add(new JLabel("Total De Vauchers: ")).setBounds(x*10+50,y,ancho,20);
 		panel.add(txtTotalVaucher).setBounds(ancho+x*10+30,y,ancho*2-190,20);
 		
 		panel.add(btnVauchers).setBounds(x,y+=25,ancho-40,20);
+		
+		panel.add(new JLabel("Total de retiros: ")).setBounds(x*10+50,y,ancho,20);
+		panel.add(txtTotalRetiros).setBounds(ancho+x*10+30,y-1,ancho*2-190,20);
 
 		panel.add(scrollVauchers).setBounds(x,y+=20,ancho*6+40,105);
 		
@@ -402,6 +412,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		btnQuitarAsignacion.addActionListener(opQuitarAsignacion);
 		btnVauchers.addActionListener(opVauchers);
 		btnQuitarVauchers.addActionListener(opQuitarVauchers);
+		btnFS.addActionListener(opFS);
+		
 		btnGuardarCorte.addActionListener(guardar);
 		btnCancelar.addActionListener(cancelar);
 		btnSalir.addActionListener(salir);
@@ -455,12 +467,14 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		txtCheques.setEditable(false);
 		txtTotalVaucher.setEditable(false);
 		txtTotalRetiros.setEditable(false);
+		txtTotalFS.setEditable(false);		
 		
 		chStatus.setEnabled(false);
 		
 		btnDeposito.setEnabled(false);
 		btnEfectivo.setEnabled(false);
 		btnCheques.setEnabled(false);
+		btnFS.setEnabled(false);
 		
 		this.setSize(940,590);
 		this.setResizable(true);
@@ -632,66 +646,81 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			if(validaCampos()!="") {
-				JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-				return;
-			}else{
-//				try{
-					Obj_Alimentacion_Cortes corte = new Obj_Alimentacion_Cortes();
+			
+			
+			for(int i = 0; i<=matriz.length-1; i++){
+//				if(matriz[i][1].toString().equals("true")){
 					
-//					this.folio_establecimiento_de_corte=0;  
-//					this.fecha_de_corte="";         
-//					this.status=false;
-						corte.setFolio_corte(lblFolio_Corte.getText());
-						corte.setUsuario(folio_usuario);
-						corte.setFolio_empleado(Integer.parseInt(lblFolio_Empleado.getText()+""));
-						
-						corte.setEstablecimiento_de_corte(lblEstablecimineto.getText().toUpperCase().trim());
-						
-						corte.setCorte_sistema(Float.parseFloat(txtCorteSistema.getText()));
-						corte.setTiempo_aire(Float.parseFloat(txtTiempoAire.getText().equals("")?"0":txtTiempoAire.getText()));
-						corte.setRecibo_luz(Float.parseFloat(txtReciboLuz.getText().equals("")?"0":txtReciboLuz.getText()));
-						corte.setDeposito(Float.parseFloat(txtDeposito.getText()));
-						corte.setEfectivo(Float.parseFloat(txtEfectivo.getText()));
-						corte.setCheques(Float.valueOf(txtCheques.getText().equals("")?"0":txtCheques.getText()));
-						corte.setTotal_de_vauchers(Float.valueOf(txtTotalVaucher.getText().equals("")?"0":txtTotalVaucher.getText()));
-						corte.setDiferencia_corte(Float.valueOf(lblDiferenciaCorte.getText().substring(2,lblDiferenciaCorte.getText().length())));
-						
-						if(txaObservaciones.getText().length()!=0){
-							corte.setComentario(txaObservaciones.getText());
-						}else{
-							corte.setComentario("");
-						}
-						
-//						si guarda entra y abre los reportes de impresion para cortes
-						if(corte.guardar(tabla_guardar_asignaciones(),tabla_guardar_vauchers(),tabla_guardar_totales_por_fecha(), lista_de_asignaciones_en_uso())){
-							
-							btnAsignacion.setEnabled(false);
-							btnQuitarAsignacion.setEnabled(false);
-							btnVauchers.setEnabled(false);
-							btnQuitarVauchers.setEnabled(false);
-							
-							btnEfectivo.setEnabled(false);
-							btnDeposito.setEnabled(false);
-							btnCheques.setEnabled(false);
-							
-							btnGuardarCorte.setEnabled(false);
-							btnCancelar.setEnabled(false);
-							
-							btnSalir.setEnabled(true);
-							btnFiltro.setEnabled(true);
-							
-//							corte.actualizar(tabla_retiros());
-//							asigna 1 si guarda 
-							bandera_de_guardado=1;
-							
-							new Cat_Reporte_De_Corte_De_Caja(lblFolio_Corte.getText().trim());
-							
-						}else{
-							JOptionPane.showMessageDialog(null, "Ha ocurrido un error al guardar el corte","Error",JOptionPane.WARNING_MESSAGE);
-							return;
-						}
-				}	
+					System.out.print(matriz[i][0]);
+					System.out.println(matriz[i][1]);
+//				}
+			}
+			
+			
+			
+			
+			
+//			if(validaCampos()!="") {
+//				JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//				return;
+//			}else{
+////				try{
+//					Obj_Alimentacion_Cortes corte = new Obj_Alimentacion_Cortes();
+//					
+////					this.folio_establecimiento_de_corte=0;  
+////					this.fecha_de_corte="";         
+////					this.status=false;
+//						corte.setFolio_corte(lblFolio_Corte.getText());
+//						corte.setUsuario(folio_usuario);
+//						corte.setFolio_empleado(Integer.parseInt(lblFolio_Empleado.getText()+""));
+//						
+//						corte.setEstablecimiento_de_corte(lblEstablecimineto.getText().toUpperCase().trim());
+//						
+//						corte.setCorte_sistema(Float.parseFloat(txtCorteSistema.getText()));
+//						corte.setTiempo_aire(Float.parseFloat(txtTiempoAire.getText().equals("")?"0":txtTiempoAire.getText()));
+//						corte.setRecibo_luz(Float.parseFloat(txtReciboLuz.getText().equals("")?"0":txtReciboLuz.getText()));
+//						corte.setDeposito(Float.parseFloat(txtDeposito.getText()));
+//						corte.setEfectivo(Float.parseFloat(txtEfectivo.getText()));
+//						corte.setCheques(Float.valueOf(txtCheques.getText().equals("")?"0":txtCheques.getText()));
+//						corte.setTotal_de_vauchers(Float.valueOf(txtTotalVaucher.getText().equals("")?"0":txtTotalVaucher.getText()));
+//						corte.setDiferencia_corte(Float.valueOf(lblDiferenciaCorte.getText().substring(2,lblDiferenciaCorte.getText().length())));
+//						
+//						if(txaObservaciones.getText().length()!=0){
+//							corte.setComentario(txaObservaciones.getText());
+//						}else{
+//							corte.setComentario("");
+//						}
+//						
+////						si guarda entra y abre los reportes de impresion para cortes
+//						if(corte.guardar(tabla_guardar_asignaciones(),tabla_guardar_vauchers(),tabla_guardar_totales_por_fecha(), lista_de_asignaciones_en_uso())){
+//							
+//							btnAsignacion.setEnabled(false);
+//							btnQuitarAsignacion.setEnabled(false);
+//							btnVauchers.setEnabled(false);
+//							btnQuitarVauchers.setEnabled(false);
+//							
+//							btnEfectivo.setEnabled(false);
+//							btnDeposito.setEnabled(false);
+//							btnCheques.setEnabled(false);
+//							btnFS.setEnabled(false);
+//							
+//							btnGuardarCorte.setEnabled(false);
+//							btnCancelar.setEnabled(false);
+//							
+//							btnSalir.setEnabled(true);
+//							btnFiltro.setEnabled(true);
+//							
+////							corte.actualizar(tabla_retiros());
+////							asigna 1 si guarda 
+//							bandera_de_guardado=1;
+//							
+//							new Cat_Reporte_De_Corte_De_Caja(lblFolio_Corte.getText().trim());
+//							
+//						}else{
+//							JOptionPane.showMessageDialog(null, "Ha ocurrido un error al guardar el corte","Error",JOptionPane.WARNING_MESSAGE);
+//							return;
+//						}
+//				}	
 			}
 	};
 	
@@ -812,6 +841,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							btnEfectivo.setEnabled(false);
 							btnDeposito.setEnabled(false);
 							btnCheques.setEnabled(false);
+							btnFS.setEnabled(false);
 							
 							while(tabla_asignaciones.getRowCount()>0) {
 								modelo_asignaciones.removeRow(0);
@@ -838,6 +868,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	ActionListener opAsignacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			new Cat_Filtrar_Asignaciones(cadenaAsignacionParametro(),lblNombre_Completo.getText()).setVisible(true);
+		}
+	};
+	
+	ActionListener opFS = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			new Cat_Seleccion_De_Ticket_De_FS_Cortes(Integer.valueOf(lblFolio_Empleado.getText()), lblNombre_Completo.getText().trim()).setVisible(true);
 		}
 	};
 	
@@ -1067,9 +1103,14 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						modelo_asignaciones.removeRow(fila);
 						
 						txtTotalVaucher.setText( "" );
+						txtTotalRetiros.setText("");
 						
 						while(tabla_vauchers.getRowCount()>0){
 								modelo_vauchers.removeRow(0);
+						}
+						
+						while(tabla_retiro_de_clientes.getRowCount()>0){
+							modelo_retiro_de_clientes.removeRow(0);
 						}
 						
 						if(borrar_lista_de_asignaciones()){
@@ -1089,6 +1130,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						btnDeposito.setEnabled(false);
 						btnEfectivo.setEnabled(false);
 						btnCheques.setEnabled(false);
+						btnFS.setEnabled(false);
 				}
 				
 //				cargar_cadena_de_vouchers_para_retiro_clientes();
@@ -1116,7 +1158,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					}
 					
 					String[] retiro = new String[2];
-					for(int i=0; i <= tabla_vauchers.getRowCount(); i++){
+					for(int i=0; i <= tabla_vauchers.getRowCount()-1; i++){
 						if(Float.valueOf(tabla_vauchers.getValueAt(i, 11).toString().trim())>0){
 							retiro[0] = modelo_vauchers.getValueAt(i, 0).toString().trim();
 							retiro[1] = modelo_vauchers.getValueAt(i, 11).toString().trim();
@@ -2683,6 +2725,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	    				}
 	    			}
 	    			
+	    			if(tabla_retiro_de_clientes.getRowCount()>0){
+	    				while(tabla_retiro_de_clientes.getRowCount()>0){
+							 modelo_retiro_de_clientes.removeRow(0);
+	    				}
+	    			}
+	    			
 	    			if(txtCorteSistema.getText().toString().trim().equals("")){
 	    				txtCorteSistema.setText(formato.format(suma_total)+"");
 	    			}else{
@@ -2693,6 +2741,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	    				btnDeposito.setEnabled(true);
 	    				btnEfectivo.setEnabled(true);
 	    				btnCheques.setEnabled(true);
+	    				btnFS.setEnabled(true);
 	    				
 	    				llenar_venta_de_asignaciones_por_fecha();
 	    			}
@@ -2918,11 +2967,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	    			}
 	    			
 	    			
-	    			if(txtTotalRetiros.getText().toString().trim().equals("")){
+//	    			if(txtTotalRetiros.getText().toString().trim().equals("")){
 	    				txtTotalRetiros.setText(formato.format(suma_total_retiros)+"");
-	    			}else{
-	    				txtTotalRetiros.setText(formato.format(Double.valueOf(txtTotalRetiros.getText().toString().trim())+suma_total_retiros)+"");
-	    			}
+//	    			}else{
+//	    				txtTotalRetiros.setText(formato.format(Double.valueOf(txtTotalRetiros.getText().toString().trim())+suma_total_retiros)+"");
+//	    			}
 	    			
 	    			
 	    			calculoDinamico();
@@ -2992,4 +3041,270 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			lblDiferenciaCorte.setText("$ "+formato.format(diferienciaCorte));
 		}
 		
+		
+		
+		
+		
+		
+		
+		 String[][] matriz = null;
+		
+		public class Cat_Seleccion_De_Ticket_De_FS_Cortes extends JDialog {
+			
+			Container cont = getContentPane();
+			JLayeredPane campo = new JLayeredPane();
+			
+			int folio_empleado=0;
+			
+			DefaultTableModel modeloFiltro = new DefaultTableModel(null,
+		            new String[]{"Ticket", "Importe","Fecha",""}
+					){
+			     @SuppressWarnings("rawtypes")
+				Class[] types = new Class[]{
+			    	java.lang.Integer.class,
+			    	java.lang.String.class,
+			    	java.lang.String.class,
+			    	java.lang.Boolean.class
+		         };
+			     @SuppressWarnings({ "rawtypes", "unchecked" })
+				public Class getColumnClass(int columnIndex) {
+		             return types[columnIndex];
+		         }
+		         public boolean isCellEditable(int fila, int columna){
+		        	 switch(columna){
+		        	 	case 0 : return false; 
+		        	 	case 1 : return false; 
+		        	 	case 2 : return false; 
+		        	 	case 3 : return true;
+		        	 		
+		        	 } 				
+		 			return false;
+		 		}
+			};
+			
+			JTable tablaFiltro = new JTable(modeloFiltro);
+		    JScrollPane scroll = new JScrollPane(tablaFiltro);
+			
+			JTextField txtFolio = new JTextField();
+			JTextField txtNombre_Completo = new JTextField();
+			
+			JButton btnAgregar = new JButton(new ImageIcon("Iconos/agregar.png"));
+			
+			public Cat_Seleccion_De_Ticket_De_FS_Cortes(int folio,String empleado) {
+				
+				this.setModal(true);
+				setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+				setTitle("Ticket Capturados Por Cajero(a)");
+				campo.setBorder(BorderFactory.createTitledBorder("Seleccion De Ticket Por Empleado"));
+				
+				this.txtFolio.setEditable(false);
+				this.txtNombre_Completo.setEditable(false);
+				
+				folio_empleado=folio;
+				
+				txtFolio.setText(folio+"");
+				txtNombre_Completo.setText(empleado);
+				
+				buscar_tabla(folio_empleado);
+				
+				btnAgregar.setToolTipText("Agregar");
+				
+				campo.add(scroll).setBounds(15,43,374,360);
+				
+				campo.add(txtFolio).setBounds(15,20,40,20);
+				campo.add(txtNombre_Completo).setBounds(56,20,280,20);
+				campo.add(btnAgregar).setBounds(340,20,50,20);
+				
+				cont.add(campo);
+				
+				configuracionTabla();
+				
+				btnAgregar.addActionListener(opAgregar);
+				
+				this.addWindowListener(new WindowListener() {
+					public void windowOpened(WindowEvent e) {}
+					public void windowIconified(WindowEvent e) {}
+					public void windowDeiconified(WindowEvent e) {}
+					public void windowDeactivated(WindowEvent e) {}
+					public void windowClosing(WindowEvent e) {
+						
+//						if(!txtTotalFS.getText().equals("")){
+//							return;
+//						}else{
+							txtTotalFS.setText("");
+//						}
+						
+					}
+					public void windowClosed(WindowEvent e) {}
+					public void windowActivated(WindowEvent e) {}
+				});
+				
+				setSize(415,450);
+				setResizable(false);
+				setLocationRelativeTo(null);
+			}
+			
+			public void configuracionTabla(){
+				
+				tablaFiltro.getColumnModel().getColumn(0).setMaxWidth(100);
+				tablaFiltro.getColumnModel().getColumn(0).setMinWidth(100);
+				tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(150);
+				tablaFiltro.getColumnModel().getColumn(1).setMinWidth(150);
+				tablaFiltro.getColumnModel().getColumn(2).setMaxWidth(80);
+				tablaFiltro.getColumnModel().getColumn(2).setMinWidth(80);
+				tablaFiltro.getColumnModel().getColumn(3).setMaxWidth(40);
+				tablaFiltro.getColumnModel().getColumn(3).setMinWidth(40);
+				
+				TableCellRenderer render = new TableCellRenderer() { 
+					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+					boolean hasFocus, int row, int column) { 
+						
+						Component componente = null;
+						
+						switch(column){
+							case 0: 
+								componente = new JLabel(value == null? "": value.toString());
+								if(row %2 == 0){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(177,177,177));	
+								}
+								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(186,143,73));
+								}
+								if(table.getSelectedRow() == row){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(186,143,73));
+								}
+								((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
+								break;
+							case 1: 
+								componente = new JLabel(value == null? "": value.toString());
+								if(row %2 == 0){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(177,177,177));	
+								}
+								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(186,143,73));
+								}
+								if(table.getSelectedRow() == row){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(186,143,73));
+								}
+								((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
+								break;
+							case 2: 
+								componente = new JLabel(value == null? "": value.toString());
+								if(row %2 == 0){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(177,177,177));	
+								}
+								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(186,143,73));
+								}
+								if(table.getSelectedRow() == row){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(186,143,73));
+								}
+								((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
+								break;
+							case 3: 
+								componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
+								if(row%2==0){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(177,177,177));	
+								}
+								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(186,143,73));
+								}
+								if(table.getSelectedRow() == row){
+									((JComponent) componente).setOpaque(true); 
+									componente.setBackground(new java.awt.Color(186,143,73));
+								}
+								((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
+								break;
+						}
+						return componente;
+					} 
+				}; 
+			
+				tablaFiltro.getColumnModel().getColumn(0).setCellRenderer(render); 
+				tablaFiltro.getColumnModel().getColumn(1).setCellRenderer(render);
+				tablaFiltro.getColumnModel().getColumn(2).setCellRenderer(render);
+				tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(render);
+			}
+			
+			ActionListener opAgregar = new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+					matriz = new String[tablaFiltro.getRowCount()][2];
+					
+						if(tablaFiltro.isEditing()){
+				 			tablaFiltro.getCellEditor().stopCellEditing();
+						}
+						double totalFS = 0;
+						
+						System.out.print(" longitud de matriz antes del if =  "+matriz.length);
+						if(matriz.length<=0){
+							System.out.print(" longitud de matriz =  "+matriz.length);
+						}
+						for(int i = 0; i<=tablaFiltro.getRowCount()-1; i++){
+							
+							
+							matriz[i][0] = tablaFiltro.getValueAt(i, 0).toString();
+							matriz[i][1] = tablaFiltro.getValueAt(i, 3).toString()==null?"false":"true";
+							
+							
+							
+							if(tablaFiltro.getValueAt(i, 3).toString().trim().equals("true")){
+								
+//								matriz[i][0] = tablaFiltro.getValueAt(i, 0).toString();
+//								matriz[i][1] = tablaFiltro.getValueAt(i, 3).toString();
+//								
+								totalFS = totalFS + (Double.valueOf(tablaFiltro.getValueAt(i, 1).toString()));
+							}
+//							else{
+//
+//								matriz[i][0] = tablaFiltro.getValueAt(i, 0).toString();
+//								matriz[i][1] = "false";
+//							
+//							}
+						}
+						
+//						System.out.print(matriz[0][0]+"   ");
+//						System.out.println(matriz[0][1]+"   ");
+//						
+//						for(int i = 0; i<=matriz.length-1; i++){
+//							if(matriz[i][1].toString().equals("true")){
+//								
+//								System.out.print(matriz[i][0]);
+//								System.out.println(matriz[i][1]);
+//							}
+//						}
+						
+						txtTotalFS.setText(totalFS+"");
+						totalFS=0;
+						dispose();				
+				}
+			};
+			
+			public void buscar_tabla(int folio_empleado){
+				
+				String[][] TicketsCapturadosPorCajera = new BuscarSQL().getTicket_FS_Para_Cortes(folio_empleado);
+				
+				for(int i=0; i<TicketsCapturadosPorCajera.length; i++){
+					 		Object[] dom = new Object[5];
+					 		
+					 		dom[0] = TicketsCapturadosPorCajera[i][0]+"   ";
+					 		dom[1] = "   "+TicketsCapturadosPorCajera[i][1];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+					 		dom[2] = TicketsCapturadosPorCajera[i][2];
+					 		dom[3] = "true";
+					 		modeloFiltro.addRow(dom);
+				}
+			}
+			
+}
 	}

@@ -173,7 +173,9 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
     JTable tabla_Trabajo_del_dia = new JTable(modelotdd);
     JScrollPane scroll_trabajo_del_dia = new JScrollPane(tabla_Trabajo_del_dia);
     
-        
+    
+    
+    
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
@@ -194,6 +196,8 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
     
     Border blackline, etched, raisedbevel, loweredbevel, empty;
 
+    String cadenaDeFoliosGuardados="";
+    
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Relacion_De_Facturas_En_Un_Periodo(){
 		
@@ -214,6 +218,9 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 		panel.add(ObtenerPanelTabla()).setBounds(15,70,990,350);
 		panel.add(ObtenerPanelTabla_Trabajos_del_dia()).setBounds(15,480,990,250);
 		refrestabla_Trabajo_del_dia();
+		
+		cadenaDeFoliosGuardados = cadena();
+		System.out.println(cadena());
 		
 		cont.add(panel);
 		
@@ -335,13 +342,13 @@ public class Cat_Relacion_De_Facturas_En_Un_Periodo extends JDialog{
 	    return scrol; 
 	}
 	
-private void refrestabla(String FI, String FF){
+private void refrestabla(String FI, String FF, String CadenaFolios){
 		Statement s;
 		ResultSet rs;
 		Connexion con = new Connexion();
 		try {
 			s = con.conexion_IZAGAR().createStatement();
-			rs = s.executeQuery("exec sp_reporte_de_facturas_en_un_periodo_con_tasas '"+FI+"','"+FF+"'");
+			rs = s.executeQuery("exec sp_reporte_de_facturas_en_un_periodo_con_tasas '"+FI+"','"+FF+"',"+CadenaFolios);
 			while (rs.next())
 			{ 
 			   Object [] fila = new Object[29];
@@ -449,6 +456,37 @@ for(int i=0; i<tabla_Trabajo_del_dia.getColumnCount(); i++){
 	 JScrollPane scrol_2 = new JScrollPane(tabla_Trabajo_del_dia);
     return scrol_2; 
 }
+
+private String cadena(){
+	Statement s;
+	ResultSet rs;
+	Connexion con = new Connexion();
+	
+	String cadenaDeFolios = "";
+	try{
+		
+		s = con.conexion().createStatement();
+		rs = s.executeQuery("select folio as Folio FROM IZAGAR_trabajo_dia_facturas ORDER BY fecha_trabajo_del_dia DESC");
+		
+		while(rs.next()){
+			cadenaDeFolios = cadenaDeFolios += "'"+rs.getString(1)+"'','";
+		}
+		
+		if(cadenaDeFolios.length()<2){
+			cadenaDeFolios="''";
+		}
+		else{
+			cadenaDeFolios = cadenaDeFolios.substring( 0, cadenaDeFolios.length()-3);
+		}
+		
+		
+	}catch (SQLException e1) {
+		e1.printStackTrace();
+	}
+	return cadenaDeFolios;
+} 
+
+
 private void refrestabla_Trabajo_del_dia(){
 	Statement s;
 	ResultSet rs;
@@ -484,10 +522,6 @@ private void refrestabla_Trabajo_del_dia(){
 	}
 }
 
-
-
-	
-	
 	ActionListener Buscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 
@@ -498,7 +532,7 @@ private void refrestabla_Trabajo_del_dia(){
 			if(c_inicio.getDate().before(c_final.getDate())){
 				while(tablaFacturas.getRowCount()>0){
 					modelo.removeRow(0);  }
-				refrestabla(fecha_inicio,fecha_final);
+				refrestabla(fecha_inicio, fecha_final, cadenaDeFoliosGuardados);
 				
 			 }else{
 				JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
@@ -528,7 +562,11 @@ private void refrestabla_Trabajo_del_dia(){
 				  	    	if(facturas_en_un_periodo.guardar(tabla_guardar(),dia_trabajo)){
 				  	    		
 				  	    	      while(tablaFacturas.getRowCount()>0){ modelo.removeRow(0);  }
-							      refrestabla(fecha_inicio,fecha_final);
+				  	    	      
+				  	    	    cadenaDeFoliosGuardados = cadena();
+				  	    	    
+							      refrestabla(fecha_inicio, fecha_final, cadenaDeFoliosGuardados);
+							      
 						     	  JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
 				  	    	}else{
 								JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
