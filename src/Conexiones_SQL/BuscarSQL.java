@@ -30,6 +30,7 @@ import Obj_Auditoria.Obj_Clientes;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Auditoria.Obj_Movimiento_De_Asignacion;
+import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Entosal;
@@ -5299,4 +5300,51 @@ public class BuscarSQL {
 		}
 		return empleado;
 	}
+
+
+public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLException{
+	Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
+	String query = "exec sp_select_datos_cajero '"+folio_empleado+"'";
+
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			datos_empleado.setFolio_empleado(rs.getInt("Folio_Empleado"));
+			datos_empleado.setNombre(rs.getString("Nombre"));
+			datos_empleado.setPuesto(rs.getString("Puesto"));
+			
+			
+			System.out.println(rs.getString("Nombre"));
+			
+//			datos_empleado.setEstablecimiento(rs.getString("Establecimiento"));
+//			datos_empleado.setAsignacion(rs.getString("Asignacion"));
+//			datos_empleado.setPc(rs.getString("PC"));
+			
+			
+			File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
+			FileOutputStream fos = new FileOutputStream(photo);
+
+	        byte[] buffer = new byte[1];
+	        InputStream is = rs.getBinaryStream("Foto");
+	        while (is.read(buffer) > 0) {
+	        	fos.write(buffer);
+	        }
+	        fos.close();
+
+		}
+	} catch (Exception e) {
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		e.printStackTrace();
+		return null;
+	}
+	
+	
+	finally{
+		if(stmt!=null){stmt.close();}
+	}
+	return datos_empleado;
+}
+
 }
