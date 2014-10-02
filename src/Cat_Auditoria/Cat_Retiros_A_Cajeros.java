@@ -58,6 +58,8 @@ public class Cat_Retiros_A_Cajeros extends JFrame{
 	
 	JCheckBox chbActivar_Avisos = new JCheckBox("Ventana De Avisos");
 	
+	
+	JTextField txtNombre = new Componentes().text(new JTextField(),"Nombre", 250, "String");
 	JTextField txtEstablecimiento = new JTextField();
 	JTextField txtFolio = new JTextField();
 	JTextField txtFechaPedido = new JTextField();
