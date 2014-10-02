@@ -3051,7 +3051,7 @@ public class BuscarSQL {
 		
 		String datosif = "exec sp_ticket_fuente_de_sodas_por_cajero "+folio;
 		
-		Matriz = new String[getFilas(datosif)][3];
+		Matriz = new String[getFilas(datosif)][4];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -3062,6 +3062,7 @@ public class BuscarSQL {
 				Matriz[i][0] = rs.getString(1);
 				Matriz[i][1] = rs.getString(2);
 				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = rs.getString(4);
 				
 				i++;
 			}
