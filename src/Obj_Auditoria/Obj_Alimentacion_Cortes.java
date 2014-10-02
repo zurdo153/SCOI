@@ -1,6 +1,5 @@
 package Obj_Auditoria;
 
-import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
