@@ -128,6 +128,9 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 	}
 	
 	public void tablaRender(){
+		
+		tabla_vaucher_filtro.getTableHeader().setReorderingAllowed(false) ;
+		
 		tabla_vaucher_filtro.getColumnModel().getColumn(0).setMaxWidth(90);
 		tabla_vaucher_filtro.getColumnModel().getColumn(0).setMinWidth(90);
 		tabla_vaucher_filtro.getColumnModel().getColumn(1).setMaxWidth(80);

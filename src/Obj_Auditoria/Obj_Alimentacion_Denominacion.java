@@ -39,27 +39,27 @@ public class Obj_Alimentacion_Denominacion {
 	}
 	
 //	denominacion
-	public boolean guardar(Object[][] tabla){ 
-		for(int i=0; i<tabla.length; i++){
-			
-			System.out.println(tabla[i][0].toString().trim()+"");
-			System.out.println(tabla[i][2].toString().trim()+"");
-			System.out.println(tabla[i][3].toString().trim()+"");
-			System.out.println(tabla[i][4].toString().trim()+"");
-		}
-		return new GuardarSQL().Guardar_Alimentacion_denominacio(this, tabla);
+	public boolean guardar(int folio_usuario,Object[][] tabla){ 
+//		for(int i=0; i<tabla.length; i++){
+//			
+//			System.out.println(tabla[i][0].toString().trim()+"");
+//			System.out.println(tabla[i][2].toString().trim()+"");
+//			System.out.println(tabla[i][3].toString().trim()+"");
+//			System.out.println(tabla[i][4].toString().trim()+"");
+//		}
+		return new GuardarSQL().Guardar_Alimentacion_denominacio(this, folio_usuario, tabla);
 	}
 //	denominacion	
-	public boolean actualizar(Object[][] tabla){ 
-		return new ActualizarSQL().Actualizar_Alimentacion_Efectivo(this, tabla);
+	public boolean actualizar(int folio_usuario, Object[][] tabla){ 
+		return new ActualizarSQL().Actualizar_Alimentacion_Efectivo(this, folio_usuario, tabla);
 	}
 	
 //	deposito
-	public boolean guardar_deposito(Object[][] tabla){ 
-		return new GuardarSQL().Guardar_Alimentacion_deposito(this, tabla);
+	public boolean guardar_deposito(int folio_usuario, Object[][] tabla){ 
+		return new GuardarSQL().Guardar_Alimentacion_deposito(this, folio_usuario, tabla);
 	}
 //	deposito	
-	public boolean actualizar_deposito(Object[][] tabla){ 
-		return new ActualizarSQL().Actualizar_Alimentacion_deposito(this, tabla);
+	public boolean actualizar_deposito(int folio_usuario, Object[][] tabla){ 
+		return new ActualizarSQL().Actualizar_Alimentacion_deposito(this, folio_usuario, tabla);
 	}
 }

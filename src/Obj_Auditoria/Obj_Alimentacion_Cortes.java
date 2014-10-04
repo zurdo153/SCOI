@@ -200,6 +200,6 @@ public class Obj_Alimentacion_Cortes {
 	
 	public boolean buscar_folio_corte_cheques(String folio_corte){ return new BuscarSQL().Folio_Corte_Cheques(folio_corte); }
 	
-	public boolean actualizarCapturaFS(String folio_corte,Object[][] tabla){ return new ActualizarSQL().Actualizar_Captura_FS(folio_corte,tabla); }
+	public boolean actualizarCapturaFS(String folio_corte, int folio_usuario, Object[][] tabla){ return new ActualizarSQL().Actualizar_Captura_FS(folio_corte, folio_usuario, tabla); }
 	
 }

@@ -103,7 +103,7 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 		campo.add(txtFolioAsignacion).setBounds(10,38,70,20);
 		campo.add(txtFolioCajero).setBounds(80,38,70,20);
 		campo.add(txtNombreCajero).setBounds(150,38,210,20);
-		campo.add(btnCargar).setBounds(925,38,80,20);
+		campo.add(btnCargar).setBounds(925,18,80,30);
 		
 		campo.add(scroll).setBounds(10,60,995,320);
 		
@@ -130,6 +130,9 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 	}
 	
 	public void tablaRender(){
+		
+		tablaFiltro.getTableHeader().setReorderingAllowed(false) ;
+		
 		tablaFiltro.getColumnModel().getColumn(0).setMaxWidth(70);
 		tablaFiltro.getColumnModel().getColumn(0).setMinWidth(70);
 		tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(70);
