@@ -388,8 +388,8 @@ public class GuardarTablasModel {
 		}		
 		return true;
 	}
-	public boolean tabla_model_alimentacion_totales_De_Cheques(Obj_Alimentacion_De_Cheques cheques,Object[] tabla){
-		String query = "exec sp_insert_cheques_de_cortes ?,?,?";
+	public boolean tabla_model_alimentacion_totales_De_Cheques(Obj_Alimentacion_De_Cheques cheques, int folio_usuario, Object[] tabla){
+		String query = "exec sp_insert_cheques_de_cortes ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try{
@@ -400,6 +400,7 @@ public class GuardarTablasModel {
 					pstmt.setString(1, cheques.getFolio_corte());
 					pstmt.setInt(2, cheques.getFolio_empleado());
 					pstmt.setFloat(3, Float.parseFloat(tabla[i].toString().trim()));
+					pstmt.setFloat(4, folio_usuario);
 					pstmt.executeUpdate();
 				}
 				con.commit();

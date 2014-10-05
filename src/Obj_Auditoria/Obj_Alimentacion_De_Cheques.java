@@ -25,11 +25,11 @@ public class Obj_Alimentacion_De_Cheques {
 	}
 	
 	
-	public boolean GuardarTotalesDeCheques(Object[] tabla){
-		return new GuardarTablasModel().tabla_model_alimentacion_totales_De_Cheques(this,tabla);
+	public boolean GuardarTotalesDeCheques(int folio_usuario, Object[] tabla){
+		return new GuardarTablasModel().tabla_model_alimentacion_totales_De_Cheques(this, folio_usuario, tabla);
 	}
 	
-	public boolean ActualizarTotalesDeCheques(Object[] tabla){
-		return new ActualizarSQL().tabla_model_alimentacion_totales_De_Cheques(this, tabla);
+	public boolean ActualizarTotalesDeCheques(int folio_usuario,Object[] tabla){
+		return new ActualizarSQL().tabla_model_alimentacion_totales_De_Cheques(this, folio_usuario, tabla);
 	}
 }

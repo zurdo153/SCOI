@@ -2164,10 +2164,10 @@ public class ActualizarSQL {
 				return true;
 			}
 			
-			public boolean Actualizar_Alimentacion_Efectivo(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
+			public boolean Actualizar_Alimentacion_Efectivo(Obj_Alimentacion_Denominacion alim_denom, int folio_usuario, Object[][] tabla){
 				
 				String query_delete = "delete from tb_alimentacion_efectivo_cortes where folio_corte ='"+alim_denom.getFolio_corte()+"'";
-				String query ="exec sp_insert_alimentacion_de_efectivo_cortes ?,?,?,?,?,?,?";
+				String query ="exec sp_insert_alimentacion_de_efectivo_cortes ?,?,?,?,?,?,?,?";
 				Connection con = new Connexion().conexion();
 				
 				try {
@@ -2185,6 +2185,7 @@ public class ActualizarSQL {
 						pstmt.setFloat(5, Float.parseFloat(tabla[i][2].toString().trim()));
 						pstmt.setFloat(6,Float.parseFloat(tabla[i][3].toString().trim()));
 						pstmt.setFloat(7,Float.parseFloat(tabla[i][4].toString().trim()));
+						pstmt.setInt(8, folio_usuario);
 						pstmt.executeUpdate();
 					}
 							
@@ -2212,10 +2213,10 @@ public class ActualizarSQL {
 				return true;
 			}
 			
-			public boolean Actualizar_Alimentacion_deposito(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
+			public boolean Actualizar_Alimentacion_deposito(Obj_Alimentacion_Denominacion alim_denom, int folio_usuario, Object[][] tabla){
 				
 				String query_delete = "delete from tb_alimentacion_deposito where folio_corte ='"+alim_denom.getEstablecimiento()+"'";
-				String query ="exec sp_insert_deposito ?,?,?,?";
+				String query ="exec sp_insert_deposito ?,?,?,?,?";
 				Connection con = new Connexion().conexion();
 				
 				try {
@@ -2228,6 +2229,7 @@ public class ActualizarSQL {
 						pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
 						pstmt.setString(3, tabla[i][0].toString().trim());
 						pstmt.setFloat (4, Float.parseFloat(tabla[i][1].toString().trim()));
+						pstmt.setInt (5, folio_usuario);
 						pstmt.executeUpdate();
 					}
 					con.commit();
@@ -2255,12 +2257,12 @@ public class ActualizarSQL {
 				
 			}
 			
-			public boolean tabla_model_alimentacion_totales_De_Cheques(Obj_Alimentacion_De_Cheques cheques,Object[] tabla){
+			public boolean tabla_model_alimentacion_totales_De_Cheques(Obj_Alimentacion_De_Cheques cheques, int folio_usuario, Object[] tabla){
 				
 				
 //				cambiar procedimientos borrado e insercion de datos 
 				String query_delete = "delete from tb_tabla_de_cheques_para_cortes where folio_corte = '"+cheques.getFolio_corte().toUpperCase().trim()+"'";
-				String query = "exec sp_insert_cheques_de_cortes ?,?,?";
+				String query = "exec sp_insert_cheques_de_cortes ?,?,?,?";
 				
 				Connection con = new Connexion().conexion();
 				
@@ -2279,6 +2281,7 @@ public class ActualizarSQL {
 							pstmt.setString(1, cheques.getFolio_corte());
 							pstmt.setInt(2, cheques.getFolio_empleado());
 							pstmt.setFloat(3, Float.parseFloat(tabla[i].toString().trim()));
+							pstmt.setInt(4, folio_usuario);
 							pstmt.executeUpdate();
 						}
 						con.commit();
@@ -2709,9 +2712,9 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Actualizar_Captura_FS(String folio_corte, Object[][] tabla){
+	public boolean Actualizar_Captura_FS(String folio_corte, int folio_usuario, Object[][] tabla){
 		String queryReset ="exec sp_reset_captura_fs ?";
-		String query ="exec sp_update_captura_fs ?,?,?";
+		String query ="exec sp_update_captura_fs ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -2734,6 +2737,7 @@ public class ActualizarSQL {
 				pstmt.setString(1, folio_corte);
 				pstmt.setString (2, tabla[i][0].toString());
 				pstmt.setString (3, tabla[i][1].toString());
+				pstmt.setInt (4, folio_usuario);
 				pstmt.executeUpdate();
 			}
 			con.commit();

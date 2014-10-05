@@ -1348,9 +1348,9 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Alimentacion_denominacio(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
+	public boolean Guardar_Alimentacion_denominacio(Obj_Alimentacion_Denominacion alim_denom, int folio_usuario, Object[][] tabla){
 		
-		String query ="exec sp_insert_alimentacion_de_efectivo_cortes ?,?,?,?,?,?,?";
+		String query ="exec sp_insert_alimentacion_de_efectivo_cortes ?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -1360,24 +1360,25 @@ public class GuardarSQL {
 			
 			for(int i=0; i<tabla.length; i++){
 				
-				System.out.println(alim_denom.getFolio_corte().toUpperCase());
-				System.out.println(alim_denom.getEmpleado().toUpperCase().trim());
-				System.out.println(alim_denom.getEstablecimiento().toUpperCase());
-				
-				System.out.println(tabla[i][0].toString().trim());
-				System.out.println(tabla[i][2].toString().trim());
-				System.out.println(tabla[i][3].toString().trim());
-				System.out.println(tabla[i][4].toString().trim());
+//				System.out.println(alim_denom.getFolio_corte().toUpperCase());
+//				System.out.println(alim_denom.getEmpleado().toUpperCase().trim());
+//				System.out.println(alim_denom.getEstablecimiento().toUpperCase());
+//				
+//				System.out.println(tabla[i][0].toString().trim());
+//				System.out.println(tabla[i][2].toString().trim());
+//				System.out.println(tabla[i][3].toString().trim());
+//				System.out.println(tabla[i][4].toString().trim());
 				
 				
 				pstmt.setString(1, alim_denom.getFolio_corte().toUpperCase());
 				pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
-				pstmt.setString(3, "CEDIS"/*alim_denom.getEstablecimiento().toUpperCase()*/);
+				pstmt.setString(3, alim_denom.getEstablecimiento().toUpperCase());
 				
 				pstmt.setInt(4, Integer.parseInt(tabla[i][0].toString().trim()));
 				pstmt.setFloat(5, Float.parseFloat(tabla[i][2].toString().trim()));
-				pstmt.setFloat(6,Float.parseFloat(tabla[i][3].toString().trim()));
-				pstmt.setFloat(7,Float.parseFloat(tabla[i][4].toString().trim()));
+				pstmt.setFloat(6, Float.parseFloat(tabla[i][3].toString().trim()));
+				pstmt.setFloat(7, Float.parseFloat(tabla[i][4].toString().trim()));
+				pstmt.setInt(8, folio_usuario);
 				
 				pstmt.executeUpdate();
 			}
@@ -1406,9 +1407,9 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Alimentacion_deposito(Obj_Alimentacion_Denominacion alim_denom,Object[][] tabla){
+	public boolean Guardar_Alimentacion_deposito(Obj_Alimentacion_Denominacion alim_denom, int folio_usuario, Object[][] tabla){
 		
-		String query ="exec sp_insert_deposito ?,?,?,?";
+		String query ="exec sp_insert_deposito ?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -1423,6 +1424,7 @@ public class GuardarSQL {
 				
 				pstmt.setString(3, tabla[i][0].toString().trim());
 				pstmt.setFloat (4, Float.parseFloat(tabla[i][1].toString().trim()));
+				pstmt.setInt (5, folio_usuario);
 				
 				pstmt.execute();
 			}
