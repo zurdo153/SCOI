@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.Connexion;
@@ -40,7 +41,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	Connexion con = new Connexion();
-	DefaultTableModel	 modelo       = new DefaultTableModel(0,7)	{
+	DefaultTableModel	 modelo       = new DefaultTableModel(0,8)	{
 		public boolean isCellEditable(int fila, int columna){
 			if(columna < 0)
 				return true;
@@ -60,6 +61,10 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbStatus = new JComboBox(status);
 	
+	String status_cobro[] = {"Pendiente De Cobro","Cobrar"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbStatuscobro = new JComboBox(status_cobro);
+	
 	
 	
 	com.toedter.calendar.JDateChooser txtCalendario = new com.toedter.calendar.JDateChooser();
@@ -72,7 +77,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	public Cat_Filtro_Diferencia_De_Cortes(String algo) {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Usuario.png"));
 		this.setTitle("Diferencia de Cortes");
-		int x = 40, y=50, ancho=140;
+		int x = 20, y=50, ancho=140;
 		txtCantidad.requestFocus();
 		panel.setBorder(BorderFactory.createTitledBorder("Cortes"));		
 		
@@ -80,23 +85,26 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		tabla.getColumnModel().getColumn(0).setMinWidth(50);
 		tabla.getColumnModel().getColumn(0).setMinWidth(50);
 		tabla.getColumnModel().getColumn(1).setHeaderValue("Fecha");
-		tabla.getColumnModel().getColumn(1).setMinWidth(80);
-		tabla.getColumnModel().getColumn(1).setMaxWidth(80);
+		tabla.getColumnModel().getColumn(1).setMinWidth(65);
+		tabla.getColumnModel().getColumn(1).setMaxWidth(65);
 		tabla.getColumnModel().getColumn(2).setHeaderValue("Cantidad");
-		tabla.getColumnModel().getColumn(2).setMinWidth(80);
-		tabla.getColumnModel().getColumn(2).setMaxWidth(80);
+		tabla.getColumnModel().getColumn(2).setMinWidth(60);
+		tabla.getColumnModel().getColumn(2).setMaxWidth(60);
 		tabla.getColumnModel().getColumn(3).setHeaderValue("Descuento");
-		tabla.getColumnModel().getColumn(3).setMinWidth(80);
-		tabla.getColumnModel().getColumn(3).setMaxWidth(80);
+		tabla.getColumnModel().getColumn(3).setMinWidth(65);
+		tabla.getColumnModel().getColumn(3).setMaxWidth(65);
 		tabla.getColumnModel().getColumn(4).setHeaderValue("Saldo");
-		tabla.getColumnModel().getColumn(4).setMinWidth(80);
-		tabla.getColumnModel().getColumn(4).setMaxWidth(80);
+		tabla.getColumnModel().getColumn(4).setMinWidth(60);
+		tabla.getColumnModel().getColumn(4).setMaxWidth(60);
 		tabla.getColumnModel().getColumn(5).setHeaderValue("Abono");
-		tabla.getColumnModel().getColumn(5).setMinWidth(80);
-		tabla.getColumnModel().getColumn(5).setMaxWidth(80);
+		tabla.getColumnModel().getColumn(5).setMinWidth(60);
+		tabla.getColumnModel().getColumn(5).setMaxWidth(60);
 		tabla.getColumnModel().getColumn(6).setHeaderValue("Status");
-		tabla.getColumnModel().getColumn(6).setMinWidth(100);
-		tabla.getColumnModel().getColumn(6).setMaxWidth(100);
+		tabla.getColumnModel().getColumn(6).setMinWidth(120);
+		tabla.getColumnModel().getColumn(6).setMaxWidth(120);
+		tabla.getColumnModel().getColumn(7).setHeaderValue("Status Cobro");
+		tabla.getColumnModel().getColumn(7).setMinWidth(150);
+		tabla.getColumnModel().getColumn(7).setMaxWidth(150);
 		
 		agregar(tabla);
 		
@@ -106,8 +114,14 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		panel.add(new JLabel("Nombre Completo:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtNombre_Completo).setBounds(x+ancho,y,ancho*2,20);
 		
+		panel.add(new JLabel("Status:")).setBounds(x+350,y,ancho,20);
+		panel.add(cmbStatus).setBounds(x+300+ancho,y,ancho-15,20);
+		
 		panel.add(new JLabel("Fecha:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtCalendario).setBounds(x+ancho,y,ancho-15,20);
+		
+		panel.add(new JLabel("Status de Cobro:")).setBounds(x+350,y,ancho,20);
+		panel.add(cmbStatuscobro).setBounds(x+300+ancho,y,ancho-15,20);
 		
 		panel.add(new JLabel("Cantidad:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtCantidad).setBounds(x+ancho,y,ancho-15,20);
@@ -115,10 +129,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		panel.add(new JLabel("Descuento:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtDescuento).setBounds(x+ancho,y,ancho-15,20);
 		
-		panel.add(new JLabel("Status:")).setBounds(x,y+=25,ancho,20);
-		panel.add(cmbStatus).setBounds(x+ancho,y,ancho-15,20);
-		
-		panel.add(panelScroll).setBounds(x,y+=25+10,ancho+420,80);
+		panel.add(panelScroll).setBounds(x,y+=25+40,ancho+460,120);
 		
 		panel.add(btnFiltro).setBounds(20,15,16,16);
 		panel.add(btnEditar).setBounds(46,15,16,16);
@@ -133,6 +144,8 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		
 		txtCantidad.addKeyListener(validaNumericoConPunto);
 		txtDescuento.addKeyListener(validaNumericoConPunto2);
+		
+		cmbStatuscobro.setSelectedIndex(1);
 	
 		cont.add(panel);
 		
@@ -168,11 +181,16 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 			}else{
 				cmbStatus.setSelectedIndex(1);
 			}
+			if(modelo.getValueAt(0, 7).equals("COBRAR")){
+				cmbStatuscobro.setSelectedIndex(1);
+			}else{
+				cmbStatuscobro.setSelectedIndex(0);
+			}
 			panelEnabledFalse();
 			btnGuardar.setEnabled(false);
 		}
 				
-		this.setSize(650,390);
+		this.setSize(655,390);
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -199,6 +217,11 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
     				cmbStatus.setSelectedIndex(0);
     			}else{
     				cmbStatus.setSelectedIndex(1);
+    			}
+    			if(modelo.getValueAt(fila, 7).equals("COBRAR")){
+    				cmbStatuscobro.setSelectedIndex(1);
+    			}else{
+    				cmbStatuscobro.setSelectedIndex(0);
     			}
 	        }
         });
@@ -234,7 +257,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 							pres.setDescuento(Double.parseDouble(txtDescuento.getText()));
 							pres.setSaldo(Double.parseDouble(txtCantidad.getText()));
 							pres.setStatus(cmbStatus.getSelectedIndex()+1);
-							pres.setStatus_descuento(cmbStatus.getSelectedIndex()+1);
+							pres.setStatus_descuento(cmbStatuscobro.getSelectedIndex());
 			
 							pres.guardar();
 							
@@ -254,6 +277,15 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 									case 0: fila[6]="VIGENTE";break;	
 									case 1: fila[6]="CANCELADO TEMPORAL";break;
 								}
+								
+								switch(cmbStatuscobro.getSelectedIndex()){
+								case 0: fila[7]="PENDIENTE DE COBRO";break;	
+								case 1: fila[7]="COBRAR";break;
+							    }
+								
+								
+								
+								
 								modelo.addRow(fila); 						
 							}
 						}
@@ -269,6 +301,8 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 								pres.setCantidad(Double.parseDouble(txtCantidad.getText()));
 								pres.setDescuento(Double.parseDouble(txtDescuento.getText()));
 								pres.setStatus(cmbStatus.getSelectedIndex()+1);
+								pres.setStatus_descuento(cmbStatuscobro.getSelectedIndex());
+								
 								pres.actualizar(Integer.parseInt(modelo.getValueAt(0,0)+""));
 										
 								int filas=  tabla.getRowCount();
@@ -281,7 +315,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 								Object[] fila = new Object[tabla.getColumnCount()]; 
 								for(int i=0; i<Tabla.length; i++){
 									modelo.addRow(fila); 
-									for(int j=0; j<7; j++){
+									for(int j=0; j<8; j++){
 										modelo.setValueAt(Tabla[i][j]+"", i,j);
 									}
 								}
@@ -321,13 +355,14 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		txtCantidad.setEditable(true);
 		txtDescuento.setEditable(true);
 		cmbStatus.setEnabled(true);
-		
+		cmbStatuscobro.setEnabled(true);
 	}
 	
 	public void panelEnabledFalse(){	
 		txtCantidad.setEditable(false);
 		txtDescuento.setEditable(false);
 		cmbStatus.setEnabled(false);
+		cmbStatuscobro.setEnabled(false);
 		
 	}
 	
@@ -422,7 +457,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	public String[][] getMatriz(String folio_empleado){
 		String qry = "exec sp_select_total_de_cortes_folio_empleado '"+folio_empleado+"'";
 		
-		String[][] Matriz = new String[getFilas(qry)][7];
+		String[][] Matriz = new String[getFilas(qry)][8];
 		Statement s;
 		ResultSet rs;
 		try {
@@ -440,11 +475,13 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 				Matriz[i][4] = decimalFormat.format(Double.parseDouble(rs.getString(5)));
 				Matriz[i][5] = decimalFormat.format(Double.parseDouble(rs.getString(6)));
 				Matriz[i][6] = rs.getString(7);
+				Matriz[i][7] = rs.getString(8);
 
 				i++;
 			}
 			
 		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Error en Cat_Filtro_Diferencias_De_Cortes  en la funcion getMatriz \n  en el procedimiento : sp_select_total_de_cortes_folio_empleado  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}
 	    return Matriz; 
@@ -466,7 +503,11 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	}
 	
 	public static void main(String args[]){
-		new Cat_Filtro_Diferencia_De_Cortes("1").setVisible(true);
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Filtro_Diferencia_De_Cortes("630").setVisible(true);
+		}catch(Exception e){	}
+		
 	}
 
 }

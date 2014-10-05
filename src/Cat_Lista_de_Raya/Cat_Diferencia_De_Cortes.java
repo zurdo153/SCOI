@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -208,8 +209,10 @@ public class Cat_Diferencia_De_Cortes extends JFrame {
 	}
 	
 	public static void main(String args[]){
-		new Cat_Diferencia_De_Cortes().setVisible(true);
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Diferencia_De_Cortes().setVisible(true);
+		}catch(Exception e){	}
 	}
-	
 }
 

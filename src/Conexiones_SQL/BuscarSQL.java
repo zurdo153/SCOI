@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -5304,41 +5306,103 @@ public class BuscarSQL {
 
 public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLException{
 	Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
+	
+   String pc_nombre="";
+				try {
+				    	pc_nombre = InetAddress.getLocalHost().getHostName();
+				} catch (UnknownHostException e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+	
 	String query = "exec sp_select_datos_cajero '"+folio_empleado+"'";
-
+	
+	String query_2="SELECT  isnull(sum(liquidaciones_tickets.importe),0)as importe" +
+			             " ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento"+
+                        "   FROM liquidaciones_tickets "+			             
+                        "WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1 and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros"+ 
+                                    " where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))";
 	Statement stmt = null;
-	try {
-		stmt = con.conexion().createStatement();
-		ResultSet rs = stmt.executeQuery(query);
-		while(rs.next()){
-			datos_empleado.setFolio_empleado(rs.getInt("Folio_Empleado"));
-			datos_empleado.setNombre(rs.getString("Nombre"));
-			datos_empleado.setPuesto(rs.getString("Puesto"));
-			
-			
-			System.out.println(rs.getString("Nombre"));
-			
-//			datos_empleado.setEstablecimiento(rs.getString("Establecimiento"));
-//			datos_empleado.setAsignacion(rs.getString("Asignacion"));
-//			datos_empleado.setPc(rs.getString("PC"));
-			
-			
-			File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
-			FileOutputStream fos = new FileOutputStream(photo);
-
-	        byte[] buffer = new byte[1];
-	        InputStream is = rs.getBinaryStream("Foto");
-	        while (is.read(buffer) > 0) {
-	        	fos.write(buffer);
-	        }
-	        fos.close();
-
-		}
-	} catch (Exception e) {
-		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		e.printStackTrace();
-		return null;
+	Statement stmt2= null;
+	
+					try {
+				
+						stmt = con.conexion().createStatement();
+						stmt2= con.conexion_IZAGAR().createStatement();
+						
+						ResultSet rs = stmt.executeQuery(query);
+						ResultSet rs2= stmt2.executeQuery(query_2);
+						
+								while(rs.next()){
+									
+									datos_empleado.setFolio_empleado(rs.getInt("Folio_Empleado"));
+									datos_empleado.setNombre(rs.getString("Nombre"));
+									datos_empleado.setPuesto(rs.getString("Puesto"));
+									datos_empleado.setPc(pc_nombre);
+									
+									
+									File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
+									FileOutputStream fos = new FileOutputStream(photo);
+									        byte[] buffer = new byte[1];
+									        InputStream is = rs.getBinaryStream("Foto");
+									        while (is.read(buffer) > 0) {
+									        	fos.write(buffer);
+									        }
+									        fos.close();
+						    	}
+							
+								
+							   while(rs2.next()){
+							 			datos_empleado.setEstablecimiento(rs2.getString("establecimiento"));
+										datos_empleado.setImporte_total(rs2.getFloat("importe"));
+							    }
+						
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						e.printStackTrace();
+						return null;
+					}
+	
+	
+	finally{
+		if(stmt!=null){stmt.close();}
 	}
+	return datos_empleado;
+}
+
+public Obj_Retiros_Cajeros datos_supervisor_retiro(String clave) throws SQLException{
+	Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
+	
+	String query = "exec sp_select_datos_supervisor_retiro '"+clave+"'";
+	
+	Statement stmt = null;
+	
+					try {
+				
+						stmt = con.conexion().createStatement();
+						ResultSet rs = stmt.executeQuery(query);
+						
+								while(rs.next()){
+									
+									datos_empleado.setFolio_supervisor(rs.getInt("Folio_Empleado"));
+									datos_empleado.setNombre_Supervisor(rs.getString("Nombre"));
+									datos_empleado.setExiste_supervisor(rs.getString("Existe"));
+									
+									File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_supervisor/supervisortmp.jpg");
+									FileOutputStream fos = new FileOutputStream(photo);
+									        byte[] buffer = new byte[1];
+									        InputStream is = rs.getBinaryStream("Foto");
+									        while (is.read(buffer) > 0) {
+									        	fos.write(buffer);
+									        }
+									        fos.close();
+						    	}
+						
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						e.printStackTrace();
+						return null;
+					}
 	
 	
 	finally{

@@ -1021,7 +1021,7 @@ public class ActualizarSQL {
 	}
 	
 	public boolean Actualizar(Obj_Diferencia_De_Cortes pres, int folio){
-		String query = "update tb_diferencia_cortes set fecha=?, cantidad=?, descuento=?, status=? where folio="+folio;
+		String query = "update tb_diferencia_cortes set fecha=?, cantidad=?, descuento=?, status=?, status_descuento=? where folio="+folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -1031,6 +1031,8 @@ public class ActualizarSQL {
 			pstmt.setDouble(2, pres.getCantidad());
 			pstmt.setDouble(3, pres.getDescuento());
 			pstmt.setInt(4, pres.getStatus());
+			pstmt.setInt(5, pres.getStatus_descuento());
+			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
