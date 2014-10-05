@@ -2,6 +2,7 @@ package Cat_Auditoria;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -20,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -53,7 +56,6 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
 	
-	JLabel lblBuscar = new JLabel("BUSCAR : ");
 	JTextField txtBuscar = new Componentes().text(new JTextField(), "Nombre de Empleado", 50, "String");
 	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Empleados();
@@ -75,23 +77,45 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 		trsfiltro = new TableRowSorter(model); 
 		tabla.setRowSorter(trsfiltro);  
 		
-		campo.add(getPanelTabla()).setBounds(10,100,365,450);
+		campo.add(new JLabel("ESTABLECIMIENTO : ")).setBounds(15,15,135,20);
+		campo.add(cmbEstablecimiento).setBounds(138, 15, 235, 20);
 		
+		campo.add(new JLabel("BUSCAR : ")).setBounds(15,40,70,20);
+		campo.add(txtBuscar).setBounds(80,40,295,20);
+		campo.add(getPanelTabla()).setBounds(10,60,365,450);
+		
+		cmbEstablecimiento.addKeyListener(op_key);
 		agregar(tabla);
 		
-		campo.add(lblBuscar).setBounds(30,30,70,20);
-		campo.add(txtBuscar).setBounds(95,30,215,20);
-		
-		campo.add(cmbEstablecimiento).setBounds(95, 60, 215, 20);
-	
 		cont.add(campo);
 		
-		this.setSize(390,600);
+		this.setSize(390,550);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 	}
+	
+	KeyListener op_key = new KeyListener() {
+	public void keyTyped(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+
+		//  guardar al presionar la tecla f2
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+	       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "foco");
+	    
+	    getRootPane().getActionMap().put("foco", new AbstractAction(){
+		        public void actionPerformed(ActionEvent e)
+		        {
+		    		if(cmbEstablecimiento.getSelectedIndex()>0){
+		    			txtBuscar.requestFocus();
+		    		} 	
+		        }
+	    });
+	}
+	public void keyPressed(KeyEvent e) {}
+};
+
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {

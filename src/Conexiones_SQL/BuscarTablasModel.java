@@ -244,7 +244,7 @@ public class BuscarTablasModel {
 				matriz[i][1] = "   "+rs.getString(2);
 				matriz[i][2] = "   "+rs.getString(3);
 				matriz[i][3] = "   "+rs.getString(4);
-				matriz[i][4] = rs.getString(5).toString().trim().equals("0.0") ? "" : Float.parseFloat(rs.getString(5).trim());
+				matriz[i][4] = rs.getString(5).toString().trim().equals("0.0") || rs.getString(5).toString().trim().equals("0") ? "" : rs.getString(5).trim();
 				i++;
 			}
 
@@ -288,7 +288,7 @@ public class BuscarTablasModel {
 			int i = 0;
 			while(rs.next()){
 				matriz[i][0] = rs.getString(1).toString().trim();
-				matriz[i][1] = rs.getString(2).toString().trim().equals("0.00") ? "" : rs.getString(2).toString().trim();
+				matriz[i][1] = rs.getString(2).toString().trim().equals("0") ? "" : rs.getString(2).toString().trim();
 				i++;
 			}
 
