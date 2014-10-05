@@ -2165,7 +2165,7 @@ public class ActualizarSQL {
 			public boolean Actualizar_Alimentacion_Efectivo(Obj_Alimentacion_Denominacion alim_denom, int folio_usuario, Object[][] tabla){
 				
 				String query_delete = "delete from tb_alimentacion_efectivo_cortes where folio_corte ='"+alim_denom.getFolio_corte()+"'";
-				String query ="exec sp_insert_alimentacion_de_efectivo_cortes ?,?,?,?,?,?,?";
+				String query ="exec sp_insert_alimentacion_de_efectivo_cortes ?,?,?,?,?,?,?,?";
 				Connection con = new Connexion().conexion();
 				
 				try {
@@ -2178,11 +2178,12 @@ public class ActualizarSQL {
 					for(int i=0; i<tabla.length; i++){
 						pstmt.setString(1, alim_denom.getFolio_corte().toUpperCase());
 						pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
-						pstmt.setInt(3, folio_usuario);
+						pstmt.setString(3, alim_denom.getEstablecimiento().toUpperCase());
 						pstmt.setInt(4, Integer.parseInt(tabla[i][0].toString().trim()));
 						pstmt.setFloat(5, Float.parseFloat(tabla[i][2].toString().trim()));
 						pstmt.setFloat(6,Float.parseFloat(tabla[i][3].toString().trim()));
 						pstmt.setFloat(7,Float.parseFloat(tabla[i][4].toString().trim()));
+						pstmt.setInt(8, folio_usuario);
 						pstmt.executeUpdate();
 					}
 							
