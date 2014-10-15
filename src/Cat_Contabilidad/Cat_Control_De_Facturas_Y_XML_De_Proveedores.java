@@ -447,7 +447,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		try {
 			s = con.conexion().createStatement();
 			rs = s.executeQuery("SELECT cod_prv,proveedor,folio_factura,convert (varchar(20),[fecha_factura],103)as fecha_factura,convert(varchar(20),[fecha_modificacion],103)as fecha_modificacion "+
-				                        ",(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico,Status FROM tb_control_de_facturas_y_xml where status=1");
+				                        ",(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico,Status FROM tb_control_de_facturas_y_xml where status=1 order by fecha_factura desc");
 			while (rs.next())
 			{ 
 			   String [] fila = new String[7];
@@ -592,8 +592,14 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		@SuppressWarnings("unused")
 		public void actionPerformed(ActionEvent e) {
 			
+			
 			if(JOptionPane.showConfirmDialog(null,"De El Proveedor:"+proveedor_recibido+" La Factura:"+cod_factura_recibido+" \n Va Hacer Marcada Como Recibida: Confirmar?") == 0){
+				
+			//nueva ventana para cargar xml y pfd	
+				
+				
 				boolean proveedorr = new Obj_Proveedores().marcar_recibido_factura(cod_prvrecibido.trim(), cod_factura_recibido.trim());
+				
 				
 			while(tabla.getRowCount()>0){
 					modelo.removeRow(0);  }

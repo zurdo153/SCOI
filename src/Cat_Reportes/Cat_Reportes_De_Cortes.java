@@ -107,6 +107,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 //			JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
 //			return;
 //		}
+			 
 		}
 	};
 	
