@@ -5317,11 +5317,14 @@ public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLExcept
 	
 	String query = "exec sp_select_datos_cajero '"+folio_empleado+"'";
 	
-	String query_2="SELECT  isnull(sum(liquidaciones_tickets.importe),0)as importe" +
-			             " ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento"+
-                        "   FROM liquidaciones_tickets "+			             
-                        "WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1 and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros"+ 
-                                    " where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))";
+	String query_2="SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe " +
+					       " ,asignaciones_cajeros.folio as folio_asignacion " +
+					       " ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento " +
+				 "  FROM liquidaciones_tickets" +
+			    "      LEFT OUTER JOIN  asignaciones_cajeros on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion  and asignaciones_cajeros.status='V'" +
+			     "  WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1" +
+					         "  and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
+					         		" group by asignaciones_cajeros.folio";
 	Statement stmt = null;
 	Statement stmt2= null;
 	
@@ -5355,6 +5358,7 @@ public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLExcept
 							   while(rs2.next()){
 							 			datos_empleado.setEstablecimiento(rs2.getString("establecimiento"));
 										datos_empleado.setImporte_total(rs2.getFloat("importe"));
+										datos_empleado.setAsignacion(rs2.getString("folio_asignacion"));
 							    }
 						
 					} catch (Exception e) {
@@ -5387,7 +5391,10 @@ public Obj_Retiros_Cajeros datos_supervisor_retiro(String clave) throws SQLExcep
 									datos_empleado.setFolio_supervisor(rs.getInt("Folio_Empleado"));
 									datos_empleado.setNombre_Supervisor(rs.getString("Nombre"));
 									datos_empleado.setExiste_supervisor(rs.getString("Existe"));
+									datos_empleado.setClave(rs.getString("Clave"));
 									
+									
+									if(rs.getString("Existe").equals("EXISTE")){
 									File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_supervisor/supervisortmp.jpg");
 									FileOutputStream fos = new FileOutputStream(photo);
 									        byte[] buffer = new byte[1];
@@ -5396,6 +5403,8 @@ public Obj_Retiros_Cajeros datos_supervisor_retiro(String clave) throws SQLExcep
 									        	fos.write(buffer);
 									        }
 									        fos.close();
+									}
+									
 						    	}
 						
 					} catch (Exception e) {

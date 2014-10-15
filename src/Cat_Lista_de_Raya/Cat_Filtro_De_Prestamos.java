@@ -68,6 +68,7 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 	
 	JTextField txtCantidad = new JTextField();
 	JTextField txtDescuento = new JTextField();
+
 	
 	String status[] = {"Vigente","Cancelado Temporal"};
 	@SuppressWarnings("rawtypes")
@@ -79,6 +80,7 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 	JButton btnFiltro = new JButton(new ImageIcon("imagen/Text preview.png"));
 	JLabel btnEditar = new JLabel(new ImageIcon("imagen//Modify.png"));
 	JLabel btnGuardar = new JLabel(new ImageIcon("imagen//Guardar.png"));
+	
 	
 	public Cat_Filtro_De_Prestamos(String algo) {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Usuario.png"));

@@ -182,6 +182,8 @@ public class Cat_Etapas extends JFrame{
 			                 {                 	    btnDeshacer.doClick();
 			               	    }
 			             });
+			             
+			             
              ///guardar con control+G
 			             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
 			                  getRootPane().getActionMap().put("guardar", new AbstractAction(){

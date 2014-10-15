@@ -185,18 +185,18 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Establecimiento(Obj_Establecimiento establecimiento){
+	public boolean Guardar_Establecimiento(Obj_Establecimiento retiro_cajero){
 		String query = "exec sp_insert_establecimiento ?,?,?,?,? ";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, establecimiento.getEstablecimiento().toUpperCase().trim());
-			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
-			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
-			pstmt.setInt(4, establecimiento.getGrupo_cheque());
-			pstmt.setInt(5, establecimiento.getStatus());
+//			pstmt.setString(1, establecimiento.getEstablecimiento().toUpperCase().trim());
+//			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
+//			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
+//			pstmt.setInt(4, establecimiento.getGrupo_cheque());
+//			pstmt.setInt(5, establecimiento.getStatus());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -3410,6 +3410,74 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			} catch(SQLException e){
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Asignacion_De_Cajero ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Retiro_Cajero(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro){
+		
+		Connection con = new Connexion().conexion();
+		
+		 System.out.println(Folio_empleado);
+		 System.out.println(folio_supervisor);
+				 System.out.println(importe_retiro);
+				 
+			String folio_retiro =""	;	
+             
+		   String folio = " select serie +(select convert(varchar(20),folio+1) from tb_folios where transaccion='Retiros A Cajeros') as folio "+
+		                  " from tb_establecimiento where nombre='"+Establecimiento.trim()+"'";
+		              Statement stmtfolio = null;
+								try {
+									stmtfolio = con.createStatement();
+									ResultSet rs = stmtfolio.executeQuery(folio);
+									while(rs.next()){
+										folio_retiro=rs.getString("folio");
+									}
+
+							   	} catch (Exception e) {
+									JOptionPane.showMessageDialog(null, "Error en Buscar  en la funcion Guardar_Retiro_Cajero \n  en  select serie +(select convert(varchar(20),folio+1) from tb_folios where transaccion='Retiros A Cajeros') \n as folio  from tb_establecimiento where nombre='"+Establecimiento.trim()+"'  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+									e.printStackTrace();
+									return null != null;
+							     	}
+								 System.out.println(folio);
+								 
+		String query = "exec sp_insert_retiros_a_cajeros ?,?,?,?,? ";
+	  	 PreparedStatement pstmt = null;	
+	  	 System.out.println(query);
+		try {
+			con.setAutoCommit(false);
+
+			pstmt = con.prepareStatement(query);
+			 
+			pstmt.setInt(1, Folio_empleado);
+			pstmt.setInt(2, folio_supervisor);
+			pstmt.setFloat(3, importe_retiro);
+			pstmt.setInt(4,0 );
+			pstmt.setString(5, folio_retiro);
+			
+									 
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException:Guardar_Retiro_Cajero " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Retiro_Cajero ] Insert  SQLException: sp_insert_retiros_a_cajeros "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Retiro_Cajero ] Insert  SQLException: sp_insert_retiros_a_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

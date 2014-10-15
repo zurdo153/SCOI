@@ -1,18 +1,9 @@
 package Cat_Auditoria;
 
-import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,20 +11,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JApplet;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -44,7 +32,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
+
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import Conexiones_SQL.Connexion;
 import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Principal.Componentes;
@@ -52,7 +46,6 @@ import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
 public class Cat_Retiros_A_Cajeros extends JFrame {
-
 	
 	Object[][] Matriz_pedidos_ctes ;
 	Container cont = getContentPane();
@@ -60,19 +53,18 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	Connexion con = new Connexion();
 	Runtime R = Runtime.getRuntime();
 	
-	JCheckBox chbActivar_Avisos = new JCheckBox("Ventana De Avisos");
-	
 	JTextField txtNombre = new Componentes().text(new JTextField(),"Nombre", 250, "String");
 	JTextField txtEstablecimiento = new Componentes().text(new JTextField(),"Establecimiento", 150, "String");
 	JTextField txtFolio_empleado =  new Componentes().text(new JTextField(),"Folio Empleado", 150, "String");
 	JTextField txtpuesto =new Componentes().text(new JTextField(),"Puesto", 150, "String");
 	JTextField txtasignacion =new Componentes().text(new JTextField(),"Asignacion", 150, "String");
 	JTextField txtpc = new Componentes().text(new JTextField(),"Nombre Pc", 150, "String");
-	
-	
-	JButton btnBuscar = new JButton(new ImageIcon("imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-32.png"));;
+
 	JButton btnFoto = new JButton();
-	Border blackline, etched, raisedbevel, loweredbevel, empty;
+	
+	Icon iconoFondo_cajero;
+	ImageIcon ImagenconFondo_cajero;
+	JLabel jlFondo_cajero =new JLabel();
 	
 	int folio_empleado =0;
     float importe_retiros_guardados =0;
@@ -81,68 +73,65 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
     
     boolean cerrarhilo = false;
     
-    
-    
 	public Cat_Retiros_A_Cajeros(Integer Folio_Empleado){
 		folio_empleado=Folio_Empleado;
 		
-		this.setSize(400,190);
+		this.setSize(355,119);
 		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setTitle("Retiros_a_Cajeros");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/lista-icono-7220-32.png"));
-		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
-		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Cajero"));
-//		(Window cont).setAlwaysOnTop( true );
-		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-32.png"));
 		this.cont.add(panel);
+		
+		this.setUndecorated(true);
+		this.setOpacity(0.99f);
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(op_cerrar);
 
-		btnBuscar.setEnabled(true);
-		btnBuscar.setToolTipText("<F5> Tecla Directa");
-		btnBuscar.addActionListener(Buscar_Cambios);
-		chbActivar_Avisos.setSelected(true);
+		btnFoto.setToolTipText("<F5> Tecla Directa");
+		btnFoto.addActionListener(Buscar_Cambios);
 		
 		Hilo_1_Minuto();
 		cargar_datos_del_empleado(Folio_Empleado);
 		
-		panel.add(chbActivar_Avisos).setBounds(420,20,150,20);
-		panel.add(btnBuscar).setBounds(350,8,32,32);
-		panel.add(btnFoto).setBounds(10,20,135,105);
-		
-		panel.add(txtFolio_empleado).setBounds(160,20,30,20);
-		panel.add(txtNombre).setBounds(160,40,200,20);
-		panel.add(txtEstablecimiento).setBounds(160,60,200,20);
-		panel.add(txtpuesto).setBounds(160,80,200,20);
-		panel.add(txtpc).setBounds(160,100,200,20);
-		
+		panel.add(btnFoto).setBounds(6,6,135,105);
+		panel.add(txtFolio_empleado).setBounds(145,7,30,20);
+		panel.add(txtasignacion).setBounds(275,7,70,20);
+		panel.add(txtNombre).setBounds(145,27,200,20);
+		panel.add(txtEstablecimiento).setBounds(145,47,200,20);
+		panel.add(txtpuesto).setBounds(145,67,200,20);
+		panel.add(txtpc).setBounds(145,87,200,20);
 		
 		txtFolio_empleado.setEditable(false);
+		txtasignacion.setEditable(false);
 		txtNombre.setEditable(false);
 		txtEstablecimiento.setEditable(false);
 		txtpuesto.setEditable(false);
 		txtpc.setEditable(false);
 		
+         //////fondo		
+		ImagenconFondo_cajero = new ImageIcon("imagen/marco_aux_caja.png");
+	    iconoFondo_cajero = new ImageIcon(ImagenconFondo_cajero.getImage().getScaledInstance(355,117, Image.SCALE_DEFAULT));
+	    jlFondo_cajero.setIcon(iconoFondo_cajero);
+	    panel.add(jlFondo_cajero).setBounds(0,0,355,117);
              
-//     Buscar Con F5
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+           //  Buscar Con F5
+                  getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                      KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "Actualizar");
                   getRootPane().getActionMap().put("Actualizar", new AbstractAction(){
                       public void actionPerformed(ActionEvent e)
-                      {        	    btnBuscar.doClick();          	    }
+                      {        	    btnFoto.doClick();          	    }
                   });
-//     asigna el foco al JTextField fecha al arrancar la ventana
+           // asigna el foco al JTextField fecha al arrancar la ventana
                   this.addWindowListener(new WindowAdapter() {
                           public void windowOpened( WindowEvent e ){
                         	  txtFolio_empleado.requestFocus();
                        }
                   });
+                  
 	}
-	
-		    
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////DISPOSE MATA EL HILO Y DETIENE EL SONIDO SI SONO ALGUNA VEZ		    
- AudioClip sonido;
 WindowListener op_cerrar = new WindowListener() {
 				public void windowOpened(WindowEvent e) {}
 				public void windowIconified(WindowEvent e) {}
@@ -151,17 +140,18 @@ WindowListener op_cerrar = new WindowListener() {
 				public void windowClosing(WindowEvent e) {
 						
 						
-						txtFolio_empleado.setText("");
-						txtNombre.setText("");
-						txtEstablecimiento.setText("");
-						txtpuesto.setText("");
+//						txtFolio_empleado.setText("");
+//						txtNombre.setText("");
+//						txtEstablecimiento.setText("");
+//						txtpuesto.setText("");
 						
 							cerrarhilo=true;
-							dispose();
+//							dispose();
 				}
 				public void windowClosed(WindowEvent e) {}
 				public void windowActivated(WindowEvent e) {}
 			};
+			
 			
 			
 	public void cargar_datos_del_empleado(Integer folio_empleado){
@@ -176,7 +166,8 @@ WindowListener op_cerrar = new WindowListener() {
   	    txtEstablecimiento.setText(datosEmpleado.getEstablecimiento()+"");
   	    txtpuesto.setText(datosEmpleado.getPuesto()+"");
   	    txtpc.setText(datosEmpleado.getPc()+"");
-  	    btnBuscar.doClick();
+  	    txtasignacion.setText(datosEmpleado.getAsignacion()+"");
+  	    btnFoto.doClick();
 	}		
 			
 	/////////CONSULTA EL IMPORTE NUEVO
@@ -191,12 +182,14 @@ WindowListener op_cerrar = new WindowListener() {
 				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		
-   		String query_importe_nvo="SELECT  isnull(sum(liquidaciones_tickets.importe),0)as importe" +
-	             " ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento"+
-               "   FROM liquidaciones_tickets "+			             
-               "WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1 and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros"+ 
-                           " where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))";
-   		
+   		String query_importe_nvo="SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe " +
+   				                         " ,asignaciones_cajeros.folio as folio_asignacion " +
+   				                         " ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento " +
+   				                   "  FROM liquidaciones_tickets" +
+   				                   "      LEFT OUTER JOIN  asignaciones_cajeros on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion  and asignaciones_cajeros.status='V'" +
+   				                   "  WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1" +
+   				                   "  and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
+   				                   		" group by asignaciones_cajeros.folio";
 		Statement s;
 		ResultSet rs2;
 		
@@ -259,7 +252,6 @@ WindowListener op_cerrar = new WindowListener() {
 /////////ACTUALIZAR
 
 ActionListener Buscar_Cambios = new ActionListener(){
-@SuppressWarnings("deprecation")
 public void actionPerformed(ActionEvent e){
 try {
 
@@ -273,19 +265,17 @@ System.out.println("valor_a_retirar_deacuerdo_al_dia"+valor_a_retirar_deacuerdo_
 
 
 if(importe_nuevo_devuelto-importe_retiros_guardados >= valor_a_retirar_deacuerdo_al_dia){
-
-if(chbActivar_Avisos.isSelected()){
 	
+	String establecimiento= txtEstablecimiento.getText()+"" ;
+	        cerrarhilo=true;
+			//   apartado para configurar el uso de la pantalla de avisos--------------------------------
+					JDialog frame = new JDialog();
+					String ruta= "prueba mensaje";//fila_mensaje.get(3).toString().trim();
+					frame.setUndecorated(true);
+					
+					new Cat_Avisos_De_Pedido(frame,ruta,establecimiento);
+					frame.setVisible(true);
 
-//   apartado para configurar el uso de la pantalla de avisos--------------------------------
-JDialog frame = new JDialog();
-String ruta= "prueba mensaje";//fila_mensaje.get(3).toString().trim();
-frame.setUndecorated(true);
-new Cat_Avisos_De_Pedido(frame,ruta);
-frame.setVisible(true);
-}
-// se asigna a auxiliar el ultimi valor de los pedidos para que se compare en la siguiente consulta
-//aux = importe_nuevo_devuelto; 
 }
 
 } catch (Exception e1) {
@@ -295,7 +285,6 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 }
 };
    	
-/////////////////////////////////////////////////////////////////////////////////////
 ////////////HILO REVISION AUTOMATICA DE PEDIDOS CADA 60 SEGUNDOS
 	public void Hilo_1_Minuto() {
 			segundero seg = new segundero();
@@ -308,10 +297,10 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		    					try {
 		    						Thread.sleep(1000);
 		    						reconsultar+=1;
-		    						if(reconsultar==60)////cambiar a 60 segundos
+		    						if(reconsultar==10)////cambiar a 60 segundos
 		    						{
 		    						   reconsultar=0;
-		    						   btnBuscar.doClick();
+		    						   btnFoto.doClick();
 		    						}
 		    					} catch (InterruptedException e) {
 		    		                 JOptionPane.showMessageDialog(null, "Error en Cat_Hilo_1_Minuto en la funcion segundero  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
@@ -322,47 +311,113 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		    }
 		    	
 		    	
-		    	
-		    	
-//////////////////////////////////////////////////////////////////////////////////
-///////////CATALOO EMERGENTE DE AVISO		    	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////CATALOO EMERGENTE DE AVISO	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	    	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		    	
 	  	public class Cat_Avisos_De_Pedido extends JComponent {
 		    		
-		    		private Image background;
-		    		
 		    		JPasswordField txtClaveSupervisor = new Componentes().textPassword(new JPasswordField(), "Clave", 30);
+		    		JPasswordField txtClaveSupervisorconfirma = new Componentes().textPassword(new JPasswordField(), "Clave del Supervisor Confirmacion", 30);
 		    		JLabel lblclave = new JLabel("Clave del Supervisor");
+		    		JLabel lblretiro = new JLabel("Cantidad del Retiro");
+		    		JLabel lblNombre_Supervisor= new JLabel();
+		    		JLabel lblConfirmacion= new JLabel("Confirmacion Clave De Supervisor");
+		    		
 		    		Icon iconoFondo;
 		    		ImageIcon tmpIconAuxFondo;
 		    		JButton btnFoto_supervisor = new JButton();
-		    		JLabel fondo = new JLabel();
-		    		JTextField txtNombreSupervisor = new Componentes().text(new JTextField(),"Nombre del Supervisor", 250, "String");
-
+		    		JButton btnNoExiste_Supervisor = new JButton();
+		    		JButton btnError_Clave_requerida =new JButton();
+		    		JButton btnError =new JButton();
+		    		JButton btnValidar_Retiro= new JButton("Validar",new ImageIcon("imagen/Aplicar.png"));
+		    		JButton btnEditar_retiro = new JButton("Editar Retiro",new ImageIcon("imagen/editara.png"));
+		    		JButton btnImprimir = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
+		    		JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
 		    		
-		    		public Cat_Avisos_De_Pedido(final JDialog frame,String ruta) {
-		    			
+		    		JLabel fondo = new JLabel();
+		    		JTextField txtfolio_Supervisor = new Componentes().text(new JTextField(),"folio_supervisor", 250, "String");
+		    		JTextField txtRetiro = new Componentes().text(new JTextField(),"Cantidad del Retiro del Cajero", 30, "Double");
+		    		JDialog framesalir=null;
+		    		String Establecimiento="";
+		    		
+		    		public Cat_Avisos_De_Pedido(final JDialog frame,String ruta, String establecimiento) {
+		    			Establecimiento=establecimiento;
+		    			framesalir=frame;
 		    			//fileFoto=ruta;
 		    			frame.setModal(true);
 		    			frame.add(lblclave).setBounds(100,10,200,20); 
-		    			frame.add(txtClaveSupervisor).setBounds(50,30,200,20);
+		    			frame.add(txtClaveSupervisor).setBounds(80,30,140,20);
 		    			frame.add(btnFoto_supervisor).setBounds(85,70,135,105);
-		    			frame.add(txtNombreSupervisor).setBounds(40,190,220,20);
-		    			
+		    			frame.add(lblNombre_Supervisor).setBounds(60,190,220,20);
+		    			frame.add(lblretiro).setBounds(100,270,200,20); 
+		    			frame.add(txtRetiro).setBounds(80,290,140,20);
+		    			frame.add(btnValidar_Retiro).setBounds(100,330,100,20);
+		    			frame.add(lblConfirmacion).setBounds(70,380,200,20);
+		    			frame.add(txtClaveSupervisorconfirma).setBounds(80,400,140,20);
+		    			frame.add(btnEditar_retiro).setBounds(15,440,130,20);
+		    			frame.add(btnImprimir).setBounds(155,440,130,20);
+		    			frame.add(btnSalir).setBounds(80,480,130,20);
+		    			frame.add(btnNoExiste_Supervisor).setBounds(8,245,283,345);
+		    			frame.add(btnError_Clave_requerida).setBounds(8,245,283,345);
+		    			frame.add(btnError).setBounds(8,470,283,120);
 		    			frame.add(fondo).setBounds(0,0,300,600);
+		    			
+		    			
 		    			tmpIconAuxFondo = new ImageIcon("imagen/retiro_cajero.png");
 		                iconoFondo = new ImageIcon(tmpIconAuxFondo.getImage().getScaledInstance(300,600, Image.SCALE_DEFAULT));
 		                fondo.setIcon(iconoFondo);
+	
 		                
-		                txtNombreSupervisor.setEditable(false);
+		        		btnNoExiste_Supervisor.setText(	"<html> <FONT FACE="+"arial"+" SIZE=7 COLOR=RED>" +
+		        										"		<CENTER><p>NO EXISTE</p></CENTER>" +
+		        										"		<CENTER><p>EL SUPERVISOR</p></CENTER>" +
+		        										"		<CENTER><p> O CLAVE INCORRECTA</p></CENTER></FONT>" +
+		        										"</html>"); 
+		                
+		        		btnError_Clave_requerida.setText(	"<html> <FONT FACE="+"arial"+" SIZE=7 COLOR=BLACK>" +
+								"		<CENTER><p> SE REQUIERE CLAVE DE SUPERVISOR</p></CENTER></FONT></html>"); 
+		        		
+		        		btnError.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=RED>" +
+								"		<CENTER><p> SE REQUIERE LA CLAVE DEL MISMO SUPERVISOR</p></CENTER></FONT></html>"); 
+		        	
+		        		
+		        		
+		        		txtClaveSupervisor.setEditable(true);
+		                txtRetiro.setVisible(false);
+		                lblNombre_Supervisor.setVisible(false);
+		                lblretiro.setVisible(false);
+		                lblConfirmacion.setVisible(false);
+		                btnNoExiste_Supervisor.setVisible(false);
+		                btnError_Clave_requerida.setVisible(false);
+		                btnValidar_Retiro.setVisible(false);
+		                btnFoto_supervisor.setVisible(false);
+		                btnEditar_retiro.setVisible(false);
+		                btnImprimir.setVisible(false);
+		                btnSalir.setVisible(false);
+		                btnError.setVisible(false);
+		                btnEditar_retiro.setEnabled(false);
+		                btnImprimir.setEnabled(false);
+		                
+		                
+		                txtClaveSupervisorconfirma.setVisible(false);
+		                
 		    			frame.setLayout(new BorderLayout( ));
 		    			frame.getContentPane( ).add("Center",this);
 		    			frame.setAlwaysOnTop( true );
 		    			frame.setSize(300,600);
 		    			frame.setLocationRelativeTo(null);
 		    			
-		    			 txtClaveSupervisor.addKeyListener(buscar_supervisor);
-		    			
+	    			    txtClaveSupervisor.addKeyListener(buscar_supervisor);
+		    			txtClaveSupervisorconfirma.addKeyListener(validacion_clave_supervisor);
+		    			txtRetiro.addKeyListener(pasar_a_validar_retiro);
+			            btnValidar_Retiro.addActionListener(pasar_a_validar_clave_supervisor);
+			            btnEditar_retiro.addActionListener(regresar_modificar_retiro);
+			        	btnImprimir.addActionListener(imprimir_retiro); 
+		    			btnSalir.addActionListener(salir);
 		    			
 		    		    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 		    				       KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "cerrar");
@@ -377,48 +432,216 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		    		    });
 		    		    
 		    		}
+		    		
 		    		KeyListener buscar_supervisor = new KeyListener() {
 		    			@SuppressWarnings("deprecation")
 						public void keyPressed(KeyEvent e) {	
 		    				
 		    				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 		    					cargar_datos_del_supervisor(txtClaveSupervisor.getText()+"");
-		    					
 		    				}
 		    			}
 		    			public void keyReleased(KeyEvent e) {}
 		    			public void keyTyped(KeyEvent e) {}
 		            }; 
 		            
-		    		public void cargar_datos_del_supervisor(String clave){
+		            
+		    		KeyListener validacion_clave_supervisor = new KeyListener() {
+		    			@SuppressWarnings("deprecation")
+						public void keyPressed(KeyEvent e) {	
+		    				
+		    				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+		    					btnError.setVisible(false);
+		    					validar_clave_de_supervisor(txtClaveSupervisorconfirma.getText()+"");
+		    				}
+		    			}
+		    			public void keyReleased(KeyEvent e) {}
+		    			public void keyTyped(KeyEvent e) {}
+		            };
+		            
+		            
+		            
+		    		KeyListener pasar_a_validar_retiro = new KeyListener() {
+		    			public void keyPressed(KeyEvent e) {	
+		    				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+		    					btnValidar_Retiro.doClick();
+		    				}
+		    			}
+		    			public void keyReleased(KeyEvent e) {}
+		    			public void keyTyped(KeyEvent e) {}
+		            }; 
+
+		            
+		    		@SuppressWarnings("deprecation")
+					public void cargar_datos_del_supervisor(String clave){
 		    			
 		    			if(txtClaveSupervisor.getText().toUpperCase().equals("")){
-		                    JOptionPane.showMessageDialog(null, "La clave es requerida \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 		                    txtClaveSupervisor.setText("");
 		                    txtClaveSupervisor.requestFocus();
+		                    txtClaveSupervisorconfirma.setVisible(true);
+		                    txtClaveSupervisorconfirma.setEditable(false);
+		                    btnError_Clave_requerida.setVisible(true);
+		                    btnNoExiste_Supervisor.setVisible(false);
+		                    btnFoto_supervisor.setVisible(false);
 		                    return;
-		    				
 		    			}else{
 		    				
 		    			
 		    			Obj_Retiros_Cajeros datosSupervisor= new Obj_Retiros_Cajeros().buscarSupervisor(clave);
+		    			if(datosSupervisor.getExiste_supervisor().equals("NO EXISTE")){
+			    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.jpg");
+			    	 		btnFoto_supervisor.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(120, 95, Image.SCALE_DEFAULT)));
+			    	 		lblNombre_Supervisor.setVisible(true);
+		                    txtClaveSupervisor.setText("");
+		                    txtClaveSupervisor.requestFocus();
+		                    
+			    	 		lblNombre_Supervisor.setText(	"<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=RED>" +
+									"	<CENTER><p> "+datosSupervisor.getNombre_Supervisor()+"</p></CENTER></FONT></html>"); 
+			    	 		
+			    	 		btnNoExiste_Supervisor.setVisible(true);
+			    	 		btnError_Clave_requerida.setVisible(false);
+			    	 		btnFoto_supervisor.setVisible(true);
+			    	 		
+		    			}else{
 		    			
 		    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_supervisor/supervisortmp.jpg");
 		    	 		btnFoto_supervisor.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(120, 95, Image.SCALE_DEFAULT)));	
-		    	  	    
-		    	        txtNombreSupervisor.setText(datosSupervisor.getNombre_Supervisor()+"");
-//		    	  	    btnBuscar.doClick();
+		    	        lblNombre_Supervisor.setText(datosSupervisor.getNombre_Supervisor()+"");
+		    	        txtfolio_Supervisor.setText(datosSupervisor.getFolio_supervisor()+"");
+		    	        
+		    	        lblNombre_Supervisor.setVisible(true);
+		    	        lblretiro.setVisible(true);
+		    	        lblConfirmacion.setVisible(true);
+		    	        txtClaveSupervisor.setEditable(false);
+		    	        
+                        txtClaveSupervisorconfirma.setEditable(false);		    	        
+		    	        txtClaveSupervisorconfirma.setVisible(true);
+		    	        txtRetiro.setVisible(true);
+		    	        txtRetiro.requestFocus();
+		    	        
+		    	        btnNoExiste_Supervisor.setVisible(false);
+		    	        btnError_Clave_requerida.setVisible(false);
+		    	        btnValidar_Retiro.setVisible(true);
+		    	        btnValidar_Retiro.setEnabled(true);
+		    	        btnFoto_supervisor.setVisible(true);
+		    	        
+		    			}
 		    		    }	
 		    		}
 		    		
+		    		@SuppressWarnings("deprecation")
+					public void validar_clave_de_supervisor(String clave_supervisor){
+		    			if(txtClaveSupervisorconfirma.getText().toUpperCase().equals("")){
+		                    txtClaveSupervisorconfirma.setText("");
+		                    txtClaveSupervisorconfirma.requestFocus();
+		                    btnError.setVisible(true);		                    
+		    			}else{
+		    				Obj_Retiros_Cajeros validar_Supervisor_Guardar_Retiro = new Obj_Retiros_Cajeros().buscarSupervisor(txtClaveSupervisor.getText());
+		    				  if( validar_Supervisor_Guardar_Retiro.getClave().equals(txtClaveSupervisorconfirma.getText()))
+		    						{
+		    					  
+		    					  if( new Obj_Retiros_Cajeros().guardar(Establecimiento,folio_empleado,Integer.valueOf(txtfolio_Supervisor.getText()),Float.valueOf(txtRetiro.getText()) )){
+		    					  btnValidar_Retiro.setEnabled(false);
+		    					  btnEditar_retiro.setEnabled(false);
+		    					  txtClaveSupervisorconfirma.setEnabled(false);
+		    					  btnImprimir.setEnabled(true);
+		    					  btnSalir.setVisible(true);
+		    					  btnSalir.setEnabled(true);
+		    					  
+
+		    					 }else{
+					                    txtClaveSupervisorconfirma.setText("");
+					                    txtClaveSupervisorconfirma.requestFocus();
+					                    btnError.setVisible(true);
+		    					 }
+		    					  
+		    					 
+		    				   }else{
+				                    txtClaveSupervisorconfirma.setText("");
+				                    txtClaveSupervisorconfirma.requestFocus();
+				                    btnError.setVisible(true);
+		    				        }
+		    				
+		    			}
+		    		}
+		    		
+		    		ActionListener pasar_a_validar_clave_supervisor = new ActionListener(){
+		    			public void actionPerformed(ActionEvent e){
+		    				lblConfirmacion.setVisible(true);
+		    				txtRetiro.setEditable(false);
+		    				txtClaveSupervisorconfirma.setEditable(true);
+		    				txtClaveSupervisorconfirma.requestFocus();
+		    				btnEditar_retiro.setVisible(true);
+		    				btnEditar_retiro.setEnabled(true);
+		    				btnImprimir.setVisible(true);
+		    				btnImprimir.setEnabled(false);
+		    				btnValidar_Retiro.setEnabled(false);
+		    			}
+		    		};
+		    		
+		    		ActionListener regresar_modificar_retiro = new ActionListener(){
+		    			public void actionPerformed(ActionEvent e){
+		    				lblConfirmacion.setVisible(true);
+		    				txtRetiro.setEditable(true);
+		    				txtRetiro.requestFocus();
+		    				txtClaveSupervisorconfirma.setEditable(false);
+		    				txtClaveSupervisorconfirma.setText("");
+		    				btnEditar_retiro.setVisible(true);
+		    				btnEditar_retiro.setEnabled(false);
+		    				btnSalir.setVisible(false);
+		    				btnImprimir.setVisible(false);
+		    				btnError.setVisible(false);
+		    				btnValidar_Retiro.setEnabled(true);
+		    				btnEditar_retiro.setVisible(false);
+		    			}
+		    		};
+		    		
+				  	ActionListener salir = new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							framesalir.dispose();
+							cerrarhilo=false;
+							Hilo_1_Minuto();
+						}
+					};
+					
+					
+					ActionListener imprimir_retiro = new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+						
+						}
+					};
+					
+					
+					@SuppressWarnings({ "rawtypes", "unchecked" })
+					public void Reporte_De_Retiros_Cajeros(String folio_retiro) {
+						
+						String query_corte_caja = "exec sp_select_reporte_corte_de_caja '"+folio_retiro+"';";
+						Statement stmt = null;
+						try {
+							
+							stmt =  new Connexion().conexion().createStatement();
+						    ResultSet rs = stmt.executeQuery(query_corte_caja);
+							JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Retiro_A_Cajeros.jrxml");
+							JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+							JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+							JasperViewer.viewReport(print, false);
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
+							JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+						}
+					 }
+					
 		    	}
 		    	
+	  	
+
+		
 ///////////////////////////////////////////////////////////////////////////////////		    	
 		    
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Retiros_A_Cajeros(740).setVisible(true);
+			new Cat_Retiros_A_Cajeros(547).setVisible(true);
 		}catch(Exception e){	}
 	}
 }
