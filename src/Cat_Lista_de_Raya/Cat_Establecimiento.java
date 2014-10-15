@@ -57,6 +57,14 @@ public class Cat_Establecimiento extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_grupo_cheque = new JComboBox(grupocheque);
 	
+	String grupocorte[] = new Obj_Establecimiento().Combo_Grupo_Corte();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmb_grupo_corte = new JComboBox(grupocorte);
+	
+	String grupoPermitirNC[] = {"NO PERMITIR","PERMITIR"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmb_grupo_PermitirNC = new JComboBox(grupoPermitirNC);
+	
 	String status[] = {"VIGENTE","CANCELADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
@@ -68,14 +76,16 @@ public class Cat_Establecimiento extends JFrame{
 	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
 	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
 	
-	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio Est. ", "Establecimiento", "Abreviatura","Serie","Grupo Cheque","Estatus"}){
+	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio Est. ", "Establecimiento", "Abreviatura","Serie","Grupo Cheque","Estatus","Grupo Corte","Permitir NC"}){
 	            @SuppressWarnings("rawtypes")
 	            Class[] types = new Class[]{
 	                       java.lang.Object.class,
 	                       java.lang.Object.class, 
 	                       java.lang.Object.class,    
 	                       java.lang.Object.class,  
+	                       java.lang.Object.class,
 	                       java.lang.Object.class,  
+	                       java.lang.Object.class,
 	                       java.lang.Object.class  
 	        };
 	            @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -90,6 +100,8 @@ public class Cat_Establecimiento extends JFrame{
 	                            case 3  : return false; 
 	                            case 4  : return false; 
 	                            case 5  : return false; 
+	                            case 6  : return false; 
+	                            case 7  : return false; 
 	                    }
 	                     return false;
 	             }
@@ -133,6 +145,12 @@ public class Cat_Establecimiento extends JFrame{
 			panel.add(new JLabel("Grupo Cheq:")).setBounds(x-25,y+=30,ancho,20);
 			panel.add(cmb_grupo_cheque).setBounds(90,y,ancho+70,20);
 			
+			panel.add(new JLabel("Grupo Corte:")).setBounds(x-25,y+=30,ancho,20);
+			panel.add(cmb_grupo_corte).setBounds(90,y,ancho+70,20);
+			
+			panel.add(new JLabel("Permitir NC:")).setBounds(x-25,y+=30,ancho,20);
+			panel.add(cmb_grupo_PermitirNC).setBounds(90,y,ancho+70,20);
+			
 			panel.add(new JLabel("Estatus:")).setBounds(x-25,y+=30,ancho,20);
 			panel.add(cmb_status).setBounds(90,y,ancho+70,20);
 			
@@ -147,16 +165,18 @@ public class Cat_Establecimiento extends JFrame{
 			
 
 			
-			panel.add(txtFolioFiltro).setBounds((x*2)+(ancho*3)-10,15,40,20);
-			panel.add(txtUnidadFiltro).setBounds((x*2)+(ancho*3)+30,15,430,20);
+			panel.add(txtFolioFiltro).setBounds((x*2)+(ancho*3)-5,15,58,20);
+			panel.add(txtUnidadFiltro).setBounds((x*2)+(ancho*3)+53,15,240,20);
 			
-			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-5,35,623,185);
+			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-5,35,623,235);
 			
 			txtEstablecimiento.setEditable(false);
 			txtAbreviatura.setEditable(false);
 			txtSerie.setEditable(false);
 			cmb_status.setEnabled(false);
 			cmb_grupo_cheque.setEnabled(false);
+			cmb_grupo_corte.setEnabled(false);
+			cmb_grupo_PermitirNC.setEnabled(false);
 			btnEditar.setEnabled(false);
 			
 			txtFolio.addKeyListener(buscar_action);
@@ -176,7 +196,7 @@ public class Cat_Establecimiento extends JFrame{
 			
 			agregar_de_tabla(tabla);
 			cont.add(panel);
-			this.setSize(1024,260);
+			this.setSize(1024,310);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -259,6 +279,11 @@ public class Cat_Establecimiento extends JFrame{
 		    this.tabla.getColumnModel().getColumn(4).setMaxWidth(100);
 		    this.tabla.getColumnModel().getColumn(5).setMinWidth(60);
 		    this.tabla.getColumnModel().getColumn(5).setMaxWidth(100);
+		    
+		    this.tabla.getColumnModel().getColumn(6).setMinWidth(100);
+		    this.tabla.getColumnModel().getColumn(6).setMaxWidth(150);
+		    this.tabla.getColumnModel().getColumn(7).setMinWidth(80);
+		    this.tabla.getColumnModel().getColumn(7).setMaxWidth(80);
 						    
 						    TableCellRenderer render = new TableCellRenderer() { 
 								public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -288,23 +313,52 @@ public class Cat_Establecimiento extends JFrame{
 	    
 	    }
 	private void refrestabla(){
+
+		while(tabla.getRowCount()>0){ modelo.removeRow(0);}
+		
 		Statement s;
 		ResultSet rs;
 		try {
 			Connexion con = new Connexion();
 			s = con.conexion().createStatement();
-			rs = s.executeQuery("select folio as folio_de_establecimiento, nombre as establecimiento,abreviatura,serie" +
-					",case when grupo_para_cheque='0' then (select 'Sin Grupo') when grupo_para_cheque='1' then (select 'SUPER')when grupo_para_cheque='2' then (select 'FERRE Y REFA')when grupo_para_cheque='3' then (select 'IZACEL') END as grupo_para_cheque" +
-					",case when status='1' then (select 'VIGENTE') when status=0 then (select 'CANCELADO') end as estatus from tb_establecimiento order by nombre asc");
+			rs = s.executeQuery("select folio as folio_de_establecimiento "+
+								", nombre as establecimiento "+
+								", abreviatura "+
+								", serie "+
+								", case when grupo_para_cheque='0'  "+
+								"		then (select 'Sin Grupo')  "+
+								"	   when grupo_para_cheque='1'  "+
+								"		then (select 'SUPER') "+
+								"	   when grupo_para_cheque='2' "+ 
+								"		then (select 'FERRE Y REFA') "+
+								"	   when grupo_para_cheque='3'  "+
+								"		then (select 'IZACEL')  "+
+								"	END as grupo_para_cheque "+
+								", case when tb_establecimiento.status='1'  "+
+								"		then (select 'VIGENTE')  "+
+								"	   when tb_establecimiento.status=0  "+
+								"		then (select 'CANCELADO')  "+
+								"	end as estatus  "+
+								" , isnull(tb_grupos_para_cortes.grupo_para_cortes,'SELECCIONE UNA OPCION') as grupo_para_cortes"+
+								", case when permitir_nc=0  "+
+								"		then (select 'NO PERMITIR')  "+
+								"	   ELSE (select 'PERMITIR')  "+
+								"	end as permitir_nc  "+
+						"from tb_establecimiento  " +
+						"left outer join tb_grupos_para_cortes on tb_grupos_para_cortes.folio_grupo_para_cortes=tb_establecimiento.folio_grupo_para_cortes "+
+						"order by nombre asc ");
+			
 			while (rs.next())
 			{ 
-			   String [] fila = new String[6];
+			   String [] fila = new String[8];
 			   fila[0] = rs.getString(1).trim();
 			   fila[1] = rs.getString(2).trim();
 			   fila[2] = rs.getString(3).trim(); 
 			   fila[3] = rs.getString(4).trim(); 
 			   fila[4] = rs.getString(5).trim(); 
 			   fila[5] = rs.getString(6).trim(); 
+			   fila[6] = rs.getString(7).trim(); 
+			   fila[7] = rs.getString(8).trim(); 
 			   modelo.addRow(fila); 
 			}	
 		} catch (SQLException e1) {
@@ -397,12 +451,16 @@ public class Cat_Establecimiento extends JFrame{
 			cmb_grupo_cheque.setSelectedIndex(0);
 			cmb_status.setSelectedIndex(1);
 			
+			cmb_grupo_corte.setSelectedIndex(0);
+			cmb_grupo_PermitirNC.setSelectedIndex(0);
 			
 			txtEstablecimiento.setEditable(false);
 			txtAbreviatura.setEditable(false);
 			txtSerie.setEditable(false);
 			
 			cmb_grupo_cheque.setEnabled(false);
+			cmb_grupo_corte.setEnabled(false);
+			cmb_grupo_PermitirNC.setEnabled(false);
 			cmb_status.setEnabled(false);
 		}
 	};
@@ -419,6 +477,8 @@ public class Cat_Establecimiento extends JFrame{
 				txtSerie.setEditable(true);
 				
 				cmb_grupo_cheque.setEnabled(true);
+				cmb_grupo_corte.setEnabled(true);
+				cmb_grupo_PermitirNC.setEnabled(true);
 				cmb_status.setEnabled(true);
 				
 				btnEditar.setEnabled(false);
@@ -446,6 +506,8 @@ public class Cat_Establecimiento extends JFrame{
 						txtSerie.setText(Establecimiento.getSerie()+"");
 						
 						cmb_grupo_cheque.setSelectedIndex(Establecimiento.getGrupo_cheque());
+						cmb_grupo_corte.setSelectedIndex(Establecimiento.getGrupo_cheque());
+						cmb_grupo_PermitirNC.setSelectedIndex(Establecimiento.getGrupo_cheque());
 						cmb_status.setSelectedIndex(Establecimiento.getStatus());
 						
 						btnNuevo.setEnabled(true);
@@ -457,6 +519,8 @@ public class Cat_Establecimiento extends JFrame{
 						txtSerie.setEditable(false);
 						
 						cmb_grupo_cheque.setEnabled(false);
+						cmb_grupo_corte.setEnabled(false);
+						cmb_grupo_PermitirNC.setEnabled(false);
 						cmb_status.setEnabled(false);
 						
 						txtFolio.requestFocus();
@@ -484,6 +548,8 @@ public class Cat_Establecimiento extends JFrame{
 						txtSerie.setText(tabla.getValueAt(fila,3).toString().substring(0,tabla.getValueAt(fila,3).toString().length()));
 						cmb_grupo_cheque.setSelectedItem(tabla.getValueAt(fila,4).toString().substring(0,tabla.getValueAt(fila,4).toString().length()));
 						cmb_status.setSelectedItem(tabla.getValueAt(fila,5).toString().substring(0,tabla.getValueAt(fila,5).toString().length()));
+						cmb_grupo_corte.setSelectedItem(tabla.getValueAt(fila,6).toString().substring(0,tabla.getValueAt(fila,6).toString().length()));
+						cmb_grupo_PermitirNC.setSelectedItem(tabla.getValueAt(fila, 7).toString().substring(0, tabla.getValueAt(fila, 7).toString().length()));
 						
 						txtFolio.setEditable(false);
 						txtEstablecimiento.setEditable(false);
@@ -491,6 +557,8 @@ public class Cat_Establecimiento extends JFrame{
 						txtSerie.setEditable(false);
 						
 						cmb_grupo_cheque.setEnabled(false);
+						cmb_grupo_corte.setEnabled(false);
+						cmb_grupo_PermitirNC.setEnabled(false);
 						cmb_status.setEnabled(false);
 						
 						btnEditar.setEnabled(true);
@@ -521,9 +589,13 @@ public class Cat_Establecimiento extends JFrame{
 				btnEditar.setEnabled(false);
 				
 				cmb_grupo_cheque.setSelectedIndex(0);
+				cmb_grupo_corte.setSelectedIndex(0);
+				cmb_grupo_PermitirNC.setSelectedIndex(0);
 				cmb_status.setSelectedIndex(1);
 				
                 cmb_grupo_cheque.setEnabled(true);
+                cmb_grupo_corte.setEnabled(true);
+                cmb_grupo_PermitirNC.setEnabled(true);
 				cmb_status.setEnabled(true);
 			}else{
 				btnDeshacer.doClick();
@@ -539,9 +611,13 @@ public class Cat_Establecimiento extends JFrame{
 				btnEditar.setEnabled(false);
 				
 				cmb_grupo_cheque.setSelectedIndex(0);
+				cmb_grupo_corte.setSelectedIndex(0);
+				cmb_grupo_PermitirNC.setSelectedIndex(0);
 				cmb_status.setSelectedIndex(1);
 				
                 cmb_grupo_cheque.setEnabled(true);
+                cmb_grupo_corte.setEnabled(true);
+                cmb_grupo_PermitirNC.setEnabled(true);
 				cmb_status.setEnabled(true);
 			}
 		}
@@ -566,12 +642,13 @@ public class Cat_Establecimiento extends JFrame{
 															Establecimiento.setAbreviatura(txtAbreviatura.getText().toLowerCase().toString());
 															Establecimiento.setSerie(txtSerie.getText().toLowerCase().toString());
 							  							    Establecimiento.setGrupo_cheque(cmb_grupo_cheque.getSelectedIndex());
+							  							    Establecimiento.setGrupo_cortes(cmb_grupo_corte.getSelectedIndex());
+							  							    Establecimiento.setGrupo_permitir_nc(cmb_grupo_PermitirNC.getSelectedIndex());
 															switch(cmb_status.getSelectedIndex()){
 																		case 0: Establecimiento.setStatus(1); break;
 																		case 1: Establecimiento.setStatus(0); break;	}
 																
 																			if(Establecimiento.actualizar(Integer.parseInt(txtFolio.getText()))){
-																						while(tabla.getRowCount()>0){ modelo.removeRow(0);}
 																						refrestabla();
 																JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
 																btnDeshacer.doClick();
@@ -610,13 +687,14 @@ public class Cat_Establecimiento extends JFrame{
 																		Establecimiento.setAbreviatura(txtAbreviatura.getText().toLowerCase().toString().trim());
 																		Establecimiento.setSerie(txtSerie.getText().toLowerCase().toString().trim());
 																		Establecimiento.setGrupo_cheque(cmb_grupo_cheque.getSelectedIndex());
+																		Establecimiento.setGrupo_cortes(cmb_grupo_corte.getSelectedIndex());
+																		Establecimiento.setGrupo_permitir_nc(cmb_grupo_PermitirNC.getSelectedIndex());
+																		
 																		switch(cmb_status.getSelectedIndex()){
 																					case 0: Establecimiento.setStatus(1); break;
 																					case 1: Establecimiento.setStatus(0); break;	}
 																			
 																				if(Establecimiento.guardar()){
-																					
-																					while(tabla.getRowCount()>0){ modelo.removeRow(0);}
 																					refrestabla();
 																					
 																					JOptionPane.showMessageDialog(null,"El registró se guardó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
@@ -676,6 +754,7 @@ public class Cat_Establecimiento extends JFrame{
 		if(txtAbreviatura.getText().equals("")) 		error+= "Abreviatura\n";
 		if(txtSerie.getText().equals("")) 		error+= "Serie del Establecimiento\n";
 		if(cmb_grupo_cheque.getSelectedIndex()==0) 		error+= "Grupo Para Cheque\n";
+		if(cmb_grupo_corte.getSelectedIndex()==0) 		error+= "Grupo Para Cortes\n";
 		return error;
 	}
 	

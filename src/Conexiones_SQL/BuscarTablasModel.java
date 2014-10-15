@@ -883,6 +883,33 @@ public class BuscarTablasModel {
 		}
 	    return matriz; 
 	}
+	
+	public Object[][] tabla_establecimientos_para_concentrado(){
+		
+		String query_lista = "select tb_establecimiento.nombre as establecimiento " +
+				"					, isnull(tb_grupos_para_cortes.grupo_para_cortes,'SIN ASIGNAR') as grupo " +
+				"				from tb_establecimiento " +
+				"				left outer join tb_grupos_para_cortes on tb_grupos_para_cortes.folio_grupo_para_cortes = tb_establecimiento.folio_grupo_para_cortes";
+		
+		Object[][] matriz = new Object[get_filas(query_lista)][2];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] = "   "+rs.getString(1);
+				matriz[i][1] = "   "+rs.getString(2);
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_establecimientos_para_concentrado  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+		}
+	    return matriz; 
+	}
 }
 
 

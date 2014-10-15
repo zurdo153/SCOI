@@ -114,6 +114,8 @@ public class BuscarSQL {
 				establecimiento.setSerie(rs.getString("serie").trim());
 				establecimiento.setGrupo_cheque(rs.getInt("grupo_para_cheque"));
 				establecimiento.setStatus(rs.getInt("status"));
+				establecimiento.setGrupo_cortes(rs.getInt("folio_grupo_para_cortes"));
+				establecimiento.setGrupo_permitir_nc(rs.getInt("permitir_nc"));
 			}
 			
 		} catch (Exception e) {
@@ -164,6 +166,26 @@ public class BuscarSQL {
 		}
 			
 		return folio_corte;
+	}
+	
+	public double total_retiro_cajero(int cajero){
+		double total_retiro=0;
+		
+		String query = "exec sp_select_total_de_retiro_de_cajero " + cajero + ";";
+		try {				
+			Statement s = con.conexion().createStatement();
+			ResultSet rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				total_retiro = rs.getDouble("total_retiro_cajero");
+//				folio.setFolio_corte(rs.getString("folio_corte"));
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+			
+		return total_retiro;
 	}
 	
 	public boolean Folio_Corte(String folio_corte){
@@ -5302,49 +5324,75 @@ public class BuscarSQL {
 	}
 
 
-public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLException{
-	Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
-	String query = "exec sp_select_datos_cajero '"+folio_empleado+"'";
-
-	Statement stmt = null;
-	try {
-		stmt = con.conexion().createStatement();
-		ResultSet rs = stmt.executeQuery(query);
-		while(rs.next()){
-			datos_empleado.setFolio_empleado(rs.getInt("Folio_Empleado"));
-			datos_empleado.setNombre(rs.getString("Nombre"));
-			datos_empleado.setPuesto(rs.getString("Puesto"));
-			
-			
-			System.out.println(rs.getString("Nombre"));
-			
-//			datos_empleado.setEstablecimiento(rs.getString("Establecimiento"));
-//			datos_empleado.setAsignacion(rs.getString("Asignacion"));
-//			datos_empleado.setPc(rs.getString("PC"));
-			
-			
-			File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
-			FileOutputStream fos = new FileOutputStream(photo);
-
-	        byte[] buffer = new byte[1];
-	        InputStream is = rs.getBinaryStream("Foto");
-	        while (is.read(buffer) > 0) {
-	        	fos.write(buffer);
-	        }
-	        fos.close();
-
+	public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLException{
+		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
+		String query = "exec sp_select_datos_cajero '"+folio_empleado+"'";
+	
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				datos_empleado.setFolio_empleado(rs.getInt("Folio_Empleado"));
+				datos_empleado.setNombre(rs.getString("Nombre"));
+				datos_empleado.setPuesto(rs.getString("Puesto"));
+				
+				
+				System.out.println(rs.getString("Nombre"));
+				
+	//			datos_empleado.setEstablecimiento(rs.getString("Establecimiento"));
+	//			datos_empleado.setAsignacion(rs.getString("Asignacion"));
+	//			datos_empleado.setPc(rs.getString("PC"));
+				
+				
+				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
+				FileOutputStream fos = new FileOutputStream(photo);
+	
+		        byte[] buffer = new byte[1];
+		        InputStream is = rs.getBinaryStream("Foto");
+		        while (is.read(buffer) > 0) {
+		        	fos.write(buffer);
+		        }
+		        fos.close();
+	
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			return null;
 		}
-	} catch (Exception e) {
-		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		e.printStackTrace();
-		return null;
+		
+		
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return datos_empleado;
 	}
 	
-	
-	finally{
-		if(stmt!=null){stmt.close();}
+	public String[][] getRetiros_a_detalle(int folio_cajero){
+		String[][] Matriz = null;
+		
+		String datosif = "exec sp_select_retiro_de_cajero_a_detalle "+folio_cajero;
+		
+		Matriz = new String[getFilas(datosif)][3];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(datosif);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		return Matriz;
 	}
-	return datos_empleado;
-}
 
 }

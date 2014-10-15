@@ -410,7 +410,7 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 						",autorizaciones_bancarias.monto as Importe " +
 						",facremtick.folio_cajero as asignacion " +
 						",isnull(liquidaciones_tickets.importe,0) as retiro_cliente  " +
-						",'true' as selector " +
+						",'false' as selector " +
 						"from autorizaciones_bancarias " +
 						"inner join equipos_perifericos_equipo_bms on equipos_perifericos_equipo_bms.equipo_bms=autorizaciones_bancarias.equipo " +
 						"inner join equipos_perifericos on equipos_perifericos.equipo_periferico=equipos_perifericos_equipo_bms.equipo_periferico " +

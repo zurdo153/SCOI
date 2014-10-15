@@ -215,7 +215,7 @@ public class ActualizarSQL {
 	}
 	
 	public boolean Establecimiento(Obj_Establecimiento establecimiento, int folio){
-		String query = "update tb_establecimiento set nombre=?, abreviatura=?,serie=?, grupo_para_cheque=?, status=? where folio=" + folio;
+		String query = "update tb_establecimiento set nombre=?, abreviatura=?,serie=?, grupo_para_cheque=?, status=?, folio_grupo_para_cortes=?, permitir_nc=? where folio=" + folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -226,6 +226,8 @@ public class ActualizarSQL {
 			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
 			pstmt.setInt(4, establecimiento.getGrupo_cheque());
 			pstmt.setInt(5, establecimiento.getStatus());
+			pstmt.setInt(6, establecimiento.getGrupo_cortes());
+			pstmt.setInt(7, establecimiento.getGrupo_permitir_nc());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
