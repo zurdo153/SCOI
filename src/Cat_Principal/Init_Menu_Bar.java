@@ -189,6 +189,7 @@ public class Init_Menu_Bar extends Init_Login{
 		}
 	}
 	
+	
     ActionListener opLogin = new ActionListener(){
 		@SuppressWarnings({ "deprecation", "static-access" })
 		public void actionPerformed(ActionEvent arg0) {
@@ -245,6 +246,8 @@ public class Init_Menu_Bar extends Init_Login{
 					System.err.println(e1.getMessage());
 					//e1.printStackTrace();
 				}
+				
+				
 			}
 		}
 	};
