@@ -188,7 +188,7 @@ public class Obj_Alimentacion_Cortes {
 	public boolean generar_folio_corte(){ return new GuardarSQL().Guardar_Folio_Corte(); }
 	public String buscar(String establecimiento){ return new BuscarSQL().Folio_Nuevo(establecimiento); }
 	
-	public double retiroCajero(int cajero){ return new BuscarSQL().total_retiro_cajero(cajero); }
+	public double retiroCajero(int cajero,String establecimiento){ return new BuscarSQL().total_retiro_cajero(cajero,establecimiento); }
 
 	public boolean buscar_folio_corte(String folio_corte){ return new BuscarSQL().Folio_Corte(folio_corte); }
 	

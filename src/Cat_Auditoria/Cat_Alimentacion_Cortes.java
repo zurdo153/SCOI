@@ -329,7 +329,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.setBorder(BorderFactory.createTitledBorder("Alimentacion Cortes"));
 		
 		CargarUsuario();
-		txtRetiroCajero.setText(new Obj_Alimentacion_Cortes().retiroCajero(folio)+"");
+		txtRetiroCajero.setText(new Obj_Alimentacion_Cortes().retiroCajero(folio,estab)+"");
 		
 		panel.add(lblUsuario).setBounds(x2-50,y,ancho*2+90,20);
 		
@@ -686,7 +686,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 //	btnRetirosCajeros
 	ActionListener opRetirosCajeros = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Retiros_A_Detalle(Integer.valueOf(lblFolio_Empleado.getText())).setVisible(true);
+			new Cat_Retiros_A_Detalle(Integer.valueOf(lblFolio_Empleado.getText()),lblEstablecimineto.getText()).setVisible(true);
 		}
 	};
 	
@@ -1158,7 +1158,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						if(borrar_lista_de_asignaciones()){
 									
 							cargar_lista_de_asignaciones();
-								
 				    		obtener_totales_de_tAire_rLuz_por_folio_de_corte();
 				    			
 				    		calculoDinamico();
@@ -3071,33 +3070,40 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 //	variables para calculo dinamico de la diferiencia de corte  funcion = (calculoDinamico());
 	double corteSistema = 0;
+	
 	double efectivo = 0;
+	double retiroCajero = 0;
+	
 //	double deposito = 0;
 	double tiempoAire = 0;
 	double resiboLuz = 0;
-	double totalVauchers = 0;
-	
+	double cheque = 0;
 	double totalFS = 0;
 	
-	double diferienciaCorte = 0;
-	double cheque = 0;
-	
+	double totalVauchers = 0;
 	double retiroCliente = 0;
+	
+	double diferienciaCorte = 0;
+	
 	
 		public void calculoDinamico(){
 			
 			corteSistema = txtCorteSistema.getText().equals("")?0:Double.valueOf(txtCorteSistema.getText());
+			
 			efectivo = txtEfectivo.getText().equals("")?0:Double.valueOf(txtEfectivo.getText());
+			retiroCajero = txtRetiroCajero.getText().equals("")?0:Double.valueOf(txtRetiroCajero.getText());
+			
 //			deposito = txtDeposito.getText().equals("")?0:Double.valueOf(txtDeposito.getText());
 			tiempoAire = txtTiempoAire.getText().equals("")?0:Double.valueOf(txtTiempoAire.getText());
 			resiboLuz = txtReciboLuz.getText().equals("")?0:Double.valueOf(txtReciboLuz.getText());
-			totalVauchers = txtTotalVaucher.getText().equals("")?0:Double.valueOf(txtTotalVaucher.getText());
 			cheque = txtCheques.getText().equals("")?0:Double.valueOf(txtCheques.getText());
 			totalFS = txtTotalFS.getText().equals("")?0:Double.valueOf(txtTotalFS.getText());
 			
+			totalVauchers = txtTotalVaucher.getText().equals("")?0:Double.valueOf(txtTotalVaucher.getText());			
 			retiroCliente = txtTotalRetiros.getText().equals("")?0:Double.parseDouble(txtTotalRetiros.getText());
 			
-			diferienciaCorte = (corteSistema-(efectivo/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
+			
+			diferienciaCorte = (corteSistema-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
 			
 			if(diferienciaCorte < 0){
 					lblEtiquetaCorte.setText("Sobrante");
@@ -3121,7 +3127,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		
 		
-		
+//		catalogo de seleccion de ticket de fuente de sodas
 		public class Cat_Seleccion_De_Ticket_De_FS_Cortes extends JDialog {
 			
 			Container cont = getContentPane();
@@ -3382,12 +3388,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 		public class Cat_Retiros_A_Detalle extends Cat_Consulta_Retiros_A_Detalle{
 			
-			public Cat_Retiros_A_Detalle(int folio_cajero){
+			public Cat_Retiros_A_Detalle(int folio_cajero,String establecimiento){
 				while(tabla_retiros.getRowCount()>0){
 					model_retiros.removeRow(0);
 				}
 				
-				String[][] retiros_a_detalle = new BuscarSQL().getRetiros_a_detalle(folio_cajero);
+				String[][] retiros_a_detalle = new BuscarSQL().getRetiros_a_detalle(folio_cajero,establecimiento);
 				
 				for(int i=0; i<retiros_a_detalle.length; i++){
 					 		Object[] retiro = new Object[3];

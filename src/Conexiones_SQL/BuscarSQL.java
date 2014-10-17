@@ -170,10 +170,10 @@ public class BuscarSQL {
 		return folio_corte;
 	}
 	
-	public double total_retiro_cajero(int cajero){
+	public double total_retiro_cajero(int cajero,String establecimiento){
 		double total_retiro=0;
 		
-		String query = "exec sp_select_total_de_retiro_de_cajero " + cajero + ";";
+		String query = "exec sp_select_total_de_retiro_de_cajero " + cajero + ",'" + establecimiento + "';";
 		try {				
 			Statement s = con.conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
@@ -5441,10 +5441,10 @@ public class BuscarSQL {
 		return datos_empleado;
 	}
 	
-	public String[][] getRetiros_a_detalle(int folio_cajero){
+	public String[][] getRetiros_a_detalle(int folio_cajero,String establecimiento){
 		String[][] Matriz = null;
 		
-		String datosif = "exec sp_select_retiro_de_cajero_a_detalle "+folio_cajero;
+		String datosif = "exec sp_select_retiro_de_cajero_a_detalle "+folio_cajero+",'"+establecimiento+"';";
 		
 		Matriz = new String[getFilas(datosif)][3];
 		Statement s;
@@ -5465,6 +5465,52 @@ public class BuscarSQL {
 		}
 		
 		return Matriz;
+	}
+	
+	public boolean buscar_xml_pdf(String folio) throws SQLException{
+		
+		boolean archivo=false;
+		
+		String query = "select xml, pdf from tb_control_de_facturas_y_xml where folio_factura = '"+folio+"';";
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				
+					File archivo_xml = new File(System.getProperty("user.dir")+"/tmp/1999.xml");
+					FileOutputStream fos_xml = new FileOutputStream(archivo_xml);
+				
+		            byte[] buffer_xml = new byte[1];
+		            InputStream is_xml = rs.getBinaryStream("xml");
+		            while (is_xml.read(buffer_xml) > 0) {
+		            	fos_xml.write(buffer_xml);
+		            }
+		            fos_xml.close();
+		            
+		            
+		            File archivo_pdf = new File(System.getProperty("user.dir")+"/tmp/1999.pdf");
+					FileOutputStream fos_pdf = new FileOutputStream(archivo_pdf);
+					
+			            byte[] buffer_pdf = new byte[1];
+			            InputStream is_pdf = rs.getBinaryStream("pdf");
+			            while (is_pdf.read(buffer_pdf) > 0) {
+			                fos_pdf.write(buffer_pdf);
+			            }
+			            fos_pdf.close();
+		            
+			}
+			archivo=true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return archivo;
 	}
 
 }

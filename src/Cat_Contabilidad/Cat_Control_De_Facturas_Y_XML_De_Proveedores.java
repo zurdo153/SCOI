@@ -1,8 +1,13 @@
 package Cat_Contabilidad;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
+import java.awt.FileDialog;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +17,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,11 +35,15 @@ import java.util.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -47,10 +64,12 @@ import javax.swing.table.TableRowSorter;
 import com.toedter.calendar.JDateChooser;
 
 import Cat_Reportes.Cat_Reportes_De_Control_Facturas_Y_XML_Recibidos;
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Contabilidad.Obj_Proveedores;
 
+import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
@@ -60,9 +79,6 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	Connexion con = new Connexion();
-	
-
-
 	
 	DefaultTableModel modelo = new DefaultTableModel(null,
             new String[]{"Cod. P.", "Proveedor","Factura","Fecha Factura","Fecha Ult Mod","Modifico",""}
@@ -589,36 +605,10 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	};
 	
  	ActionListener OpAgregar = new ActionListener() {
-		@SuppressWarnings("unused")
 		public void actionPerformed(ActionEvent e) {
 			
-			
-			if(JOptionPane.showConfirmDialog(null,"De El Proveedor:"+proveedor_recibido+" La Factura:"+cod_factura_recibido+" \n Va Hacer Marcada Como Recibida: Confirmar?") == 0){
-				
-			//nueva ventana para cargar xml y pfd	
-				
-				
-				boolean proveedorr = new Obj_Proveedores().marcar_recibido_factura(cod_prvrecibido.trim(), cod_factura_recibido.trim());
-				
-				
-			while(tabla.getRowCount()>0){
-					modelo.removeRow(0);  }
-            Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
-            String[] fila = new String[7];
-                    for(int i=0; i<lista_proveedores.length; i++){
-                            fila[0] = lista_proveedores[i][0]+"";
-                            fila[1] = lista_proveedores[i][1]+"";
-                            fila[2] = lista_proveedores[i][2]+"";
-                            fila[3] = lista_proveedores[i][3]+"";
-                            fila[4] = lista_proveedores[i][4]+"";
-                            fila[5] = lista_proveedores[i][5]+"";
-                            fila[6] = "false";
-                            modelo.addRow(fila);}
-			JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
-			}else{
-				JOptionPane.showMessageDialog(null,"Se Cancelo La Marcacion De La Factura","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-				return;
-			}					
+			new Cat_Almacenar_XML().setVisible(true);
+					
 		}
 	};
 	
@@ -750,5 +740,143 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			new Cat_Control_De_Facturas_Y_XML_De_Proveedores("1253","ELDORADO").setVisible(true);
 		}catch(Exception e){	}
+	}
+	
+	
+	
+	
+	
+	String xml = "";
+	String pdf = "";
+	public class Cat_Almacenar_XML extends JDialog{
+		
+		Container contenedor = getContentPane();
+		JLayeredPane panelxml = new JLayeredPane();
+		
+		JLabel lblXml = new JLabel("");
+		JLabel lblPdf = new JLabel("");
+		
+		JButton btnXML = new JButton("XML",new ImageIcon("imagen/Nuevo.png"));
+		JButton btnPDF = new JButton("PDF",new ImageIcon("imagen/Nuevo.png"));
+		JButton btnGuardarFacXml = new JButton("GUARDAR",new ImageIcon("imagen/Aplicar.png"));
+		
+		public Cat_Almacenar_XML(){
+			this.setModal(true);
+			this.setTitle("Guardar Facturas y XML De Proveedores");
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/control_facturas_y_xml.png"));
+			blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+			panelxml.setBorder(BorderFactory.createTitledBorder(blackline,"Guardar Facturas y XML De Proveedores"));
+			
+			lblXml.setFont(new Font("arial",Font.BOLD,14));
+			lblXml.setForeground(Color.DARK_GRAY);
+			
+			lblPdf.setFont(new Font("arial",Font.BOLD,14));
+			lblPdf.setForeground(Color.DARK_GRAY);
+
+			panelxml.add(btnXML).setBounds(15,80,80,35);
+			panelxml.add(lblXml).setBounds(100,88,270,20);
+			
+			panelxml.add(btnPDF).setBounds(15,120,80,35);
+			panelxml.add(lblPdf).setBounds(100,128,270,20);
+			
+			
+			panelxml.add(btnGuardarFacXml).setBounds(230,170,120,20);
+			
+	        this.contenedor.add(panelxml);
+	        
+	        btnXML.addActionListener(opExaminarXML);
+	        btnPDF.addActionListener(opExaminarPDF);
+	        btnGuardarFacXml.addActionListener(opGauardarXMLpdf);
+	        
+			this.setSize(380,230);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		}
+		
+		ActionListener opGauardarXMLpdf = new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+			if(JOptionPane.showConfirmDialog(null,"De El Proveedor:"+proveedor_recibido+" La Factura:"+cod_factura_recibido+" \n Va Hacer Marcada Como Recibida: Confirmar?") == 0){
+				
+//				boolean proveedorr = 
+						new Obj_Proveedores().marcar_recibido_factura(cod_prvrecibido.trim(), cod_factura_recibido.trim(),new File(xml),new File(pdf));
+				
+				while(tabla.getRowCount()>0){
+						modelo.removeRow(0);  }
+			    Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
+			    String[] fila = new String[7];
+			            for(int i=0; i<lista_proveedores.length; i++){
+			                    fila[0] = lista_proveedores[i][0]+"";
+			                    fila[1] = lista_proveedores[i][1]+"";
+			                    fila[2] = lista_proveedores[i][2]+"";
+			                    fila[3] = lista_proveedores[i][3]+"";
+			                    fila[4] = lista_proveedores[i][4]+"";
+			                    fila[5] = lista_proveedores[i][5]+"";
+			                    fila[6] = "false";
+			                    modelo.addRow(fila);
+			              }
+			            
+	            xml ="";
+	            pdf="";
+				JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+			}else{
+				JOptionPane.showMessageDialog(null,"Se Cancelo La Marcacion De La Factura","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				return;
+			}
+		}
+	};
+		
+		ActionListener opExaminarXML = new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+				 JFileChooser elegir = new JFileChooser();
+                int opcion = elegir.showOpenDialog(btnXML);
+           
+                //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
+                if (opcion == JFileChooser.APPROVE_OPTION) {
+                	
+                    String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
+                    String nombre = elegir.getSelectedFile().getName(); //obtiene nombre del archivo
+				    	
+                    if(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).equals(".xml")){
+                    	xml = pathArchivo;
+                    	lblXml.setText(nombre);
+                    }else{
+                    	xml = "";
+                    	lblXml.setText("");
+                    	JOptionPane.showMessageDialog(null,"El archivo seleccionado es de tipo ("+pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).trim()+") \nCuando se requiere uno de tipo (.xml)","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+        				return;
+                    }
+                    
+                	
+                 }
+			}
+		};
+		
+		ActionListener opExaminarPDF = new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+				 JFileChooser elegir = new JFileChooser();
+                 int opcion = elegir.showOpenDialog(btnXML);
+            
+                 //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
+                 if (opcion == JFileChooser.APPROVE_OPTION) {
+                	 
+                     String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
+                     String nombre = elegir.getSelectedFile().getName(); //obtiene nombre del archivo
+                	 
+                     if(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).equals(".pdf")){
+                     	pdf = pathArchivo;
+                     	lblPdf.setText(nombre);
+                     }else{
+                     	pdf = "";
+                     	lblPdf.setText("");
+                     	JOptionPane.showMessageDialog(null,"El archivo seleccionado es de tipo ("+pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).trim()+") \nCuando se requiere uno de tipo (.pdf)","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+         				return;
+                     }
+                 }
+			}
+		};
 	}
 }

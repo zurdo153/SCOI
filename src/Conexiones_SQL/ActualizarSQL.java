@@ -1,6 +1,8 @@
 package Conexiones_SQL;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -2569,14 +2571,40 @@ public class ActualizarSQL {
 		return true;
 	}	
 			
-	public boolean marcar_c_recibido_factura(String cod_prov_recibido, String folio_factura_recibido){
-		 
-		String query = "update tb_control_de_facturas_y_xml set status=2,fecha_recibido=getdate() where cod_prv='"+cod_prov_recibido+"' and folio_factura='"+folio_factura_recibido+"'";
+	public boolean marcar_c_recibido_factura(String cod_prov_recibido, String folio_factura_recibido,File xml,File pdf){
+		
+		System.out.println(xml);
+		System.out.println(pdf);
+
+			
+		
+		String query = "update tb_control_de_facturas_y_xml set status=2,fecha_recibido=getdate(),xml=?,pdf=? where cod_prv='"+cod_prov_recibido+"' and folio_factura='"+folio_factura_recibido+"'";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmtabla = null;
 		try {
+
+			
 			    con.setAutoCommit(false);
   			    pstmtabla = con.prepareStatement(query);
+  			    
+  				
+  				
+  				FileInputStream stream_xml = new FileInputStream(xml);
+  				pstmtabla.setBinaryStream(1, stream_xml);
+  				
+  				FileInputStream stream_pdf = new FileInputStream(pdf);
+  				pstmtabla.setBinaryStream(2, stream_pdf);
+  				
+  				System.out.println(stream_xml);
+  				System.out.println(stream_pdf);
+  				
+  			    
+//  				FileInputStream stream_xml = new FileInputStream(xml);
+//  				pstmtabla.setBinaryStream(1, stream_xml, xml.length());
+//  				
+//  				FileInputStream stream_pdf = new FileInputStream(pdf);
+//  				pstmtabla.setBinaryStream(2, stream_pdf,xml.length());
+  				
 				pstmtabla.executeUpdate();
 				con.commit();
 		} catch (Exception e) {

@@ -1,5 +1,6 @@
 package Obj_Contabilidad;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
@@ -88,8 +89,8 @@ public class Obj_Proveedores {
 		return new ActualizarSQL().Factura_Provedores_xml(this,folio_Factura_Editada); 
 		}
 	
-	public boolean marcar_recibido_factura(String cod_prov_recibido, String folio_factura_recibido){
-		return new ActualizarSQL().marcar_c_recibido_factura(cod_prov_recibido, folio_factura_recibido); 
+	public boolean marcar_recibido_factura(String cod_prov_recibido, String folio_factura_recibido,File xml,File pdf){
+		return new ActualizarSQL().marcar_c_recibido_factura(cod_prov_recibido, folio_factura_recibido,xml,pdf); 
 		}
 	
 }
