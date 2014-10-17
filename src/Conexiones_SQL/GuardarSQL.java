@@ -187,18 +187,21 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Establecimiento(Obj_Establecimiento retiro_cajero){
-		String query = "exec sp_insert_establecimiento ?,?,?,?,? ";
+	public boolean Guardar_Establecimiento(Obj_Establecimiento establecimiento){
+		String query = "exec sp_insert_establecimiento ?,?,?,?,?,?,? ";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-//			pstmt.setString(1, establecimiento.getEstablecimiento().toUpperCase().trim());
-//			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
-//			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
-//			pstmt.setInt(4, establecimiento.getGrupo_cheque());
-//			pstmt.setInt(5, establecimiento.getStatus());
+			pstmt.setString(1, establecimiento.getEstablecimiento().toUpperCase().trim());
+			pstmt.setString(2, establecimiento.getAbreviatura().toUpperCase().trim());
+			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
+			pstmt.setInt(4, establecimiento.getGrupo_cheque());
+			pstmt.setInt(5, establecimiento.getStatus());
+			pstmt.setInt(6, establecimiento.getGrupo_cortes());
+			pstmt.setInt(7, establecimiento.getGrupo_permitir_nc());
+			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {

@@ -14,7 +14,8 @@ public class Obj_Establecimiento {
 	private String serie;
 	public int grupo_cheque;
 	public int status;
-
+	public int grupo_cortes;
+	public int grupo_permitir_nc;
 //	public Obj_Establecimiento(){
 //		folio=0;
 //		establecimiento="";
@@ -143,11 +144,24 @@ public class Obj_Establecimiento {
 		}
 		return null;
 	}
-	
-	
+
+	public int getGrupo_cortes() {
+		return grupo_cortes;
+	}
+
+	public void setGrupo_cortes(int grupo_cortes) {
+		this.grupo_cortes = grupo_cortes;
+	}
+
+	public int getGrupo_permitir_nc() {
+		return grupo_permitir_nc;
+	}
+
+	public void setGrupo_permitir_nc(int grupo_permitir_nc) {
+		this.grupo_permitir_nc = grupo_permitir_nc;
+	}
 	
 	////////////////////////////////////////////////////////////////////////////////
-	
 
 	public Obj_Establecimiento buscar(int folio) { 
 		try {
@@ -183,9 +197,22 @@ public class Obj_Establecimiento {
 	public boolean guardar(){
 		return new GuardarSQL().Guardar_Establecimiento(this); }
 	
-
-
 	
+	public String[] Combo_Grupo_Corte(){
+		try {
+			return new Cargar_Combo().GruposDeCortes();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
 	
-	
+	public String[] Combo_Establecimiento_Concentrado(){
+		try {
+			return new Cargar_Combo().EstablecimientoConcentrado();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

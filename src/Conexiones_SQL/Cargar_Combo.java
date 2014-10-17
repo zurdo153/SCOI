@@ -589,6 +589,76 @@ public class Cargar_Combo {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public String[] GruposDeCortes() throws SQLException {
+		String query = "select grupo_para_cortes from tb_grupos_para_cortes";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("SELECCIONE UNA OPCION");
+				}
+				miVector.add(rs.getString("grupo_para_cortes"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		
+		return pila;
+			
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] EstablecimientoConcentrado() throws SQLException {
+		String query = "select grupo_para_cortes from tb_grupos_para_cortes";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("TODOS");
+				}
+				miVector.add(rs.getString("grupo_para_cortes"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		
+		return pila;
+			
+	}
+	
+	@SuppressWarnings("unchecked")
 	public String[] Usuario() throws SQLException{
 		String query = "select distinct tb_empleado.folio, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as usuario from tb_permisos_submenus_usuarios inner join tb_empleado on tb_empleado.folio=tb_permisos_submenus_usuarios.folio_empleado where tb_empleado.status=1";
 		

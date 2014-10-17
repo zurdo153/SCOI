@@ -99,7 +99,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JButton btnCancelar = new JButton("Cancelar");
 	JButton btnSalir = new JButton("Salir");
 	
-	
 	JLabel lblMarco = new JLabel();
 	
 	JCheckBox chStatus = new JCheckBox("Status");
@@ -109,6 +108,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JTextField txtEfectivo = new JTextField("");
 	JTextField txtFechaCorte = new JTextField("");
 	JTextField txtDeposito = new JTextField("");
+	
+	JTextField txtRetiroCajero = new JTextField("");
+	
 	JTextField txtCheques = new JTextField("");
 	JTextField txtTiempoAire = new JTextField("");
 	JTextField txtReciboLuz = new JTextField("");
@@ -139,8 +141,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JButton btnAsignacion = new JButton("Asignaciones");
 	JButton btnQuitarAsignacion = new JButton("Quitar");
 	
+	JButton btnRetiroCajero = new JButton("RC");
+	
 	JButton btnVauchers = new JButton("Vauchers");
 	JButton btnQuitarVauchers = new JButton("Quitar");
+	
+	JButton btnReimprimir = new JButton("Reimprimir Corte Guardado");
 	
 	DefaultTableModel modelo_asignaciones = new DefaultTableModel(null,
             new String[]{"Asignacion", "F. Cajero(a)","Nombre Cajera(o)","Total","Cod Estab","Establecimiento","Fecha de Asignacion","Fecha de Liquidacion"}
@@ -290,6 +296,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	int filaEfec = 0;
 	int columnaEfect = 4;
 //	int filaEfecMod = 0;
+	int bandera_de_guardado = 0;
 	
 	public Cat_Alimentacion_Cortes(int folio, String estab, String folio_corte) {
 		
@@ -322,6 +329,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.setBorder(BorderFactory.createTitledBorder("Alimentacion Cortes"));
 		
 		CargarUsuario();
+		txtRetiroCajero.setText(new Obj_Alimentacion_Cortes().retiroCajero(folio,estab)+"");
 		
 		panel.add(lblUsuario).setBounds(x2-50,y,ancho*2+90,20);
 		
@@ -343,14 +351,19 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		y=20;
 		
 		panel.add(new JLabel("Folio Corte:")).setBounds(x,y,ancho,20);
-		panel.add(lblFolio_Corte).setBounds(ancho-30,y,ancho*2-150,20);
-		panel.add(chStatus).setBounds(x*3+ancho,y,70,20);
+		panel.add(lblFolio_Corte).setBounds(ancho-40,y,ancho*2-150,20);
+		panel.add(chStatus).setBounds(x*3+ancho-20,y,70,20);
 		
 		panel.add(new JLabel("Deposito:")).setBounds(ancho*2,y,ancho,20);
 		panel.add(txtDeposito).setBounds(ancho+x*10,y,ancho-50,20);
 		panel.add(btnDeposito).setBounds(ancho+x*10+90,y,29,20);
 		
 		panel.add(btnAsignacion).setBounds(x,y+=25,ancho-40,20);
+		
+				panel.add(new JLabel("Retiros Cajero:")).setBounds(ancho*2-27,y-2,ancho,20);
+				panel.add(txtRetiroCajero).setBounds(ancho+x*10,y-2,ancho-50,20);
+				panel.add(btnRetiroCajero).setBounds(ancho+x*10+90,y-2,29,20);
+		
 		panel.add(scroll).setBounds(x,y+=20,ancho*3+20,105);
 		panel.add(btnQuitarAsignacion).setBounds(x,y+=105,ancho-40,20);
 
@@ -399,6 +412,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(scroll_retiro_de_clientes).setBounds(x*18,y+145,ancho+60,100);
 		
 		panel.add(btnQuitarVauchers).setBounds(x,y+=105,ancho-40,20);
+		panel.add(btnReimprimir).setBounds(x*34,y,ancho+80,30);
 		
 		panel.add(btnGuardarCorte).setBounds(x*29,y+=130,ancho-40,20);
 		panel.add(btnCancelar).setBounds(x*29+110,y,ancho-40,20);
@@ -412,6 +426,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		btnQuitarAsignacion.addActionListener(opQuitarAsignacion);
 		btnVauchers.addActionListener(opVauchers);
 		btnQuitarVauchers.addActionListener(opQuitarVauchers);
+		
+		btnRetiroCajero.addActionListener(opRetirosCajeros);
 		
 		btnGuardarCorte.addActionListener(guardar);
 		btnCancelar.addActionListener(cancelar);
@@ -428,7 +444,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		btnCheques.addActionListener(opAlimentarCheques);
 		
 		btnFS.addActionListener(opFS);
-		
+		btnReimprimir.addActionListener(opReimprimir);
+
 		txtCorteSistema.addKeyListener(validaNumericoConPunto);
 		txtDeposito.addKeyListener(validaNumericoConPunto2);
 		
@@ -454,13 +471,14 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		Obj_Puestos puesto = new Obj_Puestos().buscar(re.getPuesto());
 		lblPuesto.setText(puesto.getPuesto());
 		
-		lblFolio_Corte.setText(folio_corte);
+		lblFolio_Corte.setText("SII6"/*folio_corte*/);
 
 		chStatus.setSelected(true);
 		
 		txtFechaCorte.setEditable(false);
 		txtCorteSistema.setEditable(false);
 		txtDeposito.setEditable(false);
+		txtRetiroCajero.setEditable(false);
 		txtEfectivo.setEditable(false);
 		
 		txtTiempoAire.setEditable(false);
@@ -476,6 +494,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		btnEfectivo.setEnabled(false);
 		btnCheques.setEnabled(false);
 		btnFS.setEnabled(false);
+	
+		btnReimprimir.setEnabled(false);
 		
 		this.setSize(940,590);
 		this.setResizable(true);
@@ -663,6 +683,13 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		}
 	};
 	
+//	btnRetirosCajeros
+	ActionListener opRetirosCajeros = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			new Cat_Retiros_A_Detalle(Integer.valueOf(lblFolio_Empleado.getText()),lblEstablecimineto.getText()).setVisible(true);
+		}
+	};
+	
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(validaCampos()!="") {
@@ -718,6 +745,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 //							asigna 1 si guarda 
 							bandera_de_guardado=1;
 							
+//							si es igual a 1 es por que ya se guardo el corte
+							if(bandera_de_guardado==1){
+								btnReimprimir.setEnabled(true);
+							}
+							
 							new Cat_Reporte_De_Corte_De_Caja(lblFolio_Corte.getText().trim());
 							
 						}else{
@@ -726,6 +758,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						}
 				}	
 			}
+	};
+	
+	ActionListener opReimprimir = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+				new Cat_Reporte_De_Corte_De_Caja(lblFolio_Corte.getText().trim());
+		}
 	};
 	
    	public int getFilasIZAGAR(String qry){
@@ -1120,7 +1158,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						if(borrar_lista_de_asignaciones()){
 									
 							cargar_lista_de_asignaciones();
-								
 				    		obtener_totales_de_tAire_rLuz_por_folio_de_corte();
 				    			
 				    		calculoDinamico();
@@ -1245,7 +1282,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	    return MatrizFiltro; 
  	}
 	
-	int bandera_de_guardado = 0;
 	ActionListener salir = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
@@ -1263,6 +1299,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			dispose();
 			new Cat_Cortes_De_Cajeros().setVisible(true);
+			bandera_de_guardado = 0;
 		}
 	};	
 	
@@ -3033,33 +3070,40 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 //	variables para calculo dinamico de la diferiencia de corte  funcion = (calculoDinamico());
 	double corteSistema = 0;
+	
 	double efectivo = 0;
+	double retiroCajero = 0;
+	
 //	double deposito = 0;
 	double tiempoAire = 0;
 	double resiboLuz = 0;
-	double totalVauchers = 0;
-	
+	double cheque = 0;
 	double totalFS = 0;
 	
-	double diferienciaCorte = 0;
-	double cheque = 0;
-	
+	double totalVauchers = 0;
 	double retiroCliente = 0;
+	
+	double diferienciaCorte = 0;
+	
 	
 		public void calculoDinamico(){
 			
 			corteSistema = txtCorteSistema.getText().equals("")?0:Double.valueOf(txtCorteSistema.getText());
+			
 			efectivo = txtEfectivo.getText().equals("")?0:Double.valueOf(txtEfectivo.getText());
+			retiroCajero = txtRetiroCajero.getText().equals("")?0:Double.valueOf(txtRetiroCajero.getText());
+			
 //			deposito = txtDeposito.getText().equals("")?0:Double.valueOf(txtDeposito.getText());
 			tiempoAire = txtTiempoAire.getText().equals("")?0:Double.valueOf(txtTiempoAire.getText());
 			resiboLuz = txtReciboLuz.getText().equals("")?0:Double.valueOf(txtReciboLuz.getText());
-			totalVauchers = txtTotalVaucher.getText().equals("")?0:Double.valueOf(txtTotalVaucher.getText());
 			cheque = txtCheques.getText().equals("")?0:Double.valueOf(txtCheques.getText());
 			totalFS = txtTotalFS.getText().equals("")?0:Double.valueOf(txtTotalFS.getText());
 			
+			totalVauchers = txtTotalVaucher.getText().equals("")?0:Double.valueOf(txtTotalVaucher.getText());			
 			retiroCliente = txtTotalRetiros.getText().equals("")?0:Double.parseDouble(txtTotalRetiros.getText());
 			
-			diferienciaCorte = (corteSistema-(efectivo/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
+			
+			diferienciaCorte = (corteSistema-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
 			
 			if(diferienciaCorte < 0){
 					lblEtiquetaCorte.setText("Sobrante");
@@ -3083,7 +3127,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		
 		
-		
+//		catalogo de seleccion de ticket de fuente de sodas
 		public class Cat_Seleccion_De_Ticket_De_FS_Cortes extends JDialog {
 			
 			Container cont = getContentPane();
@@ -3340,6 +3384,26 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					 		modeloFiltro.addRow(dom);
 				}
 			}
+		}
+	
+		public class Cat_Retiros_A_Detalle extends Cat_Consulta_Retiros_A_Detalle{
 			
+			public Cat_Retiros_A_Detalle(int folio_cajero,String establecimiento){
+				while(tabla_retiros.getRowCount()>0){
+					model_retiros.removeRow(0);
+				}
+				
+				String[][] retiros_a_detalle = new BuscarSQL().getRetiros_a_detalle(folio_cajero,establecimiento);
+				
+				for(int i=0; i<retiros_a_detalle.length; i++){
+					 		Object[] retiro = new Object[3];
+					 		
+					 		retiro[0] = retiros_a_detalle[i][0];
+					 		retiro[1] = retiros_a_detalle[i][1];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+					 		retiro[2] = retiros_a_detalle[i][2];
+					 		model_retiros.addRow(retiro);
+				}
+				
+			}
+		}
 }
-	}

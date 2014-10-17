@@ -1,5 +1,6 @@
 package Conexiones_SQL;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.sql.Connection;
@@ -215,7 +216,7 @@ public class ActualizarSQL {
 	}
 	
 	public boolean Establecimiento(Obj_Establecimiento establecimiento, int folio){
-		String query = "update tb_establecimiento set nombre=?, abreviatura=?,serie=?, grupo_para_cheque=?, status=? where folio=" + folio;
+		String query = "update tb_establecimiento set nombre=?, abreviatura=?,serie=?, grupo_para_cheque=?, status=?, folio_grupo_para_cortes=?, permitir_nc=? where folio=" + folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -226,6 +227,8 @@ public class ActualizarSQL {
 			pstmt.setString(3, establecimiento.getSerie().toUpperCase().trim());
 			pstmt.setInt(4, establecimiento.getGrupo_cheque());
 			pstmt.setInt(5, establecimiento.getStatus());
+			pstmt.setInt(6, establecimiento.getGrupo_cortes());
+			pstmt.setInt(7, establecimiento.getGrupo_permitir_nc());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -2567,14 +2570,40 @@ public class ActualizarSQL {
 		return true;
 	}	
 			
-	public boolean marcar_c_recibido_factura(String cod_prov_recibido, String folio_factura_recibido){
-		 
-		String query = "update tb_control_de_facturas_y_xml set status=2,fecha_recibido=getdate() where cod_prv='"+cod_prov_recibido+"' and folio_factura='"+folio_factura_recibido+"'";
+	public boolean marcar_c_recibido_factura(String cod_prov_recibido, String folio_factura_recibido,File xml,File pdf){
+		
+		System.out.println(xml);
+		System.out.println(pdf);
+
+			
+		
+		String query = "update tb_control_de_facturas_y_xml set status=2,fecha_recibido=getdate(),xml=?,pdf=? where cod_prv='"+cod_prov_recibido+"' and folio_factura='"+folio_factura_recibido+"'";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmtabla = null;
 		try {
+
+			
 			    con.setAutoCommit(false);
   			    pstmtabla = con.prepareStatement(query);
+  			    
+  				
+  				
+  				FileInputStream stream_xml = new FileInputStream(xml);
+  				pstmtabla.setBinaryStream(1, stream_xml);
+  				
+  				FileInputStream stream_pdf = new FileInputStream(pdf);
+  				pstmtabla.setBinaryStream(2, stream_pdf);
+  				
+  				System.out.println(stream_xml);
+  				System.out.println(stream_pdf);
+  				
+  			    
+//  				FileInputStream stream_xml = new FileInputStream(xml);
+//  				pstmtabla.setBinaryStream(1, stream_xml, xml.length());
+//  				
+//  				FileInputStream stream_pdf = new FileInputStream(pdf);
+//  				pstmtabla.setBinaryStream(2, stream_pdf,xml.length());
+  				
 				pstmtabla.executeUpdate();
 				con.commit();
 		} catch (Exception e) {
