@@ -159,8 +159,12 @@ public class Obj_Retiros_Cajeros {
 	return null; 
 	}
 	
-	public boolean guardar(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro){
+	public String guardar(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro){
 		return new GuardarSQL().Guardar_Retiro_Cajero(Establecimiento,Folio_empleado,folio_supervisor, importe_retiro); 
+		   }
+	
+	public String guardar_sesion(String Establecimiento,int Folio_empleado){
+		return new GuardarSQL().Guardar_Sesion_Cajero(Establecimiento,Folio_empleado); 
 		   }
 
 

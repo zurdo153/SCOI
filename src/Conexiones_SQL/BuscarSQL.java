@@ -1206,8 +1206,6 @@ public class BuscarSQL {
 
 			while(rs.next()){
 //				datos personales	
-				
-				
 				empleado.setUsuario(rs.getString("usuario"));
 				empleado.setFecha(rs.getString("fecha"));
 				empleado.setEmpleado(rs.getString("empleado"));
@@ -1215,7 +1213,6 @@ public class BuscarSQL {
 				empleado.setPuesto(rs.getString("puesto"));
 				empleado.setTicket(rs.getString("ticket"));
 				empleado.setImporte(rs.getFloat("importe"));
-		            
 			}
 			
 		} catch (Exception e) {
@@ -5336,6 +5333,7 @@ public class BuscarSQL {
 						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					}
 		
+					
 		String query = "exec sp_select_datos_cajero '"+folio_empleado+"'";
 		
 		String query_2="SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe " +
@@ -5346,24 +5344,23 @@ public class BuscarSQL {
 				     "  WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1" +
 						         "  and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
 						         		" group by asignaciones_cajeros.folio";
+		
+				
 		Statement stmt = null;
 		Statement stmt2= null;
 		
 						try {
-					
 							stmt = con.conexion().createStatement();
 							stmt2= con.conexion_IZAGAR().createStatement();
-							
+									
 							ResultSet rs = stmt.executeQuery(query);
 							ResultSet rs2= stmt2.executeQuery(query_2);
 							
 									while(rs.next()){
-										
 										datos_empleado.setFolio_empleado(rs.getInt("Folio_Empleado"));
 										datos_empleado.setNombre(rs.getString("Nombre"));
 										datos_empleado.setPuesto(rs.getString("Puesto"));
 										datos_empleado.setPc(pc_nombre);
-										
 										
 										File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
 										FileOutputStream fos = new FileOutputStream(photo);
@@ -5374,7 +5371,7 @@ public class BuscarSQL {
 										        }
 										        fos.close();
 							    	}
-								
+
 									
 								   while(rs2.next()){
 								 			datos_empleado.setEstablecimiento(rs2.getString("establecimiento"));
@@ -5387,8 +5384,7 @@ public class BuscarSQL {
 							e.printStackTrace();
 							return null;
 						}
-		
-		
+
 		finally{
 			if(stmt!=null){stmt.close();}
 		}
@@ -5440,6 +5436,7 @@ public class BuscarSQL {
 		}
 		return datos_empleado;
 	}
+
 	
 	public String[][] getRetiros_a_detalle(int folio_cajero,String establecimiento){
 		String[][] Matriz = null;

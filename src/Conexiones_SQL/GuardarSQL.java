@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,6 +30,7 @@ import Obj_Auditoria.Obj_Clientes;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Auditoria.Obj_Movimiento_De_Asignacion;
+import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
@@ -3418,15 +3420,11 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 		return true;
 	}
 	
-	public boolean Guardar_Retiro_Cajero(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro){
+	public String Guardar_Retiro_Cajero(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro){
 		
 		Connection con = new Connexion().conexion();
 		
-		 System.out.println(Folio_empleado);
-		 System.out.println(folio_supervisor);
-				 System.out.println(importe_retiro);
-				 
-			String folio_retiro =""	;	
+	       String folio_retiro =""	;	
              
 		   String folio = " select serie +(select convert(varchar(20),folio+1) from tb_folios where transaccion='Retiros A Cajeros') as folio "+
 		                  " from tb_establecimiento where nombre='"+Establecimiento.trim()+"'";
@@ -3441,13 +3439,15 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 							   	} catch (Exception e) {
 									JOptionPane.showMessageDialog(null, "Error en Buscar  en la funcion Guardar_Retiro_Cajero \n  en  select serie +(select convert(varchar(20),folio+1) from tb_folios where transaccion='Retiros A Cajeros') \n as folio  from tb_establecimiento where nombre='"+Establecimiento.trim()+"'  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 									e.printStackTrace();
-									return null != null;
+									return  folio_retiro="Error en GuardarSQL";
 							     	}
-								 System.out.println(folio);
-								 
-		String query = "exec sp_insert_retiros_a_cajeros ?,?,?,?,? ";
+								
+			Obj_Retiros_Cajeros Folio_Retiro_Devolver= new Obj_Retiros_Cajeros();
+			        
+			Folio_Retiro_Devolver.setFolio_retiro(folio_retiro);
+								
+		String query = "exec sp_insert_retiros_a_cajeros ?,?,?,?,?,'"+Establecimiento.trim()+"' ";
 	  	 PreparedStatement pstmt = null;	
-	  	 System.out.println(query);
 		try {
 			con.setAutoCommit(false);
 
@@ -3458,7 +3458,6 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			pstmt.setFloat(3, importe_retiro);
 			pstmt.setInt(4,0 );
 			pstmt.setString(5, folio_retiro);
-			
 									 
 			pstmt.executeUpdate();
 			con.commit();
@@ -3473,7 +3472,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Retiro_Cajero ] Insert  SQLException: sp_insert_retiros_a_cajeros "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			} 
-			return false;
+			return folio_retiro="Error en GuardarSQL";
 		}finally{
 			try {
 				pstmt.close();
@@ -3483,6 +3482,52 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Retiro_Cajero ] Insert  SQLException: sp_insert_retiros_a_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
-		return true;
+		return folio_retiro;
+	}
+	
+public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
+
+	String Guardo_Sesion =""	;
+	
+		Connection con = new Connexion().conexion();
+		
+				 String pc_nombre="";
+				   String ip="";
+								try { 	pc_nombre = InetAddress.getLocalHost().getHostName();
+								    	ip = InetAddress.getLocalHost().getHostAddress();
+								} catch (UnknownHostException e1) {
+									e1.printStackTrace();
+									JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Guardar_Sesion_Cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+								}
+								
+		String query = " exec sp_insert_sesion_retiro_cajero '"+pc_nombre+"','"+ip+"','"+Establecimiento.trim()+"',"+Folio_empleado+"";
+	  	 PreparedStatement pstmt = null;	
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException:Guardar_Retiro_Cajero " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sesion_Cajero ] Insert  SQLException: sp_insert_sesion_retiro_cajero "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			} 
+			return Guardo_Sesion="Error en GuardarSQL";
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sesion_Cajero ] Insert  SQLException: sp_insert_sesion_retiro_cajero "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return Guardo_Sesion;
 	}
 }
