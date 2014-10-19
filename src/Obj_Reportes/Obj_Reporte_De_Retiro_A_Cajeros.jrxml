@@ -40,14 +40,14 @@ where folio_retiro='sii4']]>
 				<text><![CDATA[RETIRO A ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9c3189db-55e2-4cf1-9123-94d3f6321cae" style="SubTitle" x="111" y="73" width="98" height="19" forecolor="#000000" backcolor="#000000"/>
+				<reportElement uuid="9c3189db-55e2-4cf1-9123-94d3f6321cae" style="SubTitle" x="99" y="73" width="98" height="19" forecolor="#000000" backcolor="#000000"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="16"/>
 				</textElement>
 				<text><![CDATA[Grupo Izagar]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="2f37aac2-4a87-4d4f-a9e5-b791ef9b9156" x="111" y="90" width="98" height="18"/>
+				<reportElement uuid="2f37aac2-4a87-4d4f-a9e5-b791ef9b9156" x="99" y="90" width="98" height="18"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Fecha : "+$F{fecha}]]></textFieldExpression>
 			</textField>

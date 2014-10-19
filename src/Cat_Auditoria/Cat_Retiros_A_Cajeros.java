@@ -313,7 +313,7 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		    					try {
 		    						Thread.sleep(1000);
 		    						reconsultar+=1;
-		    						if(reconsultar==60)////cambiar a 60 segundos
+		    						if(reconsultar==120)////cambiar a 60 segundos
 		    						{
 		    						   reconsultar=0;
 		    						   btnFoto.doClick();
