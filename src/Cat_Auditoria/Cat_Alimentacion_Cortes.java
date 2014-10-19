@@ -54,6 +54,7 @@ import Cat_Reportes.Cat_Reporte_De_Cheques_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
 import Cat_Reportes.Cat_Reporte_De_Depositos_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Efectivo_Cortes;
+import Cat_Reportes.Cat_Reportes_De_Cortes;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
@@ -495,7 +496,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		btnCheques.setEnabled(false);
 		btnFS.setEnabled(false);
 	
-		btnReimprimir.setEnabled(false);
+		btnReimprimir.setEnabled(true);
 		
 		this.setSize(940,590);
 		this.setResizable(true);
@@ -762,7 +763,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	ActionListener opReimprimir = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				new Cat_Reporte_De_Corte_De_Caja(lblFolio_Corte.getText().trim());
+				new Cat_Reportes_De_Cortes().setVisible(true);
 		}
 	};
 	
@@ -3200,23 +3201,23 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				
 				btnAgregar.addActionListener(opAgregar);
 				
-				this.addWindowListener(new WindowListener() {
-					public void windowOpened(WindowEvent e) {}
-					public void windowIconified(WindowEvent e) {}
-					public void windowDeiconified(WindowEvent e) {}
-					public void windowDeactivated(WindowEvent e) {}
-					public void windowClosing(WindowEvent e) {
-						
-//						if(!txtTotalFS.getText().equals("")){
-//							return;
-//						}else{
-							txtTotalFS.setText("");
-//						}
-						
-					}
-					public void windowClosed(WindowEvent e) {}
-					public void windowActivated(WindowEvent e) {}
-				});
+//				this.addWindowListener(new WindowListener() {
+//					public void windowOpened(WindowEvent e) {}
+//					public void windowIconified(WindowEvent e) {}
+//					public void windowDeiconified(WindowEvent e) {}
+//					public void windowDeactivated(WindowEvent e) {}
+//					public void windowClosing(WindowEvent e) {
+//						
+////						if(!txtTotalFS.getText().equals("")){
+////							return;
+////						}else{
+//							txtTotalFS.setText("");
+////						}
+//						
+//					}
+//					public void windowClosed(WindowEvent e) {}
+//					public void windowActivated(WindowEvent e) {}
+//				});
 				
 				setSize(415,450);
 				setResizable(false);
@@ -3352,8 +3353,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					tabla[i][0] = tablaFiltro.getValueAt(i, 0).toString().trim(); 
 					tabla[i][1] = tablaFiltro.getValueAt(i, 3).toString().trim();
 					
-					System.out.print(tablaFiltro.getValueAt(i, 0).toString().trim()+"       ");
-					System.out.println(tablaFiltro.getValueAt(i, 3).toString().trim());
+//					System.out.print(tablaFiltro.getValueAt(i, 0).toString().trim()+"       ");
+//					System.out.println(tablaFiltro.getValueAt(i, 3).toString().trim());
 					
 					
 					if(tablaFiltro.getValueAt(i, 3).toString().trim().equals("true")){
