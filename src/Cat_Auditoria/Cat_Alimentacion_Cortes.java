@@ -120,7 +120,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	JTextField txtTotalRetiros = new JTextField("");
 	
-	JTextField txtTotalFS = new JTextField("");
+	JTextField txtTotalFS = new JTextField("152");
 	
 	JButton btnEfectivo = new JButton("efe");
 	JButton btnDeposito = new JButton("dep");
@@ -3200,23 +3200,21 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				
 				btnAgregar.addActionListener(opAgregar);
 				
-				this.addWindowListener(new WindowListener() {
-					public void windowOpened(WindowEvent e) {}
-					public void windowIconified(WindowEvent e) {}
-					public void windowDeiconified(WindowEvent e) {}
-					public void windowDeactivated(WindowEvent e) {}
-					public void windowClosing(WindowEvent e) {
-						
-//						if(!txtTotalFS.getText().equals("")){
-//							return;
-//						}else{
-							txtTotalFS.setText("");
+//				this.addWindowListener(new WindowListener() {
+//					public void windowOpened(WindowEvent e) {}
+//					public void windowIconified(WindowEvent e) {}
+//					public void windowDeiconified(WindowEvent e) {}
+//					public void windowDeactivated(WindowEvent e) {}
+//					public void windowClosing(WindowEvent e) {
+//						
+//						if(txtTotalFS.getText().equals("")){
+//							txtTotalFS.setText("");
 //						}
-						
-					}
-					public void windowClosed(WindowEvent e) {}
-					public void windowActivated(WindowEvent e) {}
-				});
+//						
+//					}
+//					public void windowClosed(WindowEvent e) {}
+//					public void windowActivated(WindowEvent e) {}
+//				});
 				
 				setSize(415,450);
 				setResizable(false);

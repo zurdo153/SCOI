@@ -280,7 +280,6 @@ importe_nuevo_devuelto           = Consulta_de_Importe_Nuevo();
 valor_a_retirar_deacuerdo_al_dia = Consulta_del_Importe_del_retiro_del_dia();
 
 
-
 if(importe_nuevo_devuelto-importe_retiros_guardados >= valor_a_retirar_deacuerdo_al_dia){
 	
 	String establecimiento= txtEstablecimiento.getText()+"" ;
