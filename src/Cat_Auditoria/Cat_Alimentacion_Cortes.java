@@ -1299,7 +1299,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	ActionListener filtro = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			dispose();
-			new Cat_Cortes_De_Cajeros().setVisible(true);
+			new Cat_Cortes_De_Cajeros(lblEstablecimineto.getText().trim()).setVisible(true);
 			bandera_de_guardado = 0;
 		}
 	};	
