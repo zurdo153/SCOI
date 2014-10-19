@@ -3336,7 +3336,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						calculoDinamico();
 						btnSalir.setEnabled(false);
 //						corte.actualizar(tabla_retiros());
-//						
+						
+//						REPORTE AQUI
+						
 						dispose();				
 				}
 			};
