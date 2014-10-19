@@ -181,14 +181,35 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		
-   		String query_importe_nvo="SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe " +
-   				                         " ,asignaciones_cajeros.folio as folio_asignacion " +
-   				                         " ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento " +
-   				                   "  FROM liquidaciones_tickets" +
-   				                   "      LEFT OUTER JOIN  asignaciones_cajeros on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion  and asignaciones_cajeros.status='V'" +
-   				                   "  WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1" +
-   				                   "  and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
-   				                   		" group by asignaciones_cajeros.folio";
+   		String query_importe_nvo="select  isnull(sum(a.importe),0)as importe ,a.folio_asignacion ,a.establecimiento from" +
+   				                           " (SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe" +
+   				                           "          ,asignaciones_cajeros.folio as folio_asignacion" +
+   				                           "          ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento" +
+   				                           "    FROM liquidaciones_tickets" +
+   				                           "          LEFT OUTER JOIN  asignaciones_cajeros on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion  and asignaciones_cajeros.status='V'" +
+   				                           "    WHERE  liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1" +
+   				                           "                    and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
+   				                           "	GROUP by asignaciones_cajeros.folio " +
+   				                           " union all " +
+   				                           " SELECT   isnull(sum(liquidaciones_tickets.importe),0)*-1 as importe " +
+   				                           "         ,asignaciones_cajeros.folio as folio_asignacion" +
+   				                           "         ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento" +
+   				                           "    FROM liquidaciones_tickets" +
+   				                           "         LEFT OUTER JOIN  asignaciones_cajeros on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion  and asignaciones_cajeros.status='V'" +
+   				                           "    WHERE  liquidaciones_tickets.afectacion='-' AND liquidaciones_tickets.forma_pago=1" +
+   				                           "                  and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
+   				                           "        		 group by asignaciones_cajeros.folio)a" +
+   				                           "  group by a.folio_asignacion,a.establecimiento";
+//   				
+//   				"SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe " +
+//   				                         " ,asignaciones_cajeros.folio as folio_asignacion " +
+//   				                         " ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento " +
+//   				                   "  FROM liquidaciones_tickets" +
+//   				                   "      LEFT OUTER JOIN  asignaciones_cajeros on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion  and asignaciones_cajeros.status='V'" +
+//   				                   "  WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1" +
+//   				                   "  and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
+//   				                   		" group by asignaciones_cajeros.folio";
+   		
 		Statement s;
 		ResultSet rs2;
 		
@@ -257,6 +278,8 @@ try {
 importe_retiros_guardados        = Consulta_El_Importe__de_los_Retiros_Guardados();
 importe_nuevo_devuelto           = Consulta_de_Importe_Nuevo();
 valor_a_retirar_deacuerdo_al_dia = Consulta_del_Importe_del_retiro_del_dia();
+
+
 
 if(importe_nuevo_devuelto-importe_retiros_guardados >= valor_a_retirar_deacuerdo_al_dia){
 	

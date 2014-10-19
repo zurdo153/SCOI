@@ -471,7 +471,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		Obj_Puestos puesto = new Obj_Puestos().buscar(re.getPuesto());
 		lblPuesto.setText(puesto.getPuesto());
 		
-		lblFolio_Corte.setText("SII6"/*folio_corte*/);
+		lblFolio_Corte.setText(folio_corte);
 
 		chStatus.setSelected(true);
 		
