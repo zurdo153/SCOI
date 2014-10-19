@@ -62,8 +62,19 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
-	@SuppressWarnings("rawtypes")
 	public Cat_Cortes_De_Cajeros()	{
+		
+		Constructor();
+	}
+	
+	public Cat_Cortes_De_Cajeros(String establecimiento)	{
+		
+		cmbEstablecimiento.setSelectedItem(establecimiento);
+		Constructor();
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public void Constructor(){
 		this.setTitle("Filtro Cortes ");
 		
 //		cont.setBackground(new Color(86,161,85));
