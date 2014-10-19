@@ -28,7 +28,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	public Cat_Reportes_De_Cortes(){
 
 		panel.setBorder(BorderFactory.createTitledBorder("Reporte De Cortes"));
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/archivo-icono-8809-32.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bolsa-de-dinero-en-efectivo-icono-6673-32.png"));
 		this.setTitle("Reportes de Cortes");
 		
 		panel.add(new JLabel("Folio Corte:")).setBounds(80,20,80,20);

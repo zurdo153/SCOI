@@ -301,7 +301,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	public Cat_Alimentacion_Cortes(int folio, String estab, String folio_corte) {
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Usuario.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bolsa-de-dinero-en-efectivo-icono-6673-32.png"));
 		this.setTitle("Alimentacion Cortes");
 		
 //		cont.setBackground(new Color(86,161,85));

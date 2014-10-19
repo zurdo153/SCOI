@@ -3,7 +3,7 @@
 	<property name="template.type" value="columnar"/>
 	<property name="ireport.zoom" value="2.3579476910000086"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="307"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -89,7 +89,7 @@ where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
 	<group name="Group2">
 		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
 		<groupHeader>
-			<band height="8"/>
+			<band height="4"/>
 		</groupHeader>
 		<groupFooter>
 			<band height="194">
@@ -315,63 +315,67 @@ where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="103" splitType="Stretch">
+		<band height="116" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="8c6e7c03-de08-42aa-a8ec-de55dc358a13" style="Title" x="2" y="6" width="201" height="33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement uuid="8c6e7c03-de08-42aa-a8ec-de55dc358a13" style="Title" x="9" y="6" width="152" height="33"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="28" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Corte de caja]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="98f3ce5c-ecbe-4e1e-855b-895a8336dcfd" x="72" y="39" width="131" height="17"/>
+				<reportElement uuid="98f3ce5c-ecbe-4e1e-855b-895a8336dcfd" x="53" y="39" width="93" height="17"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="13" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="e52e9387-7985-42b7-b8ea-78243db8e8b2" style="Title" x="9" y="39" width="63" height="17"/>
+				<reportElement uuid="e52e9387-7985-42b7-b8ea-78243db8e8b2" style="Title" x="12" y="39" width="41" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="fa2d9724-c048-4e5d-bc21-ccdbc1b3266b" x="94" y="74" width="109" height="17"/>
+				<reportElement uuid="fa2d9724-c048-4e5d-bc21-ccdbc1b3266b" x="94" y="87" width="109" height="17"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{establecimiento_de_corte}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="1a49efbf-1ca0-43b6-9b57-0e50b5624edb" style="Title" x="12" y="74" width="81" height="17"/>
+				<reportElement uuid="1a49efbf-1ca0-43b6-9b57-0e50b5624edb" style="Title" x="12" y="87" width="81" height="17"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Establecimiento: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="4a3efc4b-acda-4268-8c87-b31cbee6f33d" x="87" y="57" width="116" height="17"/>
+				<reportElement uuid="4a3efc4b-acda-4268-8c87-b31cbee6f33d" x="87" y="70" width="116" height="17"/>
 				<textElement>
 					<font fontName="SansSerif" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{folio_corte}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="a90e5f88-f447-4d54-b2b1-d5cad7b289d4" style="Title" x="12" y="57" width="75" height="17"/>
+				<reportElement uuid="a90e5f88-f447-4d54-b2b1-d5cad7b289d4" style="Title" x="12" y="70" width="75" height="17"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Folio de Corte: ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="8e829bc4-3d8f-493d-8430-6a5e24320000" positionType="Float" x="12" y="91" width="191" height="11" forecolor="#000000"/>
+				<reportElement uuid="8e829bc4-3d8f-493d-8430-6a5e24320000" positionType="Float" x="12" y="104" width="191" height="11" forecolor="#000000"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Cajero(a): "+$F{cajero}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement uuid="adff2fb0-e380-40a7-98bf-be2c93af7739" x="146" y="39" width="42" height="30"/>
+				<imageExpression><![CDATA["C:\\SCOI\\imagen\\bolsa-de-dinero-en-efectivo-icono-6673-128.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -381,8 +385,8 @@ where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="6" splitType="Stretch"/>
-		<band height="6"/>
+		<band height="3" splitType="Stretch"/>
+		<band height="3"/>
 	</detail>
 	<columnFooter>
 		<band height="44" splitType="Stretch">
