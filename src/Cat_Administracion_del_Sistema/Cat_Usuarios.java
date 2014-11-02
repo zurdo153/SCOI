@@ -229,10 +229,11 @@ public class Cat_Usuarios extends JFrame{
 	JPasswordField txtContrasena = new JPasswordField();
 	JPasswordField txtContrasena1 = new JPasswordField();
     
+	JButton btnFoto = new JButton();
 	JButton btnUsuariovigente = new JButton(new ImageIcon("imagen/usuario-icono-vigente7340-64.png"));
 	JButton btnNoEsUsuario = new JButton(new ImageIcon("imagen/usuario-icono-noes_usuario9131-64.png"));
 	JButton btnNuevo  = new JButton(new ImageIcon("imagen/usuario-icono-editar8476-64.png"));
-	JButton btnGuardar = new JButton("Guardar");
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	
 	String establecimiento[] = new Obj_SubMenus().Combo_Usuarios();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -245,7 +246,8 @@ public class Cat_Usuarios extends JFrame{
 		this.setTitle("Usuarios y Permisos");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Lock.png"));
 		
-//		lblFoto.setBorder(LineBorder.createGrayLineBorder());
+		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.jpg");
+ 		btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(110, 90, Image.SCALE_DEFAULT)));
 		
 		tabla.setRowSorter(trsfiltro);  
 		
@@ -266,17 +268,17 @@ public class Cat_Usuarios extends JFrame{
 		int y = 415;
 		campo.add(new JLabel("Folio:")).setBounds(120,y,90,20);
 		campo.add(txtFolio).setBounds(170,y,100,20);
-		campo.add(new JLabel("Clonar Permisos del Usuario:")).setBounds(470,y,210,20);
-		
+
+		campo.add(new JLabel("Clonar Permisos del Usuario:")).setBounds(570,y,200,20);
+		campo.add(cmbempleado_usuario).setBounds(570, y+20, 200, 20);
 		campo.add(new JLabel("Usuario:")).setBounds(120,y+=25,90,20);
-		campo.add(txtNombre_Completo).setBounds(170,y,250,20);
-		campo.add(cmbempleado_usuario).setBounds(470, y, 300, 20);
+		campo.add(txtNombre_Completo).setBounds(170,y,210,20);
 		
-		campo.add(btnGuardar).setBounds(340,y+=25,80,20);
-		
-		campo.add(btnNoEsUsuario).setBounds(40,415,64,64);
-		campo.add(btnUsuariovigente).setBounds(40,415,64,64);
-		campo.add(btnNuevo).setBounds(40,415,64,64);
+		campo.add(btnGuardar).setBounds(280,y+=35,100,20);
+		campo.add(btnFoto).setBounds(10,y-70,100,95);
+		campo.add(btnNoEsUsuario).setBounds(390,415,64,64);
+		campo.add(btnUsuariovigente).setBounds(390,415,64,64);
+		campo.add(btnNuevo).setBounds(390,415,64,64);
 		
 		btnNuevo.setVisible(true);
 		btnNoEsUsuario.setVisible(false);
@@ -337,6 +339,7 @@ public class Cat_Usuarios extends JFrame{
 
 			    	
 	MouseAdapter opMouse = new MouseAdapter(){
+	
 		@SuppressWarnings("rawtypes")
 		public void mouseClicked(MouseEvent arg0){
 			if(arg0.getClickCount() == 1){
@@ -352,14 +355,20 @@ public class Cat_Usuarios extends JFrame{
 				txtFolio.setText(folio_empleado+"");
         		txtNombre_Completo.setText(Nombre_Completo.toString());
         		
+               ///cargar foto del empleado///
+        		new Obj_Usuario().BuscarUsuario(folio_empleado);
+    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
+    	 		btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(110, 90, Image.SCALE_DEFAULT)));
+        		
 				if(new Obj_Usuario().ExisteUsuario(folio_empleado) == true){
 										
 					txtFolio.setText(folio_empleado+"");
 	        		txtNombre_Completo.setText(Nombre_Completo.toString());
-
+	        		
 	        		Obj_Usuario usuario = new Obj_Usuario().BuscarUsuario(folio_empleado);
+	    	 		
 	        		txtContrasena.setText(usuario.getContrasena());
-	        		 btnUsuariovigente.setVisible(true);
+	        		btnUsuariovigente.setVisible(true);
 	        		
 	        		Vector catalogo = new Obj_Usuario().returnPermisos(folio_empleado,1);
 	        		for(int i = 0; i<Administracion_del_sistema.length; i++){
@@ -406,9 +415,9 @@ public class Cat_Usuarios extends JFrame{
 	        		
 	        		
 				}else{
+					
 					btnNoEsUsuario.setVisible(true);
 					
-	        			        		
 	        		for(int i = 0; i<Administracion_del_sistema.length; i++){
 	        			Administracion_del_sistema[i].setSelected(false);
 	        		}

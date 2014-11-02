@@ -90,7 +90,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
             
 			JOptionPane.showMessageDialog(null, "El Usuario No Esta Asignado ", "Avisa al Administrador", JOptionPane.WARNING_MESSAGE);
 			btnaviso.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=BLUE>" +
-					"		<CENTER><p> CIERRA ESTA VENTANA Y VUELVE A INTENTARLO CUANDO TE ASIGNEN O HAGAS LA PRIMER VENTA</p></CENTER></FONT></html>"); 
+					"		<CENTER><p> CIERRA ESTA VENTANA Y VUELVE A INTENTARLO CUANDO TE ASIGNEN Y HAGAS LA PRIMER VENTA</p></CENTER></FONT></html>"); 
 			panel.add(btnaviso).setBounds(1,1,350,90);
     		
 		}else{
@@ -158,8 +158,11 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
   	    btnFoto.doClick();
   	    
   	    
-	 String  Guardo_sesion=new Obj_Retiros_Cajeros().guardar_sesion(datosEmpleado.getEstablecimiento()+"",folio_empleado);
+  	    
+  	    
+	    String  Guardo_sesion=new Obj_Retiros_Cajeros().guardar_sesion(datosEmpleado.getEstablecimiento()+"",folio_empleado);
 		  
+	 
 		   if(Guardo_sesion !="Error en GuardarSQL"){
 	      
 		  }else{
@@ -200,16 +203,6 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
    				                           "                  and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
    				                           "        		 group by asignaciones_cajeros.folio)a" +
    				                           "  group by a.folio_asignacion,a.establecimiento";
-//   				
-//   				"SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe " +
-//   				                         " ,asignaciones_cajeros.folio as folio_asignacion " +
-//   				                         " ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento " +
-//   				                   "  FROM liquidaciones_tickets" +
-//   				                   "      LEFT OUTER JOIN  asignaciones_cajeros on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion  and asignaciones_cajeros.status='V'" +
-//   				                   "  WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1" +
-//   				                   "  and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
-//   				                   		" group by asignaciones_cajeros.folio";
-   		
 		Statement s;
 		ResultSet rs2;
 		
@@ -229,7 +222,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	/////////CONSULTA EL DE LOS RETIROS YA GUARDADOS
    	public float Consulta_El_Importe__de_los_Retiros_Guardados(){
    		
-   		String query_importe_retiros="select isnull(sum(importe_retiro),0)as importe_retiro from tb_retiros_a_cajeros where status_retiro_corte=1 and folio_cajero="+folio_empleado;
+   		String query_importe_retiros="exec sp_consulta_acumulado_de_retiros_a_cajeros_del_dia "+folio_empleado;
    		
 		Statement s;
 		ResultSet rs2;
@@ -242,7 +235,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en Cat_Retiros_a_Cajeros  en la funcion [ Consulta_de_Importe_Nuevo ]   SQLException:  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en Cat_Retiros_a_Cajeros  en la funcion [ Consulta_de_Importe_Nuevo ]   SQLException: sp_consulta_acumulado_de_retiros_a_cajeros_del_dia  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return importe_retiros_guardados; 
 	}
@@ -278,6 +271,10 @@ try {
 importe_retiros_guardados        = Consulta_El_Importe__de_los_Retiros_Guardados();
 importe_nuevo_devuelto           = Consulta_de_Importe_Nuevo();
 valor_a_retirar_deacuerdo_al_dia = Consulta_del_Importe_del_retiro_del_dia();
+
+//System.out.println("importe_retiros_guardados:"+importe_retiros_guardados);
+//System.out.println("importe_nuevo_devuelto:"+importe_nuevo_devuelto);
+//System.out.println("valor_a_retirar_deacuerdo_al_dia:"+valor_a_retirar_deacuerdo_al_dia);
 
 
 if(importe_nuevo_devuelto-importe_retiros_guardados >= valor_a_retirar_deacuerdo_al_dia){
@@ -541,11 +538,12 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		                    txtClaveSupervisorconfirma.setText("");
 		                    txtClaveSupervisorconfirma.requestFocus();
 			        		btnError.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=RED>" +
-									"		<CENTER><p> SE REQUIERE LA CLAVE DEL MISMO SUPERVISOR</p></CENTER></FONT></html>"); 
+									"		<CENTER><p> NECESITA LA CLAVE DEL MISMO SUPERVISOR >NO VACIO< </p></CENTER></FONT></html>"); 
 		                    btnError.setVisible(true);		                    
 		    			}else{
-		    				Obj_Retiros_Cajeros validar_Supervisor_Guardar_Retiro = new Obj_Retiros_Cajeros().buscarSupervisor(txtClaveSupervisor.getText());
-		    				  if( validar_Supervisor_Guardar_Retiro.getClave().equals(txtClaveSupervisorconfirma.getText()))
+		    				Obj_Retiros_Cajeros validar_Supervisor_Guardar_Retiro = new Obj_Retiros_Cajeros().buscarSupervisor(txtClaveSupervisor.getText().toUpperCase().trim());
+		    				
+		    				  if( validar_Supervisor_Guardar_Retiro.getClave().equals(txtClaveSupervisorconfirma.getText().toUpperCase().trim()))
 		    						{
 		    					  if(Float.valueOf(txtRetiro.getText())>10000){
 		  			        		btnError.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=RED>" +
@@ -579,7 +577,7 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 				                    txtClaveSupervisorconfirma.setText("");
 				                    txtClaveSupervisorconfirma.requestFocus();
 					        		btnError.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=RED>" +
-											"		<CENTER><p> SE REQUIERE LA CLAVE DEL MISMO SUPERVISOR</p></CENTER></FONT></html>"); 
+											"		<CENTER><p> NO COINCIDEN LAS CONTRASEÑAS </p></CENTER></FONT></html>"); 
 				                    btnError.setVisible(true);	
 		    				        }
 		    				
