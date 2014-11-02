@@ -1305,7 +1305,7 @@ public class BuscarSQL {
 	
 	public Obj_Usuario BuscarUsuarios(int folio_empleado) throws SQLException{
 		Obj_Usuario usuario = new Obj_Usuario();
-		String query = "select folio,nombre+''+ap_paterno+''+ap_materno as nombre_completo,case when contrasena='' then '0' else contrasena end as contrasena,status from tb_empleado where folio="+folio_empleado;
+		String query = "select folio,nombre+''+ap_paterno+''+ap_materno as nombre_completo,case when contrasena='' then '0' else contrasena end as contrasena,status,foto as Foto from tb_empleado where folio="+folio_empleado;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -1315,7 +1315,19 @@ public class BuscarSQL {
 				usuario.setNombre_completo(rs.getString("nombre_completo").trim());
 				usuario.setContrasena(rs.getString("contrasena").trim());
 				usuario.setStatus(rs.getInt("status"));
+				
+				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
+				FileOutputStream fos = new FileOutputStream(photo);
+				        byte[] buffer = new byte[1];
+				        InputStream is = rs.getBinaryStream("Foto");
+				        while (is.read(buffer) > 0) {
+				        	fos.write(buffer);
+				        }
+				        fos.close();
+				
 			}
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

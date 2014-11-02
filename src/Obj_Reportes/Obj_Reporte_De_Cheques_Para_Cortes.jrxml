@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Efectivo_Para_Cortes" language="groovy" pageWidth="250" pageHeight="708" columnWidth="210" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="1f81344e-8124-4307-847f-1d49169f400a">
 	<property name="ireport.zoom" value="3.8906136901500075"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="264"/>
+	<property name="ireport.y" value="144"/>
 	<style name="Title" mode="Transparent" forecolor="#000000" backcolor="#000000" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -11,7 +11,7 @@
 	</style>
 	<queryString>
 		<![CDATA[declare @folio_corte varchar(15)
-set @folio_corte = ('E35130');
+set @folio_corte = ('SII131');
 
 select convert(varchar(20),tb_tabla_de_cheques_para_cortes.fecha_mov,103)+' '+convert(varchar(20),tb_tabla_de_cheques_para_cortes.fecha_mov,108) as fecha
 		,tb_tabla_de_cheques_para_cortes.folio_corte as folio_corte
@@ -62,7 +62,7 @@ order by tb_tabla_de_cheques_para_cortes.cantidad desc]]>
 			<textField>
 				<reportElement uuid="15095c36-7be2-4138-a3fe-6efbb41fcadd" style="SubTitle" x="11" y="85" width="185" height="16"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Cajero(a): "+$F{cajero}]]></textFieldExpression>
 			</textField>

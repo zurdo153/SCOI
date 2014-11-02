@@ -3,7 +3,7 @@
 	<property name="template.type" value="columnar"/>
 	<property name="ireport.zoom" value="2.3579476910000086"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="332"/>
 	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -20,7 +20,7 @@
 	<queryString>
 		<![CDATA[declare  @dolares money,@vales money,@retiro_a_cajero money,@fuente_de_sodas money
 
-,@folio_corte varchar(15) set @folio_corte = ('e35123');
+,@folio_corte varchar(15) set @folio_corte = ('SII129');
 
 
 set @dolares=(select tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor
@@ -57,6 +57,7 @@ select convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,103)+' '+con
 		,(select sum(tb_vauchers.retiro) from tb_vauchers where tb_vauchers.folio_corte = @folio_corte) as total_de_retiros_clientes
         ,@retiro_a_cajero as importe_retiros_a_cajero
         ,@fuente_de_sodas as importe_fuente_de_sodas
+        ,tb_alimentacion_de_cortes.observacion
 
 from tb_alimentacion_de_cortes
 inner join tb_empleado on tb_empleado.folio = tb_alimentacion_de_cortes.folio_empleado
@@ -82,6 +83,7 @@ where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
 	<field name="total_de_retiros_clientes" class="java.math.BigDecimal"/>
 	<field name="importe_retiros_a_cajero" class="java.math.BigDecimal"/>
 	<field name="importe_fuente_de_sodas" class="java.math.BigDecimal"/>
+	<field name="observacion" class="java.lang.String"/>
 	<variable name="Total_de_Conceptos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{efectivo}+$F{dolares}+$F{vales}+$F{cheques}+$F{total_de_vauchers}
 +$F{importe_retiros_a_cajero}+$F{importe_fuente_de_sodas}]]></variableExpression>
@@ -415,7 +417,15 @@ where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="8" splitType="Stretch"/>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement uuid="d63d3a8e-f452-48cd-89e5-d7d9abd983b8" x="12" y="0" width="182" height="18"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="5" splitType="Stretch"/>

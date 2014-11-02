@@ -121,7 +121,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	JTextField txtTotalRetiros = new JTextField("");
 	
-	JTextField txtTotalFS = new JTextField("152");
+	JTextField txtTotalFS = new JTextField("");
 	
 	JButton btnEfectivo = new JButton("efe");
 	JButton btnDeposito = new JButton("dep");

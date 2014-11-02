@@ -18,8 +18,8 @@ public class Init_Menu_Bar extends Init_Login{
 
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.3.0");
 		
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.3.5");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -30,6 +30,7 @@ public class Init_Menu_Bar extends Init_Login{
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
 	}	
+	
 	
 	@SuppressWarnings("rawtypes")
 	public JMenuBar miMenuTop(){
