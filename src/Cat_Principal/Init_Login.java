@@ -1,5 +1,6 @@
 package Cat_Principal;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -7,21 +8,39 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
 
 
 
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Checador;
 import Cat_Checador.Cat_Solicitud_De_Empleados;
@@ -38,8 +57,10 @@ import Cat_Lista_de_Raya.Cat_Prestamos;
 import Cat_Lista_de_Raya.Cat_Revision_De_Lista_Raya;
 import Cat_Lista_de_Raya.Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF;
 import Cat_Lista_de_Raya.Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH;
+import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.Obj_Menus;
 
@@ -182,10 +203,25 @@ public class Init_Login extends JFrame{
 		/* MANEJO DE LA RESOLUCIONES */ 
 		Resolucion(ancho, alto);
 		
+		
+		// buscar usuario con F2
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+	       KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "filtro");
+	    
+	    getRootPane().getActionMap().put("filtro", new AbstractAction(){
+		        public void actionPerformed(ActionEvent e)
+		        {
+		        	new Cat_Seleccion_De_Usuario().setVisible(true);
+		        }
+	    });
+		
 		btnBuscar.addActionListener(opBuscar);
 		txtFolio.addKeyListener(enterBuscar);
 		txtContrasena.addKeyListener(enterIn);
 		txtContrasenaActual.addKeyListener(entervalidar);
+
+		txtContrasenaNueva.addKeyListener(entervalidar);
+		txtContrasenaConfirmar.addKeyListener(entervalidar);
 		
 		deshabilitarCambiarContrasena();
 		cargar_usuariotrue();
@@ -565,13 +601,25 @@ public class Init_Login extends JFrame{
 			}
 		}
 	};
+	
 	KeyListener entervalidar = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				btnValidarContrasena.doClick();
-			}
+			
+				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					
+						if(e.getSource().equals(txtContrasenaActual)){
+							btnValidarContrasena.doClick();
+						}
+						if(e.getSource().equals(txtContrasenaNueva)){
+							txtContrasenaConfirmar.requestFocus();
+						}
+						if(e.getSource().equals(txtContrasenaConfirmar)){
+							btnGuardarContrasena.doClick();
+						}
+				}
+				
 		}
 	};
 	
@@ -832,6 +880,305 @@ public class Submenusbtns{
 		this.Nombre = nombre;
 		this.Menu_Id = Integer.valueOf(menu_id);
 	}
+}
+
+
+
+//	filtro de Empleados con usuario en SCOI y con status vigente--------------------------------------------------------------------------------
+		public class Cat_Seleccion_De_Usuario extends JDialog {
+			
+			Container cont = getContentPane();
+			JLayeredPane campo = new JLayeredPane();
+			
+			DefaultTableModel model = new DefaultTableModel(0,3){
+				public boolean isCellEditable(int fila, int columna){
+					if(columna < 0)
+						return true;
+					return false;
+				}
+			};
+			
+			JTable tabla = new JTable(model);
+			
+			@SuppressWarnings("rawtypes")
+		private TableRowSorter trsfiltro;
+		
+		JTextField txtFolioFiltroEmpleado = new JTextField();
+		JTextField txtNombre_Completo = new JTextField();
+		
+		String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
+		
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Cat_Seleccion_De_Usuario(){
+			
+			this.setModal(true);
+			
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setTitle("Filtro de Empleados");
+			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Empleado"));
+			trsfiltro = new TableRowSorter(model); 
+			tabla.setRowSorter(trsfiltro);  
+			
+			campo.add(getPanelTabla()).setBounds(15,42,450,565);
+			
+			campo.add(txtFolioFiltroEmpleado).setBounds(15,20,48,20);
+			campo.add(txtNombre_Completo).setBounds(64,20,229,20);
+			campo.add(cmbEstablecimientos).setBounds(295,20, 148, 20);
+			
+			agregar(tabla);
+			
+			cont.add(campo);
+			
+			txtFolioFiltroEmpleado.addKeyListener(opFiltroFolio);
+			txtNombre_Completo.addKeyListener(opFiltroNombre);
+			cmbEstablecimientos.addActionListener(opFiltro);
+			
+			this.setSize(490,650);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+			tabla.addKeyListener(seleccionEmpleadoconteclado);
+			
+		//      asigna el foco al JTextField del nombre deseado al arrancar la ventana
+		    this.addWindowListener(new WindowAdapter() {
+		            public void windowOpened( WindowEvent e ){
+		            	txtNombre_Completo.requestFocus();
+		         }
+		    });
+		      
+		//     pone el foco en el txtFolio al presionar la tecla scape
+		      getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+		         KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "foco");
+		      
+		      getRootPane().getActionMap().put("foco", new AbstractAction(){
+		          @Override
+		          public void actionPerformed(ActionEvent e)
+		          {
+		        	  txtNombre_Completo.setText("");
+		              txtNombre_Completo.requestFocus();
+		          }
+		      });
+		      
+		//        pone el foco en la tabla al presionar f4
+		      getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+		         KeyStroke.getKeyStroke(KeyEvent.VK_F4 , 0), "dtabla");
+		      
+		      getRootPane().getActionMap().put("dtabla", new AbstractAction(){
+		          @Override
+		          public void actionPerformed(ActionEvent e)
+		          {
+		        	tabla.requestFocus();
+		          }
+		      });
+			 
+			
+		}
+		private void agregar(final JTable tbl) {
+		    tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	if(e.getClickCount() == 2){
+		    			int fila = tabla.getSelectedRow();
+		    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
+		    			dispose();
+		    			txtFolio.setText(folio+"");
+		    			btnBuscar.doClick();
+		        	}
+		        }
+		    });
+		}
+		
+		KeyListener opFiltroFolio = new KeyListener(){
+			@SuppressWarnings("unchecked")
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioFiltroEmpleado.getText(), 0));
+			}
+			public void keyTyped(KeyEvent arg0) {
+				char caracter = arg0.getKeyChar();
+				if(((caracter < '0') ||
+					(caracter > '9')) &&
+				    (caracter != KeyEvent.VK_BACK_SPACE)){
+					arg0.consume(); 
+				}	
+			}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+		
+		KeyListener opFiltroNombre = new KeyListener(){
+			@SuppressWarnings("unchecked")
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+		
+		ActionListener opFiltro = new ActionListener(){
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent arg0){
+				if(cmbEstablecimientos.getSelectedIndex() != 0){
+					trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
+				}else{
+					trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+				}
+			}
+		};
+		
+		private JScrollPane getPanelTabla()	{		
+			
+			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+			tcr.setHorizontalAlignment(SwingConstants.CENTER);
+			
+			int a=2;
+			tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
+			tabla.getColumnModel().getColumn(a).setCellRenderer(tcr);
+			
+			// Creamos las columnas.
+			tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
+			tabla.getColumnModel().getColumn(0).setMaxWidth(50);
+			tabla.getColumnModel().getColumn(0).setMinWidth(50);
+			tabla.getColumnModel().getColumn(1).setHeaderValue("Nombre Completo");
+			tabla.getColumnModel().getColumn(1).setMaxWidth(230);
+			tabla.getColumnModel().getColumn(1).setMinWidth(230);
+			tabla.getColumnModel().getColumn(2).setHeaderValue("Establecimiento");
+			tabla.getColumnModel().getColumn(2).setMaxWidth(150);
+			tabla.getColumnModel().getColumn(2).setMinWidth(150);
+			
+			TableCellRenderer render = new TableCellRenderer() { 
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+				boolean hasFocus, int row, int column) { 
+					
+					Component componente = null;
+					
+					switch(column){
+						case 0: 
+							componente = new JLabel(value == null? "": value.toString());
+							if(row %2 == 0){
+								((JComponent) componente).setOpaque(true); 
+								componente.setBackground(new java.awt.Color(177,177,177));	
+							}
+							if(table.getSelectedRow() == row){
+								((JComponent) componente).setOpaque(true); 
+								componente.setBackground(new java.awt.Color(186,143,73));
+							}				
+							((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
+							break;
+						case 1: 
+							componente = new JLabel(value == null? "": value.toString());
+							if(row %2 == 0){
+								((JComponent) componente).setOpaque(true); 
+								componente.setBackground(new java.awt.Color(177,177,177));	
+							}
+							if(table.getSelectedRow() == row){
+								((JComponent) componente).setOpaque(true); 
+								componente.setBackground(new java.awt.Color(186,143,73));
+							}
+							((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+							break;
+						case 2:
+							componente = new JLabel(value == null? "": value.toString());
+							if(row %2 == 0){
+								((JComponent) componente).setOpaque(true); 
+								componente.setBackground(new java.awt.Color(177,177,177));	
+							}
+							if(table.getSelectedRow() == row){
+								((JComponent) componente).setOpaque(true); 
+								componente.setBackground(new java.awt.Color(186,143,73));
+							}
+							((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+							break;
+					}
+					return componente;
+				} 
+			}; 
+			
+			tabla.getColumnModel().getColumn(a=0).setCellRenderer(render); 
+			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
+			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render);
+			
+			Statement s;
+			ResultSet rs;
+			try {
+				s = new Connexion().conexion().createStatement();
+				rs = s.executeQuery("exec sp_select_usuarios_scoi");
+				
+				while (rs.next())
+				{ 
+				   String [] fila = new String[3];
+				   fila[0] = rs.getString(1)+"  ";
+				   fila[1] = "   "+rs.getString(2);
+				   fila[2] = "   "+rs.getString(3).trim();
+				
+				   model.addRow(fila); 
+				}	
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			 JScrollPane scrol = new JScrollPane(tabla);
+			   
+		    return scrol; 
+		}
+		
+		KeyListener validaCantidad = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e){
+				char caracter = e.getKeyChar();				
+				if(((caracter < '0') ||	
+				    	(caracter > '9')) && 
+				    	(caracter != '.' )){
+				    	e.consume();
+				    	}
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {	
+			}
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+			}	
+		};
+		
+		KeyListener validaNumericoConPunto = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+				
+			    if(((caracter < '0') ||	
+			    	(caracter > '9')) && 
+			    	(caracter != '.')){
+			    	e.consume();
+			    	}
+			}
+			@Override
+			public void keyPressed(KeyEvent e){}
+			@Override
+			public void keyReleased(KeyEvent e){}
+									
+		};
+		
+		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
+			@SuppressWarnings("static-access")
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+				
+				if(caracter==e.VK_ENTER){
+				int fila=tabla.getSelectedRow()-1;
+				String folio = tabla.getValueAt(fila,0).toString().trim();
+					
+				txtFolio.setText(folio);
+				btnBuscar.doClick();
+				dispose();
+				}
+			}
+			@Override
+			public void keyPressed(KeyEvent e){}
+			@Override
+			public void keyReleased(KeyEvent e){}
+									
+		};
+		
 }
 					
 			

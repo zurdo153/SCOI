@@ -1,6 +1,7 @@
 package Cat_Administracion_del_Sistema;
 
 import java.awt.Container;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -34,6 +36,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNode;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNodeEditor;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNodeRenderer;
+import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_NombreVector;
 import Obj_Administracion_del_Sistema.Obj_SubMenus;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -190,10 +193,6 @@ public class Cat_Usuarios extends JFrame{
 		Vector ReportesEspecialesVector = new Obj_NombreVector("Reportes Especiales", Reportes_Especiales);
 		
 		
-		
-		
-		
-		
 	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ContabilidadVector, EvaluacionesVector, 
 			Lista_de_RayaVector,ReportesEspecialesVector};
 	    
@@ -239,10 +238,14 @@ public class Cat_Usuarios extends JFrame{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbempleado_usuario = new JComboBox(establecimiento);
 
+	JButton btnDefault = new JButton("Contraseña default");
+	
 	@SuppressWarnings("unchecked")
 	public Cat_Usuarios(){
 		this.setTitle("Usuarios y Permisos");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Lock.png"));
+		
+//		lblFoto.setBorder(LineBorder.createGrayLineBorder());
 		
 		tabla.setRowSorter(trsfiltro);  
 		
@@ -252,7 +255,8 @@ public class Cat_Usuarios extends JFrame{
 				
 		campo.add(txtFolioFiltro).setBounds(370,20,68,20);
 		campo.add(txtNombre_CompletoFiltro).setBounds(440,20,208,20);
-		campo.add(scrolltable).setBounds(370,50,400,350);	
+		campo.add(btnDefault).setBounds(650,20,150,20);
+		campo.add(scrolltable).setBounds(370,50,430,350);	
 		
 		tabla.getColumnModel().getColumn(0).setMaxWidth(70);
 		tabla.getColumnModel().getColumn(0).setMinWidth(70);
@@ -263,10 +267,12 @@ public class Cat_Usuarios extends JFrame{
 		campo.add(new JLabel("Folio:")).setBounds(120,y,90,20);
 		campo.add(txtFolio).setBounds(170,y,100,20);
 		campo.add(new JLabel("Clonar Permisos del Usuario:")).setBounds(470,y,210,20);
+		
 		campo.add(new JLabel("Usuario:")).setBounds(120,y+=25,90,20);
-		campo.add(txtNombre_Completo).setBounds(170,y,210,20);
+		campo.add(txtNombre_Completo).setBounds(170,y,250,20);
 		campo.add(cmbempleado_usuario).setBounds(470, y, 300, 20);
-		campo.add(btnGuardar).setBounds(300,y+=25,80,20);
+		
+		campo.add(btnGuardar).setBounds(340,y+=25,80,20);
 		
 		campo.add(btnNoEsUsuario).setBounds(40,415,64,64);
 		campo.add(btnUsuariovigente).setBounds(40,415,64,64);
@@ -288,14 +294,48 @@ public class Cat_Usuarios extends JFrame{
 		
 		txtFolio.setEditable(false);
 		txtNombre_Completo.setEditable(false);
+		
+		btnDefault.setEnabled(false);
+		
+		btnDefault.addActionListener(contraseniaDefault);
 	
-		this.setSize(800,540);
+		this.setSize(830,530);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 	}
 	
+	boolean usuario = false;
+	ActionListener contraseniaDefault = new ActionListener(){
+		@SuppressWarnings("static-access")
+		public void actionPerformed(ActionEvent e){
+			
+			
+			if(!validaCampos().equals("")){
+			    	JOptionPane.showMessageDialog(null,"Seleccione un Usuario","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+			    	return;
+			}else{
+					usuario = tabla.getValueAt(tabla.getSelectedRow(), 2).equals("")?false:true;
+				
+					if(usuario){
+								if(JOptionPane.showConfirmDialog(null, "Se le asignara cotraseña default al usuario \n"+txtNombre_Completo.getText()+"\n¿desea continuar?") == 0){
+									
+									String nuevacontrasena = new Obj_MD5().cryptMD5("1234567890", "izagar").trim().toLowerCase();
+									 new Obj_Usuario().CambiarContrasena(Integer.valueOf(txtFolio.getText()),nuevacontrasena);
+									 
+									 JOptionPane.showMessageDialog(null,"La contraseña se restauro correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+								     return;
+								}
+					}else{
+								JOptionPane.showMessageDialog(null,"El empleado seleccionado no cuenta con permisos de usuario","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+						    	return;
+					}
+			}
+		}
+	};
+
+			    	
 	MouseAdapter opMouse = new MouseAdapter(){
 		@SuppressWarnings("rawtypes")
 		public void mouseClicked(MouseEvent arg0){
@@ -306,9 +346,11 @@ public class Cat_Usuarios extends JFrame{
     			
     			btnNoEsUsuario.setVisible(false);
     		    btnUsuariovigente.setVisible(false);
+    		    
+    		    btnDefault.setEnabled(true);
+    		    
 				txtFolio.setText(folio_empleado+"");
         		txtNombre_Completo.setText(Nombre_Completo.toString());
-
         		
 				if(new Obj_Usuario().ExisteUsuario(folio_empleado) == true){
 										
