@@ -845,16 +845,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		return matriz;
 	}
 	
-//	private Object[][] tabla_retiros(){
-//		Object[][] matriz = new Object[tabla_retiro_de_clientes.getRowCount()][2];
-//		for(int i=0; i<tabla_retiro_de_clientes.getRowCount(); i++){
-//			
-//			matriz[i][0] = modelo_retiro_de_clientes.getValueAt(i,0).toString().trim();
-//			matriz[i][1] = modelo_retiro_de_clientes.getValueAt(i,1).toString().trim();
-//			
-//		}
-//		return matriz;
-//	}
 	
 	ActionListener cancelar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -1051,24 +1041,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 										"						 group by convert(varchar(20),facremtick.fecha,103))rl " +
 										"	GROUP BY rl.fecha";
 			
-			
-//				String consulta_ta_rluz = "declare @t_aire money, @r_luz money, @asignacion varchar(50) " +
-//										  "set @asignacion= '"+modelo_asignaciones.getValueAt(i,0).toString().trim()+"' " +
-//										  "set @t_aire = (SELECT SUM(ta)as TA FROM " +
-//										  "     (SELECT sum(entysal.total)as ta FROM facremtick AS f  with (nolock) " +
-//										  "              INNER JOIN entysal on entysal.folio=f.folio  WHERE (f.folio_cajero = @asignacion and entysal.cod_prod='52401') " +
-//										  "     union all " +
-//										  "      SELECT isnull(sum(entysal.total*-1),0) as ta FROM facremtick AS f  with (nolock) " +
-//										  "                     INNER JOIN entysal on entysal.folio=f.folio WHERE ( (f.status = 'C') AND (f.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52401' ) )t " +
-//										  ") " +
-//										  "set @r_luz = (SELECT SUM(rl)as RL FROM " +
-//										  "     (SELECT sum(entysal.total)as rl FROM facremtick AS f  with (nolock) " +
-//										  "              INNER JOIN entysal on entysal.folio=f.folio  WHERE (f.folio_cajero = @asignacion and entysal.cod_prod='52384') " +
-//										  "     union all " +
-//										  "      SELECT isnull(sum(entysal.total*-1),0) as ta FROM facremtick AS f  with (nolock) " +
-//										  "                     INNER JOIN entysal on entysal.folio=f.folio WHERE ( (f.status = 'C') AND (f.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52384' ) )t " +
-//										  ") " +
-//										  "select @t_aire as TA, @r_luz as RL " ;
 				
 				String query_ta_rluz = "exec sp_insert_relacion_por_pagos_de_servicios ?,?,?,?,?";
 				
@@ -1089,12 +1061,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 								pstmt_ta_rluz.setString(3,	rs_IZAGAR.getString(3));
 								pstmt_ta_rluz.setDouble(4,	rs_IZAGAR.getDouble(4));
 								pstmt_ta_rluz.setString(5, 	rs_IZAGAR.getString(5));
-								
-//								pstmt_ta_rluz.setString(1, 		lblFolio_Corte.getText().trim());
-//								pstmt_ta_rluz.setString(2, 	rs_IZAGAR.getString(2));
-//								pstmt_ta_rluz.setString(3,	modelo_asignaciones.getValueAt(i,0).toString().trim());
-//								pstmt_ta_rluz.setDouble(4,	rs_IZAGAR.getDouble(1));
-//								pstmt_ta_rluz.setDouble(5, 	rs_IZAGAR.getDouble(2));
 								pstmt_ta_rluz.executeUpdate();
 								
 								registrado = true;

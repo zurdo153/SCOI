@@ -52,7 +52,6 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	
 	JPasswordField txtClave = new JPasswordField();
 	JTextField txtTicket = new JTextField();
-
 	JTextField txtImporte = new Componentes().text(new JTextField (),"Importe Total del Ticket", 50, "Double");
 	
 	JPasswordField txtConfirmarCompra = new JPasswordField();
@@ -68,7 +67,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	
 	JLabel lblCajero = new JLabel("Cajera(O):");
 	JLabel lblUsuario = new JLabel();
-	JLabel lblClaveCajero = new JLabel("C.Cajero:");
+	JLabel lblClaveCajero = new JLabel("Cla.Cajero:");
 	
 	JLabel lblClave = new JLabel("Clave:");
 	JLabel lblTicket = new JLabel("Ticket:");
@@ -247,15 +246,19 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 				
 				}else{
 					try {
-						System.out.println(txtClaveCajero.getText());
-						System.out.println(lblUsuario.getText().toUpperCase().trim());
-						System.out.println(lblUsuario.getText().toUpperCase().trim());
-						
 						if(new Obj_Captura_Fuente_Sodas().buscarcajero(txtClaveCajero.getText(),lblUsuario.getText().toUpperCase().trim())){
-							
+						txtClaveCajero.setText("");	
+						txtClaveCajero.setEnabled(false);
+						
 						txtTicket.setEnabled(true);
 						txtTicket.requestFocus();
+						
+						
 						return;
+						 }else{
+							 txtClaveCajero.setText("");
+								JOptionPane.showMessageDialog(null, "Clave Incorrecta Necesita Pasar El Gafete Del Cajero!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								return;
 						 }
 					} catch (SQLException e) {
 						JOptionPane.showMessageDialog(null, "Error al Buscar el Cajero en Cat_Captura_De_Fuente_De_Sodas_Cajeras en la ActionListener claveCajero!!","Aviso",JOptionPane.ERROR_MESSAGE);
@@ -325,7 +328,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 						
 						txtClave.setText("");
 						txtClave.requestFocus();
-						JOptionPane.showMessageDialog(null,"No Se Encontro al Empleado o no Cuenta \n Con Fuente de Sodas Favor de Comunicarse \n a Desarrollo Humano","Aviso", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,"No Se Encontro Al Empleado o No Cuenta \n Con Fuente De Sodas Favor De Comunicarse \n a Desarrollo Humano","Aviso", JOptionPane.WARNING_MESSAGE);
 						return;
 					}
 			}else{
@@ -371,7 +374,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 				}else{
 						txtClave.setText("");
 						txtClave.requestFocus();
-						JOptionPane.showMessageDialog(null,"El empleado no cuenta con fuente de sodas","Aviso", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,"El Empleado No Cuenta Con Fuente De Sodas","Aviso", JOptionPane.WARNING_MESSAGE);
 						return;
 				}
 			}
@@ -405,7 +408,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		{
 			
 			if(txtConfirmarCompra.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "Pase su gafete para confirmar la compra!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Pase El Gafete Del Empleado Para Confirmar La Compra!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}else{
 				
@@ -426,12 +429,12 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 						if(sodas.Guardar()){
 							 new Imprime_Ticket_Captura_Fuente_Sodas(txtClave.getText().toUpperCase()).setVisible(true);
 					}else{
-						JOptionPane.showMessageDialog(null, "La clave no coincide!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "La Clave No Coincide!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}
 				}else{
 					txtConfirmarCompra.setText("");
-					JOptionPane.showMessageDialog(null, "No se ha podido realizar su pedido de forma correcta,\npase su gafete de nuevo o comuniquese a\nDesarrollo Humano","Aviso",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "No  Coincide La Clave Del Empleado\nPase El Gafete De Nuevo O Comuniquese\n A Desarrollo Humano","Aviso",JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
 			}
@@ -441,6 +444,8 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	ActionListener cancelar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) 
 		{
+			txtClaveCajero.setText("");
+			txtClaveCajero.setEnabled(false);
 			txtClave.setText("");
 			txtTicket.setText("");
 			txtImporte.setText("");
