@@ -10,6 +10,8 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import com.lowagie.text.pdf.codec.Base64.InputStream;
+
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
@@ -2598,13 +2600,7 @@ public class ActualizarSQL {
   				System.out.println(stream_pdf);
   				
   			    
-//  				FileInputStream stream_xml = new FileInputStream(xml);
-//  				pstmtabla.setBinaryStream(1, stream_xml, xml.length());
-//  				
-//  				FileInputStream stream_pdf = new FileInputStream(pdf);
-//  				pstmtabla.setBinaryStream(2, stream_pdf,xml.length());
-  				
-				pstmtabla.executeUpdate();
+//				pstmtabla.executeUpdate();
 				con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());

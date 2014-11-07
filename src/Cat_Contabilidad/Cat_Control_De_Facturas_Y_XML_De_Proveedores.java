@@ -1,7 +1,6 @@
 package Cat_Contabilidad;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Font;
@@ -24,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,11 +39,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import javax.swing.table.TableRowSorter;
 
@@ -56,6 +52,7 @@ import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Contabilidad.Obj_Proveedores;
 
+import Obj_Principal.tablaRenderer;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
@@ -67,7 +64,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	Connexion con = new Connexion();
 	
 	DefaultTableModel modelo = new DefaultTableModel(null,
-            new String[]{"Cod. P.", "Proveedor","Factura","Fecha Factura","Fecha Ult Mod","Modifico",""}
+            new String[]{"Cod. P.", "Proveedor","Factura","Fecha Factura","Fecha Ult Mod","Modifico","XML","PDF",""}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -77,6 +74,8 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	    	java.lang.String.class,
 	    	java.lang.String.class,
 	    	java.lang.String.class,
+	    	javax.swing.ImageIcon.class,
+	    	javax.swing.ImageIcon.class,
 	    	java.lang.Boolean.class
                                     };
 	     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -91,7 +90,9 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
         	 	case 3 : return false;
         	 	case 4 : return false;
         	 	case 5 : return false;
-        	 	case 6 : return true;
+        	 	case 6 : return false;
+        	 	case 7 : return false;
+        	 	case 8 : return true;
         	 	
         	 } 				
  			return false;
@@ -125,6 +126,8 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
 	JButton btnRecibido = new JButton("Recibido",new ImageIcon("imagen/Aplicar.png"));
 	
+	JLabel lblTrue = new JLabel(new ImageIcon("imagen/Aplicar.png"));
+	JLabel lblFalse = new JLabel(new ImageIcon("imagen/Aplicar.png"));
 	
 //	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
 
@@ -293,15 +296,38 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		llamar_render();
 	
+	}
+	
+	public void llamar_render(){
+		//		tipo de valor = imagen,chb,texto
+//		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
+    
+		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",12)); 
+    	
+		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
+		
+		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("fecha","centro","Arial","normal",12));
+		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("fecha","centro","Arial","normal",12));
+		
+		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("","","","",12));
+		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("imagen","","","",0));
+		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("imagen","","","",0));
+		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("chb","","","",0));
 	}
 
 	private JScrollPane getPanelTabla()	{		
 	
+		this.tabla.getTableHeader().setReorderingAllowed(false) ;
+		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
 	tabla.getColumnModel().getColumn(0).setMaxWidth(50);
 	tabla.getColumnModel().getColumn(0).setMinWidth(90);
 	tabla.getColumnModel().getColumn(1).setMaxWidth(460);
-	tabla.getColumnModel().getColumn(1).setMinWidth(140);
+	tabla.getColumnModel().getColumn(1).setMinWidth(205);
 	tabla.getColumnModel().getColumn(2).setMaxWidth(350);
 	tabla.getColumnModel().getColumn(2).setMinWidth(90);
 	tabla.getColumnModel().getColumn(3).setMaxWidth(100);
@@ -309,157 +335,54 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	tabla.getColumnModel().getColumn(4).setMaxWidth(100);
 	tabla.getColumnModel().getColumn(4).setMinWidth(60);
 	tabla.getColumnModel().getColumn(5).setMaxWidth(350);
-	tabla.getColumnModel().getColumn(5).setMinWidth(90);
-	tabla.getColumnModel().getColumn(6).setMaxWidth(17);
-	tabla.getColumnModel().getColumn(6).setMinWidth(17);
+	tabla.getColumnModel().getColumn(5).setMinWidth(130);
 	
-	TableCellRenderer render = new TableCellRenderer() { 
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-		boolean hasFocus, int row, int column) { 
-			
-			Component componente = null;
-			
-			switch(column){
-				case 0: 
-					componente = new JLabel(value == null? "": value.toString());
-					if(row %2 == 0){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(177,177,177));	
-					}
-					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					if(table.getSelectedRow() == row){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-					break;
-				case 1: 
-					componente = new JLabel(value == null? "": value.toString());
-					if(row %2 == 0){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(177,177,177));	
-					}
-					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					if(table.getSelectedRow() == row){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-					break;
-				case 2: 
-					componente = new JLabel(value == null? "": value.toString());
-					if(row %2 == 0){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(177,177,177));	
-					}
-					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					if(table.getSelectedRow() == row){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-					break;
-				case 3: 
-					componente = new JLabel(value == null? "": value.toString());
-					if(row %2 == 0){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(177,177,177));	
-					}
-					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					if(table.getSelectedRow() == row){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-					break;
-				case 4: 
-					componente = new JLabel(value == null? "": value.toString());
-					if(row %2 == 0){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(177,177,177));	
-					}
-					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					if(table.getSelectedRow() == row){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-					break;
-				case 5: 
-					componente = new JLabel(value == null? "": value.toString());
-					if(row %2 == 0){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(177,177,177));	
-					}
-					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					if(table.getSelectedRow() == row){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-					break;
-				case 6: 
-					componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-					if(row%2==0){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(177,177,177));	
-					}
-					if(Boolean.parseBoolean(modelo.getValueAt(row,2).toString())){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					if(table.getSelectedRow() == row){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
-					break;
-			}
-			return componente;
-		} 
-	}; 
+	tabla.getColumnModel().getColumn(6).setMaxWidth(30);
+	tabla.getColumnModel().getColumn(6).setMinWidth(30);
 	
-		            	tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-						tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-						tabla.getColumnModel().getColumn(2).setCellRenderer(render);
-						tabla.getColumnModel().getColumn(3).setCellRenderer(render);
-						tabla.getColumnModel().getColumn(4).setCellRenderer(render);
-						tabla.getColumnModel().getColumn(5).setCellRenderer(render);
-						tabla.getColumnModel().getColumn(6).setCellRenderer(render);
+	tabla.getColumnModel().getColumn(7).setMaxWidth(30);
+	tabla.getColumnModel().getColumn(7).setMinWidth(30);
+	
+	tabla.getColumnModel().getColumn(8).setMaxWidth(17);
+	tabla.getColumnModel().getColumn(8).setMinWidth(17);
+	
+
 		Statement s;
 		ResultSet rs;
 		try {
 			s = con.conexion().createStatement();
-			rs = s.executeQuery("SELECT cod_prv,proveedor,folio_factura,convert (varchar(20),[fecha_factura],103)as fecha_factura,convert(varchar(20),[fecha_modificacion],103)as fecha_modificacion "+
-				                        ",(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico,Status FROM tb_control_de_facturas_y_xml where status=1 order by fecha_factura desc");
+			
+			rs = s.executeQuery("SELECT cod_prv " +
+										" ,proveedor" +
+										" ,folio_factura" +
+										" ,convert (varchar(20),[fecha_factura],103)as fecha_factura" +
+										" ,convert(varchar(20),[fecha_modificacion],103)as fecha_modificacion"+
+									    " ,(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico" +
+									    " ,case when (xml)is null" +
+									    "		then 0" +
+									    "		else 1" +
+									    "	end as xml" +
+									    " ,case when (pdf)is null " +
+									    "		then 0 " +
+									    "		else 1 " +
+									    "	end as pdf " +
+									    " ,Status " +
+									    " FROM tb_control_de_facturas_y_xml " +
+									    " where status=1 " +
+									    " order by fecha_factura desc");
+		
 			while (rs.next())
 			{ 
-			   String [] fila = new String[7];
+			   Object [] fila = new Object[9];
 			   fila[0] = rs.getString(1).trim();
 			   fila[1] = rs.getString(2).trim();
 			   fila[2] = rs.getString(3).trim(); 
 			   fila[3] = rs.getString(4).trim(); 
 			   fila[4] = rs.getString(5).trim(); 
 			   fila[5] = rs.getString(6).trim(); 
-			   fila[6] = "false";
+			   fila[6] = rs.getString(7).trim();
+			   fila[7] = rs.getString(8).trim();
+			   fila[8] = "false";
 			   modelo.addRow(fila); 
 			}	
 		} catch (SQLException e1) {
@@ -497,8 +420,6 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
         });
     }
 	
-
-	
 	ActionListener guardar = new ActionListener(){
 	public void actionPerformed(ActionEvent e){
 		
@@ -530,7 +451,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 																	        	while(tabla.getRowCount()>0){	
 																			              modelo.removeRow(0);  }
 															                    Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
-															                    String[] fila = new String[7];
+															                    String[] fila = new String[9];
 															                            for(int i=0; i<lista_proveedores.length; i++){
 															                                    fila[0] = lista_proveedores[i][0]+"";
 															                                    fila[1] = lista_proveedores[i][1]+"";
@@ -538,7 +459,9 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 															                                    fila[3] = lista_proveedores[i][3]+"";
 															                                    fila[4] = lista_proveedores[i][4]+"";
 															                                    fila[5] = lista_proveedores[i][5]+"";
-															                                    fila[6] = "false";
+															                     			   	fila[6] = lista_proveedores[i][6]+"";
+															                     			   	fila[7] = lista_proveedores[i][7]+"";
+															                                    fila[8] = "false";
 															                                    modelo.addRow(fila);}
 															                      btnDeshacer.doClick(); 
 																    	JOptionPane.showMessageDialog(null,"El registró se actualizó correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
@@ -557,7 +480,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 														       while(tabla.getRowCount()>0){
 															      modelo.removeRow(0);  }
 														       Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
-									 	                        String[] fila = new String[7];
+									 	                        String[] fila = new String[9];
 												                for(int i=0; i<lista_proveedores.length; i++){
 												                               fila[0] = lista_proveedores[i][0]+"";
 												                               fila[1] = lista_proveedores[i][1]+"";
@@ -565,7 +488,9 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 													                           fila[3] = lista_proveedores[i][3]+"";
 													                           fila[4] = lista_proveedores[i][4]+"";
 													                           fila[5] = lista_proveedores[i][5]+"";
-													                           fila[6] = "false";
+													                           fila[6] = lista_proveedores[i][6]+"";
+											                     			   fila[7] = lista_proveedores[i][7]+"";
+													                           fila[8] = "false";
 													                       modelo.addRow(fila);}
 																      txtFolioFactura.setText("");
 																      txtFolioFactura.requestFocus();
@@ -614,7 +539,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 			while(tabla.getRowCount()>0){
 				modelo.removeRow(0);  }
         Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
-        String[] fila = new String[7];
+        String[] fila = new String[9];
                 for(int i=0; i<lista_proveedores.length; i++){
                         fila[0] = lista_proveedores[i][0]+"";
                         fila[1] = lista_proveedores[i][1]+"";
@@ -622,7 +547,9 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
                         fila[3] = lista_proveedores[i][3]+"";
                         fila[4] = lista_proveedores[i][4]+"";
                         fila[5] = lista_proveedores[i][5]+"";
-                        fila[6] = "false";
+                        fila[6] = lista_proveedores[i][6]+"";
+         			   	fila[7] = lista_proveedores[i][7]+"";
+                        fila[8] = "false";
                         modelo.addRow(fila);}
 		}
 	};
@@ -674,9 +601,9 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 			int fila = tabla.getSelectedRow();
 			int columna = tabla.getSelectedColumn();
 			
-			if(columna==6){
+			if(columna==8){
 				for(int i=0; i<=tabla.getRowCount()-1; i++){
-					tabla.setValueAt(false, i, 6);
+					tabla.setValueAt(false, i, 8);
 				}
 				tabla.setValueAt(true, fila, columna);
 				
@@ -791,7 +718,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 				while(tabla.getRowCount()>0){
 						modelo.removeRow(0);  }
 			    Object [][] lista_proveedores = new BuscarTablasModel().tabla_model_proveedores_guardados();;
-			    String[] fila = new String[7];
+			    String[] fila = new String[9];
 			            for(int i=0; i<lista_proveedores.length; i++){
 			                    fila[0] = lista_proveedores[i][0]+"";
 			                    fila[1] = lista_proveedores[i][1]+"";
@@ -799,7 +726,9 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 			                    fila[3] = lista_proveedores[i][3]+"";
 			                    fila[4] = lista_proveedores[i][4]+"";
 			                    fila[5] = lista_proveedores[i][5]+"";
-			                    fila[6] = "false";
+			                    fila[6] = lista_proveedores[i][6]+"";
+                 			   	fila[7] = lista_proveedores[i][7]+"";
+			                    fila[8] = "false";
 			                    modelo.addRow(fila);
 			              }
 			            

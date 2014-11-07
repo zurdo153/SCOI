@@ -785,21 +785,40 @@ public class BuscarTablasModel {
 	}
 	
 	public Object[][] tabla_model_proveedores_guardados(){
-		String query_lista = ("SELECT cod_prv,proveedor,folio_factura,convert (varchar(20),[fecha_factura],103)as fecha_factura,convert(varchar(20),[fecha_modificacion],103)as fecha_modificacion "+
-                ",(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico,Status FROM tb_control_de_facturas_y_xml where status=1");
-		Object[][] matriz = new Object[get_filas(query_lista)][6];
+		String query_lista = ("SELECT cod_prv" +
+									"	,proveedor " +
+									"	,folio_factura " +
+									"	,convert (varchar(20),[fecha_factura],103)as fecha_factura" +
+									"	,convert(varchar(20),[fecha_modificacion],103)as fecha_modificacion "+
+					                "	,(select nombre+' '+ap_paterno+' 'ap_materno from tb_empleado where folio=folio_empleado_modifico)as empleado_modifico " +
+					                " 	,case when len(xml) is null" +
+					                "		then 0 " +
+					                "		else 1 " +
+					                "	end as xml " +
+					                ",case when len(pdf)is null " +
+					                "		then 0 " +
+					                "		else 1 	" +
+					                "	end as pdf" +
+					                " 	,Status " +
+					                " FROM tb_control_de_facturas_y_xml " +
+					                " where status=1 " +
+								    " order by fecha_factura desc");
+		
+	Object[][] matriz = new Object[get_filas(query_lista)][8];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query_lista);
 			
 			int i = 0;
 			while(rs.next()){
-				matriz[i][0] = "   "+rs.getString(1);
-				matriz[i][1] = "   "+rs.getString(2);
-				matriz[i][2] = "   "+rs.getString(3);
-				matriz[i][3] = "   "+rs.getString(4);
-				matriz[i][4] = "   "+rs.getString(5);
-				matriz[i][5] = "   "+rs.getString(6);
+				matriz[i][0] = rs.getString(1);
+				matriz[i][1] = rs.getString(2);
+				matriz[i][2] = rs.getString(3);
+				matriz[i][3] = rs.getString(4);
+				matriz[i][4] = rs.getString(5);
+				matriz[i][5] = rs.getString(6);
+				matriz[i][6] = rs.getString(7);
+				matriz[i][7] = rs.getString(8);
 				i++;
 			}
 
