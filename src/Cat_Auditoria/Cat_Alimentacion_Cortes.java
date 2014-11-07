@@ -106,6 +106,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	JLabel lblFolio_Corte = new JLabel();
 	
+	JTextField txtApartados = new JTextField("");
 	JTextField txtEfectivo = new JTextField("");
 	JTextField txtFechaCorte = new JTextField("");
 	JTextField txtDeposito = new JTextField("");
@@ -363,15 +364,20 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		panel.add(btnAsignacion).setBounds(x,y+=25,ancho,20);
 		
-				panel.add(new JLabel("Retiros Cajero:")).setBounds(ancho*2-27,y-2,ancho,20);
-				panel.add(txtRetiroCajero).setBounds(ancho+x*10,y-2,ancho-50,20);
-				panel.add(btnRetiroCajero).setBounds(ancho+x*10+90,y-2,29,20);
+
 		
 		panel.add(scroll).setBounds(x,y+=20,ancho*3+20,105);
 		panel.add(btnQuitarAsignacion).setBounds(x,y+=105,ancho,20);
 
 		panel.add(new JLabel("Corte del Sistema:")).setBounds(x*10+50,y,ancho,20);
 		panel.add(txtCorteSistema).setBounds(ancho+x*10+30,y,ancho*2-190,20);
+		
+		panel.add(new JLabel("Retiros Cajero:")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtRetiroCajero).setBounds(ancho-40,y,ancho-40,20);
+		panel.add(btnRetiroCajero).setBounds(ancho*2-80,y,29,20);
+		
+		panel.add(new JLabel("Apartados: ")).setBounds(x*10+50,y,ancho,20);
+		panel.add(txtApartados).setBounds(ancho+x*10+30,y,ancho*2-190,20);
 		
 		panel.add(lblComentario).setBounds(x2-50,y,100,20);
 		panel.add(Observasiones).setBounds(x2-50,y+=20,420,80);
@@ -480,6 +486,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		txtFechaCorte.setEditable(false);
 		txtCorteSistema.setEditable(false);
+		txtApartados.setEditable(false);
 		txtDeposito.setEditable(false);
 		txtRetiroCajero.setEditable(false);
 		txtEfectivo.setEditable(false);
@@ -500,7 +507,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 		btnReimprimir.setEnabled(true);
 		
-		this.setSize(940,590);
+		this.setSize(940,615);
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 
