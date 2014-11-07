@@ -2,6 +2,7 @@ package Cat_Auditoria;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,9 +32,10 @@ public class Cat_Consulta_Retiros_A_Detalle extends JDialog {
 	JLabel lblEmpleado = new JLabel();
 	JTextField txtTotal = new JTextField();
 	
-	DefaultTableModel model_retiros = new DefaultTableModel( null, new String[]{"$ Cantidad", "Fecha", "Supervisor"}) {
+	DefaultTableModel model_retiros = new DefaultTableModel( null, new String[]{"Folio Retiro","$ Cantidad", "Fecha", "Supervisor(a) Realizo"}) {
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
+	    	java.lang.Object.class,
 	    	java.lang.Object.class,
 	    	java.lang.Object.class,
 	    	java.lang.Object.class
@@ -48,6 +50,7 @@ public class Cat_Consulta_Retiros_A_Detalle extends JDialog {
         	 	case 0 : return false; 
         	 	case 1 : return false; 
         	 	case 2 : return false; 
+        	 	case 3 : return false; 
         	 } 				
  			return false;
  		}
@@ -63,7 +66,7 @@ public class Cat_Consulta_Retiros_A_Detalle extends JDialog {
 	public void Constructor(){
 		this.setModal(true);
 		this.setTitle("Retiros a Detalle");
-//		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/captura_nomina_icon&16.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-32.png"));
 		
 		this.panel.add(scroll_tabla).setBounds(10,10,525,300);
 		
@@ -84,12 +87,14 @@ public class Cat_Consulta_Retiros_A_Detalle extends JDialog {
 	public void init_tabla(){
 		this.tabla_retiros.getTableHeader().setReorderingAllowed(false) ;
 		
-    	this.tabla_retiros.getColumnModel().getColumn(0).setMaxWidth(100);
-    	this.tabla_retiros.getColumnModel().getColumn(0).setMinWidth(100);		
+    	this.tabla_retiros.getColumnModel().getColumn(0).setMaxWidth(90);
+    	this.tabla_retiros.getColumnModel().getColumn(0).setMinWidth(90);		
     	this.tabla_retiros.getColumnModel().getColumn(1).setMaxWidth(90);
     	this.tabla_retiros.getColumnModel().getColumn(1).setMinWidth(90);
-    	this.tabla_retiros.getColumnModel().getColumn(2).setMaxWidth(320);
-    	this.tabla_retiros.getColumnModel().getColumn(2).setMinWidth(320);		
+    	this.tabla_retiros.getColumnModel().getColumn(2).setMaxWidth(120);
+    	this.tabla_retiros.getColumnModel().getColumn(2).setMinWidth(120);		
+    	this.tabla_retiros.getColumnModel().getColumn(3).setMaxWidth(320);
+    	this.tabla_retiros.getColumnModel().getColumn(3).setMinWidth(320);
     	
 		TableCellRenderer render = new TableCellRenderer() { 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -104,12 +109,7 @@ public class Cat_Consulta_Retiros_A_Detalle extends JDialog {
 					lbl.setBackground(new java.awt.Color(186,143,73));
 				}
 				
-				lbl.setHorizontalAlignment(SwingConstants.CENTER);
-//				switch(column){
-//					case 0 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-//					case 1 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-//					case 2 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-//				}
+				lbl.setHorizontalAlignment(SwingConstants.LEFT);
 			return lbl; 
 			} 
 		}; 
@@ -117,6 +117,7 @@ public class Cat_Consulta_Retiros_A_Detalle extends JDialog {
 		this.tabla_retiros.getColumnModel().getColumn(0).setCellRenderer(render); 
 		this.tabla_retiros.getColumnModel().getColumn(1).setCellRenderer(render); 
 		this.tabla_retiros.getColumnModel().getColumn(2).setCellRenderer(render); 
+		this.tabla_retiros.getColumnModel().getColumn(3).setCellRenderer(render); 
     }
     
 }

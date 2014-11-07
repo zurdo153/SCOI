@@ -136,6 +136,10 @@ public class Obj_Captura_Fuente_Sodas
 		return new BuscarSQL().getTablaCapturaFuenteSodas(folio_empleado);
 	}
 	
+	public boolean buscarcajero(String clavecajero,String nombrecajero) throws SQLException{ 
+		return new BuscarSQL().validacion_cajero_fuente_sodas(clavecajero,nombrecajero);
+	}
+	
 	public Obj_Captura_Fuente_Sodas buscar(String clave){ 
 		try {
 			return new BuscarSQL().CapturaFuenteSodas(clave);
@@ -144,6 +148,7 @@ public class Obj_Captura_Fuente_Sodas
 		}
 	return null; 
 	}
+	
 	
 //	tabla de tickets por empleado auxiliar y finanazas
 	public String[][] tabla(int folio_empleado) throws SQLException{

@@ -4,9 +4,13 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,9 +19,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import com.toedter.calendar.JDateChooser;
+
 import Conexiones_SQL.Connexion;
 import IZAGAR_Obj.Obj_IZAGAR_Apartados;
 
+import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -32,27 +39,53 @@ public class Cat_IZAGAR_Reporte_De_Apartados extends JFrame {
 	
 	JTextField txtAsignacion = new JTextField();
 
-	JButton btnGenerar = new JButton("Generar");
-
+	JButton btnGenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
+	JButton btnApartadoAsignacion =new JButton("",new ImageIcon("imagen/Accounting.png"));
+	JButton btnApartadoFecha =new JButton("",new ImageIcon("imagen/Calendar.png"));
+	
+	JDateChooser cfecha = new JDateChooser();
+	
+	int tipo_Reporte = 0;
 	
 	public Cat_IZAGAR_Reporte_De_Apartados(){
-		this.setTitle("Reporte de Apartados y Abonos");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/ancla.jpg"));
-		int x=25, y=25, z=80;
-		panel.setBorder(BorderFactory.createTitledBorder("Reporte de Apartados y Abonos en una Asignacion"));
-		
-		panel.add(new JLabel("Asignacion:")).setBounds(x,y,z,20);		
-		panel.add(txtAsignacion).setBounds(x+z,y,z+50,20);
-        
-		 panel.add(btnGenerar).setBounds(100,60,80,20);
-		 btnGenerar.addActionListener(opGuardar) ;
-		
 		cont.add(panel);
-			
-		this.setSize(305,180);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		setSize(305,280);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setTitle("Reporte de Apartados y Abonos");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/documentos-de-gabinete-icono-4840-32.png"));
+		panel.setBorder(BorderFactory.createTitledBorder("Seleccione el Tipo de Reporte Asignacion-Fecha"));
+		
+		
+		btnApartadoAsignacion.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Apartado Por Asignacion</p></CENTER></FONT>" +
+				"</html>");
+		
+		btnApartadoFecha.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Apartado Por Fecha     </p></CENTER></FONT>" +
+				"</html>");
+
+		
+		panel.add(btnApartadoAsignacion).setBounds(20,25,260,30);
+		panel.add(btnApartadoFecha).setBounds(20,75,260,30);
+		panel.add(new JLabel("Asignacion:")).setBounds(20,130,200,20);		
+		panel.add(txtAsignacion).setBounds(80,130,195,20);
+		panel.add(new JLabel("Fecha:")).setBounds(20,170,200,20);		
+		panel.add(cfecha).setBounds(80,170,195,20);
+	    panel.add(btnGenerar).setBounds(100,200,120,30);
+		 
+		
+	    txtAsignacion.setEditable(false);
+	    cfecha.setEnabled(false);
+	    btnGenerar.setEnabled(false);
+		 
+		btnGenerar.addActionListener(opGenerar) ;
+		btnApartadoAsignacion.addActionListener(opReporte_Por_Asignacion);
+		btnApartadoFecha.addActionListener(opReporte_Por_Fecha);
+		 
+
 	}
 	
 	ActionListener opSalir = new ActionListener(){
@@ -61,13 +94,51 @@ public class Cat_IZAGAR_Reporte_De_Apartados extends JFrame {
 		}
 	};
 	
+	ActionListener opReporte_Por_Asignacion = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			txtAsignacion.setEditable(true);
+			cfecha.setEnabled(false);
+			btnGenerar.setEnabled(true);
+			tipo_Reporte=1;
+			cfecha.setDate(null);
+		}
+	};
 	
-	ActionListener opGuardar = new ActionListener(){
+	ActionListener opReporte_Por_Fecha = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			txtAsignacion.setEditable(false);
+			cfecha.setEnabled(true);
+			btnGenerar.setEnabled(true);
+			tipo_Reporte=2;
+			txtAsignacion.setText("");
+			
+		}
+	};
+	
+	public String validar_fechas(){
+		String error = "";
+		@SuppressWarnings("unused")
+		String fechafinalNull = cfecha.getDate()+"";
+	    if(cfecha.equals("null"))error+= "Fecha\n";
+		return error;
+	}
+	
+	
+	
+	ActionListener opGenerar = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
 			 
 			Obj_IZAGAR_Apartados objasignacion = new Obj_IZAGAR_Apartados();
 			
 			objasignacion.setAsignacion(txtAsignacion.getText());
+			
+			if(tipo_Reporte==1){
+				
+			if(txtAsignacion.getText().equals(""))
+			{
+				JOptionPane.showMessageDialog(null,"Necesita Teclear Una Asignacion","Mensaje",JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
 			
 			if(new Obj_IZAGAR_Apartados().guardar(objasignacion)){
 				try {
@@ -82,20 +153,39 @@ public class Cat_IZAGAR_Reporte_De_Apartados extends JFrame {
 			}
 			else{
 				 
-				JOptionPane.showMessageDialog(null,"Ocurrio un error al Generar el Reporte","Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Ocurrio un error al Generar el Reporte por Asignacion opGenerar","Error",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			}
+		   }else{
+			   String fechaNull = cfecha.getDate()+"";
+			   if(fechaNull.equals("null")){
+				   
+					JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Mensaje",JOptionPane.WARNING_MESSAGE);
+					return;
+				   }else{
+					   String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate())+" 00:00:00";
+					   String query = "exec IZAGAR_consulta_de_apartados '"+fecha+"'" ;
+						Statement stmt = null;
+						
+						try {
+							stmt =  new Connexion().conexion_IZAGAR().createStatement();
+						    ResultSet rs = stmt.executeQuery(query);
+							JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\IZAGAR_Obj_Reportes\\Obj_Reporte_IZAGAR_de_Apartados_Por_Fecha.jrxml");
+							JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+							@SuppressWarnings({ "rawtypes", "unchecked" })
+							JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+							JasperViewer.viewReport(print, false);
+						} catch (Exception e1) {
+							System.out.println(e1.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Apartados Por Fecha  procedure sp_consulta_de_datos_voucher SQLException: \n "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}
+						return;					   
+				   }
 			}
 			
 		}
 	};
-	
-//	private String validaCampos(){
-//		String error="";
-//		
-//		if(txtValorAsistencia.getText().equals("")) 	error+= "     Valor de Asistencia\n";
-//		if(txtValorPuntualidad.getText().equals("")) 	error+= "     Valor de Puntualidad\n";
-//		if(txtGafete.getText().equals("")) 		error+= "     Valor de Gafete\n";		
-//		return error;
-//	}
 
 	
 	public static void main(String args[]){

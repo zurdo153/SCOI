@@ -95,10 +95,10 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	JLabel lblEtiquetaCorte = new JLabel("");
 	
-	JButton btnFiltro = new JButton(new ImageIcon("imagen/Text preview.png"));
-	JButton btnGuardarCorte = new JButton("Guardar");
-	JButton btnCancelar = new JButton("Cancelar");
-	JButton btnSalir = new JButton("Salir");
+	JButton btnFiltro = new JButton("Buscar Otro Cajero",new ImageIcon("imagen/Text preview.png"));
+	JButton btnGuardarCorte = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnCancelar = new JButton("Cancelar",new ImageIcon("imagen/deshacer16.png"));
+	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
 	
 	JLabel lblMarco = new JLabel();
 	
@@ -123,9 +123,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	JTextField txtTotalFS = new JTextField("");
 	
-	JButton btnEfectivo = new JButton("efe");
-	JButton btnDeposito = new JButton("dep");
-	JButton btnCheques	= new JButton("che");
+	JButton btnEfectivo = new JButton("",new ImageIcon("imagen/dinero-icono-8797-16.png"));
+	JButton btnDeposito = new JButton("",new ImageIcon("imagen/monedas-en-efectivo-en-moneda-icono-4023-16.png"));
+	JButton btnCheques	= new JButton("",new ImageIcon ("imagen/Icono-cheque16.png"));
 	
 	JButton btnFS = new JButton("fs");
 	
@@ -139,15 +139,15 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	int folio_usuario;
 	JLabel lblUsuario = new JLabel("USUARIO: ");
 	
-	JButton btnAsignacion = new JButton("Asignaciones");
-	JButton btnQuitarAsignacion = new JButton("Quitar");
+	JButton btnAsignacion = new JButton("Asignaciones",new ImageIcon("imagen/Accounting.png"));
+	JButton btnQuitarAsignacion = new JButton("Quitar Asignacion",new ImageIcon("imagen/Delete.png"));
 	
-	JButton btnRetiroCajero = new JButton("RC");
+	JButton btnRetiroCajero = new JButton("",new ImageIcon("imagen/boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-16.png"));
 	
 	JButton btnVauchers = new JButton("Vauchers");
-	JButton btnQuitarVauchers = new JButton("Quitar");
+	JButton btnQuitarVauchers = new JButton("Quitar Voucher",new ImageIcon("imagen/Delete.png"));
 	
-	JButton btnReimprimir = new JButton("Reimprimir Corte Guardado");
+	JButton btnReimprimir = new JButton("Reimprimir Corte Guardado",new ImageIcon("imagen/Print.png"));
 	
 	DefaultTableModel modelo_asignaciones = new DefaultTableModel(null,
             new String[]{"Asignacion", "F. Cajero(a)","Nombre Cajera(o)","Total","Cod Estab","Establecimiento","Fecha de Asignacion","Fecha de Liquidacion"}
@@ -187,7 +187,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JScrollPane scroll = new JScrollPane(tabla_asignaciones,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
 	DefaultTableModel modelo_vauchers = new DefaultTableModel(null,
-            new String[]{"Ticket", "Afiliacion", "Numero De Targeta",  "Fecha E.", "Cod. Aut.", "Tipo De Targeta", "Banco Emisor", "Tipo De Operacion", "Fecha Aut", "Importe","Asignacion","Retiro cliente"}
+            new String[]{"Ticket", "Afiliacion", "Numero De Tarjeta",  "Fecha E.", "Cod. Aut.", "Tipo De Targeta", "Banco Emisor", "Tipo De Operacion", "Fecha Aut", "Importe","Asignacion","Retiro cliente"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -298,8 +298,10 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	int columnaEfect = 4;
 //	int filaEfecMod = 0;
 	int bandera_de_guardado = 0;
+	String establecimiento="";
 	
 	public Cat_Alimentacion_Cortes(int folio, String estab, String folio_corte) {
+		establecimiento=estab;
 		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bolsa-de-dinero-en-efectivo-icono-6673-32.png"));
 		this.setTitle("Alimentacion Cortes");
@@ -338,7 +340,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		panel.add(new JLabel("Folio Empleado:")).setBounds(x2-50,y+=15,ancho,20);
 		panel.add(lblFolio_Empleado).setBounds(x2+50,y,ancho,20);
-		panel.add(btnFiltro).setBounds(x2+90,y,30,20);
+		panel.add(btnFiltro).setBounds(x2+90,y,160,20);
 		
 		panel.add(lblFoto).setBounds(x+ancho*5+65,y-5,120,120);
 		
@@ -359,14 +361,14 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(txtDeposito).setBounds(ancho+x*10,y,ancho-50,20);
 		panel.add(btnDeposito).setBounds(ancho+x*10+90,y,29,20);
 		
-		panel.add(btnAsignacion).setBounds(x,y+=25,ancho-40,20);
+		panel.add(btnAsignacion).setBounds(x,y+=25,ancho,20);
 		
 				panel.add(new JLabel("Retiros Cajero:")).setBounds(ancho*2-27,y-2,ancho,20);
 				panel.add(txtRetiroCajero).setBounds(ancho+x*10,y-2,ancho-50,20);
 				panel.add(btnRetiroCajero).setBounds(ancho+x*10+90,y-2,29,20);
 		
 		panel.add(scroll).setBounds(x,y+=20,ancho*3+20,105);
-		panel.add(btnQuitarAsignacion).setBounds(x,y+=105,ancho-40,20);
+		panel.add(btnQuitarAsignacion).setBounds(x,y+=105,ancho,20);
 
 		panel.add(new JLabel("Corte del Sistema:")).setBounds(x*10+50,y,ancho,20);
 		panel.add(txtCorteSistema).setBounds(ancho+x*10+30,y,ancho*2-190,20);
@@ -412,7 +414,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(lbltablaRetiros).setBounds(x*17+10,y+130,ancho+80,125);
 		panel.add(scroll_retiro_de_clientes).setBounds(x*18,y+145,ancho+60,100);
 		
-		panel.add(btnQuitarVauchers).setBounds(x,y+=105,ancho-40,20);
+		panel.add(btnQuitarVauchers).setBounds(x,y+=105,ancho,20);
 		panel.add(btnReimprimir).setBounds(x*34,y,ancho+80,30);
 		
 		panel.add(btnGuardarCorte).setBounds(x*29,y+=130,ancho-40,20);
@@ -2735,7 +2737,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			 }
 			
 			String[] fila = new String[9];
-			Object[][] getTablaFiltro = getTablaFiltro(cadena);
+			Object[][] getTablaFiltro = getTablaFiltro(cadena,establecimiento);
             for(int i=0; i<getTablaFiltro.length; i++){
                     fila[0] = getTablaFiltro[i][0]+"";
                     fila[1] = getTablaFiltro[i][1]+"";
@@ -3355,10 +3357,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					tabla[i][0] = tablaFiltro.getValueAt(i, 0).toString().trim(); 
 					tabla[i][1] = tablaFiltro.getValueAt(i, 3).toString().trim();
 					
-//					System.out.print(tablaFiltro.getValueAt(i, 0).toString().trim()+"       ");
-//					System.out.println(tablaFiltro.getValueAt(i, 3).toString().trim());
-					
-					
 					if(tablaFiltro.getValueAt(i, 3).toString().trim().equals("true")){
 						totalFS = totalFS + (Double.valueOf(tablaFiltro.getValueAt(i, 1).toString()));
 					}
@@ -3399,11 +3397,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				String[][] retiros_a_detalle = new BuscarSQL().getRetiros_a_detalle(folio_cajero,establecimiento);
 				
 				for(int i=0; i<retiros_a_detalle.length; i++){
-					 		Object[] retiro = new Object[3];
+					 		Object[] retiro = new Object[4];
 					 		
 					 		retiro[0] = retiros_a_detalle[i][0];
 					 		retiro[1] = retiros_a_detalle[i][1];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 					 		retiro[2] = retiros_a_detalle[i][2];
+					 		retiro[3] = retiros_a_detalle[i][3];
 					 		model_retiros.addRow(retiro);
 				}
 				

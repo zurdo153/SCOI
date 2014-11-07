@@ -1,10 +1,14 @@
 package Cat_Auditoria;
 
+import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -94,11 +98,8 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 		
 		trsfiltro = new TableRowSorter(modeloFiltro); 
 		tablaFiltro.setRowSorter(trsfiltro); 
-				
-//		cont.setBackground(new Color(86,161,85));
 		
 		tablaRender();
-		
 		
 		campo.add(txtFolioAsignacion).setBounds(10,38,70,20);
 		campo.add(txtFolioCajero).setBounds(80,38,70,20);
@@ -112,12 +113,31 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 		txtFolioAsignacion.addKeyListener(opFiltroAsignacion);
 		txtFolioCajero.addKeyListener(opFiltroFolioCajero);
 		txtNombreCajero.addKeyListener(opFiltroNombreCajero);
-
+		
+        this.addWindowListener(new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+          	  txtNombreCajero.requestFocus();
+          	enterauto();	  
+           }
+        });
+        
 		setSize(1020,450);
 		setResizable(false);
 		setLocationRelativeTo(null);
 	}
 	
+	public void enterauto(){
+			Robot robot;
+			try {
+	            robot = new Robot();
+	            robot.keyPress(KeyEvent.VK_ENTER);
+	            robot.keyRelease(KeyEvent.VK_ENTER);
+	        } catch (AWTException e) {
+	            e.printStackTrace();
+	        }
+ 	     };
+	
+ 	     
 	@SuppressWarnings("unchecked")
 	public void limpiar_filtro(){
 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
@@ -167,10 +187,6 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(177,177,177));	
 						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
 						if(table.getSelectedRow() == row){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
@@ -183,10 +199,6 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(177,177,177));	
 						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
 						if(table.getSelectedRow() == row){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
@@ -199,10 +211,6 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(177,177,177));	
 						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
 						if(table.getSelectedRow() == row){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
@@ -215,10 +223,6 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(177,177,177));	
 						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
 						if(table.getSelectedRow() == row){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
@@ -231,10 +235,6 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(177,177,177));	
 						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
 						if(table.getSelectedRow() == row){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
@@ -247,10 +247,6 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(177,177,177));	
 						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
 						if(table.getSelectedRow() == row){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
@@ -263,10 +259,6 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(177,177,177));	
 						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
 						if(table.getSelectedRow() == row){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
@@ -279,42 +271,18 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(177,177,177));	
 						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
 						if(table.getSelectedRow() == row){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
 						}
 						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
 						break;
-//					case 8:
-//						componente = new JLabel(value == null? "": value.toString());
-//						if(row %2 == 0){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(177,177,177));	
-//						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
-//						if(table.getSelectedRow() == row){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
-//						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-//						break;
 					case 8: 
 						componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
 						if(row%2==0){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(177,177,177));	
 						}
-//						if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,3).toString())){
-//							((JComponent) componente).setOpaque(true); 
-//							componente.setBackground(new java.awt.Color(186,143,73));
-//						}
 						if(table.getSelectedRow() == row){
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
@@ -337,10 +305,11 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 		
 	}
 	
-	 	public Object[][] getTablaFiltro(String cadena_asignaciones_en_uso){
+	 	public Object[][] getTablaFiltro(String cadena_asignaciones_en_uso,String Establecimiento){
 	 		
 		String cadenaFinal="";
 		String cadenaAsignacionesGuardadasEnSCOI="";
+		
 		
 	 		String asignacionesSCOI ="select asignacion from tb_tabla_de_asignaciones_para_cortes";
 	 		
@@ -376,7 +345,7 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 				"		WHERE " +
 				"		(Asignaciones_cajeros.ultima_modificacion >= @fecha_inicial and Asignaciones_cajeros.ultima_modificacion <= @fecha_final) " +
 				"		AND " +
-				"		Asignaciones_cajeros.status = 'L' " +
+				"		Asignaciones_cajeros.status = 'L' and establecimientos.nombre='"+Establecimiento+ "'" +
 				"		AND Asignaciones_cajeros.Folio not in ("+cadenaFinal+")" +
 				"		GROUP BY Asignaciones_cajeros.Folio, Asignaciones_cajeros.fecha, Asignaciones_cajeros.status, cajeros.cajero, cajeros.nombre, Asignaciones_cajeros.caja,Asignaciones_cajeros.cod_estab " +
 				"		         ,establecimientos.nombre, Asignaciones_cajeros.fecha_liquidacion " +
