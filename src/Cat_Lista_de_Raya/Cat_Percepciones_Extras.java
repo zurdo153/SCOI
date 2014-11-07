@@ -180,7 +180,7 @@ public class Cat_Percepciones_Extras extends Cat_Root {
 						JOptionPane.showMessageDialog(null, "La tabla de percepciones se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}else{
-						JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla Percepciones Extras op_guardar","Error Avisa al Administrador",JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 				}else{

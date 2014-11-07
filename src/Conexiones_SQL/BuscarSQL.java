@@ -5455,7 +5455,7 @@ public class BuscarSQL {
 		
 		String datosif = "exec sp_select_retiro_de_cajero_a_detalle "+folio_cajero+",'"+establecimiento+"';";
 		
-		Matriz = new String[getFilas(datosif)][3];
+		Matriz = new String[getFilas(datosif)][4];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -5466,11 +5466,13 @@ public class BuscarSQL {
 				Matriz[i][0] = rs.getString(1);
 				Matriz[i][1] = rs.getString(2);
 				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = rs.getString(4);
 				
 				i++;
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getRetiros_a_detalle \n  en el procedimiento : sp_select_retiro_de_cajero_a_detalle  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return Matriz;
@@ -5521,5 +5523,21 @@ public class BuscarSQL {
 		}
 		return archivo;
 	}
-
+	
+	public boolean validacion_cajero_fuente_sodas(String clavecajero,String nombrecajero){
+		String query = "exec sp_validar_cajero '" + clavecajero + "','"+nombrecajero+"';";
+		
+		boolean disponible = false;
+		try { Statement s = con.conexion().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	disponible = rs.getBoolean(1);
+			      }
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion validacion_cajero_fuente_sodas \n  en el procedimiento : sp_validar_cajero  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+    return disponible;
+	}
 }

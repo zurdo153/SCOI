@@ -27,7 +27,6 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;

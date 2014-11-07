@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -71,6 +73,12 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 		
 		cmbEstablecimiento.setSelectedItem(establecimiento);
 		Constructor();
+		
+        this.addWindowListener(new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+          	  txtBuscar.requestFocus();
+           }
+        });
 	}
 	
 	@SuppressWarnings("rawtypes")

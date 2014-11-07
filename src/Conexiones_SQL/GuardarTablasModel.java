@@ -132,12 +132,14 @@ public class GuardarTablasModel {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion [tabla_model_persecciones] SQLException:sp_insert_persecciones_extra "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion [tabla_model_persecciones] SQLException:sp_insert_persecciones_extra "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -146,6 +148,7 @@ public class GuardarTablasModel {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion [tabla_model_persecciones] SQLException:sp_insert_persecciones_extra "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

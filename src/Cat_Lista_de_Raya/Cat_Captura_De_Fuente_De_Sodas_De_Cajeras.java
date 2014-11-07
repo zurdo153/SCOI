@@ -48,6 +48,8 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
+	JPasswordField txtClaveCajero = new JPasswordField();
+	
 	JPasswordField txtClave = new JPasswordField();
 	JTextField txtTicket = new JTextField();
 
@@ -55,10 +57,9 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	
 	JPasswordField txtConfirmarCompra = new JPasswordField();
 	
-	JButton btnImprimir = new JButton("Imprimir autorizacion");
-	
-	JButton btnGuardar = new JButton("Guardar");
-	JButton btnCancelar = new JButton("Cancelar");
+	JButton btnImprimir = new JButton("Imprimir autorizacion",new ImageIcon("imagen/Print.png"));
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnCancelar = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	
 	JLabel lblNombre_Empleado = new JLabel();
 	JLabel lblEstablecimiento_Empleado = new JLabel();
@@ -67,6 +68,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	
 	JLabel lblCajero = new JLabel("Cajera(O):");
 	JLabel lblUsuario = new JLabel();
+	JLabel lblClaveCajero = new JLabel("C.Cajero:");
 	
 	JLabel lblClave = new JLabel("Clave:");
 	JLabel lblTicket = new JLabel("Ticket:");
@@ -135,6 +137,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		Imgsigno.setFont(new Font("arial", Font.BOLD, 80));
 		lblSaldo.setFont(new Font("arial", Font.BOLD, 80));
 		
+		lblClaveCajero.setFont(new Font("arial", Font.BOLD, 12));
 		lblClave.setFont(new Font("arial", Font.BOLD, 12));
 		lblTicket.setFont(new Font("arial", Font.BOLD, 12));
 		lblImporte.setFont(new Font("arial", Font.BOLD, 12));
@@ -147,8 +150,10 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		lblEstablecimiento.setFont(new Font("arial", Font.BOLD, 16));
 		lblEstablecimiento_Empleado.setFont(new Font("arial", Font.BOLD, 16));
 		lblPuesto.setFont(new Font("arial", Font.BOLD, 16));
-		lblPuesto_Empleado.setFont(new Font("arial", Font.BOLD, 16));	
+		lblPuesto_Empleado.setFont(new Font("arial", Font.BOLD, 16));
 		
+		
+		lblClaveCajero.setForeground(new java.awt.Color(105,105,105));
 		lblClave.setForeground(new java.awt.Color(105,105,105));
 		lblTicket.setForeground(new java.awt.Color(105,105,105));
 		lblImporte.setForeground(new java.awt.Color(105,105,105));
@@ -164,61 +169,63 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		
 		panel.add(lblCajero).setBounds(20,20,80,20);
 		panel.add(lblUsuario).setBounds(105,20,350,20);
+		panel.add(lblClaveCajero).setBounds(20,45,70,20);
+		panel.add(txtClaveCajero).setBounds(90,45,140,20);
 		
-		panel.add(lblClave).setBounds(20,60,50,20);
-		panel.add(txtClave).setBounds(90,60,130,20);
+		panel.add(lblClave).setBounds(20,85,50,20);
+		panel.add(txtClave).setBounds(90,85,140,20);
 		
-		panel.add(lblTicket).setBounds(20,90,50,20);
-		panel.add(txtTicket).setBounds(90,90,130,20);
+		panel.add(lblTicket).setBounds(20,115,50,20);
+		panel.add(txtTicket).setBounds(90,115,140,20);
 		
-		panel.add(lblImporte).setBounds(20,120,50,20);
-		panel.add(txtImporte).setBounds(90,120,130,20);
+		panel.add(lblImporte).setBounds(20,145,50,20);
+		panel.add(txtImporte).setBounds(90,145,140,20);
 		
-		panel.add(lblConfirmarCompra).setBounds(20,150,70,20);
-		panel.add(txtConfirmarCompra).setBounds(90,150,130,20);
+		panel.add(lblConfirmarCompra).setBounds(20,180,70,20);
+		panel.add(txtConfirmarCompra).setBounds(90,180,140,20);
 		
-		panel.add(lblFoto).setBounds(235,60,170,170);
+		panel.add(lblFoto).setBounds(235,85,170,170);
 		
-		panel.add(lblNombre).setBounds(420,60,70,20);
-		panel.add(lblNombre_Empleado).setBounds(490,60,320,20);
+		panel.add(lblNombre).setBounds(420,80,70,20);
+		panel.add(lblNombre_Empleado).setBounds(490,80,320,20);
 		
-		panel.add(lblEstablecimiento).setBounds(420,85,130,20);
-		panel.add(lblEstablecimiento_Empleado).setBounds(550,85,280,20);
+		panel.add(lblEstablecimiento).setBounds(420,105,130,20);
+		panel.add(lblEstablecimiento_Empleado).setBounds(550,105,280,20);
 		
-		panel.add(lblPuesto).setBounds(420,110,70,20);
-		panel.add(lblPuesto_Empleado).setBounds(490,110,320,20);
+		panel.add(lblPuesto).setBounds(420,130,70,20);
+		panel.add(lblPuesto_Empleado).setBounds(490,130,320,20);
 		
-		panel.add(lblEnmarcadoSaldo).setBounds(440,135,380,100);
-		panel.add(Imgsigno).setBounds(450,150,80,80);
-		panel.add(lblSaldo).setBounds(500,150,360,80);
+		panel.add(lblEnmarcadoSaldo).setBounds(420,155,400,100);
+		panel.add(Imgsigno).setBounds(430,170,80,80);
+		panel.add(lblSaldo).setBounds(520,170,360,80);
 		
-		panel.add(btnImprimir).setBounds(30,180,180,20);
-		panel.add(btnGuardar).setBounds(30,205,80,20);
-		panel.add(btnCancelar).setBounds(130,205,80,20);
+		panel.add(btnImprimir).setBounds(20,210,210,20);
+		panel.add(btnGuardar).setBounds(20,235,100,20);
+		panel.add(btnCancelar).setBounds(130,235,100,20);
 		
-		panel.add(panelScroll).setBounds(20,240,800,300);
+		panel.add(panelScroll).setBounds(20,260,800,300);
 		
 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.jpg");
 	    lblFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(lblFoto.getWidth(),lblFoto.getHeight(), Image.SCALE_DEFAULT)));	
 		
+	    
+	    txtClaveCajero.setEnabled(false);
 		txtTicket.setEnabled(false);
 		txtImporte.setEnabled(false);
 		txtConfirmarCompra.setEnabled(false);
-		
 		btnGuardar.setEnabled(false);
 		
+		txtClaveCajero.addActionListener(claveCajero);
 		txtImporte.addKeyListener(numerico_action_punto);
-		
 		txtClave.addActionListener(opClave);
 		txtTicket.addActionListener(opTiket);
 		txtImporte.addActionListener(importe);
 		txtConfirmarCompra.addActionListener(guardar);
-		
 		btnGuardar.addActionListener(guardar);
 		btnImprimir.addActionListener(opImprmiAutorizacion);
 		btnCancelar.addActionListener(cancelar);
 		
-		this.setSize(850,600);
+		this.setSize(850,610);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -229,6 +236,36 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	public Cat_Captura_De_Fuente_De_Sodas_De_Cajeras(){
 		getContenedor();
 	}
+	
+	ActionListener claveCajero = new ActionListener() {
+		@SuppressWarnings("deprecation")
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			if(txtClaveCajero.getText().toUpperCase().equals("")){
+				JOptionPane.showMessageDialog(null, "Se Necesita Pasar El Gafete Del Cajero!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				return;
+				
+				}else{
+					try {
+						System.out.println(txtClaveCajero.getText());
+						System.out.println(lblUsuario.getText().toUpperCase().trim());
+						System.out.println(lblUsuario.getText().toUpperCase().trim());
+						
+						if(new Obj_Captura_Fuente_Sodas().buscarcajero(txtClaveCajero.getText(),lblUsuario.getText().toUpperCase().trim())){
+							
+						txtTicket.setEnabled(true);
+						txtTicket.requestFocus();
+						return;
+						 }
+					} catch (SQLException e) {
+						JOptionPane.showMessageDialog(null, "Error al Buscar el Cajero en Cat_Captura_De_Fuente_De_Sodas_Cajeras en la ActionListener claveCajero!!","Aviso",JOptionPane.ERROR_MESSAGE);
+						e.printStackTrace();
+					}
+
+			}
+		}
+	};
+	
 	
 	ActionListener opClave = new ActionListener() {
 		@SuppressWarnings("deprecation")
@@ -274,26 +311,27 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 							
 							txtClave.setText("");
 							txtClave.requestFocus();
-							JOptionPane.showMessageDialog(null,"No cuenta con saldo suficiente","Aviso", JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null,"No cuenta con Saldo Suficiente","Aviso", JOptionPane.WARNING_MESSAGE);
 							return;
 						}else{
 						
 							txtClave.setEnabled(false);
-							txtTicket.setEnabled(true);
-							txtTicket.requestFocus();
+							
+							txtClaveCajero.setEnabled(true);
+							txtClaveCajero.requestFocus();
 					}
 							
 					}else{
 						
 						txtClave.setText("");
 						txtClave.requestFocus();
-						JOptionPane.showMessageDialog(null,"No se encontro al empleado o no cuenta \ncon fuente de sodas favor de comunicarse \na Desarrollo Humano","Aviso", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,"No Se Encontro al Empleado o no Cuenta \n Con Fuente de Sodas Favor de Comunicarse \n a Desarrollo Humano","Aviso", JOptionPane.WARNING_MESSAGE);
 						return;
 					}
 			}else{
 				txtClave.setText("");
 				txtClave.requestFocus();
-				JOptionPane.showMessageDialog(null,"Pase su gafete para confirmar empleado","Aviso", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Pase el Gafete para Confirmar el Cargo al Empleado","Aviso", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 		}
