@@ -27,6 +27,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -105,6 +106,8 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
     JScrollPane scrollAsignado = new JScrollPane(tabla);
 	JTextField txtFoliofacturaFiltro = new JTextField();
 	JTextField txtProveedorFiltro = new JTextField();
+	JTextField txtFacturaFiltro = new JTextField();
+	
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
 	
@@ -147,10 +150,14 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
+		
 		txtFoliofacturaFiltro.setToolTipText("Filtro Por Folio de Factura del Proveedor");
 		txtProveedorFiltro.setToolTipText("Filtro Por Proveedor");
+		txtFacturaFiltro.setToolTipText("Factura");
+		
 		panel.add(txtFoliofacturaFiltro).setBounds(20,153,50,20);
 		panel.add(txtProveedorFiltro).setBounds(70,153,205,20);
+		panel.add(txtFacturaFiltro).setBounds(275,153,90,20);
 		
 		panel.add(getPanelTabla()).setBounds(20,175,720,520);
 		panel.add(new JLabel("Cod. Proveedor:")).setBounds(20,30,100,20);
@@ -203,6 +210,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 //     autofiltros de la tabla
 		txtFoliofacturaFiltro.addKeyListener(opFiltroFolio);
 		txtProveedorFiltro.addKeyListener(opFiltroNombre);
+		txtFacturaFiltro.addKeyListener(opFiltroFactura);
 		tabla.addMouseListener(opTablaFiltroSeleccion);
 		seleccionar_click(tabla);
 		
@@ -606,9 +614,9 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 				}
 				tabla.setValueAt(true, fila, columna);
 				
-				cod_prvrecibido = (String)tabla.getValueAt(fila, 0);
-				cod_factura_recibido  =(String) tabla.getValueAt(fila, 2);
-				proveedor_recibido =(String) tabla.getValueAt(fila, 1);
+				cod_prvrecibido = tabla.getValueAt(fila, 0).toString();
+				cod_factura_recibido  = tabla.getValueAt(fila, 2).toString();
+				proveedor_recibido = tabla.getValueAt(fila, 1).toString();
 				
 				btnRecibido.setEnabled(true);
 				}
@@ -622,7 +630,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	KeyListener opFiltroFolio = new KeyListener(){
 		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFoliofacturaFiltro.getText(), 2));
+			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFoliofacturaFiltro.getText(), 0));
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}	
@@ -632,6 +640,15 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
 			trsfiltro.setRowFilter(RowFilter.regexFilter(txtProveedorFiltro.getText().toUpperCase().trim(), 1));
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	    };
+	    
+	KeyListener opFiltroFactura = new KeyListener(){
+		@SuppressWarnings("unchecked")
+		public void keyReleased(KeyEvent arg0) {
+			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFacturaFiltro.getText().toUpperCase().trim(), 2));
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -658,18 +675,21 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	
 	
 	
-	String xml = "";
-	String pdf = "";
+	String xml_pdf = "";
+//	String pdf = "";
 	public class Cat_Almacenar_XML extends JDialog{
 		
 		Container contenedor = getContentPane();
 		JLayeredPane panelxml = new JLayeredPane();
 		
 		JLabel lblXml = new JLabel("");
-		JLabel lblPdf = new JLabel("");
+//		JLabel lblPdf = new JLabel("");
 		
-		JButton btnXML = new JButton("XML",new ImageIcon("imagen/Nuevo.png"));
-		JButton btnPDF = new JButton("PDF",new ImageIcon("imagen/Nuevo.png"));
+		String[] tipoDeArchivo = {"Seleccione Un Tipo de Archivo","XML","PDF"};
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		JComboBox cmbTipo = new JComboBox(tipoDeArchivo);
+		
+		JButton btnXML_PDF = new JButton("Importar",new ImageIcon("imagen/Nuevo.png"));
 		JButton btnGuardarFacXml = new JButton("GUARDAR",new ImageIcon("imagen/Aplicar.png"));
 		
 		public Cat_Almacenar_XML(){
@@ -682,37 +702,32 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 			lblXml.setFont(new Font("arial",Font.BOLD,14));
 			lblXml.setForeground(Color.DARK_GRAY);
 			
-			lblPdf.setFont(new Font("arial",Font.BOLD,14));
-			lblPdf.setForeground(Color.DARK_GRAY);
-
-			panelxml.add(btnXML).setBounds(15,80,80,35);
-			panelxml.add(lblXml).setBounds(100,88,270,20);
 			
-			panelxml.add(btnPDF).setBounds(15,120,80,35);
-			panelxml.add(lblPdf).setBounds(100,128,270,20);
+			panelxml.add(cmbTipo).setBounds(15,30,180,20);
+			panelxml.add(btnXML_PDF).setBounds(15,80,100,35);
+			panelxml.add(lblXml).setBounds(120,88,270,20);
 			
-			
-			panelxml.add(btnGuardarFacXml).setBounds(230,170,120,20);
+			panelxml.add(btnGuardarFacXml).setBounds(250,140,120,20);
 			
 	        this.contenedor.add(panelxml);
 	        
-	        btnXML.addActionListener(opExaminarXML);
-	        btnPDF.addActionListener(opExaminarPDF);
+	        btnXML_PDF.addActionListener(opExaminarXML_PDF);
+//	        btnPDF.addActionListener(opExaminarPDF);
 	        btnGuardarFacXml.addActionListener(opGauardarXMLpdf);
 	        
-			this.setSize(380,230);
+			this.setSize(400,200);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		}
 		
-		ActionListener opGauardarXMLpdf = new ActionListener(){
+	ActionListener opGauardarXMLpdf = new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				
 			if(JOptionPane.showConfirmDialog(null,"De El Proveedor:"+proveedor_recibido+" La Factura:"+cod_factura_recibido+" \n Va Hacer Marcada Como Recibida: Confirmar?") == 0){
 				
-//				boolean proveedorr = 
-						new Obj_Proveedores().marcar_recibido_factura(cod_prvrecibido.trim(), cod_factura_recibido.trim(),new File(xml),new File(pdf));
+//				boolean proveedorr =
+						new Obj_Proveedores().marcar_recibido_factura(cod_prvrecibido.trim(), cod_factura_recibido.trim(),cmbTipo.getSelectedItem().toString(),new File(xml_pdf));
 				
 				while(tabla.getRowCount()>0){
 						modelo.removeRow(0);  }
@@ -731,9 +746,9 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 			                    modelo.addRow(fila);
 			              }
 			            
-	            xml ="";
-	            pdf="";
+	            xml_pdf ="";
 				JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+				dispose();
 			}else{
 				JOptionPane.showMessageDialog(null,"Se Cancelo La Marcacion De La Factura","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 				return;
@@ -741,56 +756,60 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		}
 	};
 		
-		ActionListener opExaminarXML = new ActionListener(){
+		ActionListener opExaminarXML_PDF = new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				
-				 JFileChooser elegir = new JFileChooser();
-                int opcion = elegir.showOpenDialog(btnXML);
-           
-                //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
-                if (opcion == JFileChooser.APPROVE_OPTION) {
-                	
-                    String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
-                    String nombre = elegir.getSelectedFile().getName(); //obtiene nombre del archivo
-				    	
-                    if(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).equals(".xml")){
-                    	xml = pathArchivo;
-                    	lblXml.setText(nombre);
-                    }else{
-                    	xml = "";
-                    	lblXml.setText("");
-                    	JOptionPane.showMessageDialog(null,"El archivo seleccionado es de tipo ("+pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).trim()+") \nCuando se requiere uno de tipo (.xml)","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-        				return;
-                    }
-                    
-                	
-                 }
-			}
-		};
-		
-		ActionListener opExaminarPDF = new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				
-				 JFileChooser elegir = new JFileChooser();
-                 int opcion = elegir.showOpenDialog(btnXML);
-            
-                 //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
-                 if (opcion == JFileChooser.APPROVE_OPTION) {
-                	 
-                     String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
-                     String nombre = elegir.getSelectedFile().getName(); //obtiene nombre del archivo
-                	 
-                     if(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).equals(".pdf")){
-                     	pdf = pathArchivo;
-                     	lblPdf.setText(nombre);
-                     }else{
-                     	pdf = "";
-                     	lblPdf.setText("");
-                     	JOptionPane.showMessageDialog(null,"El archivo seleccionado es de tipo ("+pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).trim()+") \nCuando se requiere uno de tipo (.pdf)","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-         				return;
-                     }
-                 }
+				   
+					if(cmbTipo.getSelectedIndex()==0){
+		                   	JOptionPane.showMessageDialog(null,"No se ha seleccionado el tipo de archivo que guardara","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+		       				return;
+	                }else{
+	   				 
+		                	JFileChooser elegir = new JFileChooser();
+		                	int opcion = elegir.showOpenDialog(btnXML_PDF);
+		            
+			                 //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
+			                 if (opcion == JFileChooser.APPROVE_OPTION) {
+			                 	
+			                     String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
+			                     String nombre = elegir.getSelectedFile().getName(); //obtiene nombre del archivo
+			 				    	
+			                         if(pathArchivo.toUpperCase().substring(pathArchivo.length()-3, pathArchivo.length()).equals(cmbTipo.getSelectedItem().toString().toUpperCase().substring(cmbTipo.getSelectedItem().toString().length()-3,cmbTipo.getSelectedItem().toString().length()))){
+			                         	xml_pdf = pathArchivo;
+			                         	lblXml.setText(nombre);
+			                         }else{
+			                         	xml_pdf = "";
+			                         	lblXml.setText("");
+			                         	JOptionPane.showMessageDialog(null,"El archivo seleccionado es de tipo ("+pathArchivo.substring(pathArchivo.length()-3, pathArchivo.length()).trim()+") \nCuando se requiere uno de tipo ("+cmbTipo.getSelectedItem().toString().toLowerCase()+")","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+			             				return;
+			                         }  
+			                 }
+	                }
 			}
 		};
 	}
 }
+
+//		ActionListener opExaminarPDF = new ActionListener(){
+//			public void actionPerformed(ActionEvent e) {
+//				
+//				 JFileChooser elegir = new JFileChooser();
+//                 int opcion = elegir.showOpenDialog(btnXML);
+//            
+//                 //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
+//                 if (opcion == JFileChooser.APPROVE_OPTION) {
+//                	 
+//                     String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
+//                     String nombre = elegir.getSelectedFile().getName(); //obtiene nombre del archivo
+//                	 
+//                     if(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).equals(".pdf")){
+//                     	pdf = pathArchivo;
+//                     	lblPdf.setText(nombre);
+//                     }else{
+//                     	pdf = "";
+//                     	lblPdf.setText("");
+//                     	JOptionPane.showMessageDialog(null,"El archivo seleccionado es de tipo ("+pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).trim()+") \nCuando se requiere uno de tipo (.pdf)","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//         				return;
+//                     }
+//                 }
+//			}
+//		};

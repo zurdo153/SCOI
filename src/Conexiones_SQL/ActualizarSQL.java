@@ -2571,36 +2571,27 @@ public class ActualizarSQL {
 		return true;
 	}	
 			
-	public boolean marcar_c_recibido_factura(String cod_prov_recibido, String folio_factura_recibido,File xml,File pdf){
+	public boolean marcar_c_recibido_factura(String cod_prov_recibido, String folio_factura_recibido,String tipo_archivo,File xml_pdf){
 		
-		System.out.println(xml);
-		System.out.println(pdf);
-
-			
-		
-		String query = "update tb_control_de_facturas_y_xml set status=2,fecha_recibido=getdate(),xml=?,pdf=? where cod_prv='"+cod_prov_recibido+"' and folio_factura='"+folio_factura_recibido+"'";
+		String query = "exec sp_update_captura_de_archivos_xml_pdf ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmtabla = null;
 		try {
-
 			
 			    con.setAutoCommit(false);
   			    pstmtabla = con.prepareStatement(query);
   			    
+  				pstmtabla.setString(1, tipo_archivo);
   				
-  				
-  				FileInputStream stream_xml = new FileInputStream(xml);
-  				pstmtabla.setBinaryStream(1, stream_xml);
-  				
-  				FileInputStream stream_pdf = new FileInputStream(pdf);
+  				FileInputStream stream_pdf = new FileInputStream(xml_pdf);
   				pstmtabla.setBinaryStream(2, stream_pdf);
   				
-  				System.out.println(stream_xml);
-  				System.out.println(stream_pdf);
+  				pstmtabla.setString(3, cod_prov_recibido);
+  				pstmtabla.setString(4, folio_factura_recibido);
   				
-  			    
-//				pstmtabla.executeUpdate();
+				pstmtabla.executeUpdate();
 				con.commit();
+				
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
 			if(con != null){
