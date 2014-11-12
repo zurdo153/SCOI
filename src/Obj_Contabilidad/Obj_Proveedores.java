@@ -89,8 +89,8 @@ public class Obj_Proveedores {
 		return new ActualizarSQL().Factura_Provedores_xml(this,folio_Factura_Editada); 
 		}
 	
-	public boolean marcar_recibido_factura(String cod_prov_recibido, String folio_factura_recibido,File xml,File pdf){
-		return new ActualizarSQL().marcar_c_recibido_factura(cod_prov_recibido, folio_factura_recibido,xml,pdf); 
+	public boolean marcar_recibido_factura(String cod_prov_recibido, String folio_factura_recibido,String tipo_archivo,File xml_pdf){
+		return new ActualizarSQL().marcar_c_recibido_factura(cod_prov_recibido, folio_factura_recibido,tipo_archivo,xml_pdf); 
 		}
 	
 }
