@@ -732,7 +732,7 @@ public class BuscarSQL {
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				denominaciones.setFolio(rs.getInt("folio"));
-				denominaciones.setDenominacion(rs.getString("nombre").trim());
+				denominaciones.setDenominacion(rs.getString("denominacion").trim());
 				denominaciones.setMoneda(rs.getString("moneda"));
 				denominaciones.setStatus((rs.getString("status").equals("1"))?true:false);
 			}

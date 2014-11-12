@@ -22,7 +22,6 @@ public class Cat_Reporte_General_de_Asistencia_Por_Establecimiento extends JFram
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Cat_Reporte_General_de_Asistencia_Por_Establecimiento(String fecha_inicio, String fecha_final, String Establecimiento,String Departamentos, String folios_empleados) {
 		String query = "exec sp_Reporte_General_de_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamentos+"','"+folios_empleados+"'";
-		System.out.println(query);
 		Statement stmt = null;
 		try {
 			

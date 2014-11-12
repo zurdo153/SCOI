@@ -99,6 +99,18 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JButton btnGuardarCorte = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	JButton btnCancelar = new JButton("Cancelar",new ImageIcon("imagen/deshacer16.png"));
 	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
+	JButton btnEfectivo = new JButton("",new ImageIcon("imagen/dinero-icono-8797-16.png"));
+	JButton btnDeposito = new JButton("",new ImageIcon("imagen/monedas-en-efectivo-en-moneda-icono-4023-16.png"));
+	JButton btnCheques	= new JButton("");
+	JButton btnAsignacion = new JButton("Asignaciones",new ImageIcon("imagen/Accounting.png"));
+	JButton btnQuitarAsignacion = new JButton("Quitar Asignacion",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+	JButton btnRetiroCajero = new JButton("",new ImageIcon("imagen/boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-16.png"));
+	JButton btnVauchers = new JButton("Vouchers",new ImageIcon("imagen/tarjeta-de-credito-visa-icono-8242-16.png"));
+	JButton btnQuitarVauchers = new JButton("Quitar Voucher",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+	JButton btnReimprimir = new JButton("Reimprimir Corte Guardado",new ImageIcon("imagen/Print.png"));
+	JButton btnFS = new JButton("",new ImageIcon("imagen/food-bread-toast-icone-4706-16.png"));
+	
+
 	
 	JLabel lblMarco = new JLabel();
 	
@@ -124,11 +136,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	JTextField txtTotalFS = new JTextField("");
 	
-	JButton btnEfectivo = new JButton("",new ImageIcon("imagen/dinero-icono-8797-16.png"));
-	JButton btnDeposito = new JButton("",new ImageIcon("imagen/monedas-en-efectivo-en-moneda-icono-4023-16.png"));
-	JButton btnCheques	= new JButton("",new ImageIcon ("imagen/Icono-cheque16.png"));
 	
-	JButton btnFS = new JButton("fs");
+
 	
 	 Border border = LineBorder.createGrayLineBorder();
 //	    Icon warnIcon = MetalIconFactory.getTreeComputerIcon();
@@ -140,15 +149,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	int folio_usuario;
 	JLabel lblUsuario = new JLabel("USUARIO: ");
 	
-	JButton btnAsignacion = new JButton("Asignaciones",new ImageIcon("imagen/Accounting.png"));
-	JButton btnQuitarAsignacion = new JButton("Quitar Asignacion",new ImageIcon("imagen/Delete.png"));
 	
-	JButton btnRetiroCajero = new JButton("",new ImageIcon("imagen/boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-16.png"));
-	
-	JButton btnVauchers = new JButton("Vauchers");
-	JButton btnQuitarVauchers = new JButton("Quitar Voucher",new ImageIcon("imagen/Delete.png"));
-	
-	JButton btnReimprimir = new JButton("Reimprimir Corte Guardado",new ImageIcon("imagen/Print.png"));
 	
 	DefaultTableModel modelo_asignaciones = new DefaultTableModel(null,
             new String[]{"Asignacion", "F. Cajero(a)","Nombre Cajera(o)","Total","Cod Estab","Establecimiento","Fecha de Asignacion","Fecha de Liquidacion"}
@@ -188,7 +189,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JScrollPane scroll = new JScrollPane(tabla_asignaciones,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
 	DefaultTableModel modelo_vauchers = new DefaultTableModel(null,
-            new String[]{"Ticket", "Afiliacion", "Numero De Tarjeta",  "Fecha E.", "Cod. Aut.", "Tipo De Targeta", "Banco Emisor", "Tipo De Operacion", "Fecha Aut", "Importe","Asignacion","Retiro cliente"}
+            new String[]{"Ticket", "Afiliacion", "Numero De Tarjeta",  "Fecha E.", "Cod. Aut.", "Tipo De Tarjeta", "Banco Emisor", "Tipo De Operacion", "Fecha Aut", "Importe","Asignacion","Retiro cliente"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -233,7 +234,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JScrollPane scrollVauchers = new JScrollPane(tabla_vauchers,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
 	DefaultTableModel modelo_totales_por_fecha = new DefaultTableModel(null,
-            new String[]{"Asignacion","Fecha", "Cantidad Cheque"}
+            new String[]{"Asignacion","Fecha", "Importe Total"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -400,7 +401,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(txtTotalFS).setBounds(ancho-40,y,ancho-40,20);
 		panel.add(btnFS).setBounds(ancho*2-80,y,29,20);
 		
-		panel.add(new JLabel("Total De Vauchers: ")).setBounds(x*10+50,y,ancho,20);
+		panel.add(new JLabel("Total De Vouchers: ")).setBounds(x*10+50,y,ancho,20);
 		panel.add(txtTotalVaucher).setBounds(ancho+x*10+30,y,ancho*2-190,20);
 		
 		panel.add(btnVauchers).setBounds(x,y+=25,ancho-40,20);
@@ -459,6 +460,14 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		txtDeposito.addKeyListener(validaNumericoConPunto2);
 		
 		lblFoto.setBorder(border);
+		
+		ImageIcon tmpIconBtncheque = new ImageIcon("imagen/Icono_cheque.png");
+		Icon iconobtncheque = new ImageIcon(tmpIconBtncheque.getImage().getScaledInstance(btnCheques.getWidth(), btnCheques.getHeight(), Image.SCALE_DEFAULT));
+		btnCheques.setIcon(iconobtncheque);
+		
+//		ImageIcon tmpIconBtnfsodas = new ImageIcon("imagen/captura_fuente_de_Sodas_64.png");
+//		Icon iconobtnfsodas = new ImageIcon(tmpIconBtnfsodas.getImage().getScaledInstance(btnFS.getWidth(), btnFS.getHeight(), Image.SCALE_DEFAULT));
+//		btnFS.setIcon(iconobtnfsodas);
 		
 //		Blokear funcion de cerrar ventana de windows
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -1010,9 +1019,29 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		for(int i=0; i<tabla_asignaciones.getRowCount(); i++){
 			
-			String consulta_ta_rluz = "declare @asignacion varchar(50) " +
+			String consulta_ta_rluz = "declare @asignacion varchar(50), @sumaapartadosnuevos money " +
+										
+					
 										" set @asignacion= '"+modelo_asignaciones.getValueAt(i,0).toString().trim()+"' " +
-										" 	SELECT '"+lblFolio_Corte.getText()+"' as folio_corte" +
+										" 	set @sumaapartadosnuevos=(SELECT    isnull(sum(abonos_clientes.importe),0) as Abono_Apartados " +
+										"								FROM         abonos_clientes with(nolock) " +
+										"								  LEFT OUTER JOIN  facremtick with(nolock) ON  facremtick.folio=abonos_clientes.folio_aplicado " +
+										"							      LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=facremtick.folio_cajero " +
+										"								where  facremtick.status <> 'C' and facremtick.cond_pago = '4' AND facremtick.folio_cajero=@asignacion and abonos_clientes.status='V' and abonos_clientes.fecha>=asignaciones_cajeros.fecha_inicial and abonos_clientes.fecha<=asignaciones_cajeros.fecha_liquidacion) " +
+										"											SELECT  '"+lblFolio_Corte.getText()+"' as folio_corte " +
+												"															 ,'APARTADOS' as concepto " +
+												"															 ,@asignacion as asignacion " +
+												"															 ,isnull(sum(case when liquidaciones_tickets.afectacion = '+' then liquidaciones_tickets.importe else liquidaciones_tickets.importe * -1 end),0)+@sumaapartadosnuevos as total " +
+												"															 ,convert(varchar(50),asignaciones_cajeros.fecha_liquidacion,103) as fecha " +
+												"														from ((select ticket  from liquidaciones_tickets with(nolock) where folio_asignacion=@asignacion) except " +
+												"																			 (select folio  as ticket from facremtick with(nolock) where folio_cajero=@asignacion)) folio " +
+												"														   INNER JOIN liquidaciones_tickets on liquidaciones_tickets.folio_asignacion=@asignacion and folio.ticket=liquidaciones_tickets.ticket " +
+												"														   LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=@asignacion " +
+												"														 group by convert(varchar(50),asignaciones_cajeros.fecha_liquidacion,103) " +
+												"                                           UNION ALL " +
+												
+												
+										"	SELECT '"+lblFolio_Corte.getText()+"' as folio_corte" +
 										"       ,'TA' as concepto " +
 										" 		,@asignacion as asignacion" +
 										"		,SUM(ta)as total " +
@@ -1098,6 +1127,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					while(rs.next()){
 						txtTiempoAire.setText(rs.getString("TA"));
 						txtReciboLuz.setText(rs.getString("RLUZ"));
+						txtApartados.setText(rs.getString("APA"));
 					}
 				con.commit();
 				
@@ -3046,6 +3076,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 //	variables para calculo dinamico de la diferiencia de corte  funcion = (calculoDinamico());
 	double corteSistema = 0;
+	double apartado = 0;
 	
 	double efectivo = 0;
 	double retiroCajero = 0;
@@ -3065,6 +3096,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		public void calculoDinamico(){
 			
 			corteSistema = txtCorteSistema.getText().equals("")?0:Double.valueOf(txtCorteSistema.getText());
+			apartado = txtApartados.getText().equals("")?0:Double.valueOf(txtApartados.getText());
 			
 			efectivo = txtEfectivo.getText().equals("")?0:Double.valueOf(txtEfectivo.getText());
 			retiroCajero = txtRetiroCajero.getText().equals("")?0:Double.valueOf(txtRetiroCajero.getText());
@@ -3079,7 +3111,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			retiroCliente = txtTotalRetiros.getText().equals("")?0:Double.parseDouble(txtTotalRetiros.getText());
 			
 			
-			diferienciaCorte = (corteSistema-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
+			diferienciaCorte = ((corteSistema+apartado)-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
 			
 			if(diferienciaCorte < 0){
 					lblEtiquetaCorte.setText("Sobrante");

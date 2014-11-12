@@ -172,13 +172,13 @@ public class Init_Login extends JFrame{
 	JPasswordField txtContrasenaNueva = new Componentes().textPassword(new JPasswordField(), "Contraseña Nueva", 50);
 	JPasswordField txtContrasenaConfirmar = new Componentes().textPassword(new JPasswordField(), "Confirmar Contraseña", 50);
 	
-	JButton btnSalir = new JButton("Salir");
+	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/logout-icone-6625-16.png"));
 	JButton btnAceptar = new JButton("Entrar");
 	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
-	JButton btnCambiarContrasena =new JButton ("Cambiar Contraseña");
+	JButton btnCambiarContrasena =new JButton ("Cambiar Contraseña", new ImageIcon("imagen/signo-kgpg-icono-4248-16.png"));
 	
 	JButton btnGuardarContrasena =new JButton ("Guardar Contraseña");
-	JButton btnValidarContrasena =new JButton ("Validar Contraseña");
+	JButton btnValidarContrasena =new JButton ("Validar Contraseña",new ImageIcon ("imagen/Key.png"));
 	
 	JLabel lblLogo = new JLabel(new ImageIcon("imagen/LogPrincipal.png"));
 	
@@ -370,7 +370,7 @@ public class Init_Login extends JFrame{
 			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,150,w);
 			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,150,w);
 			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,150,w);
-			panel.add(btnSalir).setBounds                (x+=155,y     ,65 ,w);
+			panel.add(btnSalir).setBounds                (x+=150,y     ,75 ,w);
 			
 			y=490;
 			panel.add(btnBuscar).setBounds               (x+70  ,y     ,30,w);
@@ -472,7 +472,7 @@ public class Init_Login extends JFrame{
 			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,150,w);
 			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,150,w);
 			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,150,w);
-			panel.add(btnSalir).setBounds                (x+=155,y     ,65 ,w);
+			panel.add(btnSalir).setBounds                (x+=150,y     ,75 ,w);
 			
 			y=400;
 			panel.add(btnBuscar).setBounds               (x+70  ,y     ,30 ,w);
@@ -573,7 +573,7 @@ public class Init_Login extends JFrame{
 			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,150,w);
 			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,150,w);
 			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,150,w);
-			panel.add(btnSalir).setBounds                (x+=155,y     ,65 ,w);
+			panel.add(btnSalir).setBounds                (x+=150,y     ,75 ,w);
 			
 			y=325;
 			panel.add(btnBuscar).setBounds               (x+35  ,y     ,30 ,w);
@@ -643,6 +643,7 @@ public class Init_Login extends JFrame{
 			}else{
 				JOptionPane.showMessageDialog(null, "Ingrese el Folio del Usuario","Aviso",JOptionPane.WARNING_MESSAGE);
 				txtFolio.requestFocus(true);
+				new Cat_Seleccion_De_Usuario().setVisible(true);
 				return;
 			}
 		}		
@@ -915,7 +916,7 @@ public class Submenusbtns{
 			
 			this.setModal(true);
 			
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/usuario-busquedaicono-4661-64.png"));
 			this.setTitle("Filtro de Empleados");
 			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Empleado"));
 			trsfiltro = new TableRowSorter(model); 

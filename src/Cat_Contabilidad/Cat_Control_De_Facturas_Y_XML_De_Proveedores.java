@@ -119,7 +119,6 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	
 	JButton btnCambProveedorr = new JButton("Cambiar de Proveedor ",new ImageIcon("imagen/buscar.png"));
 	JButton btnReportes = new JButton("Reportes de Captura",new ImageIcon("imagen/orange-folder-saved-search-icone-8197-16.png"));
-	
 	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));

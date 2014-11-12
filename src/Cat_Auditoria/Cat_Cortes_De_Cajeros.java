@@ -2,6 +2,7 @@ package Cat_Auditoria;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -84,6 +85,7 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 	@SuppressWarnings("rawtypes")
 	public void Constructor(){
 		this.setTitle("Filtro Cortes ");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bolsa-de-dinero-en-efectivo-icono-6673-32.png"));
 		
 //		cont.setBackground(new Color(86,161,85));
 		
@@ -96,7 +98,8 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 		trsfiltro = new TableRowSorter(model); 
 		tabla.setRowSorter(trsfiltro);  
 		
-		campo.add(new JLabel("ESTABLECIMIENTO : ")).setBounds(15,15,135,20);
+		campo.add(new JLabel("ESTABLECIMIENTO:")).setBounds(15,15,120,20);
+		campo.add(new JLabel(new ImageIcon("imagen/folder-home-home-icone-5663-16.png"))).setBounds(120,15,20,20); 
 		campo.add(cmbEstablecimiento).setBounds(138, 15, 235, 20);
 		
 		campo.add(new JLabel("BUSCAR : ")).setBounds(15,40,70,20);

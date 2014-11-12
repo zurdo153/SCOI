@@ -18,7 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
@@ -35,7 +35,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
-public class Cat_Filtro_De_Asignacion extends JFrame{
+public class Cat_Filtro_De_Asignacion extends JDialog{
 	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
@@ -92,7 +92,8 @@ public class Cat_Filtro_De_Asignacion extends JFrame{
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Cat_Filtro_De_Asignacion() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+		setModal(true);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/Accounting.png"));
 		setTitle("Filtro De Asignaciones");
 		campo.setBorder(BorderFactory.createTitledBorder("Asignaciones Liquidadas"));
 		

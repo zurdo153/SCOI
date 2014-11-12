@@ -10,7 +10,6 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import com.lowagie.text.pdf.codec.Base64.InputStream;
 
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Usuario;

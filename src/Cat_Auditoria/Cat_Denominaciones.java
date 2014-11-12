@@ -1,7 +1,7 @@
 package Cat_Auditoria;
 
-import java.awt.Component;
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,11 +12,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -24,13 +26,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import Conexiones_SQL.Connexion;
 import Obj_Auditoria.Obj_Denominaciones;
+import Obj_Principal.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Denominaciones extends JFrame{
@@ -61,37 +62,35 @@ public class Cat_Denominaciones extends JFrame{
 	
 	JCheckBox chStatus = new JCheckBox("Status");
 	
-	JButton btnSalir = new JButton("Salir");
-	JButton btnDeshacer = new JButton("Deshacer");
-	JButton btnGuardar = new JButton("Guardar");
-	JButton btnEditar = new JButton("Editar");
-	JButton btnNuevo = new JButton("Nuevo");
+	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
+	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
+	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
 	
 	public Cat_Denominaciones(){
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Toolbox.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-icono-8797-32.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Denominaciones"));
 		
 		this.setTitle("Denominaciones");
 		
-//		cont.setBackground(new Color(86,161,85));
-		
 		int x = 15, y=30, ancho=100;
 		
 		panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);
-		panel.add(txtFolio).setBounds(ancho,y,ancho,20);
+		panel.add(txtFolio).setBounds(ancho+10,y,ancho-10,20);
 		
 		panel.add(chStatus).setBounds(x+(ancho*2)+20,y,70,20);
 		
 		panel.add(new JLabel("Denominacion:")).setBounds(x,y+=30,ancho,20);
-		panel.add(txtDenominacion).setBounds(ancho,y,ancho+ancho,20);
+		panel.add(txtDenominacion).setBounds(ancho+10,y,ancho+ancho-10,20);
 		panel.add(btnNuevo).setBounds(x+290,y,ancho,20);
 		
 		panel.add(new JLabel("Valor denominacion:")).setBounds(x,y+=30,ancho+20,20);
-		panel.add(txtValorD).setBounds(ancho+40,y,ancho+ancho-40,20);
+		panel.add(txtValorD).setBounds(ancho+10,y,ancho+ancho-10,20);
 		
 		panel.add(new JLabel("Moneda:")).setBounds(x,y+=30,ancho,20);
-		panel.add(cmbMoneda).setBounds(ancho,y,ancho+ancho,20);
+		panel.add(cmbMoneda).setBounds(ancho+10,y,ancho+ancho-10,20);
 		panel.add(btnEditar).setBounds(x+290,y,ancho,20);
 		panel.add(btnDeshacer).setBounds(x+ancho+85,y+=30,ancho,20);
 		panel.add(btnSalir).setBounds(x+80,y,ancho,20);
@@ -104,7 +103,7 @@ public class Cat_Denominaciones extends JFrame{
 		txtFolio.setEditable(false);
 		txtDenominacion.setEditable(false);
 		txtValorD.setEditable(false);
-		cmbMoneda.setEditable(false);
+		cmbMoneda.setEnabled(false);
 		
 		txtDenominacion.requestFocus();
 		txtFolio.addKeyListener(numerico_action);
@@ -120,58 +119,95 @@ public class Cat_Denominaciones extends JFrame{
 		
 		agregar(tabla);
 		
+		///deshacer con escape
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+          getRootPane().getActionMap().put("escape", new AbstractAction(){
+         public void actionPerformed(ActionEvent e)
+         {                 	    btnDeshacer.doClick();
+       	    }
+     });
+     	///guardar con control+G
+         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+           getRootPane().getActionMap().put("guardar", new AbstractAction(){
+              public void actionPerformed(ActionEvent e)
+              {                 	    btnGuardar.doClick();
+            	    }
+         });
+       ///guardar con F12
+          getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+              getRootPane().getActionMap().put("guardar", new AbstractAction(){
+                  public void actionPerformed(ActionEvent e)
+                  {                 	    btnGuardar.doClick();
+                    	    }
+             });
+              ///nuevo con F9
+              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
+               getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+                   public void actionPerformed(ActionEvent e)
+                   {                 	    btnNuevo.doClick();
+	                    	    }
+              });
+               
+             ///editar con F10
+	              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
+	                  getRootPane().getActionMap().put("editar", new AbstractAction(){
+	                      public void actionPerformed(ActionEvent e)
+	                      {                 	    btnEditar.doClick();
+		                    	    }
+	                 });
+             ///editar con Ctrl+E
+	              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,Event.CTRL_MASK), "editar");
+	                  getRootPane().getActionMap().put("editar", new AbstractAction(){
+	                      public void actionPerformed(ActionEvent e)
+	                      {                 	    btnEditar.doClick();
+		                    	    }
+	                 });
+               
+           ///nuevo con control+N
+              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
+                getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+                        public void actionPerformed(ActionEvent e)
+                    {                 	    btnNuevo.doClick();
+	                    	    }
+              });
+                
+                render();
+		
 		this.setSize(820,210);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
+	public void render(){
+		//		tipo de valor = imagen,chb,texto
+//		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
+    
+		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",10)); 
+		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10)); 
+		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",10));
+		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",10));
+		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",10));
+		
+	}
 	
 	private JScrollPane getPanelTabla()	{		
 		new Connexion();
-
+		tabla.getTableHeader().setReorderingAllowed(false) ;
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
-		tabla.getColumnModel().getColumn(0).setMinWidth(45);
-		tabla.getColumnModel().getColumn(0).setMinWidth(45);
+		tabla.getColumnModel().getColumn(0).setMinWidth(30);
+		tabla.getColumnModel().getColumn(0).setMinWidth(30);
 		tabla.getColumnModel().getColumn(1).setHeaderValue("Denominacion");
-		tabla.getColumnModel().getColumn(1).setMinWidth(130);
-		tabla.getColumnModel().getColumn(1).setMaxWidth(130);
+		tabla.getColumnModel().getColumn(1).setMinWidth(100);
+		tabla.getColumnModel().getColumn(1).setMaxWidth(100);
 		tabla.getColumnModel().getColumn(2).setHeaderValue("# Denominacion");
-		tabla.getColumnModel().getColumn(2).setMinWidth(120);
-		tabla.getColumnModel().getColumn(2).setMaxWidth(120);
-		tabla.getColumnModel().getColumn(3).setHeaderValue("Valor");
-		tabla.getColumnModel().getColumn(3).setMinWidth(40);
-		tabla.getColumnModel().getColumn(3).setMaxWidth(40);
+		tabla.getColumnModel().getColumn(2).setMinWidth(90);
+		tabla.getColumnModel().getColumn(2).setMaxWidth(90);
+		tabla.getColumnModel().getColumn(3).setHeaderValue("Moneda");
+		tabla.getColumnModel().getColumn(3).setMinWidth(60);
+		tabla.getColumnModel().getColumn(3).setMaxWidth(60);
 		tabla.getColumnModel().getColumn(4).setHeaderValue("Status");
-		tabla.getColumnModel().getColumn(4).setMinWidth(40);
-		tabla.getColumnModel().getColumn(4).setMaxWidth(40);
-		
-		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-		tcr.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(1).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(2).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(3).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(4).setCellRenderer(tcr);
-		
-		TableCellRenderer render = new TableCellRenderer() 
-		{ 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-		
-				if(row%2==0){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-			return lbl; 
-			} 
-		}; 
-						tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-						tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-						tabla.getColumnModel().getColumn(2).setCellRenderer(render);
-						tabla.getColumnModel().getColumn(3).setCellRenderer(render); 
-						tabla.getColumnModel().getColumn(4).setCellRenderer(render);
+		tabla.getColumnModel().getColumn(4).setMinWidth(30);
+		tabla.getColumnModel().getColumn(4).setMaxWidth(30);
 		
 		Statement s;
 		ResultSet rs;
@@ -417,16 +453,21 @@ public class Cat_Denominaciones extends JFrame{
 			panelEnabledTrue();
 			btnEditar.setEnabled(false);
 			btnNuevo.setEnabled(false);
+			
 		}		
 	};
 	
 	public void panelEnabledFalse(){	
 		txtDenominacion.setEditable(false);
+		txtValorD.setEnabled(false);
+		cmbMoneda.setEnabled(false);
 	}		
 	
 	public void panelEnabledTrue(){	
 		txtDenominacion.setEditable(true);
 		txtValorD.setEditable(true);
+		txtValorD.setEnabled(true);
+		cmbMoneda.setEnabled(true);
 	}
 	
 	public void panelLimpiar(){

@@ -153,7 +153,7 @@ public class Cargar_Combo {
 
 	@SuppressWarnings("unchecked")
 	public String[] Establecimiento_Empleado(String tabla) throws SQLException{
-		String query = "select nombre from " + tabla + " order by nombre asc";
+		String query = "select nombre from " + tabla + " order by nombre desc";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();

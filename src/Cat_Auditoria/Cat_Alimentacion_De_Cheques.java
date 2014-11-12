@@ -36,27 +36,6 @@ public class Cat_Alimentacion_De_Cheques extends JDialog {
 	JTextField txtTotal = new JTextField();
 	String columnNames[] = { "Orden", "Cantidad"};
 	
-//	public String[][] tablaCheques(){
-//
-////        Object [][] lista_tabla = new Obj_Alimentacion_Por_Denominacion().get_tabla_model_modificar(lblFolio_Corte.getText());
-////        String[] fila = new String[5];
-////                for(int i=0; i<lista_tabla.length; i++){
-////                        fila[0] = lista_tabla[i][0]+"";
-////                        fila[1] = lista_tabla[i][1]+"";
-////                        fila[2] = lista_tabla[i][2]+"";
-////                        fila[3] = lista_tabla[i][3]+"";
-////                        fila[4] = lista_tabla[i][4]+"";
-////                        tabla_model_cheques.addRow(fila);
-////                }
-//                
-//		String[][] matriz = new String[50][2];
-//		
-//			for(int i =0; i<50; i++){
-//				matriz[i][0]=i+1+"";
-//				matriz[i][1]="";
-//			};
-//			return matriz;
-//	}
 	
 	DefaultTableModel tabla_model_cheques = new DefaultTableModel(null, columnNames) {
 	     @SuppressWarnings("rawtypes")
@@ -100,9 +79,8 @@ public class Cat_Alimentacion_De_Cheques extends JDialog {
 	public void Constructor(){
 		this.setModal(true);
 		this.setTitle("Captura de Cheques");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/captura_nomina_icon&16.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/Icono_cheque.png"));
 		
-//		lblEmpleado.setForeground(Color.GRAY);
 		
 		this.panel.add(menu_toolbar).setBounds(0,0,150,25);
 //		this.panel.add(lblEmpleado).setBounds(30,35,350,20);

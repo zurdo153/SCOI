@@ -67,7 +67,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	
 	JLabel lblCajero = new JLabel("Cajera(O):");
 	JLabel lblUsuario = new JLabel();
-	JLabel lblClaveCajero = new JLabel("Cla.Cajero:");
+	JLabel lblClaveCajero = new JLabel("Clave Cajero:");
 	
 	JLabel lblClave = new JLabel("Clave:");
 	JLabel lblTicket = new JLabel("Ticket:");
@@ -168,20 +168,25 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		
 		panel.add(lblCajero).setBounds(20,20,80,20);
 		panel.add(lblUsuario).setBounds(105,20,350,20);
-		panel.add(lblClaveCajero).setBounds(20,45,70,20);
-		panel.add(txtClaveCajero).setBounds(90,45,140,20);
+		panel.add(lblClaveCajero).setBounds(20,45,100,20);
+		panel.add(new JLabel(new ImageIcon("imagen/key-group-icone-5159-16.png"))).setBounds(100,45,20,20);
+		panel.add(txtClaveCajero).setBounds(120,45,110,20);
 		
 		panel.add(lblClave).setBounds(20,85,50,20);
-		panel.add(txtClave).setBounds(90,85,140,20);
+		panel.add(new JLabel(new ImageIcon("imagen/Key.png"))).setBounds(100,85,20,20);
+		panel.add(txtClave).setBounds(120,85,110,20);
 		
 		panel.add(lblTicket).setBounds(20,115,50,20);
-		panel.add(txtTicket).setBounds(90,115,140,20);
+		panel.add(new JLabel(new ImageIcon("imagen/Lista.png"))).setBounds(100,115,20,20);
+		panel.add(txtTicket).setBounds(120,115,110,20);
 		
 		panel.add(lblImporte).setBounds(20,145,50,20);
-		panel.add(txtImporte).setBounds(90,145,140,20);
+		panel.add(new JLabel(new ImageIcon("imagen/Dollar.png"))).setBounds(100,145,20,20);
+		panel.add(txtImporte).setBounds(120,145,110,20);
 		
 		panel.add(lblConfirmarCompra).setBounds(20,180,70,20);
-		panel.add(txtConfirmarCompra).setBounds(90,180,140,20);
+		panel.add(new JLabel(new ImageIcon("imagen/Aplicar.png"))).setBounds(100,180,20,20);
+		panel.add(txtConfirmarCompra).setBounds(120,180,110,20);
 		
 		panel.add(lblFoto).setBounds(235,85,170,170);
 		

@@ -1,7 +1,7 @@
 package Cat_Auditoria;
 
-import java.awt.Component;
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,10 +13,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -24,14 +26,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import Conexiones_SQL.Connexion;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Principal.Componentes;
+import Obj_Principal.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Divisas_Y_Tipo_De_Cambio extends JFrame{
@@ -57,16 +58,15 @@ public class Cat_Divisas_Y_Tipo_De_Cambio extends JFrame{
 	
 	JCheckBox chStatus = new JCheckBox("Status");
 	
-//	JButton btnBuscar = new JButton(new ImageIcon("imagen/buscar.png"));
-	JButton btnSalir = new JButton("Salir");
-	JButton btnDeshacer = new JButton("Deshacer");
-	JButton btnGuardar = new JButton("Guardar");
-	JButton btnEditar = new JButton("Editar");
-	JButton btnNuevo = new JButton("Nuevo");
+	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
+	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
+	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
 	
 	public Cat_Divisas_Y_Tipo_De_Cambio(){
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Toolbox.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-icono-8797-32.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Divisa y Tipo de Cambio"));
 		
 		this.setTitle("Divisa y Tipo de Cambio");
@@ -102,12 +102,10 @@ public class Cat_Divisas_Y_Tipo_De_Cambio extends JFrame{
 		chStatus.setEnabled(false);
 		
 		txtFolio.requestFocus();
-//		txtFolio.addKeyListener(buscar_action);
 		txtValor.addKeyListener(guardar_action);
 		
 		btnGuardar.addActionListener(guardar);
 		btnSalir.addActionListener(cerrar);
-//		btnBuscar.addActionListener(buscar);
 		btnDeshacer.addActionListener(deshacer);
 		btnNuevo.addActionListener(nuevo);
 		btnEditar.addActionListener(editar);
@@ -115,16 +113,80 @@ public class Cat_Divisas_Y_Tipo_De_Cambio extends JFrame{
 		cont.add(panel);
 		
 		agregar(tabla);
+	
+		///deshacer con escape
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+          getRootPane().getActionMap().put("escape", new AbstractAction(){
+         public void actionPerformed(ActionEvent e)
+         {                 	    btnDeshacer.doClick();
+       	    }
+     });
+     	///guardar con control+G
+         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+           getRootPane().getActionMap().put("guardar", new AbstractAction(){
+              public void actionPerformed(ActionEvent e)
+              {                 	    btnGuardar.doClick();
+            	    }
+         });
+       ///guardar con F12
+          getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+              getRootPane().getActionMap().put("guardar", new AbstractAction(){
+                  public void actionPerformed(ActionEvent e)
+                  {                 	    btnGuardar.doClick();
+                    	    }
+             });
+              ///nuevo con F9
+              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
+               getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+                   public void actionPerformed(ActionEvent e)
+                   {                 	    btnNuevo.doClick();
+	                    	    }
+              });
+               
+             ///editar con F10
+	              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
+	                  getRootPane().getActionMap().put("editar", new AbstractAction(){
+	                      public void actionPerformed(ActionEvent e)
+	                      {                 	    btnEditar.doClick();
+		                    	    }
+	                 });
+             ///editar con Ctrl+E
+	              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,Event.CTRL_MASK), "editar");
+	                  getRootPane().getActionMap().put("editar", new AbstractAction(){
+	                      public void actionPerformed(ActionEvent e)
+	                      {                 	    btnEditar.doClick();
+		                    	    }
+	                 });
+               
+           ///nuevo con control+N
+              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
+                getRootPane().getActionMap().put("nuevo", new AbstractAction(){
+                        public void actionPerformed(ActionEvent e)
+                    {                 	    btnNuevo.doClick();
+	                    	    }
+              });
+                
+                render();
 		
 		this.setSize(760,210);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
+	public void render(){
+		//		tipo de valor = imagen,chb,texto
+//		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
+    
+		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",14)); 
+		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",14)); 
+		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",14));
+		
+	}
 	
 	private JScrollPane getPanelTabla()	{		
 		new Connexion();
 
+		tabla.getTableHeader().setReorderingAllowed(false) ;
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
 		tabla.getColumnModel().getColumn(0).setMinWidth(50);
 		tabla.getColumnModel().getColumn(0).setMinWidth(50);
@@ -134,30 +196,6 @@ public class Cat_Divisas_Y_Tipo_De_Cambio extends JFrame{
 		tabla.getColumnModel().getColumn(2).setHeaderValue("Valor");
 		tabla.getColumnModel().getColumn(2).setMinWidth(80);
 		tabla.getColumnModel().getColumn(2).setMaxWidth(80);
-		
-		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-		tcr.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(1).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(2).setCellRenderer(tcr);
-		
-		TableCellRenderer render = new TableCellRenderer() 
-		{ 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-		
-				if(row%2==0){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-			return lbl; 
-			} 
-		}; 
-						tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-						tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-						tabla.getColumnModel().getColumn(2).setCellRenderer(render);
 		
 		Statement s;
 		ResultSet rs;
@@ -274,21 +312,6 @@ public class Cat_Divisas_Y_Tipo_De_Cambio extends JFrame{
 		}
 	};
 	
-//	KeyListener buscar_action = new KeyListener() {
-//		@Override
-//		public void keyTyped(KeyEvent e){
-//		}
-//		@Override
-//		public void keyReleased(KeyEvent e) {	
-//		}
-//		@Override
-//		public void keyPressed(KeyEvent e) {
-//			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-//				btnBuscar.doClick();
-//			}
-//		}
-//	};
-	
 	KeyListener guardar_action = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e){
@@ -303,42 +326,6 @@ public class Cat_Divisas_Y_Tipo_De_Cambio extends JFrame{
 			}
 		}
 	};
-	
-//	ActionListener buscar = new ActionListener()
-//	{
-//		public void actionPerformed(ActionEvent e)
-//		{
-//			if(txtFolio.getText().equals("")){
-//				JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Error",JOptionPane.WARNING_MESSAGE);
-//				return;
-//			}else{
-//			Obj_Divisas_Y_Tipo_De_Cambio divisas = new Obj_Divisas_Y_Tipo_De_Cambio();
-//			divisas = divisas.buscar(Integer.parseInt(txtFolio.getText()));
-//			
-//			if(divisas.getFolio() != 0){
-//			
-//			txtFolio.setText(divisas.getFolio()+"");
-//			txtNombre_divisas.setText(divisas.getNombre()+"");
-//			txtValor.setText(divisas.getValor()+"");
-//			System.out.println(divisas.getStatus());
-//			if(divisas.getStatus() == true){chStatus.setSelected(true);}
-//			else{chStatus.setSelected(false);}
-//			
-//			btnNuevo.setEnabled(false);
-//			btnEditar.setEnabled(false);
-//			panelEnabledFalse();
-//			txtFolio.setEditable(true);
-//			txtFolio.requestFocus();
-//			
-//			}
-//			else{
-//				JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
-//				return;
-//				}
-//			}
-//		}
-//	};
-	
 	ActionListener cerrar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			dispose();

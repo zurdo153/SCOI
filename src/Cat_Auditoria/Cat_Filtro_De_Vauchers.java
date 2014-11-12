@@ -14,7 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
@@ -31,7 +31,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
-public class Cat_Filtro_De_Vauchers extends JFrame{
+public class Cat_Filtro_De_Vauchers extends JDialog{
 	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
@@ -94,14 +94,14 @@ public class Cat_Filtro_De_Vauchers extends JFrame{
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Cat_Filtro_De_Vauchers() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
-		setTitle("Filtro De Asignaciones");
-		campo.setBorder(BorderFactory.createTitledBorder("Asignaciones Liquidadas"));
+		setModal(true);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/tarjeta-de-credito-visa-icono-8242-32.png"));
+		setTitle("Filtro De Vouchers");
+		campo.setBorder(BorderFactory.createTitledBorder("Seleccione un Voucher"));
 		
 		trsfiltro = new TableRowSorter(modelo_vaucher_filtro); 
 		tabla_vaucher_filtro.setRowSorter(trsfiltro); 
 				
-//		cont.setBackground(new Color(86,161,85));
 		
 		tablaRender();
 		
