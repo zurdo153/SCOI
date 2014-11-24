@@ -612,13 +612,13 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 				for(int i=0; i<=tabla.getRowCount()-1; i++){
 					tabla.setValueAt(false, i, 8);
 				}
-				tabla.setValueAt(true, fila, columna);
-				
-				cod_prvrecibido = tabla.getValueAt(fila, 0).toString();
-				cod_factura_recibido  = tabla.getValueAt(fila, 2).toString();
-				proveedor_recibido = tabla.getValueAt(fila, 1).toString();
-				
-				btnRecibido.setEnabled(true);
+					tabla.setValueAt(true, fila, columna);
+					
+					cod_prvrecibido = tabla.getValueAt(fila, 0).toString();
+					cod_factura_recibido  = tabla.getValueAt(fila, 2).toString();
+					proveedor_recibido = tabla.getValueAt(fila, 1).toString();
+					
+					btnRecibido.setEnabled(true);
 				}
 			}
 			public void mouseClicked(MouseEvent e) {}
@@ -672,9 +672,6 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 	}
 	
 	
-	
-	
-	
 	String xml_pdf = "";
 //	String pdf = "";
 	public class Cat_Almacenar_XML extends JDialog{
@@ -682,15 +679,20 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		Container contenedor = getContentPane();
 		JLayeredPane panelxml = new JLayeredPane();
 		
+		JLabel lblCodigoProveedor = new JLabel("");
+		JLabel lblProveedor = new JLabel("");
+		JLabel lblNoFactura = new JLabel("");
+		JLabel lblFechaFactura = new JLabel("");
+		
 		JLabel lblXml = new JLabel("");
-//		JLabel lblPdf = new JLabel("");
+		JLabel lblCampoDeBusqueda = new JLabel("");
 		
 		String[] tipoDeArchivo = {"Seleccione Un Tipo de Archivo","XML","PDF"};
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbTipo = new JComboBox(tipoDeArchivo);
 		
-		JButton btnXML_PDF = new JButton("Importar",new ImageIcon("imagen/Nuevo.png"));
-		JButton btnGuardarFacXml = new JButton("GUARDAR",new ImageIcon("imagen/Aplicar.png"));
+		JButton btnXML_PDF = new JButton("Buscar Archivo",new ImageIcon("imagen/Nuevo.png"));
+		JButton btnGuardarFacXml = new JButton("Guardar Archivo",new ImageIcon("imagen/Aplicar.png"));
 		
 		public Cat_Almacenar_XML(){
 			this.setModal(true);
@@ -699,15 +701,32 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 			blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 			panelxml.setBorder(BorderFactory.createTitledBorder(blackline,"Guardar Facturas y XML De Proveedores"));
 			
+			lblCampoDeBusqueda.setBorder(BorderFactory.createTitledBorder(blackline,"Buscar Archivo"));
+			
+			lblCodigoProveedor.setFont(new Font("arial",Font.BOLD,12));
+			lblProveedor.setFont(new Font("arial",Font.BOLD,12));
+			lblNoFactura.setFont(new Font("arial",Font.BOLD,12));
+			lblFechaFactura.setFont(new Font("arial",Font.BOLD,12));
+			
 			lblXml.setFont(new Font("arial",Font.BOLD,14));
 			lblXml.setForeground(Color.DARK_GRAY);
 			
+			panelxml.add(lblCodigoProveedor).setBounds(15,30,220,20);
+			panelxml.add(lblProveedor).setBounds(15,60,570,20);
+			panelxml.add(lblNoFactura).setBounds(15,90,220,20);
+			panelxml.add(lblFechaFactura).setBounds(15,120,220,20);
 			
-			panelxml.add(cmbTipo).setBounds(15,30,180,20);
-			panelxml.add(btnXML_PDF).setBounds(15,80,100,35);
-			panelxml.add(lblXml).setBounds(120,88,270,20);
+			panelxml.add(lblCampoDeBusqueda).setBounds(5,155,585,100);
+			panelxml.add(cmbTipo).setBounds(45,175,180,20);
+			panelxml.add(btnXML_PDF).setBounds(380,175,180,35);
+			panelxml.add(lblXml).setBounds(15,218,570,20);
 			
-			panelxml.add(btnGuardarFacXml).setBounds(250,140,120,20);
+			panelxml.add(btnGuardarFacXml).setBounds(380,260,180,35);
+			
+			lblCodigoProveedor.setText( "Cod. Proveedor:         "	   + ( tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim() ) 	);
+			lblProveedor.setText(	    "Proveedor:                  " + ( tabla.getValueAt(tabla.getSelectedRow(), 1).toString().trim() ) 	);
+			lblNoFactura.setText(	    "No. Factura:                " + ( tabla.getValueAt(tabla.getSelectedRow(), 2).toString().trim() ) 	);
+			lblFechaFactura.setText(    "Fecha de Factura:     "	   + ( tabla.getValueAt(tabla.getSelectedRow(), 3).toString().trim() )	);
 			
 	        this.contenedor.add(panelxml);
 	        
@@ -715,7 +734,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 //	        btnPDF.addActionListener(opExaminarPDF);
 	        btnGuardarFacXml.addActionListener(opGauardarXMLpdf);
 	        
-			this.setSize(400,200);
+			this.setSize(600,335);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
