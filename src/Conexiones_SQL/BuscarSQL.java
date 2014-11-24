@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +18,10 @@ import java.sql.Statement;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import Biblioteca.Crear_arbol_de_carpetas;
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -5482,50 +5485,105 @@ public class BuscarSQL {
 		return Matriz;
 	}
 	
-	public boolean buscar_xml_pdf(String folio) throws SQLException{
-		
-		boolean archivo=false;
-		
-		String query = "select xml, pdf from tb_control_de_facturas_y_xml where folio_factura = '"+folio+"';";
+	public int AnioActual() throws SQLException{
+		int anio_actual  = 0;
+		String query = "SELECT year(dateadd(ms,-3,DATEADD(mm, DATEDIFF(m,0,getdate() )+1, 0))) as anio;";
 		Statement stmt = null;
-
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-
 			while(rs.next()){
-				
-					File archivo_xml = new File(System.getProperty("user.dir")+"/tmp/1999.xml");
-					FileOutputStream fos_xml = new FileOutputStream(archivo_xml);
-				
-		            byte[] buffer_xml = new byte[1];
-		            InputStream is_xml = rs.getBinaryStream("xml");
-		            while (is_xml.read(buffer_xml) > 0) {
-		            	fos_xml.write(buffer_xml);
-		            }
-		            fos_xml.close();
-		            
-		            
-		            File archivo_pdf = new File(System.getProperty("user.dir")+"/tmp/1999.pdf");
-					FileOutputStream fos_pdf = new FileOutputStream(archivo_pdf);
-					
-			            byte[] buffer_pdf = new byte[1];
-			            InputStream is_pdf = rs.getBinaryStream("pdf");
-			            while (is_pdf.read(buffer_pdf) > 0) {
-			                fos_pdf.write(buffer_pdf);
-			            }
-			            fos_pdf.close();
-		            
+				anio_actual = rs.getInt("anio");
 			}
-			archivo=true;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return 0;
 		}
 		finally{
 			if(stmt!=null){stmt.close();}
 		}
-		return archivo;
+		return anio_actual;
+	}
+	
+	public void buscar_xml_pdf(int bandera, String fecha,String folio_factota) throws SQLException, IOException{
+		
+		String cod_prv="";
+		String folio_fact="";
+		String dia="";
+		String mes="";
+		String anio="";
+		
+		String query = "exec sp_select_fecha_de_referencia_para_generear_xml_y_pdf "+bandera+",'"+fecha+"','"+folio_factota+"'";
+		
+		if(getFilas(query)>0){
+			
+						Statement s;
+						ResultSet rs;
+						
+								try {			
+										s = con.conexion().createStatement();
+										rs = s.executeQuery(query);
+									
+												while(rs.next()){
+													
+													cod_prv=	rs.getString(1);
+													folio_fact=	rs.getString(2);
+													anio=		rs.getString(3);
+													mes=		rs.getString(4);
+													dia=		rs.getString(5);
+													
+													String ruta = "c:\\Concentrado_xml_pdf\\"+anio+"\\"+mes+"\\"+dia+"\\"+cod_prv;
+													File archivos = new File(ruta);
+													
+													
+													// creamos fichero si no existe y escribimos archivo 
+													if (!archivos.exists()) { 
+														
+															archivos.mkdirs();
+													
+																	Blob blob_xml = rs.getBlob("xml");
+												            		if(blob_xml.length() > 4){
+												            			
+															            	File archivo_xml = new File(ruta+"//"+folio_fact+".xml");
+															            	FileOutputStream fos_xml = new FileOutputStream(archivo_xml);
+														            		
+														            			byte[] buffer_xml = new byte[1]; 
+														            	 
+														            			InputStream is_xml = rs.getBinaryStream("xml");
+																	            while (is_xml.read(buffer_xml) > 0) {
+																	            	
+																	            	fos_xml.write(buffer_xml);
+																	            }
+																	            fos_xml.close();
+														            }
+														           
+												            		Blob blob_pdf = rs.getBlob("pdf");
+														            if(blob_pdf.length() > 4){
+														            	 
+													            		File archivo_pdf = new File(ruta+"//"+folio_fact+".pdf");
+													            		FileOutputStream fos_pdf = new FileOutputStream(archivo_pdf);
+																
+													            		byte[] buffer_pdf = new byte[1];
+														            		
+														            		InputStream is_pdf = rs.getBinaryStream("pdf");
+														            		while (is_pdf.read(buffer_pdf) > 0) {
+														            			
+														            			fos_pdf.write(buffer_pdf);
+														            		}
+														            		fos_pdf.close();
+														            }
+													}
+													
+												}
+								} catch (SQLException e1) {
+						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_xml_pdf : sp_select_fecha_de_referencia_para_generear_xml_y_pdf  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+		}else{
+					JOptionPane.showMessageDialog(null, "No se encontraron archivos con los datos ingresados", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+					return;
+		}
 	}
 	
 	public boolean validacion_cajero_fuente_sodas(String clavecajero,String nombrecajero){
