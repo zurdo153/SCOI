@@ -2421,7 +2421,7 @@ public class GuardarSQL {
 		String insert ="exec sp_insert_entosal "+folio+",?,?,?,?;";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
-		
+		System.out.println(insert);
 		try{
 			String pc_nombre = InetAddress.getLocalHost().getHostName();
 			String pc_ip = InetAddress.getLocalHost().getHostAddress();
@@ -2629,6 +2629,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 		String insert ="exec sp_insert_entosal "+folio+",?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
+		
 		
 		try{
 			String pc_nombre = InetAddress.getLocalHost().getHostName();
