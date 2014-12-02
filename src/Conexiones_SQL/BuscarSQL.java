@@ -1332,6 +1332,8 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion BuscarUsuarios \n  en select folio,nombre+''+ap_paterno+''+ap_materno as nombre_completo,\n case when contrasena='' then '0' else contrasena end as contrasena,status,foto as Foto \n from tb_empleado where folio="+folio_empleado+"  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			return null;
 		}
 		finally{
@@ -1354,6 +1356,7 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion returnPermiso \n  en el procedimiento : sp_obtener_status_de_permisos  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
@@ -1388,6 +1391,7 @@ public class BuscarSQL {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Obj_Usuario Maximo() \n  en select max(folio) as 'Maximo' from tb_usuario \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		finally{
