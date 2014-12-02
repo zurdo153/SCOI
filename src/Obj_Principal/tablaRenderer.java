@@ -56,6 +56,26 @@ public class tablaRenderer extends DefaultTableCellRenderer {
              return label;
          }
          
+         if( tipo.toUpperCase().trim().equals("VENTA")){
+         	
+				JLabel lbl = new JLabel(value == null? "": value.toString());
+				
+//				lbl.setFont(new Font("arial", Font.BOLD, 25));
+				lbl.setFont(fuente);
+				
+				lbl.setOpaque(true); 
+				lbl.setBackground(new java.awt.Color(182,211,255));
+					
+					if(selected){
+						lbl.setOpaque(true); 
+						lbl.setBackground(new java.awt.Color(100,181,255));
+					}
+					
+					lbl.setHorizontalAlignment(JLabel.CENTER);
+        	 
+             return lbl;
+         }
+         
          if(tipo.toUpperCase().trim().equals("CHB")){
         	 
         	 chb = new JCheckBox("",Boolean.parseBoolean(value.toString()));

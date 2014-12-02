@@ -18,14 +18,15 @@ public class Obj_Abono_Clientes {
 	String fecha_fin;
 	String fecha_liquidacion;
 	String fecha_cancelacion;
+	String establecimiento;
 	
 	double abono;
 	double saldo;
 	
 	public Obj_Abono_Clientes(){
-		this.folio=0;		this.ticket="";	this.folio_cliente=0;		this.cajero=""; 		this.asignacion="";	
+		this.folio=0;		this.ticket="";			this.folio_cliente=0;		this.cajero=""; 		this.asignacion="";	
 		this.status=0;		this.fecha_in="";		this.fecha_fin="";			this.fecha_liquidacion="";	this.fecha_cancelacion="";
-		this.abono=0;		this.saldo=0;
+		this.abono=0;		this.saldo=0;			this.establecimiento="";
 	}
 
 	public int getFolio() {
@@ -124,7 +125,15 @@ public class Obj_Abono_Clientes {
 		this.saldo = saldo;
 	}
 	
-//	guardar ticket y abonos
+public String getEstablecimiento() {
+		return establecimiento;
+	}
+
+	public void setEstablecimiento(String establecimiento) {
+		this.establecimiento = establecimiento;
+	}
+
+	//	guardar ticket y abonos
 	public boolean guardarTickets(){ return new GuardarSQL().Guardar_Ticket(this); }
 	
 //	trae tabla de tickets

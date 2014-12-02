@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -100,6 +102,34 @@ import Obj_Principal.tablaRenderer;
 		Border blackline, etched, raisedbevel, loweredbevel, empty;
 		Calendar fecha = new GregorianCalendar();
 		
+		DefaultTableModel modeloBase = new DefaultTableModel(null,
+	            new String[]{"Fol. Factura","Cod. Proveedor", "Proveedor","Ruta"}
+				){
+		     @SuppressWarnings("rawtypes")
+			Class[] types = new Class[]{
+		    	java.lang.String.class,
+		    	java.lang.String.class,
+		    	java.lang.String.class,
+		    	java.lang.String.class
+	                                    };
+		     @SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {
+	             return types[columnIndex];
+	         }
+	         public boolean isCellEditable(int fila, int columna){
+	        	 switch(columna){
+	        	 	case 0 : return false; 
+	        	 	case 1 : return false; 
+	        	 	case 2 : return false;
+	        	 	case 3 : return false;
+	        	 } 				
+	 			return false;
+	 		}
+		};
+		
+	    JTable tablaBase = new JTable(modeloBase);
+	    JScrollPane scrollAsignadoBase = new JScrollPane(tablaBase);
+	    
 		public Cat_Generar_xml_pdf(){
 			this.setTitle("Generar Facturas y XML De Proveedores");
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/control_facturas_y_xml.png"));
@@ -134,6 +164,8 @@ import Obj_Principal.tablaRenderer;
 			panelxml.add(btnFiltro).setBounds(350,110,30,20);
 			panelxml.add(btnGenerar).setBounds(230,140,150,20);
 			
+			panelxml.add(getPanelTabla()).setBounds(20,190,995,140);
+			
 	        this.contenedor.add(panelxml);
 	        
 	        calendario.setEnabled(false);
@@ -149,10 +181,44 @@ import Obj_Principal.tablaRenderer;
 	        btnGenerar.addActionListener(opConsulta);
 	        btnFiltro.addActionListener(opFiltro);
 	        
-			this.setSize(410,200);
+			this.setSize(1040,380);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+			llamar_render();
+		}
+		
+		public void llamar_render(){
+			//		tipo de valor = imagen,chb,texto
+//			tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
+	    
+			tablaBase.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",12)); 
+	    	
+			tablaBase.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",12)); 
+			
+			tablaBase.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+			
+			tablaBase.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+			
+		}
+		
+		private JScrollPane getPanelTabla()	{		
+			
+			this.tablaBase.getTableHeader().setReorderingAllowed(false) ;
+			this.tablaBase.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			
+			tablaBase.getColumnModel().getColumn(0).setMaxWidth(80);
+			tablaBase.getColumnModel().getColumn(0).setMinWidth(80);
+			tablaBase.getColumnModel().getColumn(1).setMaxWidth(100);
+			tablaBase.getColumnModel().getColumn(1).setMinWidth(100);
+			tablaBase.getColumnModel().getColumn(2).setMaxWidth(440);
+			tablaBase.getColumnModel().getColumn(2).setMinWidth(440);
+			tablaBase.getColumnModel().getColumn(3).setMaxWidth(380);
+			tablaBase.getColumnModel().getColumn(3).setMinWidth(380);
+			
+		    JScrollPane scrolBase = new JScrollPane(tablaBase);
+		    return scrolBase; 
 		}
 		
 		ActionListener opTipoDeFiltrado = new ActionListener(){
@@ -430,18 +496,38 @@ import Obj_Principal.tablaRenderer;
 			    };
 			    
 			ActionListener opDescargarLista = new ActionListener() {
+				@SuppressWarnings("deprecation")
 				public void actionPerformed(ActionEvent e) {
+					
+					String[] vector = new String[4];
 					
 					int bandera =0;
 					for(int i=0; i<tabla.getRowCount(); i++){
 						
 						if(tabla.getValueAt(i, 6).equals(true)){
 							
-								try {
-									new BuscarSQL().buscar_xml_pdf(1,"01/01/1900",tabla.getValueAt(i, 0).toString());
-								} catch (IOException | SQLException e1) {
-									e1.printStackTrace();
-								}
+							vector[0] = tabla.getValueAt(i, 0).toString();
+							vector[1] = tabla.getValueAt(i, 1).toString();
+							vector[2] = tabla.getValueAt(i, 2).toString();
+							
+							String  ruta = "";
+							try {
+								Date date = new SimpleDateFormat("dd/MM/yyyy").parse(tabla.getValueAt(i, 3).toString());
+								ruta = "C:/concentrado_xml_pdf/"+date.getYear()+"/"+(date.getMonth()+1)+"/"+date.getDay()+"/"+tabla.getValueAt(i, 1).toString();
+							} catch (ParseException e1) {
+								e1.printStackTrace();
+							}
+							
+							vector[3] = ruta;
+							
+							modeloBase.addRow(vector);
+							
+							try {
+								new BuscarSQL().buscar_xml_pdf(1,"01/01/1900",tabla.getValueAt(i, 0).toString());
+							} catch (IOException | SQLException e1) {
+								e1.printStackTrace();
+							}
+								
 							bandera++;
 						}
 					}

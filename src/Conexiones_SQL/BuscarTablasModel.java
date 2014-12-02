@@ -853,7 +853,7 @@ public class BuscarTablasModel {
 	}
 	
 	public Object[][] tabla_model_tickets(int folio_cliente){
-		String query_lista = "exec sp_select_tabla_tickets "+folio_cliente;
+		String query_lista = "exec sp_select_tabla_ticket_c_ahorro_cte "+folio_cliente;
 		Object[][] matriz = new Object[get_filas(query_lista)][4];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
@@ -871,7 +871,7 @@ public class BuscarTablasModel {
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_tickets store procedure sp_select_tabla_tickets  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_tickets store procedure sp_select_tabla_ticket_c_ahorro_cte  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 
 		}
 	    return matriz; 
@@ -879,8 +879,8 @@ public class BuscarTablasModel {
 	
 	public Object[][] tabla_model_abonos(String ticket){
 		//cambiar procedimiento para que traiga los abonos de el cliente del parametro
-		String query_lista = "exec sp_select_tabla_abonos '"+ticket+"';";
-		Object[][] matriz = new Object[get_filas(query_lista)][4];
+		String query_lista = "exec sp_select_abonos_c_ahorro_cliente '"+ticket+"';";
+		Object[][] matriz = new Object[get_filas(query_lista)][5];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query_lista);
@@ -891,13 +891,14 @@ public class BuscarTablasModel {
 				matriz[i][1] = "   "+rs.getString(2);
 				matriz[i][2] = "   "+rs.getString(3);
 				matriz[i][3] = "   "+rs.getString(4);
+				matriz[i][4] = "   "+rs.getString(5);
 				
 				i++;
 			}
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_abonos store procedure sp_select_tabla_abonos  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_abonos store procedure sp_select_abonos_c_ahorro_cliente  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 
 		}
 	    return matriz; 
@@ -928,6 +929,40 @@ public class BuscarTablasModel {
 
 		}
 	    return matriz; 
+	}
+	
+	public String[][] denominaciones_apartados(){
+		String[][] Matriz = null;
+		
+		String query = "SELECT NOMBRE_DIVISAS AS MONEDA " +
+						 "		,VALOR AS VALOR " +
+						 "		,0 AS PAGO " +
+						 "		,0 AS IMPORTE " +
+						 " FROM tb_divisas_tipo_de_cambio " +
+						 " WHERE STATUS = 1 " +
+						 " ORDER BY FOLIO DESC";
+		
+		Matriz = new String[get_filas(query)][4];
+		
+		try {	
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = rs.getString(4);
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getRetiros_a_detalle \n  en el procedimiento : sp_select_retiro_de_cajero_a_detalle  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return Matriz;
 	}
 }
 

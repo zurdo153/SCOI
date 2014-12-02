@@ -21,7 +21,6 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import Biblioteca.Crear_arbol_de_carpetas;
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -5281,9 +5280,34 @@ public class BuscarSQL {
 	}
 
 	public String nuevo_ticket(String cavecera){
-//		cambiar sp
-//		sp_select_nuevo_ticket
-		String query = "exec sp_select_ticket_nuevo " + cavecera+";";
+		
+		String queryUpdate = "update tb_folios set folio = (select folio+1 from tb_folios where transaccion = 'Tickets Caja De Ahorro Clientes') where transaccion = 'Tickets Caja De Ahorro Clientes';";
+
+		Connection conec = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		
+		try {
+			conec.setAutoCommit(false);
+			pstmt = conec.prepareStatement(queryUpdate);
+			
+			pstmt.executeUpdate();
+			conec.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(conec != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					conec.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ nuevo_ticket ]  SQLException: "+e.getMessage()+" "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+		
+//--------------------------------------------------------------------------------------------------------------------------------		
+		
+		String query = "exec sp_select_ticket_nuevo_c_ahorro_clientes '" + cavecera+"';";
 		
 		String cadena = "";
 		Statement s;
@@ -5301,6 +5325,7 @@ public class BuscarSQL {
 		}
 		return cadena;
 	}
+	
 	
 	public Obj_Abono_Clientes CapturaAbonoCliente_UltimiAbono(String ticket) throws SQLException{
 		Obj_Abono_Clientes empleado = new Obj_Abono_Clientes();
@@ -5504,6 +5529,8 @@ public class BuscarSQL {
 	
 	public void buscar_xml_pdf(int bandera, String fecha,String folio_factota) throws SQLException, IOException{
 		
+//		Object[][] matriz = null;
+		
 		String cod_prv="";
 		String folio_fact="";
 		String dia="";
@@ -5511,6 +5538,8 @@ public class BuscarSQL {
 		String anio="";
 		
 		String query = "exec sp_select_fecha_de_referencia_para_generear_xml_y_pdf "+bandera+",'"+fecha+"','"+folio_factota+"'";
+		
+//		matriz = new Object[getFilas(query)][2];
 		
 		if(getFilas(query)>0){
 			
@@ -5531,6 +5560,7 @@ public class BuscarSQL {
 													
 													String ruta = "c:\\Concentrado_xml_pdf\\"+anio+"\\"+mes+"\\"+dia+"\\"+cod_prv;
 													File archivos = new File(ruta);
+													
 													
 													
 													// creamos fichero si no existe y escribimos archivo 
