@@ -85,6 +85,8 @@ public class Cat_Cumpleanios_Del_Mes extends JDialog{
 				JOptionPane.showMessageDialog(null, "Error En La Subclase Cat_Genera_Reporte_Cumpleanios_Del_Mes ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 			}
 		}
+				
+		
 	}
 
 	

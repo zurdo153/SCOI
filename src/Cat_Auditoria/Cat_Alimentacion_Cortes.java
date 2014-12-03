@@ -2794,6 +2794,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	    				while(tabla_vauchers.getRowCount()>0){
 							 modelo_vauchers.removeRow(0);
 	    				}
+	    				txtTotalVaucher.setText("");
 	    			}
 	    			
 	    			if(tabla_retiro_de_clientes.getRowCount()>0){

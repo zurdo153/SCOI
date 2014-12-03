@@ -206,6 +206,11 @@ public class Cat_Clientes extends JDialog{
 	};
 	
 	public void limpiarPantella(){
+		
+		trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
+//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+		
 		txtFolioCliente.setText("");
 		txtNombre.setText("");
 		txtApPaterno.setText("");
@@ -250,7 +255,7 @@ public class Cat_Clientes extends JDialog{
 			                        
 				                        Object [][] lista_tabla = new Obj_Clientes().get_tabla_model();
 				                        String[] fila = new String[3];
-		                                for(int i=0; i<lista_tabla.length; i++){
+		                                for(int i=0; i<=lista_tabla.length; i++){
 		                                        fila[0] = lista_tabla[i][0]+"   ";
 		                                        fila[1] = "   "+lista_tabla[i][1];
 		                                        fila[2] = "   "+lista_tabla[i][2];
@@ -293,19 +298,19 @@ public class Cat_Clientes extends JDialog{
 									btnModificar.setEnabled(false);
 									txtNombre.requestFocus();
 									
-				                        while(tabla.getRowCount()>0){
-			                                tabla_model.removeRow(0);
-				                        }
-			                        
-				                        Object [][] lista_tabla = new Obj_Clientes().get_tabla_model();
-				                        String[] fila = new String[3];
-		                                for(int i=0; i<lista_tabla.length; i++){
-		                                        fila[0] = lista_tabla[i][0]+"   ";
-		                                        fila[1] = "   "+lista_tabla[i][1];
-		                                        fila[2] = "   "+lista_tabla[i][2];
-		                                        tabla_model.addRow(fila);
-		                                }
-									
+									while(tabla.getRowCount()>0){
+		                                tabla_model.removeRow(0);
+			                        }
+		                        
+			                        Object [][] lista_tabla = new Obj_Clientes().get_tabla_model();
+			                        String[] fila = new String[3];
+	                                for(int i=0; i<=lista_tabla.length; i++){
+	                                        fila[0] = lista_tabla[i][0]+"   ";
+	                                        fila[1] = "   "+lista_tabla[i][1];
+	                                        fila[2] = "   "+lista_tabla[i][2];
+	                                        tabla_model.addRow(fila);
+	                                }
+		                                
 									JOptionPane.showMessageDialog(null,"Cliente Modificado","Aviso",JOptionPane.INFORMATION_MESSAGE);
 									return;
 								}else{

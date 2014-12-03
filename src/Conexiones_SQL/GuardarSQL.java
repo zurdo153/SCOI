@@ -3334,8 +3334,9 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			
 			
 			
-			public boolean Guardar_Ticket(Obj_Abono_Clientes movimiento){
-		String query = "exec sp_abono_y_ticket_de_clientes ?,?,?,?,?,?";
+	public boolean Guardar_Ticket(Obj_Abono_Clientes movimiento){
+				
+		String query = "exec sp_insert_abono_c_ahorro_cliente ?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -3345,32 +3346,33 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			
 			int i=1;
 
-			System.out.println( movimiento.getAsignacion());
-			System.out.println(movimiento.getCajero());
-			System.out.println(movimiento.getFolio_cliente());
-			System.out.println(movimiento.getTicket());
-			System.out.println(movimiento.getAbono());
-			System.out.println(movimiento.getFecha_fin());
+//			System.out.println( movimiento.getTicket());
+//			System.out.println(movimiento.getAbono());
+//			System.out.println(movimiento.getEstablecimiento());
+//			System.out.println(movimiento.getCajero());
+//			System.out.println(movimiento.getFecha_fin());
+//			System.out.println(movimiento.getFolio_cliente());
 			
-			pstmt.setString(i, movimiento.getAsignacion());
-			pstmt.setString(i+=1, movimiento.getCajero());
-			pstmt.setInt(i+=1, movimiento.getFolio_cliente());
-			pstmt.setString(i+=1, movimiento.getTicket());
+			
+			pstmt.setString(i, movimiento.getTicket());
 			pstmt.setDouble(i+=1, movimiento.getAbono());
+			pstmt.setString(i+=1, movimiento.getEstablecimiento());
+			pstmt.setString(i+=1, movimiento.getCajero());
 			pstmt.setString(i+=1, movimiento.getFecha_fin());
+			pstmt.setInt(i+=1, movimiento.getFolio_cliente());
 			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_abono_c_ahorro_cliente "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_asignacion_de_cajeros "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_abono_c_ahorro_cliente "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -3379,7 +3381,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_unidades_de_inspeccion "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ticket ] Insert  SQLException: sp_insert_abono_c_ahorro_cliente "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
