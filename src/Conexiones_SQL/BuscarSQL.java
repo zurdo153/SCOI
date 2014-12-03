@@ -21,7 +21,6 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import Biblioteca.Crear_arbol_de_carpetas;
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -46,6 +45,7 @@ import Obj_Checador.Obj_Encargado_De_Solicitudes;
 import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
+import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
@@ -5602,4 +5602,123 @@ public class BuscarSQL {
 		}
     return disponible;
 	}
+	
+	public boolean validacion_ticket_fuente_sodas(String nombre_usuario,String folioticket){
+		
+		String query = "exec sp_validar_folio_ticket_fte_sodas '"+ nombre_usuario +"','"+folioticket+"'";
+		
+		boolean disponible = false;
+		try { Statement s = con.conexion().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	disponible = rs.getBoolean(1);
+			      }
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion validacion_ticket_fuente_sodas \n  en el procedimiento : sp_validar_cajero  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+    return disponible;
+	}
+	
+	public Obj_Cotizaciones_De_Un_Producto datos_producto(String cod_prod) throws SQLException{
+		Obj_Cotizaciones_De_Un_Producto datosproducto = new Obj_Cotizaciones_De_Un_Producto();
+		
+		String query = "  declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35)  set @Producto='"+cod_prod+"' "+
+				"  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto))" +
+				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end" +
+				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end" +
+				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_unidad=@Producto)) end" +
+				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end" +
+				"      set @exist_cedis=(select isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas)" +
+				"                       else (prodestab.exist_piezas) end),0)  from productos left outer join prodestab on prodestab.cod_prod=productos.cod_prod " +
+				"                          where productos.cod_prod=@cod_prod and prodestab.cod_estab=7)" +
+				"      SELECT   productos.cod_prod " +
+				"              ,productos.descripcion " +
+				"              ,prodestab.ultimo_costo" +
+				"              ,prodestab.costo_promedio" +
+				"              ,@exist_cedis as existencia_cedis  " +
+				"             ,isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0) as existencia_total" +
+				"      from productos " +
+				"        left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod " +
+				"      where productos.cod_prod=@cod_prod" +
+				"      group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio";
+		
+		Statement stmt2= null;
+		
+						try {
+							stmt2= con.conexion_IZAGAR().createStatement();
+									
+							ResultSet rs2= stmt2.executeQuery(query);
+							
+								   while(rs2.next()){
+									   datosproducto.setCod_Prod(rs2.getString("cod_prod"));
+									   datosproducto.setDescripcion_Prod(rs2.getString("descripcion"));
+									   datosproducto.setUltimo_Costo(rs2.getDouble("ultimo_costo"));
+									   datosproducto.setCosto_Promedio(rs2.getDouble("costo_promedio"));
+									   datosproducto.setExistencia_Cedis(rs2.getDouble("existencia_cedis"));
+									   datosproducto.setExistencia_Total(rs2.getDouble("existencia_total"));
+								    }
+							
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_producto \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+							return null;
+						}
+
+		finally{
+			if(stmt2!=null){stmt2.close();}
+		}
+		return datosproducto;
+	}
+	
+	public boolean existe_Producto(String cod_prod){
+		
+		String query = "declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35)  set @Producto='"+cod_prod+"' "+
+				"  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto))" +
+				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end" +
+				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end" +
+				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_unidad=@Producto)) end" +
+				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end" +
+				"  if @cod_prod is null select 'false' else select 'true'";
+		
+		boolean existe = false;
+		try { Statement s = con.conexion_IZAGAR().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	existe = rs.getBoolean(1);
+			      }
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion existe_Producto \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+    return existe;
+	}
+	
+	public Obj_Cotizaciones_De_Un_Producto Hoymenos3meses() throws SQLException{
+		Obj_Cotizaciones_De_Un_Producto fecha = new Obj_Cotizaciones_De_Un_Producto();
+		
+		String query = "select convert (varchar(15),getdate()-90,103) as fecha ";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				fecha.setFecha(rs.getString("fecha"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Hoymenos3meses \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return fecha;
+	}
+	
+	
 }

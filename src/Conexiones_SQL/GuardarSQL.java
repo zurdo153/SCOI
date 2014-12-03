@@ -891,7 +891,7 @@ public class GuardarSQL {
 		String query_asignacion = 		 "exec sp_insert_asignacion_para_cortes  ?,?,?,?,?,?,?,?,?";		// <-9		11 ->  tb_tabla_de_asignaciones_para_cortes 
 		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
-		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
+		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
 		
 		Connection con = new Connexion().conexion();
 //		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();
@@ -958,10 +958,10 @@ public class GuardarSQL {
 			i=1;
 			for(int x= 0; x<tb_totales_por_fecha.length; x++){
 
-				System.out.println(corte.getFolio_corte().toUpperCase().trim());
-				System.out.println(tb_totales_por_fecha[x][0].toString().trim());
-				System.out.println(tb_totales_por_fecha[x][1].toString().trim());
-				System.out.println(tb_totales_por_fecha[x][2].toString().trim());
+//				System.out.println(corte.getFolio_corte().toUpperCase().trim());
+//				System.out.println(tb_totales_por_fecha[x][0].toString().trim());
+//				System.out.println(tb_totales_por_fecha[x][1].toString().trim());
+//				System.out.println(tb_totales_por_fecha[x][2].toString().trim());
 				
 				pstmt_total_por_fecha.setString(i, 	corte.getFolio_corte().toUpperCase().trim());
 				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][0].toString().trim());
@@ -980,6 +980,8 @@ public class GuardarSQL {
 			pstmt_corte.setInt(i+=1, corte.getFolio_empleado());
 			pstmt_corte.setString(i+=1, corte.getEstablecimiento_de_corte());
 			pstmt_corte.setFloat(i+=1, corte.getCorte_sistema());
+			pstmt_corte.setFloat(i+=1,corte.getApartado());
+			
 			pstmt_corte.setFloat(i+=1, corte.getTiempo_aire());
 			pstmt_corte.setFloat(i+=1, corte.getRecibo_luz());
 			pstmt_corte.setFloat(i+=1, corte.getDeposito());

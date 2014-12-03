@@ -193,7 +193,16 @@ public class Cat_Usuarios extends JFrame{
 		Vector ReportesEspecialesVector = new Obj_NombreVector("Reportes Especiales", Reportes_Especiales);
 		
 		
-	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ContabilidadVector, EvaluacionesVector, 
+	// MENU PRINCIPAL REPORTES ESPECIALES (8)
+			String[] Sub_Compras = new Obj_SubMenus().Relacion_de_SubMenus(8);
+			Obj_CheckBoxNode Compras[] = {
+				new Obj_CheckBoxNode(Sub_Compras[0], false),
+			};
+			@SuppressWarnings("rawtypes")
+			Vector ComprasVector = new Obj_NombreVector("Compras", Compras);
+		
+		////ESTA PARTE SE ORDENA LA POSICION EN LA QUE SE QUIERE EL MENU PRINCIPAL  EN EL ARBOL
+	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ComprasVector, ContabilidadVector, EvaluacionesVector, 
 			Lista_de_RayaVector,ReportesEspecialesVector};
 	    
 	@SuppressWarnings("rawtypes")
@@ -301,7 +310,7 @@ public class Cat_Usuarios extends JFrame{
 		
 		btnDefault.addActionListener(contraseniaDefault);
 	
-		this.setSize(830,530);
+		this.setSize(830,550);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -412,6 +421,12 @@ public class Cat_Usuarios extends JFrame{
 	        		}
 	        		tree.collapseRow(6);
 	        		
+	        		Vector compras = new Obj_Usuario().returnPermisos(folio_empleado, 8);
+	        		for(int i = 0; i<Compras.length; i ++){
+	        			Compras[i].setSelected(Boolean.parseBoolean(compras.get(i).toString()));
+	        		}
+	        		tree.collapseRow(6);
+	        		
 	        		
 	        		
 				}else{
@@ -449,8 +464,12 @@ public class Cat_Usuarios extends JFrame{
 	        		for(int i = 0; i<Reportes_Especiales.length; i ++){
 	        			Reportes_Especiales[i].setSelected(false);
 	        		}
-	        		
 	        		tree.collapseRow(5);
+	        		
+	        		for(int i = 0; i<Compras.length; i ++){
+	        			Compras[i].setSelected(false);
+	        		}
+	        		tree.collapseRow(6);
 	        		
 				}        		
 			}

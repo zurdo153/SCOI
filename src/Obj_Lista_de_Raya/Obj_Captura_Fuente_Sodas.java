@@ -140,6 +140,10 @@ public class Obj_Captura_Fuente_Sodas
 		return new BuscarSQL().validacion_cajero_fuente_sodas(clavecajero,nombrecajero);
 	}
 	
+	public boolean validarticket(String nombre_usuario,String folioticket) throws SQLException{ 
+		return new BuscarSQL().validacion_ticket_fuente_sodas(nombre_usuario, folioticket);
+	}
+	
 	public Obj_Captura_Fuente_Sodas buscar(String clave){ 
 		try {
 			return new BuscarSQL().CapturaFuenteSodas(clave);
