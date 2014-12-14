@@ -119,6 +119,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JLabel lblFolio_Corte = new JLabel();
 	
 	JTextField txtApartados = new JTextField("");
+	JTextField txtAbonos = new JTextField("");
 	JTextField txtEfectivo = new JTextField("");
 	JTextField txtFechaCorte = new JTextField("");
 	JTextField txtDeposito = new JTextField("");
@@ -365,8 +366,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		panel.add(btnAsignacion).setBounds(x,y+=25,ancho,20);
 		
-
-		
 		panel.add(scroll).setBounds(x,y+=20,ancho*3+20,105);
 		panel.add(btnQuitarAsignacion).setBounds(x,y+=105,ancho,20);
 
@@ -381,34 +380,37 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(txtApartados).setBounds(ancho+x*10+30,y,ancho*2-190,20);
 		
 		panel.add(lblComentario).setBounds(x2-50,y,100,20);
-		panel.add(Observasiones).setBounds(x2-50,y+=20,420,80);
+		panel.add(Observasiones).setBounds(x2-50,y+=20,420,105);
 		
 		panel.add(new JLabel("Efectivo:")).setBounds(x,y+=5,ancho,20);
 		panel.add(txtEfectivo).setBounds(ancho-40,y,ancho-40,20);
 		panel.add(btnEfectivo).setBounds(ancho*2-80,y,29,20);
 		
-		panel.add(new JLabel("Tiempo Aire: ")).setBounds(x*10+50,y,ancho,20);
-		panel.add(txtTiempoAire).setBounds(ancho+x*10+30,y,ancho*2-190,20);
+		panel.add(new JLabel("Abono Clientes: ")).setBounds(x*10+50,y,ancho,20);
+		panel.add(txtAbonos).setBounds(ancho+x*10+30,y,ancho*2-190,20);
 		
 		panel.add(new JLabel("Cheques: ")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtCheques).setBounds(ancho-40,y,ancho-40,20);
 		panel.add(btnCheques).setBounds(ancho*2-80,y,29,20);
 		
-		panel.add(new JLabel("Recibo de luz: ")).setBounds(x*10+50,y,ancho,20);
-		panel.add(txtReciboLuz).setBounds(ancho+x*10+30,y,ancho*2-190,20);
+		panel.add(new JLabel("Tiempo Aire: ")).setBounds(x*10+50,y,ancho,20);
+		panel.add(txtTiempoAire).setBounds(ancho+x*10+30,y,ancho*2-190,20);
 		
 		panel.add(new JLabel("F. Sodas: ")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtTotalFS).setBounds(ancho-40,y,ancho-40,20);
 		panel.add(btnFS).setBounds(ancho*2-80,y,29,20);
 		
-		panel.add(new JLabel("Total De Vouchers: ")).setBounds(x*10+50,y,ancho,20);
-		panel.add(txtTotalVaucher).setBounds(ancho+x*10+30,y,ancho*2-190,20);
-		
-		panel.add(btnVauchers).setBounds(x,y+=25,ancho-40,20);
+		panel.add(new JLabel("Recibo de luz: ")).setBounds(x*10+50,y,ancho,20);
+		panel.add(txtReciboLuz).setBounds(ancho+x*10+30,y,ancho*2-190,20);
+	
+		panel.add(new JLabel("Total De Vouchers: ")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtTotalVaucher).setBounds(ancho-25,y,ancho*2-195,20);
 		
 		panel.add(new JLabel("Total de retiros: ")).setBounds(x*10+50,y,ancho,20);
 		panel.add(txtTotalRetiros).setBounds(ancho+x*10+30,y-1,ancho*2-190,20);
-
+		
+		panel.add(btnVauchers).setBounds(x,y+=25,ancho-40,20);
+		
 		panel.add(scrollVauchers).setBounds(x,y+=20,ancho*6+40,105);
 		
 		panel.add(lblDiferencia).setBounds(x2+50,y+130,ancho*2+40,100);
@@ -496,6 +498,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		txtFechaCorte.setEditable(false);
 		txtCorteSistema.setEditable(false);
 		txtApartados.setEditable(false);
+		txtAbonos.setEditable(false);
 		txtDeposito.setEditable(false);
 		txtRetiroCajero.setEditable(false);
 		txtEfectivo.setEditable(false);
@@ -516,7 +519,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 		btnReimprimir.setEnabled(true);
 		
-		this.setSize(940,615);
+		this.setSize(940,640);
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 
@@ -1117,7 +1120,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
  	
 	public void obtener_totales_de_tAire_rLuz_por_folio_de_corte(){
 		
-		String query_total_ta_rluz_por_folio_de_corte = "exec sp_select_suma_ta_rluz '"+lblFolio_Corte.getText()+"'";
+//		,"+lblFolio_Empleado.getText()
+		String query_total_ta_rluz_por_folio_de_corte = "exec sp_select_suma_ta_rluz_2 '"+lblFolio_Corte.getText()+"',"+Integer.valueOf(lblFolio_Empleado.getText().trim());
 			Connection con = new Connexion().conexion();
 			
 			try {				
@@ -1128,6 +1132,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						txtTiempoAire.setText(rs.getString("TA"));
 						txtReciboLuz.setText(rs.getString("RLUZ"));
 						txtApartados.setText(rs.getString("APA"));
+						txtAbonos.setText(rs.getString("TOTAL_ABONOS"));
 					}
 				con.commit();
 				

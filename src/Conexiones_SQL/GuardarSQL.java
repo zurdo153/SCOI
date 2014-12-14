@@ -188,7 +188,7 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Establecimiento(Obj_Establecimiento establecimiento){
-		String query = "exec sp_insert_establecimiento ?,?,?,?,?,?,? ";
+		String query = "exec sp_insert_establecimiento ?,?,?,?,?,?,?,?,?,?,? ";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -201,6 +201,11 @@ public class GuardarSQL {
 			pstmt.setInt(5, establecimiento.getStatus());
 			pstmt.setInt(6, establecimiento.getGrupo_cortes());
 			pstmt.setInt(7, establecimiento.getGrupo_permitir_nc());
+			
+			pstmt.setString(8, establecimiento.getDomicilio().toUpperCase().trim());
+			pstmt.setString(9, establecimiento.getRazon_social().toUpperCase().trim());
+			pstmt.setString(10, establecimiento.getRfc().toUpperCase().trim());
+			pstmt.setString(11, establecimiento.getTelefono().toUpperCase().trim());
 			
 			pstmt.executeUpdate();
 			con.commit();

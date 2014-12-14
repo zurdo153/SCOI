@@ -1,6 +1,5 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Toolkit;
@@ -30,15 +29,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Establecimiento extends JFrame{
@@ -52,6 +50,11 @@ public class Cat_Establecimiento extends JFrame{
 	JTextField txtSerie = new Componentes().text(new JTextField(), "Serie", 5, "String");
 	JTextField txtFolioFiltro = new JTextField();
 	JTextField txtUnidadFiltro = new Componentes().text(new JTextField(), "Filtro Por Nombre de Establecimiento", 30, "String");
+	
+	JTextField txtDomicilio = new Componentes().text(new JTextField(), "Domicilio", 100, "String");
+	JTextField txtRazonSocial = new Componentes().text(new JTextField(), "Razon Social", 60, "String");
+	JTextField txtRFC = new Componentes().text(new JTextField(), "RFC", 20, "String");
+	JTextField txtTelefono = new Componentes().text(new JTextField(), "Telefono", 15, "Int");
 	
 	String grupocheque[] = {"Sin Grupo","SUPER","FERRE Y REFA","IZACEL"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -76,12 +79,16 @@ public class Cat_Establecimiento extends JFrame{
 	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
 	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
 	
-	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio Est. ", "Establecimiento", "Abreviatura","Serie","Grupo Cheque","Estatus","Grupo Corte","Permitir NC"}){
+	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio Est. ", "Establecimiento", "Abreviatura","Serie","Grupo Cheque","Estatus","Grupo Corte","Permitir NC","Domicilio","Razon social","RFC","Telefono"}){
 	            @SuppressWarnings("rawtypes")
 	            Class[] types = new Class[]{
 	                       java.lang.Object.class,
 	                       java.lang.Object.class, 
 	                       java.lang.Object.class,    
+	                       java.lang.Object.class,  
+	                       java.lang.Object.class,
+	                       java.lang.Object.class,  
+	                       java.lang.Object.class,
 	                       java.lang.Object.class,  
 	                       java.lang.Object.class,
 	                       java.lang.Object.class,  
@@ -102,6 +109,10 @@ public class Cat_Establecimiento extends JFrame{
 	                            case 5  : return false; 
 	                            case 6  : return false; 
 	                            case 7  : return false; 
+	                            case 8  : return false; 
+	                            case 9  : return false; 
+	                            case 10 : return false; 
+	                            case 11 : return false; 
 	                    }
 	                     return false;
 	             }
@@ -154,6 +165,17 @@ public class Cat_Establecimiento extends JFrame{
 			panel.add(new JLabel("Estatus:")).setBounds(x-25,y+=30,ancho,20);
 			panel.add(cmb_status).setBounds(90,y,ancho+70,20);
 			
+			panel.add(new JLabel("Domicilio:")).setBounds(x-25,y+=30,ancho,20);
+			panel.add(txtDomicilio).setBounds(90,y,ancho+70,20);
+			
+			panel.add(new JLabel("Razon Social:")).setBounds(x-25,y+=30,ancho,20);
+			panel.add(txtRazonSocial).setBounds(90,y,ancho+70,20);
+			
+			panel.add(new JLabel("RFC:")).setBounds(x-25,y+=30,ancho,20);
+			panel.add(txtRFC).setBounds(90,y,ancho+70,20);
+			
+			panel.add(new JLabel("Telefono:")).setBounds(x-25,y+=30,ancho,20);
+			panel.add(txtTelefono).setBounds(90,y,ancho+70,20);
 			
 			panel.add(btnNuevo).setBounds(x+(ancho*2)+30,y-=120,100,20);
 			panel.add(btnEditar).setBounds(x+(ancho*2)+30,y+=30,100,20);
@@ -168,15 +190,23 @@ public class Cat_Establecimiento extends JFrame{
 			panel.add(txtFolioFiltro).setBounds((x*2)+(ancho*3)-5,15,58,20);
 			panel.add(txtUnidadFiltro).setBounds((x*2)+(ancho*3)+53,15,240,20);
 			
-			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-5,35,623,235);
+			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-5,35,623,355);
+			
 			
 			txtEstablecimiento.setEditable(false);
 			txtAbreviatura.setEditable(false);
 			txtSerie.setEditable(false);
+			
 			cmb_status.setEnabled(false);
 			cmb_grupo_cheque.setEnabled(false);
 			cmb_grupo_corte.setEnabled(false);
 			cmb_grupo_PermitirNC.setEnabled(false);
+			
+			txtDomicilio.setEditable(false);
+			txtRazonSocial.setEditable(false);
+			txtRFC.setEditable(false);
+			txtTelefono.setEditable(false);
+			
 			btnEditar.setEnabled(false);
 			
 			txtFolio.addKeyListener(buscar_action);
@@ -196,7 +226,7 @@ public class Cat_Establecimiento extends JFrame{
 			
 			agregar_de_tabla(tabla);
 			cont.add(panel);
-			this.setSize(1024,310);
+			this.setSize(1024,430);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -284,29 +314,23 @@ public class Cat_Establecimiento extends JFrame{
 		    this.tabla.getColumnModel().getColumn(6).setMaxWidth(150);
 		    this.tabla.getColumnModel().getColumn(7).setMinWidth(80);
 		    this.tabla.getColumnModel().getColumn(7).setMaxWidth(80);
+		    
+		    this.tabla.getColumnModel().getColumn(8).setMinWidth(80);
+		    this.tabla.getColumnModel().getColumn(8).setMaxWidth(80);
+		    
+		    this.tabla.getColumnModel().getColumn(9).setMinWidth(80);
+		    this.tabla.getColumnModel().getColumn(9).setMaxWidth(80);
+		    
+		    this.tabla.getColumnModel().getColumn(10).setMinWidth(80);
+		    this.tabla.getColumnModel().getColumn(10).setMaxWidth(80);
+		    
+		    this.tabla.getColumnModel().getColumn(11).setMinWidth(80);
+		    this.tabla.getColumnModel().getColumn(11).setMaxWidth(80);
 						    
-						    TableCellRenderer render = new TableCellRenderer() { 
-								public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-								boolean hasFocus, int row, int column) { 
-						          		Component componente = null;
-											componente = new JLabel(value == null? "": value.toString());
-											if(row %2 == 0){
-												((JComponent) componente).setOpaque(true); 
-												componente.setBackground(new java.awt.Color(177,177,177));	
-											}
-											
-											if(table.getSelectedRow() == row){
-												((JComponent) componente).setOpaque(true); 
-												componente.setBackground(new java.awt.Color(186,143,73));
-											 }
-											((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-									return componente;
-								} 
-							}; 
-
 							for(int i=0; i<tabla.getColumnCount(); i++){
-							    this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
+								this.tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 							}
+							
 							refrestabla();
 					 JScrollPane scrol = new JScrollPane(tabla);
 				    return scrol; 
@@ -343,14 +367,18 @@ public class Cat_Establecimiento extends JFrame{
 								", case when permitir_nc=0  "+
 								"		then (select 'NO PERMITIR')  "+
 								"	   ELSE (select 'PERMITIR')  "+
-								"	end as permitir_nc  "+
+								"	end as permitir_nc,  " +
+								" domicilio, " +
+								" razon_social, " +
+								" rfc, " +
+								" telefono "+
 						"from tb_establecimiento  " +
 						"left outer join tb_grupos_para_cortes on tb_grupos_para_cortes.folio_grupo_para_cortes=tb_establecimiento.folio_grupo_para_cortes "+
 						"order by nombre asc ");
 			
 			while (rs.next())
 			{ 
-			   String [] fila = new String[8];
+			   String [] fila = new String[12];
 			   fila[0] = rs.getString(1).trim();
 			   fila[1] = rs.getString(2).trim();
 			   fila[2] = rs.getString(3).trim(); 
@@ -358,7 +386,11 @@ public class Cat_Establecimiento extends JFrame{
 			   fila[4] = rs.getString(5).trim(); 
 			   fila[5] = rs.getString(6).trim(); 
 			   fila[6] = rs.getString(7).trim(); 
-			   fila[7] = rs.getString(8).trim(); 
+			   fila[7] = rs.getString(8).trim();
+			   fila[8] = rs.getString(9).trim();
+			   fila[9] = rs.getString(10).trim();
+			   fila[10] = rs.getString(11).trim();
+			   fila[11] = rs.getString(12).trim();
 			   modelo.addRow(fila); 
 			}	
 		} catch (SQLException e1) {
@@ -448,6 +480,11 @@ public class Cat_Establecimiento extends JFrame{
 			txtAbreviatura.setText("");
 			txtSerie.setText("");
 			
+			txtDomicilio.setText("");
+			txtRazonSocial.setText("");
+			txtRFC.setText("");
+			txtTelefono.setText("");
+			
 			cmb_grupo_cheque.setSelectedIndex(0);
 			cmb_status.setSelectedIndex(1);
 			
@@ -457,6 +494,11 @@ public class Cat_Establecimiento extends JFrame{
 			txtEstablecimiento.setEditable(false);
 			txtAbreviatura.setEditable(false);
 			txtSerie.setEditable(false);
+			
+			txtDomicilio.setEditable(false);
+			txtRazonSocial.setEditable(false);
+			txtRFC.setEditable(false);
+			txtTelefono.setEditable(false);
 			
 			cmb_grupo_cheque.setEnabled(false);
 			cmb_grupo_corte.setEnabled(false);
@@ -475,6 +517,11 @@ public class Cat_Establecimiento extends JFrame{
 				txtEstablecimiento.setEditable(true);
 				txtAbreviatura.setEditable(true);
 				txtSerie.setEditable(true);
+				
+				txtDomicilio.setEditable(true);
+				txtRazonSocial.setEditable(true);
+				txtRFC.setEditable(true);
+				txtTelefono.setEditable(true);
 				
 				cmb_grupo_cheque.setEnabled(true);
 				cmb_grupo_corte.setEnabled(true);
@@ -505,6 +552,11 @@ public class Cat_Establecimiento extends JFrame{
 						txtAbreviatura.setText(Establecimiento.getAbreviatura()+"");
 						txtSerie.setText(Establecimiento.getSerie()+"");
 						
+						txtDomicilio.setText(Establecimiento.getDomicilio());
+						txtRazonSocial.setText(Establecimiento.getRazon_social());
+						txtRFC.setText(Establecimiento.getRfc());
+						txtTelefono.setText(Establecimiento.getTelefono());
+						
 						cmb_grupo_cheque.setSelectedIndex(Establecimiento.getGrupo_cheque());
 						cmb_grupo_corte.setSelectedIndex(Establecimiento.getGrupo_cheque());
 						cmb_grupo_PermitirNC.setSelectedIndex(Establecimiento.getGrupo_cheque());
@@ -517,6 +569,11 @@ public class Cat_Establecimiento extends JFrame{
 						txtEstablecimiento.setEditable(false);
 						txtAbreviatura.setEditable(false);
 						txtSerie.setEditable(false);
+						
+						txtDomicilio.setEditable(false);
+						txtRazonSocial.setEditable(false);
+						txtRFC.setEditable(false);
+						txtTelefono.setEditable(false);
 						
 						cmb_grupo_cheque.setEnabled(false);
 						cmb_grupo_corte.setEnabled(false);
@@ -551,10 +608,20 @@ public class Cat_Establecimiento extends JFrame{
 						cmb_grupo_corte.setSelectedItem(tabla.getValueAt(fila,6).toString().substring(0,tabla.getValueAt(fila,6).toString().length()));
 						cmb_grupo_PermitirNC.setSelectedItem(tabla.getValueAt(fila, 7).toString().substring(0, tabla.getValueAt(fila, 7).toString().length()));
 						
+						txtDomicilio.setText(tabla.getValueAt(fila,8).toString().substring(0,tabla.getValueAt(fila,8).toString().length()));
+						txtRazonSocial.setText(tabla.getValueAt(fila,9).toString().substring(0,tabla.getValueAt(fila,9).toString().length()));
+						txtRFC.setText(tabla.getValueAt(fila,10).toString().substring(0,tabla.getValueAt(fila,10).toString().length()));
+						txtTelefono.setText(tabla.getValueAt(fila,11).toString().substring(0,tabla.getValueAt(fila,11).toString().length()));
+						
 						txtFolio.setEditable(false);
 						txtEstablecimiento.setEditable(false);
 						txtAbreviatura.setEditable(false);
 						txtSerie.setEditable(false);
+						
+						txtDomicilio.setEditable(false);
+						txtRazonSocial.setEditable(false);
+						txtRFC.setEditable(false);
+						txtTelefono.setEditable(false);
 						
 						cmb_grupo_cheque.setEnabled(false);
 						cmb_grupo_corte.setEnabled(false);
@@ -582,6 +649,10 @@ public class Cat_Establecimiento extends JFrame{
 				txtAbreviatura.setEditable(true);
 				txtSerie.setEditable(true);
 				
+				txtDomicilio.setEditable(true);
+				txtRazonSocial.setEditable(true);
+				txtRFC.setEditable(true);
+				txtTelefono.setEditable(true);
 				
 				txtFolio.setText( busqueda_proximo_folio()+"");
 				txtFolio.setEditable(false);
@@ -604,6 +675,11 @@ public class Cat_Establecimiento extends JFrame{
 				txtEstablecimiento.setEditable(true);
 				txtAbreviatura.setEditable(true);
 				txtSerie.setEditable(true);
+				
+				txtDomicilio.setEditable(true);
+				txtRazonSocial.setEditable(true);
+				txtRFC.setEditable(true);
+				txtTelefono.setEditable(true);
 				
 				txtFolio.setText(1+"");
 				txtFolio.setEditable(false);
@@ -644,6 +720,12 @@ public class Cat_Establecimiento extends JFrame{
 							  							    Establecimiento.setGrupo_cheque(cmb_grupo_cheque.getSelectedIndex());
 							  							    Establecimiento.setGrupo_cortes(cmb_grupo_corte.getSelectedIndex());
 							  							    Establecimiento.setGrupo_permitir_nc(cmb_grupo_PermitirNC.getSelectedIndex());
+							  							    
+							  							    Establecimiento.setDomicilio(txtDomicilio.getText().toLowerCase().toString());
+								  							Establecimiento.setRazon_social(txtRazonSocial.getText().toLowerCase().toString());
+								  							Establecimiento.setRfc(txtRFC.getText().toLowerCase().toString());
+								  							Establecimiento.setTelefono(txtTelefono.getText().toLowerCase().toString());
+							  							
 															switch(cmb_status.getSelectedIndex()){
 																		case 0: Establecimiento.setStatus(1); break;
 																		case 1: Establecimiento.setStatus(0); break;	}
@@ -689,6 +771,11 @@ public class Cat_Establecimiento extends JFrame{
 																		Establecimiento.setGrupo_cheque(cmb_grupo_cheque.getSelectedIndex());
 																		Establecimiento.setGrupo_cortes(cmb_grupo_corte.getSelectedIndex());
 																		Establecimiento.setGrupo_permitir_nc(cmb_grupo_PermitirNC.getSelectedIndex());
+																		
+										  							    Establecimiento.setDomicilio(txtDomicilio.getText().toLowerCase().toString());
+											  							Establecimiento.setRazon_social(txtRazonSocial.getText().toLowerCase().toString());
+											  							Establecimiento.setRfc(txtRFC.getText().toLowerCase().toString());
+											  							Establecimiento.setTelefono(txtTelefono.getText().toLowerCase().toString());
 																		
 																		switch(cmb_status.getSelectedIndex()){
 																					case 0: Establecimiento.setStatus(1); break;
@@ -755,6 +842,12 @@ public class Cat_Establecimiento extends JFrame{
 		if(txtSerie.getText().equals("")) 		error+= "Serie del Establecimiento\n";
 		if(cmb_grupo_cheque.getSelectedIndex()==0) 		error+= "Grupo Para Cheque\n";
 		if(cmb_grupo_corte.getSelectedIndex()==0) 		error+= "Grupo Para Cortes\n";
+		
+		if(txtDomicilio.getText().equals("")) 		error+= "Domicilio\n";
+		if(txtRazonSocial.getText().equals("")) 		error+= "Razon social\n";
+		if(txtRFC.getText().equals("")) 		error+= "RFC\n";
+		if(txtTelefono.getText().equals("")) 		error+= "Telefono\n";
+		
 		return error;
 	}
 	

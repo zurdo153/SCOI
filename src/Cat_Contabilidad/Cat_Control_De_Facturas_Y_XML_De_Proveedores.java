@@ -376,7 +376,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 									    " ,Status " +
 									    " FROM tb_control_de_facturas_y_xml " +
 									    " where status=1 " +
-									    " order by fecha_factura desc");
+									    " order by tb_control_de_facturas_y_xml.fecha_modificacion");
 		
 			while (rs.next())
 			{ 
