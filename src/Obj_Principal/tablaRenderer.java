@@ -88,7 +88,7 @@ public class tablaRenderer extends DefaultTableCellRenderer {
          }else{
         	 
         	 this.alineacionOrizontal( alineacion );
-             this.setText( (String) value );
+             this.setText( value.toString() );
              this.setForeground( (selected)?new Color(255,255,255):new Color(32,17,32) ); 
              this.setFont(fuente);            
 //             return this;

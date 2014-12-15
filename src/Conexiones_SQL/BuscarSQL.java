@@ -121,6 +121,11 @@ public class BuscarSQL {
 				establecimiento.setStatus(rs.getInt("status"));
 				establecimiento.setGrupo_cortes(rs.getInt("folio_grupo_para_cortes"));
 				establecimiento.setGrupo_permitir_nc(rs.getInt("permitir_nc"));
+				
+				establecimiento.setDomicilio(rs.getString("domicilio"));
+				establecimiento.setRazon_social(rs.getString("razon_social"));
+				establecimiento.setRfc(rs.getString("rfc"));
+				establecimiento.setTelefono(rs.getString("telefono"));
 			}
 			
 		} catch (Exception e) {
@@ -5727,6 +5732,34 @@ public class BuscarSQL {
     return existe;
 	}
 	
+	
+	public String  permiso_cancelar_ticket_o_abono(String clave){
+		String permiso_cancelarApartados ="";
+		
+		String query = "exec sp_select_supervisores_para_cancelar_c_ahorro_clientes '"+clave+"'";
+		Statement stmt = null;
+		
+		try {
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					permiso_cancelarApartados = rs.getString(1);
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt != null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}}
+		}
+		return permiso_cancelarApartados;
+	}
+
+	
 	public Obj_Cotizaciones_De_Un_Producto Hoymenos3meses() throws SQLException{
 		Obj_Cotizaciones_De_Un_Producto fecha = new Obj_Cotizaciones_De_Un_Producto();
 		
@@ -5750,6 +5783,5 @@ public class BuscarSQL {
 		}
 		return fecha;
 	}
-	
 	
 }

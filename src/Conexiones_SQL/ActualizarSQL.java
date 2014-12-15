@@ -217,7 +217,8 @@ public class ActualizarSQL {
 	}
 	
 	public boolean Establecimiento(Obj_Establecimiento establecimiento, int folio){
-		String query = "update tb_establecimiento set nombre=?, abreviatura=?,serie=?, grupo_para_cheque=?, status=?, folio_grupo_para_cortes=?, permitir_nc=? where folio=" + folio;
+		String query = "update tb_establecimiento set nombre=?, abreviatura=?,serie=?, grupo_para_cheque=?, status=?, " +
+						" folio_grupo_para_cortes=?, permitir_nc=?, domicilio=?, razon_social=?, rfc=?, telefono=? where folio=" + folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -230,6 +231,12 @@ public class ActualizarSQL {
 			pstmt.setInt(5, establecimiento.getStatus());
 			pstmt.setInt(6, establecimiento.getGrupo_cortes());
 			pstmt.setInt(7, establecimiento.getGrupo_permitir_nc());
+			
+			pstmt.setString(8, establecimiento.getDomicilio().toUpperCase().trim());
+			pstmt.setString(9, establecimiento.getRazon_social().toUpperCase().trim());
+			pstmt.setString(10, establecimiento.getRfc().toUpperCase().trim());
+			pstmt.setString(11, establecimiento.getTelefono().toUpperCase().trim());
+			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -2780,4 +2787,45 @@ public class ActualizarSQL {
 	
 	}	
 
+	public boolean Actualizar_Cancelar_Ticket_o_Abono(String folio_ticket_abono, String usuario_cancelo, String movimiento){
+		String query ="exec sp_update_cancelar_ticket_o_abono ?,?,?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			con.setAutoCommit(false);
+			PreparedStatement pstmt = con.prepareStatement(query);
+			
+				System.out.println(folio_ticket_abono);
+				System.out.println(usuario_cancelo);
+				System.out.println(movimiento);
+				
+				pstmt.setString(1, folio_ticket_abono);
+				pstmt.setString (2, usuario_cancelo);
+				pstmt.setString (3, movimiento);
+				pstmt.executeUpdate();
+
+				con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Captura_FS ] update  SQLException: sp_update_captura_fs "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Captura_FS ] update  SQLException: sp_update_captura_fs "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+					return false;
+					}	
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
+	}	
+	
 }
