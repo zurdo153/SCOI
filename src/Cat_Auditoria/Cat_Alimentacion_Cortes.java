@@ -1019,25 +1019,31 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		for(int i=0; i<tabla_asignaciones.getRowCount(); i++){
 			
-			String consulta_ta_rluz = "declare @asignacion varchar(50), @sumaapartadosnuevos money " +
-										
-					
-										" set @asignacion= '"+modelo_asignaciones.getValueAt(i,0).toString().trim()+"' " +
-										" 	set @sumaapartadosnuevos=(SELECT    isnull(sum(abonos_clientes.importe),0) as Abono_Apartados " +
-										"								FROM         abonos_clientes with(nolock) " +
-										"								  LEFT OUTER JOIN  facremtick with(nolock) ON  facremtick.folio=abonos_clientes.folio_aplicado " +
-										"							      LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=facremtick.folio_cajero " +
-										"								where  facremtick.status <> 'C' and facremtick.cond_pago = '4' AND facremtick.folio_cajero=@asignacion and abonos_clientes.status='V' and abonos_clientes.fecha>=asignaciones_cajeros.fecha_inicial and abonos_clientes.fecha<=asignaciones_cajeros.fecha_liquidacion) " +
-										"											SELECT  '"+lblFolio_Corte.getText()+"' as folio_corte " +
-												"															 ,'APARTADOS' as concepto " +
-												"															 ,@asignacion as asignacion " +
-												"															 ,isnull(sum(case when liquidaciones_tickets.afectacion = '+' then liquidaciones_tickets.importe else liquidaciones_tickets.importe * -1 end),0)+@sumaapartadosnuevos as total " +
-												"															 ,convert(varchar(50),asignaciones_cajeros.fecha_liquidacion,103) as fecha " +
-												"														from ((select ticket  from liquidaciones_tickets with(nolock) where folio_asignacion=@asignacion) except " +
-												"																			 (select folio  as ticket from facremtick with(nolock) where folio_cajero=@asignacion)) folio " +
-												"														   INNER JOIN liquidaciones_tickets on liquidaciones_tickets.folio_asignacion=@asignacion and folio.ticket=liquidaciones_tickets.ticket " +
-												"														   LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=@asignacion " +
-												"														 group by convert(varchar(50),asignaciones_cajeros.fecha_liquidacion,103) " +
+			String consulta_ta_rluz = "declare @asignacion varchar(50), @Fecha varchar(30) " +
+									" set @asignacion= '"+modelo_asignaciones.getValueAt(i,0).toString().trim()+"' " +
+					"		SET @Fecha =(SELECT TOP 1  CONVERT (VARCHAR(20),abonos_clientes.fecha,103) AS Fecha FROM  abonos_clientes with(nolock) LEFT OUTER JOIN  facremtick with(nolock) ON  facremtick.folio=abonos_clientes.folio_aplicado " +
+					"                        LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=facremtick.folio_cajero " +
+					"       where  facremtick.status <> 'C' and facremtick.cond_pago = '4' AND facremtick.folio_cajero=@asignacion and abonos_clientes.status='V' and abonos_clientes.fecha>=asignaciones_cajeros.fecha_inicial and abonos_clientes.fecha<=asignaciones_cajeros.fecha_liquidacion)" +
+					"	(SELECT '"+lblFolio_Corte.getText()+"' as folio_corte" +
+					"  ,'APARTADOS' as concepto ,facremtick.folio_cajero as Asignacion" +
+					"  ,abonos_clientes.importe as Abono " +
+					"  ,CONVERT (VARCHAR(20),abonos_clientes.fecha,103) AS Fecha " +
+					"      FROM         abonos_clientes with(nolock)" +
+					"         LEFT OUTER JOIN  facremtick with(nolock) ON  facremtick.folio=abonos_clientes.folio_aplicado" +
+					"         LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=facremtick.folio_cajero " +
+					"      where  facremtick.status <> 'C' and facremtick.cond_pago = '4' AND facremtick.folio_cajero=@asignacion and abonos_clientes.status='V' and abonos_clientes.fecha>=asignaciones_cajeros.fecha_inicial and abonos_clientes.fecha<=asignaciones_cajeros.fecha_liquidacion)" +
+					"   UNION ALL  " +
+					"	(SELECT '"+lblFolio_Corte.getText()+"' as folio_corte" +
+					"   ,'APARTADOS' as concepto ,@asignacion as Asignacion" +
+					"   ,sum(case when liquidaciones_tickets.afectacion = '+' then liquidaciones_tickets.importe else liquidaciones_tickets.importe * -1 end) as Abono" +
+					"   ,@FECHA Fecha " +
+					"     FROM ((select ticket  from liquidaciones_tickets with(nolock) where folio_asignacion=@asignacion)" +
+					"            except" +
+					"      (select folio  as ticket from facremtick with(nolock) where folio_cajero=@asignacion)) folio" +
+					"     inner join liquidaciones_tickets on liquidaciones_tickets.folio_asignacion=@asignacion and folio.ticket=liquidaciones_tickets.ticket" +
+					"     inner join datos_apartados_mercancia ON datos_apartados_mercancia.folio = folio.ticket " +
+					"   group by folio.ticket,datos_apartados_mercancia.entregar_a" +
+					"         ,datos_apartados_mercancia.domicilio,datos_apartados_mercancia.telefono) "+ 
 												"                                           UNION ALL " +
 												
 										"	SELECT '"+lblFolio_Corte.getText()+"' as folio_corte" +
@@ -1075,7 +1081,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 										"						INNER JOIN entysal on entysal.folio=facremtick.folio WHERE ( (facremtick.status = 'C') AND (facremtick.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52384' )" +
 										"						 group by convert(varchar(20),facremtick.fecha,103))rl " +
 										"	GROUP BY rl.fecha";
-			
 				
 				String query_ta_rluz = "exec sp_insert_relacion_por_pagos_de_servicios ?,?,?,?,?";
 				

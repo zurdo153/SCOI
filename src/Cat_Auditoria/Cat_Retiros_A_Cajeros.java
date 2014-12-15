@@ -204,6 +204,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
    	
 	/////////CONSULTA EL DE LOS RETIROS YA GUARDADOS
    	public float Consulta_El_Importe__de_los_Retiros_Guardados(){
+   		importe_retiros_guardados=0;
    		
    		String query_importe_retiros="exec sp_consulta_acumulado_de_retiros_a_cajeros_del_dia "+folio_empleado;
    		
@@ -225,6 +226,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
    	
 	/////////CONSULTA DEL VALOR A RETIRAR DE ACUERDO AL DIA
    	public float Consulta_del_Importe_del_retiro_del_dia(){
+   		valor_a_retirar_deacuerdo_al_dia=0;
    		
    		String query_importe_retiros_del_dia="exec sp_obtener_importe_del_retiro_del_dia";
    		
@@ -250,6 +252,10 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 ActionListener Buscar_Cambios = new ActionListener(){
 public void actionPerformed(ActionEvent e){
 try {
+	importe_retiros_guardados        = 0;
+	importe_nuevo_devuelto           = 0;
+	valor_a_retirar_deacuerdo_al_dia = 0;
+	
 
 importe_retiros_guardados        = Consulta_El_Importe__de_los_Retiros_Guardados();
 importe_nuevo_devuelto           = Consulta_de_Importe_Nuevo();

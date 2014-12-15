@@ -37,6 +37,7 @@ import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
+import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Contabilidad.Obj_Importar_Voucher;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
@@ -3346,13 +3347,6 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			
 			int i=1;
 
-//			System.out.println( movimiento.getTicket());
-//			System.out.println(movimiento.getAbono());
-//			System.out.println(movimiento.getEstablecimiento());
-//			System.out.println(movimiento.getCajero());
-//			System.out.println(movimiento.getFecha_fin());
-//			System.out.println(movimiento.getFolio_cliente());
-			
 			
 			pstmt.setString(i, movimiento.getTicket());
 			pstmt.setDouble(i+=1, movimiento.getAbono());
@@ -3535,4 +3529,51 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		}		
 		return Guardo_Sesion;
 	}
+
+public boolean Guardar_Cotizacion_Producto(Obj_Cotizaciones_De_Un_Producto Cotizacion_Producto){
+	String query = "exec sp_insert_cotizacion_de_un_productos_en_proveedores ?,?,?,?,?,?,?,?,?,?,?,? ";
+	Connection con = new Connexion().conexion_IZAGAR();
+	PreparedStatement pstmt = null;
+	try {
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query);
+		
+		pstmt.setString(1, Cotizacion_Producto.getCod_Prod().toUpperCase().trim());
+		pstmt.setString(2, Cotizacion_Producto.getFolio_compra().toUpperCase().trim());
+        pstmt.setString(3, Cotizacion_Producto.getCod_Prv().toUpperCase().trim());
+        pstmt.setString(4, Cotizacion_Producto.getProveedor().toUpperCase().trim());
+        pstmt.setDouble(5,  Cotizacion_Producto.getUltimo_Costo());  
+        pstmt.setDouble(6,  Cotizacion_Producto.getCosto_Promedio());
+        pstmt.setDouble(7,  Cotizacion_Producto.getCosto_Nuevo());
+        pstmt.setDouble(8, Cotizacion_Producto.getCantidad_Requerida());
+        pstmt.setString(9, Cotizacion_Producto.getNotas_Negociacion());
+        pstmt.setDouble(10, Cotizacion_Producto.getExistencia_Cedis());
+        pstmt.setDouble(11, Cotizacion_Producto.getExistencia_Total());
+        pstmt.setString(12, usuario.getNombre_completo());
+        		
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage());
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cotizacion_Producto ] Insert  SQLException: sp_insert_cotizacion_de_un_productos_en_proveedores "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			pstmt.close();
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cotizacion_Producto ] Insert  SQLException: sp_insert_cotizacion_de_un_productos_en_proveedores "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
 }
