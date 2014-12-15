@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -19,7 +20,7 @@ public class Init_Menu_Bar extends Init_Login{
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
 		
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.3.8");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.4.1");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -233,9 +234,17 @@ public class Init_Menu_Bar extends Init_Login{
 						else
 							JOptionPane.showMessageDialog(null, "El usuario no tiene cuadrante", "Aviso!", JOptionPane.OK_CANCEL_OPTION);
 					}else{
+						
+					if(e.getActionCommand().equalsIgnoreCase("Cotizaciones De Un Producto En Proveedores")){
+						
+						new Cat_Cotizaciones_De_Un_Producto_En_Proveedores("").setVisible(true);
+					}else{
+						
 						Class instance = Class.forName(new Componentes().classExiste(e.getActionCommand()));
 						Object instanceObject = instance.newInstance();
+						
 						((Window) instanceObject).setVisible(true);
+					}
 					}
 				} catch (ClassNotFoundException e1) {
 					System.err.println(e1.getMessage());
@@ -248,7 +257,7 @@ public class Init_Menu_Bar extends Init_Login{
 					//e1.printStackTrace();
 				}
 				
-				
+			
 			}
 		}
 	};

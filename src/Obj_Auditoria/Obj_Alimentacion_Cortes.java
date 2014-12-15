@@ -5,7 +5,7 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Alimentacion_Cortes {
-	
+	                                                      
 		private String folio_corte;                  	private float corte_sistema;
 		private int usuario;                      	 	private float tiempo_aire;
 		private int folio_empleado;                  	private float recibo_luz;
@@ -15,7 +15,16 @@ public class Obj_Alimentacion_Cortes {
 		private String puesto;                       	private float total_de_vauchers;                      
 		private String establecimiento;              	private float diferencia_corte;                      
 													 	private boolean status;                      
-													 	private String comentario;                      
+													 	private String comentario;     
+													 	private float apartado;
+
+	public float getApartado() {
+															return apartado;
+														}
+
+														public void setApartado(float apartado) {
+															this.apartado = apartado;
+														}
 
 	public Obj_Alimentacion_Cortes(){
 		
@@ -29,7 +38,8 @@ public class Obj_Alimentacion_Cortes {
 		this.establecimiento="";                		this.diferencia_corte=0;
 														this.status=false;
 														this.comentario="";
-	}
+														this.apartado=0; 
+	} 
 
 	public String getFolio_corte() {
 		return folio_corte;

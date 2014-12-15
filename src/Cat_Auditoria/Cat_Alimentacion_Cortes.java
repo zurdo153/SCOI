@@ -108,7 +108,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JButton btnVauchers = new JButton("Vouchers",new ImageIcon("imagen/tarjeta-de-credito-visa-icono-8242-16.png"));
 	JButton btnQuitarVauchers = new JButton("Quitar Voucher",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	JButton btnReimprimir = new JButton("Reimprimir Corte Guardado",new ImageIcon("imagen/Print.png"));
-	JButton btnFS = new JButton("",new ImageIcon("imagen/food-bread-toast-icone-4706-16.png"));
+	JButton btnFS = new JButton("",new ImageIcon("imagen/fast-food-icon16.png"));
 	
 
 	
@@ -721,9 +721,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 //				try{
 					Obj_Alimentacion_Cortes corte = new Obj_Alimentacion_Cortes();
 					
-//					this.folio_establecimiento_de_corte=0;  
-//					this.fecha_de_corte="";         
-//					this.status=false;
 						corte.setFolio_corte(lblFolio_Corte.getText());
 						corte.setUsuario(folio_usuario);
 						corte.setFolio_empleado(Integer.parseInt(lblFolio_Empleado.getText()+""));
@@ -731,6 +728,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						corte.setEstablecimiento_de_corte(lblEstablecimineto.getText().toUpperCase().trim());
 						
 						corte.setCorte_sistema(Float.parseFloat(txtCorteSistema.getText()));
+						corte.setApartado(Float.parseFloat(txtApartados.getText().equals("")?"0":txtApartados.getText()));
+						
 						corte.setTiempo_aire(Float.parseFloat(txtTiempoAire.getText().equals("")?"0":txtTiempoAire.getText()));
 						corte.setRecibo_luz(Float.parseFloat(txtReciboLuz.getText().equals("")?"0":txtReciboLuz.getText()));
 						corte.setDeposito(Float.parseFloat(txtDeposito.getText()));
@@ -760,6 +759,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							
 							btnGuardarCorte.setEnabled(false);
 							btnCancelar.setEnabled(false);
+							btnRetiroCajero.setEnabled(false);
 							
 							btnSalir.setEnabled(true);
 							btnFiltro.setEnabled(true);
@@ -1042,7 +1042,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 												"														   LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=@asignacion " +
 												"														 group by convert(varchar(50),asignaciones_cajeros.fecha_liquidacion,103) " +
 												"                                           UNION ALL " +
-												
 												
 										"	SELECT '"+lblFolio_Corte.getText()+"' as folio_corte" +
 										"       ,'TA' as concepto " +
@@ -1618,7 +1617,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 																	if(isNumeric(tabla_model_efectivo.getValueAt(i,4).toString().trim())){
 												    						suma += Float.parseFloat(tabla_model_efectivo.getValueAt(i,4).toString())*(Float.parseFloat(tabla_model_efectivo.getValueAt(i,2).toString())*Float.parseFloat(tabla_model_efectivo.getValueAt(i,3).toString()));
 																	}else{
-																			JOptionPane.showMessageDialog(null, "La nomina en el establecimiento "+tabla_model_efectivo.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
+																			JOptionPane.showMessageDialog(null, "La denominacion del efectivo "+tabla_model_efectivo.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
 																			tabla_model_efectivo.setValueAt("", i, 4);
 																	}
 															}
@@ -1776,7 +1775,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							if(isNumeric(tabla_model_cheques.getValueAt(i,1).toString().trim())){
 		    						suma += Float.parseFloat(tabla_model_cheques.getValueAt(i,1).toString());
 							}else{
-									JOptionPane.showMessageDialog(null, "La nomina en el establecimiento "+tabla_model_cheques.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
+									JOptionPane.showMessageDialog(null, "La tabla de cheques  "+tabla_model_cheques.getValueAt(i,0).toString()+"  están mal en su formato:\n","Error",JOptionPane.ERROR_MESSAGE);
 									tabla_model_cheques.setValueAt("", i, 1);
 							}
 					}

@@ -125,7 +125,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	public void getContenedor()
 	{
 		init_tabla();
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/captura_fuente_de_Sodas_64.png"));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/fast-food-icon64.png"));
 		this.setTitle("Captura de fuente de sodas");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Captura de fuente de sodas"));
 		
@@ -170,6 +170,8 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		panel.add(lblUsuario).setBounds(105,20,350,20);
 		panel.add(lblClaveCajero).setBounds(20,45,100,20);
 		panel.add(new JLabel(new ImageIcon("imagen/key-group-icone-5159-16.png"))).setBounds(100,45,20,20);
+		panel.add(new JLabel(new ImageIcon("imagen/fast-food-icon72.png"))).setBounds(760,5,72,72);
+		
 		panel.add(txtClaveCajero).setBounds(120,45,110,20);
 		
 		panel.add(lblClave).setBounds(20,85,50,20);
@@ -349,10 +351,25 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		public void actionPerformed(ActionEvent e) {
 			
 			if(txtTicket.getText().length() != 0 ){
-				txtTicket.setEnabled(false);
-				txtImporte.setEnabled(true);
-				txtImporte.requestFocus();
-				btnGuardar.setEnabled(true);
+				
+				
+			try {
+				if(new Obj_Captura_Fuente_Sodas().validarticket(lblUsuario.getText().toUpperCase().trim(), txtTicket.getText().toUpperCase().trim())){
+					
+					txtTicket.setEnabled(false);
+					txtImporte.setEnabled(true);
+					txtImporte.requestFocus();
+					btnGuardar.setEnabled(true);
+				 }else{
+				JOptionPane.showMessageDialog(null,"El Folio del Ticket Tecleado Ya Existe ,Verifique El Folio ","Aviso", JOptionPane.WARNING_MESSAGE);
+				return;
+				}
+				
+			    } catch (SQLException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error al Buscar el ticket en Cat_Captura_De_Fuente_De_Sodas_Cajeras en la ActionListener opTiket!!","Aviso",JOptionPane.ERROR_MESSAGE);
+			 };
+
 			}else{
 				JOptionPane.showMessageDialog(null,"ingrese codigo de tiket para registrar compra","Aviso", JOptionPane.WARNING_MESSAGE);
 				return;
