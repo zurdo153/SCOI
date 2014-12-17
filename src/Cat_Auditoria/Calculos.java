@@ -1,12 +1,15 @@
-package Cat_Contabilidad;
+package Cat_Auditoria;
 
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -16,9 +19,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
+import Conexiones_SQL.BuscarTablasModel;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.tablaRenderer;
@@ -33,57 +38,45 @@ public class Calculos extends JFrame{
 	
 	JDateChooser calendario = new JDateChooser();
 	
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_desc();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	static DecimalFormat df = new DecimalFormat("#0.00");
 	
-	public static Object[][] llenarTabla(double porcentaje){
-		Object[][] datosTablaPrincipal = {
-			 {"SV-154864", "SV1247", new Double(df.format(150*porcentaje)), new Double(df.format(00.1*porcentaje)), new Double(df.format(00.2*porcentaje)), new Double(df.format(00.3*porcentaje)), new Double(df.format(150*porcentaje)), new Double(df.format(1150*porcentaje)), new Double(df.format(50*porcentaje)),  new Double(4550), 	new Double(150), 	new Double(0), 		new Double(.16),	new Double(150), 	"01/01/1900", "01/01/1900"},
-			 {"SV-154865", "SV1248", new Double(df.format(250*porcentaje)), new Double(df.format(0001*porcentaje)), new Double(df.format(0002*porcentaje)), new Double(df.format(0003*porcentaje)), new Double(df.format(250*porcentaje)), new Double(df.format(2150*porcentaje)), new Double(df.format(80*porcentaje)),  new Double(1592), 	new Double(450), 	new Double(490), 	new Double(1.16), 	new Double(450), 	"01/01/1900", "01/01/1900"},
-			 {"SV-154866", "SV1249", new Double(df.format(350*porcentaje)), new Double(df.format(0010*porcentaje)), new Double(df.format(0020*porcentaje)), new Double(df.format(0030*porcentaje)), new Double(df.format(350*porcentaje)), new Double(df.format(3150*porcentaje)), new Double(df.format(120*porcentaje)), new Double(945), 		new Double(380), 	new Double(1500), 	new Double(2.16), 	new Double(380), 	"01/01/1900", "01/01/1900"},
-			 {"SV-154867", "SV1250", new Double(df.format(450*porcentaje)), new Double(df.format(0100*porcentaje)), new Double(df.format(0200*porcentaje)), new Double(df.format(0300*porcentaje)), new Double(df.format(450*porcentaje)), new Double(df.format(4150*porcentaje)), new Double(df.format(90*porcentaje)),  new Double(3487),		new Double(980), 	new Double(800), 	new Double(3.16), 	new Double(980), 	"01/01/1900", "01/01/1900"},
-			 {"SV-154868", "SV1251", new Double(df.format(550*porcentaje)), new Double(df.format(1000*porcentaje)), new Double(df.format(2000*porcentaje)), new Double(df.format(3000*porcentaje)), new Double(df.format(550*porcentaje)), new Double(df.format(5150*porcentaje)), new Double(df.format(180*porcentaje)), new Double(1764), 	new Double(1000), 	new Double(784), 	new Double(4.16), 	new Double(1000),	"01/01/1900", "01/01/1900"},
-			 {"SV-154869", "SV1252", new Double(df.format(650*porcentaje)), new Double(df.format(0.10*porcentaje)), new Double(df.format(0.20*porcentaje)), new Double(df.format(0.30*porcentaje)), new Double(df.format(650*porcentaje)), new Double(df.format(6150*porcentaje)), new Double(df.format(200*porcentaje)), new Double(589), 		new Double(750), 	new Double(453), 	new Double(5.16), 	new Double(750), 	"01/01/1900", "01/01/1900"},
-			 {"SV-154870", "SV1253", new Double(df.format(150*porcentaje)), new Double(df.format(00.1*porcentaje)), new Double(df.format(00.2*porcentaje)), new Double(df.format(00.3*porcentaje)), new Double(df.format(150*porcentaje)), new Double(df.format(1150*porcentaje)), new Double(df.format(50*porcentaje)),  new Double(4550), 	new Double(150), 	new Double(0), 		new Double(.16),	new Double(150), 	"01/01/1900", "01/01/1900"},
-			 {"SV-154871", "SV1254", new Double(df.format(250*porcentaje)), new Double(df.format(0001*porcentaje)), new Double(df.format(0002*porcentaje)), new Double(df.format(0003*porcentaje)), new Double(df.format(250*porcentaje)), new Double(df.format(2150*porcentaje)), new Double(df.format(80*porcentaje)),  new Double(1592), 	new Double(450), 	new Double(490), 	new Double(1.16), 	new Double(450), 	"01/01/1900", "01/01/1900"},
-			 {"SV-154872", "SV1255", new Double(df.format(350*porcentaje)), new Double(df.format(0010*porcentaje)), new Double(df.format(0020*porcentaje)), new Double(df.format(0030*porcentaje)), new Double(df.format(350*porcentaje)), new Double(df.format(3150*porcentaje)), new Double(df.format(120*porcentaje)), new Double(945), 		new Double(380), 	new Double(1500), 	new Double(2.16), 	new Double(380), 	"01/01/1900", "01/01/1900"},
-			 {"SV-154873", "SV1256", new Double(df.format(450*porcentaje)), new Double(df.format(0100*porcentaje)), new Double(df.format(0200*porcentaje)), new Double(df.format(0300*porcentaje)), new Double(df.format(450*porcentaje)), new Double(df.format(4150*porcentaje)), new Double(df.format(90*porcentaje)),  new Double(3487),		new Double(980), 	new Double(800), 	new Double(3.16), 	new Double(980), 	"01/01/1900", "01/01/1900"},
-			 {"SV-154874", "SV1257", new Double(df.format(550*porcentaje)), new Double(df.format(1000*porcentaje)), new Double(df.format(2000*porcentaje)), new Double(df.format(3000*porcentaje)), new Double(df.format(550*porcentaje)), new Double(df.format(5150*porcentaje)), new Double(df.format(180*porcentaje)), new Double(1764), 	new Double(1000), 	new Double(784), 	new Double(4.16), 	new Double(1000),	"01/01/1900", "01/01/1900"},
-			 {"SV-154875", "SV1258", new Double(df.format(650*porcentaje)), new Double(df.format(0.10*porcentaje)), new Double(df.format(0.20*porcentaje)), new Double(df.format(0.30*porcentaje)), new Double(df.format(650*porcentaje)), new Double(df.format(6150*porcentaje)), new Double(df.format(200*porcentaje)), new Double(589), 		new Double(750), 	new Double(453), 	new Double(5.16), 	new Double(750), 	"01/01/1900", "01/01/1900"}
-		};
+	public static Object[][] llenarTabla(double porcentaje,String fecha, String establecimiento){
+		
+		 Object[][] datosTablaPrincipal = new BuscarTablasModel().traer_tabla_base_calculos(porcentaje, fecha,  establecimiento);
 		return datosTablaPrincipal;
 	}
 	 
 
-//static Object[][] datosTablaPrincipal = new BuscarTablasModel().denominaciones_apartados();
-public static DefaultTableModel tabla_model_base = new DefaultTableModel( 
-		null, 
-		new String[]{"Asignacion", "Corte", "Costo Venta", "IVA", "Tasa 0", "Tasa Ex.", "Tasa IEPS", "Tasa IVA", "Total", "Apartados", "Dev_y_C.", "Vouhcers", "Retiros Cte", "TA-Luz", "Fecha Asig.", "Fecha liq."} )
-	{
-             
-		@SuppressWarnings({ "rawtypes" })
-		Class[] types = new Class[]{
-                java.lang.Object.class,
-                java.lang.Object.class, 
-                java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, 
-                java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, 
-                java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, 
-                java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, 
-                java.lang.Object.class,
-                java.lang.Object.class
-                 
- };
+		//static Object[][] datosTablaPrincipal = new BuscarTablasModel().denominaciones_apartados();
+		public static DefaultTableModel tabla_model_base = new DefaultTableModel( 
+				null, 
+				new String[]{"Asignacion", "Corte", "Costo Venta", "IVA", "Tasa 0", "Tasa Ex.", "Tasa IEPS", "Tasa IVA", "Total", "Apartados", "Dev y Canc", "Vouchers", "Retiros Cte", "TA-LUZ", "Fecha Asig.", "Fecha liq."} )
+			{
+		             
+				@SuppressWarnings({ "rawtypes" })
+				Class[] types = new Class[]{
+		                java.lang.Object.class,
+		                java.lang.Object.class, 
+		                java.lang.Object.class,
+		                java.lang.Object.class,
+		                java.lang.Object.class, 
+		                java.lang.Object.class,
+		                java.lang.Object.class,
+		                java.lang.Object.class, 
+		                java.lang.Object.class,
+		                java.lang.Object.class,
+		                java.lang.Object.class, 
+		                java.lang.Object.class,
+		                java.lang.Object.class,
+		                java.lang.Object.class, 
+		                java.lang.Object.class,
+		                java.lang.Object.class
+		                 
+		 };
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
              return types[columnIndex];
@@ -110,7 +103,7 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 		             }
 		              return false;
 		      }
-	};
+	  };
 
 	JTable tabla_base = new JTable(tabla_model_base);
 	JScrollPane panelScroll_base = new JScrollPane(tabla_base);
@@ -178,7 +171,7 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 			double  importe = 0;
 			double total = 0;
 			
-		JLabel lblDiferiencia = new JLabel("");
+		    JLabel lblDiferiencia = new JLabel("");
 			JLabel lblCostoDif = new JLabel("0.0");
 			JLabel lblIvaDif = new JLabel("0.0");
 			JLabel lblTasa0Dif = new JLabel("0.0");
@@ -186,6 +179,8 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 			JLabel lblIepsDif = new JLabel("0.0");
 			JLabel lblImporteDif = new JLabel("0.0");
 			JLabel lblTotalDif = new JLabel("0.0");
+			
+			JLabel lblTotalfinal = new JLabel("0.0");
 			
 			double costo_dif = 0;
 			double iva_dif = 0;
@@ -195,38 +190,57 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 			double  importe_dif = 0;
 			double total_dif = 0;
 			
-			
+			double total_final=0;
 			
 	JTextField txtPorcentaje = new Componentes().text(new JTextField(), "Aplicar Porcentaje", 3, "Int");
-	JButton btnPorcentaje = new JButton("Aplicar");
+	JButton btnPorcentaje = new JButton("Aplicar",new ImageIcon("imagen/Aplicar.png"));
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	
 	public Calculos(){
-		this.setTitle("Calculo");
-		
+		setTitle("Calculo");
+		setSize(1024,650);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		Border blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/encontrar-busqueda-lupa-de-la-ventana-de-zoom-icono-4008-32.png"));
+		
+		
 		this.lblTotales.setBorder(BorderFactory.createTitledBorder(blackline,"Totales"));
 		this.lblDiferiencia.setBorder(BorderFactory.createTitledBorder(blackline,"Diferencias"));
 		
-		lblAsignacion.setFont(new Font("arial", Font.BOLD, 10));
+		lblAsignacion.setFont(new Font("arial", Font.BOLD, 12));
 //		lblCorte.setFont(new Font("arial", Font.BOLD, 10));
-		lblCosto.setFont(new Font("arial", Font.BOLD, 10));
-		lblIva.setFont(new Font("arial", Font.BOLD, 10));
-		lblTasa0.setFont(new Font("arial", Font.BOLD, 10));
-		lblTasaExent.setFont(new Font("arial", Font.BOLD, 10));
-		lblIeps.setFont(new Font("arial", Font.BOLD, 10));
-		lblImporte.setFont(new Font("arial", Font.BOLD, 10));
-		lblTotal.setFont(new Font("arial", Font.BOLD, 10));
+		lblCosto.setFont(new Font("arial", Font.BOLD, 12));
+		lblIva.setFont(new Font("arial", Font.BOLD, 12));
+		lblTasa0.setFont(new Font("arial", Font.BOLD, 12));
+		lblTasaExent.setFont(new Font("arial", Font.BOLD, 12));
+		lblIeps.setFont(new Font("arial", Font.BOLD, 12));
+		lblImporte.setFont(new Font("arial", Font.BOLD, 12));
+		lblTotal.setFont(new Font("arial", Font.BOLD, 12));
+		
+		lblDiferiencia.setFont(new Font("arial", Font.BOLD, 12));
+//		lblCorte.setFont(new Font("arial", Font.BOLD, 10));
+		lblCostoDif.setFont(new Font("arial", Font.BOLD, 12));
+		lblIvaDif.setFont(new Font("arial", Font.BOLD, 12));
+		lblTasa0Dif.setFont(new Font("arial", Font.BOLD, 12));
+		lblTasaExentDif.setFont(new Font("arial", Font.BOLD, 12));
+		lblIepsDif.setFont(new Font("arial", Font.BOLD, 12));
+		lblImporteDif.setFont(new Font("arial", Font.BOLD, 12));
+		lblTotalDif.setFont(new Font("arial", Font.BOLD, 12));
+		
+		lblTotalfinal.setFont(new Font("arial", Font.BOLD, 16));
 		
 		int x = 115;
 		int ancho = 66;
 		int y = 20;
 		
+		panel.add(new JLabel("Fecha: ")).setBounds(20,10,80,20);
+		panel.add(calendario).setBounds(100,10,170,20);
 		
-		panel.add(new JLabel("Fecha: ")).setBounds(75,y,60,20);
-		panel.add(calendario).setBounds(125,y,100,20);
-		
-		panel.add(new JLabel("Establecimiento: ")).setBounds(20,y+=25,100,20);
-		panel.add(cmbEstablecimiento).setBounds(125,y,200,20);
+		panel.add(new JLabel("Establecimiento: ")).setBounds(20,y+=20,100,20);
+		panel.add(cmbEstablecimiento).setBounds(100,y,170,20);
 		
 		panel.add(getPanelTablaBase()).setBounds(20,y+=25,965,200);
 		
@@ -234,24 +248,25 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 		
 		panel.add(lblAsignacion).setBounds(20,y+=5,ancho+20,50);
 //		panel.add(lblCorte).setBounds(x,y,ancho+10,50);
-		panel.add(lblCosto).setBounds(x+=ancho+25,y,ancho-10,50);
-		panel.add(lblIva).setBounds(x+=ancho+5,y,ancho-10,50);
-		panel.add(lblTasa0).setBounds(x+=ancho+5,y,ancho-10,50);
-		panel.add(lblTasaExent).setBounds(x+=ancho+5,y,ancho-10,50);
-		panel.add(lblIeps).setBounds(x+=ancho+5,y,ancho-10,50);
-		panel.add(lblImporte).setBounds(x+=ancho,y,ancho-10,50);
-		panel.add(lblTotal).setBounds(x+=ancho+5,y,ancho-10,50);
+		panel.add(lblCosto).setBounds(x+=ancho+25,y,ancho-5,50);
+		panel.add(lblIva).setBounds(x+=ancho+5,y,ancho-5,50);
+		panel.add(lblTasa0).setBounds(x+=ancho+5,y,ancho-5,50);
+		panel.add(lblTasaExent).setBounds(x+=ancho+5,y,ancho-5,50);
+		panel.add(lblIeps).setBounds(x+=ancho+5,y,ancho-5,50);
+		panel.add(lblImporte).setBounds(x+=ancho,y,ancho-5,50);
+		panel.add(lblTotal).setBounds(x+=ancho+5,y,ancho-5,50);
 		
 		panel.add(txtPorcentaje).setBounds(20,y+=50,50,20);
-		panel.add(btnPorcentaje).setBounds(75,y,90,20);
+		panel.add(btnPorcentaje).setBounds(75,y,100,20);
+		panel.add(btnDeshacer).setBounds(185,y,100,20);
+		panel.add(btnGuardar).setBounds(295,y,100,20);
+		panel.add(lblTotalfinal).setBounds(500,y,100,20);
 		
 		panel.add(getPanelTablaCalculada()).setBounds(20,y+=30,688,200);
-		
 		
 		x = ancho+50;
 		
 		panel.add(lblDiferiencia).setBounds(15,y+=210,695,50);
-		
 		panel.add(lblCostoDif).setBounds(x+=ancho+25,y,ancho-10,50);
 		panel.add(lblIvaDif).setBounds(x+=ancho+5,y,ancho-10,50);
 		panel.add(lblTasa0Dif).setBounds(x+=ancho+5,y,ancho-10,50);
@@ -259,6 +274,7 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 		panel.add(lblIepsDif).setBounds(x+=ancho+5,y,ancho-10,50);
 		panel.add(lblImporteDif).setBounds(x+=ancho,y,ancho-10,50);
 		panel.add(lblTotalDif).setBounds(x+=ancho+5,y,ancho-10,50);
+		
 		
 		lblAsignacion.setHorizontalAlignment(0);
 //		lblCorte.setHorizontalAlignment(0);
@@ -280,24 +296,27 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 		lblImporteDif.setHorizontalAlignment(0);
 		lblTotalDif.setHorizontalAlignment(0);
 		
+		lblTotalfinal.setHorizontalAlignment(0);
+		
 		txtPorcentaje.setHorizontalAlignment(0);
 		
 		cont.add(panel);
 		
 		calcular_totales();
 		
+
 		cmbEstablecimiento.addActionListener(opConsultar);
 		btnPorcentaje.addActionListener(opAplicar);
+		btnDeshacer.addActionListener(deshacer);
 		txtPorcentaje.addActionListener(opAplicar);
 		
-		this.setSize(1024,768);
-		
 	}
+	
 	
 	public JScrollPane getPanelTablaBase(){
     	
 		int texto=90;
-		int money=70;
+		int money=80;
 		
     	this.tabla_base.getTableHeader().setReorderingAllowed(false) ;
     	this.tabla_base.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -351,8 +370,9 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 			
 					while(tabla_base.getRowCount()>0)
 		    			tabla_model_base.removeRow(0);
-				
-		    		Object [][] lista_tabla = llenarTabla(1);
+
+					String fecha = new SimpleDateFormat("dd/MM/yyyy").format(calendario.getDate());
+					Object [][] lista_tabla = llenarTabla(1,fecha,cmbEstablecimiento.getSelectedItem()+"");
 	
 		    		String[] fila = new String[16];
 		                    for(int i=0; i<lista_tabla.length; i++){
@@ -375,6 +395,59 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 		                            tabla_model_base.addRow(fila);
 		                    }
 		                    calcular_totales();
+		            		calendario.setEnabled(false);
+		}
+	};
+	
+	ActionListener deshacer = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+            
+			lblAsignacion.setText("");
+			lblCosto.setText("");
+			lblIva.setText("");
+			lblTasa0.setText("");
+			lblTasaExent.setText("");
+			lblIeps.setText("");
+			lblImporte.setText("");
+			lblTotal.setText("");
+			lblDiferiencia.setText("");
+			lblCostoDif.setText("");
+			lblIvaDif.setText("");
+			lblTasa0Dif.setText("");
+			lblTasaExentDif.setText("");
+			lblIepsDif.setText("");
+			lblImporteDif.setText("");
+			lblTotalDif.setText("");
+			lblTotalfinal.setText("");
+			
+			calendario.setDate(null);
+			calendario.setEnabled(true);
+			cmbEstablecimiento.removeActionListener(opConsultar);
+			cmbEstablecimiento.setSelectedIndex(0);
+			
+			while(tabla_base.getRowCount()>0){
+				tabla_model_base.removeRow(0);  }
+			
+			while(tabla_calculada.getRowCount()>0){
+				tabla_model_calculada.removeRow(0);  }
+			
+			cmbEstablecimiento.addActionListener(opConsultar);
+		}
+	};
+	
+	
+	ActionListener guardar = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+//    for(int i=0; i<tabla_base.getRowCount(); i++){ }
+//			Double.valueOf(tabla_base.getValueAt(i,2).toString().trim());
+		
+		
+		}
+	};
+	
+	ActionListener salir = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			dispose();
 		}
 	};
 	
@@ -430,6 +503,8 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 		lblImporteDif.setText("0.0");
 		lblTotalDif.setText("0.0");
 		
+		lblTotalfinal.setText("0.0");
+		
 		costo_dif 	= 0;
 		iva_dif 	= 0;
 		tasa0_dif 	= 0;
@@ -437,6 +512,8 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 		ieps_dif 	= 0;
 		importe_dif = 0;
 		total_dif 	= 0;
+		
+		
 	}
 	
 	ActionListener opAplicar = new ActionListener() {
@@ -461,7 +538,8 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 					while(tabla_calculada.getRowCount()>0)
 		    			tabla_model_calculada.removeRow(0);
 				
-		    		Object [][] lista_tabla = llenarTabla((Double.valueOf(txtPorcentaje.getText()))/100);
+					String fecha = new SimpleDateFormat("dd/MM/yyyy").format(calendario.getDate());
+		    		Object [][] lista_tabla = llenarTabla(1-(Double.valueOf((txtPorcentaje.getText()))/100),fecha,cmbEstablecimiento.getSelectedItem()+"");
 	
 		    		String[] fila = new String[9];
 		                    for(int i=0; i<lista_tabla.length; i++){
@@ -492,15 +570,21 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 				ieps_dif 	=  	ieps_dif	+=	Double.valueOf(tabla_calculada.getValueAt(i,6).toString().trim());
 				importe_dif = 	importe_dif	+=	Double.valueOf(tabla_calculada.getValueAt(i,7).toString().trim());
 				total_dif 	=  	total_dif	+=	Double.valueOf(tabla_calculada.getValueAt(i,8).toString().trim());
+				
+				
 		}
 	
-		lblCostoDif.setText(df.format(Double.valueOf(lblCosto.getText())-costo_dif)+"");
-		lblIvaDif.setText(df.format(Double.valueOf(lblIva.getText())-iva_dif)+"");
-		lblTasa0Dif.setText(df.format(Double.valueOf(lblTasa0.getText())-tasa0_dif)+"");
-		lblTasaExentDif.setText(df.format(Double.valueOf(lblTasaExent.getText())-tasaE_dif)+"");
-		lblIepsDif.setText(df.format(Double.valueOf(lblIeps.getText())-ieps_dif)+"");
-		lblImporteDif.setText(df.format(Double.valueOf(lblImporte.getText())-importe_dif)+"");
-		lblTotalDif.setText(df.format(Double.valueOf(lblTotal.getText())-total_dif)+"");
+		lblCostoDif.setText(df.format(Double.valueOf(costo_dif+"")));
+		lblIvaDif.setText(df.format(Double.valueOf(iva_dif+"")));
+		lblTasa0Dif.setText(df.format(Double.valueOf(tasa0_dif+"")));
+		lblTasaExentDif.setText(df.format(Double.valueOf(tasaE_dif+"")));
+		lblIepsDif.setText(df.format(Double.valueOf(ieps_dif+"")));
+		lblImporteDif.setText(df.format(Double.valueOf(importe_dif+"")));
+		lblTotalDif.setText(df.format(Double.valueOf(total_dif+"")));
+		
+		double total_ant = (Double.valueOf(lblTotal.getText()));
+		
+		lblTotalfinal.setText(df.format(Double.valueOf(total_ant-total_dif)));
 		
 		costo_dif 	= 0;
 		iva_dif 	= 0;
@@ -512,6 +596,10 @@ public static DefaultTableModel tabla_model_base = new DefaultTableModel(
 	}
 	
 	public static void main(String[] args) {
-		new Calculos().setVisible(true);
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Calculos().setVisible(true);
+		}catch(Exception e){	}
+		
 	}
 }

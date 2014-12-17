@@ -451,67 +451,6 @@ public class Cat_Cotizaciones_De_Un_Producto_fail extends JFrame{
 		
 	};
 	
-	
-	
-	
-//	ActionListener opGenerar = new ActionListener() {
-//		@SuppressWarnings({ "rawtypes", "unchecked" })
-//		public void actionPerformed(ActionEvent e) {
-//			
-//			if(tipo_Reporte==1){
-//						if(!txtcod_prod.getText().equals("")){
-//														
-//							String query = "exec sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio "+Integer.valueOf(txtcod_prod.getText())  ;
-//							Statement stmt = null;
-//								try {
-//									stmt =  new Connexion().conexion().createStatement();
-//								    ResultSet rs = stmt.executeQuery(query);
-//									JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Fuente_De_Sodas.jrxml");
-//									JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-//									JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-//									JasperViewer.viewReport(print, false);
-//									
-//								} catch (Exception e2) {
-//									System.out.println(e2.getMessage());
-//									JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Fuente de Sodas de Lista del Folio procedure sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio SQLException: \n "+e2.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//
-//								}
-//								return;	
-//						}else{
-//							JOptionPane.showMessageDialog(null,"Debes de Teclear Un Folio de Lista de Raya \n O Seleccionarla de la Lista  Siguiente ","Aviso!", JOptionPane.WARNING_MESSAGE);
-//							 new Cat_Filtro_De_Listas_De_Raya_Pasadas(1).setVisible(true);
-//							return;		
-//					    }
-//			}else{
-//				 String fechaNull = cfecha.getDate()+"";
-//				   if(fechaNull.equals("null")){
-//						JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Mensaje",JOptionPane.WARNING_MESSAGE);
-//						return;
-//					   }else{
-//						   
-//						   String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
-//						   String query = "exec sp_Reporte_De_Fuente_De_Sodas_Sin_Cobro_En_lista_De_Raya '"+fecha+"'" ;
-//							Statement stmt = null;
-//							
-//							try {
-//								stmt =  new Connexion().conexion().createStatement();
-//							    ResultSet rs = stmt.executeQuery(query);
-//								JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Fuente_De_Sodas_de_Empleados_Sin_Cobro_En_Listas_de_Raya.jrxml");
-//								JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-//								JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-//								JasperViewer.viewReport(print, false);
-//							} catch (Exception e1) {
-//								System.out.println(e1.getMessage());
-//								JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Fuente de Sodas Sin Cobro En Lista de Raya procedure sp_Reporte_De_Fuente_De_Sodas_Sin_Cobro_En_lista_De_Raya SQLException: \n "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//							}
-//							return;					   
-//					   }
-//			}
-//		}
-//	};
-	
-	
-	
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
