@@ -986,6 +986,7 @@ public class GuardarSQL {
 			pstmt_corte.setString(i+=1, corte.getEstablecimiento_de_corte());
 			pstmt_corte.setFloat(i+=1, corte.getCorte_sistema());
 			pstmt_corte.setFloat(i+=1,corte.getApartado());
+			pstmt_corte.setFloat(i+=1, corte.getAbono());
 			
 			pstmt_corte.setFloat(i+=1, corte.getTiempo_aire());
 			pstmt_corte.setFloat(i+=1, corte.getRecibo_luz());

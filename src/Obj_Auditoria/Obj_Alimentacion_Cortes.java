@@ -17,14 +17,7 @@ public class Obj_Alimentacion_Cortes {
 													 	private boolean status;                      
 													 	private String comentario;     
 													 	private float apartado;
-
-	public float getApartado() {
-															return apartado;
-														}
-
-														public void setApartado(float apartado) {
-															this.apartado = apartado;
-														}
+													 	private float abono;
 
 	public Obj_Alimentacion_Cortes(){
 		
@@ -39,6 +32,7 @@ public class Obj_Alimentacion_Cortes {
 														this.status=false;
 														this.comentario="";
 														this.apartado=0; 
+														this.abono=0;
 	} 
 
 	public String getFolio_corte() {
@@ -184,8 +178,23 @@ public class Obj_Alimentacion_Cortes {
 	public void setRecibo_luz(float recibo_luz) {
 		this.recibo_luz = recibo_luz;
 	}
+	public float getApartado() {
+		return apartado;
+	}
 
-//	public Obj_Alimentacion_Cortes buscar_tiket(String Clave)
+	public void setApartado(float apartado) {
+		this.apartado = apartado;
+	}
+	
+	public float getAbono() {
+		return abono;
+	}
+
+	public void setAbono(float abono) {
+		this.abono = abono;
+	}
+
+	//	public Obj_Alimentacion_Cortes buscar_tiket(String Clave)
 //	{
 //		Obj_Alimentacion_Cortes corte = new Obj_Alimentacion_Cortes();
 //		try{
