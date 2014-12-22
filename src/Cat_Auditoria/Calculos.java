@@ -23,6 +23,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
@@ -199,7 +200,7 @@ public class Calculos extends JFrame{
 	
 	public Calculos(){
 		setTitle("Calculo");
-		setSize(1024,650);
+		setSize(1010,660);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -260,20 +261,23 @@ public class Calculos extends JFrame{
 		panel.add(btnPorcentaje).setBounds(75,y,100,20);
 		panel.add(btnDeshacer).setBounds(185,y,100,20);
 		panel.add(btnGuardar).setBounds(295,y,100,20);
-		panel.add(lblTotalfinal).setBounds(500,y,100,20);
+		
+		
+		panel.add(new JLabel("Diferencia Final: ")).setBounds(830,y-60,150,20);
+		panel.add(lblTotalfinal).setBounds(800,y-40,150,20);
 		
 		panel.add(getPanelTablaCalculada()).setBounds(20,y+=30,688,200);
 		
 		x = ancho+50;
 		
 		panel.add(lblDiferiencia).setBounds(15,y+=210,695,50);
-		panel.add(lblCostoDif).setBounds(x+=ancho+25,y,ancho-10,50);
-		panel.add(lblIvaDif).setBounds(x+=ancho+5,y,ancho-10,50);
-		panel.add(lblTasa0Dif).setBounds(x+=ancho+5,y,ancho-10,50);
-		panel.add(lblTasaExentDif).setBounds(x+=ancho+5,y,ancho-10,50);
-		panel.add(lblIepsDif).setBounds(x+=ancho+5,y,ancho-10,50);
-		panel.add(lblImporteDif).setBounds(x+=ancho,y,ancho-10,50);
-		panel.add(lblTotalDif).setBounds(x+=ancho+5,y,ancho-10,50);
+		panel.add(lblCostoDif).setBounds(x+=ancho+25,y,ancho-5,50);
+		panel.add(lblIvaDif).setBounds(x+=ancho+5,y,ancho-5,50);
+		panel.add(lblTasa0Dif).setBounds(x+=ancho+5,y,ancho-5,50);
+		panel.add(lblTasaExentDif).setBounds(x+=ancho+5,y,ancho-5,50);
+		panel.add(lblIepsDif).setBounds(x+=ancho+5,y,ancho-5,50);
+		panel.add(lblImporteDif).setBounds(x+=ancho,y,ancho-5,50);
+		panel.add(lblTotalDif).setBounds(x+=ancho+5,y,ancho-5,50);
 		
 		
 		lblAsignacion.setHorizontalAlignment(0);
@@ -304,12 +308,11 @@ public class Calculos extends JFrame{
 		
 		calcular_totales();
 		
-
 		cmbEstablecimiento.addActionListener(opConsultar);
 		btnPorcentaje.addActionListener(opAplicar);
 		btnDeshacer.addActionListener(deshacer);
+		btnGuardar.addActionListener(guardar);
 		txtPorcentaje.addActionListener(opAplicar);
-		
 	}
 	
 	
@@ -438,10 +441,31 @@ public class Calculos extends JFrame{
 	
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-//    for(int i=0; i<tabla_base.getRowCount(); i++){ }
-//			Double.valueOf(tabla_base.getValueAt(i,2).toString().trim());
-		
-		
+			
+			Object [][] matriz = new Object[tabla_base.getRowCount()][2];
+			
+			if(tabla_base.getRowCount()<=0){
+					JOptionPane.showMessageDialog(null, "No se an cargado datos","Aviso",JOptionPane.INFORMATION_MESSAGE);
+					return;
+			}else{
+					if(txtPorcentaje.getText().equals("")){
+							JOptionPane.showMessageDialog(null, "Favor de especificar un porcentaje","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							return;
+					}else{
+							for(int i=0; i<tabla_base.getRowCount(); i++){ 
+							    	matriz[i][0] = tabla_base.getValueAt(i, 0);
+							    	matriz[i][1] = txtPorcentaje.getText();
+						    }
+						    
+						    if(new ActualizarSQL().Actualizar_IZAGAR_Relacion_de_Asignaciones_Liquidadaso(matriz)){
+							    	JOptionPane.showMessageDialog(null, "El registro se actualizo correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+									return;
+						    }else{
+							    	JOptionPane.showMessageDialog(null, "no actualizo","error",JOptionPane.ERROR_MESSAGE);
+									return;
+						    }
+					}
+			}
 		}
 	};
 	

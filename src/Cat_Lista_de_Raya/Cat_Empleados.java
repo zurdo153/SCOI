@@ -88,7 +88,7 @@ import javax.swing.table.TableRowSorter;
 
 
 import Cat_Checador.Cat_Horarios;
-import Cat_Reportes.Cat_Cumpleanios_Del_Mes;
+import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Reporte_De_Empleados_No_Contratables;
 import Cat_Reportes.Cat_Horarios_Provisionales;
 import Cat_Reportes.Cat_Personal_Con_Horario;
@@ -1758,7 +1758,7 @@ public class Cat_Empleados extends JFrame{
 	
 	ActionListener Reporte_De_Cumpleanios_Del_Mes = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				new Cat_Cumpleanios_Del_Mes().setVisible(true);
+				new Cat_Reporte_De_Cumpleanios_Del_Mes().setVisible(true);
 		}
 	};
 	

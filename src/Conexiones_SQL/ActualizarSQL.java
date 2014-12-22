@@ -2828,4 +2828,47 @@ public class ActualizarSQL {
 		return true;
 	}	
 	
+	public boolean Actualizar_IZAGAR_Relacion_de_Asignaciones_Liquidadaso(Object[][] matriz){
+		String query =("update IZAGAR_Relacion_de_Asignaciones_Liquidadas set  usuario= "+usuario.getFolio()+", set porcentaje = ?, set fecha =getdate()"+
+                		" where asignacion =?");
+
+		Connection con = new Connexion().conexion_IZAGAR();
+		PreparedStatement pstmt= null;
+		
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			for(int i = 0; i<matriz.length; i++){
+					pstmt.setInt(1,Integer.valueOf(matriz[i][1].toString()));
+				    pstmt.setString(2, matriz[i][0].toString().trim());
+					
+					System.out.println(query);
+					
+	//				pstmt.executeUpdate();
+			}
+				con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_IZAGAR_Relacion_de_Asignaciones_Liquidadaso ] update  SQLException:  "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_IZAGAR_Relacion_de_Asignaciones_Liquidadaso ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+					return false;
+					}	
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
+	}	
+	
 }
