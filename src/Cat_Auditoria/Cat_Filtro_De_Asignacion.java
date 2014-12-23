@@ -358,7 +358,8 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 ////////////////////////////////////////////////////////////////////////	 	
 	 	
 		String todos ="  DECLARE @fecha_inicial varchar(50)    ,@fecha_final varchar(50) " +
-				"                SET @fecha_inicial=convert(varchar(20), getdate()-7,103)+' 00:00:00' " +
+				"                SET @fecha_inicial=convert(varchar(20), getdate()-3" +
+				",103)+' 00:00:00' " +
 				"  		         SET @fecha_final=convert(varchar(20), getdate(),103)+' 23:59:59'" +
 				"             SELECT Asignacion,Cajero,Nombre_Cajero,Total,Cod_Estab,Establecimiento" +
 				"                   ,convert(varchar(20),Fecha_Asignacion,103)+' '+ convert(varchar(20), Fecha_Asignacion,108) as Fecha_Asignacion " +

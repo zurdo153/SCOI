@@ -28,7 +28,7 @@ import net.sf.jasperreports.view.JasperViewer;
 
 
 @SuppressWarnings("serial")
-public class Cat_Cumpleanios_Del_Mes extends JDialog{
+public class Cat_Reporte_De_Cumpleanios_Del_Mes extends JDialog{
 	 
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
@@ -39,7 +39,7 @@ public class Cat_Cumpleanios_Del_Mes extends JDialog{
 		
 		JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 		
-		public Cat_Cumpleanios_Del_Mes(){
+		public Cat_Reporte_De_Cumpleanios_Del_Mes(){
 			
 			panel.setBorder(BorderFactory.createTitledBorder("Reporte De Cumpleaños"));
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/cookies-tarta-de-cumpleanos-icono-9840-16.png"));
@@ -105,7 +105,7 @@ public class Cat_Cumpleanios_Del_Mes extends JDialog{
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Cumpleanios_Del_Mes().setVisible(true);
+				new Cat_Reporte_De_Cumpleanios_Del_Mes().setVisible(true);
 			}catch(Exception e){	}
 		}
 

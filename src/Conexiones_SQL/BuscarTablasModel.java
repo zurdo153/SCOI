@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 
 import javax.swing.JOptionPane;
 
@@ -954,6 +955,103 @@ public class BuscarTablasModel {
 				Matriz[i][1] = rs.getString(2);
 				Matriz[i][2] = rs.getString(3);
 				Matriz[i][3] = rs.getString(4);
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getRetiros_a_detalle \n  en el procedimiento : sp_select_retiro_de_cajero_a_detalle  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return Matriz;
+	}
+	
+	public int get_filas_izagar(String sentencia){
+		int filas = 0;
+		try {
+			Statement stmt = new Connexion().conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(sentencia);
+			while(rs.next())
+				filas++;
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return filas;
+	}
+	
+	public String[][] traer_tabla_base_calculos(double porcentaje,String fecha, String establecimiento){
+		DecimalFormat df = new DecimalFormat("#0.00");
+		
+		String query1 = "exec sp_Recopilacion_IZAGAR_de_Asignaciones_y_cajeros";
+		String query2 = "exec sp_Reporte_IZAGAR_de_Valores_por_Tasa_por_asignacion";
+		
+		Connection con = new Connexion().conexion_IZAGAR();
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		try {
+			con.setAutoCommit(false);
+			
+			pstmt1 = con.prepareStatement(query1);
+			pstmt1.executeUpdate();
+			
+			pstmt2 = con.prepareStatement(query2);
+			pstmt2.executeUpdate();
+			
+			
+			con.commit();
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion Empleado  procedimiento almacenado sp_update_alta_empleado SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+
+		
+		
+		String[][] Matriz = null;
+		
+		String query = "exec sp_cortes_de_una_fecha_determinada '"+fecha+"','"+establecimiento+"';";
+		
+		System.out.println(query);
+		
+		Matriz = new String[get_filas_izagar(query)][16];
+		
+		try {	
+			Statement stmtIZ = new Connexion().conexion_IZAGAR().createStatement();
+			ResultSet rs = stmtIZ.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = (df.format(rs.getDouble(3)*porcentaje)+"");
+				Matriz[i][3] = (df.format(rs.getDouble(4)*porcentaje)+"");
+				Matriz[i][4] = (df.format(rs.getDouble(5)*porcentaje)+"");
+				Matriz[i][5] = (df.format(rs.getDouble(6)*porcentaje)+"");
+				Matriz[i][6] = (df.format(rs.getDouble(7)*porcentaje)+"");
+				Matriz[i][7] = (df.format(rs.getDouble(8)*porcentaje)+"");
+				Matriz[i][8] = (df.format(rs.getDouble(9)*porcentaje)+"");
+				Matriz[i][9] = (df.format(rs.getDouble(10)*porcentaje)+"");
+				Matriz[i][10] = (df.format(rs.getDouble(11)*porcentaje)+"");
+				Matriz[i][11] = (df.format(rs.getDouble(12)*porcentaje)+"");
+				Matriz[i][12] = (df.format(rs.getDouble(13)*porcentaje)+"");
+				Matriz[i][13] = (df.format(rs.getDouble(14)*porcentaje)+"");
+				Matriz[i][14] = rs.getString(15);
+				Matriz[i][15] = rs.getString(16);
 				
 				i++;
 			}

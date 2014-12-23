@@ -418,7 +418,7 @@ public class Cat_Filtro_De_Vauchers extends JDialog{
 						"left outer join liquidaciones_tickets on  liquidaciones_tickets.ticket=  autorizaciones_bancarias.folio and folio_documento = 'RetiroCte' " +
 						"where autorizaciones_bancarias.folio in(select folio from facremtick where folio_cajero in ("+cadenaAsignaciones+")) and equipos_perifericos.tipo_periferico='P' " +
 						"and autorizaciones_bancarias.folio not in ("+cadena_de_vouchers_en_uso+")";		
-		System.out.println(todos);
+
 		Statement s;
 		ResultSet rs;
 		try {

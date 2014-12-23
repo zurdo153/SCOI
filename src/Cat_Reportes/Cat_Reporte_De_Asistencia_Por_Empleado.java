@@ -94,10 +94,10 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
 			String Establecimiento=txtEstablecimiento.getText()+"";
 			String Departamento=txtDepartamento.getText()+"";
-			String folio_empleado=txtFolio.getText()+"";
+			String folios_empleados=txtFolio.getText()+"";
 			
 			if(c_inicio.getDate().before(c_final.getDate())){
-				new Cat_Reporte_General_de_Asistencia_Por_Establecimiento(fecha_inicio,fecha_final,Establecimiento,Departamento,folio_empleado);
+				new Cat_Reporte_De_Asistencia().Reporte_de_Asistencia_establecimiento(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
 				
 			}else{
 				JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
