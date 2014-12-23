@@ -3,6 +3,7 @@ package Obj_Compras;
 import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.GuardarSQL;
 
 
 public class Obj_Cotizaciones_De_Un_Producto {
@@ -13,10 +14,14 @@ public class Obj_Cotizaciones_De_Un_Producto {
 	double Costo_Promedio;
 	double Existencia_Cedis;
 	double Existencia_Total;
+	String folio_compra;
 	String Cod_Prv;
 	String Proveedor;
 	double Costo_Nuevo;
-	int    Cantidad_Requerida;
+	double    Cantidad_Requerida;
+	
+
+
 	String Notas_Negociacion;
 	
 	String fecha;
@@ -85,6 +90,14 @@ public class Obj_Cotizaciones_De_Un_Producto {
 	public void setCod_Prv(String cod_Prv) {
 		Cod_Prv = cod_Prv;
 	}
+	
+	public String getFolio_compra() {
+		return folio_compra;
+	}
+
+	public void setFolio_compra(String folio_compra) {
+		this.folio_compra = folio_compra;
+	}
 
 	public String getProveedor() {
 		return Proveedor;
@@ -92,6 +105,14 @@ public class Obj_Cotizaciones_De_Un_Producto {
 
 	public void setProveedor(String proveedor) {
 		Proveedor = proveedor;
+	}
+	
+	public double getCantidad_Requerida() {
+		return Cantidad_Requerida;
+	}
+
+	public void setCantidad_Requerida(double cantidad_Requerida) {
+		Cantidad_Requerida = cantidad_Requerida;
 	}
 
 	public double getCosto_Nuevo() {
@@ -102,13 +123,6 @@ public class Obj_Cotizaciones_De_Un_Producto {
 		Costo_Nuevo = costo_Nuevo;
 	}
 
-	public int getCantidad_Requerida() {
-		return Cantidad_Requerida;
-	}
-
-	public void setCantidad_Requerida(int cantidad_Requerida) {
-		Cantidad_Requerida = cantidad_Requerida;
-	}
 
 	public String getNotas_Negociacion() {
 		return Notas_Negociacion;
@@ -140,10 +154,8 @@ public class Obj_Cotizaciones_De_Un_Producto {
 	return null; 
 	}
 	
+	public boolean Guardar_Cotizacion(){ return new GuardarSQL().Guardar_Cotizacion_Producto(this); }
 	
-//	public String guardar_sesion(String Establecimiento,int Folio_empleado){
-//		return new GuardarSQL().Guardar_Sesion_Cajero(Establecimiento,Folio_empleado); 
-//		   }
 
 
 }

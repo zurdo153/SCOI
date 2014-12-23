@@ -470,7 +470,7 @@ public class Cat_Abono_Clientes extends JFrame{
 					return;
 	        	}else{
 //    		    	imprimir ticket 
-					new Cat_Genera_Ticket_De_Abono_Cliente(txtTiket.getText());
+					new Cat_Genera_Ticket_De_Abono_Cliente(txtTiket.getText(),"abono");
 	        	}
 	        }
 	    });
@@ -566,7 +566,7 @@ public class Cat_Abono_Clientes extends JFrame{
 			        	if(abonar.guardarTickets()){
 			        		
 //    		    	imprimir ticket 
-							 	new Cat_Genera_Ticket_De_Abono_Cliente(txtTiket.getText());
+							 	new Cat_Genera_Ticket_De_Abono_Cliente(txtTiket.getText(),"abono");
 			        		
 //        			quite edicion de celda de jtable
 							 	tabla_cobros.putClientProperty ("terminateEditOnFocusLost", Boolean.TRUE) ;
@@ -1167,14 +1167,25 @@ public class Cat_Abono_Clientes extends JFrame{
 	public class Cat_Genera_Ticket_De_Abono_Cliente extends JFrame {
 		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public Cat_Genera_Ticket_De_Abono_Cliente(String ticket) {
-			String query = "exec sp_tickets_abonos_c_ahorro_cte "+ticket;
+		public Cat_Genera_Ticket_De_Abono_Cliente(String ticket,String movimiento) {
+			
+			String ruta = "";
+			String query = "";
+			if(movimiento.equals("abono")){
+				ruta = "\\src\\Obj_Reportes\\Obj_Ticket_C_Ahorro_Cte.jrxml";
+				query = "exec sp_tickets_abonos_c_ahorro_cte "+ticket;
+			}else{
+					ruta = "\\src\\Obj_Reportes\\Obj_Ticket_C_Ahorro_Cte_A_Detalle.jrxml";
+					query = "exec sp_tickets_abonos_c_ahorro_cte_a_detalle "+ticket;
+			}
+			
+			
 			try {
 				
 //				jenera el archivo *.jasper en la misma ruta del proyecto
 //				JasperCompileManager.compileReportToFile(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Cumpleanios_Del_Mes.jrxml");
 				
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Ticket_C_Ahorro_Cte.jrxml");
+				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+ruta);
 				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(),new JRResultSetDataSource(new Connexion().conexion().createStatement().executeQuery(query)));
 				
 //				mostras reporte (comentar para no mostrar)
@@ -1185,6 +1196,8 @@ public class Cat_Abono_Clientes extends JFrame{
 //				true  = muestra ventana de seleccion de impresora -----------------------------------------------------------------------------------------
 //				JasperPrintManager.printReport(print, false);
 //				JasperPrintManager.printReport(print, false);
+				
+				ruta= "";
 				
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -1329,6 +1342,8 @@ public class Cat_Abono_Clientes extends JFrame{
 							case "Abono": 
 									if(new ActualizarSQL().Actualizar_Cancelar_Ticket_o_Abono(Folio_ticket_o_abono,  txtNombre.getText(), 	"ABONO")){
 										
+											new Cat_Genera_Ticket_De_Abono_Cliente(Folio_ticket_o_abono,"cancelacion");
+											
 											dispose();
 											buscar_cliente(Integer.valueOf(txtFolioCliente.getText()));
 											lblSeleccion_de_tabla.setText("Sin datos seleccionados");
