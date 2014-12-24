@@ -50,8 +50,9 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento = new JComboBox(departamento);
 
-	JButton btn_generar_Completo = new JButton  ("Reporte de Asistencia Completo");
+	JButton btn_generar_sin_observaciones = new JButton  ("Reporte de Asistencia Sin Observaciones");
 	JButton btn_generar_Permisos = new JButton  ("Reporte de Permisos a Empleados");
+	JButton btn_generar_Completo = new JButton  ("Reporte de Asistencia Completo");
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -74,18 +75,95 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		this.panel.add(new JLabel("Departamento:")).setBounds(225,55,150,20);
 		this.panel.add(JLBdepartamento).setBounds(300,55,20,20);
 		this.panel.add(cmbDepartamento).setBounds(320,55,170,20);
-		this.btn_generar_Completo.addActionListener(op_generar);
-		this.btn_generar_Permisos.addActionListener(op_generar_permisos);
-		this.panel.add(btn_generar_Completo).setBounds(140,130,210,20);
+	
+		this.panel.add(btn_generar_sin_observaciones).setBounds(140,130,210,20);
 		this.panel.add(btn_generar_Permisos).setBounds(140,160,210,20);
+		this.panel.add(btn_generar_Completo).setBounds(140,190,210,20);
+		
+		
 		this.cont.add(panel);
 		this.setSize(510,270);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
+		
+		this.btn_generar_Completo.addActionListener(op_generar);
+		this.btn_generar_Permisos.addActionListener(op_generar_permisos);
+		this.btn_generar_sin_observaciones.addActionListener(op_generar_sin_observaciones);
+		
 	}
 	
 	
 	ActionListener op_generar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(validar_fechas().equals("")){
+				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
+				String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+				String Departamento = cmbDepartamento.getSelectedItem().toString();
+				String folios_empleados = "Selecciona un Empleado";
+
+				if(c_inicio.getDate().before(c_final.getDate())){
+					Reporte_de_Asistencia_completo(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
+
+					
+				}else{
+					JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
+			}else{
+				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+		}
+	};
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void Reporte_de_Asistencia_completo(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
+		String query = "exec sp_Reporte_De_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
+		Statement stmt = null;
+		try {
+			
+			stmt =  new Connexion().conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+		    
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Asistencia_Por_Establecimiento.jrxml");
+			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+			JasperViewer.viewReport(print, false);
+		} catch (Exception e1) {
+			System.out.println(e1.getMessage());
+			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_General_de_Asistencia_Por_Establecimiento ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+	}
+	}
+	
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void Reporte_de_Asistencia_establecimiento(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
+		String query = "exec sp_Reporte_General_de_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
+		Statement stmt = null;
+		try {
+			
+			stmt =  new Connexion().conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+		    
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_de_Asistencia_Por_Establecimiento_Sin_Observaciones.jrxml");
+			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+			JasperViewer.viewReport(print, false);
+		} catch (Exception e1) {
+			System.out.println(e1.getMessage());
+			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_General_de_Asistencia_Por_Establecimiento ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+	}
+	}
+	
+	
+	
+	
+	
+	
+	ActionListener op_generar_sin_observaciones = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
@@ -110,25 +188,6 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 
 		}
 	};
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void Reporte_de_Asistencia_establecimiento(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
-		String query = "exec sp_Reporte_General_de_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-		Statement stmt = null;
-		try {
-			
-			stmt =  new Connexion().conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-		    
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_General_de_Asistencia_Por_Establecimiento.jrxml");
-			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-			JasperViewer.viewReport(print, false);
-		} catch (Exception e1) {
-			System.out.println(e1.getMessage());
-			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_General_de_Asistencia_Por_Establecimiento ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-	}
-	}
 	
 	
 	ActionListener op_generar_permisos = new ActionListener() {
