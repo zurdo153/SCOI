@@ -46,11 +46,21 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] Establecimiento(String tabla) throws SQLException{
-		String query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 'V' order by nombre asc";
-		
+		String query = "";
+		if(tabla.equals("tb_establecimiento")){
+			query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 1 order by nombre asc";
+		}else{
+			query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 'V' order by nombre asc";
+		}
 		Statement stmt = null;
 		try {
-			stmt = con.conexion_IZAGAR().createStatement();
+			if(tabla.equals("tb_establecimiento")){
+				stmt = con.conexion().createStatement();
+			}else{
+				stmt = con.conexion_IZAGAR().createStatement();
+			}
+			
+			
 			ResultSet rs = stmt.executeQuery(query);
 			
 			int j=0;

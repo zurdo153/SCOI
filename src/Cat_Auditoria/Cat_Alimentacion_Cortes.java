@@ -729,6 +729,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						
 						corte.setCorte_sistema(Float.parseFloat(txtCorteSistema.getText()));
 						corte.setApartado(Float.parseFloat(txtApartados.getText().equals("")?"0":txtApartados.getText()));
+						corte.setAbono(Float.parseFloat(txtAbonos.getText().equals("")?"0":txtAbonos.getText()));
 						
 						corte.setTiempo_aire(Float.parseFloat(txtTiempoAire.getText().equals("")?"0":txtTiempoAire.getText()));
 						corte.setRecibo_luz(Float.parseFloat(txtReciboLuz.getText().equals("")?"0":txtReciboLuz.getText()));
@@ -1174,7 +1175,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 									
 							cargar_lista_de_asignaciones();
 				    		obtener_totales_de_tAire_rLuz_por_folio_de_corte();
-				    			
+				    			txtAbonos.setText("0.0");
 				    		calculoDinamico();
 				    			
 //			    			procedimiento para llenar  (tabla_de_ventas_por_fecha)  con respecto a las asignaciones seleccionadas
@@ -3087,6 +3088,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 //	variables para calculo dinamico de la diferiencia de corte  funcion = (calculoDinamico());
 	double corteSistema = 0;
 	double apartado = 0;
+	double abono = 0;
 	
 	double efectivo = 0;
 	double retiroCajero = 0;
@@ -3107,6 +3109,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			
 			corteSistema = txtCorteSistema.getText().equals("")?0:Double.valueOf(txtCorteSistema.getText());
 			apartado = txtApartados.getText().equals("")?0:Double.valueOf(txtApartados.getText());
+			abono = txtAbonos.getText().equals("")?0:Double.valueOf(txtAbonos.getText());
 			
 			efectivo = txtEfectivo.getText().equals("")?0:Double.valueOf(txtEfectivo.getText());
 			retiroCajero = txtRetiroCajero.getText().equals("")?0:Double.valueOf(txtRetiroCajero.getText());
@@ -3121,7 +3124,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			retiroCliente = txtTotalRetiros.getText().equals("")?0:Double.parseDouble(txtTotalRetiros.getText());
 			
 			
-			diferienciaCorte = ((corteSistema+apartado)-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
+			diferienciaCorte = ((corteSistema+apartado+abono)-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
 			
 			if(diferienciaCorte < 0){
 					lblEtiquetaCorte.setText("Sobrante");

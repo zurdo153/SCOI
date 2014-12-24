@@ -12,6 +12,7 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -43,6 +44,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	JButton btnlistadocortesdia = new JButton("",new ImageIcon("imagen/Calendar.png"));
 	JButton btnlistadocortespendientes = new JButton("",new ImageIcon("imagen/vista-previa-del-ojo-icono-7248-16.png"));
 
+	JCheckBox chbExportar = new JCheckBox("Para Exportar");
 	
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 	
@@ -51,7 +53,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	int tipo_Reporte = 0;
 	
 	public Cat_Reportes_De_Cortes(){
-		setSize(305,330);
+		setSize(305,350);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -71,6 +73,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 				"		<CENTER><p>Reporte De Cortes Pendientes Con Venta </p></CENTER></FONT>" +
 				"</html>");	
 		
+		
 		panel.add(btncortedelfolio).setBounds(20,25,260,30);
 		panel.add(btnlistadocortesdia).setBounds(20,75,260,30);
 //		panel.add(btnlistadocortespendientes).setBounds(20,125,260,30);
@@ -80,12 +83,14 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 		panel.add(new JLabel("Fecha:")).setBounds(20,220,200,20);
 		
 		panel.add(cfecha).setBounds(80,220,195,20);
-
 		
-		panel.add(btngenerar).setBounds(100,250,120,30);
+		panel.add(chbExportar).setBounds(80,250,100,20);
+		
+		panel.add(btngenerar).setBounds(100,275,120,30);
 	    
 	    txtFolio.setEditable(false);
 	    cfecha.setEnabled(false);
+	    chbExportar.setEnabled(false);
 	    btngenerar.setEnabled(false);
 	    
 		cont.add(panel);
@@ -99,9 +104,11 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 		public void actionPerformed(ActionEvent arg0) {
 			txtFolio.setEditable(true);
 			cfecha.setEnabled(false);
+			chbExportar.setEnabled(false);
 			btngenerar.setEnabled(true);
 			tipo_Reporte=1;
 			cfecha.setDate(null);
+			chbExportar.setSelected(false);
 		}
 	};
 	
@@ -109,6 +116,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 		public void actionPerformed(ActionEvent arg0) {
 			txtFolio.setEditable(false);
 			cfecha.setEnabled(true);
+			chbExportar.setEnabled(true);
 			btngenerar.setEnabled(true);
 			tipo_Reporte=2;
 			txtFolio.setText("");
@@ -119,6 +127,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 		public void actionPerformed(ActionEvent arg0) {
 			txtFolio.setEditable(false);
 			cfecha.setEnabled(true);
+			chbExportar.setEnabled(true);
 			btngenerar.setEnabled(true);
 			tipo_Reporte=3;
 			txtFolio.setText("");
@@ -151,6 +160,16 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 					   }else{
 						   Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 						   
+						   String ruta_reporte = "";
+						   
+						   if(chbExportar.isSelected()){
+//							   reporte para exportar
+							   ruta_reporte = "\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia.jrxml";
+//							   ruta_reporte = "\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia_Exportar.jrxml";
+						   }else{
+							   ruta_reporte = "\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia.jrxml";
+						   }
+						   
 						   String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
 						   String query = "exec sp_Reporte_De_Cortes_Del_Dia '"+usuario.getNombre_completo()+"','"+fecha+"'" ;
 							Statement stmt = null;
@@ -158,7 +177,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 							try {
 								stmt =  new Connexion().conexion().createStatement();
 							    ResultSet rs = stmt.executeQuery(query);
-								JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia.jrxml");
+								JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+ruta_reporte);
 								JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
 								@SuppressWarnings({ "rawtypes", "unchecked" })
 								JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);

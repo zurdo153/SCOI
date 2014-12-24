@@ -2,10 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Ticket_C_Ahorro_Cte" language="groovy" pageWidth="210" pageHeight="760" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="c5d3ef7e-2023-4702-a5da-9686000435e0">
 	<property name="ireport.zoom" value="3.452271214393105"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="576"/>
+	<property name="ireport.y" value="336"/>
 	<queryString>
-		<![CDATA[declare @folio_ticket varchar(20)
-set @folio_ticket = 'SV0000003757';
+		<![CDATA[declare @folio_abono varchar(20), @folio_ticket varchar(20)
+
+set @folio_abono ='SV3756';
+set @folio_ticket = (select ticket from  tb_captura_abono_c_ahorro_cte where folio_abono = @folio_abono);
 --SV0000003758
 --SV0000003754
 
@@ -49,7 +51,8 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 										where tb_captura_tickets_c_ahorro_cte.ticket = @folio_ticket
 										and tb_captura_tickets_c_ahorro_cte.status='V')
 								) a
-					order by a.fecha desc]]>
+					order by a.fecha desc
+]]>
 	</queryString>
 	<field name="folio_cliente" class="java.lang.Integer"/>
 	<field name="cliente" class="java.lang.String"/>
@@ -72,15 +75,15 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 	<title>
 		<band height="69" splitType="Stretch">
 			<image>
-				<reportElement uuid="0b448697-ee5c-4abd-8906-b035e985c4dd" x="147" y="14" width="61" height="52"/>
+				<reportElement uuid="0b448697-ee5c-4abd-8906-b035e985c4dd" x="150" y="27" width="51" height="42"/>
 				<imageExpression><![CDATA["C:\\Users\\ZURDO\\Documents\\imagenes\\ticket_ahorro_cte.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="262033e6-86e8-4771-b797-ca370a253687" x="14" y="38" width="134" height="30"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement uuid="262033e6-86e8-4771-b797-ca370a253687" x="12" y="5" width="189" height="64"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="Times New Roman" size="20" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Abonos Cliente]]></text>
+				<text><![CDATA[Abonos de Cliente a Detalle]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -206,7 +209,7 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ABONO]]></text>
+				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="1a6b2305-33d1-4013-a770-0b70e5b1f2e0" x="12" y="9" width="48" height="10"/>
@@ -257,11 +260,10 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 			<line>
 				<reportElement uuid="d766572a-ff36-476c-b524-8fabc11939e0" x="15" y="11" width="178" height="1"/>
 			</line>
-			<textField pattern="###0.00;-###0.00">
+			<textField>
 				<reportElement uuid="6b1e9639-cf92-4260-8213-7ec80f858639" x="143" y="0" width="50" height="12"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="9" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
@@ -306,7 +308,7 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 				</textElement>
 				<text><![CDATA[Total Acumulado:]]></text>
 			</staticText>
-			<textField pattern="###0.00;-###0.00">
+			<textField>
 				<reportElement uuid="5f268781-374c-4222-83b5-f8378d5c5530" x="120" y="3" width="73" height="13"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="9" isBold="true"/>
