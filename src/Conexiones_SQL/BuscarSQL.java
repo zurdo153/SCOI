@@ -25,12 +25,10 @@ import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Arduino.Obj_Arduino;
-import Obj_Auditoria.Obj_Abono_Clientes;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Por_Denominacion;
-import Obj_Auditoria.Obj_Clientes;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Auditoria.Obj_Movimiento_De_Asignacion;
@@ -83,6 +81,8 @@ import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
+import Obj_Punto_De_Venta.Obj_Abono_Clientes;
+import Obj_Punto_De_Venta.Obj_Clientes;
 
 public class BuscarSQL {
 	

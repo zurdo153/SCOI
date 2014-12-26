@@ -13,6 +13,8 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 public class BuscarTablasModel {
 	
+	DecimalFormat df = new DecimalFormat("#0.00");
+	
 	public Object[][] tabla_model_bancos(){
 		String query_lista = "exec sp_lista_banco";
 		Object[][] matriz = new Object[get_filas(query_lista)][6];
@@ -981,7 +983,6 @@ public class BuscarTablasModel {
 	}
 	
 	public String[][] traer_tabla_base_calculos(double porcentaje,String fecha, String establecimiento){
-		DecimalFormat df = new DecimalFormat("#0.00");
 		
 		String query1 = "exec sp_Recopilacion_IZAGAR_de_Asignaciones_y_cajeros";
 		String query2 = "exec sp_Reporte_IZAGAR_de_Valores_por_Tasa_por_asignacion";
@@ -1058,6 +1059,36 @@ public class BuscarTablasModel {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion getRetiros_a_detalle \n  en el procedimiento : sp_select_retiro_de_cajero_a_detalle  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return Matriz;
+	}
+	
+	public String[][] filtro_cortes_guardados(){
+		String[][] Matriz = null;
+		
+		String query = "sp_select_cortes_guardados";
+		
+		Matriz = new String[get_filas(query)][6];
+		
+		try {	
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = "  "+rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = df.format(Float.valueOf(rs.getString(4)));
+				Matriz[i][4] = rs.getString(5);
+				Matriz[i][5] = rs.getString(6);
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [filtro_cortes_guardados] \n  en el procedimiento : sp_select_cortes_guardados  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return Matriz;

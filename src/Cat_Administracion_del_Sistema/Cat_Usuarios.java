@@ -200,10 +200,19 @@ public class Cat_Usuarios extends JFrame{
 			};
 			@SuppressWarnings("rawtypes")
 			Vector ComprasVector = new Obj_NombreVector("Compras", Compras);
+			
+	// MENU PRICIPAL PUNTO DE VENTA (9)
+	String[] Sub_Punto_de_Venta = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(9);
+	Obj_CheckBoxNode Punto_de_Venta[] = {
+		new Obj_CheckBoxNode(Sub_Punto_de_Venta[0], false),
+		new Obj_CheckBoxNode(Sub_Punto_de_Venta[1], false),
+	};
+	@SuppressWarnings("rawtypes")
+	Vector Vector_Punto_De_Venta = new Obj_NombreVector("Punto De Venta", Punto_de_Venta);
 		
 		////ESTA PARTE SE ORDENA LA POSICION EN LA QUE SE QUIERE EL MENU PRINCIPAL  EN EL ARBOL
 	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ComprasVector, ContabilidadVector, EvaluacionesVector, 
-			Lista_de_RayaVector,ReportesEspecialesVector};
+			Lista_de_RayaVector,ReportesEspecialesVector,Vector_Punto_De_Venta};
 	    
 	@SuppressWarnings("rawtypes")
 	Vector rootVector = new Obj_NombreVector("Permisos", rootNodos);
@@ -425,8 +434,13 @@ public class Cat_Usuarios extends JFrame{
 	        		for(int i = 0; i<Compras.length; i ++){
 	        			Compras[i].setSelected(Boolean.parseBoolean(compras.get(i).toString()));
 	        		}
-	        		tree.collapseRow(6);
+	        		tree.collapseRow(7);
 	        		
+	        		Vector punto_de_venta = new Obj_Usuario().returnPermisos(folio_empleado, 9);
+	        		for(int i = 0; i<Punto_de_Venta.length; i ++){
+	        			Punto_de_Venta[i].setSelected(Boolean.parseBoolean(punto_de_venta.get(i).toString()));
+	        		}
+	        		tree.collapseRow(8);
 	        		
 	        		
 				}else{

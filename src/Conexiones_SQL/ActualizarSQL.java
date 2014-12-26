@@ -17,7 +17,6 @@ import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_De_Cheques;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
-import Obj_Auditoria.Obj_Clientes;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
@@ -61,6 +60,7 @@ import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
+import Obj_Punto_De_Venta.Obj_Clientes;
 
 public class ActualizarSQL {
 	String Qbitacora ="exec sp_insert_empleado_en_bitacora ?,?,?,?,?";

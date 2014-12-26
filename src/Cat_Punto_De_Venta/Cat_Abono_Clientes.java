@@ -1,4 +1,4 @@
-package Cat_Auditoria;
+package Cat_Punto_De_Venta;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -56,11 +56,11 @@ import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
-import Obj_Auditoria.Obj_Abono_Clientes;
-import Obj_Auditoria.Obj_Clientes;
 import Obj_Principal.Componentes;
 import Obj_Principal.MyRenderer;
 import Obj_Principal.tablaRenderer;
+import Obj_Punto_De_Venta.Obj_Abono_Clientes;
+import Obj_Punto_De_Venta.Obj_Clientes;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -76,6 +76,7 @@ public class Cat_Abono_Clientes extends JFrame{
 	JLabel lblF2 = new JLabel("F2 => Abrir Filtro De Clientes");
 	JLabel lblF5 = new JLabel("F5 => Imprimir Ticket A Detalle");
 	JLabel lblF9 = new JLabel("F9 => Generer Abono");
+	JLabel lblLimpiar = new JLabel("Esc => Limpiar");
 	
 	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
 	JButton btnGuardarAbono = new JButton("Guardar");
@@ -251,6 +252,7 @@ public class Cat_Abono_Clientes extends JFrame{
     	lblF2.setFont(new Font("arial", Font.BOLD, 13));
     	lblF5.setFont(new Font("arial", Font.BOLD, 13));
     	lblF9.setFont(new Font("arial", Font.BOLD, 13));
+    	lblLimpiar.setFont(new Font("arial", Font.BOLD, 13));
     	
     	lblSeleccion_de_tabla.setFont(new Font("arial", Font.BOLD, 12));
 
@@ -290,6 +292,7 @@ public class Cat_Abono_Clientes extends JFrame{
 		lblF2.setForeground(Color.white);
 		lblF5.setForeground(Color.white);
 		lblF9.setForeground(Color.white);
+		lblLimpiar.setForeground(Color.white);
 		
 		lblSeleccion_de_tabla.setForeground(Color.red);
 
@@ -302,9 +305,9 @@ public class Cat_Abono_Clientes extends JFrame{
 		panel.add(txtEstablecimiento).setBounds(x,y,ancho+100,20);
 		
 		panel.add(lblCajero).setBounds(x+195, y, ancho, 20);
-		panel.add(txtCajera).setBounds(x+260,y,(ancho*4)+20,20);
+		panel.add(txtCajera).setBounds(x+260,y,(ancho*4)-30,20);
 		
-		panel.add(lblF2).setBounds(x+610,y,ancho*4,20);
+		panel.add(lblF2).setBounds(x+560,y,ancho*4,20);
 		
 		panel.add(btnCancelarTicket).setBounds(x+820,y,150,20);
 		
@@ -313,9 +316,9 @@ public class Cat_Abono_Clientes extends JFrame{
 		panel.add(btnBuscar).setBounds(x+150,y,30,20);
 		
 		panel.add(lblCliente).setBounds(x+195, y, ancho, 20);
-		panel.add(txtCliente).setBounds(x+260,y,(ancho*4)+20,20);
+		panel.add(txtCliente).setBounds(x+260,y,(ancho*4)-30,20);
 		
-		panel.add(lblF5).setBounds(x+610,y,ancho*4,20);
+		panel.add(lblF5).setBounds(x+560,y,ancho*4,20);
 		
 		panel.add(btnCancelarAbono).setBounds(x+820,y,150,20);
 		
@@ -323,9 +326,9 @@ public class Cat_Abono_Clientes extends JFrame{
 		panel.add(txtTiket).setBounds(x+70,y,ancho,20);
 		
 		panel.add(lblDomicilio).setBounds(x+195, y, ancho, 20);
-		panel.add(txtDomicilio).setBounds(x+260,y,(ancho*4)+20,20);
+		panel.add(txtDomicilio).setBounds(x+260,y,(ancho*4)-30,20);
 		
-		panel.add(lblF9).setBounds(x+610,y,ancho*4,20);
+		panel.add(lblF9).setBounds(x+560,y,ancho*4,20);
 
 		panel.add(btnLiquidarTicket).setBounds(x+820,y,150,20);
 		
@@ -333,9 +336,11 @@ public class Cat_Abono_Clientes extends JFrame{
 		panel.add(txtAbono).setBounds(x+70,y,ancho,20);
 		
 		panel.add(lblFechaLim).setBounds(x+195, y, ancho, 20);
-		panel.add(fecha).setBounds(x+260, y, ancho+20, 20);
-		panel.add(btnGuardarAbono).setBounds(x+365,y,ancho+20,20);
-		panel.add(btnNuevaCuenta).setBounds(x+470,y,ancho+50,20);
+		panel.add(fecha).setBounds(x+260, y, ancho+10, 20);
+		panel.add(btnGuardarAbono).setBounds(x+355,y,ancho,20);
+		panel.add(btnNuevaCuenta).setBounds(x+440,y,ancho+30,20);
+		
+		panel.add(lblLimpiar).setBounds(x+560,y,ancho*4,20);
 		
 		panel.add(lblSeleccion_de_tabla).setBounds(720,y+10,ancho+180,20);
 		
@@ -390,6 +395,8 @@ public class Cat_Abono_Clientes extends JFrame{
 		txtEstablecimiento.setHorizontalAlignment(0);
 		
 		lblSeleccion_de_tabla.setHorizontalAlignment(4);
+		
+		limpiar();
 		
 //      asigna el foco al JTextField deseado al arrancar la ventana
         this.addWindowListener(new WindowAdapter() {
@@ -453,6 +460,18 @@ public class Cat_Abono_Clientes extends JFrame{
 	        public void actionPerformed(ActionEvent e)
 	        {
 		        	abonar();
+	        }
+	    });
+	    
+		//  cobrar 
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+	       KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "limpiar_pantalla");
+	    
+	    getRootPane().getActionMap().put("limpiar_pantalla", new AbstractAction(){
+	        @Override
+	        public void actionPerformed(ActionEvent e)
+	        {
+		        	limpiar();
 	        }
 	    });
 	    
@@ -605,6 +624,21 @@ public class Cat_Abono_Clientes extends JFrame{
 							return;
 			        	}
 			}
+	}
+	
+	public void limpiar(){
+		
+		txtFolioCliente.setText("");
+		txtTiket.setText("");
+		txtAbono.setText("");
+		txtCliente.setText("");
+		txtDomicilio.setText("");
+		fecha.setDate(null);
+		
+		while(tabla_ticket.getRowCount()>0)
+			tabla_model_ticket.removeRow(0);
+		while(tabla_abonos.getRowCount()>0)
+			tabla_model_abonos.removeRow(0);
 	}
 	
 	public void pintar_botones(){
