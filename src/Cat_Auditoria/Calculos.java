@@ -38,7 +38,6 @@ public class Calculos extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	JDateChooser calendario = new JDateChooser();
-
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_desc();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);

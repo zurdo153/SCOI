@@ -43,6 +43,7 @@ import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
+import Obj_Lista_de_Raya.Obj_Conceptos_De_Extras_Para_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
@@ -2871,25 +2872,16 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Observacion_de_corte_guardado(String folio_corte, String observacion){
-		
-		System.out.println(folio_corte);
-		System.out.println(observacion);
-		
-		
-		String update =" update tb_alimentacion_de_cortes set observacion= ?"+
-						" where folio_corte = ?";
-		
-		
+	public boolean Concepto_extra(Obj_Conceptos_De_Extras_Para_Lista_De_Raya concepto, int folio){
+		String query = "update tb_conceptos_de_extra_de_lista_de_raya set concepto_extra=?, abreviatura=?, status=? where folio_concepto_extra=" + folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(update);
-			
-			 pstmt.setString(1, observacion);
-			 pstmt.setString(2, folio_corte);
-			
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, concepto.getConcepto().toUpperCase().trim());
+			pstmt.setString(2, concepto.getAbreviatura().toUpperCase().trim());
+			pstmt.setString(3, (concepto.getStatus().equals("VIGENTE"))?"1":"0");
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -2898,10 +2890,10 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Observacion_de_corte_guardado ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Concepto_extra ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Observacion_de_corte_guardado ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -2914,5 +2906,42 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
+	
+	public boolean Observacion_de_corte_guardado(String folio_corte, String observacion){
+		String update =" update tb_alimentacion_de_cortes set observacion= ?"+
+						" where folio_corte = ?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			con.setAutoCommit(false);
+			PreparedStatement pstmt = con.prepareStatement(update);
+			
+				 pstmt.setString(1, observacion);
+				 pstmt.setString(2, folio_corte);
+				pstmt.executeUpdate();
 
+				con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Observacion_de_corte_guardado ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Observacion_de_corte_guardado ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+					return false;
+					}	
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
+	}
+		
 }

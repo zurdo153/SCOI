@@ -470,7 +470,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 						modelo_prv.removeRow(0);  }
 					 Llenar_Tabla_proveedores ();
 					 render_proveedor();
-            	   JOptionPane.showMessageDialog(null, "Se Guardo Correctamente:","Aviso", JOptionPane.INFORMATION_MESSAGE);
+            	   JOptionPane.showMessageDialog(null, "Se Guardo Correctamente:","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
    				return;
                }
    			   JOptionPane.showMessageDialog(null, "Error  en la funcion [ Guardar ] \n if(Obj_Cotizaciones_De_Un_Producto.Guardar_Cotizacion()) ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
