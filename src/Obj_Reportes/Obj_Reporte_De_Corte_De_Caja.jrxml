@@ -3,7 +3,7 @@
 	<property name="template.type" value="columnar"/>
 	<property name="ireport.zoom" value="2.3579476910000086"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="520"/>
+	<property name="ireport.y" value="362"/>
 	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -20,7 +20,8 @@
 	<queryString>
 		<![CDATA[declare  @dolares money,@vales money,@retiro_a_cajero money,@fuente_de_sodas money,@retiros_de_clientes money
 
-,@folio_corte varchar(15) set @folio_corte = ('SV1887');
+,@folio_corte varchar(15)
+--set @folio_corte = ('DPI2254');
 
 
 set @dolares=(select tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor

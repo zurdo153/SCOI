@@ -1,4 +1,4 @@
-package Obj_Auditoria;
+package Obj_Punto_De_Venta;
 
 import java.sql.SQLException;
 
