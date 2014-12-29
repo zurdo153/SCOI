@@ -1148,4 +1148,39 @@ public class Cargar_Combo {
 		return pila;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String[] Conseptos() throws SQLException {
+		String query = "select concepto_extra from tb_conceptos_de_extra_de_lista_de_raya";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("");
+				}
+				miVector.add(rs.getString("concepto_extra"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		
+		return pila;
+			
+	}
+	
 }

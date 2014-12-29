@@ -69,7 +69,7 @@ public class GuardarTablasModel {
 		
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
-
+        
 			con.setAutoCommit(false);
 			
 			for(int i=0; i<tabla.length; i++){
@@ -85,6 +85,70 @@ public class GuardarTablasModel {
 				pstmt.setFloat(10, Float.parseFloat(tabla[i][10].toString()));
 				pstmt.executeUpdate();
 			
+//				System.out.println(tabla[i][0].toString().trim() +"Falta"+tabla[i][5].toString());
+			}
+		
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean tabla_model_deduccion_y_percepcionesde_lista_de_raya(Object[][] tabla){
+		String query = "exec sp_insert_deducciones_y_precepciones_de_lista_de_raya ?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			PreparedStatement pstmt = con.prepareStatement(query);
+
+			con.setAutoCommit(false);
+			
+			for(int i=0; i<tabla.length; i++){
+//				System.out.print(Integer.parseInt(tabla[i][0].toString().trim()));
+//				System.out.print("  "+tabla[i][2].toString().trim());
+//				System.out.print(tabla[i][3].toString().trim().equals("true")?"  1":"  0");
+//				System.out.print(tabla[i][4].toString().trim().equals("true")?"  1":"  0");
+//				System.out.print("  "+Integer.parseInt(tabla[i][5].toString().trim()));
+//				System.out.print(tabla[i][6].toString().trim().equals("true")?"  1":"  0");
+//				System.out.print("  "+Integer.parseInt(tabla[i][7].toString().trim()));
+//				System.out.print("  "+Integer.parseInt(tabla[i][8].toString().trim()));
+//				System.out.print("  "+Integer.parseInt(tabla[i][9].toString().trim()));
+//				System.out.print("  "+Float.parseFloat(tabla[i][10].toString().trim()));
+//				System.out.println("  "+tabla[i][11].toString().trim());
+				
+				pstmt.setInt(	1, Integer.parseInt(tabla[i][0].toString().trim()));
+				pstmt.setString(2, tabla[i][2].toString().trim());
+				
+				pstmt.setInt(3, tabla[i][3].toString().trim().equals("true")?1:0);
+				pstmt.setInt(4, tabla[i][4].toString().trim().equals("true")?1:0);
+				
+				pstmt.setInt(	5, Integer.parseInt(tabla[i][5].toString().trim()));
+				
+				pstmt.setInt(6, tabla[i][6].toString().trim().equals("true")?1:0);
+				
+				pstmt.setInt(	7, Integer.parseInt(tabla[i][7].toString().trim()));
+				pstmt.setInt(	8, Integer.parseInt(tabla[i][8].toString().trim()));
+				pstmt.setInt(	9, Integer.parseInt(tabla[i][9].toString().trim()));
+				pstmt.setFloat(	10,Float.parseFloat(tabla[i][10].toString().trim()));
+				pstmt.setString(11,tabla[i][11].toString().trim());
+				
+				pstmt.executeUpdate();
 			}
 		
 			con.commit();

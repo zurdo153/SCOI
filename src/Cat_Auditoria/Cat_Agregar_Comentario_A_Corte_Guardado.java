@@ -24,6 +24,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Obj_Principal.Componentes;
 import Obj_Principal.tablaRenderer;
@@ -241,32 +242,38 @@ public class Cat_Agregar_Comentario_A_Corte_Guardado extends JDialog {
 		ActionListener opGuardarObservacion = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if(txaObservacion.getText().equals("")){
+				if(!txaObservacion.getText().equals("")){
+					
+						if(new ActualizarSQL().Observacion_de_corte_guardado(Folio_corte, txaObservacion.getText().toUpperCase().trim())){
+							
+							while(tabla.getRowCount()>0)
+								modelo.removeRow(0);
+							
+							Object[][] recargarTabla = new BuscarTablasModel().filtro_cortes_guardados();
+							
+							 String[] fila = new String[6];
+		                     for(int i=0; i<recargarTabla.length; i++){
+		                             fila[0] = recargarTabla[i][0]+"";
+		                             fila[1] = recargarTabla[i][1]+"";
+		                             fila[2] = recargarTabla[i][2]+"";
+		                             fila[3] = recargarTabla[i][3]+"";
+		                             fila[4] = recargarTabla[i][4]+"";
+		                             fila[5] = recargarTabla[i][5]+"";
+		                             modelo.addRow(fila);
+		                     }
+		                     
+		                     dispose();
+							
+							JOptionPane.showMessageDialog(null, "Observacion guardada correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							return;
+						}else{
+							dispose();
+							JOptionPane.showMessageDialog(null, "No se pudo ingresar la observacion", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							return;
+						}
+				}else{
 					JOptionPane.showMessageDialog(null, "Ingresar Observacion", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 					return;
-				}else{
-					
-					JOptionPane.showMessageDialog(null, "Agregar el metodo modificar Observacion\ncon el folio_corte = "+Folio_corte, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-//					return;
-					dispose();
-					
-					while(tabla.getRowCount()>0)
-						modelo.removeRow(0);
-					
-					Object[][] recargarTabla = new BuscarTablasModel().filtro_cortes_guardados();
-					
-					 String[] fila = new String[6];
-                     for(int i=0; i<recargarTabla.length; i++){
-                             fila[0] = recargarTabla[i][0]+"";
-                             fila[1] = recargarTabla[i][1]+"";
-                             fila[2] = recargarTabla[i][2]+"";
-                             fila[3] = recargarTabla[i][3]+"";
-                             fila[4] = recargarTabla[i][4]+"";
-                             fila[5] = recargarTabla[i][5]+"";
-                             modelo.addRow(fila);
-                     }
-					
-
 				}
 			}
 		};

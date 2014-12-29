@@ -2869,6 +2869,50 @@ public class ActualizarSQL {
 				}
 		}		
 		return true;
-	}	
+	}
 	
+	public boolean Observacion_de_corte_guardado(String folio_corte, String observacion){
+		
+		System.out.println(folio_corte);
+		System.out.println(observacion);
+		
+		
+		String update =" update tb_alimentacion_de_cortes set observacion= ?"+
+						" where folio_corte = ?";
+		
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(update);
+			
+			 pstmt.setString(1, observacion);
+			 pstmt.setString(2, folio_corte);
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Observacion_de_corte_guardado ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Observacion_de_corte_guardado ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+
 }

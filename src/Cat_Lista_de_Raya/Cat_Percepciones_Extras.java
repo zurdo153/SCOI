@@ -7,28 +7,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 
-import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Persecciones_Extra;
+import Obj_Principal.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Percepciones_Extras extends Cat_Root {
@@ -43,6 +40,9 @@ public class Cat_Percepciones_Extras extends Cat_Root {
     public JComboBox cmb_layaout_dia = new JComboBox(lista);
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public JComboBox cmb_tabla_dia = new JComboBox(lista1);
+    
+	int fila = 0;
+	int columna = 3;
 	
 	public DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Persecciones_Extra().get_tabla_model(),
             new String[]{"Folio", "Nombre Completo", "Establecimiento", "Bono", "Día Extra", "Cantidad Dias"}
@@ -113,7 +113,9 @@ public class Cat_Percepciones_Extras extends Cat_Root {
 		
 		this.cont.add(panel);
 		
+		this.llamar_render();
 		this.init_tabla();
+		this.agregar(tabla);
 		
 		this.btn_guardar.addActionListener(op_guardar);
 		this.btn_refrescar.setVisible(false);
@@ -124,12 +126,94 @@ public class Cat_Percepciones_Extras extends Cat_Root {
 		this.cmb_layaout_dia.addActionListener(op_dia);
 		this.chb_todos.addActionListener(op_todos);
 		
+		this.chb_habilitar.addActionListener(opChbBono);
+		
+		tabla.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyReleased(KeyEvent arg0) {
+				
+						if(Validar(fila, columna)==false){
+								JOptionPane.showMessageDialog(null, "Se introdujo un valor no valido","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								tabla.setValueAt("", fila, columna);
+								tabla.editCellAt(fila, columna);
+								Component aComp=tabla.getEditorComponent();
+								aComp.requestFocus();
+								return;
+						}else{
+								if(chb_habilitar.isSelected()){
+								
+								int cantidadDeFilas = tabla.getRowCount();
+								fila+=1;
+								
+								if(fila == cantidadDeFilas){	fila=0;		}
+								
+										tabla.editCellAt(fila, columna);
+										Component aComp=tabla.getEditorComponent();
+										aComp.requestFocus();
+								}
+						}
+			}
+			public void keyPressed(KeyEvent arg0) {}
+		});
+		
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		this.setLocationRelativeTo(null);
 		this.addWindowListener(op_cerrar);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
     
+	@SuppressWarnings("unused")
+	private boolean Validar(int fila, int columna) { 
+		
+			String valor=""; 
+		
+			if(tabla.getValueAt(fila,columna)==null) { 
+				return false; 
+			}else{ 
+				double numero =0;
+				
+				try{
+						numero = Double.valueOf(tabla.getValueAt(fila, columna).toString().trim());
+						return true;
+				}catch(NumberFormatException e){
+					if(tabla.getValueAt(fila, columna).toString().trim().equals("")){
+						return true;
+					}else{
+						return false;
+					}
+						
+				}
+			} 
+	}
+	
+	ActionListener opChbBono = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			
+			if(chb_habilitar.isSelected()){
+//				tabla.setEnabled(true);
+				fila=0;
+				tabla.editCellAt(fila, columna);
+				Component aComp=tabla.getEditorComponent();
+				aComp.requestFocus();
+			}
+			
+		}
+	};
+    
+	private void agregar(final JTable tbl) {
+        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	        	if(tbl.getSelectedColumn()!=3){
+	        		chb_habilitar.setSelected(false);
+	        		fila=0;
+	        	}else{
+	        		fila= tbl.getSelectedRow();
+	        	}
+	        	
+	        }
+        });
+    }
+	
     WindowListener op_cerrar = new WindowListener() {
 		public void windowOpened(WindowEvent e) {}
 		public void windowIconified(WindowEvent e) {}
@@ -256,8 +340,18 @@ public class Cat_Percepciones_Extras extends Cat_Root {
 		return error;
 	}
     
+	public void llamar_render(){
+		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("CHB","izquierda","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void init_tabla(){
+		
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 		
 		this.tabla.getColumnModel().getColumn(0).setMaxWidth(72);
@@ -273,100 +367,7 @@ public class Cat_Percepciones_Extras extends Cat_Root {
     	this.tabla.getColumnModel().getColumn(5).setMaxWidth(135);
     	this.tabla.getColumnModel().getColumn(5).setMinWidth(135);
     	
-		TableCellRenderer render = new TableCellRenderer() { 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				
-				Component componente = null;
-				
-				switch(column){
-					case 0: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 1: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 2:
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 3: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 4: 
-						componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-						if(row%2==0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
-						break;
-					case 5: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					
-				}
-					
-				return componente;
-			} 
-		}; 
-	
 
-		this.tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-		this.tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-		this.tabla.getColumnModel().getColumn(2).setCellRenderer(render);
-		this.tabla.getColumnModel().getColumn(3).setCellRenderer(render); 
-		this.tabla.getColumnModel().getColumn(4).setCellRenderer(render); 
-		this.tabla.getColumnModel().getColumn(5).setCellRenderer(render);
-		
 		this.tabla.setRowSorter(trsfiltro);  
 		
 	}

@@ -753,9 +753,14 @@ public class Cat_Abono_Clientes extends JFrame{
 	ActionListener opGenerarNuevaCuenta = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-//			enviar de parametro el establecimiento donde se capturo ("NS")
-			String nuevoTicket = new Obj_Abono_Clientes().nuevoTicket(txtEstablecimiento.getText());
-			txtTiket.setText(nuevoTicket);
+			if(txtCliente.equals("")){
+				JOptionPane.showMessageDialog(null, "El cliente no tiene cueta abierta","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}else{
+//				enviar de parametro el establecimiento donde se capturo ("NS")
+					String nuevoTicket = new Obj_Abono_Clientes().nuevoTicket(txtEstablecimiento.getText());
+					txtTiket.setText(nuevoTicket);
+			}
 			txtAbono.requestFocus();
 		}
 	};

@@ -3,10 +3,14 @@ package Obj_Principal;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 @SuppressWarnings("serial")
@@ -77,12 +81,21 @@ public class tablaRenderer extends DefaultTableCellRenderer {
          }
          
          if(tipo.toUpperCase().trim().equals("CHB")){
-        	 
-        	 chb = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-        	 chb.setHorizontalAlignment(JCheckBox.CENTER);
+				
+				chb = new JCheckBox("",Boolean.parseBoolean(value.toString()));
+				if(row%2==0){
+					((JComponent) chb).setOpaque(true); 
+					chb.setBackground(new java.awt.Color(177,177,177));	
+				}
 				if(table.getSelectedRow() == row){
+					((JComponent) chb).setOpaque(true); 
 					chb.setBackground(new java.awt.Color(186,143,73));
 				}
+				if(selected){
+					((JComponent) chb).setOpaque(true); 
+					chb.setBackground(new java.awt.Color(186,143,73));
+				}
+				((AbstractButton) chb).setHorizontalAlignment(SwingConstants.CENTER);	
 				return chb;
 			
          }else{
