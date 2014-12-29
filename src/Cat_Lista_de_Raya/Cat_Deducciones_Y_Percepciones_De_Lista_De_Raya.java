@@ -17,18 +17,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Cargar_Combo;
+import Obj_Checador.Obj_Traer_Checador;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya;
 import Obj_Principal.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat__Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
+public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 	
 	Runtime R = Runtime.getRuntime();
 
@@ -131,7 +133,7 @@ public class Cat__Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 	public TableColumn columna_hrs_ext = tabla.getColumnModel().getColumn(9);
 	public TableColumn columna_conseptos = tabla.getColumnModel().getColumn(11);
 	
-	public Cat__Deducciones_Y_Percepciones_De_Lista_De_Raya(){
+	public Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/hand_contra_icon&16.png"));
 		this.setTitle("Deducción por Inasistencia");
 
@@ -231,6 +233,32 @@ public class Cat__Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 								Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya inasistencia = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya();
 								
 									if(inasistencia.guardar(tabla_guardar())){
+										
+										while(tabla.getRowCount()>0){
+											tabla_model.removeRow(0);
+										}
+										
+				                        Object [][] lista_tabla = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya().get_tabla_model();
+				                        String[] fila = new String[12];
+				                                for(int i=0; i<lista_tabla.length; i++){
+				                                        fila[0] = lista_tabla[i][0]+"";
+				                                        fila[1] = lista_tabla[i][1]+"";
+				                                        fila[2] = lista_tabla[i][2]+"";
+				                                        fila[3] = lista_tabla[i][3]+"";
+				                                        fila[4] = lista_tabla[i][4]+"";
+				                                        fila[5] = lista_tabla[i][5]+"";
+				                                        fila[6] = lista_tabla[i][6]+"";
+				                                        fila[7] = lista_tabla[i][7]+"";
+				                                        fila[8] = lista_tabla[i][8]+"";
+				                                        fila[9] = lista_tabla[i][9]+"";
+				                                        fila[10] = lista_tabla[i][10]+"";
+				                                        fila[11] = lista_tabla[i][11]+"";
+				                                        tabla_model.addRow(fila);
+				                                }
+										
+										
+										
+										
 										JOptionPane.showMessageDialog(null, "La tabla Deducción por Inasistencia se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
 										return;
 									}else{
@@ -279,7 +307,7 @@ public class Cat__Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 	}
 
 	public void llamar_render(){
-		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",8));
+		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
@@ -374,5 +402,12 @@ public class Cat__Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 			}
 		}
 	};
+	
+	public static void main(String [] arg){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya().setVisible(true);
+		}catch(Exception e){	}
+	}
 
 }
