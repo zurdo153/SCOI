@@ -69,7 +69,7 @@ public class GuardarTablasModel {
 		
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
-
+        
 			con.setAutoCommit(false);
 			
 			for(int i=0; i<tabla.length; i++){
@@ -85,6 +85,7 @@ public class GuardarTablasModel {
 				pstmt.setFloat(10, Float.parseFloat(tabla[i][10].toString()));
 				pstmt.executeUpdate();
 			
+//				System.out.println(tabla[i][0].toString().trim() +"Falta"+tabla[i][5].toString());
 			}
 		
 			con.commit();

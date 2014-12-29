@@ -50,9 +50,9 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento = new JComboBox(departamento);
 
-	JButton btn_generar_sin_observaciones = new JButton  ("Reporte de Asistencia Sin Observaciones");
-	JButton btn_generar_Permisos = new JButton  ("Reporte de Permisos a Empleados");
-	JButton btn_generar_Completo = new JButton  ("Reporte de Asistencia Completo");
+	JButton btn_generar_sin_observaciones = new JButton  ("Reporte de Asistencia S/Observaciones",new ImageIcon("imagen/proceso-para-los-usuarios-icono-5903-16.png"));
+	JButton btn_generar_Permisos = new JButton  ("Reporte de Permisos a Empleados",new ImageIcon("imagen/apoyo-y-asistencia-icono-6525-16.png"));
+	JButton btn_generar_Completo = new JButton  ("Reporte de Asistencia Completo",new ImageIcon("imagen/asistencia-comunitaria-icono-9465-16.png"));
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -76,9 +76,9 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		this.panel.add(JLBdepartamento).setBounds(300,55,20,20);
 		this.panel.add(cmbDepartamento).setBounds(320,55,170,20);
 	
-		this.panel.add(btn_generar_sin_observaciones).setBounds(140,130,210,20);
-		this.panel.add(btn_generar_Permisos).setBounds(140,160,210,20);
-		this.panel.add(btn_generar_Completo).setBounds(140,190,210,20);
+		this.panel.add(btn_generar_sin_observaciones).setBounds(120,100,250,35);
+		this.panel.add(btn_generar_Permisos).setBounds(120,145,250,35);
+		this.panel.add(btn_generar_Completo).setBounds(120,190,250,35);
 		
 		
 		this.cont.add(panel);

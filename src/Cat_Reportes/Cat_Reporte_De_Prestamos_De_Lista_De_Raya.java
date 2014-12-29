@@ -48,7 +48,7 @@ public class Cat_Reporte_De_Prestamos_De_Lista_De_Raya extends JFrame {
 		
 		btnPrestamos_Limpio.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
 				"		<p>Impresion de Reporte de Prestamos Para</p>" +
-				"		<CENTER><p>Por Empleado de Lista de Raya Actual</p></CENTER></FONT>" +
+				"		<CENTER><p>Exp Por Empleado de Lista de Raya Actual</p></CENTER></FONT>" +
 				"</html>"); 
 		
 		btnPrestamos_Por_Establecimiento.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +

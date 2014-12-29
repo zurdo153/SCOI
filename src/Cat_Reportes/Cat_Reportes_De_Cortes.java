@@ -12,7 +12,6 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -42,9 +41,8 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	
 	JButton btncortedelfolio = new JButton("",new ImageIcon("imagen/bolsa-de-dinero-en-efectivo-icono-6673-16.png"));
 	JButton btnlistadocortesdia = new JButton("",new ImageIcon("imagen/Calendar.png"));
-	JButton btnlistadocortespendientes = new JButton("",new ImageIcon("imagen/vista-previa-del-ojo-icono-7248-16.png"));
+	JButton btnlistadocortesExportar = new JButton("",new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
 
-	JCheckBox chbExportar = new JCheckBox("Para Exportar");
 	
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 	
@@ -69,14 +67,15 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 				"		<CENTER><p>Reporte De Cortes Por Fecha     </p></CENTER></FONT>" +
 				"</html>");	
 		
-		btnlistadocortespendientes.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<CENTER><p>Reporte De Cortes Pendientes Con Venta </p></CENTER></FONT>" +
+		btnlistadocortesExportar.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Cortes Por Fecha</p></CENTER>" +
+				"		<CENTER><p>Para Exportar</p></CENTER></FONT>" +
 				"</html>");	
 		
 		
 		panel.add(btncortedelfolio).setBounds(20,25,260,30);
 		panel.add(btnlistadocortesdia).setBounds(20,75,260,30);
-//		panel.add(btnlistadocortespendientes).setBounds(20,125,260,30);
+		panel.add(btnlistadocortesExportar).setBounds(20,125,260,40);
 		
 		panel.add(new JLabel("Folio:")).setBounds(20,180,200,20);		
 		panel.add(txtFolio).setBounds(80,180,195,20);
@@ -84,31 +83,27 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 		
 		panel.add(cfecha).setBounds(80,220,195,20);
 		
-		panel.add(chbExportar).setBounds(80,250,100,20);
 		
 		panel.add(btngenerar).setBounds(100,275,120,30);
 	    
 	    txtFolio.setEditable(false);
 	    cfecha.setEnabled(false);
-	    chbExportar.setEnabled(false);
 	    btngenerar.setEnabled(false);
 	    
 		cont.add(panel);
 		btngenerar.addActionListener(opGenerar);
 		btncortedelfolio.addActionListener(opReporte_Por_Folio);
 		btnlistadocortesdia.addActionListener(opReporte_Por_Fecha);
-		btnlistadocortespendientes.addActionListener(opReporte_Cortes_Pendientes);
+		btnlistadocortesExportar.addActionListener(opReporte_Cortes_Pendientes);
 
 	}
 	ActionListener opReporte_Por_Folio = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			txtFolio.setEditable(true);
 			cfecha.setEnabled(false);
-			chbExportar.setEnabled(false);
 			btngenerar.setEnabled(true);
 			tipo_Reporte=1;
 			cfecha.setDate(null);
-			chbExportar.setSelected(false);
 		}
 	};
 	
@@ -116,7 +111,6 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 		public void actionPerformed(ActionEvent arg0) {
 			txtFolio.setEditable(false);
 			cfecha.setEnabled(true);
-			chbExportar.setEnabled(true);
 			btngenerar.setEnabled(true);
 			tipo_Reporte=2;
 			txtFolio.setText("");
@@ -127,7 +121,7 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 		public void actionPerformed(ActionEvent arg0) {
 			txtFolio.setEditable(false);
 			cfecha.setEnabled(true);
-			chbExportar.setEnabled(true);
+			btnlistadocortesExportar.setEnabled(true);
 			btngenerar.setEnabled(true);
 			tipo_Reporte=3;
 			txtFolio.setText("");
@@ -162,10 +156,8 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 						   
 						   String ruta_reporte = "";
 						   
-						   if(chbExportar.isSelected()){
-//							   reporte para exportar
-							   ruta_reporte = "\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia.jrxml";
-//							   ruta_reporte = "\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia_Exportar.jrxml";
+						   if(tipo_Reporte==3){
+							   ruta_reporte = "\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia_Para_Exportar.jrxml";
 						   }else{
 							   ruta_reporte = "\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia.jrxml";
 						   }

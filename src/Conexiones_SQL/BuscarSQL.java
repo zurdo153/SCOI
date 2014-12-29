@@ -67,6 +67,7 @@ import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
+import Obj_Lista_de_Raya.Obj_Conceptos_De_Extras_Para_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
@@ -5782,6 +5783,54 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return fecha;
+	}
+	
+	public Obj_Conceptos_De_Extras_Para_Lista_De_Raya Concepto_extra_nuevo() throws SQLException{
+		Obj_Conceptos_De_Extras_Para_Lista_De_Raya concepto_extra = new Obj_Conceptos_De_Extras_Para_Lista_De_Raya();
+		String query = "select max(folio_concepto_extra) as 'Maximo' from tb_conceptos_de_extra_de_lista_de_raya";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				concepto_extra.setFolio(rs.getInt("Maximo"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Concepto_extra_nuevo \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return concepto_extra;
+	}
+	
+	public Obj_Conceptos_De_Extras_Para_Lista_De_Raya Concepto_Extra(int folio) throws SQLException{
+		Obj_Conceptos_De_Extras_Para_Lista_De_Raya concepto_extra = new Obj_Conceptos_De_Extras_Para_Lista_De_Raya();
+		String query = "select folio_concepto_extra,concepto_extra,abreviatura,case when status=1 then 'VIGENTE' ELSE 'CANCELADO' END as status "+
+		                "   from tb_conceptos_de_extra_de_lista_de_raya where folio_concepto_extra="+folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				concepto_extra.setFolio(rs.getInt("folio_concepto_extra"));
+				concepto_extra.setConcepto(rs.getString("concepto_extra").trim());
+				concepto_extra.setAbreviatura(rs.getString("abreviatura").trim());
+				concepto_extra.setStatus((rs.getString("status").trim()));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Concepto_Extra \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return concepto_extra;
 	}
 	
 }

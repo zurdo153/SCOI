@@ -39,11 +39,8 @@ public class Calculos extends JFrame{
 	
 	JDateChooser calendario = new JDateChooser();
 	
-<<<<<<< HEAD:src/Cat_Contabilidad/Calculos.java
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
-=======
+	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_desc();
->>>>>>> 60a0f0f83099a2fe950d69f37e7aeddb7c1dacc2:src/Cat_Auditoria/Calculos.java
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	

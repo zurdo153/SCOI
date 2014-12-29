@@ -58,6 +58,7 @@ import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
+import Obj_Lista_de_Raya.Obj_Conceptos_De_Extras_Para_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
@@ -3536,7 +3537,6 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return Guardo_Sesion;
 	}
 
-<<<<<<< HEAD
 	public boolean Guardar_Cotizacion_Producto(Obj_Cotizaciones_De_Un_Producto Cotizacion_Producto){
 			String query = "exec sp_insert_cotizacion_de_un_productos_en_proveedores ?,?,?,?,?,?,?,?,?,?,?,? ";
 			Connection con = new Connexion().conexion_IZAGAR();
@@ -3583,52 +3583,43 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			}		
 		return true;
 	}
-=======
-public boolean Guardar_Cotizacion_Producto(Obj_Cotizaciones_De_Un_Producto Cotizacion_Producto){
-	String query = "exec sp_insert_cotizacion_de_un_productos_en_proveedores ?,?,?,?,?,?,?,?,?,?,?,? ";
-	Connection con = new Connexion().conexion_IZAGAR();
-	PreparedStatement pstmt = null;
-	try {
-		con.setAutoCommit(false);
-		pstmt = con.prepareStatement(query);
-		
-		pstmt.setString(1, Cotizacion_Producto.getCod_Prod().toUpperCase().trim());
-		pstmt.setString(2, Cotizacion_Producto.getFolio_compra().toUpperCase().trim());
-        pstmt.setString(3, Cotizacion_Producto.getCod_Prv().toUpperCase().trim());
-        pstmt.setString(4, Cotizacion_Producto.getProveedor().toUpperCase().trim());
-        pstmt.setDouble(5,  Cotizacion_Producto.getUltimo_Costo());  
-        pstmt.setDouble(6,  Cotizacion_Producto.getCosto_Promedio());
-        pstmt.setDouble(7,  Cotizacion_Producto.getCosto_Nuevo());
-        pstmt.setDouble(8, Cotizacion_Producto.getCantidad_Requerida());
-        pstmt.setString(9, Cotizacion_Producto.getNotas_Negociacion());
-        pstmt.setDouble(10, Cotizacion_Producto.getExistencia_Cedis());
-        pstmt.setDouble(11, Cotizacion_Producto.getExistencia_Total());
-        pstmt.setString(12, usuario.getNombre_completo());
-        		
-		pstmt.executeUpdate();
-		con.commit();
-	} catch (Exception e) {
-		System.out.println("SQLException: " + e.getMessage());
-		if (con != null){
-			try {
-				System.out.println("La transacción ha sido abortada");
-				con.rollback();
-			} catch(SQLException ex) {
-				System.out.println(ex.getMessage());
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cotizacion_Producto ] Insert  SQLException: sp_insert_cotizacion_de_un_productos_en_proveedores "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}
-		} 
-		return false;
-	}finally{
+	public boolean Guardar_Concepto_Extra(Obj_Conceptos_De_Extras_Para_Lista_De_Raya conceptos_extra){
+		String query = "exec sp_insert_puesto ?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
 		try {
-			pstmt.close();
-			con.close();
-		} catch(SQLException e){
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cotizacion_Producto ] Insert  SQLException: sp_insert_cotizacion_de_un_productos_en_proveedores "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-	}		
-	return true;
-}
->>>>>>> 60a0f0f83099a2fe950d69f37e7aeddb7c1dacc2
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, conceptos_extra.getConcepto().toUpperCase().trim());
+			pstmt.setString(2, conceptos_extra.getAbreviatura().toUpperCase().trim());
+			pstmt.setString(3, (conceptos_extra.getStatus().equals("VIGENTE"))?"1":"0");
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Concepto_Extra ] Insert  SQLException: sp_insert_puesto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Concepto_Extra ] Insert  SQLException: sp_insert_puesto "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Concepto_Extra ] Insert  SQLException: sp_insert_puesto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			}
+		}		
+		return true;
+	}
+	
 }
