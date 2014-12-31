@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.Connexion;
 import Obj_Auditoria.Obj_Denominaciones;
-import Obj_Principal.tablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Denominaciones extends JFrame{

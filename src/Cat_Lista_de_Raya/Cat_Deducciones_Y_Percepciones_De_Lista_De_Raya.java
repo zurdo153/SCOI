@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -23,11 +24,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Cargar_Combo;
-import Obj_Checador.Obj_Traer_Checador;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya;
-import Obj_Principal.tablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
@@ -43,37 +43,33 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private JComboBox cmb_tabla_gafete = new JComboBox(lista1);
     
-//  
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private JComboBox cmb_tabla_dias_ext = new JComboBox(lista1);
    
 	public String[] listaHrs(){
-		
 		String[] lista = new String[81];
 		float valor=0;
-		
 			for (int i = 0; i<lista.length; i++){
-				lista[i] = ((valor)-20)+"";
+				lista[i] = ((valor)-20)==0?"":((valor)-20)+"";
 				valor+=.5;
 			}
-			return lista;
-			};
+		return lista;
+	};
+	
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private JComboBox cmb_tabla_horas = new JComboBox(listaHrs());
     
 	public String[] Combo_Conseptos(){
-		try {
-			return new Cargar_Combo().Conseptos();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		try {return new Cargar_Combo().Conseptos();}
+		catch (SQLException e) {e.printStackTrace();}
 		return null;
 	}	
+	
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	private JComboBox cmb_tabla_conseptos = new JComboBox(Combo_Conseptos());
     
     private DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya().get_tabla_model(),
-            new String[]{"Folio", "Nombre Completo", "Establecimiento", "Inpuntualidad", "Omision", "Días Falta", "Inasitencia", "Días Gafete", "Dias Extra", "Hrs Extra","Extra", "Conseptos" }
+            new String[]{"Folio", "Nombre Completo", "Establecimiento", "Inpuntualidad", "Omision", "Días Falta", "Inasitencia", "Días Gafete", "Dias Extra", "Hrs Extra","Extra", "Conceptos" }
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -107,14 +103,10 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
         	 	case 7 : return true;
         	 	case 8 : return true;
         	 	case 9 : return true;
-        	 	case 10 :
-	        	 		if(chb_habilitar.isSelected()){
-	        	 			return true;
-	        	 		}else{
-	        	 			return false;
-	        	 		}
-        	 	case 11 :return true;
-        	 } 				
+        	 	case 10 :	if(chb_habilitar.isSelected()){return true;}
+        	 				else{return false;}
+        	 	case 11 :return true; 
+        	 }
  			return false;
  		}
 
@@ -136,11 +128,11 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 	public Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/hand_contra_icon&16.png"));
 		this.setTitle("Deducción por Inasistencia");
-
+		
 		this.panel.add(cmbEstablecimientos).setBounds(463,35,150,20);
 
 		this.panel.add(chb_habilitar).setBounds(1050,35,65,20);
-
+		
 		this.columna_dia_falta.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_dias));
 		this.columna_dia_gafete.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_gafete));
 		
@@ -148,7 +140,6 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 		this.columna_hrs_ext.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_horas));
 		
 		this.columna_conseptos.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_conseptos));
-		
 
 		this.panel.remove(txtFolio);
 		this.panel.remove(txtNombre_Completo);
@@ -165,6 +156,13 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 
 		this.llamar_render();
 		this.init_tabla();
+		
+//      asigna el foco al JTextField deseado al arrancar la ventana
+        this.addWindowListener(new WindowAdapter() {
+                public void windowOpened( WindowEvent e ){
+                txtNombre_Completo.requestFocus();
+             }
+        });
 
 		this.btn_guardar.addActionListener(op_guardar);
 			this.btn_guardar.setToolTipText("Guardar");
@@ -233,32 +231,6 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 								Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya inasistencia = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya();
 								
 									if(inasistencia.guardar(tabla_guardar())){
-										
-										while(tabla.getRowCount()>0){
-											tabla_model.removeRow(0);
-										}
-										
-				                        Object [][] lista_tabla = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya().get_tabla_model();
-				                        String[] fila = new String[12];
-				                                for(int i=0; i<lista_tabla.length; i++){
-				                                        fila[0] = lista_tabla[i][0]+"";
-				                                        fila[1] = lista_tabla[i][1]+"";
-				                                        fila[2] = lista_tabla[i][2]+"";
-				                                        fila[3] = lista_tabla[i][3]+"";
-				                                        fila[4] = lista_tabla[i][4]+"";
-				                                        fila[5] = lista_tabla[i][5]+"";
-				                                        fila[6] = lista_tabla[i][6]+"";
-				                                        fila[7] = lista_tabla[i][7]+"";
-				                                        fila[8] = lista_tabla[i][8]+"";
-				                                        fila[9] = lista_tabla[i][9]+"";
-				                                        fila[10] = lista_tabla[i][10]+"";
-				                                        fila[11] = lista_tabla[i][11]+"";
-				                                        tabla_model.addRow(fila);
-				                                }
-										
-										
-										
-										
 										JOptionPane.showMessageDialog(null, "La tabla Deducción por Inasistencia se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
 										return;
 									}else{
@@ -278,15 +250,15 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 		for(int i=0; i<tabla.getRowCount(); i++){
 			for(int j=0; j<tabla.getColumnCount(); j++){
 				
-						if(j==5 || j==7 || j==8 || j==9){
-								matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim().equals("")?0:1;
-						}else{
-								if(j==10){
-										matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim().equals("")?0:1;
-								}else{
-										matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();
-								}
-						}
+//						if(j==5 || j==7 || j==8 || j==9 || j==10){
+								matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim().equals("")?0:tabla_model.getValueAt(i,j).toString().trim();
+//						}else{
+//								if(j==10){
+//										matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim().equals("")?0:1;
+//								}else{
+//										matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();
+//								}
+//						}
 			}
 		}
 		return matriz;

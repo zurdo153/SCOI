@@ -43,7 +43,7 @@ import com.toedter.calendar.JDateChooser;
 import Conexiones_SQL.Connexion;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Principal.Componentes;
-import Obj_Principal.tablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{

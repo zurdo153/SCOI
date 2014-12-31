@@ -898,7 +898,7 @@ public class GuardarSQL {
 		String query_asignacion = 		 "exec sp_insert_asignacion_para_cortes  ?,?,?,?,?,?,?,?,?";		// <-9		11 ->  tb_tabla_de_asignaciones_para_cortes 
 		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
-		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
+		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
 		
 		Connection con = new Connexion().conexion();
 //		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();

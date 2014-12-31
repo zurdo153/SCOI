@@ -36,7 +36,7 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Conceptos_De_Extras_Para_Lista_De_Raya;
 import Obj_Principal.Componentes;
-import Obj_Principal.tablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Conceptos_De_Extras_Para_Lista_De_Raya extends JFrame{

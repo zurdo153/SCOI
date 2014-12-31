@@ -41,7 +41,7 @@ import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
-import Obj_Principal.tablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 	@SuppressWarnings("serial")
 	public class Cat_Generar_xml_pdf extends JFrame{

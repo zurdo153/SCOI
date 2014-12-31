@@ -132,20 +132,20 @@ public class GuardarTablasModel {
 //				System.out.print("  "+Float.parseFloat(tabla[i][10].toString().trim()));
 //				System.out.println("  "+tabla[i][11].toString().trim());
 				
-				pstmt.setInt(	1, Integer.parseInt(tabla[i][0].toString().trim()));
+				pstmt.setInt(	1, Integer.valueOf(tabla[i][0].toString().trim()));
 				pstmt.setString(2, tabla[i][2].toString().trim());
 				
 				pstmt.setInt(3, tabla[i][3].toString().trim().equals("true")?1:0);
 				pstmt.setInt(4, tabla[i][4].toString().trim().equals("true")?1:0);
 				
-				pstmt.setInt(	5, Integer.parseInt(tabla[i][5].toString().trim()));
+				pstmt.setInt(	5, Integer.valueOf(tabla[i][5].toString().trim()));
 				
 				pstmt.setInt(6, tabla[i][6].toString().trim().equals("true")?1:0);
 				
-				pstmt.setInt(	7, Integer.parseInt(tabla[i][7].toString().trim()));
-				pstmt.setInt(	8, Integer.parseInt(tabla[i][8].toString().trim()));
-				pstmt.setInt(	9, Integer.parseInt(tabla[i][9].toString().trim()));
-				pstmt.setFloat(	10,Float.parseFloat(tabla[i][10].toString().trim()));
+				pstmt.setInt(	7, Integer.valueOf(tabla[i][7].toString().trim()));
+				pstmt.setInt(	8, Integer.valueOf(tabla[i][8].toString().trim()));
+				pstmt.setFloat(	9, Float.valueOf(tabla[i][9].toString().trim()));
+				pstmt.setFloat(	10,Float.valueOf(tabla[i][10].toString().trim()));
 				pstmt.setString(11,tabla[i][11].toString().trim());
 				
 				pstmt.executeUpdate();

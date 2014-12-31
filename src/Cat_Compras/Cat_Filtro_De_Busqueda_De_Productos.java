@@ -31,7 +31,7 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
-import Obj_Principal.tablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {

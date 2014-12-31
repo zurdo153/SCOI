@@ -1,4 +1,4 @@
-package Obj_Principal;
+package Obj_Renders;
 
 import java.awt.Color;
 import java.awt.Component;
