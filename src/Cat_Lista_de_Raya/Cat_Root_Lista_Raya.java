@@ -45,9 +45,9 @@ public class Cat_Root_Lista_Raya extends JFrame {
 		
 		this.panel.add(menu_toolbar).setBounds(0,0,200,25);
 		
-		this.panel.add(txtFolio).setBounds(30,35,85,20);
-		this.panel.add(txtNombre_Completo).setBounds(116,35,310,20);
-		this.panel.add(cmbEstablecimientos).setBounds(427,35,160,20);
+		this.panel.add(txtFolio).setBounds(30,35,55,20);
+		this.panel.add(txtNombre_Completo).setBounds(85,35,260,20);
+		this.panel.add(cmbEstablecimientos).setBounds(345,35,160,20);
 		this.panel.add(txtCalendario).setBounds(588,35,90,20);
 		this.txtCalendario.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		

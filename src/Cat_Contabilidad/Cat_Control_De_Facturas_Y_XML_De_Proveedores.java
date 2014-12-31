@@ -207,7 +207,7 @@ public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{
 		btnRecibido.addActionListener(OpAgregar);
 		btnReportes.addActionListener(Reportes);
 
-//     autofiltros de la tabla
+
 		txtFoliofacturaFiltro.addKeyListener(opFiltroFolio);
 		txtProveedorFiltro.addKeyListener(opFiltroNombre);
 		txtFacturaFiltro.addKeyListener(opFiltroFactura);

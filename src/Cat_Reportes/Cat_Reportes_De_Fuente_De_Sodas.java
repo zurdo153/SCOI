@@ -15,7 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -38,7 +38,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
-public class Cat_Reportes_De_Fuente_De_Sodas extends JDialog{
+public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	

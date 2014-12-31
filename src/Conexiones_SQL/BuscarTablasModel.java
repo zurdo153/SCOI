@@ -130,7 +130,7 @@ public class BuscarTablasModel {
 	
 	public Object[][] tabla_model_lista_raya(){
 		String query_lista = "exec sp_get_lista_raya";
-		Object[][] matriz = new Object[get_filas(query_lista)][25];
+		Object[][] matriz = new Object[get_filas(query_lista)][26];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query_lista);
@@ -159,9 +159,10 @@ public class BuscarTablasModel {
 				matriz[i][19] = Float.parseFloat(rs.getString(20)) == 0 ? "" : Float.parseFloat(rs.getString(20));
 				matriz[i][20] = Float.parseFloat(rs.getString(21)) == 0 ? "" : Float.parseFloat(rs.getString(21));
 				matriz[i][21] = Float.parseFloat(rs.getString(22)) == 0 ? "" : Float.parseFloat(rs.getString(22));
-				matriz[i][22] = Float.parseFloat(rs.getString(23)) == 0 ? "" : Decimal(Float.parseFloat(rs.getString(23)));
-				matriz[i][23] = "   "+rs.getString(24);
+				matriz[i][22] = Float.parseFloat(rs.getString(23)) == 0 ? "" : Float.parseFloat(rs.getString(23));
+				matriz[i][23] = Float.parseFloat(rs.getString(24)) == 0 ? "" : Decimal(Float.parseFloat(rs.getString(24)));
 				matriz[i][24] = "   "+rs.getString(25);
+				matriz[i][25] = "   "+rs.getString(26);
 				
 				i++;
 			}
