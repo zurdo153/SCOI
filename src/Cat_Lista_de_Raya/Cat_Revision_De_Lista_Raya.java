@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
@@ -26,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
@@ -42,10 +44,10 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 	private DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Revision_De_Lista_Raya().get_tabla_model(),
 		new String[]{"","Folio", "Nombre Completo", "Establecimiento", "Sueldo",
-			"P Bono complementario", "Saldo Prestamo Inicial", "Descuento Prestamo", "Saldo Final", "D Fuente Sodas",
-			"D Puntualidad", "D Faltas", "D Asistencia", "D Gafete", "D Cortes", 
-			"D Infonavit", "Pension", "D Banamex", "D Banorte", "D Extra", 
-			"P Día Extras", "P Bono Extra", "A Pagar", "Observaciones D.H.", "Observaciones II" }){
+			"Bono", "P.Saldo ini", "Desc.Prest", "P.Saldo Fin", "F. Sodas",
+			"Imp.","Omi.", "Faltas", "Ina.", "Gafete", "Cortes", 
+			"Infvt", "Pension", "Banamex", "Banorte", "Horas Ext", "Extra", 
+			"Día Ext", "A Pagar", "Observaciones D.H.", "Observaciones II" }){
 			
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -54,7 +56,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		   	java.lang.Object.class, 
 		   	java.lang.Object.class, 
 		   	java.lang.Object.class, 
-		    	
+		    
+		   	java.lang.Object.class,
 		   	java.lang.Object.class, 
 		   	java.lang.Object.class, 
 		   	java.lang.Object.class,  
@@ -112,8 +115,9 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	       	 	case 20 : return false; 
 	       	 	case 21 : return false; 
 	       	 	case 22 : return false; 
-	       	 	case 23 : return true; 
-	       	 	case 24 : return acceso;
+	       	    case 23 : return false; 
+	       	 	case 24 : return true; 
+	       	 	case 25 : return acceso;
 	       	 	
 	       	 }
 	 		return false;
@@ -160,6 +164,14 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
 		busqueda_Observaciones_auditoria();
+		
+//      asigna el foco al JTextField 
+        this.addWindowListener(new WindowAdapter() {
+                public void windowOpened( WindowEvent e ){
+                    txtNombre_Completo.requestFocus();
+             }
+        });
+		
 
 		
 			
@@ -426,7 +438,14 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 23 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();			break;
+					case 23 :
+						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+							matriz[i][j] = Float.parseFloat("0");
+						}else{
+							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+						}
+						break;
+					case 24 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();			break;
 					
 				}
 
@@ -579,58 +598,60 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 		this.tabla.getColumnModel().getColumn(0).setMaxWidth(16);
 		this.tabla.getColumnModel().getColumn(0).setMinWidth(16);
-		this.tabla.getColumnModel().getColumn(1).setMaxWidth(70);
-		this.tabla.getColumnModel().getColumn(1).setMinWidth(70);
-		this.tabla.getColumnModel().getColumn(2).setMaxWidth(310);
-		this.tabla.getColumnModel().getColumn(2).setMinWidth(310);
-		this.tabla.getColumnModel().getColumn(3).setMaxWidth(160);
-		this.tabla.getColumnModel().getColumn(3).setMinWidth(160);
-		this.tabla.getColumnModel().getColumn(4).setMaxWidth(91);
-		this.tabla.getColumnModel().getColumn(4).setMinWidth(91);
+		this.tabla.getColumnModel().getColumn(1).setMaxWidth(40);
+		this.tabla.getColumnModel().getColumn(1).setMinWidth(40);
+		this.tabla.getColumnModel().getColumn(2).setMaxWidth(260);
+		this.tabla.getColumnModel().getColumn(2).setMinWidth(260);
+		this.tabla.getColumnModel().getColumn(3).setMaxWidth(110);
+		this.tabla.getColumnModel().getColumn(3).setMinWidth(110);
+		this.tabla.getColumnModel().getColumn(4).setMaxWidth(50);
+		this.tabla.getColumnModel().getColumn(4).setMinWidth(50);
 		
-		this.tabla.getColumnModel().getColumn(5).setMaxWidth(130);
-		this.tabla.getColumnModel().getColumn(5).setMinWidth(130);
-		this.tabla.getColumnModel().getColumn(6).setMaxWidth(130);
-		this.tabla.getColumnModel().getColumn(6).setMinWidth(130);
-		this.tabla.getColumnModel().getColumn(7).setMaxWidth(120);
-		this.tabla.getColumnModel().getColumn(7).setMinWidth(120);
-		this.tabla.getColumnModel().getColumn(8).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(8).setMinWidth(80);
-		this.tabla.getColumnModel().getColumn(9).setMaxWidth(90);
-		this.tabla.getColumnModel().getColumn(9).setMinWidth(90);
+		this.tabla.getColumnModel().getColumn(5).setMaxWidth(45);
+		this.tabla.getColumnModel().getColumn(5).setMinWidth(45);
+		this.tabla.getColumnModel().getColumn(6).setMaxWidth(60);
+		this.tabla.getColumnModel().getColumn(6).setMinWidth(65);
+		this.tabla.getColumnModel().getColumn(7).setMaxWidth(65);
+		this.tabla.getColumnModel().getColumn(7).setMinWidth(65);
+		this.tabla.getColumnModel().getColumn(8).setMaxWidth(65);
+		this.tabla.getColumnModel().getColumn(8).setMinWidth(65);
+		this.tabla.getColumnModel().getColumn(9).setMaxWidth(55);
+		this.tabla.getColumnModel().getColumn(9).setMinWidth(55);
 		
-		this.tabla.getColumnModel().getColumn(10).setMaxWidth(90);
-		this.tabla.getColumnModel().getColumn(10).setMinWidth(90);
-		this.tabla.getColumnModel().getColumn(11).setMaxWidth(60);
-		this.tabla.getColumnModel().getColumn(11).setMinWidth(60);
-		this.tabla.getColumnModel().getColumn(12).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(12).setMinWidth(80);
-		this.tabla.getColumnModel().getColumn(13).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(13).setMinWidth(80);
-		this.tabla.getColumnModel().getColumn(14).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(14).setMinWidth(80);
+		this.tabla.getColumnModel().getColumn(10).setMaxWidth(35);
+		this.tabla.getColumnModel().getColumn(10).setMinWidth(35);
+		this.tabla.getColumnModel().getColumn(11).setMaxWidth(35);
+		this.tabla.getColumnModel().getColumn(11).setMinWidth(35);
+		this.tabla.getColumnModel().getColumn(12).setMaxWidth(50);
+		this.tabla.getColumnModel().getColumn(12).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(13).setMaxWidth(35);
+		this.tabla.getColumnModel().getColumn(13).setMinWidth(35);
+		this.tabla.getColumnModel().getColumn(14).setMaxWidth(50);
+		this.tabla.getColumnModel().getColumn(14).setMinWidth(50);
 		
-		this.tabla.getColumnModel().getColumn(15).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(15).setMinWidth(80);
-		this.tabla.getColumnModel().getColumn(16).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(16).setMinWidth(80);
-		this.tabla.getColumnModel().getColumn(17).setMaxWidth(85);
-		this.tabla.getColumnModel().getColumn(17).setMinWidth(85);
-		this.tabla.getColumnModel().getColumn(18).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(18).setMinWidth(80);
-		this.tabla.getColumnModel().getColumn(19).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(19).setMinWidth(80);
+		this.tabla.getColumnModel().getColumn(15).setMaxWidth(50);
+		this.tabla.getColumnModel().getColumn(15).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(16).setMaxWidth(50);
+		this.tabla.getColumnModel().getColumn(16).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(17).setMaxWidth(50);
+		this.tabla.getColumnModel().getColumn(17).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(18).setMaxWidth(55);
+		this.tabla.getColumnModel().getColumn(18).setMinWidth(55);
+		this.tabla.getColumnModel().getColumn(19).setMaxWidth(55);
+		this.tabla.getColumnModel().getColumn(19).setMinWidth(55);
 		
-		this.tabla.getColumnModel().getColumn(20).setMaxWidth(90);
-		this.tabla.getColumnModel().getColumn(20).setMinWidth(90);
-		this.tabla.getColumnModel().getColumn(21).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(21).setMinWidth(80);
-		this.tabla.getColumnModel().getColumn(22).setMaxWidth(80);
-		this.tabla.getColumnModel().getColumn(22).setMinWidth(80);
-		this.tabla.getColumnModel().getColumn(23).setMaxWidth(230);
-		this.tabla.getColumnModel().getColumn(23).setMinWidth(230);
-		this.tabla.getColumnModel().getColumn(24).setMaxWidth(230);
-		this.tabla.getColumnModel().getColumn(24).setMinWidth(230);
+		this.tabla.getColumnModel().getColumn(20).setMaxWidth(60);
+		this.tabla.getColumnModel().getColumn(20).setMinWidth(60);
+		this.tabla.getColumnModel().getColumn(21).setMaxWidth(60);
+		this.tabla.getColumnModel().getColumn(21).setMinWidth(60);
+		this.tabla.getColumnModel().getColumn(22).setMaxWidth(60);
+		this.tabla.getColumnModel().getColumn(22).setMinWidth(60);
+		this.tabla.getColumnModel().getColumn(23).setMaxWidth(60);
+		this.tabla.getColumnModel().getColumn(23).setMinWidth(60);
+		this.tabla.getColumnModel().getColumn(24).setMaxWidth(300);
+		this.tabla.getColumnModel().getColumn(24).setMinWidth(300);
+		this.tabla.getColumnModel().getColumn(25).setMaxWidth(230);
+		this.tabla.getColumnModel().getColumn(25).setMinWidth(230);
     	
 		TableCellRenderer render = new TableCellRenderer() { 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -926,7 +947,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
 						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
 						break;
 					case 24: 
 						componente = new JLabel(value == null? "": value.toString());
@@ -940,23 +961,32 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 						}
 						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
 						break;
+					case 25: 
+						componente = new JLabel(value == null? "": value.toString());
+						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(177,177,177));	
+						}
+						if(table.getSelectedRow() == row){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(186,143,73));
+						}
+						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+						break;
 						
 				}
-								
 				return componente;
 			} 
 		}; 
 		for(int i=0; i<tabla.getColumnCount(); i++){
 			this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
 		}
-		
 		this.tabla.setRowSorter(trsfiltro);  
-				
     }
+	
 	
 	MouseListener opTablaFiltroSeleccion = new MouseListener() {
 		public void mousePressed(MouseEvent e) {
-
 				btn_imprimir.setEnabled(false);
 			}
 			public void mouseClicked(MouseEvent e) {}
@@ -1000,5 +1030,12 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			}
 		}
 	};
+	
+	public static void main(String [] arg){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Revision_De_Lista_Raya().setVisible(true);
+		}catch(Exception e){	}
+	}
 
 }

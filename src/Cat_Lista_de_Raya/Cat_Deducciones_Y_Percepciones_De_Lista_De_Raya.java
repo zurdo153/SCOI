@@ -23,7 +23,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Cargar_Combo;
-import Obj_Checador.Obj_Traer_Checador;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya;
