@@ -424,8 +424,8 @@ public class GuardarTablasModel {
 			con.setAutoCommit(false);
 			
 			for(int i=0; i<tabla.length; i++){
-				pstmt.setString(1, Boolean.parseBoolean(tabla[i][0].toString().trim()) ? "true" : "false");
-				pstmt.setInt(2, Integer.parseInt(tabla[i][1].toString().trim()));
+				pstmt.setString(1, Boolean.valueOf(tabla[i][0].toString().trim()) ? "true" : "false");
+				pstmt.setInt(2, Integer.valueOf(tabla[i][1].toString().trim()));
 				pstmt.setString(3, tabla[i][2].toString().trim());
 				pstmt.setFloat(4, Float.parseFloat(tabla[i][3].toString().trim()));
 				pstmt.setString(5, tabla[i][4].toString().trim());
