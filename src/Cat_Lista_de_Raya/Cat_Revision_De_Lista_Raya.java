@@ -559,13 +559,14 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			matriz[i][0] = Boolean.parseBoolean(tabla_model.getValueAt(i,0).toString().trim());
 			matriz[i][1] = Integer.parseInt(tabla_model.getValueAt(i,1).toString().trim());
 			matriz[i][2] = tabla_model.getValueAt(i,3).toString().trim();
-			if(tabla_model.getValueAt(i,22).toString().trim().equals("")){
-				matriz[i][3] = Float.parseFloat("0");
-			}else{
-				matriz[i][3] = Float.parseFloat(tabla_model.getValueAt(i,22).toString().trim());
-			}
-			matriz[i][4] = tabla_model.getValueAt(i,23).toString().trim();
-			matriz[i][5] = tabla_model.getValueAt(i,24).toString().trim();
+			matriz[i][3] = tabla_model.getValueAt(i,23).toString().trim().equals("") ? 0 : Float.parseFloat(tabla_model.getValueAt(i,23).toString().trim());
+//			if(tabla_model.getValueAt(i,22).toString().trim().equals("")){
+//				matriz[i][3] = Float.parseFloat("0");
+//			}else{
+//				matriz[i][3] = Float.parseFloat(tabla_model.getValueAt(i,22).toString().trim());
+//			}
+			matriz[i][4] = tabla_model.getValueAt(i,24).toString().trim();
+			matriz[i][5] = tabla_model.getValueAt(i,25).toString().trim();
 		}
 		return matriz;
 	}

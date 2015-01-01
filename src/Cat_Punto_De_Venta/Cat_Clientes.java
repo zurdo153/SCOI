@@ -28,8 +28,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Obj_Principal.Componentes;
-import Obj_Principal.tablaRenderer;
 import Obj_Punto_De_Venta.Obj_Clientes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Clientes extends JDialog{

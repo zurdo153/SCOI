@@ -32,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
 import Conexiones_SQL.Connexion;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Principal.Componentes;
-import Obj_Principal.tablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Divisas_Y_Tipo_De_Cambio extends JFrame{

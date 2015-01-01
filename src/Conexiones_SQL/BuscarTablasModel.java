@@ -72,7 +72,7 @@ public class BuscarTablasModel {
 	}
 	
 	public Object[][] tabla_model_deduccion_y_percepcionesde_lista_de_raya(){
-		String query_lista = "exec sp_buscar_deduccion_inasistencia";
+		String query_lista = "exec sp_select_deduccion_y_percepciones_de_lista_de_raya";
 		Object[][] matriz = new Object[get_filas(query_lista)][12];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
@@ -83,16 +83,17 @@ public class BuscarTablasModel {
 				matriz[i][0] = rs.getInt(1)+" ";
 				matriz[i][1] = "   "+rs.getString(2);
 				matriz[i][2] = "   "+rs.getString(3);
-				matriz[i][3] = rs.getString(4).trim().equals("true") ? true : false;
-				matriz[i][4] = false;
-//				matriz[i][5] = rs.getString(5).trim().equals("true") ? true : false;
-				matriz[i][5] = Integer.parseInt(rs.getString(6)) == 0 ? "":Integer.parseInt(rs.getString(6));
-				matriz[i][6] = rs.getString(7).trim().equals("true") ? true : false;
-				matriz[i][7] = Integer.parseInt(rs.getString(10)) == 0 ? "":Integer.parseInt(rs.getString(10));
-				matriz[i][8] = Integer.parseInt(rs.getString(10)) == 0 ? "":Integer.parseInt(rs.getString(10));
-				matriz[i][9] = Integer.parseInt(rs.getString(10)) == 0 ? "":Integer.parseInt(rs.getString(10));
-				matriz[i][10] = Float.parseFloat(rs.getString(11)) == 0 ? "":Float.parseFloat(rs.getString(11));
-				matriz[i][11] = "";
+				
+				matriz[i][3] = Boolean.valueOf(rs.getString(4).toString().trim());
+				matriz[i][4] = Boolean.valueOf(rs.getString(5).toString().trim());
+				matriz[i][5] = Integer.valueOf(rs.getString(6)) == 0 ? "":Integer.valueOf(rs.getString(6));
+				matriz[i][6] = Boolean.valueOf(rs.getString(7).toString().trim());
+				
+				matriz[i][7] = Integer.valueOf(rs.getString(8)) == 0 ? "":Integer.valueOf(rs.getString(8));
+				matriz[i][8] = Integer.valueOf(rs.getString(9)) == 0 ? "":Integer.valueOf(rs.getString(9));
+				matriz[i][9] = Float.valueOf(rs.getString(10)) == 0 ? "":Float.valueOf(rs.getString(10));
+				matriz[i][10] = Float.valueOf(rs.getString(11)) == 0 ? "":Float.valueOf(rs.getString(11));
+				matriz[i][11] = rs.getString(12).toString().trim();
 				i++;
 			}
 		} catch (SQLException e1) {

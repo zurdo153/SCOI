@@ -1,4 +1,4 @@
-package Obj_Principal;
+package Obj_Renders;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -9,7 +9,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 @SuppressWarnings("serial")
-public class MyRenderer extends DefaultTableCellRenderer {
+public class CaveceraTablaRenderer extends DefaultTableCellRenderer {
 	
 	Color background;
 	Color foreground;
@@ -18,7 +18,7 @@ public class MyRenderer extends DefaultTableCellRenderer {
 	
 	private String alineacion="text";
 	
-	public MyRenderer (Color background, Color foreground, String alineacionTexto,	String tipoDeLetra, String estilo, int tamanio) {
+	public CaveceraTablaRenderer (Color background, Color foreground, String alineacionTexto,	String tipoDeLetra, String estilo, int tamanio) {
 		
 		super();
 		

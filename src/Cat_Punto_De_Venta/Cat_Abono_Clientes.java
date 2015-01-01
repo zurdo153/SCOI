@@ -57,10 +57,10 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
-import Obj_Principal.MyRenderer;
-import Obj_Principal.tablaRenderer;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
+import Obj_Renders.CaveceraTablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -773,15 +773,15 @@ public class Cat_Abono_Clientes extends JFrame{
 		Color textoEncabezado = Color.black;
 		
 		for(int i = 0; i<tabla_cobros.getColumnCount(); i++){
-			tabla_cobros.getColumnModel().getColumn(i).setHeaderRenderer(new MyRenderer(fondoEncabezado,textoEncabezado,"centro","Arial","negrita",18));
+			tabla_cobros.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado,textoEncabezado,"centro","Arial","negrita",18));
 			tabla_cobros.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("VENTA","centro","Arial","negrita",25));
 		}
 		for(int i = 0; i<tabla_ticket.getColumnCount(); i++){
-			tabla_ticket.getColumnModel().getColumn(i).setHeaderRenderer(new MyRenderer(fondoEncabezado,textoEncabezado,"centro","Arial","negrita",18));
+			tabla_ticket.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado,textoEncabezado,"centro","Arial","negrita",18));
 			tabla_ticket.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("VENTA","centro","Arial","negrita",20));
 		}
 		for(int i = 0; i<tabla_abonos.getColumnCount(); i++){
-			tabla_abonos.getColumnModel().getColumn(i).setHeaderRenderer(new MyRenderer(fondoEncabezado,textoEncabezado,"centro","Arial","negrita",18));
+			tabla_abonos.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado,textoEncabezado,"centro","Arial","negrita",18));
 			tabla_abonos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("VENTA","centro","Arial","negrita",16));
 		}
 	}
@@ -1092,7 +1092,7 @@ public class Cat_Abono_Clientes extends JFrame{
 			Color textoEncabezado = Color.black;
 			
 			for(int i = 0; i<tabla.getColumnCount(); i++){
-				tabla.getColumnModel().getColumn(i).setHeaderRenderer(new MyRenderer(fondoEncabezado,textoEncabezado,"centro","Arial","negrita",16));
+				tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado,textoEncabezado,"centro","Arial","negrita",16));
 				tabla.getColumnModel().getColumn(i ).setCellRenderer(new tablaRenderer("VENTA","centro","Arial","negrita",12));
 			}
 		}

@@ -27,7 +27,7 @@ import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
-import Obj_Principal.tablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 import com.toedter.calendar.JDateChooser;
 

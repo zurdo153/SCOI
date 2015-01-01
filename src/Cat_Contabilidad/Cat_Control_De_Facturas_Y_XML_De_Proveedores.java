@@ -53,8 +53,8 @@ import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Contabilidad.Obj_Proveedores;
 
-import Obj_Principal.tablaRenderer;
 import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Control_De_Facturas_Y_XML_De_Proveedores extends JFrame{

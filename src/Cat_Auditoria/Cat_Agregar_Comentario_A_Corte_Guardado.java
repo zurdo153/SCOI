@@ -27,7 +27,7 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Obj_Principal.Componentes;
-import Obj_Principal.tablaRenderer;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Agregar_Comentario_A_Corte_Guardado extends JDialog {
