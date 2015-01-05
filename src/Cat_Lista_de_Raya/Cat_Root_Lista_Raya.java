@@ -32,18 +32,18 @@ public class Cat_Root_Lista_Raya extends JFrame {
 	
 	public JDateChooser txtCalendario = new JDateChooser();
 	
-	public JButton btn_guardar = new JButton(new ImageIcon("Iconos/save_icon&16.png"));
-	public JButton btn_imprimir = new JButton(new ImageIcon("Iconos/print_icon&16.png"));
-	public JButton btn_refrescar = new JButton(new ImageIcon("Iconos/refresh_icon&16.png"));
-	public JButton btn_nomina = new JButton(new ImageIcon("Iconos/nomina_icon&16.png"));
-	public JButton btn_generar = new JButton(new ImageIcon("Iconos/generar_icon&16.png"));
+	public JButton btn_guardar = new JButton("Guardar",new ImageIcon("Iconos/save_icon&16.png"));
+	public JButton btn_imprimir = new JButton("Imprimir",new ImageIcon("Iconos/print_icon&16.png"));
+	public JButton btn_refrescar = new JButton("Actualizar",new ImageIcon("Iconos/refresh_icon&16.png"));
+	public JButton btn_nomina = new JButton("Totales Nomina",new ImageIcon("Iconos/nomina_icon&16.png"));
+	public JButton btn_generar = new JButton("Generar Lista Raya",new ImageIcon("Iconos/generar_icon&16.png"));
 	//se agrega el nombre de la variable boton y se le agrega el icono
-	public JButton btn_lista_raya_pasadas = new JButton(new ImageIcon("Iconos/consulta_lista_raya_icon&16.png"));
+	public JButton btn_lista_raya_pasadas = new JButton("Consulta De Listas De Raya Pasadas",new ImageIcon("Iconos/consulta_lista_raya_icon&16.png"));
 
 	public Cat_Root_Lista_Raya(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/list_bullets_icon&16.png"));
 		
-		this.panel.add(menu_toolbar).setBounds(0,0,200,25);
+		this.panel.add(menu_toolbar).setBounds(30,0,700,25);
 		
 		this.panel.add(txtFolio).setBounds(30,35,55,20);
 		this.panel.add(txtNombre_Completo).setBounds(85,35,260,20);

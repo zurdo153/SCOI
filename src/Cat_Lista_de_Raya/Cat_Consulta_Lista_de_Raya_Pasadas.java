@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Reportes.Cat_Reporte_Consulta_Lista_de_Raya_Pasadas;
+import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Revision_De_Lista_Raya;
 
@@ -91,7 +91,8 @@ public class Cat_Consulta_Lista_de_Raya_Pasadas extends JFrame {
 	    				    			
 	    			if (new Obj_Revision_De_Lista_Raya().Lista_de_Raya_Pasada(folio)) {
 	    				dispose();
-	    				new Cat_Reporte_Consulta_Lista_de_Raya_Pasadas();
+	    				
+	    				new Cat_Reportes_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada(folio);
 	    			}
 	    			else{
 	    				JOptionPane.showMessageDialog(null,"Error Al Intentar Abrir el Reporte","Error",JOptionPane.ERROR_MESSAGE);
