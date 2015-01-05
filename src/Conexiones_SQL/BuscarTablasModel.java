@@ -1126,6 +1126,46 @@ public class BuscarTablasModel {
 		
 		return Matriz;
 	}
+	
+	public String[][] filtro_impuntualidad_a_considerar(){
+		String[][] Matriz = null;
+		
+		String query = "sp_Select_Consideracion_Checador";
+		
+		Matriz = new String[get_filas(query)][15];
+		
+		try {	
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = "  "+rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = df.format(Float.valueOf(rs.getString(4)));
+				Matriz[i][4] = rs.getString(5);
+				Matriz[i][5] = rs.getString(6);
+				
+				Matriz[i][6]  = rs.getString(7);
+				Matriz[i][7]  = rs.getString(8);
+				Matriz[i][8]  = rs.getString(9);
+				Matriz[i][9]  = rs.getString(10);
+				Matriz[i][10] = rs.getString(11);
+				Matriz[i][11] = rs.getString(12);
+				Matriz[i][12] = rs.getString(13);
+				Matriz[i][13] = rs.getString(14);
+				Matriz[i][14] = rs.getInt(15)==0?"false":"true";
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [filtro_impuntualidad_a_considerar] \n  en el procedimiento : sp_Select_Consideracion_Checador  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return Matriz;
+	}
 }
 
 

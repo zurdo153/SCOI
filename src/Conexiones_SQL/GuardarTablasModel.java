@@ -550,6 +550,35 @@ public class GuardarTablasModel {
 			con.setAutoCommit(false);
 			
 			for(int i=0; i<tabla.length; i++){
+				
+				System.out.print( Integer.parseInt(tabla[i][1].toString().trim())+" ");
+				System.out.print( tabla[i][2].toString().trim()+" ");
+				System.out.print( tabla[i][3].toString().trim()+" ");
+				System.out.print( Float.parseFloat(tabla[i][4].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][5].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][6].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][7].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][8].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][9].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][10].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][11].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][12].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][13].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][14].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][15].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][16].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][17].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][18].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][19].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][20].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][21].toString().trim())+" ");
+				System.out.print( Float.parseFloat(tabla[i][22].toString().trim())+" ");
+				System.out.print( tabla[i][23].toString().trim()+" ");
+				System.out.print( fecha+" ");
+				System.out.print( 1+" ");
+				System.out.println(folio_lista);
+				
+				
 				pstmt.setInt(1, Integer.parseInt(tabla[i][1].toString().trim()));
 				pstmt.setString(2, tabla[i][2].toString().trim());
 				pstmt.setString(3, tabla[i][3].toString().trim());
@@ -576,8 +605,8 @@ public class GuardarTablasModel {
 				pstmt.setString(24, fecha);
 				pstmt.setInt(25, 1);
 				pstmt.setInt(26, folio_lista);
-				pstmt.executeUpdate();
-				System.out.println(folio_lista);
+//				pstmt.executeUpdate();
+//				System.out.println(folio_lista);
 				
 			}
 					

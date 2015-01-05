@@ -12,6 +12,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -233,7 +235,11 @@ public class Cat_Abono_Clientes extends JFrame{
 	String folio_ticket_o_folio_abono = "";
 	double cantidad = 0;
 	
+	String bandera="";
+	
 	public Cat_Abono_Clientes(){
+		
+		this.fecha.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		
 		cont.setBackground(new Color(0,17 ,255));
 		
@@ -369,6 +375,11 @@ public class Cat_Abono_Clientes extends JFrame{
 		txtTiket.setEditable(false);
 		txtAbono.setEditable(false);
 		
+		fecha.setEnabled(false);
+		
+		btnGuardarAbono.setEnabled(false);
+		btnNuevaCuenta.setEnabled(false);
+		
 		btnGuardarAbono.setBackground(new Color(255,171,0));
 		btnGuardarAbono.setForeground(new Color(0,17 ,255));
 		btnGuardarAbono.setContentAreaFilled(false);
@@ -415,15 +426,35 @@ public class Cat_Abono_Clientes extends JFrame{
 					
 				}else{
 					
-					if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
-						JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
-						return;
+					
+					
+					
+					
+//                  si 		bandera = "" entonces el ticket no es nuevo y se guardara correctamente
+//					else 	pedir fecha limite
+					if(bandera.equals("")){
+						
+							if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
+									JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+									return;
+							}else{
+								btnGuardarAbono.setEnabled(true);
+									tabla_cobros.setEnabled(true);
+									tabla_cobros.editCellAt(fila, columna);
+									Component aComp=tabla_cobros.getEditorComponent();
+									aComp.requestFocus();
+							}
+						
 					}else{
-						tabla_cobros.setEnabled(true);
-						tabla_cobros.editCellAt(fila, columna);
-						Component aComp=tabla_cobros.getEditorComponent();
-						aComp.requestFocus();
+							JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							return;
 					}
+					
+					
+					
+					
+					
+					
 				}
 			}
 		});
@@ -459,7 +490,32 @@ public class Cat_Abono_Clientes extends JFrame{
 	        @Override
 	        public void actionPerformed(ActionEvent e)
 	        {
-		        	abonar();
+	        	
+	        	if(txtCliente.getText().equals("")){
+	        		JOptionPane.showMessageDialog(null, "No se ha seleccionado un cliente aun","Aviso",JOptionPane.INFORMATION_MESSAGE);
+					return;
+	        	}else{
+	        		if(txtTiket.getText().equals("")){
+	        			JOptionPane.showMessageDialog(null, "Genere ticket nuevo o seleccione uno de la tabla","Aviso",JOptionPane.INFORMATION_MESSAGE);
+						return;
+	        		}else{
+//	                  si 		bandera = "" entonces el ticket no es nuevo y se guardara correctamente
+//						else 	pedir fecha limite
+						if(bandera.equals("")){
+							
+								if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
+										JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+										return;
+								}else{
+									abonar();
+								}
+							
+						}else{
+								JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								return;
+						}
+	        		}
+	        	}
 	        }
 	    });
 	    
@@ -503,6 +559,9 @@ public class Cat_Abono_Clientes extends JFrame{
 		btnCancelarAbono.addActionListener(opCancelarAbono);
 		btnLiquidarTicket.addActionListener(opLiquidarTicket);
 		
+//    	FUNCION PARA AGREGAR UNA ACCION AL SELECCIONAR UNA FECHA
+        fecha.getDateEditor().addPropertyChangeListener(opFecha);
+        
 		CargarCajero();
 		
 		SELECCION_TICKET(tabla_ticket);
@@ -626,6 +685,14 @@ public class Cat_Abono_Clientes extends JFrame{
 			}
 	}
 	
+	PropertyChangeListener opFecha = new PropertyChangeListener() {
+	  	  public void propertyChange(PropertyChangeEvent e) {
+	  	            if ("date".equals(e.getPropertyName())){
+		  	            		txtAbono.requestFocusInWindow();	
+	  	            }
+	  		}
+    };
+	
 	public void limpiar(){
 		
 		txtFolioCliente.setText("");
@@ -639,6 +706,8 @@ public class Cat_Abono_Clientes extends JFrame{
 			tabla_model_ticket.removeRow(0);
 		while(tabla_abonos.getRowCount()>0)
 			tabla_model_abonos.removeRow(0);
+		
+		txtFolioCliente.requestFocus();
 	}
 	
 	public void pintar_botones(){
@@ -743,9 +812,14 @@ public class Cat_Abono_Clientes extends JFrame{
 			
 			if(txtFolioCliente.getText().equals("")){
 				new Cat_Filtro_Clientes().setVisible(true);
+				btnNuevaCuenta.setEnabled(false);
+				fecha.setEnabled(false);
 			}else{
+				
 //				ingresar folio_cliente directo
 				buscar_cliente(Integer.valueOf(txtFolioCliente.getText()));
+				btnNuevaCuenta.setEnabled(true);
+				fecha.setEnabled(true);
 			}
 		}
 	};
@@ -754,12 +828,15 @@ public class Cat_Abono_Clientes extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			
 			if(txtCliente.equals("")){
-				JOptionPane.showMessageDialog(null, "El cliente no tiene cueta abierta","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "No se ha seleccionado un cliente aun","Aviso",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}else{
 //				enviar de parametro el establecimiento donde se capturo ("NS")
 					String nuevoTicket = new Obj_Abono_Clientes().nuevoTicket(txtEstablecimiento.getText());
 					txtTiket.setText(nuevoTicket);
+					
+//                  para validar si pide fecha o no
+					bandera="cuenta_nueva";
 			}
 			txtAbono.requestFocus();
 		}
@@ -932,6 +1009,9 @@ public class Cat_Abono_Clientes extends JFrame{
 	        		
                     folio_ticket_o_folio_abono =  tabla_ticket.getValueAt(rowButton1, 0).toString().trim();
                     cantidad = Double.valueOf(tabla_ticket.getValueAt(rowButton1, 3).toString());
+                    
+//                  para validar si pide fecha o no
+                    bandera="";
                 	
                     lblSeleccion_de_tabla.setText("El ticket   "+ folio_ticket_o_folio_abono+"   esta seleccionado");
                     
@@ -949,6 +1029,7 @@ public class Cat_Abono_Clientes extends JFrame{
 	                            	filaA[4] = lista_abonos[i][4]+"";
                                     tabla_model_abonos.addRow(filaA);
                             }
+                            
                       txtAbono.requestFocus();
                       
                       	btnCancelarTicket.setEnabled(true);
@@ -1108,6 +1189,8 @@ public class Cat_Abono_Clientes extends JFrame{
 
 		    			//buscar cliente para abonos
 		    			buscar_cliente(Integer.valueOf(folio));
+		    			btnNuevaCuenta.setEnabled(true);
+		    			fecha.setEnabled(true);
 		        	}
 		        }
 	        });
