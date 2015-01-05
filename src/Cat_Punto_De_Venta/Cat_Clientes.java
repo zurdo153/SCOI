@@ -197,6 +197,7 @@ public class Cat_Clientes extends JDialog{
 					btnGuardar.setEnabled(false);
 					btnModificar.setEnabled(true);
 					txtNombre.requestFocus();
+					trsfiltro.removeRowSorterListener(tabla);
 					
 					guardar_modificar = "modificar";
 					
@@ -285,6 +286,8 @@ public class Cat_Clientes extends JDialog{
 				btnModificar.setEnabled(false);
 				txtNombre.requestFocus();
 				
+				trsfiltro.addRowSorterListener(tabla);
+				
 				contador=0;
 				guardar_modificar="guardar";
 				
@@ -297,8 +300,6 @@ public class Cat_Clientes extends JDialog{
 	public void limpiarPantella(){
 		
 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
 		
 		txtFolioCliente.setText("");
 		txtNombre.setText("");
@@ -337,7 +338,6 @@ public class Cat_Clientes extends JDialog{
 									btnNuevo.setEnabled(true);
 									btnGuardar.setEnabled(false);
 									btnModificar.setEnabled(false);
-									txtNombre.requestFocus();
 									
 									while(tabla.getRowCount()>0){
 										tabla_model.removeRow(0);
@@ -352,6 +352,7 @@ public class Cat_Clientes extends JDialog{
 												tabla_model.addRow(fila);
 									}
 									
+									txtNombre.requestFocus();
 									contador=0;
 									guardar_modificar = "guardar";
 									JOptionPane.showMessageDialog(null,"Cliente Guardado","Aviso",JOptionPane.INFORMATION_MESSAGE);
@@ -384,10 +385,11 @@ public class Cat_Clientes extends JDialog{
 							
 								if(cliente.actualizar()){
 									limpiarPantella();
+									trsfiltro.removeRowSorterListener(tabla);
 									btnNuevo.setEnabled(true);
 									btnGuardar.setEnabled(false);
 									btnModificar.setEnabled(false);
-									txtNombre.requestFocus();
+									
 									
 										while(tabla.getRowCount()>0){
 											tabla_model.removeRow(0);
@@ -401,7 +403,8 @@ public class Cat_Clientes extends JDialog{
 												fila[2] = "   "+lista_tabla[i][2];
 												tabla_model.addRow(fila);
 										}
-									
+										
+										txtNombre.requestFocus();
 										contador=0;
 										guardar_modificar = "guardar";
 									JOptionPane.showMessageDialog(null,"Cliente Modificado","Aviso",JOptionPane.INFORMATION_MESSAGE);

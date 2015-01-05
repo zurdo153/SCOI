@@ -269,8 +269,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				JOptionPane.showMessageDialog(null, "Los siguientes datos son requeridos:\n"+valida_error(),"Error",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
-				if(new Obj_Revision_De_Lista_Raya().init_autorizacion()){
-					if(new Obj_Revision_De_Lista_Raya().init_totales_nomina()){
+//				if(new Obj_Revision_De_Lista_Raya().init_autorizacion()){
+//					if(new Obj_Revision_De_Lista_Raya().init_totales_nomina()){
 					
 						Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
 						if(lista_raya.generar(tabla_generar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
@@ -283,14 +283,14 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							JOptionPane.showMessageDialog(null, "La lista de raya no se pudo generar","Error",JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-					}else{
-						JOptionPane.showMessageDialog(null, "Antes de generar la lista de raya tiene que guardar los Totales de Cheque","Aviso",JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-				}else{
-					JOptionPane.showMessageDialog(null, "La lista de raya no está autorizada","Aviso",JOptionPane.WARNING_MESSAGE);
-					return;
-				}
+//					}else{
+//						JOptionPane.showMessageDialog(null, "Antes de generar la lista de raya tiene que guardar los Totales de Cheque","Aviso",JOptionPane.ERROR_MESSAGE);
+//						return;
+//					}
+//				}else{
+//					JOptionPane.showMessageDialog(null, "La lista de raya no está autorizada","Aviso",JOptionPane.WARNING_MESSAGE);
+//					return;
+//				}
 			}
 		}
 	};
@@ -300,150 +300,151 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		for(int i=0; i<tabla.getRowCount(); i++){
 			for(int j=0; j<=tabla.getColumnCount(); j++){
 				switch(j){
-					case 1 : matriz[i][j] = Integer.parseInt(tabla_model.getValueAt(i,j).toString().trim());		break;
-					case 2 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();							break;
-					case 3 : matriz[i][j] =tabla_model.getValueAt(i,j).toString().trim();							break;
-					case 4 :
+/*folio*/				case 1 : matriz[i][j] = Integer.parseInt(tabla_model.getValueAt(i,j).toString().trim());		break;
+/*empleado*/			case 2 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();							break;
+/*establecimiento*/		case 3 : matriz[i][j] =tabla_model.getValueAt(i,j).toString().trim();							break;
+/*sueldo*/				case 4 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 5 :
+/*bono*/					case 5 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 6 :
+/*P.Saldo ini*/					case 6 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 7 :
+/*Desc.Prest*/					case 7 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 8 :
+/*P.Saldo Fin*/				case 8 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 9 :
+/*F.Sodas*/				case 9 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 10 :
+/*Imp.*/				case 10 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 11 :
+/*Omi.*/					case 11 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 12 :
+/*Faltas*/					case 12 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 13 :
+/*Ina.*/					case 13 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 14 :
+/*Gafete*/					case 14 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 15 :
+/*Cortes*/					case 15 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 16 :
+/*Infvt*/					case 16 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 17 :
+/*Pension*/					case 17 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 18 :
+/*Banamex*/					case 18 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 19 :
+/*Banorte*/					case 19 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 20 :
+/*Horas Ext*/					case 20 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 21 :
+/*Extra*/					case 21 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 22 :
+/*Dia Ext*/					case 22 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 23 :
+/*A Pagar*/					case 23 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-					case 24 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();			break;
+/*Obs D.H.*/			case 24 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();			break;
+/*Obs II*/
 					
 				}
 

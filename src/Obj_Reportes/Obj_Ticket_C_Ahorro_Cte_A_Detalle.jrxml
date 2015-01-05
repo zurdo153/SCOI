@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Ticket_C_Ahorro_Cte" language="groovy" pageWidth="210" pageHeight="760" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="c5d3ef7e-2023-4702-a5da-9686000435e0">
 	<property name="ireport.zoom" value="3.452271214393105"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="336"/>
+	<property name="ireport.y" value="192"/>
 	<queryString>
 		<![CDATA[declare @folio_abono varchar(20), @folio_ticket varchar(20)
 
@@ -15,7 +15,9 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 						tb_clientes.nombre+' '+tb_clientes.ap_paterno+' '+tb_clientes.ap_materno as cliente,
 						tb_captura_tickets_c_ahorro_cte.ticket as ticket,
 						tb_captura_abono_c_ahorro_cte.folio_abono as folio_abono,
-						tb_captura_abono_c_ahorro_cte.fecha_abono as fecha,
+						tb_captura_abono_c_ahorro_cte.fecha_abono as fecha_abono,
+						convert(varchar(20),tb_captura_tickets_c_ahorro_cte.fecha_inicial,103) as fecha_ticket,
+						convert(varchar(20),tb_captura_tickets_c_ahorro_cte.fecha_limite,103) as fecha_limite,
 						tb_captura_abono_c_ahorro_cte.cantidad as cantidad,
 						tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado,
 						tb_establecimiento.nombre as establecimiento,
@@ -35,7 +37,9 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 												tb_clientes.nombre+' '+tb_clientes.ap_paterno+' '+tb_clientes.ap_materno as cliente,
 												tb_captura_tickets_c_ahorro_cte.ticket as ticket,
 												tb_captura_abono_c_ahorro_cte.folio_abono as folio_abono,
-												tb_captura_abono_c_ahorro_cte.fecha_cancelacion as fecha,
+												tb_captura_abono_c_ahorro_cte.fecha_cancelacion as fecha_abono,
+												convert(varchar(20),tb_captura_tickets_c_ahorro_cte.fecha_inicial,103) as fecha_ticket,
+												convert(varchar(20),tb_captura_tickets_c_ahorro_cte.fecha_limite,103) as fecha_limite,
 												(tb_captura_abono_c_ahorro_cte.cantidad*-1) as cantidad,
 												tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado,
 												tb_establecimiento.nombre as establecimiento,
@@ -51,14 +55,17 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 										where tb_captura_tickets_c_ahorro_cte.ticket = @folio_ticket
 										and tb_captura_tickets_c_ahorro_cte.status='V')
 								) a
-					order by a.fecha desc
+					order by a.fecha_abono desc
+
 ]]>
 	</queryString>
 	<field name="folio_cliente" class="java.lang.Integer"/>
 	<field name="cliente" class="java.lang.String"/>
 	<field name="ticket" class="java.lang.String"/>
 	<field name="folio_abono" class="java.lang.String"/>
-	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="fecha_abono" class="java.sql.Timestamp"/>
+	<field name="fecha_ticket" class="java.lang.String"/>
+	<field name="fecha_limite" class="java.lang.String"/>
 	<field name="cantidad" class="java.math.BigDecimal"/>
 	<field name="empleado" class="java.lang.String"/>
 	<field name="establecimiento" class="java.lang.String"/>
@@ -76,7 +83,7 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 		<band height="69" splitType="Stretch">
 			<image>
 				<reportElement uuid="0b448697-ee5c-4abd-8906-b035e985c4dd" x="150" y="27" width="51" height="42"/>
-				<imageExpression><![CDATA["C:\\Users\\ZURDO\\Documents\\imagenes\\ticket_ahorro_cte.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["C:\\SCOI\\imagen\\ticket_ahorro_cte.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement uuid="262033e6-86e8-4771-b797-ca370a253687" x="12" y="5" width="189" height="64"/>
@@ -88,7 +95,7 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 		</band>
 	</title>
 	<pageHeader>
-		<band height="41" splitType="Stretch">
+		<band height="59" splitType="Stretch">
 			<textField>
 				<reportElement uuid="3aa3aab4-32dc-4cf2-b74a-fee280d35567" x="12" y="8" width="95" height="9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -97,11 +104,11 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 				<textFieldExpression><![CDATA["TIENDA:  "+$F{establecimiento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="da9ad3d4-6629-427d-ade0-18b805aba331" x="106" y="24" width="95" height="9"/>
+				<reportElement uuid="da9ad3d4-6629-427d-ade0-18b805aba331" x="106" y="41" width="95" height="9"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="7" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Fecha: "+$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Fecha: "+$F{fecha_abono}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="36b97f23-5b20-424f-a713-b0949da8c63f" x="12" y="0" width="189" height="10"/>
@@ -125,14 +132,14 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 				<textFieldExpression><![CDATA["RFC: "+$F{rfc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c22c7d43-c92d-43e0-b35f-c40f2d58afd2" x="12" y="24" width="95" height="9"/>
+				<reportElement uuid="c22c7d43-c92d-43e0-b35f-c40f2d58afd2" x="12" y="41" width="95" height="9"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="7" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["TICKET: "+$F{ticket}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="aebed2fe-f22e-417a-a478-c76472571c33" x="106" y="32" width="95" height="9"/>
+				<reportElement uuid="aebed2fe-f22e-417a-a478-c76472571c33" x="106" y="49" width="95" height="9"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="7"/>
 				</textElement>
@@ -145,6 +152,20 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 				</textElement>
 				<text><![CDATA[ELDORADO, SINALOA.]]></text>
 			</staticText>
+			<textField>
+				<reportElement uuid="b9b378c5-0c4a-49d4-bffb-7e1744999a10" x="12" y="28" width="95" height="9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="7" isBold="true" isItalic="false" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Inicial: "+$F{fecha_ticket}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7536b5f4-ccef-4b20-87f3-8bda94b15ea4" x="106" y="28" width="95" height="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="7" isBold="true" isItalic="false" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Limite: "+$F{fecha_limite}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -255,7 +276,7 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fecha_abono}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement uuid="d766572a-ff36-476c-b524-8fabc11939e0" x="15" y="11" width="178" height="1"/>
@@ -277,7 +298,7 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 		</band>
 	</detail>
 	<summary>
-		<band height="81" splitType="Stretch">
+		<band height="125" splitType="Stretch">
 			<textField>
 				<reportElement uuid="af1f42fb-28ec-4b76-800b-18c4abdfc752" x="6" y="71" width="98" height="7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -315,6 +336,13 @@ select * from (select tb_clientes.folio_cliente as folio_cliente,
 				</textElement>
 				<textFieldExpression><![CDATA[$V{total_de_acumulado}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="e9fa0d1b-77f2-4a40-99cd-d31a59ca27e3" x="10" y="81" width="192" height="42"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Las cuentas de ahorro que se manejan en Supermercado La Competidora deberán ser liquidadas en su totalidad al momento que el cliente desee hacer uso de su saldo disponible, el cliente solo podrá adquirir su saldo en mercancía ya que no se permite regresar efectivo.]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
