@@ -32,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
@@ -44,9 +45,9 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 	private DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Revision_De_Lista_Raya().get_tabla_model(),
 		new String[]{"","Folio", "Nombre Completo", "Establecimiento", "Sueldo",
-			"Bono", "P.Saldo ini", "Desc.Prest", "P.Saldo Fin", "F. Sodas",
+			"Bono", "P.Saldo ini", "Desc.Prest", "P.Saldo Fin", "F.Sodas",
 			"Imp.","Omi.", "Faltas", "Ina.", "Gafete", "Cortes", 
-			"Infvt", "Pension", "Banamex", "Banorte", "Horas Ext", "Extra", 
+			"Infvt", "Pension", "Banamex", "Banorte", "Hrs Ext", "Extra", 
 			"Día Ext", "A Pagar", "Observaciones D.H.", "Observaciones II" }){
 			
 		@SuppressWarnings("rawtypes")
@@ -172,9 +173,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
              }
         });
 		
-
-		
-			
 
 	}
 
@@ -538,8 +536,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
 	ActionListener op_imprimir = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
-			btn_guardar.doClick();
-			new Cat_Imprimir_Lista_De_Raya().setVisible(true);
+			new Cat_Reportes_De_Lista_De_Raya().setVisible(true);
 		}
 	};
 	
@@ -561,11 +558,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			matriz[i][1] = Integer.parseInt(tabla_model.getValueAt(i,1).toString().trim());
 			matriz[i][2] = tabla_model.getValueAt(i,3).toString().trim();
 			matriz[i][3] = tabla_model.getValueAt(i,23).toString().trim().equals("") ? 0 : Float.parseFloat(tabla_model.getValueAt(i,23).toString().trim());
-//			if(tabla_model.getValueAt(i,22).toString().trim().equals("")){
-//				matriz[i][3] = Float.parseFloat("0");
-//			}else{
-//				matriz[i][3] = Float.parseFloat(tabla_model.getValueAt(i,22).toString().trim());
-//			}
 			matriz[i][4] = tabla_model.getValueAt(i,24).toString().trim();
 			matriz[i][5] = tabla_model.getValueAt(i,25).toString().trim();
 		}
@@ -606,35 +598,35 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.tabla.getColumnModel().getColumn(2).setMinWidth(260);
 		this.tabla.getColumnModel().getColumn(3).setMaxWidth(110);
 		this.tabla.getColumnModel().getColumn(3).setMinWidth(110);
-		this.tabla.getColumnModel().getColumn(4).setMaxWidth(50);
-		this.tabla.getColumnModel().getColumn(4).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(4).setMaxWidth(45);
+		this.tabla.getColumnModel().getColumn(4).setMinWidth(45);
 		
-		this.tabla.getColumnModel().getColumn(5).setMaxWidth(45);
-		this.tabla.getColumnModel().getColumn(5).setMinWidth(45);
+		this.tabla.getColumnModel().getColumn(5).setMaxWidth(40);
+		this.tabla.getColumnModel().getColumn(5).setMinWidth(40);
 		this.tabla.getColumnModel().getColumn(6).setMaxWidth(60);
-		this.tabla.getColumnModel().getColumn(6).setMinWidth(65);
-		this.tabla.getColumnModel().getColumn(7).setMaxWidth(65);
-		this.tabla.getColumnModel().getColumn(7).setMinWidth(65);
+		this.tabla.getColumnModel().getColumn(6).setMinWidth(60);
+		this.tabla.getColumnModel().getColumn(7).setMaxWidth(62);
+		this.tabla.getColumnModel().getColumn(7).setMinWidth(62);
 		this.tabla.getColumnModel().getColumn(8).setMaxWidth(65);
 		this.tabla.getColumnModel().getColumn(8).setMinWidth(65);
-		this.tabla.getColumnModel().getColumn(9).setMaxWidth(55);
-		this.tabla.getColumnModel().getColumn(9).setMinWidth(55);
+		this.tabla.getColumnModel().getColumn(9).setMaxWidth(50);
+		this.tabla.getColumnModel().getColumn(9).setMinWidth(50);
 		
 		this.tabla.getColumnModel().getColumn(10).setMaxWidth(35);
 		this.tabla.getColumnModel().getColumn(10).setMinWidth(35);
 		this.tabla.getColumnModel().getColumn(11).setMaxWidth(35);
 		this.tabla.getColumnModel().getColumn(11).setMinWidth(35);
-		this.tabla.getColumnModel().getColumn(12).setMaxWidth(50);
-		this.tabla.getColumnModel().getColumn(12).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(12).setMaxWidth(45);
+		this.tabla.getColumnModel().getColumn(12).setMinWidth(45);
 		this.tabla.getColumnModel().getColumn(13).setMaxWidth(35);
 		this.tabla.getColumnModel().getColumn(13).setMinWidth(35);
-		this.tabla.getColumnModel().getColumn(14).setMaxWidth(50);
-		this.tabla.getColumnModel().getColumn(14).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(14).setMaxWidth(45);
+		this.tabla.getColumnModel().getColumn(14).setMinWidth(45);
 		
-		this.tabla.getColumnModel().getColumn(15).setMaxWidth(50);
-		this.tabla.getColumnModel().getColumn(15).setMinWidth(50);
-		this.tabla.getColumnModel().getColumn(16).setMaxWidth(50);
-		this.tabla.getColumnModel().getColumn(16).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(15).setMaxWidth(45);
+		this.tabla.getColumnModel().getColumn(15).setMinWidth(45);
+		this.tabla.getColumnModel().getColumn(16).setMaxWidth(45);
+		this.tabla.getColumnModel().getColumn(16).setMinWidth(45);
 		this.tabla.getColumnModel().getColumn(17).setMaxWidth(50);
 		this.tabla.getColumnModel().getColumn(17).setMinWidth(50);
 		this.tabla.getColumnModel().getColumn(18).setMaxWidth(55);
@@ -642,16 +634,16 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.tabla.getColumnModel().getColumn(19).setMaxWidth(55);
 		this.tabla.getColumnModel().getColumn(19).setMinWidth(55);
 		
-		this.tabla.getColumnModel().getColumn(20).setMaxWidth(60);
-		this.tabla.getColumnModel().getColumn(20).setMinWidth(60);
-		this.tabla.getColumnModel().getColumn(21).setMaxWidth(60);
-		this.tabla.getColumnModel().getColumn(21).setMinWidth(60);
-		this.tabla.getColumnModel().getColumn(22).setMaxWidth(60);
-		this.tabla.getColumnModel().getColumn(22).setMinWidth(60);
-		this.tabla.getColumnModel().getColumn(23).setMaxWidth(60);
-		this.tabla.getColumnModel().getColumn(23).setMinWidth(60);
-		this.tabla.getColumnModel().getColumn(24).setMaxWidth(300);
-		this.tabla.getColumnModel().getColumn(24).setMinWidth(300);
+		this.tabla.getColumnModel().getColumn(20).setMaxWidth(45);
+		this.tabla.getColumnModel().getColumn(20).setMinWidth(45);
+		this.tabla.getColumnModel().getColumn(21).setMaxWidth(50);
+		this.tabla.getColumnModel().getColumn(21).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(22).setMaxWidth(55);
+		this.tabla.getColumnModel().getColumn(22).setMinWidth(55);
+		this.tabla.getColumnModel().getColumn(23).setMaxWidth(55);
+		this.tabla.getColumnModel().getColumn(23).setMinWidth(55);
+		this.tabla.getColumnModel().getColumn(24).setMaxWidth(350);
+		this.tabla.getColumnModel().getColumn(24).setMinWidth(350);
 		this.tabla.getColumnModel().getColumn(25).setMaxWidth(230);
 		this.tabla.getColumnModel().getColumn(25).setMinWidth(230);
     	
