@@ -1,0 +1,520 @@
+package Cat_Auditoria;
+
+
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
+import com.toedter.calendar.JDateChooser;
+
+import Conexiones_SQL.ActualizarSQL;
+import Conexiones_SQL.BuscarTablasModel;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Lista_de_Raya.Obj_Departamento;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
+
+@SuppressWarnings("serial")
+public class Cat_Consideracion_De_Impuntualidad_Checador extends JDialog {
+
+    
+	int folio_emp = 0; 	
+	String empleado = ""; 	
+	String fecha = ""; 	
+	String ent_sal = ""; 	
+	String  tipo_checada = ""; 	
+	int  imp = 0; 	
+	int fav  = 0; 	
+	String observacion  = "";
+	int realizo_consideracion = 0;
+	
+	Container cont = getContentPane();
+	JLayeredPane panel = new JLayeredPane();
+	
+	JDateChooser c_inicio = new JDateChooser();
+	JDateChooser c_final = new JDateChooser();
+	
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
+	String departamento[] = new Obj_Departamento().Combo_Departamento();
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbDepartamento = new JComboBox(departamento);
+	
+	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
+	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
+	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
+	JLabel JLBdepartamento= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
+	
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio De Corte", 15, "String");
+	JTextField txtCajera = new Componentes().text(new JTextField(), "Nombre De Cajera(o)", 15, "String");
+	
+	JButton btnGenerar = new JButton("Generar");
+	
+	@SuppressWarnings("rawtypes")
+	private TableRowSorter trsfiltro;
+	
+//	static Object[][] cortes_guardados = new BuscarTablasModel().filtro_impuntualidad_a_considerar();
+	DefaultTableModel modelo = new DefaultTableModel(null,
+            new String[]{ "Folio_Emp.", "Nombre_Empleado", "Fecha_corte", "Hora_mov", "Dia_de_Semana",
+							"Ent-Sal", "Tipo_mov", "Tipo_checada", "Imp.", "Fav.", "Tipo_de_permiso",
+							"Min_consid_imp", "Min_consid_fav", "Observacion", "Realizo_ mov", "Modif."}
+			){
+	     @SuppressWarnings("rawtypes")
+		Class[] types = new Class[]{
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.Boolean.class
+	    
+         };
+	     @SuppressWarnings({ "rawtypes", "unchecked" })
+		public Class getColumnClass(int columnIndex) {
+             return types[columnIndex];
+         }
+         public boolean isCellEditable(int fila, int columna){
+        	 switch(columna){
+        	 	case 0  : return false; 
+        	 	case 1  : return false; 
+        	 	case 2  : return false;
+        	 	case 3  : return false;
+        	 	case 4  : return false;
+        	 	case 5  : return false;
+        	 	
+        	 	case 6  : return false; 
+        	 	case 7  : return false;
+        	 	case 8  : return false;
+        	 	case 9  : return false;
+        	 	case 10 : return false;
+        	 	case 11 : return false; 
+        	 	case 12 : return false;
+        	 	case 13 : return false;
+        	 	case 14 : return false;
+        	 	case 15 : return false;
+        	 	} 				
+ 			return false;
+ 		}
+	};
+	
+	JTable tabla = new JTable(modelo);
+	JScrollPane scroll = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+	Border blackline;
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Cat_Consideracion_De_Impuntualidad_Checador(){
+		this.setModal(true);
+		this.setTitle("Agregar Observacion A Cortes Del Dia");
+		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Filtrar"));
+
+		this.c_inicio.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
+		this.c_final.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
+		
+		trsfiltro = new TableRowSorter(modelo); 
+		tabla.setRowSorter(trsfiltro);  
+		
+		realizo_consideracion = new Obj_Usuario().LeerSession().getFolio();
+		
+		this.panel.add(new JLabel("Fecha Inicio:")).setBounds(15,25,100,20);
+		this.panel.add(JLBlinicio).setBounds(75,25,20,20);
+		this.panel.add(c_inicio).setBounds(95,25,100,20);
+		this.panel.add(new JLabel("Fecha Final:")).setBounds(15,55,100,20);
+		this.panel.add(JLBfin).setBounds(75,55,20,20);
+		this.panel.add(c_final).setBounds(95,55,100,20);
+	    this.panel.add(new JLabel("Establecimiento:")).setBounds(220,25,150,20);
+	    this.panel.add(JLBestablecimiento).setBounds(300,25,20,20);
+		this.panel.add(cmbEstablecimiento).setBounds(320,25,170,20);
+		this.panel.add(new JLabel("Departamento:")).setBounds(225,55,150,20);
+		this.panel.add(JLBdepartamento).setBounds(300,55,20,20);
+		this.panel.add(cmbDepartamento).setBounds(320,55,170,20);
+		
+		this.panel.add(btnGenerar).setBounds(500,55,80,20);
+		
+		panel.add(txtFolio).setBounds(20,100,90,20);
+		panel.add(txtCajera).setBounds(110,100,320,20);
+		
+		panel.add(scroll).setBounds(20,125,970,590);
+		
+		cont.add(panel);
+		
+		agregar(tabla);
+		
+		llamar_render();
+		
+		txtFolio.addKeyListener(opFiltroAsignacion);
+		txtCajera.addKeyListener(opFiltroFolioCajero);
+		
+		btnGenerar.addActionListener(opGenerarTabla);
+		
+		this.setSize(1024,768);
+		this.setLocationRelativeTo(null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void llamar_render(){
+		
+		this.tabla.getTableHeader().setReorderingAllowed(false) ;
+		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		int x = 65;
+		
+		this.tabla.getColumnModel().getColumn(0).setMaxWidth(x);
+		this.tabla.getColumnModel().getColumn(0).setMinWidth(x);		
+		this.tabla.getColumnModel().getColumn(1).setMaxWidth(270);
+		this.tabla.getColumnModel().getColumn(1).setMinWidth(270);
+		this.tabla.getColumnModel().getColumn(2).setMaxWidth(x+20);
+		this.tabla.getColumnModel().getColumn(2).setMinWidth(x+20);
+		
+		this.tabla.getColumnModel().getColumn(3).setMaxWidth(x);
+		this.tabla.getColumnModel().getColumn(3).setMinWidth(x);		
+		this.tabla.getColumnModel().getColumn(4).setMaxWidth(x+30);
+		this.tabla.getColumnModel().getColumn(4).setMinWidth(x+30);
+		this.tabla.getColumnModel().getColumn(5).setMaxWidth(90);
+		this.tabla.getColumnModel().getColumn(5).setMinWidth(90);
+		
+		this.tabla.getColumnModel().getColumn(6).setMaxWidth(x+20);
+		this.tabla.getColumnModel().getColumn(6).setMinWidth(x+20);
+		this.tabla.getColumnModel().getColumn(7).setMaxWidth(x+20);
+		this.tabla.getColumnModel().getColumn(7).setMinWidth(x+20);
+		
+		this.tabla.getColumnModel().getColumn(8).setMaxWidth(x-25);
+		this.tabla.getColumnModel().getColumn(8).setMinWidth(x-25);
+		this.tabla.getColumnModel().getColumn(9).setMaxWidth(x-25);
+		this.tabla.getColumnModel().getColumn(9).setMinWidth(x-25);
+		this.tabla.getColumnModel().getColumn(10).setMaxWidth(x+150);
+		this.tabla.getColumnModel().getColumn(10).setMinWidth(x+150);
+		this.tabla.getColumnModel().getColumn(11).setMaxWidth(x+30);
+		this.tabla.getColumnModel().getColumn(11).setMinWidth(x+30);
+		this.tabla.getColumnModel().getColumn(12).setMaxWidth(x+30);
+		this.tabla.getColumnModel().getColumn(12).setMinWidth(x+50);
+		this.tabla.getColumnModel().getColumn(13).setMaxWidth(x+100);
+		this.tabla.getColumnModel().getColumn(13).setMinWidth(x+100);
+		this.tabla.getColumnModel().getColumn(14).setMaxWidth(270);
+		this.tabla.getColumnModel().getColumn(14).setMinWidth(270);
+		this.tabla.getColumnModel().getColumn(15).setMaxWidth(x-20);
+		this.tabla.getColumnModel().getColumn(15).setMinWidth(x-20);
+
+		this.tabla.setRowSorter(trsfiltro);  
+		
+		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		
+		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(10).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(11).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(12).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(13).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(14).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(15).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
+	}
+	
+	private void agregar(final JTable tbl) {
+        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	        	if(e.getClickCount() == 2){
+	    			int fila = tabla.getSelectedRow();
+	    			
+	    					folio_emp = 	Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
+    						 empleado = 	tabla.getValueAt(fila, 1).toString().trim();
+    						 	fecha = 	tabla.getValueAt(fila, 2).toString().trim()+" "+tabla.getValueAt(fila, 3).toString().trim();
+	    					  ent_sal = 	tabla.getValueAt(fila, 5).toString().trim();
+				   	     tipo_checada = 	tabla.getValueAt(fila, 7).toString().trim();	    					  
+	    					   	  imp = 	Integer.valueOf(tabla.getValueAt(fila, 8).toString().trim());
+	    					   	 fav  = 	Integer.valueOf(tabla.getValueAt(fila, 9).toString().trim());
+	    					   	 
+	    				 observacion  = 	tabla.getValueAt(fila, 13).toString().trim();
+//	    			dispose();
+	    			new Cat_Comentario_A_Corte_Guardado().setVisible(true);
+	        	}
+	        }
+        });
+    }
+	
+	ActionListener opGenerarTabla = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			if(c_inicio.getDate()==null || c_final.getDate()==null){
+				
+				JOptionPane.showMessageDialog(null, "campos nulos", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				return;
+			}else{
+				if(c_final.getDate().before(c_inicio.getDate())){
+					JOptionPane.showMessageDialog(null, "El rango de fechas esta invertido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+					return;
+				}else{
+//					JOptionPane.showMessageDialog(null, "rango correcto", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//					return;
+					
+					String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+					String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
+					String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+					String Departamento = cmbDepartamento.getSelectedItem().toString();
+					String folios_empleados = "Selecciona un Empleado";
+
+					while(tabla.getRowCount()>0)
+						modelo.removeRow(0);
+					
+					Object[][] recargarTabla = new BuscarTablasModel().filtro_impuntualidad_a_considerar(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
+					
+					 String[] fila = new String[16];
+                     for(int i=0; i<recargarTabla.length; i++){
+                             fila[0] = recargarTabla[i][0]+"";
+                             fila[1] = recargarTabla[i][1]+"";
+                             fila[2] = recargarTabla[i][2]+"";
+                             fila[3] = recargarTabla[i][3]+"";
+                             fila[4] = recargarTabla[i][4]+"";
+                             fila[5] = recargarTabla[i][5]+"";
+                             fila[6] = recargarTabla[i][6]+"";
+                             fila[7] = recargarTabla[i][7]+"";
+                             fila[8] = recargarTabla[i][8]+"";
+                             fila[9] = recargarTabla[i][9]+"";
+                             fila[10] = recargarTabla[i][10]+"";
+                             fila[11] = recargarTabla[i][11]+"";
+                             fila[12] = recargarTabla[i][12]+"";
+                             fila[13] = recargarTabla[i][13]+"";
+                             fila[14] = recargarTabla[i][14]+"";
+                             fila[15] = recargarTabla[i][15]+"";
+                             modelo.addRow(fila);
+                     }
+				}
+				
+			}
+			
+		}
+	};
+	
+	KeyListener opFiltroAsignacion = new KeyListener(){
+		@SuppressWarnings("unchecked")
+		public void keyReleased(KeyEvent arg0) {
+			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText().toUpperCase(), 0));
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
+	
+	KeyListener opFiltroFolioCajero = new KeyListener(){
+		@SuppressWarnings("unchecked")
+		public void keyReleased(KeyEvent arg0) {
+			trsfiltro.setRowFilter(RowFilter.regexFilter(txtCajera.getText().toUpperCase(), 1));
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
+	
+	
+	
+	
+	
+	
+	
+	public class Cat_Comentario_A_Corte_Guardado extends JDialog {
+
+		Container cont = getContentPane();
+		JLayeredPane panel = new JLayeredPane();
+		
+		JLabel lblFolio_corte = new JLabel("");
+		JLabel lblCajero = new JLabel("");
+		JLabel lblFecha = new JLabel("");
+		JLabel lblMovimiento = new JLabel("");
+		
+		JTextField txtImp = new Componentes().text(new JTextField(), "Observaciones", 4, "Double");
+		JTextField txtFav = new Componentes().text(new JTextField(), "Observaciones", 4, "Double");
+		
+		
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		JComboBox cmbTipo_checada =new JComboBox(new String[]{"No Aplica","Aplica"});
+		
+		
+		JTextArea txaObservacion =new Componentes().textArea(new JTextArea(), "Observaciones", 150);
+		JScrollPane scrollObservacion = new JScrollPane(txaObservacion,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		JButton btnGuardar = new JButton("Guardar");
+		
+		public Cat_Comentario_A_Corte_Guardado(){
+			this.setModal(true);
+			this.setTitle("Consideracion checador");
+			this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Guardar consideracion de checador seleccionado"));
+			
+			lblFolio_corte.setText("Folio Empleado:  "+folio_emp);
+			lblCajero.setText("Empleado:  "+empleado);
+			lblFecha.setText("Fecha:  "+fecha);
+			lblMovimiento.setText("Movimiento: "+ent_sal);
+			
+			txtImp.setText(imp+"");
+			txtFav.setText(fav+"");
+			txaObservacion.setText(observacion);
+			
+			if(tipo_checada.equals("-")){
+				cmbTipo_checada.setEnabled(false);
+				cmbTipo_checada.setSelectedItem("No Aplica");
+			}else{
+				cmbTipo_checada.setEnabled(true);
+				cmbTipo_checada.setSelectedItem("Aplica");
+			}
+			
+			
+			int y=20;
+			
+			panel.add(lblFolio_corte).setBounds(15,y,150,20);
+			panel.add(lblFecha).setBounds(320,y,180,20);
+			
+			panel.add(lblCajero).setBounds(15,y+=25,500,20);
+			panel.add(lblMovimiento).setBounds(320,y,440,20);
+			
+			panel.add(new JLabel("Observacion:")).setBounds(200,y+=25,70,20);
+			panel.add(scrollObservacion).setBounds(200,y+15,270,100);
+			
+			panel.add(new JLabel("Impuntualidad: ")).setBounds(15,y+=30,90,20);
+			panel.add(txtImp).setBounds(100,y,80,20);
+			
+			panel.add(new JLabel("A Favor: ")).setBounds(15,y+=25,90,20);
+			panel.add(txtFav).setBounds(100,y,80,20);
+			
+			panel.add(new JLabel("Clave Master: ")).setBounds(15,y+=25,90,20);
+			panel.add(cmbTipo_checada).setBounds(100,y,80,20);
+			
+			panel.add(btnGuardar).setBounds(370,y+50,100,20);
+
+			txaObservacion.setLineWrap(true); 
+			txaObservacion.setWrapStyleWord(true);
+//			panel.add(scroll).setBounds(20,45,970,500);
+			
+			cont.add(panel);
+			
+			btnGuardar.addActionListener(opGuardarObservacion);
+			
+			this.setSize(500,270);
+			this.setLocationRelativeTo(null);
+		}
+		
+		ActionListener opGuardarObservacion = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(!txaObservacion.getText().equals("")){
+					
+//		consideraciones ( mandar parametros para el update)
+					
+							int consid_imp = (imp - Integer.valueOf(txtImp.getText()));
+							int consid_fav = (fav - Integer.valueOf(txtFav.getText()));
+							
+							String clave_master = "";
+							if(tipo_checada.equals("-")){
+									clave_master="";
+							}else{
+									clave_master = cmbTipo_checada.getSelectedItem().toString().trim().equals("Aplica")?"":cmbTipo_checada.getSelectedItem().toString().trim();
+							}
+							
+//							System.out.println("aqui es igual a = "+realizo_consideracion);
+						if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(), realizo_consideracion)){
+							
+							folio_emp = 0; 	
+							empleado = ""; 	
+							fecha = ""; 	
+							ent_sal = ""; 	
+							tipo_checada = ""; 	
+							imp = 0; 	
+							fav  = 0; 	
+							observacion  = "";
+							
+							String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+							String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
+							String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+							String Departamento = cmbDepartamento.getSelectedItem().toString();
+							String folios_empleados = "Selecciona un Empleado";
+
+							while(tabla.getRowCount()>0)
+								modelo.removeRow(0);
+							
+							Object[][] recargarTabla = new BuscarTablasModel().filtro_impuntualidad_a_considerar(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
+							
+							 String[] fila = new String[16];
+		                     for(int i=0; i<recargarTabla.length; i++){
+		                             fila[0] = recargarTabla[i][0]+"";
+		                             fila[1] = recargarTabla[i][1]+"";
+		                             fila[2] = recargarTabla[i][2]+"";
+		                             fila[3] = recargarTabla[i][3]+"";
+		                             fila[4] = recargarTabla[i][4]+"";
+		                             fila[5] = recargarTabla[i][5]+"";
+		                             fila[6] = recargarTabla[i][6]+"";
+		                             fila[7] = recargarTabla[i][7]+"";
+		                             fila[8] = recargarTabla[i][8]+"";
+		                             fila[9] = recargarTabla[i][9]+"";
+		                             fila[10] = recargarTabla[i][10]+"";
+		                             fila[11] = recargarTabla[i][11]+"";
+		                             fila[12] = recargarTabla[i][12]+"";
+		                             fila[13] = recargarTabla[i][13]+"";
+		                             fila[14] = recargarTabla[i][14]+"";
+		                             fila[15] = recargarTabla[i][15]+"";
+		                             modelo.addRow(fila);
+		                     }
+		                     dispose();
+							
+							JOptionPane.showMessageDialog(null, "Consideracion guardada correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							return;
+						}else{
+							dispose();
+							JOptionPane.showMessageDialog(null, "No se pudo ingresar la Consideracion", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							return;
+						}
+				}else{
+					JOptionPane.showMessageDialog(null, "Ingresar Consideracion", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+					return;
+				}
+			}
+		};
+	}
+	
+	
+	public static void main(String[] args) {
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Consideracion_De_Impuntualidad_Checador().setVisible(true);
+		}catch(Exception e){
+			System.err.println("Error :"+ e.getMessage());
+		}
+	}
+
+}

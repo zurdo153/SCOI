@@ -1127,12 +1127,56 @@ public class BuscarTablasModel {
 		return Matriz;
 	}
 	
-	public String[][] filtro_impuntualidad_a_considerar(){
+	public String[][] filtro_impuntualidad_a_considerar(String fecha_inicio,String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
 		String[][] Matriz = null;
 		
-		String query = "sp_Select_Consideracion_Checador";
+		String query = "sp_Select_Consideracion_Checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"';";
 		
-		Matriz = new String[get_filas(query)][15];
+		Matriz = new String[get_filas(query)][16];
+		
+		try {	
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(2);
+				Matriz[i][1] = "  "+rs.getString(3);
+				Matriz[i][2] = rs.getString(4);
+				Matriz[i][3] = rs.getString(5);
+				Matriz[i][4] = rs.getString(6);
+				Matriz[i][5] = rs.getString(7);
+				
+				Matriz[i][6]  = rs.getString(8);
+				Matriz[i][7]  = rs.getString(9);
+				Matriz[i][8]  = rs.getString(10);
+				Matriz[i][9]  = rs.getString(11);
+				Matriz[i][10] = rs.getString(12);
+				Matriz[i][11] = rs.getString(13);
+				Matriz[i][12] = rs.getString(14);
+				Matriz[i][13] = rs.getString(15);
+				Matriz[i][14] = rs.getString(16);
+				Matriz[i][15] = rs.getInt(17)==0?"false":"true";
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [filtro_impuntualidad_a_considerar] \n  en el procedimiento : sp_Select_Consideracion_Checador  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return Matriz;
+	}
+	
+	public String[][] lista_de_establecimiento(){
+		String[][] Matriz = null;
+		
+		String query = "select folio as folio_establecimiento" +
+				"						,nombre as establecimiento " +
+				"		from tb_establecimiento " +
+				"		where status = 1";
+		
+		Matriz = new String[get_filas(query)][2];
 		
 		try {	
 			Statement stmt = new Connexion().conexion().createStatement();
@@ -1142,26 +1186,12 @@ public class BuscarTablasModel {
 			while(rs.next()){
 				Matriz[i][0] = rs.getString(1);
 				Matriz[i][1] = "  "+rs.getString(2);
-				Matriz[i][2] = rs.getString(3);
-				Matriz[i][3] = df.format(Float.valueOf(rs.getString(4)));
-				Matriz[i][4] = rs.getString(5);
-				Matriz[i][5] = rs.getString(6);
-				
-				Matriz[i][6]  = rs.getString(7);
-				Matriz[i][7]  = rs.getString(8);
-				Matriz[i][8]  = rs.getString(9);
-				Matriz[i][9]  = rs.getString(10);
-				Matriz[i][10] = rs.getString(11);
-				Matriz[i][11] = rs.getString(12);
-				Matriz[i][12] = rs.getString(13);
-				Matriz[i][13] = rs.getString(14);
-				Matriz[i][14] = rs.getInt(15)==0?"false":"true";
-				
+
 				i++;
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [filtro_impuntualidad_a_considerar] \n  en el procedimiento : sp_Select_Consideracion_Checador  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [lista_de_establecimiento] \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return Matriz;

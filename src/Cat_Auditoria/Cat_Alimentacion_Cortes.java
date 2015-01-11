@@ -110,8 +110,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JButton btnReimprimir = new JButton("Reimprimir Corte Guardado",new ImageIcon("imagen/Print.png"));
 	JButton btnFS = new JButton("",new ImageIcon("imagen/fast-food-icon16.png"));
 	
-
-	
 	JLabel lblMarco = new JLabel();
 	
 	JCheckBox chStatus = new JCheckBox("Status");
@@ -137,10 +135,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	JTextField txtTotalFS = new JTextField("");
 	
-	
 
-	
-	 Border border = LineBorder.createGrayLineBorder();
+	Border border = LineBorder.createGrayLineBorder();
 //	    Icon warnIcon = MetalIconFactory.getTreeComputerIcon();
 	
 	String Efectivo = "";
@@ -1138,6 +1134,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						txtReciboLuz.setText(rs.getString("RLUZ"));
 						txtApartados.setText(rs.getString("APA"));
 						txtAbonos.setText(rs.getString("TOTAL_ABONOS"));
+						
+						txtCorteSistema.setText(formato.format(Double.valueOf(txtCorteSistema.getText())+Double.parseDouble(txtAbonos.getText()))+"");
 					}
 				con.commit();
 				
