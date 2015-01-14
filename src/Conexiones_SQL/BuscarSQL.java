@@ -5836,4 +5836,35 @@ public class BuscarSQL {
 		return concepto_extra;
 	}
 	
+	public String establecimiento_ticket_selecionado(String ticket) throws SQLException{
+		String establecimiento = "";
+
+		//		cambiar procedimiento almacenado
+		
+		String query = "	SELECT     LTRIM(RTRIM(tb_establecimiento.nombre)) AS establecimiento_del_ticket_seleccionado " +
+						" 	FROM         tb_captura_tickets_c_ahorro_cte INNER JOIN " +
+						"                      tb_establecimiento ON tb_establecimiento.folio = tb_captura_tickets_c_ahorro_cte.cod_establecimiento " +
+						" 	WHERE     (tb_captura_tickets_c_ahorro_cte.ticket = '"+ticket+"')";
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				
+				establecimiento = rs.getString("establecimiento_del_ticket_seleccionado");
+		            
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return establecimiento;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return establecimiento;
+	}
+	
 }
