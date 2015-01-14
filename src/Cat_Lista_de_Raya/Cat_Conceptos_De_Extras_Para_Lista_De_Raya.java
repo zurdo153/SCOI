@@ -351,8 +351,6 @@ public class Cat_Conceptos_De_Extras_Para_Lista_De_Raya extends JFrame{
 						}
 						
 						JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-					}else{
-						return;
 					}
 				}else{
 					if(validaCampos()!="") {
@@ -364,25 +362,30 @@ public class Cat_Conceptos_De_Extras_Para_Lista_De_Raya extends JFrame{
 						concepto.setStatus(cmb_status.getSelectedItem()+"");
 						concepto.guardar();
 						
-						Object[] fila = new Object[tabla.getColumnCount()]; 
-							
-						fila[0]=txtFolio.getText();
-						fila[1]=txtConcepto.getText();
-						fila[2]=txtAbreviatura.getText();
-						modelo.addRow(fila); 
-						
-						panelLimpiar();
-						panelEnabledFalse();
-						
-						 while(tabla.getRowCount()>0){
-								modelo.removeRow(0);  }
-						 llenar_tabla();
-						 render();
+
 						 
 						txtFolio.setEditable(true);
 						txtFolio.requestFocus();
+						if(concepto.guardar()){
+							Object[] fila = new Object[tabla.getColumnCount()]; 
+							
+							fila[0]=txtFolio.getText();
+							fila[1]=txtConcepto.getText();
+							fila[2]=txtAbreviatura.getText();
+							modelo.addRow(fila); 
+							
+							panelLimpiar();
+							panelEnabledFalse();
+							
+							 while(tabla.getRowCount()>0){
+									modelo.removeRow(0);  }
+							 llenar_tabla();
+							 render();
 						JOptionPane.showMessageDialog(null,"El registró se guardó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-					}
+						}else{
+						JOptionPane.showMessageDialog(null, "Error en Cat_Conceptos_De_Extras_Para_Lista_De_Rata  en la funcion [ Guardar_Concepto_Extra ] \n Insert  SQLException: sp_insert_puesto","Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}
+						}
 				}
 			}			
 		}

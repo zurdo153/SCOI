@@ -31,8 +31,8 @@ public class Cat_Mantenimiento_Base_de_Datos extends JFrame {
 	JButton  btn_Guardar=new JButton("Guardar");
 
 	JTextField txtNombreSubmenu = new Componentes().text(new JTextField(), "Nombre del Submenu, deberá tener el mismo nombre que el catalogo, sin Cat ni el guion bajo", 100, "String");
-	JTextField txtMenu_id = new Componentes().text(new JTextField(), "Numero del Submenu-Menu_id este deberá tener el numero id del grupo de submenus", 30, "Int");
-	JTextField txtMenu_Principal = new Componentes().text(new JTextField(), "Numero del Menu Principal-Encabezado este deberá tener el numero de menu principal contado de izquierda a derecha", 30, "Int");
+	JTextField txtMenu_id = new Componentes().text(new JTextField(), "Numero del Submenu-Menu_id este deberá tener el numero id del grupo de submenus ", 30, "Int");
+	JTextField txtMenu_Principal = new Componentes().text(new JTextField(), "Numero del grupo de Menu Principal-Encabezado este deberá \n tener el numero de menu principal de acuerdo al consecutivo del Cat_Usuarios ", 30, "Int");
 
 
 	

@@ -22,6 +22,7 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -51,6 +52,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 				JLayeredPane panel = new JLayeredPane();
 				
 				JTextField txtcod_prod = new Componentes().text(new JTextField(), "Codigo del Producto", 15, "String");
+				JCheckBox chbHabilitarVentas = new JCheckBox("Cargar Ventas");	
 				JButton btnBuscar_Producto = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 				JButton btnBuscar_Proveedor= new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 				JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
@@ -132,10 +134,11 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 			    
 			    
 				DefaultTableModel modelo_exist_estab = new DefaultTableModel(null,
-			            new String[]{"Establecimiento","Existecia","Fecha de Agotado"}
+			            new String[]{"Establecimiento","Existecia","Venta/Pzs","Fecha Agotado"}
 						){
 				     @SuppressWarnings("rawtypes")
 					Class[] types = new Class[]{
+				    	java.lang.String.class,
 				    	java.lang.String.class,
 				    	java.lang.String.class,
 				    	java.lang.String.class
@@ -149,6 +152,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 			        	 	case 0 : return false; 
 			        	 	case 1 : return false; 
 			        	 	case 2 : return false; 
+			        	 	case 3 : return false; 
 			        	 } 				
 			 			return false;
 			 		}
@@ -197,19 +201,22 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 		panel.add(JLBultimo_costo).setBounds(x+=75,y,l-20,a);
 		panel.add(new JLabel("Costo Promedio:")).setBounds(x+=l-20,y,l-30,a);
 		panel.add(JLBcosto_promedio).setBounds(x+=85,y,l-20,a);
-		panel.add(new JLabel("Existencia Cedis:")).setBounds(x+=l-20,y,l-20,a);
+		panel.add(chbHabilitarVentas).setBounds(x-384,y+=20,l,a);
+		
+		panel.add(new JLabel("Existencia Cedis:")).setBounds(x+=-250,y,l-20,a);
 		panel.add(JLBexist_cedis).setBounds(x+=85,y,l-20,a);
-		panel.add(new JLabel("Existencia Total:")).setBounds(x+=l-20,y,l-20,a);
+		panel.add(new JLabel("Existencia Total:")).setBounds(x+=l-30,y,l-20,a);
 		panel.add(JLBexist_total).setBounds(x+=85,y,l-20,a);
 		
 		x=10;
 		
-		panel.add(new JLabel("Num Cotizacion")).setBounds(x+10,y+=40,l-20,a);
+		panel.add(new JLabel("Num Cotizacion")).setBounds(x+10,y+=20,l-20,a);
 		panel.add(new JLabel("Cod Proveedor")).setBounds(x+100,y,l-20,a);
 		panel.add(new JLabel("Nombre Del Proveedor")).setBounds(x+270,y,l+150,a);
 		panel.add(new JLabel("Costo Unitario")).setBounds(x+480,y,l,a);
 		panel.add(new JLabel("Cantidad En Piezas" )).setBounds(x+580,y,l,a);
-		panel.add(new JLabel("Condiciones De La Compra")).setBounds(x+685,y,l+20,a);
+		panel.add(new JLabel("Condiciones")).setBounds(x+10,y+40,l+20,a);
+		panel.add(new JLabel("De La Compra")).setBounds(x+10,y+60,l+20,a);
 
 		panel.add(txtFoliocompra1).setBounds(x,y+=20,l-20,a);
 		panel.add(txtCod_Prv).setBounds(x+90,y,l-20,a);
@@ -217,9 +224,9 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 		panel.add(txtNom_Proveedor).setBounds(x+200,y,l+150,a);
 		panel.add(txtCosto_Unitario).setBounds(x+460,y,l,a);
 		panel.add(txtCant_Requerida_Compra).setBounds(x+570,y,l,a);
-		panel.add(Condiciones).setBounds(x+680,y,l+30,l-20);
+		panel.add(Condiciones).setBounds(x+80,y+25,l+490,40);
 		
-		panel.add(btnNuevo).setBounds(x,y+=30,l-10,a);
+		panel.add(btnNuevo).setBounds(x,y+=70,l-10,a);
 		panel.add(btnDeshacer).setBounds(x+115,y,l-10,a);
 //		panel.add(btnEditar).setBounds(x+227,y,l-10,a);
 		panel.add(btnGuardar).setBounds(x+339,y,l-10,a);
@@ -227,7 +234,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 		panel.add(btnLimpiar).setBounds(x+564,y,l-10,a);
 		
 		panel.add(Tabla_Proveedor()).setBounds(10,200,1000,400);
-		panel.add(Tabla_Exist_Estab()).setBounds(835,13,175,180);
+		panel.add(Tabla_Exist_Estab()).setBounds(695,13,315,180);
 		
 		txtFoliocompra1.setEditable(false);
 		txtCod_Prv.setEditable(false);
@@ -744,6 +751,7 @@ public void render_Exist_Estab(){
 							tabla_Proveedor.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 							tabla_Proveedor.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 							tabla_Proveedor.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+							tabla_Proveedor.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 						}
         private JScrollPane Tabla_Exist_Estab()	{		
 				
@@ -752,10 +760,12 @@ public void render_Exist_Estab(){
 				
 			tabla_Existencia_Estab.getColumnModel().getColumn(0).setMaxWidth(108);
 			tabla_Existencia_Estab.getColumnModel().getColumn(0).setMinWidth(108);
-			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMaxWidth(65);
-			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMinWidth(65);
-			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMaxWidth(120);
-			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMinWidth(120);
+			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMaxWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMinWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(2).setMaxWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(2).setMinWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMaxWidth(120);
+			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMinWidth(120);
 				
 				 JScrollPane scrol = new JScrollPane(tabla_Existencia_Estab);
 			    return scrol; 
@@ -768,22 +778,45 @@ public void render_Exist_Estab(){
 			
 			try {
 				s = con.conexion_IZAGAR().createStatement();
+				String fecha_busqueda =new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
+				rs=null;
 				
-				rs = s.executeQuery("select  establecimientos.nombre as establecimiento" +
-						"                    ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0)) as existencia_pz" +
-						"                    ,isnull(convert(varchar(20),prodestab.fecha_agotado,103),'Sin Fecha Agotado')as fecha_agotado" +
-						"               from prodestab with (nolock) " +
-						"               inner join productos on productos.cod_prod=prodestab.cod_prod" +
-						"               inner join establecimientos on establecimientos.cod_estab=prodestab.cod_estab " +
-						"              where prodestab.cod_prod='"+cod_producto+"'"+
-						"               group by establecimientos.nombre,convert(varchar(20),prodestab.fecha_agotado,103) order by establecimiento asc")   ;
+				if(chbHabilitarVentas.isSelected()){
+										rs = s.executeQuery("SELECT  establecimientos.nombre as establecimiento" +
+												"                   ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0)) as existencia_pz" +
+												"                   ,isnull(mab.venta_pzas,0) as venta_pzas" +
+												"                   ,isnull(convert(varchar(20),prodestab.fecha_agotado,103),'Sin Fecha Agotado')as fecha_agotado" +
+												"              FROM prodestab with (nolock) " +
+												"                 inner join productos on productos.cod_prod=prodestab.cod_prod" +
+												"                 inner join establecimientos on establecimientos.cod_estab=prodestab.cod_estab" +
+												"  			      left outer join	(SELECT Entysal.cod_prod ,sum(case when entysal.unidad <> 'U' then entysal.cantidad else 0 end) as venta_pzas ,facremtick.cod_estab" +
+												" 									   FROM Entysal with (nolock)  " +
+												"  									      INNER JOIN facremtick  with (nolock) ON Entysal.folio = facremtick.folio AND Entysal.transaccion = facremtick.transaccion " +
+												"  										  INNER JOIN productos on entysal.cod_prod = productos.cod_prod " +
+												" 									   WHERE (entysal.cod_prod ='"+cod_producto+"') AND  entysal.fecha between '"+fecha_busqueda+"'"+
+												"                                                and getdate()  AND Entysal.transaccion in ('36','37','38')" +
+												"									 GROUP BY Entysal.cod_prod,facremtick.cod_estab)mab on mab.cod_estab=prodestab.cod_estab" +
+												"			   WHERE prodestab.cod_prod='"+cod_producto+"'"+
+												"            GROUP BY establecimientos.nombre,convert(varchar(20),prodestab.fecha_agotado,103),mab.venta_pzas order by establecimiento asc")           ;
+			      }else{
+									rs = s.executeQuery("SELECT  establecimientos.nombre as establecimiento" +
+											"                   ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0)) as existencia_pz" +
+											"                   ,0 as venta_pzas" +
+											"                   ,isnull(convert(varchar(20),prodestab.fecha_agotado,103),'Sin Fecha Agotado')as fecha_agotado" +
+											"              FROM prodestab with (nolock) " +
+											"                 inner join productos on productos.cod_prod=prodestab.cod_prod" +
+											"                 inner join establecimientos on establecimientos.cod_estab=prodestab.cod_estab" +
+											"			   WHERE prodestab.cod_prod='"+cod_producto+"'"+
+											"            GROUP BY establecimientos.nombre,convert(varchar(20),prodestab.fecha_agotado,103) order by establecimiento asc")           ;
+				}
 			
 				while (rs.next())
 				{ 
-				   Object [] fila = new Object[3];
+				   Object [] fila = new Object[4];
 				   fila[0] = rs.getString(1).trim();
 				   fila[1] = rs.getString(2).trim();
 				   fila[2] = rs.getString(3).trim();
+				   fila[3] = rs.getString(4).trim();
 				   modelo_exist_estab.addRow(fila); 
 				}	
 			} catch (SQLException e1) {

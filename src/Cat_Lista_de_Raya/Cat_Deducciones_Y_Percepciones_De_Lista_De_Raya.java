@@ -9,7 +9,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.JCheckBox;
@@ -35,7 +34,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 	Runtime R = Runtime.getRuntime();
 
 	private JCheckBox chb_habilitar = new JCheckBox("Habilitar");
-    
+	
 	private String lista1[] = {"","1","2","3","4","5","6","7"};
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private JComboBox cmb_tabla_dias = new JComboBox(lista1);
@@ -106,6 +105,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
         	 	case 10 :	if(chb_habilitar.isSelected()){return true;}
         	 				else{return false;}
         	 	case 11 :return true; 
+        	 	
         	 }
  			return false;
  		}
@@ -126,12 +126,10 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 	public TableColumn columna_conseptos = tabla.getColumnModel().getColumn(11);
 	
 	public Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya(){
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/hand_contra_icon&16.png"));
-		this.setTitle("Deducción por Inasistencia");
-		
-		this.panel.add(cmbEstablecimientos).setBounds(463,35,150,20);
-
-		this.panel.add(chb_habilitar).setBounds(1050,35,65,20);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/percepciones_y_deducciones32.png"));
+		this.setTitle("Deducciónes y Precepciones De Lista De Raya");
+//		this.panel.add(cmbEstablecimientos).setBounds(463,35,300,20);
+//		this.panel.add(chb_habilitar).setBounds(1050,35,65,20);
 		
 		this.columna_dia_falta.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_dias));
 		this.columna_dia_gafete.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_gafete));
@@ -146,9 +144,11 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 		this.panel.remove(cmbEstablecimientos);
 		this.panel.remove(chb_habilitar);
 		
+		
 		this.panel.add(txtFolio).setBounds(30,35,35,20);
 		this.panel.add(txtNombre_Completo).setBounds(65,35,290,20);
-		this.panel.add(cmbEstablecimientos).setBounds(355,35,110,20);
+		this.panel.add(cmbEstablecimientos).setBounds(355,35,180,20);
+		
 		this.panel.add(chb_habilitar).setBounds(955,35,80,20);
 		this.panel.add(scroll_tabla).setBounds(30,60,1195,615);
 
@@ -193,6 +193,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 		public void windowActivated(WindowEvent e) {}
 	};
 
+	
 	ActionListener op_guardar = new ActionListener() {
 		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
@@ -204,11 +205,8 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 			
 				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
 						
-						JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificada Ninguna Deduccion Por Inasistencia......"
-						       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<Al dar Click en Aceptar SCOI se Cerrará>>","Aviso",JOptionPane.WARNING_MESSAGE);
-						
-						try {	R.exec("taskkill /f /im javaw.exe"); } catch (IOException e1) {	e1.printStackTrace(); }		
-						
+						JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificada Ninguna Deduccion o Percepcion de Lista de Raya....."
+						       +" \n Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<>>","Aviso",JOptionPane.WARNING_MESSAGE);
 				}else{
 						trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
 						trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
