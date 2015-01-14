@@ -75,6 +75,8 @@ public class Cat_Abono_Clientes extends JFrame{
 	int fila = 0;
 	int columna = 2;
 	
+	String establecimiento_de_ticket = "";
+	
 	JLabel lblF2 = new JLabel("F2 => Abrir Filtro De Clientes");
 	JLabel lblF5 = new JLabel("F5 => Imprimir Ticket A Detalle");
 	JLabel lblF9 = new JLabel("F9 => Generer Abono");
@@ -429,7 +431,7 @@ public class Cat_Abono_Clientes extends JFrame{
 					
 					
 					
-					
+					System.out.println(bandera);
 //                  si 		bandera = "" entonces el ticket no es nuevo y se guardara correctamente
 //					else 	pedir fecha limite
 					if(bandera.equals("")){
@@ -446,8 +448,29 @@ public class Cat_Abono_Clientes extends JFrame{
 							}
 						
 					}else{
-							JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
-							return;
+						String fechaNull = fecha.getDate()+"";
+						
+						String fecha_parametro = "";
+						if(!fechaNull.equals("null")){
+							fecha_parametro = new SimpleDateFormat("dd/MM/yyyy").format(fecha.getDate());;
+						}
+						
+						if(fecha_parametro.equals("")){
+								JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								return;
+						}else{
+								if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
+									JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+									return;
+								}else{
+									btnGuardarAbono.setEnabled(true);
+										tabla_cobros.setEnabled(true);
+										tabla_cobros.editCellAt(fila, columna);
+										Component aComp=tabla_cobros.getEditorComponent();
+										aComp.requestFocus();
+								}
+						}
+							
 					}
 					
 					
@@ -1009,6 +1032,14 @@ public class Cat_Abono_Clientes extends JFrame{
 	        		
                     folio_ticket_o_folio_abono =  tabla_ticket.getValueAt(rowButton1, 0).toString().trim();
                     cantidad = Double.valueOf(tabla_ticket.getValueAt(rowButton1, 3).toString());
+                    
+//             buacar establecimiento del ticket seleccionado
+                    try {
+						establecimiento_de_ticket = new BuscarSQL().establecimiento_ticket_selecionado(folio_ticket_o_folio_abono);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
                     
 //                  para validar si pide fecha o no
                     bandera="";

@@ -1196,6 +1196,56 @@ public class BuscarTablasModel {
 		
 		return Matriz;
 	}
+	
+	public Object[][] tabla_puestos_por_establecimiento(int folio_establecimiento){
+		String query = "exec sp_select_puestos_por_establecimiento '"+folio_establecimiento+"';";
+		Object[][] matriz = new Object[get_filas(query)][3];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] =rs.getString(1);
+				matriz[i][1] =rs.getString(2);
+				matriz[i][2] =rs.getString(3);
+				
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
+	
+	public Object[][] tabla_puestos_disponibles(String listaEnUso){
+		String query = "select tb_puesto.folio as folio_puesto" +
+				"				,tb_puesto.nombre as puesto" +
+				"				,'false' as cantidad_de_puesto" +
+				"		from tb_puesto" +
+				"		where tb_puesto.status = 1" +
+				"		and tb_puesto.folio not in("+listaEnUso+");";
+		
+		Object[][] matriz = new Object[get_filas(query)][3];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] =rs.getString(1);
+				matriz[i][1] =rs.getString(2);
+				matriz[i][2] =rs.getString(3);
+				
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
 }
 
 
