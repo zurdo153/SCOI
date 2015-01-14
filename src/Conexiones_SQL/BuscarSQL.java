@@ -5377,8 +5377,11 @@ public class BuscarSQL {
 		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
 		
 	   String pc_nombre="";
+//	 	pc_nombre ="SIV_CAJA1";
+	   
 					try {
-					    	pc_nombre = InetAddress.getLocalHost().getHostName();
+	   pc_nombre = InetAddress.getLocalHost().getHostName();
+					    			InetAddress.getLocalHost().getHostName();
 					} catch (UnknownHostException e1) {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);

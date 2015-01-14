@@ -20,7 +20,7 @@ public class Init_Menu_Bar extends Init_Login{
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
 		
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.4.6");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.4.9");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -29,7 +29,6 @@ public class Init_Menu_Bar extends Init_Login{
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		this.setSize(ancho,alto);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		
 	}	
 	
 	
@@ -278,7 +277,7 @@ public class Init_Menu_Bar extends Init_Login{
 			btnCaja.setEnabled(false);
 			btnFsRH.setEnabled(false);
 			btnFsAux.setEnabled(false);
-			btnPExtras.setEnabled(false);
+			btnRetirosCajeras.setEnabled(false);
 			btnPrestamo.setEnabled(false);
 			btnAltaEmp.setEnabled(false);
 			btnListaRaya.setEnabled(false);

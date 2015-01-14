@@ -39,7 +39,7 @@ public class tablaRenderer extends DefaultTableCellRenderer {
      public Component getTableCellRendererComponent ( JTable table, Object value, boolean selected, boolean focused, int row, int column ){   
 		
     	 if(row %2 == 0){
-				this.setBackground(new java.awt.Color(177,177,177));	
+				this.setBackground(new java.awt.Color(177,177,190));	
 		  }else{
 		      this.setBackground(Color.white);
 		  }
@@ -85,7 +85,7 @@ public class tablaRenderer extends DefaultTableCellRenderer {
 				chb = new JCheckBox("",Boolean.parseBoolean(value.toString()));
 				if(row%2==0){
 					((JComponent) chb).setOpaque(true); 
-					chb.setBackground(new java.awt.Color(177,177,177));	
+					chb.setBackground(new java.awt.Color(177,177,190));	
 				}
 				if(table.getSelectedRow() == row){
 					((JComponent) chb).setOpaque(true); 

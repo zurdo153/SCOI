@@ -3426,7 +3426,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 		return true;
 	}
 	
-	public String Guardar_Retiro_Cajero(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro){
+	public String Guardar_Retiro_Cajero(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro,String Asignacion){
 		
 		Connection con = new Connexion().conexion();
 		
@@ -3452,7 +3452,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			        
 			Folio_Retiro_Devolver.setFolio_retiro(folio_retiro);
 								
-		String query = "exec sp_insert_retiros_a_cajeros ?,?,?,?,?,'"+Establecimiento.trim()+"' ";
+		String query = "exec sp_insert_retiros_a_cajeros_2 ?,?,?,?,?,'"+Establecimiento.trim()+"','"+Asignacion+"'";
 	  	 PreparedStatement pstmt = null;	
 		try {
 			con.setAutoCommit(false);
@@ -3584,7 +3584,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	public boolean Guardar_Concepto_Extra(Obj_Conceptos_De_Extras_Para_Lista_De_Raya conceptos_extra){
-		String query = "exec sp_insert_puesto ?,?,?";
+		String query = "exec sp_insert_concepto_de_extra_en_lista_de_raya ?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -3606,7 +3606,6 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Concepto_Extra ] Insert  SQLException: sp_insert_puesto "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-
 				}
 			}
 			return false;

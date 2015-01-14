@@ -136,7 +136,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	public Cat_Revision_De_Lista_Raya(){
 		this.setTitle("Revisión lista raya");
 		
-		this.panel.add(scroll_tabla).setBounds(30,60,1250,615);
+		this.panel.add(scroll_tabla).setBounds(30,60,1300,620);
 		cont.add(panel);
 		
 		this.init_tabla();
@@ -269,8 +269,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				JOptionPane.showMessageDialog(null, "Los siguientes datos son requeridos:\n"+valida_error(),"Error",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
-//				if(new Obj_Revision_De_Lista_Raya().init_autorizacion()){
-//					if(new Obj_Revision_De_Lista_Raya().init_totales_nomina()){
+				if(new Obj_Revision_De_Lista_Raya().init_autorizacion()){
+					if(new Obj_Revision_De_Lista_Raya().init_totales_nomina()){
 					
 						Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
 						if(lista_raya.generar(tabla_generar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
@@ -283,14 +283,14 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							JOptionPane.showMessageDialog(null, "La lista de raya no se pudo generar","Error",JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-//					}else{
-//						JOptionPane.showMessageDialog(null, "Antes de generar la lista de raya tiene que guardar los Totales de Cheque","Aviso",JOptionPane.ERROR_MESSAGE);
-//						return;
-//					}
-//				}else{
-//					JOptionPane.showMessageDialog(null, "La lista de raya no está autorizada","Aviso",JOptionPane.WARNING_MESSAGE);
-//					return;
-//				}
+					}else{
+						JOptionPane.showMessageDialog(null, "Antes de generar la lista de raya tiene que guardar los Totales de Cheque","Aviso",JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}else{
+					JOptionPane.showMessageDialog(null, "La lista de raya no está autorizada","Aviso",JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 			}
 		}
 	};

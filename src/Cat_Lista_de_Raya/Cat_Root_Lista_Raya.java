@@ -34,7 +34,7 @@ public class Cat_Root_Lista_Raya extends JFrame {
 	
 	public JButton btn_guardar = new JButton("Guardar",new ImageIcon("Iconos/save_icon&16.png"));
 	public JButton btn_imprimir = new JButton("Imprimir",new ImageIcon("Iconos/print_icon&16.png"));
-	public JButton btn_refrescar = new JButton("Actualizar",new ImageIcon("Iconos/refresh_icon&16.png"));
+	public JButton btn_refrescar = new JButton("Guardar y Actualizar",new ImageIcon("Iconos/refresh_icon&16.png"));
 	public JButton btn_nomina = new JButton("Totales Nomina",new ImageIcon("Iconos/nomina_icon&16.png"));
 	public JButton btn_generar = new JButton("Generar Lista Raya",new ImageIcon("Iconos/generar_icon&16.png"));
 	//se agrega el nombre de la variable boton y se le agrega el icono
@@ -47,7 +47,7 @@ public class Cat_Root_Lista_Raya extends JFrame {
 		
 		this.panel.add(txtFolio).setBounds(30,35,55,20);
 		this.panel.add(txtNombre_Completo).setBounds(85,35,260,20);
-		this.panel.add(cmbEstablecimientos).setBounds(345,35,160,20);
+		this.panel.add(cmbEstablecimientos).setBounds(345,35,180,20);
 		this.panel.add(txtCalendario).setBounds(588,35,90,20);
 		this.txtCalendario.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		
