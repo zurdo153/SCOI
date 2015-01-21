@@ -324,7 +324,7 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 				
 				while(rs.next()){	cadenaAsignacionesGuardadasEnSCOI+= "'"+(rs.getString(1).trim())+"',";	}
 									cadenaFinal = cadenaAsignacionesGuardadasEnSCOI+cadena_asignaciones_en_uso;
-				
+				rs.close();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}	 	
@@ -390,6 +390,7 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 				
 				i++;
 			}
+			rs.close();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

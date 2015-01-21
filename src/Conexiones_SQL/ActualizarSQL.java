@@ -2788,8 +2788,8 @@ public class ActualizarSQL {
 	
 	}	
 
-	public boolean Actualizar_Cancelar_Ticket_o_Abono(String folio_ticket_abono, String usuario_cancelo, String movimiento){
-		String query ="exec sp_update_cancelar_ticket_o_abono ?,?,?";
+	public boolean Actualizar_Cancelar_Ticket_o_Abono(String folio_ticket_abono, String usuario_cancelo, String movimiento, String cajero){
+		String query ="exec sp_update_cancelar_ticket_o_abono ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -2799,10 +2799,12 @@ public class ActualizarSQL {
 				System.out.println(folio_ticket_abono);
 				System.out.println(usuario_cancelo);
 				System.out.println(movimiento);
+				System.out.println(cajero);
 				
 				pstmt.setString(1, folio_ticket_abono);
 				pstmt.setString (2, usuario_cancelo);
 				pstmt.setString (3, movimiento);
+				pstmt.setString(4, cajero);
 				pstmt.executeUpdate();
 
 				con.commit();
