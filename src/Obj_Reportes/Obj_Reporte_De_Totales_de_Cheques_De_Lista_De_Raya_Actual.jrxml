@@ -60,9 +60,24 @@
 	<variable name="Total Final Cheque Nomina Super" class="java.math.BigDecimal" resetType="Group" resetGroup="Grupo_Cheque" calculation="Sum">
 		<variableExpression><![CDATA[$F{total_cheque_nomina}]]></variableExpression>
 	</variable>
-	<variable name="Total Final Cheque Nomina Ferre" class="java.math.BigDecimal" resetType="Group" resetGroup="Grupo_Cheque" incrementType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$F{total_cheque_nomina}]]></variableExpression>
-		<initialValueExpression><![CDATA[$F{grupo_para_cheque}.equals("IZACEL")]]></initialValueExpression>
+	<variable name="Total Final Cheque Nomina Ferre" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{grupo_para_cheque}.equals("FERRE Y REFA")? $F{total_cheque_nomina}:0]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Total Final Cheque Nomina Izacel" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{grupo_para_cheque}.equals("IZACEL")? $F{total_cheque_nomina}:0]]></variableExpression>
+	</variable>
+	<variable name="Total Final Diferiencia LR FERRE" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{grupo_para_cheque}.equals("FERRE Y REFA")?$F{diferencia}:0]]></variableExpression>
+	</variable>
+	<variable name="Total Final Diferiencia LR SuperEIzacel" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{grupo_para_cheque}.equals("IZACEL")||$F{grupo_para_cheque}.equals("SUPER")?$F{diferencia}:0]]></variableExpression>
+	</variable>
+	<variable name="Cheque Complemento Supers" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[($F{grupo_para_cheque}.equals("IZACEL")||$F{grupo_para_cheque}.equals("SUPER")?$F{diferencia}:0)-($F{grupo_para_cheque}.equals("IZACEL")||$F{grupo_para_cheque}.equals("SUPER")? $F{total_cheque_nomina}:0)]]></variableExpression>
+	</variable>
+	<variable name="Cheque Complemento Ferre" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[($F{grupo_para_cheque}.equals("FERRE Y REFA")?$F{diferencia}:0)-($F{grupo_para_cheque}.equals("FERRE Y REFA")? $F{total_cheque_nomina}:0)]]></variableExpression>
 	</variable>
 	<group name="Group2" keepTogether="true">
 		<groupHeader>
@@ -323,14 +338,122 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="67">
-			<textField>
-				<reportElement x="306" y="37" width="100" height="20" uuid="b7d814db-79b8-4b2c-9484-5f1b4b4f818b"/>
+		<band height="118">
+			<rectangle>
+				<reportElement x="2" y="1" width="553" height="113" uuid="5fcdfbc8-7e06-4fc7-a3c0-37894da85f1c"/>
+			</rectangle>
+			<image>
+				<reportElement x="379" y="3" width="106" height="40" uuid="f6336799-849a-49b5-8ad6-d9ad258027f2"/>
+				<imageExpression><![CDATA["C:\\SCOI\\imagen\\Imagen_cheque .jpg"]]></imageExpression>
+			</image>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="205" y="65" width="62" height="14" uuid="b7d814db-79b8-4b2c-9484-5f1b4b4f818b"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{Total Final Cheque Nomina Super}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="96" y="27" width="100" height="20" uuid="f1e72143-45a6-404a-881c-50ef5eecfa13"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="204" y="37" width="63" height="14" uuid="f1e72143-45a6-404a-881c-50ef5eecfa13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{Total Final Cheque Nomina Ferre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="37" width="211" height="14" uuid="f38d9e88-e778-471f-83b4-96fe66f49f2e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL CHEQUE NOMINA FERRE Y REFA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="51" width="211" height="14" uuid="e094e3a7-6993-4cb2-be23-74e2211fdcbb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL CHEQUE NOMINA IZACEL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="65" width="211" height="14" uuid="441581bc-ec88-4f41-b21e-b72354a41bd6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL CHEQUE NOMINA SUPER'S:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="204" y="51" width="63" height="14" uuid="df544c4c-7513-4e16-800a-6fa6c61932e5"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total Final Cheque Nomina Izacel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="38" width="207" height="14" uuid="401f529e-d2a5-4eab-8374-737086332c2c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL CHEQUE DIF FERRE Y REFA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="52" width="207" height="14" uuid="7f47db6a-69e5-4deb-b351-c8af628d5350"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL CHEQUE DIF IZACEL Y SUPER'S :]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="467" y="38" width="86" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="25142eeb-3182-4e03-aff7-35a5444c25b8"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total Final Diferiencia LR FERRE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="485" y="52" width="68" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="fc43915a-9e4b-44a7-bfdc-99c1f84be1d2"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total Final Diferiencia LR SuperEIzacel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="104" y="3" width="275" height="22" uuid="d3bed017-58b4-49b1-b9c7-df2a6805076b"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESUMEN DE TOTALES DE CHEQUES:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="85" width="250" height="14" uuid="96eb8665-f70e-4bc1-8ac4-789e63e7c33c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL CHEQUE COMPLEMENTO FERRE Y REFA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="99" width="266" height="14" uuid="42196801-df3f-407f-8e05-faf126c18608"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL CHEQUE COMPLEMENTO IZACEL Y SUPER'S:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="362" y="99" width="65" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="e9af628e-b6fe-4007-aed8-71d1b5788eaa"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Cheque Complemento Supers}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="352" y="85" width="75" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="eb16a81d-b92b-42cc-884c-30475302b088"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Cheque Complemento Ferre}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

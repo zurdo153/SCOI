@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -38,9 +39,9 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 	Object[][] Matriz_nomina_neto_bms ;
 	Object[][] Matriz_Conciliados;
 	Object[][] Matriz_Mal_Clasificados_SCOI;
-	JButton btnAgregar = new JButton("Traspaso Por Nombre");
-	public JButton btnAplicar = new JButton("Aplicar Nomina a Depositos Banco");
-	JButton btnRemover = new JButton("Remover");
+	JButton btnAgregar = new JButton("Traspaso Por Nombre",new ImageIcon("imagen/double-arrow-icone-3883-16.png"));
+	public JButton btnAplicar = new JButton("Aplicar Nomina a Depositos Banco",new ImageIcon("imagen/Aplicar.png"));
+	JButton btnRemover = new JButton("Remover Conciliado",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 
 	
 //TABLA PENDIENTES DE CONCILIAR SCOI-----------------------------------------------------------------------------------------
@@ -277,9 +278,9 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 		campo.add(scrollmalclasificadosSCOIs).setBounds(15,585,630,150);
      	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		campo.add(btnAgregar).setBounds(710,10,200,20);
-		campo.add(btnAplicar).setBounds(710,710,200,20);
-		campo.add(btnRemover).setBounds(830, 290, 80, 20);
+		campo.add(btnAgregar).setBounds(700,10,195,20);
+		campo.add(btnRemover).setBounds(700, 290,195, 20);
+		campo.add(btnAplicar).setBounds(650,583,240,20);
 		btnAplicar.setEnabled(false);
 		
 		cont.add(campo);

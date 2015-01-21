@@ -58,6 +58,8 @@ import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Principal.Componentes;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
@@ -399,10 +401,9 @@ public class Cat_Abono_Clientes extends JFrame{
 		
 		pintar_botones();
 		
-//		int folio_empleado=new Obj_Usuario().LeerSession().getFolio();
-//		Obj_Retiros_Cajeros datosEmpleado= new Obj_Retiros_Cajeros().buscarEmpleado(folio_empleado);
-//		
-//		txtEstablecimiento.setText(datosEmpleado.getEstablecimiento());
+		int folio_empleado=new Obj_Usuario().LeerSession().getFolio();
+		Obj_Retiros_Cajeros datosEmpleado= new Obj_Retiros_Cajeros().buscarEmpleado(folio_empleado);
+		txtEstablecimiento.setText(datosEmpleado.getEstablecimiento());
 		
 		txtEstablecimiento.setText("SUPER V");
 		txtEstablecimiento.setHorizontalAlignment(0);

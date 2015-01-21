@@ -32,7 +32,9 @@ public class BuscarTablasModel {
 				float total = rs.getFloat(6);
 				matriz[i][3] = banamex == Float.parseFloat("0.0") ? "" : banamex ;
 				matriz[i][4] = banorte == Float.parseFloat("0.0") ? "" : banorte ;
-				matriz[i][5] = total == Float.parseFloat("0.0") ? "" : total ;
+				matriz[i][5] = total == Float.parseFloat("0.0") ? "" :Decimal( total) ;
+				
+//				Float.parseFloat(rs.getString(24)) == 0 ? "" : Decimal(Float.parseFloat(rs.getString(24)))
 				i++;
 			}
 		} catch (SQLException e1) {

@@ -56,11 +56,13 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	public JTextField txtBanamex = new JTextField();
 	public JTextField txtBanorte = new JTextField();
 	public JTextField txtTotales = new JTextField();
-	    
+	   
+	float numero=0;
+	
 	public static DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Depositos_A_Bancos().get_tabla_model(),
-            new String[]{"Folio", "Nombre Completo", "Establecimientos", "Banamex", "Banorte", "Total a Pagar" }
+            new String[]{"Folio", "Nombre Completo", "Establecimientos", "Banamex", "Banorte", "Total a Pagar","Sugerido" }
 			){
-
+        
         public boolean isCellEditable(int fila, int columna){
         	switch(columna){
         		case 0 : return false; 
@@ -86,9 +88,8 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
     	 			 }else{
     	 				 return false;
     	 			 }
-        	 	case 5 : 
-        	 		return false;
-
+        	 	case 5 : return false;
+        	 	case 6 : return false;
         	 } 				
  			return false;
  		}
@@ -104,6 +105,8 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	JButton btn_IDepositosBancP_Estab = new JButton();
 	JButton btn_EmpleadosS_Dep = new JButton ();
 	JButton btn_Empleados_Pagar_Negativo =new JButton ();
+	
+	JButton btn_aplicar_Sugerido =new JButton ("Aplicar Sugerido",new ImageIcon("imagen/Aplicar.png"));
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(tabla_model); 
@@ -112,10 +115,14 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/money_icon&16.png"));
 		this.setTitle("Bancos");
 			
-		this.panel.add(cmbEstablecimientos).setBounds(463,35,210,20);
-		this.panel.add(chbHabilitarBanamex).setBounds(700,35,90,20);
-		this.panel.add(chbHabilitarBanorte).setBounds(820,35,90,20);
-		this.panel.add(chbNegativos).setBounds(920,35,120,20);
+		this.panel.add(cmbEstablecimientos).setBounds(385,35,190,20);
+		this.panel.add(chbHabilitarBanamex).setBounds(580,35,90,20);
+		this.panel.add(chbHabilitarBanorte).setBounds(700,35,90,20);
+		this.panel.add(chbNegativos).setBounds(800,35,130,20);
+		this.panel.add(btn_aplicar_Sugerido).setBounds(930,35,140,20);
+		
+		panel.remove(txtNombre_Completo);
+		this.panel.add(txtNombre_Completo).setBounds(101,35,280,20);
 		
 		this.panel.add(scroll_tabla).setBounds(30,60,1035,615);
 		this.panel.add(btn_lay_out).setBounds(1085,160,40,40);
@@ -177,6 +184,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.btn_IDepositosBancP_Estab.addActionListener(Reporte_Depositos_Bancos_);
 		this.btn_EmpleadosS_Dep.addActionListener(Reporte_Empleados_Sin_Depositos_A_Bancos_);
 		this.btn_Empleados_Pagar_Negativo.addActionListener(Reporte_Empleados_Con_Depositos_A_Bancos_Excedido);
+		this.btn_aplicar_Sugerido.addActionListener(aplicarSugerido);
 		this.btn_refrescar.setVisible(false);
 			
 		btn_lay_out.setToolTipText("Generar Lay Out");
@@ -187,10 +195,43 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
 		this.chbNegativos.addActionListener(op_negativos);
 		
+		calcularSugerido();
+		
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		this.setLocationRelativeTo(null);
 		this.addWindowListener(op_cerrar);
 	}
+    
+    public void calcularSugerido(){
+ 		for(int i=0; i<tabla.getRowCount(); i++){
+ 			if(tabla_model.getValueAt(i,3).toString().equals("")&&tabla_model.getValueAt(i,4).toString().equals("")){
+ 				tabla_model.setValueAt("", i, 6);
+ 			}else{
+ 				
+	 		if(tabla_model.getValueAt(i,5).toString().equals("")){numero=0;}else{ numero=Float.valueOf(tabla_model.getValueAt(i,5).toString());}
+	 			
+	 			if(numero < 0){
+        	 		if(tabla_model.getValueAt(i,3).toString().equals("")){ 	 		        	
+	 		        	tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,4).toString())+numero+"", i, 6) ;
+	 		           }else{
+	 		        	  tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,3).toString())+numero+"", i, 6) ;
+	 		           }
+	        }else{ tabla_model.setValueAt("", i, 6);
+	        }
+	        }
+ 		}
+    }
+    
+    ActionListener aplicarSugerido = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+ 		for(int i=0; i<tabla.getRowCount(); i++){
+ 			if(!tabla_model.getValueAt(i,6).toString().equals("")){		
+	 			if(tabla_model.getValueAt(i,3).toString().equals("")){tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,6).toString()), i, 4); }
+															 	 else{tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,6).toString()), i, 3); }
+	 			}
+ 		}
+     }
+    };
     
     WindowListener op_cerrar = new WindowListener() {
 		public void windowOpened(WindowEvent e) {}
@@ -258,6 +299,8 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 							txtBanamex.setText("$ "+returnBanamex());
 							txtBanorte.setText("$ "+returnBanorte());
 							txtTotales.setText("$ "+returnTotales());
+							
+							calcularSugerido();
 							
 							JOptionPane.showMessageDialog(null, "La tabla bancos se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
 							return;
@@ -363,16 +406,18 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
     	
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(72);
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(72);		
-    	this.tabla.getColumnModel().getColumn(1).setMaxWidth(360);
-    	this.tabla.getColumnModel().getColumn(1).setMinWidth(360);
-    	this.tabla.getColumnModel().getColumn(2).setMaxWidth(210);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(210);
+    	this.tabla.getColumnModel().getColumn(1).setMaxWidth(280);
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(280);
+    	this.tabla.getColumnModel().getColumn(2).setMaxWidth(180);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(180);
     	this.tabla.getColumnModel().getColumn(3).setMaxWidth(120);
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(120);
     	this.tabla.getColumnModel().getColumn(4).setMaxWidth(120);
     	this.tabla.getColumnModel().getColumn(4).setMinWidth(120);		
     	this.tabla.getColumnModel().getColumn(5).setMaxWidth(130);
     	this.tabla.getColumnModel().getColumn(5).setMinWidth(130);
+    	this.tabla.getColumnModel().getColumn(6).setMaxWidth(110);
+    	this.tabla.getColumnModel().getColumn(6).setMinWidth(110);
     	
 		TableCellRenderer render = new TableCellRenderer() {
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -397,6 +442,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 								case 3 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
 								case 4 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
 								case 5 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+								case 6 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
 							}
 							return lbl; 
 					} 
@@ -619,6 +665,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 										txtBanamex.setText("$ "+returnBanamex());
 										txtBanorte.setText("$ "+returnBanorte());
 										txtTotales.setText("$ "+returnTotales());
+										calcularSugerido();
 											
 								JOptionPane.showMessageDialog(null,"El Transpaso Se a Realizado Exitosamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 								return;

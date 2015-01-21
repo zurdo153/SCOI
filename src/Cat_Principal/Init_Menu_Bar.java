@@ -20,7 +20,7 @@ public class Init_Menu_Bar extends Init_Login{
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
 		
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.4.10");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.4.12");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
