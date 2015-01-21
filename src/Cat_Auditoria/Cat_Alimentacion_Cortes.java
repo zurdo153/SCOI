@@ -1119,6 +1119,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		return registrado;
 	}
  	
+ 	
 	public void obtener_totales_de_tAire_rLuz_por_folio_de_corte(){
 		
 //		,"+lblFolio_Empleado.getText()
@@ -1135,7 +1136,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						txtApartados.setText(rs.getString("APA"));
 						txtAbonos.setText(rs.getString("TOTAL_ABONOS"));
 						
-						txtCorteSistema.setText(formato.format(Double.valueOf(txtCorteSistema.getText())+Double.parseDouble(txtAbonos.getText()))+"");
+//						txtCorteSistema.setText(formato.format(Double.valueOf(txtCorteSistema.getText())+Double.parseDouble(txtAbonos.getText()))+"");
+						corte_sitema();
 					}
 				con.commit();
 				
@@ -1145,18 +1147,55 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			}
 	}
 	
+	public void corte_sitema(){
+//		double cantidad =  Double.valueOf(tabla_asignaciones.getValueAt(fila, 3).toString().trim());
+		
+		
+		double suma_recalculada = 0;
+		
+		if(tabla_asignaciones.getRowCount()==0){
+			txtCorteSistema.setText( "0.0000" );
+			txtAbonos.setText("0.0000");
+		}else{
+			for(int i = 0; i<tabla_asignaciones.getRowCount(); i++){
+				suma_recalculada = suma_recalculada += Double.valueOf(tabla_asignaciones.getValueAt(i, 3).toString().trim());
+			}
+			txtCorteSistema.setText( formato.format(suma_recalculada + Double.valueOf(txtAbonos.getText().trim()))+"" );
+		}
+	}
+	
+	int fila=0;
 	ActionListener opQuitarAsignacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				int fila = tabla_asignaciones.getSelectedRow();
+				fila = tabla_asignaciones.getSelectedRow();
 				if(fila<0){
 			   			 JOptionPane.showMessageDialog(null, "Debe Seleccionar La Asignacion Que Desea Quitar","Aviso",JOptionPane.INFORMATION_MESSAGE);
 			              return;
 				}else{
-						double cantidad =  Double.valueOf(tabla_asignaciones.getValueAt(fila, 3).toString().trim());
+					
+					modelo_asignaciones.removeRow(fila);
+//					corte_sitema();
+////						double cantidad =  Double.valueOf(tabla_asignaciones.getValueAt(fila, 3).toString().trim());
+//						modelo_asignaciones.removeRow(fila);
+//						
+//						double suma_recalculada = 0;
+//						
+//						if(tabla_asignaciones.getRowCount()==0){
+//							txtCorteSistema.setText( "0.0000" );
+//							txtAbonos.setText("0.0000");
+//						}else{
+//							for(int i = 0; i<tabla_asignaciones.getRowCount(); i++){
+//								suma_recalculada = suma_recalculada += Double.valueOf(tabla_asignaciones.getValueAt(i, 3).toString().trim());
+//							}
+//							txtCorteSistema.setText( formato.format(suma_recalculada + Double.valueOf(txtAbonos.getText().trim()))+"" );
+//						}
 						
-						txtCorteSistema.setText( formato.format((Double.valueOf(txtCorteSistema.getText()) - cantidad))+"" );
 						
-						modelo_asignaciones.removeRow(fila);
+						
+						
+						
+						
+						
 						
 						txtTotalVaucher.setText( "" );
 						txtTotalRetiros.setText("");
@@ -1170,10 +1209,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						}
 						
 						if(borrar_lista_de_asignaciones()){
-									
 							cargar_lista_de_asignaciones();
 				    		obtener_totales_de_tAire_rLuz_por_folio_de_corte();
-				    			txtAbonos.setText("0.0");
+
 				    		calculoDinamico();
 				    			
 //			    			procedimiento para llenar  (tabla_de_ventas_por_fecha)  con respecto a las asignaciones seleccionadas
@@ -3122,7 +3160,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			retiroCliente = txtTotalRetiros.getText().equals("")?0:Double.parseDouble(txtTotalRetiros.getText());
 			
 			
-			diferienciaCorte = ((corteSistema+apartado+abono)-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
+			diferienciaCorte = ((corteSistema+apartado-abono)-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
 			
 			if(diferienciaCorte < 0){
 					lblEtiquetaCorte.setText("Sobrante");

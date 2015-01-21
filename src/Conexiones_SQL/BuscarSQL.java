@@ -230,7 +230,7 @@ public class BuscarSQL {
 			while(rs.next()){
 				folio.setFolio_corte(rs.getString("folio_corte"));
 			}
-			
+			rs.close();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Obj_Alimentacion_Cortes ]   SQLException: sp_select_comprobar_folio_corte_deposito "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
@@ -5865,6 +5865,85 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return establecimiento;
+	}
+	
+	public Obj_Retiros_Cajeros datos_cajero_para_ahorro_cte(Integer folio_empleado) throws SQLException{
+		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
+		
+	   String pc_nombre="";
+//	 	pc_nombre ="SIV_CAJA1";
+	   
+					try {
+	   pc_nombre = InetAddress.getLocalHost().getHostName();
+					    			InetAddress.getLocalHost().getHostName();
+					} catch (UnknownHostException e1) {
+						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+		
+					
+		String query = "exec sp_select_datos_cajero '"+folio_empleado+"'";
+		
+		String query_2=" declare @folio_establecimiento int, @nombre_caja varchar(20), @folio_empleado int " +
+						" set @nombre_caja= '"+pc_nombre+"'; " +
+						" set @folio_empleado = '"+folio_empleado+"'; " +
+						" set @folio_establecimiento =(select cod_estab from cajas where caja= (select caja from equipos_bms where nombre=@nombre_caja)); " +
+						"	select establecimientos.nombre as establecimiento " +
+						"			,Asignaciones_cajeros.Folio as folio_asignacion " +
+						"	from Asignaciones_cajeros " +
+						"		inner join establecimientos on establecimientos.cod_estab = Asignaciones_cajeros.cod_estab " +
+						"	where Asignaciones_cajeros.status = 'V' and Asignaciones_cajeros.Folio = (select folio_asignacion " +
+						"									from cajeros " +
+						"									where cod_estab=@folio_establecimiento" +
+						" 									and status_asignacion='A' " +
+						"									and e_mail=@folio_empleado) " +
+						"	and fecha_inicial<=getdate() " +
+						"	and fecha_final>=getdate()";
+		
+				
+		Statement stmt = null;
+		Statement stmt2= null;
+		
+						try {
+							stmt = con.conexion().createStatement();
+							stmt2= con.conexion_IZAGAR().createStatement();
+									
+							ResultSet rs = stmt.executeQuery(query);
+							ResultSet rs2= stmt2.executeQuery(query_2);
+							
+									while(rs.next()){
+										datos_empleado.setFolio_empleado(rs.getInt("Folio_Empleado"));
+										datos_empleado.setNombre(rs.getString("Nombre"));
+										datos_empleado.setPuesto(rs.getString("Puesto"));
+										datos_empleado.setPc(pc_nombre);
+										
+										File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
+										FileOutputStream fos = new FileOutputStream(photo);
+										        byte[] buffer = new byte[1];
+										        InputStream is = rs.getBinaryStream("Foto");
+										        while (is.read(buffer) > 0) {
+										        	fos.write(buffer);
+										        }
+										        fos.close();
+							    	}
+
+									
+								   while(rs2.next()){
+								 			datos_empleado.setEstablecimiento(rs2.getString("establecimiento"));
+//											datos_empleado.setImporte_total(rs2.getFloat("importe"));
+											datos_empleado.setAsignacion(rs2.getString("folio_asignacion"));
+								    }
+							
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero_para_ahorro_cte \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+							return null;
+						}
+
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return datos_empleado;
 	}
 	
 }

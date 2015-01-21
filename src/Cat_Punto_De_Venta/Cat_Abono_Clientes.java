@@ -58,6 +58,8 @@ import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Principal.Componentes;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
@@ -239,362 +241,389 @@ public class Cat_Abono_Clientes extends JFrame{
 	
 	String bandera="";
 	
+	JButton btnaviso = new JButton();
+	
 	public Cat_Abono_Clientes(){
+		int folio_empleado=new Obj_Usuario().LeerSession().getFolio();
+		Obj_Retiros_Cajeros datosEmpleado= new Obj_Retiros_Cajeros().buscarEmpleado_para_ahorro_cte(folio_empleado);
 		
-		this.fecha.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
-		
-		cont.setBackground(new Color(0,17 ,255));
-		
-		blackline = BorderFactory.createLineBorder(new Color(255,171,0));
-		this.setTitle("Abonos Clientes");
-		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Captura de abonos clientes"));
-		
-		btnCancelarTicket.setToolTipText("Cancelar Ticket");
-		btnCancelarAbono.setToolTipText("Cancelar Abono");
-		btnLiquidarTicket.setToolTipText("Liquidar Cuenta");
-
-    	tabla_cobros.setRowHeight(30);//tamaño de fila
-    	tabla_ticket.setRowHeight(30);//tamaño de fila
-    	tabla_abonos.setRowHeight(30);//tamaño de fila
-    	
-    	lblF2.setFont(new Font("arial", Font.BOLD, 13));
-    	lblF5.setFont(new Font("arial", Font.BOLD, 13));
-    	lblF9.setFont(new Font("arial", Font.BOLD, 13));
-    	lblLimpiar.setFont(new Font("arial", Font.BOLD, 13));
-    	
-    	lblSeleccion_de_tabla.setFont(new Font("arial", Font.BOLD, 12));
-
-		lblSignoCambio.setFont(new Font("arial", Font.BOLD, 25));
-		lblCambio.setFont(new Font("arial", Font.BOLD, 25));
-		
-		lblSignoSaldo.setFont(new Font("arial", Font.BOLD, 25));
-		lblSaldo.setFont(new Font("arial", Font.BOLD, 25));
-		
-		lblImporteTotal.setFont(new Font("arial", Font.BOLD, 25));
-		lblImporte.setFont(new Font("arial", Font.BOLD, 25));
-		
-		lblDineroFaltente.setFont(new Font("arial", Font.BOLD, 25));
-		lblFaltente.setFont(new Font("arial", Font.BOLD, 25));
-		
-		lblSignoCambio.setForeground(Color.white);
-		lblCambio.setForeground(Color.white);
-		
-		lblSignoSaldo.setForeground(Color.white);
-		lblSaldo.setForeground(Color.white);
-		
-		lblImporteTotal.setForeground(Color.white);
-		lblImporte.setForeground(Color.white);
-		
-		lblDineroFaltente.setForeground(Color.white);
-		lblFaltente.setForeground(Color.white);
-		
-//		lblAsignacion.setForeground(Color.white);
-		lblCajero.setForeground(Color.white);
-		lblFolioCli.setForeground(Color.white);
-		lblCliente.setForeground(Color.white);
-		lblTicket.setForeground(Color.white);
-		lblDomicilio.setForeground(Color.white);
-		lblAbono.setForeground(Color.white);
-		lblFechaLim.setForeground(Color.white);
-		
-		lblF2.setForeground(Color.white);
-		lblF5.setForeground(Color.white);
-		lblF9.setForeground(Color.white);
-		lblLimpiar.setForeground(Color.white);
-		
-		lblSeleccion_de_tabla.setForeground(Color.red);
-
-		init_tabla();
-		llamar_render();
-		
-		int x=20; int y=15; int ancho=80;
-		
-//		panel.add(lblAsignacion).setBounds(x, y, ancho, 20);
-		panel.add(txtEstablecimiento).setBounds(x,y,ancho+100,20);
-		
-		panel.add(lblCajero).setBounds(x+195, y, ancho, 20);
-		panel.add(txtCajera).setBounds(x+260,y,(ancho*4)-30,20);
-		
-		panel.add(lblF2).setBounds(x+560,y,ancho*4,20);
-		
-		panel.add(btnCancelarTicket).setBounds(x+820,y,150,20);
-		
-		panel.add(lblFolioCli).setBounds(x, y+=25, ancho, 20);
-		panel.add(txtFolioCliente).setBounds(x+70,y,ancho,20);
-		panel.add(btnBuscar).setBounds(x+150,y,30,20);
-		
-		panel.add(lblCliente).setBounds(x+195, y, ancho, 20);
-		panel.add(txtCliente).setBounds(x+260,y,(ancho*4)-30,20);
-		
-		panel.add(lblF5).setBounds(x+560,y,ancho*4,20);
-		
-		panel.add(btnCancelarAbono).setBounds(x+820,y,150,20);
-		
-		panel.add(lblTicket).setBounds(x, y+=25, ancho, 20);
-		panel.add(txtTiket).setBounds(x+70,y,ancho,20);
-		
-		panel.add(lblDomicilio).setBounds(x+195, y, ancho, 20);
-		panel.add(txtDomicilio).setBounds(x+260,y,(ancho*4)-30,20);
-		
-		panel.add(lblF9).setBounds(x+560,y,ancho*4,20);
-
-		panel.add(btnLiquidarTicket).setBounds(x+820,y,150,20);
-		
-		panel.add(lblAbono).setBounds(x, y+=25, ancho, 20);
-		panel.add(txtAbono).setBounds(x+70,y,ancho,20);
-		
-		panel.add(lblFechaLim).setBounds(x+195, y, ancho, 20);
-		panel.add(fecha).setBounds(x+260, y, ancho+10, 20);
-		panel.add(btnGuardarAbono).setBounds(x+355,y,ancho,20);
-		panel.add(btnNuevaCuenta).setBounds(x+440,y,ancho+30,20);
-		
-		panel.add(lblLimpiar).setBounds(x+560,y,ancho*4,20);
-		
-		panel.add(lblSeleccion_de_tabla).setBounds(720,y+10,ancho+180,20);
-		
-		panel.add(panelScroll_cobros).setBounds(x, y+=30, 970, 170);
-		panel.add(panelScroll_ticket).setBounds(x, y+=240, 970, 117);
-		panel.add(panelScroll_abonos).setBounds(x, y+=130, 970, 177);
-
-		panel.add(lblDineroFaltente).setBounds(x, 290, ancho*3+20, 40);
-		panel.add(lblFaltente).setBounds(x+290,290,ancho*2+30,40);
-		
-		panel.add(lblSignoSaldo).setBounds(x, 320, ancho*3+20, 40);
-		panel.add(lblSaldo).setBounds(x+290,320,ancho*2+30,40);
-		
-		panel.add(lblImporteTotal).setBounds(x+530, 290, ancho*3+20, 40);
-		panel.add(lblImporte).setBounds(x+820,290,ancho*2+30,40);
-		
-		panel.add(lblSignoCambio).setBounds(x+530, 320, ancho*3+20, 40);
-		panel.add(lblCambio).setBounds(x+820,320,ancho*2+30,40);
-		
-		tabla_cobros.setEnabled(false);
-
-		txtEstablecimiento.setEditable(false);
-		txtCajera.setEditable(false);
-		txtCliente.setEditable(false);
-		txtDomicilio.setEditable(false);
-		txtTiket.setEditable(false);
-		txtAbono.setEditable(false);
-		
-		fecha.setEnabled(false);
-		
-		btnGuardarAbono.setEnabled(false);
-		btnNuevaCuenta.setEnabled(false);
-		
-		btnGuardarAbono.setBackground(new Color(255,171,0));
-		btnGuardarAbono.setForeground(new Color(0,17 ,255));
-		btnGuardarAbono.setContentAreaFilled(false);
-		btnGuardarAbono.setOpaque(true);
-		
-		btnBuscar.setBackground(new Color(255,171,0));
-		btnBuscar.setForeground(new Color(0,17 ,255));
-		btnBuscar.setContentAreaFilled(false);
-		btnBuscar.setOpaque(true);
-		
-		btnNuevaCuenta.setBackground(new Color(255,171,0));
-		btnNuevaCuenta.setForeground(new Color(0,17 ,255));
-		btnNuevaCuenta.setContentAreaFilled(false);
-		btnNuevaCuenta.setOpaque(true);
-		
-		pintar_botones();
-		
-//		int folio_empleado=new Obj_Usuario().LeerSession().getFolio();
-//		Obj_Retiros_Cajeros datosEmpleado= new Obj_Retiros_Cajeros().buscarEmpleado(folio_empleado);
-//		
-//		txtEstablecimiento.setText(datosEmpleado.getEstablecimiento());
-		
-		txtEstablecimiento.setText("SUPER V");
-		txtEstablecimiento.setHorizontalAlignment(0);
-		
-		lblSeleccion_de_tabla.setHorizontalAlignment(4);
-		
-		limpiar();
-		
-//      asigna el foco al JTextField deseado al arrancar la ventana
-        this.addWindowListener(new WindowAdapter() {
-                public void windowOpened( WindowEvent e ){
-               	 txtFolioCliente.requestFocus();
-             }
-        });
-
-		txtAbono.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				if(txtTiket.getText().equals("")){
+				if(datosEmpleado.getAsignacion()== null){
+					this.setTitle("Aviso !!!");
 					
-					JOptionPane.showMessageDialog(null, "Genere ticket nuevo o seleccione uno de la tabla","Aviso",JOptionPane.INFORMATION_MESSAGE);
-					return;
+//					JOptionPane.showMessageDialog(null, "El usuario no esta asignado o no se pudo vincular con asignacion\nfavor de comunicarse con el departamento de sistemas", "Aviso", JOptionPane.WARNING_MESSAGE);
+					btnaviso.setText(	"<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLUE>" +
+							"		<CENTER><p> El usuario no esta asignado o no se pudo vincular con la asignacion, favor de comunicarse con el departamento de sistemas</p></CENTER></FONT></html>"); 
+					panel.add(btnaviso).setBounds(1,1,350,90);
 					
+					cont.add(panel);
+					
+					this.setSize(360,120);
+					this.setResizable(false);
+					this.setLocationRelativeTo(null);
+    		
 				}else{
+		
 					
-					
-					
-					
-					System.out.println(bandera);
-//                  si 		bandera = "" entonces el ticket no es nuevo y se guardara correctamente
-//					else 	pedir fecha limite
-					if(bandera.equals("")){
+					txtEstablecimiento.setText(datosEmpleado.getEstablecimiento());
+					this.setTitle("Abonos Clientes              Folio de asignacion( "+datosEmpleado.getAsignacion().trim()+" )");
+				
+				
+				this.fecha.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
+				
+				cont.setBackground(new Color(0,17 ,255));
+				
+				blackline = BorderFactory.createLineBorder(new Color(255,171,0));
+		//		this.setTitle("Abonos Clientes");
+				this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Captura de abonos clientes"));
+				
+				btnCancelarTicket.setToolTipText("Cancelar Ticket");
+				btnCancelarAbono.setToolTipText("Cancelar Abono");
+				btnLiquidarTicket.setToolTipText("Liquidar Cuenta");
+		
+		    	tabla_cobros.setRowHeight(30);//tamaño de fila
+		    	tabla_ticket.setRowHeight(30);//tamaño de fila
+		    	tabla_abonos.setRowHeight(30);//tamaño de fila
+		    	
+		    	lblF2.setFont(new Font("arial", Font.BOLD, 13));
+		    	lblF5.setFont(new Font("arial", Font.BOLD, 13));
+		    	lblF9.setFont(new Font("arial", Font.BOLD, 13));
+		    	lblLimpiar.setFont(new Font("arial", Font.BOLD, 13));
+		    	
+		    	lblSeleccion_de_tabla.setFont(new Font("arial", Font.BOLD, 12));
+		
+				lblSignoCambio.setFont(new Font("arial", Font.BOLD, 25));
+				lblCambio.setFont(new Font("arial", Font.BOLD, 25));
+				
+				lblSignoSaldo.setFont(new Font("arial", Font.BOLD, 25));
+				lblSaldo.setFont(new Font("arial", Font.BOLD, 25));
+				
+				lblImporteTotal.setFont(new Font("arial", Font.BOLD, 25));
+				lblImporte.setFont(new Font("arial", Font.BOLD, 25));
+				
+				lblDineroFaltente.setFont(new Font("arial", Font.BOLD, 25));
+				lblFaltente.setFont(new Font("arial", Font.BOLD, 25));
+				
+				lblSignoCambio.setForeground(Color.white);
+				lblCambio.setForeground(Color.white);
+				
+				lblSignoSaldo.setForeground(Color.white);
+				lblSaldo.setForeground(Color.white);
+				
+				lblImporteTotal.setForeground(Color.white);
+				lblImporte.setForeground(Color.white);
+				
+				lblDineroFaltente.setForeground(Color.white);
+				lblFaltente.setForeground(Color.white);
+				
+		//		lblAsignacion.setForeground(Color.white);
+				lblCajero.setForeground(Color.white);
+				lblFolioCli.setForeground(Color.white);
+				lblCliente.setForeground(Color.white);
+				lblTicket.setForeground(Color.white);
+				lblDomicilio.setForeground(Color.white);
+				lblAbono.setForeground(Color.white);
+				lblFechaLim.setForeground(Color.white);
+				
+				lblF2.setForeground(Color.white);
+				lblF5.setForeground(Color.white);
+				lblF9.setForeground(Color.white);
+				lblLimpiar.setForeground(Color.white);
+				
+				lblSeleccion_de_tabla.setForeground(Color.red);
+		
+				init_tabla();
+				llamar_render();
+				
+				int x=20; int y=15; int ancho=80;
+				
+		//		panel.add(lblAsignacion).setBounds(x, y, ancho, 20);
+				panel.add(txtEstablecimiento).setBounds(x,y,ancho+100,20);
+				
+				panel.add(lblCajero).setBounds(x+195, y, ancho, 20);
+				panel.add(txtCajera).setBounds(x+260,y,(ancho*4)-30,20);
+				
+				panel.add(lblF2).setBounds(x+560,y,ancho*4,20);
+				
+				panel.add(btnCancelarTicket).setBounds(x+820,y,150,20);
+				
+				panel.add(lblFolioCli).setBounds(x, y+=25, ancho, 20);
+				panel.add(txtFolioCliente).setBounds(x+70,y,ancho,20);
+				panel.add(btnBuscar).setBounds(x+150,y,30,20);
+				
+				panel.add(lblCliente).setBounds(x+195, y, ancho, 20);
+				panel.add(txtCliente).setBounds(x+260,y,(ancho*4)-30,20);
+				
+				panel.add(lblF5).setBounds(x+560,y,ancho*4,20);
+				
+				panel.add(btnCancelarAbono).setBounds(x+820,y,150,20);
+				
+				panel.add(lblTicket).setBounds(x, y+=25, ancho, 20);
+				panel.add(txtTiket).setBounds(x+70,y,ancho,20);
+				
+				panel.add(lblDomicilio).setBounds(x+195, y, ancho, 20);
+				panel.add(txtDomicilio).setBounds(x+260,y,(ancho*4)-30,20);
+				
+				panel.add(lblF9).setBounds(x+560,y,ancho*4,20);
+		
+				panel.add(btnLiquidarTicket).setBounds(x+820,y,150,20);
+				
+				panel.add(lblAbono).setBounds(x, y+=25, ancho, 20);
+				panel.add(txtAbono).setBounds(x+70,y,ancho,20);
+				
+				panel.add(lblFechaLim).setBounds(x+195, y, ancho, 20);
+				panel.add(fecha).setBounds(x+260, y, ancho+10, 20);
+				panel.add(btnGuardarAbono).setBounds(x+355,y,ancho,20);
+				panel.add(btnNuevaCuenta).setBounds(x+440,y,ancho+30,20);
+				
+				panel.add(lblLimpiar).setBounds(x+560,y,ancho*4,20);
+				
+				panel.add(lblSeleccion_de_tabla).setBounds(720,y+10,ancho+180,20);
+				
+				panel.add(panelScroll_cobros).setBounds(x, y+=30, 970, 170);
+				panel.add(panelScroll_ticket).setBounds(x, y+=240, 970, 117);
+				panel.add(panelScroll_abonos).setBounds(x, y+=130, 970, 177);
+		
+				panel.add(lblDineroFaltente).setBounds(x, 290, ancho*3+20, 40);
+				panel.add(lblFaltente).setBounds(x+290,290,ancho*2+30,40);
+				
+				panel.add(lblSignoSaldo).setBounds(x, 320, ancho*3+20, 40);
+				panel.add(lblSaldo).setBounds(x+290,320,ancho*2+30,40);
+				
+				panel.add(lblImporteTotal).setBounds(x+530, 290, ancho*3+20, 40);
+				panel.add(lblImporte).setBounds(x+820,290,ancho*2+30,40);
+				
+				panel.add(lblSignoCambio).setBounds(x+530, 320, ancho*3+20, 40);
+				panel.add(lblCambio).setBounds(x+820,320,ancho*2+30,40);
+				
+				tabla_cobros.setEnabled(false);
+		
+				txtEstablecimiento.setEditable(false);
+				txtCajera.setEditable(false);
+				txtCliente.setEditable(false);
+				txtDomicilio.setEditable(false);
+				txtTiket.setEditable(false);
+				txtAbono.setEditable(false);
+				
+				fecha.setEnabled(false);
+				
+				btnGuardarAbono.setEnabled(false);
+				btnNuevaCuenta.setEnabled(false);
+				
+				btnGuardarAbono.setBackground(new Color(255,171,0));
+				btnGuardarAbono.setForeground(new Color(0,17 ,255));
+				btnGuardarAbono.setContentAreaFilled(false);
+				btnGuardarAbono.setOpaque(true);
+				
+				btnBuscar.setBackground(new Color(255,171,0));
+				btnBuscar.setForeground(new Color(0,17 ,255));
+				btnBuscar.setContentAreaFilled(false);
+				btnBuscar.setOpaque(true);
+				
+				btnNuevaCuenta.setBackground(new Color(255,171,0));
+				btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+				btnNuevaCuenta.setContentAreaFilled(false);
+				btnNuevaCuenta.setOpaque(true);
+				
+				pintar_botones();
+		
+		//		txtEstablecimiento.setText("SUPER V");
+				txtEstablecimiento.setHorizontalAlignment(0);
+				lblSeleccion_de_tabla.setHorizontalAlignment(4);
+				
+				limpiar();
+				
+		//      asigna el foco al JTextField deseado al arrancar la ventana
+		        this.addWindowListener(new WindowAdapter() {
+		                public void windowOpened( WindowEvent e ){
+		               	 txtFolioCliente.requestFocus();
+		             }
+		        });
+		
+				txtAbono.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
 						
-							if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
-									JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
-									return;
-							}else{
-								btnGuardarAbono.setEnabled(true);
-									tabla_cobros.setEnabled(true);
-									tabla_cobros.editCellAt(fila, columna);
-									Component aComp=tabla_cobros.getEditorComponent();
-									aComp.requestFocus();
-							}
-						
-					}else{
-						String fechaNull = fecha.getDate()+"";
-						
-						String fecha_parametro = "";
-						if(!fechaNull.equals("null")){
-							fecha_parametro = new SimpleDateFormat("dd/MM/yyyy").format(fecha.getDate());;
-						}
-						
-						if(fecha_parametro.equals("")){
-								JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
-								return;
+						if(txtTiket.getText().equals("")){
+							
+							JOptionPane.showMessageDialog(null, "Genere ticket nuevo o seleccione uno de la tabla","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							return;
+							
 						}else{
-								if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
-									JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
-									return;
-								}else{
-									btnGuardarAbono.setEnabled(true);
-										tabla_cobros.setEnabled(true);
-										tabla_cobros.editCellAt(fila, columna);
-										Component aComp=tabla_cobros.getEditorComponent();
-										aComp.requestFocus();
+							
+							
+							
+							
+		//					System.out.println(bandera);
+		//                  si 		bandera = "" entonces el ticket no es nuevo y se guardara correctamente
+		//					else 	pedir fecha limite
+							if(bandera.equals("")){
+								
+									if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
+											JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+											return;
+									}else{
+										
+										btnGuardarAbono.setEnabled(true);
+											tabla_cobros.setEnabled(true);
+											
+		//								if(Integer.valueOf(tabla_cobros.getValueAt(fila, columna)+"")==0){
+		//									tabla_cobros.setValueAt("",fila, columna);
+		//								}
+											
+											tabla_cobros.editCellAt(fila, columna);
+											Component aComp=tabla_cobros.getEditorComponent();
+											aComp.requestFocus();
+									}
+								
+							}else{
+								String fechaNull = fecha.getDate()+"";
+								
+								String fecha_parametro = "";
+								if(!fechaNull.equals("null")){
+									fecha_parametro = new SimpleDateFormat("dd/MM/yyyy").format(fecha.getDate());;
 								}
-						}
-							
-					}
-					
-					
-					
-					
-					
-					
-				}
-			}
-		});
-		
-		tabla_cobros.addKeyListener(new KeyListener() {
-			public void keyTyped(KeyEvent arg0) {}
-			public void keyReleased(KeyEvent arg0) {
-						if(CalcularImporte()==false){
-								JOptionPane.showMessageDialog(null, "Se introdujo un valor no valido","Aviso",JOptionPane.INFORMATION_MESSAGE);
-								tabla_cobros.setValueAt(0, fila, columna);
-								return;
-						}
-			}
-			public void keyPressed(KeyEvent arg0) {}
-		});
-		
-		//  filtro cliente
-	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-	       KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "filtrar");
-	    
-	    getRootPane().getActionMap().put("filtrar", new AbstractAction(){
-	        public void actionPerformed(ActionEvent e)
-	        {
-	        	new Cat_Filtro_Clientes().setVisible(true);
-	        }	    
-	    });
-	    
-		//  cobrar 
-	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-	       KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "cobrar");
-	    
-	    getRootPane().getActionMap().put("cobrar", new AbstractAction(){
-	        @Override
-	        public void actionPerformed(ActionEvent e)
-	        {
-	        	
-	        	if(txtCliente.getText().equals("")){
-	        		JOptionPane.showMessageDialog(null, "No se ha seleccionado un cliente aun","Aviso",JOptionPane.INFORMATION_MESSAGE);
-					return;
-	        	}else{
-	        		if(txtTiket.getText().equals("")){
-	        			JOptionPane.showMessageDialog(null, "Genere ticket nuevo o seleccione uno de la tabla","Aviso",JOptionPane.INFORMATION_MESSAGE);
-						return;
-	        		}else{
-//	                  si 		bandera = "" entonces el ticket no es nuevo y se guardara correctamente
-//						else 	pedir fecha limite
-						if(bandera.equals("")){
-							
-								if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
-										JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								
+								if(fecha_parametro.equals("")){
+										JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
 										return;
 								}else{
-									abonar();
+										if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
+											JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+											return;
+										}else{
+											btnGuardarAbono.setEnabled(true);
+												tabla_cobros.setEnabled(true);
+												
+		//										if(Integer.valueOf(tabla_cobros.getValueAt(fila, columna)+"")==0){
+		//											tabla_cobros.setValueAt("",fila, columna);
+		//										}
+												
+												tabla_cobros.editCellAt(fila, columna);
+												Component aComp=tabla_cobros.getEditorComponent();
+												aComp.requestFocus();
+										}
 								}
+									
+							}
 							
-						}else{
-								JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
-								return;
 						}
-	        		}
-	        	}
-	        }
-	    });
-	    
-		//  cobrar 
-	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-	       KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "limpiar_pantalla");
-	    
-	    getRootPane().getActionMap().put("limpiar_pantalla", new AbstractAction(){
-	        @Override
-	        public void actionPerformed(ActionEvent e)
-	        {
-		        	limpiar();
-	        }
-	    });
-	    
-	//  Ticket a detalle 
-	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-	       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "ticketDetalle");
-	    
-	    getRootPane().getActionMap().put("ticketDetalle", new AbstractAction(){
-	        @Override
-	        public void actionPerformed(ActionEvent e)
-	        {
-	        	if(tabla_ticket.getSelectedRow()<0){
-	        		
-	        		JOptionPane.showMessageDialog(null, "Debe selecccionar el ticket que desea reimprimir", "Aviso !!!", JOptionPane.INFORMATION_MESSAGE);
-					return;
-	        	}else{
-//    		    	imprimir ticket 
-					new Cat_Genera_Ticket_De_Abono_Cliente(txtTiket.getText(),"abono");
-	        	}
-	        }
-	    });
-	    
-	    txtFolioCliente.addActionListener(opBuscar);
-		btnBuscar.addActionListener(opBuscar);
-		btnNuevaCuenta.addActionListener(opGenerarNuevaCuenta);
-		btnGuardarAbono.addActionListener(opGenerarAbono);
+					}
+				});
+				
+				tabla_cobros.addKeyListener(new KeyListener() {
+					public void keyTyped(KeyEvent arg0) {}
+					public void keyReleased(KeyEvent arg0) {
+								if(CalcularImporte()==false){
+										JOptionPane.showMessageDialog(null, "Se introdujo un valor no valido","Aviso",JOptionPane.INFORMATION_MESSAGE);
+										tabla_cobros.setValueAt(0, fila, columna);
+										return;
+								}
+					}
+					public void keyPressed(KeyEvent arg0) {}
+				});
+				
+				//  filtro cliente
+			    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+			       KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "filtrar");
+			    
+			    getRootPane().getActionMap().put("filtrar", new AbstractAction(){
+			        public void actionPerformed(ActionEvent e)
+			        {
+			        	new Cat_Filtro_Clientes().setVisible(true);
+			        }	    
+			    });
+			    
+				//  cobrar 
+			    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+			       KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "cobrar");
+			    
+			    getRootPane().getActionMap().put("cobrar", new AbstractAction(){
+			        @Override
+			        public void actionPerformed(ActionEvent e)
+			        {
+			        	
+			        	if(txtCliente.getText().equals("")){
+			        		JOptionPane.showMessageDialog(null, "No se ha seleccionado un cliente aun","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							return;
+			        	}else{
+			        		if(txtTiket.getText().equals("")){
+			        			JOptionPane.showMessageDialog(null, "Genere ticket nuevo o seleccione uno de la tabla","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								return;
+			        		}else{
+		//	                  si 		bandera = "" entonces el ticket no es nuevo y se guardara correctamente
+		//						else 	pedir fecha limite
+								if(bandera.equals("")){
+									
+										if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
+												JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+												return;
+										}else{
+											abonar();
+										}
+									
+								}else{
+										JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
+										return;
+								}
+			        		}
+			        	}
+			        }
+			    });
+			    
+				//  cobrar 
+			    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+			       KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "limpiar_pantalla");
+			    
+			    getRootPane().getActionMap().put("limpiar_pantalla", new AbstractAction(){
+			        @Override
+			        public void actionPerformed(ActionEvent e)
+			        {
+				        	limpiar();
+			        }
+			    });
+			    
+			//  Ticket a detalle 
+			    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+			       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "ticketDetalle");
+			    
+			    getRootPane().getActionMap().put("ticketDetalle", new AbstractAction(){
+			        @Override
+			        public void actionPerformed(ActionEvent e)
+			        {
+			        	if(tabla_ticket.getSelectedRow()<0){
+			        		
+			        		JOptionPane.showMessageDialog(null, "Debe selecccionar el ticket que desea reimprimir", "Aviso !!!", JOptionPane.INFORMATION_MESSAGE);
+							return;
+			        	}else{
+		//    		    	imprimir ticket 
+							new Cat_Genera_Ticket_De_Abono_Cliente(txtTiket.getText(),"abono");
+			        	}
+			        }
+			    });
+			    
+			    txtFolioCliente.addActionListener(opBuscar);
+				btnBuscar.addActionListener(opBuscar);
+				btnNuevaCuenta.addActionListener(opGenerarNuevaCuenta);
+				btnGuardarAbono.addActionListener(opGenerarAbono);
+				
+				btnCancelarTicket.addActionListener(opCancelarTicket);
+				btnCancelarAbono.addActionListener(opCancelarAbono);
+				btnLiquidarTicket.addActionListener(opLiquidarTicket);
+				
+		//    	FUNCION PARA AGREGAR UNA ACCION AL SELECCIONAR UNA FECHA
+		        fecha.getDateEditor().addPropertyChangeListener(opFecha);
+		        
+				CargarCajero();
+				
+				SELECCION_TICKET(tabla_ticket);
+				SELECCION_ABONO(tabla_abonos);
+				
+				cont.add(panel);
+				
+				this.setSize(1024,720);
+				this.setResizable(false);
+				this.setLocationRelativeTo(null);
+			}	
 		
-		btnCancelarTicket.addActionListener(opCancelarTicket);
-		btnCancelarAbono.addActionListener(opCancelarAbono);
-		btnLiquidarTicket.addActionListener(opLiquidarTicket);
-		
-//    	FUNCION PARA AGREGAR UNA ACCION AL SELECCIONAR UNA FECHA
-        fecha.getDateEditor().addPropertyChangeListener(opFecha);
-        
-		CargarCajero();
-		
-		SELECCION_TICKET(tabla_ticket);
-		SELECCION_ABONO(tabla_abonos);
-		
-		cont.add(panel);
-
-		this.setSize(1024,720);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
 	}
 
 	ActionListener opCancelarTicket = new ActionListener() {
@@ -605,7 +634,7 @@ public class Cat_Abono_Clientes extends JFrame{
 				JOptionPane.showMessageDialog(null, "Debe cancelar los abonos primeros", "Aviso !!!", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}else{
-				new Cat_Cancelacion_De_Tickets_C_Ahorro_Clientes("Ticket", folio_ticket_o_folio_abono, cantidad).setVisible(true);
+				new Cat_Cancelacion_De_Tickets_C_Ahorro_Clientes("Ticket", folio_ticket_o_folio_abono, cantidad, txtCajera.getText().toString().trim()).setVisible(true);
 			}
 			
 		}
@@ -614,14 +643,14 @@ public class Cat_Abono_Clientes extends JFrame{
 	ActionListener opCancelarAbono = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			new Cat_Cancelacion_De_Tickets_C_Ahorro_Clientes("Abono", folio_ticket_o_folio_abono, cantidad).setVisible(true);
+			new Cat_Cancelacion_De_Tickets_C_Ahorro_Clientes("Abono", folio_ticket_o_folio_abono, cantidad, txtCajera.getText().toString().trim()).setVisible(true);
 		}
 	};
 	
 	ActionListener opLiquidarTicket = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			new Cat_Cancelacion_De_Tickets_C_Ahorro_Clientes("Liquidar", folio_ticket_o_folio_abono, 0).setVisible(true);
+			new Cat_Cancelacion_De_Tickets_C_Ahorro_Clientes("Liquidar", folio_ticket_o_folio_abono, 0, txtCajera.getText().toString().trim()).setVisible(true);
 		}
 	};
 	
@@ -668,9 +697,13 @@ public class Cat_Abono_Clientes extends JFrame{
 			        		
 //    		    	imprimir ticket 
 							 	new Cat_Genera_Ticket_De_Abono_Cliente(txtTiket.getText(),"abono");
+							 	
+//							 	for(int i = 0; i < tabla_cobros.getRowCount(); i++){
+//							 		tabla_cobros.setValueAt("", i, 2);
+//							 	}
 			        		
 //        			quite edicion de celda de jtable
-							 	tabla_cobros.putClientProperty ("terminateEditOnFocusLost", Boolean.TRUE) ;
+//							 	tabla_cobros.putClientProperty ("terminateEditOnFocusLost", Boolean.TRUE) ;
 			
 				        		txtFolioCliente.setText("");
 				        		txtCliente.setText("");
@@ -680,6 +713,7 @@ public class Cat_Abono_Clientes extends JFrame{
 				        		fecha.setDate(null);
 				        		lblSeleccion_de_tabla.setText("Sin datos seleccionados");
 //	        		txtCliente.requestFocus();
+				        		
 			        		
 				        		while(tabla_cobros.getRowCount()>0)
 				        			tabla_model_cobro.removeRow(0);
@@ -757,12 +791,14 @@ public class Cat_Abono_Clientes extends JFrame{
 	private boolean Validar(int fila, int columna) { 
 		
 			String valor=""; 
-		
-			if(tabla_cobros.getValueAt(fila,columna)==null) { 
-				return false; 
+			double numero =0;
+			
+			if(tabla_cobros.getValueAt(fila,columna).toString().equals("")) {
+				numero =0;
+				return true; 
 			}else{ 
 				
-				double numero =0;
+				
 				
 				try{
 						numero = Double.valueOf(tabla_cobros.getValueAt(fila, columna).toString().trim());
@@ -786,14 +822,20 @@ public class Cat_Abono_Clientes extends JFrame{
 				if(fila == cantidadDeFilas){
 					fila=0;
 				}
+				
+//				if(tabla_cobros.getValueAt(fila, columna).equals("")){
+//					tabla_cobros.setValueAt(0,fila, columna);
+//				}
 		
 				tabla_cobros.editCellAt(fila, columna);
 				Component aComp=tabla_cobros.getEditorComponent();
 				aComp.requestFocus();
 		
 				double totalDelImporte=0;
+				double pago = 0;
 				for(int i=0; i<=tabla_cobros.getRowCount()-1; i++){
-						tabla_cobros.setValueAt((Double.valueOf(tabla_cobros.getValueAt(i, 1).toString().trim())*Double.valueOf(tabla_cobros.getValueAt(i, 2).toString().trim())), i, 3);
+					pago = tabla_cobros.getValueAt(i, 2).toString().trim().equals("")?0:Double.valueOf(tabla_cobros.getValueAt(i, 2).toString().trim());
+						tabla_cobros.setValueAt((Double.valueOf(tabla_cobros.getValueAt(i, 1).toString().trim())*pago), i, 3);
 						totalDelImporte = totalDelImporte + Double.valueOf(tabla_cobros.getValueAt(i, 3).toString().trim());
 				}
 				lblImporte.setText(totalDelImporte+"");
@@ -1036,48 +1078,106 @@ public class Cat_Abono_Clientes extends JFrame{
 //             buacar establecimiento del ticket seleccionado
                     try {
 						establecimiento_de_ticket = new BuscarSQL().establecimiento_ticket_selecionado(folio_ticket_o_folio_abono);
+						
+						if(establecimiento_de_ticket.equals(txtEstablecimiento.getText().toString().trim())){
+							
+	//		                  para validar si pide fecha o no
+			                    bandera="";
+			                	
+			                    lblSeleccion_de_tabla.setText("El ticket   "+ folio_ticket_o_folio_abono+"   esta seleccionado");
+			                    
+				    			txtTiket.setText(folio_ticket_o_folio_abono);
+				    			
+								while(tabla_abonos.getRowCount()>0){tabla_model_abonos.removeRow(0);}
+								
+	//			              	buscar abonos del cliente
+			                    Object [][] lista_abonos = new Obj_Abono_Clientes().get_tabla_abonos(txtTiket.getText());
+			            		String[] filaA = new String[5];
+			                            for(int i=0; i<lista_abonos.length; i++){
+				                            	filaA[0] = lista_abonos[i][0]+"";
+				                            	filaA[1] = lista_abonos[i][1]+"";
+				                            	filaA[2] = lista_abonos[i][2]+"";
+				                            	filaA[3] = lista_abonos[i][3]+"";
+				                            	filaA[4] = lista_abonos[i][4]+"";
+			                                    tabla_model_abonos.addRow(filaA);
+			                            }
+			                            
+			                            tabla_cobros.setEnabled(true);
+
+										txtAbono.setEditable(true);
+										fecha.setEnabled(true);
+
+										btnGuardarAbono.setEnabled(true);
+										btnNuevaCuenta.setEnabled(true);
+										
+										btnGuardarAbono.setBackground(new Color(255,171,0));
+										btnGuardarAbono.setForeground(new Color(0,17 ,255));
+										btnGuardarAbono.setContentAreaFilled(false);
+										btnGuardarAbono.setOpaque(true);
+										
+										btnBuscar.setBackground(new Color(255,171,0));
+										btnBuscar.setForeground(new Color(0,17 ,255));
+										btnBuscar.setContentAreaFilled(false);
+										btnBuscar.setOpaque(true);
+										
+										btnNuevaCuenta.setBackground(new Color(255,171,0));
+										btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+										btnNuevaCuenta.setContentAreaFilled(false);
+										btnNuevaCuenta.setOpaque(true);
+										
+										pintar_botones();
+										
+			                      txtAbono.requestFocus();
+			                      
+			                      	btnCancelarTicket.setEnabled(true);
+			                		btnCancelarTicket.setBackground(new Color(255,171,0));
+			                		btnCancelarTicket.setContentAreaFilled(false);
+			                		btnCancelarTicket.setOpaque(true);
+			                		
+			                      	btnCancelarAbono.setEnabled(false);
+				                    btnCancelarAbono.setBackground(new Color(155,131,110));
+				              		btnCancelarAbono.setContentAreaFilled(false);
+				            		btnCancelarAbono.setOpaque(true);
+			            		
+				            		btnLiquidarTicket.setEnabled(true);
+				            		btnLiquidarTicket.setBackground(new Color(255,171,0));
+				            		btnLiquidarTicket.setContentAreaFilled(false);
+				            		btnLiquidarTicket.setOpaque(true);
+			            		
+						}else{
+							
+							tabla_cobros.setEnabled(false);
+
+							txtAbono.setEditable(false);
+							fecha.setEnabled(false);
+
+							btnGuardarAbono.setEnabled(false);
+							btnNuevaCuenta.setEnabled(false);
+							
+							btnGuardarAbono.setBackground(new Color(255,171,0));
+							btnGuardarAbono.setForeground(new Color(0,17 ,255));
+							btnGuardarAbono.setContentAreaFilled(false);
+							btnGuardarAbono.setOpaque(true);
+							
+							btnBuscar.setBackground(new Color(255,171,0));
+							btnBuscar.setForeground(new Color(0,17 ,255));
+							btnBuscar.setContentAreaFilled(false);
+							btnBuscar.setOpaque(true);
+							
+							btnNuevaCuenta.setBackground(new Color(255,171,0));
+							btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+							btnNuevaCuenta.setContentAreaFilled(false);
+							btnNuevaCuenta.setOpaque(true);
+							
+							pintar_botones();
+							
+							JOptionPane.showMessageDialog(null, "El Ticket que desea abonar fue dado de alta en el establecimiento: "+establecimiento_de_ticket+"\nFavor de informar al cliente que realice su abono en dicho establecimiento", "Aviso !!!", JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+						
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-                    
-//                  para validar si pide fecha o no
-                    bandera="";
-                	
-                    lblSeleccion_de_tabla.setText("El ticket   "+ folio_ticket_o_folio_abono+"   esta seleccionado");
-                    
-	    			txtTiket.setText(folio_ticket_o_folio_abono);
-	    			
-					while(tabla_abonos.getRowCount()>0){tabla_model_abonos.removeRow(0);}
-//	              	buscar abonos del cliente
-                    Object [][] lista_abonos = new Obj_Abono_Clientes().get_tabla_abonos(txtTiket.getText());
-            		String[] filaA = new String[5];
-                            for(int i=0; i<lista_abonos.length; i++){
-	                            	filaA[0] = lista_abonos[i][0]+"";
-	                            	filaA[1] = lista_abonos[i][1]+"";
-	                            	filaA[2] = lista_abonos[i][2]+"";
-	                            	filaA[3] = lista_abonos[i][3]+"";
-	                            	filaA[4] = lista_abonos[i][4]+"";
-                                    tabla_model_abonos.addRow(filaA);
-                            }
-                            
-                      txtAbono.requestFocus();
-                      
-                      	btnCancelarTicket.setEnabled(true);
-                		btnCancelarTicket.setBackground(new Color(255,171,0));
-                		btnCancelarTicket.setContentAreaFilled(false);
-                		btnCancelarTicket.setOpaque(true);
-                		
-                      	btnCancelarAbono.setEnabled(false);
-	                    btnCancelarAbono.setBackground(new Color(155,131,110));
-	              		btnCancelarAbono.setContentAreaFilled(false);
-	            		btnCancelarAbono.setOpaque(true);
-            		
-	            		btnLiquidarTicket.setEnabled(true);
-	            		btnLiquidarTicket.setBackground(new Color(255,171,0));
-	            		btnLiquidarTicket.setContentAreaFilled(false);
-	            		btnLiquidarTicket.setOpaque(true);
-                		
 //	        	}
 	        }
         });
@@ -1371,19 +1471,23 @@ public class Cat_Abono_Clientes extends JFrame{
 		
 		JLabel lblClave = new JLabel("Clave de autorizacion:");
 		JPasswordField txtClave = new JPasswordField();
-		JTextField txtNombre = new JTextField();
+		JTextField txtNombre_supervisor = new JTextField();
 		
 		JButton btnAceptarCancelacion = new JButton("");
 		
 		String Cancelacion_ticket_abono_o_liquidacion = "";
 		String Folio_ticket_o_abono = "";
-
-		public Cat_Cancelacion_De_Tickets_C_Ahorro_Clientes(String cancelacion_ticket_abono_o_liquidacion,String folio, double cantidad){
+		
+		String Cajero = "";
+		
+		public Cat_Cancelacion_De_Tickets_C_Ahorro_Clientes(String cancelacion_ticket_abono_o_liquidacion,String folio, double cantidad, String cajera){
 			this.setModal(true);
 			blackline = BorderFactory.createLineBorder(Color.darkGray);
 			
 			Cancelacion_ticket_abono_o_liquidacion = cancelacion_ticket_abono_o_liquidacion;
 			Folio_ticket_o_abono = folio;
+			
+			Cajero=cajera;
 			
 			lblCancelarFolio.setFont(new Font("arial",Font.BOLD,12));
 			lblCancelacionComplemento.setFont(new Font("arial",Font.BOLD,12));
@@ -1424,14 +1528,14 @@ public class Cat_Abono_Clientes extends JFrame{
 		
 			panel.add(lblClave).setBounds(100,y+=35,130,20);
 			panel.add(txtClave).setBounds(250,y,100,20);
-			panel.add(txtNombre).setBounds(15,y+=25,410,20);
+			panel.add(txtNombre_supervisor).setBounds(15,y+=25,410,20);
 			
 			panel.add(btnAceptarCancelacion).setBounds(145,y+=25,140,30);
 			
 			cont.add(panel);
 			
-			txtNombre.setEditable(false);
-			txtNombre.setHorizontalAlignment(0);
+			txtNombre_supervisor.setEditable(false);
+			txtNombre_supervisor.setHorizontalAlignment(0);
 			
 			lblCancelarFolio.setHorizontalAlignment(0);
 			lblCancelacionComplemento.setHorizontalAlignment(0);
@@ -1452,7 +1556,7 @@ public class Cat_Abono_Clientes extends JFrame{
 				if(txtClave.getText().equals("")){
 					
 						btnAceptarCancelacion.setVisible(false);
-						txtNombre.setText("");
+						txtNombre_supervisor.setText("");
 						JOptionPane.showMessageDialog(null, "Pasar gafete de supervisor(a)", "Aviso !!!", JOptionPane.INFORMATION_MESSAGE);
 						return;
 						
@@ -1463,14 +1567,14 @@ public class Cat_Abono_Clientes extends JFrame{
 						
 						if(persona_autorizada.equals("EMPLEADO NO ENCONTRADO") || persona_autorizada.equals("")){
 							
-								txtNombre.setText("");
+								txtNombre_supervisor.setText("");
 								btnAceptarCancelacion.setVisible(false);
 								JOptionPane.showMessageDialog(null, "El usuario no esta autorizado para cancelar", "Aviso !!!", JOptionPane.INFORMATION_MESSAGE);
 								return;
 							
 						}else{
 //								si tiene permiso    (activar boton de confirmacion)
-								txtNombre.setText(persona_autorizada);
+								txtNombre_supervisor.setText(persona_autorizada);
 								btnAceptarCancelacion.setVisible(true);
 						}
 				}	
@@ -1482,7 +1586,7 @@ public class Cat_Abono_Clientes extends JFrame{
 				
 					switch(Cancelacion_ticket_abono_o_liquidacion){
 							case "Ticket": 	
-									if(new ActualizarSQL().Actualizar_Cancelar_Ticket_o_Abono(Folio_ticket_o_abono,  txtNombre.getText(),  "TICKET")){
+									if(new ActualizarSQL().Actualizar_Cancelar_Ticket_o_Abono(Folio_ticket_o_abono,  txtNombre_supervisor.getText(),  "TICKET", Cajero)){
 											
 											dispose();
 											buscar_cliente(Integer.valueOf(txtFolioCliente.getText()));
@@ -1493,7 +1597,7 @@ public class Cat_Abono_Clientes extends JFrame{
 							break;
 							
 							case "Abono": 
-									if(new ActualizarSQL().Actualizar_Cancelar_Ticket_o_Abono(Folio_ticket_o_abono,  txtNombre.getText(), 	"ABONO")){
+									if(new ActualizarSQL().Actualizar_Cancelar_Ticket_o_Abono(Folio_ticket_o_abono,  txtNombre_supervisor.getText(), 	"ABONO", Cajero)){
 										
 											new Cat_Genera_Ticket_De_Abono_Cliente(Folio_ticket_o_abono,"cancelacion");
 											
@@ -1506,7 +1610,7 @@ public class Cat_Abono_Clientes extends JFrame{
 							break;
 							
 							case "Liquidar": 
-									if(new ActualizarSQL().Actualizar_Cancelar_Ticket_o_Abono(Folio_ticket_o_abono,  txtNombre.getText(),  "LIQUIDAR")){
+									if(new ActualizarSQL().Actualizar_Cancelar_Ticket_o_Abono(Folio_ticket_o_abono,  txtNombre_supervisor.getText(),  "LIQUIDAR", Cajero)){
 										
 											dispose();
 											buscar_cliente(Integer.valueOf(txtFolioCliente.getText()));

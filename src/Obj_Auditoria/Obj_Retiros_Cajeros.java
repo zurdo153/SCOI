@@ -150,6 +150,15 @@ public class Obj_Retiros_Cajeros {
 	return null; 
 	}
 	
+	public Obj_Retiros_Cajeros buscarEmpleado_para_ahorro_cte(Integer folio_empleado){ 
+		try {
+			return new BuscarSQL().datos_cajero_para_ahorro_cte(folio_empleado);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return null; 
+	}
+	
 	public Obj_Retiros_Cajeros buscarSupervisor(String clave){ 
 		try {
 			return new BuscarSQL().datos_supervisor_retiro(clave);

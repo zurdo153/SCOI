@@ -972,7 +972,7 @@ public class BuscarTablasModel {
 		
 		String query = "SELECT NOMBRE_DIVISAS AS MONEDA " +
 						 "		,VALOR AS VALOR " +
-						 "		,0 AS PAGO " +
+						 "		,'' AS PAGO " +
 						 "		,0 AS IMPORTE " +
 						 " FROM tb_divisas_tipo_de_cambio " +
 						 " WHERE STATUS = 1 " +
