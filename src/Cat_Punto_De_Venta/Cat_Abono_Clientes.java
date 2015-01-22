@@ -1083,7 +1083,7 @@ public class Cat_Abono_Clientes extends JFrame{
 							while(tabla_abonos.getRowCount()>0){tabla_model_abonos.removeRow(0);}
 							
 //							mensaje (no tiene un numero de ticket, generar uno nuevo)
-							JOptionPane.showMessageDialog(null, "El cliente no tiene cueta abierta","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "El cliente no tiene cuenta abierta","Aviso",JOptionPane.INFORMATION_MESSAGE);
 						break;
 						
 						case 1: 
