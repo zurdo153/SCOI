@@ -39,7 +39,7 @@ public class Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya ext
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio de la Lista De Raya", 15, "String");
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Teclee A Partir De Que Lista De Raya Se Va a Hacer La Comparacion:", 15, "String");
 	
 	JButton btnReporte_porfecha = new JButton("",new ImageIcon("imagen/orange-folder-saved-search-icone-8197-16.png"));
 	JButton btnReporte_actual = new JButton("",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
@@ -68,8 +68,8 @@ public class Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya ext
 		panel.add(btnReporte_porfecha).setBounds(15,25,280,40);
 		panel.add(btnReporte_actual).setBounds(15,75,280,40);
 		
-		panel.add(new JLabel("Folio Lista Raya:")).setBounds(35,145,200,20);		
-		panel.add(txtFolio).setBounds(120,145,155,20);
+		panel.add(new JLabel("A Partir De la Lista De Raya:")).setBounds(15,145,200,20);		
+		panel.add(txtFolio).setBounds(150,145,125,20);
 		panel.add(btnSeleccionLR).setBounds(275,145,20,20);
 		panel.add(btngenerar).setBounds(115,190,120,25);
 	    
@@ -117,7 +117,7 @@ public class Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya ext
 	
 	ActionListener opfiltroLR = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			 new Cat_Filtro_De_Listas_De_Raya_Pasadas(4).setVisible(true);
+			 new Cat_Filtro_De_Listas_De_Raya_Pasadas(5).setVisible(true);
 		}
 	};
 	
@@ -134,12 +134,12 @@ public class Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya ext
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public  void obtiene_lista_de_raya_selecionada(final Integer folio){
 	 String	Foliorecibido = folio+"";
-		String query = "exec Reporte_De_Diferencias_De_Sueldo_Y_Bonos_De_Listas_De_Raya 'Diferiencias De Sueldo y Bono De Empleado Vigentes Desde La Lista De Raya',"+Foliorecibido;
+		String query = "exec sp_Reporte_De_Diferencias_De_Sueldo_Y_Bonos_De_Listas_De_Raya 'Diferiencias De Sueldo y Bono De Empleado Vigentes Desde La Lista De Raya Selecionada','"+Foliorecibido+"'";
 		Statement stmt = null;
 			try {
 				stmt =  new Connexion().conexion().createStatement();
 			    ResultSet rs = stmt.executeQuery(query);
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml");
+				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Diferiencias_De_Sueldo_Entre_Listas_De_Raya.jrxml");
 				JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
 				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 				JasperViewer.viewReport(print, false);
@@ -157,12 +157,12 @@ public class Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya ext
 			
 			if(tipo_Reporte==2){
 						if(!txtFolio.getText().equals("")){
-							String query = "exec Reporte_De_Diferencias_De_Sueldo_Y_Bonos_De_Listas_De_Raya 'Diferiencias De Sueldo y Bono De Empleado Vigentes Desde La Lista De Raya',"+Integer.valueOf(txtFolio.getText());
+							String query = "exec sp_Reporte_De_Diferencias_De_Sueldo_Y_Bonos_De_Listas_De_Raya 'Diferiencias De Sueldo y Bono De Empleado Vigentes Desde La Lista De Raya Selecionada','"+Integer.valueOf(txtFolio.getText())+"'";
 							Statement stmt = null;
 								try {
 									stmt =  new Connexion().conexion().createStatement();
 								    ResultSet rs = stmt.executeQuery(query);
-									JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml");
+									JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Diferiencias_De_Sueldo_Entre_Listas_De_Raya.jrxml");
 									JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
 									JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 									JasperViewer.viewReport(print, false);
@@ -172,15 +172,13 @@ public class Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya ext
 								}	
 								return;	
 					    }
-		}
+	      	}
 		}
 	};
 	
-	
-	
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void Reporte_De_Lista_De_Raya_Actual() {
-		String query = "exec Reporte_De_Diferencias_De_Sueldo_Y_Bonos_De_Listas_De_Raya 'Diferiencias De Sueldo y Bono De Empleado Vigentes De Todas Las Listas De Raya',0" ;
+		String query = "exec sp_Reporte_De_Diferencias_De_Sueldo_Y_Bonos_De_Listas_De_Raya 'Diferiencias De Sueldo y Bono De Empleado Vigentes De Todas Las Listas De Raya','0'" ;
 		Statement stmt = null;
 			try {
 				stmt =  new Connexion().conexion().createStatement();
@@ -194,7 +192,6 @@ public class Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya ext
 				JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Diferencias de Sueldo y Bono Entre Listas De Raya procedure Reporte_De_Diferencias_De_Sueldo_Y_Bonos_De_Listas_De_Raya SQLException: \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-
 	
 	public static void main(String args[]){
 		try{

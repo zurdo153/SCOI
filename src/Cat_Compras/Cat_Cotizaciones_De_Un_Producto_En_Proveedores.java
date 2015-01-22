@@ -134,10 +134,12 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 			    
 			    
 				DefaultTableModel modelo_exist_estab = new DefaultTableModel(null,
-			            new String[]{"Establecimiento","Existecia","Venta/Pzs","Fecha Agotado"}
+			            new String[]{"Establecimiento","Existecia","Venta/Pzs","Dias/Venta","Prom.Venta/Dia","Fecha Agotado"}
 						){
 				     @SuppressWarnings("rawtypes")
 					Class[] types = new Class[]{
+				    	java.lang.String.class,
+				    	java.lang.String.class,
 				    	java.lang.String.class,
 				    	java.lang.String.class,
 				    	java.lang.String.class,
@@ -153,6 +155,8 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 			        	 	case 1 : return false; 
 			        	 	case 2 : return false; 
 			        	 	case 3 : return false; 
+			        	 	case 4 : return false;
+			        	 	case 5 : return false;
 			        	 } 				
 			 			return false;
 			 		}
@@ -752,6 +756,8 @@ public void render_Exist_Estab(){
 							tabla_Proveedor.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 							tabla_Proveedor.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 							tabla_Proveedor.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+							tabla_Proveedor.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+							tabla_Proveedor.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 						}
         private JScrollPane Tabla_Exist_Estab()	{		
 				
@@ -764,8 +770,12 @@ public void render_Exist_Estab(){
 			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMinWidth(60);
 			tabla_Existencia_Estab.getColumnModel().getColumn(2).setMaxWidth(60);
 			tabla_Existencia_Estab.getColumnModel().getColumn(2).setMinWidth(60);
-			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMaxWidth(120);
-			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMinWidth(120);
+			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMaxWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMinWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(4).setMaxWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(4).setMinWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(5).setMaxWidth(120);
+			tabla_Existencia_Estab.getColumnModel().getColumn(5).setMinWidth(120);
 				
 				 JScrollPane scrol = new JScrollPane(tabla_Existencia_Estab);
 			    return scrol; 
@@ -785,6 +795,8 @@ public void render_Exist_Estab(){
 										rs = s.executeQuery("SELECT  establecimientos.nombre as establecimiento" +
 												"                   ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0)) as existencia_pz" +
 												"                   ,isnull(mab.venta_pzas,0) as venta_pzas" +
+										        "                   ,datediff(day,'22/10/2014',getdate()) as dias_de_venta"+
+										        "                   ,(isnull(mab.venta_pzas,0) /datediff(day,'22/10/2014',getdate())) as promedio_de_venta_diaria"+
 												"                   ,isnull(convert(varchar(20),prodestab.fecha_agotado,103),'Sin Fecha Agotado')as fecha_agotado" +
 												"              FROM prodestab with (nolock) " +
 												"                 inner join productos on productos.cod_prod=prodestab.cod_prod" +
