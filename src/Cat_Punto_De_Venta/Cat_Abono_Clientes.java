@@ -207,7 +207,7 @@ public class Cat_Abono_Clientes extends JFrame{
 	JLabel lblAbono = new JLabel("Abono: ");
 	JLabel lblFechaLim = new JLabel("Fecha Limite: ");
 	
-	JTextField txtEstablecimiento = new JTextField("011");
+	JTextField txtEstablecimiento = new JTextField("");
 	JTextField txtCajera = new JTextField("");
 	
 	JTextField txtFolioCliente = new Componentes().text(new JTextField(), "Folio de Cliente", 10, "Int");
@@ -262,7 +262,7 @@ public class Cat_Abono_Clientes extends JFrame{
 					this.setLocationRelativeTo(null);
     		
 				}else{
-		            txtEstablecimiento.setText(datosEmpleado.getEstablecimiento());
+		            txtEstablecimiento.setText("SUPER V"/*datosEmpleado.getEstablecimiento()*/);
 					this.setTitle("Abonos Clientes              Folio de asignacion( "+datosEmpleado.getAsignacion().trim()+" )");
 				
 				this.fecha.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
@@ -403,23 +403,13 @@ public class Cat_Abono_Clientes extends JFrame{
 				
 				fecha.setEnabled(false);
 				
-				btnGuardarAbono.setEnabled(false);
-				btnNuevaCuenta.setEnabled(false);
-				
-				btnGuardarAbono.setBackground(new Color(255,171,0));
-				btnGuardarAbono.setForeground(new Color(0,17 ,255));
-				btnGuardarAbono.setContentAreaFilled(false);
-				btnGuardarAbono.setOpaque(true);
-				
 				btnBuscar.setBackground(new Color(255,171,0));
 				btnBuscar.setForeground(new Color(0,17 ,255));
 				btnBuscar.setContentAreaFilled(false);
 				btnBuscar.setOpaque(true);
 				
-				btnNuevaCuenta.setBackground(new Color(255,171,0));
-				btnNuevaCuenta.setForeground(new Color(0,17 ,255));
-				btnNuevaCuenta.setContentAreaFilled(false);
-				btnNuevaCuenta.setOpaque(true);
+				btnGuardarAbono.setEnabled(false);
+				btnNuevaCuenta.setEnabled(false);
 				
 				pintar_botones();
 		
@@ -470,6 +460,22 @@ public class Cat_Abono_Clientes extends JFrame{
 											Component aComp=tabla_cobros.getEditorComponent();
 											aComp.requestFocus();
 									}
+									
+									btnGuardarAbono.setEnabled(true);
+									btnNuevaCuenta.setEnabled(false);
+									
+									btnGuardarAbono.setBackground(new Color(255,171,0));
+									btnGuardarAbono.setForeground(new Color(0,17 ,255));
+									btnGuardarAbono.setContentAreaFilled(false);
+									btnGuardarAbono.setOpaque(true);
+									
+									
+									btnNuevaCuenta.setBackground(new Color(155,131,110));
+									btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+									btnNuevaCuenta.setContentAreaFilled(false);
+									btnNuevaCuenta.setOpaque(true);
+									
+									
 								
 							}else{
 								String fechaNull = fecha.getDate()+"";
@@ -487,8 +493,21 @@ public class Cat_Abono_Clientes extends JFrame{
 											JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
 											return;
 										}else{
-											btnGuardarAbono.setEnabled(true);
 												tabla_cobros.setEnabled(true);
+												
+												btnGuardarAbono.setEnabled(true);
+												btnNuevaCuenta.setEnabled(false);
+												
+												btnGuardarAbono.setBackground(new Color(255,171,0));
+												btnGuardarAbono.setForeground(new Color(0,17 ,255));
+												btnGuardarAbono.setContentAreaFilled(false);
+												btnGuardarAbono.setOpaque(true);
+												
+												
+												btnNuevaCuenta.setBackground(new Color(155,131,110));
+												btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+												btnNuevaCuenta.setContentAreaFilled(false);
+												btnNuevaCuenta.setOpaque(true);
 												
 		//										if(Integer.valueOf(tabla_cobros.getValueAt(fila, columna)+"")==0){
 		//											tabla_cobros.setValueAt("",fila, columna);
@@ -558,8 +577,17 @@ public class Cat_Abono_Clientes extends JFrame{
 										}
 									
 								}else{
-										JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
-										return;
+										if(fecha.getDate()==null){
+												JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
+												return;
+										}else{
+												if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
+														JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+														return;
+												}else{
+														abonar();
+												}
+										}
 								}
 			        		}
 			        	}
@@ -669,11 +697,17 @@ public class Cat_Abono_Clientes extends JFrame{
 		            tabla_cobros.putClientProperty ("terminateEditOnFocusLost", Boolean.TRUE) ;
 	            
 				        	if(importeTotal<abono){
+				        		
+					        		tabla_cobros.editCellAt(fila, columna);
+									Component aComp=tabla_cobros.getEditorComponent();
+									aComp.requestFocus();
+									
 					        		JOptionPane.showMessageDialog(null, "El importe es insuficiente","Aviso",JOptionPane.INFORMATION_MESSAGE);
 									return;
 				        	}else{
 				        			lblCambio.setText((importeTotal-abono)+"");
-				        	}
+				        	
+				        	
 	        	
 				        	Obj_Abono_Clientes abonar = new Obj_Abono_Clientes();
 				        	
@@ -719,6 +753,7 @@ public class Cat_Abono_Clientes extends JFrame{
 				        		while(tabla_abonos.getRowCount()>0)
 				        			tabla_model_abonos.removeRow(0);
 			        		
+				        		
 				        		Object [][] lista_tabla = data;
 			
 				        		String[] fila = new String[4];
@@ -736,6 +771,7 @@ public class Cat_Abono_Clientes extends JFrame{
 			        		JOptionPane.showMessageDialog(null, "El abono no a sido realizado con exito","Error",JOptionPane.ERROR_MESSAGE);
 							return;
 			        	}
+			       }
 			}
 	}
 	
@@ -782,6 +818,16 @@ public class Cat_Abono_Clientes extends JFrame{
 		btnLiquidarTicket.setForeground(new Color(0,17 ,255));
 		btnLiquidarTicket.setContentAreaFilled(false);
 		btnLiquidarTicket.setOpaque(true);
+		
+		btnGuardarAbono.setBackground(new Color(155,131,110));
+		btnGuardarAbono.setForeground(new Color(0,17 ,255));
+		btnGuardarAbono.setContentAreaFilled(false);
+		btnGuardarAbono.setOpaque(true);
+		
+		btnNuevaCuenta.setBackground(new Color(155,131,110));
+		btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+		btnNuevaCuenta.setContentAreaFilled(false);
+		btnNuevaCuenta.setOpaque(true);
 	}
 	
 	@SuppressWarnings("unused")
@@ -877,11 +923,19 @@ public class Cat_Abono_Clientes extends JFrame{
 				btnNuevaCuenta.setEnabled(false);
 				fecha.setEnabled(false);
 			}else{
-				
+				bandera="";
+				txtTiket.setText("");
 //				ingresar folio_cliente directo
 				buscar_cliente(Integer.valueOf(txtFolioCliente.getText()));
 				btnNuevaCuenta.setEnabled(true);
 				fecha.setEnabled(true);
+				
+				btnNuevaCuenta.setBackground(new Color(255,171,0));
+				btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+				btnNuevaCuenta.setContentAreaFilled(false);
+				btnNuevaCuenta.setOpaque(true);
+				
+
 			}
 		}
 	};
@@ -889,7 +943,7 @@ public class Cat_Abono_Clientes extends JFrame{
 	ActionListener opGenerarNuevaCuenta = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			if(txtCliente.equals("")){
+			if(txtCliente.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "No se ha seleccionado un cliente aun","Aviso",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}else{
@@ -897,6 +951,13 @@ public class Cat_Abono_Clientes extends JFrame{
 					String nuevoTicket = new Obj_Abono_Clientes().nuevoTicket(txtEstablecimiento.getText());
 					txtTiket.setText(nuevoTicket);
 					
+					btnNuevaCuenta.setEnabled(false);
+            		
+    				btnNuevaCuenta.setBackground(new Color(155,131,110));
+    				btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+    				btnNuevaCuenta.setContentAreaFilled(false);
+    				btnNuevaCuenta.setOpaque(true);
+    				
 //                  para validar si pide fecha o no
 					bandera="cuenta_nueva";
 			}
@@ -1117,11 +1178,6 @@ public class Cat_Abono_Clientes extends JFrame{
 										btnBuscar.setContentAreaFilled(false);
 										btnBuscar.setOpaque(true);
 										
-										btnNuevaCuenta.setBackground(new Color(255,171,0));
-										btnNuevaCuenta.setForeground(new Color(0,17 ,255));
-										btnNuevaCuenta.setContentAreaFilled(false);
-										btnNuevaCuenta.setOpaque(true);
-										
 										pintar_botones();
 										
 			                      txtAbono.requestFocus();
@@ -1140,6 +1196,15 @@ public class Cat_Abono_Clientes extends JFrame{
 				            		btnLiquidarTicket.setBackground(new Color(255,171,0));
 				            		btnLiquidarTicket.setContentAreaFilled(false);
 				            		btnLiquidarTicket.setOpaque(true);
+				            		
+				            		btnNuevaCuenta.setEnabled(true);
+				            		
+				    				btnNuevaCuenta.setBackground(new Color(255,171,0));
+				    				btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+				    				btnNuevaCuenta.setContentAreaFilled(false);
+				    				btnNuevaCuenta.setOpaque(true);
+				    				
+
 			            		
 						}else{
 							
@@ -1311,6 +1376,9 @@ public class Cat_Abono_Clientes extends JFrame{
 		        public void mouseClicked(MouseEvent e) {
 		        	if(e.getClickCount() == 2){
 		        		
+		        		bandera="";
+		        		txtTiket.setText("");
+		        		
 		        		int fila = tabla.getSelectedRow();
 		    			String folio =  tabla.getValueAt(fila, 0).toString().trim();
 		    			dispose();
@@ -1319,6 +1387,13 @@ public class Cat_Abono_Clientes extends JFrame{
 		    			buscar_cliente(Integer.valueOf(folio));
 		    			btnNuevaCuenta.setEnabled(true);
 		    			fecha.setEnabled(true);
+		    			
+						btnNuevaCuenta.setBackground(new Color(255,171,0));
+						btnNuevaCuenta.setForeground(new Color(0,17 ,255));
+						btnNuevaCuenta.setContentAreaFilled(false);
+						btnNuevaCuenta.setOpaque(true);
+						
+
 		        	}
 		        }
 	        });
