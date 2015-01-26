@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Diferiencias_De_Sueldo_Entre_Listas_De_Raya" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2581964a-fef8-484a-addd-e085d2044d14">
 	<property name="ireport.zoom" value="2.143588810000003"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="72"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
@@ -59,7 +59,7 @@ DECLARE @contador_empleado int,@contador_cambios_LR int,@num_lista_raya int,@net
              END
 		 END
       END
-select numero_lista,folio_empleado,nombre_completo,establecimiento,sueldo,bono,convert(varchar(15),fecha,103)as fecha_corta from '+@tabla_temp+'
+select numero_lista,folio_empleado,nombre_completo,establecimiento,sueldo,bono,convert(varchar(15),fecha,103)as fecha_corta, ''reporte'' as reporte from '+@tabla_temp+'
 
  order by nombre_completo,numero_lista
 
@@ -79,6 +79,7 @@ select numero_lista,folio_empleado,nombre_completo,establecimiento,sueldo,bono,c
 	<field name="sueldo" class="java.math.BigDecimal"/>
 	<field name="bono" class="java.math.BigDecimal"/>
 	<field name="fecha_corta" class="java.lang.String"/>
+	<field name="reporte" class="java.lang.String"/>
 	<group name="establecimiento">
 		<groupHeader>
 			<band height="17">
@@ -123,14 +124,15 @@ select numero_lista,folio_empleado,nombre_completo,establecimiento,sueldo,bono,c
 	<title>
 		<band height="60" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="395" height="58" backcolor="#000066" uuid="b9eff32c-88d7-464e-b2af-1789ed528890"/>
-				<staticText>
-					<reportElement style="Title" x="0" y="0" width="379" height="58" uuid="c7141f72-983e-4aeb-81c5-3af48cbd108a"/>
-					<textElement>
-						<font size="24" isBold="false"/>
+				<reportElement mode="Opaque" x="0" y="0" width="446" height="58" backcolor="#000066" uuid="b9eff32c-88d7-464e-b2af-1789ed528890"/>
+				<textField>
+					<reportElement mode="Transparent" x="0" y="0" width="446" height="58" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="3b9128f2-2237-4759-9b57-920083a8df54"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="22" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
 					</textElement>
-					<text><![CDATA[Diferiencias de Sueldo y Bono Entre Listas de Raya]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$F{reporte}]]></textFieldExpression>
+				</textField>
 			</frame>
 			<image>
 				<reportElement x="469" y="0" width="65" height="58" uuid="0f90ca26-774b-4729-8fe9-e50f1e9cfca5"/>

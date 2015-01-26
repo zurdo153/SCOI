@@ -27,6 +27,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Reportes.Cat_Reporte_De_Prestamos_De_Lista_De_Raya;
+import Cat_Reportes.Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Fuente_De_Sodas;
 import Cat_Reportes.Cat_Reportes_De_Infonavit_De_Lista_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
@@ -104,6 +105,9 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
     			           	dispose();
     				           break;
 		    				case 4:		new Cat_Reportes_De_Infonavit_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada(folio);
+    			           	dispose();
+    				           break;
+		    				case 5:		new Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya().obtiene_lista_de_raya_selecionada(folio);
     			           	dispose();
     				           break;
 		    				}

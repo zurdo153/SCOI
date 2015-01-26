@@ -566,15 +566,11 @@ public class Cat_Abono_Clientes extends JFrame{
 			        		}else{
 		//	                  si 		bandera = "" entonces el ticket no es nuevo y se guardara correctamente
 		//						else 	pedir fecha limite
-								if(bandera.equals("")){
+//								if(bandera.equals("")){
 									
 										if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
 												JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
 												return;
-										}else{
-											abonar();
-										}
-									
 								}else{
 										if(fecha.getDate()==null){
 												JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
