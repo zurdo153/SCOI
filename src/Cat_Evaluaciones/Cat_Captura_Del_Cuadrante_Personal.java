@@ -38,6 +38,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
+import Cat_Reportes.Cat_Reporte_De_Cuadrantes;
 import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
 import Obj_Evaluaciones.Obj_Imprimir_Cuadrante;

@@ -1,4 +1,4 @@
-package Cat_Evaluaciones;
+package Cat_Reportes;
 
 import java.awt.Component;
 import java.awt.Container;

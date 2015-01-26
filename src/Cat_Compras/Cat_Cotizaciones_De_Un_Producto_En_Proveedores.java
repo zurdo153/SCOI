@@ -68,6 +68,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 				JLabel JLBcosto_promedio= new JLabel();
 				JLabel JLBexist_cedis= new JLabel();
 				JLabel JLBexist_total= new JLabel();
+				JLabel JLvent_total= new JLabel();
 				
 				JTextField txtFoliocompra1 = new Componentes().text(new JTextField(), "Folio De La Compra",30, "String");
 				JTextField txtCod_Prv = new Componentes().text(new JTextField(), "Codigo Del Proveedor",15, "String");
@@ -134,10 +135,11 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 			    
 			    
 				DefaultTableModel modelo_exist_estab = new DefaultTableModel(null,
-			            new String[]{"Establecimiento","Existecia","Venta/Pzs","Dias/Venta","Prom.Venta/Dia","Fecha Agotado"}
+			            new String[]{"Establecimiento","Exist","Vnt Pzs","Dias Vent","Vent/Dias","Exist/PrVtD","Fecha Agotado"}
 						){
 				     @SuppressWarnings("rawtypes")
 					Class[] types = new Class[]{
+				    	java.lang.String.class,
 				    	java.lang.String.class,
 				    	java.lang.String.class,
 				    	java.lang.String.class,
@@ -157,6 +159,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 			        	 	case 3 : return false; 
 			        	 	case 4 : return false;
 			        	 	case 5 : return false;
+			        	 	case 6 : return false;
 			        	 } 				
 			 			return false;
 			 		}
@@ -175,6 +178,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 			  double costo_promedio=0;
 			  double exist_cedis=0;
 			  double exist_total=0;
+			  double venta_total=0;
 			  
 	public Cat_Cotizaciones_De_Un_Producto_En_Proveedores(String cod_prod){
 		codigo_producto=cod_prod+"";
@@ -199,46 +203,55 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 		
 		panel.add(txtcod_prod).setBounds(x,y,l,a);
 		panel.add(btnBuscar_Producto).setBounds(l+=x,y,a,a);
-		panel.add(JLBdescripcion).setBounds(l+x+20,y,l+700,a);
+		panel.add(JLBdescripcion).setBounds(l+x+20,y,l+340,a);
 		panel.add(cfecha).setBounds(x,y+=25,l+10,a);
+		
 		panel.add(new JLabel("Ultimo Costo:")).setBounds(x+=l+20,y,l-40,a);
-		panel.add(JLBultimo_costo).setBounds(x+=75,y,l-20,a);
-		panel.add(new JLabel("Costo Promedio:")).setBounds(x+=l-20,y,l-30,a);
-		panel.add(JLBcosto_promedio).setBounds(x+=85,y,l-20,a);
-		panel.add(chbHabilitarVentas).setBounds(x-384,y+=20,l,a);
+		panel.add(JLBultimo_costo).setBounds(x+=75,y,l-35,a);
+		panel.add(new JLabel("Costo Promedio:")).setBounds(x+=l-45,y,l-30,a);
+		panel.add(JLBcosto_promedio).setBounds(x+=85,y,l-35,a);
+		panel.add(new JLabel("Venta Total:")).setBounds(x+=80,y,l-20,a);
+		panel.add(JLvent_total).setBounds(x+=85,y,l-35,a);
+		
+		panel.add(chbHabilitarVentas).setBounds(x-523,y+=20,l,a);
 		
 		panel.add(new JLabel("Existencia Cedis:")).setBounds(x+=-250,y,l-20,a);
-		panel.add(JLBexist_cedis).setBounds(x+=85,y,l-20,a);
+		panel.add(JLBexist_cedis).setBounds(x+=85,y,l-35,a);
 		panel.add(new JLabel("Existencia Total:")).setBounds(x+=l-30,y,l-20,a);
-		panel.add(JLBexist_total).setBounds(x+=85,y,l-20,a);
+		panel.add(JLBexist_total).setBounds(x+=85,y,l-35,a);
+
 		
 		x=10;
 		
-		panel.add(new JLabel("Num Cotizacion")).setBounds(x+10,y+=20,l-20,a);
-		panel.add(new JLabel("Cod Proveedor")).setBounds(x+100,y,l-20,a);
-		panel.add(new JLabel("Nombre Del Proveedor")).setBounds(x+270,y,l+150,a);
-		panel.add(new JLabel("Costo Unitario")).setBounds(x+480,y,l,a);
-		panel.add(new JLabel("Cantidad En Piezas" )).setBounds(x+580,y,l,a);
+		panel.add(new JLabel("No.Cotizacion")).setBounds(x,y+=20,l-20,a);
+		panel.add(new JLabel("Cod.Proveedor")).setBounds(x+75,y,l-20,a);
+		panel.add(new JLabel("Nombre Del Proveedor")).setBounds(x+220,y,l+150,a);
+		panel.add(new JLabel("Costo Unitario")).setBounds(x+400,y,l,a);
+		panel.add(new JLabel("Cantidad Piezas" )).setBounds(x+480,y,l,a);
 		panel.add(new JLabel("Condiciones")).setBounds(x+10,y+40,l+20,a);
 		panel.add(new JLabel("De La Compra")).setBounds(x+10,y+60,l+20,a);
 
+		l=87; 
 		panel.add(txtFoliocompra1).setBounds(x,y+=20,l-20,a);
-		panel.add(txtCod_Prv).setBounds(x+90,y,l-20,a);
-		panel.add(btnBuscar_Proveedor).setBounds(x+180,y,a,a);
-		panel.add(txtNom_Proveedor).setBounds(x+200,y,l+150,a);
-		panel.add(txtCosto_Unitario).setBounds(x+460,y,l,a);
-		panel.add(txtCant_Requerida_Compra).setBounds(x+570,y,l,a);
-		panel.add(Condiciones).setBounds(x+80,y+25,l+490,40);
+		panel.add(txtCod_Prv).setBounds(x+=67,y,l-20,a);
+		panel.add(btnBuscar_Proveedor).setBounds(x+=68,y,a,a);
+		panel.add(txtNom_Proveedor).setBounds(x+=20,y,l+150,a);
+		panel.add(txtCosto_Unitario).setBounds(x+=235,y,l,a);
+		panel.add(txtCant_Requerida_Compra).setBounds(x+=88,y,l,a);
 		
+		
+		
+		l=110;
+		x=10;
+		panel.add(Condiciones).setBounds(x+80,y+25,l+375,40);
 		panel.add(btnNuevo).setBounds(x,y+=70,l-10,a);
 		panel.add(btnDeshacer).setBounds(x+115,y,l-10,a);
-//		panel.add(btnEditar).setBounds(x+227,y,l-10,a);
-		panel.add(btnGuardar).setBounds(x+339,y,l-10,a);
-		panel.add(btnSalir).setBounds(x+452,y,l-10,a);
-		panel.add(btnLimpiar).setBounds(x+564,y,l-10,a);
+		panel.add(btnGuardar).setBounds(x+227,y,l-10,a);
+		panel.add(btnSalir).setBounds(x+339,y,l-10,a);
+		panel.add(btnLimpiar).setBounds(x+452,y,l-10,a);
 		
 		panel.add(Tabla_Proveedor()).setBounds(10,200,1000,400);
-		panel.add(Tabla_Exist_Estab()).setBounds(695,13,315,180);
+		panel.add(Tabla_Exist_Estab()).setBounds(580,13,430,180);
 		
 		txtFoliocompra1.setEditable(false);
 		txtCod_Prv.setEditable(false);
@@ -256,6 +269,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 //		btnEditar.setEnabled(false);
 		btnGuardar.setEnabled(false);
 		btnBuscar_Proveedor.setEnabled(false);
+		chbHabilitarVentas.setSelected(true);
 
 		
 	    cfecha.setEnabled(true);
@@ -335,6 +349,10 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 	     	            	
 	   	  	            	if(cfecha.getDate() != null){
 	   	  	            		
+	   	  	            	while(tabla_Existencia_Estab.getRowCount()>0){
+								modelo_exist_estab.removeRow(0);  }
+							Llenar_Tabla_Exist_Estab ();
+							
 	   	  	            	while(tabla_Proveedor.getRowCount()>0){
 								modelo_prv.removeRow(0);  }
 							 Llenar_Tabla_proveedores ();
@@ -450,6 +468,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 			JLBcosto_promedio.setText("");
 			JLBexist_cedis.setText("");
 			JLBexist_total.setText("");
+			JLvent_total.setText("");
 		}
 	};
 	
@@ -472,7 +491,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
                 cotizacion_prod.setCantidad_Requerida(Double.valueOf(txtCant_Requerida_Compra.getText()));
                 cotizacion_prod.setNotas_Negociacion(txaCondiciones.getText().toUpperCase().trim()+"");
                 cotizacion_prod.setExistencia_Cedis(exist_cedis);
-                cotizacion_prod.setExistencia_Total(exist_total);
+//                cotizacion_prod.setExistencia_Total(exist_total);
                 
                 
                if(cotizacion_prod.Guardar_Cotizacion()){
@@ -560,7 +579,8 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				
+				exist_total=0;
+				venta_total=0;
 				try {
 					
 					if(new Obj_Cotizaciones_De_Un_Producto().Existe_Producto(txtcod_prod.getText().trim().toUpperCase()+"")){
@@ -571,22 +591,26 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 						ultimo_costo=Datos_Producto.getUltimo_Costo();
 						costo_promedio=Datos_Producto.getCosto_Promedio();
 						exist_cedis=Datos_Producto.getExistencia_Cedis();
-						exist_total=Datos_Producto.getExistencia_Total();
+//						exist_total=Datos_Producto.getExistencia_Total();
 						txtcod_prod.setText(Datos_Producto.getCod_Prod());
 						btnNuevo.setEnabled(true);
 						
-						JLBdescripcion.setText("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=BLACk><CENTER><p>"+descripcion+"</p></CENTER></FONT></html>");
+						JLBdescripcion.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>"+descripcion+"</p></b></CENTER></FONT></html>");
 						JLBultimo_costo.setText("<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk><p>"+ultimo_costo+"</p></FONT></html>");
 						JLBcosto_promedio.setText("<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk><p>"+costo_promedio+"</p></FONT></html>");
 						JLBexist_cedis.setText("<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk><p>"+exist_cedis+"</p></FONT></html>");
-						JLBexist_total.setText("<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk><p>"+exist_total+"</p></FONT></html>");
+						
 						
 						while(tabla_Existencia_Estab.getRowCount()>0){
 							modelo_exist_estab.removeRow(0);  }
 						Llenar_Tabla_Exist_Estab ();
+						render_Exist_Estab();
 						
+						
+						JLBexist_total.setText("<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk><p>"+exist_total+"</p></FONT></html>");
+						JLvent_total.setText("<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk><p>"+venta_total+"</p></FONT></html>");
 						while(tabla_Proveedor.getRowCount()>0){
-							modelo_prv.removeRow(0);  }
+							modelo_prv.removeRow(0); }
 						 Llenar_Tabla_proveedores ();
 						 render_proveedor();
 						 
@@ -625,10 +649,10 @@ public void render_proveedor(){
 				}
 				
 				
-				private JScrollPane Tabla_Proveedor()	{		
-					
-					this.tabla_Proveedor.getTableHeader().setReorderingAllowed(false) ;
-					this.tabla_Proveedor.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		private JScrollPane Tabla_Proveedor()	{		
+		
+			    this.tabla_Proveedor.getTableHeader().setReorderingAllowed(false) ;
+				this.tabla_Proveedor.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 					
 				tabla_Proveedor.getColumnModel().getColumn(0).setMaxWidth(65);
 				tabla_Proveedor.getColumnModel().getColumn(0).setMinWidth(65);
@@ -752,12 +776,13 @@ public void render_proveedor(){
 public void render_Exist_Estab(){
 					//		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
 							
-							tabla_Proveedor.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-							tabla_Proveedor.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-							tabla_Proveedor.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-							tabla_Proveedor.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-							tabla_Proveedor.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-							tabla_Proveedor.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+	tabla_Existencia_Estab.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10)); 
+	tabla_Existencia_Estab.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+	tabla_Existencia_Estab.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+	tabla_Existencia_Estab.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+	tabla_Existencia_Estab.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+	tabla_Existencia_Estab.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+	tabla_Existencia_Estab.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 						}
         private JScrollPane Tabla_Exist_Estab()	{		
 				
@@ -766,16 +791,18 @@ public void render_Exist_Estab(){
 				
 			tabla_Existencia_Estab.getColumnModel().getColumn(0).setMaxWidth(108);
 			tabla_Existencia_Estab.getColumnModel().getColumn(0).setMinWidth(108);
-			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMaxWidth(60);
-			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMinWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMaxWidth(55);
+			tabla_Existencia_Estab.getColumnModel().getColumn(1).setMinWidth(55);
 			tabla_Existencia_Estab.getColumnModel().getColumn(2).setMaxWidth(60);
 			tabla_Existencia_Estab.getColumnModel().getColumn(2).setMinWidth(60);
-			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMaxWidth(60);
-			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMinWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMaxWidth(55);
+			tabla_Existencia_Estab.getColumnModel().getColumn(3).setMinWidth(55);
 			tabla_Existencia_Estab.getColumnModel().getColumn(4).setMaxWidth(60);
 			tabla_Existencia_Estab.getColumnModel().getColumn(4).setMinWidth(60);
-			tabla_Existencia_Estab.getColumnModel().getColumn(5).setMaxWidth(120);
-			tabla_Existencia_Estab.getColumnModel().getColumn(5).setMinWidth(120);
+			tabla_Existencia_Estab.getColumnModel().getColumn(5).setMaxWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(5).setMinWidth(60);
+			tabla_Existencia_Estab.getColumnModel().getColumn(6).setMaxWidth(120);
+			tabla_Existencia_Estab.getColumnModel().getColumn(6).setMinWidth(120);
 				
 				 JScrollPane scrol = new JScrollPane(tabla_Existencia_Estab);
 			    return scrol; 
@@ -794,13 +821,14 @@ public void render_Exist_Estab(){
 				if(chbHabilitarVentas.isSelected()){
 										rs = s.executeQuery("SELECT  establecimientos.nombre as establecimiento" +
 												"                   ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0)) as existencia_pz" +
-												"                   ,isnull(mab.venta_pzas,0) as venta_pzas" +
-										        "                   ,datediff(day,'22/10/2014',getdate()) as dias_de_venta"+
-										        "                   ,(isnull(mab.venta_pzas,0) /datediff(day,'22/10/2014',getdate())) as promedio_de_venta_diaria"+
+												"                   ,convert(numeric(10,2),isnull(mab.venta_pzas,0)) as venta_pzas" +
+										        "                   ,datediff(day,'"+fecha_busqueda+"',getdate()) as dias_de_venta"+
+										        "                   ,convert(numeric(10,2),(isnull(mab.venta_pzas,0) /datediff(day,'"+fecha_busqueda+"',getdate()))) as promedio_de_venta_diaria"+
+										        "                   ,convert(numeric(10,2),(isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0))/(isnull(mab.venta_pzas,1) /datediff(day,'"+fecha_busqueda+"',getdate())))   as Proyeccion_de_Venta_prom"+
 												"                   ,isnull(convert(varchar(20),prodestab.fecha_agotado,103),'Sin Fecha Agotado')as fecha_agotado" +
 												"              FROM prodestab with (nolock) " +
 												"                 inner join productos on productos.cod_prod=prodestab.cod_prod" +
-												"                 inner join establecimientos on establecimientos.cod_estab=prodestab.cod_estab" +
+												"                 inner join establecimientos on establecimientos.cod_estab=prodestab.cod_estab and establecimientos.cod_estab not in(15,19,20)" +
 												"  			      left outer join	(SELECT Entysal.cod_prod ,sum(case when entysal.unidad <> 'U' then entysal.cantidad else 0 end) as venta_pzas ,facremtick.cod_estab" +
 												" 									   FROM Entysal with (nolock)  " +
 												"  									      INNER JOIN facremtick  with (nolock) ON Entysal.folio = facremtick.folio AND Entysal.transaccion = facremtick.transaccion " +
@@ -814,30 +842,38 @@ public void render_Exist_Estab(){
 									rs = s.executeQuery("SELECT  establecimientos.nombre as establecimiento" +
 											"                   ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0)) as existencia_pz" +
 											"                   ,0 as venta_pzas" +
+											"                   ,0 as dias_de_venta"+
+											"                   ,0 as promedio_venta_diaria"+ 
+											"                   ,0 as Proyeccion_de_Venta_prom "+
 											"                   ,isnull(convert(varchar(20),prodestab.fecha_agotado,103),'Sin Fecha Agotado')as fecha_agotado" +
 											"              FROM prodestab with (nolock) " +
 											"                 inner join productos on productos.cod_prod=prodestab.cod_prod" +
-											"                 inner join establecimientos on establecimientos.cod_estab=prodestab.cod_estab" +
+											"                 inner join establecimientos on establecimientos.cod_estab=prodestab.cod_estab and establecimientos.cod_estab not in(15,19,20)" +
 											"			   WHERE prodestab.cod_prod='"+cod_producto+"'"+
 											"            GROUP BY establecimientos.nombre,convert(varchar(20),prodestab.fecha_agotado,103) order by establecimiento asc")           ;
 				}
 			
 				while (rs.next())
 				{ 
-				   Object [] fila = new Object[4];
+				   Object [] fila = new Object[7];
 				   fila[0] = rs.getString(1).trim();
 				   fila[1] = rs.getString(2).trim();
 				   fila[2] = rs.getString(3).trim();
 				   fila[3] = rs.getString(4).trim();
+				   fila[4] = rs.getString(5).trim();
+				   fila[5] = rs.getString(6).trim();
+				   fila[6] = rs.getString(7).trim();
 				   modelo_exist_estab.addRow(fila); 
+				   
+				   exist_total+=Double.valueOf(rs.getString(2).trim());
+				   venta_total+=Double.valueOf(rs.getString(3).trim());
+				   
 				}	
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en Cat_Control_De_Facturas_Y_XML_De_Proveedores en la funcion Llenar_Tabla_Exist_Estab  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en Cat_Cotizaciones_De_Un_Producto_En_Proveedores en la funcion Llenar_Tabla_Exist_Estab  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 }
-
-	
 	
 	
 	
