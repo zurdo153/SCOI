@@ -40,7 +40,6 @@ import Obj_Renders.tablaRenderer;
 @SuppressWarnings("serial")
 public class Cat_Consideracion_De_Impuntualidad_Checador extends JDialog {
 
-    
 	int folio_emp = 0; 	
 	String empleado = ""; 	
 	String fecha = ""; 	
@@ -140,7 +139,7 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JDialog {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Consideracion_De_Impuntualidad_Checador(){
 		this.setModal(true);
-		this.setTitle("Agregar Observacion A Cortes Del Dia");
+		this.setTitle("Consideracion De Impuntualidad Checador");
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Filtrar"));
 
 		this.c_inicio.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
@@ -257,17 +256,24 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JDialog {
 	        	if(e.getClickCount() == 2){
 	    			int fila = tabla.getSelectedRow();
 	    			
-	    					folio_emp = 	Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
-    						 empleado = 	tabla.getValueAt(fila, 1).toString().trim();
-    						 	fecha = 	tabla.getValueAt(fila, 2).toString().trim()+" "+tabla.getValueAt(fila, 3).toString().trim();
-	    					  ent_sal = 	tabla.getValueAt(fila, 5).toString().trim();
-				   	     tipo_checada = 	tabla.getValueAt(fila, 7).toString().trim();	    					  
-	    					   	  imp = 	Integer.valueOf(tabla.getValueAt(fila, 8).toString().trim());
-	    					   	 fav  = 	Integer.valueOf(tabla.getValueAt(fila, 9).toString().trim());
-	    					   	 
-	    				 observacion  = 	tabla.getValueAt(fila, 13).toString().trim();
-//	    			dispose();
-	    			new Cat_Comentario_A_Corte_Guardado().setVisible(true);
+	    			System.out.println(tabla.getValueAt(fila, tabla.getColumnCount()-1));
+	    			if(tabla.getValueAt(fila, tabla.getColumnCount()-1).toString().equals("true")){
+	    				JOptionPane.showMessageDialog(null, "Solo se permite modificar los registros una vez,\nEste registro ya a sido modificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+	    				return;
+	    			}else{
+	    			
+		    					folio_emp = 	Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
+	    						 empleado = 	tabla.getValueAt(fila, 1).toString().trim();
+	    						 	fecha = 	tabla.getValueAt(fila, 2).toString().trim()+" "+tabla.getValueAt(fila, 3).toString().trim();
+		    					  ent_sal = 	tabla.getValueAt(fila, 5).toString().trim();
+					   	     tipo_checada = 	tabla.getValueAt(fila, 7).toString().trim();	    					  
+		    					   	  imp = 	Integer.valueOf(tabla.getValueAt(fila, 8).toString().trim());
+		    					   	 fav  = 	Integer.valueOf(tabla.getValueAt(fila, 9).toString().trim());
+		    					   	 
+		    				 observacion  = 	tabla.getValueAt(fila, 13).toString().trim();
+	//	    			dispose();
+		    			new Cat_Comentario_A_Corte_Guardado().setVisible(true);
+	    			}
 	        	}
 	        }
         });
@@ -320,9 +326,7 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JDialog {
                              modelo.addRow(fila);
                      }
 				}
-				
 			}
-			
 		}
 	};
 	

@@ -79,9 +79,9 @@ public class Cat_Abono_Clientes extends JFrame{
 	
 	String establecimiento_de_ticket = "";
 	
-	JLabel lblF2 = new JLabel("F2 => Abrir Filtro De Clientes");
-	JLabel lblF5 = new JLabel("F5 => Imprimir Ticket A Detalle");
-	JLabel lblF9 = new JLabel("F9 => Generer Abono");
+	JLabel lblF2 = new JLabel("F2  => Abrir Filtro De Clientes");
+	JLabel lblF5 = new JLabel("F11 => Imprimir Ticket A Detalle");
+	JLabel lblF9 = new JLabel("F9  => Generer Abono");
 	JLabel lblLimpiar = new JLabel("Esc => Limpiar");
 	
 	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
@@ -262,7 +262,8 @@ public class Cat_Abono_Clientes extends JFrame{
 					this.setLocationRelativeTo(null);
     		
 				}else{
-		            txtEstablecimiento.setText("SUPER V"/*datosEmpleado.getEstablecimiento()*/);
+		            txtEstablecimiento.setText(/*"SUPER V"*/datosEmpleado.getEstablecimiento().trim());
+		            txtEstablecimiento.setHorizontalAlignment(0);
 					this.setTitle("Abonos Clientes              Folio de asignacion( "+datosEmpleado.getAsignacion().trim()+" )");
 				
 				this.fecha.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
@@ -413,8 +414,6 @@ public class Cat_Abono_Clientes extends JFrame{
 				
 				pintar_botones();
 		
-		//		txtEstablecimiento.setText("SUPER V");
-				txtEstablecimiento.setHorizontalAlignment(0);
 				lblSeleccion_de_tabla.setHorizontalAlignment(4);
 				
 				limpiar();
@@ -530,7 +529,7 @@ public class Cat_Abono_Clientes extends JFrame{
 					public void keyReleased(KeyEvent arg0) {
 								if(CalcularImporte()==false){
 										JOptionPane.showMessageDialog(null, "Se introdujo un valor no valido","Aviso",JOptionPane.INFORMATION_MESSAGE);
-										tabla_cobros.setValueAt(0, fila, columna);
+										tabla_cobros.setValueAt("", fila, columna);
 										return;
 								}
 					}
@@ -604,7 +603,7 @@ public class Cat_Abono_Clientes extends JFrame{
 			    
 			//  Ticket a detalle 
 			    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-			       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "ticketDetalle");
+			       KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), "ticketDetalle");
 			    
 			    getRootPane().getActionMap().put("ticketDetalle", new AbstractAction(){
 			        @Override
@@ -616,7 +615,7 @@ public class Cat_Abono_Clientes extends JFrame{
 							return;
 			        	}else{
 		//    		    	imprimir ticket 
-							new Cat_Genera_Ticket_De_Abono_Cliente(txtTiket.getText(),"abono");
+							new Cat_Genera_Ticket_De_Abono_Cliente(folio_ticket_o_folio_abono,"abono");
 			        	}
 			        }
 			    });
@@ -684,7 +683,6 @@ public class Cat_Abono_Clientes extends JFrame{
 				
 			}else{
 				
-		        	tabla_cobros.setEnabled(false);
 		        	double abono = Double.valueOf(txtAbono.getText());
 		        	double importeTotal = Double.valueOf(lblImporte.getText());
 		        	
@@ -723,7 +721,7 @@ public class Cat_Abono_Clientes extends JFrame{
 			        	if(abonar.guardarTickets()){
 			        		
 //    		    	imprimir ticket 
-							 	new Cat_Genera_Ticket_De_Abono_Cliente(txtTiket.getText(),"abono");
+			        		String ticket = txtTiket.getText();
 							 	
 //							 	for(int i = 0; i < tabla_cobros.getRowCount(); i++){
 //							 		tabla_cobros.setValueAt("", i, 2);
@@ -739,8 +737,33 @@ public class Cat_Abono_Clientes extends JFrame{
 				        		txtAbono.setText("");
 				        		fecha.setDate(null);
 				        		lblSeleccion_de_tabla.setText("Sin datos seleccionados");
-//	        		txtCliente.requestFocus();
+				        		lblFaltente.setText("0.0");
+				        		lblSaldo.setText("0.0");
+				        		lblImporte.setText("0.0");
+				        		lblCambio.setText("0.0");
 				        		
+				    			tabla_cobros.removeEditor();
+				    			
+				    			tabla_cobros.setEnabled(false);
+				    			
+								txtEstablecimiento.setEditable(false);
+								txtCajera.setEditable(false);
+								txtCliente.setEditable(false);
+								txtDomicilio.setEditable(false);
+								txtTiket.setEditable(false);
+								txtAbono.setEditable(false);
+								
+								fecha.setEnabled(false);
+								
+								btnBuscar.setBackground(new Color(255,171,0));
+								btnBuscar.setForeground(new Color(0,17 ,255));
+								btnBuscar.setContentAreaFilled(false);
+								btnBuscar.setOpaque(true);
+								
+								btnGuardarAbono.setEnabled(false);
+								btnNuevaCuenta.setEnabled(false);
+								
+								pintar_botones();
 			        		
 				        		while(tabla_cobros.getRowCount()>0)
 				        			tabla_model_cobro.removeRow(0);
@@ -748,25 +771,26 @@ public class Cat_Abono_Clientes extends JFrame{
 				        			tabla_model_ticket.removeRow(0);
 				        		while(tabla_abonos.getRowCount()>0)
 				        			tabla_model_abonos.removeRow(0);
-			        		
 				        		
-				        		Object [][] lista_tabla = data;
+//				        		Object [][] lista_tabla = data;
 			
 				        		String[] fila = new String[4];
-				                        for(int i=0; i<lista_tabla.length; i++){
-				                                fila[0] = lista_tabla[i][0]+"";
-				                                fila[1] = lista_tabla[i][1]+"";
-				                                fila[2] = lista_tabla[i][2]+"";
-				                                fila[3] = lista_tabla[i][3]+"";
+				                        for(int i=0; i<data.length; i++){
+				                                fila[0] = data[i][0]+"";
+				                                fila[1] = data[i][1]+"";
+				                                fila[2] = data[i][2]+"";
+				                                fila[3] = data[i][3]+"";
 				                                tabla_model_cobro.addRow(fila);
 				                        }
-			                        
-				                        txtFolioCliente.requestFocus();
+				                        
+				                 txtFolioCliente.requestFocus();       
+				                        new Cat_Genera_Ticket_De_Abono_Cliente(ticket,"abono");
 			                        
 			        	}else{
 			        		JOptionPane.showMessageDialog(null, "El abono no a sido realizado con exito","Error",JOptionPane.ERROR_MESSAGE);
 							return;
 			        	}
+			        	tabla_cobros.setEnabled(false);
 			       }
 			}
 	}
@@ -1133,6 +1157,8 @@ public class Cat_Abono_Clientes extends JFrame{
                     try {
 						establecimiento_de_ticket = new BuscarSQL().establecimiento_ticket_selecionado(folio_ticket_o_folio_abono);
 						
+						cargarAbonos(folio_ticket_o_folio_abono);
+						
 						if(establecimiento_de_ticket.equals(txtEstablecimiento.getText().toString().trim())){
 							
 	//		                  para validar si pide fecha o no
@@ -1140,22 +1166,8 @@ public class Cat_Abono_Clientes extends JFrame{
 			                	
 			                    lblSeleccion_de_tabla.setText("El ticket   "+ folio_ticket_o_folio_abono+"   esta seleccionado");
 			                    
-				    			txtTiket.setText(folio_ticket_o_folio_abono);
-				    			
-								while(tabla_abonos.getRowCount()>0){tabla_model_abonos.removeRow(0);}
-								
-	//			              	buscar abonos del cliente
-			                    Object [][] lista_abonos = new Obj_Abono_Clientes().get_tabla_abonos(txtTiket.getText());
-			            		String[] filaA = new String[5];
-			                            for(int i=0; i<lista_abonos.length; i++){
-				                            	filaA[0] = lista_abonos[i][0]+"";
-				                            	filaA[1] = lista_abonos[i][1]+"";
-				                            	filaA[2] = lista_abonos[i][2]+"";
-				                            	filaA[3] = lista_abonos[i][3]+"";
-				                            	filaA[4] = lista_abonos[i][4]+"";
-			                                    tabla_model_abonos.addRow(filaA);
-			                            }
-			                            
+				    			txtTiket.setText(folio_ticket_o_folio_abono);							
+
 			                            tabla_cobros.setEnabled(true);
 
 										txtAbono.setEditable(true);
@@ -1199,8 +1211,6 @@ public class Cat_Abono_Clientes extends JFrame{
 				    				btnNuevaCuenta.setForeground(new Color(0,17 ,255));
 				    				btnNuevaCuenta.setContentAreaFilled(false);
 				    				btnNuevaCuenta.setOpaque(true);
-				    				
-
 			            		
 						}else{
 							
@@ -1229,8 +1239,11 @@ public class Cat_Abono_Clientes extends JFrame{
 							
 							pintar_botones();
 							
+//							cargarAbonos(txtTiket.getText());
+							
+//							txtTiket.setText("");
 							JOptionPane.showMessageDialog(null, "El Ticket que desea abonar fue dado de alta en el establecimiento: "+establecimiento_de_ticket+"\nFavor de informar al cliente que realice su abono en dicho establecimiento", "Aviso !!!", JOptionPane.INFORMATION_MESSAGE);
-							return;
+//							return;
 						}
 						
 					} catch (SQLException e1) {
@@ -1240,6 +1253,23 @@ public class Cat_Abono_Clientes extends JFrame{
 	        }
         });
     }
+	
+	public void cargarAbonos(String tick){
+		
+		while(tabla_abonos.getRowCount()>0){tabla_model_abonos.removeRow(0);}
+		
+//			              	buscar abonos del cliente
+        Object [][] lista_abonos = new Obj_Abono_Clientes().get_tabla_abonos(tick);
+		String[] filaA = new String[5];
+                for(int i=0; i<lista_abonos.length; i++){
+                    	filaA[0] = lista_abonos[i][0]+"";
+                    	filaA[1] = lista_abonos[i][1]+"";
+                    	filaA[2] = lista_abonos[i][2]+"";
+                    	filaA[3] = lista_abonos[i][3]+"";
+                    	filaA[4] = lista_abonos[i][4]+"";
+                        tabla_model_abonos.addRow(filaA);
+                }
+	}
 	
 	private void SELECCION_ABONO(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1492,15 +1522,27 @@ public class Cat_Abono_Clientes extends JFrame{
 			
 			String ruta = "";
 			String query = "";
-			if(movimiento.equals("abono")){
-				ruta = "\\src\\Obj_Reportes\\Obj_Ticket_C_Ahorro_Cte.jrxml";
-				query = "exec sp_tickets_abonos_c_ahorro_cte "+ticket;
-			}else{
-					ruta = "\\src\\Obj_Reportes\\Obj_Ticket_C_Ahorro_Cte_A_Detalle.jrxml";
-					query = "exec sp_tickets_abonos_c_ahorro_cte_a_detalle "+ticket;
+			
+			
+			
+			if(movimiento.equals("liquidacion")){
+				
+					System.out.println(ticket+" - "+movimiento);
+					                                
+						ruta = "\\src\\Obj_Reportes\\Obj_Liquidar_Ticket_C_Ahorro_Cte.jrxml";
+						query = "exec sp_tickets_abonos_c_ahorro_cte '"+ticket+"','L'";
+						
+						System.out.println(query);
+				}else{	
+						if(movimiento.equals("abono")){
+								ruta = "\\src\\Obj_Reportes\\Obj_Ticket_C_Ahorro_Cte.jrxml";
+								query = "exec sp_tickets_abonos_c_ahorro_cte '"+ticket+"','V'";
+						}else{					
+								ruta = "\\src\\Obj_Reportes\\Obj_Ticket_C_Ahorro_Cte_A_Detalle.jrxml";
+								query = "exec sp_tickets_abonos_c_ahorro_cte_a_detalle '"+ticket+"'";
+						}
 			}
-			
-			
+					
 			try {
 				
 //				jenera el archivo *.jasper en la misma ruta del proyecto
@@ -1679,6 +1721,8 @@ public class Cat_Abono_Clientes extends JFrame{
 							
 							case "Liquidar": 
 									if(new ActualizarSQL().Actualizar_Cancelar_Ticket_o_Abono(Folio_ticket_o_abono,  txtNombre_supervisor.getText(),  "LIQUIDAR", Cajero)){
+										
+										new Cat_Genera_Ticket_De_Abono_Cliente(Folio_ticket_o_abono,"liquidacion");
 										
 											dispose();
 											buscar_cliente(Integer.valueOf(txtFolioCliente.getText()));
