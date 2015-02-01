@@ -4,7 +4,10 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -19,6 +22,7 @@ import javax.swing.UIManager;
 
 import com.toedter.calendar.JDateChooser;
 
+import Conexiones_SQL.BuscarSQL;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 
@@ -86,7 +90,7 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 		panel.add(btngenerar).setBounds(150, 150, 100, 20);
 		
 		cont.add(panel);
-		
+		cargar_fechas();
 		btngenerar.addActionListener(opGenerar);
 		
 		this.setSize(400, 210);
@@ -94,11 +98,32 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
+	public void cargar_fechas(){
+		
+		Date date1 = null;
+				  try {
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(7));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		c_inicio.setDate(date1);
+					
+	    Date date2 = null;
+					  try {
+						date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
+					} catch (ParseException e) {
+						e.printStackTrace();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+		c_final.setDate(date2);
+	};
 	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-
-		if(validar_fechas().equals("")){
+     if(validar_fechas().equals("")){
 			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
 			String Establecimiento=txtEstablecimiento.getText()+"";
@@ -106,7 +131,7 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 			String folios_empleados=txtFolio.getText()+"";
 			
 			if(c_inicio.getDate().before(c_final.getDate())){
-				new Cat_Reporte_De_Asistencia().Reporte_de_Asistencia_establecimiento(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
+				new Cat_Reporte_De_Asistencia().Reporte_de_Asistencia_completo(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
 				
 			}else{
 				JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);

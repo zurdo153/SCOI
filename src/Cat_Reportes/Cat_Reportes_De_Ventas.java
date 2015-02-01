@@ -8,14 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -23,7 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.UIManager;
@@ -225,16 +222,13 @@ ResultSet rs;
 
 try {
 	s = con.conexion_IZAGAR().createStatement();
-	String fecha_inicial =new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
-	String fecha_final =new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
+//	String fecha_inicial =new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
+//	String fecha_final =new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
+
 	
 	rs=null;
 	
 							rs = s.executeQuery(" Select 1,2,3,4,5,6,7"
-									
-									
-									
-									
 									
 //									"SELECT  establecimientos.nombre as establecimiento" +
 //									"                   ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0)) as existencia_pz" +

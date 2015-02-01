@@ -1132,9 +1132,9 @@ public class BuscarTablasModel {
 	public String[][] filtro_impuntualidad_a_considerar(String fecha_inicio,String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
 		String[][] Matriz = null;
 		
-		String query = "sp_Select_Consideracion_Checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"';";
+		String query = "sp_select_consideracion_checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"';";
 		
-		Matriz = new String[get_filas(query)][16];
+		Matriz = new String[get_filas(query)][17];
 		
 		try {	
 			Statement stmt = new Connexion().conexion().createStatement();
@@ -1158,7 +1158,8 @@ public class BuscarTablasModel {
 				Matriz[i][12] = rs.getString(14);
 				Matriz[i][13] = rs.getString(15);
 				Matriz[i][14] = rs.getString(16);
-				Matriz[i][15] = rs.getInt(17)==0?"false":"true";
+				Matriz[i][15] = rs.getString(17);
+				Matriz[i][16] = rs.getInt(18)==0?"false":"true";
 				
 				i++;
 			}

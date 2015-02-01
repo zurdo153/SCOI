@@ -1,5 +1,7 @@
 package Obj_Lista_de_Raya;
 
+import java.sql.SQLException;
+
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
@@ -13,8 +15,16 @@ public class Obj_Totales_De_Cheque {
 	String lista_raya;
 	String diferencia;
 	String fecha;
+	private boolean autorizar;
 	
-	
+	public boolean isAutorizar() {
+		return autorizar;
+	}
+
+	public void setAutorizar(boolean autorizar) {
+		this.autorizar = autorizar;
+	}
+
 	public Obj_Totales_De_Cheque(){
 		this.numero_listaraya=0; 		this.establecimiento="";
 		this.nomina="";		this.pago_linea="";
@@ -98,4 +108,14 @@ public class Obj_Totales_De_Cheque {
 	
 	public boolean Actualizar(String Establecimiento, int Folio){ return new ActualizarSQL().Actualizar(this,Establecimiento,Folio); }
 	
+	public boolean actualizar(){ return new ActualizarSQL().Autorizar_Nomina(this); }	
+	
+	public Obj_Totales_De_Cheque buscar_autorizacion(){
+		try {
+			return new BuscarSQL().Autorizar_nomina();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
 }

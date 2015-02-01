@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,6 +20,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -109,7 +111,7 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
                  {                 	    btn_guardar.doClick();
                	    }
             });
-///guardar con F12
+       ///guardar con F12
              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
                  getRootPane().getActionMap().put("guardar", new AbstractAction(){
                      public void actionPerformed(ActionEvent e)
@@ -168,7 +170,9 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
 				if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de Totales de Nomina?") == 0){
 					Obj_Totales_De_Nomina totales = new Obj_Totales_De_Nomina();
 					if(totales.guardar(tabla_guardar())){
-						JOptionPane.showMessageDialog(null, "La tabla Totales de Nomina se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "La Tabla De Totales De Nomina Se Guardó Exitosamente \n Ahora Se Abrira Los Totales De Cheque Para Su Impresion","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						dispose();
+						new Cat_Totales_De_Cheque().setVisible(true);
 						return;
 					}else{
 						JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la Tabla de Nominas","Error",JOptionPane.ERROR_MESSAGE);
@@ -266,4 +270,10 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
     		return false;
     	}
     }
+    public static void main(String [] arg){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Totales_De_Nomina().setVisible(true);
+		}catch(Exception e){	}
+	}
 }

@@ -5,8 +5,11 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -26,6 +29,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
@@ -50,7 +54,7 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento = new JComboBox(departamento);
 
-	JButton btn_generar_sin_observaciones = new JButton  ("Reporte de Asistencia S/Observaciones",new ImageIcon("imagen/proceso-para-los-usuarios-icono-5903-16.png"));
+	JButton btn_generar_consideraciones = new JButton  ("Reporte de Asistencia C/Consideraciones",new ImageIcon("imagen/proceso-para-los-usuarios-icono-5903-16.png"));
 	JButton btn_generar_Permisos = new JButton  ("Reporte de Permisos a Empleados",new ImageIcon("imagen/apoyo-y-asistencia-icono-6525-16.png"));
 	JButton btn_generar_Completo = new JButton  ("Reporte de Asistencia Completo",new ImageIcon("imagen/asistencia-comunitaria-icono-9465-16.png"));
 	
@@ -76,7 +80,7 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		this.panel.add(JLBdepartamento).setBounds(300,55,20,20);
 		this.panel.add(cmbDepartamento).setBounds(320,55,170,20);
 	
-		this.panel.add(btn_generar_sin_observaciones).setBounds(120,100,250,35);
+		this.panel.add(btn_generar_consideraciones).setBounds(120,100,250,35);
 		this.panel.add(btn_generar_Permisos).setBounds(120,145,250,35);
 		this.panel.add(btn_generar_Completo).setBounds(120,190,250,35);
 		
@@ -85,12 +89,36 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		this.setSize(510,270);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
+		 cargar_fechas();
 		
 		this.btn_generar_Completo.addActionListener(op_generar);
 		this.btn_generar_Permisos.addActionListener(op_generar_permisos);
-		this.btn_generar_sin_observaciones.addActionListener(op_generar_sin_observaciones);
+		this.btn_generar_consideraciones.addActionListener(op_generar_con_consideraciones);
 		
 	}
+	
+	public void cargar_fechas(){
+			
+		Date date1 = null;
+				  try {
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(7));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		c_inicio.setDate(date1);
+					
+	    Date date2 = null;
+					  try {
+						date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
+					} catch (ParseException e) {
+						e.printStackTrace();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+		c_final.setDate(date2);
+	};
 	
 	
 	ActionListener op_generar = new ActionListener() {
@@ -104,7 +132,6 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 
 				if(c_inicio.getDate().before(c_final.getDate())){
 					Reporte_de_Asistencia_completo(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
-
 					
 				}else{
 					JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
@@ -124,7 +151,6 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		String query = "exec sp_Reporte_De_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
 		Statement stmt = null;
 		try {
-			
 			stmt =  new Connexion().conexion().createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 		    
@@ -140,15 +166,15 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void Reporte_de_Asistencia_establecimiento(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
-		String query = "exec sp_Reporte_General_de_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
+	public void op_generar_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
+		String query = "exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
 		Statement stmt = null;
 		try {
 			
 			stmt =  new Connexion().conexion().createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 		    
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_de_Asistencia_Por_Establecimiento_Sin_Observaciones.jrxml");
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Asistencia_Por_Establecimiento_Consideraciones.jrxml");
 			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
 			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 			JasperViewer.viewReport(print, false);
@@ -160,10 +186,7 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	
 	
 	
-	
-	
-	
-	ActionListener op_generar_sin_observaciones = new ActionListener() {
+	ActionListener op_generar_con_consideraciones = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
@@ -173,7 +196,7 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 				String folios_empleados = "Selecciona un Empleado";
 
 				if(c_inicio.getDate().before(c_final.getDate())){
-					Reporte_de_Asistencia_establecimiento(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
+					op_generar_consideraciones(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
 
 					
 				}else{

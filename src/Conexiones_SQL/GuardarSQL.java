@@ -1256,7 +1256,7 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_prestamo(Obj_Prestamos pres){
-		String query = "exec sp_insert_prestamo ?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_prestamo ?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -1272,17 +1272,21 @@ public class GuardarSQL {
 			pstmt.setDouble(7, pres.getSaldo());
 			pstmt.setString(8, "1");
 			pstmt.setDouble(9, 0);
+			pstmt.setDouble(10, pres.getTipo_prestamo());
 			pstmt.executeUpdate();
 			con.commit();
 			
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_prestamo ] \n SQLException: sp_insert_prestamo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_prestamo ] \n La transacción ha sido abortada update  SQLException: sp_insert_prestamo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_prestamo ] \n Confirmacion SQLException: sp_insert_prestamo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;

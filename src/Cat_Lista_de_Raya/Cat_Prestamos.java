@@ -2,6 +2,7 @@ package Cat_Lista_de_Raya;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -23,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -57,9 +59,13 @@ public class Cat_Prestamos extends JFrame {
 	String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
+    
+
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Prestamos() {
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/prestamo.png"));
+		
 		this.setTitle("Filtro De Prestamos");
 		panel.setBorder(BorderFactory.createTitledBorder("Filtro De Prestamos"));
 		
@@ -70,8 +76,8 @@ public class Cat_Prestamos extends JFrame {
 		
 		panel.add(txtFolio).setBounds(15,20,68,20);
 		panel.add(txtNombre_Completo).setBounds(85,20,239,20);
-		panel.add(cmbEstablecimientos).setBounds(325,20, 148, 20);
-
+		panel.add(cmbEstablecimientos).setBounds(325,20, 180, 20);
+       
 		txtFolio.addKeyListener(opFiltroFolio);
 		txtNombre_Completo.addKeyListener(opFiltroNombre);
 		cmbEstablecimientos.addActionListener(opFiltro);
@@ -134,7 +140,7 @@ public class Cat_Prestamos extends JFrame {
 			if(cmbEstablecimientos.getSelectedIndex() != 0){
 				trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
 			}else{
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+			 	trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
 			}
 		}
 	};
@@ -305,6 +311,12 @@ public class Cat_Prestamos extends JFrame {
 					dispose();
 			}
 		}
+	}
+	public static void main(String args[]){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Prestamos().setVisible(true);
+		}catch(Exception e){	}
 	}
 }
 

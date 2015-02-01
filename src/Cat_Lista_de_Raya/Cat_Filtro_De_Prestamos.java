@@ -2,6 +2,7 @@ package Cat_Lista_de_Raya;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,10 +20,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -28,6 +33,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.Connexion;
@@ -49,13 +56,14 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 	
 	Connexion con = new Connexion();
 	
-	DefaultTableModel	 modelo       = new DefaultTableModel(0,7)	{
+	DefaultTableModel	 modelo       = new DefaultTableModel(0,8)	{
 		public boolean isCellEditable(int fila, int columna){
 			if(columna < 0)
 				return true;
 			return false;
 		}
 	};
+	
 	JTable tabla                   = new JTable(modelo);
 	JScrollPane panelScroll        = new JScrollPane(tabla);
 	
@@ -68,24 +76,33 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 	
 	JTextField txtCantidad = new JTextField();
 	JTextField txtDescuento = new JTextField();
+	JTextField txtSaldo = new JTextField();
+	JTextField txtAbonos = new JTextField();
 
 	
 	String status[] = {"Vigente","Cancelado Temporal"};
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbStatus = new JComboBox(status);
 	
+	String tipo_prestamo[] = {"Contable","No Contable"};
+	@SuppressWarnings({ "rawtypes"})
+	JComboBox cmbtipo_prestamo = new JComboBox(tipo_prestamo);
+	
 	com.toedter.calendar.JDateChooser txtCalendario = new com.toedter.calendar.JDateChooser();
 	JLabel lblTotal = new JLabel("");
 	
-	JButton btnFiltro = new JButton(new ImageIcon("imagen/Text preview.png"));
-	JLabel btnEditar = new JLabel(new ImageIcon("imagen//Modify.png"));
-	JLabel btnGuardar = new JLabel(new ImageIcon("imagen//Guardar.png"));
+	JButton btnFiltro  = new JButton("Buscar Otro Empleado",new ImageIcon("imagen/Text preview.png"));
+	JButton btnEditar  = new JButton("Editar"              ,new ImageIcon("imagen//Modify.png"));
+	JButton btnGuardar = new JButton("Guardar"             ,new ImageIcon("imagen//Guardar.png"));
+	JButton btnDeshacer = new JButton("Deshacer"           ,new ImageIcon("imagen/deshacer16.png"));
 	
+	String empleado="";
 	
 	public Cat_Filtro_De_Prestamos(String algo) {
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Usuario.png"));
+		empleado=algo;
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/prestamo.png"));
 		this.setTitle("Prestamos");
-		int x = 40, y=50, ancho=140;
+		int x = 20,	y=20, ancho=100,a=20;
 		txtCantidad.requestFocus();
 		panel.setBorder(BorderFactory.createTitledBorder("Prestamo"));		
 		
@@ -96,74 +113,108 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 		tabla.getColumnModel().getColumn(1).setMinWidth(80);
 		tabla.getColumnModel().getColumn(1).setMaxWidth(80);
 		tabla.getColumnModel().getColumn(2).setHeaderValue("Cantidad");
-		tabla.getColumnModel().getColumn(2).setMinWidth(80);
-		tabla.getColumnModel().getColumn(2).setMaxWidth(80);
+		tabla.getColumnModel().getColumn(2).setMinWidth(70);
+		tabla.getColumnModel().getColumn(2).setMaxWidth(70);
 		tabla.getColumnModel().getColumn(3).setHeaderValue("Descuento");
-		tabla.getColumnModel().getColumn(3).setMinWidth(80);
-		tabla.getColumnModel().getColumn(3).setMaxWidth(80);
+		tabla.getColumnModel().getColumn(3).setMinWidth(70);
+		tabla.getColumnModel().getColumn(3).setMaxWidth(70);
 		tabla.getColumnModel().getColumn(4).setHeaderValue("Saldo");
-		tabla.getColumnModel().getColumn(4).setMinWidth(80);
-		tabla.getColumnModel().getColumn(4).setMaxWidth(80);
+		tabla.getColumnModel().getColumn(4).setMinWidth(70);
+		tabla.getColumnModel().getColumn(4).setMaxWidth(70);
 		tabla.getColumnModel().getColumn(5).setHeaderValue("Total Abonos");
 		tabla.getColumnModel().getColumn(5).setMinWidth(80);
 		tabla.getColumnModel().getColumn(5).setMaxWidth(80);
 		tabla.getColumnModel().getColumn(6).setHeaderValue("Status");
-		tabla.getColumnModel().getColumn(6).setMinWidth(100);
-		tabla.getColumnModel().getColumn(6).setMaxWidth(100);
+		tabla.getColumnModel().getColumn(6).setMinWidth(55);
+		tabla.getColumnModel().getColumn(6).setMaxWidth(55);
+		tabla.getColumnModel().getColumn(7).setHeaderValue("Tipo Prestamo");
+		tabla.getColumnModel().getColumn(7).setMinWidth(90);
+		tabla.getColumnModel().getColumn(7).setMaxWidth(90);
 		
 		agregar(tabla);
 		
-		panel.add(new JLabel("Folio Empleado:")).setBounds(x,y,ancho,20);
-		panel.add(txtFolio_Empleado).setBounds(x+ancho,y,ancho*2,20);
+		panel.add(new JLabel("Folio Empleado:")).setBounds(x,y,ancho-20,a);
+		panel.add(txtFolio_Empleado).setBounds(x+=80,y,ancho-40,a);
 		
-		panel.add(new JLabel("Nombre Completo:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtNombre_Completo).setBounds(x+ancho,y,ancho*2,20);
+		panel.add(new JLabel("Nombre:")).setBounds(x+=40,y,ancho-50,a);
+		panel.add(txtNombre_Completo).setBounds(x+=45,y,ancho*2,a);
 		
-		panel.add(new JLabel("Fecha:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtCalendario).setBounds(x+ancho,y,ancho-15,20);
+		panel.add(lblEtiquetaRango).setBounds(x+=220,y,ancho+40,a);
+		panel.add(lblRango).setBounds(x+ancho+25,y,ancho+40,a);
 		
-		panel.add(lblEtiquetaRango).setBounds(x,y+=25,ancho+20,20);
-		panel.add(lblRango).setBounds(x+ancho+35,y,ancho+40,20);
+		x=a;
+		panel.add(new JLabel("Fecha:")).setBounds(x,y+=30,ancho-50,a);
+		panel.add(txtCalendario).setBounds(x+=60,y,ancho-15,a);
 		
-		panel.add(new JLabel("Cantidad:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtCantidad).setBounds(x+ancho,y,ancho-15,20);
+		panel.add(new JLabel("Estatus:")).setBounds(x+=160,y,ancho-50,a);
+		panel.add(cmbStatus).setBounds(x+=50,y,ancho-15,a);
 		
-		panel.add(new JLabel("Descuento:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtDescuento).setBounds(x+ancho,y,ancho-15,20);
+		panel.add(new JLabel("Tipo Prestamo:")).setBounds(x+=165,y,ancho,a);
+		panel.add(cmbtipo_prestamo).setBounds(x+=ancho-25,y,ancho-15,a);
 		
-		panel.add(new JLabel("Status:")).setBounds(x,y+=25,ancho,20);
-		panel.add(cmbStatus).setBounds(x+ancho,y,ancho-15,20);
 		
-		panel.add(panelScroll).setBounds(x,y+=25+10,ancho+420,80);
+		x=a;
+		panel.add(new JLabel("Cantidad:")).setBounds(x,y+=30,ancho,a);
+		panel.add(txtCantidad).setBounds(x+=60,y,ancho-15,a);
 		
-		panel.add(btnFiltro).setBounds(20,15,16,16);
-		panel.add(btnEditar).setBounds(46,15,16,16);
-		panel.add(btnGuardar).setBounds(73,15,16,16);
-		panel.add(lblTotal).setBounds(ancho-30,y-30, 400, 200);
+		panel.add(new JLabel("Saldo:")).setBounds(x+=160,y,ancho,a);
+		panel.add(txtSaldo).setBounds(x+=50,y,ancho-15,a);
+		
+		
+		x=a;
+		panel.add(new JLabel("Descuento:")).setBounds(x,y+=25,ancho,a);
+		panel.add(txtDescuento).setBounds(x+=60,y,ancho-15,a);
+		
+		panel.add(new JLabel("Abonos:")).setBounds(x+=160,y,ancho,a);
+		panel.add(txtAbonos).setBounds(x+=50,y,ancho-15,a);
+		
+		x=a;
+		panel.add(lblTotal).setBounds(x+350,y, 400, 200);
+
+		
+		panel.add(panelScroll).setBounds(x,y+=25+10,ancho+495,90);
+		
+		panel.add(btnEditar).setBounds(x,y+=110,ancho,a);
+		panel.add(btnGuardar).setBounds(x+=ancho+20,y,ancho,a);
+		panel.add(btnDeshacer).setBounds(x+=ancho+20,y,ancho,a);
+		panel.add(btnFiltro).setBounds(x+=195,y,ancho+60,a);
 		
 		lblTotal.setFont(new java.awt.Font("Algerian",0,60));
-		lblRango.setFont(new java.awt.Font("SansSerif",5,18));
-		lblEtiquetaRango.setFont(new java.awt.Font("SansSerif",5,18));	
-		
-		lblRango.setForeground(Color.blue);
+		lblRango.setFont(new java.awt.Font("SansSerif",8,14));
+		lblEtiquetaRango.setFont(new java.awt.Font("SansSerif",8,14));	
 		lblEtiquetaRango.setForeground(Color.blue);
+		lblRango.setForeground(Color.blue);
+		
 		
 		btnFiltro.addActionListener(filtro);
-		btnEditar.addMouseListener(ValidarCampos);
+		btnEditar.addActionListener(Editar);
 		btnGuardar.addMouseListener(guardar);
+		btnDeshacer.addActionListener(deshacer);
 		
+                  
 		txtCantidad.addKeyListener(validaNumericoConPunto);
 		txtDescuento.addKeyListener(valida_numeric);
-	
+		
+//      asigna el foco al JTextField deseado al arrancar la ventana
+        this.addWindowListener(new WindowAdapter() {
+                public void windowOpened( WindowEvent e ){
+                btnFiltro.requestFocus();
+             }
+        });
+        
 		cont.add(panel);
 		
 		Obj_Empleados re = new Obj_Empleados();
-		re = re.buscar(Integer.parseInt(algo));
+		re = re.buscar(Integer.parseInt(empleado));
 	
 		folio_empleado= re.getFolio();
 		txtFolio_Empleado.setText(folio_empleado+"");
 		txtNombre_Completo.setText(re.getNombre()+" "+re.getAp_paterno()+" "+re.getAp_materno()+"");	
 		lblRango.setText(rango_prestamo[re.getPrestamo()]);
+		txtAbonos.setText("0");
+		txtSaldo.setText("0");
+		 
+   	 
 		panelEnabledTrue();
 		
 		String Rango =rango_prestamo[re.getPrestamo()];
@@ -194,16 +245,76 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 			}
 			txtCantidad.setText(modelo.getValueAt(0, 2)+"");
 			txtDescuento.setText(modelo.getValueAt(0, 3)+"");
+			txtSaldo.setText(modelo.getValueAt(0, 4)+"");
+			txtAbonos.setText(modelo.getValueAt(0,5)+"");
+			
+			
 			if(modelo.getValueAt(0, 6).equals("VIGENTE")){
-				cmbStatus.setSelectedIndex(0);
-			}else{
-				cmbStatus.setSelectedIndex(1);
+						cmbStatus.setSelectedIndex(0);
+					}else{
+						cmbStatus.setSelectedIndex(1);
 			}
+			
+			 if(modelo.getValueAt(0, 7).equals("CONTABLE")){
+					cmbtipo_prestamo.setSelectedIndex(0);
+				}else{
+					cmbtipo_prestamo.setSelectedIndex(1);
+			 }
+			 
+
+			
 			panelEnabledFalse();
 			btnGuardar.setEnabled(false);
 		}
+		
+		
+         ///buscar F2
+         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "filtro");
+             getRootPane().getActionMap().put("filtro", new AbstractAction(){
+                 public void actionPerformed(ActionEvent e)
+                 {             	  btnFiltro.doClick();
+               	    }
+            });
+             
+         
+		///deshacer con escape
+	     getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+	     	getRootPane().getActionMap().put("escape", new AbstractAction(){
+	     		public void actionPerformed(ActionEvent e)
+	      		{                 	    btnDeshacer.doClick();
+	    	    }
+	  });
+  	///guardar con control+G
+      getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+//        getRootPane().getActionMap().put("guardar", new AbstractAction(){
+//           public void actionPerformed(ActionEvent e)
+//           {                 	    btnGuardar.doClick();
+//         	    }
+//      });
+    ///guardar con F12
+       getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+           getRootPane().getActionMap().put("guardar", new AbstractAction(){
+               public void actionPerformed(ActionEvent e)
+               {                 	    btnGuardar.doClick();
+                 	    }
+          });
+           
+    ///editar con F10
+           getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
+               getRootPane().getActionMap().put("editar", new AbstractAction(){
+                   public void actionPerformed(ActionEvent e)
+                   {                 	    btnEditar.doClick();
+	                    	    }
+              });
+    ///editar con Ctrl+E
+           getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,Event.CTRL_MASK), "editar");
+               getRootPane().getActionMap().put("editar", new AbstractAction(){
+                   public void actionPerformed(ActionEvent e)
+                   {                 	    btnEditar.doClick();
+	                    	    }
+              });
 				
-		this.setSize(650,390);
+		this.setSize(650,330);
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -231,6 +342,12 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 	    			}else{
 	    				cmbStatus.setSelectedIndex(1);
 	    				 }
+	    			
+	    			if(modelo.getValueAt(fila, 7).equals("CONTABLE")){
+	    				cmbtipo_prestamo.setSelectedIndex(0);
+	    			}else{
+	    				cmbtipo_prestamo.setSelectedIndex(1);
+	    				 }
 	        }
         });
     }
@@ -238,25 +355,33 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 	MouseListener guardar = new MouseListener() {
 		@Override
 		public void mousePressed(MouseEvent e) {
+	    	 
 			if(validaCampos()!="") {
-				JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-				if(Double.parseDouble(txtCantidad.getText())> rangoFin){
-					JOptionPane.showMessageDialog(null,"Solo se le puede autorizar la cantidad de $"+rangoFin, "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				if((Double.parseDouble(txtCantidad.getText())-Double.parseDouble(txtAbonos.getText()))   > rangoFin){
+					JOptionPane.showMessageDialog(null,"Se Le Quiere Poner Un Prestamo De  Cantidad-Total Abonos="+(Double.parseDouble(txtCantidad.getText())-Double.parseDouble(txtAbonos.getText()))+
+							                   "  \n y Solo Tiene Autorizado Para Prestamo La Cantidad Maxima De $"+rangoFin+
+							                   " \n Avise Al Encargado De Desarrollo Humano Si Se Le Autoriza Subir El A", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 				if(Double.parseDouble(txtDescuento.getText())>Double.parseDouble(txtCantidad.getText())){
-					JOptionPane.showMessageDialog(null,"El Descuento es mayor que el prestamo", "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+					JOptionPane.showMessageDialog(null,"El Descuento Es Mayor Que El Prestamo \n Descuento:"+Double.parseDouble(txtDescuento.getText())+" Cantidad Prestamo:"+Double.parseDouble(txtCantidad.getText()), "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
+				if(Double.parseDouble(txtCantidad.getText())<Double.parseDouble(txtAbonos.getText())){
+					JOptionPane.showMessageDialog(null,"La Cantidad No Puede Ser Menor Que La Suma De Los Abonos \n Cantidad:"+Double.parseDouble(txtCantidad.getText())+" Total Abonos:"+Double.parseDouble(txtAbonos.getText()), "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
+				
 				
 				Obj_Prestamos pres = new Obj_Prestamos();
 				
 				switch(tabla.getRowCount()){
 					case 0: 
 						if(Double.parseDouble(txtDescuento.getText()) > Double.parseDouble(txtCantidad.getText())){
-							JOptionPane.showMessageDialog(null, "El Descuento es Mayor que la cantidad", "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							JOptionPane.showMessageDialog(null, "El Descuento:"+Double.parseDouble(txtDescuento.getText())+" Es Mayor Que La Cantidad:"+Double.parseDouble(txtCantidad.getText()), "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;	
 						}else{
 							pres.setFolio(Integer.parseInt(txtFolio_Empleado.getText()));
@@ -268,10 +393,11 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 							pres.setSaldo(Double.parseDouble(txtCantidad.getText()));
 							pres.setStatus(cmbStatus.getSelectedIndex()+1);
 							pres.setStatus_descuento(cmbStatus.getSelectedIndex()+1);
+							pres.setTipo_prestamo(cmbtipo_prestamo.getSelectedIndex());
 			
 							pres.guardar();
 							
-							JOptionPane.showMessageDialog(null,"El registro se guardo exitosamente", "Aviso se guardo el registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							JOptionPane.showMessageDialog(null,"El registro se guardo exitosamente", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							
 							if(pres.getStatus_descuento()==1){
 								Object[] fila = new Object[tabla.getColumnCount()]; 
@@ -285,32 +411,34 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 									fila[4]=txtCantidad.getText();
 									fila[5]=0.00;
 									
-									
 									switch(cmbStatus.getSelectedIndex()){
 										case 0: fila[6]="VIGENTE";break;	
 										case 1: fila[6]="CANCELADO TEMPORAL";break;
+									}
+									switch(cmbtipo_prestamo.getSelectedIndex()){
+										case 0: fila[7]="CONTABLE";break;	
+										case 1: fila[7]="NO CONTABLE";break;
 									}
 									modelo.addRow(fila); 	
 								} catch (SQLException e1) {
 									e1.printStackTrace();
 								}
-													
 							}
 						}
 						
 						break;
 					case 1: 
 						if(Double.parseDouble(txtDescuento.getText()) > Double.parseDouble(modelo.getValueAt(0,4)+"")){
-							JOptionPane.showMessageDialog(null,"El Descuento que quiere aplicar es mayor que con lo que salda la cuenta", "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							JOptionPane.showMessageDialog(null,"El Descuento Que Quiere Aplicar Es Mayor Que Con Lo Que Salda La Cuenta", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;
 						}
 						if(Double.parseDouble(txtCantidad.getText()) < Double.parseDouble(txtDescuento.getText()) || 
 								Double.parseDouble(txtCantidad.getText()) == 0 ){
-							JOptionPane.showMessageDialog(null,"No es posible agregar una cantidad menor que el descuento", "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							JOptionPane.showMessageDialog(null,"No Es Posible Agregar Una Cantidad Menor Que El Descuento", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;
 						}					
 						if(Double.parseDouble(txtCantidad.getText()) == 0 ){
-							JOptionPane.showMessageDialog(null,"La cantidad tiene valor cero", "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							JOptionPane.showMessageDialog(null,"La Cantidad Tiene Valor Cero", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;
 						}
 						if(JOptionPane.showConfirmDialog(null, "Desea Actualizar el registro existente ?") == JOptionPane.YES_OPTION) {
@@ -318,6 +446,8 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 							pres.setCantidad(Double.parseDouble(txtCantidad.getText()));
 							pres.setDescuento(Double.parseDouble(txtDescuento.getText()));
 							pres.setStatus(cmbStatus.getSelectedIndex()+1);
+							pres.setTipo_prestamo(cmbtipo_prestamo.getSelectedIndex());
+						
 							pres.actualizar(Integer.parseInt(modelo.getValueAt(0,0)+""));
 										
 							int filas=  tabla.getRowCount();
@@ -353,52 +483,44 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 			
 		}
 	};	
-	MouseListener ValidarCampos = new MouseListener() {
-		@Override
-		public void mousePressed(MouseEvent e) {
+	
+	ActionListener deshacer = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			dispose();
+			new Cat_Filtro_De_Prestamos(empleado).setVisible(true);
+			
+		panelEnabledFalse();	
+		}
+	};	
+	
+   ActionListener Editar = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
 			panelEnabledTrue();
+			txtCantidad.requestFocus();
 			btnGuardar.setEnabled(true);
 		}
-		public void mouseReleased(MouseEvent e) {}		
-		public void mouseExited(MouseEvent e) {}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseClicked(MouseEvent e) {}
 	};
 	
 	public void panelEnabledTrue(){	
 		txtCantidad.setEnabled(true);
 		txtDescuento.setEnabled(true);
 		cmbStatus.setEnabled(true);
-		
+		cmbtipo_prestamo.setEnabled(true); 
+		txtCalendario.setEnabled(true);
+		txtAbonos.setEnabled(false);
+		txtSaldo.setEnabled(false);
+
 	}
 	
 	public void panelEnabledFalse(){	
 		txtCantidad.setEnabled(false);
 		txtDescuento.setEnabled(false);
 		cmbStatus.setEnabled(false);
-		
+		cmbtipo_prestamo.setEnabled(false);
+		txtCalendario.setEnabled(false);
+		txtSaldo.setEnabled(false);
+		txtAbonos.setEnabled(false);
 	}
-	
-	public void panelLimpiar(){	
-		panelEnabledFalse();
-		panelEnabledTrue();
-		txtCantidad.setText("");
-		txtDescuento.setText("");
-		txtCantidad.requestFocus();
-		tabla.setSelectionMode(0);
-		
-	}
-	
-	MouseListener salir = new MouseListener() {
-		@Override
-		public void mousePressed(MouseEvent e) {
-			dispose();
-		}
-		public void mouseReleased(MouseEvent e) {}		
-		public void mouseExited(MouseEvent e) {}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseClicked(MouseEvent e) {}
-	};
 	
 	KeyListener numerico_action = new KeyListener() {
 		@Override
@@ -478,7 +600,7 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 		String qry = "exec sp_select_prestamo "+folio_empleado;
 		System.out.println(qry);
 		
-		String[][] Matriz = new String[getFilas(qry)][7];
+		String[][] Matriz = new String[getFilas(qry)][8];
 		
 		Statement s;
 		ResultSet rs;
@@ -497,6 +619,7 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 					Matriz[i][4] = decimalFormat.format(Double.parseDouble(rs.getString(5)))+"";
 					Matriz[i][5] = decimalFormat.format(Double.parseDouble(rs.getString(6)))+"";
 					Matriz[i][6] = rs.getString(7);
+					Matriz[i][7] = rs.getString(8);
 				
 					i++;
 			}
@@ -547,5 +670,13 @@ public class Cat_Filtro_De_Prestamos extends JFrame {
 		}
 		return valor;
 	}
+	
+	public static void main(String args[]){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Filtro_De_Prestamos("1").setVisible(true);
+		}catch(Exception e){	}
+	}
+
 	
 }

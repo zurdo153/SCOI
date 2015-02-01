@@ -17,8 +17,10 @@ public class Obj_Prestamos {
     private String fecha;
     private int status;
     private int status_descuento;
-    
-    public Obj_Prestamos(){
+    private int tipo_prestamo;
+
+
+	public Obj_Prestamos(){
     	this.folio_empleado=0;
     	this.nombre_completo = "";
     	this.cantidad =0.0;
@@ -28,6 +30,7 @@ public class Obj_Prestamos {
     	this.saldo=0.0;
     	this.abonos=0.0;
     	this.status_descuento=0;
+    	this.tipo_prestamo=0;
 
     }
 
@@ -88,8 +91,6 @@ public class Obj_Prestamos {
 		this.saldo = saldo;
 	}
 	
-	
-
 	public double getAbonos() {
 		return abonos;
 	}
@@ -122,7 +123,17 @@ public class Obj_Prestamos {
 		status_descuento = statusDescuento;
 	}
 
+    public int getTipo_prestamo() {
+		return tipo_prestamo;
+	}
+
+	public void setTipo_prestamo(int tipo_prestamo) {
+		this.tipo_prestamo = tipo_prestamo;
+	}
+	
+	
 	public boolean guardar(){ return new GuardarSQL().Guardar_prestamo(this); }
+	
 	
 	public Obj_Prestamos buscar(int folio) throws SQLException{ return new BuscarSQL().Prestamo(folio); }
 	

@@ -58,6 +58,7 @@ public class Cat_Reportes_De_Totales_De_Cheques_De_Lista_De_Raya extends JFrame 
 //		btnCheque_Listas_Raya_Pasadas.addActionListener(Reporte_De_Totales_de_Cheques_De_Listas_de_Raya_Pasadas);
 		cont.add(panel);
 		this.setSize(320,200);
+		this.setAlwaysOnTop(true);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

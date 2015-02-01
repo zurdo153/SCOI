@@ -11,6 +11,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.AbstractButton;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -35,8 +38,11 @@ import javax.swing.table.TableRowSorter;
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
+import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Lista_de_Raya.Obj_Revision_De_Lista_Raya;
+import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 
 @SuppressWarnings("serial")
 /** CTRL EN CAT_ROOT_LISTA_RAYA PARA AGREGAR BOTON **/
@@ -139,11 +145,24 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.panel.add(scroll_tabla).setBounds(30,60,1300,620);
 		cont.add(panel);
 		
+		panel.add(new JLabel("Autorizacion Auditoria:")).setBounds(730,20,120,20);
+		panel.add(JLBAutoriazacion_Auditoria).setBounds(840,20,20,20);
+		panel.add(new JLabel("Traspaso Fuente Sodas:")).setBounds(870,20,120,20);
+		panel.add(JLBGuardado_Fte_Sodas).setBounds(1000,20,20,20);
+		
+		panel.add(new JLabel("Autorizacion Finanzas:")).setBounds(730,40,120,20);
+		panel.add(JLBAutorizacion_finanzas).setBounds(840,40,20,20);
+		panel.add(new JLabel("Totales Nomina y Cheques:")).setBounds(870,40,135,20);
+		panel.add(JLBTotales_Nomina).setBounds(1000,40,20,20);
+		
+		
 		this.init_tabla();
 		this.init_component();
+		cargar_autorizaciones();
 		txtCalendario.setEnabled(false);
 		
 		btn_imprimir.setEnabled(false);
+		btn_nomina.setEnabled(false);
 		tabla.addMouseListener(opTablaFiltroSeleccion);
 		
 		this.btn_guardar.addActionListener(op_guardar);
@@ -249,7 +268,29 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 	}
 	
+	public void cargar_autorizaciones(){
+		
+		if((new Obj_Fue_Sodas_DH().busquedaautoizacionfs().isStatus_autorizacion()))
+		  {btn_imprimir.setEnabled(false);
+		   JLBGuardado_Fte_Sodas.setEnabled(false);
+		  }else{btn_imprimir.setEnabled(true);
+			    JLBGuardado_Fte_Sodas.setEnabled(true);}
+		
+		if(new Obj_Autorizacion_Auditoria().buscar().isAutorizar()){
+			JLBAutoriazacion_Auditoria.setEnabled(true);
+			 }else{JLBAutoriazacion_Auditoria.setEnabled(false);}
+		
+		if(new Obj_Autorizacion_Finanzas().buscar().isAutorizar()){
+			JLBAutorizacion_finanzas.setEnabled(true);
+			 }else{JLBAutorizacion_finanzas.setEnabled(false);}
+	    
+	    if(new Obj_Totales_De_Cheque().buscar_autorizacion().isAutorizar()){
+	    	JLBTotales_Nomina.setEnabled(true);
+		    }else{JLBTotales_Nomina.setEnabled(false);}
+		};
 
+		
+	
 	ActionListener op_generar = new ActionListener() {
 		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
@@ -271,24 +312,30 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			}else{
 				if(new Obj_Revision_De_Lista_Raya().init_autorizacion()){
 					if(new Obj_Revision_De_Lista_Raya().init_totales_nomina()){
-					
+						 if(new Obj_Totales_De_Cheque().buscar_autorizacion().isAutorizar()){
+						    	
 						Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
 						if(lista_raya.generar(tabla_generar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
-
-							JOptionPane.showMessageDialog(null, "La lista de raya se generó con éxito","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							
+							JOptionPane.showMessageDialog(null, "La Lista De Raya Se Generó Con Éxito \n Se Cerrara-Abrira y Le Pedira Guardar La Nueva Pre Lista De Raya ","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							dispose();
 							new Cat_Revision_De_Lista_Raya().setVisible(true);
+							btn_guardar.doClick();
 							return;
 						}else{
 							JOptionPane.showMessageDialog(null, "La lista de raya no se pudo generar","Error",JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-					}else{
-						JOptionPane.showMessageDialog(null, "Antes de generar la lista de raya tiene que guardar los Totales de Cheque","Aviso",JOptionPane.ERROR_MESSAGE);
+						 }else{
+								JOptionPane.showMessageDialog(null, "Antes De Generar La Lista De Raya Tiene Que Guardar Los Totales De Cheque", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+						 }
+					  }else{
+						JOptionPane.showMessageDialog(null, "Antes De Generar La Lista De Raya Tiene Que Guardar Los Totales De Nomina", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}
 				}else{
-					JOptionPane.showMessageDialog(null, "La lista de raya no está autorizada","Aviso",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "La Lista De Raya No Esta Autorizada:", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			}
@@ -512,17 +559,21 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				JOptionPane.showMessageDialog(null, "Los siguientes datos son requeridos:\n"+valida_error(),"Error",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
-				if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista pre-raya?") == 0){
+				if(JOptionPane.showConfirmDialog(null, "¿Desea Guardar La  Pre Lista De Raya?") == 0){
 					Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
 					if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
-						if((new Obj_Fue_Sodas_DH().busquedaautoizacionfs().isStatus_autorizacion()))
-						{
-						btn_imprimir.setEnabled(false);
-						} else { 
-							btn_imprimir.setEnabled(true);
-									}
-						JOptionPane.showMessageDialog(null, "La tabla pre-raya se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
-						return;
+							 Obj_Totales_De_Cheque autorizacion = new Obj_Totales_De_Cheque();
+							 autorizacion.setAutorizar(false);
+							if(autorizacion.actualizar()){
+								cargar_autorizaciones();
+	
+								btn_nomina.setEnabled(true);
+								JOptionPane.showMessageDialog(null, "La Tabla De Pre Lista De Raya Se Guardo Exitosamente!!!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+								return;
+						}else{
+							JOptionPane.showMessageDialog(null, "Error Al Guardar ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}
+						
 					}else{
 						JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
 						return;
@@ -536,21 +587,51 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
 	ActionListener op_imprimir = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
+			update_autorizar_finanzas();
+			cargar_autorizaciones();
 			new Cat_Reportes_De_Lista_De_Raya().setVisible(true);
 		}
 	};
 	
 	ActionListener op_totales_cheque = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			if(new Obj_Revision_De_Lista_Raya().init_revision_totales()){
-				new Cat_Totales_De_Cheque().setVisible(true);
-			}else{
-				JOptionPane.showMessageDialog(null, "Se necesita que alimente los totales de nómina", "Error al visualizar la revisión de totales", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
+			dispose();
+			new Cat_Totales_De_Nomina().setVisible(true);
 		}
 	};
 	
+	public void update_autorizar_finanzas(){
+		String todos = "update tb_autorizaciones set autorizar_finanzas='true' ";
+		PreparedStatement pstmt = null;
+		Connection con = new Connexion().conexion();
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(todos);
+		
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en Cat_Imprimir_Lista_de_Raya  en la funcion [ update_autorizar_finanzas ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en Cat_Imprimir_Lista_de_Raya  en la funcion [ update_autorizar_finanzas ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en Cat_Imprimir_Lista_de_Raya  en la funcion [ update_autorizar_finanzas ] SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+
+	}
 	private Object[][] tabla_guardar(){
 		Object[][] matriz = new Object[tabla.getRowCount()][6];
 		for(int i=0; i<tabla.getRowCount(); i++){
@@ -982,6 +1063,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	MouseListener opTablaFiltroSeleccion = new MouseListener() {
 		public void mousePressed(MouseEvent e) {
 				btn_imprimir.setEnabled(false);
+				btn_nomina.setEnabled(false);
 			}
 			public void mouseClicked(MouseEvent e) {}
 			public void mouseEntered(MouseEvent e) {}

@@ -167,7 +167,10 @@ private void refrestabla(){
 	
 	ActionListener opImprimir = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
+			dispose();
+			new Cat_Revision_De_Lista_Raya().setVisible(true);
 			new Cat_Reportes_De_Totales_De_Cheques_De_Lista_De_Raya().setVisible(true);
+		
 			}
 	};
 	
@@ -241,8 +244,15 @@ private void refrestabla(){
 							
 						miVector.clear();
 					}
-					JOptionPane.showMessageDialog(null, "Los Totales de Cheque Se Guardaron exitosamente!","Aviso",JOptionPane.WARNING_MESSAGE);
-					dispose();
+					
+					Obj_Totales_De_Cheque autorizacion = new Obj_Totales_De_Cheque();
+					autorizacion.setAutorizar(true);
+					if(autorizacion.actualizar()){
+						dispose();
+					JOptionPane.showMessageDialog(null,"Los Totales De Cheque Se Guardaron Exitosamente! ", "Mensaje", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					}else{
+						JOptionPane.showMessageDialog(null, "Error Al Guardar ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
 				}else{
 					if(JOptionPane.showConfirmDialog(null, "Los Totales de Cheque ya existen, ¿desea actualizarlos?") == 0){
 						for(int i=0; i<model.getRowCount(); i++){
@@ -270,10 +280,18 @@ private void refrestabla(){
 								
 							miVector.clear();
 						}	
-						JOptionPane.showMessageDialog(null, "Los Totales de Cheque Se Guardaron Exitosamente!","Aviso",JOptionPane.WARNING_MESSAGE);
-						dispose();
+						Obj_Totales_De_Cheque autorizacion = new Obj_Totales_De_Cheque();
+						autorizacion.setAutorizar(true);
+						if(autorizacion.actualizar()){
+							dispose();
+						JOptionPane.showMessageDialog(null,"Los Totales De Cheque Se Guardaron Exitosamente! ", "Mensaje", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						}else{
+							JOptionPane.showMessageDialog(null, "Error Al Actualizar ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+						}
 					}else{
 						return;
+					
 					}
 				}
 			}

@@ -37,7 +37,7 @@ import net.sf.jasperreports.view.JasperViewer;
 import Cat_IZAGAR.Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos;
 import Cat_IZAGAR.Cat_IZAGAR_Selecionar_Nomina_Para_Netos;
 import Cat_Reportes.Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos;
-import Cat_Reportes.Cat_Reporte_Depositos_A_Bancos;
+import Cat_Reportes.Cat_Reportes_De_Depositos_A_Bancos;
 import Cat_Reportes.Cat_Reportes_De_Empleados_Con_Deposito_En_Bancos_Excedido;
 import Conexiones_SQL.Connexion;
 import IZAGAR_Obj.Obj_IZAGAR_Netos_Nominas;
@@ -589,7 +589,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	
 	ActionListener Reporte_Depositos_Bancos_ = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				new Cat_Reporte_Depositos_A_Bancos().setVisible(true);
+				new Cat_Reportes_De_Depositos_A_Bancos().setVisible(true);
 		}
 	};
 	

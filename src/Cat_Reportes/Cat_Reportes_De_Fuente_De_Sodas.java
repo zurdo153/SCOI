@@ -46,7 +46,7 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 	
 	JButton btnReporte_porfolio = new JButton("",new ImageIcon("imagen/fast-food-icon16.png"));
 	JButton btnReporte_porfecha = new JButton("",new ImageIcon("imagen/Calendar.png"));
-	JButton btnReporte_actual = new JButton("",new ImageIcon("imagen/fast-food-icon16.png"));
+	JButton btnReporte_actual = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
     JButton btnSeleccionLR =new JButton("",new ImageIcon ("imagen/Filter-List-icon16.png"));
 	
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));

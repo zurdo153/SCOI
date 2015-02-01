@@ -79,6 +79,7 @@ import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
+import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
@@ -88,6 +89,48 @@ import Obj_Punto_De_Venta.Obj_Clientes;
 public class BuscarSQL {
 	
 	Connexion con = new Connexion();
+	
+	
+	public int  dias_para_fecha_revision_consideracion() throws SQLException{
+		int dias=0;
+		String query = "select dias_atras_para_fecha_consideracion_asistencia as dias from tb_configuracion_sistema";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				dias=(rs.getInt("dias"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return dias;
+	}
+	
+	public String fecha(int dias) throws SQLException{
+		String fecha="";
+		String query = "     select convert(varchar(15),getdate()-"+dias+",103) as fecha";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				fecha=(rs.getString("fecha"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return fecha;
+	}
+	
 	
 	public Obj_Fue_Sodas_DH buscarautoizacionfs(){
 		Obj_Fue_Sodas_DH fs_autorizacion = new Obj_Fue_Sodas_DH();
@@ -102,7 +145,6 @@ public class BuscarSQL {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-			
 		return fs_autorizacion;
 	}
 	
@@ -1265,6 +1307,8 @@ public class BuscarSQL {
 		return pre;
 	}
 	
+	
+	
 	public Obj_Empleados Empleado_Nuevo() throws SQLException{
 		Obj_Empleados empleado = new Obj_Empleados();
 		String query = "select max(folio) as 'Maximo' from tb_empleado";
@@ -2234,6 +2278,28 @@ public class BuscarSQL {
 			 if (stmt != null) { stmt.close(); }
 		}
 		return auditoria;
+	}
+	
+	public Obj_Totales_De_Cheque Autorizar_nomina () throws SQLException{
+		Obj_Totales_De_Cheque nomina = new Obj_Totales_De_Cheque();
+		String query = "select autorizar_nomina from tb_autorizaciones";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				nomina.setAutorizar(rs.getBoolean(1));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			return null;
+		}
+		finally{
+			 if (stmt != null) { stmt.close(); }
+		}
+		return nomina;
 	}
 	
 

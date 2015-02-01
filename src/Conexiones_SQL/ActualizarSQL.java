@@ -926,7 +926,7 @@ public class ActualizarSQL {
 	}	
 	
 	public boolean prestamo(Obj_Prestamos pres, int folio){
-		String query = "update tb_prestamo set fecha=?, cantidad=?, descuento=?, status=? where folio="+folio;
+		String query = "update tb_prestamo set fecha=?, cantidad=?, descuento=?, status=? ,tipo_prestamo=? where folio="+folio;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -936,6 +936,7 @@ public class ActualizarSQL {
 			pstmt.setDouble(2, pres.getCantidad());
 			pstmt.setDouble(3, pres.getDescuento());
 			pstmt.setInt(4, pres.getStatus());
+			pstmt.setInt(5,pres.getTipo_prestamo());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -947,7 +948,7 @@ public class ActualizarSQL {
 					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ prestamo ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ prestamo ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ prestamo ]  \n Confirmacion update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1208,6 +1209,40 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
+	
+	public boolean Autorizar_Nomina(Obj_Totales_De_Cheque nomina){
+		String query = "update tb_autorizaciones set autorizar_nomina=? ";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, (nomina.isAutorizar())? "true" : "false");
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizar_Nomina ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizar_Nomina ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 	
 	@SuppressWarnings("rawtypes")
 	public boolean PermisoUsuario(int folio_empleado, Vector Permisos){
@@ -2946,33 +2981,16 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean consideracion_para_checador(int folio_emp, String fecha, int consid_imp, int consid_fav, String clave_master, String observacion, int folio_realizo_consideracion){
-		String query ="sp_update_consideracion_para_checador "+folio_emp+",'"+fecha+"',"+consid_imp+","+consid_fav+",'"+clave_master+"','"+observacion+"','"+folio_realizo_consideracion+"';";
+	public boolean consideracion_para_checador(int folio_emp, String fecha, int consid_imp, int consid_fav, String clave_master, String observacion,String omision_mod){
+		String query ="sp_update_consideracion_para_checador "+folio_emp+",'"+fecha+"',"+consid_imp+","+consid_fav+",'"+clave_master+"','"+observacion+"',"+usuario.getFolio()+",'"+omision_mod+"'";
+		
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			
-			
-			System.out.println(folio_emp); 
-			System.out.println(fecha);
-			System.out.println(consid_imp);
-			System.out.println(consid_fav);
-			System.out.println(clave_master); 
-			System.out.println(observacion);
-			System.out.println(folio_realizo_consideracion);
-				
-			
-//				 pstmt.setInt(1, folio_emp);
-//				 pstmt.setString(2, fecha);
-//				 pstmt.setInt(3, consid_imp);
-//				 pstmt.setInt(4, consid_fav);
-//				 pstmt.setString(5, clave_master);
-//				 pstmt.setString(6, "'"+observacion+"'");
-//				 pstmt.setInt(7, folio_realizo_consideracion);
-//				 
+						System.out.println(omision_mod);
 				pstmt.executeUpdate();
 
 				con.commit();
