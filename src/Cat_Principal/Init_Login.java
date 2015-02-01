@@ -802,7 +802,7 @@ public class Init_Login extends JFrame{
 					btnFsRH.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 46)
 					btnListaComparacion.setEnabled(true);
-				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 47)
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 97)
 					btnInasistencia.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 48)
 					btnCaja.setEnabled(true);
