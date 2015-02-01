@@ -2981,8 +2981,8 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean consideracion_para_checador(int folio_emp, String fecha, int consid_imp, int consid_fav, String clave_master, String observacion,String omision_mod){
-		String query ="sp_update_consideracion_para_checador "+folio_emp+",'"+fecha+"',"+consid_imp+","+consid_fav+",'"+clave_master+"','"+observacion+"',"+usuario.getFolio()+",'"+omision_mod+"'";
+	public boolean consideracion_para_checador(int folio_emp, String fecha, int consid_imp, int consid_fav, String clave_master, String observacion,String omision_mod, String status_mod){
+		String query ="exec sp_update_consideracion_para_checador "+folio_emp+",'"+fecha+"',"+consid_imp+","+consid_fav+",'"+clave_master+"','"+observacion+"',"+usuario.getFolio()+",'"+omision_mod+"','"+status_mod+"'";
 		
 		
 		Connection con = new Connexion().conexion();
@@ -2990,7 +2990,7 @@ public class ActualizarSQL {
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-						System.out.println(omision_mod);
+						System.out.println(query);
 				pstmt.executeUpdate();
 
 				con.commit();
@@ -3000,7 +3000,7 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
-							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ consideracion_para_checador ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ consideracion_para_checador ] sp_update_consideracion_para_checador  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
 							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ consideracion_para_checador ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);

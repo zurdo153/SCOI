@@ -37,7 +37,6 @@ import com.toedter.calendar.JDateChooser;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
-import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
@@ -161,7 +160,6 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);  
 		
-		realizo_consideracion = new Obj_Usuario().LeerSession().getFolio();
 		
 		this.panel.add(new JLabel("Fecha Inicio:")).setBounds(15,25,100,20);
 		this.panel.add(JLBlinicio).setBounds(75,25,20,20);
@@ -306,7 +304,6 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 	    				JOptionPane.showMessageDialog(null, "Solo se permite modificar los registros una vez,\nEste registro ya a sido modificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 	    				return;
 	    			}else{
-	    			
 		    					folio_emp = 	Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
 	    						 empleado = 	tabla.getValueAt(fila, 1).toString().trim();
 	    						 	fecha = 	tabla.getValueAt(fila, 2).toString().trim()+" "+tabla.getValueAt(fila, 3).toString().trim();
@@ -317,7 +314,7 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 		    				  observacion = 	tabla.getValueAt(fila, 13).toString().trim();
 		    				   Status_Mov =     tabla.getValueAt(fila, 15).toString().trim();
 	//	    			dispose();
-		    			new Cat_Comentario_A_Corte_Guardado().setVisible(true);
+		    			new Cat_Ventana_Consideracion().setVisible(true);
 	    			}
 	        	}
 	        }
@@ -394,8 +391,9 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 	
+	 ///////VENTANA EMERGENTE
 	
-	public class Cat_Comentario_A_Corte_Guardado extends JDialog {
+	public class Cat_Ventana_Consideracion extends JDialog {
 
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
@@ -415,7 +413,7 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 		JComboBox cmbOmision =new JComboBox(new String[]{"No Aplica","Aplica"});
 		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		JComboBox cmbstatus_checada =new JComboBox(new String[]{"VIGENTE","CANCELADO"});
+		JComboBox cmbstatus_checada =new JComboBox(new String[]{"Vigente","Cancelado"});
 		
 		
 		JTextArea txaObservacion =new Componentes().textArea(new JTextArea(), "Observaciones", 150);
@@ -423,9 +421,9 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 		JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 		
 		
- ///////VENTANA EMERGENTE
+
 		
-		public Cat_Comentario_A_Corte_Guardado(){
+		public Cat_Ventana_Consideracion(){
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setModal(true);
@@ -457,15 +455,6 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 				cmbOmision.setSelectedItem("No Aplica");
 			}
 			
-			if(Status_Mov.equals("VIGENTE")){
-				cmbstatus_checada.setEnabled(true);
-				cmbstatus_checada.setSelectedItem("VIGENTE");
-			}else{
-				cmbstatus_checada.setEnabled(false);
-				cmbstatus_checada.setSelectedItem("CANCELADO");
-			}
-			
-			
 			int y=20;
 			
 			panel.add(lblFolio_corte).setBounds(15,y,150,20);
@@ -489,7 +478,10 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 			panel.add(new JLabel("Omision: ")).setBounds(15,y+=25,90,20);
 			panel.add(cmbOmision).setBounds(100,y,80,20);
 			
-			panel.add(btnGuardar).setBounds(370,y+50,100,20);
+			panel.add(new JLabel("Estatus Checada: ")).setBounds(15,y+=25,90,20);
+			panel.add(cmbstatus_checada).setBounds(100,y,80,20);
+			
+			panel.add(btnGuardar).setBounds(370,y+25,100,20);
 
 			txaObservacion.setLineWrap(true); 
 			txaObservacion.setWrapStyleWord(true);
@@ -526,14 +518,12 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 							}else{ omision_mod = cmbOmision.getSelectedItem().toString().trim().equals("Aplica")?"":cmbOmision.getSelectedItem().toString().trim();
 							}
 							
-							String status_valor = "";
-							if(Status_Mov.equals("VIGENTE")){
-								status_valor="";
-							}else{ status_valor = cmbstatus_checada.getSelectedItem().toString().trim().equals("VIGENTE")?"":cmbOmision.getSelectedItem().toString().trim();
-							}
+							String status_mod = "";
+							status_mod = cmbstatus_checada.getSelectedItem().toString().trim();
+							
 							
 //							System.out.println("aqui es igual a = "+realizo_consideracion);
-						if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod)){
+						if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod)){
 							
 							folio_emp = 0; 	
 							empleado = ""; 	
@@ -543,7 +533,7 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 							imp = 0; 	
 							fav  = 0; 	
 							observacion  = "";
-							status_valor = "";
+							Status_Mov = "";
 							
 							
 							String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";

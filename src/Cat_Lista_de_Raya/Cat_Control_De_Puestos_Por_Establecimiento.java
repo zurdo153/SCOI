@@ -27,7 +27,7 @@ import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings({ "serial" })
-public class Cat_Control__De_Puestos_Por_Establecimiento extends JFrame{
+public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel  = new JLayeredPane();
@@ -125,7 +125,7 @@ public class Cat_Control__De_Puestos_Por_Establecimiento extends JFrame{
 	JButton btnGuardar = new JButton("Guardar");
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Control__De_Puestos_Por_Establecimiento(){
+	public Cat_Control_De_Puestos_Por_Establecimiento(){
 		this.panel.setBorder(BorderFactory.createTitledBorder("Clasificador de puestos por establecimiento"));
 		this.setTitle("Control de puestos por establecimientos");
 		
@@ -555,7 +555,7 @@ public class Cat_Control__De_Puestos_Por_Establecimiento extends JFrame{
 	public static void main(String [] args){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Control__De_Puestos_Por_Establecimiento().setVisible(true);
+			new Cat_Control_De_Puestos_Por_Establecimiento().setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}
