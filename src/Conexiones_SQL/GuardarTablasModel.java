@@ -1347,6 +1347,84 @@ public boolean guarda_tabla_Seleccion_de_Facturas(Object[][] tabla, String fecha
 	}		
 	return true;
 }
+
+public boolean Guarda_tabla_puestos_por_establecimiento(int folio_establecimineto, int folio_departamento, Object[][] tabla){
+	
+	String query = "exec sp_insert_clasificador_de_puestos "+folio_establecimineto+","+folio_departamento+",?,?;";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.length; i++){
+			
+			pstmt.setString(1, tabla[i][0].toString().trim());
+			pstmt.setString(2, tabla[i][2].toString().trim());
+			
+		pstmt.executeUpdate();
+		}
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_puestos_por_establecimiento /n procedimiento almacenado sp_insert_clasificador_de_puestos SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_puestos_por_establecimiento /n procedimiento almacenado sp_insert_clasificador_de_puestos SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_de_vouchers_cargados_desde_fecha_automatico /n procedimiento almacenado sp_insert_vouchers_importados_automatico_desde_una_fecha_determinada SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+public boolean Borra_departamento_y_puestos_dependientes(int folio_establecimineto, int folio_departamento){
+	
+	String query = "DELETE FROM tb_control_de_puestos_por_establecimiento WHERE tb_control_de_puestos_por_establecimiento.folio_establecimiento = "+folio_establecimineto+" " +
+			"		and tb_control_de_puestos_por_establecimiento.folio_departamento="+folio_departamento+";";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+			
+		pstmt.executeUpdate();
+
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_puestos_por_establecimiento /n procedimiento almacenado sp_insert_clasificador_de_puestos SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_puestos_por_establecimiento /n procedimiento almacenado sp_insert_clasificador_de_puestos SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_de_vouchers_cargados_desde_fecha_automatico /n procedimiento almacenado sp_insert_vouchers_importados_automatico_desde_una_fecha_determinada SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
 }
 
 

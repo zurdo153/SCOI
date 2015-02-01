@@ -1200,8 +1200,8 @@ public class BuscarTablasModel {
 		return Matriz;
 	}
 	
-	public Object[][] tabla_puestos_por_establecimiento(int folio_establecimiento){
-		String query = "exec sp_select_puestos_por_establecimiento '"+folio_establecimiento+"';";
+	public Object[][] tabla_puestos_por_establecimiento(int folio_establecimiento, int folio_departamento){
+		String query = "exec sp_select_puestos_por_establecimiento '"+folio_establecimiento+"','"+folio_departamento+"';";
 		Object[][] matriz = new Object[get_filas(query)][3];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
@@ -1222,13 +1222,46 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
-	public Object[][] tabla_puestos_disponibles(String listaEnUso){
-		String query = "select tb_puesto.folio as folio_puesto" +
-				"				,tb_puesto.nombre as puesto" +
-				"				,'false' as cantidad_de_puesto" +
-				"		from tb_puesto" +
-				"		where tb_puesto.status = 1" +
-				"		and tb_puesto.folio not in("+listaEnUso+");";
+	public Object[][] tabla_departamentos_por_establecimiento(int folio_establecimiento){
+		String query = "exec sp_select_departamentos_por_establecimiento "+folio_establecimiento+";";
+		Object[][] matriz = new Object[get_filas(query)][2];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] =rs.getString(1);
+				matriz[i][1] =rs.getString(2);
+				
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
+	
+	public Object[][] tabla_puestos_disponibles(String listaEnUso, String ventana){
+		
+		String query = "";
+		
+		if(ventana.equals("Departamentos")){
+			query = "select tb_departamento.folio as folio_departamento" +
+					"				,tb_departamento.departamento as departamento" +
+					"				,'false' as status" +
+					"		from tb_departamento" +
+					"		where tb_departamento.status = 1" +
+					"		and tb_departamento.folio not in("+listaEnUso+");";
+		}else{
+			query = "select tb_puesto.folio as folio_puesto" +
+					"				,tb_puesto.nombre as puesto" +
+					"				,'false' as status" +
+					"		from tb_puesto" +
+					"		where tb_puesto.status = 1" +
+					"		and tb_puesto.folio not in("+listaEnUso+");";
+		}
 		
 		Object[][] matriz = new Object[get_filas(query)][3];
 		try {
