@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -21,6 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Cat_Reportes.Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.GuardarTablasModel;
 import Obj_Principal.Componentes;
@@ -38,9 +40,9 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 	JTextField txtFolioPuesto = new Componentes().text(new JTextField(), "Folio de puesto", 5, "Int");
 	JTextField txtPuesto = new  JTextField();
 	
-	JButton btnCargarPuesto = new JButton("Cargar");
-	JButton btnCargarDepartamento = new JButton("Cargar");
-	JButton btnQuitarDepartamento = new JButton("Quitar");
+	JButton btnCargarPuesto = new JButton("Buscar",new ImageIcon("Iconos/zoom_icon&16.png"));
+	JButton btnCargarDepartamento = new JButton("Buscar",new ImageIcon("Iconos/zoom_icon&16.png"));
+	JButton btnQuitarDepartamento = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	
 	static Object[][] lista_de_establecimientos = new BuscarTablasModel().lista_de_establecimiento();
 	DefaultTableModel modelo_establecimiento = new DefaultTableModel(lista_de_establecimientos,
@@ -122,7 +124,9 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 	JTable tabla_puesto = new JTable(modelo_puesto);
 	JScrollPane scroll_puesto = new JScrollPane(tabla_puesto,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
-	JButton btnGuardar = new JButton("Guardar");
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnPlantilla = new JButton("Plantilla",new ImageIcon("imagen/Thiago-Silva-Palm-Contacts16.png"));
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Control_De_Puestos_Por_Establecimiento(){
@@ -132,17 +136,18 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 		trsfiltro = new TableRowSorter(modelo_puesto); 
 		tabla_puesto.setRowSorter(trsfiltro);  
 		
-		panel.add(btnCargarDepartamento).setBounds(350,20,65,20);
-		panel.add(btnQuitarDepartamento).setBounds(606,20,65,20);
+		panel.add(btnCargarDepartamento).setBounds(350,20,85,20);
+		panel.add(btnQuitarDepartamento).setBounds(570,20,100,20);
 		
 		panel.add(txtFolioPuesto).setBounds(20,258,66,20);
-		panel.add(txtPuesto).setBounds(86,258,520,20);
-		panel.add(btnCargarPuesto).setBounds(606,258,65,20);
+		panel.add(txtPuesto).setBounds(86,258,500,20);
+		panel.add(btnCargarPuesto).setBounds(585,258,85,20);
 		
 		panel.add(scroll_establecimiento).setBounds(20,40,280,200);
 		panel.add(scroll_departamento).setBounds(350,40,320,200);
 		panel.add(scroll_puesto).setBounds(20,280,650,250);
-		panel.add(btnGuardar).setBounds(591,535,80,20);
+		panel.add(btnPlantilla).setBounds(20,535,100,20);
+		panel.add(btnGuardar).setBounds(571,535,100,20);
 		
 		btnCargarPuesto.setEnabled(false);
 		btnCargarDepartamento.setEnabled(false);
@@ -160,6 +165,7 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 		btnGuardar.addActionListener(opGuardarLista);
 		
 		btnQuitarDepartamento.addActionListener(opQuitarDepto);
+		btnPlantilla.addActionListener(opReporteDePlantilla);
 		
 		cont.add(panel);
 		this.setSize(705,600);
@@ -266,6 +272,12 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 	        }
         });
     }
+	
+	ActionListener opReporteDePlantilla = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			new Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento().setVisible(true);
+		}
+	};
 	
 	ActionListener opListaDedepartamentos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {

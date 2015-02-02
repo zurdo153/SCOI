@@ -10,7 +10,7 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import javax.swing.UIManager;
 
@@ -24,7 +24,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento extends JFrame{
+public class Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento extends JDialog{
 
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -33,7 +33,7 @@ public class Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento extends JFr
 	JButton btngenerar = new JButton("Generar");
 	
 	public Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento(){
-	
+		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Contacts-icon.png"));
 		this.setTitle("Reporte de Plantilla");
 		
