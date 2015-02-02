@@ -24,7 +24,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Puestos_Por_Establecimiento extends JFrame{
+public class Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento extends JFrame{
 
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -32,7 +32,7 @@ public class Cat_Reporte_De_Puestos_Por_Establecimiento extends JFrame{
 	
 	JButton btngenerar = new JButton("Generar");
 	
-	public Cat_Reporte_De_Puestos_Por_Establecimiento(){
+	public Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento(){
 	
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Contacts-icon.png"));
 		this.setTitle("Reporte de Plantilla");
@@ -80,7 +80,7 @@ public class Cat_Reporte_De_Puestos_Por_Establecimiento extends JFrame{
 	public static void main(String [] arg){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Puestos_Por_Establecimiento().setVisible(true);
+			new Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento().setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}
