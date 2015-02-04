@@ -196,10 +196,11 @@ public class Cat_Usuarios extends JFrame{
 		Vector ReportesEspecialesVector = new Obj_NombreVector("Reportes Especiales", Reportes_Especiales);
 		
 		
-	// MENU PRINCIPAL REPORTES ESPECIALES (8)
+	// MENU PRINCIPAL COMPRAS (8)
 			String[] Sub_Compras = new Obj_SubMenus().Relacion_de_SubMenus(8);
 			Obj_CheckBoxNode Compras[] = {
 				new Obj_CheckBoxNode(Sub_Compras[0], false),
+				new Obj_CheckBoxNode(Sub_Compras[1], false),
 			};
 			@SuppressWarnings("rawtypes")
 			Vector ComprasVector = new Obj_NombreVector("Compras", Compras);

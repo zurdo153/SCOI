@@ -1,6 +1,7 @@
 package Cat_Lista_de_Raya;
 
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -40,13 +41,13 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 	JTextField txtFolioPuesto = new Componentes().text(new JTextField(), "Folio de puesto", 5, "Int");
 	JTextField txtPuesto = new  JTextField();
 	
-	JButton btnCargarPuesto = new JButton("Buscar",new ImageIcon("Iconos/zoom_icon&16.png"));
-	JButton btnCargarDepartamento = new JButton("Buscar",new ImageIcon("Iconos/zoom_icon&16.png"));
-	JButton btnQuitarDepartamento = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+	JButton btnCargarPuesto = new JButton("Buscar Puesto",new ImageIcon("Iconos/zoom_icon&16.png"));
+	JButton btnCargarDepartamento = new JButton("Buscar Departamento",new ImageIcon("Iconos/zoom_icon&16.png"));
+	JButton btnQuitarDepartamento = new JButton("Quitar Departamento",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	
 	static Object[][] lista_de_establecimientos = new BuscarTablasModel().lista_de_establecimiento();
 	DefaultTableModel modelo_establecimiento = new DefaultTableModel(lista_de_establecimientos,
-            new String[]{ "Folio", "establecimiento"}
+            new String[]{ "Folio", "Establecimiento"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -67,7 +68,7 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
  		}
 	};
 	
-	DefaultTableModel modelo_departamento = new DefaultTableModel(null,new String[]{ "Folio", "departamento"}){
+	DefaultTableModel modelo_departamento = new DefaultTableModel(null,new String[]{ "Folio", "Departamento"}){
 	    
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -136,15 +137,15 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 		trsfiltro = new TableRowSorter(modelo_puesto); 
 		tabla_puesto.setRowSorter(trsfiltro);  
 		
-		panel.add(btnCargarDepartamento).setBounds(350,20,85,20);
-		panel.add(btnQuitarDepartamento).setBounds(570,20,100,20);
+		panel.add(btnCargarDepartamento).setBounds(330,20,160,20);
+		panel.add(btnQuitarDepartamento).setBounds(500,20,170,20);
 		
 		panel.add(txtFolioPuesto).setBounds(20,258,66,20);
-		panel.add(txtPuesto).setBounds(86,258,500,20);
+		panel.add(txtPuesto).setBounds(86,258,400,20);
 		panel.add(btnCargarPuesto).setBounds(585,258,85,20);
 		
 		panel.add(scroll_establecimiento).setBounds(20,40,280,200);
-		panel.add(scroll_departamento).setBounds(350,40,320,200);
+		panel.add(scroll_departamento).setBounds(330,40,340,200);
 		panel.add(scroll_puesto).setBounds(20,280,650,250);
 		panel.add(btnPlantilla).setBounds(20,535,100,20);
 		panel.add(btnGuardar).setBounds(571,535,100,20);
@@ -413,13 +414,13 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro_f;
 		
-		JTextField txtFolioPuesto_f = new Componentes().text(new JTextField(), "Folio de puesto", 5, "Int");
+		JTextField txtFolioPuesto_f = new Componentes().text(new JTextField(), "Folio", 5, "Int");
 		JTextField txtPuesto_f = new  JTextField();
 		
 		JButton btnCargarPuesto_f = new JButton("Cargar");
 		
 		DefaultTableModel modelo_puesto_f = new DefaultTableModel(null,
-	            new String[]{ "Folio", " Puesto",  "*"}
+	            new String[]{ "Folio", " Nombre",  "*"}
 				){
 		     @SuppressWarnings("rawtypes")
 			Class[] types = new Class[]{
@@ -481,6 +482,8 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 			llamar_render_f();
 			
 			txtFolioPuesto_f.addKeyListener(opFiltroFolio_f);
+			txtPuesto_f.addKeyListener(opFiltroPuesto_f);
+			
 			tabla_puesto_f.addKeyListener(opFiltroPuesto_f);
 			
 			btnCargarPuesto_f.addActionListener(opCargarPuestosSeleccionados);
@@ -488,6 +491,7 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 			cont_f.add(panel_f);
 			this.setSize(705,528);
 			this.setLocationRelativeTo(null);
+			setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/comprobar-la-lista-de-tareas-icono-7647-32.png"));
 			
 		}
 		
@@ -547,7 +551,7 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 		KeyListener opFiltroFolio_f = new KeyListener(){
 			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioPuesto_f.getText().toUpperCase(), 0));
+				trsfiltro_f.setRowFilter(RowFilter.regexFilter(txtFolioPuesto_f.getText().toUpperCase(), 0));
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -556,7 +560,7 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 		KeyListener opFiltroPuesto_f = new KeyListener(){
 			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtPuesto_f.getText().toUpperCase(), 1));
+				trsfiltro_f.setRowFilter(RowFilter.regexFilter(txtPuesto_f.getText().toUpperCase(), 1));
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		

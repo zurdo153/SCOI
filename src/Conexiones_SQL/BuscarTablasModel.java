@@ -1253,14 +1253,14 @@ public class BuscarTablasModel {
 					"				,'false' as status" +
 					"		from tb_departamento" +
 					"		where tb_departamento.status = 1" +
-					"		and tb_departamento.folio not in("+listaEnUso+");";
+					"		and tb_departamento.folio not in("+listaEnUso+") order by departamento;";
 		}else{
 			query = "select tb_puesto.folio as folio_puesto" +
 					"				,tb_puesto.nombre as puesto" +
 					"				,'false' as status" +
 					"		from tb_puesto" +
 					"		where tb_puesto.status = 1" +
-					"		and tb_puesto.folio not in("+listaEnUso+");";
+					"		and tb_puesto.folio not in("+listaEnUso+") order by  nombre ;";
 		}
 		
 		Object[][] matriz = new Object[get_filas(query)][3];
