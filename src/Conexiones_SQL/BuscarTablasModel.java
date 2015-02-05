@@ -1282,6 +1282,34 @@ public class BuscarTablasModel {
 		}
 	    return matriz; 
 	}
+	
+	public Object[][] tabla_model_asignaciones(){
+		
+		String query = " SELECT     asignacion, folio_corte, nombre_cajero, establecimiento " +
+						"			FROM         tb_tabla_de_asignaciones_para_cortes " +
+						"			order by fecha_de_liquidacion desc";
+		
+		Object[][] matriz = new Object[get_filas(query)][5];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] =rs.getString(1);
+				matriz[i][1] = "   "+rs.getString(2);
+				matriz[i][2] = "   "+rs.getString(3);
+				matriz[i][3] = "   "+rs.getString(4);
+				matriz[i][4] = "false";
+				
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return matriz; 
+	}
 }
 
 

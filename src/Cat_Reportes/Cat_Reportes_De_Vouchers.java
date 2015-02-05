@@ -17,13 +17,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.RowFilter;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -35,9 +41,11 @@ import net.sf.jasperreports.view.JasperViewer;
 import com.toedter.calendar.JDateChooser;
 
 
+import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Reportes_De_Vouchers extends JFrame{
@@ -49,7 +57,7 @@ public class Cat_Reportes_De_Vouchers extends JFrame{
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Corte", 15, "String");
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Corte", 800, "String");
 	
 	JButton btnReporte_porfecha_estab_Exportar_deun_estab = new JButton("",new ImageIcon("imagen/tarjeta-de-credito-visa-icono-8242-16.png"));
 	JButton btnReporte_porfecha_estab_Exportar = new JButton("",new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
@@ -170,7 +178,7 @@ public class Cat_Reportes_De_Vouchers extends JFrame{
 			cfecha.setEnabled(false);
 			btngenerar.setEnabled(true);
 			tipo_Reporte=3;
-			btnSeleccionAsignacion.setEnabled(false);
+			btnSeleccionAsignacion.setEnabled(true);
 			txtFolio.setText("");
 			cfecha.setDate(null);
 			txtFolio.requestFocus();
@@ -180,7 +188,8 @@ public class Cat_Reportes_De_Vouchers extends JFrame{
 	
 	ActionListener opfiltroLR = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			JOptionPane.showMessageDialog(null,"Falta desarrollar el Filtro de Asignaciones","Mensaje",JOptionPane.WARNING_MESSAGE);
+			txtFolio.setText("");
+			new Cat_Filtro_De_Asignaciones().setVisible(true);
 		}
 	};
 	
@@ -285,4 +294,220 @@ public class Cat_Reportes_De_Vouchers extends JFrame{
 			new Cat_Reportes_De_Vouchers().setVisible(true);
 		}catch(Exception e){	}
 	}
+	
+	
+	
+	@SuppressWarnings({ "serial", "unchecked" })
+	public class Cat_Filtro_De_Asignaciones extends JDialog {
+		
+		Container cont = getContentPane();
+		JLayeredPane panel = new JLayeredPane();
+		
+		Connexion con = new Connexion();
+		
+		public Object[][] get_tabla(){
+			return new BuscarTablasModel().tabla_model_asignaciones();
+		}
+		
+	    public DefaultTableModel tabla_model = new DefaultTableModel(
+	    		get_tabla(),	new String[]{	"Asignacion",	"Folio de corte", "cajera(o)", "Establecimiento", "*"}){
+	                    @SuppressWarnings("rawtypes")
+	                    Class[] types = new Class[]{
+	                               java.lang.Object.class, 
+	                               java.lang.Object.class, 
+	                               java.lang.Object.class,  
+	                               java.lang.Object.class,  
+	                               java.lang.Boolean.class
+	                };
+	                    @SuppressWarnings({ "rawtypes" })
+	                    public Class getColumnClass(int columnIndex) {
+	                            return types[columnIndex];
+	                    }
+	                public boolean isCellEditable(int fila, int columna){
+	                            switch(columna){
+	                                    case 0  : return false; 
+	                                    case 1  : return false; 
+	                                    case 2  : return false; 
+	                                    case 3  : return false; 
+	                                    case 4  : return true; 
+	                            }
+	                             return false;
+	                     }
+	            };
+		
+		JTable tabla = new JTable(tabla_model);
+		JScrollPane panelScroll = new JScrollPane(tabla);
+		
+		@SuppressWarnings("rawtypes")
+		private TableRowSorter trsfiltro;
+		
+		JTextField txtFolioAsignacion = new JTextField();
+		JTextField txtFolioCorte = new JTextField();
+		JTextField txtNombre = new JTextField();
+		String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
+		
+		JButton btnCargar = new JButton("Cargar");
+		
+		@SuppressWarnings("rawtypes")
+		JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
+		
+		@SuppressWarnings({ "rawtypes" })
+		public Cat_Filtro_De_Asignaciones()	{
+			this.setModal(true);
+//			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/sun_icon&16.png"));
+			this.setTitle("Filtro de asignaciones por empleado");
+			panel.setBorder(BorderFactory.createTitledBorder("Asignaciones de empleados"));
+
+			this.init_tabla();
+			
+			trsfiltro = new TableRowSorter(tabla_model); 
+			tabla.setRowSorter(trsfiltro);  
+			
+			panel.add(panelScroll).setBounds(15,42,720,327);
+			
+			panel.add(txtFolioAsignacion).setBounds(15,20,80,20);
+			panel.add(txtFolioCorte).setBounds(96,20,79,20);
+			panel.add(txtNombre).setBounds(176,20,320,20);
+			panel.add(cmbEstablecimientos).setBounds(497,20, 170, 20);
+			panel.add(btnCargar).setBounds(668,20, 65, 20);
+			
+//			agregar(tabla);
+			
+			cont.add(panel);
+			
+			txtFolioAsignacion.addKeyListener(opFiltroFolio);
+			txtFolioCorte.addKeyListener(opFiltroFolioCorte);
+			txtNombre.addKeyListener(opFiltroNombre);
+			
+			cmbEstablecimientos.addActionListener(opFiltro);
+			
+			btnCargar.addActionListener(opCadena);
+			
+			this.setSize(755,415);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+		}
+		
+		ActionListener opCadena = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String cadena = "";
+				for(int i = 0; i<tabla.getRowCount(); i++){
+					
+					if(tabla.getValueAt(i, 4).toString().equals("true")){
+						cadena+=tabla.getValueAt(i, 0).toString().trim()+"'',''";
+					
+					}
+				}
+				txtFolio.setText(cadena.substring(0,cadena.length()-5));
+				dispose();
+			}
+		};
+		
+		KeyListener opFiltroFolio = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioAsignacion.getText().toUpperCase().trim(), 0));
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}
+			
+		};
+		
+		KeyListener opFiltroFolioCorte = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioCorte.getText().toUpperCase().trim(), 1));
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}
+			
+		};
+		
+		KeyListener opFiltroNombre = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre.getText().toUpperCase().trim(), 2));
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}
+			
+		};
+		
+		ActionListener opFiltro = new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				if(cmbEstablecimientos.getSelectedIndex() != 0){
+					trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 3));
+				}else{
+					trsfiltro.setRowFilter(RowFilter.regexFilter("", 3));
+				}
+			}
+		};
+		
+		public void init_tabla(){
+	        this.tabla.getTableHeader().setReorderingAllowed(false) ;
+	        
+	        	   int w=100;
+	               int x=80;
+	               int y=320;
+	               int z=50;
+	               
+	                this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	                
+	                this.tabla.getColumnModel().getColumn(0).setMaxWidth(x);
+	                this.tabla.getColumnModel().getColumn(0).setMinWidth(x);
+	                this.tabla.getColumnModel().getColumn(1).setMaxWidth(x);
+	                this.tabla.getColumnModel().getColumn(1).setMinWidth(x);
+	                this.tabla.getColumnModel().getColumn(2).setMaxWidth(y);
+	                this.tabla.getColumnModel().getColumn(2).setMinWidth(y);
+	                this.tabla.getColumnModel().getColumn(3).setMaxWidth(w+70);
+	                this.tabla.getColumnModel().getColumn(3).setMinWidth(w+70);
+	                this.tabla.getColumnModel().getColumn(4).setMaxWidth(z);
+	                this.tabla.getColumnModel().getColumn(4).setMinWidth(z);
+	                
+	                this.tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer( "texto" ,"izquierda",	"arial", "normal",12));
+	                this.tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer( "texto" ,"izquierda",	"arial", "normal",12));
+	                this.tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer( "texto" ,"izquierda",	"arial", "normal",12));
+	                this.tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer( "texto" ,"centro",	"arial", "normal",12));
+	                this.tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer( "CHB" ,"centro",	"arial", "normal",12));
+	}
+		
+		KeyListener validaCantidad = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e){
+				char caracter = e.getKeyChar();				
+				if(((caracter < '0') ||	
+				    	(caracter > '9')) && 
+				    	(caracter != '.' )){
+				    	e.consume();
+				    	}
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {	
+			}
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+			}	
+		};
+		
+		KeyListener validaNumericoConPunto = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+
+				if(((caracter < '0') ||	
+			    	(caracter > '9')) && 
+			    	(caracter != '.')){
+			    	e.consume();
+			    	}
+			    		    		       	
+			}
+			@Override
+			public void keyPressed(KeyEvent e){}
+			@Override
+			public void keyReleased(KeyEvent e){}
+									
+		};
+	}
+
+
+
 }
