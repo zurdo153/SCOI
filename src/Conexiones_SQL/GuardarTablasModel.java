@@ -1388,10 +1388,19 @@ public boolean Guarda_tabla_puestos_por_establecimiento(int folio_estableciminet
 	return true;
 	}
 
-public boolean Borra_departamento_y_puestos_dependientes(int folio_establecimineto, int folio_departamento){
+public boolean Borra_departamento_y_puestos_dependientes(int folio_establecimineto, int folio_departamento,int folio_puesto){
+	String query = "";
 	
-	String query = "DELETE FROM tb_control_de_puestos_por_establecimiento WHERE tb_control_de_puestos_por_establecimiento.folio_establecimiento = "+folio_establecimineto+" " +
-			"		and tb_control_de_puestos_por_establecimiento.folio_departamento="+folio_departamento+";";
+	if(folio_puesto==0){
+		query = "DELETE FROM tb_control_de_puestos_por_establecimiento WHERE tb_control_de_puestos_por_establecimiento.folio_establecimiento = "+folio_establecimineto+" " +
+				"		and tb_control_de_puestos_por_establecimiento.folio_departamento="+folio_departamento+";";
+	}else{
+		query = "DELETE FROM tb_control_de_puestos_por_establecimiento WHERE tb_control_de_puestos_por_establecimiento.folio_establecimiento = "+folio_establecimineto+" " +
+				"		and tb_control_de_puestos_por_establecimiento.folio_departamento="+folio_departamento+" "+
+				"		and tb_control_de_puestos_por_establecimiento.folio_puesto="+folio_puesto+";";
+
+	}
+	
 	Connection con = new Connexion().conexion();
 	
 	try {

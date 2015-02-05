@@ -42,6 +42,8 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 	JTextField txtPuesto = new  JTextField();
 	
 	JButton btnCargarPuesto = new JButton("Buscar Puesto",new ImageIcon("Iconos/zoom_icon&16.png"));
+	JButton btnQuitarPuesto = new JButton("Quitar Puesto",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+	
 	JButton btnCargarDepartamento = new JButton("Buscar Departamento",new ImageIcon("Iconos/zoom_icon&16.png"));
 	JButton btnQuitarDepartamento = new JButton("Quitar Departamento",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	
@@ -141,8 +143,9 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 		panel.add(btnQuitarDepartamento).setBounds(500,20,170,20);
 		
 		panel.add(txtFolioPuesto).setBounds(20,258,66,20);
-		panel.add(txtPuesto).setBounds(86,258,400,20);
-		panel.add(btnCargarPuesto).setBounds(585,258,85,20);
+		panel.add(txtPuesto).setBounds(86,258,315,20);
+		panel.add(btnCargarPuesto).setBounds(400,258,135,20);
+		panel.add(btnQuitarPuesto).setBounds(535,258,135,20);
 		
 		panel.add(scroll_establecimiento).setBounds(20,40,280,200);
 		panel.add(scroll_departamento).setBounds(330,40,340,200);
@@ -157,15 +160,18 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 		
 		llenarDepartamentos(tabla_establecimiento);
 		llenarPuestos(tabla_departamento);
+		selecccionarPuestos(tabla_puesto);
 		
 		txtFolioPuesto.addKeyListener(opFiltroFolio);
 		txtPuesto.addKeyListener(opFiltroPuesto);
 		
 		btnCargarPuesto.addActionListener(opListaDePuestos);
 		btnCargarDepartamento.addActionListener(opListaDedepartamentos);
-		btnGuardar.addActionListener(opGuardarLista);
 		
 		btnQuitarDepartamento.addActionListener(opQuitarDepto);
+		btnQuitarPuesto.addActionListener(opQuitarPuesto);
+		
+		btnGuardar.addActionListener(opGuardarLista);
 		btnPlantilla.addActionListener(opReporteDePlantilla);
 		
 		cont.add(panel);
@@ -274,6 +280,18 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
         });
     }
 	
+	int folio_puesto = 0;
+	private void selecccionarPuestos(final JTable tbl) {
+        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+	        	if(e.getClickCount() == 1){
+	    			int row = tbl.getSelectedRow();
+	    			folio_puesto = Integer.valueOf(tabla_puesto.getValueAt(row, 0).toString().trim());
+	        	}
+	        }
+        });
+    }
+	
 	ActionListener opReporteDePlantilla = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			new Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento().setVisible(true);
@@ -323,7 +341,7 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 				
 					if(JOptionPane.showConfirmDialog(null, "El departamento "+tabla_departamento.getValueAt(filaSeleccionada, 1)+" será removido,\nlos puestos dependientes tambien se removeran,\n¿desea continuar?") == 0){
 					
-							if(new GuardarTablasModel().Borra_departamento_y_puestos_dependientes(folio_establecimiento,folio_departamento)){
+							if(new GuardarTablasModel().Borra_departamento_y_puestos_dependientes(folio_establecimiento,folio_departamento,0)){
 								
 								while(tabla_departamento.getRowCount()>0){modelo_departamento.removeRow(0);}
 								while(tabla_puesto.getRowCount()>0){modelo_puesto.removeRow(0);}
@@ -335,6 +353,54 @@ public class Cat_Control_De_Puestos_Por_Establecimiento extends JFrame{
 					                                fila[1] = lista_tabla[i][1]+"";
 					                                modelo_departamento.addRow(fila);
 					                        }
+					                        
+								
+								JOptionPane.showMessageDialog(null, "El registro fue eliminado correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								return;
+							
+							}else{
+								JOptionPane.showMessageDialog(null, "El registro no pudo ser eliminado","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								return;
+							}
+						
+					}
+			
+			}else{
+				JOptionPane.showMessageDialog(null, "Debe seleccionar el departamente que desea eliminar,\nal eliminar un departamento se eliminaran todos\nsus puestos correspondientes al establecimiento\nseleccionado","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+		}
+	};
+	
+	ActionListener opQuitarPuesto = new ActionListener() {
+		public void actionPerformed(ActionEvent   e) {
+			
+			int filaSeleccionada = tabla_puesto.getSelectedRow();
+			
+			if(filaSeleccionada >= 0){
+				
+					if(JOptionPane.showConfirmDialog(null, "El puesto "+tabla_puesto.getValueAt(filaSeleccionada, 1)+"\nserá removido ¿desea continuar?") == 0){
+					
+						
+							if(new GuardarTablasModel().Borra_departamento_y_puestos_dependientes(folio_establecimiento,folio_departamento,folio_puesto)){
+								
+								if(tabla_puesto.getRowCount()==1){
+									
+										while(tabla_departamento.getRowCount()>0){modelo_departamento.removeRow(0);}
+										while(tabla_puesto.getRowCount()>0){modelo_puesto.removeRow(0);}
+										
+										 Object [][] lista_tabla = new BuscarTablasModel().tabla_departamentos_por_establecimiento(folio_establecimiento);
+							                String[] fila = new String[2];
+							                        for(int i=0; i<lista_tabla.length; i++){
+							                                fila[0] = lista_tabla[i][0]+"";
+							                                fila[1] = lista_tabla[i][1]+"";
+							                                modelo_departamento.addRow(fila);
+							                        }
+								}else{
+									modelo_puesto.removeRow(filaSeleccionada);
+								}
+								
+								
 					                        
 								
 								JOptionPane.showMessageDialog(null, "El registro fue eliminado correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
