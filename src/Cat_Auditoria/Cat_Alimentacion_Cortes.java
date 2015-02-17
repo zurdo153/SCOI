@@ -2974,7 +2974,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 //	LLAMAR AL FILTRO DE VAUCHERS--------------------------------------------------------------------------------------------------------------------------
 	public class Cat_Filtrar_Vauchers extends Cat_Filtro_De_Vauchers{
 		
+		int bandera;
+		
 		public Cat_Filtrar_Vauchers(){
+			
+			bandera = 0;
 			
 			llenar_vauchers();
 			btnCargar.addActionListener(opCargar);
@@ -3038,8 +3042,10 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		return matriz;
 		}
 		
+		
 		ActionListener opCargar = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				bandera+=1;
 				
 				limpiar_filtro();
 				
@@ -3049,6 +3055,10 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				double suma_total_retiros =0;
 				String[] retiro = new String[2];
 				
+				
+				
+				if(bandera==1){
+					
 	    			for(int i=0; i<cargar_tabla_vauchers_de_filtro().length; i++){
 	    				
 	    				if(cargar_tabla_vauchers_de_filtro()[i][12].toString().trim().equals("true")){
@@ -3077,6 +3087,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
                                  suma_total += (Double.valueOf(cargar_tabla_vauchers_de_filtro()[i][9].toString().trim()));
 	    				}
 	    			}
+				
+
 	    			
 	    			
 	    			if(txtTotalVaucher.getText().toString().trim().equals("")){
@@ -3091,10 +3103,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 //	    			}else{
 //	    				txtTotalRetiros.setText(formato.format(Double.valueOf(txtTotalRetiros.getText().toString().trim())+suma_total_retiros)+"");
 //	    			}
-	    			
-	    			
-	    			calculoDinamico();
-	    		dispose();
+				}
+				calculoDinamico();
+		    dispose();
 			}
 		};
 		

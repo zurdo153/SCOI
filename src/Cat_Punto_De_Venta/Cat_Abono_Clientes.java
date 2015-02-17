@@ -51,8 +51,8 @@ import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
@@ -1532,7 +1532,7 @@ public class Cat_Abono_Clientes extends JFrame{
 						ruta = "\\src\\Obj_Reportes\\Obj_Liquidar_Ticket_C_Ahorro_Cte.jrxml";
 						query = "exec sp_tickets_abonos_c_ahorro_cte '"+ticket+"','L'";
 						
-						System.out.println(query);
+//						System.out.println(query);
 				}else{	
 						if(movimiento.equals("abono")){
 								ruta = "\\src\\Obj_Reportes\\Obj_Ticket_C_Ahorro_Cte.jrxml";
@@ -1552,13 +1552,13 @@ public class Cat_Abono_Clientes extends JFrame{
 				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(),new JRResultSetDataSource(new Connexion().conexion().createStatement().executeQuery(query)));
 				
 //				mostras reporte (comentar para no mostrar)
-				JasperViewer.viewReport(print, false);
+//				JasperViewer.viewReport(print, false);
 				
 //				imprimir reporte automatico ---------------------------------------------------------------------------------------------------------------
 //				false = imprime reporte en impresora predeterminada ---------------------------------------------------------------------------------------
 //				true  = muestra ventana de seleccion de impresora -----------------------------------------------------------------------------------------
-//				JasperPrintManager.printReport(print, false);
-//				JasperPrintManager.printReport(print, false);
+				JasperPrintManager.printReport(print, false);
+				JasperPrintManager.printReport(print, false);
 				
 				ruta= "";
 				
