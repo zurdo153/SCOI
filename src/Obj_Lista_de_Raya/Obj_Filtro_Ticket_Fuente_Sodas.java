@@ -36,8 +36,8 @@ public class Obj_Filtro_Ticket_Fuente_Sodas {
 		this.nombre_completo = nombre_completo;
 	}
 //	guardado de auxiliar y finanzas
-	public boolean guardar(Object[][] tabla, int folio,String empleado){
-		return new GuardarTablasModel().tablaTicketFuenteSodas_auxf(tabla,folio,empleado);
+	public boolean guardar(Object[][] tabla, int folio,String empleado, int periodo){
+		return new GuardarTablasModel().tablaTicketFuenteSodas_auxf(tabla,folio,empleado, periodo);
 	}
 	
 //	guardado de desarrollo humano

@@ -251,8 +251,8 @@ public class GuardarTablasModel {
 		return true;
 	}
 	
-	public boolean tablaTicketFuenteSodas_auxf(Object[][] tabla, int folio, String empleado){
-		String query = "exec sp_insert_fuente_soda_auxf_de_seleccion_de_ticket ?,?,?,?,?,?,?,?";
+	public boolean tablaTicketFuenteSodas_auxf(Object[][] tabla, int folio, String empleado, int periodo){
+		String query = "exec sp_insert_fuente_soda_auxf_de_seleccion_de_ticket ?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -269,6 +269,7 @@ public class GuardarTablasModel {
 				pstmt.setInt(6, Boolean.parseBoolean(tabla[i][3].toString().trim()) ? 1 : 0);
 				pstmt.setString(7, "0");
 				pstmt.setString(8, "1");
+				pstmt.setInt(9, periodo);
 				
 				pstmt.executeUpdate();
 			}
@@ -1432,6 +1433,102 @@ public boolean Borra_departamento_y_puestos_dependientes(int folio_establecimine
 		}
 	}		
 	return true;
+	}
+
+public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double TotalDelCorte,double TotalRetiroCliente, double TotalRecibosDeLuz, double Izacel, double Planes, double Pines, double Depositos, double CajaVerde){
+	
+	int folio_usuario = new Obj_Usuario().getFolio();
+	
+	String queryUpdate = "update tb_folios set folio = (select folio+1 from tb_folios where transaccion = 'Trabajo De Cortes') where transaccion = 'Trabajo De Cortes'";
+	String querySelect = "select folio as folio_trabajo_cortes from  tb_folios as folio_trabajo_cortes where transaccion = 'Trabajo De Cortes'";
+//	String query = "exec sp_insert_trabajo_de_cortes ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	String query = "exec sp_update_trabajo_de_cortes ?,?,?,?";
+	
+	String queryInsertTotales = "exec sp_insert_totales_trabajo_de_cortes ?,?,?,?,?,?,?,?,?";
+
+	Connection con = new Connexion().conexion();
+	int folio_trabajo = 0;
+	Statement stmt = null;
+		
+	try {
+		
+//		actualizar folio
+		PreparedStatement pstmtupdate = con.prepareStatement(queryUpdate);
+		con.setAutoCommit(false);
+		pstmtupdate.executeUpdate();
+		
+//		seleccionar folio
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(querySelect);
+
+			while(rs.next()){
+				folio_trabajo = rs.getInt("folio_trabajo_cortes");
+			}
+		
+//		actualizar corte
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tb_cv.length; i++){
+			
+			pstmt.setString(1 , tb_cv[i][1 ].toString().trim());
+			pstmt.setString(2, "CV");
+			pstmt.setInt(3, folio_trabajo);
+			pstmt.setInt(4, folio_usuario);
+			
+			pstmt.executeUpdate();
+		}
+		
+		for(int i=0; i<tb_gr.length; i++){
+			
+			pstmt.setString(1 , tb_gr[i][1 ].toString().trim());
+			pstmt.setString(2, "GR");
+			pstmt.setInt(3, folio_trabajo);
+			pstmt.setInt(4, folio_usuario);
+			
+			pstmt.executeUpdate();
+		}
+		
+//		guardar totales de trabajos de corte
+		PreparedStatement pstmtInsertTotales = con.prepareStatement(queryInsertTotales);
+		con.setAutoCommit(false);
+			
+		pstmtInsertTotales.setDouble(1 ,TotalDelCorte);
+		pstmtInsertTotales.setDouble(2, TotalRetiroCliente);
+		pstmtInsertTotales.setDouble(3, TotalRecibosDeLuz);
+		pstmtInsertTotales.setDouble(4 ,Izacel);
+		pstmtInsertTotales.setDouble(5, Planes);
+		pstmtInsertTotales.setDouble(6, Pines);
+		pstmtInsertTotales.setDouble(7 ,Depositos);
+		pstmtInsertTotales.setDouble(8, CajaVerde);
+		pstmtInsertTotales.setDouble(9, folio_trabajo);
+			
+		pstmtInsertTotales.executeUpdate();
+		
+		
+		
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_trabajos /n procedimiento almacenado sp_insert_trabajo_de_cortes SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_puestos_por_establecimiento /n procedimiento almacenado sp_insert_trabajo_de_cortes SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guarda_tabla_de_vouchers_cargados_desde_fecha_automatico /n procedimiento almacenado sp_insert_trabajo_de_cortes SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return 0;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return folio_trabajo;
 	}
 
 }

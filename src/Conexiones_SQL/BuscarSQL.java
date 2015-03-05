@@ -6012,4 +6012,23 @@ public class BuscarSQL {
 		return datos_empleado;
 	}
 	
+	public int folio_periodo() throws SQLException{
+		
+		String query = "select folio as folio_periodo_fs from  tb_folios where transaccion = 'Periodos Captura Fuente de Sodas'";
+
+		int folio = 0;
+		try {				
+			Statement s = con.conexion().createStatement();
+			ResultSet rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				folio = rs.getInt(1);
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+			
+		return folio;
+	}
 }

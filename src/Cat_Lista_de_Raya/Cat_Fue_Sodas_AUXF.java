@@ -57,6 +57,8 @@ public class Cat_Fue_Sodas_AUXF extends JFrame {
 	JLabel txtFolio_Empleado = new JLabel();
 	JLabel txtNombre_Completo = new JLabel();
 	JTextField txtCantidad = new JTextField();
+	
+	JTextField txtPeriodo = new JTextField();
 
 	com.toedter.calendar.JDateChooser txtCalendario = new com.toedter.calendar.JDateChooser();
 	
@@ -131,6 +133,13 @@ public class Cat_Fue_Sodas_AUXF extends JFrame {
 		lblTotal.setFont(new java.awt.Font("Algerian",0,60));
 		panel.add(lblTotal).setBounds(ancho-30,y, 400, 200);
 		
+		panel.add(new JLabel("Periodo:")).setBounds(490,20,80,20);
+		panel.add(txtPeriodo).setBounds(540,20,40,20);
+		
+		txtPeriodo.setEditable(false);
+		txtPeriodo.setHorizontalAlignment(0);
+		
+		txtPeriodo.setText(new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().seleccionarPeriodo()+"");
 		
 		btnGuardar.addActionListener(guardar);
 		btnSalir.addActionListener(salir);

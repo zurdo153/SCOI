@@ -677,7 +677,7 @@ public class Cargar_Combo {
 			int j=0;
 			while(rs.next()){
 				if(j == 0){
-					miVector.add("TODOS");
+					miVector.add("SELECCIONE UN CONCENTRADO");
 				}
 				miVector.add(rs.getString("grupo_para_cortes"));
 				j++;

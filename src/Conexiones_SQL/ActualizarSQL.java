@@ -3016,5 +3016,75 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
+	
+	public boolean actualizar_tabla_cortes_con_asignaciones(){
+
+		String query_asignaciones = "exec sp_asignaciones_en_cortes;";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query_asignaciones);
+			pstmt.executeUpdate();
+
+				con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ actualizar_tabla_cortes_con_asignaciones ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ actualizar_tabla_cortes_con_asignaciones ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+					return false;
+					}	
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
+	}
+	
+	public boolean actualizar_folio_periodo_fs(int valor){
+		String query = "update tb_folios set folio = (select folio+"+(valor)+"from tb_folios where transaccion = 'Periodos Captura Fuente de Sodas') where transaccion = 'Periodos Captura Fuente de Sodas'";
+
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.executeUpdate();
+
+				con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ actualizar_folio_periodo_fs ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ actualizar_folio_periodo_fs ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+					return false;
+					}	
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
+	}
 		
 }
