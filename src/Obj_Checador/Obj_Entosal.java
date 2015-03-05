@@ -8,8 +8,13 @@ import Conexiones_SQL.BuscarSQL;
 
 public class Obj_Entosal {
 	private String clave;
+	 String Valor_Descanso;
+	 String Valor_Pc;
 	
 	
+	
+
+
 	public String getClave() {
 		return clave;
 	}
@@ -18,6 +23,30 @@ public class Obj_Entosal {
 
 	public void setClave(String clave) {
 		this.clave = clave;
+	}
+
+
+
+	public String getValor_Descanso() {
+		return Valor_Descanso;
+	}
+
+
+
+	public void setValor_Descanso(String valor_Descanso) {
+		Valor_Descanso = valor_Descanso;
+	}
+
+
+
+	public String getValor_Pc() {
+		return Valor_Pc;
+	}
+
+
+
+	public void setValor_Pc(String valor_Pc) {
+		Valor_Pc = valor_Pc;
 	}
 
 
@@ -52,13 +81,16 @@ public class Obj_Entosal {
 			return false;
 		}
 	}
-	public boolean checar_dia_descanso(int folio){ 
-		try {
-			return new BuscarSQL().IntentaChecarDiaDescanso(folio);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public Obj_Entosal checar_dia_descanso(int folio){ 
+			try {
+				return new BuscarSQL().IntentaChecarDiaDescanso(folio);
+
+			  
+			     
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return null;
 	}
 	
 	public boolean checadas_dia_dobla(int folio){ 

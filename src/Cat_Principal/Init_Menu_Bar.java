@@ -20,7 +20,7 @@ public class Init_Menu_Bar extends Init_Login{
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
 		
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.4.17");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.4.20");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -197,9 +197,8 @@ public class Init_Menu_Bar extends Init_Login{
 			if(txtContrasena.getText().length() != 0){
 				Obj_MD5 algoritmo = new Obj_MD5();
 				Obj_Usuario user = new Obj_Usuario().buscar(Integer.parseInt(txtFolio.getText()));
-
+				
 				if(!algoritmo.cryptMD5(txtContrasena.getText(), "izagar").trim().toLowerCase().equals(user.getContrasena().trim().toLowerCase())){
-					
 					JOptionPane.showMessageDialog(null, "La contraseña no es válida...","Aviso",JOptionPane.WARNING_MESSAGE);
 					txtContrasena.setText("");
 					txtContrasena.requestFocus(true);
@@ -218,8 +217,8 @@ public class Init_Menu_Bar extends Init_Login{
 				return;
 			}
 		}
-		
 	};
+
 	ActionListener Opciones = new ActionListener(){
 		@SuppressWarnings("rawtypes")
 		public void actionPerformed(ActionEvent e){

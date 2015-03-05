@@ -6,9 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.HashMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -23,15 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
-
 import Cat_Lista_de_Raya.Cat_Filtro_De_Listas_De_Raya_Pasadas;
-import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
@@ -131,70 +121,44 @@ public class Cat_Reportes_De_Infonavit_De_Lista_De_Raya extends JFrame{
 			}
 		}
 	};
+	String basedatos="2.26";
+	String vista_previa_reporte="no";
+	int vista_previa_de_ventana=0;
+	String comando="";
+	String reporte = "";
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public  void obtiene_lista_de_raya_selecionada(final Integer folio){
-	 String	Foliorecibido = folio+"";
-		String query = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Empleados Con Infonavit De Lista De Raya Pasada',"+Foliorecibido  ;
-		Statement stmt = null;
-			try {
-				stmt =  new Connexion().conexion().createStatement();
-			    ResultSet rs = stmt.executeQuery(query);
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml");
-				JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-				JasperViewer.viewReport(print, false);
-			} catch (Exception e2) {
-				System.out.println(e2.getMessage());
-				JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Infonavit de Lista De Raya Pasadas procedure sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio SQLException: \n "+e2.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}	
-			txtFolio.setText(Foliorecibido);
-			return;	
-	}
+
 	
 	ActionListener opGenerar = new ActionListener() {
-		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void actionPerformed(ActionEvent e) {
 			
 			if(tipo_Reporte==2){
 						if(!txtFolio.getText().equals("")){
-							String query = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Empleados Con Infonavit De Lista De Raya Pasada',"+Integer.valueOf(txtFolio.getText())  ;
-							Statement stmt = null;
-								try {
-									stmt =  new Connexion().conexion().createStatement();
-								    ResultSet rs = stmt.executeQuery(query);
-									JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml");
-									JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-									JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-									JasperViewer.viewReport(print, false);
-								} catch (Exception e2) {
-									System.out.println(e2.getMessage());
-									JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Infonavit de Lista De Raya Pasadas procedure sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio SQLException: \n "+e2.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-								}	
-								return;	
-					    }
-		}
-		}
-	};
-	
-	
-	
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public void Reporte_De_Lista_De_Raya_Actual() {
-		String query = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Empleados Con Infonavit De Lista De Raya Actual',0" ;
-		Statement stmt = null;
-			try {
-				stmt =  new Connexion().conexion().createStatement();
-			    ResultSet rs = stmt.executeQuery(query);
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml");
-				JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-				JasperViewer.viewReport(print, false);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				JOptionPane.showMessageDialog(null, "Error en Generar Reporte Infonavit de Lista de Raya Actual procedure sp_reporte_de_infonavit_de_lista_de_raya SQLException: \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-
+							 reporte = "Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml";
+							 comando = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Empleados Con Infonavit De Lista De Raya Pasada',"+Integer.valueOf(txtFolio.getText())  ;
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+						}else{
+						  JOptionPane.showMessageDialog(null, "El Campo Folio No Debe De Estar Vacio","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	                      return;
+						}
 			}
+						
+	 	}
+	   };
+	   
+	   public  void obtiene_lista_de_raya_selecionada(final Integer folio){
+		 String	Foliorecibido = folio+"";
+		 reporte = "Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml";
+		 comando = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Empleados Con Infonavit De Lista De Raya Pasada',"+Foliorecibido  ;
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+	 	 txtFolio.setText(Foliorecibido);
+		 return;	
+       }
+	
+		public void Reporte_De_Lista_De_Raya_Actual() {
+			 reporte = "Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml";
+			 comando = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Empleados Con Infonavit De Lista De Raya Actual',0" ;
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 
 	

@@ -428,6 +428,7 @@ public class Cat_Etapas extends JFrame{
 		}
 	};
 	
+	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 			 busqueda_proximo_folio();

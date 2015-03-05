@@ -263,8 +263,8 @@ public class Cat_Checador extends JFrame {
 				 
 				 lblSemaforoRojo.setEnabled(true);
 				 lblSemaforoVerde.setEnabled(false);
-	                
-                JOptionPane.showMessageDialog(null, "La clave es requerida \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+                 JOptionPane.showMessageDialog(null, "Es Necesario Pasar El Gafete Por El Lector","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                     
                 txtClaveReal.setText("");
                 txtClaveReal.requestFocus();
                 return;
@@ -359,8 +359,7 @@ public class Cat_Checador extends JFrame {
 					 	}else{
 	                   		 lblSemaforoRojo.setEnabled(true);
                            lblSemaforoVerde.setEnabled(false);
-                       
-              			 JOptionPane.showMessageDialog(null, "La clave no es valida","Aviso",JOptionPane.WARNING_MESSAGE);
+      		  			  JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
               			 txtClaveReal.setText("");
               			 txtClaveReal.requestFocus();
                          return;
@@ -391,21 +390,36 @@ public class Cat_Checador extends JFrame {
 //                        }
 //----------------------------------------------------------------------------------------------------------------------        
 //                if(txtClaveReal.getText().toUpperCase().equals(numero_de_checador)){
+        	
 //-----------------------------------------
-        if(new Obj_Entosal().checar_dia_descanso(folio_empleado)){   
-		        	lblSemaforoRojo.setEnabled(true);
+        	Obj_Entosal entosal=new Obj_Entosal().checar_dia_descanso(folio_empleado);
+           
+        	if (entosal.getValor_Descanso().equals("true")){
+        		
+        		lblSemaforoRojo.setEnabled(true);
 		            lblSemaforoVerde.setEnabled(false);
-                         JOptionPane.showMessageDialog(null, "El dia de hoy lo tienes registrado como tu dia de descanso,\nfavor de avisar a desarrollo humano para que pueda regustrar su entrada a trabajar,\nde lo contrario n ote sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
-                         JOptionPane.showMessageDialog(null, "El dia de hoy lo tienes registrado como tu dia de descanso,\nfavor de avisar a desarrollo humano para que pueda regustrar su entrada a trabajar,\nde lo contrario n ote sera valido el pago de este dia","Aviso",JOptionPane.INFORMATION_MESSAGE);
-                                 
+                         JOptionPane.showMessageDialog(null, "El Dia De Hoy Lo Tienes Registrado Como Tu Dia De Descanso,\nAvisa A Desarrollo Humano Para Que Puedas Registrar Tu Entrada \nA Trabajar, De Lo Contrario No Te Sera Valido El Pago De Este Dia","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                         JOptionPane.showMessageDialog(null, "El Dia De Hoy Lo Tienes Registrado Como Tu Dia De Descanso,\nAvisa A Desarrollo Humano Para Que Puedas Registrar Tu Entrada \nA Trabajar, De Lo Contrario No Te Sera Valido El Pago De Este Dia","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/red-de-usuario-icono-6758-64.png"));
+                                                        
                                                 txtClaveReal.setText("");
                                                 txtClaveReal.requestFocus();
                          return;
+        	
          }else{
+         	if (entosal.getValor_Pc().equals("false")){
+         		lblSemaforoRojo.setEnabled(true);
+ 		            lblSemaforoVerde.setEnabled(false);
+ 		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+ 		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/red-de-usuario-icono-6758-64.png"));
+ 		  			  txtClaveReal.setText("");
+                                                 txtClaveReal.requestFocus();
+                          return;
+            	}
+         	
                 if(new Obj_Entosal().buscar_colicion(folio_empleado)){
                 	lblSemaforoRojo.setEnabled(true);
                     lblSemaforoVerde.setEnabled(false);
-                        JOptionPane.showMessageDialog(null, "Estas intentando checar 2 veces en menos\nde 1 minuto espere un momento y reintente","Aviso",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Estas Intentando Checar 2 Veces En Menos\n De 1 Minuto Espere Un Momento y Reintente","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
                                         txtClaveReal.setText("");
                                         txtClaveReal.requestFocus();
                         return;
@@ -698,7 +712,7 @@ public class Cat_Checador extends JFrame {
 //metodo para llenar vector para checador2--------------------------------------
                 Object [] vector = new Object[10];
                 
-                if(new Obj_Empleados().insertar_comida(folio_empleado,tipo_entrada,tipo_salida_comer)){
+                if(new Obj_Empleados().insertar_checada(folio_empleado,tipo_entrada,tipo_salida_comer)){
                 	lblSemaforoRojo.setEnabled(false);
                     lblSemaforoVerde.setEnabled(true);
                  Vector fila_sql=new Obj_Entosal().buscar_hora_entosal(folio_empleado);

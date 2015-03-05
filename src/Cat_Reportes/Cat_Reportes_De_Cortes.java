@@ -4,37 +4,26 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
-
 import com.toedter.calendar.JDateChooser;
 
-
-import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
-public class Cat_Reportes_De_Cortes extends JDialog{
+public class Cat_Reportes_De_Cortes extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Corte", 10, "String");
@@ -138,6 +127,11 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="";
+			String reporte = "";
 			
 			if(tipo_Reporte==1){
 						if(!txtFolio.getText().equals("")){
@@ -154,31 +148,14 @@ public class Cat_Reportes_De_Cortes extends JDialog{
 					   }else{
 						   Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 						   
-						   String ruta_reporte = "";
-						   
 						   if(tipo_Reporte==3){
-							   ruta_reporte = "\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia_Para_Exportar.jrxml";
+							   reporte = "Obj_Reporte_De_Cortes_Del_Dia_Para_Exportar.jrxml";
 						   }else{
-							   ruta_reporte = "\\src\\Obj_Reportes\\Obj_Reporte_De_Cortes_Del_Dia.jrxml";
+							   reporte = "Obj_Reporte_De_Cortes_Del_Dia.jrxml";
 						   }
-						   
 						   String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
-						   String query = "exec sp_Reporte_De_Cortes_Del_Dia '"+usuario.getNombre_completo()+"','"+fecha+"'" ;
-							Statement stmt = null;
-							
-							try {
-								stmt =  new Connexion().conexion().createStatement();
-							    ResultSet rs = stmt.executeQuery(query);
-								JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+ruta_reporte);
-								JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-								@SuppressWarnings({ "rawtypes", "unchecked" })
-								JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-								JasperViewer.viewReport(print, false);
-							} catch (Exception e1) {
-								System.out.println(e1.getMessage());
-								JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Cortes del  Dia  procedure sp_Reporte_De_Cortes_Del_Dia SQLException: \n "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-							}
-							return;					   
+							 comando = "exec sp_Reporte_De_Cortes_Del_Dia '"+usuario.getNombre_completo()+"','"+fecha+"'" ;
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 					   }
 			}
 		}

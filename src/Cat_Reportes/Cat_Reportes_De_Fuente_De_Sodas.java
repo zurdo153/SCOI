@@ -5,11 +5,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -23,34 +19,22 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
-
 import com.toedter.calendar.JDateChooser;
-
-
 import Cat_Lista_de_Raya.Cat_Filtro_De_Listas_De_Raya_Pasadas;
-import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
 public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Corte", 15, "String");
 	
 	JButton btnReporte_porfolio = new JButton("",new ImageIcon("imagen/fast-food-icon16.png"));
 	JButton btnReporte_porfecha = new JButton("",new ImageIcon("imagen/Calendar.png"));
 	JButton btnReporte_actual = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
     JButton btnSeleccionLR =new JButton("",new ImageIcon ("imagen/Filter-List-icon16.png"));
-	
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
-	
 	JDateChooser cfecha = new JDateChooser();
 	
 	int tipo_Reporte = 0;
@@ -106,9 +90,7 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
          {                 	    btnSeleccionLR.doClick();
        	    }
      });
-		
 	}
-
 	
 	ActionListener opReporte_Por_Folio = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
@@ -119,7 +101,6 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 			tipo_Reporte=1;
 			cfecha.setDate(null);
 			txtFolio.requestFocus();
-			
 		}
 	};
 	
@@ -152,7 +133,6 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 		}
 	};
 	
-	
 	public String validar_fechas(){
 		String error = "";
 		@SuppressWarnings("unused")
@@ -161,59 +141,28 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 		return error;
 	}
 	
+	String basedatos="2.26";
+	String vista_previa_reporte="no";
+	int vista_previa_de_ventana=0;
+	String comando="";
+	String reporte = "";
 	
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public  void obtiene_lista_de_raya_selecionada(final Integer folio){
-		
-	 String	Foliorecibido = folio+"";
-		
-		
-		
-		String query = "exec sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio "+Foliorecibido  ;
-		Statement stmt = null;
-			try {
-				stmt =  new Connexion().conexion().createStatement();
-			    ResultSet rs = stmt.executeQuery(query);
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Fuente_De_Sodas.jrxml");
-				JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-				JasperViewer.viewReport(print, false);
-				
-			} catch (Exception e2) {
-				System.out.println(e2.getMessage());
-				JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Fuente de Sodas de Lista del Folio procedure sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio SQLException: \n "+e2.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}	
-			
+	     String	Foliorecibido = folio+"";
+		 comando = "exec sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio "+Foliorecibido  ;
+		 reporte="Obj_Reporte_De_Fuente_De_Sodas.jrxml";
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			txtFolio.setText(Foliorecibido);
 			return;	
 	}
 	
-
-	
 	ActionListener opGenerar = new ActionListener() {
-		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void actionPerformed(ActionEvent e) {
-			
 			if(tipo_Reporte==1){
 						if(!txtFolio.getText().equals("")){
-														
-							String query = "exec sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio "+Integer.valueOf(txtFolio.getText())  ;
-							Statement stmt = null;
-								try {
-									stmt =  new Connexion().conexion().createStatement();
-								    ResultSet rs = stmt.executeQuery(query);
-									JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Fuente_De_Sodas.jrxml");
-									JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-									JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-									JasperViewer.viewReport(print, false);
-									
-								} catch (Exception e2) {
-									System.out.println(e2.getMessage());
-									JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Fuente de Sodas de Lista del Folio procedure sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio SQLException: \n "+e2.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-
-								}
-								return;	
+							 comando ="exec sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Por_Folio "+Integer.valueOf(txtFolio.getText());
+							 reporte="Obj_Reporte_De_Fuente_De_Sodas.jrxml";
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 						}else{
 							JOptionPane.showMessageDialog(null,"Debes de Teclear Un Folio de Lista de Raya \n O Seleccionarla de la Lista  Siguiente ","Aviso!", JOptionPane.WARNING_MESSAGE);
 							 new Cat_Filtro_De_Listas_De_Raya_Pasadas(1).setVisible(true);
@@ -225,49 +174,20 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 						JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Mensaje",JOptionPane.WARNING_MESSAGE);
 						return;
 					   }else{
-						   
-						   String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
-						   String query = "exec sp_Reporte_De_Fuente_De_Sodas_Sin_Cobro_En_lista_De_Raya '"+fecha+"'" ;
-							Statement stmt = null;
-							
-							try {
-								stmt =  new Connexion().conexion().createStatement();
-							    ResultSet rs = stmt.executeQuery(query);
-								JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Fuente_De_Sodas_de_Empleados_Sin_Cobro_En_Listas_de_Raya.jrxml");
-								JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-								JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-								JasperViewer.viewReport(print, false);
-							} catch (Exception e1) {
-								System.out.println(e1.getMessage());
-								JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Fuente de Sodas Sin Cobro En Lista de Raya procedure sp_Reporte_De_Fuente_De_Sodas_Sin_Cobro_En_lista_De_Raya SQLException: \n "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-							}
-							return;					   
+						     String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
+							 comando = "exec sp_Reporte_De_Fuente_De_Sodas_Sin_Cobro_En_lista_De_Raya'"+fecha+"'" ;
+							 reporte="Obj_Reporte_De_Fuente_De_Sodas_de_Empleados_Sin_Cobro_En_Listas_de_Raya.jrxml";
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 					   }
 			}
 		}
 	};
 	
-	
-	
-		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void Reporte_De_Fuente_De_Sodas() {
-		String query = "exec sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Actual " ;
-		Statement stmt = null;
-			try {
-				stmt =  new Connexion().conexion().createStatement();
-			    ResultSet rs = stmt.executeQuery(query);
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Fuente_De_Sodas.jrxml");
-				JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-				JasperViewer.viewReport(print, false);
-				
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Fuente de Sodas de Lista de Raya Actual procedure sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Actual SQLException: \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-
-			}
+		 comando = "exec sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Actual " ;
+		 reporte="Obj_Reporte_De_Fuente_De_Sodas.jrxml";
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
-
 	
 	public static void main(String args[]){
 		try{

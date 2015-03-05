@@ -20,6 +20,7 @@ import Obj_Auditoria.Obj_Alimentacion_Denominacion;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
+import Obj_Checador.Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
@@ -69,7 +70,7 @@ public class ActualizarSQL {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public boolean Empleado(Obj_Empleados empleado, int folio){
-		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -147,6 +148,7 @@ public class ActualizarSQL {
 			pstmt.setInt(i+=1, 		empleado.getStatus_h3());
 			pstmt.setString(i+=1, 		empleado.getFecha_ingreso_imss());
 			pstmt.setString(i+=1, 		empleado.getFecha_vencimiento_licencia());
+			pstmt.setInt(i+=1, usuario.getFolio());
 			
 			pstmt.executeUpdate();
 			con.commit();
@@ -3087,4 +3089,42 @@ public class ActualizarSQL {
 		return true;
 	}
 		
+	public boolean PCAsignadasaEstab(Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento pcnombre, int folio){
+		String query = " exec sp_actualizar_pc_asignada_a_establecimiento_para_checador ?,?,?," + folio;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, pcnombre.getNombre_Pc().toUpperCase().trim());
+			pstmt.setString(2, pcnombre.getEstablecimiento().toUpperCase().trim());
+			pstmt.setInt(3, pcnombre.getStatus());
+			
+			System.out.println(pcnombre.getNombre_Pc().toUpperCase().trim());
+			
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ PCAsignadasaEstab ] update  SQLException: sp_actualizar_pc_asignada_a_establecimiento_para_checador "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ PCAsignadasaEstab ] update  SQLException: sp_actualizar_pc_asignada_a_establecimiento_para_checador "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 }

@@ -578,20 +578,22 @@ public class Cat_Empleados extends JFrame{
 		btnExaminar.setEnabled(false);
 		btnCamara.setEnabled(false);
 		
+		btnHorario.setEnabled(false);
 		btnHorario2.setEnabled(false);
 		btnHorario3.setEnabled(false);
 		
 		txtDescanso.setEnabled(false);
 		txtDobla.setEnabled(false);
-		txtChecador.setEditable(false);
+		txtChecador.setEnabled(false);
 		txtHorario.setEnabled(false);
 		txtHorario2.setEnabled(false);
 		txtHorario3.setEnabled(false);
-		txtFechaActualizacion.setEditable(false);
+		txtFechaActualizacion.setEnabled(false);
 		
 		panelEnabledFalse();
 		txtFolioEmpleado.setEditable(true);
-		txtTelefono_Cuadrante.setEditable(false);
+		txtFolioEmpleado.setEnabled(true);
+		txtTelefono_Cuadrante.setEnabled(false);
 		
 		 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
          Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
@@ -1064,10 +1066,12 @@ public class Cat_Empleados extends JFrame{
 					txtFolioEmpleado.setEditable(true);
 					txtFolioEmpleado.requestFocus();
 					btnEditar.setEnabled(true);
-					
+					btnVerificar.setEnabled(false);
 					txtFolioEmpleado.setEditable(false);
 					btnBuscar.setEnabled(false);
 					btnFiltro.setEnabled(true);
+					btnHorario.setEnabled(false);
+					cmbHorarioRotativo.setEnabled(false);
 				}else{
 					JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
 					panelEnabledFalse();
@@ -1282,6 +1286,7 @@ public class Cat_Empleados extends JFrame{
 								panelEnabledFalse();
 								rbHorario2.setEnabled(false);
 								rbHorario3.setEnabled(false);
+								txtFolioEmpleado.setEnabled(true);
 								txtFolioEmpleado.setEditable(true);
 								txtFolioEmpleado.requestFocus();
 								btnTrueFoto.setSelected(false);
@@ -1291,7 +1296,7 @@ public class Cat_Empleados extends JFrame{
 								btnBuscar.setEnabled(true);
 								btnFiltro.setEnabled(true);
 								btnNuevo.setEnabled(true);
-								JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "El Empleado Se Actualizo Correcmente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							}else{
 								JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
 							}
@@ -1453,6 +1458,7 @@ public class Cat_Empleados extends JFrame{
 							panelEnabledFalse();
 							rbHorario2.setEnabled(false);
 							rbHorario3.setEnabled(false);
+							txtFolioEmpleado.setEnabled(true);
 							txtFolioEmpleado.setEditable(true);
 							txtFolioEmpleado.requestFocus();
 							btnTrueFoto.setSelected(false);
@@ -1462,7 +1468,7 @@ public class Cat_Empleados extends JFrame{
 							btnBuscar.setEnabled(true);
 							btnFiltro.setEnabled(true);
 							btnNuevo.setEnabled(true);
-							JOptionPane.showMessageDialog(null,"El registro se guardó de forma segura","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "El Empleado Se Guardo Correcmente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						}else{
 							JOptionPane.showMessageDialog(null, "Ocurrió un problema al almacenar el empleado", "Error", JOptionPane.ERROR_MESSAGE);
 						}
@@ -1489,16 +1495,19 @@ public class Cat_Empleados extends JFrame{
 				
 					case 0: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(0);
+							cmbHorarioRotativo.setEnabled(true);
 							rbHorario.setSelected(true);
 							break;
 							
 					case 1: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(1);
+							cmbHorarioRotativo.setEnabled(true);
 							rbHorario2.setEnabled(true);
 							break;
 							
 					case 2: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(2);
+							cmbHorarioRotativo.setEnabled(true);
 							rbHorario3.setEnabled(true);
 							break;
 				}
@@ -1514,28 +1523,27 @@ public class Cat_Empleados extends JFrame{
 	};
 	
 	public void panelEnabledTrue(){	
-		txtFolioEmpleado.setEditable(true);
-		txtNombre.setEditable(true);
-		txtApPaterno.setEditable(true);
-		txtApMaterno.setEditable(true);
-		txtPensionAli.setEditable(true);
+		txtNombre.setEnabled(true);
+		txtApPaterno.setEnabled(true);
+		txtApMaterno.setEnabled(true);
+		txtPensionAli.setEnabled(true);
 		cmbEstablecimiento.setEnabled(true);
 		cmbPuesto.setEnabled(true);
 		cmbSueldo.setEnabled(true);
 		cmbBono.setEnabled(true);
 		cmbPrestamos.setEnabled(true);
-		txtInfonavit.setEditable(true);
-		txtTarjetaNomina.setEditable(true);
+		txtInfonavit.setEnabled(true);
+		txtTarjetaNomina.setEnabled(true);
 		cmbTipoBancos.setEnabled(true);
 		txtImss.setEnabled(true);
 		chbFuente_Sodas.setEnabled(true);
 		chbGafete.setEnabled(true);
 		cmbStatus.setEnabled(true);
-		txaObservaciones.setEditable(true);
+		txaObservaciones.setEnabled(true);
 		txtCalendario.setEnabled(true);
 		cmbActivo_Inactivo.setEnabled(true);
 		txtIngreso.setEnabled(true);
-		txtTelefono_Familiar.setEditable(true);
+		txtTelefono_Familiar.setEnabled(true);
 		chb_cuadrante_parcial.setEnabled(true);
 		
 		txtIngresoImss.setEnabled(true);
@@ -1562,18 +1570,18 @@ public class Cat_Empleados extends JFrame{
 	}
 	
 	public void panelEnabledFalse(){	
-		txtFolioEmpleado.setEditable(false);
-		txtNombre.setEditable(false);
-		txtApPaterno.setEditable(false);
-		txtApMaterno.setEditable(false);
-		txtPensionAli.setEditable(false);
+		txtFolioEmpleado.setEnabled(false);
+		txtNombre.setEnabled(false);
+		txtApPaterno.setEnabled(false);
+		txtApMaterno.setEnabled(false);
+		txtPensionAli.setEnabled(false);
 		cmbEstablecimiento.setEnabled(false);
 		cmbPuesto.setEnabled(false);
 		cmbSueldo.setEnabled(false);
 		cmbBono.setEnabled(false);
 		cmbPrestamos.setEnabled(false);
-		txtInfonavit.setEditable(false);
-		txtTarjetaNomina.setEditable(false);
+		txtInfonavit.setEnabled(false);
+		txtTarjetaNomina.setEnabled(false);
 		cmbTipoBancos.setEnabled(false);
 		txtImss.setEnabled(false);
 		chbFuente_Sodas.setEnabled(false);
@@ -1583,7 +1591,7 @@ public class Cat_Empleados extends JFrame{
 		txtCalendario.setEnabled(false);
 		cmbActivo_Inactivo.setEnabled(false);
 		txtIngreso.setEnabled(false);
-		txtTelefono_Familiar.setEditable(false);
+		txtTelefono_Familiar.setEnabled(false);
 		chb_cuadrante_parcial.setEnabled(false);
 		
 		txtIngresoImss.setEnabled(false);
@@ -1693,9 +1701,9 @@ public class Cat_Empleados extends JFrame{
 				if(empleado.getFolio() != 0){
 					panelLimpiar();
 					panelEnabledFalse();
-					txtNombre.setEditable(true);
-					txtApPaterno.setEditable(true);
-					txtApMaterno.setEditable(true);
+					txtNombre.setEnabled(true);
+					txtApPaterno.setEnabled(true);
+					txtApMaterno.setEnabled(true);
 					txtFolioEmpleado.setText(empleado.getFolio()+1+"");
 					txtNombre.requestFocus();
 					txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
@@ -1710,11 +1718,11 @@ public class Cat_Empleados extends JFrame{
 						btnFiltro.setEnabled(false); 
 						btnBuscar.setEnabled(false); 
 						btnNuevo.setEnabled(false);
-			         
+						btnVerificar.setEnabled(true);
 				}else{
 					panelEnabledTrue();
 					txtFolioEmpleado.setText(1+"");
-					txtFolioEmpleado.setEditable(false);
+					txtFolioEmpleado.setEnabled(false);
 					txtNombre.requestFocus();
 					txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
 					
@@ -1739,6 +1747,7 @@ public class Cat_Empleados extends JFrame{
 			rbHorario2.setEnabled(false);
 			panelEnabledFalse();
 			txtFolioEmpleado.setEditable(true);
+			txtFolioEmpleado.setEnabled(true);
 			txtFolioEmpleado.requestFocus();
 			btnEditar.setEnabled(false);
 			btnNuevo.setEnabled(true);
