@@ -1310,6 +1310,47 @@ public class BuscarTablasModel {
 		}
 	    return matriz; 
 	}
+	
+	public String[][] tabla_model_trabajo_de_cortes(String cadena){
+		String query_lista = "exec sp_select_trabajo_de_cortes'"+cadena+"';";
+		String[][] matriz = new String[get_filas(query_lista)][20];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] = "   "+rs.getString(1);
+				matriz[i][1] = "   "+rs.getString(2);
+				matriz[i][2] = "   "+rs.getString(3);
+				matriz[i][3] = "   "+rs.getString(4);
+				matriz[i][4] = "   "+rs.getString(5);
+				matriz[i][5] = "   "+df.format(rs.getDouble(6));
+				matriz[i][6] = "   "+df.format(rs.getDouble(7));
+				matriz[i][7] = "   "+df.format(rs.getDouble(8));
+				matriz[i][8] = "   "+df.format(rs.getDouble(9));
+				matriz[i][9] = "   "+df.format(rs.getDouble(10));
+				matriz[i][10] = "   "+df.format(rs.getDouble(11));
+				matriz[i][11] = "   "+df.format(rs.getDouble(12));
+				matriz[i][12] = "   "+df.format(rs.getDouble(13));
+				matriz[i][13] = "   "+df.format(rs.getDouble(14));
+				matriz[i][14] = "   "+df.format(rs.getDouble(15));
+				matriz[i][15] = "   "+df.format(rs.getDouble(16));
+				matriz[i][16] = "   "+df.format(rs.getDouble(17));
+				matriz[i][17] = "   "+df.format(rs.getDouble(18));
+				matriz[i][18] = "   "+rs.getString(19);
+				matriz[i][19] = "   "+rs.getString(20);
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_trabajo_de_cortes store procedure sp_select_trabajo_de_cortes  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+		}
+	    return matriz; 
+	}
+	
 }
 
 
