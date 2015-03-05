@@ -30,6 +30,7 @@ import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Auditoria.Obj_Movimiento_De_Asignacion;
 import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
+import Obj_Checador.Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
@@ -2639,7 +2640,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 	return true;
 }
 
-	public boolean Insert_Empleado_Comida(int folio, String t_entrada, int tipo_salida_comer) {
+	public boolean Insert_Checada(int folio, String t_entrada, int tipo_salida_comer) {
 		String insert ="exec sp_insert_entosal "+folio+",?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -3623,4 +3624,44 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		}		
 		return true;
 	   }
+	
+	public boolean Guardar_Nombre_PC(Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento tpc){
+		String query = "exec sp_insert_nombre_de_PC_Para_Checador_Del_establecimiento ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, tpc.getFolio());
+			pstmt.setString(2, tpc.getNombre_Pc().toUpperCase().trim());
+			pstmt.setString(3, tpc.getEstablecimiento().toUpperCase().trim());
+			pstmt.setInt(4, tpc.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nombre_PC ] Insert   \nSQLException: sp_insert_nombre_de_PC_Para_Checador_Del_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nombre_PC ] Insert  \nSQLException: sp_insert_nombre_de_PC_Para_Checador_Del_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nombre_PC ] Insert  SQLException: insert_etapa "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
 } 

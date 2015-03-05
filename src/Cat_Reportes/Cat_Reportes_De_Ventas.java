@@ -222,35 +222,12 @@ ResultSet rs;
 
 try {
 	s = con.conexion_IZAGAR().createStatement();
-//	String fecha_inicial =new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
-//	String fecha_final =new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 
 	
 	rs=null;
 	
 							rs = s.executeQuery(" Select 1,2,3,4,5,6,7"
 									
-//									"SELECT  establecimientos.nombre as establecimiento" +
-//									"                   ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0)) as existencia_pz" +
-//									"                   ,convert(numeric(10,2),isnull(mab.venta_pzas,0)) as venta_pzas" +
-//							        "                   ,datediff(day,'"+fecha_inicial+"','"+fecha_final+"') as dias_de_venta"+
-//							        "                   ,convert(numeric(10,2),(isnull(mab.venta_pzas,0) /datediff(day,'"+fecha_inicial+"','"+fecha_final+"'))) as promedio_de_venta_diaria"+
-//							        "                   ,convert(numeric(10,2),(isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0))/(isnull(mab.venta_pzas,1) /datediff(day,'"+fecha_inicial+"','"+fecha_final+"')))   as Proyeccion_de_Venta_prom"+
-//									"                   ,isnull(convert(varchar(20),prodestab.fecha_agotado,103),'Sin Fecha Agotado')as fecha_agotado" +
-//									"              FROM prodestab with (nolock) " +
-//									"                 inner join productos on productos.cod_prod=prodestab.cod_prod" +
-//									"                 inner join establecimientos on establecimientos.cod_estab=prodestab.cod_estab and establecimientos.cod_estab not in(15,19,20)" +
-//									"  			      left outer join	(SELECT Entysal.cod_prod ,sum(case when entysal.unidad <> 'U' then entysal.cantidad else 0 end) as venta_pzas ,facremtick.cod_estab" +
-//									" 									   FROM Entysal with (nolock)  " +
-//									"  									      INNER JOIN facremtick  with (nolock) ON Entysal.folio = facremtick.folio AND Entysal.transaccion = facremtick.transaccion " +
-//									"  										  INNER JOIN productos on entysal.cod_prod = productos.cod_prod " +
-//									" 									   WHERE " +
-////									"(entysal.cod_prod ='"+cod_producto+"') AND  " +
-//											"entysal.fecha between '"+fecha_inicial+"'"+
-//									"                                                and '"+fecha_final+"'  AND Entysal.transaccion in ('36','37','38')" +
-//									"									 GROUP BY Entysal.cod_prod,facremtick.cod_estab)mab on mab.cod_estab=prodestab.cod_estab" +
-////									"			   WHERE prodestab.cod_prod='"+cod_producto+"'"+
-//									"            GROUP BY establecimientos.nombre,convert(varchar(20),prodestab.fecha_agotado,103),mab.venta_pzas order by establecimiento asc"
 
 									
 									)           ;

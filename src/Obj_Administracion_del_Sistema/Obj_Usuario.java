@@ -16,10 +16,12 @@ public class Obj_Usuario {
 	private String fecha_alta;
 	private String fecha_actua;
 	private String sesion;
+	private String vista_previa_impresion;
 	private int status;
-		
+
+	
 	public Obj_Usuario(){
-		this.folio=0; nombre_completo=""; contrasena=""; permiso_id=0; status=0; fecha_alta=""; fecha_actua=""; sesion="";
+		this.folio=0; nombre_completo=""; contrasena=""; permiso_id=0; status=0; fecha_alta=""; fecha_actua=""; sesion="";vista_previa_impresion="";
 	}
 
 
@@ -83,6 +85,16 @@ public class Obj_Usuario {
 	}
 
 
+	public String getVista_previa_impresion() {
+		return vista_previa_impresion;
+	}
+
+
+	public void setVista_previa_impresion(String vista_previa_impresion) {
+		this.vista_previa_impresion = vista_previa_impresion;
+	}
+	
+	
 	public int getStatus() {
 		return status;
 	}

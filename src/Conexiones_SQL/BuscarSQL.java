@@ -34,6 +34,7 @@ import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Auditoria.Obj_Movimiento_De_Asignacion;
 import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
+import Obj_Checador.Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Entosal;
 import Obj_Checador.Obj_Gen_Code_Bar;
@@ -1343,6 +1344,7 @@ public class BuscarSQL {
 				usuario.setContrasena(rs.getString("contrasena").trim());
 				usuario.setPermiso_id(rs.getInt("permiso_id"));
 				usuario.setFecha_alta(rs.getString("fecha").trim());
+				usuario.setVista_previa_impresion(rs.getString("vista_previa_reportes"));
 				usuario.setStatus(rs.getInt("status"));
 			}
 			
@@ -4214,28 +4216,9 @@ public class BuscarSQL {
 		return existe;
 	}
 	
-	public boolean IntentaChecarDiaDescanso(int folio)throws SQLException{
-		boolean descanso = false;
-		String query = "exec sp_valida_checada_dia_descanso "+folio;
-		
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				descanso = rs.getBoolean("valor");
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion IntentaChecarDiaDescanso store procedure sp_valida_checada_dia_descanso: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return descanso;
-	}
+
+	
+	
 	public boolean obtener_checadas_dia_dobla(int folio)throws SQLException{
 		boolean descanso = false;
 		String query = "sp_valida_cantidad_de_checadas_en_dia_dobla "+folio;
@@ -4279,6 +4262,41 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return dobla;
+	}
+	
+	public Obj_Entosal IntentaChecarDiaDescanso(int folio)throws SQLException{
+		Obj_Entosal desc_pc = new Obj_Entosal();
+		String pc_nombre ="";
+		
+		try {
+			pc_nombre = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+				
+		String query = "exec sp_valida_checada_dia_descanso_y_Pc_Autorizada "+folio+",'"+pc_nombre+"'";
+		
+			Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				     desc_pc.setValor_Descanso(rs.getString("valor_descanso"));
+				     desc_pc.setValor_Pc(rs.getString("valor_pc"));
+				     
+				     System.out.println(rs.getString("valor_descanso"));
+				     System.out.println(rs.getString("valor_pc"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion IntentaChecarDiaDescanso y Validar PC store procedure sp_valida_checada_dia_descanso: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return desc_pc;
+		  
 	}
 	
 	//Buscamos el horario por su nombre
@@ -5314,6 +5332,9 @@ public class BuscarSQL {
 		return etapas;
 	}
 	
+	
+	
+	
 	public Obj_Aspectos_De_La_Etapa ExisteAspecto(int folio){
 		Obj_Aspectos_De_La_Etapa aspecto = new Obj_Aspectos_De_La_Etapa();
 		String query = "select * from tb_aspectos_de_la_etapa where folio_aspecto ="+ folio;
@@ -6011,5 +6032,32 @@ public class BuscarSQL {
 		}
 		return datos_empleado;
 	}
+	
+	
+	public Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento Existepc_establecimiento(int folio){
+		Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento nombrepc = new Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento();
+		String query = " select tpc.folio,tpc.nombre_pc_checador,tb_establecimiento.nombre as establecimiento,tpc.status from tb_pc_asignadas_a_establecimiento_para_checador tpc" +
+				" inner join tb_establecimiento on tb_establecimiento.folio=tpc.folio_establecimiento where tpc.folio ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				nombrepc.setFolio(rs.getInt("folio"));
+				nombrepc.setNombre_Pc(rs.getString("nombre_pc_checador").trim());
+				nombrepc.setEstablecimiento(rs.getString("establecimiento").trim());
+				nombrepc.setStatus(rs.getInt("status"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Existepc_establecimiento en select * from tb_etapas where folio ="+ folio+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return nombrepc;
+	}
+	
+	
+	
+	
 	
 }

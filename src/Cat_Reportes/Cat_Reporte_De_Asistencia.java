@@ -4,13 +4,10 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -22,15 +19,9 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 
 import Conexiones_SQL.BuscarSQL;
-import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 
@@ -98,7 +89,6 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	}
 	
 	public void cargar_fechas(){
-			
 		Date date1 = null;
 				  try {
 					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(7));
@@ -119,6 +109,11 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 					}
 		c_final.setDate(date2);
 	};
+	String basedatos="2.26";
+	String vista_previa_reporte="no";
+	int vista_previa_de_ventana=0;
+	String comando="";
+	String reporte = "";
 	
 	
 	ActionListener op_generar = new ActionListener() {
@@ -132,59 +127,17 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 
 				if(c_inicio.getDate().before(c_final.getDate())){
 					Reporte_de_Asistencia_completo(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
-					
 				}else{
-					JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
-					return;
+					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                      return;
 				}
-				
 			}else{
-				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
-				return;
+				  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                  return;
 			}
 
 		}
 	};
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void Reporte_de_Asistencia_completo(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
-		String query = "exec sp_Reporte_De_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-		Statement stmt = null;
-		try {
-			stmt =  new Connexion().conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-		    
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Asistencia_Por_Establecimiento.jrxml");
-			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-			JasperViewer.viewReport(print, false);
-		} catch (Exception e1) {
-			System.out.println(e1.getMessage());
-			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_General_de_Asistencia_Por_Establecimiento ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-	}
-	}
-	
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void op_generar_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
-		String query = "exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-		Statement stmt = null;
-		try {
-			
-			stmt =  new Connexion().conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-		    
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Asistencia_Por_Establecimiento_Consideraciones.jrxml");
-			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-			JasperViewer.viewReport(print, false);
-		} catch (Exception e1) {
-			System.out.println(e1.getMessage());
-			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_General_de_Asistencia_Por_Establecimiento ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-	}
-	}
-	
-	
 	
 	ActionListener op_generar_con_consideraciones = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -197,24 +150,19 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 
 				if(c_inicio.getDate().before(c_final.getDate())){
 					op_generar_consideraciones(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
-
-					
 				}else{
-					JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
-					return;
+					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                      return;
 				}
-				
 			}else{
-				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
-				return;
+				  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                  return;
 			}
-
 		}
 	};
 	
 	
 	ActionListener op_generar_permisos = new ActionListener() {
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
@@ -223,40 +171,38 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 				
 				if(c_inicio.getDate().before(c_final.getDate())){
 						
-						   String query = "exec sp_Reporte_De_Permisos_A_Empleados '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"';";
-							
-							Statement stmt = null;
-							try {
-								stmt =  new Connexion().conexion().createStatement();
-							    ResultSet rs = stmt.executeQuery(query);
-							    
-								JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Permisos_A_Empleados.jrxml");
-								JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-								@SuppressWarnings("rawtypes")
-								JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-								JasperViewer.viewReport(print, false);
-							} catch (Exception e1) {
-								System.out.println(e1.getMessage());
-						}
+					 reporte = "Obj_Permisos_A_Empleados.jrxml";
+					 comando = "exec sp_Reporte_De_Permisos_A_Empleados '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"';";
+					 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 				}else{
-					JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
-					return;
+					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                      return;
 				}
-				
 			}else{
-				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
-				return;
+				  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                  return;
 			}
-
 		}
 	};
+	
+	public void Reporte_de_Asistencia_completo(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
+		 reporte = "Obj_Reporte_De_Asistencia_Por_Establecimiento.jrxml";
+		 comando = "exec sp_Reporte_De_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+	}
+	
+	public void op_generar_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
+		 reporte = "Obj_Reporte_De_Asistencia_Por_Establecimiento_Consideraciones.jrxml";
+		 comando = "exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+	}
+	
 	public String validar_fechas(){
 		String error = "";
 		String fechainicioNull = c_inicio.getDate()+"";
 		String fechafinalNull = c_final.getDate()+"";
 	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";
 		if(fechafinalNull.equals("null"))error+= "Fecha Final\n";
-		
 		return error;
 	}
 	

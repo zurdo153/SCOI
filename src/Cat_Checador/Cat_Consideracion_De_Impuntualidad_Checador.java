@@ -81,6 +81,7 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 	
 	JButton btnGenerar = new JButton("Generar");
 	
+	
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
 	
@@ -301,7 +302,7 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 	    			int fila = tabla.getSelectedRow();
 	    			
 	    			if(tabla.getValueAt(fila, tabla.getColumnCount()-1).toString().equals("true")){
-	    				JOptionPane.showMessageDialog(null, "Solo se permite modificar los registros una vez,\nEste registro ya a sido modificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+ 	  				  JOptionPane.showMessageDialog(null, "Solo Esta Permitido Modificar El Registro Una Vez \n Este Registro Ya A Sido Modificado","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 	    				return;
 	    			}else{
 		    					folio_emp = 	Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
@@ -394,7 +395,6 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 	 ///////VENTANA EMERGENTE
 	
 	public class Cat_Ventana_Consideracion extends JDialog {
-
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
 		
@@ -419,9 +419,6 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 		JTextArea txaObservacion =new Componentes().textArea(new JTextArea(), "Observaciones", 150);
 		JScrollPane scrollObservacion = new JScrollPane(txaObservacion,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
-		
-		
-
 		
 		public Cat_Ventana_Consideracion(){
 			this.setResizable(false);
@@ -497,13 +494,15 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 		
 		ActionListener opGuardarObservacion = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				if(!txaObservacion.getText().equals("")){
-					
 //		consideraciones ( mandar parametros para el update)
-					
-							int consid_imp = (imp - Integer.valueOf(txtImp.getText()));
-							int consid_fav = (fav - Integer.valueOf(txtFav.getText()));
+							int consid_imp = (imp - Integer.valueOf(txtImp.getText()))*-1;
+							int consid_fav = (fav - Integer.valueOf(txtFav.getText()))*-1;
+							
+							System.out.println(imp);
+							System.out.println(Integer.valueOf(txtImp.getText()));
+							
+							
 							
 							String clave_master = "";
 							if(tipo_checada.equals("-")){
@@ -515,12 +514,19 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 							String omision_mod = "";
 							if(ent_sal.equals("FALT.REG.")){
 								   omision_mod="";
-							}else{ omision_mod = cmbOmision.getSelectedItem().toString().trim().equals("Aplica")?"":cmbOmision.getSelectedItem().toString().trim();
-							}
+								   
+							}else{ omision_mod = cmbOmision.getSelectedItem().toString().trim().equals("Aplica")?"":
+								cmbOmision.getSelectedItem().toString().trim();
+							if(cmbOmision.isEnabled()){consid_imp=imp*-1;}}
 							
 							String status_mod = "";
 							status_mod = cmbstatus_checada.getSelectedItem().toString().trim();
-							
+
+							if(status_mod.equals("Cancelado")){
+								consid_imp=imp*-1;
+								consid_fav=fav*-1;
+								omision_mod="No Aplica";
+								clave_master="";    			}
 							
 //							System.out.println("aqui es igual a = "+realizo_consideracion);
 						if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod)){
@@ -534,7 +540,6 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 							fav  = 0; 	
 							observacion  = "";
 							Status_Mov = "";
-							
 							
 							String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 							String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
@@ -578,13 +583,12 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 							return;
 						}
 				}else{
-					JOptionPane.showMessageDialog(null, "Ingresar Consideracion", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+	  			  JOptionPane.showMessageDialog(null, "Es Necesario Teclear Una Observacion \n El Porque Se Modifico El Registro","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			}
 		};
 	}
-	
 	
 	public static void main(String[] args) {
 		try{
@@ -594,5 +598,4 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 			System.err.println("Error :"+ e.getMessage());
 		}
 	}
-
 }

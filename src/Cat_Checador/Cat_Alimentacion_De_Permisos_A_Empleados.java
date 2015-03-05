@@ -204,12 +204,12 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		panel.add(spComida).setBounds(360,y,60,20);
 		
 		y=125;
-		panel.add(chbCambio_turno).setBounds(500,y,250,20);
-		panel.add(lblCambio_turno).setBounds(520,y+=20,90,20);
-		panel.add(txtFolioEmpleadoCambio).setBounds(610,y,70,20);
-		panel.add(btnFiltroEmpleadoCambio).setBounds(680,y,20,20);
-		panel.add(txtEmpleadoCambio).setBounds(500,y+=22,260,20);
-		panel.add(txtEmpleadoHorario).setBounds(500,y+=22,260,20);
+//		panel.add(chbCambio_turno).setBounds(500,y,250,20);
+//		panel.add(lblCambio_turno).setBounds(520,y+=20,90,20);
+//		panel.add(txtFolioEmpleadoCambio).setBounds(610,y,70,20);
+//		panel.add(btnFiltroEmpleadoCambio).setBounds(680,y,20,20);
+//		panel.add(txtEmpleadoCambio).setBounds(500,y+=22,260,20);
+//		panel.add(txtEmpleadoHorario).setBounds(500,y+=22,260,20);
 		
 		panel.add(lblMotivo).setBounds(500,y+=40,80,20);
 		panel.add(Observasiones).setBounds(500,y+=20,260,140);

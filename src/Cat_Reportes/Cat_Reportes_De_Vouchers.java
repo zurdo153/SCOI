@@ -297,7 +297,7 @@ public class Cat_Reportes_De_Vouchers extends JFrame{
 	
 	
 	
-	@SuppressWarnings({ "serial", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public class Cat_Filtro_De_Asignaciones extends JDialog {
 		
 		Container cont = getContentPane();

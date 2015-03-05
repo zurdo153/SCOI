@@ -11,6 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+
+import Conexiones_SQL.Generacion_Reportes;
+
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
@@ -20,12 +23,7 @@ public class Cat_Reporte_De_Movimientos_Operados extends JFrame {
 	JLayeredPane panel = new JLayeredPane();
 	
 	JDateChooser c_inicio = new JDateChooser();
-
-
-	
-
 	JButton btn_generar = new JButton("Generar Reporte");
-
 	
 	public Cat_Reporte_De_Movimientos_Operados(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/reporte_icon&16.png"));
@@ -47,8 +45,15 @@ public class Cat_Reporte_De_Movimientos_Operados extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
 				String fecha = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
-				new Cat_IZAGAR.Cat_IZAGAR_Reporte_De_Movimientos_Operados_Print(fecha);
+				String basedatos="2.200";
+				String vista_previa_reporte="no";
+				int vista_previa_de_ventana=0;
+				String comando="";
+				String reporte = "";
 				
+				 reporte = "Obj_Reporte_IZAGAR_de_Movimientos_Operados.jrxml";
+				 comando = "exec sp_Reporte_IZAGAR_de_Movimientos_Operados '"+fecha+"';";
+				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			}else{
 				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
 				return;

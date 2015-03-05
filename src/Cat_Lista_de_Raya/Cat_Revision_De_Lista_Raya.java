@@ -327,10 +327,12 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							return;
 						}
 						 }else{
+							 
 								JOptionPane.showMessageDialog(null, "Antes De Generar La Lista De Raya Tiene Que Guardar Los Totales De Cheque", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 						 }
 					  }else{
+						  
 						JOptionPane.showMessageDialog(null, "Antes De Generar La Lista De Raya Tiene Que Guardar Los Totales De Nomina", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}
