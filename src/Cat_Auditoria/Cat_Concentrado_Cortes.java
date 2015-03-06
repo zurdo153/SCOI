@@ -13,20 +13,18 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.BuscarTablasModel;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
-import Obj_Principal.Componentes;
-
-import com.toedter.calendar.JDateChooser;
 
 
 @SuppressWarnings("serial")
@@ -35,13 +33,12 @@ public class Cat_Concentrado_Cortes extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JDateChooser calendario = new JDateChooser();
-	
 	String[] vector = new Obj_Establecimiento().Combo_Establecimiento_Concentrado();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcentrado = new JComboBox(vector);
 	
-	JTextField txtPlanes = new Componentes().text(new JTextField(), "Planes", 15, "Double");
+//	JDateChooser calendario = new JDateChooser();
+//	JTextField txtPlanes = new Componentes().text(new JTextField(), "Planes", 15, "Double");
 	
 	JButton btnGenerar = new JButton("Generar");
 	
@@ -80,16 +77,16 @@ public class Cat_Concentrado_Cortes extends JFrame{
 		trsfiltro = new TableRowSorter(modelo_establecimiento_para_concentrado); 
 		tabla_establecimiento_para_concentrado.setRowSorter(trsfiltro);
 		
-		panel.add(new JLabel("Fecha: ")).setBounds(10,20,40,20);
-		panel.add(calendario).setBounds(60,20,90,20);
+//		panel.add(new JLabel("Fecha: ")).setBounds(10,20,40,20);
+//		panel.add(calendario).setBounds(60,20,90,20);
 		
-		panel.add(new JLabel("Concentrado: ")).setBounds(160,20,80,20);
-		panel.add(cmbConcentrado).setBounds(240,20,130,20);
+		panel.add(new JLabel("Concentrado: ")).setBounds(60,20,80,20);
+		panel.add(cmbConcentrado).setBounds(150,20,220,20);
 		
 		panel.add(scroll_establecimiento_para_concentrado).setBounds(60,50,310,250);
 		
-		panel.add(new JLabel("Planes:")).setBounds(10,310,70,20);
-		panel.add(txtPlanes).setBounds(60,310,70,20);
+//		panel.add(new JLabel("Planes:")).setBounds(10,310,70,20);
+//		panel.add(txtPlanes).setBounds(60,310,70,20);
 		
 		panel.add(btnGenerar).setBounds(290,310,80,20);
 		
@@ -117,10 +114,12 @@ public class Cat_Concentrado_Cortes extends JFrame{
 	
 	ActionListener opGenerar = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
-			if(cmbConcentrado.getSelectedIndex() != 0){
-				txtPlanes.setText(tabla_establecimiento_para_concentrado.getRowCount()+"");
+			
+			if(cmbConcentrado.getSelectedIndex() == 0 || tabla_establecimiento_para_concentrado.getRowCount() == 0){
+				JOptionPane.showMessageDialog(null, "Seleccionar un concentrado que contenga establecimientos clasificados", "Aviso", JOptionPane.WARNING_MESSAGE);
+				return;
 			}else{
-				txtPlanes.setText(tabla_establecimiento_para_concentrado.getRowCount()+"");
+				new Cat_Trabajos_Cortes(cmbConcentrado.getSelectedItem().toString()).setVisible(true);
 			}
 		}
 	};
@@ -163,7 +162,12 @@ public class Cat_Concentrado_Cortes extends JFrame{
 	
 	
 	public static void main(String[] args) {
-		new Cat_Concentrado_Cortes().setVisible(true);
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Concentrado_Cortes().setVisible(true);
+		}catch(Exception e){
+			System.err.println("Error :"+ e.getMessage());
+		}
 	}
 
 }

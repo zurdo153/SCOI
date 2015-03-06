@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -248,6 +250,26 @@ public class Cat_Captura_Y_Modificacion_De_Fuente_De_Sodas_AUXF extends JFrame {
 		public void keyReleased(KeyEvent e){}
 								
 	};
+	
+	@SuppressWarnings("unchecked")
+	public static void main(String [] args){
+		try{
+			UIManager.setLookAndFeel(
+					UIManager.getSystemLookAndFeelClassName());
+		}catch(Exception e){}
+		
+		Cat_Captura_Y_Modificacion_De_Fuente_De_Sodas_AUXF thisClass = new Cat_Captura_Y_Modificacion_De_Fuente_De_Sodas_AUXF();
+		thisClass.setVisible(true);
+
+		//utilizacion del AWTUtilities con el metodo opaque
+		try {
+			   @SuppressWarnings("rawtypes")
+			Class clazz =  Class.forName("com.sun.awt.AWTUtilities");
+			   Method method = clazz.getMethod("setWindowOpaque", java.awt.Window.class, Boolean.TYPE);
+			   method.invoke(clazz,thisClass , false);
+			   } catch (Exception e) 
+			   { }	
+	}
 
 }
 

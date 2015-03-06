@@ -9,13 +9,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -26,9 +29,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import Conexiones_SQL.ActualizarSQL;
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
@@ -87,6 +93,10 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
 	
+	JButton btnPeriodo = new JButton("Periodo");
+	JButton btnRecorrer = new JButton("Recorrer");
+	JTextField txtPeriodo = new Componentes().text(new JTextField(), "Periodo", 2, "Int");
+	
 	@SuppressWarnings({ "rawtypes" })
 	public Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF()	{
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/sun_icon&16.png"));
@@ -104,6 +114,10 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 		panel.add(txtNombre_Completo).setBounds(85,20,300,20);
 		panel.add(cmbEstablecimientos).setBounds(387,20, 180, 20);
 		
+		panel.add(btnPeriodo).setBounds(572, 20, 90, 20);
+		panel.add(txtPeriodo).setBounds(665, 20, 50, 20);
+		panel.add(btnRecorrer).setBounds(725, 20, 90, 20);
+		
 		agregar(tabla);
 		
 		cont.add(panel);
@@ -112,11 +126,28 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 		txtNombre_Completo.addKeyListener(opFiltroNombre);
 		cmbEstablecimientos.addActionListener(opFiltro);
 		
+		btnPeriodo.addActionListener(opPeriodo);
+		btnRecorrer.addActionListener(opPeriodo);
+		
+		txtPeriodo.setEditable(false);
+		txtPeriodo.setHorizontalAlignment(0);
+		txtPeriodo.setText(seleccionarPeriodo()+"");
+		
 		this.setSize(850,415);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
+	}
+	
+	public int seleccionarPeriodo(){
+		int periodo = 0;
+		try {
+			periodo = new BuscarSQL().folio_periodo();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return periodo;
 	}
 	
 	private void agregar(final JTable tbl) {
@@ -128,11 +159,43 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	    			int folio =  Integer.parseInt(tabla.getValueAt(fila, 0)+"");
 	    			Object empleado =  tabla.getValueAt(fila, 1);
 	    			
-	    			new Cat_Filtro_Ticket_Fuente_Sodas_AUXF(folio,empleado+"").setVisible(true);
+	    			new Cat_Filtro_Ticket_Fuente_Sodas_AUXF(folio,empleado+"",Integer.valueOf(txtPeriodo.getText())).setVisible(true);
 	        	}
 	        }
         });
     }
+	
+	ActionListener opPeriodo = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			
+			if(Double.valueOf(txtPeriodo.getText())==20 && e.getActionCommand().equals("Periodo")){
+				JOptionPane.showMessageDialog(null, "El limite de periodos es 20", "Aviso", JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
+				
+				if(Double.valueOf(txtPeriodo.getText())==1 && e.getActionCommand().equals("Recorrer")){
+					JOptionPane.showMessageDialog(null, "El limite de periodos es 1", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}else{
+					
+					if(new ActualizarSQL().actualizar_folio_periodo_fs(e.getActionCommand().equals("Periodo")?1:-1)){
+						txtPeriodo.setText(seleccionarPeriodo()+"");
+					}else{
+						JOptionPane.showMessageDialog(null, "No se pudo generar el periodo", "Aviso", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+				
+			}
+		}
+	};
+	
+	ActionListener opReporte = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			
+			
+		}
+	};
 	
 	KeyListener opFiltroFolio = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {

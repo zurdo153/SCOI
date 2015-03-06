@@ -5,10 +5,12 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -16,14 +18,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarTablasModel;
-import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Conexiones_SQL.Connexion;
+import Conexiones_SQL.GuardarTablasModel;
 import Obj_Principal.Componentes;
 import Obj_Renders.CaveceraTablaRenderer;
 import Obj_Renders.tablaRenderer;
@@ -34,12 +43,13 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+//	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	JButton btnRestaurar = new JButton("Restaurar");
 	JButton btnCV = new JButton("A Caja Verde");
+	JButton btnGenerar = new JButton("Generar");
 	
 	JTextField txtDepositos = new JTextField();
 	JTextField txtIzacel = new JTextField();
@@ -55,14 +65,14 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		String cadena = "";
 			if(tabla_c_verde.getRowCount()>0){
 					for(int i=0; i<tabla_c_verde.getRowCount(); i++){
-						cadena+=tabla_c_verde.getValueAt(i, 2).toString().trim()+"'',''";
+						cadena+=tabla_c_verde.getValueAt(i, 1).toString().trim()+"'',''";
 					}
 				cadena=cadena.substring(0,cadena.length()-5);
 			}
 		return cadena;
 	}
 	
-    public DefaultTableModel tabla_model_grupos = new DefaultTableModel( new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde()), new String[]{"*","Establecimiento","F.Corte", "F.Asignacion", "Cajero", "Total Efec.", "Retiros prog.", "Cheques", "Vales", "Dolares", "F.Sodas", "PIN-PAD", "Total Corte", "Diferencia", "Retiros Clt.", "TA", "R.Luz","Apartados", "Fecha Corte", "Observacion"} ){
+    public DefaultTableModel tabla_model_grupos = new DefaultTableModel(null, new String[]{"*","Establecimiento","F.Corte", "F.Asignacion", "Cajero", "Total Efec.", "Retiros prog.", "Cheques", "Vales", "Dolares", "F.Sodas", "PIN-PAD", "Total Corte", "Diferencia", "Retiros Clt.", "TA", "R.Luz","Apartados", "Fecha Corte", "Observacion"} ){
                     
 		@SuppressWarnings({ "rawtypes" })
 		Class[] types = new Class[]{
@@ -94,7 +104,11 @@ public class Cat_Trabajos_Cortes extends JFrame{
         }
     public boolean isCellEditable(int fila, int columna){
                 switch(columna){
-                        case 0  : return true; 
+                        case 0  : if(tabla_model_grupos.getValueAt(fila, 1).toString().trim().equals("IZACEL") || Double.valueOf(tabla_model_grupos.getValueAt(fila, 11).toString()) > 0){
+                        				return false; 
+			                        }else{
+			                        	return true; 
+			                        }             	
                         case 1  : return false; 
                         case 2  : return false; 
                         case 3  : return false; 
@@ -235,8 +249,37 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
+	int folio_trabajo_realizado=0;
+	String grupo_corte="";
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Trabajos_Cortes(){
+	public Cat_Trabajos_Cortes(String grupo_de_concentrado){
+		
+		grupo_corte = grupo_de_concentrado;
+		
+		if(new ActualizarSQL().actualizar_tabla_cortes_con_asignaciones()){
+			refresh();
+//			while(tabla_grupos.getRowCount()>0){
+//				tabla_model_grupos.removeRow(0);
+//			}
+//				String[][] matriz = new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde(),grupo_de_concentrado);
+//	 
+//				String[] fila = new String[20];
+//		        for(int i=0; i<matriz.length; i++){
+//		        	
+//		        	for(int j=0; j<20; j++){
+//		        		fila[j] = matriz[i][j]+"";
+//		        	}
+//		        		tabla_model_grupos.addRow(fila);
+//		        }
+		}else{
+			JOptionPane.showMessageDialog(null, "No se validaron los folios de asignacion","Aviso",JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		 
+		 
+		 
 //		blackline = BorderFactory.createLineBorder(new Color(255,171,0));
 		this.setTitle("Abonos Clientes");
 		this.panel.setBorder(BorderFactory.createTitledBorder( "Captura de abonos clientes"));
@@ -247,7 +290,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		panel.add(btnRestaurar).setBounds(890, 10, 100, 20);
 		panel.add(scroll).setBounds(20, 30, 970, 130);
 		
-		panel.add(cmbEstablecimiento).setBounds(45, 165, 160, 20);
+//		panel.add(cmbEstablecimiento).setBounds(45, 165, 160, 20);
 		panel.add(btnCV).setBounds(890, 165, 100, 20);
 		panel.add(scroll_grupos).setBounds(20, 185, 970, 290);
 //		panel.add(btnCalcular).setBounds(20, 0, 160, 20);
@@ -261,18 +304,19 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		panel.add(txtIzacel 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalRetiroCliente				).setBounds(x+ancho+320, y, ancho, 20);  
 		panel.add(new JLabel("PLAN TELCEL: ")).setBounds(x, y+=25, ancho, 20);       panel.add(new JLabel("TOTAL RECIBOS DE LUZ: ")	).setBounds(x+250, y, ancho+50, 20);    
 		panel.add(txtPlanes 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalRecibosDeLuz 				).setBounds(x+ancho+320, y, ancho, 20);  
-		panel.add(new JLabel("PINES: ")		 ).setBounds(x, y+=25, ancho, 20);               
+		panel.add(new JLabel("PINES: ")		 ).setBounds(x, y+=25, ancho, 20);       panel.add(btnGenerar							).setBounds(x+ancho+320, y, ancho, 20);        
 		panel.add(txtPines 					 ).setBounds(x+ancho+10, y, ancho, 20);             
 		panel.add(new JLabel("CAJA VERDE: ") ).setBounds(x, y+=25, ancho, 20);
 		panel.add(txtCajaVerde				 ).setBounds(x+ancho+10, y, ancho, 20);
 		
 		llamar_render();
-		calcular();
-		calcular_totales();
+//		calcular();
+//		calcular_totales();
 		
-		cmbEstablecimiento.addActionListener(opFiltro);
+//		cmbEstablecimiento.addActionListener(opFiltro);
 		btnCV.addActionListener(opCajaVerde);
 		btnRestaurar.addActionListener(opRestaurar);
+		btnGenerar.addActionListener(opGenerar);
 
 		cont.add(panel);
 		
@@ -307,12 +351,12 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			switch(i){
 //					case 0: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
-					case 0: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
-					case 1: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
-					case 2: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
-					case 3: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
+					case 0: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9)); break;
+					case 1: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
+					case 2: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9)); break;
+					case 3: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
 					case 16:tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
-					case 17:tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
+					case 18:tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
 					default: tabla_c_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11)); break;
 				}
 		}
@@ -324,15 +368,17 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			switch(i){
 					case 0: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
-					case 1: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
-					case 2: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
-					case 3: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
-					case 4: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
+					case 1: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9)); break;
+					case 2: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
+					case 3: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9)); break;
+					case 4: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
 					case 17:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
-					case 18:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
+					case 19:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
 					default: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11)); break;
 				}
 		}
+		
+		
 		
 		tabla_concentrado.getColumnModel().getColumn(0).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_concentrado,textoEncabezado,"centro","Arial","negrita",10));
 		tabla_concentrado.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10));
@@ -354,15 +400,15 @@ public class Cat_Trabajos_Cortes extends JFrame{
     	this.tabla_c_verde.getTableHeader().setReorderingAllowed(false) ;
     	this.tabla_c_verde.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     	
-    	this.tabla_c_verde.getColumnModel().getColumn(0 ).setMaxWidth(x*3-20);
-    	this.tabla_c_verde.getColumnModel().getColumn(0 ).setMinWidth(x*3-20);
+    	this.tabla_c_verde.getColumnModel().getColumn(0 ).setMaxWidth(x*3-50);
+    	this.tabla_c_verde.getColumnModel().getColumn(0 ).setMinWidth(x*3-50);
     	this.tabla_c_verde.getColumnModel().getColumn(1 ).setMaxWidth(x);
     	this.tabla_c_verde.getColumnModel().getColumn(1 ).setMinWidth(x);
-    	this.tabla_c_verde.getColumnModel().getColumn(2 ).setMaxWidth(x+10);
-    	this.tabla_c_verde.getColumnModel().getColumn(2 ).setMinWidth(x+10);
+    	this.tabla_c_verde.getColumnModel().getColumn(2 ).setMaxWidth(x+40);
+    	this.tabla_c_verde.getColumnModel().getColumn(2 ).setMinWidth(x+40);
     	                                               
-    	this.tabla_c_verde.getColumnModel().getColumn(3 ).setMaxWidth(x*4+20);
-    	this.tabla_c_verde.getColumnModel().getColumn(3 ).setMinWidth(x*4+20);		
+    	this.tabla_c_verde.getColumnModel().getColumn(3 ).setMaxWidth(x*4);
+    	this.tabla_c_verde.getColumnModel().getColumn(3 ).setMinWidth(x*4);		
     	this.tabla_c_verde.getColumnModel().getColumn(4 ).setMaxWidth(x);
     	this.tabla_c_verde.getColumnModel().getColumn(4 ).setMinWidth(x);
     	this.tabla_c_verde.getColumnModel().getColumn(5 ).setMaxWidth(x);
@@ -401,15 +447,15 @@ public class Cat_Trabajos_Cortes extends JFrame{
     	
     	this.tabla_grupos.getColumnModel().getColumn(0 ).setMaxWidth(25);   
     	this.tabla_grupos.getColumnModel().getColumn(0 ).setMinWidth(25);	
-    	this.tabla_grupos.getColumnModel().getColumn(1 ).setMaxWidth(x*3-20);   
-    	this.tabla_grupos.getColumnModel().getColumn(1 ).setMinWidth(x*3-20);   
+    	this.tabla_grupos.getColumnModel().getColumn(1 ).setMaxWidth(x*3-50);   
+    	this.tabla_grupos.getColumnModel().getColumn(1 ).setMinWidth(x*3-50);   
     	this.tabla_grupos.getColumnModel().getColumn(2 ).setMaxWidth(x);
     	this.tabla_grupos.getColumnModel().getColumn(2 ).setMinWidth(x);
-    	this.tabla_grupos.getColumnModel().getColumn(3 ).setMaxWidth(x+10); 
-    	this.tabla_grupos.getColumnModel().getColumn(3 ).setMinWidth(x+10); 
+    	this.tabla_grupos.getColumnModel().getColumn(3 ).setMaxWidth(x+40); 
+    	this.tabla_grupos.getColumnModel().getColumn(3 ).setMinWidth(x+40); 
     	                                               
-    	this.tabla_grupos.getColumnModel().getColumn(4 ).setMaxWidth(x*4+20);
-    	this.tabla_grupos.getColumnModel().getColumn(4 ).setMinWidth(x*4+20);		
+    	this.tabla_grupos.getColumnModel().getColumn(4 ).setMaxWidth(x*4);
+    	this.tabla_grupos.getColumnModel().getColumn(4 ).setMinWidth(x*3-42);		
     	this.tabla_grupos.getColumnModel().getColumn(5 ).setMaxWidth(x);
     	this.tabla_grupos.getColumnModel().getColumn(5 ).setMinWidth(x);
     	this.tabla_grupos.getColumnModel().getColumn(6 ).setMaxWidth(x);
@@ -479,6 +525,19 @@ public class Cat_Trabajos_Cortes extends JFrame{
     	this.tabla_concentrado.getColumnModel().getColumn(13).setMinWidth(x);
     }
 	
+//	ActionListener opFiltro = new ActionListener(){
+//		@SuppressWarnings("unchecked")
+//		public void actionPerformed(ActionEvent arg0){
+//			if(cmbEstablecimiento.getSelectedIndex() != 0){
+//				trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimiento.getSelectedItem()+"", 1));
+//			}else{
+//				trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+//			}
+//			calcular();
+//			calcular_caja_verde();
+//		}
+//	};
+	
 	ActionListener opCajaVerde = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 		
@@ -494,26 +553,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 					tabla_model_c_verde.addRow(vector);
 				}
 			}
-			
-			while(tabla_grupos.getRowCount()>0){
-				tabla_model_grupos.removeRow(0);
-			}
-			
-			
-			String[][] consultarTrabajo = new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde());
-			
-			String[] fila = new String[consultarTrabajo.length];
-			
-			for(int i=0; i<consultarTrabajo.length; i++){
-				 		
-				for(int j=0; j<tabla_grupos.getColumnCount(); j++){
-					fila[j] = consultarTrabajo[i][j];
-				}
-				 		tabla_model_grupos.addRow(fila);
-			}
-			calcular();
-			calcular_caja_verde();
-			calcular_totales();
+			refresh();
 		}
 	};
 	
@@ -527,14 +567,80 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				return;
 			}else{
 				tabla_model_c_verde.removeRow(filaSeleccionada);
-				System.out.println(filaSeleccionada);
+				refresh();
 			}
+		}
+	};
+	
+	ActionListener opGenerar = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+//			cmbEstablecimiento.setSelectedIndex(0);
+			
+			if(txtPlanes.getText().equals("")){
+				JOptionPane.showMessageDialog(null, "El Campo Planes Se encuentra Vacio.\nIngrese Una Cantidad Para Seguir","Aviso",JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
+				
+			}
+			
+			if(guardarTrabajo( tabla_cv(), tabla_gr())>0){
+				new Cat_Reporte_De_Trabajo_De_Crotes(folio_trabajo_realizado);
+			}else{
+				JOptionPane.showMessageDialog(null, "El trabajo no pudo ser guardado","Aviso",JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			
+		}
+	};
+	
+	public Object[][] tabla_cv(){
+		Object[][] matrizCV = new Object[tabla_c_verde.getRowCount()][tabla_c_verde.getColumnCount()];
 		
+		for(int i =0; i<tabla_c_verde.getRowCount(); i++){
+			for(int j =0; j<tabla_c_verde.getColumnCount(); j++){
+				matrizCV[i][j] = tabla_c_verde.getValueAt(i, j).toString();
+			}
+		}
+		
+		return matrizCV;
+	}
+	
+	public Object[][] tabla_gr(){
+		
+		Object[][] matrizGr = new Object[tabla_grupos.getRowCount()][tabla_grupos.getColumnCount()];
+		
+		for(int i =0; i<tabla_grupos.getRowCount(); i++){
+			for(int j =0; j<tabla_grupos.getColumnCount()-1; j++){
+				matrizGr[i][j] = tabla_model_grupos.getValueAt(i, j+1).toString().trim();
+			}
+		}
+		return matrizGr;
+	}
+	
+	public int guardarTrabajo( Object[][] tb_CV, Object[][] tb_Gr){
+		folio_trabajo_realizado=new GuardarTablasModel().Guarda_tabla_trabajos(tb_CV, tb_Gr, Double.valueOf(txtTotalDelCorte.getText()), Double.valueOf(txtTotalRetiroCliente.getText()), Double.valueOf(txtTotalRecibosDeLuz.getText()), Double.valueOf(txtIzacel.getText()), Double.valueOf(txtPlanes.getText()), Double.valueOf(txtPines.getText()), Double.valueOf(txtDepositos.getText()), Double.valueOf(txtCajaVerde.getText())); 
+		return folio_trabajo_realizado;
+	}
+	
+	public void refresh(){
+		
+		while(tabla_grupos.getRowCount()>0){
+			tabla_model_grupos.removeRow(0);
+		}
+			String[][] matriz = new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde(),grupo_corte);
+ 
+			String[] fila = new String[20];
+	        for(int i=0; i<matriz.length; i++){
+	        	
+	        	for(int j=0; j<20; j++){
+	        		fila[j] = matriz[i][j]+"";
+	        	}
+	        		tabla_model_grupos.addRow(fila);
+	        }
 			calcular();
 			calcular_caja_verde();
 			calcular_totales();
-		}
-	};
+	}
 	
 	public void calcular(){
 		
@@ -591,7 +697,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						
 							if(i==tabla_grupos.getRowCount()-1){
 								
-								
 								fila_cacl[0] = estab_aux.toString() ;
 								fila_cacl[1] = df.format(t_efect    )    ; 
 								fila_cacl[2] = df.format(r_prog     )    ; 
@@ -625,7 +730,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						fila_cacl[12] =df.format(luz        )    ; 
 						fila_cacl[13] =df.format(apartados  )    ; 
 						tabla_model_concentrado.addRow(fila_cacl);
-						
 						
 						t_efect   = 0;
 						r_prog    = 0;
@@ -709,12 +813,13 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				fila_cacl[12] =df.format(luz        )    ;
 				fila_cacl[13] =df.format(apartados  )    ;
 				
-				if(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 0).equals("TOTAL CAJA VERDE")){
-					tabla_model_concentrado.removeRow(tabla_concentrado.getRowCount()-1);
+				if(tabla_concentrado.getRowCount() > 0){
+					if(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 0).equals("TOTAL CAJA VERDE")){
+						tabla_model_concentrado.removeRow(tabla_concentrado.getRowCount()-1);
+					}	
 				}
-					tabla_model_concentrado.addRow(fila_cacl);
 				
-				
+				tabla_model_concentrado.addRow(fila_cacl);
 		}
 	}
 	
@@ -739,79 +844,25 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		double total_dif       = 0;
 		double total_corte_cv  = 0;
 		
-		double total_cheques   = 0;
-		double total_vales	   = 0;
+////		double total_cheques   = 0;
+////		double total_vales	   = 0;
 		double total_dolar	   = 0;
 		
-		if(tabla_c_verde.getRowCount()>0){
-			
-				for(int i =0; i<tabla_concentrado.getRowCount()-1; i++){
-					
-						total_cheques+= Double.valueOf(tabla_concentrado.getValueAt(i, 3 ).toString().trim());
-						total_vales	 += Double.valueOf(tabla_concentrado.getValueAt(i, 4 ).toString().trim());
-						total_dolar	 += Double.valueOf(tabla_concentrado.getValueAt(i, 5 ).toString().trim());
-						total_f_sodas+= Double.valueOf(tabla_concentrado.getValueAt(i, 6 ).toString().trim());
-						
-						pin_pad 	 += Double.valueOf(tabla_concentrado.getValueAt(i, 7 ).toString().trim());
-						t_corte 	 += Double.valueOf(tabla_concentrado.getValueAt(i, 8 ).toString().trim());
-						total_dif    += Double.valueOf(tabla_concentrado.getValueAt(i, 9 ).toString().trim());
-						r_clt 		 += Double.valueOf(tabla_concentrado.getValueAt(i, 10).toString().trim());
-						total_ta	 += Double.valueOf(tabla_concentrado.getValueAt(i, 11).toString().trim());
-						luz 		 += Double.valueOf(tabla_concentrado.getValueAt(i, 12).toString().trim());
-						
-						if(tabla_concentrado.getValueAt(i, 0 ).toString().trim().equals("IZACEL")){
-							total_izacel 	+= Double.valueOf(tabla_concentrado.getValueAt(i, 1 ).toString().trim());
-						}
-						
-//						if(tabla_concentrado.getValueAt(i, 0 ).toString().trim().equals("TOTAL CAJA VERDE")){
-//							total_corte_cv 	+= Double.valueOf(tabla_concentrado.getValueAt(i, 8 ).toString().trim());
-//						}
-					}
-				
-				txtTotalDelCorte.setText(		df.format(t_corte-Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 8 ).toString().trim())));
-				txtTotalRetiroCliente.setText(	df.format(r_clt-Double.valueOf  (tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 10).toString().trim())));
-				txtTotalRecibosDeLuz.setText(	df.format(luz));
-				
-				txtIzacel.setText(df.format(total_izacel+total_ta));
-				
-//				pendiente
-				txtPlanes.setText(df.format(0));
-				
-				txtPines.setText(df.format(pin_pad+r_clt));
-				
-				txtDepositos.setText(df.format( (Double.valueOf(txtTotalDelCorte.getText())+
-												 Double.valueOf(txtTotalRetiroCliente.getText()))
-												  -(Double.valueOf(txtIzacel.getText())+
-												   Double.valueOf(txtPlanes.getText())+
-												   Double.valueOf(txtPines.getText()))
-						));
-				
-//				en esta parte se les suma los totales de caja verde
-				total_cheques += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 3 ).toString().trim());
-				total_vales	  += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 4 ).toString().trim());
-				total_dolar	  += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 5 ).toString().trim());
-				total_f_sodas += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 6 ).toString().trim());
-				total_corte_cv = Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 8 ).toString().trim());
+		double total_ta_cv 	  = 0;
+		double total_rluz_cv  = 0;
+		double total_apart_cv = 0;
+		
 
-				total_dif     += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 9 ).toString().trim());
-				
-				txtCajaVerde.setText(df.format(	total_corte_cv
-												-( total_cheques + total_vales + total_dolar + total_f_sodas + (total_dif) )
-											));
-		}else{
-			
+		
 			int filasCV = 0;
 			if(tabla_c_verde.getRowCount()>0){
 				filasCV = 1;
 			}
-			
-			
-//			if(tabla_c_verde.getRowCount()>0){
-				
-					for(int i =0; i<tabla_concentrado.getRowCount()-filasCV; i++){
+
+			for(int i =0; i<tabla_concentrado.getRowCount()-filasCV; i++){
 						
-							total_cheques+= Double.valueOf(tabla_concentrado.getValueAt(i, 3 ).toString().trim());
-							total_vales	 += Double.valueOf(tabla_concentrado.getValueAt(i, 4 ).toString().trim());
+////							total_cheques+= Double.valueOf(tabla_concentrado.getValueAt(i, 3 ).toString().trim());
+////							total_vales	 += Double.valueOf(tabla_concentrado.getValueAt(i, 4 ).toString().trim());
 							total_dolar	 += Double.valueOf(tabla_concentrado.getValueAt(i, 5 ).toString().trim());
 							total_f_sodas+= Double.valueOf(tabla_concentrado.getValueAt(i, 6 ).toString().trim());
 							
@@ -823,7 +874,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 							luz 		 += Double.valueOf(tabla_concentrado.getValueAt(i, 12).toString().trim());
 							
 							if(tabla_concentrado.getValueAt(i, 0 ).toString().trim().equals("IZACEL")){
-								total_izacel 	+= Double.valueOf(tabla_concentrado.getValueAt(i, 1 ).toString().trim());
+//								System.out.println(total_izacel+"  "+total_ta+"  "+tabla_concentrado.getValueAt(i, 1 ).toString().trim());
+								total_izacel 	+= Double.valueOf(tabla_concentrado.getValueAt(i, 8 ).toString().trim());
 							}
 							
 //							if(tabla_concentrado.getValueAt(i, 0 ).toString().trim().equals("TOTAL CAJA VERDE")){
@@ -832,78 +884,89 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						}
 					
 			if(filasCV==1){
-				txtTotalDelCorte.setText(		df.format(t_corte-Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 8 ).toString().trim())));
-				txtTotalRetiroCliente.setText(	df.format(r_clt-Double.valueOf  (tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 10).toString().trim())));
+//				txtTotalDelCorte.setText(		df.format(t_corte-Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 8 ).toString().trim())));
+//				txtTotalRetiroCliente.setText(	df.format(r_clt-Double.valueOf  (tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 10).toString().trim())));
 				
 //				en esta parte se les suma los totales de caja verde
-				total_cheques += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 3 ).toString().trim());
-				total_vales	  += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 4 ).toString().trim());
+////				total_cheques += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 3 ).toString().trim());
+////				total_vales	  += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 4 ).toString().trim());
 				total_dolar	  += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 5 ).toString().trim());
 				total_f_sodas += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 6 ).toString().trim());
-				total_corte_cv = Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 8 ).toString().trim());
+				total_dif     += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 9 ).toString().trim());
+				
+				total_corte_cv 	= Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 8 ).toString().trim());
+				total_ta_cv		= Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 11).toString().trim());
+//				total_rluz_cv 	= Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 12).toString().trim());
+				total_apart_cv 	= Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 13).toString().trim());
+				
 				
 				txtCajaVerde.setText(df.format(	total_corte_cv
-						-( total_cheques + total_vales + total_dolar + total_f_sodas + (total_dif) )
-					));
+												- total_f_sodas
+												- total_dolar
+												+ (total_dif) ));
 				
 			}else{
-				txtTotalDelCorte.setText(		df.format(t_corte));
-				txtTotalRetiroCliente.setText(	df.format(r_clt));
+//				txtTotalDelCorte.setText(		df.format(t_corte));
+//				txtTotalRetiroCliente.setText(	df.format(r_clt));
 				txtCajaVerde.setText("0.00");
 			}
 					
+			txtTotalDelCorte.setText( df.format(t_corte + total_ta_cv + total_rluz_cv + total_apart_cv) );
+			txtTotalRetiroCliente.setText(	df.format(r_clt));
+			
+			txtTotalRecibosDeLuz.setText(	df.format(luz));
 					
-					txtTotalRecibosDeLuz.setText(	df.format(luz));
-					
-					txtIzacel.setText(df.format(total_izacel+total_ta));
+//					System.out.println(total_izacel+"  "+total_ta);
+					txtIzacel.setText( df.format(total_izacel + total_ta + total_ta_cv) );
 					
 //					pendiente
-					txtPlanes.setText(df.format(0));
+//					txtPlanes.setText(df.format(0));
 					
 					txtPines.setText(df.format(pin_pad+r_clt));
 					
-					txtDepositos.setText(df.format( (Double.valueOf(txtTotalDelCorte.getText())+
-													 Double.valueOf(txtTotalRetiroCliente.getText()))
-													  -(Double.valueOf(txtIzacel.getText())+
+					txtDepositos.setText(df.format( Double.valueOf(txtTotalDelCorte.getText())-
+													 pin_pad+
+													  Double.valueOf(txtIzacel.getText())/*+
 													   Double.valueOf(txtPlanes.getText())+
-													   Double.valueOf(txtPines.getText()))
+													   Double.valueOf(txtPines.getText())*/
 							));
-					
-////					en esta parte se les suma los totales de caja verde
-//					total_cheques += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 3 ).toString().trim());
-//					total_vales	  += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 4 ).toString().trim());
-//					total_dolar	  += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 5 ).toString().trim());
-//					total_f_sodas += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 6 ).toString().trim());
-//					total_corte_cv = Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 8 ).toString().trim());
-	//
-//					txtCajaVerde.setText(df.format(	total_corte_cv
-//													-( total_cheques + total_vales + total_dolar + total_f_sodas + (total_dif) )
-//												));
-//			}
-		}
-		
-		
+
 	}
 	
-	ActionListener opFiltro = new ActionListener(){
-		@SuppressWarnings("unchecked")
-		public void actionPerformed(ActionEvent arg0){
-			if(cmbEstablecimiento.getSelectedIndex() != 0){
-				trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimiento.getSelectedItem()+"", 1));
-			}else{
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+	public class Cat_Reporte_De_Trabajo_De_Crotes extends JFrame {
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Cat_Reporte_De_Trabajo_De_Crotes(int folio_trabajo_de_corte) {
+			
+//			String query_corte_caja = "exec sp_Reporte_De_Trabajo_De_Cortes "+folio_trabajo_de_corte;
+//			Statement stmt = null;
+			
+			try {
+				
+//				stmt =  new Connexion().conexion().createStatement();
+////			    ResultSet rs = 
+//			    		stmt.executeQuery(query_corte_caja);
+			    
+				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_Para_Trabajo_De_Cortes.jrxml");
+				
+				Map parametro = new HashMap();
+				parametro.put("folio_trabajo", folio_trabajo_de_corte);
+				
+				JasperPrint print = JasperFillManager.fillReport(report, parametro, new Connexion().conexion());
+				JasperViewer.viewReport(print, false);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 			}
-			calcular();
-			calcular_caja_verde();
-		}
-	};
+			
+		}}
 	
-	public static void main(String[] args) {
-		try{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Trabajos_Cortes().setVisible(true);
-		}catch(Exception e){
-			System.err.println("Error :"+ e.getMessage());
-		}
-	}
+//	public static void main(String[] args) {
+//		try{
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//			new Cat_Trabajos_Cortes("CONCENTRADO 1").setVisible(true);
+//		}catch(Exception e){
+//			System.err.println("Error :"+ e.getMessage());
+//		}
+//	}
 }

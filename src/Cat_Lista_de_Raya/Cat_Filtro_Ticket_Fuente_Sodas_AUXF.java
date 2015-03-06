@@ -67,10 +67,11 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 			
 			JTextField txtFolio = new JTextField();
 			JTextField txtNombre_Completo = new JTextField();
+			JTextField txtPeriodo = new JTextField();
 			
 			JButton btnAgregar = new JButton(new ImageIcon("Iconos/agregar.png"));
 			
-			public Cat_Filtro_Ticket_Fuente_Sodas_AUXF(int folio,String empleado) {
+			public Cat_Filtro_Ticket_Fuente_Sodas_AUXF( int folio, String empleado, int folio_periodo) {
 				
 				this.setModal(true);
 				setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
@@ -92,7 +93,8 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				campo.add(scroll).setBounds(15,43,374,360);
 				
 				campo.add(txtFolio).setBounds(15,20,40,20);
-				campo.add(txtNombre_Completo).setBounds(56,20,280,20);
+				campo.add(txtNombre_Completo).setBounds(56,20,240,20);
+				campo.add(txtPeriodo).setBounds(298,20,40,20);
 				campo.add(btnAgregar).setBounds(340,20,50,20);
 				
 				cont.add(campo);
@@ -100,6 +102,10 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				configuracionTabla();
 				
 				btnAgregar.addActionListener(opAgregar);
+				
+				txtPeriodo.setEditable(false);
+				txtPeriodo.setText(folio_periodo+"");
+				txtPeriodo.setHorizontalAlignment(0);
 				
 				setSize(415,450);
 				setResizable(false);
@@ -207,7 +213,7 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				 			tablaFiltro.getCellEditor().stopCellEditing();
 						}
 					
-					if(new Obj_Filtro_Ticket_Fuente_Sodas().guardar(tabla_guardar(), Integer.parseInt(txtFolio.getText()), txtNombre_Completo.getText())){
+					if(new Obj_Filtro_Ticket_Fuente_Sodas().guardar(tabla_guardar(), Integer.parseInt(txtFolio.getText()), txtNombre_Completo.getText(), Integer.valueOf(txtPeriodo.getText().trim()))){
 
 						//tabla de tickets--------------------------------
 						while(tablaFiltro.getRowCount()>0){
