@@ -22,7 +22,7 @@ import Obj_Principal.Componentes;
 public class Cat_Reportes_De_Cobros_De_Servicios extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio de la Asignacion", 20, "String");
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio de la Asignacion", 500, "String");
 	
 	JButton btncortedelfolio = new JButton("",new ImageIcon("imagen/idea-de-bombilla-icono-3949-32.png"));
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
@@ -83,38 +83,38 @@ public class Cat_Reportes_De_Cobros_De_Servicios extends JFrame{
 							       
 							       reporte = "Obj_Reporte_De_Cobro_De_CFE_Por_Asignacion.jrxml";
 							       
-  								   comando = " declare @asignacion varchar(50), @Fecha varchar(30)	set @asignacion='"+txtFolio.getText().trim().toUpperCase()+"'"+
-	                                         " set @Fecha =(SELECT TOP 1  CONVERT (VARCHAR(20),abonos_clientes.fecha,103) AS Fecha" +
-	                                         "                      FROM  abonos_clientes with(nolock)" +
-	                                         "                    LEFT OUTER JOIN  facremtick with(nolock) ON  facremtick.folio=abonos_clientes.folio_aplicado" +
-	                                         "  		          LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=facremtick.folio_cajero" +
-	                                         "		      WHERE  facremtick.status <> 'C' and facremtick.cond_pago = '4' AND facremtick.folio_cajero=@asignacion" +
-	                                         "                   and abonos_clientes.status='V' and abonos_clientes.fecha>=asignaciones_cajeros.fecha_inicial " +
-	                                         "                   and abonos_clientes.fecha<=asignaciones_cajeros.fecha_liquidacion)" +
-	                                         
-	                                         " SELECT  facremtick.folio as ticket" +
-	                                         "         ,entysal.total as ta" +
-	                                         "  	   ,convert(varchar(20),facremtick.fecha,103)as fecha" +
-	                                         "         ,productos.descripcion as descripcion_producto" +
-	                                         "         ,comentarios_ventas.comentario" +
-	                                         "         ,@asignacion as asignacion" +
-	                                         "  	FROM facremtick with (nolock)" +
-	                                         "  		INNER JOIN entysal on entysal.folio=facremtick.folio" +
-	                                         "          INNER JOIN productos on productos.cod_prod=entysal.cod_prod" +
-	                                         "          LEFT OUTER JOIN comentarios_ventas on comentarios_ventas.folio=facremtick.folio" +
-	                                         "     WHERE (facremtick.folio_cajero = @asignacion and entysal.cod_prod='52384')" +
-	                                         "	UNION all" +
-	                                         " SELECT  facremtick.folio as ticket" +
-	                                         "        ,entysal.total*-1 as ta" +
-	                                         " 	      ,convert(varchar(20),facremtick.fecha,103)as fecha" +
-	                                         "        ,productos.descripcion as descripcion_producto" +
-	                                         "        ,comentarios_ventas.comentario" +
-	                                         "        ,@asignacion as asignacion" +
-	                                         " 	  FROM facremtick   with (nolock)" +
-	                                         "	       INNER JOIN entysal on entysal.folio=facremtick.folio" +
-	                                         "         INNER JOIN productos on productos.cod_prod=entysal.cod_prod" +
-	                                         "         LEFT OUTER JOIN comentarios_ventas on comentarios_ventas.folio=facremtick.folio" +
-	                                         "     WHERE ( (facremtick.status = 'C') AND (facremtick.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52384' ) " ;
+  								   comando ="declare @asignacion varchar(500),@SQLQRY nvarchar(max), @Fecha varchar(30)" +
+  								   		" 	set @asignacion="+ txtFolio.getText().trim()+""+
+  								   		
+  								   		"			SET @SQLQRY='" +
+  								   		"                                SELECT  facremtick.folio as ticket " +
+  								   		"                                            ,entysal.total as ta " +
+  								   		"                                       	   ,convert(varchar(20),facremtick.fecha,103)as fecha                          " +
+  										"                                                  ,productos.descripcion as descripcion_producto                          " +
+  										"                                               ,comentarios_ventas.comentario                                             " +
+  										"                                               ,facremtick.folio_cajero as asignacion                                     " +
+  										"                                        	FROM facremtick with (nolock)                                                   " +
+  										"                                        		INNER JOIN entysal on entysal.folio=facremtick.folio                        " +
+  										"                                            INNER JOIN productos on productos.cod_prod=entysal.cod_prod                    " +
+  										"                                            LEFT OUTER JOIN comentarios_ventas on comentarios_ventas.folio=facremtick.folio" + 
+  										"                                       WHERE (facremtick.folio_cajero in ('''+@asignacion+''') and entysal.cod_prod=''52384'')  " +
+  										"                                  	UNION all                                                                                    " +
+  										"                                   SELECT  facremtick.folio as ticket                                                           " +
+  										"                                          ,entysal.total*-1 as ta                                                             " +
+  										"                                   	      ,convert(varchar(20),facremtick.fecha,103)as fecha                                  " +
+  										"                                          ,productos.descripcion as descripcion_producto                                         " +
+  										"                                           ,comentarios_ventas.comentario                                                        " +
+  										"                                                 ,facremtick.folio_cajero as asignacion                                          " +
+  										"                                          	  FROM facremtick   with (nolock)                                                      " +
+  										"                                         	       INNER JOIN entysal on entysal.folio=facremtick.folio                            " +
+  										"                                                  INNER JOIN productos on productos.cod_prod=entysal.cod_prod                     " +
+  										"                                                  LEFT OUTER JOIN comentarios_ventas on comentarios_ventas.folio=facremtick.folio " +
+  										"                                              WHERE ( (facremtick.status = ''C'') AND                                             " +
+                                        "                                                                                                                                  " +
+  									    "                                                        (facremtick.folio_cajero in('''+@asignacion+'''))                         " +
+  									    "                                                 and entysal.cod_prod=''52384'' )  ;'                                             " +
+                                        "					exec sp_executesql @SQLQRY ";
+
   								           
 								   new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 								   txtFolio.requestFocus();
