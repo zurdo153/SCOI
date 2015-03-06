@@ -9,12 +9,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -22,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -29,12 +37,19 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
@@ -93,9 +108,13 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
 	
-	JButton btnPeriodo = new JButton("Periodo");
-	JButton btnRecorrer = new JButton("Recorrer");
+	JButton btnPeriodo = new JButton("Avanzar",new ImageIcon("imagen/adelante.png"));
+	JButton btnRecorrer = new JButton("Recorrer",new ImageIcon("imagen/atras.png"));
 	JTextField txtPeriodo = new Componentes().text(new JTextField(), "Periodo", 2, "Int");
+	
+	JButton btnReporteGeneral = new JButton("Reporte General");
+	JButton btnReporte = new JButton("Reporte");
+	JTextField txtReporte_Periodo = new Componentes().text(new JTextField(), "Folio de periodo", 2, "Int");
 	
 	@SuppressWarnings({ "rawtypes" })
 	public Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF()	{
@@ -114,9 +133,13 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 		panel.add(txtNombre_Completo).setBounds(85,20,300,20);
 		panel.add(cmbEstablecimientos).setBounds(387,20, 180, 20);
 		
-		panel.add(btnPeriodo).setBounds(572, 20, 90, 20);
-		panel.add(txtPeriodo).setBounds(665, 20, 50, 20);
-		panel.add(btnRecorrer).setBounds(725, 20, 90, 20);
+		panel.add(btnPeriodo).setBounds(572, 20, 100, 20);
+		panel.add(txtPeriodo).setBounds(672, 20, 35, 20);
+		panel.add(btnRecorrer).setBounds(707, 20, 110, 20);
+		
+		panel.add(btnReporteGeneral).setBounds(530, 375, 140, 20);
+		panel.add(txtReporte_Periodo).setBounds(685, 375, 40, 20);
+		panel.add(btnReporte).setBounds(725, 375, 90, 20);
 		
 		agregar(tabla);
 		
@@ -129,11 +152,26 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 		btnPeriodo.addActionListener(opPeriodo);
 		btnRecorrer.addActionListener(opPeriodo);
 		
+		btnReporte.addActionListener(opReporte);
+		btnReporteGeneral.addActionListener(opReporte);
+		
+		//  abre el filtro de busqueda de periodos al presionar la tecla f2
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+	       KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "foco");
+	    
+	    getRootPane().getActionMap().put("foco", new AbstractAction(){
+	        @Override
+	        public void actionPerformed(ActionEvent e)
+	        {
+	        	new Cat_Filtro_De_Periodos().setVisible(true);
+	        }
+	    });
+		
 		txtPeriodo.setEditable(false);
 		txtPeriodo.setHorizontalAlignment(0);
 		txtPeriodo.setText(seleccionarPeriodo()+"");
 		
-		this.setSize(850,415);
+		this.setSize(850,445);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -168,7 +206,7 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	ActionListener opPeriodo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
-			if(Double.valueOf(txtPeriodo.getText())==20 && e.getActionCommand().equals("Periodo")){
+			if(Double.valueOf(txtPeriodo.getText())==20 && e.getActionCommand().equals("Avanzar")){
 				JOptionPane.showMessageDialog(null, "El limite de periodos es 20", "Aviso", JOptionPane.WARNING_MESSAGE);
 				return;
 			}else{
@@ -177,26 +215,65 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 					JOptionPane.showMessageDialog(null, "El limite de periodos es 1", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}else{
-					
-					if(new ActualizarSQL().actualizar_folio_periodo_fs(e.getActionCommand().equals("Periodo")?1:-1)){
-						txtPeriodo.setText(seleccionarPeriodo()+"");
-					}else{
-						JOptionPane.showMessageDialog(null, "No se pudo generar el periodo", "Aviso", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
+					actualizarPeriodo(e.getActionCommand(),0);
 				}
-				
 			}
 		}
 	};
 	
+	public void actualizarPeriodo(String accion, int valor){
+		
+		if(new ActualizarSQL().actualizar_folio_periodo_fs(accion,valor)){
+			txtPeriodo.setText(seleccionarPeriodo()+"");
+		}else{
+			JOptionPane.showMessageDialog(null, "No se pudo generar el periodo", "Aviso", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+	}
+	
+	
 	ActionListener opReporte = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
+			if(e.getActionCommand().equals("Reporte")){
+				
+					if(txtReporte_Periodo.getText().equals("")){
+						JOptionPane.showMessageDialog(null, "Ingrese Un Periodo Para Generar Reporte", "Aviso", JOptionPane.ERROR_MESSAGE);
+						return;
+					}else{
+						if(Integer.valueOf(txtReporte_Periodo.getText())<1 || Integer.valueOf(txtReporte_Periodo.getText())>20){
+							JOptionPane.showMessageDialog(null, "Periodo Fuera De Rango", "Aviso", JOptionPane.ERROR_MESSAGE);
+							return;
+						}else{
+							Cat_Reporte_De_Periodo(Integer.valueOf(txtReporte_Periodo.getText()));
+						}
+					}
+					
+			}else{
+				Cat_Reporte_De_Periodo(0);
+			}
 			
 		}
 	};
 	
+	@SuppressWarnings("rawtypes")
+	public void Cat_Reporte_De_Periodo(int periodo) {
+		
+		try {
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Periodos_Fuente_De_Sodas.jrxml");
+			
+			Map parametro = new HashMap();
+			parametro.put("periodo", periodo);
+			
+			JasperPrint print = JasperFillManager.fillReport(report, parametro, new Connexion().conexion());
+			JasperViewer.viewReport(print, false);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Periodo ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+		}
+		
+	}
+
 	KeyListener opFiltroFolio = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
 			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
@@ -345,6 +422,7 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 		public void keyReleased(KeyEvent e){}
 								
 	};
+	
 	public static void main(String [] args){
 		try{
 			UIManager.setLookAndFeel(
@@ -362,6 +440,173 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 			   method.invoke(clazz,thisClass , false);
 			   } catch (Exception e) 
 			   { }	
+	}
+	
+public class Cat_Filtro_De_Periodos extends JDialog {
+		
+		Container cont = getContentPane();
+		JLayeredPane campo = new JLayeredPane();
+		Connexion con = new Connexion();
+		
+		DefaultTableModel model = new DefaultTableModel(0,2){
+			public boolean isCellEditable(int fila, int columna){
+				if(columna < 0)
+					return true;
+				return false;
+			}
+		};
+		
+		JTable tabla = new JTable(model);
+		@SuppressWarnings("rawtypes")
+		private TableRowSorter trsfiltro;
+		
+		JTextField txtFolio = new Componentes().text(new JTextField(),"Teclee Periodo", 2, "Int2");
+		JTextField txtFecha = new Componentes().text(new JTextField(),"Teclee Fecha De Periodo", 10, "String");
+	    int Catalogo=0;
+		@SuppressWarnings({ "rawtypes" })
+		public Cat_Filtro_De_Periodos()	{
+			
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setTitle("Periodos De Fuentes De Sodas");
+
+			campo.setBorder(BorderFactory.createTitledBorder("Lista De Peridos Por Fecha"));
+			trsfiltro = new TableRowSorter(model); 
+			tabla.setRowSorter(trsfiltro);  
+			campo.add(getPanelTabla()).setBounds(15,42,220,360);
+			campo.add(txtFolio).setBounds(15,20,100,20);
+			campo.add(txtFecha).setBounds(116,20,100,20);
+			
+			llamar_render();
+			
+			agregar(tabla);
+			cont.add(campo);
+			
+			txtFolio.addKeyListener(opFiltroFolio);
+			txtFecha.addKeyListener(opFiltroFecha);
+			
+			this.setSize(255,445);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+		}
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	if(e.getClickCount() == 2){
+		        		int fila = tabla.getSelectedRow();
+		    			int periodo = Integer.parseInt(tabla.getValueAt(fila, 0).toString().trim());
+		    			
+		    			actualizarPeriodo("",periodo);
+		    			dispose();
+		        	}
+		        }
+	        });
+	    }
+		
+		
+		
+		KeyListener opFiltroFolio = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
+			}
+			public void keyTyped(KeyEvent arg0) {
+//				char caracter = arg0.getKeyChar();
+//				if(((caracter < '0') ||
+//					(caracter > '9')) &&
+//				    (caracter != KeyEvent.VK_BACK_SPACE)){
+//					arg0.consume(); 
+//				}	
+			}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+		
+		KeyListener opFiltroFecha = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFecha.getText().toUpperCase().trim(), 1));
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+		
+		public void llamar_render(){
+			
+			tabla.getTableHeader().setReorderingAllowed(false) ;
+	    	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+			tabla.getColumnModel().getColumn(0).setHeaderValue("Periodo");
+			tabla.getColumnModel().getColumn(0).setMaxWidth(100);
+			tabla.getColumnModel().getColumn(0).setMinWidth(100);
+			tabla.getColumnModel().getColumn(1).setHeaderValue("Fecha");
+			tabla.getColumnModel().getColumn(1).setMaxWidth(100);
+			tabla.getColumnModel().getColumn(1).setMinWidth(100);
+			
+			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		}
+		
+	   	private JScrollPane getPanelTabla()	{		
+			
+			Statement s;
+			ResultSet rs;
+			try {
+				s = con.conexion().createStatement();
+				rs = s.executeQuery("select distinct periodo," +
+						"            convert(varchar(20),Fecha_Captura,103)" +
+						" 			 from tb_fuente_sodas_auxf " +
+						"			 where status = 1");
+				
+				String [] fila = new String[2];
+				while (rs.next()) {
+				   fila[0] = rs.getString(1)+"  ";
+				   fila[1] = "   "+rs.getString(2);
+				   
+			  	   model.addRow(fila); 
+				}	
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			 JScrollPane scrol = new JScrollPane(tabla);
+			   
+		    return scrol; 
+		}
+		
+		KeyListener validaCantidad = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e){
+				char caracter = e.getKeyChar();				
+				if(((caracter < '0') ||	
+			    	(caracter > '9')) && 
+			    	(caracter != '.' )){
+			    	e.consume();
+		    	}
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {	
+			}
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+			}	
+		};
+		
+		KeyListener validaNumericoConPunto = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+				
+			    if(((caracter < '0') ||	
+			    	(caracter > '9')) && 
+			    	(caracter != '.')){
+			    	e.consume();
+		    	}
+			}
+			@Override
+			public void keyPressed(KeyEvent e){}
+			@Override
+			public void keyReleased(KeyEvent e){}
+									
+		};
 	}
 }
 

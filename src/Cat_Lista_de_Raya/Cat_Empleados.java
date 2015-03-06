@@ -129,7 +129,7 @@ public class Cat_Empleados extends JFrame{
 	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
 	
 	JTextField txtFolioEmpleado = new Componentes().text( new JTextField(), "Folio de Empleado", 9, "Int");
-	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 20, "String");
+	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 50, "String");
 	JTextField txtApPaterno = new Componentes().text( new JTextField(), "Apellido Paterno", 20, "String");
 	JTextField txtApMaterno = new Componentes().text( new JTextField(), "Apellido Materno", 20, "String");
 	JTextField txtFechaActualizacion = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));

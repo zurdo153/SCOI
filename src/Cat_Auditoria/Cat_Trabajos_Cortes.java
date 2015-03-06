@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -584,7 +583,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			}
 			
 			if(guardarTrabajo( tabla_cv(), tabla_gr())>0){
-				new Cat_Reporte_De_Trabajo_De_Crotes(folio_trabajo_realizado);
+				Cat_Reporte_De_Trabajo_De_Crotes(folio_trabajo_realizado);
 			}else{
 				JOptionPane.showMessageDialog(null, "El trabajo no pudo ser guardado","Aviso",JOptionPane.WARNING_MESSAGE);
 				return;
@@ -933,10 +932,9 @@ public class Cat_Trabajos_Cortes extends JFrame{
 
 	}
 	
-	public class Cat_Reporte_De_Trabajo_De_Crotes extends JFrame {
 
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public Cat_Reporte_De_Trabajo_De_Crotes(int folio_trabajo_de_corte) {
+		public void Cat_Reporte_De_Trabajo_De_Crotes(int folio_trabajo_de_corte) {
 			
 //			String query_corte_caja = "exec sp_Reporte_De_Trabajo_De_Cortes "+folio_trabajo_de_corte;
 //			Statement stmt = null;
@@ -959,7 +957,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 			}
 			
-		}}
+		}
 	
 //	public static void main(String[] args) {
 //		try{
