@@ -43,7 +43,7 @@ import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
+public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 
 	int folio_emp = 0; 	
 	String empleado = ""; 	
@@ -148,7 +148,7 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	
-	public Cat_Consideracion_De_Impuntualidad_Checador(){
+	public Cat_Consideraciones_De_Impuntualidad_En_Asistencia(){
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/check-vcard-icone-9025-32.png"));
@@ -575,11 +575,11 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 		                     }
 		                     dispose();
 							
-							JOptionPane.showMessageDialog(null, "Consideracion guardada correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							JOptionPane.showMessageDialog(null, "Consideracion Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							return;
 						}else{
 							dispose();
-							JOptionPane.showMessageDialog(null, "No se pudo ingresar la Consideracion", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				  			JOptionPane.showMessageDialog(null,"No Se Pudo Guardar La Consideracion","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 							return;
 						}
 				}else{
@@ -593,7 +593,7 @@ public class Cat_Consideracion_De_Impuntualidad_Checador extends JFrame {
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Consideracion_De_Impuntualidad_Checador().setVisible(true);
+			new Cat_Consideraciones_De_Impuntualidad_En_Asistencia().setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}

@@ -296,8 +296,7 @@ public class Cat_Checador extends JFrame {
 		                                            			 
 			                                            			 lblSemaforoRojo.setEnabled(true);
 			                                                         lblSemaforoVerde.setEnabled(false);
-		                                                         
-		                                                			 JOptionPane.showMessageDialog(null, "La clave no corresponde","Aviso",JOptionPane.WARNING_MESSAGE);
+				                    				     		     JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador <>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 		                                                			 txtClaveReal.setText("");
 		                                                			 txtClaveReal.requestFocus();
 		                                                           return;
@@ -337,8 +336,7 @@ public class Cat_Checador extends JFrame {
 				                                          			 
 					                                            			 lblSemaforoRojo.setEnabled(true);
 					                                                         lblSemaforoVerde.setEnabled(false);
-				                                                       
-				                                              			 JOptionPane.showMessageDialog(null, "La clave no corresponde","Aviso",JOptionPane.WARNING_MESSAGE);
+					                    				     		     JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				                                              			 txtClaveReal.setText("");
 				                                              			 txtClaveReal.requestFocus();
 				                                                         return;
@@ -350,8 +348,7 @@ public class Cat_Checador extends JFrame {
 								}else{
 									lblSemaforoRojo.setEnabled(true);
 									lblSemaforoVerde.setEnabled(false);
-					                
-			                         JOptionPane.showMessageDialog(null, "El empleado no se encontro", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				     		  		 JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador > ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			                         txtClaveReal.setText("");
 			                         txtClaveReal.requestFocus();
 			                         return;
@@ -359,7 +356,7 @@ public class Cat_Checador extends JFrame {
 					 	}else{
 	                   		 lblSemaforoRojo.setEnabled(true);
                            lblSemaforoVerde.setEnabled(false);
-      		  			  JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+      		  			  JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador >>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
               			 txtClaveReal.setText("");
               			 txtClaveReal.requestFocus();
                          return;
@@ -368,8 +365,8 @@ public class Cat_Checador extends JFrame {
 				 		lblSemaforoRojo.setEnabled(true);
 						 lblSemaforoVerde.setEnabled(false);
 			                
-                        JOptionPane.showMessageDialog(null, "La clave es incorrecta", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-                        txtClaveReal.setText("");
+     		  		 JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador >>>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+     		  		    txtClaveReal.setText("");
                         txtClaveReal.requestFocus();
                         return;
 			 		}

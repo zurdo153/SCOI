@@ -45,7 +45,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	public JTextField txtTallaProducto = new Componentes().text(new JTextField(),"Busqueda Por Talla Del Producto",300, "String");
 
 	Object[][] Matriz_Productos ;
-	DefaultTableModel Tabla_Productos= new DefaultTableModel(null,new String[]{"Codigo", "Descripcion","Familia","Talla"}
+	DefaultTableModel Tabla_Productos= new DefaultTableModel(null,new String[]{"Codigo", "Descripcion","Clase Producto","Talla"}
 			){
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -236,8 +236,8 @@ Object[] fila = new Object[4];
 	
    	public Object[][] llenarTablaProductos(){
    		
-		String todos = "select productos.cod_prod,productos.descripcion,familias.nombre as familia,tallas.nombre as talla" +
-				"  from productos with (nolock) inner join familias on familias.familia= productos.familia inner join tallas on tallas.talla=productos.talla" +
+		String todos = "select productos.cod_prod,productos.descripcion,case when clases_productos.nombre is null then '' else clases_productos.nombre end as clase_producto,tallas.nombre as talla" +
+				"  from productos with (nolock) left outer join clases_productos on clases_productos.clase_producto= productos.clase_producto inner join tallas on tallas.talla=productos.talla" +
 				"     order by descripcion ";
 
 		Statement s;
