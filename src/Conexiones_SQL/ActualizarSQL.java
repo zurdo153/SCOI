@@ -3054,9 +3054,17 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean actualizar_folio_periodo_fs(int valor){
-		String query = "update tb_folios set folio = (select folio+"+(valor)+"from tb_folios where transaccion = 'Periodos Captura Fuente de Sodas') where transaccion = 'Periodos Captura Fuente de Sodas'";
-
+	public boolean actualizar_folio_periodo_fs(String accion,int valor){
+		String query = "";
+		if(accion.equals("")){
+			query = "update tb_folios set folio = "+valor+" where transaccion = 'Periodos Captura Fuente de Sodas'";
+		}else{
+			if(accion.equals("Avanzar")){
+				query = "update tb_folios set folio = (select folio+1 from tb_folios where transaccion = 'Periodos Captura Fuente de Sodas') where transaccion = 'Periodos Captura Fuente de Sodas'";
+			}else{
+				query = "update tb_folios set folio = (select folio-1 from tb_folios where transaccion = 'Periodos Captura Fuente de Sodas') where transaccion = 'Periodos Captura Fuente de Sodas'";
+			}
+		}
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
