@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import com.toedter.calendar.JDateChooser;
+
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
 
@@ -22,8 +24,12 @@ import Obj_Principal.Componentes;
 public class Cat_Reportes_De_Cobros_De_Servicios extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
+	
+	JDateChooser fhInico = new JDateChooser();
+	JDateChooser fhFin = new JDateChooser();
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio de la Asignacion", 500, "String");
 	
+	JButton btncortePorFecha = new JButton("",new ImageIcon("imagen/Calendar.png"));
 	JButton btncortedelfolio = new JButton("",new ImageIcon("imagen/idea-de-bombilla-icono-3949-32.png"));
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 	
@@ -32,7 +38,10 @@ public class Cat_Reportes_De_Cobros_De_Servicios extends JFrame{
 	
 	public Cat_Reportes_De_Cobros_De_Servicios(){
 		
-		setSize(305,200);
+		fhInico.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
+		fhFin.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
+		
+		setSize(305,250);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -40,23 +49,38 @@ public class Cat_Reportes_De_Cobros_De_Servicios extends JFrame{
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Service-icon.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleciona El Tipo De Reporte"));
 	
+		btncortePorFecha.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Cobros De CFE Por Fecha</p></CENTER></FONT>" +
+				"</html>");
+		
 		btncortedelfolio.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
 				"		<CENTER><p>Reporte De Cobros De CFE Por Asignacion</p></CENTER></FONT>" +
 				"</html>");
 		
-		panel.add(btncortedelfolio).setBounds(20,25,260,40);
+		panel.add(btncortePorFecha).setBounds(20,25,260,40);
+		panel.add(btncortedelfolio).setBounds(20,65,260,40);
 		panel.add(new JLabel("Folio Asignacion:")).setBounds(20,80,200,20);		
-		panel.add(txtFolio).setBounds(100,80,175,20);
-		panel.add(btngenerar).setBounds(100,120,120,30);
+		
+		panel.add(new JLabel("De:")).setBounds(20,120,30,20);
+		panel.add(fhInico).setBounds(50,120,90,20);
+		panel.add(new JLabel("A:")).setBounds(160,120,30,20);
+		panel.add(fhFin).setBounds(190,120,90,20);
+		
+		panel.add(txtFolio).setBounds(20,150,260,20);
+		panel.add(btngenerar).setBounds(100,180,120,30);
 	    txtFolio.setEditable(false);
 	    btngenerar.setEnabled(false);
 		cont.add(panel);
 		btngenerar.addActionListener(opGenerar);
+		btncortePorFecha.addActionListener(opReporte_Por_Folio);
 		btncortedelfolio.addActionListener(opReporte_Por_Folio);
+		
 	}
 	
 	ActionListener opReporte_Por_Folio = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
+			
+			
 			txtFolio.setEditable(true);
 			btngenerar.setEnabled(true);
 			tipo_Reporte=1;
