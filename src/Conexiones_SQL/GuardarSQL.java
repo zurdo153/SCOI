@@ -3664,4 +3664,48 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
+	public boolean Guardar_Sugerido_Sistema(Object[][] sugeridos){
+		String query = "exec ssdsdsds ?,?,?,?";//crear procedimiento
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			for(int i=0; i<sugeridos.length; i++){
+					
+			}
+				
+			
+//			pstmt.setInt(1, tpc.getFolio());
+//			pstmt.setString(2, tpc.getNombre_Pc().toUpperCase().trim());
+//			pstmt.setString(3, tpc.getEstablecimiento().toUpperCase().trim());
+//			pstmt.setInt(4, tpc.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sugerido_Sistema ] Insert   \nSQLException: sp_isert_fsfsdfsdf "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sugerido_Sistema ] Insert  \nSQLException: sp_isert_fsfsdfsdf "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nombre_PC ] Insert  SQLException: insert_etapa "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
 } 

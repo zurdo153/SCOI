@@ -206,17 +206,24 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	ActionListener opPeriodo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
-			if(Double.valueOf(txtPeriodo.getText())==20 && e.getActionCommand().equals("Avanzar")){
-				JOptionPane.showMessageDialog(null, "El limite de periodos es 20", "Aviso", JOptionPane.WARNING_MESSAGE);
-				return;
-			}else{
+			try {
+				int periodo = new BuscarSQL().periodos();
 				
-				if(Double.valueOf(txtPeriodo.getText())==1 && e.getActionCommand().equals("Recorrer")){
-					JOptionPane.showMessageDialog(null, "El limite de periodos es 1", "Aviso", JOptionPane.WARNING_MESSAGE);
+				if(Double.valueOf(txtPeriodo.getText())==periodo && e.getActionCommand().equals("Avanzar")){
+					JOptionPane.showMessageDialog(null, "El limite de periodos es ("+periodo+")", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}else{
-					actualizarPeriodo(e.getActionCommand(),0);
+					
+					if(Double.valueOf(txtPeriodo.getText())==1 && e.getActionCommand().equals("Recorrer")){
+						JOptionPane.showMessageDialog(null, "El limite de periodos es (1)", "Aviso", JOptionPane.WARNING_MESSAGE);
+						return;
+					}else{
+						actualizarPeriodo(e.getActionCommand(),0);
+					}
 				}
+				
+			} catch (SQLException e1) {
+				e1.printStackTrace();
 			}
 		}
 	};

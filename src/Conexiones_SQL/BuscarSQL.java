@@ -6075,4 +6075,58 @@ public class BuscarSQL {
 		return nombrepc;
 	}
 	
+	public int periodos() throws SQLException{
+		int periodos = 0;
+
+		String query = "select periodos_fuente_sodas as periodos from tb_configuracion_sistema";
+		
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				periodos = rs.getInt("periodos");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return periodos;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return periodos;
+	}
+	
+	public String cadenaDeAsignacion(String fhIn,String fhFin) throws SQLException{
+		String cadena = "";
+
+		String query = "select asignacion as asignaciones from tb_relacion_por_pagos_de_servicios " +
+				"		where concepto = 'LUZ' " +
+				"		and fecha >= convert(smalldatetime,'"+fhIn+"',103) " +
+				"		and fecha <= convert(smalldatetime,'"+fhFin+"',103)";
+		
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				cadena = cadena+"'"+rs.getString("asignaciones")+"'','";
+			}
+			cadena= cadena.substring(0,cadena.length()-3);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return cadena;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return cadena;
+	}
+	
 }
