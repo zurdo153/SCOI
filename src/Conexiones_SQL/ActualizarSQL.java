@@ -762,13 +762,14 @@ public class ActualizarSQL {
 	}
 	
 	public boolean eliminarListaFuenteSodas_auxf(int id){
-		String query = "update tb_fuente_sodas_auxf set status=? where folio="+id;
+		
+		String query = "sp_update_fuente_de_sodas_auxf "+id;
+		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, "0");
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
