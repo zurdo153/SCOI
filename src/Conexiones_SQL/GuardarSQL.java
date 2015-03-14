@@ -3664,25 +3664,71 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
-	public boolean Guardar_Sugerido_Sistema(Object[][] sugeridos){
-		String query = "exec ssdsdsds ?,?,?,?";//crear procedimiento
+	public boolean Guardar_Sugerido_Sistema(Object[][] matriz1, Object[][] matriz2){
+		int folio_usuario = usuario.getFolio();
+		
+		String query = "exec sp_insert_tb_sugeridos_cedis ?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
+		
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			
-			for(int i=0; i<sugeridos.length; i++){
-					
-			}
+			for(int i=0; i<matriz1.length; i++){
 				
+//				System.out.print(matriz1[i][0 ].toString().trim()+"  ");
+//				System.out.print(matriz1[i][1 ].toString().trim()+"  ");
+//				System.out.print(matriz1[i][2 ].toString().trim()+"  ");
+//				System.out.print(matriz1[i][3 ].toString().trim()+"  ");
+//				System.out.print(matriz1[i][4 ].toString().trim()+"  ");
+//				System.out.print(matriz1[i][5 ].toString().trim()+"  ");
+//				System.out.print(matriz1[i][6 ].toString().trim()+"  ");
+//				System.out.println(matriz1[i][7 ].toString().trim());
+				
+				
+					pstmt.setString(1 , matriz1[i][0 ].toString().trim());
+					pstmt.setString(2 , matriz1[i][1 ].toString().trim());
+					pstmt.setDouble(3 , Double.valueOf(matriz1[i][2 ].toString().trim()));
+					pstmt.setDouble(4 , Double.valueOf(matriz1[i][3 ].toString().trim()));
+					pstmt.setDouble(5 , Double.valueOf(matriz1[i][4 ].toString().trim()));
+					pstmt.setInt   (6 , matriz1[i][5 ].toString().trim().equals("false")?0:1);
+					pstmt.setDouble(7 , matriz1[i][6 ].toString().trim().equals("")?0:Double.valueOf(matriz1[i][6 ].toString().trim()));
+					pstmt.setString(8 , matriz1[i][7 ].toString().trim());
+					                                 
+					pstmt.setInt(9 , folio_usuario);
+					pstmt.setInt(10, 1);			//pedido       
+					
+					pstmt.executeUpdate();
+			}
 			
-//			pstmt.setInt(1, tpc.getFolio());
-//			pstmt.setString(2, tpc.getNombre_Pc().toUpperCase().trim());
-//			pstmt.setString(3, tpc.getEstablecimiento().toUpperCase().trim());
-//			pstmt.setInt(4, tpc.getStatus());
+			for(int i=0; i<matriz2.length; i++){
+				
+//				System.out.print(matriz2[i][0 ].toString().trim()+"  ");
+//				System.out.print(matriz2[i][1 ].toString().trim()+"  ");
+//				System.out.print(matriz2[i][2 ].toString().trim()+"  ");
+//				System.out.print(matriz2[i][3 ].toString().trim()+"  ");
+//				System.out.print(matriz2[i][4 ].toString().trim()+"  ");
+//				System.out.print(matriz2[i][5 ].toString().trim()+"  ");
+//				System.out.print(matriz2[i][6 ].toString().trim()+"  ");
+//				System.out.println(matriz2[i][7 ].toString().trim());
+				
+				
+					pstmt.setString(1 , matriz2[i][0 ].toString().trim());                                                                
+					pstmt.setString(2 , matriz2[i][1 ].toString().trim());                                                                
+					pstmt.setDouble(3 , Double.valueOf(matriz2[i][2 ].toString().trim()));                                                
+					pstmt.setDouble(4 , Double.valueOf(matriz2[i][3 ].toString().trim()));                                                
+					pstmt.setDouble(5 , Double.valueOf(matriz2[i][4 ].toString().trim()));                                                
+					pstmt.setInt   (6 , matriz2[i][5 ].toString().trim().equals("false")?0:1);                                            
+					pstmt.setDouble(7 , matriz2[i][6 ].toString().trim().equals("")?0:Double.valueOf(matriz2[i][6 ].toString().trim()));  
+					pstmt.setString(8 , matriz2[i][7 ].toString().trim());                                                                
+					                                 
+					pstmt.setInt(9 , folio_usuario);
+					pstmt.setInt(10, 0);			//negado       
+					
+					pstmt.executeUpdate();
+			}
 			
-			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());

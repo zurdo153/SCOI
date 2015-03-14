@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Periodos_Fuente_De_Sodas" language="groovy" pageWidth="611" pageHeight="791" columnWidth="571" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22dc77ce-4dce-4801-8ec0-c7a01733f232">
-	<property name="ireport.zoom" value="1.9487171000000025"/>
-	<property name="ireport.x" value="440"/>
+	<property name="ireport.zoom" value="1.3310000000000015"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
@@ -13,17 +13,19 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
-	<parameter name="periodo" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="periodo" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[if($P{periodo})=0
 begin
 SELECT folio_empleado as folio_empleado,nombre_completo as empleado,ticket as ticket,cantidad  as cantidad,fecha as fecha_ticket,convert(varchar(20),Fecha_Captura,103) as fecha_captura
-,periodo as periodo FROM tb_fuente_sodas_auxf where status_ticket = 0 and status = 1 and periodo > $P{periodo} ORDER BY periodo,nombre_completo ASC
+,periodo as periodo FROM tb_fuente_sodas_auxf where status_ticket = 0 and status = 1 and periodo > $P{periodo} ORDER BY periodo ASC,nombre_completo ASC
 end
 else
 begin
 SELECT folio_empleado as folio_empleado,nombre_completo as empleado,ticket as ticket,cantidad  as cantidad,fecha as fecha_ticket,convert(varchar(20),Fecha_Captura,103) as fecha_captura
-,periodo as periodo FROM tb_fuente_sodas_auxf where status_ticket = 0 and status = 1 and periodo = $P{periodo} ORDER BY periodo,nombre_completo ASC
+,periodo as periodo FROM tb_fuente_sodas_auxf where status_ticket = 0 and status = 1 and periodo = $P{periodo} ORDER BY periodo ASC,nombre_completo ASC
 end]]>
 	</queryString>
 	<field name="folio_empleado" class="java.lang.Integer"/>
@@ -33,11 +35,17 @@ end]]>
 	<field name="fecha_ticket" class="java.lang.String"/>
 	<field name="fecha_captura" class="java.lang.String"/>
 	<field name="periodo" class="java.lang.Integer"/>
-	<variable name="total_de_periodo" class="java.math.BigDecimal" resetType="Group" resetGroup="totales por periodo" calculation="Sum">
+	<variable name="total_de_periodo" class="java.math.BigDecimal" resetType="Group" resetGroup="Grupo_Periodo" calculation="Sum">
 		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
 	</variable>
-	<group name="Group1">
-		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/15)]]></groupExpression>
+	<group name="totales por periodo">
+		<groupExpression><![CDATA[$F{periodo}]]></groupExpression>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="Grupo_Periodo" keepTogether="true">
+		<groupExpression><![CDATA[$F{periodo}]]></groupExpression>
 		<groupHeader>
 			<band height="21">
 				<frame>
@@ -94,26 +102,20 @@ end]]>
 				</frame>
 			</band>
 		</groupHeader>
-	</group>
-	<group name="Group2">
-		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
-	</group>
-	<group name="totales por periodo">
-		<groupExpression><![CDATA[$F{periodo}]]></groupExpression>
 		<groupFooter>
-			<band height="13">
+			<band height="18">
 				<rectangle radius="10">
-					<reportElement uuid="0fa02fd7-8474-45bb-a4ec-5c180b894fce" x="179" y="0" width="148" height="13"/>
+					<reportElement uuid="0fa02fd7-8474-45bb-a4ec-5c180b894fce" x="179" y="5" width="148" height="13"/>
 				</rectangle>
 				<textField pattern="###0.00;-###0.00">
-					<reportElement uuid="c8ffb8da-c953-4575-959a-b733f1f305a4" x="275" y="-1" width="46" height="13"/>
+					<reportElement uuid="c8ffb8da-c953-4575-959a-b733f1f305a4" x="275" y="4" width="46" height="13"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{total_de_periodo}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="be702985-9164-4928-93bf-ed8c9099d8bf" x="179" y="-1" width="96" height="13" forecolor="#000000"/>
+					<reportElement uuid="be702985-9164-4928-93bf-ed8c9099d8bf" x="179" y="4" width="96" height="13" forecolor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
@@ -150,7 +152,7 @@ end]]>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="5" splitType="Stretch"/>
+		<band height="3" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
 		<band height="12" splitType="Stretch">
