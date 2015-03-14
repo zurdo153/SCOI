@@ -79,7 +79,7 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio De Corte", 15, "String");
 	JTextField txtNombre = new Componentes().text(new JTextField(), "Nombre", 15, "String");
 	
-	JButton btnGenerar = new JButton("Generar");
+	JButton btnGenerar = new JButton("Actualizar",new ImageIcon("Imagen/Actualizar.png"));
 	
 	
 	@SuppressWarnings("rawtypes")
@@ -175,7 +175,7 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		this.panel.add(JLBdepartamento).setBounds(300,55,20,20);
 		this.panel.add(cmbDepartamento).setBounds(320,55,170,20);
 		
-		this.panel.add(btnGenerar).setBounds(500,85,100,20);
+		this.panel.add(btnGenerar).setBounds(900,85,100,20);
 		panel.add(txtFolio).setBounds(10,90,40,20);
 		panel.add(txtNombre).setBounds(50,90,270,20);
 		panel.add(scroll).setBounds(10,110,990,590);
