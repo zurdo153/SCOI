@@ -48,7 +48,7 @@ import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 /** CTRL EN CAT_ROOT_LISTA_RAYA PARA AGREGAR BOTON **/
 public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	 boolean acceso = null != null;
-		
+	 int cantidad_sueldos_mod =0;	
 	private DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Revision_De_Lista_Raya().get_tabla_model(),
 		new String[]{"","Folio", "Nombre Completo", "Establecimiento", "Sueldo",
 			"Bono", "P.Saldo ini", "Desc.Prest", "P.Saldo Fin", "F.Sodas",
@@ -134,7 +134,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 	private JTable tabla = new JTable(tabla_model);
 	private JScrollPane scroll_tabla = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+	JLabel JLBcambios_sueldo= new JLabel();	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(tabla_model); 
 	
@@ -155,6 +155,13 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		panel.add(new JLabel("Totales Nomina y Cheques:")).setBounds(870,40,135,20);
 		panel.add(JLBTotales_Nomina).setBounds(1000,40,20,20);
 		
+		
+		
+		panel.add(JLBcambios_sueldo).setBounds(1050,40,350,20);
+//		if(cantidad_sueldos_mod>0){ 
+//		JLBcambios_sueldo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>Sueldos Pendientes de Auditoria Por Autorizar: "+cantidad_sueldos_mod+"</p></b></CENTER></FONT></html>");
+//        btn_guardar.setEnabled(false);
+//		}
 		
 		this.init_tabla();
 		this.init_component();
@@ -184,6 +191,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
 		busqueda_Observaciones_auditoria();
+		
+		
 		
 //      asigna el foco al JTextField 
         this.addWindowListener(new WindowAdapter() {
@@ -268,7 +277,52 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 	}
 	
+	public int  Checar_Cambios_De_Sueldo_Pendientes_De_Autorizar() {
+		Connexion con = new Connexion();
+		String query = "	if (select validacion_sueldo_auditoria from tb_configuracion_sistema)='true' "+
+		               "        select count(folio_empleado) from tb_historico_sueldos_empleados where status='N'" +
+		               " 	else select 0  ";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				cantidad_sueldos_mod =(rs.getInt(1));
+				
+				if(cantidad_sueldos_mod>0){ 
+					JLBcambios_sueldo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=RED><CENTER><b><p>Sueldos Pendientes de Auditoria Por Autorizar: "+cantidad_sueldos_mod+"</p></b></CENTER></FONT></html>");
+			        btn_guardar.setEnabled(false);
+			        btn_imprimir.setEnabled(false);
+					}
+				
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en Cat_Autorizacion_De_Cambio_De_Sueldo_O_Bono en la funcion Checar_Activo()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return cantidad_sueldos_mod ;
+		}
+		finally{
+			 if (stmt != null) { try {
+				stmt.close();
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Error en Cat_Autorizacion_De_Cambio_De_Sueldo_O_Bono en la funcion Checar_Activo()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				e.printStackTrace();
+			} }
+		}
+		return cantidad_sueldos_mod;
+			}
+	
+  
+		
+		
+		
 	public void cargar_autorizaciones(){
+		
+
 		
 		if((new Obj_Fue_Sodas_DH().busquedaautoizacionfs().isStatus_autorizacion()))
 		  {btn_imprimir.setEnabled(false);
@@ -287,6 +341,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	    if(new Obj_Totales_De_Cheque().buscar_autorizacion().isAutorizar()){
 	    	JLBTotales_Nomina.setEnabled(true);
 		    }else{JLBTotales_Nomina.setEnabled(false);}
+	    
+	    Checar_Cambios_De_Sueldo_Pendientes_De_Autorizar();
 		};
 
 		

@@ -3108,7 +3108,6 @@ public class ActualizarSQL {
 			pstmt.setString(2, pcnombre.getEstablecimiento().toUpperCase().trim());
 			pstmt.setInt(3, pcnombre.getStatus());
 			
-			System.out.println(pcnombre.getNombre_Pc().toUpperCase().trim());
 			
 			
 			pstmt.executeUpdate();
@@ -3123,6 +3122,67 @@ public class ActualizarSQL {
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ PCAsignadasaEstab ] update  SQLException: sp_actualizar_pc_asignada_a_establecimiento_para_checador "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Aceptar_Negar_Sueldo_o_Bono(Object[][] guardarAN_sueldo_bono){
+		int  folio_usuario= usuario.getFolio();
+		String query = " exec sp_actualizar_negacion_o_aceptacion_del_sueldo_y_bono ?,?,?,?,?,?";
+		
+		int i=0;
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+
+			for(i=0;i<guardarAN_sueldo_bono.length;i++){
+				if(guardarAN_sueldo_bono[i][5].toString().equals("true")){ 
+			
+					System.out.println(guardarAN_sueldo_bono[i][4].toString().trim());
+					
+					
+			pstmt.setInt(1, Integer.valueOf(guardarAN_sueldo_bono[i][0].toString()));
+			pstmt.setFloat(2, Float.valueOf(guardarAN_sueldo_bono[i][1].toString()));
+			pstmt.setFloat(3, Float.valueOf(guardarAN_sueldo_bono[i][2].toString()));
+			pstmt.setString(4, String.valueOf(guardarAN_sueldo_bono[i][3].toString().trim()));
+			pstmt.setInt(5, Integer.valueOf(guardarAN_sueldo_bono[i][4].toString().trim()));
+			pstmt.setInt(6, folio_usuario);
+			
+			
+				pstmt.executeUpdate();	
+				}
+			}
+			
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Aceptar_Negar_Sueldo_o_Bono ] update  SQLException:\n Procedimiento Almacenado: "+query+
+							"\n Valores Enviados Que Provocaron El Error: " +
+							"\nValor 1:"+guardarAN_sueldo_bono[i][0] +
+							"\nValor 2: "+guardarAN_sueldo_bono[i][1] +
+							"\nValor 3: "+guardarAN_sueldo_bono[i][2] +
+							"\nValor 4: "+guardarAN_sueldo_bono[i][3] +
+							"\nValor 5: "+guardarAN_sueldo_bono[i][4] +
+							"\n Error Mostrado SQL: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Aceptar_Negar_Sueldo_o_Bono ] update  SQLException:\n sp_actualizar_negacion_o_aceptacion_del_sueldo_y_bono "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
