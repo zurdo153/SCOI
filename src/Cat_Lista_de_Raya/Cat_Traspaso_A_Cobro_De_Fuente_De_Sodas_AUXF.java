@@ -242,13 +242,16 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	ActionListener opReporte = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
-			if(e.getActionCommand().equals("Reporte")){
+			try {
+				int periodo = new BuscarSQL().periodos();
 				
+				if(e.getActionCommand().equals("Reporte")){
+					
 					if(txtReporte_Periodo.getText().equals("")){
 						JOptionPane.showMessageDialog(null, "Ingrese Un Periodo Para Generar Reporte", "Aviso", JOptionPane.ERROR_MESSAGE);
 						return;
 					}else{
-						if(Integer.valueOf(txtReporte_Periodo.getText())<1 || Integer.valueOf(txtReporte_Periodo.getText())>20){
+						if(Integer.valueOf(txtReporte_Periodo.getText())<1 || Integer.valueOf(txtReporte_Periodo.getText())>periodo){
 							JOptionPane.showMessageDialog(null, "Periodo Fuera De Rango", "Aviso", JOptionPane.ERROR_MESSAGE);
 							return;
 						}else{
@@ -256,8 +259,13 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 						}
 					}
 					
-			}else{
-				Cat_Reporte_De_Periodo(0);
+				}else{
+					Cat_Reporte_De_Periodo(0);
+				}
+				
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			
 		}
