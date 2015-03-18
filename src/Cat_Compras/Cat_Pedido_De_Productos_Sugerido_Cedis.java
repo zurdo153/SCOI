@@ -31,7 +31,7 @@ import Obj_Renders.tablaRenderer;
 
 
 @SuppressWarnings("serial")
-public class Cat_Sugerido_Sistema extends JFrame{
+public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -143,7 +143,7 @@ public class Cat_Sugerido_Sistema extends JFrame{
 	private TableRowSorter trsfiltro;
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Sugerido_Sistema(){
+	public Cat_Pedido_De_Productos_Sugerido_Cedis(){
 		this.setTitle("Sugerido Cedis");
 		this.panel.setBorder(BorderFactory.createTitledBorder( "Captura De Sugerido Cedis"));
 		
@@ -469,7 +469,7 @@ public class Cat_Sugerido_Sistema extends JFrame{
 	public static void main(String [] arg){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Sugerido_Sistema().setVisible(true);
+			new Cat_Pedido_De_Productos_Sugerido_Cedis().setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}

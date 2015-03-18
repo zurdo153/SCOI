@@ -164,7 +164,9 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 
 			Checar_Activo();
 			panel.add(JLBactivo).setBounds(680,285,350,20);
-			JLBactivo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>Esta Funcion Se Encuentra:"+Activo+"</p></b></CENTER></FONT></html>");
+			if(Activo.equals("Activada"))
+		        {JLBactivo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>Esta Funcion Se Encuentra: "+Activo+"</p></b></CENTER></FONT></html>");}
+		    else{JLBactivo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=RED><CENTER><b><p>Esta Funcion Se Encuentra: "+Activo+"</p></b></CENTER></FONT></html>");}
 			
 			agregar(tabla);
 			cont.add(panel);

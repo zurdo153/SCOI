@@ -183,6 +183,7 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 		}
 	};
 	
+	
 		public void Reporte_De_Fuente_De_Sodas() {
 		 comando = "exec sp_Reporte_De_Fuente_De_Sodas_De_Lista_De_Raya_Actual " ;
 		 reporte="Obj_Reporte_De_Fuente_De_Sodas.jrxml";
