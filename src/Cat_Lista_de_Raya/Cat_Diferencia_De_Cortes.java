@@ -30,6 +30,7 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Diferencia_De_Cortes extends JFrame {
@@ -138,39 +139,16 @@ public class Cat_Diferencia_De_Cortes extends JFrame {
 	};
  
 	private JScrollPane getPanelTabla()	{		
-		new Connexion();
+//		new Connexion();
 
-		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-		tcr.setHorizontalAlignment(SwingConstants.CENTER);
-		DefaultTableCellRenderer tcrR = new DefaultTableCellRenderer();
-		tcrR.setHorizontalAlignment(SwingConstants.RIGHT);
-		DefaultTableCellRenderer tcrL = new DefaultTableCellRenderer();
-		tcrL.setHorizontalAlignment(SwingConstants.LEFT);
-		
-		int a=2;
-		tabla.getColumnModel().getColumn(0).setCellRenderer(tcrR);
-		tabla.getColumnModel().getColumn(a).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-		tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-		
-		TableCellRenderer render = new TableCellRenderer() { 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-		
-				if(row%2==0){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-			return lbl; 
-			} 
-		}; 
-		tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-		tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-		tabla.getColumnModel().getColumn(2).setCellRenderer(render);
-		tabla.getColumnModel().getColumn(3).setCellRenderer(render); 
-		tabla.getColumnModel().getColumn(4).setCellRenderer(render); 
-
+		for(int i = 0; i<tabla.getColumnCount(); i++){
+			if(i==0 || i==4){
+				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11))	;
+			}else{
+				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11))	;
+			}
+		}
+			
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
 		tabla.getColumnModel().getColumn(0).setMaxWidth(70);
 		tabla.getColumnModel().getColumn(0).setMinWidth(70);

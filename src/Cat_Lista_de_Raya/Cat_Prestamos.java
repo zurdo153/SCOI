@@ -32,6 +32,7 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Prestamos extends JFrame {
@@ -224,21 +225,29 @@ public class Cat_Prestamos extends JFrame {
 		}
 			class Hilo implements Runnable {
 				public void run() {
-					new Connexion();
+//					new Connexion();
+					
+					for(int i = 0; i<tabla.getColumnCount(); i++){
+						if(i==0 || i==5){
+							tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11))	;
+						}else{
+							tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11))	;
+						}
+					}
 
 					DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
 					tcr.setHorizontalAlignment(SwingConstants.CENTER);
 					
-					int a=2;
-					tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
-					tabla.getColumnModel().getColumn(a).setCellRenderer(tcr);
-					tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-					tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-					tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
+//					int a=2;
+//					tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
+//					tabla.getColumnModel().getColumn(a).setCellRenderer(tcr);
+//					tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
+//					tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
+//					tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
 
 					tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
-					tabla.getColumnModel().getColumn(0).setMaxWidth(70);
-					tabla.getColumnModel().getColumn(0).setMinWidth(70);
+					tabla.getColumnModel().getColumn(0).setMaxWidth(50);
+					tabla.getColumnModel().getColumn(0).setMinWidth(50);
 					tabla.getColumnModel().getColumn(1).setHeaderValue("Nombre Completo");
 					tabla.getColumnModel().getColumn(1).setMaxWidth(240);
 					tabla.getColumnModel().getColumn(1).setMinWidth(240);
@@ -255,24 +264,24 @@ public class Cat_Prestamos extends JFrame {
 					tabla.getColumnModel().getColumn(5).setMaxWidth(72);
 					tabla.getColumnModel().getColumn(5).setMinWidth(72);
 					
-					TableCellRenderer render = new TableCellRenderer() { 
-						public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-						boolean hasFocus, int row, int column) { 
-							JLabel lbl = new JLabel(value == null? "": value.toString());
-					
-							if(row%2==0){
-									lbl.setOpaque(true); 
-									lbl.setBackground(new java.awt.Color(177,177,177));
-							} 
-						return lbl; 
-						} 
-					}; 
-					tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-					tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-					tabla.getColumnModel().getColumn(2).setCellRenderer(render);
-					tabla.getColumnModel().getColumn(3).setCellRenderer(render); 
-					tabla.getColumnModel().getColumn(4).setCellRenderer(render);
-					tabla.getColumnModel().getColumn(5).setCellRenderer(render);
+//					TableCellRenderer render = new TableCellRenderer() { 
+//						public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+//						boolean hasFocus, int row, int column) { 
+//							JLabel lbl = new JLabel(value == null? "": value.toString());
+//					
+//							if(row%2==0){
+//									lbl.setOpaque(true); 
+//									lbl.setBackground(new java.awt.Color(177,177,177));
+//							} 
+//						return lbl; 
+//						} 
+//					}; 
+//					tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
+//					tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
+//					tabla.getColumnModel().getColumn(2).setCellRenderer(render);
+//					tabla.getColumnModel().getColumn(3).setCellRenderer(render); 
+//					tabla.getColumnModel().getColumn(4).setCellRenderer(render);
+//					tabla.getColumnModel().getColumn(5).setCellRenderer(render);
 					String query = "exec sp_filtro_prestamo";
 					Statement s;
 					ResultSet rs;

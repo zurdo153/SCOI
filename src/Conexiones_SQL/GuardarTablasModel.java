@@ -252,7 +252,7 @@ public class GuardarTablasModel {
 	}
 	
 	public boolean tablaTicketFuenteSodas_auxf(Object[][] tabla, int folio, String empleado, int periodo){
-		String query = "exec sp_insert_fuente_soda_auxf_de_seleccion_de_ticket ?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_fuente_soda_auxf_de_seleccion_de_ticket ?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -261,17 +261,20 @@ public class GuardarTablasModel {
 			con.setAutoCommit(false);
 			
 			for(int i=0; i<tabla.length; i++){
-				pstmt.setInt(1, folio);
-				pstmt.setString(2, empleado.toUpperCase().trim());
-				pstmt.setString(3, tabla[i][0].toString().toUpperCase().trim());
-				pstmt.setFloat(4, Float.valueOf(tabla[i][1].toString().trim()));
-				pstmt.setString(5, tabla[i][2].toString().trim());
-				pstmt.setInt(6, Boolean.parseBoolean(tabla[i][3].toString().trim()) ? 1 : 0);
-				pstmt.setString(7, "0");
-				pstmt.setString(8, "1");
-				pstmt.setInt(9, periodo);
+				if(tabla[i][3].toString().trim().equals("true")){
+					pstmt.setInt(1, folio);
+					pstmt.setString(2, empleado.toUpperCase().trim());
+					pstmt.setString(3, tabla[i][0].toString().toUpperCase().trim());
+					pstmt.setFloat(4, Float.valueOf(tabla[i][1].toString().trim()));
+					pstmt.setString(5, tabla[i][2].toString().trim());
+//					pstmt.setInt(6, Boolean.parseBoolean(tabla[i][3].toString().trim()) ? 1 : 0);
+					pstmt.setString(6, "0");
+					pstmt.setString(7, "1");
+					pstmt.setInt(8, periodo);
+					
+					pstmt.executeUpdate();
+				}
 				
-				pstmt.executeUpdate();
 			}
 					
 			con.commit();

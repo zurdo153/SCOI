@@ -3665,13 +3665,21 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	}
 	
 	public boolean Guardar_Sugerido_Sistema(Object[][] matriz1, Object[][] matriz2){
+		
 		int folio_usuario = usuario.getFolio();
 		
+		String queryUpdate = "update tb_folios set folio = (select folio+1 from tb_folios where transaccion = 'Folio Sugerido Cedis') where transaccion = 'Folio Sugerido Cedis'";
 		String query = "exec sp_insert_tb_sugeridos_cedis ?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		
 		try {
+			
+//			actualizar folio
+			PreparedStatement pstmtupdate = con.prepareStatement(queryUpdate);
+			con.setAutoCommit(false);
+			pstmtupdate.executeUpdate();
+			
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			
