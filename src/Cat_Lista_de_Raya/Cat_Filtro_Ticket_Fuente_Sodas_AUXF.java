@@ -206,6 +206,7 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 			}
 			
 			ActionListener opAgregar = new ActionListener() {
+				@SuppressWarnings("static-access")
 				public void actionPerformed(ActionEvent arg0) {
 					
 						if(tablaFiltro.isEditing()){
@@ -222,14 +223,13 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 						//------------------------------------------------
 						
 						if(tablaFiltro.getRowCount()==0){
-							
-							new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().setVisible(true);
 							dispose();
-//							//tabla de empleados con adeudo en fuente de sodas auxf--------------------------------
-//							while(new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().tabla_model.getRowCount()>0){
-//								new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().tabla_model.removeRow(0);
-//						    }
-//							buscar_tabla_empleado_con_pendiente_en_fuente_sodas();
+							
+							//tabla de empleados con adeudo en fuente de sodas auxf--------------------------------
+							while(new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().tabla_model.getRowCount()>0){
+								new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().tabla_model.removeRow(0);
+						    }
+							buscar_tabla_empleado_con_pendiente_en_fuente_sodas();
 							//------------------------------------------------
 						}
 					}else{
@@ -256,6 +256,20 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
+			}
+			
+			@SuppressWarnings("static-access")
+			public void buscar_tabla_empleado_con_pendiente_en_fuente_sodas(){
+				Object [][] lista_tabla_empleados = new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().get_tabla();
+				 String[] fila = new String[9];
+				         for(int i=0; i<lista_tabla_empleados.length; i++){
+				                 fila[0] = lista_tabla_empleados[i][0]+"";
+				                 fila[1] = lista_tabla_empleados[i][1]+"";
+				                 fila[2] = lista_tabla_empleados[i][2]+"";
+				                 fila[3] = lista_tabla_empleados[i][3]+"";
+				                 fila[4] = lista_tabla_empleados[i][4]+"";
+				                 new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().tabla_model.addRow(fila);
+				         }
 			}
 			
 			private Object[][] tabla_guardar(){

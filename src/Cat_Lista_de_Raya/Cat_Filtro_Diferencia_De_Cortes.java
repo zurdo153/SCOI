@@ -30,8 +30,6 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
-import com.toedter.calendar.JDateChooser;
-
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
@@ -58,8 +56,6 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	
 	JTextField txtCantidad = new JTextField();
 	JTextField txtDescuento = new JTextField();
-	JTextField txtSaldo  = new JTextField();
-	JTextField txtAbonos = new JTextField();
 	
 	String status[] = {"Vigente","Cancelado Temporal"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -71,7 +67,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	
 	
 	
-	JDateChooser txtCalendario = new JDateChooser();
+	com.toedter.calendar.JDateChooser txtCalendario = new com.toedter.calendar.JDateChooser();
 	JLabel lblTotal = new JLabel("");
 	
 	JButton btnFiltro = new JButton(new ImageIcon("imagen/Text preview.png"));
@@ -130,16 +126,10 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		panel.add(new JLabel("Cantidad:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtCantidad).setBounds(x+ancho,y,ancho-15,20);
 		
-		panel.add(new JLabel("Saldo:")).setBounds(x+350,y,ancho,20);
-		panel.add(txtSaldo).setBounds(x+300+ancho,y,ancho-15,20); 
-		
 		panel.add(new JLabel("Descuento:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtDescuento).setBounds(x+ancho,y,ancho-15,20);
 		
-		panel.add(new JLabel("Abonos:")).setBounds(x+350,y,ancho,20);
-		panel.add(txtAbonos).setBounds(x+300+ancho,y,ancho-15,20);
-		
-		panel.add(panelScroll).setBounds(x,y+=25+10,ancho+460,120);
+		panel.add(panelScroll).setBounds(x,y+=25+40,ancho+460,120);
 		
 		panel.add(btnFiltro).setBounds(20,15,16,16);
 		panel.add(btnEditar).setBounds(46,15,16,16);
@@ -175,9 +165,6 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 			}
 		}
 		
-		txtSaldo.setText("0");
-		txtAbonos.setText("0");
-		
 		if(tabla.getRowCount() != 0){
 			
 			try {
@@ -188,8 +175,6 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 			}
 			txtCantidad.setText(modelo.getValueAt(0, 2)+"");
 			txtDescuento.setText(modelo.getValueAt(0, 3)+"");
-			txtSaldo.setText(modelo.getValueAt(0, 4)+"");
-			txtAbonos.setText(modelo.getValueAt(0, 5)+"");
 			
 			if(modelo.getValueAt(0, 6).equals("VIGENTE")){
 				cmbStatus.setSelectedIndex(0);
@@ -204,10 +189,8 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 			panelEnabledFalse();
 			btnGuardar.setEnabled(false);
 		}
-		
-		
-		
-		this.setSize(655,360);
+				
+		this.setSize(655,390);
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -257,17 +240,12 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 					return;
 				}
 				
-				if(Double.parseDouble(txtCantidad.getText())<Double.parseDouble(txtAbonos.getText())){
-					JOptionPane.showMessageDialog(null,"La Cantidad No Puede Ser Menor Que La Suma De Los Abonos \n Cantidad:"+Double.parseDouble(txtCantidad.getText())+" Total Abonos:"+Double.parseDouble(txtAbonos.getText()), "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-					return;
-				}
-				
 				Obj_Diferencia_De_Cortes pres = new Obj_Diferencia_De_Cortes();
 				
 				switch(tabla.getRowCount()){
 					case 0: 
 						if(Double.parseDouble(txtDescuento.getText()) > Double.parseDouble(txtCantidad.getText())) {
-							JOptionPane.showMessageDialog(null, "El Descuento:"+Double.parseDouble(txtDescuento.getText())+" Es Mayor Que La Cantidad:"+Double.parseDouble(txtCantidad.getText()), "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+							JOptionPane.showMessageDialog(null, "El Descuento es Mayor que la cantidad", "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 							return;
 						}else {
 							
@@ -287,7 +265,6 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 							
 							if(pres.getStatus_descuento()==1){
 								Object[] fila = new Object[tabla.getColumnCount()]; 
-								
 								Obj_Diferencia_De_Cortes maximo = new Obj_Diferencia_De_Cortes().maximo();
 								fila[0]=maximo.getFolio();
 								fila[1]=new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate());
@@ -305,6 +282,10 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 								case 0: fila[7]="PENDIENTE DE COBRO";break;	
 								case 1: fila[7]="COBRAR";break;
 							    }
+								
+								
+								
+								
 								modelo.addRow(fila); 						
 							}
 						}
@@ -312,37 +293,31 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 					break;
 					case 1: 
 						if(Double.parseDouble(txtDescuento.getText()) > Double.parseDouble(modelo.getValueAt(0,4)+"")){
-							JOptionPane.showMessageDialog(null,"El Descuento Que Quiere Aplicar Es Mayor Que Con Lo Que Salda La Cuenta", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+							JOptionPane.showMessageDialog(null, "El Descuento que quiere aplicar es mayor que con lo que salda la cuenta", "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 							return;
-						}
-						if(Double.parseDouble(txtCantidad.getText()) < Double.parseDouble(txtDescuento.getText()) || 
-								Double.parseDouble(txtCantidad.getText()) == 0 ){
-							JOptionPane.showMessageDialog(null,"No Es Posible Agregar Una Cantidad Menor Que El Descuento", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-							return;
-						}					
-						if(Double.parseDouble(txtCantidad.getText()) == 0 ){
-							JOptionPane.showMessageDialog(null,"La Cantidad Tiene Valor Cero", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-							return;
-						}
-						if(JOptionPane.showConfirmDialog(null, "Desea Actualizar el registro existente ?") == JOptionPane.YES_OPTION) {
-							pres.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()));
-							pres.setCantidad(Double.parseDouble(txtCantidad.getText()));
-							pres.setDescuento(Double.parseDouble(txtDescuento.getText()));
-							pres.setStatus(cmbStatus.getSelectedIndex()+1);
-							pres.setStatus_descuento(cmbStatuscobro.getSelectedIndex());
-							
-							pres.actualizar(Integer.parseInt(modelo.getValueAt(0,0)+""));
-									
-							while(tabla.getRowCount() > 0){
-								modelo.removeRow(0);
-							}
-									
-							String[][] Tabla = getMatriz(txtFolio_Empleado.getText());
-							Object[] fila = new Object[tabla.getColumnCount()]; 
-							for(int i=0; i<Tabla.length; i++){
-								modelo.addRow(fila); 
-								for(int j=0; j<8; j++){
-									modelo.setValueAt(Tabla[i][j]+"", i,j);
+						}else{
+							if(JOptionPane.showConfirmDialog(null, "Desea Actualizar el registro existente ?") == JOptionPane.YES_OPTION) {
+								pres.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()));
+								pres.setCantidad(Double.parseDouble(txtCantidad.getText()));
+								pres.setDescuento(Double.parseDouble(txtDescuento.getText()));
+								pres.setStatus(cmbStatus.getSelectedIndex()+1);
+								pres.setStatus_descuento(cmbStatuscobro.getSelectedIndex());
+								
+								pres.actualizar(Integer.parseInt(modelo.getValueAt(0,0)+""));
+										
+								int filas=  tabla.getRowCount();
+								while(filas > 0){
+									modelo.removeRow(0);
+									filas--;
+								}
+										
+								String[][] Tabla = getMatriz(txtFolio_Empleado.getText());
+								Object[] fila = new Object[tabla.getColumnCount()]; 
+								for(int i=0; i<Tabla.length; i++){
+									modelo.addRow(fila); 
+									for(int j=0; j<8; j++){
+										modelo.setValueAt(Tabla[i][j]+"", i,j);
+									}
 								}
 							}
 						}
@@ -377,17 +352,13 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	};
 	
 	public void panelEnabledTrue(){	
-		txtCalendario.setEnabled(true);
 		txtCantidad.setEditable(true);
 		txtDescuento.setEditable(true);
 		cmbStatus.setEnabled(true);
 		cmbStatuscobro.setEnabled(true);
 	}
 	
-	public void panelEnabledFalse(){
-		txtCalendario.setEnabled(false);
-		txtSaldo.setEditable(false);
-		txtAbonos.setEditable(false);
+	public void panelEnabledFalse(){	
 		txtCantidad.setEditable(false);
 		txtDescuento.setEditable(false);
 		cmbStatus.setEnabled(false);

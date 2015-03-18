@@ -81,8 +81,6 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			
-			
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia.png"));
 			this.setTitle("Reporte de Listas de Raya Pasadas");
 
@@ -96,7 +94,7 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 			campo.add(btnNegar).setBounds(600,20,100,20);
 			
 			Checar_Activo();
-			Actualizar();
+			Actualizar_tabla();
 			llamar_render();
 			
 			campo.add(JLBactivo).setBounds(780,300,350,20);
@@ -156,7 +154,7 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 		if(new ActualizarSQL().Aceptar_Negar_Sueldo_o_Bono(arreglo_guardado)){
         	while(tabla.getRowCount()>0){	
 	              model.removeRow(0);  }
-        	Actualizar();
+        	Actualizar_tabla();
 			JOptionPane.showMessageDialog(null, "Se Actualizo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		}else{
 			JOptionPane.showMessageDialog(null, "Error Al Actualizar", "Avise al Administrador Del sistemas", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
@@ -278,7 +276,7 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 		    return scrol; 
 		}
 		
-	   	public void Actualizar(){
+	   	public void Actualizar_tabla(){
 			Statement s;
 			ResultSet rs;
 			try {

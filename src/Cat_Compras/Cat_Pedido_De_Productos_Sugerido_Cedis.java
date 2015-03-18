@@ -2,6 +2,7 @@ package Cat_Compras;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,11 +10,15 @@ import java.awt.event.KeyListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -24,13 +29,14 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.toedter.calendar.JDateChooser;
+
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Renders.CaveceraTablaRenderer;
 import Obj_Renders.tablaRenderer;
-
-///pruebassssssdasdasd
-
 
 
 @SuppressWarnings("serial")
@@ -39,7 +45,7 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	String[] columnas = new String[]{"Cod.Prod.","Descripcion","Exist.Cedis", "Transferencia", "sugerido", "*", "Sugerido Cedis", "Observaciones"};
+	String[] columnas = new String[]{"Cod.Prod.","Descripcion","Exist.Cedis", "Transferencia", "Sugerido", "*", "Sugerido Cedis", "Observaciones"};
    
 	public DefaultTableModel modelo = new DefaultTableModel(null,  columnas){
                     
@@ -137,9 +143,11 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
     JTextField txtCodProd = new JTextField();
     JTextField txtDesc = new JTextField();
     
-    JButton btnQuitarFila = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
-    JButton btnGuardar = new JButton("Guardar Sugrido",new ImageIcon("imagen/Guardar.png"));
+    JDateChooser c_fecha = new JDateChooser();
     
+    JButton btnQuitarFila = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+    JButton btnGuardar = new JButton("Guardar Sugerido",new ImageIcon("imagen/Guardar.png"));
+    JButton btnReporte = new JButton("Reporte De Sugerido",new ImageIcon("imagen/checklist-icon16.png"));
     JButton btnRestaurarFila = new JButton("Restaurar",new ImageIcon("imagen/Up.png"));
     
     @SuppressWarnings("rawtypes")
@@ -149,16 +157,22 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 	public Cat_Pedido_De_Productos_Sugerido_Cedis(){
 		this.setTitle("Sugerido Cedis");
 		this.panel.setBorder(BorderFactory.createTitledBorder( "Captura De Sugerido Cedis"));
-		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/checklist-icon128.png"));
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
 		
 		panel.add(btnConsultar).setBounds(15,20,100,20);
 		panel.add(btnGuardar).setBounds(260,20,160,20);
 		
+		panel.add(new JLabel("Fecha Del Pedido Para Reporte:")).setBounds(600,20,150,20);
+		panel.add(c_fecha).setBounds(740,20,90,20);
+		panel.add(btnReporte).setBounds(845,20,160,20);
+		
 		panel.add(txtCodProd).setBounds(15, 45, 80, 20);
 		panel.add(txtDesc).setBounds(95, 45, 320, 20);
 		panel.add(btnQuitarFila).setBounds(415,45,100,20);
+		
+		
 		
 		panel.add(scroll).setBounds(15, 65, 990, 525);
 		
@@ -175,6 +189,7 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 		btnQuitarFila.addActionListener(opQuitar);
 		btnRestaurarFila.addActionListener(opQuitar);
 		btnGuardar.addActionListener(opGuardar);
+		btnReporte.addActionListener(opReporte);
 		
 		txtCodProd.addKeyListener(opFiltroCodProd);
 		txtDesc.addKeyListener(opFiltroDesc);
@@ -182,7 +197,25 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 		this.setSize(1024,768);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
+		
+		cargar_fecha();
 	}
+	
+	
+	public void cargar_fecha(){
+			
+			Date date1 = null;
+					  try {
+						date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
+					} catch (ParseException e) {
+						e.printStackTrace();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+			c_fecha.setDate(date1);
+						
+		};
+	
 	
 	public void llamarRender(JTable table){
 		Color fondoEncabezado = new Color(255,171,0);
@@ -261,6 +294,26 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 
 			}
 		};
+		
+		
+		String basedatos="2.26";
+		String vista_previa_reporte="no";
+		int vista_previa_de_ventana=0;
+		String comando="";
+		String reporte = "";
+		
+
+		
+		ActionListener opReporte = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String fecha = new SimpleDateFormat("dd/MM/yyyy").format(c_fecha.getDate());		
+				 comando = "exec sp_Reporte_De_Sugeridos 1,'"+fecha+"'"  ;
+				 reporte="Obj_Reporte_De_Pedido_De_Productos_Cedis.jrxml";
+				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			}
+		};
+		
+		
 		
 		public void movimiento(JTable tb, DefaultTableModel model1, DefaultTableModel model2){
 			

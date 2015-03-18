@@ -192,13 +192,12 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 2){
-	    			dispose();
+	    			
 	        		int fila = tabla.getSelectedRow();
 	    			int folio =  Integer.parseInt(tabla.getValueAt(fila, 0)+"");
 	    			Object empleado =  tabla.getValueAt(fila, 1);
 	    			
 	    			new Cat_Filtro_Ticket_Fuente_Sodas_AUXF(folio,empleado+"",Integer.valueOf(txtPeriodo.getText())).setVisible(true);
-	    			dispose();
 	        	}
 	        }
         });
