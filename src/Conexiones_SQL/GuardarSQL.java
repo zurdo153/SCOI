@@ -16,6 +16,7 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
@@ -2645,10 +2646,12 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		
+		String pc_nombre = "";
+		String pc_ip = "";
 		
 		try{
-			String pc_nombre = InetAddress.getLocalHost().getHostName();
-			String pc_ip = InetAddress.getLocalHost().getHostAddress();
+			pc_nombre = InetAddress.getLocalHost().getHostName();
+			pc_ip = InetAddress.getLocalHost().getHostAddress();
 			
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(insert);
@@ -2664,7 +2667,13 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			
 		}catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Insert_Empleado_Comida  sp sp_insert_entosal "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la Funcion Insert_Empleado_Comida \n Procedimiento Almacenado: "+insert+" \n Parametros Enviados:"
+			                             +"\nfolio Empleado:"+folio
+			                             +"\npc_nombre:"+pc_nombre
+			                             +"\npc_ip:"+pc_ip 
+			                             +"\nt_entrada:"+t_entrada
+			                             +"\ntipo_salida_comer:"+tipo_salida_comer
+			                             +"\nSql:"+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");

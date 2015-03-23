@@ -184,6 +184,7 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[37], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[38], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[39], false),
+		new Obj_CheckBoxNode(Sub_Lista_de_Raya[40], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Lista_de_RayaVector = new Obj_NombreVector("Lista De Raya", Lista_de_Raya);
