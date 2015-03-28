@@ -129,8 +129,8 @@ public class ActualizarSQL {
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario_integrado());
 			pstmt.setString(i+=1,	empleado.getForma_pago().toUpperCase());
-			pstmt.setInt(i+=1,		empleado.getSueldo());
-			pstmt.setInt(i+=1, 		empleado.getBono());
+			pstmt.setFloat(i+=1,	empleado.getStatus()==4||empleado.getStatus()==5?0:empleado.getSueldo());
+			pstmt.setInt(i+=1, 		empleado.getStatus()==4||empleado.getStatus()==5?0:empleado.getBono());
 			pstmt.setInt(i+=1, 		empleado.getPrestamo());
 			pstmt.setFloat(i+=1, 	empleado.getPension_alimenticia());
 			pstmt.setFloat(i+=1,	empleado.getInfonavit());
@@ -142,6 +142,7 @@ public class ActualizarSQL {
 			
 			pstmt.setString(i+=1, 	empleado.getFecha_actualizacion().toUpperCase());
 			
+			System.out.println(empleado.getSueldo());
 			
 //			cambios extras 
 			pstmt.setInt(i+=1,		empleado.getHorario3());

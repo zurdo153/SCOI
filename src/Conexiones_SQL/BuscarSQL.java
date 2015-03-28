@@ -1165,7 +1165,7 @@ public class BuscarSQL {
 				empleado.setSalario_diario(rs.getFloat("salario_diario"));
 				empleado.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
 				empleado.setForma_pago(rs.getString("forma_pago"));
-				empleado.setSueldo(rs.getInt("sueldo_id"));				
+				empleado.setSueldo(rs.getFloat("sueldo_id"));				
 				empleado.setBono(rs.getInt("bono_id"));
 				empleado.setPrestamo(rs.getInt("rango_prestamo_id"));
 				empleado.setPension_alimenticia(rs.getFloat("pension_alimenticia"));

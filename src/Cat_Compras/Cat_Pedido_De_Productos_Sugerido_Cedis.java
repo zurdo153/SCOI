@@ -1,12 +1,14 @@
 package Cat_Compras;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -101,7 +103,6 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 	            java.lang.Boolean.class,
 	            java.lang.String.class, 
 	            java.lang.String.class
-	                
 		};
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
@@ -137,7 +138,6 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
     JTable tablaEliminados = new JTable(modeloEliminados);
     JScrollPane scrollEliminados = new JScrollPane(tablaEliminados,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-//    JDateChooser fhBuscar = new JDateChooser();
     JButton btnConsultar = new JButton("Consultar");
     
     JTextField txtCodProd = new JTextField();
@@ -148,61 +148,161 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
     JButton btnQuitarFila = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
     JButton btnGuardar = new JButton("Guardar Sugerido",new ImageIcon("imagen/Guardar.png"));
     JButton btnReporte = new JButton("Reporte De Sugerido",new ImageIcon("imagen/checklist-icon16.png"));
+    JButton btnReporteNSugerido = new JButton("Reporte De N/Sugerido",new ImageIcon("imagen/checklist-icon16.png"));
+    
+    JTextField txtCodProdRestaurar = new JTextField();
+    JTextField txtDescRestaurar = new JTextField();
     JButton btnRestaurarFila = new JButton("Restaurar",new ImageIcon("imagen/Up.png"));
     
-    @SuppressWarnings("rawtypes")
+    int filaDep =0;
+    int columnaDep = 6;
+
+	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
+	@SuppressWarnings("rawtypes")
+	private TableRowSorter trsfiltroRestaurar;
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Pedido_De_Productos_Sugerido_Cedis(){
 		this.setTitle("Sugerido Cedis");
 		this.panel.setBorder(BorderFactory.createTitledBorder( "Captura De Sugerido Cedis"));
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/checklist-icon128.png"));
+		
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
 		
-		panel.add(btnConsultar).setBounds(15,20,100,20);
-		panel.add(btnGuardar).setBounds(260,20,160,20);
+		trsfiltroRestaurar = new TableRowSorter(modeloEliminados); 
+		tablaEliminados.setRowSorter(trsfiltroRestaurar);
 		
-		panel.add(new JLabel("Fecha Del Pedido Para Reporte:")).setBounds(600,20,150,20);
+		panel.add(btnConsultar).setBounds(15,20,100,20);
+		panel.add(btnGuardar).setBounds(257,20,160,20);
+		
+		panel.add(new JLabel("Fecha Del Pedido Para Reporte:")).setBounds(550,20,200,20);
 		panel.add(c_fecha).setBounds(740,20,90,20);
-		panel.add(btnReporte).setBounds(845,20,160,20);
+		panel.add(btnReporte).setBounds(840,20,165,20);
+		panel.add(btnReporteNSugerido).setBounds(840,40,165,20);
 		
 		panel.add(txtCodProd).setBounds(15, 45, 80, 20);
 		panel.add(txtDesc).setBounds(95, 45, 320, 20);
 		panel.add(btnQuitarFila).setBounds(415,45,100,20);
 		
-		
-		
 		panel.add(scroll).setBounds(15, 65, 990, 525);
 		
-		panel.add(btnRestaurarFila).setBounds(15, 595, 100, 20);
+		panel.add(txtCodProdRestaurar).setBounds(15, 595, 80, 20);
+		panel.add(txtDescRestaurar).setBounds(95, 595, 320, 20);
+		panel.add(btnRestaurarFila).setBounds(415,595,100,20);
+		
 		panel.add(scrollEliminados).setBounds(15, 615, 990, 115);
 		
 		cont.add(panel);
 		
+		btnGuardar.setEnabled(false);
+		
 		llamarRender(tabla);
 		llamarRender(tablaEliminados);
 		
-//		fhBuscar.getDateEditor().addPropertyChangeListener(opBusqueda);
+		filaDep=0;
+	    agregar(tabla);
+		
 		btnConsultar.addActionListener(opBuscar);
 		btnQuitarFila.addActionListener(opQuitar);
 		btnRestaurarFila.addActionListener(opQuitar);
 		btnGuardar.addActionListener(opGuardar);
 		btnReporte.addActionListener(opReporte);
+		btnReporteNSugerido.addActionListener(opReporte);
 		
 		txtCodProd.addKeyListener(opFiltroCodProd);
 		txtDesc.addKeyListener(opFiltroDesc);
+		
+		txtCodProdRestaurar.addKeyListener(opFiltroCodProdRestaurar);
+		txtDescRestaurar.addKeyListener(opFiltroDescRestaurar);
+		
+		tabla.addKeyListener(op_key);
 		
 		this.setSize(1024,768);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		
-		cargar_fecha();
+		c_fecha.setDate(cargar_fecha());
 	}
 	
+	private void agregar(final JTable tbl) {
+        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	        	filaDep= tbl.getSelectedRow();
+	        	
+	        	if(tabla.getValueAt(filaDep, columnaDep-1).toString().equals("true")){
+	        		tabla.setEnabled(true);
+	    			tabla.editCellAt(filaDep, columnaDep);
+	    			Component aComp=tabla.getEditorComponent();
+	    			aComp.requestFocus();
+	        	}else{
+	        		tabla.setValueAt("", filaDep, columnaDep);
+	        		tabla.setValueAt("", filaDep, columnaDep+1);
+	        	}
+	        }
+        });
+    }
 	
-	public void cargar_fecha(){
+	KeyListener op_key = new KeyListener() {
+		public void keyTyped(KeyEvent e) {}
+		public void keyReleased(KeyEvent e) {
+		
+			if(!isNumeric(modelo.getValueAt(filaDep,columnaDep).toString().trim())){
+				
+				JOptionPane.showMessageDialog(null, "El Sugerido Cedis en el Cod. Prod. "+modelo.getValueAt(filaDep,0).toString()+"\nestán mal en su formato o esta vacio","Error",JOptionPane.ERROR_MESSAGE);
+				modelo.setValueAt("", filaDep,columnaDep);
+				tabla.setEnabled(true);
+    			tabla.editCellAt(filaDep, columnaDep);
+    			Component aComp=tabla.getEditorComponent();
+    			aComp.requestFocus();
+				return;
+				
+			}else{
+				if(!tabla.getValueAt(filaDep, columnaDep+1).equals("")){
+					tabla.setEnabled(false);
+				}else{
+					modelo.setValueAt("", filaDep,columnaDep+1);
+					tabla.setEnabled(true);
+	    			tabla.editCellAt(filaDep, columnaDep+1);
+	    			Component aComp=tabla.getEditorComponent();
+	    			aComp.requestFocus();
+				}
+			}
+		}
+		public void keyPressed(KeyEvent e) {}
+	};
+	
+	
+	@SuppressWarnings("unused")
+	private boolean Validar(int fila, int columna) { 
+		String valor=""; 
+		
+			if(tabla.getValueAt(fila,columna)==null) { 
+				return false; 
+			}else{ 
+				try{
+					return true;
+				}catch(NumberFormatException e){
+				 return false;
+				}
+			} 
+	}
+	
+    private boolean isNumeric(String cadena){
+    	try {
+    		if(cadena.equals("")){
+        		return false;
+    		}else{
+    			Float.parseFloat(cadena);
+        		return true;
+    		}
+    	} catch (NumberFormatException nfe){
+    		return false;
+    	}
+    }
+	
+	public Date cargar_fecha(){
 			
 			Date date1 = null;
 					  try {
@@ -212,7 +312,7 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
-			c_fecha.setDate(date1);
+			return date1;
 						
 		};
 	
@@ -262,30 +362,33 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
     	table.getColumnModel().getColumn(7 ).setMinWidth(x*3);	
 	}
 	
-//	 PropertyChangeListener opBusqueda = new PropertyChangeListener() {
-//    	  public void propertyChange(PropertyChangeEvent e) {
-//    		  
-//    		  if ("date".equals(e.getPropertyName())) {
-//  	  	            	if(fhBuscar.getDate() != null){
-//  	  	            		while(tabla.getRowCount()>0){
-//  	  	            			modelo.removeRow(0);  }
-//							Llenar_Tabla_Sugerido_Cedis();
-//  	  	            	}
-//    		  }
-//    	  }
-//	 };
-	 
 	 ActionListener opBuscar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			Llenar_Tabla_Sugerido_Cedis();
+			btnGuardar.setEnabled(true);
 		} 
 	 };
 	 
 	 
 	 
 		ActionListener opQuitar = new ActionListener() {
+			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent arg0) {
-						
+				
+//	          quite edicion de celda de jtable
+	            tabla.putClientProperty ("terminateEditOnFocusLost", Boolean.TRUE) ;
+	            tablaEliminados.putClientProperty ("terminateEditOnFocusLost", Boolean.TRUE) ;
+	            
+				txtCodProd.setText("");
+				txtDesc.setText("");
+				trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
+				trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+				
+				txtCodProdRestaurar.setText("");
+				txtDescRestaurar.setText("");
+				trsfiltroRestaurar.setRowFilter(RowFilter.regexFilter("", 0));
+				trsfiltroRestaurar.setRowFilter(RowFilter.regexFilter("", 1));
+				
 				if(arg0.getActionCommand().equals("Quitar")){
 					movimiento(tabla, modeloEliminados, modelo);
 				}else{
@@ -295,23 +398,33 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 			}
 		};
 		
-		
-		String basedatos="2.26";
-		String vista_previa_reporte="no";
-		int vista_previa_de_ventana=0;
-		String comando="";
-		String reporte = "";
-		
-
-		
 		ActionListener opReporte = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String fecha = new SimpleDateFormat("dd/MM/yyyy").format(c_fecha.getDate());		
-				 comando = "exec sp_Reporte_De_Sugeridos 1,'"+fecha+"'"  ;
-				 reporte="Obj_Reporte_De_Pedido_De_Productos_Cedis.jrxml";
-				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				
+				String fecha = new SimpleDateFormat("dd/MM/yyyy").format(c_fecha.getDate());	
+				
+				if(arg0.getActionCommand().equals("Reporte De Sugerido")){
+					reporte(fecha,1,"Productos Del Pedido Sugerido Por Cedis");
+				}else{
+					reporte(fecha,0,"Productos Del Pedido Sugerido Negados Por Cedis");
+				}
 			}
 		};
+		
+		
+		
+		public void reporte(String fecha,int status, String nombre_reporte){
+			
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="";
+			String reporte = "";
+			
+				comando = "exec sp_Reporte_De_Sugeridos "+status+",'"+fecha+"','"+nombre_reporte+"'"  ;
+				 reporte="Obj_Reporte_De_Pedido_De_Productos_Cedis.jrxml";
+				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		}
 		
 		
 		
@@ -330,22 +443,6 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 					i--;
 				}
 			}
-			
-//			int filaSeleccionada = tb.getSelectedRow();
-//			
-//			if(filaSeleccionada<0){
-//				JOptionPane.showMessageDialog(null, "No se ha seleccionado ningun registro","Aviso",JOptionPane.WARNING_MESSAGE);
-//				return;
-//			}else{
-//				Object[] vector = new Object[tb.getColumnCount()];
-//				
-//				for(int i=0; i<tb.getColumnCount(); i++){
-//					vector[i] = tb.getValueAt(filaSeleccionada, i);
-//				}
-//				
-//				model1.addRow(vector);
-//				model2.removeRow(filaSeleccionada);
-//			}
 		}
 	
 	ActionListener opGuardar = new ActionListener(){
@@ -360,6 +457,10 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 				Object[][] matriz1 = funcionTb(tabla);
 				Object[][] matriz2 = funcionTb(tablaEliminados);
 				
+//		          quite edicion de celda de jtable
+		            tabla.putClientProperty ("terminateEditOnFocusLost", Boolean.TRUE) ;
+		            tablaEliminados.putClientProperty ("terminateEditOnFocusLost", Boolean.TRUE) ;
+				
 				if(tabla.getRowCount()<=0){
 					JOptionPane.showMessageDialog(null, "No ha podido guardar, la tabla principal debe contener registros","Aviso",JOptionPane.WARNING_MESSAGE);
 					return;
@@ -370,9 +471,11 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 						return;
 					}else{
 						
-						if(new GuardarSQL().Guardar_Sugerido_Sistema(matriz1,matriz2)){
-							JOptionPane.showMessageDialog(null, "Sugeridos guardado exitosamente","Aviso",JOptionPane.WARNING_MESSAGE);
-							return;
+						if(new GuardarSQL().Guardar_Sugerido_Sistema(matriz1,matriz2,folio_sugerido)){
+							btnGuardar.setEnabled(false);
+							String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cargar_fecha());		
+							reporte(fecha,1,"Productos Del Pedido Sugerido Por Cedis");
+							limpiarTablas();
 						}else{
 							JOptionPane.showMessageDialog(null, "Los datos no pueden ser guardados","Aviso",JOptionPane.WARNING_MESSAGE);
 							return;
@@ -382,7 +485,6 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 				
 			}catch(Exception e1){
 				e1.getMessage();
-				JOptionPane.showMessageDialog(null, "Error al momento de guardar (catch)","Aviso",JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 		}
@@ -409,94 +511,107 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 								return null;
 						}else{
 								matriz[i][j] = llenar_tabla.getValueAt(i, j);
-								
-//								if(j==llenar_tabla.getColumnCount()-1){
-//									System.out.println(llenar_tabla.getValueAt(i, j).toString());
-//								}else{
-//									System.out.print(llenar_tabla.getValueAt(i, j).toString()+"  ");
-//								}
 						}
 					}
 				}else{
 						matriz[i][j] = llenar_tabla.getValueAt(i, j);
-						
-//						if(j==llenar_tabla.getColumnCount()-1){
-//							System.out.println(llenar_tabla.getValueAt(i, j).toString());
-//						}else{
-//							System.out.print(llenar_tabla.getValueAt(i, j).toString()+"  ");
-//						}
 				}
 			}
 		}
 		return matriz;
 	}
 	
-	public void Llenar_Tabla_Sugerido_Cedis(){
-		
+	public void limpiarTablas(){
 		while(tabla.getRowCount()>0){
 			modelo.removeRow(0);
 		}
-		
 		while(tablaEliminados.getRowCount()>0){
 			modeloEliminados.removeRow(0);
 		}
+	}
+	
+	int folio_sugerido=0;
+	@SuppressWarnings("resource")
+	public void Llenar_Tabla_Sugerido_Cedis(){
+		
+		limpiarTablas();
 		
 		Statement s;
 		ResultSet rs;
 		
 		try {
-			s = new Connexion().conexion_IZAGAR().createStatement();
-//			String fecha_busqueda =new SimpleDateFormat("dd/MM/yyyy").format(fhBuscar.getDate());
+			String queryDeEleccionDeConsulta = ("if exists(select folio from tb_sugeridos_cedis where convert(smalldatetime,convert(varchar(20),fecha_mov,103)) =  convert(smalldatetime,convert(varchar(20),getdate(),103))) "
+												+ "		begin	select 'true' as existe		end "
+												+ "	else "
+												+ "		begin 	select 'false' as existe	end ");
 			
-			rs = s.executeQuery("select * from (select productos.cod_prod " +
-					"		       					,productos.descripcion " +
-					"		      				 	,prodestab.exist_piezas " +
-					"		     				 	,sum(isnull(entysal.cantidad,0)) as transferidos_desde_cedis " +
-					"		    				  	,sum(isnull(entysal.cantidad,0))- prodestab.exist_piezas as sugerido " +
-					"							 from productos " +
-					"							inner join prodestab on prodestab.cod_prod=productos.cod_prod " +
-					"							left outer join entysal with (nolock) on entysal.cod_prod=productos.cod_prod and entysal.transaccion='35' " +
-					"							and entysal.fecha>(getdate()-30) and entysal.cod_estab=7 " +
-					"							where prodestab.cod_estab=7 and productos.clase_producto = 1 " +
-					"							group by  productos.cod_prod,productos.descripcion,prodestab.exist_piezas) a " +
-					"			where  (a.sugerido >= 10) and not (a.exist_piezas = a.transferidos_desde_cedis) or (a.exist_piezas = 0 and a.transferidos_desde_cedis = 0 ) " +
-					"			order by a.sugerido desc");
+			s = new Connexion().conexion().createStatement();
+			rs = s.executeQuery(queryDeEleccionDeConsulta);
 			
-//			Object[][] matriz = {{"asd123".toUpperCase(),"Descrip".toUpperCase(),40,150,90,false,"".toUpperCase(),"".toUpperCase()},
-//					 {"asd100".toUpperCase(),"Descrip".toUpperCase(),40,150,90,false,"".toUpperCase(),"".toUpperCase()},
-//					 {"asd200".toUpperCase(),"Descrip".toUpperCase(),40,150,90,false,"".toUpperCase(),"".toUpperCase()},
-//					 {"asd300".toUpperCase(),"Descrip".toUpperCase(),40,150,90,false,"".toUpperCase(),"".toUpperCase()},
-//					 {"asd400".toUpperCase(),"Descrip".toUpperCase(),40,150,90,false,"".toUpperCase(),"".toUpperCase()}};
-			
-			
-			Object [] fila = new Object[8];
-			while (rs.next())
-			{ 
-			   fila[0] = rs.getString(1).trim()+"  ";
-			   fila[1] = "  "+rs.getString(2).trim();
-			   fila[2] = rs.getString(3).trim(); 
-			   fila[3] = rs.getString(4).trim(); 
-			   fila[4] = rs.getString(5).trim(); 
-			   fila[5] = "false"; 
-			   fila[6] = "";
-			   fila[7] = "";
-			   
-			   
-			   modelo.addRow(fila); 
+			boolean existe = false;
+			while (rs.next()){
+				existe = rs.getBoolean("existe");
 			}
 			
-//			for(int i=0; i<matriz.length;i++){
-//				   fila[0] = matriz[i][0].toString().trim();
-//				   fila[1] = matriz[i][1].toString().trim();
-//				   fila[2] = matriz[i][2].toString().trim();
-//				   fila[3] = matriz[i][3].toString().trim();
-//				   fila[4] = matriz[i][4].toString().trim();
-//				   fila[5] = matriz[i][5].toString().trim();
-//				   fila[6] = matriz[i][6].toString().trim();
-//				   fila[7] = matriz[i][7].toString().trim();
-//
-//				   modelo.addRow(fila); 
-//			}
+			folio_sugerido=0;
+			if(existe){
+				rs = s.executeQuery("exec sp_select_sugeridos_cedis_SCOI");
+				
+				Object [] fila = new Object[9];
+				while (rs.next()){
+					
+					folio_sugerido=rs.getInt("folio           ".trim());
+					
+					fila[0]=rs.getString("codigo_producto ".trim());
+					fila[1]=rs.getString("descripcion     ".trim());
+					fila[2]=rs.getInt("existencia_cedis".trim());
+					fila[3]=rs.getInt("transferencia   ".trim());
+					fila[4]=rs.getInt("sugerido_sistema".trim());
+					fila[5]=rs.getBoolean("selector        ".trim());
+					fila[6]=rs.getInt("segerido_cedis  ".trim());
+					fila[7]=rs.getString("observacion     ".trim());
+					fila[8]=rs.getInt("status     ".trim());
+					
+					if(Integer.valueOf(fila[8].toString())==1){
+						modelo.addRow(fila);
+					}else{
+						modeloEliminados.addRow(fila);
+					}
+				}
+				
+			}else{
+				
+				s = new Connexion().conexion_IZAGAR().createStatement();
+				
+				rs = s.executeQuery("select * from (select productos.cod_prod " +
+						"		       					,productos.descripcion " +
+						"		      				 	,prodestab.exist_piezas " +
+						"		     				 	,sum(isnull(entysal.cantidad,0)) as transferidos_desde_cedis " +
+						"		    				  	,sum(isnull(entysal.cantidad,0))- prodestab.exist_piezas as sugerido " +
+						"							 from productos " +
+						"							inner join prodestab on prodestab.cod_prod=productos.cod_prod " +
+						"							left outer join entysal with (nolock) on entysal.cod_prod=productos.cod_prod and entysal.transaccion='35' " +
+						"							and entysal.fecha>(getdate()-30) and entysal.cod_estab=7 " +
+						"							where prodestab.cod_estab=7 and productos.clase_producto = 1 " +
+						"							group by  productos.cod_prod,productos.descripcion,prodestab.exist_piezas) a " +
+						"			where  (a.sugerido >= 10) and not (a.exist_piezas = a.transferidos_desde_cedis) or (a.exist_piezas = 0 and a.transferidos_desde_cedis = 0 ) " +
+						"			order by a.sugerido desc");
+				
+				Object [] fila = new Object[8];
+				while (rs.next())
+				{ 
+				   fila[0] = rs.getString(1).trim()+"  ";
+				   fila[1] = "  "+rs.getString(2).trim();
+				   fila[2] = rs.getString(3).trim(); 
+				   fila[3] = rs.getString(4).trim(); 
+				   fila[4] = rs.getString(5).trim(); 
+				   fila[5] = "false"; 
+				   fila[6] = "";
+				   fila[7] = "";
+				   
+				   modelo.addRow(fila); 
+				}
+			}
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -517,6 +632,24 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
 			trsfiltro.setRowFilter(RowFilter.regexFilter(txtDesc.getText().toUpperCase(), 1));
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
+	
+	KeyListener opFiltroCodProdRestaurar = new KeyListener(){
+		@SuppressWarnings("unchecked")
+		public void keyReleased(KeyEvent arg0) {
+			trsfiltroRestaurar.setRowFilter(RowFilter.regexFilter(txtCodProdRestaurar.getText().toUpperCase(), 0));
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
+	
+	KeyListener opFiltroDescRestaurar = new KeyListener(){
+		@SuppressWarnings("unchecked")
+		public void keyReleased(KeyEvent arg0) {
+			trsfiltroRestaurar.setRowFilter(RowFilter.regexFilter(txtDescRestaurar.getText().toUpperCase(), 1));
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

@@ -503,7 +503,7 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] Sueldo(String tabla) throws SQLException{
-		String query = "select sueldo from " + tabla;
+		String query = "select sueldo from " + tabla+" order by sueldo asc";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();

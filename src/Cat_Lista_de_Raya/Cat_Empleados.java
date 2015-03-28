@@ -837,16 +837,21 @@ public class Cat_Empleados extends JFrame{
 				String nombre = procesa_texto(txtNombre.getText()) + " " + procesa_texto(txtApPaterno.getText()) + " " + procesa_texto(txtApMaterno.getText());
 				if(new Obj_Empleados().nombre_disponible(nombre)){
 					btnVerificar.setBackground(Color.red);
+					panelEnabledFalse();
 					
-					txtNombre.setEditable(true);
-					txtApPaterno.setEditable(true);
-					txtApMaterno.setEditable(true);
+					txtNombre.setEnabled(true);
+					txtApPaterno.setEnabled(true);
+					txtApMaterno.setEnabled(true);
 					
 					rbHorario.setEnabled(true);
+					cmbSueldo.setSelectedIndex(0) ;
+					cmbBono.setSelectedIndex(0);
 					
 				}else{
 					btnVerificar.setBackground(Color.blue);
 					panelEnabledTrue();
+					cmbSueldo.setSelectedItem("0.0");
+					cmbBono.setSelectedItem("0.0");
 				}
 			}
 		}
@@ -1019,7 +1024,7 @@ public class Cat_Empleados extends JFrame{
 					txtSalarioDiario.setText(re.getSalario_diario()+"");
 					txtSalarioDiarioIntegrado.setText(re.getSalario_diario_integrado()+"");
 					txtFormaDePago.setText(re.getForma_pago()+"");
-					cmbSueldo.setSelectedIndex(re.getSueldo());
+					cmbSueldo.setSelectedItem(re.getSueldo()+"");
 					
 					Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscar(re.getBono());
 					cmbBono.setSelectedItem(bono.getBono()+"");
@@ -1084,8 +1089,23 @@ public class Cat_Empleados extends JFrame{
 		}
 	};
 	
+	public int validaIMSS(){
+		int valorIMSS = 0;
+		
+		if(txtIngresoImss.getDate()!=null){
+			valorIMSS++;
+		}
+		if(!txtImss.getText().equals("")){
+			valorIMSS++;
+		}
+		if(cmbActivo_Inactivo.getSelectedIndex()==0){
+			valorIMSS++;
+		}
+		
+		return valorIMSS;
+	}
+	
 	ActionListener guardar = new ActionListener(){
-		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e){
 		
 			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
@@ -1105,6 +1125,12 @@ public class Cat_Empleados extends JFrame{
 			
 			if(txtFolioEmpleado.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "El folio es requerido \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+			}
+			if(validaIMSS()>0 && validaIMSS()<3){
+				
+				JOptionPane.showMessageDialog(null, "Para poder guardar o actualizar en necesario que los siguientes campos esten llenos o totalemente vacios:\n- No Seguro Social\n- Actuvo(IMSS) ó Inactivo (IMSS)\n- Ingreso IMSS (Fecha)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				return;
+				
 			}else{			
 				Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioEmpleado.getText()));
 				
@@ -1244,7 +1270,7 @@ public class Cat_Empleados extends JFrame{
 							
 							empleado.setForma_pago(txtFormaDePago.getText()+"");
 
-							empleado.setSueldo(cmbSueldo.getSelectedIndex());
+							empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
 							
 							Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
 							empleado.setBono(bono.getFolio());
@@ -1427,7 +1453,7 @@ public class Cat_Empleados extends JFrame{
 						}
 						
 						empleado.setForma_pago(txtFormaDePago.getText()+"");
-						empleado.setSueldo(cmbSueldo.getSelectedIndex());
+						empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
 						
 						Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
 						empleado.setBono(bono.getFolio());
@@ -1529,8 +1555,8 @@ public class Cat_Empleados extends JFrame{
 		txtPensionAli.setEnabled(true);
 		cmbEstablecimiento.setEnabled(true);
 		cmbPuesto.setEnabled(true);
-		cmbSueldo.setEnabled(true);
-		cmbBono.setEnabled(true);
+//		cmbSueldo.setEnabled(true);
+//		cmbBono.setEnabled(true);
 		cmbPrestamos.setEnabled(true);
 		txtInfonavit.setEnabled(true);
 		txtTarjetaNomina.setEnabled(true);
@@ -1571,50 +1597,50 @@ public class Cat_Empleados extends JFrame{
 	
 	public void panelEnabledFalse(){	
 		txtFolioEmpleado.setEnabled(false);
-		txtNombre.setEnabled(false);
-		txtApPaterno.setEnabled(false);
-		txtApMaterno.setEnabled(false);
-		txtPensionAli.setEnabled(false);
-		cmbEstablecimiento.setEnabled(false);
-		cmbPuesto.setEnabled(false);
-		cmbSueldo.setEnabled(false);
-		cmbBono.setEnabled(false);
-		cmbPrestamos.setEnabled(false);
-		txtInfonavit.setEnabled(false);
-		txtTarjetaNomina.setEnabled(false);
-		cmbTipoBancos.setEnabled(false);
-		txtImss.setEnabled(false);
-		chbFuente_Sodas.setEnabled(false);
-		chbGafete.setEnabled(false);
-		cmbStatus.setEnabled(false);
-		txaObservaciones.setEditable(false);
-		txtCalendario.setEnabled(false);
-		cmbActivo_Inactivo.setEnabled(false);
-		txtIngreso.setEnabled(false);
-		txtTelefono_Familiar.setEnabled(false);
-		chb_cuadrante_parcial.setEnabled(false);
-		
-		txtIngresoImss.setEnabled(false);
-		txtVencimientoLicencia.setEnabled(false);
-		
-		txtCalle.setEnabled(false);
-		txtColonia.setEnabled(false);
-		txtPoblacion.setEnabled(false);
-		txtTelefono_Propio.setEnabled(false);
-		txtRFC.setEnabled(false);
-		txtCurp.setEnabled(false);
-		
-		rbMasculino.setEnabled(false);
-		rbFemenino.setEnabled(false);
-		
-		rbHorario.setEnabled(false);
-		rbHorario2.setEnabled(false);
-		rbHorario3.setEnabled(false);
-		
-		txtBaja.setEnabled(false);
-		cmbDepartamento.setEnabled(false);
-		txtNumeroInfonavit.setEnabled(false);
-		
+		txtNombre.setEnabled(false);                                                                       
+		txtApPaterno.setEnabled(false);                                                                    
+		txtApMaterno.setEnabled(false);                                                                    
+		txtPensionAli.setEnabled(false);                                                                   
+		cmbEstablecimiento.setEnabled(false);                                                              
+		cmbPuesto.setEnabled(false);                                                                       
+		cmbSueldo.setEnabled(false);                                                                       
+		cmbBono.setEnabled(false);                                                                         
+		cmbPrestamos.setEnabled(false);                                                                    
+		txtInfonavit.setEnabled(false);                                                                    
+		txtTarjetaNomina.setEnabled(false);                                                                
+		cmbTipoBancos.setEnabled(false);                                                                   
+		txtImss.setEnabled(false);                                                                         
+		chbFuente_Sodas.setEnabled(false);                                                                 
+		chbGafete.setEnabled(false);                                                                       
+		cmbStatus.setEnabled(false);                                                                       
+		txaObservaciones.setEnabled(false);                                                                
+		txtCalendario.setEnabled(false);                                                                   
+		cmbActivo_Inactivo.setEnabled(false);                                                              
+		txtIngreso.setEnabled(false);                                                                      
+		txtTelefono_Familiar.setEnabled(false);                                                            
+		chb_cuadrante_parcial.setEnabled(false);                                                           
+		                                                                                                   
+		txtIngresoImss.setEnabled(false);                                                                  
+		txtVencimientoLicencia.setEnabled(false);                                                          
+		                                                                                                   
+		txtCalle.setEnabled(false);                                                                        
+		txtColonia.setEnabled(false);                                                                      
+		txtPoblacion.setEnabled(false);                                                                    
+		txtTelefono_Propio.setEnabled(false);                                                              
+		txtRFC.setEnabled(false);                                                                          
+		txtCurp.setEnabled(false);                                                                         
+		                                                                                                   
+		rbMasculino.setEnabled(false);                                                                     
+		rbFemenino.setEnabled(false);                                                                      
+		                                                                                                   
+		rbHorario.setEnabled(false);                                                                       
+		rbHorario2.setEnabled(false);                                                                      
+		rbHorario3.setEnabled(false);                                                                      
+		                                                                                                   
+		txtBaja.setEnabled(false);                                                                         
+		cmbDepartamento.setEnabled(false);                                                                 
+		txtNumeroInfonavit.setEnabled(false);                                                              
+		                                                                                                   
 		txtSalarioDiario.setEnabled(false);
 		txtSalarioDiarioIntegrado.setEnabled(false);
 		txtFormaDePago.setEnabled(false);
