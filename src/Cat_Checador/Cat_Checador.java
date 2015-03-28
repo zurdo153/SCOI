@@ -416,6 +416,7 @@ public class Cat_Checador extends JFrame {
                 if(new Obj_Entosal().buscar_colicion(folio_empleado)){
                 	lblSemaforoRojo.setEnabled(true);
                     lblSemaforoVerde.setEnabled(false);
+                    
                         JOptionPane.showMessageDialog(null, "Estas Intentando Checar 2 Veces En Menos\n De 1 Minuto Espere Un Momento y Reintente","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
                                         txtClaveReal.setText("");
                                         txtClaveReal.requestFocus();
@@ -441,7 +442,7 @@ public class Cat_Checador extends JFrame {
 	         		                        Icon icono = new ImageIcon(tmpIconAux.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
 	         		                        btnFoto.setIcon(icono);  
 	                                    	
-	                                    	Object[] registro = fila2(folio_empleado,checada,0);
+	                                    	Object[] registro = intentar_checar(folio_empleado,checada,0);
 			
 			                                    String tipo=registro[2].toString();
 			                                    String hora=registro[3].toString();
@@ -704,7 +705,7 @@ public class Cat_Checador extends JFrame {
     }
 
         @SuppressWarnings({ "rawtypes", "unused" })
-        public static Object[] fila2(int folio_empleado,String tipo_entrada,int tipo_salida_comer){
+        public static Object[] intentar_checar(int folio_empleado,String tipo_entrada,int tipo_salida_comer){
                 
 //metodo para llenar vector para checador2--------------------------------------
                 Object [] vector = new Object[10];

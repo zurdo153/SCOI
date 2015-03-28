@@ -46,11 +46,9 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	
 	String[] columnas = new String[]{"Cod.Prod.","Descripcion","Exist.Cedis", "Transferencia", "Sugerido", "*", "Sugerido Cedis", "Observaciones"};
    
 	public DefaultTableModel modelo = new DefaultTableModel(null,  columnas){
-                    
 		@SuppressWarnings({ "rawtypes" })
 		Class[] types = new Class[]{
                    java.lang.Integer.class, 

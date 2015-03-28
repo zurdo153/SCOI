@@ -31,7 +31,7 @@ import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends JFrame {
+public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame {
 	    String Activo ="";
 	    int aceptar_negar=0;
 	    
@@ -39,13 +39,13 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 		JLayeredPane campo = new JLayeredPane();
 		Connexion con = new Connexion();
 		
-		DefaultTableModel model = new DefaultTableModel(0,9){
+		DefaultTableModel model = new DefaultTableModel(0,12){
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
-		             return listacolumnas(9)[columnIndex];
+		             return listacolumnas(12)[columnIndex];
 		         }   
 			public boolean isCellEditable(int fila, int columna){
-				if(columna < 8)
+				if(columna < 10)
 					return false;
 				return true;
 			}
@@ -56,7 +56,7 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 		public Class[] listacolumnas(int Columnas){
 		Class[] lista = new Class[Columnas];
 		for (int i = 0; i<lista.length; i++){
-			if(i==8){
+			if(i==11){
 				lista[i]=(Boolean.class);
 			}else{
 				lista[i] =(String.class);
@@ -76,7 +76,7 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 	    
 	    
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria(Integer catalogo)	{
+		public Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono(Integer catalogo)	{
 			this.setSize(1024,350);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
@@ -95,7 +95,7 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 			
 			Checar_Activo();
 			Actualizar_tabla();
-			llamar_render();
+			cargar_render();
 			
 			campo.add(JLBactivo).setBounds(780,300,350,20);
 			if(Activo.equals("Activada"))
@@ -111,15 +111,13 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 		
 		
 		ActionListener opaceptar = new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
+	    	public void actionPerformed(ActionEvent arg0) {
 				aceptar_negar=1;
 				verificar();
 			}
 		};
 		
 		ActionListener opnegar = new ActionListener() {
-			
 			public void actionPerformed(ActionEvent arg0) {
 				aceptar_negar=0;
 				verificar();
@@ -127,29 +125,37 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 		};
 		
 		
-		@SuppressWarnings("unused")
 		public void verificar(){
-			for (int i=0;i<tabla.getRowCount();i++){
-				System.out.println(tabla.getValueAt(i,8).toString().trim());
-			if((tabla.getValueAt(i,8).toString().trim()).equals("true")){
-				actualizar();
-				return;
-			};
-			JOptionPane.showMessageDialog(null, "Necesita Por Lo Menos Seleccionar un Registro", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-			return;
+			if(tabla.isEditing()){
+				tabla.getCellEditor().stopCellEditing();
 			}
+			
+			for (int i=0;i<tabla.getRowCount();i++){
+			if((tabla.getValueAt(i,11).toString().trim()).equals("true")){
+				if((tabla.getValueAt(i,10).toString().trim()).equals("")){
+					JOptionPane.showMessageDialog(null, "Todo Sueldo Aprobado o Cancelado Necesita Tener Observacion \n El Sueldo Selecionado Del Colaborador: \n"+tabla.getValueAt(i,1).toString().trim()+" No Tiene" , "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+	                return;
+				}else{
+					actualizar();
+			    	return;
+				}
+			};
+			}
+			JOptionPane.showMessageDialog(null, "Necesita Por Lo Menos Seleccionar Un Registro", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+			return;
 		};
 		
 		
 		public void actualizar(){
-		Object[][] arreglo_guardado= new Object[tabla.getRowCount()][6];
+		Object[][] arreglo_guardado= new Object[tabla.getRowCount()][7];
 		for (int i=0;i<tabla.getRowCount();i++){
 	       	 arreglo_guardado[i][0]=tabla.getValueAt(i,0).toString().trim();
-	         arreglo_guardado[i][1]=tabla.getValueAt(i,4).toString().trim();
-	       	 arreglo_guardado[i][2]=tabla.getValueAt(i,5).toString().trim();
-	       	 arreglo_guardado[i][3]=tabla.getValueAt(i,7).toString().trim();
-	       	 arreglo_guardado[i][4]=aceptar_negar;
-	       	 arreglo_guardado[i][5]=tabla.getValueAt(i,8).toString().trim();
+	         arreglo_guardado[i][1]=tabla.getValueAt(i,5).toString().trim();
+	       	 arreglo_guardado[i][2]=tabla.getValueAt(i,7).toString().trim();
+	       	 arreglo_guardado[i][3]=tabla.getValueAt(i,9).toString().trim();
+	       	 arreglo_guardado[i][4]=tabla.getValueAt(i,10).toString().trim();
+	       	 arreglo_guardado[i][5]=aceptar_negar;
+	       	 arreglo_guardado[i][6]=tabla.getValueAt(i,11).toString().trim();
 		    }
 		if(new ActualizarSQL().Aceptar_Negar_Sueldo_o_Bono(arreglo_guardado)){
         	while(tabla.getRowCount()>0){	
@@ -157,10 +163,9 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
         	Actualizar_tabla();
 			JOptionPane.showMessageDialog(null, "Se Actualizo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		}else{
-			JOptionPane.showMessageDialog(null, "Error Al Actualizar", "Avise al Administrador Del sistemas", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			JOptionPane.showMessageDialog(null, "Error Al Actualizar", "Avise al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 		}
 		}
-		
 		
 		
 		public String  Checar_Activo() {
@@ -220,7 +225,7 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-    	public void llamar_render(){
+    	public void cargar_render(){
     		//		tipo de valor = imagen,chb,texto
 //    		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
         
@@ -230,9 +235,12 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
     		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",9));
     		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",11)); 
     		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",11)); 
-    		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10));
-    		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("fecha","centro","Arial","normal",10));
-    		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("chb","","","",0));
+    		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",11)); 
+    		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",11));
+    		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10));
+    		tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("fecha","centro","Arial","normal",10));
+    		tabla.getColumnModel().getColumn(10).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10));
+    		tabla.getColumnModel().getColumn(11).setCellRenderer(new tablaRenderer("chb","","","",0));
     	}
     	
 		
@@ -251,21 +259,30 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 			tabla.getColumnModel().getColumn(3).setHeaderValue("Puesto");
 			tabla.getColumnModel().getColumn(3).setMaxWidth(b-30);
 			tabla.getColumnModel().getColumn(3).setMinWidth(b-30);
-			tabla.getColumnModel().getColumn(4).setHeaderValue("Sueldo");
-			tabla.getColumnModel().getColumn(4).setMaxWidth(a);
-			tabla.getColumnModel().getColumn(4).setMinWidth(a);
-			tabla.getColumnModel().getColumn(5).setHeaderValue("Bono");
-			tabla.getColumnModel().getColumn(5).setMaxWidth(a);
-			tabla.getColumnModel().getColumn(5).setMinWidth(a);
-			tabla.getColumnModel().getColumn(6).setHeaderValue("Empleado Modifico");
-			tabla.getColumnModel().getColumn(6).setMaxWidth(b);
-			tabla.getColumnModel().getColumn(6).setMinWidth(b);
-			tabla.getColumnModel().getColumn(7).setHeaderValue("Fecha");
-			tabla.getColumnModel().getColumn(7).setMaxWidth(a*2);
-			tabla.getColumnModel().getColumn(7).setMinWidth(a*2);
-			tabla.getColumnModel().getColumn(8).setHeaderValue("S");
-			tabla.getColumnModel().getColumn(8).setMaxWidth(a/2);
-			tabla.getColumnModel().getColumn(8).setMinWidth(a/2);
+			tabla.getColumnModel().getColumn(4).setHeaderValue("Sueldo Vig");
+			tabla.getColumnModel().getColumn(4).setMaxWidth(a+5);
+			tabla.getColumnModel().getColumn(4).setMinWidth(a+5);
+			tabla.getColumnModel().getColumn(5).setHeaderValue("Sueldo Nvo");
+			tabla.getColumnModel().getColumn(5).setMaxWidth(a+5);
+			tabla.getColumnModel().getColumn(5).setMinWidth(a+5);
+			tabla.getColumnModel().getColumn(6).setHeaderValue("Bono Vig");
+			tabla.getColumnModel().getColumn(6).setMaxWidth(a);
+			tabla.getColumnModel().getColumn(6).setMinWidth(a);
+			tabla.getColumnModel().getColumn(7).setHeaderValue("Bono Nvo");
+			tabla.getColumnModel().getColumn(7).setMaxWidth(a);
+			tabla.getColumnModel().getColumn(7).setMinWidth(a);
+			tabla.getColumnModel().getColumn(8).setHeaderValue("Empleado Modifico");
+			tabla.getColumnModel().getColumn(8).setMaxWidth(b);
+			tabla.getColumnModel().getColumn(8).setMinWidth(b);
+			tabla.getColumnModel().getColumn(9).setHeaderValue("Fecha");
+			tabla.getColumnModel().getColumn(9).setMaxWidth(a*2);
+			tabla.getColumnModel().getColumn(9).setMinWidth(a*2);
+			tabla.getColumnModel().getColumn(10).setHeaderValue("Observaciones");
+			tabla.getColumnModel().getColumn(10).setMaxWidth(b+b-10);
+			tabla.getColumnModel().getColumn(10).setMinWidth(b+b-10);
+			tabla.getColumnModel().getColumn(11).setHeaderValue("S");
+			tabla.getColumnModel().getColumn(11).setMaxWidth(a/2);
+			tabla.getColumnModel().getColumn(11).setMinWidth(a/2);
 			
 	    	tabla.getTableHeader().setReorderingAllowed(false) ;
 	    	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -282,7 +299,7 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 			try {
 				s = con.conexion().createStatement();
 				rs = s.executeQuery("exec sp_select_empleados_con_sueldo_pendiente_de_validar");
-				Object [] fila = new Object[9];
+				Object [] fila = new Object[12];
 				while (rs.next()) {
 				   fila[0] = rs.getString(1)+"  ";
 				   fila[1] = "   "+rs.getString(2);
@@ -292,7 +309,10 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 				   fila[5] = "   "+rs.getString(6);
 				   fila[6] = "   "+rs.getString(7);
 				   fila[7] = "   "+rs.getString(8);
-				   fila[8] = false;
+				   fila[8] = "   "+rs.getString(9);
+				   fila[9] = "   "+rs.getString(10);
+				   fila[10] = "   "+rs.getString(11);
+				   fila[11] = false;
 				   
 			  	   model.addRow(fila); 
 				}	
@@ -339,7 +359,7 @@ public class Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria extends 
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Autorizacion_De_Cambios_De_Sueldo_O_Bono_Por_Auditoria(1).setVisible(true);
+				new Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono(1).setVisible(true);
 			}catch(Exception e){	}
 		}
 	}
