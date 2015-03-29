@@ -87,6 +87,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 
+
 import Cat_Checador.Cat_Horarios;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Reporte_De_Empleados_No_Contratables;
@@ -1106,6 +1107,7 @@ public class Cat_Empleados extends JFrame{
 	}
 	
 	ActionListener guardar = new ActionListener(){
+		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e){
 		
 			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
