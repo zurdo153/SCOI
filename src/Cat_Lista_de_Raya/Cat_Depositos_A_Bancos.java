@@ -179,7 +179,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		
 		this.btn_guardar.addActionListener(op_guardar);
 		this.btn_lay_out.addActionListener(op_lay_out);
-		this.btn_cargar_nomina.addActionListener(op_123);
+		this.btn_cargar_nomina.addActionListener(ventana_cargar_nomina);
 		this.btn_IDepositosBancLimpio.addActionListener(Reporte_Depositos_Bancos_limpio);
 		this.btn_IDepositosBancP_Estab.addActionListener(Reporte_Depositos_Bancos_);
 		this.btn_EmpleadosS_Dep.addActionListener(Reporte_Empleados_Sin_Depositos_A_Bancos_);
@@ -230,6 +230,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 															 	 else{tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,6).toString()), i, 3); }
 	 			}
  		}
+ 	
      }
     };
     
@@ -323,7 +324,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		}
 	};
 	
-	   ActionListener op_123 = new ActionListener() {
+	   ActionListener ventana_cargar_nomina = new ActionListener() {
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent arg0) {
 				txtFolio.setText("");
@@ -624,7 +625,6 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 
 		public asignarBancos(String folio_nomina) {
 			super(folio_nomina);
-			System.out.println("actionlsitener aplicar");
 			btnAplicar.addActionListener(optAplicar);
 			
 		}

@@ -20,7 +20,7 @@ public class Init_Menu_Bar extends Init_Login{
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
 		
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.4.27");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] V:2.4.28");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -234,13 +234,11 @@ public class Init_Menu_Bar extends Init_Login{
 					}else{
 						
 					if(e.getActionCommand().equalsIgnoreCase("Cotizaciones De Un Producto En Proveedores")){
-						
 						new Cat_Cotizaciones_De_Un_Producto_En_Proveedores("").setVisible(true);
 					}else{
 						
 						Class instance = Class.forName(new Componentes().classExiste(e.getActionCommand()));
 						Object instanceObject = instance.newInstance();
-						
 						((Window) instanceObject).setVisible(true);
 					}
 					}

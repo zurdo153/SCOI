@@ -76,7 +76,7 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 	    
 	    
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono(Integer catalogo)	{
+		public Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono()	{
 			this.setSize(1024,350);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
@@ -359,7 +359,7 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono(1).setVisible(true);
+				new Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono().setVisible(true);
 			}catch(Exception e){	}
 		}
 	}
