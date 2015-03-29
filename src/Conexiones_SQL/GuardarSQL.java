@@ -145,7 +145,7 @@ public class GuardarSQL {
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario_integrado());
 			pstmt.setString(i+=1,	empleado.getForma_pago().toUpperCase());
-			pstmt.setInt(i+=1,		empleado.getSueldo());
+			pstmt.setFloat(i+=1,		empleado.getSueldo());
 			pstmt.setInt(i+=1, 		empleado.getBono());
 			pstmt.setInt(i+=1, 		empleado.getPrestamo());
 			pstmt.setFloat(i+=1, 	empleado.getPension_alimenticia());
@@ -3673,28 +3673,38 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
-	public boolean Guardar_Sugerido_Sistema(Object[][] matriz1, Object[][] matriz2){
-		int folio_usuario = usuario.getFolio();
+	public boolean Guardar_Sugerido_Sistema(Object[][] matriz1, Object[][] matriz2, int folio_sugerido) throws SQLException{
 		
-		String query = "exec sp_insert_tb_sugeridos_cedis ?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
+		
+		int folio_usuario = usuario.getFolio();
+		
+		if(folio_sugerido>0){
+			String queryUpdate = "delete tb_sugeridos_cedis where folio = "+folio_sugerido;
+
+//			actualizar folio
+			PreparedStatement pstmtupdate = con.prepareStatement(queryUpdate);
+			con.setAutoCommit(false);
+			pstmtupdate.executeUpdate();
+					
+		}else{
+			String queryUpdate = "update tb_folios set folio = (select folio+1 from tb_folios where transaccion = 'Folio Sugerido Cedis') where transaccion = 'Folio Sugerido Cedis'";
+
+//			actualizar folio
+			PreparedStatement pstmtupdate = con.prepareStatement(queryUpdate);
+			con.setAutoCommit(false);
+			pstmtupdate.executeUpdate();
+		}
+		
+		String query = "exec sp_insert_tb_sugeridos_cedis ?,?,?,?,?,?,?,?,?,?,"+folio_sugerido;
+		
 		
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			
 			for(int i=0; i<matriz1.length; i++){
-				
-//				System.out.print(matriz1[i][0 ].toString().trim()+"  ");
-//				System.out.print(matriz1[i][1 ].toString().trim()+"  ");
-//				System.out.print(matriz1[i][2 ].toString().trim()+"  ");
-//				System.out.print(matriz1[i][3 ].toString().trim()+"  ");
-//				System.out.print(matriz1[i][4 ].toString().trim()+"  ");
-//				System.out.print(matriz1[i][5 ].toString().trim()+"  ");
-//				System.out.print(matriz1[i][6 ].toString().trim()+"  ");
-//				System.out.println(matriz1[i][7 ].toString().trim());
-				
 				
 					pstmt.setString(1 , matriz1[i][0 ].toString().trim());
 					pstmt.setString(2 , matriz1[i][1 ].toString().trim());
@@ -3712,16 +3722,6 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			}
 			
 			for(int i=0; i<matriz2.length; i++){
-				
-//				System.out.print(matriz2[i][0 ].toString().trim()+"  ");
-//				System.out.print(matriz2[i][1 ].toString().trim()+"  ");
-//				System.out.print(matriz2[i][2 ].toString().trim()+"  ");
-//				System.out.print(matriz2[i][3 ].toString().trim()+"  ");
-//				System.out.print(matriz2[i][4 ].toString().trim()+"  ");
-//				System.out.print(matriz2[i][5 ].toString().trim()+"  ");
-//				System.out.print(matriz2[i][6 ].toString().trim()+"  ");
-//				System.out.println(matriz2[i][7 ].toString().trim());
-				
 				
 					pstmt.setString(1 , matriz2[i][0 ].toString().trim());                                                                
 					pstmt.setString(2 , matriz2[i][1 ].toString().trim());                                                                

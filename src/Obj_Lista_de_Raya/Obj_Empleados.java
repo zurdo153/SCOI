@@ -56,7 +56,7 @@ public class Obj_Empleados {
 	private float salario_diario;
 	private float salario_diario_integrado;
 	private String forma_pago;
-	private int sueldo;
+	private float sueldo;
 	private int bono;
 	private int prestamo;
 	private float pension_alimenticia;
@@ -401,11 +401,11 @@ public class Obj_Empleados {
 		this.forma_pago = forma_pago;
 	}
 
-	public int getSueldo() {
+	public float getSueldo() {
 		return sueldo;
 	}
 
-	public void setSueldo(int sueldo) {
+	public void setSueldo(float sueldo) {
 		this.sueldo = sueldo;
 	}
 
