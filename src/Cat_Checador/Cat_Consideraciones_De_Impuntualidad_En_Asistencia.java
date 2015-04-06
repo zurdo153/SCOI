@@ -1,6 +1,7 @@
 package Cat_Checador;
 
-
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -16,7 +17,9 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,6 +33,7 @@ import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
@@ -40,7 +44,6 @@ import Conexiones_SQL.BuscarTablasModel;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
-import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
@@ -141,6 +144,53 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
  		}
 	};
 	
+//	JTable tabla = new JTable(modelo){
+////      private static final long serialVersionUID = 1L;
+//      @Override
+//      public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+//      	Component c =(JLabel)super.prepareRenderer(renderer, row, column);
+////          c.setBackground(Color.WHITE);
+//          	if (tabla.getColumnCount() >= 0) {
+//          		
+////                              int mmDiffDealToValue = (tabla.getValueAt(row+1, 0).toString()).compareTo(tabla.getValueAt(row, 0).toString());
+////                              System.out.println(mmDiffDealToValue);
+//                              if(row==0){
+//                              	base = Color.orange;
+//                              }else{
+//                              	if (!tabla.getValueAt(row, 0).toString().equals(tabla.getValueAt(row-1, 0).toString())) {
+//                              		if(base.getRGB()==Color.YELLOW.getRGB()){
+//                                  		base = Color.orange;
+//                              		}else{
+//                              			base = Color.yellow;
+//                              		}
+//                              		
+////                                  	base = Color.orange;
+//                                  }
+//                              	
+//                              	
+//                              	
+////                              	else{
+////                                  	base = Color.yellow;
+////                                  }
+//                              }
+//                              
+////                              if(column<tabla.getColumnCount()-1){
+//                              ((JComponent) c).setOpaque(true);
+//                              	c.setBackground(base);
+////                              }
+//                              
+//              }
+//
+//           if (isRowSelected(row) && isColumnSelected(column)) {
+//              ((JComponent) c).setBorder(new LineBorder(Color.red));
+//          }
+//           if (isRowSelected(row)) {
+//               c.setBackground(Color.blue);;
+//           }
+//          return c;
+//      }
+//  };	    
+	    
 	JTable tabla = new JTable(modelo);
 	JScrollPane scroll = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -224,12 +274,8 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 			c_final.setDate(date2);
 		};
 
-	
-	
-	
 	@SuppressWarnings("unchecked")
 	public void llamar_render(){
-		
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
@@ -275,24 +321,78 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 
 		this.tabla.setRowSorter(trsfiltro);  
 		
-		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		
-		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(10).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(11).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(12).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(13).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(14).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(15).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(16).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
+		TableCellRenderer render = new TableCellRenderer() { 
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+			boolean hasFocus, int row, int column) { 
+				Component lbl = null;
+				
+				if(column==tabla.getColumnCount()-1){
+					lbl = new JCheckBox("",Boolean.parseBoolean(value.toString()));
+				}else{
+					lbl = new JLabel(value == null? "": value.toString());
+				}
+				
+				Color base = Color.orange;
+					if(row==0){
+                      	base = Color.orange;
+                      }else{
+                      	if (!tabla.getValueAt(row, 0).toString().equals(tabla.getValueAt(row-1, 0).toString())) {
+                      		if(base.getRGB()==Color.orange.getRGB()){
+                          		base = Color.white;
+                      		}else{
+                      			base = Color.orange;
+                      		}
+                          }
+                      }
+                      
+                      ((JComponent) lbl).setOpaque(true);
+                      	lbl.setBackground(base);
+				
+				if(table.getValueAt(row,16).equals("true")){
+					((JComponent)lbl).setOpaque(true); 
+					lbl.setBackground(Color.red);
+				}
+				
+				if(isSelected){
+					((JComponent)lbl).setOpaque(true);
+//					lbl.setBorder(new LineBorder(Color.blue));
+					lbl.setBackground(new java.awt.Color(158,255,255));
+				}
+				
+				if(isSelected && table.getValueAt(row,16).equals("true")){
+					((JComponent)lbl).setOpaque(true);
+//					lbl.setBorder(new LineBorder(Color.blue));
+					lbl.setBackground(new java.awt.Color(158,100,188));
+				}
+				
+//				switch(column){
+//					case 0 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
+//					case 1 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//					case 2 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
+//					case 3 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
+//					case 4 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
+//					
+//					case 5 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//					case 6 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
+//					case 7 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
+//					case 8 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
+//					case 9 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//					case 10: lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
+//					case 11: lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
+//					case 12: lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
+//					case 13: lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
+//					case 14: lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//					case 15: lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//					case 16: lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//					
+//				}
+			return lbl; 
+			} 
+		}; 
+
+		for(int i = 0; i<tabla.getColumnCount(); i++){
+			this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
+		}
 	}
 	
 	private void agregar(final JTable tbl) {
