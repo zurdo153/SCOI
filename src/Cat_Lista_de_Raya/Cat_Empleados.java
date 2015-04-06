@@ -122,7 +122,6 @@ public class Cat_Empleados extends JFrame{
 	JLabel lblSexo = new JLabel();
 	JLabel lblLaboral = new JLabel();
 	JLabel lblPercepciones = new JLabel();
-	
 	JLabel lblFolioHorario1 = new JLabel("");
 	JLabel lblFolioHorario2 = new JLabel("");
 	JLabel lblFolioHorario3 = new JLabel("");
