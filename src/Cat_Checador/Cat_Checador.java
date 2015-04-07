@@ -159,7 +159,6 @@ public class Cat_Checador extends JFrame {
                 Icon iconoLogo;
                 Icon iconoCerrar;
                 
-                
         public Cat_Checador(){
                 
                 this.init_tabla();

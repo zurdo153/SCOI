@@ -35,6 +35,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import com.lowagie.text.Table;
+
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -155,13 +157,13 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		panel.add(new JLabel("Totales Nomina y Cheques:")).setBounds(870,40,135,20);
 		panel.add(JLBTotales_Nomina).setBounds(1000,40,20,20);
 		
-		
-		
 		panel.add(JLBcambios_sueldo).setBounds(1050,40,350,20);
 //		if(cantidad_sueldos_mod>0){ 
 //		JLBcambios_sueldo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>Sueldos Pendientes de Auditoria Por Autorizar: "+cantidad_sueldos_mod+"</p></b></CENTER></FONT></html>");
 //        btn_guardar.setEnabled(false);
 //		}
+		
+		this.menu_toolbar.remove(btn_refrescar);
 		
 		this.init_tabla();
 		this.init_component();
@@ -175,7 +177,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.btn_guardar.addActionListener(op_guardar);
 		this.btn_imprimir.addActionListener(op_imprimir);
 		this.btn_nomina.addActionListener(op_totales_cheque);
-		this.btn_refrescar.addActionListener(op_refrescar);
+//		this.btn_refrescar.addActionListener(op_refrescar);
 		this.btn_generar.addActionListener(op_generar);
 
 		this.btn_lista_raya_pasadas.addActionListener(op_consulta_lista);
@@ -559,43 +561,58 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		return matriz;
 	}
 	
-	ActionListener op_refrescar = new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-			actualizar();
-			JOptionPane.showMessageDialog(null, "Se guardó y se refrescaron los datos correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
-		}
-	};
+//	ActionListener op_refrescar = new ActionListener() {
+//		public void actionPerformed(ActionEvent arg0) {
+//			actualizar();
+//			JOptionPane.showMessageDialog(null, "Se guardó y se refrescaron los datos correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+//		}
+//	};
 	
 	@SuppressWarnings("unchecked")
-	public void actualizar(){
-		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-		trsfiltro.setRowFilter(RowFilter.regexFilter("", 3));
+//	public void actualizar(){
+//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 3));
+//		
+//		txtFolio.setText("");
+//		txtNombre_Completo.setText("");
+//		cmbEstablecimientos.setSelectedIndex(0);
+//		
+//		if(tabla.isEditing()){
+//			tabla.getCellEditor().stopCellEditing();
+//		}
+//		
+//		Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
+//		
+//		if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
+//			while(tabla.getRowCount() > 0){
+//				tabla_model.removeRow(0);
+//			}
+//			
+//			Object[][] Tabla = new Obj_Revision_De_Lista_Raya().get_tabla_model();
+//			Object[] fila = new Object[tabla.getColumnCount()];
+//			for(int i=0; i<Tabla.length; i++){
+//				tabla_model.addRow(fila); 
+//				for(int j=0; j<tabla.getColumnCount(); j++){
+//					tabla_model.setValueAt(Tabla[i][j], i,j);
+//				}
+//			}
+//		}		
+//	}
+	
+	public String EmpleadoConNegativo(){
+	 String registro="";
+	  for(int i=0; i<tabla.getRowCount(); i++){
+		float descPrest = tabla.getValueAt(i, 7).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 7).toString());
+		float corte = tabla.getValueAt(i, 15).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 15).toString());
+		float aPagar = tabla.getValueAt(i, 23).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 23).toString());
 		
-		txtFolio.setText("");
-		txtNombre_Completo.setText("");
-		cmbEstablecimientos.setSelectedIndex(0);
-		
-		if(tabla.isEditing()){
-			tabla.getCellEditor().stopCellEditing();
+		if(descPrest<0 || corte<0 || aPagar<0){
+			registro += ("* "+tabla.getValueAt(i, 2).toString().trim()+".....................................................................").substring(0,64)+"    "+(descPrest+"                             ").substring(0,25)+(corte+"                             ").substring(0,25)+aPagar+"\n";
+		System.out.println(registro);
 		}
-		
-		Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
-		
-		if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
-			while(tabla.getRowCount() > 0){
-				tabla_model.removeRow(0);
-			}
-			
-			Object[][] Tabla = new Obj_Revision_De_Lista_Raya().get_tabla_model();
-			Object[] fila = new Object[tabla.getColumnCount()];
-			for(int i=0; i<Tabla.length; i++){
-				tabla_model.addRow(fila); 
-				for(int j=0; j<tabla.getColumnCount(); j++){
-					tabla_model.setValueAt(Tabla[i][j], i,j);
-				}
-			}
-		}		
+	  }
+	 return registro;
 	}
 	
 	ActionListener op_guardar = new ActionListener() {
@@ -617,27 +634,50 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				JOptionPane.showMessageDialog(null, "Los siguientes datos son requeridos:\n"+valida_error(),"Error",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
-				if(JOptionPane.showConfirmDialog(null, "¿Desea Guardar La  Pre Lista De Raya?") == 0){
-					Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
-					if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
-							 Obj_Totales_De_Cheque autorizacion = new Obj_Totales_De_Cheque();
-							 autorizacion.setAutorizar(false);
-							if(autorizacion.actualizar()){
-								cargar_autorizaciones();
-	
-								btn_nomina.setEnabled(true);
-								JOptionPane.showMessageDialog(null, "La Tabla De Pre Lista De Raya Se Guardo Exitosamente!!!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-								return;
+				
+				if(!EmpleadoConNegativo().equals("")){
+					txtNombre_Completo.requestFocus();
+					JOptionPane.showMessageDialog(null,"\n                          Empleado                                                  Desc_Prest              Cortes              A Pagar\n"+EmpleadoConNegativo(),"Aviso: Empleados Con Valores Negativos",JOptionPane.WARNING_MESSAGE);
+					return;
+				}else{
+					
+				
+					if(JOptionPane.showConfirmDialog(null, "¿Desea Guardar La  Pre Lista De Raya?") == 0){
+						Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
+						if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
+							
+							while(tabla.getRowCount() > 0){
+								tabla_model.removeRow(0);
+							}
+							Object[][] Tabla = new Obj_Revision_De_Lista_Raya().get_tabla_model();
+							Object[] fila = new Object[tabla.getColumnCount()];
+							for(int i=0; i<Tabla.length; i++){
+								tabla_model.addRow(fila); 
+								for(int j=0; j<tabla.getColumnCount(); j++){
+									tabla_model.setValueAt(Tabla[i][j], i,j);
+								}
+							}
+							
+							Obj_Totales_De_Cheque autorizacion = new Obj_Totales_De_Cheque();
+								 autorizacion.setAutorizar(false);
+								if(autorizacion.actualizar()){
+									cargar_autorizaciones();
+		
+									btn_nomina.setEnabled(true);
+									JOptionPane.showMessageDialog(null, "La Tabla De Pre Lista De Raya Se Guardo Exitosamente!!!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+									return;
+							}else{
+								JOptionPane.showMessageDialog(null, "Error Al Guardar ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							}
+							
 						}else{
-							JOptionPane.showMessageDialog(null, "Error Al Guardar ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
+							return;
 						}
-						
 					}else{
-						JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-				}else{
-					return;
+					
 				}
 			}
 		}
