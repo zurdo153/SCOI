@@ -231,6 +231,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	 			}
  		}
  	
+ 		btn_guardar.doClick();
      }
     };
     

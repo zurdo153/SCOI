@@ -145,8 +145,8 @@ public class GuardarSQL {
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario_integrado());
 			pstmt.setString(i+=1,	empleado.getForma_pago().toUpperCase());
-			pstmt.setFloat(i+=1,		empleado.getSueldo());
-			pstmt.setInt(i+=1, 		empleado.getBono());
+			pstmt.setFloat(i+=1,     0);
+			pstmt.setInt(i+=1, 		 1);
 			pstmt.setInt(i+=1, 		empleado.getPrestamo());
 			pstmt.setFloat(i+=1, 	empleado.getPension_alimenticia());
 			pstmt.setFloat(i+=1,	empleado.getInfonavit());
