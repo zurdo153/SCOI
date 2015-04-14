@@ -293,7 +293,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				cantidad_sueldos_mod =(rs.getInt(1));
 				
 				if(cantidad_sueldos_mod>0){ 
-					JLBcambios_sueldo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=RED><CENTER><b><p>Sueldos Pendientes de Auditoria Por Autorizar: "+cantidad_sueldos_mod+"</p></b></CENTER></FONT></html>");
+					JLBcambios_sueldo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=RED><CENTER><b><p>Sueldos Pendientes Por Autorizar: "+cantidad_sueldos_mod+"</p></b></CENTER></FONT></html>");
 			        btn_guardar.setEnabled(false);
 			        btn_imprimir.setEnabled(false);
 					}

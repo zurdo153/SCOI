@@ -129,7 +129,7 @@ public class Cat_Empleados extends JFrame{
 	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
 	
 	JTextField txtFolioEmpleado = new Componentes().text( new JTextField(), "Folio de Empleado", 9, "Int");
-	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 50, "String");
+	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 70, "String");
 	JTextField txtApPaterno = new Componentes().text( new JTextField(), "Apellido Paterno", 20, "String");
 	JTextField txtApMaterno = new Componentes().text( new JTextField(), "Apellido Materno", 20, "String");
 	JTextField txtFechaActualizacion = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
@@ -293,7 +293,7 @@ public class Cat_Empleados extends JFrame{
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/user_icon&16.png"));
 		this.setTitle("Alta de Empleados");
 		
-		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Alta de Empleados"));
+		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Datos del Colaborador"));
 		
 //		asignacion de bordes
 		this.lblDatosPersonales.setBorder(BorderFactory.createTitledBorder(blackline,"Datos Personales"));
@@ -846,12 +846,16 @@ public class Cat_Empleados extends JFrame{
 					rbHorario.setEnabled(true);
 					cmbSueldo.setSelectedIndex(0) ;
 					cmbBono.setSelectedIndex(0);
+
 					
 				}else{
 					btnVerificar.setBackground(Color.blue);
 					panelEnabledTrue();
 					cmbSueldo.setSelectedItem("0.0");
 					cmbBono.setSelectedItem("0.0");
+					cmbBono.setEnabled(false);
+					cmbSueldo.setEnabled(false);
+					cmbActivo_Inactivo.setSelectedIndex(1);
 				}
 			}
 		}
@@ -1129,7 +1133,7 @@ public class Cat_Empleados extends JFrame{
 			}
 			if(validaIMSS()>0 && validaIMSS()<3){
 				
-				JOptionPane.showMessageDialog(null, "Para poder guardar o actualizar en necesario que los siguientes campos esten llenos o totalemente vacios:\n- No Seguro Social\n- Actuvo(IMSS) ó Inactivo (IMSS)\n- Ingreso IMSS (Fecha)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "Para poder guardar o actualizar en necesario que los siguientes campos esten llenos o totalemente vacios:\n- No Seguro Social\n- Activo(IMSS) ó Inactivo (IMSS)\n- Ingreso IMSS (Fecha)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 				
 			}else{			
@@ -1138,7 +1142,7 @@ public class Cat_Empleados extends JFrame{
 				if(empleado.getFolio() == Integer.parseInt(txtFolioEmpleado.getText())){
 					if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
 						if(validaCampos()!="") {
-							JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+							JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;
 						}else{
 
@@ -1556,8 +1560,8 @@ public class Cat_Empleados extends JFrame{
 		txtPensionAli.setEnabled(true);
 		cmbEstablecimiento.setEnabled(true);
 		cmbPuesto.setEnabled(true);
-//		cmbSueldo.setEnabled(true);
-//		cmbBono.setEnabled(true);
+		cmbSueldo.setEnabled(true);
+		cmbBono.setEnabled(true);
 		cmbPrestamos.setEnabled(true);
 		txtInfonavit.setEnabled(true);
 		txtTarjetaNomina.setEnabled(true);
