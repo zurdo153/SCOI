@@ -3,6 +3,7 @@ package Cat_Compras;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -15,6 +16,8 @@ import java.sql.Statement;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
@@ -29,6 +32,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Cat_Reportes.Cat_Reportes_De_Ventas;
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
@@ -38,6 +42,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
+	String operador_ventas = "";
 	
 	public JTextField txtFolio = new Componentes().text(new JTextField(),"Busqueda Por Codigo del Producto",25, "Int");
 	public JTextField txtProductoDescripcion = new Componentes().text(new JTextField(),"Busqueda Por Descripcion del Producto",300, "String");
@@ -45,14 +50,15 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	public JTextField txtTallaProducto = new Componentes().text(new JTextField(),"Busqueda Por Talla Del Producto",300, "String");
 
 	Object[][] Matriz_Productos ;
-	DefaultTableModel Tabla_Productos= new DefaultTableModel(null,new String[]{"Codigo", "Descripcion","Clase Producto","Talla"}
+	DefaultTableModel Tabla_Productos= new DefaultTableModel(null,new String[]{"Codigo", "Descripcion","Clase Producto","Talla","*"}
 			){
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
 	    	java.lang.Object.class,
 	    	java.lang.Object.class, 
 	    	java.lang.Object.class,
-	    	java.lang.Object.class
+	    	java.lang.Object.class,
+	    	java.lang.Boolean.class
          };
 	     
 		@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -65,11 +71,35 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
         	 	case 1 : return false; 
         	 	case 2 : return false; 
         	 	case 3 : return false; 
+        	 	
+        	 	case 4 : if(operador_ventas.equals(""))
+        	 				return false;
+        	 			return true;
         	 } 				
  			return false;
  		}
+        
+        @Override
+        public void setValueAt(Object value, int row, int col) {
+            super.setValueAt(value, row, col);
+            	switch(operador_ventas){
+	            	case "Igual"	: if (col == 4 && value.equals(Boolean.TRUE)) deselectValues(row, col); break;
+	            	case "Menor que": if (col == 4 && value.equals(Boolean.TRUE)) deselectValues(row, col); break;
+	            	case "Mayor que": if (col == 4 && value.equals(Boolean.TRUE)) deselectValues(row, col); break;
+	            	case "Diferente": if (col == 4 && value.equals(Boolean.TRUE)) deselectValues(row, col); break;
+            	}
+        }
+
+        private void deselectValues(int selectedRow, int col) {
+            for (int row = 0; row < getRowCount(); row++) {
+                if (getValueAt(row, col).equals(Boolean.TRUE)
+                        && row != selectedRow) {
+                    setValueAt(Boolean.FALSE, row, col);
+                    fireTableCellUpdated(row, col);
+                }
+            }
+        }
 	};
-	
 	
 	public JTable tabla = new JTable(Tabla_Productos);
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
@@ -77,12 +107,14 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(Tabla_Productos); 
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
+
+	JButton btnCargar = new JButton("Cargar");
 	
 	String valor_catalogo="";
 	
 	int bandera_filtro_familia=0;
 	
-	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro){
+	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador){
 		valor_catalogo=bandera_origen_consulta_filro;
 
 		this.setModal(true);
@@ -94,16 +126,30 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		this.panel.add(txtFolio).setBounds(10,25,59,20);
 		this.panel.add(txtProductoDescripcion).setBounds(70,25,450,20);
 		this.panel.add(txtFamiliaProducto).setBounds(520,25,240,20);
+		this.panel.add(btnCargar).setBounds(920,25,90,20);
 		this.panel.add(scroll_tabla).setBounds(10,47,997,511);
 		
+		this.render();
 		this.init_tabla();
-		this.tabla.addMouseListener(opAgregar);
-		this.tabla.addKeyListener(op_agregar_productoconteclado);
+		
+		operador_ventas = operador;
+		
+		if(bandera_origen_consulta_filro.equals("Reporte_De_Ventas")){
+			btnCargar.setVisible(true);
+			tabla.removeMouseListener(opAgregar);
+			tabla.removeKeyListener(op_agregar_productoconteclado);
+		}else{
+			btnCargar.setVisible(false);
+			this.tabla.addMouseListener(opAgregar);
+			this.tabla.addKeyListener(op_agregar_productoconteclado);
+		}
 
 		this.txtFolio.addKeyListener(op_filtro_cod_Prod);
 		this.txtProductoDescripcion.addKeyListener(op_filtro_Descripcion);
 		this.txtFamiliaProducto.addKeyListener(op_filtro_Familia);
 		this.txtTallaProducto.addKeyListener(op_filtro_Talla);
+		
+		btnCargar.addActionListener(opCargar);
 		
 		this.cont.add(panel);
 		this.setSize(1024,600);
@@ -126,6 +172,37 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
         });
         
 	}
+	
+	ActionListener opCargar = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			int contador=0;
+	 		String Lista="('";	
+	 			for(int i=0; i<tabla.getRowCount(); i++){
+	 				if(Boolean.parseBoolean(Tabla_Productos.getValueAt(i, 4).toString()) == true){
+	 					String posicion = Tabla_Productos.getValueAt(i, 0).toString().trim();
+	 					
+	 					contador=contador+=1;
+	 							if(contador == 1){
+	 								Lista=Lista+"'"+posicion+"'";
+			 					}else{
+			 						Lista=Lista+"',''"+posicion+"'";
+			 					}
+//	 						}
+//	 					}
+	 				}
+	 			}
+	 			
+	 			Lista=Lista+"')";
+
+	 			if(Lista.equals("('')")){
+	 				JOptionPane.showMessageDialog(null, "Es necesario seleccionar un argunemto", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+						return;
+	 			}else{
+	 				new Cat_Reportes_De_Ventas(Lista,operador_ventas).setVisible(true);
+	 				dispose();
+	 			}
+		}
+	};
 	
 	
 	MouseListener opAgregar = new MouseListener() {
@@ -192,23 +269,27 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	
 	
 	
-	@SuppressWarnings({ "unchecked" })
 	public void init_tabla(){
 /////////////////LLENADO DE TABLAS/////////////////////////////////////////////////////////////////////////////
 
 		while(Tabla_Productos.getRowCount()>0){	Tabla_Productos.removeRow(0);	}
 
-Object[][] getTablaNomina = llenarTablaProductos();
-
-Object[] fila = new Object[4];
-
- for(int i=0; i<getTablaNomina.length; i++){
-         fila[0] = getTablaNomina[i][0]+"";
-         fila[1] = getTablaNomina[i][1]+"";
-         fila[2] = getTablaNomina[i][2]+"";
-         fila[3] = getTablaNomina[i][3]+"";
-         Tabla_Productos.addRow(fila); }
- 
+		Object[][] getTablaNomina = llenarTablaProductos();
+		
+		Object[] fila = new Object[5];
+		
+		 for(int i=0; i<getTablaNomina.length; i++){
+		         fila[0] = getTablaNomina[i][0]+"";
+		         fila[1] = getTablaNomina[i][1]+"";
+		         fila[2] = getTablaNomina[i][2]+"";
+		         fila[3] = getTablaNomina[i][3]+"";
+		         fila[4] = getTablaNomina[i][4].toString();
+		         Tabla_Productos.addRow(fila); 
+		  }
+    }
+	
+	@SuppressWarnings("unchecked")
+	public void render(){
 	    this.tabla.getTableHeader().setReorderingAllowed(false) ;
 	    this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    this.tabla.setRowSorter(trsfiltro);  
@@ -217,20 +298,19 @@ Object[] fila = new Object[4];
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(60);		
     	this.tabla.getColumnModel().getColumn(1).setMaxWidth(1500);
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(450);
-    	this.tabla.getColumnModel().getColumn(2).setMaxWidth(1500);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(240);
+    	this.tabla.getColumnModel().getColumn(2).setMaxWidth(1400);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(200);
     	this.tabla.getColumnModel().getColumn(3).setMaxWidth(1500);
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(240);
+    	this.tabla.getColumnModel().getColumn(4).setMaxWidth(30);
+    	this.tabla.getColumnModel().getColumn(4).setMinWidth(30);
     	
-    	render();
-				
-    }
-	public void render(){
 //		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
 		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("fecha","izquierda","Arial","normal",12));
+		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("CHB","centro","Arial","normal",12));
 	}
 	
 	
@@ -245,13 +325,14 @@ Object[] fila = new Object[4];
 		try {
 			s = new Connexion().conexion_IZAGAR().createStatement();
 			rs2 = s.executeQuery(todos);
-			Matriz_Productos = new Object[getFilasProveedores(todos)][4];
+			Matriz_Productos = new Object[getFilasProveedores(todos)][5];
 			int i=0;
 			while(rs2.next()){
 				Matriz_Productos[i][0] = "   "+rs2.getString(1).trim();
 				Matriz_Productos[i][1] = "   "+rs2.getString(2).trim();
 				Matriz_Productos[i][2] = "   "+rs2.getString(3).trim();
 				Matriz_Productos[i][3] = "   "+rs2.getString(4).trim();
+				Matriz_Productos[i][4] = "false";
 								i++;
 			}
 		} catch (SQLException e1) {
@@ -267,8 +348,8 @@ Object[] fila = new Object[4];
 		int filas=0;
 		Statement stmt = null;
 		try {stmt = new Connexion().conexion_IZAGAR().createStatement();
-			ResultSet rs2 = stmt.executeQuery(qry);
-			while(rs2.next()){filas++;}
+			ResultSet rs3 = stmt.executeQuery(qry);
+			while(rs3.next()){filas++;}
 		} catch (SQLException e1) {	e1.printStackTrace();}
 		return filas;
 	}
@@ -339,7 +420,7 @@ Object[] fila = new Object[4];
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Filtro_De_Busqueda_De_Productos("Cotizaciones_De_Un_Producto").setVisible(true);
+				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas","").setVisible(true);
 			}catch(Exception e){	}
 		}
 	

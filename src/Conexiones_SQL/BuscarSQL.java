@@ -86,11 +86,11 @@ import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
+import Obj_Reportes.Obj_Reportes_De_Ventas;
 
 public class BuscarSQL {
 	
 	Connexion con = new Connexion();
-	
 	
 	public int  dias_para_fecha_revision_consideracion() throws SQLException{
 		int dias=0;
@@ -2331,6 +2331,21 @@ public class BuscarSQL {
 		int filas=0;
 		try {
 			Statement s = con.conexion().createStatement();
+			ResultSet rs = s.executeQuery(qry);
+			while(rs.next()){
+				filas++;
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return filas;
+	}
+	
+	public int getFilasExterno(String qry){
+		int filas=0;
+		try {
+			Statement s = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = s.executeQuery(qry);
 			while(rs.next()){
 				filas++;
@@ -6127,6 +6142,73 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return cadena;
+	}
+	
+	public String[][] Reporte_De_Ventas(Obj_Reportes_De_Ventas ventas) throws SQLException{
+		
+		Statement stmt = null;
+		
+		Obj_Usuario usuario = new Obj_Usuario();
+		
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery("select acceso_a_costos_y_precio_de_venta from tb_empleado where folio = "+ usuario.LeerSession().getFolio());
+			
+				while(rs.next()){
+						usuario.setAcceso_a_costos_y_precio_de_venta(rs.getInt(1));
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())+"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"'";
+		System.out.println(query);
+		String[][] rp_ventas = new String[getFilasExterno(query)][20];
+		
+		try {
+			stmt = con.conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+				while(rs.next()){
+//					for(int j=0; j<20; j++){
+//						rp_ventas[i][j ]= rs.getString(j+1);
+						
+						rp_ventas[i][0 ]= rs.getString(1 ).trim();
+						rp_ventas[i][1 ]= rs.getString(2 ).trim();
+						rp_ventas[i][2 ]= rs.getString(3 ).trim()+"  ";
+						rp_ventas[i][3 ]= rs.getString(4 ).trim();
+						rp_ventas[i][4 ]= rs.getString(5 ).trim()+"  ";
+						rp_ventas[i][5 ]= rs.getString(6 ).trim()+"  ";
+						rp_ventas[i][6 ]= rs.getString(7 ).trim();
+						rp_ventas[i][7 ]= rs.getString(8 ).trim();
+						rp_ventas[i][8 ]= rs.getString(9 ).trim();
+						rp_ventas[i][9 ]= rs.getString(10).trim();
+						rp_ventas[i][10]= rs.getString(11).trim();
+						rp_ventas[i][11]= rs.getString(12).trim()+"  ";
+						rp_ventas[i][12]= rs.getString(13).trim()+"  ";
+						rp_ventas[i][13]= rs.getString(14).trim()+"  ";
+						rp_ventas[i][14]= rs.getString(15).trim();
+						rp_ventas[i][15]= rs.getString(16).trim()+"  ";
+						rp_ventas[i][16]= rs.getString(17).trim();
+						rp_ventas[i][17]= rs.getString(18).trim();
+						rp_ventas[i][18]= rs.getString(19).trim();
+						rp_ventas[i][19]= rs.getString(20).trim();
+//					}                
+					i++;
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return rp_ventas;
 	}
 	
 }
