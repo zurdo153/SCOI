@@ -6146,13 +6146,28 @@ public class BuscarSQL {
 	
 	public String[][] Reporte_De_Ventas(Obj_Reportes_De_Ventas ventas) throws SQLException{
 		
-//		int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
-//		buscar el folio y comprovar si tiene acceso a costos
+		Statement stmt = null;
 		
-		String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())+"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"'"+1;
+		Obj_Usuario usuario = new Obj_Usuario();
+		
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery("select acceso_a_costos_y_precio_de_venta from tb_empleado where folio = "+ usuario.LeerSession().getFolio());
+			
+				while(rs.next()){
+						usuario.setAcceso_a_costos_y_precio_de_venta(rs.getInt(1));
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())+"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"'";
 		System.out.println(query);
 		String[][] rp_ventas = new String[getFilasExterno(query)][20];
-		Statement stmt = null;
+		
 		try {
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);

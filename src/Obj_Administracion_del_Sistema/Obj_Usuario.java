@@ -18,10 +18,10 @@ public class Obj_Usuario {
 	private String sesion;
 	private String vista_previa_impresion;
 	private int status;
-
+	private int acceso_a_costos_y_precio_de_venta;
 	
 	public Obj_Usuario(){
-		this.folio=0; nombre_completo=""; contrasena=""; permiso_id=0; status=0; fecha_alta=""; fecha_actua=""; sesion="";vista_previa_impresion="";
+		this.folio=0; nombre_completo=""; contrasena=""; permiso_id=0; status=0; fecha_alta=""; fecha_actua=""; sesion="";vista_previa_impresion="";acceso_a_costos_y_precio_de_venta=0;
 	}
 
 
@@ -112,6 +112,17 @@ public class Obj_Usuario {
 		this.sesion = sesion;
 	}
 	
+	public int getAcceso_a_costos_y_precio_de_venta() {
+		return acceso_a_costos_y_precio_de_venta;
+	}
+
+
+	public void setAcceso_a_costos_y_precio_de_venta(
+			int acceso_a_costos_y_precio_de_venta) {
+		this.acceso_a_costos_y_precio_de_venta = acceso_a_costos_y_precio_de_venta;
+	}
+
+
 	public boolean guardar(){ return new GuardarSQL().Guardar_Usuario(this); }
 	
 	public Obj_Usuario buscar(int folio){ 
