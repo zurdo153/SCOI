@@ -112,7 +112,7 @@ public class Obj_Totales_De_Cheque {
 	
 	public Obj_Totales_De_Cheque buscar_autorizacion(){
 		try {
-			return new BuscarSQL().Autorizar_nomina();
+			return new BuscarSQL().Autorizacion_totales_nomina();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

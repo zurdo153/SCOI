@@ -1327,7 +1327,7 @@ public class Cat_Empleados extends JFrame{
 								btnBuscar.setEnabled(true);
 								btnFiltro.setEnabled(true);
 								btnNuevo.setEnabled(true);
-								JOptionPane.showMessageDialog(null, "El Empleado Se Actualizo Correcmente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+								JOptionPane.showMessageDialog(null, "El Empleado Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							}else{
 								JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
 							}

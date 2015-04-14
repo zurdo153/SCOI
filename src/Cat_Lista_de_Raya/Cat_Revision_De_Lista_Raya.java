@@ -35,7 +35,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import com.lowagie.text.Table;
 
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
@@ -51,6 +50,7 @@ import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	 boolean acceso = null != null;
 	 int cantidad_sueldos_mod =0;	
+	 
 	private DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Revision_De_Lista_Raya().get_tabla_model(),
 		new String[]{"","Folio", "Nombre Completo", "Establecimiento", "Sueldo",
 			"Bono", "P.Saldo ini", "Desc.Prest", "P.Saldo Fin", "F.Sodas",
@@ -324,7 +324,10 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 	public void cargar_autorizaciones(){
 		
-
+		if(!EmpleadoConNegativo().equals("")){
+			txtNombre_Completo.requestFocus();
+			JOptionPane.showMessageDialog(null,"\n No Podra Usar El Boton Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>>\nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar \n \n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n"+EmpleadoConNegativo(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+		}  
 		
 		if((new Obj_Fue_Sodas_DH().busquedaautoizacionfs().isStatus_autorizacion()))
 		  {btn_imprimir.setEnabled(false);
@@ -568,7 +571,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 //		}
 //	};
 	
-	@SuppressWarnings("unchecked")
 //	public void actualizar(){
 //		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 //		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
@@ -609,7 +611,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 		if(descPrest<0 || corte<0 || aPagar<0){
 			registro += ("* "+tabla.getValueAt(i, 2).toString().trim()+".....................................................................").substring(0,64)+"    "+(descPrest+"                             ").substring(0,25)+(corte+"                             ").substring(0,25)+aPagar+"\n";
-		System.out.println(registro);
+//		System.out.println(registro);
 		}
 	  }
 	 return registro;
@@ -637,15 +639,13 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				
 				if(!EmpleadoConNegativo().equals("")){
 					txtNombre_Completo.requestFocus();
-					JOptionPane.showMessageDialog(null,"\n                          Empleado                                                  Desc_Prest              Cortes              A Pagar\n"+EmpleadoConNegativo(),"Aviso: Empleados Con Valores Negativos",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"\n No Es Posible Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>>\nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar\n\n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n"+EmpleadoConNegativo(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}else{
-					
 				
 					if(JOptionPane.showConfirmDialog(null, "¿Desea Guardar La  Pre Lista De Raya?") == 0){
 						Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
 						if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
-							
 							while(tabla.getRowCount() > 0){
 								tabla_model.removeRow(0);
 							}
@@ -664,20 +664,18 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 									cargar_autorizaciones();
 		
 									btn_nomina.setEnabled(true);
-									JOptionPane.showMessageDialog(null, "La Tabla De Pre Lista De Raya Se Guardo Exitosamente!!!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+									JOptionPane.showMessageDialog(null, "La Revision De La Lista De Raya Se Guardo Exitosamente!!!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 									return;
 							}else{
 								JOptionPane.showMessageDialog(null, "Error Al Guardar ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-							}
-							
+                  		   		 }
 						}else{
 							JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
 							return;
-						}
+					     	 }
 					}else{
 						return;
-					}
-					
+					    }
 				}
 			}
 		}
