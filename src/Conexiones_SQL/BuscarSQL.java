@@ -2282,7 +2282,7 @@ public class BuscarSQL {
 		return auditoria;
 	}
 	
-	public Obj_Totales_De_Cheque Autorizar_nomina () throws SQLException{
+	public Obj_Totales_De_Cheque Autorizacion_totales_nomina () throws SQLException{
 		Obj_Totales_De_Cheque nomina = new Obj_Totales_De_Cheque();
 		String query = "select autorizar_nomina from tb_autorizaciones";
 		Statement stmt = null;

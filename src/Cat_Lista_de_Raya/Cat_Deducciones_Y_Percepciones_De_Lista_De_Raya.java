@@ -38,7 +38,8 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 	private String lista1[] = {"","1","2","3","4","5","6","7"};
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private JComboBox cmb_tabla_dias = new JComboBox(lista1);
-  
+   
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private JComboBox cmb_tabla_gafete = new JComboBox(lista1);
     
