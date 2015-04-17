@@ -402,15 +402,15 @@ public class Cat_Checador extends JFrame {
                          return;
         	
          }else{
-//         	if (entosal.getValor_Pc().equals("false")){
-//         		lblSemaforoRojo.setEnabled(true);
-// 		            lblSemaforoVerde.setEnabled(false);
-// 		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-// 		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/red-de-usuario-icono-6758-64.png"));
-// 		  			  txtClaveReal.setText("");
-//                                                 txtClaveReal.requestFocus();
-//                          return;
-//            	}
+         	if (entosal.getValor_Pc().equals("false")){
+         		lblSemaforoRojo.setEnabled(true);
+ 		            lblSemaforoVerde.setEnabled(false);
+ 		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+ 		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/red-de-usuario-icono-6758-64.png"));
+ 		  			  txtClaveReal.setText("");
+                                                 txtClaveReal.requestFocus();
+                          return;
+            	}
          	
                 if(new Obj_Entosal().buscar_colicion(folio_empleado)){
                 	lblSemaforoRojo.setEnabled(true);

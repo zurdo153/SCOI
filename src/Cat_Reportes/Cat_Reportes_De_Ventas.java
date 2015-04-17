@@ -208,6 +208,9 @@ public class Cat_Reportes_De_Ventas extends JFrame {
     
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	
+	String parametroGeneral = "";
+	String Lista="";
+	
 	public Cat_Reportes_De_Ventas(String parametro, String operador){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
@@ -528,6 +531,7 @@ public void filtroProductos(String cadena){
             txtFiltroFamilia.setText("");
             txtFiltroLinea.setText("");
         	panelEnableTrue();
+        	Lista="";
 		}
 	};
 	
@@ -539,51 +543,128 @@ public void filtroProductos(String cadena){
             txtFiltroFamilia.setText("");
             txtFiltroLinea.setText("");
         	panelEnableTrue();
+        	Lista="";
 		}
 	};
 	
 	ActionListener limpiar_filtro_categorias = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-            txtFiltroCategoria.setText("");
             
-            	btnFiltroClase.setEnabled(true);
+			panelEnableFalse();
+			txtFiltroCategoria.setText("");
+			limpiar_vacios();
+//			 btnFiltroCategoria.setEnabled(true);
+//			 btnLimpiarFiltroCategoria.setEnabled(true);
+//			 
+//	         btnLimpiarFiltroClase.setEnabled(true);
+//	            
+//	            	if(txtFiltroClase.getText().equals("")){
+//	            		btnFiltroClase.setEnabled(true);
+//	            		
+//	            		if(txtFiltroClase.getText().equals("")){
+//		            		btnFiltroClase.setEnabled(true);
+//		            		btnLimpiarFiltroClase.setEnabled(true);
+//		            		
+//		            		btnFiltroProducto.setEnabled(true);
+//		            	}
+//	            	}
+            
 		}
 	};
 	
 	ActionListener limpiar_filtro_familias = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-            txtFiltroFamilia.setText("");
-            
-            btnFiltroCategoria.setEnabled(true);
-            
-            if(txtFiltroClase.getText().equals("")){
-            	btnFiltroClase.setEnabled(true);
-            }
+           
+			panelEnableFalse();
+			txtFiltroFamilia.setText("");
+			limpiar_vacios();
+//            btnFiltroFamilia.setEnabled(true);
+//            btnLimpiarFiltroFamilia.setEnabled(true);
+//            
+//            btnLimpiarFiltroCategoria.setEnabled(true);
+//            
+//            	if(txtFiltroCategoria.getText().equals("")){
+//            		btnFiltroCategoria.setEnabled(true);
+//            		
+//            		if(txtFiltroClase.getText().equals("")){
+//	            		btnFiltroClase.setEnabled(true);
+//	            		btnLimpiarFiltroClase.setEnabled(true);
+//	            		
+//	            		btnFiltroProducto.setEnabled(true);
+//	            	}
+//            	}
+            	
 		}
 	};
 	
 	ActionListener limpiar_filtro_lineas = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-            txtFiltroLinea.setText("");
-            
-            	btnFiltroFamilia.setEnabled(true);
-            	btnLimpiarFiltroFamilia.setEnabled(true);
-            	
-            	if(txtFiltroFamilia.getText().equals("")){
-            		if(txtFiltroCategoria.getText().equals("")){
-	                	btnFiltroCategoria.setEnabled(true);
-	                	btnLimpiarFiltroCategoria.setEnabled(true);
-	                	
-	                	if(txtFiltroClase.getText().equals("")){
-	                    	btnFiltroClase.setEnabled(true);
-	                    	btnLimpiarFiltroClase.setEnabled(true);
-	                    }
-	                }
-            	}
-            	
+			
+			panelEnableFalse();
+			txtFiltroLinea.setText("");
+			limpiar_vacios();
+//            
+//            btnFiltroLinea.setEnabled(true);
+//            btnLimpiarFiltroLinea.setEnabled(true);
+//            
+//            btnLimpiarFiltroFamilia.setEnabled(true);
+//            
+//            	if(txtFiltroFamilia.getText().equals("")){
+//            		btnFiltroFamilia.setEnabled(true);
+//            		
+//            		if(txtFiltroCategoria.getText().equals("")){
+//                		btnFiltroCategoria.setEnabled(true);
+//                		btnLimpiarFiltroCategoria.setEnabled(true);
+//                		
+//                		if(txtFiltroClase.getText().equals("")){
+//    	            		btnFiltroClase.setEnabled(true);
+//    	            		btnLimpiarFiltroClase.setEnabled(true);
+//    	            		
+//    	            		btnFiltroProducto.setEnabled(true);
+//    	            	}
+//                	}
+//            	}
             	
 		}
 	};
+	
+	public void limpiar_vacios(){
+		panelEnableFalse();
+		txtFiltroLinea.setText("");
+        
+        btnFiltroLinea.setEnabled(true);
+        btnLimpiarFiltroLinea.setEnabled(true);
+        
+        btnLimpiarFiltroFamilia.setEnabled(true);
+        
+        	if(txtFiltroFamilia.getText().equals("")){
+        		btnFiltroFamilia.setEnabled(true);
+        		
+        		if(txtFiltroCategoria.getText().equals("")){
+            		btnFiltroCategoria.setEnabled(true);
+            		btnLimpiarFiltroCategoria.setEnabled(true);
+            		
+            		if(txtFiltroClase.getText().equals("")){
+	            		btnFiltroClase.setEnabled(true);
+	            		btnLimpiarFiltroClase.setEnabled(true);
+	            		
+	            		btnFiltroProducto.setEnabled(true);
+	            	}
+            		btnLimpiarFiltroClase.setEnabled(true);
+            	}
+        		btnLimpiarFiltroCategoria.setEnabled(true);
+        	}
+        	btnLimpiarFiltroFamilia.setEnabled(true);
+        	
+        	
+        	cmbOperador_Productos.setSelectedIndex(0);
+        	cmbOperador_Clase.setSelectedIndex(0);
+        	cmbOperador_Categoria.setSelectedIndex(0);
+        	cmbOperador_Familia.setSelectedIndex(0);
+        	cmbOperador_Linea.setSelectedIndex(0);
+        	
+        	Lista="";
+	}
 	
 //	----------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -664,7 +745,7 @@ public void filtroProductos(String cadena){
     	btnFiltroFamilia.setEnabled(false);
     	btnFiltroLinea.setEnabled(false);
     	
-    	btnLimpiarFiltroProducto.setEnabled(false);
+//    	btnLimpiarFiltroProducto.setEnabled(false);
     	btnLimpiarFiltroClase.setEnabled(false);
     	btnLimpiarFiltroCategoria.setEnabled(false);
     	btnLimpiarFiltroFamilia.setEnabled(false);
@@ -678,7 +759,7 @@ public void filtroProductos(String cadena){
     	btnFiltroFamilia.setEnabled(true);
     	btnFiltroLinea.setEnabled(true);
     	
-    	btnLimpiarFiltroProducto.setEnabled(true);
+//    	btnLimpiarFiltroProducto.setEnabled(true);
     	btnLimpiarFiltroClase.setEnabled(true);
     	btnLimpiarFiltroCategoria.setEnabled(true);
     	btnLimpiarFiltroFamilia.setEnabled(true);
@@ -858,7 +939,7 @@ public void filtroProductos(String cadena){
 						txtNombre_Completo.setText("");
 						
 						int contador=0;
-				 		String Lista="('";	
+				 		 Lista="('";	
 				 			for(int i=0; i<tablaFiltro.getRowCount(); i++){
 				 				if(Boolean.parseBoolean(modeloFiltro.getValueAt(i, 2).toString()) == true){
 				 					String posicion = modeloFiltro.getValueAt(i, 0).toString().trim();
@@ -887,42 +968,64 @@ public void filtroProductos(String cadena){
 				 		        
 				 		        	
 				 		            switch(Operador){
-				 			    		case "Igual"		:operador_simbolo=" = "; break;
-				 			    		case "Esta en lista":operador_simbolo=" in "; break;
-				 			    		case "Menor que"	:operador_simbolo=" < "; break;
-				 			    		case "Mayor que"	:operador_simbolo=" > "; break;
-				 			    		case "Diferente"	:operador_simbolo=" <> "; break;
+				 			    		case "Igual"		:operador_simbolo=" = "; 
+				 			    		panelEnableFalse();
+				 			    		parametroGeneral=Lista;
+				 			    		
+				 			    		break;
+				 			    		case "Esta en lista":operador_simbolo=" in "; 
+				 			    		panelEnableFalse();
+				 			    		
+				 			    		break;
+				 			    		case "Menor que"	:operador_simbolo=" < "; 
+				 			    		panelEnableFalse();
+				 			    		
+				 			    		break;
+				 			    		case "Mayor que"	:operador_simbolo=" > "; 
+				 			    		panelEnableFalse();
+				 			    		
+				 			    		break;
+				 			    		case "Diferente"	:operador_simbolo=" <> "; 
+				 			    		panelEnableFalse();
+				 			    		
+				 			    		break;
 				 		    		}
-				 				
+				 				Lista=operador_simbolo+Lista;
 				 				switch(folio_columna){
-							 				case "clase_producto":	txtFiltroClase.setText(operador_simbolo+Lista)		;
+				 				           
+							 				case "clase_producto":	txtFiltroClase.setText(Lista)		;
+							 										if(Operador.equals("Igual")||Operador.equals("Esta en lista")){
+							 											btnFiltroCategoria.setEnabled(true);
+							 											btnLimpiarFiltroCategoria.setEnabled(true);
+							 										}
+							 										
+							 										btnLimpiarFiltroClase.setEnabled(true);
 							 										btnFiltroProducto.setEnabled(false);
-//							 										btnFiltroClase.setEnabled(false);
 							 				break;
 							 				
-							 				case "categoria":		txtFiltroCategoria.setText(operador_simbolo+Lista)	;
+							 				case "categoria":		txtFiltroCategoria.setText(Lista)	;
+													 				if(Operador.equals("Igual")||Operador.equals("Esta en lista")){
+							 											btnFiltroFamilia.setEnabled(true);
+							 											btnLimpiarFiltroFamilia.setEnabled(true);
+							 										}
+													 				btnLimpiarFiltroCategoria.setEnabled(true);
 													 				btnFiltroProducto.setEnabled(false);
-							 										btnFiltroClase.setEnabled(false);
-//							 										btnFiltroClase.setEnabled(false);
 							 				break;
 							 				
 							 				
-							 				case "familia":			txtFiltroFamilia.setText(operador_simbolo+Lista)		;
+							 				case "familia":			txtFiltroFamilia.setText(Lista)		;
+													 				if(Operador.equals("Igual")||Operador.equals("Esta en lista")){
+							 											btnFiltroLinea.setEnabled(true);
+							 											btnLimpiarFiltroLinea.setEnabled(true);
+							 										}
+													 				btnLimpiarFiltroFamilia.setEnabled(true);
 													 				btnFiltroProducto.setEnabled(false);
-							 										btnFiltroClase.setEnabled(false);
-							 										btnFiltroCategoria.setEnabled(false);
-							 										
-							 										btnLimpiarFiltroCategoria.setEnabled(false);
 							 				break;
 							 				
-							 				case "linea_producto":	txtFiltroLinea.setText(operador_simbolo+Lista)		;
+							 				case "linea_producto":	txtFiltroLinea.setText(Lista)		;
+							 				
+							 										btnLimpiarFiltroLinea.setEnabled(true);
 													 				btnFiltroProducto.setEnabled(false);
-							 										btnFiltroClase.setEnabled(false);
-							 										btnFiltroCategoria.setEnabled(false);
-							 										btnFiltroFamilia.setEnabled(false);
-							 										
-							 										btnLimpiarFiltroCategoria.setEnabled(false);
-							 										btnLimpiarFiltroFamilia.setEnabled(false);
 	 										break;
 				 				}
 					 			dispose();
@@ -959,7 +1062,23 @@ public void filtroProductos(String cadena){
 				
 			   	public Object[][] getTablaFiltro(String operador, String nombre_de_tabla){
 //			   		String todos = "exec sp_select_filtro_empleados_con_cuadrante_asignado";
-					String todos = "select "+folio_columna+" as folio,nombre from "+nombre_de_tabla+" order by nombre";
+			   		String condicion = "";
+			   		
+			   		if(!Lista.equals("")){
+			   			
+			   			condicion = " where jerarquia "+Lista.replace("''","'");
+			   		}
+////			   		else{
+////			   			
+////			   		}
+//			   		if(nombre_de_tabla.equals("clases_productos")){
+//			   			condicion = " where folio = "+parametroGeneral;
+//			   		}
+			   		
+			   		
+					String todos = "select "+folio_columna+" as folio,nombre from "+nombre_de_tabla+condicion+" order by nombre";
+					
+					System.out.println(todos);
 					Statement s;
 					ResultSet rs;
 					try {
@@ -975,6 +1094,7 @@ public void filtroProductos(String cadena){
 							MatrizFiltro[i][2] = false;
 							i++;
 						}
+						Lista="";
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
