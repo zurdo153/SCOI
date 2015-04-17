@@ -2,6 +2,7 @@ package Cat_Lista_de_Raya;
 
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -34,6 +35,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
+
 
 
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
@@ -142,9 +144,18 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
 	/* EL CONSTRUCTOR TIENE EL NOMBRE PUBLIC Y SEGUIDO DEL NOMBRE DE LA CLASE */
 	public Cat_Revision_De_Lista_Raya(){
+		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+		
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+		this.addWindowListener(op_cerrar);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		
 		this.setTitle("Revisión lista raya");
 		
-		this.panel.add(scroll_tabla).setBounds(30,60,1300,620);
+		this.panel.add(scroll_tabla).setBounds(30,60,ancho-50,620);
 		cont.add(panel);
 		
 		panel.add(new JLabel("Autorizacion Auditoria:")).setBounds(730,20,120,20);
@@ -186,15 +197,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
 		
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
-		this.addWindowListener(op_cerrar);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			
 		busqueda_Observaciones_auditoria();
-		
-		
 		
 //      asigna el foco al JTextField 
         this.addWindowListener(new WindowAdapter() {

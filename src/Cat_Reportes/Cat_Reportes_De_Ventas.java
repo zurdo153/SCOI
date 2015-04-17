@@ -1,6 +1,7 @@
 package Cat_Reportes;
 
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -208,8 +209,10 @@ public class Cat_Reportes_De_Ventas extends JFrame {
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	
 	public Cat_Reportes_De_Ventas(String parametro, String operador){
+		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+		
 		cont.add(panel);
-		setSize(1024,768);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia-comunitaria-icono-9465-32.png"));
@@ -279,10 +282,9 @@ public class Cat_Reportes_De_Ventas extends JFrame {
        
         panel.add(btn_buscar).setBounds(x+810,y,l,a);
         
-        panel.add(Tabla()).setBounds(10,y+=50,1000,500);
+        panel.add(Tabla()).setBounds(10,y+=50,ancho-30,500);
         
         cargar_fechas();
-        
         render_tabla();
         
         txtFiltroProducto.setEditable(false); 
