@@ -14,10 +14,12 @@ public class Obj_Alimentacion_Cortes {
 		private String nombre;                       	private float cheques;
 		private String puesto;                       	private float total_de_vauchers;                      
 		private String establecimiento;              	private float diferencia_corte;                      
-													 	private boolean status;                      
+                                    				 	private boolean status;                      
 													 	private String comentario;     
 													 	private float apartado;
 													 	private float abono;
+
+
 
 	public Obj_Alimentacion_Cortes(){
 		
@@ -29,12 +31,13 @@ public class Obj_Alimentacion_Cortes {
 		this.nombre="";                          		this.cheques=0;
 		this.puesto="";                         		this.total_de_vauchers=0;
 		this.establecimiento="";                		this.diferencia_corte=0;
-														this.status=false;
+		                								this.status=false;
 														this.comentario="";
 														this.apartado=0; 
 														this.abono=0;
 	} 
 
+	
 	public String getFolio_corte() {
 		return folio_corte;
 	}

@@ -32,7 +32,6 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Reportes.Cat_Reportes_De_Ventas;
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
@@ -174,9 +173,18 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	}
 	
 	ActionListener opCargar = new ActionListener(){
+		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent e){
 			int contador=0;
 	 		String Lista="('";	
+	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
+	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+	 		
+	 		if(tabla.isEditing()){
+				tabla.getCellEditor().stopCellEditing();
+			}
+	 		
 	 			for(int i=0; i<tabla.getRowCount(); i++){
 	 				if(Boolean.parseBoolean(Tabla_Productos.getValueAt(i, 4).toString()) == true){
 	 					String posicion = Tabla_Productos.getValueAt(i, 0).toString().trim();

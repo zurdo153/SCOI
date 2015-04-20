@@ -44,34 +44,8 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
-	public Object[][] tabla_model_deduccion_inasistencia(){
-		String query_lista = "exec sp_buscar_deduccion_inasistencia";
-		Object[][] matriz = new Object[get_filas(query_lista)][11];
-		try {
-			Statement stmt = new Connexion().conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query_lista);
-			
-			int i = 0;
-			while(rs.next()){
-				matriz[i][0] = rs.getInt(1)+" ";
-				matriz[i][1] = "   "+rs.getString(2);
-				matriz[i][2] = "   "+rs.getString(3);
-				matriz[i][3] = rs.getString(4).trim().equals("true") ? true : false;
-				matriz[i][4] = rs.getString(5).trim().equals("true") ? true : false;
-				matriz[i][5] = Integer.parseInt(rs.getString(6)) == 0 ? "":Integer.parseInt(rs.getString(6));
-				matriz[i][6] = rs.getString(7).trim().equals("true") ? true : false;
-				matriz[i][7] = rs.getString(8).trim().equals("true") ? true : false;
-				matriz[i][8] = rs.getString(9).trim().equals("true") ? true : false;
-				matriz[i][9] = Integer.parseInt(rs.getString(10)) == 0 ? "":Integer.parseInt(rs.getString(10));
-				matriz[i][10] = Float.parseFloat(rs.getString(11)) == 0 ? "":Float.parseFloat(rs.getString(11));
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_deduccion_inasistencia  procedimiento almacenado sp_buscar_deduccion_inasistencia SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-	    return matriz; 
-	}
+
+	
 	
 	public Object[][] tabla_model_deduccion_y_percepcionesde_lista_de_raya(){
 		String query_lista = "exec sp_select_deduccion_y_percepciones_de_lista_de_raya";

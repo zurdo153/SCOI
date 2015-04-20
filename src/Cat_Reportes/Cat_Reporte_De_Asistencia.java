@@ -149,7 +149,7 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 				String folios_empleados = "Selecciona un Empleado";
 
 				if(c_inicio.getDate().before(c_final.getDate())){
-					op_generar_consideraciones(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
+					Reporte_de_Asistencia_consideraciones(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
 				}else{
 					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
                       return;
@@ -160,6 +160,7 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 			}
 		}
 	};
+	
 	
 	
 	ActionListener op_generar_permisos = new ActionListener() {
@@ -191,7 +192,7 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	
-	public void op_generar_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
+	public void Reporte_de_Asistencia_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
 		 reporte = "Obj_Reporte_De_Asistencia_Por_Establecimiento_Consideraciones.jrxml";
 		 comando = "exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);

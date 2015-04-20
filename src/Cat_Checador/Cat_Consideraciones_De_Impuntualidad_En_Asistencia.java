@@ -93,7 +93,7 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 	DefaultTableModel modelo = new DefaultTableModel(null,
             new String[]{ "Folio", "Nombre", "Fecha Mov", "Hora Mov", "Dia",
 							"Entrada-Salida", "Tipo Mov", "15m/Comida", "Impuntualidad", "Favor", "Tipo Permiso",
-							"Min Imp Considerados", "Min Fav Considerados", "Observaciones", "Realizo Mov", "Estatus Reg.","Estatus Modif."}
+							"Min.Imp.Cons", "Min.Fav.Cons", "Observaciones", "Realizo Mov", "Estatus Reg.","Estatus Modif."}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -201,6 +201,8 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 	
 	public Cat_Consideraciones_De_Impuntualidad_En_Asistencia(){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+		
 		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		
 		this.setLocationRelativeTo(null);
@@ -230,10 +232,12 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		this.panel.add(JLBdepartamento).setBounds(300,55,20,20);
 		this.panel.add(cmbDepartamento).setBounds(320,55,170,20);
 		
-		this.panel.add(btnGenerar).setBounds(900,85,100,20);
+		this.panel.add(btnGenerar).setBounds(550,75,150,30);
 		panel.add(txtFolio).setBounds(10,90,40,20);
 		panel.add(txtNombre).setBounds(50,90,270,20);
-		panel.add(scroll).setBounds(10,110,ancho-25,590);
+		int y=110;
+		
+		panel.add(scroll).setBounds(10,y,ancho-25,alto-(y+75));
 		cont.add(panel);
 		
 		c_inicio.setEnabled(false);
@@ -285,8 +289,8 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		
 		int x = 60;
 		
-		this.tabla.getColumnModel().getColumn(0).setMaxWidth(x-20);
-		this.tabla.getColumnModel().getColumn(0).setMinWidth(x-20);		
+		this.tabla.getColumnModel().getColumn(0).setMaxWidth(x);
+		this.tabla.getColumnModel().getColumn(0).setMinWidth(x);		
 		this.tabla.getColumnModel().getColumn(1).setMaxWidth(270);
 		this.tabla.getColumnModel().getColumn(1).setMinWidth(270);
 		this.tabla.getColumnModel().getColumn(2).setMaxWidth(x+20);
@@ -310,18 +314,18 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		this.tabla.getColumnModel().getColumn(9).setMinWidth(x);
 		this.tabla.getColumnModel().getColumn(10).setMaxWidth(x+150);
 		this.tabla.getColumnModel().getColumn(10).setMinWidth(x+150);
-		this.tabla.getColumnModel().getColumn(11).setMaxWidth(x+40);
-		this.tabla.getColumnModel().getColumn(11).setMinWidth(x+40);
-		this.tabla.getColumnModel().getColumn(12).setMaxWidth(x+50);
-		this.tabla.getColumnModel().getColumn(12).setMinWidth(x+50);
-		this.tabla.getColumnModel().getColumn(13).setMaxWidth(x+400);
-		this.tabla.getColumnModel().getColumn(13).setMinWidth(x+200);
+		this.tabla.getColumnModel().getColumn(11).setMaxWidth(x+15);
+		this.tabla.getColumnModel().getColumn(11).setMinWidth(x+15);
+		this.tabla.getColumnModel().getColumn(12).setMaxWidth(x+15);
+		this.tabla.getColumnModel().getColumn(12).setMinWidth(x+15);
+		this.tabla.getColumnModel().getColumn(13).setMinWidth(x+220);
+		this.tabla.getColumnModel().getColumn(13).setMaxWidth(x+520);
 		this.tabla.getColumnModel().getColumn(14).setMaxWidth(270);
 		this.tabla.getColumnModel().getColumn(14).setMinWidth(270);
-		this.tabla.getColumnModel().getColumn(15).setMaxWidth(x+10);
-		this.tabla.getColumnModel().getColumn(15).setMinWidth(x+10);
-		this.tabla.getColumnModel().getColumn(16).setMaxWidth(x-20);
-		this.tabla.getColumnModel().getColumn(16).setMinWidth(x-20);
+		this.tabla.getColumnModel().getColumn(15).setMaxWidth(x+20);
+		this.tabla.getColumnModel().getColumn(15).setMinWidth(x+20);
+		this.tabla.getColumnModel().getColumn(16).setMaxWidth(x+20);
+		this.tabla.getColumnModel().getColumn(16).setMinWidth(x+20);
 
 		this.tabla.setRowSorter(trsfiltro);  
 		

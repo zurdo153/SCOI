@@ -81,6 +81,7 @@ import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
+import Obj_Lista_de_Raya.Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
@@ -6144,10 +6145,37 @@ public class BuscarSQL {
 		return cadena;
 	}
 	
+	public String[][] llenar_tabla_deduccion_inasistencia_sugerido_sistema(Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia)throws SQLException{
+		String query = "exec sp_buscar_sugerido_sistemas_inasistencia";
+		String[][] matriz = new String[getFilas(query)][7];
+		
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+//			System.out.println(rs.getString(2));
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] = rs.getInt(1)+" ";
+				matriz[i][1] = rs.getString(2).trim();
+				matriz[i][2] = rs.getString(3).trim();
+				matriz[i][3] = rs.getString(4).trim();
+				matriz[i][4] = rs.getString(5).trim();
+				matriz[i][5] = rs.getString(6).trim();
+				matriz[i][6] = rs.getString(7).trim();
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion llenar_tabla_deduccion_inasistencia_sugerido_sistema \nprocedimiento almacenado sp_buscar_sugerido_sistemas_inasistencia \n SQL Server Exception: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	    return matriz; 
+	}
+	
+	
+	
 	public String[][] Reporte_De_Ventas(Obj_Reportes_De_Ventas ventas) throws SQLException{
-		
 		Statement stmt = null;
-		
 		Obj_Usuario usuario = new Obj_Usuario();
 		
 		try {
@@ -6163,9 +6191,7 @@ public class BuscarSQL {
 			return null;
 		}
 		
-		
 		String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())+"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"'";
-		System.out.println(query);
 		String[][] rp_ventas = new String[getFilasExterno(query)][20];
 		
 		try {

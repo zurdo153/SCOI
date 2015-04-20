@@ -79,6 +79,23 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
         	 	} 				
  			return false;
  		}
+         
+         @Override
+         public void setValueAt(Object value, int row, int col) {
+             super.setValueAt(value, row, col);
+             	if (col == 8 && value.equals(Boolean.TRUE))
+                 deselectValues(row, col);
+         }
+
+         private void deselectValues(int selectedRow, int col) {
+             for (int row = 0; row < getRowCount(); row++) {
+                 if (getValueAt(row, col).equals(Boolean.TRUE)
+                         && row != selectedRow) {
+                     setValueAt(Boolean.FALSE, row, col);
+                     fireTableCellUpdated(row, col);
+                 }
+             }
+         }
 	};
 	
 	JTable tablaFiltro = new JTable(modeloFiltro);
@@ -310,24 +327,27 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 	}
 	
 	 	public Object[][] getTablaFiltro(String cadena_asignaciones_en_uso,String Establecimiento){
-	 		
-		String cadenaFinal="";
-		String cadenaAsignacionesGuardadasEnSCOI="";
-		
-	
-	 		String asignacionesSCOI ="select asignacion from tb_tabla_de_asignaciones_para_cortes";
 			Statement s;
 			ResultSet rs;
-			try {
-				s = new Connexion().conexion().createStatement();
-				rs = s.executeQuery(asignacionesSCOI);
-				
-				while(rs.next()){	cadenaAsignacionesGuardadasEnSCOI+= "'"+(rs.getString(1).trim())+"',";	}
-									cadenaFinal = cadenaAsignacionesGuardadasEnSCOI+cadena_asignaciones_en_uso;
-				rs.close();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}	 	
+			
+			
+//		String cadenaFinal="";
+//		String cadenaAsignacionesGuardadasEnSCOI="";
+//		
+//	
+//	 		String asignacionesSCOI ="select asignacion from tb_tabla_de_asignaciones_para_cortes";
+//			try {
+//				s = new Connexion().conexion().createStatement();
+//				rs = s.executeQuery(asignacionesSCOI);
+//				
+//				while(rs.next()){	cadenaAsignacionesGuardadasEnSCOI+= "'"+(rs.getString(1).trim())+"',";	}
+//									cadenaFinal = cadenaAsignacionesGuardadasEnSCOI+cadena_asignaciones_en_uso;
+//				rs.close();
+//			} catch (SQLException e1) {
+//				e1.printStackTrace();
+//			}	 
+
+			
 ////////////RECOPILACION DE ASIGNACIONES////////////////////////////////////////////////////				
 	 	String recopilacion_asignaciones="  exec sp_Recopilacion_IZAGAR_de_Asignaciones_y_cajeros  " ;	
 		Connection con = new Connexion().conexion_IZAGAR();
@@ -357,27 +377,27 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 			}
 ////////////////////////////////////////////////////////////////////////	 	
 	 	
-		String todos ="  DECLARE @fecha_inicial varchar(50)    ,@fecha_final varchar(50) " +
-				"                SET @fecha_inicial=convert(varchar(20), getdate()-3" +
-				",103)+' 00:00:00' " +
-				"  		         SET @fecha_final=convert(varchar(20), getdate(),103)+' 23:59:59'" +
-				"             SELECT Asignacion,Cajero,Nombre_Cajero,Total,Cod_Estab,Establecimiento" +
-				"                   ,convert(varchar(20),Fecha_Asignacion,103)+' '+ convert(varchar(20), Fecha_Asignacion,108) as Fecha_Asignacion " +
-				"                   ,convert(varchar(20),Fecha_Liquidacion,103)+' '+ convert(varchar(20), Fecha_Liquidacion,108) as Fecha_Liquidacion " +
-				"                  FROM IZAGAR_Relacion_de_Asignaciones_Liquidadas" +
-				"               WHERE (Fecha_Liquidacion>= @fecha_inicial and Fecha_Liquidacion <= @fecha_final) and Establecimiento='"+Establecimiento+ "' and Asignacion not in ("+cadenaFinal+")"+ 
-				"		        ORDER BY Fecha_Liquidacion desc "   ;		
-		
-		cadenaFinal="";
+//		String todos ="  DECLARE @fecha_inicial varchar(50)    ,@fecha_final varchar(50) " +
+//				"                SET @fecha_inicial=convert(varchar(20), getdate()-3" +
+//				",103)+' 00:00:00' " +
+//				"  		         SET @fecha_final=convert(varchar(20), getdate(),103)+' 23:59:59'" +
+//				"             SELECT Asignacion,Cajero,Nombre_Cajero,Total,Cod_Estab,Establecimiento" +
+//				"                   ,convert(varchar(20),Fecha_Asignacion,103)+' '+ convert(varchar(20), Fecha_Asignacion,108) as Fecha_Asignacion " +
+//				"                   ,convert(varchar(20),Fecha_Liquidacion,103)+' '+ convert(varchar(20), Fecha_Liquidacion,108) as Fecha_Liquidacion " +
+//				"                  FROM IZAGAR_Relacion_de_Asignaciones_Liquidadas" +
+//				"               WHERE (Fecha_Liquidacion>= @fecha_inicial and Fecha_Liquidacion <= @fecha_final) and Establecimiento='"+Establecimiento+ "' and Asignacion not in ("+cadenaFinal+")"+ 
+//				"		        ORDER BY Fecha_Liquidacion desc "   ;		
+//		
+//		cadenaFinal="";
+	 	
+		String todos ="exec sp_consulta_de_asignaciones  '"+Establecimiento+"'";
 		
 		try {
 			s = new Connexion().conexion_IZAGAR().createStatement();
 			rs = s.executeQuery(todos);
-						
 			MatrizFiltro = new Object[getFilasIZAGAR(todos)][9];
 			int i=0;
 			while(rs.next()){
-				
 				MatrizFiltro[i][0] = "   "+rs.getString(1).trim();
 				MatrizFiltro[i][1] = "   "+rs.getString(2).trim();
 				MatrizFiltro[i][2] = "   "+rs.getString(3).trim();
@@ -387,15 +407,15 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 				MatrizFiltro[i][6] = "   "+rs.getString(7).trim();
 				MatrizFiltro[i][7] = "   "+rs.getString(8).trim();
 				MatrizFiltro[i][8] = "false";
-				
 				i++;
 			}
 			rs.close();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en Cat_Filtro_De_Asignaciones  sp_consulta_de_asignaciones "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return MatrizFiltro; 
-	}
+     }
    	
    	public int getFilasIZAGAR(String qry){
 		int filas=0;
