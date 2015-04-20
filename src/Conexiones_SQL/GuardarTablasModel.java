@@ -1320,7 +1320,6 @@ public boolean guarda_tabla_Seleccion_de_Facturas(Object[][] tabla, String fecha
 			pstmt.setString(28, tabla[i][27].toString().trim());                 //Fecha_Cancelacion
 			pstmt.setString(29, tabla[i][28].toString().trim());                 //booleano
 			
-			
 			pstmt.executeUpdate();
 		}
 				
