@@ -901,16 +901,32 @@ public class GuardarSQL {
 		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
 		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
+		String query_status_corte_para_filtro="update IZAGAR_Relacion_de_Asignaciones_Liquidadas set status_corte=1 where Asignacion = ?";
+		
 		
 		Connection con = new Connexion().conexion();
-//		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();
+		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();
 		
 		PreparedStatement pstmt_asignacion = null;
 		PreparedStatement pstmt_vauchers = null;
 		PreparedStatement pstmt_total_por_fecha = null;
 		PreparedStatement pstmt_corte = null;
+		PreparedStatement pstmt_update_asignacion = null;
 		
-//		PreparedStatement pstmt_ta_rluz = null;
+		
+//		try {
+//			
+//		} catch (SQLException e1) {
+//			System.out.println("SQLException: "+e1.getMessage());
+//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Corte ] update IZAGAR_Relacion_de_Asignaciones_Liquidadas set status_corte=1 where Asignacion \n  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//
+//			e1.printStackTrace();
+//		}
+		
+		
+		
+		
+		
 		
 		try {
 			
@@ -920,6 +936,10 @@ public class GuardarSQL {
 			pstmt_total_por_fecha = con.prepareStatement(query_totales_por_fecha);
 			pstmt_corte 		  = con.prepareStatement(query_corte);
 			
+			
+			pstmt_update_asignacion= con_IZAGAR.prepareStatement(query_status_corte_para_filtro);
+
+		
 			int i=1;
 			
 			for(int x= 0; x<tb_asignaciones.length; x++){
@@ -967,10 +987,7 @@ public class GuardarSQL {
 			i=1;
 			for(int x= 0; x<tb_totales_por_fecha.length; x++){
 
-//				System.out.println(corte.getFolio_corte().toUpperCase().trim());
-//				System.out.println(tb_totales_por_fecha[x][0].toString().trim());
-//				System.out.println(tb_totales_por_fecha[x][1].toString().trim());
-//				System.out.println(tb_totales_por_fecha[x][2].toString().trim());
+
 				
 				pstmt_total_por_fecha.setString(i, 	corte.getFolio_corte().toUpperCase().trim());
 				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][0].toString().trim());
@@ -1003,6 +1020,12 @@ public class GuardarSQL {
 			pstmt_corte.executeUpdate();
 			
 			con.commit();
+			
+			pstmt_update_asignacion.setString(1,tb_asignaciones[0][0].toString().trim());
+		    pstmt_update_asignacion.executeUpdate();
+		    con_IZAGAR.commit();
+		    
+		
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Corte ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);

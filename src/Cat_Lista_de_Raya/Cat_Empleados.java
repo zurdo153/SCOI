@@ -88,6 +88,7 @@ import javax.swing.table.TableRowSorter;
 
 
 
+
 import Cat_Checador.Cat_Horarios;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Reporte_De_Empleados_No_Contratables;
@@ -95,6 +96,8 @@ import Cat_Reportes.Cat_Horarios_Provisionales;
 import Cat_Reportes.Cat_Personal_Con_Horario;
 import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
@@ -235,6 +238,8 @@ public class Cat_Empleados extends JFrame{
 	JButton btnExaminar = new JButton("Examinar");
 	JButton btnCamara = new JButton(new ImageIcon("Iconos/camara_icon&16.png"));
 	
+	JButton btnContratacion = new JButton("Contratacion",new ImageIcon("Imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
+	
 	JButton btn_plantilla = new JButton("R.Plantilla",new ImageIcon ("Imagen/plan-icono-5073-16.png"));
 	JButton btn_horario_provisional = new JButton("H. Provisional",new ImageIcon("Imagen/horas-de-reloj-de-alarma-icono-5601-16.png"));
 	JButton btnCumpleaños_del_Mes = new JButton("R.Cumpleaños",new ImageIcon("Imagen/cookies-tarta-de-cumpleanos-icono-9840-16.png"));
@@ -353,6 +358,7 @@ public class Cat_Empleados extends JFrame{
 	
 		panel.add(btnFoto).setBounds(x*2+ancho*5,y-5,ancho+55,160);
 		
+//		panel.add(btnContratacion).setBounds(x+ancho+20,8,128,18);
 		panel.add(btnAsistencia_Empleado).setBounds(x+ancho*2+10,8,128,18);
 		panel.add(btn_plantilla).setBounds(x+ancho*3,8,128,18);
 		panel.add(btn_horario_provisional).setBounds(x+ancho*4-10,8,128,18);
@@ -551,6 +557,7 @@ public class Cat_Empleados extends JFrame{
 		btn_plantilla.addActionListener(opPlantilla);
 		btn_horario_provisional.addActionListener(opHorarioProvisional);
 		btnAsistencia_Empleado.addActionListener(opAsistenciaEmpleado);		
+		btnContratacion.addActionListener(opcontrato);
 		
 		btnExaminar.addActionListener(opExaminar);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
@@ -695,6 +702,29 @@ public class Cat_Empleados extends JFrame{
 						                 });
 	    
 	  	}
+	
+	ActionListener opcontrato = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="";
+			String reporte = "";
+			
+			Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+			
+			
+			reporte = "Obj_Reporte_de_Contrato1.jrxml";
+			comando = "exec sp_Reporte_De_Contrato "+txtFolioEmpleado.getText()+"".trim()+","+usuario.getFolio() ;
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+							 
+			reporte = "Obj_Reporte_de_Contrato2.jrxml";
+			comando = "exec sp_Reporte_De_Contrato "+txtFolioEmpleado.getText()+"".trim()+","+usuario.getFolio() ;
+		    		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);							 
+							 
+							 
+		}
+	};
 	
 
 	ActionListener opCmbHorarioRotarivo = new ActionListener(){
@@ -1276,6 +1306,8 @@ public class Cat_Empleados extends JFrame{
 							empleado.setForma_pago(txtFormaDePago.getText()+"");
 
 							empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
+							
+							System.out.println(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
 							
 							Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
 							empleado.setBono(bono.getFolio());
@@ -2765,6 +2797,7 @@ public class Cat_Empleados extends JFrame{
 				}	
 			} catch (SQLException e1) {
 				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null,"Error Al Abrir El Filtro De El Empleado Error en El Procedimiento sp_filtro_empleado"+e1, "Avisa Al Administrador Del Sistema!",JOptionPane.ERROR_MESSAGE);
 			}
 			 JScrollPane scrol = new JScrollPane(tabla);
 			   

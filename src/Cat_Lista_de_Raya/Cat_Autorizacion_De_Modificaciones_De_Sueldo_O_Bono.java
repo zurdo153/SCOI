@@ -1,6 +1,7 @@
 package Cat_Lista_de_Raya;
 
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -69,15 +70,19 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
 		JLabel JLBactivo= new JLabel();
-		JTextField txtFolio = new Componentes().text(new JTextField(),"Teclee Folio Lista de Raya", 150, "Integer");
-		JTextField txtFecha = new Componentes().text(new JTextField(),"Teclee Fecha Final de La Lista de Raya <Fecha de Cierre>", 150, "String");
+		JTextField txtFolio = new Componentes().text(new JTextField(),"Teclee Folio del Empleado", 150, "Integer");
+		JTextField txtFecha = new Componentes().text(new JTextField(),"Teclee Nombre del Empleado", 150, "String");
 	    JButton btnAceptar = new JButton("Aceptar",new ImageIcon("Imagen/Aplicar.png"));
 	    JButton btnNegar = new JButton("Negar",new ImageIcon("Imagen/Delete.png"));
 	    
 	    
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono()	{
-			this.setSize(1024,350);
+			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+			int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+			
+			setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+			
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -87,17 +92,18 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 			campo.setBorder(BorderFactory.createTitledBorder("Seleccione La Lista de Raya a Consultar"));
 			trsfiltro = new TableRowSorter(model); 
 			tabla.setRowSorter(trsfiltro);  
-			campo.add(getPanelTabla()).setBounds(15,42,990,260);
-			campo.add(txtFolio).setBounds(15,20,100,20);
-			campo.add(txtFecha).setBounds(116,20,100,20);
-			campo.add(btnAceptar).setBounds(905,20,100,20);
-			campo.add(btnNegar).setBounds(600,20,100,20);
+			campo.add(getPanelTabla()).setBounds(15,42,ancho-25,alto-125);
+			campo.add(txtFolio).setBounds(15,20,70,20);
+			campo.add(txtFecha).setBounds(85,20,270,20);
+
+			campo.add(btnNegar).setBounds(475,20,100,20);
+			campo.add(btnAceptar).setBounds(643,20,100,20);
 			
 			Checar_Activo();
 			Actualizar_tabla();
 			cargar_render();
 			
-			campo.add(JLBactivo).setBounds(780,300,350,20);
+			campo.add(JLBactivo).setBounds(780,20,350,20);
 			if(Activo.equals("Activada"))
 			     {JLBactivo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>Esta Funcion Se Encuentra: "+Activo+"</p></b></CENTER></FONT></html>");}
 			else{JLBactivo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=RED><CENTER><b><p>Esta Funcion Se Encuentra: "+Activo+"</p></b></CENTER></FONT></html>");}
@@ -245,14 +251,14 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
     	
 		
 	   	private JScrollPane getPanelTabla()	{		
-			int a=60,b=200;
+			int a=70,b=200;
 			
-			tabla.getColumnModel().getColumn(0).setHeaderValue("F.E");
-			tabla.getColumnModel().getColumn(0).setMaxWidth(30);
-			tabla.getColumnModel().getColumn(0).setMinWidth(30);
+			tabla.getColumnModel().getColumn(0).setHeaderValue("Folio Empleado");
+			tabla.getColumnModel().getColumn(0).setMaxWidth(a);
+			tabla.getColumnModel().getColumn(0).setMinWidth(a);
 			tabla.getColumnModel().getColumn(1).setHeaderValue("Empleado");
-			tabla.getColumnModel().getColumn(1).setMaxWidth(b);
-			tabla.getColumnModel().getColumn(1).setMinWidth(b);
+			tabla.getColumnModel().getColumn(1).setMaxWidth(b+a);
+			tabla.getColumnModel().getColumn(1).setMinWidth(b+a);
 			tabla.getColumnModel().getColumn(2).setHeaderValue("Establecimiento");
 			tabla.getColumnModel().getColumn(2).setMaxWidth(b-80);
 			tabla.getColumnModel().getColumn(2).setMinWidth(b-80);
@@ -272,17 +278,17 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 			tabla.getColumnModel().getColumn(7).setMaxWidth(a);
 			tabla.getColumnModel().getColumn(7).setMinWidth(a);
 			tabla.getColumnModel().getColumn(8).setHeaderValue("Empleado Modifico");
-			tabla.getColumnModel().getColumn(8).setMaxWidth(b);
-			tabla.getColumnModel().getColumn(8).setMinWidth(b);
+			tabla.getColumnModel().getColumn(8).setMaxWidth(b+a);
+			tabla.getColumnModel().getColumn(8).setMinWidth(b+a);
 			tabla.getColumnModel().getColumn(9).setHeaderValue("Fecha");
 			tabla.getColumnModel().getColumn(9).setMaxWidth(a*2);
 			tabla.getColumnModel().getColumn(9).setMinWidth(a*2);
 			tabla.getColumnModel().getColumn(10).setHeaderValue("Observaciones");
 			tabla.getColumnModel().getColumn(10).setMaxWidth(b+b-10);
 			tabla.getColumnModel().getColumn(10).setMinWidth(b+b-10);
-			tabla.getColumnModel().getColumn(11).setHeaderValue("S");
-			tabla.getColumnModel().getColumn(11).setMaxWidth(a/2);
-			tabla.getColumnModel().getColumn(11).setMinWidth(a/2);
+			tabla.getColumnModel().getColumn(11).setHeaderValue("Seleccion");
+			tabla.getColumnModel().getColumn(11).setMaxWidth(a);
+			tabla.getColumnModel().getColumn(11).setMinWidth(a);
 			
 	    	tabla.getTableHeader().setReorderingAllowed(false) ;
 	    	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

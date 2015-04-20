@@ -744,6 +744,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 //						si guarda entra y abre los reportes de impresion para cortes
 						if(corte.guardar(tabla_guardar_asignaciones(),tabla_guardar_vauchers(),tabla_guardar_totales_por_fecha(), lista_de_asignaciones_en_uso())){
 							
+							
+							
 							btnAsignacion.setEnabled(false);
 							btnQuitarAsignacion.setEnabled(false);
 							btnVauchers.setEnabled(false);
@@ -918,7 +920,13 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			
 	ActionListener opAsignacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Filtrar_Asignaciones(cadenaAsignacionParametro(),lblNombre_Completo.getText()).setVisible(true);
+			if(tabla_asignaciones.getRowCount()>0){
+				JOptionPane.showMessageDialog(null, "Ya se a seleccionado una asignacion, para cambiarla es necesario quitar la asignacion seleccionada","Aviso",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else{
+				new Cat_Filtrar_Asignaciones(cadenaAsignacionParametro(),lblNombre_Completo.getText()).setVisible(true);
+			}
+			
 		}
 	};
 	

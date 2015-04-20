@@ -3,6 +3,7 @@ package Cat_Checador;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -92,7 +93,7 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 	DefaultTableModel modelo = new DefaultTableModel(null,
             new String[]{ "Folio", "Nombre", "Fecha Mov", "Hora Mov", "Dia",
 							"Entrada-Salida", "Tipo Mov", "15m/Comida", "Impuntualidad", "Favor", "Tipo Permiso",
-							"Min Imp Considerados", "Min Fav Considerados", "Observaciones", "Realizo Mov", "Estatus Reg.","Estatus Modif."}
+							"Min.Imp.Cons", "Min.Fav.Cons", "Observaciones", "Realizo Mov", "Estatus Reg.","Estatus Modif."}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -199,6 +200,12 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	
 	public Cat_Consideraciones_De_Impuntualidad_En_Asistencia(){
+		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+		
+		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+		
+		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/check-vcard-icone-9025-32.png"));
@@ -225,10 +232,12 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		this.panel.add(JLBdepartamento).setBounds(300,55,20,20);
 		this.panel.add(cmbDepartamento).setBounds(320,55,170,20);
 		
-		this.panel.add(btnGenerar).setBounds(900,85,100,20);
+		this.panel.add(btnGenerar).setBounds(550,75,150,30);
 		panel.add(txtFolio).setBounds(10,90,40,20);
 		panel.add(txtNombre).setBounds(50,90,270,20);
-		panel.add(scroll).setBounds(10,110,990,590);
+		int y=110;
+		
+		panel.add(scroll).setBounds(10,y,ancho-25,alto-(y+75));
 		cont.add(panel);
 		
 		c_inicio.setEnabled(false);
@@ -241,8 +250,7 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		
 		btnGenerar.addActionListener(opGenerarTabla);
 		
-		this.setSize(1024,768);
-		this.setLocationRelativeTo(null);
+
 	}
 	
 	public void cargar_fechas(){
@@ -281,8 +289,8 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		
 		int x = 60;
 		
-		this.tabla.getColumnModel().getColumn(0).setMaxWidth(x-20);
-		this.tabla.getColumnModel().getColumn(0).setMinWidth(x-20);		
+		this.tabla.getColumnModel().getColumn(0).setMaxWidth(x);
+		this.tabla.getColumnModel().getColumn(0).setMinWidth(x);		
 		this.tabla.getColumnModel().getColumn(1).setMaxWidth(270);
 		this.tabla.getColumnModel().getColumn(1).setMinWidth(270);
 		this.tabla.getColumnModel().getColumn(2).setMaxWidth(x+20);
@@ -306,18 +314,18 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		this.tabla.getColumnModel().getColumn(9).setMinWidth(x);
 		this.tabla.getColumnModel().getColumn(10).setMaxWidth(x+150);
 		this.tabla.getColumnModel().getColumn(10).setMinWidth(x+150);
-		this.tabla.getColumnModel().getColumn(11).setMaxWidth(x+30);
-		this.tabla.getColumnModel().getColumn(11).setMinWidth(x+30);
-		this.tabla.getColumnModel().getColumn(12).setMaxWidth(x+30);
-		this.tabla.getColumnModel().getColumn(12).setMinWidth(x+50);
-		this.tabla.getColumnModel().getColumn(13).setMaxWidth(x+100);
-		this.tabla.getColumnModel().getColumn(13).setMinWidth(x+100);
+		this.tabla.getColumnModel().getColumn(11).setMaxWidth(x+15);
+		this.tabla.getColumnModel().getColumn(11).setMinWidth(x+15);
+		this.tabla.getColumnModel().getColumn(12).setMaxWidth(x+15);
+		this.tabla.getColumnModel().getColumn(12).setMinWidth(x+15);
+		this.tabla.getColumnModel().getColumn(13).setMinWidth(x+220);
+		this.tabla.getColumnModel().getColumn(13).setMaxWidth(x+520);
 		this.tabla.getColumnModel().getColumn(14).setMaxWidth(270);
 		this.tabla.getColumnModel().getColumn(14).setMinWidth(270);
-		this.tabla.getColumnModel().getColumn(15).setMaxWidth(x);
-		this.tabla.getColumnModel().getColumn(15).setMinWidth(x);
-		this.tabla.getColumnModel().getColumn(16).setMaxWidth(x-20);
-		this.tabla.getColumnModel().getColumn(16).setMinWidth(x-20);
+		this.tabla.getColumnModel().getColumn(15).setMaxWidth(x+20);
+		this.tabla.getColumnModel().getColumn(15).setMinWidth(x+20);
+		this.tabla.getColumnModel().getColumn(16).setMaxWidth(x+20);
+		this.tabla.getColumnModel().getColumn(16).setMinWidth(x+20);
 
 		this.tabla.setRowSorter(trsfiltro);  
 		

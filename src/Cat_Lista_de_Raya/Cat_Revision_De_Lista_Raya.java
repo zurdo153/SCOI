@@ -2,6 +2,7 @@ package Cat_Lista_de_Raya;
 
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -34,6 +35,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
+
 
 
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
@@ -142,9 +144,19 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
 	/* EL CONSTRUCTOR TIENE EL NOMBRE PUBLIC Y SEGUIDO DEL NOMBRE DE LA CLASE */
 	public Cat_Revision_De_Lista_Raya(){
+		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+		
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+		this.addWindowListener(op_cerrar);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		
 		this.setTitle("Revisión lista raya");
 		
-		this.panel.add(scroll_tabla).setBounds(30,60,1300,620);
+		this.panel.add(scroll_tabla).setBounds(30,60,ancho-50,alto-60-75);
 		cont.add(panel);
 		
 		panel.add(new JLabel("Autorizacion Auditoria:")).setBounds(730,20,120,20);
@@ -186,15 +198,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
 		
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
-		this.addWindowListener(op_cerrar);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			
 		busqueda_Observaciones_auditoria();
-		
-		
 		
 //      asigna el foco al JTextField 
         this.addWindowListener(new WindowAdapter() {
@@ -326,7 +330,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 		if(!EmpleadoConNegativo().equals("")){
 			txtNombre_Completo.requestFocus();
-			JOptionPane.showMessageDialog(null,"\n No Podra Usar El Boton Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>>\nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar \n \n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n"+EmpleadoConNegativo(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+			JOptionPane.showMessageDialog(null,"\n No Podra Usar El Boton Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>>\nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar \n \n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n"+EmpleadoConNegativo()+EmpleadoConSueldoCero(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 		}  
 		
 		if((new Obj_Fue_Sodas_DH().busquedaautoizacionfs().isStatus_autorizacion()))
@@ -611,8 +615,23 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 		if(descPrest<0 || corte<0 || aPagar<0){
 			registro += ("* "+tabla.getValueAt(i, 2).toString().trim()+".....................................................................").substring(0,64)+"    "+(descPrest+"                             ").substring(0,25)+(corte+"                             ").substring(0,25)+aPagar+"\n";
-//		System.out.println(registro);
 		}
+	  }
+	  
+	 return registro;
+	}
+	
+	public String EmpleadoConSueldoCero(){
+	 String registro="";
+	  for(int i=0; i<tabla.getRowCount(); i++){
+		float sueldoCero = tabla.getValueAt(i, 4).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 4).toString());
+		if(sueldoCero==0){
+			registro+="\n\nSueldos En Cero:\n";
+			registro += ("* "+tabla.getValueAt(i, 2).toString().trim()+".....................................................................").substring(0,64)+"    "+(sueldoCero+"                             ").substring(0,25)+"\n";
+		}
+	  }
+	  if(registro.equals("")){
+		  registro="No se encontraron sueldos en cero";
 	  }
 	 return registro;
 	}
@@ -639,7 +658,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				
 				if(!EmpleadoConNegativo().equals("")){
 					txtNombre_Completo.requestFocus();
-					JOptionPane.showMessageDialog(null,"\n No Es Posible Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>>\nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar\n\n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n"+EmpleadoConNegativo(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null,"\n No Es Posible Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>>\nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar\n\n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n"+EmpleadoConNegativo()+EmpleadoConSueldoCero(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}else{
 				

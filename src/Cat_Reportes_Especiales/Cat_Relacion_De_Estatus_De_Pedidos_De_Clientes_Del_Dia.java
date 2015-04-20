@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -23,6 +24,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -47,6 +49,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
+
 import Conexiones_SQL.Connexion;
 
 
@@ -101,7 +104,7 @@ public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFra
 	JTextField txtFolio = new JTextField();
 	JTextField txtFechaPedido = new JTextField();
 	
-	JButton btnBuscar = new JButton(new ImageIcon("imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-32.png"));;
+	JButton btnBuscar = new JButton("ACTUALIZAR MANUAL",new ImageIcon("imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-32.png"));;
 
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	
@@ -114,7 +117,10 @@ public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFra
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia(){
-		this.setSize(1024,768);
+		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+		
+		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setTitle("Consulta de Pedidos De Clientes");
@@ -143,11 +149,11 @@ public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFra
 		Hilo_1_Minuto();
 		
 		panel.add(chbActivar_Avisos).setBounds(420,20,150,20);
-		panel.add(btnBuscar).setBounds(973,8,32,32);
+		panel.add(btnBuscar).setBounds(900,8,180,32);
 		panel.add(txtEstablecimiento).setBounds(15,20,130,20);
 		panel.add(txtFolio).setBounds(145,20,50,20);
 		panel.add(txtFechaPedido).setBounds(195,20,120,20);
-		panel.add(getPanelTabla()).setBounds(15,40,990,650);
+		panel.add(getPanelTabla()).setBounds(15,40,ancho-25,alto-120);
              
 //     Buscar Con F5
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -192,7 +198,6 @@ public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFra
 	private JScrollPane getPanelTabla()	{	
 		
 	tabla.getTableHeader().setReorderingAllowed(false) ;
-	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	tabla.getColumnModel().getColumn(0).setMinWidth(130);
 	tabla.getColumnModel().getColumn(0).setMaxWidth(130);
 	tabla.getColumnModel().getColumn(1).setMinWidth(50);
@@ -203,9 +208,9 @@ public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFra
 	tabla.getColumnModel().getColumn(3).setMaxWidth(115);
 	tabla.getColumnModel().getColumn(4).setMinWidth(50);
 	tabla.getColumnModel().getColumn(4).setMaxWidth(50);
-	tabla.getColumnModel().getColumn(5).setMinWidth(400);
-	tabla.getColumnModel().getColumn(5).setMaxWidth(1200);
-	tabla.getColumnModel().getColumn(6).setMinWidth(200);
+	tabla.getColumnModel().getColumn(5).setMinWidth(600);
+	tabla.getColumnModel().getColumn(5).setMaxWidth(1400);
+	tabla.getColumnModel().getColumn(6).setMinWidth(300);
 	tabla.getColumnModel().getColumn(6).setMaxWidth(800);
 
 	tabla.getColumnModel().getColumn(0).setCellRenderer(render); 

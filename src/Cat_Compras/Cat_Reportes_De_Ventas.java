@@ -1,6 +1,7 @@
-package Cat_Reportes;
+package Cat_Compras;
 
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +42,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
-import Cat_Compras.Cat_Filtro_De_Busqueda_De_Productos;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
@@ -211,11 +211,15 @@ public class Cat_Reportes_De_Ventas extends JFrame {
 	String Lista="";
 	
 	public Cat_Reportes_De_Ventas(String parametro, String operador){
+		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+		
+		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+		
 		cont.add(panel);
-		setSize(1024,768);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia-comunitaria-icono-9465-32.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Sales-by-payment-method-icon-64.png"));
 		setTitle("Reportes de  Ventas");
 		panel.setBorder(BorderFactory.createTitledBorder("Reportes de Venta"));
 		
@@ -282,10 +286,9 @@ public class Cat_Reportes_De_Ventas extends JFrame {
        
         panel.add(btn_buscar).setBounds(x+810,y,l,a);
         
-        panel.add(Tabla()).setBounds(10,y+=50,1000,500);
+        panel.add(Tabla()).setBounds(10,y+=50,ancho-30,alto-y-75);
         
         cargar_fechas();
-        
         render_tabla();
         
         txtFiltroProducto.setEditable(false); 
@@ -530,6 +533,7 @@ public void filtroProductos(String cadena){
             txtFiltroLinea.setText("");
         	panelEnableTrue();
         	Lista="";
+        	limpiar_vacios();
 		}
 	};
 	
@@ -542,6 +546,7 @@ public void filtroProductos(String cadena){
             txtFiltroLinea.setText("");
         	panelEnableTrue();
         	Lista="";
+        	limpiar_vacios();
 		}
 	};
 	

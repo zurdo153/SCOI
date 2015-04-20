@@ -131,7 +131,7 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 			String folios_empleados=txtFolio.getText()+"";
 			
 			if(c_inicio.getDate().before(c_final.getDate())){
-				new Cat_Reporte_De_Asistencia().Reporte_de_Asistencia_completo(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
+				new Cat_Reporte_De_Asistencia().Reporte_de_Asistencia_consideraciones(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
 				
 			}else{
 				JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
