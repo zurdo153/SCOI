@@ -5600,7 +5600,7 @@ public class BuscarSQL {
 		
 		String datosif = "exec sp_select_retiro_de_cajero_a_detalle "+folio_cajero+",'"+establecimiento+"';";
 		
-		Matriz = new String[getFilas(datosif)][4];
+		Matriz = new String[getFilas(datosif)][5];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -5612,6 +5612,7 @@ public class BuscarSQL {
 				Matriz[i][1] = rs.getString(2);
 				Matriz[i][2] = rs.getString(3);
 				Matriz[i][3] = rs.getString(4);
+				Matriz[i][4] = rs.getString(5);
 				
 				i++;
 			}
