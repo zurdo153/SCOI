@@ -1329,6 +1329,146 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
+	public String[][] tabla_model_revision_de_cortes_por_auditoria(String fecha_in, String fecha_fin){
+		
+//		String query_lista = "exec sp_Reporte_De_Cortes_Del_Dia '','"+fecha_in+"','"+fecha_fin+"'" ;
+//		String query_lista = "exec sp_select_revision_de_cortes_por_auditoria";		
+		String query_lista = "exec sp_Revision_De_Cortes_Auditoria '"+fecha_in+"','"+fecha_fin+"'";
+		System.out.print(query_lista);
+//		String[][] matriz = new String[get_filas(query_lista)][23];
+		String[][] matriz = new String[get_filas(query_lista)][32];
+		
+		Connection con = new Connexion().conexion();
+		try {
+			
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			
+			int i = 0;
+			while(rs.next()){
+				
+				matriz[i][0 ] = " "+rs.getString(1);
+				matriz[i][1 ] = " "+rs.getString(2);
+				matriz[i][2 ] = " "+rs.getString(3);
+				matriz[i][3 ] = " "+rs.getString(4);
+				matriz[i][4 ] = " "+rs.getString(5);
+				            
+				matriz[i][5 ] = " "+df.format(rs.getDouble(6));
+				matriz[i][6 ] = " "+df.format(rs.getDouble(7));
+				matriz[i][7 ] = " "+df.format(rs.getDouble(8));
+				matriz[i][8 ] = " "+df.format(rs.getDouble(9));
+				matriz[i][9 ] = " "+df.format(rs.getDouble(10));
+				matriz[i][10] = " "+df.format(rs.getDouble(11));
+				matriz[i][11] = " "+df.format(rs.getDouble(12));
+				matriz[i][12] = " "+df.format(rs.getDouble(13));
+				matriz[i][13] = " "+df.format(rs.getDouble(14));
+				matriz[i][14] = " "+df.format(rs.getDouble(15));
+				matriz[i][15] = " "+df.format(rs.getDouble(16));
+				matriz[i][16] = " "+df.format(rs.getDouble(17));
+				matriz[i][17] = " "+df.format(rs.getDouble(18));
+				matriz[i][18] = " "+df.format(rs.getDouble(19));
+				
+				matriz[i][19] = " "+rs.getString(20);
+				matriz[i][20] = " "+rs.getString(21);
+				matriz[i][21] = " "+rs.getString(22);
+				matriz[i][22] = " "+rs.getString(23);
+				matriz[i][23] = " "+rs.getString(24);
+				matriz[i][24] = " "+rs.getString(25);
+				matriz[i][25] = " "+rs.getString(26);
+				matriz[i][26] = " "+rs.getString(27);
+				matriz[i][27] = " "+rs.getString(28);
+				matriz[i][28] = " "+rs.getString(29);
+				matriz[i][29] = " "+rs.getString(30);
+				matriz[i][30] = " "+rs.getString(31);
+				matriz[i][31] = " "+rs.getString(32);
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+//				matriz[i][0 ] = " "+rs.getString(1);
+//				matriz[i][1 ] = " "+rs.getString(2);
+//				matriz[i][2 ] = " "+rs.getString(3);
+//				matriz[i][3 ] = " "+rs.getString(4);
+//				matriz[i][4 ] = " "+rs.getString(5);
+//				            
+//				matriz[i][5 ] = " "+rs.getString(6);
+//				matriz[i][6 ] = " "+rs.getString(7);
+//				matriz[i][7 ] = " "+rs.getString(8);
+//				matriz[i][8 ] = " "+df.format(rs.getDouble(9));
+//				matriz[i][9 ] = " "+df.format(rs.getDouble(10));
+//				matriz[i][10] = " "+df.format(rs.getDouble(11));
+//				matriz[i][11] = " "+df.format(rs.getDouble(12));
+//				matriz[i][12] = " "+df.format(rs.getDouble(13));
+//				matriz[i][13] = " "+df.format(rs.getDouble(14));
+//				matriz[i][14] = " "+df.format(rs.getDouble(15));
+//				matriz[i][15] = " "+df.format(rs.getDouble(16));
+//				matriz[i][16] = " "+df.format(rs.getDouble(17));
+//				matriz[i][17] = " "+df.format(rs.getDouble(18));
+//				
+//				matriz[i][18] = " "+df.format(rs.getDouble(19));
+//				matriz[i][19] = " "+df.format(rs.getDouble(20));
+//				matriz[i][20] = " "+df.format(rs.getDouble(21));
+//				matriz[i][21] = " "+df.format(rs.getDouble(22));
+//				matriz[i][22] = " "+rs.getString(23);
+//				matriz[i][23] = " "+rs.getString(24);
+//				matriz[i][24] = " "+rs.getString(25);
+//				matriz[i][25] = " "+rs.getString(26);
+//				matriz[i][26] = " "+rs.getString(27);
+//				matriz[i][27] = " "+rs.getString(28);
+//				matriz[i][28] = " "+rs.getString(29);
+//				matriz[i][29] = " "+rs.getString(30);
+//				matriz[i][30] = " "+rs.getString(31);
+				
+//				System.out.print("  "+rs.getString(1));
+//				System.out.print("  "+rs.getString(2));
+//				System.out.print("  "+rs.getString(3));
+//				System.out.print("  "+rs.getString(4));
+//				System.out.print("  "+rs.getString(5));
+//				System.out.print("  "+rs.getString(6));
+//				System.out.print("  "+rs.getString(7));
+//				System.out.print("  "+rs.getString(8));
+//				System.out.print("  "+df.format(rs.getDouble(9)));
+//				System.out.print("  "+df.format(rs.getDouble(10)));
+//				System.out.print("  "+df.format(rs.getDouble(11)));
+//				System.out.print("  "+df.format(rs.getDouble(12)));
+//				System.out.print("  "+df.format(rs.getDouble(13)));
+//				System.out.print("  "+df.format(rs.getDouble(14)));
+//				System.out.print("  "+df.format(rs.getDouble(15)));
+//				System.out.print("  "+df.format(rs.getDouble(16)));
+//				System.out.print("  "+df.format(rs.getDouble(17)));
+//				System.out.print("  "+df.format(rs.getDouble(18)));
+//				System.out.print("  "+df.format(rs.getDouble(19)));
+//				System.out.print("  "+df.format(rs.getDouble(20)));
+//				System.out.print("  "+df.format(rs.getDouble(21)));
+//				System.out.print("  "+df.format(rs.getDouble(22)));
+//				System.out.print("  "+rs.getString(23));
+//				System.out.print("  "+rs.getString(24));
+//				System.out.print("  "+rs.getString(25));
+//				System.out.print("  "+rs.getString(26));
+//				System.out.print("  "+rs.getString(27));
+//				System.out.print("  "+rs.getString(28));
+//				System.out.print("  "+rs.getString(29));
+//				System.out.print("  "+rs.getString(30));
+//				System.out.println("  "+rs.getString(31));
+
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_trabajo_de_cortes store procedure sp_select_trabajo_de_cortes  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+		}
+	    return matriz; 
+	}
+	
 }
 
 

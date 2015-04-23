@@ -896,11 +896,11 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte, Object[][] tb_asignaciones,Object[][] tb_vauchers,Object[][] tb_totales_por_fecha,  Object[] lista_de_asignaciones_en_uso){
+	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte, Object[][] tb_asignaciones,Object[][] tb_vauchers,Object[][] tb_totales_por_fecha,  Object[] lista_de_asignaciones_en_uso, String cadena_de_retiros_programados){
 		String query_asignacion = 		 "exec sp_insert_asignacion_para_cortes  ?,?,?,?,?,?,?,?,?";		// <-9		11 ->  tb_tabla_de_asignaciones_para_cortes 
 		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
-		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-13
+		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-16
 		String query_status_corte_para_filtro="update IZAGAR_Relacion_de_Asignaciones_Liquidadas set status_corte=1 where Asignacion = ?";
 		
 		
@@ -1017,7 +1017,11 @@ public class GuardarSQL {
 			pstmt_corte.setFloat(i+=1, corte.getTotal_de_vauchers());
 			pstmt_corte.setFloat(i+=1, corte.getDiferencia_corte());
 			pstmt_corte.setString(i+=1, corte.getComentario().toUpperCase());
+			pstmt_corte.setString(i+=1, cadena_de_retiros_programados.equals("")?"Todos":cadena_de_retiros_programados);
 			pstmt_corte.executeUpdate();
+			
+			System.out.println(cadena_de_retiros_programados);
+			System.out.println(cadena_de_retiros_programados.equals("")?"Todos":cadena_de_retiros_programados);
 			
 			con.commit();
 			

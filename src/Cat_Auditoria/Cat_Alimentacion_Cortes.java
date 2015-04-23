@@ -299,6 +299,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	int bandera_de_guardado = 0;
 	String establecimiento="";
 	
+	String folios_retiros_programados_seleccionados="";
+	
 	public Cat_Alimentacion_Cortes(int folio, String estab, String folio_corte) {
 		establecimiento=estab;
 		
@@ -742,9 +744,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						}
 						
 //						si guarda entra y abre los reportes de impresion para cortes
-						if(corte.guardar(tabla_guardar_asignaciones(),tabla_guardar_vauchers(),tabla_guardar_totales_por_fecha(), lista_de_asignaciones_en_uso())){
+						if(corte.guardar(tabla_guardar_asignaciones(),tabla_guardar_vauchers(),tabla_guardar_totales_por_fecha(), lista_de_asignaciones_en_uso(),folios_retiros_programados_seleccionados)){
 							
-							
+							folios_retiros_programados_seleccionados="";
 							
 							btnAsignacion.setEnabled(false);
 							btnQuitarAsignacion.setEnabled(false);
@@ -3462,6 +3464,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 		public class Cat_Retiros_A_Detalle extends Cat_Consulta_Retiros_A_Detalle{
 			
+			
 			public Cat_Retiros_A_Detalle(int folio_cajero,String establecimiento){
 				while(tabla_retiros.getRowCount()>0){
 					model_retiros.removeRow(0);
@@ -3470,15 +3473,55 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				String[][] retiros_a_detalle = new BuscarSQL().getRetiros_a_detalle(folio_cajero,establecimiento);
 				
 				for(int i=0; i<retiros_a_detalle.length; i++){
-					 		Object[] retiro = new Object[4];
+					 		Object[] retiro = new Object[5];
 					 		
 					 		retiro[0] = retiros_a_detalle[i][0];
 					 		retiro[1] = retiros_a_detalle[i][1];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 					 		retiro[2] = retiros_a_detalle[i][2];
 					 		retiro[3] = retiros_a_detalle[i][3];
+					 		retiro[4] = retiros_a_detalle[i][4];
 					 		model_retiros.addRow(retiro);
 				}
 				
+				btnAgregar.addActionListener(opCargar);
+				
 			}
+			
+			ActionListener opCargar = new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					folios_retiros_programados_seleccionados = "";
+					double retiros_programados = 0;
+					
+					int contador = 0;
+					
+					for(int i=0; i<tabla_retiros.getRowCount(); i++){
+						if(Boolean.valueOf(tabla_retiros.getValueAt(i, 4).toString())){
+							
+							contador++;
+ 							if(contador == 1){
+ 								folios_retiros_programados_seleccionados += "'"+tabla_retiros.getValueAt(i,0)+"'";
+		 					}else{
+		 						folios_retiros_programados_seleccionados += "',''"+tabla_retiros.getValueAt(i,0)+"'";
+		 					}
+ 							
+//							folios_retiros+="'"+tabla_retiros.getValueAt(i,0)+"'','";
+							retiros_programados+=Double.valueOf(tabla_retiros.getValueAt(i,1).toString());
+							
+						}
+					}
+//					folios_retiros_programados_seleccionados += "''";
+					
+					if(folios_retiros_programados_seleccionados.equals("")){
+						folios_retiros_programados_seleccionados = "Ninguno";
+					}
+					
+					
+					txtRetiroCajero.setText(retiros_programados+"");
+					System.out.println(folios_retiros_programados_seleccionados);
+					
+					calculoDinamico();
+					dispose();
+				}
+			};
 		}
 }
