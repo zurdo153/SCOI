@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.swing.*;
 
 import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
+import Cat_Compras.Cat_Reporte_De_Ventas;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -234,12 +235,18 @@ public class Init_Menu_Bar extends Init_Login{
 					}else{
 						
 					if(e.getActionCommand().equalsIgnoreCase("Cotizaciones De Un Producto En Proveedores")){
-						new Cat_Cotizaciones_De_Un_Producto_En_Proveedores("").setVisible(true);
+					        	new Cat_Cotizaciones_De_Un_Producto_En_Proveedores("").setVisible(true);
+					}else{
+					if(e.getActionCommand().equalsIgnoreCase("Reporte De Ventas")){
+						      new Cat_Reporte_De_Ventas("","Todos").setVisible(true);
+						
+					
 					}else{
 						
 						Class instance = Class.forName(new Componentes().classExiste(e.getActionCommand()));
 						Object instanceObject = instance.newInstance();
 						((Window) instanceObject).setVisible(true);
+					}
 					}
 					}
 				} catch (ClassNotFoundException e1) {
@@ -291,7 +298,12 @@ public class Init_Menu_Bar extends Init_Login{
 	
 	public static void main(String args[]){
 		try{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+//			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+//			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel"); 
+			
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			new Init_Menu_Bar().setVisible(true);
 		}catch(Exception e){}
 	}

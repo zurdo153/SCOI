@@ -181,6 +181,7 @@ public class Cat_Cotizaciones_De_Un_Producto_En_Proveedores extends JFrame{
 			  double venta_total=0;
 			  
 	public Cat_Cotizaciones_De_Un_Producto_En_Proveedores(String cod_prod){
+		
 		codigo_producto=cod_prod+"";
 		txtcod_prod.setText(codigo_producto+"");
 

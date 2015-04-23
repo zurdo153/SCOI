@@ -51,7 +51,7 @@ import Obj_Reportes.Obj_Reportes_De_Ventas;
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
-public class Cat_Reportes_De_Ventas extends JFrame {
+public class Cat_Reporte_De_Ventas extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -210,7 +210,7 @@ public class Cat_Reportes_De_Ventas extends JFrame {
 	String parametroGeneral = "";
 	String Lista="";
 	
-	public Cat_Reportes_De_Ventas(String parametro, String operador){
+	public Cat_Reporte_De_Ventas(String parametro, String operador){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		
@@ -1161,7 +1161,7 @@ public void filtroProductos(String cadena){
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reportes_De_Ventas("","Todos").setVisible(true);
+			new Cat_Reporte_De_Ventas("","Todos").setVisible(true);
 		}catch(Exception e){	}
 	}
 

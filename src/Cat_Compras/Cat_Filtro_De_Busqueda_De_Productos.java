@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -114,6 +115,24 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	int bandera_filtro_familia=0;
 	
 	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador){
+		
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
 		valor_catalogo=bandera_origen_consulta_filro;
 
 		this.setModal(true);
@@ -206,7 +225,23 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	 				JOptionPane.showMessageDialog(null, "Es necesario seleccionar un argunemto", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 						return;
 	 			}else{
-	 				new Cat_Reportes_De_Ventas(Lista,operador_ventas).setVisible(true);
+	 				try {
+						UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InstantiationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (UnsupportedLookAndFeelException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+	 				
+	 				new Cat_Reporte_De_Ventas(Lista,operador_ventas).setVisible(true);
 	 				dispose();
 	 			}
 		}
@@ -226,7 +261,25 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
     			
     			
     			switch(valor_catalogo){
-				case "Cat_Cotizaciones_De_Un_Producto_En_Proveedores":		new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
+				case "Cat_Cotizaciones_De_Un_Producto_En_Proveedores":		
+					try {
+						UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InstantiationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (UnsupportedLookAndFeelException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+					new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
 			           	dispose();
 				break;
 				
@@ -253,7 +306,24 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 			String folio = tabla.getValueAt(fila,0).toString().trim();
 			
 			switch(valor_catalogo){
-			case "Cat_Cotizaciones_De_Un_Producto_En_Proveedores":		new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
+			case "Cat_Cotizaciones_De_Un_Producto_En_Proveedores":	
+				
+				try {
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
 		           	dispose();
 			break;
 			
@@ -419,10 +489,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		
-		
-		
-	
 		
 		
 		public static void main(String args[]){
