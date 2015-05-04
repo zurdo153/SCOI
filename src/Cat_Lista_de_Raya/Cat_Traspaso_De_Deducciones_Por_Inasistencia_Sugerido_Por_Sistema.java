@@ -37,7 +37,7 @@ import Obj_Lista_de_Raya.Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Ina
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Deducciones_Por_Inasistencia extends Cat_Root{
+public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema extends Cat_Root{
 	
 	Runtime R = Runtime.getRuntime();
     
@@ -89,9 +89,10 @@ public class Cat_Deducciones_Por_Inasistencia extends Cat_Root{
 //	public TableColumn columna_dia_falta = tabla.getColumnModel().getColumn(5);
 //	public TableColumn columna_dia_gafete = tabla.getColumnModel().getColumn(9);
     
-	public Cat_Deducciones_Por_Inasistencia(){
+	public Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema(){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+		alto=alto-50;
 		
 		this.setSize(1100, alto);
 		this.setLocationRelativeTo(null);
@@ -100,7 +101,7 @@ public class Cat_Deducciones_Por_Inasistencia extends Cat_Root{
 		
 		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/actualizacion-del-sistema-icono-5792-48.png"));
-		this.setTitle("Deducción por Inasistencia");
+		this.setTitle("Traspaso De Deducción por Inasistencia Sugerido Por Sistema");
 		this.panel.add(cmbEstablecimientos).setBounds(463,35,150,20);
 
 //		this.columna_dia_falta.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_dias));
@@ -139,7 +140,6 @@ public class Cat_Deducciones_Por_Inasistencia extends Cat_Root{
 //	};
 
 	ActionListener op_guardar = new ActionListener() {
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
 			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
 			Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
@@ -383,7 +383,7 @@ public class Cat_Deducciones_Por_Inasistencia extends Cat_Root{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new  Cat_Deducciones_Por_Inasistencia().setVisible(true);
+			new  Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema().setVisible(true);
 		}catch(Exception e){	}
 	}
 }
