@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -102,7 +103,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	};
 	
 	public JTable tabla = new JTable(Tabla_Productos);
-	public JScrollPane scroll_tabla = new JScrollPane(tabla);
+	public JScrollPane scroll_tabla;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(Tabla_Productos); 
@@ -117,7 +118,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador){
 		
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -131,10 +132,10 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+		scroll_tabla = new JScrollPane(tabla);
 		
 		valor_catalogo=bandera_origen_consulta_filro;
-
+		
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/Filter-List-icon16.png"));
 		this.setTitle("Filtro de Productos");
@@ -174,6 +175,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.addWindowListener(op_cerrar);
 		
 //      pone el foco en el txtProductoDescripcion al presionar la tecla scape y limpia lo buscado
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -190,6 +192,32 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
         });
         
 	}
+	WindowListener op_cerrar = new WindowListener() {
+		public void windowOpened(WindowEvent e) {}
+		public void windowIconified(WindowEvent e) {}
+		public void windowDeiconified(WindowEvent e) {}
+		public void windowDeactivated(WindowEvent e) {}
+		public void windowClosing(WindowEvent e) {
+				try {
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		public void windowClosed(WindowEvent e) {}
+		public void windowActivated(WindowEvent e) {}
+	};
+	
 	
 	ActionListener opCargar = new ActionListener(){
 		@SuppressWarnings("unchecked")

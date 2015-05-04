@@ -89,14 +89,18 @@ import javax.swing.table.TableRowSorter;
 
 
 
+
+
+
 import Cat_Checador.Cat_Horarios;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Reporte_De_Empleados_No_Contratables;
 import Cat_Reportes.Cat_Horarios_Provisionales;
 import Cat_Reportes.Cat_Personal_Con_Horario;
 import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
+import Cat_Reportes.Cat_Reportes_De_Contratacion_Por_Empleado;
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
-import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
@@ -238,8 +242,7 @@ public class Cat_Empleados extends JFrame{
 	JButton btnExaminar = new JButton("Examinar");
 	JButton btnCamara = new JButton(new ImageIcon("Iconos/camara_icon&16.png"));
 	
-	JButton btnContratacion = new JButton("Contratacion",new ImageIcon("Imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
-	
+	JButton btnContratacion = new JButton("Contratacion",new ImageIcon("Imagen/contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png"));
 	JButton btn_plantilla = new JButton("R.Plantilla",new ImageIcon ("Imagen/plan-icono-5073-16.png"));
 	JButton btn_horario_provisional = new JButton("H. Provisional",new ImageIcon("Imagen/horas-de-reloj-de-alarma-icono-5601-16.png"));
 	JButton btnCumpleaños_del_Mes = new JButton("R.Cumpleaños",new ImageIcon("Imagen/cookies-tarta-de-cumpleanos-icono-9840-16.png"));
@@ -252,7 +255,7 @@ public class Cat_Empleados extends JFrame{
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
 	
-	JDateChooser txtCalendario = new JDateChooser();
+	JDateChooser txtFechaNacimiento = new JDateChooser();
 	JDateChooser txtIngreso = new JDateChooser();
 	JDateChooser txtIngresoImss = new JDateChooser();
 	JDateChooser txtVencimientoLicencia = new JDateChooser();
@@ -336,7 +339,7 @@ public class Cat_Empleados extends JFrame{
 
 		int x = 20, y=35, ancho=140;
 		
-		this.txtCalendario.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
+		this.txtFechaNacimiento.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		this.txtIngreso.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		this.txtIngresoImss.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		this.txtVencimientoLicencia.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
@@ -358,7 +361,7 @@ public class Cat_Empleados extends JFrame{
 	
 		panel.add(btnFoto).setBounds(x*2+ancho*5,y-5,ancho+55,160);
 		
-//		panel.add(btnContratacion).setBounds(x+ancho+20,8,128,18);
+		panel.add(btnContratacion).setBounds(x+ancho+20,8,128,18);
 		panel.add(btnAsistencia_Empleado).setBounds(x+ancho*2+10,8,128,18);
 		panel.add(btn_plantilla).setBounds(x+ancho*3,8,128,18);
 		panel.add(btn_horario_provisional).setBounds(x+ancho*4-10,8,128,18);
@@ -387,7 +390,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(btnVerificar).setBounds(x+(ancho*4)+100, y,25,20);
 		
 		panel.add(new JLabel("F. de Nacimiento:")).setBounds(x,y+=25, ancho, 20);
-		panel.add(txtCalendario).setBounds(x+ancho-40,y,125,20);
+		panel.add(txtFechaNacimiento).setBounds(x+ancho-40,y,125,20);
 
 		panel.add(new JLabel("Calle y N°:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtCalle).setBounds(x+ancho-40,y,ancho-15,20);
@@ -552,12 +555,15 @@ public class Cat_Empleados extends JFrame{
 		btnVerificar.addActionListener(opVerificar);
 		btnTrueFoto.addActionListener(opPresionFoto);
 		
+		btnContratacion.addActionListener(opContratacion);
+		btnAsistencia_Empleado.addActionListener(opAsistenciaEmpleado);		
+	
+		
 		btnIncontratables.addActionListener(Reporte_de_Empleados_No_Contratables);
 		btnCumpleaños_del_Mes.addActionListener(Reporte_De_Cumpleanios_Del_Mes);
 		btn_plantilla.addActionListener(opPlantilla);
 		btn_horario_provisional.addActionListener(opHorarioProvisional);
-		btnAsistencia_Empleado.addActionListener(opAsistenciaEmpleado);		
-		btnContratacion.addActionListener(opcontrato);
+		
 		
 		btnExaminar.addActionListener(opExaminar);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
@@ -703,28 +709,7 @@ public class Cat_Empleados extends JFrame{
 	    
 	  	}
 	
-	ActionListener opcontrato = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			String basedatos="2.26";
-			String vista_previa_reporte="no";
-			int vista_previa_de_ventana=0;
-			String comando="";
-			String reporte = "";
-			
-			Obj_Usuario usuario = new Obj_Usuario().LeerSession();
-			
-			
-			reporte = "Obj_Reporte_de_Contrato1.jrxml";
-			comando = "exec sp_Reporte_De_Contrato "+txtFolioEmpleado.getText()+"".trim()+","+usuario.getFolio() ;
-							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-							 
-			reporte = "Obj_Reporte_de_Contrato2.jrxml";
-			comando = "exec sp_Reporte_De_Contrato "+txtFolioEmpleado.getText()+"".trim()+","+usuario.getFolio() ;
-		    		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);							 
-							 
-							 
-		}
-	};
+
 	
 
 	ActionListener opCmbHorarioRotarivo = new ActionListener(){
@@ -942,7 +927,7 @@ public class Cat_Empleados extends JFrame{
 						Date date_ingreso_imss_comparacion = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/1900");
 						Date date_vencimiento_licencia_comparacion = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/1900");
 						
-						txtCalendario.setDate(date);
+						txtFechaNacimiento.setDate(date);
 						txtIngreso.setDate(date_ingreso);
 						
 						if(date_ingreso_imss_comparacion.before(date_ingreso_imss)){
@@ -1188,7 +1173,7 @@ public class Cat_Empleados extends JFrame{
 								empleado.setAp_materno("");
 							}
 							
-							empleado.setFecha_nacimiento(new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()));
+							empleado.setFecha_nacimiento(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaNacimiento.getDate()));
 							empleado.setCalle(txtCalle.getText());
 							empleado.setColonia(txtColonia.getText());
 							empleado.setPoblacion(txtPoblacion.getText());
@@ -1385,7 +1370,7 @@ public class Cat_Empleados extends JFrame{
 							empleado.setAp_materno("");
 						}
 						
-						empleado.setFecha_nacimiento(new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()));
+						empleado.setFecha_nacimiento(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaNacimiento.getDate()));
 						empleado.setCalle(txtCalle.getText());
 						empleado.setColonia(txtColonia.getText());
 						empleado.setPoblacion(txtPoblacion.getText());
@@ -1603,7 +1588,7 @@ public class Cat_Empleados extends JFrame{
 		chbGafete.setEnabled(true);
 		cmbStatus.setEnabled(true);
 		txaObservaciones.setEnabled(true);
-		txtCalendario.setEnabled(true);
+		txtFechaNacimiento.setEnabled(true);
 		cmbActivo_Inactivo.setEnabled(true);
 		txtIngreso.setEnabled(true);
 		txtTelefono_Familiar.setEnabled(true);
@@ -1651,7 +1636,7 @@ public class Cat_Empleados extends JFrame{
 		chbGafete.setEnabled(false);                                                                       
 		cmbStatus.setEnabled(false);                                                                       
 		txaObservaciones.setEnabled(false);                                                                
-		txtCalendario.setEnabled(false);                                                                   
+		txtFechaNacimiento.setEnabled(false);                                                                   
 		cmbActivo_Inactivo.setEnabled(false);                                                              
 		txtIngreso.setEnabled(false);                                                                      
 		txtTelefono_Familiar.setEnabled(false);                                                            
@@ -1717,7 +1702,7 @@ public class Cat_Empleados extends JFrame{
 	    txtTelefono_Familiar.setText("");
 	    txtTelefono_Cuadrante.setText("");
 	    chb_cuadrante_parcial.setSelected(false);
-	    txtCalendario.setDate(null);
+	    txtFechaNacimiento.setDate(null);
 	    
 		txtCalle.setText("");
 		txtColonia.setText("");
@@ -1821,17 +1806,53 @@ public class Cat_Empleados extends JFrame{
 			
 		}
 	};
-	
-	ActionListener Reporte_de_Empleados_No_Contratables = new ActionListener(){
+
+	ActionListener opContratacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Reporte_De_Empleados_No_Contratables();
-		}
+			if(txtFolioEmpleado.getText().equals("")){
+				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
+			String Sexo ="",Estado_Civil="", NombreUsuario="";
+			String Edad = "";
+			
+				if(rbMasculino.isSelected()==true){
+					Sexo="MASCULINO";
+				}else{
+					Sexo="FEMENINO";
+				}
+			
+				Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+				NombreUsuario=usuario.getNombre_completo();
+							
+				String fecha_nacimiento = new SimpleDateFormat("dd/MM/yyyy").format(txtFechaNacimiento.getDate())+" 00:00:00";
+			     try {
+				Edad = (new BuscarSQL().edad(fecha_nacimiento));
+				  } catch (SQLException e1) {e1.printStackTrace();}
+		
+			     
+
+			
+			new Cat_Reportes_De_Contratacion_Por_Empleado(txtFolioEmpleado.getText(), txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText(), cmbEstablecimiento.getSelectedItem().toString()
+					                                      ,cmbDepartamento.getSelectedItem().toString(), Sexo, Estado_Civil, Edad, txtCalle.getText()+", COL. "+txtColonia.getText()+", "+txtPoblacion.getText()
+					                                      ,cmbSueldo.getSelectedItem().toString(), NombreUsuario, txtHorario.getText()).setVisible(true);
+
+			}
+			}
 	};
 	
-	ActionListener Reporte_De_Cumpleanios_Del_Mes = new ActionListener(){
+	
+	
+	ActionListener opAsistenciaEmpleado = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				new Cat_Reporte_De_Cumpleanios_Del_Mes().setVisible(true);
-		}
+			if(txtFolioEmpleado.getText().equals("")){
+				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
+			
+			new Cat_Reporte_De_Asistencia_Por_Empleado(txtFolioEmpleado.getText(),txtNombre.getText()+" "+txtApPaterno.getText(),cmbEstablecimiento.getSelectedItem().toString(),cmbDepartamento.getSelectedItem().toString()).setVisible(true);
+			}
+			}
 	};
 	
 	ActionListener opPlantilla = new ActionListener(){
@@ -1846,16 +1867,16 @@ public class Cat_Empleados extends JFrame{
 		}
 	};
 	
-	ActionListener opAsistenciaEmpleado = new ActionListener(){
+	ActionListener Reporte_De_Cumpleanios_Del_Mes = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
-				return;
-			}else{
-			
-			new Cat_Reporte_De_Asistencia_Por_Empleado(txtFolioEmpleado.getText(),txtNombre.getText()+" "+txtApPaterno.getText(),cmbEstablecimiento.getSelectedItem().toString(),cmbDepartamento.getSelectedItem().toString()).setVisible(true);
-			}
-			}
+				new Cat_Reporte_De_Cumpleanios_Del_Mes().setVisible(true);
+		}
+	};
+	
+	ActionListener Reporte_de_Empleados_No_Contratables = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			new Cat_Reporte_De_Empleados_No_Contratables();
+		}
 	};
 	
 	ActionListener salir = new ActionListener(){
@@ -1973,7 +1994,7 @@ public class Cat_Empleados extends JFrame{
 	
 	private String validaCampos(){
 		String error="";
-		String fechaNull = txtCalendario.getDate()+"";
+		String fechaNull = txtFechaNacimiento.getDate()+"";
 		String fechaIngresoNull = txtIngreso.getDate()+"";
 //		String fechaIngresoImssNull = txtIngresoImss.getDate()+"";
 //		String fechaVencimientoLicenciaNull = txtVencimientoLicencia.getDate()+"";

@@ -1,7 +1,6 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
-import java.awt.GraphicsEnvironment;
+import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,44 +9,50 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-import javax.swing.AbstractButton;
-import javax.swing.JCheckBox;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
-import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema extends Cat_Root{
+public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema extends JFrame {
+	public Container cont = getContentPane();
+	
+	public JLayeredPane panel = new JLayeredPane();
+	
+	public JToolBar menu_toolbar = new JToolBar();
+	
+	public JTextField txtFolio;
+	public JTextField txtNombre_Completo;
+	
+	public String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
+	@SuppressWarnings("rawtypes")
+	public JComboBox cmbEstablecimientos ;
+	
+	public JButton btn_guardar = new JButton("Guardar",new ImageIcon("Iconos/save_icon&16.png"));
+	public JButton btn_refrescar = new JButton(new ImageIcon("Iconos/refresh_icon&16.png"));
 	
 	Runtime R = Runtime.getRuntime();
     
-	private String lista1[] = {"","1","2","3","4","5","6","7"};
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private JComboBox cmb_tabla_dias = new JComboBox(lista1);
-  
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private JComboBox cmb_tabla_gafete = new JComboBox(lista1);
-    	
     private DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio", "Nombre Completo", "Establecimiento", "Inpuntualidad", "Sug.Impuntualidad", "Sug.Omisiones", "Sug.Gafete"}
 			){
 	     @SuppressWarnings("rawtypes")
@@ -78,6 +83,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 			return false;
          }	 
      };
+     
 
 	public JTable tabla = new JTable(modelo);
     JScrollPane scroll_tabla = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -85,28 +91,44 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(modelo); 
     
-	
-//	public TableColumn columna_dia_falta = tabla.getColumnModel().getColumn(5);
-//	public TableColumn columna_dia_gafete = tabla.getColumnModel().getColumn(9);
     
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema(){
-		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			e1.printStackTrace();
+		}
+		
+
+
+		
+//		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		alto=alto-50;
-		
 		this.setSize(1100, alto);
 		this.setLocationRelativeTo(null);
-//		this.addWindowListener(op_cerrar);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		cmbEstablecimientos = new JComboBox(establecimientos);
+		txtFolio = new JTextField();
+		txtNombre_Completo = new JTextField();
 		
 		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/actualizacion-del-sistema-icono-5792-48.png"));
 		this.setTitle("Traspaso De Deducción por Inasistencia Sugerido Por Sistema");
-		this.panel.add(cmbEstablecimientos).setBounds(463,35,150,20);
-
-//		this.columna_dia_falta.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_dias));
-//		this.columna_dia_gafete.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_gafete));
-
+		this.panel.add(menu_toolbar).setBounds(25,0,150,25);
+		
+		this.panel.add(txtFolio).setBounds(30,30,75,25);
+		this.panel.add(txtNombre_Completo).setBounds(101,30,359,25);
+		this.panel.add(cmbEstablecimientos).setBounds(463,30,300,25);
+		
 		panel.add(obtener_tabla()).setBounds(30,60,1024,alto-120);
 		llenar_tabla__sugerido ();
 		pitar_tabla();
@@ -117,27 +139,43 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 			this.btn_guardar.setToolTipText("Guardar");
 		this.btn_refrescar.setVisible(false);
 		
+		this.menu_toolbar.add(btn_guardar);
+		this.menu_toolbar.setEnabled(false);
+		this.btn_guardar.setToolTipText("Guardar");
 		this.txtFolio.addKeyListener(op_filtro_folio);
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
 
 
-
+		this.addWindowListener(op_cerrar);
+		
 	}
 
-//	WindowListener op_cerrar = new WindowListener() {
-//		public void windowOpened(WindowEvent e) {}
-//		public void windowIconified(WindowEvent e) {}
-//		public void windowDeiconified(WindowEvent e) {}
-//		public void windowDeactivated(WindowEvent e) {}
-//		public void windowClosing(WindowEvent e) {
-//			if(JOptionPane.showConfirmDialog(null, "¿Desea guardar antes de cerrar?", "Aviso!", JOptionPane.YES_NO_OPTION) == 0){
-//				new Obj_Deducciones_Por_Inasistencia().guardar(tabla_guardar());
-//			}
-//		}
-//		public void windowClosed(WindowEvent e) {}
-//		public void windowActivated(WindowEvent e) {}
-//	};
+	WindowListener op_cerrar = new WindowListener() {
+		public void windowOpened(WindowEvent e) {}
+		public void windowIconified(WindowEvent e) {}
+		public void windowDeiconified(WindowEvent e) {}
+		public void windowDeactivated(WindowEvent e) {}
+		public void windowClosing(WindowEvent e) {
+				try {
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		public void windowClosed(WindowEvent e) {}
+		public void windowActivated(WindowEvent e) {}
+	};
 
 	ActionListener op_guardar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
@@ -259,19 +297,19 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 //		return matriz;
 //	}
 
-	private String valida_tabla(){
-		String error = "";
-		for(int i=0; i<tabla.getRowCount(); i++){
-			try{
-				if(!isNumeric(tabla.getValueAt(i,5).toString())){
-					error += "   La celda de la columna Extra no es un número en el [Folio: "+tabla.getValueAt(i,0)+"]\t\n";
-				}
-			} catch(Exception e){
-				JOptionPane.showMessageDialog(null, "La tabla tiene una celda con texto en lugar de un valor numérico: \n"+e,"Error",JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		return error;
-	}
+//	private String valida_tabla(){
+//		String error = "";
+//		for(int i=0; i<tabla.getRowCount(); i++){
+//			try{
+//				if(!isNumeric(tabla.getValueAt(i,5).toString())){
+//					error += "   La celda de la columna Extra no es un número en el [Folio: "+tabla.getValueAt(i,0)+"]\t\n";
+//				}
+//			} catch(Exception e){
+//				JOptionPane.showMessageDialog(null, "La tabla tiene una celda con texto en lugar de un valor numérico: \n"+e,"Error",JOptionPane.ERROR_MESSAGE);
+//			}
+//		}
+//		return error;
+//	}
 
 	public JScrollPane obtener_tabla(){
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
@@ -327,18 +365,18 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	
 
 
-	private static boolean isNumeric(String cadena){
-		 try {
-			 if(cadena.equals("")){
-				 return true;
-			 }else{
-				 Float.parseFloat(cadena);
-				 return true;
-			 }
-		 } catch (NumberFormatException nfe){
-			 return false;
-		 }
-	 }
+//	private static boolean isNumeric(String cadena){
+//		 try {
+//			 if(cadena.equals("")){
+//				 return true;
+//			 }else{
+//				 Float.parseFloat(cadena);
+//				 return true;
+//			 }
+//		 } catch (NumberFormatException nfe){
+//			 return false;
+//		 }
+//	 }
 
 	
 	

@@ -103,29 +103,6 @@ public class Cat_Consulta_Retiros_A_Detalle extends JDialog {
     	this.tabla_retiros.getColumnModel().getColumn(4).setMinWidth(30);
     	
     	
-//		TableCellRenderer render = new TableCellRenderer() { 
-//			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-//			boolean hasFocus, int row, int column) { 
-//				JLabel lbl = new JLabel(value == null? "": value.toString());
-//				if(row%2==0){
-//						lbl.setOpaque(true); 
-//						lbl.setBackground(new java.awt.Color(177,177,177));
-//				} 
-//				if(table.getSelectedRow() == row){
-//					lbl.setOpaque(true); 
-//					lbl.setBackground(new java.awt.Color(186,143,73));
-//				}
-//				
-//				lbl.setHorizontalAlignment(SwingConstants.LEFT);
-//			return lbl; 
-//			} 
-//		}; 
-//
-//		this.tabla_retiros.getColumnModel().getColumn(0).setCellRenderer(render); 
-//		this.tabla_retiros.getColumnModel().getColumn(1).setCellRenderer(render); 
-//		this.tabla_retiros.getColumnModel().getColumn(2).setCellRenderer(render); 
-//		this.tabla_retiros.getColumnModel().getColumn(3).setCellRenderer(render); 
-    	
 		tabla_retiros.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		tabla_retiros.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		tabla_retiros.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));

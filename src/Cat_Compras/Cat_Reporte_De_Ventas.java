@@ -336,6 +336,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		tiempodefault();
 	}
 	
+	
 	public void render_tabla(){
 		//		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
 				
