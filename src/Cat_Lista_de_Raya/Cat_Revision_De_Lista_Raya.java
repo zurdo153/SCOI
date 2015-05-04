@@ -301,8 +301,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			        btn_guardar.setEnabled(false);
 			        btn_imprimir.setEnabled(false);
 					}
-				
-				
 			}
 			
 		} catch (Exception e) {
@@ -328,9 +326,9 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 	public void cargar_autorizaciones(){
 		
-		if(!EmpleadoConNegativo().equals("")){
+		if(!EmpleadoConNegativo().equals("")||!EmpleadoConSueldoCero().equals("No se encontraron sueldos en cero")){
 			txtNombre_Completo.requestFocus();
-			JOptionPane.showMessageDialog(null,"\n No Podra Usar El Boton Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>>\nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar \n \n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n"+EmpleadoConNegativo()+EmpleadoConSueldoCero(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+			JOptionPane.showMessageDialog(null,"\n No Podra Usar El Boton Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>>\nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar \n \n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n   No Podra Usar El Boton Guardar Con Empleados Que Tengan Sueldo 0 \n"+EmpleadoConNegativo()+EmpleadoConSueldoCero(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 		}  
 		
 		if((new Obj_Fue_Sodas_DH().busquedaautoizacionfs().isStatus_autorizacion()))
@@ -655,10 +653,9 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				JOptionPane.showMessageDialog(null, "Los siguientes datos son requeridos:\n"+valida_error(),"Error",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
-				
-				if(!EmpleadoConNegativo().equals("")){
+				if(!EmpleadoConNegativo().equals("")||!EmpleadoConSueldoCero().equals("No se encontraron sueldos en cero")){
 					txtNombre_Completo.requestFocus();
-					JOptionPane.showMessageDialog(null,"\n No Es Posible Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>>\nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar\n\n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n"+EmpleadoConNegativo()+EmpleadoConSueldoCero(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null,"\n No Es Posible Guardar Con Empleados Que Tengan Valores Negativos En \n <<Descuento De Prestamo,Descuento De Cortes O En El Total A Pagar>> \n O/Y Empleados Que Tengan Sueldo 0 \nSolo podra Guardar Cerrando La Ventana De Revision De Lista De Raya Y Confirmando Que Quiere Guardar\n\n                          Empleado                                                   Desc_Prest               Cortes              A Pagar\n"+EmpleadoConNegativo()+EmpleadoConSueldoCero(),"Aviso:",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}else{
 				

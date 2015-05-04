@@ -114,7 +114,7 @@ public class BuscarSQL {
 	
 	public String fecha(int dias) throws SQLException{
 		String fecha="";
-		String query = "     select convert(varchar(15),getdate()-"+dias+",103) as fecha";
+		String query = "     select convert(varchar(15),getdate()-("+dias+"),103) as fecha";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -132,6 +132,49 @@ public class BuscarSQL {
 		}
 		return fecha;
 	}
+	
+	public String edad(String fecha_nacimiento) throws SQLException{
+		String fecha="";
+		String query = " select (datediff (d, '"+fecha_nacimiento+"', getdate ())) / 365 as edad";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				fecha=(rs.getString("edad"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return fecha;
+	}
+	
+	public String numero_a_letra(double numero) throws SQLException{
+		String Cantidad_Letra="";
+		String query = " Select dbo.CantidadConLetra("+numero+") as cant_letra";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Cantidad_Letra=(rs.getString("cant_letra"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return Cantidad_Letra;
+	}
+	
 	
 	
 	public Obj_Fue_Sodas_DH buscarautoizacionfs(){
@@ -225,16 +268,33 @@ public class BuscarSQL {
 	
 	public double total_retiro_cajero(int cajero,String establecimiento){
 		double total_retiro=0;
+		String queryupdate = "declare @folio_establecimiento int"+
+		          "  set @folio_establecimiento = (select folio from tb_establecimiento where nombre ='"+establecimiento+"') "
+				+ " update tb_retiros_a_cajeros set status_recibido=1 where folio_cajero ="+cajero+" and folio_establecimiento=@folio_establecimiento  and status_retiro_corte = 1 ";
 		
 		String query = "exec sp_select_total_de_retiro_de_cajero " + cajero + ",'" + establecimiento + "';";
-		try {				
+		
+		Connection con1 = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		
+		try {	
+			con1.setAutoCommit(false);
+			pstmt = con1.prepareStatement(queryupdate);
+			pstmt.executeUpdate();
+			con1.commit();
+			
+			
+			
 			Statement s = con.conexion().createStatement();
 			ResultSet rs = s.executeQuery(query);
 			
 			while(rs.next()){
 				total_retiro = rs.getDouble("total_retiro_cajero");
-//				folio.setFolio_corte(rs.getString("folio_corte"));
 			}
+			
+			
+
+			
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();

@@ -11,6 +11,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 
+
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
@@ -70,7 +71,7 @@ public class ActualizarSQL {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public boolean Empleado(Obj_Empleados empleado, int folio){
-		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_update_alta_empleado ?,?,?,?,?,,?,??,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -3198,4 +3199,45 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
+	
+	public boolean Actualizar_retiros_seleccionados(String[][] tabla){
+		
+		String query ="update tb_retiros_a_cajeros set status_recibido=0 where folio_retiro =?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			con.setAutoCommit(false);
+			PreparedStatement pstmt = con.prepareStatement(query);
+			
+			for(int i=0; i<tabla.length; i++){
+				if(tabla[i][1].toString().equals("false")){
+					pstmt.setString (1, tabla[i][0].toString());
+			        pstmt.executeUpdate();	
+				}
+			}
+			con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_retiros_seleccionados ] update \n update tb_retiros_a_cajeros set status_recibido=0 where folio_retiro= SQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_retiros_seleccionados ] update \n update tb_retiros_a_cajeros set status_recibido=0 where folio_retiro= SQLException:"+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+					return false;
+					}	
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
+	
+	}	
+	
 }

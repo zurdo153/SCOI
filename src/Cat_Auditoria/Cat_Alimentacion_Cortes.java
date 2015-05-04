@@ -56,6 +56,7 @@ import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
 import Cat_Reportes.Cat_Reporte_De_Depositos_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Efectivo_Cortes;
 import Cat_Reportes.Cat_Reportes_De_Cortes;
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
@@ -300,7 +301,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	int bandera_de_guardado = 0;
 	String establecimiento="";
 	
-	String folios_retiros_programados_seleccionados="";
 	
 	public Cat_Alimentacion_Cortes(int folio, String estab, String folio_corte) {
 		establecimiento=estab;
@@ -745,9 +745,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						}
 						
 //						si guarda entra y abre los reportes de impresion para cortes
-						if(corte.guardar(tabla_guardar_asignaciones(),tabla_guardar_vauchers(),tabla_guardar_totales_por_fecha(), lista_de_asignaciones_en_uso(),folios_retiros_programados_seleccionados)){
+						if(corte.guardar(tabla_guardar_asignaciones(),tabla_guardar_vauchers(),tabla_guardar_totales_por_fecha(), lista_de_asignaciones_en_uso())){
 							
-							folios_retiros_programados_seleccionados="";
 							
 							btnAsignacion.setEnabled(false);
 							btnQuitarAsignacion.setEnabled(false);
@@ -3470,12 +3469,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				while(tabla_retiros.getRowCount()>0){
 					model_retiros.removeRow(0);
 				}
-				
 				String[][] retiros_a_detalle = new BuscarSQL().getRetiros_a_detalle(folio_cajero,establecimiento);
-				
 				for(int i=0; i<retiros_a_detalle.length; i++){
 					 		Object[] retiro = new Object[5];
-					 		
 					 		retiro[0] = retiros_a_detalle[i][0];
 					 		retiro[1] = retiros_a_detalle[i][1];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 					 		retiro[2] = retiros_a_detalle[i][2];
@@ -3490,44 +3486,96 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			
 			ActionListener opCargar = new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					folios_retiros_programados_seleccionados = "'";
-					
-					
-					
 					double retiros_programados = 0;
-					
-					int contador = 0;
+					String [][] Retirosfalse = new String[tabla_retiros.getRowCount()][2];
 					
 					for(int i=0; i<tabla_retiros.getRowCount(); i++){
-						
-						if(Boolean.valueOf(tabla_retiros.getValueAt(i, 4).toString())){
 							
-							contador++;
- 							if(contador == 1){
- 								folios_retiros_programados_seleccionados += "'"+tabla_retiros.getValueAt(i,0)+"'";
-		 					}else{
-		 						folios_retiros_programados_seleccionados += "',''"+tabla_retiros.getValueAt(i,0)+"'";
-		 					}
- 							
-//							folios_retiros+="'"+tabla_retiros.getValueAt(i,0)+"'','";
-							retiros_programados+=Double.valueOf(tabla_retiros.getValueAt(i,1).toString());
-							
-						}
+						  Retirosfalse[i][0] = tabla_retiros.getValueAt(i, 0).toString();
+						  Retirosfalse[i][1] =  tabla_retiros.getValueAt(i,4 ).toString();
+						  
+							if(Boolean.valueOf(tabla_retiros.getValueAt(i, 4).toString())){  
+								retiros_programados+=Double.valueOf(tabla_retiros.getValueAt(i,1).toString());
+							}
+//=======
+//						
+//						if(Boolean.valueOf(tabla_retiros.getValueAt(i, 4).toString())){
+//							
+//							contador++;
+// 							if(contador == 1){
+// 								folios_retiros_programados_seleccionados += "'"+tabla_retiros.getValueAt(i,0)+"'";
+//		 					}else{
+//		 						folios_retiros_programados_seleccionados += "',''"+tabla_retiros.getValueAt(i,0)+"'";
+//		 					}
+// 							
+////							folios_retiros+="'"+tabla_retiros.getValueAt(i,0)+"'','";
+//							retiros_programados+=Double.valueOf(tabla_retiros.getValueAt(i,1).toString());
+//							
+//						}
+//					}
+//					
+//					folios_retiros_programados_seleccionados += "'";
+//					
+//					if(folios_retiros_programados_seleccionados.equals("''")){
+//						folios_retiros_programados_seleccionados = "Ninguno";
+//>>>>>>> 49a6fe47531b4fefacbf0d2e8b3b0ed4986ba093
 					}
 					
-					folios_retiros_programados_seleccionados += "'";
-					
-					if(folios_retiros_programados_seleccionados.equals("''")){
-						folios_retiros_programados_seleccionados = "Ninguno";
-					}
-					
+					new ActualizarSQL().Actualizar_retiros_seleccionados(Retirosfalse);
 					
 					txtRetiroCajero.setText(retiros_programados+"");
-					System.out.println(folios_retiros_programados_seleccionados);
 					
 					calculoDinamico();
 					dispose();
 				}
 			};
+			public boolean Actualizar_Captura_FS(String folio_corte, int folio_usuario, Object[][] tabla){
+				String queryReset ="exec sp_reset_captura_fs ?";
+				String query ="exec sp_update_captura_fs ?,?,?,?";
+				Connection con = new Connexion().conexion();
+				
+				try {
+					
+					con.setAutoCommit(false);
+					
+					PreparedStatement pstmtReset = con.prepareStatement(queryReset);
+					PreparedStatement pstmt = con.prepareStatement(query);
+					
+					pstmtReset.setString(1, folio_corte);
+					pstmtReset.executeUpdate();
+					
+					
+					for(int i=0; i<tabla.length; i++){
+						
+						pstmt.setString(1, folio_corte);
+						pstmt.setString (2, tabla[i][0].toString());
+						pstmt.setString (3, tabla[i][1].toString());
+						pstmt.setInt (4, folio_usuario);
+						pstmt.executeUpdate();
+					}
+					con.commit();
+				} catch (Exception e) {
+						System.out.println("SQLException: "+e.getMessage());
+							if(con != null){
+								try{
+									System.out.println("La transacción ha sido abortada");
+									con.rollback();
+									JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Captura_FS ] update  SQLException: sp_update_captura_fs "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+								}catch(SQLException ex){
+									System.out.println(ex.getMessage());
+									JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Captura_FS ] update  SQLException: sp_update_captura_fs "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							}
+							return false;
+							}	
+				}finally{
+						try {
+							con.close();
+						} catch(SQLException e){
+							e.printStackTrace();
+						}
+				}		
+				return true;
+			
+			}	
 		}
 }
