@@ -305,22 +305,22 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		public void actionPerformed(ActionEvent e) {
      if(validar_fechas().equals("")){
     	 
-    	    String Nombre_CompletoV =txtNombreEmpleado.getText()+"";
-			String EstablecimientoV=txtEstablecimiento.getText()+"";
-			String DepartamentoV=txtDepartamento.getText()+"";
-			String SexoV=txtSexo.getText()+"";
-			String Estado_CivilV=txtEstadoCivil.getText()+"";
-			String EdadV=txtEdad.getText()+"";
-			String DomicilioV=txtDomicilio.getText();
-			String HorarioV=txtDomicilio.getText();
-			String SueldoV=txtSueldo_Base.getText();
-			String Sueldo_LetraV=txtSueldo_Letra.getText();
-			String TemporadaV=txtTemporada.getText();
-			String Testigo1=txtTestigo1.getText();
-			String testigo2=txtTestigo2.getText();
-			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
-			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
-			String folio_empleado=txtFolio.getText()+"";
+//    	    String Nombre_CompletoV =txtNombreEmpleado.getText()+"";
+//			String EstablecimientoV=txtEstablecimiento.getText()+"";
+//			String DepartamentoV=txtDepartamento.getText()+"";
+//			String SexoV=txtSexo.getText()+"";
+//			String Estado_CivilV=txtEstadoCivil.getText()+"";
+//			String EdadV=txtEdad.getText()+"";
+//			String DomicilioV=txtDomicilio.getText();
+//			String HorarioV=txtDomicilio.getText();
+//			String SueldoV=txtSueldo_Base.getText();
+//			String Sueldo_LetraV=txtSueldo_Letra.getText();
+//			String TemporadaV=txtTemporada.getText();
+//			String Testigo1=txtTestigo1.getText();
+//			String testigo2=txtTestigo2.getText();
+//			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+//			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
+//			String folio_empleado=txtFolio.getText()+"";
 	
 			
 			String basedatos="2.26";
@@ -329,10 +329,10 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 			String comando="";
 			String reporte = "Obj_Reporte_De_Contrato.jrxml";
 				
-				comando = "Select  '"
-						+Nombre_CompletoV+"' as nombre '"
-						+EstablecimientoV+"' as Establecimientp'"
-						+DepartamentoV+" ";
+//				comando = "Select  '"
+//						+Nombre_CompletoV+"' as nombre '"
+//						+EstablecimientoV+"' as Establecimientp'"
+//						+DepartamentoV+" ";
 						
 						
 										 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);

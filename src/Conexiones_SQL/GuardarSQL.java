@@ -902,7 +902,7 @@ public class GuardarSQL {
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
 		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-16
 		String query_status_corte_para_filtro="update IZAGAR_Relacion_de_Asignaciones_Liquidadas set status_corte=1 where Asignacion = ?";
-		
+
 		
 		Connection con = new Connexion().conexion();
 		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();
@@ -3772,4 +3772,44 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
+	public boolean Guardar_Revision_De_Corte_Aud(String FolioCorte, String StatusCobro, String DiferenciaAuditoria, String Observacion){
+		
+		String query = "exec sp_update_reviso_corte_auditoria ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, FolioCorte);
+			pstmt.setString(2, StatusCobro);
+			pstmt.setDouble(3, DiferenciaAuditoria.equals("")?0:Double.valueOf(DiferenciaAuditoria));
+			pstmt.setString(4, Observacion);
+			pstmt.setInt(5, usuario.getFolio());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Revision_De_Corte_Aud ] Update   \nSQLException: sp_update_reviso_corte_auditoria "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Revision_De_Corte_Aud ] Update  \nSQLException: sp_update_reviso_corte_auditoria "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Revision_De_Corte_Aud ] Update  SQLException: sp_update_reviso_corte_auditoria "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
 } 

@@ -197,16 +197,6 @@ public class Obj_Alimentacion_Cortes {
 		this.abono = abono;
 	}
 
-	//	public Obj_Alimentacion_Cortes buscar_tiket(String Clave)
-//	{
-//		Obj_Alimentacion_Cortes corte = new Obj_Alimentacion_Cortes();
-//		try{
-//			corte = new Archivos().leerTiket(Clave);
-//		}catch(IOException e){
-//			e.printStackTrace();
-//		}
-//		return corte;
-//	}
 	public boolean generar_folio_corte(){ return new GuardarSQL().Guardar_Folio_Corte(); }
 	public String buscar(String establecimiento){ return new BuscarSQL().Folio_Nuevo(establecimiento); }
 	
