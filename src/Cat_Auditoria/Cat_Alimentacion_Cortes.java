@@ -50,6 +50,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 
+
 import Cat_Reportes.Cat_Reporte_De_Cheques_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
 import Cat_Reportes.Cat_Reporte_De_Depositos_Cortes;
@@ -3489,12 +3490,16 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			
 			ActionListener opCargar = new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					folios_retiros_programados_seleccionados = "";
+					folios_retiros_programados_seleccionados = "'";
+					
+					
+					
 					double retiros_programados = 0;
 					
 					int contador = 0;
 					
 					for(int i=0; i<tabla_retiros.getRowCount(); i++){
+						
 						if(Boolean.valueOf(tabla_retiros.getValueAt(i, 4).toString())){
 							
 							contador++;
@@ -3509,9 +3514,10 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							
 						}
 					}
-//					folios_retiros_programados_seleccionados += "''";
 					
-					if(folios_retiros_programados_seleccionados.equals("")){
+					folios_retiros_programados_seleccionados += "'";
+					
+					if(folios_retiros_programados_seleccionados.equals("''")){
 						folios_retiros_programados_seleccionados = "Ninguno";
 					}
 					
