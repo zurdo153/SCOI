@@ -359,27 +359,9 @@ public class Cat_Revision_De_Cortes extends JFrame{
 	        		String seguridad = matriz[0].toString().trim();
 	        		String auditoria = matriz[1].toString().trim();
 	        		
-	        		if(seguridad.equals("true") && auditoria.equals("false")){
-	        			columna = 30;
-	        		}
-	        		if(seguridad.equals("flase") && auditoria.equals("true")){
-	        			columna = 25;
-	        		}
-					if(seguridad.equals("true") && auditoria.equals("true")){
-						columna = 30;
-	        		}
-	        		
-	        		System.out.println(seguridad+"    "+auditoria);
-//	        		 
-//	    			String[] fila = new String[35];
-//	    	        for(int i=0; i<matriz.length; i++){
-//	    	        	
-//	    	        	for(int j=0; j<35; j++){
-//	    	        		fila[j] = matriz[i][j]+"";
-//	    	        	}
-//	    	        	modelo.addRow(fila);
-//	    	        }
-	        		
+	        		if(seguridad.equals("true") && auditoria.equals("false")){ columna = 30;	}
+	        		if(seguridad.equals("flase") && auditoria.equals("true")){ columna = 25;	}
+					if(seguridad.equals("true") && auditoria.equals("true")) { columna = 30;	}
 	        		
 	        			if(!tbl.getValueAt(fila, columna).toString().trim().equals("")){
 	        				JOptionPane.showMessageDialog(null, "No se puede abrir este corte por que ya fue revisado","Aviso",JOptionPane.WARNING_MESSAGE);

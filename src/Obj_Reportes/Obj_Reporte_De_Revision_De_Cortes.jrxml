@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-05-04T08:54:45 -->
+<!-- 2015-05-04T18:52:08 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte  de Depositos Bancos" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="56" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d877fc95-687e-432b-bc71-4ca9584c39f8">
 	<property name="ireport.callouts" value="callouts.1.fg=0,0,0\n callouts.1.bg=255,255,0\n "/>
 	<property name="com.jaspersoft.studio.unit." value="cm"/>
@@ -27,7 +27,6 @@
 
 select a.folio
        ,a.folio_corte
-       ,a.folio_usuario
        ,a.realizo_corte
        ,a.folio_empleado
        ,a.cajero
@@ -78,7 +77,6 @@ select a.folio
      from(
 			SELECT tb_alimentacion_de_cortes.folio
 				  ,tb_alimentacion_de_cortes.folio_corte
-				  ,tb_alimentacion_de_cortes.folio_usuario
 				  ,empleado_realizo_corte.nombre+' '+empleado_realizo_corte.ap_paterno+' '+empleado_realizo_corte.ap_materno as realizo_corte
 				  ,tb_alimentacion_de_cortes.folio_empleado
 				  ,cajero.nombre+' '+cajero.ap_paterno+' '+cajero.ap_materno as cajero
@@ -139,7 +137,7 @@ select a.folio
 				  ,tb_alimentacion_de_cortes.folio_empleado      ,tb_alimentacion_de_cortes.folio_establecimiento_de_corte
 				  ,empleado_realizo_corte.nombre                 ,empleado_realizo_corte.ap_paterno     ,empleado_realizo_corte.ap_materno
 				  ,cajero.nombre                                 ,cajero.ap_paterno                     ,cajero.ap_materno
-				  ,tb_alimentacion_de_cortes.folio_usuario       ,tb_alimentacion_de_cortes.apartados
+				   ,tb_alimentacion_de_cortes.apartados
 				  ,tb_establecimiento.nombre                     ,tb_alimentacion_de_cortes.corte_del_sistema
 				  ,tb_alimentacion_de_cortes.tiempo_aire         ,tb_alimentacion_de_cortes.recibo_de_luz
 				  ,tb_alimentacion_de_cortes.deposito            ,tb_alimentacion_de_cortes.efectivo
@@ -164,7 +162,6 @@ select a.folio
 left outer join tb_captura_fuente_sodas on tb_captura_fuente_sodas.folio_corte=a.folio_corte
 
 group by a.folio_corte
-       ,a.folio_usuario
        ,a.realizo_corte
        ,a.folio_empleado
        ,a.cajero

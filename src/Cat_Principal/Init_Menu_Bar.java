@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.swing.*;
 
 import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
+import Cat_Compras.Cat_Reporte_De_Ventas;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
