@@ -1,51 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
-<!-- 2015-04-21T14:40:18 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-05-04T17:04:07 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="94c28d3b-fcff-46c1-a86d-6b9ba4669dad">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
-	<queryString>
-		<![CDATA[select   2 as folio_empleado
-        ,'VICTOR HUGO HERRERA CUEVAS ' as nombre_completo
-        ,'JUAN RICARDO CORTEZ' as desarrollo_humano
-       
-
-		,'AUXILIAR DE SISTEMAS' as puesto       
-		,'14/04/15' as fecha_inicial
-		,'14/07/15' as fecha_final
-		,'Masculino' as sexo
-		,'Soltero' as estado_civil
-		,'30' as edad
-		,'Calle 10 de Mayo, Colonia Lienzo Charro' as direccion
-		,'1250' as sueldo_base
-		,'Mil Doscientos Cincuenta Pesos' as sueldo_texto	
-		,'14' as dia
-		,'Abril' as mes
-		,'15' as anio
-		,'X' as testigo_1
-		,'X' as testigo_2]]>
+	<queryString language="SQL">
+		<![CDATA[exec sp_Reporte_De_Contrato 'VICTOR HUGO HERRERA CUEVAS','SISTEMAS','SISTEMAS','AUXILIAR DE SISTEMAS','MASCULINO','CASADO','30','10 DE MAYO NUM.52, COL. LIENZO CHARRO, ELDORADO','10 DE MAYO NUM.52, COL. LIENZO CHARRO, ELDORADO','1125.0','UN MIL CIENTO VEINTICINCO PESOS 00/100 PESOS','DIA DE LAS MADRES','EDGAR EDUARDO JIMENEZ MOLINA','MARCO ANTONIO BODART GUZMAN','04/05/2015','03/06/2015',2]]>
 	</queryString>
 	<field name="folio_empleado" class="java.lang.Integer"/>
 	<field name="nombre_completo" class="java.lang.String"/>
-	<field name="desarrollo_humano" class="java.lang.String"/>
-	<field name="puesto" class="java.lang.String"/>
 	<field name="fecha_inicial" class="java.lang.String"/>
 	<field name="fecha_final" class="java.lang.String"/>
 	<field name="estado_civil" class="java.lang.String"/>
 	<field name="sexo" class="java.lang.String"/>
-	<field name="edad" class="java.lang.String"/>
-	<field name="direccion" class="java.lang.String"/>
-	<field name="sueldo_base" class="java.lang.String"/>
-	<field name="sueldo_texto" class="java.lang.String"/>
-	<field name="dia" class="java.lang.String"/>
+	<field name="edad" class="java.lang.Integer"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="departamento" class="java.lang.String"/>
+	<field name="domicilio" class="java.lang.String"/>
+	<field name="horario" class="java.lang.String"/>
+	<field name="sueldo" class="java.math.BigDecimal"/>
+	<field name="sueldo_letra" class="java.lang.String"/>
+	<field name="temporada" class="java.lang.String"/>
+	<field name="testigo1" class="java.lang.String"/>
+	<field name="testigo2" class="java.lang.String"/>
+	<field name="puesto" class="java.lang.String"/>
+	<field name="dia" class="java.lang.Integer"/>
 	<field name="mes" class="java.lang.String"/>
-	<field name="anio" class="java.lang.String"/>
-	<field name="testigo_1" class="java.lang.String"/>
-	<field name="testigo_2" class="java.lang.String"/>
+	<field name="año" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="801">
+		<band height="779">
 			<staticText>
 				<reportElement x="120" y="20" width="330" height="70" uuid="0db7ea77-e36a-4595-afe0-7dc6f10c9afe"/>
 				<textElement textAlignment="Center">
@@ -62,11 +47,11 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<imageExpression><![CDATA["C:/SCOI/imagen/Logotipo_IZAGAR.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="-2" y="130" width="551" height="80" uuid="ab1608f1-b924-4fb7-8048-672c7572fbf1"/>
-				<textElement>
+				<reportElement x="-2" y="130" width="551" height="50" uuid="ab1608f1-b924-4fb7-8048-672c7572fbf1"/>
+				<textElement textAlignment="Justified">
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[CONTRATO INDIVIDUAL DE TRABAJO POR TIEMPO DETERMINADO (O TIEMPO FIJO) CELEBRAN POR UNA PARTE  LA EMPRESA SUPERMERCADO LA COMPETIDORA S.A. DE C.V. REPRESENTADA POR EL SR. OMAR IZABAL GARMENDIA, EN SU CARÁCTER DE REPRESENTANTE LEGAL Y POR LA OTRA EL TRABAJADOR __________________________________________________________ AL TENOR DE LA SIGUIENTES  DECLARACIONES Y CLAUSULAS:]]></text>
+				<text><![CDATA[      CONTRATO INDIVIDUAL DE TRABAJO POR TIEMPO DETERMINADO (O TIEMPO FIJO) CELEBRAN POR UNA PARTE  LA EMPRESA SUPERMERCADO LA COMPETIDORA S.A. DE C.V. REPRESENTADA POR EL SR. OMAR IZABAL GARMENDIA, EN SU CARÁCTER DE REPRESENTANTE LEGAL Y POR LA OTRA EL TRABAJADOR]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="130" y="200" width="311" height="21" uuid="899f99b0-372c-498d-a285-6d77c98333ec"/>
@@ -77,7 +62,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="230" width="551" height="260" uuid="4f378612-21b1-41b7-9151-643ad39f65f8"/>
-				<textElement>
+				<textElement textAlignment="Justified">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[I.- Supermercado La Competidora S.A. DE C.V., declara:
@@ -93,25 +78,25 @@ b)	.- Tener como giro mercantil supermercado y miscelánea con venta de papeler�
 c)	.- Tener  su establecimiento ubicado en Francisco Javier Mina y Deciderio Ochoa  S/n. colonia Centro  de esta ciudad ; Eldorado Sinaloa ,
 
 
-d)	.- Que actualmente en la negociación un recargo extraordinario de trabajo, por estar próximas las ventas correspondientes a ___________________________, labores que no pueden ser desahogadas por el personal de planta, por lo que requiere de lo servicios de una persona que desempeñe el puesto de _______________________________ en lapso comprendido del _______________________________al________________________________ convencimiento  al concluir las labores correspondientes a este ultimo día .
+d)	.- Que actualmente en la negociación un recargo extraordinario de trabajo, por estar próximas las ventas correspondientes a ___________________________, labores que no pueden ser desahogadas por el personal de planta, por lo que requiere de lo servicios de una persona que desempeñe el puesto de _______________________________ en lapso comprendido del                        al                       convencimiento  al concluir las labores correspondientes a este ultimo día .
 
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="490" width="551" height="190" uuid="c3020f4a-d3ec-4810-97dc-9f49a9c1da67"/>
-				<textElement>
+				<reportElement x="0" y="490" width="551" height="220" uuid="c3020f4a-d3ec-4810-97dc-9f49a9c1da67"/>
+				<textElement textAlignment="Justified">
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[II.-______________________________________, declara:
+				<text><![CDATA[II.-                                                                                           
 
 
-	a).- Que es de nacionalidad mexicana, sexo _____________________, estado civil ____________; de ______________________años de edad, con domicilio en ____________________________________________.
+a).- Que es de nacionalidad mexicana, sexo                      , estado civil                          ; de        años de edad, con domicilio en 
 
 
-	b).- Que posee la experiencia y conocimientos necesarios para desempeñar el puesto a que se refiere el inciso d) de la declaración anterior, en el establecimiento  ubicado en Francisco Javier Mina y Deciderio Ochoa S/n colonia Centro de esta ciudad, en cualquier sucursal ya establecida, la que en futuro llegare a fijarse;
+b).- Que posee la experiencia y conocimientos necesarios para desempeñar el puesto a que se refiere el inciso d) de la declaración anterior, en el establecimiento  ubicado en Francisco Javier Mina y Deciderio Ochoa S/n colonia Centro de esta ciudad, en cualquier sucursal ya establecida, la que en futuro llegare a fijarse;
 
 
-	c).- Que conoce y acepta para todos los efectos legales la causa extraordinaria que origina este contrato y cuya duración concluye el día a que se refiere el inciso d) de la declaración anterior.
+c).- Que conoce y acepta para todos los efectos legales la causa extraordinaria que origina este contrato y cuya duración concluye el día a que se refiere el inciso d) de la declaración anterior.
 ]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Bottom">
@@ -119,49 +104,76 @@ d)	.- Que actualmente en la negociación un recargo extraordinario de trabajo, p
 				<imageExpression><![CDATA["C:/SCOI/imagen/Orange wave.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="1" y="155" width="269" height="30" uuid="5340eb34-ffd0-4e9a-b201-6cb162732784"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+				<reportElement x="1" y="164" width="548" height="14" uuid="a7296327-7fb3-484a-9b15-1979801ec416">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}+" AL TENOR DE LA SIGUIENTES  DECLARACIONES Y CLAUSULAS:"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="370" y="416" width="150" height="30" uuid="0f98abd5-47db-4e4f-ae3f-334ea708bb46"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
+				<reportElement x="87" y="412" width="150" height="16" uuid="62b37ca9-1283-41f7-b0c3-70d7cec29492">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{temporada}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="105" y="427" width="156" height="30" uuid="16845fbf-0b35-44df-bc8d-6b75419645ae"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="103" y="436" width="60" height="14" uuid="c2f0bbd6-1a38-4c6d-90ec-cc9295d461e9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{fecha_inicial}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="297" y="427" width="148" height="30" uuid="a77dec9e-a5ce-4aa7-a4e5-2557d51bde91"/>
-				<textElement verticalAlignment="Middle"/>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="176" y="436" width="60" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="a60f9cef-99e3-4d9f-9855-1cc219972ce1">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_final}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="20" y="480" width="200" height="30" uuid="7ab2d2c4-6701-4b18-9518-a986ebbe228e"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+				<reportElement x="11" y="489" width="259" height="16" uuid="850deb2d-6861-4598-845b-2391bbc4d946">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}+" ,declara:"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="248" y="515" width="105" height="30" uuid="f3d3627b-7696-4c6c-b2a5-3c0992012e15"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="197" y="524" width="69" height="14" uuid="146a0803-cece-4e26-8084-b18f5f7b8c48">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="411" y="515" width="100" height="30" uuid="a56ee242-4a55-41f6-abec-86a386d473f6"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="317" y="524" width="72" height="14" uuid="48575050-0121-4e41-bb7a-2b37b2d2c4c2"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{estado_civil}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="14" y="527" width="100" height="30" uuid="7668f83e-7398-42a1-a69b-b22395ce50d8"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="405" y="524" width="23" height="14" uuid="12a70a65-8599-4e03-85fa-d534ecb33b38"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{edad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="270" y="527" width="240" height="30" uuid="e464df45-0362-44eb-ac01-120beec2cb35"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+				<reportElement x="20" y="536" width="454" height="13" uuid="2ea36715-fb91-4275-bc78-0aa7377539f1"/>
+				<textFieldExpression><![CDATA[$F{domicilio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="356" y="424" width="174" height="14" uuid="da531e5d-b113-4194-8dd8-a69c42bd6354">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -179,7 +191,8 @@ d)	.- Que actualmente en la negociación un recargo extraordinario de trabajo, p
 				<textElement textAlignment="Justified">
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[	PRIMERA.- Ambas partes convienen en que para abreviar en el curso de este contrato se usaran las palabras “LA EMPRESA “para aludir a Supermercado la Competidora, S.A. De CV  “EL TRABAJADOR “para referirse a______________________________________________y “LA LEY “para designar a la Ley Federal del Trabajo.
+				<text><![CDATA[	PRIMERA.- Ambas partes convienen en que para abreviar en el curso de este contrato se usaran las palabras “LA EMPRESA “para aludir a Supermercado la Competidora, S.A. De CV  “EL TRABAJADOR “para referirse a
+
 
 	SEGUNDA.- El trabajador se obliga a presentar sus  servicios con el carácter mencionado y tendrá todas las obligaciones que se deriven de este contrato, de ley o de las costumbres de la empresa. 
 
@@ -212,9 +225,11 @@ d)	.- Que actualmente en la negociación un recargo extraordinario de trabajo, p
 				<imageExpression><![CDATA["C:/SCOI/imagen/Orange wave.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="12" y="54" width="250" height="30" uuid="808f1ee0-1954-4d7b-82d4-861a6aebce55"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+				<reportElement x="2" y="63" width="546" height="14" uuid="18695c1f-559c-453d-a66b-da982d4217b4">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}+" y “LA LEY “para designar a la Ley Federal del Trabajo."]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -222,6 +237,12 @@ d)	.- Que actualmente en la negociación un recargo extraordinario de trabajo, p
 		<band height="801">
 			<staticText>
 				<reportElement positionType="FixRelativeToBottom" x="2" y="20" width="551" height="540" uuid="0f49ade7-3aaf-4559-a459-22aac03d8d40"/>
+				<box>
+					<topPen lineStyle="Dotted" lineColor="#FFFFFF"/>
+					<leftPen lineStyle="Dotted" lineColor="#FFFFFF"/>
+					<bottomPen lineStyle="Dotted" lineColor="#FFFFFF"/>
+					<rightPen lineStyle="Dotted" lineColor="#FFFFFF"/>
+				</box>
 				<textElement textAlignment="Justified">
 					<font fontName="Arial"/>
 				</textElement>
@@ -234,7 +255,7 @@ d)	.- Que actualmente en la negociación un recargo extraordinario de trabajo, p
 
 	DECIMA CUARTA.- Al término de la vigencia del presente contrato, el patrón entregara al trabajador la cantidad correspondiente a las vacaciones proporcionarles al tiempo laborado. Incluida la prima adicional de 25 % Asimismo, el trabajador tendrá derecho al pago del aguinaldo en proporción al tiempo laborado.
 
-	DECIMA QUINTA .- El trabajador disfrutara de su  salario de $____________(______________________________________________)por jornada diaria . El pago del salario se hará al trabajador en periodos semanales, al concluir la jornada de labores en el domicilió de la empresa.
+	DECIMA QUINTA .- El trabajador disfrutara de su  salario de $__________                                      (______________________________________________________________________ ) por jornada diaria . El pago del salario se hará al trabajador en periodos semanales, al concluir la jornada de labores en el domicilió de la empresa.
 
 	DECIMA SEXTA.- La empresa se obliga a retener al trabajador y a enterar a las autoridades correspondientes. Las cantidades que por concepto del impuesto  sobre productos del  trabajo  le corresponda, así como las que autorice la Ley del  Seguro  Social, a cargo del trabajador.
 
@@ -247,19 +268,19 @@ d)	.- Que actualmente en la negociación un recargo extraordinario de trabajo, p
 	VIGESIMA.- Ambas partes convienen en que estarán a lo dispuesto por la Ley en todo aquello que no haya sido motivo de pacto expreso 0n este contrato.
 
 
-Leído que fue por ambas partes el presente contrato, enterado de su contenido y obligatoriedad, lo firma en la ciudad de Eldorado, Sinaloa, el día ______ del mes de ___________________ del año de _______.
+Leído que fue por ambas partes el presente contrato, enterado de su contenido y obligatoriedad, lo firma en la ciudad de Eldorado, Sinaloa, el día       del mes de                  del año de              .
 
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="582" width="122" height="15" uuid="57f97e6e-cb92-44fa-a011-ae742baaeec3"/>
+				<reportElement x="2" y="580" width="122" height="15" uuid="57f97e6e-cb92-44fa-a011-ae742baaeec3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[A EMPRESA]]></text>
+				<text><![CDATA[LA EMPRESA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="318" y="650" width="127" height="15" uuid="ce74efd5-9d8d-4758-ac7a-6627bd0c3f6f"/>
+				<reportElement x="304" y="650" width="127" height="15" uuid="ce74efd5-9d8d-4758-ac7a-6627bd0c3f6f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -273,7 +294,7 @@ Leído que fue por ambas partes el presente contrato, enterado de su contenido y
 				<text><![CDATA[_____________________]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="650" width="127" height="15" uuid="46904431-e59e-4f9f-bba0-257265a815ed"/>
+				<reportElement x="134" y="650" width="127" height="15" uuid="46904431-e59e-4f9f-bba0-257265a815ed"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -287,21 +308,21 @@ Leído que fue por ambas partes el presente contrato, enterado de su contenido y
 				<text><![CDATA[_____________________]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="320" y="627" width="122" height="15" uuid="cc50c863-b3f8-4c2f-8f20-e589eec7718e"/>
+				<reportElement x="306" y="627" width="122" height="15" uuid="cc50c863-b3f8-4c2f-8f20-e589eec7718e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[TESTIGO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="438" y="582" width="117" height="15" uuid="34f3c708-e369-4480-8d31-258af80f0041"/>
+				<reportElement x="438" y="580" width="117" height="15" uuid="34f3c708-e369-4480-8d31-258af80f0041"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[EL TRABAJADOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="119" y="627" width="122" height="15" uuid="565e0780-540a-4477-8a84-8387e46f1a4a"/>
+				<reportElement x="133" y="627" width="122" height="15" uuid="565e0780-540a-4477-8a84-8387e46f1a4a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -312,40 +333,73 @@ Leído que fue por ambas partes el presente contrato, enterado de su contenido y
 				<imageExpression><![CDATA["C:/SCOI/imagen/Orange wave.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="487" y="263" width="85" height="30" uuid="3092b471-3f3a-4865-8518-ed09b52876cd"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{sueldo_base}]]></textFieldExpression>
+				<reportElement x="498" y="272" width="56" height="14" uuid="b0e3b098-5aff-4202-9be7-822f0cb8012d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{sueldo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="2" y="275" width="259" height="30" uuid="d9aced6b-12c1-4b70-b0c1-b37d7f22aa72"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{sueldo_texto}]]></textFieldExpression>
+				<reportElement x="7" y="284" width="392" height="14" uuid="0f5673b5-5da0-44cb-ad17-de066d2577a0">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sueldo_letra}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="111" y="517" width="40" height="30" uuid="02b17047-11d6-4a19-af65-f98c5ac061ac"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="306" y="665" width="121" height="30" uuid="6be3940c-38d6-4b15-9c4a-2b1639b84665"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{testigo2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="139" y="665" width="116" height="30" uuid="2646ef6c-1b5e-4e91-a26d-a6d96ccd5606"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{testigo1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="434" y="627" width="119" height="30" uuid="d3792bd5-a36f-450e-92ff-a01d52a2eba2"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="112" y="526" width="22" height="14" uuid="380bb9ab-433b-4690-8d4b-cac755337e1e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="210" y="517" width="100" height="30" uuid="5f3b6ce4-c6d8-4cdd-9b73-0fa02637defb"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="181" y="526" width="48" height="14" uuid="3a9492f1-e6a5-4bb9-98fc-ec9e330adf70">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="360" y="517" width="51" height="30" uuid="27071f7b-969b-447f-911d-d1c7f4402599"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{anio}]]></textFieldExpression>
+				<reportElement x="280" y="526" width="40" height="14" uuid="8f55946d-0dd9-4414-ac99-7f2ccd88930a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{año}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="125" y="642" width="105" height="30" uuid="87d5ec38-e2fa-41bc-b422-d49fb331f6ae"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{testigo_1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="321" y="642" width="110" height="30" uuid="463b6529-2926-42f6-a6b5-a96acbd37502"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{testigo_2}]]></textFieldExpression>
-			</textField>
+			<staticText>
+				<reportElement x="1" y="624" width="122" height="30" uuid="7d67b4a7-4c84-42a9-96c2-ce15be8575c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[SR. OMAR IZABAL  GARMENDIA]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

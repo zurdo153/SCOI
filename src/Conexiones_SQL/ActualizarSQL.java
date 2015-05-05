@@ -71,7 +71,7 @@ public class ActualizarSQL {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public boolean Empleado(Obj_Empleados empleado, int folio){
-		String query = "exec sp_update_alta_empleado ?,?,?,?,?,,?,??,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -132,11 +132,6 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1,	empleado.getForma_pago().toUpperCase());
 			pstmt.setFloat(i+=1,	empleado.getStatus()==4||empleado.getStatus()==5?0:empleado.getSueldo());
 			
-			System.out.println(empleado.getStatus()==4||empleado.getStatus()==5?0:empleado.getSueldo());
-			
-			
-			
-			
 			pstmt.setInt(i+=1, 		empleado.getStatus()==4||empleado.getStatus()==5?1:empleado.getBono());
 			pstmt.setInt(i+=1, 		empleado.getPrestamo());
 			pstmt.setFloat(i+=1, 	empleado.getPension_alimenticia());
@@ -146,9 +141,7 @@ public class ActualizarSQL {
 			pstmt.setBoolean(i+=1, (empleado.isGafete())? true: false);
 			pstmt.setBoolean(i+=1, (empleado.isFuente_sodas())? true: false);
 			pstmt.setString(i+=1, 	empleado.getObservasiones().toUpperCase());
-			
 			pstmt.setString(i+=1, 	empleado.getFecha_actualizacion().toUpperCase());
-			
 			
 //			cambios extras 
 			pstmt.setInt(i+=1,		empleado.getHorario3());
@@ -165,7 +158,7 @@ public class ActualizarSQL {
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion Empleado  procedimiento almacenado sp_update_alta_empleado SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion Empleado  procedimiento almacenado sp_update_alta_empleado SQLException: "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());

@@ -12,7 +12,6 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -24,8 +23,6 @@ import javax.swing.UIManager;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Lista_de_Raya.Obj_Departamento;
-import Obj_Lista_de_Raya.Obj_Establecimiento;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -126,15 +123,6 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 			if(e.getActionCommand().toString().trim().toUpperCase().equals("AUDITORIA PASO A SEGURIDAD")){
 				cargar_fechas();
 				
-//				try {
-//					Date date = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/1900");
-//					c_inicio.setDate(date);
-//				} catch (ParseException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//				
-//				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
 				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 				
 				Reporte_de_Asistencia_completo("01/01/1900",fecha_final,e.getActionCommand().toString().trim().toUpperCase());
@@ -161,16 +149,14 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 	};
 	
 	public void Reporte_de_Asistencia_completo(String fecha_inicio, String fecha_final, String tipo_de_reporte){
-		 reporte = "Obj_Reporte_De_Asistencia_Por_Establecimiento.jrxml";
-		 comando = "exec sp_Reporte_De_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+tipo_de_reporte+"','"+new Obj_Usuario().getFolio()+"'";
+//		+new Obj_Usuario().getFolio()+
+		 reporte = "Obj_Reporte_De_Revision_De_Cortes.jrxml";
+		 comando = "exec sp_Reporte_De_Revision_De_Cortes '"+fecha_inicio+"','"+fecha_final+"','"+tipo_de_reporte+"','"+1+"'";
+		 System.out.println(comando);
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	
-	public void Reporte_de_Asistencia_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
-		 reporte = "Obj_Reporte_De_Asistencia_Por_Establecimiento_Consideraciones.jrxml";
-		 comando = "exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-	}
+
 	
 	public String validar_fechas(){
 		String error = "";

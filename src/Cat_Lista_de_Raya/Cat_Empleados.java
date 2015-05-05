@@ -1292,7 +1292,6 @@ public class Cat_Empleados extends JFrame{
 
 							empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
 							
-							System.out.println(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
 							
 							Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
 							empleado.setBono(bono.getFolio());
@@ -1829,18 +1828,14 @@ public class Cat_Empleados extends JFrame{
 			     try {
 				Edad = (new BuscarSQL().edad(fecha_nacimiento));
 				  } catch (SQLException e1) {e1.printStackTrace();}
-		
-			     
-
 			
 			new Cat_Reportes_De_Contratacion_Por_Empleado(txtFolioEmpleado.getText(), txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText(), cmbEstablecimiento.getSelectedItem().toString()
-					                                      ,cmbDepartamento.getSelectedItem().toString(), Sexo, Estado_Civil, Edad, txtCalle.getText()+", COL. "+txtColonia.getText()+", "+txtPoblacion.getText()
+					                                      ,cmbDepartamento.getSelectedItem().toString(),cmbPuesto.getSelectedItem().toString(), Sexo, Estado_Civil, Edad, txtCalle.getText()+", COL. "+txtColonia.getText()+", "+txtPoblacion.getText()
 					                                      ,cmbSueldo.getSelectedItem().toString(), NombreUsuario, txtHorario.getText()).setVisible(true);
 
 			}
 			}
 	};
-	
 	
 	
 	ActionListener opAsistenciaEmpleado = new ActionListener(){

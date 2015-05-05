@@ -28,7 +28,6 @@ import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
-import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 
@@ -45,6 +44,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	JTextField txtNombreEmpleado = new Componentes().text(new JTextField(), "Nombre del Empleado",100, "String");
 	JTextField txtEstablecimiento = new Componentes().text(new JTextField(), "Establecimiento",100, "String");
 	JTextField txtDepartamento = new Componentes().text(new JTextField(), "Departamento",100, "String");
+	JTextField txtPuesto = new Componentes().text(new JTextField(), "Puesto",100, "String");
 	JTextField txtSexo = new Componentes().text(new JTextField(), "Sexo",100, "String");
 	JTextField txtEstadoCivil = new Componentes().text(new JTextField(), "Estado_Civil",100, "String");
 	JTextField txtEdad = new Componentes().text(new JTextField(), "Edad",100, "String");
@@ -63,6 +63,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	JLabel JLBdepartamento= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
+	JLabel JLBpuesto= new JLabel(new ImageIcon("Imagen/verde-de-usuario-icono-7340-16.png") );
 	JLabel JLBSexoM= new JLabel(new ImageIcon("Imagen/macho-icono-8093-16.png") );
 	JLabel JLBSexoF= new JLabel(new ImageIcon("Imagen/hembra-icono-8352-16.png") );
 	JLabel JLBEstado_civil= new JLabel(new ImageIcon("Imagen/Estado_Civil_16.png") );
@@ -78,7 +79,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	
 	String Cantidad_Letra="";
 	double numero=0;
-	public Cat_Reportes_De_Contratacion_Por_Empleado(String Folio,String Nombre,String Establecimiento,String Departamento,String Sexo, String Estado_Civil
+	public Cat_Reportes_De_Contratacion_Por_Empleado(String Folio,String Nombre,String Establecimiento,String Departamento,String Puesto, String Sexo, String Estado_Civil
 			                                        ,String Edad ,String Domicilio ,String Sueldo,String NombreUsuario, String Horario){
 
          numero= Double.valueOf(Sueldo);
@@ -117,6 +118,14 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		panel.add(txtDepartamento).setBounds(110,y,310,a);
 		txtDepartamento.setEditable(false);
         txtDepartamento.setText(Departamento);    
+        
+        x=15;
+        
+		panel.add(new JLabel("Puesto:")).setBounds(x,y+=30,80,a);
+		panel.add(JLBpuesto).setBounds(x+=75,y,a,a);
+		panel.add(txtPuesto).setBounds(110,y,310,a);
+		txtPuesto.setEditable(false);
+        txtPuesto.setText(Puesto);    
         
          x=15;
         
@@ -259,10 +268,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		        	   Cargar_Cantidad_Letra();
 		        	   txtTemporada.requestFocus();
 		           }
-				 
 			}
-			
-			
 		}	
 	    };
 	    
@@ -281,7 +287,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 					
 	    Date date2 = null;
 					  try {
-						date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(-90));
+						date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(-30));
 					} catch (ParseException e) {
 						e.printStackTrace();
 					} catch (SQLException e) {
@@ -305,23 +311,24 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		public void actionPerformed(ActionEvent e) {
      if(validar_fechas().equals("")){
     	 
-//    	    String Nombre_CompletoV =txtNombreEmpleado.getText()+"";
-//			String EstablecimientoV=txtEstablecimiento.getText()+"";
-//			String DepartamentoV=txtDepartamento.getText()+"";
-//			String SexoV=txtSexo.getText()+"";
-//			String Estado_CivilV=txtEstadoCivil.getText()+"";
-//			String EdadV=txtEdad.getText()+"";
-//			String DomicilioV=txtDomicilio.getText();
-//			String HorarioV=txtDomicilio.getText();
-//			String SueldoV=txtSueldo_Base.getText();
-//			String Sueldo_LetraV=txtSueldo_Letra.getText();
-//			String TemporadaV=txtTemporada.getText();
-//			String Testigo1=txtTestigo1.getText();
-//			String testigo2=txtTestigo2.getText();
-//			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
-//			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
-//			String folio_empleado=txtFolio.getText()+"";
-	
+    	    String Nombre_CompletoV =txtNombreEmpleado.getText()+"";
+			String EstablecimientoV=txtEstablecimiento.getText()+"";
+			String DepartamentoV=txtDepartamento.getText()+"";
+			String PuestoV=txtPuesto.getText()+"";
+			String SexoV=txtSexo.getText()+"";
+			String Estado_CivilV=txtEstadoCivil.getText().toUpperCase().toString().trim();
+			String EdadV=txtEdad.getText()+"";
+			String DomicilioV=txtDomicilio.getText();
+			String HorarioV=txtDomicilio.getText();
+			String SueldoV=txtSueldo_Base.getText();
+			String Sueldo_LetraV=txtSueldo_Letra.getText();
+			String TemporadaV=txtTemporada.getText().toUpperCase().trim();
+			String Testigo1=txtTestigo1.getText();
+			String testigo2=txtTestigo2.getText();
+			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
+			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
+			String folio_empleado=txtFolio.getText()+"";
+
 			
 			String basedatos="2.26";
 			String vista_previa_reporte="no";
@@ -329,19 +336,11 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 			String comando="";
 			String reporte = "Obj_Reporte_De_Contrato.jrxml";
 				
-//				comando = "Select  '"
-//						+Nombre_CompletoV+"' as nombre '"
-//						+EstablecimientoV+"' as Establecimientp'"
-//						+DepartamentoV+" ";
-						
-						
-										 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-								 
-//				reporte = "Obj_Reporte_de_Contrato2.jrxml";
-//				comando = "exec sp_Reporte_De_Contrato "+txtFolioEmpleado.getText()+"".trim()+","+usuario.getFolio() ;
-//			    		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);					
-				
-			
+				comando = "exec sp_Reporte_De_Contrato '" +Nombre_CompletoV+"','"+EstablecimientoV+"','"+DepartamentoV+"','"+PuestoV+"','"+SexoV+"','"+Estado_CivilV+"','"+EdadV+"','"+DomicilioV+"','"+HorarioV
+						+"','"+SueldoV+"','"+Sueldo_LetraV+"','"+TemporadaV+"','"+Testigo1+"','"+testigo2+"','"+fecha_inicio+"','"+fecha_final+"',"+folio_empleado;
+				System.out.println(comando);
+      		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+      		 
 	 	}else{
 			JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
 			return;
@@ -362,7 +361,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reportes_De_Contratacion_Por_Empleado("1","MARCO ANTONIO BODART GUZMAN","SISTEMAS","SISTEMAS","MASCULINO","CASADO","35"," COL LA CUCHILLA ELDORADO,SINALOA","2025","NOMBRE COMPLETO USUARIO SCOI","8-7").setVisible(true);
+			new Cat_Reportes_De_Contratacion_Por_Empleado("1","MARCO ANTONIO BODART GUZMAN","SISTEMAS","SISTEMAS","LIDER SISTEMAS","MASCULINO","CASADO","35"," COL LA CUCHILLA ELDORADO,SINALOA","2025","NOMBRE COMPLETO USUARIO SCOI","8-7").setVisible(true);
 		}catch(Exception e){	}
 	}
 }
