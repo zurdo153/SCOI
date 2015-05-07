@@ -176,7 +176,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Revision_De_Cortes(){
 		int anchop = Toolkit.getDefaultToolkit().getScreenSize().width;
-		int altop = Toolkit.getDefaultToolkit().getScreenSize().height;
+		int altop = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		
 		this.setTitle("Abonos Clientes");
@@ -204,7 +204,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		panel.add(txtCajero).setBounds((x+=ancho)+120, y, (ancho*=2.5)+80, alto);  
 		panel.add(cmbEstablecimientos).setBounds(x*4+75, y, 168, alto); 
 		
-		panel.add(scroll_grupos).setBounds(8, y+=20, 1000, 630);
+		panel.add(scroll_grupos).setBounds(8, y+=20, anchop-25, altop-130);
 		
 		llamar_render();
 		
@@ -377,11 +377,11 @@ public class Cat_Revision_De_Cortes extends JFrame{
 			        		String fecha_corte		=	tbl.getValueAt(fila, 3).toString().trim();
 			        		String cajero			=	tbl.getValueAt(fila, 4).toString().trim();
 			        		String corte_sistema	=	tbl.getValueAt(fila, 5).toString().trim();
-			        		String corte_total		=	tbl.getValueAt(fila, 17).toString().trim();
+			        		String diferencia		=	tbl.getValueAt(fila, 12).toString().trim();
 			        		String efectivo_corte	=	tbl.getValueAt(fila, 18).toString().trim();
 			        		String establecimiento	=	tbl.getValueAt(fila, 20).toString().trim();
 			        			
-				        	new Revisar__Y_Clasificar_Corte(f_corte,f_asignacion,fecha_corte,cajero,corte_sistema,corte_total,efectivo_corte,establecimiento).setVisible(true);
+				        	new Revisar__Y_Clasificar_Corte(f_corte,f_asignacion,fecha_corte,cajero,corte_sistema,diferencia,efectivo_corte,establecimiento).setVisible(true);
 	        			}
 	        	}
 	        }
@@ -392,20 +392,30 @@ public class Cat_Revision_De_Cortes extends JFrame{
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			
-			if( validar_fechas().equals("")){
-				
-				if(cfecha_fin.getDate().before(cfecha_in.getDate())){
-					JOptionPane.showMessageDialog(null, "Las fechas estan invertidas, no se permite que la fecha inicial sea mayor que la fecha final","Aviso",JOptionPane.WARNING_MESSAGE);
-					return;
-				}else{
-					refresh();
-					txtFolioCorteFiltro.requestFocus();
-				}
-				
-			}else{
-				JOptionPane.showMessageDialog(null, "Verifique que los siguientes campos esten correctos:\n"+validar_fechas(),"Aviso",JOptionPane.WARNING_MESSAGE);
+    		String[] matriz = new BuscarTablasModel().permiso_para_revision_de_cortes();
+    		
+    		String seguridad = matriz[0].toString().trim();
+    		String auditoria = matriz[1].toString().trim();
+    		
+    		if(seguridad.equals("false") && auditoria.equals("false")){
+    			JOptionPane.showMessageDialog(null, "No Cuentas Con Autorizacion Para Realizar Esta Consulta","Aviso",JOptionPane.WARNING_MESSAGE);
 				return;
-			}
+    		}else{
+    			if( validar_fechas().equals("")){
+    				
+    				if(cfecha_fin.getDate().before(cfecha_in.getDate())){
+    					JOptionPane.showMessageDialog(null, "Las fechas estan invertidas, no se permite que la fecha inicial sea mayor que la fecha final","Aviso",JOptionPane.WARNING_MESSAGE);
+    					return;
+    				}else{
+    					refresh();
+    					txtFolioCorteFiltro.requestFocus();
+    				}
+    				
+    			}else{
+    				JOptionPane.showMessageDialog(null, "Verifique que los siguientes campos esten correctos:\n"+validar_fechas(),"Aviso",JOptionPane.WARNING_MESSAGE);
+    				return;
+    			}
+    		}
 		}
 	};
 	
@@ -535,10 +545,10 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		JLabel lblCajero					= new JLabel("Cajero:				");
 		JLabel lblEstablecimiento			= new JLabel("Establecimiento:		");
 		JLabel lblCorteSistema				= new JLabel("Corte De Sistema:		");
-		JLabel lblCorteTotal				= new JLabel("Corte Total:			");
+		JLabel lblDiferenciaCorte			= new JLabel("Diferencia Corte:		");
 		JLabel lblEfectivoTotal				= new JLabel("Efectivo Total:		");
 		JLabel lblStatusCobro				= new JLabel("Status de cobro:		");
-		JLabel lblDiferenciaAuditoria		= new JLabel("Status de cobro:		");
+		JLabel lblDiferenciaManual			= new JLabel("Diferencia manual:	");
 	
 		JTextField txtFolioCorte	 		= new JTextField("");
 		JTextField txtFolioAsignacion		= new JTextField("");
@@ -546,9 +556,9 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		JTextField txtCajero				= new JTextField("");
 		JTextField txtEstablecimiento		= new JTextField("");
 		JTextField txtCorteSistema			= new JTextField("");
-		JTextField txtCorteTotal			= new JTextField("");
+		JTextField txtDiferenciaCorte 			= new JTextField("");
 		JTextField txtEfectivoTotal			= new JTextField("");
-		JTextField txtDiferenciaAuditoria	= new Componentes().text(new JTextField(), "diferencia por auditoria", 8, "Double");
+		JTextField txtDiferenciaManual		= new Componentes().text(new JTextField(), "diferencia por auditoria", 8, "Double");
 		
 		
 		String[] statusCobro = {"Seleccione un movimiento","No Cobrar","Cobrar","Pasar a seguridad"};
@@ -560,7 +570,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		JTextArea txaObservacion = new Componentes().textArea(new JTextArea(), "Observaciones", 400);
 		JScrollPane Observasion = new JScrollPane(txaObservacion);
 		
-		public Revisar__Y_Clasificar_Corte(String f_corte, String f_asignacion, String fecha_corte, String cajero, String corte_sistema, String corte_total, String efectivo_corte, String establecimiento){
+		public Revisar__Y_Clasificar_Corte(String f_corte, String f_asignacion, String fecha_corte, String cajero, String corte_sistema, String diferencia, String efectivo_corte, String establecimiento){
 			this.setModal(true);
 			this.setTitle("Clasificar Corte");
 			this.panel.setBorder(BorderFactory.createTitledBorder( "Clasificar Corte"));
@@ -573,9 +583,9 @@ public class Cat_Revision_De_Cortes extends JFrame{
 			panel.add(lblEstablecimiento	).setBounds(x,y+=25,ancho,20);           panel.add(txtEstablecimiento		).setBounds(x+ancho+20,y,ancho+50,20); 
 
 			panel.add(lblFolioCorte	 		).setBounds(x,y+=25,ancho,20);           panel.add(txtFolioCorte	 		).setBounds(x+ancho+20,y,ancho,20);     panel.add(lblCorteSistema		).setBounds(x+350,y,ancho,20);           panel.add(txtCorteSistema			).setBounds(x+ancho+370,y,ancho,20);
-			panel.add(lblFolioAsignacion	).setBounds(x,y+=25,ancho,20);           panel.add(txtFolioAsignacion		).setBounds(x+ancho+20,y,ancho,20);     panel.add(lblCorteTotal			).setBounds(x+350,y,ancho,20);           panel.add(txtCorteTotal			).setBounds(x+ancho+370,y,ancho,20);
+			panel.add(lblFolioAsignacion	).setBounds(x,y+=25,ancho,20);           panel.add(txtFolioAsignacion		).setBounds(x+ancho+20,y,ancho,20);     panel.add(lblDiferenciaCorte	).setBounds(x+350,y,ancho,20);           panel.add(txtDiferenciaCorte		).setBounds(x+ancho+370,y,ancho,20);
 			panel.add(lblFechaCorte			).setBounds(x,y+=25,ancho,20);           panel.add(txtFechaCorte			).setBounds(x+ancho+20,y,ancho+50,20);  panel.add(lblEfectivoTotal		).setBounds(x+350,y,ancho,20);           panel.add(txtEfectivoTotal			).setBounds(x+ancho+370,y,ancho,20);
-			panel.add(lblStatusCobro		).setBounds(x,y+=25,ancho,20);           panel.add(cmbStatusCobro			).setBounds(x+ancho+20,y,ancho+50,20);  panel.add(lblDiferenciaAuditoria).setBounds(x+350,y,ancho,20);			 panel.add(txtDiferenciaAuditoria	).setBounds(x+ancho+370,y,ancho,20);  
+			panel.add(lblStatusCobro		).setBounds(x,y+=25,ancho,20);           panel.add(cmbStatusCobro			).setBounds(x+ancho+20,y,ancho+50,20);  panel.add(lblDiferenciaManual	).setBounds(x+350,y,ancho,20);			 panel.add(txtDiferenciaManual		).setBounds(x+ancho+370,y,ancho,20);  
 			panel.add(Observasion			).setBounds(x,y+=25,ancho*5+40,120);
 			panel.add(btnGuardar			).setBounds(x+ancho+370,y+=122,ancho,20);
 			
@@ -585,7 +595,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 			txtCajero			.setEditable(false);
 			txtEstablecimiento	.setEditable(false);
 			txtCorteSistema		.setEditable(false);
-			txtCorteTotal		.setEditable(false);
+			txtDiferenciaCorte	.setEditable(false);
 			txtEfectivoTotal	.setEditable(false);
 			
 			txtFolioCorte	 	.setText(f_corte);
@@ -594,11 +604,11 @@ public class Cat_Revision_De_Cortes extends JFrame{
 			txtCajero			.setText(cajero);
 			txtEstablecimiento	.setText(establecimiento);
 			txtCorteSistema		.setText(corte_sistema);
-			txtCorteTotal		.setText(corte_total);
+			txtDiferenciaCorte	.setText(diferencia);
 			txtEfectivoTotal	.setText(efectivo_corte);	
 			
 			cmbStatusCobro.addActionListener(opFocoDif);
-			txtDiferenciaAuditoria.addActionListener(opFocoObs);
+			txtDiferenciaManual.addActionListener(opFocoObs);
 			btnGuardar.addActionListener(opGuardar);
 			
 			cont.add(panel);
@@ -613,7 +623,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 				if(cmbStatusCobro.getSelectedIndex()==0){
 					cmbStatusCobro.requestFocus();
 				}else{
-					txtDiferenciaAuditoria.requestFocus();
+					txtDiferenciaManual.requestFocus();
 				}
 			}
 		};
@@ -638,7 +648,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 							}else{
 								
 								
-								if(new GuardarSQL().Guardar_Revision_De_Corte_Aud(txtFolioCorte.getText(),cmbStatusCobro.getSelectedItem()+"",txtDiferenciaAuditoria.getText(),txaObservacion.getText())){
+								if(new GuardarSQL().Guardar_Revision_De_Corte_Aud(txtFolioCorte.getText(),cmbStatusCobro.getSelectedItem()+"",txtDiferenciaManual.getText(),txaObservacion.getText())){
 									
 										while(tabla.getRowCount()>0){
 											modelo.removeRow(0);
