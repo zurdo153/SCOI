@@ -2,6 +2,8 @@ package Cat_Auditoria;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -173,6 +175,9 @@ public class Cat_Revision_De_Cortes extends JFrame{
 //	TODO (Contructor)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Revision_De_Cortes(){
+		int anchop = Toolkit.getDefaultToolkit().getScreenSize().width;
+		int altop = Toolkit.getDefaultToolkit().getScreenSize().height;
+		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		
 		this.setTitle("Abonos Clientes");
 		this.panel.setBorder(BorderFactory.createTitledBorder( "Captura de abonos clientes"));
@@ -213,7 +218,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 
 		cont.add(panel);
 		
-		this.setSize(1024,768);
+		this.setSize(anchop,altop);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 	}

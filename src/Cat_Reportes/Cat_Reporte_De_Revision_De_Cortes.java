@@ -22,6 +22,7 @@ import javax.swing.UIManager;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -148,8 +149,9 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 	};
 	
 	public void Reporte_de_Revision_de_Cortes(String fecha_inicio, String fecha_final, String tipo_de_reporte){
+		int folio_usuario = new Obj_Usuario().getFolio();
 		 reporte = "Obj_Reporte_De_Revision_De_Cortes.jrxml";
-		 comando = "exec sp_Reporte_De_Revision_De_Cortes '"+fecha_inicio+"','"+fecha_final+"','"+tipo_de_reporte+"','"+491+"'";
+		 comando = "exec sp_Reporte_De_Revision_De_Cortes '"+fecha_inicio+"','"+fecha_final+"','"+tipo_de_reporte+"','"+folio_usuario+"'";
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	
