@@ -124,7 +124,7 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 				
 				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 				
-				Reporte_de_Asistencia_completo("01/01/1900",fecha_final,e.getActionCommand().toString().trim().toUpperCase());
+				Reporte_de_Revision_de_Cortes("01/01/1900",fecha_final,e.getActionCommand().toString().trim().toUpperCase());
 			}else{
 					if(validar_fechas().equals("")){
 						
@@ -133,7 +133,7 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 	
 						
 								if(c_inicio.getDate().before(c_final.getDate())){
-										Reporte_de_Asistencia_completo(fecha_inicio,fecha_final,e.getActionCommand().toString().trim().toUpperCase());
+									Reporte_de_Revision_de_Cortes(fecha_inicio,fecha_final,e.getActionCommand().toString().trim().toUpperCase());
 								}else{
 									  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					                  return;
@@ -147,15 +147,12 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 		}
 	};
 	
-	public void Reporte_de_Asistencia_completo(String fecha_inicio, String fecha_final, String tipo_de_reporte){
-//		+new Obj_Usuario().getFolio()+
+	public void Reporte_de_Revision_de_Cortes(String fecha_inicio, String fecha_final, String tipo_de_reporte){
+		int folio_usuario = new Obj_Usuario().getFolio();
 		 reporte = "Obj_Reporte_De_Revision_De_Cortes.jrxml";
-		 comando = "exec sp_Reporte_De_Revision_De_Cortes '"+fecha_inicio+"','"+fecha_final+"','"+tipo_de_reporte+"','"+1+"'";
-		 System.out.println(comando);
+		 comando = "exec sp_Reporte_De_Revision_De_Cortes '"+fecha_inicio+"','"+fecha_final+"','"+tipo_de_reporte+"','"+folio_usuario+"'";
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
-	
-
 	
 	public String validar_fechas(){
 		String error = "";
