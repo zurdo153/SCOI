@@ -3200,6 +3200,59 @@ public class ActualizarSQL {
 		return true;
 	}
 	
+	public boolean Aceptar_Negar_Cobro_De_Corte(Object[][] lista_descuento_de_cortes){
+		int  folio_usuario= usuario.getFolio();
+		String query = " exec sp_update_negacion_o_aceptacion_de_cobro_de_revision_de_cortes ?,?,?,?";
+		int i=0;
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+ 		 for(i=0;i<lista_descuento_de_cortes.length;i++){
+				if(lista_descuento_de_cortes[i][1].toString().equals("true")){ 
+					pstmt.setString(1, lista_descuento_de_cortes[i][0].toString());
+					pstmt.setInt(2, Integer.valueOf(lista_descuento_de_cortes[i][2].toString()));
+					pstmt.setInt(3, folio_usuario);
+					pstmt.executeUpdate();	
+				}
+			}
+			
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Aceptar_Negar_Cobro_De_Corte ] update  SQLException:\n Procedimiento Almacenado: "+query+
+							"\n Valores Enviados Que Provocaron El Error: " +
+							"\nVariable 1:"+lista_descuento_de_cortes[i][0] +
+							"\nVariable 2: "+lista_descuento_de_cortes[i][1] +
+							"\nVariable 3: "+lista_descuento_de_cortes[i][2] +
+							"\nVariable 4: "+lista_descuento_de_cortes[i][3] +
+							"\nVariable 5: "+lista_descuento_de_cortes[i][4] +
+							"\nVariable 6: "+lista_descuento_de_cortes[i][5] +
+							"\nVariable 7: "+folio_usuario +
+							
+							"\n Error Mostrado SQL: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Aceptar_Negar_Cobro_De_Corte ] update  SQLException:\n sp_actualizar_negacion_o_aceptacion_del_sueldo_y_bono "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 	public boolean Actualizar_retiros_seleccionados(String[][] tabla){
 		
 		String query ="update tb_retiros_a_cajeros set status_recibido=0 where folio_retiro =?";

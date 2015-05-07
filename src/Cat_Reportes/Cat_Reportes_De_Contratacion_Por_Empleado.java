@@ -28,7 +28,6 @@ import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
-import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 
