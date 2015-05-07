@@ -1,5 +1,6 @@
 package Cat_Compras;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -29,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
@@ -117,8 +119,19 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	
 	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador){
 		
+		UIManager.put("nimbusBase", new Color(255,255,255));
+		UIManager.put("nimbusBlueGrey", new Color(191,98,4));
+		UIManager.put("control", new Color(191,98,4));
+
+		
+		
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			    if ("Nimbus".equals(info.getName())) {
+			        UIManager.setLookAndFeel(info.getClassName());
+			        break;}}
+//			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -521,8 +534,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		
 		public static void main(String args[]){
 			try{
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas","").setVisible(true);
+				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas","Igual").setVisible(true);
 			}catch(Exception e){	}
 		}
 	

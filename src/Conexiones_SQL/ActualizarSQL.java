@@ -3152,7 +3152,7 @@ public class ActualizarSQL {
 					pstmt.setFloat(2, Float.valueOf(guardarAN_sueldo_bono[i][1].toString()));
 					pstmt.setFloat(3, Float.valueOf(guardarAN_sueldo_bono[i][2].toString()));
 					pstmt.setString(4, String.valueOf(guardarAN_sueldo_bono[i][3].toString().trim()));
-					pstmt.setString(5, String.valueOf(guardarAN_sueldo_bono[i][6].toString().trim()));
+					pstmt.setString(5, String.valueOf(guardarAN_sueldo_bono[i][4].toString().trim()));
 					pstmt.setInt(6, Integer.valueOf(guardarAN_sueldo_bono[i][5].toString().trim()));
 					pstmt.setInt(7, folio_usuario);
 					pstmt.executeUpdate();	
