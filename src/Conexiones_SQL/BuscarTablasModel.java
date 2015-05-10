@@ -1417,6 +1417,95 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
+	public String[] Responsable_de_error_en_corte(){
+		String query_lista = "SELECT responsable FROM tb_responsable_de_errores_en_corte WHERE status = 1";
+		String[] matriz = new String[get_filas(query_lista)];
+		
+		Connection con = new Connexion().conexion();
+		try {
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(query_lista);
+				
+				int i = 0;
+				while(rs.next()){
+					matriz[i ] = " "+rs.getString(1);
+					i++;
+				}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion Responsable_de_error_en_corte "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	    return matriz; 
+	}
+	
+	public String[][] tabla_filtro_de_asignaciones_para_ajuste_de_ticket(String asignacion){
+		
+		String query_lista = "declare @folio_establecimiento int "
+				+ "		set @folio_establecimiento = (select cod_estab from establecimientos where nombre = '"+asignacion+"'); "
+				+ "		select Asignacion,Iva,IEPS,Total,Nombre_Cajero,'false' "
+				+ " from IZAGAR_Relacion_de_Asignaciones_Liquidadas "
+				+ " where Cod_Estab = @folio_establecimiento "
+				+ "	and Fecha_Liquidacion > getdate()-5";
+
+		String[][] matriz = new String[get_filas_izagar(query_lista)][5];
+		
+		Connection con = new Connexion().conexion_IZAGAR();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				
+				matriz[i][0 ] = " "+rs.getString(1);
+				matriz[i][1 ] = " "+rs.getString(2);
+				matriz[i][2 ] = " "+rs.getString(3);
+				matriz[i][3 ] = " "+rs.getString(4);
+				matriz[i][4 ] = " "+rs.getString(5);
+				
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_filtro_de_asignaciones_para_ajuste_de_ticket "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	    return matriz; 
+	}
+	
+	public String[][] tabla_de_ajustes_ticket(String asignacion){
+		
+		String query_lista = "select folio,transaccion,fecha,importe,iva,status,'false' from IZAGAR_AVi_facremtick where asignacion = '"+asignacion+"';";
+
+		String[][] matriz = new String[get_filas_izagar(query_lista)][7];
+		
+		Connection con = new Connexion().conexion_IZAGAR();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				
+				matriz[i][0 ] = " "+rs.getString(1);
+				matriz[i][1 ] = " "+rs.getString(2);
+				matriz[i][2 ] = " "+rs.getString(3);
+				matriz[i][3 ] = " "+rs.getString(4);
+				matriz[i][4 ] = " "+rs.getString(5);
+				matriz[i][5 ] = " "+rs.getString(6);
+				matriz[i][6 ] = " "+rs.getString(7);
+				
+				i++;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_filtro_de_asignaciones_para_ajuste_de_ticket "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	    return matriz; 
+	}
+	
 }
 
 

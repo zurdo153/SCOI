@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -179,8 +180,8 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		int altop = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		
-		this.setTitle("Abonos Clientes");
-		this.panel.setBorder(BorderFactory.createTitledBorder( "Captura de abonos clientes"));
+		this.setTitle("Revision De Cortes");
+		this.panel.setBorder(BorderFactory.createTitledBorder( "Revision De Cortes"));
 		
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);  
@@ -369,7 +370,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 					if(seguridad.equals("true") && auditoria.equals("true")) { columna = 30;	}
 	        		
 	        			if(!tbl.getValueAt(fila, columna).toString().trim().equals("")){
-	        				JOptionPane.showMessageDialog(null, "No se puede abrir este corte por que ya fue revisado","Aviso",JOptionPane.WARNING_MESSAGE);
+	        				JOptionPane.showMessageDialog(null, "No se puede abrir este corte por que ya fue revisado","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 	    					return;
 	        			}else{
 	        				String f_corte 			=	tbl.getValueAt(fila, 1).toString().trim();
@@ -398,13 +399,13 @@ public class Cat_Revision_De_Cortes extends JFrame{
     		String auditoria = matriz[1].toString().trim();
     		
     		if(seguridad.equals("false") && auditoria.equals("false")){
-    			JOptionPane.showMessageDialog(null, "No Cuentas Con Autorizacion Para Realizar Esta Consulta","Aviso",JOptionPane.WARNING_MESSAGE);
+    			JOptionPane.showMessageDialog(null, "No Cuentas Con Autorizacion Para Realizar Esta Consulta","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
     		}else{
     			if( validar_fechas().equals("")){
     				
     				if(cfecha_fin.getDate().before(cfecha_in.getDate())){
-    					JOptionPane.showMessageDialog(null, "Las fechas estan invertidas, no se permite que la fecha inicial sea mayor que la fecha final","Aviso",JOptionPane.WARNING_MESSAGE);
+    					JOptionPane.showMessageDialog(null, "Las fechas estan invertidas, no se permite que la fecha inicial sea mayor que la fecha final","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
     					return;
     				}else{
     					refresh();
@@ -412,7 +413,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
     				}
     				
     			}else{
-    				JOptionPane.showMessageDialog(null, "Verifique que los siguientes campos esten correctos:\n"+validar_fechas(),"Aviso",JOptionPane.WARNING_MESSAGE);
+    				JOptionPane.showMessageDialog(null, "Verifique que los siguientes campos esten correctos:\n"+validar_fechas(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
     				return;
     			}
     		}
@@ -447,15 +448,20 @@ public class Cat_Revision_De_Cortes extends JFrame{
 			seleccionar_todos = "0";
 		}
 			String[][] matriz = new BuscarTablasModel().tabla_model_revision_de_cortes_por_auditoria(fecha_in,fecha_fin,seleccionar_todos);
- 
-			String[] fila = new String[35];
-	        for(int i=0; i<matriz.length; i++){
-	        	
-	        	for(int j=0; j<35; j++){
-	        		fila[j] = matriz[i][j]+"";
-	        	}
-	        	modelo.addRow(fila);
-	        }
+			
+			if(matriz.length==0){
+				JOptionPane.showMessageDialog(null, "No se encontraron registros con las condiciones de busqueda proporcionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}else{
+				String[] fila = new String[35];
+		        for(int i=0; i<matriz.length; i++){
+		        	
+		        	for(int j=0; j<35; j++){
+		        		fila[j] = matriz[i][j]+"";
+		        	}
+		        	modelo.addRow(fila);
+		        }
+			}
 	}
 	
 	public String validar_fechas(){
@@ -549,6 +555,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		JLabel lblEfectivoTotal				= new JLabel("Efectivo Total:		");
 		JLabel lblStatusCobro				= new JLabel("Status de cobro:		");
 		JLabel lblDiferenciaManual			= new JLabel("Diferencia manual:	");
+		JLabel lblStatusResponsable			= new JLabel("Responsable:			");
 	
 		JTextField txtFolioCorte	 		= new JTextField("");
 		JTextField txtFolioAsignacion		= new JTextField("");
@@ -565,6 +572,10 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbStatusCobro = new JComboBox(statusCobro);
 		
+		String[] statusResponsable = new BuscarTablasModel().Responsable_de_error_en_corte();
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		JComboBox cmbStatusResponsable = new JComboBox(statusResponsable);
+		
 		JButton btnGuardar = new JButton("Guardar");
 		
 		JTextArea txaObservacion = new Componentes().textArea(new JTextArea(), "Observaciones", 400);
@@ -580,12 +591,12 @@ public class Cat_Revision_De_Cortes extends JFrame{
 			int x=15,y=15,ancho=110;
 	
 			panel.add(lblCajero				).setBounds(x,y,ancho,20);           	 panel.add(txtCajero				).setBounds(x+ancho+20,y,ancho*3,20); 
-			panel.add(lblEstablecimiento	).setBounds(x,y+=25,ancho,20);           panel.add(txtEstablecimiento		).setBounds(x+ancho+20,y,ancho+50,20); 
+			panel.add(lblEstablecimiento	).setBounds(x,y+=25,ancho,20);           panel.add(txtEstablecimiento		).setBounds(x+ancho+20,y,ancho+50,20); 	panel.add(lblCorteSistema		).setBounds(x+350,y,ancho,20);           panel.add(txtCorteSistema			).setBounds(x+ancho+370,y,ancho,20);
 
-			panel.add(lblFolioCorte	 		).setBounds(x,y+=25,ancho,20);           panel.add(txtFolioCorte	 		).setBounds(x+ancho+20,y,ancho,20);     panel.add(lblCorteSistema		).setBounds(x+350,y,ancho,20);           panel.add(txtCorteSistema			).setBounds(x+ancho+370,y,ancho,20);
-			panel.add(lblFolioAsignacion	).setBounds(x,y+=25,ancho,20);           panel.add(txtFolioAsignacion		).setBounds(x+ancho+20,y,ancho,20);     panel.add(lblDiferenciaCorte	).setBounds(x+350,y,ancho,20);           panel.add(txtDiferenciaCorte		).setBounds(x+ancho+370,y,ancho,20);
-			panel.add(lblFechaCorte			).setBounds(x,y+=25,ancho,20);           panel.add(txtFechaCorte			).setBounds(x+ancho+20,y,ancho+50,20);  panel.add(lblEfectivoTotal		).setBounds(x+350,y,ancho,20);           panel.add(txtEfectivoTotal			).setBounds(x+ancho+370,y,ancho,20);
-			panel.add(lblStatusCobro		).setBounds(x,y+=25,ancho,20);           panel.add(cmbStatusCobro			).setBounds(x+ancho+20,y,ancho+50,20);  panel.add(lblDiferenciaManual	).setBounds(x+350,y,ancho,20);			 panel.add(txtDiferenciaManual		).setBounds(x+ancho+370,y,ancho,20);  
+			panel.add(lblFolioCorte	 		).setBounds(x,y+=25,ancho,20);           panel.add(txtFolioCorte	 		).setBounds(x+ancho+20,y,ancho,20);     panel.add(lblDiferenciaCorte	).setBounds(x+350,y,ancho,20);           panel.add(txtDiferenciaCorte		).setBounds(x+ancho+370,y,ancho,20);
+			panel.add(lblFolioAsignacion	).setBounds(x,y+=25,ancho,20);           panel.add(txtFolioAsignacion		).setBounds(x+ancho+20,y,ancho,20);     panel.add(lblEfectivoTotal		).setBounds(x+350,y,ancho,20);           panel.add(txtEfectivoTotal			).setBounds(x+ancho+370,y,ancho,20);
+			panel.add(lblFechaCorte			).setBounds(x,y+=25,ancho,20);           panel.add(txtFechaCorte			).setBounds(x+ancho+20,y,ancho+50,20);  panel.add(lblDiferenciaManual	).setBounds(x+350,y,ancho,20);			 panel.add(txtDiferenciaManual		).setBounds(x+ancho+370,y,ancho,20);
+			panel.add(lblStatusCobro		).setBounds(x,y+=25,ancho,20);           panel.add(cmbStatusCobro			).setBounds(x+ancho+20,y,ancho+50,20);  panel.add(lblStatusResponsable	).setBounds(x+350,y,ancho,20);			 panel.add(cmbStatusResponsable		).setBounds(x+ancho+320,y,ancho+50,20);  
 			panel.add(Observasion			).setBounds(x,y+=25,ancho*5+40,120);
 			panel.add(btnGuardar			).setBounds(x+ancho+370,y+=122,ancho,20);
 			
@@ -643,23 +654,23 @@ public class Cat_Revision_De_Cortes extends JFrame{
 					}else{
 						
 							if(txaObservacion.getText().trim().equals("")){
-									JOptionPane.showMessageDialog(null, "Es necesario poner una observacion","Aviso",JOptionPane.WARNING_MESSAGE);
+									JOptionPane.showMessageDialog(null, "Es necesario poner una observacion","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 									return;
 							}else{
 								
-								
-								if(new GuardarSQL().Guardar_Revision_De_Corte_Aud(txtFolioCorte.getText(),cmbStatusCobro.getSelectedItem()+"",txtDiferenciaManual.getText(),txaObservacion.getText())){
+								if(new GuardarSQL().Guardar_Revision_De_Corte_Aud(txtFolioCorte.getText(),cmbStatusCobro.getSelectedItem()+"",txtDiferenciaManual.getText(),txaObservacion.getText().toUpperCase(),cmbStatusResponsable.getSelectedItem().toString().trim())){
 									
 										while(tabla.getRowCount()>0){
 											modelo.removeRow(0);
 										}
+										
 										refresh();
 										dispose();
-										JOptionPane.showMessageDialog(null, "El registro se guardo correctamente","Aviso",JOptionPane.WARNING_MESSAGE);
+										JOptionPane.showMessageDialog(null, "El Registro Se Guardo Exitosamente!!!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 										return;
 										
 								}else{
-										JOptionPane.showMessageDialog(null, "No se pudo guardar el registro","Error",JOptionPane.ERROR_MESSAGE);
+										JOptionPane.showMessageDialog(null, "No se pudo guardar el registro","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 										return;
 								}
 								

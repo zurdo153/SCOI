@@ -714,16 +714,23 @@ public void filtroProductos(String cadena){
 					ventas.setLineas(lineas);
 					
 					try {
-						String[][] matriz_reporte_de_ventas = ventas.reporte_de_ventas();
-						
 						while(tabla.getRowCount()>0){modelo_ventas.removeRow(0);}
 						
-                        String[] fila = new String[20];
-						for(int i=0; i<matriz_reporte_de_ventas.length; i++){
-							for(int j=0; j<20; j++){
-								fila[j] = matriz_reporte_de_ventas[i][j ]+"";
-							}
-							modelo_ventas.addRow(fila);
+						String[][] matriz_reporte_de_ventas = ventas.reporte_de_ventas();
+						
+						if(matriz_reporte_de_ventas.length==0){
+							JOptionPane.showMessageDialog(null, "No se encontraron registros con las condiciones de busqueda proporcionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+							return;
+						}else{
+							
+							 String[] fila = new String[20];
+							 
+								for(int i=0; i<matriz_reporte_de_ventas.length; i++){
+									for(int j=0; j<20; j++){
+										fila[j] = matriz_reporte_de_ventas[i][j ]+"";
+									}
+									modelo_ventas.addRow(fila);
+								}
 						}
 						
 					} catch (SQLException e2) {

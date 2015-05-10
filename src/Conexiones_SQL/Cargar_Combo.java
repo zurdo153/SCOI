@@ -1,9 +1,14 @@
 package Conexiones_SQL;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
+
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 public class Cargar_Combo {
 	Connexion con = new Connexion();
@@ -60,6 +65,41 @@ public class Cargar_Combo {
 				stmt = con.conexion_IZAGAR().createStatement();
 			}
 			
+			
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona un Establecimiento");
+				}
+				miVector.add(rs.getString("nombre"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] Responsables(String tabla) throws SQLException{
+		
+		String 	query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 1 order by nombre asc";
+		Statement stmt = null;
+		try {
+				stmt = con.conexion().createStatement();
 			
 			ResultSet rs = stmt.executeQuery(query);
 			

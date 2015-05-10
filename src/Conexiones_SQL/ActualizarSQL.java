@@ -3286,4 +3286,39 @@ public class ActualizarSQL {
 	
 	}	
 	
+	public boolean ajuste_avi(String asignacion){
+		String query ="exec sp_ajuste_avi '"+asignacion+"','R';";
+		System.out.println(">----------   "+query);
+		
+		Connection con = new Connexion().conexion_IZAGAR();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.executeUpdate();
+
+			con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ ajuste_avi ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+							 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ ajuste_avi ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+					return false;
+					}	
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
+	}
+	
 }

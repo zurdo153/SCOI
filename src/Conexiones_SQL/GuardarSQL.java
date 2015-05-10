@@ -3772,9 +3772,9 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
-	public boolean Guardar_Revision_De_Corte_Aud(String FolioCorte, String StatusCobro, String DiferenciaAuditoria, String Observacion){
+	public boolean Guardar_Revision_De_Corte_Aud(String FolioCorte, String StatusCobro, String DiferenciaAuditoria, String Observacion, String responsable_de_error){
 		
-		String query = "exec sp_update_reviso_corte_auditoria ?,?,?,?,?";
+		String query = "exec sp_update_reviso_corte_auditoria ?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -3786,6 +3786,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			pstmt.setDouble(3, DiferenciaAuditoria.equals("")?0:Double.valueOf(DiferenciaAuditoria));
 			pstmt.setString(4, Observacion);
 			pstmt.setInt(5, usuario.getFolio());
+			pstmt.setString(6, responsable_de_error);
 			
 			pstmt.executeUpdate();
 			con.commit();
