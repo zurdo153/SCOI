@@ -1149,15 +1149,15 @@ public boolean IZAGAR_Remove_Netos_Nominas_Temp_individual(int folio_empleado,in
 		con.commit();
 	} catch (Exception e) {
 		System.out.println("SQLException: "+e.getMessage());
-		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual /n procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual \n procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		if(con != null){
 			try{
 				System.out.println("La transacción ha sido abortada");
-				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual /n procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual \n procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				con.rollback();
 			}catch(SQLException ex){
 				System.out.println(ex.getMessage());
-				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual /n procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual \n procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return false;
@@ -1165,7 +1165,7 @@ public boolean IZAGAR_Remove_Netos_Nominas_Temp_individual(int folio_empleado,in
 		try {
 			con.close();
 		} catch(SQLException e){
-			JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual /n procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Remove_Netos_Nominas_Temp_individual \n procedimiento almacenado IZAGAR_remover_netos_de_nomina_por_empleado_pre_conciliados_individual SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}		

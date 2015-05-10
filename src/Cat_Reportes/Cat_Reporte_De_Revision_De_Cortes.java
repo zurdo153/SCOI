@@ -22,7 +22,6 @@ import javax.swing.UIManager;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
-import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 import com.toedter.calendar.JDateChooser;
 

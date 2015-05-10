@@ -627,7 +627,6 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		public asignarBancos(String folio_nomina) {
 			super(folio_nomina);
 			btnAplicar.addActionListener(optAplicar);
-			
 		}
 		
 			ActionListener optAplicar = new ActionListener(){
