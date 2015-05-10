@@ -20,14 +20,16 @@ import javax.swing.UIManager;
 
 
 
+
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 import com.toedter.calendar.JDateChooser;
 
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
+public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -46,7 +48,7 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 	JLabel JLBestablecimiento	= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	JLabel JLBdepartamento		= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
 	
-	public Cat_Reporte_De_Revision_De_Cortes(){
+	public Cat_Reportes_De_Revision_De_Cortes(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia-comunitaria-icono-9465-32.png"));
 		this.setTitle("Reportes De Revision De Cortes");
 		
@@ -132,12 +134,12 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 						String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 	
 						
-								if(c_inicio.getDate().before(c_final.getDate())){
+//								if(c_final.getDate().before(c_inicio.getDate())){
 									Reporte_de_Revision_de_Cortes(fecha_inicio,fecha_final,e.getActionCommand().toString().trim().toUpperCase());
-								}else{
-									  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-					                  return;
-								}
+//								}else{
+//									  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//					                  return;
+//								}
 					}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 		                  return;
@@ -148,7 +150,7 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 	};
 	
 	public void Reporte_de_Revision_de_Cortes(String fecha_inicio, String fecha_final, String tipo_de_reporte){
-		int folio_usuario = new Obj_Usuario().getFolio();
+		int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
 		 reporte = "Obj_Reporte_De_Revision_De_Cortes.jrxml";
 		 comando = "exec sp_Reporte_De_Revision_De_Cortes '"+fecha_inicio+"','"+fecha_final+"','"+tipo_de_reporte+"','"+folio_usuario+"'";
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
@@ -166,7 +168,7 @@ public class Cat_Reporte_De_Revision_De_Cortes extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Revision_De_Cortes().setVisible(true);
+			new Cat_Reportes_De_Revision_De_Cortes().setVisible(true);
 		}catch(Exception e){	}
 	}
 
