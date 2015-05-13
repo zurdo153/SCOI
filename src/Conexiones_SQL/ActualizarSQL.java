@@ -3195,7 +3195,7 @@ public class ActualizarSQL {
 	
 	public boolean Aceptar_Negar_Cobro_De_Corte(Object[][] lista_descuento_de_cortes){
 		int  folio_usuario= usuario.getFolio();
-		String query = " exec sp_update_negacion_o_aceptacion_de_cobro_de_revision_de_cortes ?,?,?,?";
+		String query = " exec sp_update_negacion_o_aceptacion_de_cobro_de_revision_de_cortes ?,?,?";
 		int i=0;
 		
 		Connection con = new Connexion().conexion();
@@ -3204,8 +3204,9 @@ public class ActualizarSQL {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
  		 for(i=0;i<lista_descuento_de_cortes.length;i++){
-				if(lista_descuento_de_cortes[i][1].toString().equals("true")){ 
-					pstmt.setString(1, lista_descuento_de_cortes[i][0].toString());
+ 			 
+				if(lista_descuento_de_cortes[i][0].toString().equals("true")){ 
+					pstmt.setString(1, lista_descuento_de_cortes[i][1].toString());
 					pstmt.setInt(2, Integer.valueOf(lista_descuento_de_cortes[i][2].toString()));
 					pstmt.setInt(3, folio_usuario);
 					pstmt.executeUpdate();	
