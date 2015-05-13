@@ -92,7 +92,7 @@ public class Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia extends JFr
 	ActionListener opGenerar = new ActionListener() {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void actionPerformed(ActionEvent e) {
-			
+			tipo_Reporte=2;
 			if(tipo_Reporte==2){
 						if(!txtFolio.getText().equals("")){
 							String query = "exec sp_Reporte_De_Diferiencias_De_Recepciones_De_Transferencia '"+String.valueOf(txtFolio.getText().toUpperCase().trim())+"'"  ;
@@ -100,7 +100,7 @@ public class Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia extends JFr
 								try {
 									stmt =  new Connexion().conexion_IZAGAR().createStatement();
 								    ResultSet rs = stmt.executeQuery(query);
-									JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\IZAGAR_Obj_Reportes\\Obj_Reporte_IZAGAR_de_Diferiencias_De_Recepciones_De_Transferencia.jrxml");
+									JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_IZAGAR_de_Diferiencias_De_Recepciones_De_Transferencia.jrxml");
 									JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
 									JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 									JasperViewer.viewReport(print, false);
