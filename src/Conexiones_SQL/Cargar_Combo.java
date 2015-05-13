@@ -1,14 +1,11 @@
 package Conexiones_SQL;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
 
-import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 public class Cargar_Combo {
 	Connexion con = new Connexion();

@@ -661,6 +661,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				
 					if(JOptionPane.showConfirmDialog(null, "¿Desea Guardar La  Pre Lista De Raya?") == 0){
 						Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
+						
 						if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
 							while(tabla.getRowCount() > 0){
 								tabla_model.removeRow(0);
