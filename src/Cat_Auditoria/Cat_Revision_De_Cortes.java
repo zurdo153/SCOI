@@ -69,8 +69,8 @@ public class Cat_Revision_De_Cortes extends JFrame{
 	int columna = 21;
 	
 //    TODO Inicializar (modelo)
-    public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "F.Corte", "F.Asig", "Fecha De Corte", "Cajero", "Corte Sistema", "Apartado", "Retiros prog.", "Efectivo","Cheques"
-    																			, "Fte. Sodas", "Voucher", "Diferencia", "TA", "R.Luz", "Retiro Clt","Total Voucher","CORTE TOTAL", "EFECTIVO TOTAL", "Realizo Corte"
+    public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "F.Corte", "F.Asig", "Fecha De Corte", "Cajero", "Corte Sistema", "Apartado", "Abono", "Retiros prog.", "Efectivo","Cheques"
+    																			, "Fte. Sodas", "Voucher", "Diferencia", "TA", "R.Luz", "Retiro Clt","Total Voucher", "EFECTIVO TOTAL", "Realizo Corte"
     																			, "Establecimiento", "Deposito", "Obs. Corte", "fecha Asignacion", "Fecha Liquidacion", "Status Cobro Aud", "Diferencia Aud", "Obs Aud", "Fecha Reviso Aud", "Reviso Aud"
     																			, "Status Cobro Seg", "Diferencia Seg", "Obs Seg", "Fecha Reviso Seg", "Reviso Seg"} ){
                     
@@ -234,7 +234,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		tabla.getColumnModel().getColumn(0).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_grupos,textoEncabezado,"centro","Arial","negrita",10));
 		for(int i = 0; i<tabla.getColumnCount(); i++){
 			
-			if(i==12 || i==26 || i==31){
+			if(i==13 || i==26 || i==31){
 				tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(Color.blue,Color.WHITE,"centro","Arial","negrita",10));
 			}else{
 				tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_grupos,textoEncabezado,"centro","Arial","negrita",10));
@@ -378,7 +378,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 			        		String fecha_corte		=	tbl.getValueAt(fila, 3).toString().trim();
 			        		String cajero			=	tbl.getValueAt(fila, 4).toString().trim();
 			        		String corte_sistema	=	tbl.getValueAt(fila, 5).toString().trim();
-			        		String diferencia		=	tbl.getValueAt(fila, 12).toString().trim();
+			        		String diferencia		=	tbl.getValueAt(fila, 13).toString().trim();
 			        		String efectivo_corte	=	tbl.getValueAt(fila, 18).toString().trim();
 			        		String establecimiento	=	tbl.getValueAt(fila, 20).toString().trim();
 			        			
@@ -565,7 +565,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		JTextField txtCorteSistema			= new JTextField("");
 		JTextField txtDiferenciaCorte 			= new JTextField("");
 		JTextField txtEfectivoTotal			= new JTextField("");
-		JTextField txtDiferenciaManual		= new Componentes().text(new JTextField(), "diferencia por auditoria", 8, "Double");
+		JTextField txtDiferenciaManual		= new Componentes().text(new JTextField(), "diferencia por auditoria", 8, "Real");
 		
 		
 		String[] statusCobro = {"Seleccione un movimiento","No Cobrar","Cobrar","Pasar a seguridad"};
