@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-
-
 public class Cargar_Combo {
 	Connexion con = new Connexion();
 	@SuppressWarnings("rawtypes")
@@ -231,6 +229,45 @@ public class Cargar_Combo {
 			
 	}
 
+	@SuppressWarnings("unchecked")
+	public String[] Establecimiento_para_revision_de_cortes() throws SQLException{
+		String query = "select convert(varchar(10),a.folio_establecimiento)+'.- '+a.establecimiento as establecimiento"
+		+ "					 from (select distinct tb_establecimiento.folio as folio_establecimiento,tb_establecimiento.nombre as establecimiento "
+		+ "							   from tb_empleado "
+		+ "							   right join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id "
+		+ "							   right join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id "
+		+ "							   where tb_empleado.puesto_id=32) a "
+		+ "				order by a.folio_establecimiento,a.establecimiento";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Todos");
+				}
+				miVector.add(rs.getString("establecimiento"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
 
 	@SuppressWarnings("unchecked")
 	public String[] Establecimiento_Empleado(String tabla) throws SQLException{
