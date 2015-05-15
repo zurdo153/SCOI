@@ -1,22 +1,20 @@
 package Cat_Lista_de_Raya;
 
 import java.awt.Container;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
@@ -41,7 +40,8 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	Connexion con = new Connexion();
-	DefaultTableModel	 modelo       = new DefaultTableModel(0,8)	{
+	
+	DefaultTableModel	 modelo       = new DefaultTableModel(0,5)	{
 		public boolean isCellEditable(int fila, int columna){
 			if(columna < 0)
 				return true;
@@ -54,108 +54,141 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	JLabel txtFolio_Empleado = new JLabel();
 	JLabel txtNombre_Completo = new JLabel();
 	
-	JTextField txtCantidad = new JTextField();
-	JTextField txtDescuento = new JTextField();
-	
-	String status[] = {"Vigente","Cancelado Temporal"};
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	JComboBox cmbStatus = new JComboBox(status);
+	JTextField txtSaldoFavor = new JTextField("");
+	JTextField txtTotalAcumulado = new JTextField("");
+	JTextField txtDiferencia = new JTextField("");
+	JTextField txtAbono = new JTextField("");
 	
 	String status_cobro[] = {"Pendiente De Cobro","Cobrar"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbStatuscobro = new JComboBox(status_cobro);
 	
+	JButton btnFoto = new JButton();
 	
+	JButton btnFiltro = new JButton("Filtro",new ImageIcon("imagen/Text preview.png"));
+	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen//Modify.png"));
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen//Guardar.png"));
 	
-	com.toedter.calendar.JDateChooser txtCalendario = new com.toedter.calendar.JDateChooser();
-	JLabel lblTotal = new JLabel("");
-	
-	JButton btnFiltro = new JButton(new ImageIcon("imagen/Text preview.png"));
-	JLabel btnEditar = new JLabel(new ImageIcon("imagen//Modify.png"));
-	JLabel btnGuardar = new JLabel(new ImageIcon("imagen//Guardar.png"));
-	
-	public Cat_Filtro_Diferencia_De_Cortes(String algo) {
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Usuario.png"));
+	public Cat_Filtro_Diferencia_De_Cortes(String folio, String empleado) {
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/caja2.png"));
 		this.setTitle("Diferencia de Cortes");
-		int x = 20, y=50, ancho=140;
-		txtCantidad.requestFocus();
+		int x = 20, y=15, ancho=140;
+		txtAbono.requestFocus();
+		
 		panel.setBorder(BorderFactory.createTitledBorder("Cortes"));		
-		
-		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
-		tabla.getColumnModel().getColumn(0).setMinWidth(50);
-		tabla.getColumnModel().getColumn(0).setMinWidth(50);
-		tabla.getColumnModel().getColumn(1).setHeaderValue("Fecha");
-		tabla.getColumnModel().getColumn(1).setMinWidth(65);
-		tabla.getColumnModel().getColumn(1).setMaxWidth(65);
-		tabla.getColumnModel().getColumn(2).setHeaderValue("Cantidad");
-		tabla.getColumnModel().getColumn(2).setMinWidth(60);
-		tabla.getColumnModel().getColumn(2).setMaxWidth(60);
-		tabla.getColumnModel().getColumn(3).setHeaderValue("Descuento");
-		tabla.getColumnModel().getColumn(3).setMinWidth(65);
-		tabla.getColumnModel().getColumn(3).setMaxWidth(65);
-		tabla.getColumnModel().getColumn(4).setHeaderValue("Saldo");
-		tabla.getColumnModel().getColumn(4).setMinWidth(60);
-		tabla.getColumnModel().getColumn(4).setMaxWidth(60);
-		tabla.getColumnModel().getColumn(5).setHeaderValue("Abono");
-		tabla.getColumnModel().getColumn(5).setMinWidth(60);
-		tabla.getColumnModel().getColumn(5).setMaxWidth(60);
-		tabla.getColumnModel().getColumn(6).setHeaderValue("Status");
-		tabla.getColumnModel().getColumn(6).setMinWidth(120);
-		tabla.getColumnModel().getColumn(6).setMaxWidth(120);
-		tabla.getColumnModel().getColumn(7).setHeaderValue("Status Cobro");
-		tabla.getColumnModel().getColumn(7).setMinWidth(150);
-		tabla.getColumnModel().getColumn(7).setMaxWidth(150);
-		
+
 		agregar(tabla);
 		
-		panel.add(new JLabel("Folio Empleado:")).setBounds(x,y,ancho,20);
-		panel.add(txtFolio_Empleado).setBounds(x+ancho,y,ancho*2,20);
-		
-		panel.add(new JLabel("Nombre Completo:")).setBounds(x,y+=25,ancho,20);
+		panel.add(new JLabel("Empleado:")).setBounds(x,y,ancho,20);
+		panel.add(txtFolio_Empleado).setBounds(x+ancho-50,y,50,20);
 		panel.add(txtNombre_Completo).setBounds(x+ancho,y,ancho*2,20);
 		
-		panel.add(new JLabel("Status:")).setBounds(x+350,y,ancho,20);
-		panel.add(cmbStatus).setBounds(x+300+ancho,y,ancho-15,20);
+		panel.add(btnFoto).setBounds(x+ancho*3+50,y,ancho+55,160);
 		
-		panel.add(new JLabel("Fecha:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtCalendario).setBounds(x+ancho,y,ancho-15,20);
+		panel.add(new JLabel("Saldo a favor:")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtSaldoFavor).setBounds(x+ancho,y,ancho-15,20);
 		
-		panel.add(new JLabel("Status de Cobro:")).setBounds(x+350,y,ancho,20);
-		panel.add(cmbStatuscobro).setBounds(x+300+ancho,y,ancho-15,20);
+		panel.add(btnFiltro).setBounds(x+ancho*2,y,100,20);
 		
-		panel.add(new JLabel("Cantidad:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtCantidad).setBounds(x+ancho,y,ancho-15,20);
+		panel.add(new JLabel("Total acumulado:")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtTotalAcumulado).setBounds(x+ancho,y,ancho-15,20);
 		
-		panel.add(new JLabel("Descuento:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtDescuento).setBounds(x+ancho,y,ancho-15,20);
+		panel.add(new JLabel("Diferencia:")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtDiferencia).setBounds(x+ancho,y,ancho-15,20);
 		
-		panel.add(panelScroll).setBounds(x,y+=25+40,ancho+460,120);
+		panel.add(btnEditar).setBounds(x+ancho*2,y,100,20);
 		
-		panel.add(btnFiltro).setBounds(20,15,16,16);
-		panel.add(btnEditar).setBounds(46,15,16,16);
-		panel.add(btnGuardar).setBounds(73,15,16,16);
-		panel.add(lblTotal).setBounds(ancho-30,y-30, 400, 200);
+		panel.add(new JLabel("Abono:")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtAbono).setBounds(x+ancho,y,ancho-15,20);
 		
-		lblTotal.setFont(new java.awt.Font("Algerian",0,60));
+		panel.add(btnGuardar).setBounds(x+ancho*2,y,100,20);
+		
+		panel.add(new JLabel("Status de Cobro:")).setBounds(x,y+=25,ancho,20);
+		panel.add(cmbStatuscobro).setBounds(x+ancho,y,ancho-15,20);
+		
+		panel.add(panelScroll).setBounds(x-10,y+=45,ancho+540,260);
+		
+		txtSaldoFavor.setEditable(false);
+		txtTotalAcumulado.setEditable(false);
+		txtDiferencia.setEditable(false);
+		txtAbono.setEditable(false);
+		cmbStatuscobro.setEnabled(false);
+		btnGuardar.setEnabled(false);
 		
 		btnFiltro.addActionListener(filtro);
-		btnEditar.addMouseListener(ValidarCampos);
-		btnGuardar.addMouseListener(guardar);
-		
-		txtCantidad.addKeyListener(validaNumericoConPunto);
-		txtDescuento.addKeyListener(validaNumericoConPunto2);
+		btnEditar.addActionListener(opEditar);
+		btnGuardar.addActionListener(opGuardar);
 		
 		cmbStatuscobro.setSelectedIndex(1);
 	
 		cont.add(panel);
 		
+		txtFolio_Empleado.setText(folio);
+		txtNombre_Completo.setText(empleado);
+		
 		Obj_Empleados re = new Obj_Empleados();
-		re = re.buscar(Integer.parseInt(algo));
+		re = re.buscar(Integer.parseInt(folio));
 	
-		txtFolio_Empleado.setText(re.getFolio()+"");
-		txtNombre_Completo.setText(re.getNombre()+" "+re.getAp_paterno()+" "+re.getAp_materno()+"");	
-		panelEnabledTrue();
-								
+		ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+        Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+        btnFoto.setIcon(iconoDefault);
+		
+		llamar_render(tabla);
+		
+		cargarTabla();
+				
+		this.setSize(715,490);
+		this.setResizable(true);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+	}
+	
+//	TODO (llamar render)
+	public void llamar_render(JTable tbl){
+		
+		tbl.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		tbl.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
+		tbl.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		tbl.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
+		tbl.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		
+
+		tbl.getTableHeader().setReorderingAllowed(false) ;
+		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		tbl.getColumnModel().getColumn(0).setHeaderValue("Folio Corte");
+		tbl.getColumnModel().getColumn(0).setMinWidth(70);
+		tbl.getColumnModel().getColumn(0).setMinWidth(70);
+		tbl.getColumnModel().getColumn(1).setHeaderValue("Fecha");
+		tbl.getColumnModel().getColumn(1).setMinWidth(120);
+		tbl.getColumnModel().getColumn(1).setMaxWidth(120);
+		tbl.getColumnModel().getColumn(2).setHeaderValue("Establecimiento");
+		tbl.getColumnModel().getColumn(2).setMinWidth(100);
+		tbl.getColumnModel().getColumn(2).setMaxWidth(100);
+		tbl.getColumnModel().getColumn(3).setHeaderValue("Dif. De Corte");
+		tbl.getColumnModel().getColumn(3).setMinWidth(80);
+		tbl.getColumnModel().getColumn(3).setMaxWidth(80);
+		tbl.getColumnModel().getColumn(4).setHeaderValue("Valido");
+		tbl.getColumnModel().getColumn(4).setMinWidth(300);
+		tbl.getColumnModel().getColumn(4).setMaxWidth(200);
+	}
+	
+//	TODO (Agregar(tabla))
+	private void agregar(final JTable tbl) {
+        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+        		panelEnabledFalse();
+        		btnGuardar.setEnabled(false);
+        		int fila = tabla.getSelectedRow();
+        		
+    			txtAbono.setText(modelo.getValueAt(fila, 3)+"");
+	        }
+        });
+    }
+	
+//	TODO (cargar tabla)
+	public void cargarTabla(){
 		String[][] Tabla = getMatriz(txtFolio_Empleado.getText());
 		Object[] fila = new Object[tabla.getColumnCount()];
 		for(int i=0; i<Tabla.length; i++){
@@ -164,174 +197,37 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 				modelo.setValueAt(Tabla[i][j]+"", i,j);
 			}
 		}
-		
-		if(tabla.getRowCount() != 0){
-			
-			try {
-				Date date = new SimpleDateFormat("dd/MM/yyyy").parse(modelo.getValueAt(0,1)+"");
-				txtCalendario.setDate(date);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			txtCantidad.setText(modelo.getValueAt(0, 2)+"");
-			txtDescuento.setText(modelo.getValueAt(0, 3)+"");
-			
-			if(modelo.getValueAt(0, 6).equals("VIGENTE")){
-				cmbStatus.setSelectedIndex(0);
-			}else{
-				cmbStatus.setSelectedIndex(1);
-			}
-			if(modelo.getValueAt(0, 7).equals("COBRAR")){
-				cmbStatuscobro.setSelectedIndex(1);
-			}else{
-				cmbStatuscobro.setSelectedIndex(0);
-			}
-			panelEnabledFalse();
-			btnGuardar.setEnabled(false);
-		}
-				
-		this.setSize(655,390);
-		this.setResizable(true);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
 	}
 	
-	private void agregar(final JTable tbl) {
-        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-	        public void mouseClicked(MouseEvent e) {
-        		panelEnabledFalse();
-        		btnGuardar.setEnabled(false);
-        		int fila = tabla.getSelectedRow();
-        		
-        		try {
-    				Date date = new SimpleDateFormat("dd/MM/yyyy").parse(modelo.getValueAt(fila,1)+"");
-    				txtCalendario.setDate(date);
-    			} catch (ParseException e1) {
-    				e1.printStackTrace();
-    			}
-        		
-    			txtCantidad.setText(modelo.getValueAt(fila, 2)+"");
-    			txtDescuento.setText(modelo.getValueAt(fila, 3)+"");
-    			if(modelo.getValueAt(fila, 6).equals("VIGENTE")){
-    				cmbStatus.setSelectedIndex(0);
-    			}else{
-    				cmbStatus.setSelectedIndex(1);
-    			}
-    			if(modelo.getValueAt(fila, 7).equals("COBRAR")){
-    				cmbStatuscobro.setSelectedIndex(1);
-    			}else{
-    				cmbStatuscobro.setSelectedIndex(0);
-    			}
-	        }
-        });
-    }
-	
-	MouseListener guardar = new MouseListener() {
-		@Override
-		public void mousePressed(MouseEvent e) {
-			if(validaCampos()!="") {
-				JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//	TODO (funcion Guardar)
+	ActionListener opGuardar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			if(txtAbono.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "El campo de abono es requerido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 				return;
 			}else{
 				
-				if(Double.parseDouble(txtDescuento.getText())>Double.parseDouble(txtCantidad.getText())){
-					JOptionPane.showMessageDialog(null,"El Descuento no puede ser mayor que la cantidad", "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				double abono = Double.valueOf(txtAbono.getText().trim());
+				double acumulado = Double.valueOf(txtSaldoFavor.getText().trim());
+				double totalAcumulado = Double.valueOf(txtTotalAcumulado.getText().trim());
+				
+				if((abono+acumulado)>totalAcumulado){
+					JOptionPane.showMessageDialog(null, "El empleado cuenta con un saldo acumulado de ( "+acumulado+" ) para que el el descuento se aplique correctamente\ndebe ingresar un abono menor o igal a: "+(totalAcumulado-acumulado), "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 					return;
+				}else{
+					if(new Obj_Diferencia_De_Cortes().actualizar_abono_de_cortes(Integer.valueOf(txtFolio_Empleado.getText().trim()),cmbStatuscobro.getSelectedItem().toString(),Double.valueOf(txtAbono.getText().trim()))){
+						JOptionPane.showMessageDialog(null, "El abono se guardo exitosamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+						return;
+					}
 				}
 				
-				Obj_Diferencia_De_Cortes pres = new Obj_Diferencia_De_Cortes();
-				
-				switch(tabla.getRowCount()){
-					case 0: 
-						if(Double.parseDouble(txtDescuento.getText()) > Double.parseDouble(txtCantidad.getText())) {
-							JOptionPane.showMessageDialog(null, "El Descuento es Mayor que la cantidad", "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-							return;
-						}else {
-							
-							pres.setFolio(Integer.parseInt(txtFolio_Empleado.getText()));
-							pres.setFolio_empleado(Integer.parseInt(txtFolio_Empleado.getText()));
-							pres.setNombre_Completo(txtNombre_Completo.getText());
-							pres.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()));
-							pres.setCantidad(Double.parseDouble(txtCantidad.getText()));
-							pres.setDescuento(Double.parseDouble(txtDescuento.getText()));
-							pres.setSaldo(Double.parseDouble(txtCantidad.getText()));
-							pres.setStatus(cmbStatus.getSelectedIndex()+1);
-							pres.setStatus_descuento(cmbStatuscobro.getSelectedIndex());
-			
-							pres.guardar();
-							
-							JOptionPane.showMessageDialog(null,"El registro se guardo exitosamente", "Aviso se guardo el registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-							
-							if(pres.getStatus_descuento()==1){
-								Object[] fila = new Object[tabla.getColumnCount()]; 
-								Obj_Diferencia_De_Cortes maximo = new Obj_Diferencia_De_Cortes().maximo();
-								fila[0]=maximo.getFolio();
-								fila[1]=new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate());
-								fila[2]=txtCantidad.getText();
-								fila[3]=txtDescuento.getText();
-								fila[4]=txtCantidad.getText();
-								fila[5]=0.00;
-								
-								switch(cmbStatus.getSelectedIndex()){
-									case 0: fila[6]="VIGENTE";break;	
-									case 1: fila[6]="CANCELADO TEMPORAL";break;
-								}
-								
-								switch(cmbStatuscobro.getSelectedIndex()){
-								case 0: fila[7]="PENDIENTE DE COBRO";break;	
-								case 1: fila[7]="COBRAR";break;
-							    }
-								
-								
-								
-								
-								modelo.addRow(fila); 						
-							}
-						}
-						
-					break;
-					case 1: 
-						if(Double.parseDouble(txtDescuento.getText()) > Double.parseDouble(modelo.getValueAt(0,4)+"")){
-							JOptionPane.showMessageDialog(null, "El Descuento que quiere aplicar es mayor que con lo que salda la cuenta", "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-							return;
-						}else{
-							if(JOptionPane.showConfirmDialog(null, "Desea Actualizar el registro existente ?") == JOptionPane.YES_OPTION) {
-								pres.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()));
-								pres.setCantidad(Double.parseDouble(txtCantidad.getText()));
-								pres.setDescuento(Double.parseDouble(txtDescuento.getText()));
-								pres.setStatus(cmbStatus.getSelectedIndex()+1);
-								pres.setStatus_descuento(cmbStatuscobro.getSelectedIndex());
-								
-								pres.actualizar(Integer.parseInt(modelo.getValueAt(0,0)+""));
-										
-								int filas=  tabla.getRowCount();
-								while(filas > 0){
-									modelo.removeRow(0);
-									filas--;
-								}
-										
-								String[][] Tabla = getMatriz(txtFolio_Empleado.getText());
-								Object[] fila = new Object[tabla.getColumnCount()]; 
-								for(int i=0; i<Tabla.length; i++){
-									modelo.addRow(fila); 
-									for(int j=0; j<8; j++){
-										modelo.setValueAt(Tabla[i][j]+"", i,j);
-									}
-								}
-							}
-						}
-					break;
-				}
 				panelEnabledFalse();
 			}
 		}
-		public void mouseReleased(MouseEvent e) {}		
-		public void mouseExited(MouseEvent e) {}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseClicked(MouseEvent e) {}
 	};
 	
+//	TODO (Filtro)
 	ActionListener filtro = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			dispose();
@@ -339,29 +235,22 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 			
 		}
 	};	
-	MouseListener ValidarCampos = new MouseListener() {
-		@Override
-		public void mousePressed(MouseEvent e) {
+	
+//	TODO (Editar)
+	ActionListener opEditar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
 			panelEnabledTrue();
 			btnGuardar.setEnabled(true);
 		}
-		public void mouseReleased(MouseEvent e) {}		
-		public void mouseExited(MouseEvent e) {}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseClicked(MouseEvent e) {}
 	};
 	
 	public void panelEnabledTrue(){	
-		txtCantidad.setEditable(true);
-		txtDescuento.setEditable(true);
-		cmbStatus.setEnabled(true);
+		txtAbono.setEditable(true);
 		cmbStatuscobro.setEnabled(true);
 	}
 	
 	public void panelEnabledFalse(){	
-		txtCantidad.setEditable(false);
-		txtDescuento.setEditable(false);
-		cmbStatus.setEnabled(false);
+		txtAbono.setEditable(false);
 		cmbStatuscobro.setEnabled(false);
 		
 	}
@@ -369,9 +258,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	public void panelLimpiar(){	
 		panelEnabledFalse();
 		panelEnabledTrue();
-		txtCantidad.setText("");
-		txtDescuento.setText("");
-		txtCantidad.requestFocus();
+		txtAbono.setText("");
 		tabla.setSelectionMode(0);
 		
 	}
@@ -394,70 +281,11 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 								
 	};
 		
-	KeyListener validaNumericoConPunto = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e) {
-			char caracter = e.getKeyChar();
-			
-		    if(((caracter < '0') ||	
-		    	(caracter > '9')) && 
-		    	(caracter != '.' )){
-		    	e.consume();
-		    	}
-		    	
-		   if (caracter==KeyEvent.VK_PERIOD){    	
-		    	String texto = txtCantidad.getText().toString();
-				if (texto.indexOf(".")>0) e.consume();
-				
-			}
-		    		    		       	
-		}
-		@Override
-		public void keyPressed(KeyEvent e){}
-		@Override
-		public void keyReleased(KeyEvent e){}
-								
-	};
-	KeyListener validaNumericoConPunto2 = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e) {
-			char caracter = e.getKeyChar();
-			
-		    if(((caracter < '0') ||	
-		    	(caracter > '9')) && 
-		    	(caracter != '.' )){
-		    	e.consume();
-		    	}
-		    	
-		   if (caracter==KeyEvent.VK_PERIOD){    	
-		    	String texto = txtDescuento.getText().toString();
-				if (texto.indexOf(".")>0) e.consume();
-				
-			}
-		    		    		       	
-		}
-		@Override
-		public void keyPressed(KeyEvent e){}
-		@Override
-		public void keyReleased(KeyEvent e){}
-								
-	};
-	
-	private String validaCampos(){
-		String error="";
-		String fechaNull = txtCalendario.getDate()+"";
-		if(txtNombre_Completo.getText().equals(""))error+= "Nombre Completo\n";
-		if(txtCantidad.getText().equals(""))error+= "Cantidad\n";
-		if(txtDescuento.getText().equals(""))error+= "Descuento\n";
-		if(fechaNull.equals("null")) error+= "Fecha\n";
-		return error;
-	}
-	
-	
+//	TODO (Funcion para llenar arreglo de cortes por cobrar del empleado)
 	public String[][] getMatriz(String folio_empleado){
-		String qry = "exec sp_select_total_de_cortes_folio_empleado '"+folio_empleado+"'";
+		String qry = "exec sp_select_tabla_cortes_en_lista_de_cobro '"+folio_empleado+"'";
 		
-		String[][] Matriz = new String[getFilas(qry)][8];
+		String[][] Matriz = new String[getFilas(qry)][5];
 		Statement s;
 		ResultSet rs;
 		try {
@@ -470,12 +298,9 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 
 				Matriz[i][0] = rs.getString(1).trim();
 				Matriz[i][1] = rs.getString(2).trim();
-				Matriz[i][2] = decimalFormat.format(Double.parseDouble(rs.getString(3)));
+				Matriz[i][2] = rs.getString(3).trim();
 				Matriz[i][3] = decimalFormat.format(Double.parseDouble(rs.getString(4)));
-				Matriz[i][4] = decimalFormat.format(Double.parseDouble(rs.getString(5)));
-				Matriz[i][5] = decimalFormat.format(Double.parseDouble(rs.getString(6)));
-				Matriz[i][6] = rs.getString(7);
-				Matriz[i][7] = rs.getString(8);
+				Matriz[i][4] = "  "+rs.getString(5).trim();
 
 				i++;
 			}
@@ -502,10 +327,11 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		return filas;
 	}
 	
+//	TODO (main)
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Filtro_Diferencia_De_Cortes("630").setVisible(true);
+			new Cat_Filtro_Diferencia_De_Cortes("784","").setVisible(true);
 		}catch(Exception e){	}
 		
 	}

@@ -126,6 +126,8 @@ public class Obj_Diferencia_De_Cortes {
 	
 	public boolean actualizar(int folio){ return new ActualizarSQL().Actualizar(this,folio); }
 	
+	public boolean actualizar_abono_de_cortes(int folio,String statusCobro, double abono){ return new ActualizarSQL().Actualizar_abono_de_cortes(folio, statusCobro, abono); }
+	
 	public Obj_Diferencia_De_Cortes maximo() {
 		try {
 			return new BuscarSQL().maximo_diferencia_cortes();

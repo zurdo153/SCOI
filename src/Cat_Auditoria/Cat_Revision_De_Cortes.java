@@ -563,7 +563,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		JTextField txtCajero				= new JTextField("");
 		JTextField txtEstablecimiento		= new JTextField("");
 		JTextField txtCorteSistema			= new JTextField("");
-		JTextField txtDiferenciaCorte 			= new JTextField("");
+		JTextField txtDiferenciaCorte 		= new JTextField("");
 		JTextField txtEfectivoTotal			= new JTextField("");
 		JTextField txtDiferenciaManual		= new Componentes().text(new JTextField(), "diferencia por auditoria", 8, "Real");
 		
