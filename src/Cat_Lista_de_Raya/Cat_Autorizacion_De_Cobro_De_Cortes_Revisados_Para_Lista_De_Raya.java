@@ -1,4 +1,4 @@
-package Cat_Auditoria;
+package Cat_Lista_de_Raya;
 
 import java.awt.Container;
 import java.awt.GraphicsEnvironment;
@@ -31,7 +31,7 @@ import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados extends JFrame {
+public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya extends JFrame {
 	    
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
@@ -72,7 +72,7 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados extends JFrame {
 	    
 	    
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Cat_Autorizacion_De_Cobro_De_Cortes_Revisados()	{
+		public Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya()	{
 			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 			int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 			
@@ -82,17 +82,17 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados extends JFrame {
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia.png"));
-			this.setTitle("Reporte de Listas de Raya Pasadas");
+			this.setTitle("Autorizacion De Cobro De Cortes Revisados");
 
-			campo.setBorder(BorderFactory.createTitledBorder("Seleccione La Lista de Raya a Consultar"));
+			campo.setBorder(BorderFactory.createTitledBorder("Seleccione Los Cortes A Aplicar"));
 			trsfiltro = new TableRowSorter(model); 
 			tabla.setRowSorter(trsfiltro);  
 			campo.add(getPanelTabla()).setBounds(15,42,ancho-25,alto-125);
 			campo.add(txtFolio).setBounds(15,20,70,20);
 			campo.add(txtFecha).setBounds(85,20,270,20);
 
-			campo.add(btnNegar).setBounds(475,20,100,20);
-			campo.add(btnAceptar).setBounds(643,20,100,20);
+			campo.add(btnNegar).setBounds(475,20,150,20);
+			campo.add(btnAceptar).setBounds(743,20,150,20);
 			
 			Actualizar_tabla();
 			cargar_render();
@@ -192,37 +192,37 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados extends JFrame {
 			tabla.getColumnModel().getColumn(3).setHeaderValue("Establecimiento");
 			tabla.getColumnModel().getColumn(3).setMaxWidth(b-50);
 			tabla.getColumnModel().getColumn(3).setMinWidth(b-50);
-			tabla.getColumnModel().getColumn(4).setHeaderValue("Dif Corte");
+			tabla.getColumnModel().getColumn(4).setHeaderValue("Dif. Corte");
 			tabla.getColumnModel().getColumn(4).setMaxWidth(a);
 			tabla.getColumnModel().getColumn(4).setMinWidth(a);
-			tabla.getColumnModel().getColumn(5).setHeaderValue("Status Aud");
+			tabla.getColumnModel().getColumn(5).setHeaderValue("Status Auditoria");
 			tabla.getColumnModel().getColumn(5).setMaxWidth(b-60);
 			tabla.getColumnModel().getColumn(5).setMinWidth(b-60);
-			tabla.getColumnModel().getColumn(6).setHeaderValue("Dif Aud");
+			tabla.getColumnModel().getColumn(6).setHeaderValue("Dif. Aud.");
 			tabla.getColumnModel().getColumn(6).setMaxWidth(a);
 			tabla.getColumnModel().getColumn(6).setMinWidth(a);
-			tabla.getColumnModel().getColumn(7).setHeaderValue("Obs Aud");
+			tabla.getColumnModel().getColumn(7).setHeaderValue("Observaciones Auditoria");
 			tabla.getColumnModel().getColumn(7).setMaxWidth(b*3);
 			tabla.getColumnModel().getColumn(7).setMinWidth(b-50);
-			tabla.getColumnModel().getColumn(8).setHeaderValue("Reviso Aud");
+			tabla.getColumnModel().getColumn(8).setHeaderValue("Reviso Auditoria");
 			tabla.getColumnModel().getColumn(8).setMaxWidth(b+a);
 			tabla.getColumnModel().getColumn(8).setMinWidth(b+a);
-			tabla.getColumnModel().getColumn(9).setHeaderValue("Fecha Revision Aud");
+			tabla.getColumnModel().getColumn(9).setHeaderValue("Fecha Revision Auditoria");
 			tabla.getColumnModel().getColumn(9).setMaxWidth(b);
 			tabla.getColumnModel().getColumn(9).setMinWidth(b);
-			tabla.getColumnModel().getColumn(10).setHeaderValue("Status Seg");
+			tabla.getColumnModel().getColumn(10).setHeaderValue("Status Seguridad");
 			tabla.getColumnModel().getColumn(10).setMaxWidth(b-60);
 			tabla.getColumnModel().getColumn(10).setMinWidth(b-60);
-			tabla.getColumnModel().getColumn(11).setHeaderValue("Dif Seg");
+			tabla.getColumnModel().getColumn(11).setHeaderValue("Dif. Seg.");
 			tabla.getColumnModel().getColumn(11).setMaxWidth(a);
 			tabla.getColumnModel().getColumn(11).setMinWidth(a);
-			tabla.getColumnModel().getColumn(12).setHeaderValue("Obs Seg");
+			tabla.getColumnModel().getColumn(12).setHeaderValue("Observaciones Seguridad");
 			tabla.getColumnModel().getColumn(12).setMaxWidth(b*3);
 			tabla.getColumnModel().getColumn(12).setMinWidth(b-50);
-			tabla.getColumnModel().getColumn(13).setHeaderValue("Reviso Seg");
+			tabla.getColumnModel().getColumn(13).setHeaderValue("Reviso Seguridad");
 			tabla.getColumnModel().getColumn(13).setMaxWidth(b+a);
 			tabla.getColumnModel().getColumn(13).setMinWidth(b+a);
-			tabla.getColumnModel().getColumn(14).setHeaderValue("Fecha revision Seg");
+			tabla.getColumnModel().getColumn(14).setHeaderValue("Fecha Revision Seguridad");
 			tabla.getColumnModel().getColumn(14).setMaxWidth(b);
 			tabla.getColumnModel().getColumn(14).setMinWidth(b);
 
@@ -305,7 +305,7 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados extends JFrame {
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Autorizacion_De_Cobro_De_Cortes_Revisados().setVisible(true);
+				new Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya().setVisible(true);
 			}catch(Exception e){	}
 		}
 	}

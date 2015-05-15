@@ -27,11 +27,9 @@ public class Connexion {
 	}
 
 	public Connection conexion_IZAGAR(){
-//		int pruebas=0;
 		
 		Connection conn = null;	
 		try{
-							
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			conn = DriverManager.getConnection("jdbc:sqlserver://192.168.2.201:1433;databaseName=BMSIZAGAR", "sa","ragazi*12345");
 			System.out.println("Se ha establecido la conexion con la base de datos: '"+conn.getCatalog()+"' exitosamente");		

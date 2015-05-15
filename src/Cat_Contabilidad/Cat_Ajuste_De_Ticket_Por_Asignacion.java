@@ -46,7 +46,6 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	JTextField txtAsignacionCorregir= new JTextField("");
 	
 	JButton btnAsignacion = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
-	JButton btnBuscar = new JButton("Buscar",new ImageIcon("imagen/buscar.png"));
 	JButton btnQuitar = new JButton("Eliminar Tickets",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	JButton btnBuscarCambio = new JButton("Generar Cambios",new ImageIcon("imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-16.png"));
 
@@ -108,7 +107,6 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		panel.add(new JLabel("Asignacion: ")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtAsignacion).setBounds(ancho,y,ancho*2-30,20);
 		panel.add(btnAsignacion).setBounds((ancho*3)-30,y,30,20);
-		panel.add(btnBuscar).setBounds(x+(ancho*3),y,ancho,20);
 		panel.add(new JLabel("Total IVA: ")).setBounds(x+(ancho*3)+220,y,ancho,20);
 		panel.add(txtiva).setBounds(x+(ancho*3)+284,y,ancho,20);
 		panel.add(scroll).setBounds(x,y+=25, anchop-45, altop-130);
@@ -123,10 +121,11 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		llamar_render(tabla);
 		
 		btnAsignacion.addActionListener(opFiltro);
-		btnBuscar.addActionListener(opGenerar);
 		btnQuitar.addActionListener(opEliminar_Tickets_Selecionado);
 		btnBuscarCambio.addActionListener(opCargar_Cambios_De_Tickets_de_la_Asignacion);
 		btnAsignacionDCambio.addActionListener(opFiltro_Asignaciones_Pendientes_corregir);
+		btnDevolverCambio.addActionListener(opDevolver_Cambios_De_Tickets_de_la_Asignacion);
+		
 		
 		btnBuscarCambio.setEnabled(false);
 		btnQuitar.setEnabled(false);
@@ -145,7 +144,6 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 			txtAsignacion.setText("");
 			txtiva.setText("");
 			txtAsignacionCorregir.setText("");
-		    btnDevolverCambio.setEnabled(false); 
 			iva=0;
 			 btnBuscarCambio.setEnabled(false);
 			 btnQuitar.setEnabled(false);
@@ -159,38 +157,6 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 					modelo.removeRow(0);
 				}
 				new filtro_de_asignaciones(cmbEstablecimiento.getSelectedItem().toString().trim()).setVisible(true);
-			}
-		}
-	};
-	
-	
-	
-	
-	ActionListener opGenerar = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			
-			while(tabla.getRowCount()>0){
-				modelo.removeRow(0);
-			}
-	
-			
-			if(txtAsignacion.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "No Se A Seleccionado Una Asignacion","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-				return;
-			}else{
-//					TODO si se corre el procedimiento (sp_ajuste_avi @asignacion,'R')
-					if(new ActualizarSQL().ajuste_avi(txtAsignacion.getText().toString().trim())){
-  			 	        llenado_de_tabla_de_tickets();
-  			 	       
-
-						
-				    	
-						
-					}else{
-						JOptionPane.showMessageDialog(null, "Error Al Intentar Llenar La Tabla de Tickets","ERROR",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-						return;
-					}
-				
 			}
 		}
 	};
@@ -277,8 +243,8 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	    	tbl.getColumnModel().getColumn(4 ).setMinWidth(x);
 	    	tbl.getColumnModel().getColumn(5 ).setMaxWidth(x);
 	    	tbl.getColumnModel().getColumn(5 ).setMinWidth(x);
-	    	tbl.getColumnModel().getColumn(6 ).setMaxWidth(x);
-	    	tbl.getColumnModel().getColumn(6 ).setMinWidth(x);
+	    	tbl.getColumnModel().getColumn(6 ).setMaxWidth(x-55);
+	    	tbl.getColumnModel().getColumn(6 ).setMinWidth(x-55);
 		}else{
 	    	tbl.getColumnModel().getColumn(5 ).setMaxWidth(x*3); 
 	    	tbl.getColumnModel().getColumn(5 ).setMinWidth(x*3); 
@@ -315,7 +281,6 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		
 		JTextField txtAsignacionFiltro = new JTextField("");
 		
-	//  TODO Inicializar (modelo)
 		  public DefaultTableModel modeloFiltro = new DefaultTableModel(null, new String[]{"Asignacion","Fecha Liquidacion","IVA", "IEPS", "Total", "Cajero"} ){
 		                  
 				@SuppressWarnings({ "rawtypes" })
@@ -345,7 +310,6 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		       }
 		  };
 			
-		//  TODO Inicializar (tablaFiltro y scrollFiltro)
 		  JTable tablaFiltro = new JTable(modeloFiltro);
 		JScrollPane scrollFiltro = new JScrollPane(tablaFiltro,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
@@ -393,7 +357,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		}
 		
 		
-		
+		//TODO ( se selecciona la asignacion,se llena las tablas con los productos, se llena la tabla de la ventana con los tickets )	
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {
@@ -402,16 +366,17 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		        		int fila= tbl.getSelectedRow();
 		        		txtAsignacion.setText(tbl.getValueAt(fila, 0).toString().trim());
 		        		dispose();
+						if(new ActualizarSQL().ajuste_avi(txtAsignacion.getText().toString().trim())){
+	  			 	        llenado_de_tabla_de_tickets();
+						}else{
+							JOptionPane.showMessageDialog(null, "Error Al Intentar Llenar La Tabla de Tickets","ERROR",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+							return;
+						}
 		        	}
 		        }
 	        });
 	    }
-		
-		
-		
-		
-		
-//		TODO (KeyListener para filtro)
+
 		KeyListener op_filtro_folio_corte = new KeyListener(){
 			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
@@ -421,6 +386,9 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 	}
+	
+	
+	
 	
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -433,7 +401,6 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		
 		JTextField txtAsignacionFiltro = new JTextField("");
 		
-	//  TODO Inicializar (modelo)
 		  public DefaultTableModel modeloFiltro2 = new DefaultTableModel(null, new String[]{"Asignacion","Fecha Liquidacion","IVA"} ){
 		                  
 				@SuppressWarnings({ "rawtypes" })
@@ -551,20 +518,28 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 				}
 			  txtAsignacion.setText("");
 			  txtiva.setText("");
-				JOptionPane.showMessageDialog(null, "Se Actualizaron Correctamente Los Datos", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+				JOptionPane.showMessageDialog(null, "Se Cambiaron Correctamente Los Datos", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+		  };
+		}
+	};
+	
+	
+//	TODO (KeyListener Hacer Cambio de valores del tickets antes de fac)
+	ActionListener opDevolver_Cambios_De_Tickets_de_la_Asignacion = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+		  if( new ActualizarSQL().Devolver_Cambios_De_Tickets_de_la_Asignacion(txtAsignacionCorregir.getText()+"")){
+			  txtAsignacionCorregir.setText("");
+				JOptionPane.showMessageDialog(null, "Se Devolvieron Correctamente Los Datos", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		  };
 		}
 	};
 
 	
+
+	
 	public static void main(String [] arg){
 		try{
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-//			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-//			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel"); 
-			
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			new Cat_Ajuste_De_Ticket_Por_Asignacion().setVisible(true);
 		}catch(Exception e){}
 		

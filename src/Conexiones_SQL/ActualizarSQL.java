@@ -3426,48 +3426,72 @@ public boolean Cargar_Cambios_De_Tickets_de_la_Asignacion(String Asignacion){
 
 public boolean Devolver_Cambios_De_Tickets_de_la_Asignacion(String Asignacion){
 	
-//	String query ="  update entysal set entysal.cod_prod=IZAGAR_AVI_entysal.cod_prod_avi,entysal.iva=0, entysal.importe=(IZAGAR_AVI_entysal.importe+IZAGAR_AVI_entysal.iva)"
-//		    	+ "      from entysal"
-//		    	+ "     inner join IZAGAR_AVI_entysal  on IZAGAR_AVI_entysal.id=entysal.id and IZAGAR_AVI_entysal.status=1 "
-//		    	+ "    where IZAGAR_AVI_entysal.id=entysal.id  and IZAGAR_AVI_entysal.asignacion='"+Asignacion+"'";
-//	
-//	String query2 ="update facremtick set facremtick.importe=(IZAGAR_AVI_facremtick.importe+IZAGAR_AVI_facremtick.iva),facremtick.iva=0"
-//			     + "    from facremtick"
-//			     + "   inner join IZAGAR_AVI_facremtick  on IZAGAR_AVI_facremtick.folio=facremtick.folio and IZAGAR_AVI_facremtick.status=1"
-//			     + "  where IZAGAR_AVI_facremtick.folio=facremtick.folio and IZAGAR_AVI_facremtick.asignacion='"+Asignacion+"'";
+	String query =" update entysal   set entysal.cod_prod=IZAGAR_AVI_entysal.cod_prod, "
+			+ "                          entysal.importe =IZAGAR_AVI_entysal.importe, "
+			+ "                          entysal.iva=IZAGAR_AVI_entysal.iva "
+			+ "         from entysal  "
+			+ "  inner join IZAGAR_AVI_entysal on IZAGAR_AVI_entysal.id=entysal.id and IZAGAR_AVI_entysal.status=2 "
+			+ "  where IZAGAR_AVI_entysal.id=entysal.id  and IZAGAR_AVI_entysal.asignacion='"+Asignacion+"'";
+	
+	String query2 ="update facremtick set facremtick.importe=IZAGAR_AVI_facremtick.importe, "
+			+ "            facremtick.iva=IZAGAR_AVI_facremtick.iva "
+			+ "        from facremtick "
+			+ "   inner join IZAGAR_AVI_facremtick  on IZAGAR_AVI_facremtick.folio=facremtick.folio and IZAGAR_AVI_facremtick.status=2 "
+			+ "   where IZAGAR_AVI_facremtick.folio=facremtick.folio  and facremtick.folio in(select folio from IZAGAR_AVI_entysal where asignacion='"+Asignacion+"')";
 	
 	String query3 ="update IZAGAR_AVI_entysal set status=3 where status=2 and asignacion='"+Asignacion+"'";
 			
 	String query4 ="update IZAGAR_AVI_facremtick set status=3 where status=2 and asignacion='"+Asignacion+"'";
 
 	Connection con = new Connexion().conexion_IZAGAR();
-		
-	try {
-		con.setAutoCommit(false);
-//		PreparedStatement pstmt = con.prepareStatement(query);
-//		PreparedStatement pstmt2 = con.prepareStatement(query2);
-		PreparedStatement pstmt3 = con.prepareStatement(query3);
-		PreparedStatement pstmt4 = con.prepareStatement(query4);
+				try {
+					con.setAutoCommit(false);
+					PreparedStatement pstmt = con.prepareStatement(query);
+					PreparedStatement pstmt2 = con.prepareStatement(query2);
+			
+					pstmt.executeUpdate();
+					pstmt2.executeUpdate();	
+					
+					con.commit();
+				} catch (Exception e) {
+						System.out.println("SQLException: "+e.getMessage());
+							if(con != null){
+								try{
+									System.out.println("La transacción ha sido abortada");
+									con.rollback();
+									JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Devolver_Cambios_De_Tickets_de_la_Asignacion 1 ] update \n SQLException:"+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+								}catch(SQLException ex){
+									System.out.println(ex.getMessage());
+									JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Devolver_Cambios_De_Tickets_de_la_Asignacion 1 ] update \n SQLException:"+query+" "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+						    	}
+						     	return false;
+							   }	
+							
+				               }
+	
+	           try {
+					con.setAutoCommit(false);
+					PreparedStatement pstmt3 = con.prepareStatement(query3);
+					PreparedStatement pstmt4 = con.prepareStatement(query4);
 
-//		pstmt.executeUpdate();
-//		pstmt2.executeUpdate();	
-		pstmt3.executeUpdate();	
-		pstmt4.executeUpdate();	
-		
-		con.commit();
-	} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-				if(con != null){
-					try{
-						System.out.println("La transacción ha sido abortada");
-						con.rollback();
-//						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Devolver_Cambios_De_Tickets_de_la_Asignacion ] update \n SQLException:"+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-					}catch(SQLException ex){
-						System.out.println(ex.getMessage());
-//						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Devolver_Cambios_De_Tickets_de_la_Asignacion ] update \n SQLException:"+query+" "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-				}
-				return false;
-				}	
+					pstmt3.executeUpdate();	
+					pstmt4.executeUpdate();	
+					
+					con.commit();
+				} catch (Exception e2) {
+						System.out.println("SQLException: "+e2.getMessage());
+							if(con != null){
+								try{
+									System.out.println("La transacción ha sido abortada");
+									con.rollback();
+									JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Devolver_Cambios_De_Tickets_de_la_Asignacion 2] update \n SQLException:"+query+" "+e2.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+								}catch(SQLException ex){
+									System.out.println(ex.getMessage());
+									JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Devolver_Cambios_De_Tickets_de_la_Asignacion 2] update \n SQLException:"+query+" "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+							}
+							return false;
+							}	
+				
 	}finally{
 			try {
 				con.close();

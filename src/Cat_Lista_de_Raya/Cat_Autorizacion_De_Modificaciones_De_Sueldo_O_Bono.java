@@ -87,9 +87,9 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia.png"));
-			this.setTitle("Reporte de Listas de Raya Pasadas");
+			this.setTitle("Autorizacion De Modificaciones De Sueldo O Bono");
 
-			campo.setBorder(BorderFactory.createTitledBorder("Seleccione La Lista de Raya a Consultar"));
+			campo.setBorder(BorderFactory.createTitledBorder("Seleccione Los Sueldo o Bonos A Aplicar"));
 			trsfiltro = new TableRowSorter(model); 
 			tabla.setRowSorter(trsfiltro);  
 			campo.add(getPanelTabla()).setBounds(15,42,ancho-25,alto-125);

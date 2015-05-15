@@ -44,16 +44,10 @@ import Obj_Renders.tablaRenderer;
 public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	
 	String operador_ventas = "";
-	
-	public JTextField txtFolio = new Componentes().text(new JTextField(),"Busqueda Por Codigo del Producto",25, "Int");
-	public JTextField txtProductoDescripcion = new Componentes().text(new JTextField(),"Busqueda Por Descripcion del Producto",300, "String");
-	public JTextField txtFamiliaProducto = new Componentes().text(new JTextField(),"Busqueda Por Familia Del Producto",300, "String");
-	public JTextField txtTallaProducto = new Componentes().text(new JTextField(),"Busqueda Por Talla Del Producto",300, "String");
 
 	Object[][] Matriz_Productos ;
-	DefaultTableModel Tabla_Productos= new DefaultTableModel(null,new String[]{"Codigo", "Descripcion","Clase Producto","Talla","*"}
+	DefaultTableModel Tabla_Productos= new DefaultTableModel(null,new String[]{"Codigo", "Descripcion","Clase Producto","Categoria","*"}
 			){
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -110,18 +104,20 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(Tabla_Productos); 
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
-
-	JButton btnCargar = new JButton("Cargar");
 	
 	String valor_catalogo="";
-	
 	int bandera_filtro_familia=0;
+	JTextField txtFolio ;
+	JTextField txtProductoDescripcion;
+	JTextField txtClase_Producto;
+	JTextField txtTallaProducto ;
 	
 	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador){
+		  setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 		
 		UIManager.put("nimbusBase", new Color(255,255,255));
-		UIManager.put("nimbusBlueGrey", new Color(191,98,4));
-		UIManager.put("control", new Color(191,98,4));
+		UIManager.put("nimbusBlueGrey", new Color(255,250,250));
+		UIManager.put("control", new Color(255,250,250));
 
 		
 		
@@ -145,9 +141,16 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		scroll_tabla = new JScrollPane(tabla);
 		
-		valor_catalogo=bandera_origen_consulta_filro;
+		
+	      scroll_tabla = new JScrollPane(tabla);
+		  JButton btnCargar = new JButton("Cargar", new ImageIcon("imagen/Aplicar.png"));
+		  txtFolio = new Componentes().text(new JTextField(),"Busqueda Por Codigo del Producto",25, "Int");
+		  txtProductoDescripcion = new Componentes().text(new JTextField(),"Busqueda Por Descripcion del Producto",300, "String");
+		  txtClase_Producto = new Componentes().text(new JTextField(),"Busqueda Por Clase De Producto",300, "String");
+		  txtTallaProducto = new Componentes().text(new JTextField(),"Busqueda Por Categoria Del Producto",300, "String");
+		
+		  valor_catalogo=bandera_origen_consulta_filro;
 		
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/Filter-List-icon16.png"));
@@ -155,10 +158,10 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline,"Busqueda y Seleccion De Un Producto"));
 		
-		this.panel.add(txtFolio).setBounds(10,25,59,20);
-		this.panel.add(txtProductoDescripcion).setBounds(70,25,450,20);
-		this.panel.add(txtFamiliaProducto).setBounds(520,25,240,20);
-		this.panel.add(btnCargar).setBounds(920,25,90,20);
+		this.panel.add(txtFolio).setBounds(10,20,59,25);
+		this.panel.add(txtProductoDescripcion).setBounds(70,20,450,25);
+//		this.panel.add(txtClase_Producto).setBounds(520,20,240,25);
+		this.panel.add(btnCargar).setBounds(920,20,90,25);
 		this.panel.add(scroll_tabla).setBounds(10,47,997,511);
 		
 		this.render();
@@ -176,10 +179,10 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 			this.tabla.addKeyListener(op_agregar_productoconteclado);
 		}
 
-		this.txtFolio.addKeyListener(op_filtro_cod_Prod);
-		this.txtProductoDescripcion.addKeyListener(op_filtro_Descripcion);
-		this.txtFamiliaProducto.addKeyListener(op_filtro_Familia);
-		this.txtTallaProducto.addKeyListener(op_filtro_Talla);
+		txtFolio.addKeyListener(op_filtro_cod_Prod);
+		txtProductoDescripcion.addKeyListener(op_filtro_Descripcion);
+		txtClase_Producto.addKeyListener(op_filtro_Familia);
+		txtTallaProducto.addKeyListener(op_filtro_Talla);
 		
 		btnCargar.addActionListener(opCargar);
 		
@@ -435,9 +438,13 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	
    	public Object[][] llenarTablaProductos(){
    		
-		String todos = "select productos.cod_prod,productos.descripcion,case when clases_productos.nombre is null then '' else clases_productos.nombre end as clase_producto,tallas.nombre as talla" +
-				"  from productos with (nolock) left outer join clases_productos on clases_productos.clase_producto= productos.clase_producto inner join tallas on tallas.talla=productos.talla" +
-				"     order by descripcion ";
+		String todos = "select productos.cod_prod,productos.descripcion+' '+productos.codigo_barras_pieza as descripcion,"
+				+ "            case when clases_productos.nombre is null then '' else clases_productos.nombre end as clase_producto,"
+				+ "               case when categorias.nombre is null then '' else categorias.nombre end as categoria"
+				+ " 				  from productos with (nolock)"
+				+ "  left outer join clases_productos on clases_productos.clase_producto= productos.clase_producto"
+				+ "  left outer join categorias on categorias.categoria=productos.categoria"
+				+ "				     order by descripcion,clases_productos.nombre,categorias.nombre  ";
 
 		Statement s;
 		ResultSet rs2;
@@ -495,16 +502,12 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		KeyListener op_filtro_Descripcion = new KeyListener(){
 			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
-				if(bandera_filtro_familia==1){
-					
-					trsfiltro.setRowFilter(RowFilter.regexFilter(txtFamiliaProducto.getText().toUpperCase().trim(), 2));
-					
+//				if(bandera_filtro_familia==1){
+//					trsfiltro.setRowFilter(RowFilter.regexFilter(txtClase_Producto.getText().toUpperCase().trim(), 2));
 					trsfiltro.setRowFilter(RowFilter.regexFilter(txtProductoDescripcion.getText().toUpperCase().trim(), 1));
-					
-					
-				}else{
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtProductoDescripcion.getText().toUpperCase().trim(), 1));
-				}
+//				}else{
+//				trsfiltro.setRowFilter(RowFilter.regexFilter(txtProductoDescripcion.getText().toUpperCase().trim(), 1));
+//				}
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -514,8 +517,8 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
 				
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFamiliaProducto.getText().toUpperCase().trim(), 2));
-				bandera_filtro_familia=1;
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtClase_Producto.getText().toUpperCase().trim(), 2));
+//				bandera_filtro_familia=1;
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
