@@ -3497,28 +3497,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							if(Boolean.valueOf(tabla_retiros.getValueAt(i, 4).toString())){  
 								retiros_programados+=Double.valueOf(tabla_retiros.getValueAt(i,1).toString());
 							}
-//=======
-//						
-//						if(Boolean.valueOf(tabla_retiros.getValueAt(i, 4).toString())){
-//							
-//							contador++;
-// 							if(contador == 1){
-// 								folios_retiros_programados_seleccionados += "'"+tabla_retiros.getValueAt(i,0)+"'";
-//		 					}else{
-//		 						folios_retiros_programados_seleccionados += "',''"+tabla_retiros.getValueAt(i,0)+"'";
-//		 					}
-// 							
-////							folios_retiros+="'"+tabla_retiros.getValueAt(i,0)+"'','";
-//							retiros_programados+=Double.valueOf(tabla_retiros.getValueAt(i,1).toString());
-//							
-//						}
-//					}
-//					
-//					folios_retiros_programados_seleccionados += "'";
-//					
-//					if(folios_retiros_programados_seleccionados.equals("''")){
-//						folios_retiros_programados_seleccionados = "Ninguno";
-//>>>>>>> 49a6fe47531b4fefacbf0d2e8b3b0ed4986ba093
 					}
 					
 					new ActualizarSQL().Actualizar_retiros_seleccionados(Retirosfalse);
