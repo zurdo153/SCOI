@@ -149,6 +149,14 @@ public class Obj_Establecimiento {
 		}
 	return null; }
 	
+	public String[] Combo_Establecimiento_Revision_De_Cortes(){
+		try {
+			return new Cargar_Combo().Establecimiento_para_revision_de_cortes();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return null; }
+	
 	public Obj_Establecimiento buscar_estab(String nombre){
 		try{
 			return new BuscarSQL().Establecimiento_buscar_folio_por_nombre(nombre); 

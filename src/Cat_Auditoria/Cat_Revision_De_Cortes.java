@@ -52,7 +52,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 	JDateChooser cfecha_in = new JDateChooser();
 	JDateChooser cfecha_fin = new JDateChooser();
 	
-	private String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
+	private String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Revision_De_Cortes();
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private JComboBox cmbEstablecimientos = new JComboBox(establecimiento);
 	
@@ -249,7 +249,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 					case 17:tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
 					case 19:tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
 					
-					case 20:tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
+					case 20:tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
 //					case 21:tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11)); break;
 					case 22:tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
 					case 23:tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
@@ -316,8 +316,8 @@ public class Cat_Revision_De_Cortes extends JFrame{
     	this.tabla.getColumnModel().getColumn(19).setMaxWidth((x*5)-30);
     	this.tabla.getColumnModel().getColumn(19).setMinWidth((x*5)-30);
     	
-    	this.tabla.getColumnModel().getColumn(20).setMaxWidth((x*2)+20);
-    	this.tabla.getColumnModel().getColumn(20).setMinWidth((x*2)+20);
+    	this.tabla.getColumnModel().getColumn(20).setMaxWidth((x*2)+40);
+    	this.tabla.getColumnModel().getColumn(20).setMinWidth((x*2)+40);
     	this.tabla.getColumnModel().getColumn(21).setMaxWidth(x);
     	this.tabla.getColumnModel().getColumn(21).setMinWidth(x);
     	this.tabla.getColumnModel().getColumn(22).setMaxWidth(x*8);
