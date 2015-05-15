@@ -93,9 +93,10 @@ public class Cat_Diferencia_De_Cortes extends JFrame {
 	        public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 2){
 	    			int fila = tabla.getSelectedRow();
-	    			Object folio =  tabla.getValueAt(fila, 0);
+	    			String folio =  tabla.getValueAt(fila, 0).toString().trim();
+	    			String nombre = tabla.getValueAt(fila, 1).toString().trim();
 	    			dispose();
-	    			new Cat_Filtro_Diferencia_De_Cortes(folio.toString().trim()).setVisible(true);
+	    			new Cat_Filtro_Diferencia_De_Cortes(folio, nombre).setVisible(true);
 	    			
 	        	}
 	        }
