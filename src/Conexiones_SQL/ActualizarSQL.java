@@ -3439,10 +3439,10 @@ public boolean Cargar_Cambios_De_Tickets_de_la_Asignacion(String Asignacion){
 					try{
 						System.out.println("La transacción ha sido abortada");
 						con.rollback();
-						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cargar_Cambios_De_Tickets_de_la_Asignacion ] update \n SQLException:"+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cargar_Cambios_De_Tickets_de_la_Asignacion ] \n SQLException:"+query+" \n"+query2+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 					}catch(SQLException ex){
 						System.out.println(ex.getMessage());
-						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cargar_Cambios_De_Tickets_de_la_Asignacion ] update \n SQLException:"+query+" "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cargar_Cambios_De_Tickets_de_la_Asignacion ] \n SQLException:"+query+" \n"+query2+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 				return false;
 				}	
