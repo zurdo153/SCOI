@@ -219,8 +219,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		public void actionPerformed(ActionEvent arg0) {
 			new Cat_Consulta_Lista_de_Raya_Pasadas().setVisible(true);	
 		}
-		
 	};
+	
 	
 	
 	WindowListener op_cerrar = new WindowListener() {

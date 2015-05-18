@@ -222,7 +222,7 @@ public class GuardarTablasModel {
 	}
 	
 	public boolean tabla_model_lista_raya_update(){
-		String query = "exec sp_lista_raya_assets";
+		String query = "exec sp_llenar_pre_lista_raya";
 		Connection con = new Connexion().conexion();
 		
 		try {
