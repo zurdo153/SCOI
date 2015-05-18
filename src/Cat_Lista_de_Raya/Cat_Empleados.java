@@ -92,6 +92,7 @@ import javax.swing.table.TableRowSorter;
 
 
 
+
 import Cat_Checador.Cat_Horarios;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Reporte_De_Empleados_No_Contratables;
@@ -101,6 +102,7 @@ import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
 import Cat_Reportes.Cat_Reportes_De_Contratacion_Por_Empleado;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
@@ -242,6 +244,7 @@ public class Cat_Empleados extends JFrame{
 	JButton btnExaminar = new JButton("Examinar");
 	JButton btnCamara = new JButton(new ImageIcon("Iconos/camara_icon&16.png"));
 	
+	JButton btnImp_Datos_Completos = new JButton("R. Impresion",new ImageIcon("Imagen/informacion-del-usuario-icono-8370-16.png"));
 	JButton btnContratacion = new JButton("Contratacion",new ImageIcon("Imagen/contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png"));
 	JButton btn_plantilla = new JButton("R.Plantilla",new ImageIcon ("Imagen/plan-icono-5073-16.png"));
 	JButton btn_horario_provisional = new JButton("H. Provisional",new ImageIcon("Imagen/horas-de-reloj-de-alarma-icono-5601-16.png"));
@@ -284,6 +287,11 @@ public class Cat_Empleados extends JFrame{
 	}
 	
 	public void getContenedor(){
+		this.setSize(975,710);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
 //		pendientes en funcionalidad----------------------------------------------------
 		txtFechaUltimasVacaciones.setEnabled(false);
 		btnFechaUltimasVacaciones.setEnabled(false);
@@ -337,7 +345,7 @@ public class Cat_Empleados extends JFrame{
 		this.bgHorarios.add(rbHorario2);
 		this.bgHorarios.add(rbHorario3);
 
-		int x = 20, y=35, ancho=140;
+		int x = 20, y=20, ancho=140;
 		
 		this.txtFechaNacimiento.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		this.txtIngreso.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
@@ -348,6 +356,16 @@ public class Cat_Empleados extends JFrame{
 		txtHorario2.setFont(new Font("ARIAL", Font.ITALIC, 9));
 		txtHorario3.setFont(new Font("ARIAL", Font.ITALIC, 9));
 		
+		
+		panel.add(btnImp_Datos_Completos).setBounds(x+20,y,128,x);
+		panel.add(btnContratacion).setBounds(x+ancho+20,y,128,x);
+		panel.add(btnAsistencia_Empleado).setBounds(x+ancho*2+10,y,128,x);
+		panel.add(btn_plantilla).setBounds(x+ancho*3,y,128,x);
+		panel.add(btn_horario_provisional).setBounds(x+ancho*4-10,y,128,x);
+		panel.add(btnCumpleaños_del_Mes).setBounds(x+ancho*4+120,y,128,x);
+		panel.add(btnIncontratables).setBounds(x*2+ancho*3+ancho+230,y,130,x);
+		
+		y=y+=40;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
 		panel.add(lblDatosPersonales).setBounds(10,y-15,ancho*7-30,215);
 		panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);
@@ -360,16 +378,6 @@ public class Cat_Empleados extends JFrame{
 		panel.add(btnNuevo).setBounds(x+ancho+ancho+51,y,ancho-49,20);
 	
 		panel.add(btnFoto).setBounds(x*2+ancho*5,y-5,ancho+55,160);
-		
-		panel.add(btnContratacion).setBounds(x+ancho+20,8,128,18);
-		panel.add(btnAsistencia_Empleado).setBounds(x+ancho*2+10,8,128,18);
-		panel.add(btn_plantilla).setBounds(x+ancho*3,8,128,18);
-		panel.add(btn_horario_provisional).setBounds(x+ancho*4-10,8,128,18);
-		panel.add(btnCumpleaños_del_Mes).setBounds(x+ancho*4+120,8,128,18);
-		panel.add(btnIncontratables).setBounds(x*2+ancho*3+ancho+230,8,130,18);
-		
-		
-		
 		
 		panel.add(btnTrueFoto).setBounds(x*2+ancho*5-10, y+155,220,20);
 		
@@ -417,6 +425,7 @@ public class Cat_Empleados extends JFrame{
 		
 		panel.add(new JLabel("Curp:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtCurp).setBounds(x+ancho-40,y,ancho-15,20);
+		
 		
 //Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
 		panel.add(lblLaboral).setBounds(10,y+=50,ancho*7-30,220);
@@ -555,10 +564,9 @@ public class Cat_Empleados extends JFrame{
 		btnVerificar.addActionListener(opVerificar);
 		btnTrueFoto.addActionListener(opPresionFoto);
 		
+        btnImp_Datos_Completos.addActionListener(opImprimir_Datos);
 		btnContratacion.addActionListener(opContratacion);
 		btnAsistencia_Empleado.addActionListener(opAsistenciaEmpleado);		
-	
-		
 		btnIncontratables.addActionListener(Reporte_de_Empleados_No_Contratables);
 		btnCumpleaños_del_Mes.addActionListener(Reporte_De_Cumpleanios_Del_Mes);
 		btn_plantilla.addActionListener(opPlantilla);
@@ -623,10 +631,7 @@ public class Cat_Empleados extends JFrame{
               }
          });
          
-		this.setSize(975,680);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
 		
 	//  abre el filtro de busqueda de empleado al presionar la tecla f2
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -710,6 +715,7 @@ public class Cat_Empleados extends JFrame{
 	  	}
 	
 
+	
 	
 
 	ActionListener opCmbHorarioRotarivo = new ActionListener(){
@@ -1836,6 +1842,31 @@ public class Cat_Empleados extends JFrame{
 			}
 			}
 	};
+	
+
+	
+
+	
+	ActionListener opImprimir_Datos = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			if(txtFolioEmpleado.getText().equals("")){
+				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
+				String basedatos="2.26";
+				String vista_previa_reporte="no";
+				int vista_previa_de_ventana=0;
+				String comando="exec sp_select_datos_completos_empleado "+txtFolioEmpleado.getText()+"";
+				String reporte = "Obj_Reporte_De_Empleado_Datos_Completos.jrxml";
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+						
+			}
+						
+	 	}
+	   };
+	   
+	   
 	
 	
 	ActionListener opAsistenciaEmpleado = new ActionListener(){
