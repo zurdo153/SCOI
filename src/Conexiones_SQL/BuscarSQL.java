@@ -69,6 +69,7 @@ import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
 import Obj_Lista_de_Raya.Obj_Conceptos_De_Extras_Para_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
+import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes_Calculado;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
@@ -6298,4 +6299,53 @@ public class BuscarSQL {
 		return rp_ventas;
 	}
 	
+	public Obj_Diferencia_De_Cortes_Calculado corte_calc(int folio) throws SQLException{
+		Obj_Diferencia_De_Cortes_Calculado corte_calculado = new Obj_Diferencia_De_Cortes_Calculado();
+		String query = "exec sp_select_datos_diferencias_de_cortes "+ folio;
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				
+//				System.out.println(rs.getInt("folio_empleado"));
+//				System.out.println(rs.getString("nombre_completo").trim());
+//				System.out.println(rs.getDouble("saldo_a_favor"));
+//				System.out.println(rs.getDouble("total_acumulado"));
+//				System.out.println(rs.getDouble("diferencia_total"));
+//				System.out.println(rs.getDouble("abono"));
+//				System.out.println(rs.getInt("status_cobro"));
+
+				corte_calculado.setFolio_empleado(rs.getInt("folio_empleado"));
+				corte_calculado.setNombre_Completo(rs.getString("nombre_completo").trim());
+				
+				corte_calculado.setSaldo_a_favor(rs.getDouble("saldo_a_favor"));
+				corte_calculado.setTotal_acumulado(rs.getDouble("total_acumulado"));
+				corte_calculado.setDiferencia_total(rs.getDouble("diferencia_total"));
+				corte_calculado.setAbono(rs.getDouble("abono"));
+				corte_calculado.setStatus_cobro(rs.getInt("status_cobro"));
+				
+				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+				FileOutputStream fos = new FileOutputStream(photo);
+				
+		            byte[] buffer = new byte[1];
+		            InputStream is = rs.getBinaryStream("foto");
+		            while (is.read(buffer) > 0) {
+		                fos.write(buffer);
+		            }
+		            fos.close();
+		            
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return corte_calculado;
+	}
 }

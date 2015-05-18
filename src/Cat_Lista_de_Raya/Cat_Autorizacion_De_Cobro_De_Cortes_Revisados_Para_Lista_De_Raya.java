@@ -66,7 +66,7 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
 		JTextField txtFolio = new Componentes().text(new JTextField(),"Teclee Folio del Empleado", 150, "Integer");
-		JTextField txtFecha = new Componentes().text(new JTextField(),"Teclee Nombre del Empleado", 150, "String");
+		JTextField txtNombre = new Componentes().text(new JTextField(),"Teclee Nombre del Empleado", 150, "String");
 	    JButton btnAceptar = new JButton("Cobrar",new ImageIcon("Imagen/Aplicar.png"));
 	    JButton btnNegar = new JButton("No Cobrar",new ImageIcon("Imagen/Delete.png"));
 	    
@@ -88,8 +88,8 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 			trsfiltro = new TableRowSorter(model); 
 			tabla.setRowSorter(trsfiltro);  
 			campo.add(getPanelTabla()).setBounds(15,42,ancho-25,alto-125);
-			campo.add(txtFolio).setBounds(15,20,70,20);
-			campo.add(txtFecha).setBounds(85,20,270,20);
+			campo.add(txtFolio).setBounds(45,20,70,20);
+			campo.add(txtNombre).setBounds(115,20,270,20);
 
 			campo.add(btnNegar).setBounds(475,20,150,20);
 			campo.add(btnAceptar).setBounds(743,20,150,20);
@@ -100,7 +100,7 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 //			agregar(tabla);
 			cont.add(campo);
 			txtFolio.addKeyListener(opFiltroFolio);
-			txtFecha.addKeyListener(opFiltroFecha);
+			txtNombre.addKeyListener(opFiltroNombre);
 			btnAceptar.addActionListener(opaceptar);
 			btnNegar.addActionListener(opaceptar);
 		}
@@ -133,7 +133,7 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 		KeyListener opFiltroFolio = new KeyListener(){
 			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 1));
 			}
 			public void keyTyped(KeyEvent arg0) {
 				char caracter = arg0.getKeyChar();
@@ -146,10 +146,10 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		KeyListener opFiltroFecha = new KeyListener(){
+		KeyListener opFiltroNombre = new KeyListener(){
 			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFecha.getText().toUpperCase().trim(), 1));
+				trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre.getText().toUpperCase().trim(), 2));
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		

@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,12 +24,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
-import Obj_Lista_de_Raya.Obj_Empleados;
+import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes_Calculado;
+import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -56,8 +55,8 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	
 	JTextField txtSaldoFavor = new JTextField("");
 	JTextField txtTotalAcumulado = new JTextField("");
-	JTextField txtDiferencia = new JTextField("");
-	JTextField txtAbono = new JTextField("");
+	JTextField txtDiferenciaTotal = new JTextField("");
+	JTextField txtAbono = new Componentes().text(new JTextField(), "Ingresar abono", 8, "Double");
 	
 	String status_cobro[] = {"Pendiente De Cobro","Cobrar"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -69,7 +68,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen//Modify.png"));
 	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen//Guardar.png"));
 	
-	public Cat_Filtro_Diferencia_De_Cortes(String folio, String empleado) {
+	public Cat_Filtro_Diferencia_De_Cortes(String folio) {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/caja2.png"));
 		this.setTitle("Diferencia de Cortes");
 		int x = 20, y=15, ancho=140;
@@ -77,40 +76,38 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		
 		panel.setBorder(BorderFactory.createTitledBorder("Cortes"));		
 
-		agregar(tabla);
-		
 		panel.add(new JLabel("Empleado:")).setBounds(x,y,ancho,20);
 		panel.add(txtFolio_Empleado).setBounds(x+ancho-50,y,50,20);
 		panel.add(txtNombre_Completo).setBounds(x+ancho,y,ancho*2,20);
 		
 		panel.add(btnFoto).setBounds(x+ancho*3+50,y,ancho+55,160);
 		
-		panel.add(new JLabel("Saldo a favor:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtSaldoFavor).setBounds(x+ancho,y,ancho-15,20);
-		
-		panel.add(btnFiltro).setBounds(x+ancho*2,y,100,20);
-		
 		panel.add(new JLabel("Total acumulado:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtTotalAcumulado).setBounds(x+ancho,y,ancho-15,20);
 		
-		panel.add(new JLabel("Diferencia:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtDiferencia).setBounds(x+ancho,y,ancho-15,20);
+		panel.add(btnFiltro).setBounds(x+ancho*2,y,100,20);
 		
-		panel.add(btnEditar).setBounds(x+ancho*2,y,100,20);
+		panel.add(new JLabel("Saldo a favor:")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtSaldoFavor).setBounds(x+ancho,y,ancho-15,20);
 		
 		panel.add(new JLabel("Abono:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtAbono).setBounds(x+ancho,y,ancho-15,20);
 		
-		panel.add(btnGuardar).setBounds(x+ancho*2,y,100,20);
+		panel.add(new JLabel("Diferencia total:")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtDiferenciaTotal).setBounds(x+ancho,y,ancho-15,20);
+		
+		panel.add(btnEditar).setBounds(x+ancho*2,y,100,20);
 		
 		panel.add(new JLabel("Status de Cobro:")).setBounds(x,y+=25,ancho,20);
 		panel.add(cmbStatuscobro).setBounds(x+ancho,y,ancho-15,20);
+		
+		panel.add(btnGuardar).setBounds(x+ancho*2,y,100,20);
 		
 		panel.add(panelScroll).setBounds(x-10,y+=45,ancho+540,260);
 		
 		txtSaldoFavor.setEditable(false);
 		txtTotalAcumulado.setEditable(false);
-		txtDiferencia.setEditable(false);
+		txtDiferenciaTotal.setEditable(false);
 		txtAbono.setEditable(false);
 		cmbStatuscobro.setEnabled(false);
 		btnGuardar.setEnabled(false);
@@ -123,19 +120,9 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	
 		cont.add(panel);
 		
-		txtFolio_Empleado.setText(folio);
-		txtNombre_Completo.setText(empleado);
-		
-		Obj_Empleados re = new Obj_Empleados();
-		re = re.buscar(Integer.parseInt(folio));
-	
-		ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-        Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-        btnFoto.setIcon(iconoDefault);
-		
 		llamar_render(tabla);
 		
-		cargarTabla();
+		cargarTabla(folio);
 				
 		this.setSize(715,490);
 		this.setResizable(true);
@@ -174,22 +161,11 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		tbl.getColumnModel().getColumn(4).setMaxWidth(200);
 	}
 	
-//	TODO (Agregar(tabla))
-	private void agregar(final JTable tbl) {
-        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-	        public void mouseClicked(MouseEvent e) {
-        		panelEnabledFalse();
-        		btnGuardar.setEnabled(false);
-        		int fila = tabla.getSelectedRow();
-        		
-    			txtAbono.setText(modelo.getValueAt(fila, 3)+"");
-	        }
-        });
-    }
-	
 //	TODO (cargar tabla)
-	public void cargarTabla(){
-		String[][] Tabla = getMatriz(txtFolio_Empleado.getText());
+	public void cargarTabla(String folio_empleado){
+		
+//		TODO (llenar tabla)
+		String[][] Tabla = getMatriz(folio_empleado);
 		Object[] fila = new Object[tabla.getColumnCount()];
 		for(int i=0; i<Tabla.length; i++){
 			modelo.addRow(fila); 
@@ -197,6 +173,29 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 				modelo.setValueAt(Tabla[i][j]+"", i,j);
 			}
 		}
+		
+//		TODO (llenar datos)
+//		Obj_Empleados re = new Obj_Empleados();
+//		re = re.buscar(Integer.parseInt(folio_empleado));
+		
+		Obj_Diferencia_De_Cortes_Calculado corte_calc = new Obj_Diferencia_De_Cortes_Calculado().buscar(Integer.parseInt(folio_empleado));
+		
+		
+		txtFolio_Empleado.setText(folio_empleado);
+		txtNombre_Completo.setText(corte_calc.getNombre_completo());
+		
+		txtAbono.setText(corte_calc.getAbono()+"");
+		txtDiferenciaTotal.setText(corte_calc.getDiferencia_total()+"");
+		txtSaldoFavor.setText(corte_calc.getSaldo_a_favor()+"");
+		txtTotalAcumulado.setText(corte_calc.getTotal_acumulado()+"");
+		
+		cmbStatuscobro.setSelectedIndex(corte_calc.getStatus_cobro());
+	
+		ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+        Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+        btnFoto.setIcon(iconoDefault);
+        
+        
 	}
 	
 //	TODO (funcion Guardar)
@@ -213,7 +212,7 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 				double totalAcumulado = Double.valueOf(txtTotalAcumulado.getText().trim());
 				
 				if((abono+acumulado)>totalAcumulado){
-					JOptionPane.showMessageDialog(null, "El empleado cuenta con un saldo acumulado de ( "+acumulado+" ) para que el el descuento se aplique correctamente\ndebe ingresar un abono menor o igal a: "+(totalAcumulado-acumulado), "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+					JOptionPane.showMessageDialog(null, "El empleado cuenta con un saldo a favor de ( "+acumulado+" ) para que el el descuento se aplique correctamente\ndebe ingresar un abono menor o igal a: "+(totalAcumulado-acumulado), "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 					return;
 				}else{
 					if(new Obj_Diferencia_De_Cortes().actualizar_abono_de_cortes(Integer.valueOf(txtFolio_Empleado.getText().trim()),cmbStatuscobro.getSelectedItem().toString(),Double.valueOf(txtAbono.getText().trim()))){
@@ -328,12 +327,12 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	}
 	
 //	TODO (main)
-	public static void main(String args[]){
-		try{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Filtro_Diferencia_De_Cortes("784","").setVisible(true);
-		}catch(Exception e){	}
-		
-	}
+//	public static void main(String args[]){
+//		try{
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//			new Cat_Filtro_Diferencia_De_Cortes("182","").setVisible(true);
+//		}catch(Exception e){	}
+//		
+//	}
 
 }
