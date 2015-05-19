@@ -326,6 +326,27 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 					new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
 			           	dispose();
 				break;
+				case "Cat_Costos_Competencia":		
+					try {
+						UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InstantiationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (UnsupportedLookAndFeelException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+					new Cat_Costos_Competencia(folio.toString().trim()).setVisible(true);
+			           	dispose();
+				break;
 				
 				case "125":		System.out.println("prueba");
 	           	dispose();
@@ -368,6 +389,26 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 					e1.printStackTrace();
 				}
 				new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
+		           	dispose();
+			break;
+			case "Cat_Costos_Competencia":	
+				
+				try {
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				new Cat_Costos_Competencia(folio.toString().trim()).setVisible(true);
 		           	dispose();
 			break;
 			

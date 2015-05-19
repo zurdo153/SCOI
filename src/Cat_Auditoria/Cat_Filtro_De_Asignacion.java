@@ -1,7 +1,6 @@
 package Cat_Auditoria;
 
 import java.awt.AWTException;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -15,27 +14,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Filtro_De_Asignacion extends JDialog{
@@ -173,7 +167,8 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 	public void tablaRender(){
 		
 		tablaFiltro.getTableHeader().setReorderingAllowed(false) ;
-		
+		tablaFiltro.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
+			
 		tablaFiltro.getColumnModel().getColumn(0).setMaxWidth(70);
 		tablaFiltro.getColumnModel().getColumn(0).setMinWidth(70);
 		tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(70);
@@ -193,137 +188,13 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 		tablaFiltro.getColumnModel().getColumn(8).setMaxWidth(25);
 		tablaFiltro.getColumnModel().getColumn(8).setMinWidth(25);
 
-		TableCellRenderer render = new TableCellRenderer() { 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				
-				tablaFiltro.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
-				
-				Component componente = null;
-				
-				switch(column){
-					case 0: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 1: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 2:
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 3:
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 4:
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 5:
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 6:
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 7:
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 8: 
-						componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-						if(row%2==0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
-						break;
-				}
-				return componente;
-			} 
-		}; 
-		tablaFiltro.getColumnModel().getColumn(0).setCellRenderer(render); 
-		tablaFiltro.getColumnModel().getColumn(1).setCellRenderer(render); 
-		tablaFiltro.getColumnModel().getColumn(2).setCellRenderer(render);
-		tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(render);
-		tablaFiltro.getColumnModel().getColumn(4).setCellRenderer(render);
-		tablaFiltro.getColumnModel().getColumn(5).setCellRenderer(render);
-		tablaFiltro.getColumnModel().getColumn(6).setCellRenderer(render);
-		tablaFiltro.getColumnModel().getColumn(7).setCellRenderer(render);
-		tablaFiltro.getColumnModel().getColumn(8).setCellRenderer(render);
-		
+		for(int i=0; i<tablaFiltro.getColumnCount(); i++){
+			if(i==8){
+				tablaFiltro.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("CHB","centro","Arial","normal",11));
+			}else{
+				tablaFiltro.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",11));
+			}
+		}
 	}
 	
 	 	public Object[][] getTablaFiltro(String cadena_asignaciones_en_uso,String Establecimiento){

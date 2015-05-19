@@ -51,6 +51,7 @@ import javax.swing.table.TableCellRenderer;
 
 
 
+
 import Cat_Reportes.Cat_Reporte_De_Cheques_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
 import Cat_Reportes.Cat_Reporte_De_Depositos_Cortes;
@@ -67,6 +68,7 @@ import Obj_Auditoria.Obj_Alimentacion_Por_Denominacion;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Alimentacion_Cortes extends JFrame{
@@ -106,6 +108,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JButton btnCheques	= new JButton("");
 	JButton btnAsignacion = new JButton("Asignaciones",new ImageIcon("imagen/Accounting.png"));
 	JButton btnQuitarAsignacion = new JButton("Quitar Asignacion",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+	JButton btnTurno = new JButton("Turno",new ImageIcon("imagen/Accounting.png"));
+	JButton btnQuitarTurno = new JButton("Quitar Turno",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	JButton btnRetiroCajero = new JButton("",new ImageIcon("imagen/boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-16.png"));
 	JButton btnVauchers = new JButton("Vouchers",new ImageIcon("imagen/tarjeta-de-credito-visa-icono-8242-16.png"));
 	JButton btnQuitarVauchers = new JButton("Quitar Voucher",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
@@ -186,6 +190,40 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	
 	JTable tabla_asignaciones = new JTable(modelo_asignaciones);
 	JScrollPane scroll = new JScrollPane(tabla_asignaciones,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	
+	DefaultTableModel modelo_turno = new DefaultTableModel(null,
+            new String[]{"Turno", "Nombre","Cod.Estab","Usuario","Fecha Inicial","Fecha Final"}
+			){
+	     @SuppressWarnings("rawtypes")
+		Class[] types = new Class[]{
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class
+	    
+         };
+	     @SuppressWarnings({ "rawtypes", "unchecked" })
+		public Class getColumnClass(int columnIndex) {
+             return types[columnIndex];
+         }
+         public boolean isCellEditable(int fila, int columna){
+        	 switch(columna){
+        	 	case 0 : return false; 
+        	 	case 1 : return false; 
+        	 	case 2 : return false;
+        	 	case 3 : return false;
+        	 	case 4 : return false;
+        	 	case 5 : return false;
+        	 	} 				
+ 			return false;
+ 		}
+	};
+	
+	JTable tabla_turno = new JTable(modelo_turno);
+	JScrollPane scrollTurno = new JScrollPane(tabla_turno,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	
 	
 	DefaultTableModel modelo_vauchers = new DefaultTableModel(null,
             new String[]{"Ticket", "Afiliacion", "Numero De Tarjeta",  "Fecha E.", "Cod. Aut.", "Tipo De Tarjeta", "Banco Emisor", "Tipo De Operacion", "Fecha Aut", "Importe","Asignacion","Retiro cliente"}
@@ -364,11 +402,14 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(btnDeposito).setBounds(ancho+x*10+90,y,29,20);
 		
 		panel.add(btnAsignacion).setBounds(x,y+=25,ancho,20);
+		panel.add(btnQuitarAsignacion).setBounds(x+300,y,ancho,20);
+		panel.add(scroll).setBounds(x,y+=20,ancho*3+20,60);
 		
-		panel.add(scroll).setBounds(x,y+=20,ancho*3+20,105);
-		panel.add(btnQuitarAsignacion).setBounds(x,y+=105,ancho,20);
-
-		panel.add(new JLabel("Corte del Sistema:")).setBounds(x*10+50,y,ancho,20);
+		panel.add(btnTurno).setBounds(x,y+=65,ancho,20);
+		panel.add(btnQuitarTurno).setBounds(x+300,y,ancho,20);
+		panel.add(scrollTurno).setBounds(x,y+=20,ancho*3+20,60);
+		
+		panel.add(new JLabel("Corte del Sistema:")).setBounds(x*10+50,y+=65,ancho,20);
 		panel.add(txtCorteSistema).setBounds(ancho+x*10+30,y,ancho*2-190,20);
 		
 		panel.add(new JLabel("Retiros Cajero:")).setBounds(x,y+=25,ancho,20);
@@ -429,12 +470,19 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(btnCancelar).setBounds(x*29+110,y,ancho-40,20);
 		panel.add(btnSalir).setBounds(x*29+220,y,ancho-40,20);
 
-		tablaRender();
+		tablaLargoColumnas();
+		tablaRender(tabla_asignaciones);
+		tablaRender(tabla_turno);
+		tablaRender(tabla_vauchers);
+		tablaRender(tabla_totales_por_fecha);
+		tablaRender(tabla_retiro_de_clientes);
 		
 		lblEstablecimineto.setText(estab);
 		
 		btnAsignacion.addActionListener(opAsignacion);
 		btnQuitarAsignacion.addActionListener(opQuitarAsignacion);
+		btnTurno.addActionListener(opTurno);
+		btnQuitarTurno.addActionListener(opQuitarTurno);
 		btnVauchers.addActionListener(opVauchers);
 		btnQuitarVauchers.addActionListener(opQuitarVauchers);
 		
@@ -515,10 +563,16 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		btnEfectivo.setEnabled(false);
 		btnCheques.setEnabled(false);
 		btnFS.setEnabled(false);
+		
+//		if(!lblEstablecimineto.getText().equals("REFACCIONARIA") && !lblEstablecimineto.getText().equals("FERRETERIA")){
+//		TODO (loste establecimietnos son optenidos de SCOI para el filtro de empleados por empleado, para ligar con )
+			btnTurno.setEnabled(false);
+			btnQuitarTurno.setEnabled(false);
+//		}
 	
 		btnReimprimir.setEnabled(true);
 		
-		this.setSize(940,640);
+		this.setSize(940,685);
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 
@@ -554,13 +608,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
  	      }
 	}
 	
-	public void tablaRender(){
-		
-		 tabla_asignaciones.getTableHeader().setReorderingAllowed(false) ;
-		 tabla_vauchers.getTableHeader().setReorderingAllowed(false) ;
-			tabla_totales_por_fecha.getTableHeader().setReorderingAllowed(false) ;
-			tabla_retiro_de_clientes.getTableHeader().setReorderingAllowed(false) ;
-		 
+	public void tablaLargoColumnas(){
+
 		tabla_asignaciones.getColumnModel().getColumn(0).setMaxWidth(70);
 		tabla_asignaciones.getColumnModel().getColumn(0).setMinWidth(70);
 		tabla_asignaciones.getColumnModel().getColumn(1).setMaxWidth(70);
@@ -577,6 +626,19 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		tabla_asignaciones.getColumnModel().getColumn(6).setMinWidth(140);
 		tabla_asignaciones.getColumnModel().getColumn(7).setMaxWidth(140);
 		tabla_asignaciones.getColumnModel().getColumn(7).setMinWidth(140);
+		
+		tabla_turno.getColumnModel().getColumn(0).setMaxWidth(70);  
+		tabla_turno.getColumnModel().getColumn(0).setMinWidth(70);  
+		tabla_turno.getColumnModel().getColumn(1).setMaxWidth(230); 
+		tabla_turno.getColumnModel().getColumn(1).setMinWidth(230); 
+		tabla_turno.getColumnModel().getColumn(2).setMaxWidth(70);  
+		tabla_turno.getColumnModel().getColumn(2).setMinWidth(70);  
+		tabla_turno.getColumnModel().getColumn(3).setMaxWidth(150); 
+		tabla_turno.getColumnModel().getColumn(3).setMinWidth(150); 
+		tabla_turno.getColumnModel().getColumn(4).setMaxWidth(130); 
+		tabla_turno.getColumnModel().getColumn(4).setMinWidth(130); 
+		tabla_turno.getColumnModel().getColumn(5).setMaxWidth(130); 
+		tabla_turno.getColumnModel().getColumn(5).setMinWidth(130); 
 		
 		tabla_vauchers.getColumnModel().getColumn(0).setMaxWidth(70);
 		tabla_vauchers.getColumnModel().getColumn(0).setMinWidth(70);
@@ -614,59 +676,82 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		tabla_retiro_de_clientes.getColumnModel().getColumn(0).setMinWidth(90);
 		tabla_retiro_de_clientes.getColumnModel().getColumn(1).setMaxWidth(100);
 		tabla_retiro_de_clientes.getColumnModel().getColumn(1).setMinWidth(100);
+	}
+	
+	public void tablaRender(JTable tbl){
 		
-		TableCellRenderer render = new TableCellRenderer() { 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				
-				tabla_asignaciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
-				tabla_vauchers.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
-				tabla_totales_por_fecha.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
-				tabla_retiro_de_clientes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
-				
-				Component componente = null;
-				
-						componente = new JLabel(value == null? "": value.toString());
-						if(row %2 == 0){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-				return componente;
-			} 
-		}; 
-		tabla_asignaciones.getColumnModel().getColumn(0).setCellRenderer(render); 
-		tabla_asignaciones.getColumnModel().getColumn(1).setCellRenderer(render); 
-		tabla_asignaciones.getColumnModel().getColumn(2).setCellRenderer(render);
-		tabla_asignaciones.getColumnModel().getColumn(3).setCellRenderer(render);
-		tabla_asignaciones.getColumnModel().getColumn(4).setCellRenderer(render);
-		tabla_asignaciones.getColumnModel().getColumn(5).setCellRenderer(render);
-		tabla_asignaciones.getColumnModel().getColumn(6).setCellRenderer(render);
-		tabla_asignaciones.getColumnModel().getColumn(7).setCellRenderer(render);
+		tbl.getTableHeader().setReorderingAllowed(false) ;
+		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
 		
-		tabla_vauchers.getColumnModel().getColumn(0).setCellRenderer(render); 
-		tabla_vauchers.getColumnModel().getColumn(1).setCellRenderer(render); 
-		tabla_vauchers.getColumnModel().getColumn(2).setCellRenderer(render);
-		tabla_vauchers.getColumnModel().getColumn(3).setCellRenderer(render);
-		tabla_vauchers.getColumnModel().getColumn(4).setCellRenderer(render);
-		tabla_vauchers.getColumnModel().getColumn(5).setCellRenderer(render);
-		tabla_vauchers.getColumnModel().getColumn(6).setCellRenderer(render);
-		tabla_vauchers.getColumnModel().getColumn(7).setCellRenderer(render);
-		tabla_vauchers.getColumnModel().getColumn(8).setCellRenderer(render);
-		tabla_vauchers.getColumnModel().getColumn(9).setCellRenderer(render);
-		tabla_vauchers.getColumnModel().getColumn(10).setCellRenderer(render);
-		tabla_vauchers.getColumnModel().getColumn(11).setCellRenderer(render);
+		for(int i=0; i<tbl.getColumnCount(); i++){
+			tbl.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		}
 		
-		tabla_totales_por_fecha.getColumnModel().getColumn(0).setCellRenderer(render); 
-		tabla_totales_por_fecha.getColumnModel().getColumn(1).setCellRenderer(render); 
-		tabla_totales_por_fecha.getColumnModel().getColumn(2).setCellRenderer(render); 
-		
-		tabla_retiro_de_clientes.getColumnModel().getColumn(0).setCellRenderer(render); 
-		tabla_retiro_de_clientes.getColumnModel().getColumn(1).setCellRenderer(render); 
+//		tabla_asignaciones.getTableHeader().setReorderingAllowed(false) ;
+//		tabla_vauchers.getTableHeader().setReorderingAllowed(false) ;
+//		tabla_totales_por_fecha.getTableHeader().setReorderingAllowed(false) ;
+//		tabla_retiro_de_clientes.getTableHeader().setReorderingAllowed(false) ;
+//		
+//		TableCellRenderer render = new TableCellRenderer() { 
+//			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+//			boolean hasFocus, int row, int column) { 
+//				
+//				tabla_asignaciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
+//				tabla_turno.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
+//				tabla_vauchers.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
+//				tabla_totales_por_fecha.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
+//				tabla_retiro_de_clientes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
+//				
+//				Component componente = null;
+//				
+//						componente = new JLabel(value == null? "": value.toString());
+//						if(row %2 == 0){
+//							((JComponent) componente).setOpaque(true); 
+//							componente.setBackground(new java.awt.Color(177,177,177));	
+//						}
+//						if(table.getSelectedRow() == row){
+//							((JComponent) componente).setOpaque(true); 
+//							componente.setBackground(new java.awt.Color(186,143,73));
+//						}
+//						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+//				return componente;
+//			} 
+//		}; 
+//		tabla_asignaciones.getColumnModel().getColumn(0).setCellRenderer(render); 
+//		tabla_asignaciones.getColumnModel().getColumn(1).setCellRenderer(render); 
+//		tabla_asignaciones.getColumnModel().getColumn(2).setCellRenderer(render);
+//		tabla_asignaciones.getColumnModel().getColumn(3).setCellRenderer(render);
+//		tabla_asignaciones.getColumnModel().getColumn(4).setCellRenderer(render);
+//		tabla_asignaciones.getColumnModel().getColumn(5).setCellRenderer(render);
+//		tabla_asignaciones.getColumnModel().getColumn(6).setCellRenderer(render);
+//		tabla_asignaciones.getColumnModel().getColumn(7).setCellRenderer(render);
+//		
+//		tabla_turno.getColumnModel().getColumn(0).setCellRenderer(render); 
+//		tabla_turno.getColumnModel().getColumn(1).setCellRenderer(render); 
+//		tabla_turno.getColumnModel().getColumn(2).setCellRenderer(render);
+//		tabla_turno.getColumnModel().getColumn(3).setCellRenderer(render);
+//		tabla_turno.getColumnModel().getColumn(4).setCellRenderer(render);
+//		tabla_turno.getColumnModel().getColumn(5).setCellRenderer(render);
+//		
+//		tabla_vauchers.getColumnModel().getColumn(0).setCellRenderer(render); 
+//		tabla_vauchers.getColumnModel().getColumn(1).setCellRenderer(render); 
+//		tabla_vauchers.getColumnModel().getColumn(2).setCellRenderer(render);
+//		tabla_vauchers.getColumnModel().getColumn(3).setCellRenderer(render);
+//		tabla_vauchers.getColumnModel().getColumn(4).setCellRenderer(render);
+//		tabla_vauchers.getColumnModel().getColumn(5).setCellRenderer(render);
+//		tabla_vauchers.getColumnModel().getColumn(6).setCellRenderer(render);
+//		tabla_vauchers.getColumnModel().getColumn(7).setCellRenderer(render);
+//		tabla_vauchers.getColumnModel().getColumn(8).setCellRenderer(render);
+//		tabla_vauchers.getColumnModel().getColumn(9).setCellRenderer(render);
+//		tabla_vauchers.getColumnModel().getColumn(10).setCellRenderer(render);
+//		tabla_vauchers.getColumnModel().getColumn(11).setCellRenderer(render);
+//		
+//		tabla_totales_por_fecha.getColumnModel().getColumn(0).setCellRenderer(render); 
+//		tabla_totales_por_fecha.getColumnModel().getColumn(1).setCellRenderer(render); 
+//		tabla_totales_por_fecha.getColumnModel().getColumn(2).setCellRenderer(render); 
+//		
+//		tabla_retiro_de_clientes.getColumnModel().getColumn(0).setCellRenderer(render); 
+//		tabla_retiro_de_clientes.getColumnModel().getColumn(1).setCellRenderer(render); 
 	}
 	
 //	btnDeposito
@@ -932,6 +1017,18 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		}
 	};
 	
+	ActionListener opTurno = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			if(tabla_asignaciones.getRowCount()>0){
+				JOptionPane.showMessageDialog(null, "Ya se a seleccionado una asignacion, para cambiarla es necesario quitar la asignacion seleccionada","Aviso",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else{
+				new Cat_Filtrar_Turno().setVisible(true);
+			}
+			
+		}
+	};
+	
 	ActionListener opFS = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			new Cat_Seleccion_De_Ticket_De_FS_Cortes(Integer.valueOf(lblFolio_Empleado.getText()), lblNombre_Completo.getText().trim()).setVisible(true);
@@ -1174,38 +1271,15 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		}
 	}
 	
-	int fila=0;
 	ActionListener opQuitarAsignacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				fila = tabla_asignaciones.getSelectedRow();
+				int fila = tabla_asignaciones.getSelectedRow();
 				if(fila<0){
 			   			 JOptionPane.showMessageDialog(null, "Debe Seleccionar La Asignacion Que Desea Quitar","Aviso",JOptionPane.INFORMATION_MESSAGE);
 			              return;
 				}else{
 					
 					modelo_asignaciones.removeRow(fila);
-//					corte_sitema();
-////						double cantidad =  Double.valueOf(tabla_asignaciones.getValueAt(fila, 3).toString().trim());
-//						modelo_asignaciones.removeRow(fila);
-//						
-//						double suma_recalculada = 0;
-//						
-//						if(tabla_asignaciones.getRowCount()==0){
-//							txtCorteSistema.setText( "0.0000" );
-//							txtAbonos.setText("0.0000");
-//						}else{
-//							for(int i = 0; i<tabla_asignaciones.getRowCount(); i++){
-//								suma_recalculada = suma_recalculada += Double.valueOf(tabla_asignaciones.getValueAt(i, 3).toString().trim());
-//							}
-//							txtCorteSistema.setText( formato.format(suma_recalculada + Double.valueOf(txtAbonos.getText().trim()))+"" );
-//						}
-						
-						
-						
-						
-						
-						
-						
 						
 						txtTotalVaucher.setText( "" );
 						txtTotalRetiros.setText("");
@@ -1237,6 +1311,47 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				}
 				
 //				cargar_cadena_de_vouchers_para_retiro_clientes();
+		}
+	};
+	
+	ActionListener opQuitarTurno = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+				int fila = tabla_asignaciones.getSelectedRow();
+				if(fila<0){
+			   			 JOptionPane.showMessageDialog(null, "Debe Seleccionar La Asignacion Que Desea Quitar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+			              return;
+				}else{
+					
+					modelo_asignaciones.removeRow(fila);
+						txtTotalVaucher.setText( "" );
+						txtTotalRetiros.setText("");
+						
+						while(tabla_vauchers.getRowCount()>0){
+								modelo_vauchers.removeRow(0);
+						}
+						
+						while(tabla_retiro_de_clientes.getRowCount()>0){
+							modelo_retiro_de_clientes.removeRow(0);
+						}
+						
+						if(borrar_lista_de_asignaciones()){
+							cargar_lista_de_asignaciones();
+				    		obtener_totales_de_tAire_rLuz_por_folio_de_corte();
+
+				    		calculoDinamico();
+				    			
+//			    			procedimiento para llenar  (tabla_de_ventas_por_fecha)  con respecto a las asignaciones seleccionadas
+			    			llenar_venta_de_asignaciones_por_fecha();
+						}
+				}
+				
+				if(tabla_asignaciones.getRowCount()==0){
+						btnDeposito.setEnabled(false);
+						btnEfectivo.setEnabled(false);
+						btnCheques.setEnabled(false);
+						btnFS.setEnabled(false);
+				}
+				
 		}
 	};
 	
@@ -2780,7 +2895,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	    }
 	}
 	
-//	LLAMAR AL FILTRO DE ASIGNACIONES-----------------------------------------------------------------------------------------------------------------
+//	TODO (LLAMAR AL FILTRO DE ASIGNACIONES)-----------------------------------------------------------------------------------------------------------------
 	public class Cat_Filtrar_Asignaciones extends Cat_Filtro_De_Asignacion{
 		
 		public Cat_Filtrar_Asignaciones(String cadena,String nombre){
@@ -2818,6 +2933,131 @@ public class Cat_Alimentacion_Cortes extends JFrame{
             		 break;
             	}
             } 
+		}
+		
+
+		ActionListener opCargar = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				limpiar_filtro();
+				
+				double suma_total =0;
+				String[] fila = new String[8];
+				
+	    			for(int i=0; i<cargar_tabla_asignaciones_de_filtro().length; i++){
+	    				
+	    				if(cargar_tabla_asignaciones_de_filtro()[i][8].toString().trim()=="true"){
+			    				
+			    				 fila[0] = cargar_tabla_asignaciones_de_filtro()[i][0].toString().trim();
+                                 fila[1] = cargar_tabla_asignaciones_de_filtro()[i][1].toString().trim();
+                                 fila[2] = cargar_tabla_asignaciones_de_filtro()[i][2].toString().trim();
+                                 fila[3] = cargar_tabla_asignaciones_de_filtro()[i][3].toString().trim();
+                                 fila[4] = cargar_tabla_asignaciones_de_filtro()[i][4].toString().trim();
+                                 fila[5] = cargar_tabla_asignaciones_de_filtro()[i][5].toString().trim();
+                                 fila[6] = cargar_tabla_asignaciones_de_filtro()[i][6].toString().trim();
+                                 fila[7] = cargar_tabla_asignaciones_de_filtro()[i][7].toString().trim();
+                                 modelo_asignaciones.addRow(fila);
+                                 
+                                 suma_total += (Double.valueOf(cargar_tabla_asignaciones_de_filtro()[i][3].toString().trim()));
+	    				}
+	    			}
+	    			
+	    			if(tabla_vauchers.getRowCount()>0){
+	    				while(tabla_vauchers.getRowCount()>0){
+							 modelo_vauchers.removeRow(0);
+	    				}
+	    				txtTotalVaucher.setText("");
+	    			}
+	    			
+	    			if(tabla_retiro_de_clientes.getRowCount()>0){
+	    				while(tabla_retiro_de_clientes.getRowCount()>0){
+							 modelo_retiro_de_clientes.removeRow(0);
+	    				}
+	    			}
+	    			
+	    			if(txtCorteSistema.getText().toString().trim().equals("")){
+	    				txtCorteSistema.setText(formato.format(suma_total)+"");
+	    			}else{
+	    				txtCorteSistema.setText(formato.format(Double.valueOf(txtCorteSistema.getText().toString().trim())+suma_total)+"");
+	    			}
+	    			
+	    			if(tabla_asignaciones.getRowCount()>0){
+	    				btnDeposito.setEnabled(true);
+	    				btnEfectivo.setEnabled(true);
+	    				btnCheques.setEnabled(true);
+	    				btnFS.setEnabled(true);
+	    				
+	    				llenar_venta_de_asignaciones_por_fecha();
+	    			}
+	    		dispose();
+	    		
+				if(borrar_lista_de_asignaciones()){
+					if(cargar_lista_de_asignaciones()){
+		    			obtener_totales_de_tAire_rLuz_por_folio_de_corte();
+		    		}
+				}
+				
+				calculoDinamico();
+
+//				cargar_cadena_de_vouchers_para_retiro_clientes();
+			}
+		};
+		
+			private Object[][] cargar_tabla_asignaciones_de_filtro(){
+	
+				Object[][] matriz = new Object[tablaFiltro.getRowCount()][9];
+				
+					for(int i=0; i<tablaFiltro.getRowCount(); i++){
+							matriz[i][0] = modeloFiltro.getValueAt(i,0).toString().trim();
+							matriz[i][1] = modeloFiltro.getValueAt(i,1).toString().trim();
+							matriz[i][2] = modeloFiltro.getValueAt(i,2).toString().trim();
+							matriz[i][3] = modeloFiltro.getValueAt(i,3).toString().trim();
+							matriz[i][4] = modeloFiltro.getValueAt(i,4).toString().trim();
+							matriz[i][5] = modeloFiltro.getValueAt(i,5).toString().trim();
+							matriz[i][6] = modeloFiltro.getValueAt(i,6).toString().trim();
+							matriz[i][7] = modeloFiltro.getValueAt(i,7).toString().trim();
+							matriz[i][8] = modeloFiltro.getValueAt(i,8).toString().trim();
+					}
+				return matriz;
+			}
+	} 
+	
+//	TODO (LLAMAR AL FILTRO DE ASIGNACIONES)-----------------------------------------------------------------------------------------------------------------
+	public class Cat_Filtrar_Turno extends Cat_Filtro_De_Turno{
+		
+		public Cat_Filtrar_Turno(){
+
+            this.addWindowListener(new WindowAdapter() {
+                public void windowOpened( WindowEvent e ){
+                	txtNombre.requestFocus();
+             }
+        });
+            
+			while(tablaFiltro.getRowCount()>0){
+				 modeloFiltro.removeRow(0);
+			 }
+			
+			String[] fila = new String[7];
+			Object[][] getTablaFiltro = getTablaFiltro(establecimiento);
+            for(int i=0; i<getTablaFiltro.length; i++){
+                    fila[0] = getTablaFiltro[i][0]+"";
+                    fila[1] = getTablaFiltro[i][1]+"";
+                    fila[2] = getTablaFiltro[i][2]+"";
+                    fila[3] = getTablaFiltro[i][3]+"";
+                    fila[4] = getTablaFiltro[i][4]+"";
+                    fila[5] = getTablaFiltro[i][5]+"";
+                    fila[6] = getTablaFiltro[i][6]+"";
+                    modeloFiltro.addRow(fila);
+            }
+            
+            btnCargar.addActionListener(opCargar);
+            
+//            for (int n = 0; n <nombre.length (); n++){ 
+//            	if(nombre.charAt(n)==' '){
+//            		 txtNombreCajero.setText(nombre.substring(0,n));
+//            		 break;
+//            	}
+//            } 
 		}
 		
 

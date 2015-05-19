@@ -68,9 +68,14 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen//Modify.png"));
 	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen//Guardar.png"));
 	
+	String folio_empleado = "";
+	
 	public Cat_Filtro_Diferencia_De_Cortes(String folio) {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/caja2.png"));
 		this.setTitle("Diferencia de Cortes");
+		
+		folio_empleado = folio;
+		
 		int x = 20, y=15, ancho=140;
 		txtAbono.requestFocus();
 		
@@ -164,6 +169,10 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 //	TODO (cargar tabla)
 	public void cargarTabla(String folio_empleado){
 		
+		while(tabla.getRowCount()>0){
+			modelo.removeRow(0);
+		}
+		
 //		TODO (llenar tabla)
 		String[][] Tabla = getMatriz(folio_empleado);
 		Object[] fila = new Object[tabla.getColumnCount()];
@@ -212,16 +221,17 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 				double totalAcumulado = Double.valueOf(txtTotalAcumulado.getText().trim());
 				
 				if((abono+acumulado)>totalAcumulado){
+					txtAbono.requestFocus();
 					JOptionPane.showMessageDialog(null, "El empleado cuenta con un saldo a favor de ( "+acumulado+" ) para que el el descuento se aplique correctamente\ndebe ingresar un abono menor o igal a: "+(totalAcumulado-acumulado), "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 					return;
 				}else{
 					if(new Obj_Diferencia_De_Cortes().actualizar_abono_de_cortes(Integer.valueOf(txtFolio_Empleado.getText().trim()),cmbStatuscobro.getSelectedItem().toString(),Double.valueOf(txtAbono.getText().trim()))){
 						JOptionPane.showMessageDialog(null, "El abono se guardo exitosamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+						cargarTabla(folio_empleado);
+						panelEnabledFalse();
 						return;
 					}
 				}
-				
-				panelEnabledFalse();
 			}
 		}
 	};
