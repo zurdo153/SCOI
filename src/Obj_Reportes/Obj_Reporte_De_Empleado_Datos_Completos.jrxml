@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-05-18T12:38:13 -->
+<!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
+<!-- 2015-05-18T14:59:36 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="049781eb-654d-4971-ae7a-a5b8a568cb5c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<queryString language="SQL">
-		<![CDATA[exec sp_select_datos_completos_empleado 2]]>
+		<![CDATA[exec sp_select_datos_completos_empleado 602]]>
 	</queryString>
 	<field name="nombre_completo" class="java.lang.String"/>
 	<field name="folio_empleado" class="java.lang.Integer"/>
@@ -150,28 +150,28 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[EDAD:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="70" y="130" width="168" height="30" uuid="3abc9e7b-93a6-437f-bf71-4c73f38669e1"/>
+				<reportElement x="70" y="130" width="220" height="30" uuid="3abc9e7b-93a6-437f-bf71-4c73f38669e1"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{calle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="190" width="168" height="30" uuid="cc627d13-2ef1-431d-97ff-99fe95a846be"/>
+				<reportElement x="70" y="188" width="220" height="30" uuid="cc627d13-2ef1-431d-97ff-99fe95a846be"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{poblacion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="160" width="168" height="30" uuid="446a6d51-df5e-4317-a1e6-df7ba8fc10a3"/>
+				<reportElement x="70" y="160" width="220" height="30" uuid="446a6d51-df5e-4317-a1e6-df7ba8fc10a3"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{colonia}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="3" y="130" width="60" height="30" uuid="3ae0187f-7221-43e0-82fb-1978e85d8a7b"/>
+				<reportElement x="3" y="130" width="64" height="30" uuid="3ae0187f-7221-43e0-82fb-1978e85d8a7b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
@@ -181,14 +181,14 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<reportElement x="-1" y="224" width="557" height="1" uuid="e784d244-e705-41cf-8ba2-03d0059f7882"/>
 			</line>
 			<textField>
-				<reportElement x="424" y="157" width="100" height="30" uuid="14053939-4565-4b30-9397-dabea1349f10"/>
+				<reportElement x="423" y="157" width="119" height="30" uuid="14053939-4565-4b30-9397-dabea1349f10"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{telefono_familiar}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="424" y="189" width="100" height="30" uuid="2d5a4d01-7b02-4b49-a2e8-61434f21a8eb"/>
+				<reportElement x="423" y="189" width="119" height="30" uuid="2d5a4d01-7b02-4b49-a2e8-61434f21a8eb"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -209,21 +209,21 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[TELEFONO PROPIO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="29" y="100" width="100" height="30" uuid="8aa92616-1a24-447b-8657-faf9aa66cdaa"/>
+				<reportElement x="29" y="100" width="104" height="30" uuid="8aa92616-1a24-447b-8657-faf9aa66cdaa"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="176" y="100" width="124" height="30" uuid="33840da0-07a3-47da-b208-d68c5c7b6538"/>
+				<reportElement x="176" y="100" width="114" height="30" uuid="33840da0-07a3-47da-b208-d68c5c7b6538"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{curp}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="348" y="100" width="100" height="30" uuid="6b8b9ebb-6e19-4055-abd9-85b21a527916"/>
+				<reportElement x="351" y="100" width="100" height="30" uuid="6b8b9ebb-6e19-4055-abd9-85b21a527916"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -244,7 +244,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[CURP:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="310" y="100" width="38" height="30" uuid="d8008980-db2b-47ec-a4ba-4e2f006c0666"/>
+				<reportElement x="313" y="100" width="38" height="30" uuid="d8008980-db2b-47ec-a4ba-4e2f006c0666"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
@@ -258,35 +258,35 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[DATOS EN LA EMPRESA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="133" y="527" width="22" height="30" uuid="f325ab56-3ac7-4ece-849a-0fafce80aedd"/>
+				<reportElement x="133" y="526" width="22" height="30" uuid="f325ab56-3ac7-4ece-849a-0fafce80aedd"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{folio_horario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="98" y="497" width="120" height="30" uuid="c0615c5c-a122-478c-b0c6-971dcfe459c6"/>
+				<reportElement x="98" y="496" width="120" height="30" uuid="c0615c5c-a122-478c-b0c6-971dcfe459c6"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{horario_rotativo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="3" y="497" width="95" height="30" uuid="3f95ac54-f1c9-404a-81a3-6f8391b24521"/>
+				<reportElement x="3" y="496" width="95" height="30" uuid="3f95ac54-f1c9-404a-81a3-6f8391b24521"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TIPO DE HORARIO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="527" width="130" height="30" uuid="87692c36-6138-4923-af24-56939616d025"/>
+				<reportElement x="3" y="526" width="130" height="30" uuid="87692c36-6138-4923-af24-56939616d025"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOMBRE DEL HORARIO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="170" y="276" width="48" height="30" uuid="ca822828-a584-4e22-9669-f7d87280fd69"/>
+				<reportElement x="170" y="276" width="132" height="30" uuid="ca822828-a584-4e22-9669-f7d87280fd69"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -328,7 +328,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[FECHA DE BAJA:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="93" y="339" width="114" height="30" uuid="3758341d-acdf-4894-9cf4-67a883f3e40f"/>
+				<reportElement x="93" y="339" width="148" height="30" uuid="3758341d-acdf-4894-9cf4-67a883f3e40f"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -342,7 +342,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[DEPARTAMENTO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="397" y="370" width="112" height="30" uuid="9725a6a0-469a-4772-8dbd-49dde81da6a9"/>
+				<reportElement x="397" y="370" width="155" height="30" uuid="9725a6a0-469a-4772-8dbd-49dde81da6a9"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -356,14 +356,14 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[STATUS EN IMSS:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="360" y="339" width="188" height="30" uuid="72827ac3-c879-4a9c-930f-d23aea128db3"/>
+				<reportElement x="302" y="339" width="250" height="30" uuid="72827ac3-c879-4a9c-930f-d23aea128db3"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="306" y="339" width="54" height="30" uuid="57a4a8ee-7c23-4dd7-92f1-8f891b6fefae"/>
+				<reportElement x="248" y="339" width="54" height="30" uuid="57a4a8ee-7c23-4dd7-92f1-8f891b6fefae"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
@@ -412,7 +412,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[SUELDO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="454" y="436" width="92" height="30" uuid="dac58e79-a84b-4a4a-99c8-8887af9be0bd"/>
+				<reportElement x="454" y="436" width="98" height="30" uuid="dac58e79-a84b-4a4a-99c8-8887af9be0bd"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -433,7 +433,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[INFONAVIT:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="43" y="369" width="100" height="30" uuid="5b4938b9-ecdf-4ac3-a5e0-2b633da0b618"/>
+				<reportElement x="43" y="369" width="140" height="30" uuid="5b4938b9-ecdf-4ac3-a5e0-2b633da0b618"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -447,7 +447,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[IMSS:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="426" y="406" width="100" height="30" uuid="b3dcb176-f07e-4aa8-90e3-260432365b09"/>
+				<reportElement x="426" y="406" width="126" height="30" uuid="b3dcb176-f07e-4aa8-90e3-260432365b09"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -475,7 +475,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<textFieldExpression><![CDATA[$F{fecha_ingreso}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="155" y="527" width="392" height="30" uuid="e7c473a0-f09f-46f2-82b2-7dc73670ea74"/>
+				<reportElement x="155" y="527" width="397" height="30" uuid="e7c473a0-f09f-46f2-82b2-7dc73670ea74"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -510,7 +510,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[BANCO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="406" y="466" width="142" height="30" uuid="21a28343-d8eb-4286-a670-a8b2100efc88"/>
+				<reportElement x="406" y="466" width="146" height="30" uuid="21a28343-d8eb-4286-a670-a8b2100efc88"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -552,14 +552,14 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[VENCIMIENTO DE LICENCIA:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="442" y="497" width="100" height="30" uuid="132cc36f-80f6-4fbc-8c2d-c2b7656113be"/>
+				<reportElement x="442" y="496" width="110" height="30" uuid="132cc36f-80f6-4fbc-8c2d-c2b7656113be"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rango_prestamos}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="304" y="497" width="138" height="30" uuid="4d91f0ee-fa57-4cd2-9c66-7d840f3178b2"/>
+				<reportElement x="304" y="496" width="138" height="30" uuid="4d91f0ee-fa57-4cd2-9c66-7d840f3178b2"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
@@ -569,7 +569,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<reportElement x="-1" y="2" width="557" height="1" uuid="4eb1f5cf-c43f-4798-a43b-39b9a0baac75"/>
 			</line>
 			<textField>
-				<reportElement x="7" y="583" width="536" height="41" uuid="e45a4834-733e-4c97-845a-c2354304211d"/>
+				<reportElement x="2" y="577" width="550" height="56" uuid="e45a4834-733e-4c97-845a-c2354304211d"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Arial"/>
 				</textElement>
@@ -579,18 +579,19 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<reportElement x="-3" y="557" width="557" height="1" uuid="356ba529-f129-4e08-8390-8f97b5c53af6"/>
 			</line>
 			<staticText>
-				<reportElement x="3" y="557" width="190" height="30" uuid="b4404869-0536-4a2a-96f6-c43c04c2cee1"/>
+				<reportElement x="3" y="552" width="190" height="30" uuid="b4404869-0536-4a2a-96f6-c43c04c2cee1"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[OBSERVACIONES]]></text>
 			</staticText>
 			<image scaleImage="FillFrame">
-				<reportElement x="0" y="625" width="554" height="60" uuid="86fabebf-2a81-41b5-af17-dd6aedb6d7c7"/>
+				<reportElement x="0" y="634" width="554" height="52" uuid="86fabebf-2a81-41b5-af17-dd6aedb6d7c7"/>
 				<imageExpression><![CDATA["C:/SCOI/imagen/Orange wave.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="70" y="415" width="200" height="16" uuid="86d32583-8c7b-4b3b-80e3-222816288758"/>
+				<reportElement x="75" y="406" width="132" height="30" uuid="e0f3daf5-d1ee-4b83-8c91-e654eede8b27"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{infonavit}]]></textFieldExpression>
 			</textField>
 		</band>

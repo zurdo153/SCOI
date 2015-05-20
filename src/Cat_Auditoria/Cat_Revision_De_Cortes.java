@@ -62,7 +62,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
     
     JCheckBox chbMosrtarTodo = new JCheckBox("Mostrar Todo");
     
-    JButton btnGenerar = new JButton("Consultar");
+    JButton btnGenerar = new JButton("Consultar",new ImageIcon("imagen/buscar.png"));
     
 //	TODO (Variables globales)
 	int fila = 0;
@@ -179,6 +179,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		int anchop = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int altop = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Sales-by-payment-method-icon-64.png"));
 		
 		this.setTitle("Revision De Cortes");
 		this.panel.setBorder(BorderFactory.createTitledBorder( "Revision De Cortes"));
