@@ -6299,6 +6299,7 @@ public class BuscarSQL {
 		return rp_ventas;
 	}
 	
+	
 	public Obj_Diferencia_De_Cortes_Calculado corte_calc(int folio) throws SQLException{
 		Obj_Diferencia_De_Cortes_Calculado corte_calculado = new Obj_Diferencia_De_Cortes_Calculado();
 		String query = "exec sp_select_datos_diferencias_de_cortes "+ folio;
