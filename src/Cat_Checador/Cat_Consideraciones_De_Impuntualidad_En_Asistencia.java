@@ -74,6 +74,7 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento = new JComboBox(departamento);
+
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -523,6 +524,9 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbstatus_checada =new JComboBox(new String[]{"Vigente","Cancelado"});
 		
+		String justificar[] = {"SELECCIONAR UNA OPCION","JUSTUFICO","NO JUSTUFICO"};
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		JComboBox cmbJustificar = new JComboBox(justificar);
 		
 		JTextArea txaObservacion =new Componentes().textArea(new JTextArea(), "Observaciones", 150);
 		JScrollPane scrollObservacion = new JScrollPane(txaObservacion,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -535,6 +539,14 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 			this.setTitle("Consideracion checador");
 			this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Guardar consideracion de checador seleccionado"));
 			
+			
+			if(ent_sal.equals("FALT.REG.") && fecha.substring(fecha.indexOf(" ")+1, fecha.length()).equals("00:00:00")){
+				cmbJustificar.setEnabled(true);
+			}else{
+				cmbJustificar.setEnabled(false);
+			}
+			
+
 			lblFolio_corte.setText("Folio Empleado:  "+folio_emp);
 			lblCajero.setText("Empleado:  "+empleado);
 			lblFecha.setText("Fecha:  "+fecha);
@@ -585,9 +597,12 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 			
 			panel.add(new JLabel("Estatus Checada: ")).setBounds(15,y+=25,90,20);
 			panel.add(cmbstatus_checada).setBounds(100,y,80,20);
-			
-			panel.add(btnGuardar).setBounds(370,y+25,100,20);
 
+			panel.add(new JLabel("Falta: ")).setBounds(15,y+=25,90,20);
+			panel.add(cmbJustificar).setBounds(100,y,170,20);
+			
+			panel.add(btnGuardar).setBounds(370,y,100,20);
+			
 			txaObservacion.setLineWrap(true); 
 			txaObservacion.setWrapStyleWord(true);
 //			panel.add(scroll).setBounds(20,45,970,500);
@@ -596,6 +611,8 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 			
 			btnGuardar.addActionListener(opGuardarObservacion);
 			
+			System.out.println(cmbJustificar.isEnabled());
+			
 			this.setSize(500,270);
 			this.setLocationRelativeTo(null);
 		}
@@ -603,99 +620,115 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		ActionListener opGuardarObservacion = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!txaObservacion.getText().equals("")){
-//		consideraciones ( mandar parametros para el update)
-							int consid_imp = (imp - Integer.valueOf(txtImp.getText()))*-1;
-							int consid_fav = (fav - Integer.valueOf(txtFav.getText()))*-1;
 							
-							System.out.println(imp);
-							System.out.println(Integer.valueOf(txtImp.getText()));
-							
-							
-							
-							String clave_master = "";
-							if(tipo_checada.equals("-")){
-									clave_master="";
+							if(!cmbJustificar.isEnabled()){
+								System.out.println("actualizar");
+								actualizar();
 							}else{
-									clave_master = cmbTipo_checada.getSelectedItem().toString().trim().equals("Aplica")?"":cmbTipo_checada.getSelectedItem().toString().trim();
+								if(cmbJustificar.getSelectedItem().equals("SELECCIONAR UNA OPCION")){
+									JOptionPane.showMessageDialog(null,"Se Requiere Seleccionar Una Opcion En El Campo Falta","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+									return;
+								}else{
+									System.out.println("actualizar");
+									actualizar();
+								}
+								
 							}
-							
-							String omision_mod = "";
-							if(ent_sal.equals("FALT.REG.")){
-								   omision_mod="";
-								   
-							}else{ omision_mod = cmbOmision.getSelectedItem().toString().trim().equals("Aplica")?"":
-								cmbOmision.getSelectedItem().toString().trim();
-							if(cmbOmision.isEnabled()){consid_imp=imp*-1;}}
-							
-							String status_mod = "";
-							status_mod = cmbstatus_checada.getSelectedItem().toString().trim();
-
-							if(status_mod.equals("Cancelado")){
-								consid_imp=imp*-1;
-								consid_fav=fav*-1;
-								omision_mod="No Aplica";
-								clave_master="";    			}
-							
-//							System.out.println("aqui es igual a = "+realizo_consideracion);
-						if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod)){
-							
-							folio_emp = 0; 	
-							empleado = ""; 	
-							fecha = ""; 	
-							ent_sal = ""; 	
-							tipo_checada = ""; 	
-							imp = 0; 	
-							fav  = 0; 	
-							observacion  = "";
-							Status_Mov = "";
-							
-							String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
-							String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
-							String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
-							String Departamento = cmbDepartamento.getSelectedItem().toString();
-							String folios_empleados = "Selecciona un Empleado";
-
-							while(tabla.getRowCount()>0)
-								modelo.removeRow(0);
-							
-							Object[][] recargarTabla = new BuscarTablasModel().filtro_impuntualidad_a_considerar(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
-							
-							 String[] fila = new String[17];
-		                     for(int i=0; i<recargarTabla.length; i++){
-		                             fila[0] = recargarTabla[i][0]+"";
-		                             fila[1] = recargarTabla[i][1]+"";
-		                             fila[2] = recargarTabla[i][2]+"";
-		                             fila[3] = recargarTabla[i][3]+"";
-		                             fila[4] = recargarTabla[i][4]+"";
-		                             fila[5] = recargarTabla[i][5]+"";
-		                             fila[6] = recargarTabla[i][6]+"";
-		                             fila[7] = recargarTabla[i][7]+"";
-		                             fila[8] = recargarTabla[i][8]+"";
-		                             fila[9] = recargarTabla[i][9]+"";
-		                             fila[10] = recargarTabla[i][10]+"";
-		                             fila[11] = recargarTabla[i][11]+"";
-		                             fila[12] = recargarTabla[i][12]+"";
-		                             fila[13] = recargarTabla[i][13]+"";
-		                             fila[14] = recargarTabla[i][14]+"";
-		                             fila[15] = recargarTabla[i][15]+"";
-		                             fila[16] = recargarTabla[i][16]+"";
-		                             modelo.addRow(fila);
-		                     }
-		                     dispose();
-							
-							JOptionPane.showMessageDialog(null, "Consideracion Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
-							return;
-						}else{
-							dispose();
-				  			JOptionPane.showMessageDialog(null,"No Se Pudo Guardar La Consideracion","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-							return;
-						}
 				}else{
 	  			  JOptionPane.showMessageDialog(null, "Es Necesario Teclear Una Observacion \n El Porque Se Modifico El Registro","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			}
 		};
+		
+		public void actualizar(){
+//			consideraciones ( mandar parametros para el update)
+			int consid_imp = (imp - Integer.valueOf(txtImp.getText()))*-1;
+			int consid_fav = (fav - Integer.valueOf(txtFav.getText()))*-1;
+			
+			System.out.println(imp);
+			System.out.println(Integer.valueOf(txtImp.getText()));
+			
+			
+			
+			String clave_master = "";
+			if(tipo_checada.equals("-")){
+					clave_master="";
+			}else{
+					clave_master = cmbTipo_checada.getSelectedItem().toString().trim().equals("Aplica")?"":cmbTipo_checada.getSelectedItem().toString().trim();
+			}
+			
+			String omision_mod = "";
+			if(ent_sal.equals("FALT.REG.")){
+				   omision_mod="";
+				   
+			}else{ omision_mod = cmbOmision.getSelectedItem().toString().trim().equals("Aplica")?"":
+				cmbOmision.getSelectedItem().toString().trim();
+			if(cmbOmision.isEnabled()){consid_imp=imp*-1;}}
+			
+			String status_mod = "";
+			status_mod = cmbstatus_checada.getSelectedItem().toString().trim();
+
+			if(status_mod.equals("Cancelado")){
+				consid_imp=imp*-1;
+				consid_fav=fav*-1;
+				omision_mod="No Aplica";
+				clave_master="";    			}
+//			System.out.println("aqui es igual a = "+realizo_consideracion);
+		if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod,cmbJustificar.getSelectedItem().toString(),ent_sal)){
+			
+			folio_emp = 0; 	
+			empleado = ""; 	
+			fecha = ""; 	
+			ent_sal = ""; 	
+			tipo_checada = ""; 	
+			imp = 0; 	
+			fav  = 0; 	
+			observacion  = "";
+			Status_Mov = "";
+			
+			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
+			String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+			String Departamento = cmbDepartamento.getSelectedItem().toString();
+			String folios_empleados = "Selecciona un Empleado";
+
+			while(tabla.getRowCount()>0)
+				modelo.removeRow(0);
+			
+			Object[][] recargarTabla = new BuscarTablasModel().filtro_impuntualidad_a_considerar(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
+			
+			 String[] fila = new String[17];
+             for(int i=0; i<recargarTabla.length; i++){
+                     fila[0] = recargarTabla[i][0]+"";
+                     fila[1] = recargarTabla[i][1]+"";
+                     fila[2] = recargarTabla[i][2]+"";
+                     fila[3] = recargarTabla[i][3]+"";
+                     fila[4] = recargarTabla[i][4]+"";
+                     fila[5] = recargarTabla[i][5]+"";
+                     fila[6] = recargarTabla[i][6]+"";
+                     fila[7] = recargarTabla[i][7]+"";
+                     fila[8] = recargarTabla[i][8]+"";
+                     fila[9] = recargarTabla[i][9]+"";
+                     fila[10] = recargarTabla[i][10]+"";
+                     fila[11] = recargarTabla[i][11]+"";
+                     fila[12] = recargarTabla[i][12]+"";
+                     fila[13] = recargarTabla[i][13]+"";
+                     fila[14] = recargarTabla[i][14]+"";
+                     fila[15] = recargarTabla[i][15]+"";
+                     fila[16] = recargarTabla[i][16]+"";
+                     modelo.addRow(fila);
+             }
+             dispose();
+			
+			JOptionPane.showMessageDialog(null, "Consideracion Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+			return;
+		}else{
+			dispose();
+  			JOptionPane.showMessageDialog(null,"No Se Pudo Guardar La Consideracion","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+			return;
+		}
+		}
 	}
 	
 	public static void main(String[] args) {
