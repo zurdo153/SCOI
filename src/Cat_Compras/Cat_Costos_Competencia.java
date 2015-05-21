@@ -36,10 +36,13 @@ import javax.swing.table.DefaultTableModel;
 
 
 
+
 import com.toedter.calendar.JDateChooser;
 
 
 
+
+import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Principal.Componentes;
@@ -67,14 +70,17 @@ public class Cat_Costos_Competencia extends JFrame{
 				JDateChooser cfecha = new JDateChooser();
 				Connexion con = new Connexion();
 				
-				DefaultTableModel modelo_captura = new DefaultTableModel(null,
-			            new String[]{"Competencia", "Costo"}
-						){
+				
+				public static Object[][] get_tabla(){
+					return new BuscarTablasModel().tabla_model_competencia();
+				}
+//				String[][] lista_comp = {{"1","ROJO-LE",""},{"2","AZUL-M2",""}};
+				DefaultTableModel modelo_captura = new DefaultTableModel(get_tabla(), new String[]{"Folio","Competencia", "Costo"}){
 				     @SuppressWarnings("rawtypes")
 					Class[] types = new Class[]{
 				    	java.lang.String.class,
+				    	java.lang.String.class,
 				    	java.lang.String.class
-				    
 			         };
 				     @SuppressWarnings({ "rawtypes", "unchecked" })
 					public Class getColumnClass(int columnIndex) {
@@ -83,7 +89,8 @@ public class Cat_Costos_Competencia extends JFrame{
 			         public boolean isCellEditable(int fila, int columna){
 			        	 switch(columna){
 			        	 	case 0 : return false; 
-			        	 	case 1 : return false; 
+			        	 	case 1 : return false;
+			        	 	case 2 : return true;
 			        	 	} 				
 			 			return false;
 			 		}
@@ -177,7 +184,7 @@ public class Cat_Costos_Competencia extends JFrame{
 		panel.add(new JLabel("Fecha:")).setBounds(x,y,l-40,a);
 		panel.add(cfecha).setBounds(x+85,y,l+10,a);
 		
-		panel.add(scrollcaptura).setBounds(x+385,y,250,140);
+		panel.add(scrollcaptura).setBounds(x+385,y,300,140);
 		
 		panel.add(new JLabel("Producto:")).setBounds(x,y+=25,l-40,a);
 		panel.add(txtcod_prod).setBounds(x+85,y,l,a);
@@ -445,14 +452,17 @@ public void render_proveedor(){
 	
 					this.tabla_captura.getTableHeader().setReorderingAllowed(false) ;
 					this.tabla_captura.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-						
-					tabla_captura.getColumnModel().getColumn(0).setMaxWidth(165);
-					tabla_captura.getColumnModel().getColumn(0).setMinWidth(165);
-					tabla_captura.getColumnModel().getColumn(1).setMaxWidth(70);
-					tabla_captura.getColumnModel().getColumn(1).setMinWidth(70);
+					
+					tabla_captura.getColumnModel().getColumn(0).setMaxWidth(50);
+					tabla_captura.getColumnModel().getColumn(0).setMinWidth(50);
+					tabla_captura.getColumnModel().getColumn(1).setMaxWidth(165);
+					tabla_captura.getColumnModel().getColumn(1).setMinWidth(165);
+					tabla_captura.getColumnModel().getColumn(2).setMaxWidth(70);
+					tabla_captura.getColumnModel().getColumn(2).setMinWidth(70);
 		
 					tabla_captura.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-					tabla_captura.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+					tabla_captura.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+					tabla_captura.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 	
 					tabla_Proveedor.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10)); 
 					tabla_Proveedor.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));

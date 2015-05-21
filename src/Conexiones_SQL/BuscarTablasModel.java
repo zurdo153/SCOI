@@ -1536,7 +1536,29 @@ public String[][] tabla_filtro_de_asignaciones_para_corregir_asignacion(){
 	    return matriz; 
 	}
 
+public Object[][] tabla_model_competencia(){
+	
+	String query = "select folio_competencia, competencia  from tb_competencias where status = 1 order by folio_competencia asc";
+	
+	Object[][] matriz = new Object[get_filas(query)][3];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		
+		int i = 0;
+		while(rs.next()){
+			matriz[i][0] =rs.getString(1);
+			matriz[i][1] = "   "+rs.getString(2);
+			matriz[i][2] = "";
+			
+			i++;
+		}
 
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+	}
+    return matriz; 
+}
 	
 }
 
