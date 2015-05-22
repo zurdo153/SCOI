@@ -1078,7 +1078,7 @@ public class ActualizarSQL {
 	
 	public boolean Actualizar_abono_de_cortes(int folio_empleado,String statusCobro, double abono){
 		
-		String query = "exec sp_update_abono_de_cajera_para_cortes "+folio_empleado+","+(statusCobro.equals("")?1:0)+","+abono+","+usuario.getFolio();
+		String query = "exec sp_update_abono_de_cajera_para_cortes "+folio_empleado+","+(statusCobro.equals("Cobrar")?1:0)+","+abono+","+usuario.getFolio();
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {

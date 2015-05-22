@@ -212,21 +212,22 @@ public class Cat_Filtro_Diferencia_De_Cortes extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			
 			if(txtAbono.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "El campo de abono es requerido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Campo De Abono Es Requerido Que No Este Vacio", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				txtAbono.requestFocus();
 				return;
 			}else{
 				
 				double abono = Double.valueOf(txtAbono.getText().trim());
-				double acumulado = Double.valueOf(txtSaldoFavor.getText().trim());
+				double afavor = Double.valueOf(txtSaldoFavor.getText().trim());
 				double totalAcumulado = Double.valueOf(txtTotalAcumulado.getText().trim());
 				
-				if((abono+acumulado)>totalAcumulado){
+				if((abono+afavor)>totalAcumulado){
 					txtAbono.requestFocus();
-					JOptionPane.showMessageDialog(null, "El empleado cuenta con un saldo a favor de ( "+acumulado+" ) para que el el descuento se aplique correctamente\ndebe ingresar un abono menor o igal a: "+(totalAcumulado-acumulado), "Aviso al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+					JOptionPane.showMessageDialog(null, "El Empleado Cuenta Con Un Daldo A Favor De ( "+afavor+" ) \n Para Que El Descuento Sea Correcto Debe \n Ingresar Un Abono Menor O Igual a: "+(totalAcumulado-afavor), "Aviso ", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}else{
 					if(new Obj_Diferencia_De_Cortes().actualizar_abono_de_cortes(Integer.valueOf(txtFolio_Empleado.getText().trim()),cmbStatuscobro.getSelectedItem().toString(),Double.valueOf(txtAbono.getText().trim()))){
-						JOptionPane.showMessageDialog(null, "El abono se guardo exitosamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+						JOptionPane.showMessageDialog(null, "La Modificacion De El Abono Se Guardo Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						cargarTabla(folio_empleado);
 						panelEnabledFalse();
 						return;

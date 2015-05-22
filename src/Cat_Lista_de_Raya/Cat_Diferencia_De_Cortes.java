@@ -94,7 +94,7 @@ public class Cat_Diferencia_De_Cortes extends JFrame {
 	    			String folio =  tabla.getValueAt(fila, 0).toString().trim();
 	    			
 	    			if(Double.valueOf(tabla.getValueAt(fila, 4).toString().trim())==0){
-	    				JOptionPane.showMessageDialog(null, "El empleado seleccionado no cuenta con nunguna diferencia de corte", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+	    				JOptionPane.showMessageDialog(null, "El Empleado Seleccionado No Cuenta Con Ninguna Diferencia De Corte Aplicada", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 	    				return;
 	    			}else{
 	    				new Cat_Filtro_Diferencia_De_Cortes(folio).setVisible(true);
