@@ -58,7 +58,7 @@ public class Cat_Reporte_De_Plantilla_De_Puestos_Por_Establecimiento extends JDi
 	ActionListener opGenerar = new ActionListener() {
 		
 		public void actionPerformed(ActionEvent e) {
-			String query = "exec sp_Reporte_de_Plantilla_de_Puesto_Por_Establecimiento  '"+cmbEstablecimiento.getSelectedItem()+"';";
+			String query = "exec sp_Reporte_de_Plantilla_de_Puesto_Por_Establecimiento '"+cmbEstablecimiento.getSelectedItem()+"';";
 				Statement stmt = null;
 				try {
 					stmt =  new Connexion().conexion().createStatement();
