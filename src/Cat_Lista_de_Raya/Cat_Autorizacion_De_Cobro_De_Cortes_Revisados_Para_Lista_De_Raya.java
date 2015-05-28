@@ -108,6 +108,7 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 		
 		ActionListener opaceptar = new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
+	    		
 	    		actualizar(arg0.getActionCommand().equals("Cobrar")?1:0);
 			}
 		};

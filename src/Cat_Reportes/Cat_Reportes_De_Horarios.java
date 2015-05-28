@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -13,19 +14,22 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 
+
+
 import Conexiones_SQL.Generacion_Reportes;
 
 @SuppressWarnings("serial")
 public class Cat_Reportes_De_Horarios extends JFrame {
-	JButton btnHorariosAsignados = new JButton();
-	JButton btnDepositos_Bancos_Por_Establecimiento = new JButton();
+	JButton btnHorariosAsignados = new JButton("",new ImageIcon("imagen/reloj-de-juego-icono-7360-32.png"));
+	JButton btnDepositos_Bancos_Por_Establecimiento = new JButton("",new ImageIcon("imagen/alterar-el-reloj-icono-8395-32.png"));
+	JButton btnHorarios_Provicionales = new JButton("",new ImageIcon("imagen/error-de-reloj-icono-5961-32.png"));
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 
 	
 	public Cat_Reportes_De_Horarios() {
-		this.setSize(320,200);
+		this.setSize(320,250);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -36,7 +40,7 @@ public class Cat_Reportes_De_Horarios extends JFrame {
 		
 		btnHorariosAsignados.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
 				"		<p>Impresion de Reporte de</p>" +
-				"		<CENTER><p>Horarios Asignados a Empleados</p></CENTER></FONT>" +
+				"		<CENTER><p>Horarios Asignados</p></CENTER></FONT>" +
 				"</html>"); 
 		
 		btnDepositos_Bancos_Por_Establecimiento.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
@@ -44,10 +48,17 @@ public class Cat_Reportes_De_Horarios extends JFrame {
 				"		<CENTER><p>Horarios Sin Asignar</p></CENTER></FONT>" +
 				"</html>"); 
 		
+		btnHorarios_Provicionales.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<p>Impresion de Reporte de</p>" +
+				"		<CENTER><p>Horarios Provicionales</p></CENTER></FONT>" +
+				"</html>"); 
+		
 		panel.add(btnHorariosAsignados).setBounds(40,40,240,40);
 		panel.add(btnDepositos_Bancos_Por_Establecimiento).setBounds(40,100,240,40);
+		panel.add(btnHorarios_Provicionales).setBounds(40,160,240,40);
 		btnHorariosAsignados.addActionListener(Reporte_De_Horarios_Asignados);
 		btnDepositos_Bancos_Por_Establecimiento.addActionListener(Reporte_De_Horarios_Sin_Asignar);
+		btnHorarios_Provicionales.addActionListener(Reporte_De_Horarios_Provicionales);
 		cont.add(panel);
 	}
 	
@@ -69,6 +80,15 @@ public class Cat_Reportes_De_Horarios extends JFrame {
 		public void actionPerformed(ActionEvent e){
 			 reporte = "Obj_Reporte_De_Horarios_De_Empleados.jrxml";
 			 comando = "exec sp_Reporte_de_Horarios_Sin_Asignar";
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			 
+		}
+	};
+	
+	ActionListener Reporte_De_Horarios_Provicionales = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			 reporte = "Obj_Reporte_De_Empleados_De_Horario_Provisional.jrxml";
+			 comando = "exec sp_reporte_de_empleados_con_horario_provicional";
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			 
 		}

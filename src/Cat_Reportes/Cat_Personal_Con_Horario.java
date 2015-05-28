@@ -4,23 +4,15 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.HashMap;
+
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
-
-import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 
 @SuppressWarnings("serial")
 public class Cat_Personal_Con_Horario extends JFrame{
@@ -29,7 +21,7 @@ public class Cat_Personal_Con_Horario extends JFrame{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
-	JButton btngenerar = new JButton("Generar");
+	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 	
 	public Cat_Personal_Con_Horario(){
 	
@@ -39,7 +31,7 @@ public class Cat_Personal_Con_Horario extends JFrame{
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
 		
-		panel.setBorder(BorderFactory.createTitledBorder("Plantilla de Personal con Horario"));
+		panel.setBorder(BorderFactory.createTitledBorder("Plantilla de Personal Por Establecimiento"));
 		
 		panel.add(cmbEstablecimiento).setBounds(10, 50, 220, 20);
 		panel.add(btngenerar).setBounds(70, 120, 100, 20);
@@ -55,25 +47,14 @@ public class Cat_Personal_Con_Horario extends JFrame{
 	}
 	
 	ActionListener opGenerar = new ActionListener() {
-		
 		public void actionPerformed(ActionEvent e) {
-			String query = "exec sp_Reporte_de_Plantilla_de_Personal_con_Horario '"+cmbEstablecimiento.getSelectedItem()+"';";
-				Statement stmt = null;
-				try {
-					stmt =  new Connexion().conexion().createStatement();
-				    ResultSet rs = stmt.executeQuery(query);
-				    
-					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Personal_Con_Horario.jrxml");
-					JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-					@SuppressWarnings({ "rawtypes", "unchecked" })
-					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-					JasperViewer.viewReport(print, false);
-				} catch (Exception e1) {
-					System.out.println(e1.getMessage());
-				}
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="exec sp_Reporte_de_Plantilla_de_Personal_con_Horario '"+cmbEstablecimiento.getSelectedItem()+"';";
+			String reporte = "Obj_Reporte_De_Empleados_Plantilla_De_Horario_De_Personal_Por_Establecimiento.jrxml";
+					 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			}
-			
-		
 	};
 	
 	public static void main(String [] arg){

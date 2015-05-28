@@ -86,20 +86,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-
-
-
-
-
-
-
 import Cat_Checador.Cat_Horarios;
+import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
-import Cat_Reportes.Cat_Reporte_De_Empleados_No_Contratables;
-import Cat_Reportes.Cat_Horarios_Provisionales;
 import Cat_Reportes.Cat_Personal_Con_Horario;
 import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
 import Cat_Reportes.Cat_Reportes_De_Contratacion_Por_Empleado;
+import Cat_Reportes.Cat_Reportes_De_Horarios;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
@@ -246,11 +239,15 @@ public class Cat_Empleados extends JFrame{
 	
 	JButton btnImp_Datos_Completos = new JButton("R. Impresion",new ImageIcon("Imagen/informacion-del-usuario-icono-8370-16.png"));
 	JButton btnContratacion = new JButton("Contratacion",new ImageIcon("Imagen/contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png"));
-	JButton btn_plantilla = new JButton("R.Plantilla",new ImageIcon ("Imagen/plan-icono-5073-16.png"));
-	JButton btn_horario_provisional = new JButton("H. Provisional",new ImageIcon("Imagen/horas-de-reloj-de-alarma-icono-5601-16.png"));
-	JButton btnCumpleaños_del_Mes = new JButton("R.Cumpleaños",new ImageIcon("Imagen/cookies-tarta-de-cumpleanos-icono-9840-16.png"));
 	JButton btnAsistencia_Empleado =new JButton("R.Asistencia",new ImageIcon("Imagen/archivo-icono-8809-16.png")); 
+	JButton btnCortes =new JButton("R.Cortes",new ImageIcon("Imagen/dinero-icono-8797-16.png")); 
+	JButton btn_plantilla = new JButton("R.Plantilla",new ImageIcon ("Imagen/plan-icono-5073-16.png"));
+	JButton btn_R_horarios = new JButton("R.Horarios",new ImageIcon("Imagen/horas-de-reloj-de-alarma-icono-5601-16.png"));
 	JButton btnIncontratables = new JButton("No Contratables",new ImageIcon("Imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
+
+	JButton btnLicencias = new JButton("R.Licencias",new ImageIcon("Imagen/truck-icon.png"));
+	JButton btnCumpleaños_del_Mes = new JButton("R.Cumpleaños",new ImageIcon("Imagen/cookies-tarta-de-cumpleanos-icono-9840-16.png"));
+	JButton btnAltasBajas = new JButton("R.Altas/Bajas",new ImageIcon("imagen/bajas_altas_16p.png"));
 	
 	JButton btnBaja = new JButton("No contratables");
 	
@@ -287,7 +284,7 @@ public class Cat_Empleados extends JFrame{
 	}
 	
 	public void getContenedor(){
-		this.setSize(975,710);
+		this.setSize(975,730);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -357,13 +354,17 @@ public class Cat_Empleados extends JFrame{
 		txtHorario3.setFont(new Font("ARIAL", Font.ITALIC, 9));
 		
 		
-		panel.add(btnImp_Datos_Completos).setBounds(x+20,y,128,x);
-		panel.add(btnContratacion).setBounds(x+ancho+20,y,128,x);
-		panel.add(btnAsistencia_Empleado).setBounds(x+ancho*2+10,y,128,x);
-		panel.add(btn_plantilla).setBounds(x+ancho*3,y,128,x);
-		panel.add(btn_horario_provisional).setBounds(x+ancho*4-10,y,128,x);
-		panel.add(btnCumpleaños_del_Mes).setBounds(x+ancho*4+120,y,128,x);
-		panel.add(btnIncontratables).setBounds(x*2+ancho*3+ancho+230,y,130,x);
+		panel.add(btnImp_Datos_Completos).setBounds(x-5,y,128,x);
+		panel.add(btnContratacion).setBounds(x+130,y,128,x);
+		panel.add(btnAsistencia_Empleado).setBounds(x+265,y,128,x);
+		panel.add(btnCortes).setBounds(x+400,y,128,x);
+		panel.add(btn_R_horarios).setBounds(x+535,y,128,x);
+		panel.add(btn_plantilla).setBounds(x+670,y,128,x);
+		panel.add(btnIncontratables).setBounds(x*2+ancho*3+ancho+225,y,130,x);
+		
+		panel.add(btnLicencias).setBounds(x-5,y+=25,128,x);
+		panel.add(btnCumpleaños_del_Mes).setBounds(x+130,y,128,x);
+		panel.add(btnAltasBajas).setBounds(x+265,y,128,x);
 		
 		y=y+=40;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
@@ -566,11 +567,15 @@ public class Cat_Empleados extends JFrame{
 		
         btnImp_Datos_Completos.addActionListener(opImprimir_Datos);
 		btnContratacion.addActionListener(opContratacion);
-		btnAsistencia_Empleado.addActionListener(opAsistenciaEmpleado);		
+		btnAsistencia_Empleado.addActionListener(opAsistenciaEmpleado);	
+		btnCortes.addActionListener(Reporte_Cortes_Por_empleado);
 		btnIncontratables.addActionListener(Reporte_de_Empleados_No_Contratables);
-		btnCumpleaños_del_Mes.addActionListener(Reporte_De_Cumpleanios_Del_Mes);
+		btn_R_horarios.addActionListener(opHorarioProvisional);
 		btn_plantilla.addActionListener(opPlantilla);
-		btn_horario_provisional.addActionListener(opHorarioProvisional);
+		
+		btnLicencias.addActionListener(Reporte_de_Vigencia_Licencias);
+		btnCumpleaños_del_Mes.addActionListener(Reporte_De_Cumpleanios_Del_Mes);
+		btnAltasBajas.addActionListener(Reporte_De_Altas_y_Bajas);
 		
 		
 		btnExaminar.addActionListener(opExaminar);
@@ -1812,6 +1817,10 @@ public class Cat_Empleados extends JFrame{
 		}
 	};
 
+	String basedatos="2.26";
+	String vista_previa_reporte="no";
+	int vista_previa_de_ventana=0;
+	
 	ActionListener opContratacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
@@ -1854,9 +1863,6 @@ public class Cat_Empleados extends JFrame{
 				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
 				return;
 			}else{
-				String basedatos="2.26";
-				String vista_previa_reporte="no";
-				int vista_previa_de_ventana=0;
 				String comando="exec sp_select_datos_completos_empleado "+txtFolioEmpleado.getText()+"";
 				String reporte = "Obj_Reporte_De_Empleado_Datos_Completos.jrxml";
 							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
@@ -1866,7 +1872,7 @@ public class Cat_Empleados extends JFrame{
 	 	}
 	   };
 	   
-	   
+	    
 	
 	
 	ActionListener opAsistenciaEmpleado = new ActionListener(){
@@ -1881,6 +1887,19 @@ public class Cat_Empleados extends JFrame{
 			}
 	};
 	
+	ActionListener Reporte_Cortes_Por_empleado = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			if(txtFolioEmpleado.getText().equals("")){
+				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
+			String reporte = "Obj_Reporte_De_Cortes_De_Lista_De_Raya_Actual.jrxml";
+			String comando = "exec sp_Reporte_De_Cortes_De_Lista_De_Raya_Actual_Para_Exportar 'status',"+txtFolioEmpleado.getText().toString();
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			}
+		}
+	};
+	
 	ActionListener opPlantilla = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 				new Cat_Personal_Con_Horario().setVisible(true);
@@ -1889,21 +1908,41 @@ public class Cat_Empleados extends JFrame{
 	
 	ActionListener opHorarioProvisional = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Horarios_Provisionales();
+			new Cat_Reportes_De_Horarios().setVisible(true);
 		}
 	};
 	
-	ActionListener Reporte_De_Cumpleanios_Del_Mes = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-				new Cat_Reporte_De_Cumpleanios_Del_Mes().setVisible(true);
-		}
-	};
+
 	
 	ActionListener Reporte_de_Empleados_No_Contratables = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Reporte_De_Empleados_No_Contratables();
+			String comando="exec Sp_Reporte_De_Empleado_No_Contratables";
+			String reporte = "Obj_Reporte_De_Empleados_No_Contratables.jrxml";
+					 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
+	
+	ActionListener Reporte_de_Vigencia_Licencias = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+
+				String comando="exec sp_select_vencimiento_de_licencia ";
+				String reporte = "Obj_Reporte_De_Empleados_Vigencia_De_Licencia_De_Choferes.jrxml";
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+	 	}
+	   };
+	   
+	ActionListener Reporte_De_Cumpleanios_Del_Mes = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+					new Cat_Reporte_De_Cumpleanios_Del_Mes().setVisible(true);
+			}
+		};
+	   
+	ActionListener Reporte_De_Altas_y_Bajas = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+					new Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas().setVisible(true);
+			}
+		};
+	   
 	
 	ActionListener salir = new ActionListener(){
 		public void actionPerformed(ActionEvent e){

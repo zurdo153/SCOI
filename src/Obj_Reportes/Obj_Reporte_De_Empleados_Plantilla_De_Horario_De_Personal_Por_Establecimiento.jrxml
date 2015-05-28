@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-05-24T10:30:05 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Plantilla de Horarios" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ca0ec92-4868-4f8f-ac47-7bfb7cd837f3">
 	<property name="ireport.zoom" value="2.5937424601000147"/>
 	<property name="ireport.x" value="0"/>
@@ -158,9 +160,9 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 		<groupHeader>
 			<band height="27">
 				<frame>
-					<reportElement uuid="c28ff7fd-ecf5-4a9c-8886-19080c972bd2" mode="Opaque" x="0" y="3" width="352" height="24" forecolor="#B89F7D" backcolor="#000066"/>
+					<reportElement mode="Opaque" x="0" y="3" width="352" height="24" forecolor="#B89F7D" backcolor="#FF9900" uuid="c28ff7fd-ecf5-4a9c-8886-19080c972bd2"/>
 					<textField isStretchWithOverflow="true">
-						<reportElement uuid="9fc35843-b11f-4729-a578-1b75f31b0dc6" style="SubTitle" x="2" y="0" width="350" height="24" forecolor="#FFFFFF" backcolor="#000033"/>
+						<reportElement style="SubTitle" x="2" y="0" width="338" height="24" forecolor="#FFFFFF" backcolor="#FF9900" uuid="9fc35843-b11f-4729-a578-1b75f31b0dc6"/>
 						<textElement>
 							<font isBold="false"/>
 						</textElement>
@@ -172,13 +174,11 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 		<groupFooter>
 			<band height="13">
 				<textField>
-					<reportElement uuid="5dbe2b0a-f6b8-4617-81f8-f2c586c89019" x="2" y="0" width="244" height="13"/>
-					<textElement/>
+					<reportElement x="2" y="0" width="244" height="13" uuid="5dbe2b0a-f6b8-4617-81f8-f2c586c89019"/>
 					<textFieldExpression><![CDATA["Cantidad de Empleados del Establecimiento: "+$V{Empleados_Por_Estab}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="4b67bb81-8514-4611-8cab-7c9a87346ec9" x="309" y="0" width="165" height="13"/>
-					<textElement/>
+					<reportElement x="309" y="0" width="165" height="13" uuid="4b67bb81-8514-4611-8cab-7c9a87346ec9"/>
 					<textFieldExpression><![CDATA["Cantidad de Departamentos: "+$V{Cantidad_Departamentos}]]></textFieldExpression>
 				</textField>
 			</band>
@@ -189,56 +189,56 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 		<groupHeader>
 			<band height="20">
 				<textField>
-					<reportElement uuid="939561f0-a589-491a-a75b-07fb74411266" positionType="Float" x="2" y="0" width="200" height="20" forecolor="#000000"/>
+					<reportElement positionType="Float" x="2" y="0" width="200" height="20" forecolor="#000000" uuid="939561f0-a589-491a-a75b-07fb74411266"/>
 					<textElement>
 						<font fontName="Times New Roman" size="16" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Departamento}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="84c9c143-2563-4776-b481-47116ab56ddb" x="331" y="4" width="60" height="15"/>
+					<reportElement x="331" y="4" width="60" height="15" uuid="84c9c143-2563-4776-b481-47116ab56ddb"/>
 					<textElement textAlignment="Left">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[DOMINGO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="2db0e561-2edf-4b1a-815f-7a3bfc62fc15" x="391" y="4" width="60" height="15"/>
+					<reportElement x="391" y="4" width="60" height="15" uuid="2db0e561-2edf-4b1a-815f-7a3bfc62fc15"/>
 					<textElement textAlignment="Left">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[LUNES]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="4a3becee-ed79-491e-ad54-effd3fac5313" x="451" y="4" width="50" height="15"/>
+					<reportElement x="451" y="4" width="50" height="15" uuid="4a3becee-ed79-491e-ad54-effd3fac5313"/>
 					<textElement textAlignment="Left">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[MARTES]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="6f27e468-e0f6-48a6-a789-30c2b21c68ca" x="511" y="4" width="60" height="15"/>
+					<reportElement x="511" y="4" width="60" height="15" uuid="6f27e468-e0f6-48a6-a789-30c2b21c68ca"/>
 					<textElement textAlignment="Left">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[MIERCOLES]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="ff06baff-c8c5-4b41-9960-3e7ae57514db" x="574" y="4" width="53" height="15"/>
+					<reportElement x="574" y="4" width="53" height="15" uuid="ff06baff-c8c5-4b41-9960-3e7ae57514db"/>
 					<textElement textAlignment="Left">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[JUEVES]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="789a4b14-e19e-4be5-9917-252159c75b8d" x="631" y="4" width="60" height="15"/>
+					<reportElement x="631" y="4" width="60" height="15" uuid="789a4b14-e19e-4be5-9917-252159c75b8d"/>
 					<textElement textAlignment="Left">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[VIERNES]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="7f4714b5-8218-4977-859e-ff04d97fdfcf" x="691" y="4" width="60" height="15"/>
+					<reportElement x="691" y="4" width="60" height="15" uuid="7f4714b5-8218-4977-859e-ff04d97fdfcf"/>
 					<textElement textAlignment="Left">
 						<font isBold="true"/>
 					</textElement>
@@ -249,8 +249,7 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 		<groupFooter>
 			<band height="15">
 				<textField>
-					<reportElement uuid="6a658763-ee55-4143-9950-735098c6f6c5" x="2" y="0" width="278" height="15"/>
-					<textElement/>
+					<reportElement x="2" y="0" width="278" height="15" uuid="6a658763-ee55-4143-9950-735098c6f6c5"/>
 					<textFieldExpression><![CDATA["Cantidad de Empleados del Departamento:"+$V{Empleados_por_Departamento}]]></textFieldExpression>
 				</textField>
 			</band>
@@ -262,9 +261,9 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 	<title>
 		<band height="44" splitType="Stretch">
 			<frame>
-				<reportElement uuid="63080f10-8f6b-4845-89d1-7fb8caac014d" mode="Opaque" x="0" y="0" width="752" height="44" forecolor="#000066" backcolor="#000066"/>
+				<reportElement mode="Opaque" x="0" y="0" width="752" height="44" forecolor="#000066" backcolor="#000066" uuid="63080f10-8f6b-4845-89d1-7fb8caac014d"/>
 				<staticText>
-					<reportElement uuid="e13921a6-83ac-434c-bca4-d229d421582b" style="Title" x="0" y="0" width="426" height="41"/>
+					<reportElement style="Title" x="0" y="0" width="426" height="41" uuid="e13921a6-83ac-434c-bca4-d229d421582b"/>
 					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
 					<textElement verticalAlignment="Bottom">
 						<font size="28" isBold="false"/>
@@ -272,14 +271,14 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 					<text><![CDATA[Plantilla de Personal con Horario]]></text>
 				</staticText>
 				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement uuid="2e5e1b70-cb64-4a45-b22f-e6d037b4dd36" x="442" y="21" width="144" height="20" forecolor="#FFFFFF"/>
+					<reportElement x="442" y="21" width="144" height="20" forecolor="#FFFFFF" uuid="2e5e1b70-cb64-4a45-b22f-e6d037b4dd36"/>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
 				<image>
-					<reportElement uuid="5027b485-ea91-48c1-a520-0bf57795b366" x="671" y="0" width="73" height="41"/>
+					<reportElement x="671" y="0" width="73" height="41" uuid="5027b485-ea91-48c1-a520-0bf57795b366"/>
 					<imageExpression><![CDATA["C:\\SCOI\\imagen\\Plantilla_de_Horarios.jpg"]]></imageExpression>
 				</image>
 			</frame>
@@ -288,86 +287,86 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 	<detail>
 		<band height="23" splitType="Stretch">
 			<frame>
-				<reportElement uuid="53a275bb-e76d-4820-9dff-b123bb7e6b0f" style="Row" mode="Opaque" x="0" y="0" width="752" height="23"/>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="752" height="23" uuid="53a275bb-e76d-4820-9dff-b123bb7e6b0f"/>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="f012061a-6b3b-4612-b545-0758756cdc3e" style="Detail" positionType="Float" x="0" y="0" width="23" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="23" height="13" uuid="f012061a-6b3b-4612-b545-0758756cdc3e"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="a3d2ee7b-2a41-4090-9107-aeb77602b509" style="Detail" positionType="Float" x="23" y="0" width="208" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="23" y="0" width="208" height="13" uuid="a3d2ee7b-2a41-4090-9107-aeb77602b509"/>
 					<textElement>
 						<font size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="b5c5837c-a27d-453a-88e5-7307bcbbaf0b" style="Detail" positionType="Float" mode="Transparent" x="0" y="13" width="329" height="9"/>
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="0" y="13" width="329" height="9" uuid="b5c5837c-a27d-453a-88e5-7307bcbbaf0b"/>
 					<textElement>
 						<font size="7"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Horario}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="867a4ba3-f6a4-4410-89ff-d92c7c2d3511" style="Detail" positionType="Float" x="331" y="0" width="60" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="331" y="0" width="60" height="13" uuid="867a4ba3-f6a4-4410-89ff-d92c7c2d3511"/>
 					<textElement>
 						<font size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Domingo}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="4b9e4585-792d-4fe6-a060-0fda600e3e1a" style="Detail" positionType="Float" x="391" y="0" width="60" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="391" y="0" width="60" height="13" uuid="4b9e4585-792d-4fe6-a060-0fda600e3e1a"/>
 					<textElement>
 						<font size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Lunes}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="8f72b58b-ab96-47fa-85d7-6773c1bec57f" style="Detail" positionType="Float" x="451" y="0" width="60" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="451" y="0" width="60" height="13" uuid="8f72b58b-ab96-47fa-85d7-6773c1bec57f"/>
 					<textElement>
 						<font size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Martes}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="dc3c3efa-8d34-4589-b0f8-c3d47bf34b84" style="Detail" positionType="Float" x="511" y="0" width="60" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="511" y="0" width="60" height="13" uuid="dc3c3efa-8d34-4589-b0f8-c3d47bf34b84"/>
 					<textElement>
 						<font size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Miercoles}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="d33d5f70-000f-4740-b580-8c0321ecccdf" style="Detail" positionType="Float" x="571" y="0" width="60" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="571" y="0" width="60" height="13" uuid="d33d5f70-000f-4740-b580-8c0321ecccdf"/>
 					<textElement>
 						<font size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Jueves}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="7d1823d3-f084-4aa9-8e5b-8eebb834b754" style="Detail" positionType="Float" x="631" y="0" width="60" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="631" y="0" width="60" height="13" uuid="7d1823d3-f084-4aa9-8e5b-8eebb834b754"/>
 					<textElement>
 						<font size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Viernes}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="acefcf28-ea2e-4b0f-8b33-1664658f5a40" style="Detail" positionType="Float" x="691" y="0" width="60" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="691" y="0" width="60" height="13" uuid="acefcf28-ea2e-4b0f-8b33-1664658f5a40"/>
 					<textElement>
 						<font size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Sabado}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="bed45ef7-73ad-4be7-a1cd-7e326c14bea3" style="Detail" positionType="Float" x="280" y="0" width="44" height="13"/>
+					<reportElement style="Detail" positionType="Float" x="280" y="0" width="44" height="13" uuid="bed45ef7-73ad-4be7-a1cd-7e326c14bea3"/>
 					<textElement>
 						<font size="7"/>
 					</textElement>
 					<textFieldExpression><![CDATA["DB:"+$F{Dobla}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="13078cde-9079-43fd-a953-0fa8d2b9e671" style="Detail" positionType="Float" mode="Transparent" x="231" y="0" width="49" height="13"/>
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="231" y="0" width="49" height="13" uuid="13078cde-9079-43fd-a953-0fa8d2b9e671"/>
 					<textElement>
 						<font size="7"/>
 					</textElement>
@@ -379,23 +378,23 @@ ORDER BY    tb_establecimiento.nombre,tb_departamento.departamento]]>
 	<pageFooter>
 		<band height="15" splitType="Stretch">
 			<frame>
-				<reportElement uuid="020449da-c4e8-45d5-9289-0a3e4ffc8387" mode="Opaque" x="0" y="0" width="752" height="15" forecolor="#D0B48E" backcolor="#000066"/>
+				<reportElement mode="Opaque" x="0" y="0" width="752" height="15" forecolor="#D0B48E" backcolor="#000066" uuid="020449da-c4e8-45d5-9289-0a3e4ffc8387"/>
 				<textField evaluationTime="Report">
-					<reportElement uuid="68f13de8-448a-4ec6-b297-a8d9c18bc954" style="Column header" x="704" y="3" width="40" height="10" forecolor="#FFFFFF"/>
+					<reportElement style="Column header" x="704" y="3" width="40" height="10" forecolor="#FFFFFF" uuid="68f13de8-448a-4ec6-b297-a8d9c18bc954"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="159f23d8-cea8-41e4-93f2-6cbe1ad9f564" style="Column header" x="624" y="3" width="80" height="10" forecolor="#FFFFFF"/>
+					<reportElement style="Column header" x="624" y="3" width="80" height="10" forecolor="#FFFFFF" uuid="159f23d8-cea8-41e4-93f2-6cbe1ad9f564"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 				</textField>
 				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement uuid="6dd44a72-d4a1-48c1-bc87-923b041ef1b0" style="Column header" x="5" y="0" width="197" height="13" forecolor="#FFFFFF"/>
+					<reportElement style="Column header" x="5" y="0" width="197" height="13" forecolor="#FFFFFF" uuid="6dd44a72-d4a1-48c1-bc87-923b041ef1b0"/>
 					<textElement verticalAlignment="Middle">
 						<font size="10" isBold="false"/>
 					</textElement>

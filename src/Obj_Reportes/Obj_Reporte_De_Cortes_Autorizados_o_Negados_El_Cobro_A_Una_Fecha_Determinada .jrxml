@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
+<!-- 2015-05-23T15:25:42 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte_de_cortes_autorizados_a_cobro_a_una_feha_determinada " pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3bc4b388-94c0-4f16-a467-0c7b647be13d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[exec sp_reporte_de_cortes_autorizados_a_cobro_a_una_feha_determinada '21/05/2015']]>
+	</queryString>
+	<field name="folio_corte" class="java.lang.String"/>
+	<field name="cajero" class="java.lang.String"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="fecha_corte" class="java.lang.String"/>
+	<field name="fecha_paso_cobro" class="java.lang.String"/>
+	<field name="diferencia" class="java.lang.Float"/>
+	<field name="diferencia_absoluta" class="java.lang.Double"/>
+	<field name="observacion_del_corte" class="java.lang.String"/>
+	<field name="comentario_auditoria" class="java.lang.String"/>
+	<field name="comentario_seguridad" class="java.lang.String"/>
+	<field name="estatus" class="java.lang.String"/>
+	<variable name="Diferirnecia_Total_Absoluta" class="java.lang.Float" resetType="Group" resetGroup="Group3" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferencia_absoluta}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{estatus}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="3" width="802" height="24" forecolor="#B89F7D" backcolor="#F04B0A" uuid="7a7526a1-6909-445b-b869-dce0ee997aaa"/>
+					<textField>
+						<reportElement x="1" y="1" width="460" height="22" forecolor="#FFFFFF" uuid="92f7c7a6-eb94-48f8-9b35-09041f705099"/>
+						<box>
+							<topPen lineColor="#FFFFFF"/>
+							<leftPen lineColor="#FFFFFF"/>
+							<bottomPen lineColor="#FFFFFF"/>
+							<rightPen lineColor="#FFFFFF"/>
+						</box>
+						<textElement>
+							<font size="16"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{estatus}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{establecimiento}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement positionType="Float" x="0" y="4" width="802" height="26" forecolor="#000000" uuid="cee0cb2c-2a36-4cda-9ae0-34d3a968ac49"/>
+					<textElement>
+						<font fontName="Times New Roman" size="16" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Group3">
+		<groupExpression><![CDATA[$F{cajero}]]></groupExpression>
+		<groupHeader>
+			<band height="77">
+				<frame>
+					<reportElement style="Row" mode="Opaque" x="0" y="-30" width="802" height="90" uuid="e0f40d8a-347d-4663-a481-3a5186f5c07d"/>
+					<textField>
+						<reportElement x="88" y="0" width="186" height="22" uuid="28fa1ffa-8530-4d2a-90f6-8598ce32a710"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{cajero}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="1" y="0" width="79" height="20" uuid="0aa5ab4a-cfed-4113-a1ce-4a96c36652b7"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{folio_corte}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="274" y="0" width="111" height="22" uuid="e9b041cf-f3b1-4be6-a40b-8bc3125dda1e"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{fecha_corte}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="385" y="0" width="115" height="22" uuid="67ef0acc-8640-45a6-a755-0d9bb2ae6ea8"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{fecha_paso_cobro}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="500" y="0" width="88" height="22" uuid="03fb7396-b874-4b84-99aa-0a877821c6c5"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="133" y="22" width="667" height="18" uuid="01a9f771-1449-491a-83ef-4da3851d767a"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{observacion_del_corte}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="133" y="40" width="667" height="18" uuid="03fa5245-6995-4266-b405-36d429bf1f1d"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{comentario_auditoria}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="133" y="58" width="668" height="18" uuid="29a48f64-3cf2-4069-917b-8321cecc3bf3"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{comentario_seguridad}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="599" y="0" width="158" height="22" uuid="4384f323-2cf1-4376-a4b6-e895cfed025d"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$V{Diferirnecia_Total_Absoluta}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="4" y="22" width="129" height="18" uuid="2fa704ea-fa5a-4af0-a2cc-5f4f89c3c03a"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8" isBold="true"/>
+						</textElement>
+						<text><![CDATA[OBSERVACIONES DE CORTE:]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="4" y="40" width="129" height="18" uuid="0dd7ece1-323f-4b6f-8f28-95015684ab96"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8" isBold="true"/>
+						</textElement>
+						<text><![CDATA[COMENTARIOS DE AUDITORIA:]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="4" y="58" width="129" height="18" uuid="653711e5-1156-48b6-8036-104dd1f26bbe"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8" isBold="true"/>
+						</textElement>
+						<text><![CDATA[COMENTARIOS DE SEGURIDAD:]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="102" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="31" width="677" height="66" backcolor="#1519ED" uuid="7f6bfeaa-86e0-46ef-992d-a9456e603de6"/>
+				<staticText>
+					<reportElement x="20" y="30" width="647" height="26" forecolor="#FAF5F5" uuid="f267edc4-e2b2-417e-9d40-c2be39da3e9a"/>
+					<textElement>
+						<font fontName="Arial" size="19"/>
+					</textElement>
+					<text><![CDATA[CORTES AUTORIZADOS A COBRO A UNA FECHA DETERMINADA.]]></text>
+				</staticText>
+			</frame>
+			<image>
+				<reportElement x="688" y="0" width="112" height="102" uuid="77a48e72-1a36-43d7-bcd1-87f2fb4b3e3e"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/Logotipo_IZAGAR.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="16" width="79" height="30" uuid="282afc7f-1c78-4217-89d2-c1f0e23b6dfc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[# FOLIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="17" width="194" height="30" uuid="d0d8e317-48f5-4efc-8727-624afd068420"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE DEL CAJERO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="17" width="111" height="30" uuid="ffcc5186-ff52-4525-9a78-f7b825fc57b5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA DE CORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="386" y="17" width="114" height="30" uuid="39837d2c-3e52-4eeb-95e2-47916498f073"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F.PASO DE CORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="502" y="17" width="88" height="30" uuid="de04fab3-6307-4f1c-acb1-f87a139af685"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIFERENCIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="592" y="17" width="169" height="30" uuid="0ea093e1-a258-409b-974e-28ff48955a6d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIFERENCIA DE CORTE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#F04B0A" uuid="72143713-03f6-4648-af93-4fed1bb54157"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="6dc3454f-0bd1-40ae-8b49-239494b84126"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="da01ac91-2e08-490b-a6a9-b36f68d2bb68"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="MMMMM dd, yyyy">
+					<reportElement x="4" y="0" width="138" height="25" forecolor="#FAF5F5" uuid="4edf7b41-7a32-4aba-be14-b4ea539f2ed4"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -4,27 +4,16 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import Conexiones_SQL.Connexion;
-
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
+import Conexiones_SQL.Generacion_Reportes;
 
 
 @SuppressWarnings("serial")
@@ -60,46 +49,15 @@ public class Cat_Reporte_De_Cumpleanios_Del_Mes extends JDialog{
 		
 		ActionListener opGenerar = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 
-				int mes= cmbMeses.getSelectedIndex();
-				new Cat_Genera_Reporte_Cumpleanios_Del_Mes(mes);
+				String basedatos="2.26";
+				String vista_previa_reporte="no";
+				int vista_previa_de_ventana=0;
+				String comando="exec sp_Reporte_De_Cumpleanios_del_Mes "+cmbMeses.getSelectedIndex();
+				String reporte = "Obj_Reporte_De_Empleados_Cumpleaños_Del_Mes.jrxml";
+						 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			}
 		};
-		
-
-
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	
-	public class Cat_Genera_Reporte_Cumpleanios_Del_Mes extends JFrame {
-		
-		public Cat_Genera_Reporte_Cumpleanios_Del_Mes(int mes) {
-			String query = "exec sp_Reporte_De_Cumpleanios_del_Mes "+mes;
-			try {
-				
-//				jenera el archivo *.jasper en la misma ruta del proyecto
-//				JasperCompileManager.compileReportToFile(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Cumpleanios_Del_Mes.jrxml");
-				
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Cumpleanios_Del_Mes.jrxml");
-				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(),new JRResultSetDataSource(new Connexion().conexion().createStatement().executeQuery(query)));
-				
-//				mostras reporte (comentar para no mostrar)
-				JasperViewer.viewReport(print, false);
-				
-//				imprimir reporte automatico ---------------------------------------------------------------------------------------------------------------
-//				false = imprime reporte en impresora predeterminada ---------------------------------------------------------------------------------------
-//				true  = muestra ventana de seleccion de impresora -----------------------------------------------------------------------------------------
-//				JasperPrintManager.printReport(print, true);
-				
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				JOptionPane.showMessageDialog(null, "Error En La Subclase Cat_Genera_Reporte_Cumpleanios_Del_Mes ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-			}
-		}
-				
-		
-	}
 
 	
 		public static void main(String args[]){

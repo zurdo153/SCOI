@@ -33,7 +33,7 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-icono-8797-48.jpg"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccion Del Reporte de Diferencia de Cortes de Lista de Raya Actual"));
-		this.setTitle("Reportes de Dif de Cortes");
+		this.setTitle("Reportes de Abonos y Saldos A Cortes");
 		
 		btncortes_Limpio.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
 				"		<p>Impresion de Reporte De Cortes</p>" +
@@ -41,16 +41,18 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 				"</html>"); 
 		
 		btnPrestamos_Por_Establecimiento.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<p>Impresion de Reporte De cortes</p>" +
-				"		<CENTER><p>Por Establecimiento</p></CENTER></FONT>" +
+				"		<p>Impresion de Reporte De Abonos y Saldo </p>" +
+				"		<CENTER><p>De Lista de Raya Actual Por Establecimiento</p></CENTER></FONT>" +
 				"</html>"); 
 		
-		panel.add(btncortes_Limpio).setBounds(40,40,240,40);
-		panel.add(btnPrestamos_Por_Establecimiento).setBounds(40,100,240,40);
-		btncortes_Limpio.addActionListener(Reporte_Cortes_Lista_de_Raya_Actual_limpio);
+
+		panel.add(btnPrestamos_Por_Establecimiento).setBounds(40,40,300,40);
+//		panel.add(btncortes_Limpio).setBounds(40,100,300,40);
 		btnPrestamos_Por_Establecimiento.addActionListener(Reporte_Cortes_Lista_de_Raya_Actual_Por_Establecimiento);
+		btncortes_Limpio.addActionListener(Reporte_Cortes_Lista_de_Raya_Actual_limpio);
+
 		cont.add(panel);
-		this.setSize(320,200);
+		this.setSize(380,150);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -67,15 +69,16 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 	ActionListener Reporte_Cortes_Lista_de_Raya_Actual_Por_Establecimiento = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			 reporte = "Obj_Reporte_De_Cortes_De_Lista_De_Raya_Actual.jrxml";
-			 comando = "exec sp_Reporte_De_Cortes_De_Lista_De_Raya_Actual_Para_Exportar 'Establecimiento'";
+			 comando = "exec sp_Reporte_De_Cortes_De_Lista_De_Raya_Actual_Para_Exportar 'status',0";
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
 	
+	
 	ActionListener Reporte_Cortes_Lista_de_Raya_Actual_limpio = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			 reporte = "Obj_Reporte_De_Cortes_De_Lista_De_Raya_Actual_Para_Exportar.jrxml";
-			 comando = "exec sp_Reporte_De_Cortes_De_Lista_De_Raya_Actual_Para_Exportar 'Nombre'";
+			 comando = "exec sp_Reporte_De_Cortes_De_Lista_De_Raya_Actual_Para_Exportar 'NombreCompleto '";
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
