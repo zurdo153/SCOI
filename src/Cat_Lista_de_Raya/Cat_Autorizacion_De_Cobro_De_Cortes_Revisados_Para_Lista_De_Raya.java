@@ -198,9 +198,9 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 			tabla.getColumnModel().getColumn(5).setHeaderValue("Status Auditoria");
 			tabla.getColumnModel().getColumn(5).setMaxWidth(b-60);
 			tabla.getColumnModel().getColumn(5).setMinWidth(b-60);
-			tabla.getColumnModel().getColumn(6).setHeaderValue("Dif. Aud.");
-			tabla.getColumnModel().getColumn(6).setMaxWidth(a);
-			tabla.getColumnModel().getColumn(6).setMinWidth(a);
+			tabla.getColumnModel().getColumn(6).setHeaderValue("Dif. Auditoria");
+			tabla.getColumnModel().getColumn(6).setMaxWidth(a+20);
+			tabla.getColumnModel().getColumn(6).setMinWidth(a+20);
 			tabla.getColumnModel().getColumn(7).setHeaderValue("Observaciones Auditoria");
 			tabla.getColumnModel().getColumn(7).setMaxWidth(b*3);
 			tabla.getColumnModel().getColumn(7).setMinWidth(b-50);
@@ -213,9 +213,9 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 			tabla.getColumnModel().getColumn(10).setHeaderValue("Status Seguridad");
 			tabla.getColumnModel().getColumn(10).setMaxWidth(b-60);
 			tabla.getColumnModel().getColumn(10).setMinWidth(b-60);
-			tabla.getColumnModel().getColumn(11).setHeaderValue("Dif. Seg.");
-			tabla.getColumnModel().getColumn(11).setMaxWidth(a);
-			tabla.getColumnModel().getColumn(11).setMinWidth(a);
+			tabla.getColumnModel().getColumn(11).setHeaderValue("Dif. Seguridad");
+			tabla.getColumnModel().getColumn(11).setMaxWidth(a+20);
+			tabla.getColumnModel().getColumn(11).setMinWidth(a+20);
 			tabla.getColumnModel().getColumn(12).setHeaderValue("Observaciones Seguridad");
 			tabla.getColumnModel().getColumn(12).setMaxWidth(b*3);
 			tabla.getColumnModel().getColumn(12).setMinWidth(b-50);
