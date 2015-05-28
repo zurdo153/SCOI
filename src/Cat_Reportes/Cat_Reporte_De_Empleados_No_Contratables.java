@@ -12,6 +12,7 @@ import net.sf.jasperreports.view.JasperViewer;
 public class Cat_Reporte_De_Empleados_No_Contratables {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Cat_Reporte_De_Empleados_No_Contratables() {
+			
 			try {
 				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Empleados_No_Contratables.jrxml");
 				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
@@ -23,3 +24,4 @@ public class Cat_Reporte_De_Empleados_No_Contratables {
 
 	}
 
+//JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Gafete_De_Empleados.jrxml");

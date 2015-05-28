@@ -4588,7 +4588,7 @@ public class BuscarSQL {
 	public void Gafetes_masivos(String listas) throws SQLException{
 		String insertIds = "exec sp_insert_ids "+listas.substring(0, listas.length()-1)+";";
 		System.out.println(listas.substring(0, listas.length()-1));
-		String query =  "exec sp_genera_clave_checador "+listas.substring(0, listas.length()-1)+";";
+//		String query =  "exec sp_genera_clave_checador "+listas.substring(0, listas.length()-1)+";";
 
 		Statement stmt = null;
 		
@@ -4601,23 +4601,23 @@ public class BuscarSQL {
 			pstmt.execute();
 			con.commit();
 			
-			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			int j = 1;
-			while(rs.next()){
-				new Obj_Gen_Code_Bar().Generar_Code(rs.getString("codigo"),j+"".trim());
-				File photo = new File(System.getProperty("user.dir")+"/AssetGafete/Users_Images/"+j+".png");
-				FileOutputStream fos = new FileOutputStream(photo);
-
-				byte[] buffer = new byte[1];
-		            InputStream is = rs.getBinaryStream("foto");
-		            while (is.read(buffer) > 0) {
-		                fos.write(buffer);
-		            }
-		            fos.close();
-		    	j++;
-		           
-			}
+//			stmt = con.createStatement();
+//			ResultSet rs = stmt.executeQuery(query);
+//			int j = 1;
+//			while(rs.next()){
+//				new Obj_Gen_Code_Bar().Generar_Code(rs.getString("codigo"),j+"".trim());
+//				File photo = new File(System.getProperty("user.dir")+"/AssetGafete/Users_Images/"+j+".png");
+//				FileOutputStream fos = new FileOutputStream(photo);
+//
+//				byte[] buffer = new byte[1];
+//		            InputStream is = rs.getBinaryStream("foto");
+//		            while (is.read(buffer) > 0) {
+//		                fos.write(buffer);
+//		            }
+//		            fos.close();
+//		    	j++;
+//		           
+//			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5843,7 +5843,8 @@ public class BuscarSQL {
 				"              ,prodestab.ultimo_costo" +
 				"              ,prodestab.costo_promedio" +
 				"              ,@exist_cedis as existencia_cedis  " +
-				"             ,isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0) as existencia_total" +
+				"             ,isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0) as existencia_total "+
+				"			  ,0 as precio_de_venta" +
 				"      from productos " +
 				"        left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod " +
 				"      where productos.cod_prod=@cod_prod" +
@@ -5863,7 +5864,8 @@ public class BuscarSQL {
 									   datosproducto.setCosto_Promedio(rs2.getDouble("costo_promedio"));
 									   datosproducto.setExistencia_Cedis(rs2.getDouble("existencia_cedis"));
 									   datosproducto.setExistencia_Total(rs2.getDouble("existencia_total"));
-								    }
+									   datosproducto.setPrecio_de_venta(rs2.getDouble("precio_de_venta"));
+								   }
 							
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_producto \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);

@@ -1,6 +1,7 @@
 package Cat_Compras;
 
 import java.awt.AWTException;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -12,7 +13,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -27,20 +30,13 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
-
-
-
 import com.toedter.calendar.JDateChooser;
-
-
-
 
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
@@ -64,17 +60,10 @@ public class Cat_Costos_Competencia extends JFrame{
 				JTextField txtcosto_promedio= new JTextField();
 				JTextField txtPrecioVenta= new JTextField();
 				
-				JTextArea txaCondiciones = new Componentes().textArea(new JTextArea(), "Condiciones De La Compra", 350);
-				JScrollPane Condiciones = new JScrollPane(txaCondiciones);
-				
 				JDateChooser cfecha = new JDateChooser();
 				Connexion con = new Connexion();
 				
-				
-				public static Object[][] get_tabla(){
-					return new BuscarTablasModel().tabla_model_competencia();
-				}
-//				String[][] lista_comp = {{"1","ROJO-LE",""},{"2","AZUL-M2",""}};
+				public static Object[][] get_tabla(){return new BuscarTablasModel().tabla_model_competencia();}
 				DefaultTableModel modelo_captura = new DefaultTableModel(get_tabla(), new String[]{"Folio","Competencia", "Costo"}){
 				     @SuppressWarnings("rawtypes")
 					Class[] types = new Class[]{
@@ -101,7 +90,7 @@ public class Cat_Costos_Competencia extends JFrame{
 				
 				
 				DefaultTableModel modelo_prv = new DefaultTableModel(null,
-			            new String[]{"Compra","Cod.Prv", "Proveedor","Fecha Compra","Unid","Cont","Cantidad","Costo","Costo PZ","Ultimo Costo","Costo Prom","Exist Cedis","Exist Total","Nota de La Negociacion","Cotizo"}
+			            new String[]{"Cod.Prod","Descripcion", "Ultimo Costo","Costo Promedio","P.Venta","Fol. Comp","P.Venta Comp","Realizo Captura"}
 						){
 				     @SuppressWarnings("rawtypes")
 					Class[] types = new Class[]{
@@ -112,15 +101,9 @@ public class Cat_Costos_Competencia extends JFrame{
 				    	java.lang.String.class,
 				    	java.lang.String.class,
 				    	java.lang.String.class,
-				    	java.lang.String.class,
-				    	java.lang.String.class,
-				    	java.lang.String.class,
-				    	java.lang.String.class,
-				    	java.lang.String.class,
-				    	java.lang.String.class,
-				    	java.lang.String.class,
 				    	java.lang.String.class
-			                                    };
+			         };
+				     
 				     @SuppressWarnings({ "rawtypes", "unchecked" })
 					public Class getColumnClass(int columnIndex) {
 			             return types[columnIndex];
@@ -135,13 +118,6 @@ public class Cat_Costos_Competencia extends JFrame{
 			        	 	case 5 : return false;
 			        	 	case 6 : return false;
 			        	 	case 7 : return false;
-			        	 	case 8 : return false;
-			        	 	case 9 : return false;
-			        	 	case 10 : return true;
-			        	 	case 11 : return true;
-			        	 	case 12 : return true;
-			        	 	case 13 : return true;
-			        	 	case 14 : return true;
 			        	 } 				
 			 			return false;
 			 		}
@@ -158,11 +134,32 @@ public class Cat_Costos_Competencia extends JFrame{
 			  double ultimo_costo=0;
 			  double costo_promedio=0;
 			  double venta_total=0;
+			  double precio_de_venta=0;
 			  
+			  int fila = 0;
 	public Cat_Costos_Competencia(String cod_prod){
 		
 		codigo_producto=cod_prod+"";
 		txtcod_prod.setText(codigo_producto+"");
+		
+		if(Validar(fila,2)){
+			
+			int cantidadDeFilas = tabla_captura.getRowCount();
+			
+			fila+=1;
+
+			if(fila == cantidadDeFilas){
+				fila=0;
+			}
+			
+//			if(tabla_cobros.getValueAt(fila, columna).equals("")){
+//				tabla_cobros.setValueAt(0,fila, columna);
+//			}
+	
+			tabla_captura.editCellAt(fila, 2);
+			Component aComp=tabla_captura.getEditorComponent();
+			aComp.requestFocus();
+		}
 
 		setSize(1024,635);
 		setResizable(false);
@@ -172,9 +169,6 @@ public class Cat_Costos_Competencia extends JFrame{
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/encontrar-busqueda-lupa-de-la-ventana-de-zoom-icono-4008-32.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccione el Tipo de Reporte"));
-		txaCondiciones.setBorder(BorderFactory.createTitledBorder(blackline));
-		txaCondiciones.setLineWrap(true); 
-		txaCondiciones.setWrapStyleWord(true);
 
 		int x=10 ;
 		int y=20 ;
@@ -206,16 +200,12 @@ public class Cat_Costos_Competencia extends JFrame{
 		
 		panel.add(Tabla_Proveedor()).setBounds(10,170,1000,430);
 		
-		Condiciones.setEnabled(false);
-		Condiciones.getHorizontalScrollBar().setEnabled(false);
-		Condiciones.getVerticalScrollBar().setEnabled(false);
-		Condiciones.getViewport().getView().setEnabled(false);
-		
 		btnDeshacer.setEnabled(false);
-		btnGuardar.setEnabled(false);
+//		btnGuardar.setEnabled(false);
 	    cfecha.setEnabled(true);
 	    
 	    render_proveedor();
+	    Llenar_Tabla_proveedores();
 	    
 		cont.add(panel);
 		
@@ -308,26 +298,15 @@ public class Cat_Costos_Competencia extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			
 		    btnDeshacer.setEnabled(true); 
-		    btnGuardar.setEnabled(true);
-			Condiciones.getHorizontalScrollBar().setEnabled(true);
-			Condiciones.getVerticalScrollBar().setEnabled(true);
-			Condiciones.getViewport().getView().setEnabled(true);
-			
+//		    btnGuardar.setEnabled(true);
 		}
 	};
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			txaCondiciones.setText("");
-			
-			Condiciones.setEnabled(false);
-			Condiciones.getHorizontalScrollBar().setEnabled(false);
-			Condiciones.getVerticalScrollBar().setEnabled(false);
-			Condiciones.getViewport().getView().setEnabled(false);
 			
 			btnDeshacer.setEnabled(false);
-			btnGuardar.setEnabled(false);
-			
+//			btnGuardar.setEnabled(false);
 		}
 	};
 	
@@ -335,16 +314,9 @@ public class Cat_Costos_Competencia extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			
 			txtcod_prod.setText("");
-			txaCondiciones.setText("");
-			
-			Condiciones.setEnabled(false);
-			Condiciones.getHorizontalScrollBar().setEnabled(false);
-			Condiciones.getVerticalScrollBar().setEnabled(false);
-			Condiciones.getViewport().getView().setEnabled(false);
-			
 			
 			btnDeshacer.setEnabled(false);
-			btnGuardar.setEnabled(false);
+//			btnGuardar.setEnabled(false);
 			
 			while(tabla_Proveedor.getRowCount()>0){
 				modelo_prv.removeRow(0);  }
@@ -356,6 +328,37 @@ public class Cat_Costos_Competencia extends JFrame{
 		}
 	};
 	
+	@SuppressWarnings("unused")
+	private boolean Validar(int fila, int columna) { 
+			String valor=""; 
+			double numero =0;
+			
+			if(tabla_captura.getValueAt(fila,columna).toString().equals("")) {
+				numero =0;
+				return true; 
+			}else{ 
+				
+				try{
+						numero = Double.valueOf(tabla_captura.getValueAt(fila, columna).toString().trim());
+						return true;
+				}catch(NumberFormatException e){
+						return false;
+				}
+			} 
+	}
+	
+	public String[][] competencia(){
+		String[][] comp = new String[tabla_captura.getRowCount()][2];
+		
+		for(int i=0; i<comp.length; i++){
+			System.out.println(tabla_captura.getValueAt(i,0).toString());
+			System.out.println(tabla_captura.getValueAt(i,2).toString());
+			comp[i][0]=tabla_captura.getValueAt(i,0).toString();
+			comp[i][1]=tabla_captura.getValueAt(i,2).toString();
+		}
+		return comp;
+	}
+	
 	ActionListener Guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
@@ -365,18 +368,21 @@ public class Cat_Costos_Competencia extends JFrame{
 			}else{
                 Obj_Cotizaciones_De_Un_Producto cotizacion_prod = new Obj_Cotizaciones_De_Un_Producto();					
 				
+                
+                
                 cotizacion_prod.setCod_Prod(codigo_producto);
                 cotizacion_prod.setUltimo_Costo(ultimo_costo);
                 cotizacion_prod.setCosto_Promedio(costo_promedio);
-                cotizacion_prod.setNotas_Negociacion(txaCondiciones.getText().toUpperCase().trim()+"");
-//                cotizacion_prod.setExistencia_Total(exist_total);
                 
+                cotizacion_prod.setPrecio_de_venta(precio_de_venta);
+                cotizacion_prod.setDescripcion_Prod(JLBdescripcion.getText().toLowerCase().toString().trim());
                 
-               if(cotizacion_prod.Guardar_Cotizacion()){
+               if(cotizacion_prod.Guardar_Captura_competencia(competencia())){
             	   btnDeshacer.doClick();  
+            	   
             	   while(tabla_Proveedor.getRowCount()>0){
 						modelo_prv.removeRow(0);  }
-//					 Llenar_Tabla_proveedores ();
+					 Llenar_Tabla_proveedores ();
 					 render_proveedor();
             	   JOptionPane.showMessageDialog(null, "Se Guardo Correctamente:","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
    				return;
@@ -388,22 +394,12 @@ public class Cat_Costos_Competencia extends JFrame{
 			
 		}
 	};
+	
 	private String validaCampos(){
 		String error="";
 		if(codigo_producto.equals("")) error +="Codigo de Producto \n";
-		if(txaCondiciones.getText().equals(""))	error+= "Condiciones De La Compra\n";
 		return error;
 	}
-	
-	KeyListener pasa_notas= new KeyListener() {
-		public void keyTyped(KeyEvent e){}
-		public void keyReleased(KeyEvent e) {}
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				txaCondiciones.requestFocus();
-			}
-		}
-	};
 	
 	KeyListener Buscar_Datos_Producto = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
@@ -420,19 +416,14 @@ public class Cat_Costos_Competencia extends JFrame{
 						descripcion=Datos_Producto.getDescripcion_Prod();
 						ultimo_costo=Datos_Producto.getUltimo_Costo();
 						costo_promedio=Datos_Producto.getCosto_Promedio();
+						precio_de_venta = Datos_Producto.getPrecio_de_venta();
 						txtcod_prod.setText(Datos_Producto.getCod_Prod());
 						
 						JLBdescripcion.setText(descripcion);
 						txtultimo_costo.setText(ultimo_costo+"");
 						txtcosto_promedio.setText(costo_promedio+"");
+						txtPrecioVenta.setText(precio_de_venta+"");
 						
-						
-//						txtPrecioVenta.setText(venta_total+"");
-//						while(tabla_Proveedor.getRowCount()>0){
-//							modelo_prv.removeRow(0); }
-//						 Llenar_Tabla_proveedores ();
-//						 render_proveedor();
-						 
 						 codigo_producto=txtcod_prod.getText().trim().toUpperCase()+"";
 						 
 					}else{
@@ -464,7 +455,7 @@ public void render_proveedor(){
 					tabla_captura.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 					tabla_captura.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 	
-					tabla_Proveedor.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10)); 
+					tabla_Proveedor.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 					tabla_Proveedor.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 					tabla_Proveedor.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 					tabla_Proveedor.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("fecha","izquierda","Arial","normal",12));
@@ -472,13 +463,6 @@ public void render_proveedor(){
 					tabla_Proveedor.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
 					tabla_Proveedor.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 					tabla_Proveedor.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(10).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(11).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(12).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(13).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10));
-					tabla_Proveedor.getColumnModel().getColumn(14).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10));
 				}
 				
 				
@@ -487,124 +471,70 @@ public void render_proveedor(){
 			    this.tabla_Proveedor.getTableHeader().setReorderingAllowed(false) ;
 				this.tabla_Proveedor.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 					
-				tabla_Proveedor.getColumnModel().getColumn(0).setMaxWidth(65);
-				tabla_Proveedor.getColumnModel().getColumn(0).setMinWidth(65);
-				tabla_Proveedor.getColumnModel().getColumn(1).setMaxWidth(65);
-				tabla_Proveedor.getColumnModel().getColumn(1).setMinWidth(65);
-				tabla_Proveedor.getColumnModel().getColumn(2).setMaxWidth(300);
-				tabla_Proveedor.getColumnModel().getColumn(2).setMinWidth(300);
-				tabla_Proveedor.getColumnModel().getColumn(3).setMaxWidth(80);
-				tabla_Proveedor.getColumnModel().getColumn(3).setMinWidth(80);
-				tabla_Proveedor.getColumnModel().getColumn(4).setMaxWidth(35);
-				tabla_Proveedor.getColumnModel().getColumn(4).setMinWidth(35);
-				tabla_Proveedor.getColumnModel().getColumn(5).setMaxWidth(35);
-				tabla_Proveedor.getColumnModel().getColumn(5).setMinWidth(35);
-				tabla_Proveedor.getColumnModel().getColumn(6).setMaxWidth(70);
-				tabla_Proveedor.getColumnModel().getColumn(6).setMinWidth(60);
-				tabla_Proveedor.getColumnModel().getColumn(7).setMaxWidth(70);
-				tabla_Proveedor.getColumnModel().getColumn(7).setMinWidth(60);
-				tabla_Proveedor.getColumnModel().getColumn(8).setMaxWidth(70);
-				tabla_Proveedor.getColumnModel().getColumn(8).setMinWidth(60);
-				tabla_Proveedor.getColumnModel().getColumn(9).setMaxWidth(70);
-				tabla_Proveedor.getColumnModel().getColumn(9).setMinWidth(60);
-				tabla_Proveedor.getColumnModel().getColumn(10).setMaxWidth(70);
-				tabla_Proveedor.getColumnModel().getColumn(10).setMinWidth(60);
-				tabla_Proveedor.getColumnModel().getColumn(11).setMaxWidth(70);
-				tabla_Proveedor.getColumnModel().getColumn(11).setMinWidth(60);
-				tabla_Proveedor.getColumnModel().getColumn(12).setMaxWidth(70);
-				tabla_Proveedor.getColumnModel().getColumn(12).setMinWidth(60);
-				tabla_Proveedor.getColumnModel().getColumn(13).setMaxWidth(500);
-				tabla_Proveedor.getColumnModel().getColumn(13).setMinWidth(90);
-				tabla_Proveedor.getColumnModel().getColumn(14).setMaxWidth(250);
-				tabla_Proveedor.getColumnModel().getColumn(14).setMinWidth(90);
-			
+				int x=90;
+				tabla_Proveedor.getColumnModel().getColumn(0).setMaxWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(0).setMinWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(1).setMaxWidth(x*5);
+				tabla_Proveedor.getColumnModel().getColumn(1).setMinWidth(x*3);
+				tabla_Proveedor.getColumnModel().getColumn(2).setMaxWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(2).setMinWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(3).setMaxWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(3).setMinWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(4).setMaxWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(4).setMinWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(5).setMaxWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(5).setMinWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(6).setMaxWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(6).setMinWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(7).setMaxWidth(x*3);
+				tabla_Proveedor.getColumnModel().getColumn(7).setMinWidth(x*3);
 					
 					 JScrollPane scrol = new JScrollPane(tabla_Proveedor);
 				    return scrol; 
 				}
 				
-//				public void Llenar_Tabla_proveedores (){
-//					Statement s;
-//					ResultSet rs;
-//					
-//					try {
-//						
-//					/////ORIGEN COMPRAS
-//						s = con.conexion_IZAGAR().createStatement();
-//						String cod_producto=txtcod_prod.getText().trim().toUpperCase()+"";
-//						String fecha_busqueda =new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
-//						
-//						rs = s.executeQuery("DECLARE @cod_prod varchar(35) set @cod_prod='"+cod_producto+"'" +
-//								" 	SELECT entysal.folio" +
-//								" 		  ,proveedores.cod_prv" +
-//								" 		  ,proveedores.razon_social as proveedor" +
-//								"   	  ,convert(varchar(15),entysal.fecha,103) as fecha_compra" +
-//								" 		  ,entysal.unidad" +
-//								"		  ,convert(numeric(10,2),productos.contenido) as contenido" +
-//								"		  ,convert(numeric(10,2),entysal.cantidad) as cantidad" +
-//								"		  ,convert(numeric(10,2),entysal.costo) as costo" +
-//								"		  ,convert(numeric(10,2),round((entysal.importe/entysal.cantidad),2)) as costo_pz" +
-//								"   	  ,0 AS ultimo_costo" +
-//								"		  ,0 as costo_promedio" +
-//								"   	  ,0 as exist_cedis" +
-//								"         ,0 as exist_total" +
-//								"		  ,'' as notas" +
-//								"         ,'' as cotizo "+
-//								"         ,entysal.fecha as fecha_order_by "+    
-//								"   FROM entysal with(nolock)  " +
-//								"	     inner join productos on productos.cod_prod=entysal.cod_prod" +
-//								"	     inner join proveedores on proveedores.cod_prv=entysal.cod_prv" +
-//								" 	 WHERE entysal.transaccion='44'  and entysal.cod_prod=@cod_prod and entysal.fecha>'"+fecha_busqueda+"'   " +
-//								"     UNION ALL" +
-//								"  SELECT folio_compra as folio" +
-//								" 		  ,cod_prv" +
-//								"		  ,proveedor" +
-//								"		  ,convert(varchar(15),fecha_de_cotizacion,103) as fecha_compra" +
-//								"		  ,'PZ' as unidad" +
-//								"		  ,1 as contenido" +
-//								"		  ,cantidad_requerida as cantidad" +
-//								"		  ,convert(numeric(30,2),cantidad_requerida*costo_nuevo) as costo" +
-//								"		  ,convert(numeric(10,2),costo_nuevo) as costo_pz" +
-//								"		  ,convert(numeric(10,2),ultimo_costo) as ultimo_costo" +
-//								"		  ,convert(numeric(10,2),costo_promedio) as costo_promedio" +
-//								"		  ,exist_cedis" +
-//								"		  ,exist_total" +
-//								"		  ,notas" +
-//								"         ,folio_empleado_cotizo"+
-//								"         ,fecha_de_cotizacion as fecha_order_by "+
-//								"   FROM IZAGAR_captura_cotizaciones_de_un_producto_en_proveedores as cotizacion" +
-//								"	 WHERE cod_prod=@cod_prod and fecha_de_cotizacion>'"+fecha_busqueda+"' order by fecha_order_by desc")   ;
-//						
-//						
-//						
-//						while (rs.next())
-//						{ 
-//						   Object [] fila = new Object[15];
-//						   fila[0] = rs.getString(1).trim();
-//						   fila[1] = rs.getString(2).trim();
-//						   fila[2] = rs.getString(3).trim(); 
-//						   fila[3] = rs.getString(4).trim(); 
-//						   fila[4] = rs.getString(5).trim(); 
-//						   fila[5] = rs.getString(6).trim(); 
-//						   fila[6] = rs.getString(7).trim();
-//						   fila[7] = rs.getString(8).trim();
-//						   fila[8] = rs.getString(9).trim();
-//						   fila[9] = rs.getString(10).trim();
-//						   fila[10] = rs.getString(11).trim();
-//						   fila[11] = rs.getString(12).trim();
-//						   fila[12] = rs.getString(13).trim();
-//						   fila[13] = rs.getString(14).trim();
-//						   fila[14] = rs.getString(15).trim();
-//						   
-//						   
-//						   modelo_prv.addRow(fila); 
-//						}	
-//
-//					} catch (SQLException e1) {
-//						e1.printStackTrace();
-//						JOptionPane.showMessageDialog(null, "Error en Cat_Cotizaciones_De_Un_Producto_En_Proveedores en la funcion Llenar_Tabla_proveedores  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//					}
-//}
+				public void Llenar_Tabla_proveedores (){
+					Statement s;
+					ResultSet rs;
+					
+					try {
+						
+					/////ORIGEN COMPRAS
+						s = con.conexion().createStatement();
+						
+						rs = s.executeQuery(" select tb_costos_de_competencia.cod_prod"
+								+ " ,tb_costos_de_competencia.descripcion "
+								+ " ,tb_costos_de_competencia.ultimo_costo "
+								+ " ,tb_costos_de_competencia.costo_promedio "
+								+ " ,tb_costos_de_competencia.precio_de_venta "
+								+ " ,tb_competencias.competencia "
+								+ " ,tb_costos_de_competencia.precio_de_venta_competencia "
+								+ " ,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as realizo_captura "
+								+ " from tb_costos_de_competencia "
+								+ " inner join tb_competencias on tb_competencias.folio_competencia = tb_costos_de_competencia.folio_competencia "
+								+ " inner join tb_empleado on tb_empleado.folio = tb_costos_de_competencia.folio_realizo_captura "
+								+ " order by fecha desc");
+						
+						while (rs.next())
+						{ 
+						   String [] fila = new String[8];
+						   fila[0] = rs.getString(1).trim();
+						   fila[1] = rs.getString(2).trim();
+						   fila[2] = rs.getString(3).trim(); 
+						   fila[3] = rs.getString(4).trim(); 
+						   fila[4] = rs.getString(5).trim(); 
+						   fila[5] = rs.getString(6).trim(); 
+						   fila[6] = rs.getString(7).trim();
+						   fila[7] = rs.getString(8).trim();
+						   
+						   modelo_prv.addRow(fila); 
+						}	
+
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Error en Cat_Costos_Competencia en la funcion Llenar_Tabla_proveedores  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+}
 	
 		
 	public static void main(String args[]){

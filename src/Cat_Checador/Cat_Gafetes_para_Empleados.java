@@ -17,7 +17,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -27,7 +26,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
-
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
@@ -38,10 +36,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 
-
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
-import Obj_Checador.Obj_Gen_Code_Bar;
 import Obj_Checador.Obj_Reporte_Impresion_Gafetes;
 
 @SuppressWarnings("serial")
@@ -50,8 +45,7 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	JButton btn_Empleados = new  JButton("Empleados");
-	JButton btn_Generar = new JButton("Generar 4 Gafetes");
-	JButton btn_Generar_2 = new JButton("Generar 2 Gafetes");
+	JButton btn_Generar = new JButton("Generar Gafetes");
 	
 	private DefaultTableModel tabla_model = new DefaultTableModel(null,
             new String[]{"Folio", "Nombre Completo","Establecimiento","Puesto"}
@@ -90,21 +84,17 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 		
 		this.panel.add(btn_Empleados).setBounds(25,25,100,20);
 		
-		this.panel.add(btn_Generar).setBounds(25,50,180,20);
-		this.panel.add(btn_Generar_2).setBounds(25,70,180,20);
+		this.panel.add(btn_Generar).setBounds(130,25,180,20);
 		
-		this.panel.add(scroll_tabla).setBounds(25,90,750,92);
+		this.panel.add(scroll_tabla).setBounds(25,50,750,92);
 		
 		this.btn_Empleados.addActionListener(op_filtro);
 		this.btn_Generar.addActionListener(op_generar);
 		this.btn_Generar.setEnabled(false);
-		this.btn_Generar_2.addActionListener(op_generar_2);
-		this.btn_Generar_2.setEnabled(false);
-		
 		
 		this.cont.add(panel);
 		
-		this.setSize(800,250);
+		this.setSize(800,190);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		tabla.getColumnModel().getColumn(0).setMaxWidth(45);
@@ -120,16 +110,16 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			new Obj_Gen_Code_Bar().Reset_Code();
-			new Obj_Gen_Code_Bar().Reset_Users();
+//			new Obj_Gen_Code_Bar().Reset_Code();
+//			new Obj_Gen_Code_Bar().Reset_Users();
 			new Obj_Reporte_Impresion_Gafetes().buscar_masivo(list_folios().trim());
-			Impresion_De_4_Gafetes();
+			Impresion_De_Gafetes();
 		}
 	};
-	public void Impresion_De_4_Gafetes() {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void Impresion_De_Gafetes() {
 		try {
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Impresion_De_4_Gafetes.jrxml");
-			@SuppressWarnings({ "rawtypes", "unchecked" })
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Gafete_De_Empleados.jrxml");
 			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
 			JasperViewer.viewReport(print, false);
 		} catch (Exception e) {
@@ -138,40 +128,48 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 	}
 	
 	
-	ActionListener op_generar_2 = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			new Obj_Gen_Code_Bar().Reset_Code();
-			new Obj_Gen_Code_Bar().Reset_Users();
-			buscar_2_gafetes(list_folios().trim());
-			 Impresion_De_2_Gafetes();
-		}
-	};
-	
-	public void buscar_2_gafetes(String lista){
-		try {
-			new BuscarSQL().Generar_2_Gafetes(lista);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void Impresion_De_2_Gafetes() {
-		try {
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Impresion_De_2_Gafetes.jrxml");
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
-			JasperViewer.viewReport(print, false);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
+//	ActionListener op_generar_2 = new ActionListener() {
+//		public void actionPerformed(ActionEvent e) {
+//			new Obj_Gen_Code_Bar().Reset_Code();
+//			new Obj_Gen_Code_Bar().Reset_Users();
+//			buscar_2_gafetes(list_folios().trim());
+//			 Impresion_De_2_Gafetes();
+//		}
+//	};
+//	
+//	public void buscar_2_gafetes(String lista){
+//		try {
+//			new BuscarSQL().Generar_2_Gafetes(lista);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	public void Impresion_De_2_Gafetes() {
+//		try {
+//			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Impresion_De_2_Gafetes.jrxml");
+//			@SuppressWarnings({ "rawtypes", "unchecked" })
+//			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
+//			JasperViewer.viewReport(print, false);
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+//	}
 
 
 	public String list_folios(){
 		String lista = "";
+		int cantidad_de_registos=4;
+		int cantidad_seleccionada=tabla.getRowCount();
 		
-		for(int i=0; i<tabla.getRowCount(); i++){
-			lista += tabla_model.getValueAt(i,0).toString().trim()+", ";
+		if(cantidad_seleccionada>0){
+			for(int i=0; i<cantidad_seleccionada; i++){
+				lista += tabla_model.getValueAt(i,0).toString().trim()+", ";
+			}
+		}
+		
+		for(int i=0; i<(cantidad_de_registos-cantidad_seleccionada); i++){
+			lista += "0, ";
 		}
 		
 		return lista;
@@ -229,8 +227,7 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 		JTextField txtFolio = new JTextField();
 		JTextField txtNombre_Completo = new JTextField();
 		
-		JButton btnAgregar = new JButton("Agregar 4 Empleados");
-		JButton btnAgregar_2 = new JButton("Agregar 2 Empleados");
+		JButton btnAgregar = new JButton("Agregar Empleados");
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		
 		public Cat_Filtro_Empleado()	{
@@ -245,7 +242,6 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 			campo.add(txtFolio).setBounds(15,20,48,20);
 			campo.add(txtNombre_Completo).setBounds(64,20,259,20);
 			campo.add(btnAgregar).setBounds(324,20,150, 20);
-			campo.add(btnAgregar_2).setBounds(484,20,150, 20);
 			
 			cont.add(campo);
 			
@@ -362,7 +358,7 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 			txtNombre_Completo.addKeyListener(opFiltroNombre);
 			
 			btnAgregar.addActionListener(Agregar);
-			btnAgregar_2.addActionListener(Agregar_2);
+//			btnAgregar_2.addActionListener(Agregar_2);
 			setSize(850,600);
 //			setSize(425,450);
 			setResizable(false);
@@ -382,8 +378,8 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 				txtFolio.setText("");
 				txtNombre_Completo.setText("");
 				
-				if(valida_select() < 4 || valida_select() > 4){
-					JOptionPane.showMessageDialog(null,"Debes seleccionar a 4 Empleados", "Aviso", JOptionPane.WARNING_MESSAGE);
+				if(valida_select() > 4){
+					JOptionPane.showMessageDialog(null,"Solo Puede Seleccionar hasta 4 Empleados", "Aviso", JOptionPane.WARNING_MESSAGE);
 				}else{
 					while(tabla_model.getRowCount() > 0)
 						tabla_model.removeRow(0);
@@ -398,44 +394,11 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 						}
 					}
 					btn_Generar.setEnabled(true);
-					btn_Generar_2.setEnabled(false);
 					dispose();
 				}
 			}
 		};
-		ActionListener Agregar_2 = new ActionListener() {
-			@SuppressWarnings("unchecked")
-			public void actionPerformed(ActionEvent arg0) {
-				if(tabla.isEditing()){
-					tabla.getCellEditor().stopCellEditing();
-				}
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-				
-				txtFolio.setText("");
-				txtNombre_Completo.setText("");
-				
-				if(valida_select() < 2 || valida_select_2() > 2){
-					JOptionPane.showMessageDialog(null,"Debes seleccionar a 2 Empleados", "Aviso", JOptionPane.WARNING_MESSAGE);
-				}else{
-					while(tabla_model.getRowCount() > 0)
-						tabla_model.removeRow(0);
 
-					Object[] vectornull = new Object[tabla.getColumnCount()];
-					for(int i=0; i<tabla1.getRowCount(); i++){
-						if(Boolean.parseBoolean(model1.getValueAt(i, 4).toString()) == true){
-							tabla_model.addRow(vectornull);
-							for(int j=0; j<tabla.getColumnCount(); j++){
-								tabla_model.setValueAt(model1.getValueAt(i,j), tabla.getRowCount()-1, j);
-							}
-						}
-					}
-					btn_Generar_2.setEnabled(true);
-					btn_Generar.setEnabled(false);
-					dispose();
-				}
-			}
-		};
 		public int valida_select(){
 			int contador = 0;
 			for(int i=0; i<tabla1.getRowCount(); i++){

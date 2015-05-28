@@ -18,9 +18,9 @@ public class Obj_Cotizaciones_De_Un_Producto {
 	String Cod_Prv;
 	String Proveedor;
 	double Costo_Nuevo;
-	double    Cantidad_Requerida;
+	double Cantidad_Requerida;
+	double precio_de_venta;
 	
-
 
 	String Notas_Negociacion;
 	
@@ -136,6 +136,14 @@ public class Obj_Cotizaciones_De_Un_Producto {
 		return new BuscarSQL().existe_Producto(cod_prod);
 	}
 	
+	public double getPrecio_de_venta() {
+		return precio_de_venta;
+	}
+
+	public void setPrecio_de_venta(double precio_de_venta) {
+		this.precio_de_venta = precio_de_venta;
+	}
+
 	public Obj_Cotizaciones_De_Un_Producto buscardatos_producto(String cod_prod){ 
 		try {
 			return new BuscarSQL().datos_producto(cod_prod);
@@ -156,6 +164,6 @@ public class Obj_Cotizaciones_De_Un_Producto {
 	
 	public boolean Guardar_Cotizacion(){ return new GuardarSQL().Guardar_Cotizacion_Producto(this); }
 	
-
+	public boolean Guardar_Captura_competencia(String[][] comp){ return new GuardarSQL().Guardar_captura_de_competencia(this,comp); }
 
 }
