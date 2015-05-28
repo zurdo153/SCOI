@@ -4553,7 +4553,7 @@ public class BuscarSQL {
 //						lblNombre_Empleado.setText(soda.getNombre_cliente()+"");
 //						lblEstablecimiento_empleado.setText(soda.getEstablecimiento_cliente()+"");
 //						lblpuesto_empleado.setText(soda.getPuesto_cliente()+"");
-						
+//						
 //						sodas.setNombre_cajera(rs.getString("nombre_empleado"));
 //						sodas.setNo_cliente(rs.getInt("no_cliente"));
 //						sodas.setTicket(rs.getString("ticket"));
@@ -6224,9 +6224,9 @@ public class BuscarSQL {
 				matriz[i][1] = rs.getString(2).trim();
 				matriz[i][2] = rs.getString(3).trim();
 				matriz[i][3] = rs.getString(4).trim();
-				matriz[i][4] = rs.getString(5).trim();
-				matriz[i][5] = rs.getString(6).trim();
-				matriz[i][6] = rs.getString(7).trim();
+				matriz[i][4] = rs.getString(5).trim().equals("0")?"":rs.getString(5).trim();
+				matriz[i][5] = rs.getString(6).trim().equals("0")?"":rs.getString(6).trim();
+				matriz[i][6] = rs.getString(7).trim().equals("0")?"":rs.getString(7).trim();
 				i++;
 			}
 		} catch (SQLException e1) {

@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -24,17 +23,21 @@ import javax.swing.JToolBar;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
+import Obj_Lista_de_Raya.Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema extends JFrame {
+public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema extends JFrame implements TableModelListener{
 	public Container cont = getContentPane();
 	
 	public JLayeredPane panel = new JLayeredPane();
@@ -91,6 +94,30 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TableRowSorter trsfiltro = new TableRowSorter(modelo); 
     
+	
+	@SuppressWarnings("unused")
+	public void tableChanged(TableModelEvent e) {
+        int row = e.getFirstRow();
+        int column = e.getColumn();
+        TableModel model = (TableModel)e.getSource();
+        String columnName = model.getColumnName(column);
+        String data = model.getValueAt(row, column).toString();
+
+//        realizar validaciones o cualquier otro movimiento
+//        System.out.print(columnName+"    ");
+//        System.out.println(data);
+        if(column>3){
+        	 try{
+ 	        	if(!data.equals("")){
+ 	        		Integer.valueOf(data);
+ 	        	}
+ 	        } catch (NumberFormatException nfe){
+ 	        	tabla.setValueAt("", row, column);
+ 	        	System.out.println("no es entero");
+ 	        }
+        }
+       
+    }
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema(){
@@ -105,9 +132,6 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 		} catch (UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 		}
-		
-
-
 		
 //		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -133,6 +157,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 		llenar_tabla__sugerido ();
 		pitar_tabla();
 		
+		tabla.getModel().addTableModelListener(this);
 
 		this.cont.add(panel);
 		this.btn_guardar.addActionListener(op_guardar);
@@ -178,6 +203,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	};
 
 	ActionListener op_guardar = new ActionListener() {
+		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
 			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
 			Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
@@ -185,131 +211,51 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 			boolean auditoriaBoolean = auditoria.isAutorizar();
 			boolean finanzasBoolean = finanzas.isAutorizar();
 			
-			if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
-				
-				JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificada Ninguna Deduccion Por Inasistencia......"
-				       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<Al dar Click en Aceptar SCOI se Cerrará>>","Aviso",JOptionPane.WARNING_MESSAGE);
-				
-				try {	R.exec("taskkill /f /im javaw.exe"); } catch (IOException e1) {	e1.printStackTrace(); }		
-				
-			}
-//			else{
-//			trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-//			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-//			trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-//
-//			txtFolio.setText("");
-//			txtNombre_Completo.setText("");
-//			cmbEstablecimientos.setSelectedIndex(0);
-//
-//			if(tabla.isEditing()){
-//				tabla.getCellEditor().stopCellEditing();
-//			}
-//
-//			if(valida_tabla() != ""){
-//				JOptionPane.showMessageDialog(null, "Las siguientes celdas están mal en su formato:\n"+valida_tabla(),"Error",JOptionPane.ERROR_MESSAGE);
-//				return;
-//			}else{
-//				if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de deducción por inasistencia?") == 0){
-//					Obj_Deducciones_Por_Inasistencia inasistencia = new Obj_Deducciones_Por_Inasistencia();
-//					if(inasistencia.guardar(tabla_guardar())){
-//						JOptionPane.showMessageDialog(null, "La tabla Deducción por Inasistencia se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
-//						return;
-//					}else{
-//						JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
-//						return;
-//					}
-//				}else{
-//					return;
-//				}
-//			}
-//		}
+				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
+						
+						JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificada Ninguna Deduccion o Percepcion de Lista de Raya....."
+						       +" \n Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<>>","Aviso",JOptionPane.WARNING_MESSAGE);
+				}else{
+						trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
+						trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+						trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+			
+						txtFolio.setText("");
+						txtNombre_Completo.setText("");
+						cmbEstablecimientos.setSelectedIndex(0);
+			
+						if(tabla.isEditing()){
+							tabla.getCellEditor().stopCellEditing();
+						}
+			
+							if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de traspaso por deducciones sugerido?") == 0){
+								
+								Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya inasistencia = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya();
+								
+									if(inasistencia.guardar_traspaso_de_deduccion_sugerido(tabla_guardar())){
+										JOptionPane.showMessageDialog(null, "El traspaso por deducciones sugerido se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+										return;
+									}else{
+										JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
+										return;
+									}
+							}else{
+								return;
+							}
+				}
 		}
 	};
-
-//	private Object[][] tabla_guardar(){
-//		Object[][] matriz = new Object[tabla.getRowCount()][11];
-//		for(int i=0; i<tabla.getRowCount(); i++){
-//			for(int j=0; j<tabla.getColumnCount(); j++){
-//				switch(j){
-//					case 0: 
-//						matriz[i][j] = Integer.parseInt(tabla_model.getValueAt(i,j).toString().trim());
-//						break;
-//					case 1: 
-//						matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();
-//						break;
-//					case 2: 
-//						matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();
-//						break;
-//					case 3: 
-//						if(tabla_model.getValueAt(i,j).toString().equals("")){
-//							matriz[i][j] = Boolean.parseBoolean("false");
-//						}else{
-//							matriz[i][j] = Boolean.parseBoolean(tabla_model.getValueAt(i,j).toString());
-//						}
-//						break;
-//					case 4: 
-//						if(tabla_model.getValueAt(i,j).toString().equals("")){
-//							matriz[i][j] = Boolean.parseBoolean("false");
-//						}else{
-//							matriz[i][j] = Boolean.parseBoolean(tabla_model.getValueAt(i,j).toString());
-//						}
-//						break;
-//					case 5: 
-//						if(tabla_model.getValueAt(i,j).toString().trim().length() == 0){
-//							matriz[i][j] = Integer.parseInt("0"); 
-//						}else{
-//							matriz[i][j] = Integer.parseInt(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-//					case 6: 
-//						if(tabla_model.getValueAt(i,j).toString().equals("")){
-//							matriz[i][j] = Boolean.parseBoolean("false");
-//						}else{
-//							matriz[i][j] = Boolean.parseBoolean(tabla_model.getValueAt(i,j).toString());
-//						}
-//						break;
-//					case 8: 
-//						if(tabla_model.getValueAt(i,j).toString().equals("")){
-//							matriz[i][j] = Boolean.parseBoolean("false");
-//						}else{
-//							matriz[i][j] = Boolean.parseBoolean(tabla_model.getValueAt(i,j).toString());
-//						}
-//						break;
-//					case 9: 
-//						if(tabla_model.getValueAt(i,j).toString().trim().length() == 0){
-//							matriz[i][j] = Integer.parseInt("0"); 
-//						}else{
-//							matriz[i][j] = Integer.parseInt(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-//					case 10: 
-//						if(tabla_model.getValueAt(i,j).toString().trim().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0"); 
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-//
-//				}
-//			}
-//		}
-//		return matriz;
-//	}
-
-//	private String valida_tabla(){
-//		String error = "";
-//		for(int i=0; i<tabla.getRowCount(); i++){
-//			try{
-//				if(!isNumeric(tabla.getValueAt(i,5).toString())){
-//					error += "   La celda de la columna Extra no es un número en el [Folio: "+tabla.getValueAt(i,0)+"]\t\n";
-//				}
-//			} catch(Exception e){
-//				JOptionPane.showMessageDialog(null, "La tabla tiene una celda con texto en lugar de un valor numérico: \n"+e,"Error",JOptionPane.ERROR_MESSAGE);
-//			}
-//		}
-//		return error;
-//	}
+	
+	private Object[][] tabla_guardar(){
+		Object[][] matriz = new Object[tabla.getRowCount()][tabla.getColumnCount()];
+		for(int i=0; i<tabla.getRowCount(); i++){
+			for(int j=0; j<tabla.getColumnCount(); j++){
+								matriz[i][j] = modelo.getValueAt(i,j).toString().trim().equals("")?0:modelo.getValueAt(i,j).toString().trim();
+			}
+		}
+		return matriz;
+	}
+	
 
 	public JScrollPane obtener_tabla(){
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
@@ -364,22 +310,6 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	}
 	
 
-
-//	private static boolean isNumeric(String cadena){
-//		 try {
-//			 if(cadena.equals("")){
-//				 return true;
-//			 }else{
-//				 Float.parseFloat(cadena);
-//				 return true;
-//			 }
-//		 } catch (NumberFormatException nfe){
-//			 return false;
-//		 }
-//	 }
-
-	
-	
 	KeyListener op_filtro_folio = new KeyListener(){
 		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {

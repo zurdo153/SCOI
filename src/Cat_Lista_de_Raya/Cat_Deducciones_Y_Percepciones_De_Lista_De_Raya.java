@@ -18,8 +18,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Cargar_Combo;
@@ -29,7 +32,7 @@ import Obj_Lista_de_Raya.Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
+public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root implements TableModelListener{
 	
 	Runtime R = Runtime.getRuntime();
 
@@ -76,8 +79,8 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 	    	java.lang.Object.class,
 	    	java.lang.Object.class, 
 	    	java.lang.Object.class, 
-	    	java.lang.Boolean.class,
-	    	java.lang.Boolean.class,
+	    	java.lang.Object.class,
+	    	java.lang.Object.class,
 	    	java.lang.Object.class,
 	    	java.lang.Boolean.class,
 	    	java.lang.Object.class,
@@ -126,11 +129,37 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 	public TableColumn columna_hrs_ext = tabla.getColumnModel().getColumn(9);
 	public TableColumn columna_conseptos = tabla.getColumnModel().getColumn(11);
 	
+	@SuppressWarnings("unused")
+	public void tableChanged(TableModelEvent e) {
+	        int row = e.getFirstRow();
+	        int column = e.getColumn();
+	        TableModel model = (TableModel)e.getSource();
+	        String columnName = model.getColumnName(column);
+	        String data = model.getValueAt(row, column).toString();
+
+//	        realizar validaciones o cualquier otro movimiento
+//	        System.out.print(columnName+"    ");
+//	        System.out.println(data);
+	        if(column!=6 && column!=9 && column!=11){
+	        	 try{
+	 	        	if(!data.equals("")){
+	 	        		Integer.valueOf(data);
+	 	        	}
+	 	        } catch (NumberFormatException nfe){
+	 	        	tabla.setValueAt("", row, column);
+	 	        	System.out.println("no es entero");
+	 	        }
+	        }
+	       
+	    }
+	
 	public Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/percepciones_y_deducciones32.png"));
 		this.setTitle("Deducciónes y Precepciones De Lista De Raya");
 //		this.panel.add(cmbEstablecimientos).setBounds(463,35,300,20);
 //		this.panel.add(chb_habilitar).setBounds(1050,35,65,20);
+		
+		tabla.getModel().addTableModelListener(this);
 		
 		this.columna_dia_falta.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_dias));
 		this.columna_dia_gafete.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_gafete));
@@ -281,8 +310,8 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root{
 		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
