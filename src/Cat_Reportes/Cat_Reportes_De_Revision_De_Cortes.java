@@ -38,10 +38,10 @@ public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 	JDateChooser c_final = new JDateChooser();
 	
 	JButton btn_todos 						= new JButton  ("Todos",new ImageIcon("imagen/Lista.png"));
-	JButton btn_revisados_por_auditoria 	= new JButton  ("Revisados  Por  Auditoria",new ImageIcon("imagen/Text preview.png"));
+	JButton btn_revisados_por_auditoria 	= new JButton  ("Revisados Por Auditoria",new ImageIcon("imagen/Text preview.png"));
 	JButton btn_sin_revisar_por_auditoria	= new JButton  ("Sin Revisar Por Auditoria",new ImageIcon("imagen/orange-folder-saved-search-icone-8197-16.png"));
-	JButton btn_auditoria_paso_a_cobro 		= new JButton  ("Auditoria  Paso  A  Cobro",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
-	JButton btn_auditoria_paso_a_seguridad 	= new JButton  ("Auditoria  A  Seguridad",new ImageIcon("imagen/vista-previa-del-ojo-icono-7248-16.png"));
+	JButton btn_auditoria_paso_a_cobro 		= new JButton  ("Auditoria Paso A Cobro",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
+	JButton btn_auditoria_paso_a_seguridad 	= new JButton  ("Auditoria A Seguridad",new ImageIcon("imagen/vista-previa-del-ojo-icono-7248-16.png"));
 	
 	JLabel JLBlinicio			= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin				= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -119,19 +119,18 @@ public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			
-			
 			if(e.getActionCommand().toString().trim().toUpperCase().equals("AUDITORIA PASO A SEGURIDAD")){
-				cargar_fechas();
 				
+				cargar_fechas();
 				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 				
 				Reporte_de_Revision_de_Cortes("01/01/1900",fecha_final,e.getActionCommand().toString().trim().toUpperCase());
+				
 			}else{
 					if(validar_fechas().equals("")){
 						
 						String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
-						String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
+						String fecha_final =  new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 	
 						
 //								if(c_final.getDate().before(c_inicio.getDate())){
