@@ -326,7 +326,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 					new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
 			           	dispose();
 				break;
-				case "Cat_Costos_Competencia":		
+				case "Cat_Alimentacion_De_Costos_De_Competencia":		
 					try {
 						UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					} catch (ClassNotFoundException e1) {
@@ -344,7 +344,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 					}
 					
 					
-					new Cat_Costos_Competencia(folio.toString().trim()).setVisible(true);
+					new Cat_Alimentacion_De_Costos_De_Competencia(folio.toString().trim()).setVisible(true);
 			           	dispose();
 				break;
 				
@@ -408,7 +408,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				new Cat_Costos_Competencia(folio.toString().trim()).setVisible(true);
+				new Cat_Alimentacion_De_Costos_De_Competencia(folio.toString().trim()).setVisible(true);
 		           	dispose();
 			break;
 			

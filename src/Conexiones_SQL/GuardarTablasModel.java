@@ -123,23 +123,23 @@ public class GuardarTablasModel {
 			con.setAutoCommit(false);
 			
 			for(int i=0; i<tabla.length; i++){
-//				System.out.print(Integer.parseInt(tabla[i][0].toString().trim()));
+//				System.out.print(Integer.valueOf(tabla[i][0].toString().trim()));
 //				System.out.print("  "+tabla[i][2].toString().trim());
-//				System.out.print(tabla[i][3].toString().trim().equals("true")?"  1":"  0");
-//				System.out.print(tabla[i][4].toString().trim().equals("true")?"  1":"  0");
-//				System.out.print("  "+Integer.parseInt(tabla[i][5].toString().trim()));
+//				System.out.print(tabla[i][3].toString().trim());
+//				System.out.print(tabla[i][4].toString().trim());
+//				System.out.print("  "+Integer.valueOf(tabla[i][5].toString().trim()));
 //				System.out.print(tabla[i][6].toString().trim().equals("true")?"  1":"  0");
-//				System.out.print("  "+Integer.parseInt(tabla[i][7].toString().trim()));
-//				System.out.print("  "+Integer.parseInt(tabla[i][8].toString().trim()));
-//				System.out.print("  "+Integer.parseInt(tabla[i][9].toString().trim()));
-//				System.out.print("  "+Float.parseFloat(tabla[i][10].toString().trim()));
+//				System.out.print("  "+Integer.valueOf(tabla[i][7].toString().trim()));
+//				System.out.print("  "+Integer.valueOf(tabla[i][8].toString().trim()));
+//				System.out.print("  "+Float.valueOf(tabla[i][9].toString().trim()));
+//				System.out.print("  "+Float.valueOf(tabla[i][10].toString().trim()));
 //				System.out.println("  "+tabla[i][11].toString().trim());
 				
 				pstmt.setInt(	1, Integer.valueOf(tabla[i][0].toString().trim()));
 				pstmt.setString(2, tabla[i][2].toString().trim());
 				
-				pstmt.setInt(3, tabla[i][3].toString().trim().equals("true")?1:0);
-				pstmt.setInt(4, tabla[i][4].toString().trim().equals("true")?1:0);
+				pstmt.setInt(3, Integer.valueOf(tabla[i][3].toString().trim()));
+				pstmt.setInt(4, Integer.valueOf(tabla[i][4].toString().trim()));
 				
 				pstmt.setInt(	5, Integer.valueOf(tabla[i][5].toString().trim()));
 				
@@ -150,6 +150,53 @@ public class GuardarTablasModel {
 				pstmt.setFloat(	9, Float.valueOf(tabla[i][9].toString().trim()));
 				pstmt.setFloat(	10,Float.valueOf(tabla[i][10].toString().trim()));
 				pstmt.setString(11,tabla[i][11].toString().trim());
+				
+				pstmt.executeUpdate();
+			}
+		
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean tabla_model_traspaso_de_deduccion_sugerido(Object[][] tabla){
+		String query = "exec sp_insert_traspaso_de_deducciones_sugerido ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		try {
+			PreparedStatement pstmt = con.prepareStatement(query);
+
+			con.setAutoCommit(false);
+			
+			for(int i=0; i<tabla.length; i++){
+//				System.out.print(Integer.valueOf(tabla[i][0].toString().trim()));
+//				System.out.print("  "+tabla[i][2].toString().trim());
+//				System.out.print("  "+Integer.valueOf(tabla[i][4].toString().trim()));
+//				System.out.print("  "+Integer.valueOf(tabla[i][5].toString().trim()));
+//				System.out.print("  "+Integer.valueOf(tabla[i][6].toString().trim()));
+				
+				pstmt.setInt(1, Integer.valueOf(tabla[i][0].toString().trim()));
+				pstmt.setInt(2, Integer.valueOf(tabla[i][4].toString().trim()));
+				
+				pstmt.setInt(3, Integer.valueOf(tabla[i][5].toString().trim()));
+				pstmt.setInt(4, Integer.valueOf(tabla[i][6].toString().trim()));
+				pstmt.setInt(5, usuario.getFolio());
 				
 				pstmt.executeUpdate();
 			}

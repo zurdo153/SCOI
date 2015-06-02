@@ -227,6 +227,8 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 		JTextField txtFolio = new JTextField();
 		JTextField txtNombre_Completo = new JTextField();
 		
+		JLabel lblAviso = new JLabel("<html><style>h5{color:blue;}</style><h5>SOLO SE PUEDE SELECCIONAR UN MAXIMO DE 4 EMPLEADOS</h5></html>");
+		
 		JButton btnAgregar = new JButton("Agregar Empleados");
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		
@@ -242,6 +244,7 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 			campo.add(txtFolio).setBounds(15,20,48,20);
 			campo.add(txtNombre_Completo).setBounds(64,20,259,20);
 			campo.add(btnAgregar).setBounds(324,20,150, 20);
+			campo.add(lblAviso).setBounds(480,20,350, 20);
 			
 			cont.add(campo);
 			

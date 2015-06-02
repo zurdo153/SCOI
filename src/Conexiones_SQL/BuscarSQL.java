@@ -4553,7 +4553,7 @@ public class BuscarSQL {
 //						lblNombre_Empleado.setText(soda.getNombre_cliente()+"");
 //						lblEstablecimiento_empleado.setText(soda.getEstablecimiento_cliente()+"");
 //						lblpuesto_empleado.setText(soda.getPuesto_cliente()+"");
-						
+//						
 //						sodas.setNombre_cajera(rs.getString("nombre_empleado"));
 //						sodas.setNo_cliente(rs.getInt("no_cliente"));
 //						sodas.setTicket(rs.getString("ticket"));
@@ -5829,26 +5829,48 @@ public class BuscarSQL {
 	public Obj_Cotizaciones_De_Un_Producto datos_producto(String cod_prod) throws SQLException{
 		Obj_Cotizaciones_De_Un_Producto datosproducto = new Obj_Cotizaciones_De_Un_Producto();
 		
-		String query = "  declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35)  set @Producto='"+cod_prod+"' "+
-				"  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto))" +
-				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end" +
-				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end" +
-				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_unidad=@Producto)) end" +
-				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end" +
-				"      set @exist_cedis=(select isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas)" +
-				"                       else (prodestab.exist_piezas) end),0)  from productos left outer join prodestab on prodestab.cod_prod=productos.cod_prod " +
-				"                          where productos.cod_prod=@cod_prod and prodestab.cod_estab=7)" +
-				"      SELECT   productos.cod_prod " +
-				"              ,productos.descripcion " +
-				"              ,prodestab.ultimo_costo" +
-				"              ,prodestab.costo_promedio" +
-				"              ,@exist_cedis as existencia_cedis  " +
-				"             ,isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0) as existencia_total "+
-				"			  ,0 as precio_de_venta" +
-				"      from productos " +
-				"        left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod " +
-				"      where productos.cod_prod=@cod_prod" +
-				"      group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio";
+//		String query = "  declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35)  set @Producto='"+cod_prod+"' "+
+//				"  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto))" +
+//				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end" +
+//				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end" +
+//				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_unidad=@Producto)) end" +
+//				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end" +
+//				"      set @exist_cedis=(select isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas)" +
+//				"                       else (prodestab.exist_piezas) end),0)  from productos left outer join prodestab on prodestab.cod_prod=productos.cod_prod " +
+//				"                          where productos.cod_prod=@cod_prod and prodestab.cod_estab=7)" +
+//				"      SELECT   productos.cod_prod " +
+//				"              ,productos.descripcion " +
+//				"              ,prodestab.ultimo_costo" +
+//				"              ,prodestab.costo_promedio" +
+//				"              ,@exist_cedis as existencia_cedis  " +
+//				"             ,isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0) as existencia_total "+
+//				"			  ,0 as precio_de_venta" +
+//				"      from productos " +
+//				"        left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod " +
+//				"      where productos.cod_prod=@cod_prod" +
+//				"      group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio";
+		
+		String query = " declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35)  set @Producto='03025' "
+				+ "				  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto)) "
+				+ "				  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end "
+				+ "				  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end "
+				+ "				  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_unidad=@Producto)) end "
+				+ "				  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end "
+				+ "	SELECT   productos.cod_prod "
+				+ "         ,productos.descripcion "
+				+ "				          ,convert(numeric(10,2),prodestab.ultimo_costo) as ultimo_costo "
+				+ "				          ,convert(numeric(10,2),prodestab.costo_promedio) as costo_promedio "
+				+ "				          ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0)) as existencia_total "
+				+ "						  ,convert(numeric (10,2),case 1 WHEN 0 then "
+				+ "												dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0) "
+				+ "												  ELSE "
+				+ "													dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0) "
+				+ "													* (1 + dbo.Ieps(productos.cod_prod)/100) "
+				+ "													* (1 + (CASE 'I' WHEN 'I' THEN productos.iva_interior ELSE productos.iva_fronterizo END/100))  END) as precio_de_venta "
+				+ " from productos "
+				+ "				    left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod "
+				+ "				  where productos.cod_prod=@cod_prod "
+				+ "				  group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio,productos.iva_interior";
 		
 		Statement stmt2= null;
 		
@@ -5862,7 +5884,6 @@ public class BuscarSQL {
 									   datosproducto.setDescripcion_Prod(rs2.getString("descripcion"));
 									   datosproducto.setUltimo_Costo(rs2.getDouble("ultimo_costo"));
 									   datosproducto.setCosto_Promedio(rs2.getDouble("costo_promedio"));
-									   datosproducto.setExistencia_Cedis(rs2.getDouble("existencia_cedis"));
 									   datosproducto.setExistencia_Total(rs2.getDouble("existencia_total"));
 									   datosproducto.setPrecio_de_venta(rs2.getDouble("precio_de_venta"));
 								   }
@@ -6224,9 +6245,9 @@ public class BuscarSQL {
 				matriz[i][1] = rs.getString(2).trim();
 				matriz[i][2] = rs.getString(3).trim();
 				matriz[i][3] = rs.getString(4).trim();
-				matriz[i][4] = rs.getString(5).trim();
-				matriz[i][5] = rs.getString(6).trim();
-				matriz[i][6] = rs.getString(7).trim();
+				matriz[i][4] = rs.getString(5).trim().equals("0")?"":rs.getString(5).trim();
+				matriz[i][5] = rs.getString(6).trim().equals("0")?"":rs.getString(6).trim();
+				matriz[i][6] = rs.getString(7).trim().equals("0")?"":rs.getString(7).trim();
 				i++;
 			}
 		} catch (SQLException e1) {

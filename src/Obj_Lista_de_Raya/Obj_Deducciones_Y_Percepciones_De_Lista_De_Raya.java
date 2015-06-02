@@ -25,5 +25,9 @@ public class Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya {
 	public boolean guardar(Object[][] tabla){
 		return new GuardarTablasModel().tabla_model_deduccion_y_percepcionesde_lista_de_raya(tabla);
 	}
+	
+	public boolean guardar_traspaso_de_deduccion_sugerido(Object[][] tabla){
+		return new GuardarTablasModel().tabla_model_traspaso_de_deduccion_sugerido(tabla);
+	}
 
 }
