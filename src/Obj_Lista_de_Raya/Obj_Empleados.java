@@ -26,6 +26,9 @@ public class Obj_Empleados {
 	private String rfc;
 	private String curp;
 	private int sexo;
+	private String estado_civil;
+	private String tipo_sangre;
+	private String escolaridad;	
 	private File foto;
 	
 //	laboral
@@ -36,6 +39,7 @@ public class Obj_Empleados {
 	private int status_h2;
 	private int status_h3;
 	private int status_rotativo;
+	private String contrato;
 //	dependen del horario activo
 	private String descanso;
 	private String dobla;
@@ -63,6 +67,7 @@ public class Obj_Empleados {
 	private float infonavit;
 	private String targeta_nomina;
 	private int tipo_banco;
+	private int presencia_fisica;
 	private boolean gafete;
 	private boolean fuente_sodas;
 	private String observasiones;
@@ -71,13 +76,13 @@ public class Obj_Empleados {
 	public Obj_Empleados(){
 		
 		folio=0; no_checador=""; nombre=""; ap_paterno=""; ap_materno=""; fecha_nacimiento=""; calle=""; colonia=""; poblacion=""; telefono_familiar="";
-		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; foto=null;
+		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; foto=null;
 		
-		horario=0; horario2=0; horario2=0; status_h1=0; status_h2=0; status_h3=0; status_rotativo=0; descanso=""; dobla=""; fecha_ingreso=""; status=0; fecha_baja=""; cuadrante_parcial=false;
+		horario=0; horario2=0; horario2=0; status_h1=0; status_h2=0; status_h3=0; status_rotativo=0; contrato=""; descanso=""; dobla=""; fecha_ingreso=""; status=0; fecha_baja=""; cuadrante_parcial=false;
 		departameto=0; imss=""; status_imss=0; numero_infonavit=""; establecimiento=0; puesto=0;
 		
 		salario_diario=0; salario_diario_integrado=0; forma_pago=""; sueldo=0; bono=0; prestamo=0; pension_alimenticia=0; infonavit=0; targeta_nomina="";
-		tipo_banco=0; gafete=false; fuente_sodas=false; observasiones="";
+		tipo_banco=0; presencia_fisica=0; gafete=false; fuente_sodas=false; observasiones="";
 		
 	}
 	
@@ -484,6 +489,46 @@ public class Obj_Empleados {
 	public String getFecha_actualizacion() {
 		return fecha_actualizacion;
 	}
+	
+	public String getEstado_civil() {
+		return estado_civil;
+	}
+
+	public void setEstado_civil(String estado_civil) {
+		this.estado_civil = estado_civil;
+	}
+
+	public String getTipo_sangre() {
+		return tipo_sangre;
+	}
+
+	public void setTipo_sangre(String tipo_sangre) {
+		this.tipo_sangre = tipo_sangre;
+	}
+
+	public String getEscolaridad() {
+		return escolaridad;
+	}
+
+	public void setEscolaridad(String escolaridad) {
+		this.escolaridad = escolaridad;
+	}
+
+	public String getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(String contrato) {
+		this.contrato = contrato;
+	}
+
+	public int getPresencia_fisica() {
+		return presencia_fisica;
+	}
+
+	public void setPresencia_fisica(int presencia_fisica) {
+		this.presencia_fisica = presencia_fisica;
+	}
 
 	public void setFecha_actualizacion(String fecha_actualizacion) {
 		this.fecha_actualizacion = fecha_actualizacion;
@@ -530,5 +575,33 @@ public class Obj_Empleados {
 		
 		return new GuardarSQL().Insert_Checada(folio,t_entrada,tipo_salida_comer);
 		
+	}
+	
+//	TODO datos adicionales
+	public String[] Combo_Tipo_Sangre(){ 
+		try {
+			return new Cargar_Combo().Tipo_De_Sangre("tb_tipo_de_sangre");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String[] Combo_Estado_Civil(){ 
+		try {
+			return new Cargar_Combo().Estado_Civil("tb_estado_civil");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String[] Combo_Escolaridad(){ 
+		try {
+			return new Cargar_Combo().Escolaridad("tb_escolaridad");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

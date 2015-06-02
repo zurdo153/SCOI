@@ -87,7 +87,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Horarios;
-import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
+//import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Personal_Con_Horario;
 import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
@@ -121,7 +121,6 @@ public class Cat_Empleados extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	JLabel lblDatosPersonales = new JLabel();
-	JLabel lblSexo = new JLabel();
 	JLabel lblLaboral = new JLabel();
 	JLabel lblPercepciones = new JLabel();
 	JLabel lblFolioHorario1 = new JLabel("");
@@ -160,8 +159,6 @@ public class Cat_Empleados extends JFrame{
 	String Departamentos[] = new Obj_Departamento().Combo_Departamento();
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbDepartamento = new JComboBox(Departamentos);  
-	
-	
 	
 	JTextField txtSalarioDiario = new Componentes().text(new JTextField(), "Salario Diario", 15, "Double");
 	JTextField txtSalarioDiarioIntegrado = new Componentes().text(new JTextField(), "Salario Diario Integrado", 15, "Double");
@@ -260,9 +257,32 @@ public class Cat_Empleados extends JFrame{
 	JDateChooser txtIngresoImss = new JDateChooser();
 	JDateChooser txtVencimientoLicencia = new JDateChooser();
 	
-	 private ButtonGroup bgSexo = new ButtonGroup();
-	 private JRadioButton rbMasculino = new JRadioButton("Masculino",true);
-	 private JRadioButton rbFemenino = new JRadioButton("Femenino",false);
+//	 private ButtonGroup bgSexo = new ButtonGroup();
+//	 private JRadioButton rbMasculino = new JRadioButton("Masculino",true);
+//	 private JRadioButton rbFemenino = new JRadioButton("Femenino",false);
+	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO"};
+	@SuppressWarnings("rawtypes")
+	JComboBox cmbSexo = new JComboBox(sexo);
+	
+	String estado_civil[] = new Obj_Empleados().Combo_Estado_Civil();
+	@SuppressWarnings("rawtypes")
+	JComboBox cmbEstadoCivil = new JComboBox(estado_civil);
+	
+	String tipo_de_sangre[] = new Obj_Empleados().Combo_Tipo_Sangre();
+	@SuppressWarnings("rawtypes")
+	JComboBox cmbTipoDeSangre = new JComboBox(tipo_de_sangre);
+	
+	String escolaridad[] = new Obj_Empleados().Combo_Escolaridad();
+	@SuppressWarnings("rawtypes")
+	JComboBox cmbEscolaridad = new JComboBox(escolaridad);
+	
+	String presencia_fisica[] = {"","APLICA","NO APLICA"};
+	@SuppressWarnings("rawtypes")
+	JComboBox cmbPresenciaFisica = new JComboBox(presencia_fisica);
+	
+	String contratacion[] = {"","PRUEBA","VALORACION","INDETERMINADO"};
+	@SuppressWarnings("rawtypes")
+	JComboBox cmbContratacion = new JComboBox(contratacion);
 	
 	 private ButtonGroup bgHorarios = new ButtonGroup();
 	 private JRadioButton rbHorario = new JRadioButton("",true);
@@ -311,7 +331,6 @@ public class Cat_Empleados extends JFrame{
 //		asignacion de bordes
 		this.lblDatosPersonales.setBorder(BorderFactory.createTitledBorder(blackline,"Datos Personales"));
 		this.btnFoto.setBorder(blackline);
-		this.lblSexo.setBorder(BorderFactory.createTitledBorder(blackline, "Sexo"));
 		this.lblLaboral.setBorder(BorderFactory.createTitledBorder(blackline, "Laboral"));
 		this.lblPercepciones.setBorder(BorderFactory.createTitledBorder(blackline,"Percepciones y Deducciones"));
 		
@@ -335,8 +354,8 @@ public class Cat_Empleados extends JFrame{
 		this.txaObservaciones.setBorder(BorderFactory.createTitledBorder(blackline));
 		
 //		agregando radio_button a grupo
-		this.bgSexo.add(rbMasculino);
-		this.bgSexo.add(rbFemenino);
+//		this.bgSexo.add(rbMasculino);
+//		this.bgSexo.add(rbFemenino);
 		
 		this.bgHorarios.add(rbHorario);
 		this.bgHorarios.add(rbHorario2);
@@ -352,7 +371,6 @@ public class Cat_Empleados extends JFrame{
 		txtHorario.setFont(new Font("ARIAL", Font.ITALIC, 9));
 		txtHorario2.setFont(new Font("ARIAL", Font.ITALIC, 9));
 		txtHorario3.setFont(new Font("ARIAL", Font.ITALIC, 9));
-		
 		
 		panel.add(btnImp_Datos_Completos).setBounds(x-5,y,128,x);
 		panel.add(btnContratacion).setBounds(x+130,y,128,x);
@@ -375,7 +393,6 @@ public class Cat_Empleados extends JFrame{
 		panel.add(btnBuscar).setBounds(x+ancho+ancho-12,y,32,20);
 		panel.add(btnFiltro).setBounds(x+ancho+ancho+20,y,32,20);
 
-		
 		panel.add(btnNuevo).setBounds(x+ancho+ancho+51,y,ancho-49,20);
 	
 		panel.add(btnFoto).setBounds(x*2+ancho*5,y-5,ancho+55,160);
@@ -410,10 +427,6 @@ public class Cat_Empleados extends JFrame{
 		panel.add(new JLabel("Poblacion:")).setBounds(x+450,y,ancho,20);
 		panel.add(txtPoblacion).setBounds(x+(ancho*3)+110,y,ancho-15,20);
 
-		panel.add(lblSexo).setBounds(330,y+45,125,55);
-			panel.add(rbMasculino).setBounds(355,y+55,85,20);
-			panel.add(rbFemenino).setBounds(355,y+75,85,20);
-		
 		panel.add(new JLabel("Tel. Familiar:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtTelefono_Familiar).setBounds(x+ancho-40,y,ancho-15,20);
 			panel.add(new JLabel("Tel. Propio:")).setBounds(x+240,y,ancho,20);
@@ -424,8 +437,21 @@ public class Cat_Empleados extends JFrame{
 		panel.add(new JLabel("RFC:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtRFC).setBounds(x+ancho-40,y,ancho-15,20);
 		
+		panel.add(new JLabel("Sexo: ")).setBounds(x+240,y,ancho,20);
+		panel.add(cmbSexo).setBounds(x+(ancho*2)+30,y,ancho-15,20);
+		
+		panel.add(new JLabel("Estado Civil: ")).setBounds(x+450,y,ancho,20);
+		panel.add(cmbEstadoCivil).setBounds(x+(ancho*3)+110,y,ancho-15,20);
+		
 		panel.add(new JLabel("Curp:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtCurp).setBounds(x+ancho-40,y,ancho-15,20);
+		
+		panel.add(new JLabel("T. De Sangre: ")).setBounds(x+240,y,ancho,20);
+		panel.add(cmbTipoDeSangre).setBounds(x+(ancho*2)+30,y,ancho-15,20);
+		
+		panel.add(new JLabel("Escolaridad: ")).setBounds(x+450,y,ancho,20);
+		panel.add(cmbEscolaridad).setBounds(x+(ancho*3)+110,y,ancho-15,20);
+		
 		
 		
 //Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
@@ -438,7 +464,9 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtHorario).setBounds(x+ancho-20,y,ancho*2+60,20);
 		panel.add(rbHorario).setBounds(x+460,y,20,20);
 		
-		panel.add(btnStatus).setBounds(x+ancho*5+20,y-5,ancho+60,180);
+//		panel.add(btnStatus).setBounds(x+ancho*5+20,y-5,ancho+60,180);
+		panel.add(new JLabel("Contrato:")).setBounds(x+ancho*5+20,y,ancho-50,20);
+		panel.add(cmbContratacion).setBounds(x+ancho*5+80,y,ancho,20);
 		
 		panel.add(new JLabel("Tipo de horario:")).setBounds(x+480, y, ancho+10, 20);
 		panel.add(cmbHorarioRotativo).setBounds(x+ancho+420,y, ancho+10, 20);
@@ -451,6 +479,8 @@ public class Cat_Empleados extends JFrame{
 		
 		panel.add(new JLabel("Descanso:")).setBounds(x+500,y,ancho,20);
 		panel.add(txtDescanso).setBounds(x+ancho+420,y,ancho+10,20);
+		
+		panel.add(btnStatus).setBounds(x+ancho*5+20,y-5,ancho+60,180);
 		
 		panel.add(new JLabel("Horario 3:")).setBounds(x,y+=25,ancho,20);
 		panel.add(btnHorario3).setBounds(x+ancho-63,y,17,17);
@@ -465,7 +495,6 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtIngreso).setBounds(x+(ancho)-40,y,130,20);
 		
 		panel.add(chb_cuadrante_parcial).setBounds(x+ancho+175,y,150,20);
-		
 		
 		panel.add(new JLabel("Establecimiento:")).setBounds(x+470,y,ancho,20);
 		panel.add(cmbEstablecimiento).setBounds(x+ancho+410,y,ancho+20,20);
@@ -504,9 +533,11 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtFechaIncapacidad).setBounds(x+(ancho*3)+145,y,ancho-40,20);
 		panel.add(btnFechaIncapacidad).setBounds(x+(ancho*4)+105,y,25,20);
 //Percepciones y Deducciones ------------------------------------------------------------------------------------------------------------------------------------------		
-		panel.add(lblPercepciones).setBounds(10,y+=30,ancho*4-40,170);
+		panel.add(lblPercepciones).setBounds(10,y+=30,ancho*4+60,170);
 		panel.add(new JLabel("Salario Diario:")).setBounds(x,y+=15,ancho,20);
 		panel.add(txtSalarioDiario).setBounds(x+ancho-40,y,ancho,20);
+		
+		panel.add(chbGafete).setBounds(x+ancho*4-50,y,ancho-50,20);
 		
 		panel.add(new JLabel("S. Diario Integrado:")).setBounds(x+260,y,ancho,20);
 		panel.add(txtSalarioDiarioIntegrado).setBounds(x+ancho+220,y,ancho,20);
@@ -516,6 +547,8 @@ public class Cat_Empleados extends JFrame{
 		
 		panel.add(new JLabel("Sueldo:")).setBounds(x+260,y,ancho,20);
 		panel.add(cmbSueldo).setBounds(x+ancho+220,y,ancho,20);
+		
+		panel.add(chbFuente_Sodas).setBounds(x+ancho*4-50,y,ancho-50,20);
 		
 		panel.add(new JLabel("Bono:")).setBounds(x,y+=25,ancho,20);
 		panel.add(cmbBono).setBounds(x+ancho-40,y,ancho,20);
@@ -535,8 +568,8 @@ public class Cat_Empleados extends JFrame{
 		panel.add(new JLabel("Tipo de Bancos:")).setBounds(x+260,y,ancho,20);
 		panel.add(cmbTipoBancos).setBounds(x+ancho+220,y,ancho,20);
 		
-		panel.add(chbGafete).setBounds(x,y+=25,60,20);
-		panel.add(chbFuente_Sodas).setBounds((x*7),y,90,20);
+		panel.add(new JLabel("Presencia Fisica:")).setBounds(x,y+=25,ancho,20);
+		panel.add(cmbPresenciaFisica).setBounds(x+ancho-40,y,ancho,20);
 		
 		panel.add(new JLabel("Ultima actualización:")).setBounds(x+250,y,ancho,20);
 		panel.add(txtFechaActualizacion).setBounds(x+ancho+220,y,ancho,20);
@@ -549,7 +582,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(btnDeshacer).setBounds(x+ancho+ancho+14,y,ancho-43,20);
 		panel.add(btnSalir).setBounds(x+ancho+ancho+ancho-7,y,ancho-43,20);
 		
-		panel.add(Observasiones).setBounds(x+ancho*3+98,y-163,ancho+280,180);
+		panel.add(Observasiones).setBounds(x+ancho*3+198,y-163,ancho+180,180);
 		
 		txaObservaciones.setLineWrap(true); 
 		txaObservaciones.setWrapStyleWord(true);
@@ -975,9 +1008,9 @@ public class Cat_Empleados extends JFrame{
 					txtCurp.setText(re.getCurp()+"");
 					
 					if(re.getSexo()==0){
-						rbMasculino.setSelected(true);
+						cmbSexo.setSelectedItem("MASCULINO");
 					}else{
-						rbFemenino.setSelected(true);
+						cmbSexo.setSelectedItem("FEMENINO");
 					}
 					
 					ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
@@ -1193,11 +1226,15 @@ public class Cat_Empleados extends JFrame{
 							empleado.setRfc(txtRFC.getText());
 							empleado.setCurp(txtCurp.getText());
 							
-							if(rbMasculino.isSelected()==true){
+							if(cmbSexo.getSelectedItem().equals("MASCULINO")){
 								empleado.setSexo(0);
 							}else{
 								empleado.setSexo(1);
 							}
+							
+							empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
+							empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
+							empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
 							
 							if(btnTrueFoto.isSelected()){
 								empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp_update/tmp.jpg"));
@@ -1254,6 +1291,8 @@ public class Cat_Empleados extends JFrame{
 								case 1: empleado.setStatus_rotativo(1); break;
 								case 2: empleado.setStatus_rotativo(2); break;
 							}
+							
+							empleado.setContrato(cmbContratacion.getSelectedItem().toString());
 							
 							empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
 							empleado.setStatus(cmbStatus.getSelectedIndex()+1);
@@ -1328,6 +1367,10 @@ public class Cat_Empleados extends JFrame{
 //							}
 							
 							empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
+							
+//							TODO (presencia ficica      0 -> default(DB)     1 -> APLICA     2 -> NO APLICA)
+							empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:2);
+							
 							empleado.setGafete(chbGafete.isSelected());
 							empleado.setFuente_sodas(chbFuente_Sodas.isSelected());
 							empleado.setObservasiones(txaObservaciones.getText()+"");
@@ -1389,11 +1432,15 @@ public class Cat_Empleados extends JFrame{
 						empleado.setRfc(txtRFC.getText());
 						empleado.setCurp(txtCurp.getText());
 						
-						if(rbMasculino.isSelected()==true){
+						if(cmbSexo.getSelectedItem().equals("MASCULINO")){
 							empleado.setSexo(0);
 						}else{
 							empleado.setSexo(1);
 						}
+						
+						empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
+						empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
+						empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
 						
 						if(btnTrueFoto.isSelected()){
 							empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp_update/tmp.jpg"));
@@ -1442,6 +1489,8 @@ public class Cat_Empleados extends JFrame{
 							case 1: empleado.setStatus_rotativo(1); break;
 							case 2: empleado.setStatus_rotativo(2); break;
 						}
+						
+						empleado.setContrato(cmbContratacion.getSelectedItem().toString());
 						
 						empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
 						empleado.setStatus(cmbStatus.getSelectedIndex()+1);
@@ -1505,6 +1554,10 @@ public class Cat_Empleados extends JFrame{
 						
 						empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
 						empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
+						
+//						TODO (presencia ficica      0 -> default(DB)     1 -> APLICA     2 -> NO APLICA)
+						empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:2);
+						
 						empleado.setGafete(chbGafete.isSelected());
 						empleado.setFuente_sodas(chbFuente_Sodas.isSelected());
 						empleado.setObservasiones(txaObservaciones.getText()+"");
@@ -1614,8 +1667,7 @@ public class Cat_Empleados extends JFrame{
 		txtRFC.setEnabled(true);
 		txtCurp.setEnabled(true);
 		
-		rbMasculino.setEnabled(true);
-		rbFemenino.setEnabled(true);
+		cmbSexo.setEnabled(true);
 		
 		rbHorario.setEnabled(true);
 		rbHorario2.setEnabled(true);
@@ -1662,8 +1714,7 @@ public class Cat_Empleados extends JFrame{
 		txtRFC.setEnabled(false);                                                                          
 		txtCurp.setEnabled(false);                                                                         
 		                                                                                                   
-		rbMasculino.setEnabled(false);                                                                     
-		rbFemenino.setEnabled(false);                                                                      
+		cmbSexo.setEnabled(false);                                                                     
 		                                                                                                   
 		rbHorario.setEnabled(false);                                                                       
 		rbHorario2.setEnabled(false);                                                                      
@@ -1830,11 +1881,7 @@ public class Cat_Empleados extends JFrame{
 			String Sexo ="",Estado_Civil="", NombreUsuario="";
 			String Edad = "";
 			
-				if(rbMasculino.isSelected()==true){
-					Sexo="MASCULINO";
-				}else{
-					Sexo="FEMENINO";
-				}
+				Sexo=cmbSexo.getSelectedItem()+"";
 			
 				Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 				NombreUsuario=usuario.getNombre_completo();
@@ -1939,7 +1986,7 @@ public class Cat_Empleados extends JFrame{
 	   
 	ActionListener Reporte_De_Altas_y_Bajas = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-					new Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas().setVisible(true);
+//					new Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas().setVisible(true);
 			}
 		};
 	   
@@ -2071,7 +2118,12 @@ public class Cat_Empleados extends JFrame{
 		if(txtColonia.getText().equals(""))	error+= "Colonia\n";
 		if(txtPoblacion.getText().equals(""))	error+= "Poblacion\n";
 		if(txtTelefono_Familiar.getText().equals(""))	error+= "Telefono Familiar\n";
-		if(txtTelefono_Propio.getText().equals(""))	error+= "txtTelefonob Propio\n";
+		if(txtTelefono_Propio.getText().equals(""))	error+= "Telefono Propio\n";
+		if(cmbSexo.getSelectedIndex()==0)	error+= "Sexo\n";
+		if(cmbEstadoCivil.getSelectedIndex()==0)	error+= "Estado Civil\n";
+		if(cmbTipoDeSangre.getSelectedIndex()==0)	error+= "Tipo De Sangre\n";
+		if(cmbEscolaridad.getSelectedIndex()==0)	error+= "Escolaridad\n";
+		
 		if(cmbDepartamento.getSelectedItem().equals("Selecciona un Departamento"))	error+= "Departamento\n";
 		
 		if(cmbEstablecimiento.getSelectedItem().equals("Selecciona un Establecimiento")) error += "Establecimiento\n";
@@ -2086,12 +2138,15 @@ public class Cat_Empleados extends JFrame{
 				if(txtHorario3.getText().equals("")) 		error+= "Horario 3\n";break;
 		}
 		
+		if(cmbContratacion.getSelectedIndex()==0)	error+= "Contrato\n";
+		
 		if(cmbSueldo.getSelectedItem().equals("Selecciona un Sueldo")) error += "Sueldo\n";
 //		if(cmbTipoBancos.getSelectedItem().equals("Selecciona un Banco")) error += "Tipo de Banco\n";
 		if(cmbBono.getSelectedItem().equals("Selecciona un Bono")) error += "Bono\n";
 		if(cmbPrestamos.getSelectedItem().equals("Selecciona un Rango de Prestamo")) error += "Rango de Prestamo\n";
 		if(fechaNull.equals("null"))error+= "Fecha de Nacimiento\n";	
 		if(fechaIngresoNull.equals("null"))error += "Fecha de ingreso\n";
+		if(cmbPresenciaFisica.getSelectedIndex()==0)	error+= "Presencia Fisica\n";
 //		if(fechaIngresoImssNull.equals("null"))error +="Fecha de ingreso IMSS\n";
 //		if(fechaVencimientoLicenciaNull.equals("null"))error += "Fecha de vencimiento de licencia de conducir\n";
 		

@@ -73,7 +73,7 @@ public class ActualizarSQL {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public boolean Empleado(Obj_Empleados empleado, int folio){
-		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -151,6 +151,13 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1, 		empleado.getFecha_ingreso_imss());
 			pstmt.setString(i+=1, 		empleado.getFecha_vencimiento_licencia());
 			pstmt.setInt(i+=1, usuario.getFolio());
+			
+//			TODO (Datos Adicionales)
+			pstmt.setString(i+=1, 	empleado.getEstado_civil().toUpperCase());
+			pstmt.setString(i+=1, 	empleado.getTipo_sangre().toUpperCase());
+			pstmt.setString(i+=1, 	empleado.getEscolaridad().toUpperCase());
+			pstmt.setString(i+=1, 	empleado.getContrato().toUpperCase());
+			pstmt.setInt(i+=1, 	empleado.getPresencia_fisica());
 			
 			pstmt.executeUpdate();
 			con.commit();

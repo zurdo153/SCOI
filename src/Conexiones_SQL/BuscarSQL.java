@@ -1245,6 +1245,13 @@ public class BuscarSQL {
 				empleado.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss"));
 				empleado.setFecha_vencimiento_licencia(rs.getString("fecha_vencimiento_licencia"));
 				
+//				TODO ( nuevos camps agregados 'falta agregar las columnas a la tabla' )
+//				empleado.setEstado_civil(rs.getString(""));
+//				empleado.setTipo_sangre(rs.getString(""));
+//				empleado.setEscolaridad(rs.getString(""));
+//				empleado.setContrato(rs.getString(""));
+//				empleado.setPresencia_fisica(rs.getInt(""));
+				
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);
 				
