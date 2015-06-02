@@ -37,6 +37,7 @@ import Obj_Lista_de_Raya.Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Ina
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
+
 public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema extends JFrame implements TableModelListener{
 	public Container cont = getContentPane();
 	

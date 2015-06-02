@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+import Cat_Compras.Cat_Alimentacion_De_Costos_De_Competencia;
 import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
 import Cat_Compras.Cat_Reporte_De_Ventas;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
@@ -233,20 +234,18 @@ public class Init_Menu_Bar extends Init_Login{
 							new Cat_Captura_Del_Cuadrante_Personal(new Componentes().getTextProcesa(usuario.getNombre_completo())).setVisible(true);
 						else
 							JOptionPane.showMessageDialog(null, "El usuario no tiene cuadrante", "Aviso!", JOptionPane.OK_CANCEL_OPTION);
-					}else{
-						
-					if(e.getActionCommand().equalsIgnoreCase("Cotizaciones De Un Producto En Proveedores")){
+					}else{if(e.getActionCommand().equalsIgnoreCase("Cotizaciones De Un Producto En Proveedores")){
 					        	new Cat_Cotizaciones_De_Un_Producto_En_Proveedores("").setVisible(true);
-					}else{
-					if(e.getActionCommand().equalsIgnoreCase("Reporte De Ventas")){
-						      new Cat_Reporte_De_Ventas("","Todos").setVisible(true);
-						
-					
+					}else{if(e.getActionCommand().equalsIgnoreCase("Alimentacion De Costos De Competencia")){
+			        	new Cat_Alimentacion_De_Costos_De_Competencia("").setVisible(true);
+		          	}else{if(e.getActionCommand().equalsIgnoreCase("Reporte De Ventas")){
+					    new Cat_Reporte_De_Ventas("","Todos").setVisible(true);
 					}else{
 						
 						Class instance = Class.forName(new Componentes().classExiste(e.getActionCommand()));
 						Object instanceObject = instance.newInstance();
 						((Window) instanceObject).setVisible(true);
+					}
 					}
 					}
 					}
