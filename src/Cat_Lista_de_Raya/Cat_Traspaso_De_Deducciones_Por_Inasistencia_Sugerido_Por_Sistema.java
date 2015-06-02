@@ -136,7 +136,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 
 		this.cont.add(panel);
 		this.btn_guardar.addActionListener(op_guardar);
-			this.btn_guardar.setToolTipText("Guardar");
+		this.btn_guardar.setToolTipText("Guardar");
 		this.btn_refrescar.setVisible(false);
 		
 		this.menu_toolbar.add(btn_guardar);

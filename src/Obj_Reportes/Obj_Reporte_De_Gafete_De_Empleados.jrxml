@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-05-27T16:01:18 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Gafete_De_Empleados" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="479f4a9b-0156-454a-97f6-bf205e37a1c8">
+<!-- 2015-05-29T12:50:20 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Gafete_De_Empleados" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="479f4a9b-0156-454a-97f6-bf205e37a1c8">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -219,13 +228,13 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 	<detail>
 		<band height="574" splitType="Stretch">
 			<frame>
-				<reportElement x="53" y="7" width="386" height="280" uuid="6277b3ab-07e6-412b-b3df-9a0362fac109"/>
+				<reportElement x="4" y="7" width="386" height="280" uuid="6277b3ab-07e6-412b-b3df-9a0362fac109"/>
 				<image>
 					<reportElement x="0" y="0" width="190" height="280" uuid="e438154e-4f02-40b2-8407-dd3eb68f405b">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
-					<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/GAFETE1.png"]]></imageExpression>
+					<imageExpression><![CDATA["C:/SCOI/imagen/GAFETE1.png"]]></imageExpression>
 				</image>
 				<image>
 					<reportElement x="191" y="0" width="190" height="280" uuid="6981c049-e53f-49bd-b218-1dab42576564">
@@ -233,11 +242,11 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
 					</reportElement>
-					<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/GAFETE2.png"]]></imageExpression>
+					<imageExpression><![CDATA["C:/SCOI/imagen/GAFETE2.png"]]></imageExpression>
 				</image>
 				<image>
 					<reportElement x="146" y="6" width="47" height="44" uuid="1905ce7f-ddc0-46c7-afa3-2b66a1c6341b"/>
-					<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/logPrincipal.png"]]></imageExpression>
+					<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 				</image>
 				<staticText>
 					<reportElement x="52" y="25" width="94" height="23" uuid="d3993a15-adac-444b-9788-5adbaa2afe4c"/>
@@ -330,7 +339,7 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 				</image>
 			</frame>
 			<componentElement>
-				<reportElement x="432" y="2" width="390" height="290" uuid="0fe72bc5-409e-4874-947c-2d54251fa6a1">
+				<reportElement x="383" y="2" width="390" height="290" uuid="0fe72bc5-409e-4874-947c-2d54251fa6a1">
 					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="gafete2"/>
 					<printWhenExpression><![CDATA[$F{CANTIDAD}>=2]]></printWhenExpression>
 				</reportElement>
@@ -346,7 +355,7 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 									<property name="local_mesure_unitwidth" value="pixel"/>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>
 								</reportElement>
-								<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/GAFETE1.png"]]></imageExpression>
+								<imageExpression><![CDATA["C:/SCOI/imagen/GAFETE1.png"]]></imageExpression>
 							</image>
 							<image>
 								<reportElement x="191" y="0" width="190" height="280" uuid="92fe512b-71e6-401d-b29d-3d3dc1d435fa">
@@ -354,11 +363,11 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 									<property name="com.jaspersoft.studio.unit.width" value="px"/>
 									<property name="local_mesure_unitheight" value="pixel"/>
 								</reportElement>
-								<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/GAFETE2.png"]]></imageExpression>
+								<imageExpression><![CDATA["C:/SCOI/imagen/GAFETE2.png"]]></imageExpression>
 							</image>
 							<image>
 								<reportElement x="146" y="6" width="47" height="44" uuid="ab57d833-7df2-4795-8a20-57850d720d8c"/>
-								<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/logPrincipal.png"]]></imageExpression>
+								<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 							</image>
 							<staticText>
 								<reportElement x="52" y="25" width="94" height="23" uuid="00184568-3186-499f-9108-8bae609bbf4d"/>
@@ -454,7 +463,7 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 				</jr:list>
 			</componentElement>
 			<componentElement>
-				<reportElement x="49" y="291" width="390" height="283" uuid="e9b6a6d5-3180-4aff-a0b7-2ac1b4458363">
+				<reportElement x="0" y="291" width="390" height="283" uuid="e9b6a6d5-3180-4aff-a0b7-2ac1b4458363">
 					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="gafete3"/>
 					<printWhenExpression><![CDATA[$F{CANTIDAD}>=3]]></printWhenExpression>
 				</reportElement>
@@ -468,7 +477,7 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 								<property name="local_mesure_unitwidth" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							</reportElement>
-							<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/GAFETE1.png"]]></imageExpression>
+							<imageExpression><![CDATA["C:/SCOI/imagen/GAFETE1.png"]]></imageExpression>
 						</image>
 						<image>
 							<reportElement x="195" y="3" width="190" height="280" uuid="5b96a25f-5aaf-48db-998a-f8957cdb9bad">
@@ -476,11 +485,11 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 								<property name="local_mesure_unitheight" value="pixel"/>
 							</reportElement>
-							<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/GAFETE2.png"]]></imageExpression>
+							<imageExpression><![CDATA["C:/SCOI/imagen/GAFETE2.png"]]></imageExpression>
 						</image>
 						<image>
 							<reportElement x="150" y="9" width="47" height="44" uuid="b99ab9ef-6d68-476e-80da-7e9fb360c2f7"/>
-							<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/logPrincipal.png"]]></imageExpression>
+							<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 						</image>
 						<staticText>
 							<reportElement x="56" y="28" width="94" height="23" uuid="47cc2ed8-6b07-40ab-901d-3ba8d58a17b6"/>
@@ -575,7 +584,7 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 				</jr:list>
 			</componentElement>
 			<componentElement>
-				<reportElement x="433" y="291" width="390" height="283" uuid="33ef25b5-9c5b-472b-9dd1-63b0e52942c1">
+				<reportElement x="384" y="291" width="390" height="283" uuid="33ef25b5-9c5b-472b-9dd1-63b0e52942c1">
 					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="gafete4"/>
 					<printWhenExpression><![CDATA[$F{CANTIDAD}==4]]></printWhenExpression>
 				</reportElement>
@@ -589,7 +598,7 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 								<property name="local_mesure_unitwidth" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							</reportElement>
-							<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/GAFETE1.png"]]></imageExpression>
+							<imageExpression><![CDATA["C:/SCOI/imagen/GAFETE1.png"]]></imageExpression>
 						</image>
 						<image>
 							<reportElement x="194" y="3" width="190" height="280" uuid="f9277efb-315d-4565-9a3a-4c15f5e644e7">
@@ -597,11 +606,11 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 								<property name="local_mesure_unitheight" value="pixel"/>
 							</reportElement>
-							<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/GAFETE2.png"]]></imageExpression>
+							<imageExpression><![CDATA["C:/SCOI/imagen/GAFETE2.png"]]></imageExpression>
 						</image>
 						<image>
 							<reportElement x="149" y="9" width="47" height="44" uuid="4713e515-180c-4ea2-a06f-38f0d685b706"/>
-							<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/logPrincipal.png"]]></imageExpression>
+							<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 						</image>
 						<staticText>
 							<reportElement x="55" y="28" width="94" height="23" uuid="30532b77-2d58-4db8-89b2-721e7c5032ee"/>

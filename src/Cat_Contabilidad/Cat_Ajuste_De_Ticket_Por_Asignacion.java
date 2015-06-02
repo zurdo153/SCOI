@@ -91,7 +91,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	
 	double iva=0;
 	public Cat_Ajuste_De_Ticket_Por_Asignacion(){
-		int anchop = 730;
+		int anchop = 755;
 		int altop = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 		
 		 this.setSize(anchop,altop);
@@ -109,7 +109,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		panel.add(btnAsignacion).setBounds((ancho*3)-30,y,30,20);
 		panel.add(new JLabel("Total IVA: ")).setBounds(x+(ancho*3)+220,y,ancho,20);
 		panel.add(txtiva).setBounds(x+(ancho*3)+284,y,ancho,20);
-		panel.add(scroll).setBounds(x,y+=25, anchop-45, altop-130);
+		panel.add(scroll).setBounds(x,y+=25, anchop-35, altop-130);
 		panel.add(btnBuscarCambio).setBounds(x,altop-55,ancho+40,20);
 		
 		panel.add(btnAsignacionDCambio).setBounds(x+435,altop-55,20,20);

@@ -42,6 +42,8 @@ public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 	JButton btn_sin_revisar_por_auditoria	= new JButton  ("Sin Revisar Por Auditoria",new ImageIcon("imagen/orange-folder-saved-search-icone-8197-16.png"));
 	JButton btn_auditoria_paso_a_cobro 		= new JButton  ("Auditoria  Paso  A  Cobro",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
 	JButton btn_auditoria_paso_a_seguridad 	= new JButton  ("Auditoria  A  Seguridad",new ImageIcon("imagen/vista-previa-del-ojo-icono-7248-16.png"));
+	JButton btn_cortesaceptado              	= new JButton  ("Cortes Aceptados El Cobro",new ImageIcon("imagen/Aplicar.png"));
+	JButton btn_cortesnegados              	= new JButton  ("Cortes Negados El Cobro",new ImageIcon("imagen/Delete.png"));
 	
 	JLabel JLBlinicio			= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin				= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -68,14 +70,17 @@ public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 		y=60;
 		ancho=250;
 	
-		this.panel.add(btn_todos 						).setBounds(x,y,ancho,30);
-		this.panel.add(btn_revisados_por_auditoria 		).setBounds(x,y+=33,ancho,30);
-		this.panel.add(btn_sin_revisar_por_auditoria	).setBounds(x,y+=33,ancho,30);
-		this.panel.add(btn_auditoria_paso_a_cobro 		).setBounds(x,y+=33,ancho,30);
-		this.panel.add(btn_auditoria_paso_a_seguridad 	).setBounds(x,y+=33,ancho,30);
+		this.panel.add(btn_todos 				       ).setBounds(x,y,ancho,30);
+		this.panel.add(btn_revisados_por_auditoria 	   ).setBounds(x,y+=33,ancho,30);
+		this.panel.add(btn_sin_revisar_por_auditoria   ).setBounds(x,y+=33,ancho,30);
+		this.panel.add(btn_auditoria_paso_a_cobro 	   ).setBounds(x,y+=33,ancho,30);
+		this.panel.add(btn_auditoria_paso_a_seguridad  ).setBounds(x,y+=33,ancho,30);
+		this.panel.add(btn_cortesaceptado              ).setBounds(x,y+=33,ancho,30);
+		this.panel.add(btn_cortesnegados	           ).setBounds(x,y+=33,ancho,30);
+		
 		
 		this.cont.add(panel);
-		this.setSize(420,270);
+		this.setSize(420,350);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		 cargar_fechas();
@@ -86,6 +91,8 @@ public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 		 btn_sin_revisar_por_auditoria.addActionListener(op_generar);
 		 btn_auditoria_paso_a_cobro.addActionListener(op_generar);
 		 btn_auditoria_paso_a_seguridad.addActionListener(op_generar);
+		 btn_cortesaceptado.addActionListener(op_generar); 
+		 btn_cortesnegados.addActionListener(op_generar); 
 	}
 	
 	public void cargar_fechas(){
@@ -118,28 +125,22 @@ public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
-			
+			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
+			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 			
 			if(e.getActionCommand().toString().trim().toUpperCase().equals("AUDITORIA PASO A SEGURIDAD")){
 				cargar_fechas();
-				
-				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
-				
-				Reporte_de_Revision_de_Cortes("01/01/1900",fecha_final,e.getActionCommand().toString().trim().toUpperCase());
-			}else{
+				String fecha_final1 = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
+				Reporte_de_Revision_de_Cortes("01/01/1900",fecha_final1,e.getActionCommand().toString().trim().toUpperCase());
+  			  }
+			
+			if(e.getActionCommand().toString().trim().equals("Cortes Aceptados El Cobro")||e.getActionCommand().toString().trim().equals("Cortes Negados El Cobro")){
+				String aceptado_negado=e.getActionCommand().equals("Cortes Negados El Cobro")?"2":"1";
+				  Reporte_de_Aceptados_Negados(fecha_inicio, fecha_final, aceptado_negado);
+			  }else{
 					if(validar_fechas().equals("")){
-						
-						String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
-						String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
-	
-						
-//								if(c_final.getDate().before(c_inicio.getDate())){
-									Reporte_de_Revision_de_Cortes(fecha_inicio,fecha_final,e.getActionCommand().toString().trim().toUpperCase());
-//								}else{
-//									  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//					                  return;
-//								}
+
+ 							Reporte_de_Revision_de_Cortes(fecha_inicio,fecha_final,e.getActionCommand().toString().trim().toUpperCase());
 					}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 		                  return;
@@ -149,10 +150,18 @@ public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 		}
 	};
 	
+	
 	public void Reporte_de_Revision_de_Cortes(String fecha_inicio, String fecha_final, String tipo_de_reporte){
 		int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
 		 reporte = "Obj_Reporte_De_Revision_De_Cortes.jrxml";
 		 comando = "exec sp_Reporte_De_Revision_De_Cortes '"+fecha_inicio+"','"+fecha_final+"','"+tipo_de_reporte+"','"+folio_usuario+"'";
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+	}
+	
+	
+	public void Reporte_de_Aceptados_Negados(String fecha_inicio, String fecha_final, String aceptado_negado){
+		 reporte = "Obj_Reporte_De_Cortes_Autorizados_o_Negados_El_Cobro.jrxml";
+		 comando = "Sp_Reporte_De_Cortes_Autorizados_Negados_Cobro_En_Un_Rango_De_Fechas '"+fecha_inicio+"','"+fecha_final+"',"+aceptado_negado;
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	
