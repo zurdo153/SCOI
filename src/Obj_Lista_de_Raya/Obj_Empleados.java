@@ -39,7 +39,7 @@ public class Obj_Empleados {
 	private int status_h2;
 	private int status_h3;
 	private int status_rotativo;
-	private String contrato;
+	private int contrato;
 //	dependen del horario activo
 	private String descanso;
 	private String dobla;
@@ -78,7 +78,7 @@ public class Obj_Empleados {
 		folio=0; no_checador=""; nombre=""; ap_paterno=""; ap_materno=""; fecha_nacimiento=""; calle=""; colonia=""; poblacion=""; telefono_familiar="";
 		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; foto=null;
 		
-		horario=0; horario2=0; horario2=0; status_h1=0; status_h2=0; status_h3=0; status_rotativo=0; contrato=""; descanso=""; dobla=""; fecha_ingreso=""; status=0; fecha_baja=""; cuadrante_parcial=false;
+		horario=0; horario2=0; horario2=0; status_h1=0; status_h2=0; status_h3=0; status_rotativo=0; contrato=0; descanso=""; dobla=""; fecha_ingreso=""; status=0; fecha_baja=""; cuadrante_parcial=false;
 		departameto=0; imss=""; status_imss=0; numero_infonavit=""; establecimiento=0; puesto=0;
 		
 		salario_diario=0; salario_diario_integrado=0; forma_pago=""; sueldo=0; bono=0; prestamo=0; pension_alimenticia=0; infonavit=0; targeta_nomina="";
@@ -514,11 +514,11 @@ public class Obj_Empleados {
 		this.escolaridad = escolaridad;
 	}
 
-	public String getContrato() {
+	public int getContrato() {
 		return contrato;
 	}
 
-	public void setContrato(String contrato) {
+	public void setContrato(int contrato) {
 		this.contrato = contrato;
 	}
 

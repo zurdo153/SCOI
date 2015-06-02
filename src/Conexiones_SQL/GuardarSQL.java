@@ -168,7 +168,7 @@ public class GuardarSQL {
 			pstmt.setString(i+=1, 	empleado.getEstado_civil().toUpperCase());
 			pstmt.setString(i+=1, 	empleado.getTipo_sangre().toUpperCase());
 			pstmt.setString(i+=1, 	empleado.getEscolaridad().toUpperCase());
-			pstmt.setString(i+=1, 	empleado.getContrato().toUpperCase());
+			pstmt.setInt(i+=1, 	empleado.getContrato());
 			pstmt.setInt(i+=1, 	empleado.getPresencia_fisica());
 			
 			

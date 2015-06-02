@@ -148,16 +148,16 @@ public class ActualizarSQL {
 //			cambios extras 
 			pstmt.setInt(i+=1,		empleado.getHorario3());
 			pstmt.setInt(i+=1, 		empleado.getStatus_h3());
-			pstmt.setString(i+=1, 		empleado.getFecha_ingreso_imss());
-			pstmt.setString(i+=1, 		empleado.getFecha_vencimiento_licencia());
-			pstmt.setInt(i+=1, usuario.getFolio());
+			pstmt.setString(i+=1, 	empleado.getFecha_ingreso_imss());
+			pstmt.setString(i+=1, 	empleado.getFecha_vencimiento_licencia());
+			pstmt.setInt(i+=1, 		usuario.getFolio());
 			
 //			TODO (Datos Adicionales)
 			pstmt.setString(i+=1, 	empleado.getEstado_civil().toUpperCase());
 			pstmt.setString(i+=1, 	empleado.getTipo_sangre().toUpperCase());
 			pstmt.setString(i+=1, 	empleado.getEscolaridad().toUpperCase());
-			pstmt.setString(i+=1, 	empleado.getContrato().toUpperCase());
-			pstmt.setInt(i+=1, 	empleado.getPresencia_fisica());
+			pstmt.setInt(i+=1, 		empleado.getContrato());
+			pstmt.setInt(i+=1, 		empleado.getPresencia_fisica());
 			
 			pstmt.executeUpdate();
 			con.commit();

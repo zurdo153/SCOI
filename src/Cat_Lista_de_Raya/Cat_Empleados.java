@@ -110,6 +110,7 @@ import Obj_Lista_de_Raya.Obj_Sueldos;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Principal.Componentes;
 
+import com.sun.media.codec.video.cinepak.CineStore;
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings({ "serial", "unchecked" })
@@ -280,7 +281,7 @@ public class Cat_Empleados extends JFrame{
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbPresenciaFisica = new JComboBox(presencia_fisica);
 	
-	String contratacion[] = {"","PRUEBA","VALORACION","INDETERMINADO"};
+	String contratacion[] = {"","30 DIAS","60 DIAS","90 DIAS","120 DIAS","150 DIAS","INDETERMINADO"};
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbContratacion = new JComboBox(contratacion);
 	
@@ -573,8 +574,7 @@ public class Cat_Empleados extends JFrame{
 		
 		panel.add(new JLabel("Ultima actualización:")).setBounds(x+250,y,ancho,20);
 		panel.add(txtFechaActualizacion).setBounds(x+ancho+220,y,ancho,20);
-		
-		
+
 		
 		panel.add(btnEditar).setBounds(x-10,y+=30,ancho-43,20);
 		btnEditar.setEnabled(false);
@@ -1013,6 +1013,14 @@ public class Cat_Empleados extends JFrame{
 						cmbSexo.setSelectedItem("FEMENINO");
 					}
 					
+					if(re.getEstado_civil().equals("0")){	cmbEstadoCivil.setSelectedIndex(0);		}else{	cmbEstadoCivil.setSelectedItem(re.getEstado_civil());	}
+					if(re.getTipo_sangre().equals("0")){	cmbTipoDeSangre.setSelectedIndex(0);	}else{	cmbTipoDeSangre.setSelectedItem(re.getTipo_sangre());	}
+					if(re.getEscolaridad().equals("0")){	cmbEscolaridad.setSelectedIndex(0);		}else{	cmbEscolaridad.setSelectedItem(re.getEscolaridad());	}
+					
+					if(re.getContrato() == 0){	cmbContratacion.setSelectedItem("INDETERMINADO");	 }else{	cmbContratacion.setSelectedItem(re.getContrato()+" DIAS");	}
+					if(re.getPresencia_fisica() == 1){	cmbPresenciaFisica.setSelectedItem("APLICA");}else{	cmbPresenciaFisica.setSelectedItem("NO APLICA");	}
+					
+					
 					ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 			         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
 			         btnFoto.setIcon(iconoDefault);
@@ -1291,8 +1299,12 @@ public class Cat_Empleados extends JFrame{
 								case 1: empleado.setStatus_rotativo(1); break;
 								case 2: empleado.setStatus_rotativo(2); break;
 							}
-							
-							empleado.setContrato(cmbContratacion.getSelectedItem().toString());
+
+							if(cmbContratacion.getSelectedItem().toString().contains(" ")){
+								empleado.setContrato(Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))));
+							}else{
+								empleado.setContrato(0);
+							}
 							
 							empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
 							empleado.setStatus(cmbStatus.getSelectedIndex()+1);
@@ -1368,8 +1380,8 @@ public class Cat_Empleados extends JFrame{
 							
 							empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
 							
-//							TODO (presencia ficica      0 -> default(DB)     1 -> APLICA     2 -> NO APLICA)
-							empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:2);
+//							TODO (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
+							empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:0);
 							
 							empleado.setGafete(chbGafete.isSelected());
 							empleado.setFuente_sodas(chbFuente_Sodas.isSelected());
@@ -1490,7 +1502,11 @@ public class Cat_Empleados extends JFrame{
 							case 2: empleado.setStatus_rotativo(2); break;
 						}
 						
-						empleado.setContrato(cmbContratacion.getSelectedItem().toString());
+						if(cmbContratacion.getSelectedItem().toString().contains(" ")){
+							empleado.setContrato(Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))));
+						}else{
+							empleado.setContrato(0);
+						}
 						
 						empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
 						empleado.setStatus(cmbStatus.getSelectedIndex()+1);
@@ -1555,8 +1571,8 @@ public class Cat_Empleados extends JFrame{
 						empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
 						empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
 						
-//						TODO (presencia ficica      0 -> default(DB)     1 -> APLICA     2 -> NO APLICA)
-						empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:2);
+//						TODO (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
+						empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:0);
 						
 						empleado.setGafete(chbGafete.isSelected());
 						empleado.setFuente_sodas(chbFuente_Sodas.isSelected());
@@ -1677,6 +1693,12 @@ public class Cat_Empleados extends JFrame{
 		txtSalarioDiario.setEnabled(true);
 		txtSalarioDiarioIntegrado.setEnabled(true);
 		txtFormaDePago.setEnabled(true);
+		
+		cmbEstadoCivil.setEnabled(true);
+		cmbTipoDeSangre.setEnabled(true);
+		cmbEscolaridad.setEnabled(true);
+		cmbContratacion.setEnabled(true);
+		cmbPresenciaFisica.setEnabled(true);
 	}
 	
 	public void panelEnabledFalse(){	
@@ -1731,6 +1753,12 @@ public class Cat_Empleados extends JFrame{
 		btnTrueFoto.setSelected(false);
 		btnExaminar.setEnabled(false);
 		btnCamara.setEnabled(false);
+		
+		cmbEstadoCivil.setEnabled(false);
+		cmbTipoDeSangre.setEnabled(false);
+		cmbEscolaridad.setEnabled(false);
+		cmbContratacion.setEnabled(false);
+		cmbPresenciaFisica.setEnabled(false);
 	}
 
 	///boton deshacer
@@ -1793,6 +1821,13 @@ public class Cat_Empleados extends JFrame{
 		lblFolioHorario3.setText("");
 		
 		cmbHorarioRotativo.setSelectedIndex(0);
+		
+		cmbSexo.setSelectedIndex(0);
+		cmbEstadoCivil.setSelectedIndex(0);
+		cmbTipoDeSangre.setSelectedIndex(0);
+		cmbEscolaridad.setSelectedIndex(0);
+		cmbContratacion.setSelectedIndex(0);
+		cmbPresenciaFisica.setSelectedIndex(0);
 	    
 		 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
          Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
