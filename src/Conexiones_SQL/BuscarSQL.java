@@ -6329,6 +6329,98 @@ public class BuscarSQL {
 		return rp_ventas;
 	}
 	
+	public Object[][] Reporte_De_Competencia(Obj_Reportes_De_Ventas ventas, int cantidad_de_columnas) throws SQLException{
+		Statement stmt = null;
+		
+		String query = "exec sp_Reporte_IZAGAR_analisis_competidores '"+(ventas.getFecha_inicio()+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos()))+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"'";
+		
+		
+		
+		Object[][] rp_competencia = new Object[getFilasExterno(query)][cantidad_de_columnas];
+		
+		System.out.println(query);
+		try {
+			stmt = con.conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				for(int j=0; j<cantidad_de_columnas; j++){
+					rp_competencia[i][j] = rs.getObject(j+1);
+				}
+//					rp_competencia[i][0] = rs.getObject(1 );
+//					rp_competencia[i][1] = rs.getObject(2 );
+//					rp_competencia[i][2] = rs.getObject(3 );
+//					rp_competencia[i][3] = rs.getObject(4 );
+//					rp_competencia[i][4] = rs.getObject(5 );
+//					rp_competencia[i][5] = rs.getObject(6 );
+//					rp_competencia[i][6] = rs.getObject(7 );
+//					rp_competencia[i][7] = rs.getObject(8 );
+//					rp_competencia[i][8] = rs.getObject(9 );
+//					rp_competencia[i][9] = rs.getObject(10);
+//					rp_competencia[i][10]= rs.getObject(11);
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		
+		return rp_competencia;
+	}	
+	
+	public int Numero_De_Competidores(){
+		Statement stmt = null;
+		String query = "select count(folio_competencia) from tb_competencias";
+		int cantidad = 0;
+		
+		try {
+			stmt = con.conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					cantidad = rs.getInt(1);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return cantidad;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String[] Vector_De_Competidores() throws SQLException{
+		Statement stmt = null;
+		
+		String query = "select competencia as competidor from tb_competencias";
+		Vector miVector = new Vector();
+		try {
+			stmt = con.conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					miVector.add(rs.getString("competidor"));
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		int i=0;
+		String[] lista= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			lista[i]= miVector.get(i).toString();
+			i++;
+		}
+		return lista;
+	}	
 	
 	public Obj_Diferencia_De_Cortes_Calculado corte_calc(int folio) throws SQLException{
 		Obj_Diferencia_De_Cortes_Calculado corte_calculado = new Obj_Diferencia_De_Cortes_Calculado();

@@ -104,4 +104,14 @@ public class Obj_Reportes_De_Ventas {
 	public String[][] reporte_de_ventas() throws SQLException{
 		return new BuscarSQL().Reporte_De_Ventas(this);
 	}
+	
+	public Object[][] reporte_de_competencias(int cantidad_de_columnas) throws SQLException{
+		return new BuscarSQL().Reporte_De_Competencia(this,cantidad_de_columnas);
+	}
+	public int cantidad_de_competidores(){
+		return new BuscarSQL().Numero_De_Competidores();
+	}
+	public String[] lista_de_competidores() throws SQLException{
+		return new BuscarSQL().Vector_De_Competidores();
+	}
 }
