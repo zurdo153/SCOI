@@ -110,7 +110,6 @@ import Obj_Lista_de_Raya.Obj_Sueldos;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Principal.Componentes;
 
-import com.sun.media.codec.video.cinepak.CineStore;
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings({ "serial", "unchecked" })

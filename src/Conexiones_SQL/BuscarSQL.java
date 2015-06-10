@@ -5835,29 +5835,7 @@ public class BuscarSQL {
 	
 	public Obj_Cotizaciones_De_Un_Producto datos_producto(String cod_prod) throws SQLException{
 		Obj_Cotizaciones_De_Un_Producto datosproducto = new Obj_Cotizaciones_De_Un_Producto();
-		
-//		String query = "  declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35)  set @Producto='"+cod_prod+"' "+
-//				"  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto))" +
-//				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end" +
-//				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end" +
-//				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_unidad=@Producto)) end" +
-//				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end" +
-//				"      set @exist_cedis=(select isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas)" +
-//				"                       else (prodestab.exist_piezas) end),0)  from productos left outer join prodestab on prodestab.cod_prod=productos.cod_prod " +
-//				"                          where productos.cod_prod=@cod_prod and prodestab.cod_estab=7)" +
-//				"      SELECT   productos.cod_prod " +
-//				"              ,productos.descripcion " +
-//				"              ,prodestab.ultimo_costo" +
-//				"              ,prodestab.costo_promedio" +
-//				"              ,@exist_cedis as existencia_cedis  " +
-//				"             ,isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0) as existencia_total "+
-//				"			  ,0 as precio_de_venta" +
-//				"      from productos " +
-//				"        left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod " +
-//				"      where productos.cod_prod=@cod_prod" +
-//				"      group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio";
-		
-		String query = " declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35)  set @Producto='03025' "
+		String query = " declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35)  set @Producto='"+cod_prod+"' "
 				+ "				  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto)) "
 				+ "				  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end "
 				+ "				  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end "
@@ -6289,7 +6267,7 @@ public class BuscarSQL {
 		try {
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
+
 			int i=0;
 				while(rs.next()){
 //					for(int j=0; j<20; j++){

@@ -6,8 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -22,7 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -104,9 +101,6 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
         String columnName = model.getColumnName(column);
         String data = model.getValueAt(row, column).toString();
 
-//        realizar validaciones o cualquier otro movimiento
-//        System.out.print(columnName+"    ");
-//        System.out.println(data);
         if(column>3){
         	 try{
  	        	if(!data.equals("")){
@@ -122,17 +116,6 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema(){
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (InstantiationException e1) {
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e1) {
-			e1.printStackTrace();
-		}
 		
 //		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -173,35 +156,9 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
 
 
-		this.addWindowListener(op_cerrar);
 		
 	}
 
-	WindowListener op_cerrar = new WindowListener() {
-		public void windowOpened(WindowEvent e) {}
-		public void windowIconified(WindowEvent e) {}
-		public void windowDeiconified(WindowEvent e) {}
-		public void windowDeactivated(WindowEvent e) {}
-		public void windowClosing(WindowEvent e) {
-				try {
-					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InstantiationException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IllegalAccessException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (UnsupportedLookAndFeelException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		public void windowClosed(WindowEvent e) {}
-		public void windowActivated(WindowEvent e) {}
-	};
 
 	ActionListener op_guardar = new ActionListener() {
 		@SuppressWarnings("unchecked")
@@ -258,7 +215,12 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	public JScrollPane obtener_tabla(){
+		this.tabla.setRowSorter(trsfiltro);  
+	    this.tabla.getTableHeader().setReorderingAllowed(false) ;
+	    this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	    
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 		this.tabla.getColumnModel().getColumn(0).setMaxWidth(72);
 		this.tabla.getColumnModel().getColumn(0).setMinWidth(72);

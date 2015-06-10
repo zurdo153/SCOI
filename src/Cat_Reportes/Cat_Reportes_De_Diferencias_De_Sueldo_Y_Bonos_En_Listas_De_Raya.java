@@ -54,7 +54,7 @@ public class Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya ext
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("Reportes De Infonavit De Lista De Raya");
+		setTitle("Reportes De Diferencias Sueldo y Bono En Listas De Raya");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/diferiencia_de_sueldos_entre_listas_de_raya2_64.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione el Tipo de Reporte"));
 	
