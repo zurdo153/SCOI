@@ -498,7 +498,7 @@ public void render_proveedor(){
 					try {
 						
 					/////ORIGEN COMPRAS
-						s = con.conexion().createStatement();
+						s = con.conexion_IZAGAR().createStatement();
 						
 						rs = s.executeQuery(" select tb_costos_de_competencia.cod_prod"
 								+ " ,tb_costos_de_competencia.descripcion "
@@ -507,11 +507,10 @@ public void render_proveedor(){
 								+ " ,tb_costos_de_competencia.precio_de_venta "
 								+ " ,tb_competencias.competencia "
 								+ " ,tb_costos_de_competencia.precio_de_venta_competencia "
-								+ " ,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as realizo_captura "
+								+ " ,tb_costos_de_competencia.folio_realizo_captura as realizo_captura "
 								+ " ,convert(varchar(20),tb_costos_de_competencia.fecha,103)+' '+convert(varchar(20),tb_costos_de_competencia.fecha,108) as fecha_captura"
 								+ " from tb_costos_de_competencia "
 								+ " inner join tb_competencias on tb_competencias.folio_competencia = tb_costos_de_competencia.folio_competencia "
-								+ " inner join tb_empleado on tb_empleado.folio = tb_costos_de_competencia.folio_realizo_captura "
 								+ " order by fecha desc");
 						
 						while (rs.next())

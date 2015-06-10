@@ -6326,17 +6326,6 @@ public class BuscarSQL {
 				for(int j=0; j<cantidad_de_columnas; j++){
 					rp_competencia[i][j] = rs.getObject(j+1);
 				}
-//					rp_competencia[i][0] = rs.getObject(1 );
-//					rp_competencia[i][1] = rs.getObject(2 );
-//					rp_competencia[i][2] = rs.getObject(3 );
-//					rp_competencia[i][3] = rs.getObject(4 );
-//					rp_competencia[i][4] = rs.getObject(5 );
-//					rp_competencia[i][5] = rs.getObject(6 );
-//					rp_competencia[i][6] = rs.getObject(7 );
-//					rp_competencia[i][7] = rs.getObject(8 );
-//					rp_competencia[i][8] = rs.getObject(9 );
-//					rp_competencia[i][9] = rs.getObject(10);
-//					rp_competencia[i][10]= rs.getObject(11);
 				i++;
 			}
 			

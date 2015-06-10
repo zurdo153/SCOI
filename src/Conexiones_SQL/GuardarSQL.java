@@ -3826,7 +3826,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 //			String query = "exec sp_insert_cotizacion_de_un_productos_en_proveedores ?,?,?,?,?,?,?,?,?,?,?,? ";
 		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?,?";
 			
-			Connection con = new Connexion().conexion();
+			Connection con = new Connexion().conexion_IZAGAR();
 			PreparedStatement pstmt = null;
 			try {
 				con.setAutoCommit(false);

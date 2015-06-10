@@ -109,18 +109,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	JTextField txtFiltroFamilia = new JTextField("");
 	JTextField txtFiltroLinea = new JTextField("");
 	
-//	String[][] mtz ={	{"DII306451","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306452","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306453","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306454","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306455","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306456","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306457","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306458","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306459","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306450","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"}};
-	
-	
 	int cantidad_de_columnas =  (new Obj_Reportes_De_Ventas().cantidad_de_competidores()+6);
 	DefaultTableModel model = new DefaultTableModel(0,cantidad_de_columnas){
 		@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -377,7 +365,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Productos.getSelectedItem().toString().equals("Todos")){
 				dispose();
-				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas",cmbOperador_Productos.getSelectedItem().toString()).setVisible(true);
+				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Analisis_De_Precios_De_Competencia",cmbOperador_Productos.getSelectedItem().toString()).setVisible(true);
 			}else{
 				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 				return;

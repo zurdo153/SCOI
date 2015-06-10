@@ -169,7 +169,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		
 		operador_ventas = operador;
 		
-		if(bandera_origen_consulta_filro.equals("Reporte_De_Ventas")){
+		if(bandera_origen_consulta_filro.equals("Reporte_De_Ventas") || bandera_origen_consulta_filro.equals("Reporte_De_Analisis_De_Precios_De_Competencia")){
 			btnCargar.setVisible(true);
 			tabla.removeMouseListener(opAgregar);
 			tabla.removeKeyListener(op_agregar_productoconteclado);
@@ -285,7 +285,11 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 						e1.printStackTrace();
 					}
 	 				
-	 				new Cat_Reporte_De_Ventas(Lista,operador_ventas).setVisible(true);
+	 				if(valor_catalogo.equals("Reporte_De_Analisis_De_Precios_De_Competencia")){
+	 					new Cat_Analisis_De_Precios_De_Competencia(Lista,operador_ventas).setVisible(true);
+	 				}else{
+	 					new Cat_Reporte_De_Ventas(Lista,operador_ventas).setVisible(true);
+	 				}
 	 				dispose();
 	 			}
 		}
