@@ -2,6 +2,7 @@ package Cat_Compras;
 
 import java.awt.AWTException;
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -173,7 +174,7 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Alimentacion De Costos De Competencia");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/encontrar-busqueda-lupa-de-la-ventana-de-zoom-icono-4008-32.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/estrategiadeprecios64.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccione o teclee un producto"));
 
@@ -256,6 +257,38 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
 			e2.printStackTrace();
 		}
           
+		///buscar con F2
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "filtro");
+             getRootPane().getActionMap().put("filtro", new AbstractAction(){
+                 public void actionPerformed(ActionEvent e)
+                 {   txtcod_prod.setText("");
+               	    btnBuscar_Producto.doClick();
+               	    }
+             });
+             
+		
+		///deshacer con escape
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+          getRootPane().getActionMap().put("escape", new AbstractAction(){
+         public void actionPerformed(ActionEvent e)
+         {                 	    btnDeshacer.doClick();
+       	    }
+     });
+     	///guardar con control+G
+         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+           getRootPane().getActionMap().put("guardar", new AbstractAction(){
+              public void actionPerformed(ActionEvent e)
+              {                 	    btnGuardar.doClick();
+            	    }
+         });
+       ///guardar con F12
+          getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+              getRootPane().getActionMap().put("guardar", new AbstractAction(){
+                  public void actionPerformed(ActionEvent e)
+                  {                 	    btnGuardar.doClick();
+                    	    }
+             });
 	}
 	
 	public void enterauto(){
@@ -299,8 +332,6 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
 		String[][] comp = new String[tabla_captura.getRowCount()][2];
 		
 		for(int i=0; i<comp.length; i++){
-			System.out.println(tabla_captura.getValueAt(i,0).toString());
-			System.out.println(tabla_captura.getValueAt(i,2).toString());
 			comp[i][0]=tabla_captura.getValueAt(i,0).toString();
 			comp[i][1]=tabla_captura.getValueAt(i,2).toString();
 		}
@@ -324,6 +355,7 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
             	   
             	   while(tabla_Proveedor.getRowCount()>0){
 						modelo_prv.removeRow(0);  }
+            	   
 					 Llenar_Tabla_proveedores ();
 					 render_proveedor();
             	   JOptionPane.showMessageDialog(null, "Se Guardo Correctamente:","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
@@ -349,6 +381,10 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
 		 txtPrecioVenta.setText("");
 		 txtultimo_costo.setText("");
 		 JLBdescripcion.setText("");
+		 txtcod_prod.requestFocus();
+  	     for(int i=0; i<tabla_captura.getRowCount(); i++){
+  				modelo_captura.setValueAt("", i, 2);
+  			}
 	}
 	
 	KeyListener Buscar_Datos_Producto = new KeyListener() {
@@ -363,6 +399,10 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
 						
 				      Obj_Cotizaciones_De_Un_Producto  Datos_Producto= new Obj_Cotizaciones_De_Un_Producto().buscardatos_producto(txtcod_prod.getText().trim().toUpperCase()+"");
 			            
+				  	     for(int i=0; i<tabla_captura.getRowCount(); i++){
+				  				modelo_captura.setValueAt("", i, 2);
+				  			}
+				  	     
 						descripcion=Datos_Producto.getDescripcion_Prod();
 						ultimo_costo=Datos_Producto.getUltimo_Costo();
 						costo_promedio=Datos_Producto.getCosto_Promedio();
@@ -378,6 +418,7 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
 						 
 						 txtcod_prod.setEditable(false);
 						 btnBuscar_Producto.setEnabled(false);
+						 tabla_captura.requestFocus();
 						 
 					}else{
 						JOptionPane.showMessageDialog(null, "El Codigo Esta Mal Escrito o El Producto No Existe" , "Aviso", JOptionPane.CANCEL_OPTION);

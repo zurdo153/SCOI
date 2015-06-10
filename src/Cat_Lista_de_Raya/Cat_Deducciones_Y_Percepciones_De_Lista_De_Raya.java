@@ -143,14 +143,13 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 	        if(column!=6 && column!=9 && column!=11){
 	        	 try{
 	 	        	if(!data.equals("")){
-	 	        		Integer.valueOf(data);
+	 	        		Float.valueOf(data);
 	 	        	}
 	 	        } catch (NumberFormatException nfe){
 	 	        	tabla.setValueAt("", row, column);
 	 	        	System.out.println("no es entero");
 	 	        }
 	        }
-	       
 	    }
 	
 	public Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya(){

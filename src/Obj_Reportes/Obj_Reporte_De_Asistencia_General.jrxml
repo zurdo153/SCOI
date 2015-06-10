@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-05-24T16:42:20 -->
+<!-- 2015-06-03T16:52:40 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_General_de_Asistencia_Por_Establecimiento" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="24cc16d5-c483-4414-a6b0-717ab373dbf7">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB_ADAPTER"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="ireport.zoom" value="4.59497298635725"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="505"/>
@@ -16,9 +16,9 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
-	<queryString>
+	<queryString language="SQL">
 		<![CDATA[exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones
-'27/01/2015 00:00:00','30/01/2015 23:59:59','SISTEMAS','Selecciona un Departamento','Selecciona un Empleado']]>
+'15/05/2015 00:00:00','20/05/2015 23:59:59','Selecciona un Establecimiento','Selecciona un Departamento','Selecciona un Empleado',1]]>
 	</queryString>
 	<field name="establecimiento" class="java.lang.String"/>
 	<field name="folio_empleado" class="java.lang.Integer"/>
@@ -46,6 +46,9 @@
 	<field name="no_trabajo_cgoce_sueldo" class="java.lang.Integer"/>
 	<field name="fecha_mov" class="java.sql.Timestamp"/>
 	<field name="tipo_de_Permiso" class="java.lang.String"/>
+	<field name="valor_impuntualidad" class="java.math.BigDecimal"/>
+	<field name="valor_omision" class="java.math.BigDecimal"/>
+	<field name="cant_omisiones" class="java.lang.Integer"/>
 	<variable name="Group2_Retardo" class="java.math.BigDecimal" resetType="Group" resetGroup="Group2" calculation="Sum">
 		<variableExpression><![CDATA[$F{inpuntualidad}]]></variableExpression>
 	</variable>
@@ -67,6 +70,18 @@
 	</variable>
 	<variable name="Dias_que_doblo_Extra" class="java.lang.Number" resetType="Group" resetGroup="Group2" calculation="Sum">
 		<variableExpression><![CDATA[$F{doblo_extra}]]></variableExpression>
+	</variable>
+	<variable name="Group2_Retardo_C_11" class="java.lang.Integer" resetType="Group" resetGroup="Group2">
+		<variableExpression><![CDATA[($V{Group2_Retardo})/11]]></variableExpression>
+	</variable>
+	<variable name="Variable_1" class="java.lang.Integer" resetType="Group" resetGroup="Group2">
+		<variableExpression><![CDATA[$V{Group2_Retardo_C_11}*$F{valor_impuntualidad}]]></variableExpression>
+	</variable>
+	<variable name="Cant_Omisiones" class="java.lang.Integer" resetType="Group" resetGroup="Group2" calculation="Sum">
+		<variableExpression><![CDATA[$F{cant_omisiones}]]></variableExpression>
+	</variable>
+	<variable name="Cobro_Omision" class="java.lang.Integer" resetType="Group" resetGroup="Group2">
+		<variableExpression><![CDATA[$V{Cant_Omisiones}*$F{valor_omision}]]></variableExpression>
 	</variable>
 	<group name="Group1" footerPosition="StackAtBottom">
 		<groupExpression><![CDATA[$F{establecimiento}]]></groupExpression>
@@ -116,6 +131,62 @@
 			<band height="41">
 				<frame>
 					<reportElement mode="Opaque" x="0" y="1" width="572" height="38" backcolor="#FFFF99" uuid="aa9c165f-dc3f-41fc-b72a-60766ccf09df"/>
+					<textField>
+						<reportElement x="0" y="0" width="129" height="12" uuid="fbff5475-bf5b-4a49-9781-23a0063a886b"/>
+						<textElement>
+							<font fontName="Times New Roman" size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Dia Descanso: "+$F{descanso}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="0" y="12" width="89" height="11" uuid="d1388acd-20e9-4541-a315-e37d32ee40ab"/>
+						<textElement>
+							<font fontName="Times New Roman" size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Dia Dobla: "+$F{dobla}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="0" y="23" width="126" height="12" uuid="9af150f8-ae69-4910-ac06-6dd23822d068"/>
+						<textElement>
+							<font fontName="Times New Roman" size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Dias Con Registros Faltantes:"+$V{Conteo_de_Registros_Faltantes}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="133" y="0" width="76" height="12" uuid="a6550574-2284-4a8e-ac9b-cfde1c22789b"/>
+						<textElement>
+							<font fontName="Times New Roman" size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Total Imp: "+$V{Group2_Retardo}+"min"]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="false">
+						<reportElement mode="Transparent" x="133" y="12" width="76" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="72f17e24-bb46-4272-bdde-cbcd9d9b127f"/>
+						<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+							<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Impunt C/11:"+$V{Group2_Retardo_C_11}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="false">
+						<reportElement mode="Transparent" x="133" y="24" width="76" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="871e9182-2c73-44f4-a153-10855bbc31f0"/>
+						<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+							<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Cobro Imp.:"+$V{Variable_1}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="false">
+						<reportElement mode="Transparent" x="209" y="12" width="80" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="0df12757-a7a2-4c25-b565-791ae7b2ee0d"/>
+						<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+							<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Cant Omision:"+$V{Cant_Omisiones}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="false">
+						<reportElement mode="Transparent" x="209" y="24" width="80" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="aa92cd2c-9440-4fc8-8e1c-a436774d2376"/>
+						<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+							<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Cobro Omi.:"+$V{Cobro_Omision}]]></textFieldExpression>
+					</textField>
 				</frame>
 				<line>
 					<reportElement x="2" y="40" width="572" height="1" uuid="89fd0eb3-f57e-46fd-9321-a71495e13cc9"/>
@@ -148,36 +219,8 @@
 					</textElement>
 					<textFieldExpression><![CDATA["Dias Que Doblo Extra:"+$V{Dias_que_doblo_Extra}]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement x="160" y="14" width="129" height="12" uuid="fbff5475-bf5b-4a49-9781-23a0063a886b"/>
-					<textElement>
-						<font fontName="Times New Roman" size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Dia Descanso: "+$F{descanso}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="133" y="0" width="76" height="12" uuid="4062c1ad-d02c-4735-b0cd-ec8167f9cd0b"/>
-					<textElement>
-						<font fontName="Times New Roman" size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Total Imp: "+$V{Group2_Retardo}+"min"]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="160" y="25" width="89" height="11" uuid="d1388acd-20e9-4541-a315-e37d32ee40ab"/>
-					<textElement>
-						<font fontName="Times New Roman" size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Dia Dobla: "+$F{dobla}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="289" y="14" width="126" height="12" uuid="9af150f8-ae69-4910-ac06-6dd23822d068"/>
-					<textElement>
-						<font fontName="Times New Roman" size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Dias Con Registros Faltantes:"+$V{Conteo_de_Registros_Faltantes}]]></textFieldExpression>
-				</textField>
 				<textField evaluationTime="Group" evaluationGroup="Group2" isBlankWhenNull="false">
-					<reportElement x="209" y="0" width="71" height="12" uuid="72a0ca88-2538-41f9-9aa2-d80babe290a0"/>
+					<reportElement x="209" y="1" width="80" height="12" uuid="72a0ca88-2538-41f9-9aa2-d80babe290a0"/>
 					<textElement>
 						<font fontName="Times New Roman" size="9"/>
 					</textElement>

@@ -14,7 +14,6 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -36,12 +35,6 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
@@ -433,44 +426,6 @@ public void filtroProductos(String cadena){
 	}
 	
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void Reporte_de_Asistencia_completo(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
-		String query = "exec sp_Reporte_De_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-		Statement stmt = null;
-		try {
-			
-			stmt =  new Connexion().conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-		    
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Asistencia_Por_Establecimiento.jrxml");
-			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-			JasperViewer.viewReport(print, false);
-		} catch (Exception e1) {
-			System.out.println(e1.getMessage());
-			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_General_de_Asistencia_Por_Establecimiento ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-	}
-	}
-	
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void Reporte_de_Asistencia_establecimiento(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
-		String query = "exec sp_Reporte_General_de_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-		Statement stmt = null;
-		try {
-			
-			stmt =  new Connexion().conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-		    
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_de_Asistencia_Por_Establecimiento_Sin_Observaciones.jrxml");
-			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-			JasperViewer.viewReport(print, false);
-		} catch (Exception e1) {
-			System.out.println(e1.getMessage());
-			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_General_de_Asistencia_Por_Establecimiento ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-	}
-	}
 	
 	ActionListener op_filtro_productos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -483,6 +438,7 @@ public void filtroProductos(String cadena){
 			}
 		}
 	};
+	
 	ActionListener op_filtro_clases = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Clase.getSelectedItem().toString().equals("Todos")){
@@ -513,6 +469,7 @@ public void filtroProductos(String cadena){
 			}
 		}
 	};
+	
 	ActionListener op_filtro_lineas = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Linea.getSelectedItem().toString().equals("Todos")){
