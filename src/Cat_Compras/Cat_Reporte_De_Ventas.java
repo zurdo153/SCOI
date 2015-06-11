@@ -1038,7 +1038,7 @@ public void filtroProductos(String cadena){
 //			   		}
 			   		
 			   		
-					String todos = "select "+folio_columna+" as folio,nombre from "+nombre_de_tabla+condicion+" order by nombre";
+					String todos = "select "+folio_columna+" as folio,upper(nombre) from "+nombre_de_tabla+condicion+" order by nombre";
 					
 					System.out.println(todos);
 					Statement s;

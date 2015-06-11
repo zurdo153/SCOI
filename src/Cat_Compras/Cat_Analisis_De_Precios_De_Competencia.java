@@ -862,7 +862,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 			   		}
 			   		
 			   		
-					String todos = "select "+folio_columna+" as folio,nombre from "+nombre_de_tabla+condicion+" order by nombre";
+					String todos = "select "+folio_columna+" as folio,upper(nombre) from "+nombre_de_tabla+condicion+" order by nombre";
 					
 					System.out.println(todos);
 					Statement s;
