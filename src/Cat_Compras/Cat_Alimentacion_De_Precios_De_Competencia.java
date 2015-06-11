@@ -48,7 +48,7 @@ import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements TableModelListener{
+public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implements TableModelListener{
 				Container cont = getContentPane();
 				JLayeredPane panel = new JLayeredPane();
 				
@@ -162,7 +162,7 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
 			       
 			    }
 			  
-	public Cat_Alimentacion_De_Costos_De_Competencia(String cod_prod){
+	public Cat_Alimentacion_De_Precios_De_Competencia(String cod_prod){
 		
 		codigo_producto=cod_prod+"";
 		txtcod_prod.setText(codigo_producto+"");
@@ -173,7 +173,7 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("Alimentacion De Costos De Competencia");
+		setTitle("Alimentacion De Precios De Competencia");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/estrategiadeprecios64.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccione o teclee un producto"));
@@ -349,6 +349,9 @@ public class Cat_Alimentacion_De_Costos_De_Competencia extends JFrame implements
                 
                 cotizacion_prod.setPrecio_de_venta(precio_de_venta);
                 cotizacion_prod.setDescripcion_Prod(JLBdescripcion.getText().toLowerCase().toString().trim());
+                if(tabla_captura.isEditing()){
+    				tabla_captura.getCellEditor().stopCellEditing();
+    			}
                 
                if(cotizacion_prod.Guardar_Captura_competencia(competencia())){
             	   limpiar();
@@ -497,21 +500,14 @@ public void render_proveedor(){
 					
 					try {
 						
-					/////ORIGEN COMPRAS
-						s = con.conexion_IZAGAR().createStatement();
+					s = con.conexion_IZAGAR().createStatement();
 						
-						rs = s.executeQuery(" select tb_costos_de_competencia.cod_prod"
-								+ " ,tb_costos_de_competencia.descripcion "
-								+ " ,tb_costos_de_competencia.ultimo_costo "
-								+ " ,tb_costos_de_competencia.costo_promedio "
-								+ " ,tb_costos_de_competencia.precio_de_venta "
-								+ " ,tb_competencias.competencia "
-								+ " ,tb_costos_de_competencia.precio_de_venta_competencia "
-								+ " ,tb_costos_de_competencia.folio_realizo_captura as realizo_captura "
-								+ " ,convert(varchar(20),tb_costos_de_competencia.fecha,103)+' '+convert(varchar(20),tb_costos_de_competencia.fecha,108) as fecha_captura"
-								+ " from tb_costos_de_competencia "
-								+ " inner join tb_competencias on tb_competencias.folio_competencia = tb_costos_de_competencia.folio_competencia "
-								+ " order by fecha desc");
+						rs = s.executeQuery("select tb_captura_de_competencia.cod_prod,productos.descripcion,tb_captura_de_competencia.ultimo_costo,tb_captura_de_competencia.costo_promedio,tb_captura_de_competencia.precio_de_venta"
+								+ "        ,tb_competencias.competencia,tb_captura_de_competencia.precio_de_venta_competencia,tb_captura_de_competencia.folio_realizo_captura as realizo_captura,convert(varchar(20),tb_captura_de_competencia.fecha,103)+' '+convert(varchar(20),tb_captura_de_competencia.fecha,108) as fecha_captura"
+								+ "      from tb_captura_de_competencia "
+								+ "          inner join productos on productos.cod_prod=tb_captura_de_competencia.cod_prod"
+								+ "          inner join tb_competencias on tb_competencias.folio_competencia = tb_captura_de_competencia.folio_competencia "
+								+ "          order by fecha desc ");
 						
 						while (rs.next())
 						{ 
@@ -539,7 +535,7 @@ public void render_proveedor(){
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Alimentacion_De_Costos_De_Competencia("").setVisible(true);
+			new Cat_Alimentacion_De_Precios_De_Competencia("").setVisible(true);
 		}catch(Exception e){	}
 	}
 }

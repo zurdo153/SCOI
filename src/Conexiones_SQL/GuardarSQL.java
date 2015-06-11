@@ -3824,7 +3824,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	
 	public boolean Guardar_captura_de_competencia(Obj_Cotizaciones_De_Un_Producto Cotizacion_Producto, String[][] comp){
 //			String query = "exec sp_insert_cotizacion_de_un_productos_en_proveedores ?,?,?,?,?,?,?,?,?,?,?,? ";
-		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?";
 			
 			Connection con = new Connexion().conexion_IZAGAR();
 			PreparedStatement pstmt = null;
@@ -3835,14 +3835,13 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				for(int i=0; i<comp.length; i++){
 					if(!comp[i][1].toString().trim().equals("")){
 						pstmt.setString(1, Cotizacion_Producto.getCod_Prod().toUpperCase().trim());
-						pstmt.setString(2,  Cotizacion_Producto.getDescripcion_Prod());  
-				        pstmt.setDouble(3,  Cotizacion_Producto.getUltimo_Costo());  
-				        pstmt.setDouble(4,  Cotizacion_Producto.getCosto_Promedio());
-				        pstmt.setDouble(5,  Cotizacion_Producto.getPrecio_de_venta());  
+					    pstmt.setDouble(2,  Cotizacion_Producto.getUltimo_Costo());  
+				        pstmt.setDouble(3,  Cotizacion_Producto.getCosto_Promedio());
+				        pstmt.setDouble(4,  Cotizacion_Producto.getPrecio_de_venta());  
 				        
-				        pstmt.setInt(6,  Integer.valueOf(comp[i][0].toString()));
-				        pstmt.setDouble(7,  Double.valueOf(comp[i][1].toString()));  
-				        pstmt.setInt(8,  usuario.getFolio());  
+				        pstmt.setInt(5,  Integer.valueOf(comp[i][0].toString()));
+				        pstmt.setDouble(6,  Double.valueOf(comp[i][1].toString()));  
+				        pstmt.setInt(7,  usuario.getFolio());  
 				        
 						pstmt.executeUpdate();
 					}

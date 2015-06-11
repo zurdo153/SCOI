@@ -161,7 +161,6 @@ public class Obj_Cotizaciones_De_Un_Producto {
 		}
 	return null; 
 	}
-	
 	public boolean Guardar_Cotizacion(){ return new GuardarSQL().Guardar_Cotizacion_Producto(this); }
 	
 	public boolean Guardar_Captura_competencia(String[][] comp){ return new GuardarSQL().Guardar_captura_de_competencia(this,comp); }
