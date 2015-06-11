@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
+import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_2;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Arduino.Obj_Arduino;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
@@ -1790,6 +1791,31 @@ public class BuscarSQL {
 		
 		try{
 			FileReader archivo = new FileReader(System.getProperty("user.dir")+"\\Config\\config");
+			BufferedReader bufferedWriter = new BufferedReader(archivo);
+			String cadena = "";
+			while( (cadena = bufferedWriter.readLine()) !=null)
+				myVector.addElement(cadena);
+				
+				config.setDireccionIPV4(myVector.get(0).toString());
+				config.setNombreBD(myVector.get(1).toString());
+				config.setUsuario(myVector.get(2).toString());
+				config.setContrasena(myVector.get(3).toString());
+				
+		}catch(FileNotFoundException e) {
+			System.out.println(e.getMessage());
+			return config=null;
+		}
+		return config;
+			
+	}
+	
+	@SuppressWarnings({ "rawtypes", "resource", "unchecked" })
+	public Obj_Configuracion_Base_de_Datos_2 Conexion_BD_2() throws IOException {
+		Vector myVector = new Vector();
+		Obj_Configuracion_Base_de_Datos_2 config = new Obj_Configuracion_Base_de_Datos_2();
+		
+		try{
+			FileReader archivo = new FileReader(System.getProperty("user.dir")+"\\Config\\config2");
 			BufferedReader bufferedWriter = new BufferedReader(archivo);
 			String cadena = "";
 			while( (cadena = bufferedWriter.readLine()) !=null)
