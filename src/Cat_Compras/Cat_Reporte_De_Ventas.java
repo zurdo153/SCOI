@@ -71,6 +71,10 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbTipoDePrecio = new JComboBox(tipoDePrecio);
 	
+	String presentado[] = {"Ticket","Producto"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbPresentado = new JComboBox(presentado);
+	
 	String operadorProducto[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbOperador_Productos = new JComboBox(operadorProducto);
@@ -128,16 +132,6 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	JTextField txtFiltroFamilia = new JTextField("");
 	JTextField txtFiltroLinea = new JTextField("");
 	
-//	String[][] mtz ={	{"DII306451","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306452","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306453","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306454","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306455","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306456","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306457","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306458","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306459","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"},
-//						{"DII306450","DEPOSITO II","03076","CERVEZA TECATE CAGUAMA LIGHT 940 ML /P12","1.00","1.00","Abarrotes","Vinos y Licores","Cerveza","No Tiene","2014-06-08 23:25:00.0","22.00","18.97","18.4600","-101.762730228","1","01/04/2015 12:05","Normal","EFECTIVO","Contado"}};
 	DefaultTableModel modelo_ventas = new DefaultTableModel(null,
             new String[]{"Ticket","Establecimiento","Cod_Prod","Descripcion","Venta Unidades","Venta Piezas","Clase Producto","Categoria","Familias","Lineas Productos","Fecha Agotado","Importe","Imp. s/IVA","Costo","Margen","Dias De Venta","Fecha De Venta","Tipo Precio Venta","Forma De Pago","Cond. De Pago"}
 			){
@@ -206,9 +200,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	public Cat_Reporte_De_Ventas(String parametro, String operador){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
-		
 		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
-		
 		cont.add(panel);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -226,13 +218,11 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		panel.add(c_inicio).setBounds(x+=20,y,l-10,a);
 		panel.add(sphora_inicio).setBounds(x+=95,y,l-50,a);
 		panel.add(JLBrelog).setBounds(x+=50,y,a,a);
-		
 		panel.add(new JLabel("Fecha Final:")).setBounds(x+=40,y,l,a);
 		panel.add(JLBfin).setBounds(x+=60,y,a,a);
 		panel.add(c_final).setBounds(x+=20,y,l-10,a);
 		panel.add(sphora_fin).setBounds(x+=95,y,l-50,a);
 		panel.add(JLBrelog2).setBounds(x+=50,y,a,a);
-		
 	    panel.add(new JLabel("Establecimiento:")).setBounds(x+=240,y,l+50,a);
 	    panel.add(JLBestablecimiento).setBounds(x+=75,y,a,a);
 		panel.add(cmbEstablecimiento).setBounds(x+=20,y,l+70,a);
@@ -254,7 +244,12 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		                                                                                  
         panel.add(txtFiltroClase							 ).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroClase							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);    
+        panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);
+        
+		panel.add(new JLabel("Presentado Por:")).setBounds(x+650,y,l+50,a);
+//	    panel.add(JLBTipoPrecio).setBounds(x+720,y,a,a);
+		panel.add(cmbPresentado).setBounds(x+740,y,l+70,a);
+		
         
 		panel.add(new JLabel("Filtro De Categoria De Productos:")).setBounds(x-85,y+=30,l+70,a); 
 		panel.add(cmbOperador_Categoria							 ).setBounds(x+80,y,l-12,a);  
@@ -262,11 +257,10 @@ public class Cat_Reporte_De_Ventas extends JFrame {
         panel.add(txtFiltroCategoria							 ).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroCategoria							 ).setBounds(x+590,y,a,a);    
         panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);    
-        
-		panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
+      	panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Familia						).setBounds(x+80,y,l-12,a);  
-		                                                                                 
-        panel.add(txtFiltroFamilia							).setBounds(x+170,y,l*4+20,a);  
+ 
+		panel.add(txtFiltroFamilia							).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroFamilia							).setBounds(x+590,y,a,a);    
         panel.add(btnLimpiarFiltroFamilia					).setBounds(x+613,y,a,a);    
         
