@@ -15,6 +15,7 @@ public class Obj_Reportes_De_Ventas {
 	String categorias 		 ;
 	String familias 		 ;
 	String lineas 			 ;
+	String presentado        ;
 	                         
 	public Obj_Reportes_De_Ventas(){
 		  fecha_inicio 	 ="";
@@ -27,6 +28,15 @@ public class Obj_Reportes_De_Ventas {
 		  categorias 	= "";
 		  familias 		= "";
 		  lineas 		= "";
+		  presentado    = "";
+	}
+
+	public String getPresentado() {
+		return presentado;
+	}
+
+	public void setPresentado(String presentado) {
+		this.presentado = presentado;
 	}
 
 	public String getFecha_inicio() {

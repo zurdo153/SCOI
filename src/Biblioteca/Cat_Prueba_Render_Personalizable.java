@@ -41,7 +41,7 @@ import Conexiones_SQL.BuscarTablasModel;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
-import Obj_Renders.tablaRendererConColores;
+//import Obj_Renders.tablaRendererConColores;
 
 @SuppressWarnings("serial")
 public class Cat_Prueba_Render_Personalizable extends JFrame {
@@ -286,26 +286,26 @@ public class Cat_Prueba_Render_Personalizable extends JFrame {
 //		Color colorSeleccionFila 	= Color.blue;//new java.awt.Color(186,143,73);
 //		Color colorSeleccionChb 	= Color.RED;
 //		
-		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		
-		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(10).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(11).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(12).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(13).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(14).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(15).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
-		tabla.getColumnModel().getColumn(16).setCellRenderer(new tablaRendererConColores("CHB","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		
+//		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(10).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(11).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(12).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(13).setCellRenderer(new tablaRendererConColores("texto","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(14).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(15).setCellRenderer(new tablaRendererConColores("texto","izquierda","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
+//		tabla.getColumnModel().getColumn(16).setCellRenderer(new tablaRendererConColores("CHB","centro","Arial","negrita",12,colorFilaPar,colorFilaNon,colorTexto,colorSeleccionFila,colorSeleccionChb ));
 	}
-	
+//	
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {

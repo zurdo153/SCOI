@@ -1367,13 +1367,13 @@ public class Cargar_Combo {
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			int j=0;
+//			int j=0;
 			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona un Empleado");
-				}
+//				if(j == 0){
+//					miVector.add("Selecciona un Empleado");
+//				}
 				miVector.add(rs.getString("Empleado"));
-				j++;
+//				j++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

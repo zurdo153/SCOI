@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -53,7 +54,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String[] inicioDefault ="0:00:00".split(":");
+	String[] inicioDefault ="1:00:00".split(":");
 	String[] finDefault ="23:59:59".split(":");
 	
 	SpinnerDateModel TiempoInicio =  new SpinnerDateModel();
@@ -123,9 +124,9 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	JLabel JLBrelog= new JLabel(new ImageIcon("Imagen/horas-reloj-icono-9852-16.png") );
 	JLabel JLBrelog2= new JLabel(new ImageIcon("Imagen/horas-reloj-icono-9852-16.png") );
 	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
-	JLabel JLBTipoPrecio= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
+	JLabel JLBTipoPrecio= new JLabel(new ImageIcon("Imagen/precio-marcado-icono-6652-16.png") );
+	JLabel JLBPresentado= new JLabel(new ImageIcon("Imagen/las-preferencias-de-tema-de-escritorio-icono-8603-16.png") );
 	
-//	JTextField txtcod_prod = new Componentes().text(new JTextField(), "Codigo del Producto", 15, "String");
 	JTextField txtFiltroProducto = new JTextField("");
 	JTextField txtFiltroClase = new JTextField("");
 	JTextField txtFiltroCategoria = new JTextField("");
@@ -133,7 +134,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	JTextField txtFiltroLinea = new JTextField("");
 	
 	DefaultTableModel modelo_ventas = new DefaultTableModel(null,
-            new String[]{"Ticket","Establecimiento","Cod_Prod","Descripcion","Venta Unidades","Venta Piezas","Clase Producto","Categoria","Familias","Lineas Productos","Fecha Agotado","Importe","Imp. s/IVA","Costo","Margen","Dias De Venta","Fecha De Venta","Tipo Precio Venta","Forma De Pago","Cond. De Pago"}
+            new String[]{"Ticket","Establecimiento","Cod_Prod","Descripcion","Venta Unidades","Venta Piezas","Clase Producto","Categoria","Familias","Lineas Productos","Fecha Agotado","Importe","Imp. s/IVA","Costo","Markup","Dias De Venta","Fecha De Venta","Tipo Precio Venta","Forma De Pago","Cond. De Pago"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -247,7 +248,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
         panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);
         
 		panel.add(new JLabel("Presentado Por:")).setBounds(x+650,y,l+50,a);
-//	    panel.add(JLBTipoPrecio).setBounds(x+720,y,a,a);
+	    panel.add(JLBPresentado).setBounds(x+720,y,a,a);
 		panel.add(cmbPresentado).setBounds(x+740,y,l+70,a);
 		
         
@@ -299,7 +300,6 @@ public class Cat_Reporte_De_Ventas extends JFrame {
         	cmbOperador_Productos.setSelectedItem(operador);
         	
         	panelEnableFalse();
-//        	btnFiltroProducto.setEnabled(true);
         	btnLimpiarFiltroProducto.setEnabled(true);
         	btnLimpiarFiltroClase.setEnabled(true);
         	
@@ -420,7 +420,6 @@ public void filtroProductos(String cadena){
 	}
 	
 	
-	
 	ActionListener op_filtro_productos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Productos.getSelectedItem().toString().equals("Todos")){
@@ -508,22 +507,6 @@ public void filtroProductos(String cadena){
 			panelEnableFalse();
 			txtFiltroCategoria.setText("");
 			limpiar_vacios();
-//			 btnFiltroCategoria.setEnabled(true);
-//			 btnLimpiarFiltroCategoria.setEnabled(true);
-//			 
-//	         btnLimpiarFiltroClase.setEnabled(true);
-//	            
-//	            	if(txtFiltroClase.getText().equals("")){
-//	            		btnFiltroClase.setEnabled(true);
-//	            		
-//	            		if(txtFiltroClase.getText().equals("")){
-//		            		btnFiltroClase.setEnabled(true);
-//		            		btnLimpiarFiltroClase.setEnabled(true);
-//		            		
-//		            		btnFiltroProducto.setEnabled(true);
-//		            	}
-//	            	}
-            
 		}
 	};
 	
@@ -533,22 +516,6 @@ public void filtroProductos(String cadena){
 			panelEnableFalse();
 			txtFiltroFamilia.setText("");
 			limpiar_vacios();
-//            btnFiltroFamilia.setEnabled(true);
-//            btnLimpiarFiltroFamilia.setEnabled(true);
-//            
-//            btnLimpiarFiltroCategoria.setEnabled(true);
-//            
-//            	if(txtFiltroCategoria.getText().equals("")){
-//            		btnFiltroCategoria.setEnabled(true);
-//            		
-//            		if(txtFiltroClase.getText().equals("")){
-//	            		btnFiltroClase.setEnabled(true);
-//	            		btnLimpiarFiltroClase.setEnabled(true);
-//	            		
-//	            		btnFiltroProducto.setEnabled(true);
-//	            	}
-//            	}
-            	
 		}
 	};
 	
@@ -558,27 +525,6 @@ public void filtroProductos(String cadena){
 			panelEnableFalse();
 			txtFiltroLinea.setText("");
 			limpiar_vacios();
-//            
-//            btnFiltroLinea.setEnabled(true);
-//            btnLimpiarFiltroLinea.setEnabled(true);
-//            
-//            btnLimpiarFiltroFamilia.setEnabled(true);
-//            
-//            	if(txtFiltroFamilia.getText().equals("")){
-//            		btnFiltroFamilia.setEnabled(true);
-//            		
-//            		if(txtFiltroCategoria.getText().equals("")){
-//                		btnFiltroCategoria.setEnabled(true);
-//                		btnLimpiarFiltroCategoria.setEnabled(true);
-//                		
-//                		if(txtFiltroClase.getText().equals("")){
-//    	            		btnFiltroClase.setEnabled(true);
-//    	            		btnLimpiarFiltroClase.setEnabled(true);
-//    	            		
-//    	            		btnFiltroProducto.setEnabled(true);
-//    	            	}
-//                	}
-//            	}
             	
 		}
 	};
@@ -586,23 +532,17 @@ public void filtroProductos(String cadena){
 	public void limpiar_vacios(){
 		panelEnableFalse();
 		txtFiltroLinea.setText("");
-        
         btnFiltroLinea.setEnabled(true);
         btnLimpiarFiltroLinea.setEnabled(true);
-        
         btnLimpiarFiltroFamilia.setEnabled(true);
-        
         	if(txtFiltroFamilia.getText().equals("")){
         		btnFiltroFamilia.setEnabled(true);
-        		
         		if(txtFiltroCategoria.getText().equals("")){
             		btnFiltroCategoria.setEnabled(true);
             		btnLimpiarFiltroCategoria.setEnabled(true);
-            		
             		if(txtFiltroClase.getText().equals("")){
 	            		btnFiltroClase.setEnabled(true);
 	            		btnLimpiarFiltroClase.setEnabled(true);
-	            		
 	            		btnFiltroProducto.setEnabled(true);
 	            	}
             		btnLimpiarFiltroClase.setEnabled(true);
@@ -610,7 +550,6 @@ public void filtroProductos(String cadena){
         		btnLimpiarFiltroCategoria.setEnabled(true);
         	}
         	btnLimpiarFiltroFamilia.setEnabled(true);
-        	
         	
         	cmbOperador_Productos.setSelectedIndex(0);
         	cmbOperador_Clase.setSelectedIndex(0);
@@ -627,20 +566,12 @@ public void filtroProductos(String cadena){
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
 				
-//				Llenar_Tabla ();
-//				render_tabla ();
-//				
-//				SpinnerDateModel TiempoInicio =  new SpinnerDateModel();
-//				  JSpinner sphora_inicio = new JSpinner(TiempoInicio);                                         
-//				  JSpinner.DateEditor datoini = new JSpinner.DateEditor(sphora_inicio,"H:mm");
-//				SpinnerDateModel TiempoFin =  new SpinnerDateModel();
-//				  JSpinner sphora_fin = new JSpinner(TiempoFin);                                         
-//				  JSpinner.DateEditor datofin = new JSpinner.DateEditor(sphora_fin,"H:mm");
-				  
-				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_inicio.getValue());//+" "+sphora_inicio.getValue()+":00";
-				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_fin.getValue());//+" "+datofin+":59";
+				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_inicio.getValue());
+				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_fin.getValue());
+				
 				String Establecimiento = "''"+cmbEstablecimiento.getSelectedItem().toString()+"''";
-				String tipo_de_precio = "''"+cmbTipoDePrecio.getSelectedItem().toString()+"''";
+				String tipo_de_precio  ="''"+cmbTipoDePrecio.getSelectedItem().toString()+"''";
+				String presentado      ="'"+cmbPresentado.getSelectedIndex()+"'";
 				
 				String productos 	= txtFiltroProducto.getText();
 				String clases 		= txtFiltroClase.getText();
@@ -648,9 +579,13 @@ public void filtroProductos(String cadena){
 				String familias 	= txtFiltroFamilia.getText();
 				String lineas 		= txtFiltroLinea.getText();
 				
-//				String folios_empleados = "Selecciona un Empleado";
+				
+				  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
 
-				if(c_inicio.getDate().before(c_final.getDate())){
+				  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+				  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+
+				if(fecha1.before(fecha2)){
 //					Reporte_de_Asistencia_establecimiento(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
 					Obj_Reportes_De_Ventas ventas = new Obj_Reportes_De_Ventas();
 					
@@ -663,6 +598,7 @@ public void filtroProductos(String cadena){
 					ventas.setCategorias(categorias);
 					ventas.setFamilias(familias);
 					ventas.setLineas(lineas);
+					ventas.setPresentado(presentado);
 					
 					try {
 						while(tabla.getRowCount()>0){modelo_ventas.removeRow(0);}
@@ -706,8 +642,6 @@ public void filtroProductos(String cadena){
     	btnFiltroCategoria.setEnabled(false);
     	btnFiltroFamilia.setEnabled(false);
     	btnFiltroLinea.setEnabled(false);
-    	
-//    	btnLimpiarFiltroProducto.setEnabled(false);
     	btnLimpiarFiltroClase.setEnabled(false);
     	btnLimpiarFiltroCategoria.setEnabled(false);
     	btnLimpiarFiltroFamilia.setEnabled(false);
@@ -720,8 +654,6 @@ public void filtroProductos(String cadena){
     	btnFiltroCategoria.setEnabled(true);
     	btnFiltroFamilia.setEnabled(true);
     	btnFiltroLinea.setEnabled(true);
-    	
-//    	btnLimpiarFiltroProducto.setEnabled(true);
     	btnLimpiarFiltroClase.setEnabled(true);
     	btnLimpiarFiltroCategoria.setEnabled(true);
     	btnLimpiarFiltroFamilia.setEnabled(true);
@@ -741,7 +673,7 @@ public void filtroProductos(String cadena){
 	public void cargar_fechas(){
 		Date date1 = null;
 				  try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(7));
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				} catch (SQLException e) {
@@ -912,8 +844,6 @@ public void filtroProductos(String cadena){
 						 					}else{
 						 						Lista=Lista+"',''"+posicion+"'";
 						 					}
-//				 						}
-//				 					}
 				 				}
 				 			}
 				 			
@@ -923,11 +853,7 @@ public void filtroProductos(String cadena){
 				 				JOptionPane.showMessageDialog(null, "Es necesario seleccionar un argunemto", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 	 							return;
 				 			}else{
-//				 				txtComparacionEmpleado.setText(ListaEmpleados);
-//					 			actionAplicar();
-				 				
 				 		        String operador_simbolo = "";
-				 		        
 				 		        	
 				 		            switch(Operador){
 				 			    		case "Igual"		:operador_simbolo=" = "; 
@@ -1023,20 +949,12 @@ public void filtroProductos(String cadena){
 				
 				
 			   	public Object[][] getTablaFiltro(String operador, String nombre_de_tabla){
-//			   		String todos = "exec sp_select_filtro_empleados_con_cuadrante_asignado";
 			   		String condicion = "";
 			   		
 			   		if(!Lista.equals("")){
 			   			
 			   			condicion = " where jerarquia "+Lista.replace("''","'");
 			   		}
-////			   		else{
-////			   			
-////			   		}
-//			   		if(nombre_de_tabla.equals("clases_productos")){
-//			   			condicion = " where folio = "+parametroGeneral;
-//			   		}
-			   		
 			   		
 					String todos = "select "+folio_columna+" as folio,upper(nombre) from "+nombre_de_tabla+condicion+" order by nombre";
 					

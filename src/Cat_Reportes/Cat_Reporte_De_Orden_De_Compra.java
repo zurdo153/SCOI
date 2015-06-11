@@ -1,7 +1,9 @@
-package Cat_Compras;
+package Cat_Reportes;
 
 import java.awt.Container;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,9 +12,10 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import Obj_Compras.Obj_Consulta_De_Orden_De_Compra;
+import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
-public class Cat_Consulta_De_Order_De_Compra extends JFrame{
+public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -32,21 +35,31 @@ public class Cat_Consulta_De_Order_De_Compra extends JFrame{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbAuditoria = new JComboBox(auditoria);
 	
-	public Cat_Consulta_De_Order_De_Compra(){
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio de la Orden de Compra", 11, "String");
+	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
+	
+	public Cat_Reporte_De_Orden_De_Compra(){
 		this.setTitle("Titulo");
 		
 		int x=15,y=20,ancho=280;
+		
 		panel.add(new JLabel("Usuario: ")).setBounds(x,y,80,20);
-		panel.add(txtUsuario).setBounds(x+90,y,ancho,20);
+		panel.add(txtUsuario).setBounds(x+80,y,ancho,20);
 		
 		panel.add(new JLabel("Compras: ")).setBounds(x,y+=25,80,20);
-		panel.add(cmbCompras).setBounds(x+90,y,ancho,20);
+		panel.add(cmbCompras).setBounds(x+80,y,ancho,20);
 		
 		panel.add(new JLabel("Contabilidad: ")).setBounds(x,y+=25,80,20);
-		panel.add(cmbContabilidad).setBounds(x+90,y,ancho,20);
+		panel.add(cmbContabilidad).setBounds(x+80,y,ancho,20);
 		
 		panel.add(new JLabel("Auditoria: ")).setBounds(x,y+=25,80,20);
-		panel.add(cmbAuditoria).setBounds(x+90,y,ancho,20);
+		panel.add(cmbAuditoria).setBounds(x+80,y,ancho,20);
+		
+		panel.add(new JLabel("Folio: ")).setBounds(x,y+=25,80,20);
+		panel.add(txtFolio).setBounds(x+80,y,ancho,20);
+		
+		
+		
 		
 		cont.add(panel);
 		
@@ -62,7 +75,7 @@ public class Cat_Consulta_De_Order_De_Compra extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Consulta_De_Order_De_Compra().setVisible(true);
+			new Cat_Reporte_De_Orden_De_Compra().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

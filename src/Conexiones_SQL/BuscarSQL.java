@@ -6261,18 +6261,16 @@ public class BuscarSQL {
 			return null;
 		}
 		
-		String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())+"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"'";
+		String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())
+				          +"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())
+				          +"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"',"+ventas.getPresentado();
 		String[][] rp_ventas = new String[getFilasExterno(query)][20];
-		
 		try {
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-
+            
 			int i=0;
 				while(rs.next()){
-//					for(int j=0; j<20; j++){
-//						rp_ventas[i][j ]= rs.getString(j+1);
-						
 						rp_ventas[i][0 ]= rs.getString(1 ).trim();
 						rp_ventas[i][1 ]= rs.getString(2 ).trim();
 						rp_ventas[i][2 ]= rs.getString(3 ).trim()+"  ";
@@ -6293,11 +6291,11 @@ public class BuscarSQL {
 						rp_ventas[i][17]= rs.getString(18).trim();
 						rp_ventas[i][18]= rs.getString(19).trim();
 						rp_ventas[i][19]= rs.getString(20).trim();
-//					}                
 					i++;
 				}
 			
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Reporte_De_Ventas \n "+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			e.printStackTrace();
 			return null;
 		}
