@@ -3626,6 +3626,7 @@ public class BuscarSQL {
 				permisoChecador.setMotivo(rs.getString("motivo"));
 				permisoChecador.setStatus(rs.getInt("status")==1?true:false);
 				permisoChecador.setFolio_empleado_optener_turno(rs.getInt("folio_empleado_usar_turno"));
+				permisoChecador.setSolicito(rs.getInt("solicito"));
 			}
 			
 		} catch (Exception e) {
