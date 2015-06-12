@@ -20,6 +20,7 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 	int descanso;
 	String tiempo_comida;
 	int folio_empleado_optener_turno;
+	int solicito;
 	public Obj_Alimentacion_De_Permisos_A_Empleados(){
 		
 		this.folio = 0;
@@ -33,6 +34,7 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 		this.descanso = 0;
 		this.tiempo_comida = "";
 		this.folio_empleado_optener_turno=0;
+		this.solicito = 0;
 
 	}
 
@@ -122,6 +124,14 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 
 	public void setFolio_empleado_optener_turno(int folio_empleado_optener_turno) {
 		this.folio_empleado_optener_turno = folio_empleado_optener_turno;
+	}
+
+	public int getSolicito() {
+		return solicito;
+	}
+
+	public void setSolicito(int solicito) {
+		this.solicito = solicito;
 	}
 
 	public Obj_Alimentacion_De_Permisos_A_Empleados buscar(int folio) {

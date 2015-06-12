@@ -2134,7 +2134,7 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Permiso_Checador(Obj_Alimentacion_De_Permisos_A_Empleados Permiso, int tiene_dia_dobla){
-		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?,?,?,?,"+tiene_dia_dobla;
+		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?,?,?,?,?,"+tiene_dia_dobla;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -2149,6 +2149,7 @@ public class GuardarSQL {
 			pstmt.setInt(7,Permiso.getDescanso());
 			pstmt.setString(8,Permiso.getTiempo_comida());
 			pstmt.setInt(9, Permiso.getFolio_empleado_optener_turno());
+			pstmt.setInt(10, Permiso.getSolicito());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {

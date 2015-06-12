@@ -1872,7 +1872,7 @@ public class ActualizarSQL {
 	
 	public boolean permiso(Obj_Alimentacion_De_Permisos_A_Empleados Permiso, int folio){
 
-		String queryDEP = "exec sp_update_permiso_checador  ?,?,?,?,?,?,?,?,?,?";
+		String queryDEP = "exec sp_update_permiso_checador  ?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmtabla = null;
 		try {
@@ -1888,6 +1888,7 @@ public class ActualizarSQL {
 			pstmtabla.setInt(8, Permiso.getDescanso());
 			pstmtabla.setString(9, Permiso.getTiempo_comida());
 			pstmtabla.setInt(10, Permiso.getFolio_empleado_optener_turno());
+			pstmtabla.setInt(11, Permiso.getSolicito());
 			pstmtabla.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
