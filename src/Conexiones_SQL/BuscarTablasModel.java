@@ -49,27 +49,35 @@ public class BuscarTablasModel {
 	
 	public Object[][] tabla_model_deduccion_y_percepcionesde_lista_de_raya(){
 		String query_lista = "exec sp_select_deduccion_y_percepciones_de_lista_de_raya";
-		Object[][] matriz = new Object[get_filas(query_lista)][12];
+		Object[][] matriz = new Object[get_filas(query_lista)][13];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query_lista);
 			
 			int i = 0;
 			while(rs.next()){
+				
+				int impunt 		= Integer.valueOf(rs.getString(4));
+	        	int omi 		= Integer.valueOf(rs.getString(5));
+	        	int dias_Falt 	= Integer.valueOf(rs.getString(6));
+	        	int inasist 	= Integer.valueOf(rs.getString(7));
+	        	int gafete 		= Integer.valueOf(rs.getString(8));
+				
 				matriz[i][0] = rs.getInt(1)+" ";
 				matriz[i][1] = "   "+rs.getString(2);
 				matriz[i][2] = "   "+rs.getString(3);
 				
-				matriz[i][3] =  Integer.valueOf(rs.getString(4)) == 0 ? "":Integer.valueOf(rs.getString(4));
-				matriz[i][4] =  Integer.valueOf(rs.getString(5)) == 0 ? "":Integer.valueOf(rs.getString(5));
-				matriz[i][5] =  Integer.valueOf(rs.getString(6)) == 0 ? "":Integer.valueOf(rs.getString(6));
-				matriz[i][6] =  Boolean.valueOf(rs.getString(7).toString().equals("1")?"true":"false");
+				matriz[i][3] =  impunt == 0 ? "":impunt;
+				matriz[i][4] =  omi == 0 ? "":omi;
+				matriz[i][5] =  dias_Falt == 0 ? "":dias_Falt;
+				matriz[i][6] =  inasist==1?"true":"false";
 				
-				matriz[i][7] =  Integer.valueOf(rs.getString(8)) == 0 ? "":Integer.valueOf(rs.getString(8));
+				matriz[i][7] =  gafete == 0 ? "":gafete;
 				matriz[i][8] =  Integer.valueOf(rs.getString(9)) == 0 ? "":Integer.valueOf(rs.getString(9));
 				matriz[i][9] =  Float.valueOf(rs.getString(10))  == 0 ? "":Float.valueOf(rs.getString(10));
 				matriz[i][10] = Float.valueOf(rs.getString(11))  == 0 ? "":Float.valueOf(rs.getString(11));
-				matriz[i][11] = rs.getString(12).toString().trim();
+				matriz[i][11] = ((impunt+omi+dias_Falt+inasist+gafete)==0)?true:false;
+				matriz[i][12] = rs.getString(12).toString().trim();
 				i++;
 			}
 		} catch (SQLException e1) {

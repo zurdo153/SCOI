@@ -114,7 +114,7 @@ public class GuardarTablasModel {
 	}
 	
 	public boolean tabla_model_deduccion_y_percepcionesde_lista_de_raya(Object[][] tabla){
-		String query = "exec sp_insert_deducciones_y_precepciones_de_lista_de_raya ?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_deducciones_y_precepciones_de_lista_de_raya ?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -149,7 +149,10 @@ public class GuardarTablasModel {
 				pstmt.setInt(	8, Integer.valueOf(tabla[i][8].toString().trim()));
 				pstmt.setFloat(	9, Float.valueOf(tabla[i][9].toString().trim()));
 				pstmt.setFloat(	10,Float.valueOf(tabla[i][10].toString().trim()));
-				pstmt.setString(11,tabla[i][11].toString().trim());
+				
+				pstmt.setInt(11, tabla[i][11].toString().trim().equals("true")?1:0);
+				
+				pstmt.setString(12,tabla[i][12].toString().trim());
 				
 				pstmt.executeUpdate();
 			}
