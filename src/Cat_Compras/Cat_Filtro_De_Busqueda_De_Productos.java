@@ -160,7 +160,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		
 		this.panel.add(txtFolio).setBounds(10,20,59,25);
 		this.panel.add(txtProductoDescripcion).setBounds(70,20,450,25);
-//		this.panel.add(txtClase_Producto).setBounds(520,20,240,25);
 		this.panel.add(btnCargar).setBounds(920,20,90,25);
 		this.panel.add(scroll_tabla).setBounds(10,47,997,511);
 		
@@ -184,6 +183,8 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		txtClase_Producto.addKeyListener(op_filtro_Familia);
 		txtTallaProducto.addKeyListener(op_filtro_Talla);
 		
+//		txtProductoDescripcion.addKeyListener(op_pasar_a_tabla);
+		
 		btnCargar.addActionListener(opCargar);
 		
 		this.cont.add(panel);
@@ -202,6 +203,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
             {   txtProductoDescripcion.setText("");
                 txtProductoDescripcion.requestFocus(); }
         });
+        
 //      asigna el foco al JTextField del nombre deseado al arrancar la ventana
         this.addWindowListener(new WindowAdapter() {
                 public void windowOpened( WindowEvent e ){  	txtProductoDescripcion.requestFocus();   }
@@ -258,8 +260,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 			 					}else{
 			 						Lista=Lista+"',''"+posicion+"'";
 			 					}
-//	 						}
-//	 					}
 	 				}
 	 			}
 	 			
@@ -330,7 +330,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 					new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
 			           	dispose();
 				break;
-				case "Cat_Alimentacion_De_Costos_De_Competencia":		
+				case "Cat_Alimentacion_De_Precios_De_Competencia":		
 					try {
 						UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					} catch (ClassNotFoundException e1) {
@@ -365,86 +365,11 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		}
 	};
 	
-	KeyListener op_agregar_productoconteclado = new KeyListener() {
-		@SuppressWarnings("static-access")
-		@Override
-		public void keyTyped(KeyEvent e) {
-			char caracter = e.getKeyChar();
-				if(caracter==e.VK_ENTER){
-			int fila=tabla.getSelectedRow()-1;
-			String folio = tabla.getValueAt(fila,0).toString().trim();
-			
-			switch(valor_catalogo){
-			case "Cat_Cotizaciones_De_Un_Producto_En_Proveedores":	
-				
-				try {
-					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InstantiationException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IllegalAccessException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (UnsupportedLookAndFeelException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
-		           	dispose();
-			break;
-			case "Cat_Costos_Competencia":	
-				
-				try {
-					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InstantiationException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IllegalAccessException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (UnsupportedLookAndFeelException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				new Cat_Alimentacion_De_Precios_De_Competencia(folio.toString().trim()).setVisible(true);
-		           	dispose();
-			break;
-			
-			case "125":		System.out.println("prueba");
-           	dispose();
-	           break;
-	           
-	          default: 	 JOptionPane.showMessageDialog(null, "Error Avise al Administrador del Sistema No Se Enuentra el Catalogo:"+valor_catalogo, "Aviso", JOptionPane.ERROR_MESSAGE);
-			    break;
- 			}
-			}
-		}
-		@Override
-		public void keyPressed(KeyEvent e){}
-		@Override
-		public void keyReleased(KeyEvent e){}
-								
-	};
-	
-	
-	
-	
-	
-	public void init_tabla(){
+public void init_tabla(){
 /////////////////LLENADO DE TABLAS/////////////////////////////////////////////////////////////////////////////
-
-		while(Tabla_Productos.getRowCount()>0){	Tabla_Productos.removeRow(0);	}
-
+	while(Tabla_Productos.getRowCount()>0){	Tabla_Productos.removeRow(0);	}
 		Object[][] getTablaNomina = llenarTablaProductos();
-		
 		Object[] fila = new Object[5];
-		
 		 for(int i=0; i<getTablaNomina.length; i++){
 		         fila[0] = getTablaNomina[i][0]+"";
 		         fila[1] = getTablaNomina[i][1]+"";
@@ -460,7 +385,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	    this.tabla.getTableHeader().setReorderingAllowed(false) ;
 	    this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    this.tabla.setRowSorter(trsfiltro);  
- 
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(60);
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(60);		
     	this.tabla.getColumnModel().getColumn(1).setMaxWidth(1500);
@@ -471,8 +395,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(240);
     	this.tabla.getColumnModel().getColumn(4).setMaxWidth(30);
     	this.tabla.getColumnModel().getColumn(4).setMinWidth(30);
-    	
-//		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
 		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
@@ -482,7 +404,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	
 	
    	public Object[][] llenarTablaProductos(){
-   		
 		String todos = "select productos.cod_prod,productos.descripcion+' '+productos.codigo_barras_pieza as descripcion,"
 				+ "            case when clases_productos.nombre is null then '' else clases_productos.nombre end as clase_producto,"
 				+ "               case when categorias.nombre is null then '' else categorias.nombre end as categoria"
@@ -490,7 +411,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 				+ "  left outer join clases_productos on clases_productos.clase_producto= productos.clase_producto"
 				+ "  left outer join categorias on categorias.categoria=productos.categoria"
 				+ "				     order by descripcion,clases_productos.nombre,categorias.nombre  ";
-
 		Statement s;
 		ResultSet rs2;
 		try {
@@ -513,8 +433,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	    return Matriz_Productos; 
 	}
    	
-   	
-   	
 	public int getFilasProveedores(String qry){
 		int filas=0;
 		Statement stmt = null;
@@ -524,8 +442,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		} catch (SQLException e1) {	e1.printStackTrace();}
 		return filas;
 	}
-	
-	
 	
 	 KeyListener op_filtro_cod_Prod = new KeyListener(){
 			@SuppressWarnings("unchecked")
@@ -541,18 +457,83 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 				}	
 			}
 			public void keyPressed(KeyEvent arg0) {}
-			
+		};
+		
+		KeyListener op_agregar_productoconteclado = new KeyListener() {
+			@SuppressWarnings("static-access")
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+					if(caracter==e.VK_ENTER){
+				int fila=tabla.getSelectedRow()-1;
+				String folio = tabla.getValueAt(fila,0).toString().trim();
+				switch(valor_catalogo){
+				case "Cat_Cotizaciones_De_Un_Producto_En_Proveedores":	
+					
+					try {
+						UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InstantiationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (UnsupportedLookAndFeelException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					new Cat_Cotizaciones_De_Un_Producto_En_Proveedores(folio.toString().trim()).setVisible(true);
+			           	dispose();
+				break;
+				case "Cat_Alimentacion_De_Precios_De_Competencia":	
+					try {
+						UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InstantiationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (UnsupportedLookAndFeelException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					new Cat_Alimentacion_De_Precios_De_Competencia(folio.toString().trim()).setVisible(true);
+			           	dispose();
+				break;
+				
+				case "125":		System.out.println("prueba");
+	           	dispose();
+		           break;
+		           
+		          default: 	 JOptionPane.showMessageDialog(null, "Error Avise al Administrador del Sistema No Se Enuentra el Catalogo:"+valor_catalogo, "Aviso", JOptionPane.ERROR_MESSAGE);
+				    break;
+	 			}
+				}
+			}
+			@Override
+			public void keyPressed(KeyEvent e){}
+			@Override
+			public void keyReleased(KeyEvent e){}
+									
 		};
 		
 		KeyListener op_filtro_Descripcion = new KeyListener(){
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({ "unchecked", "static-access" })
 			public void keyReleased(KeyEvent arg0) {
-//				if(bandera_filtro_familia==1){
-//					trsfiltro.setRowFilter(RowFilter.regexFilter(txtClase_Producto.getText().toUpperCase().trim(), 2));
-					trsfiltro.setRowFilter(RowFilter.regexFilter(txtProductoDescripcion.getText().toUpperCase().trim(), 1));
-//				}else{
-//				trsfiltro.setRowFilter(RowFilter.regexFilter(txtProductoDescripcion.getText().toUpperCase().trim(), 1));
-//				}
+				char caracter = arg0.getKeyChar();
+				if(caracter==arg0.VK_ENTER){
+					tabla.requestFocus();
+				}else{
+					trsfiltro.setRowFilter(RowFilter.regexFilter(txtProductoDescripcion.getText().toUpperCase().trim(), 1));}
+					
+					
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
