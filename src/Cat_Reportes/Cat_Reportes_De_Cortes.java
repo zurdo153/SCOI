@@ -31,8 +31,7 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 	JButton btncortedelfolio = new JButton("",new ImageIcon("imagen/bolsa-de-dinero-en-efectivo-icono-6673-16.png"));
 	JButton btnlistadocortesdia = new JButton("",new ImageIcon("imagen/Calendar.png"));
 	JButton btnlistadocortesExportar = new JButton("",new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
-
-	
+	JButton btncortes_LiquidadosSCorteSCOI = new JButton("",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 	
 	JDateChooser cfecha = new JDateChooser();
@@ -40,7 +39,7 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 	int tipo_Reporte = 0;
 	
 	public Cat_Reportes_De_Cortes(){
-		setSize(305,350);
+		setSize(305,400);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -61,19 +60,24 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 				"		<CENTER><p>Para Exportar</p></CENTER></FONT>" +
 				"</html>");	
 		
+		btncortes_LiquidadosSCorteSCOI.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Cortes Liquidados</p></CENTER>" +
+				"		<CENTER><p>Sin Corte En SCOI</p></CENTER></FONT>" +
+				"</html>");	
+		
 		
 		panel.add(btncortedelfolio).setBounds(20,25,260,30);
 		panel.add(btnlistadocortesdia).setBounds(20,75,260,30);
 		panel.add(btnlistadocortesExportar).setBounds(20,125,260,40);
+		panel.add(btncortes_LiquidadosSCorteSCOI).setBounds(20,180,260,40);
 		
-		panel.add(new JLabel("Folio:")).setBounds(20,180,200,20);		
-		panel.add(txtFolio).setBounds(80,180,195,20);
-		panel.add(new JLabel("Fecha:")).setBounds(20,220,200,20);
+		panel.add(new JLabel("Folio:")).setBounds(20,240,200,20);		
+		panel.add(txtFolio).setBounds(80,240,195,20);
+		panel.add(new JLabel("Fecha:")).setBounds(20,270,200,20);
+		panel.add(cfecha).setBounds(80,270,195,20);
 		
-		panel.add(cfecha).setBounds(80,220,195,20);
 		
-		
-		panel.add(btngenerar).setBounds(100,275,120,30);
+		panel.add(btngenerar).setBounds(100,300,120,30);
 	    
 	    txtFolio.setEditable(false);
 	    cfecha.setEnabled(false);
@@ -84,7 +88,7 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 		btncortedelfolio.addActionListener(opReporte_Por_Folio);
 		btnlistadocortesdia.addActionListener(opReporte_Por_Fecha);
 		btnlistadocortesExportar.addActionListener(opReporte_Cortes_Pendientes);
-
+        btncortes_LiquidadosSCorteSCOI.addActionListener(opReporte_Liquidados_SincorteSCOI);  
 	}
 	ActionListener opReporte_Por_Folio = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
@@ -117,6 +121,19 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 		}
 	};
 	
+	ActionListener opReporte_Liquidados_SincorteSCOI = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			txtFolio.setEditable(false);
+			cfecha.setEnabled(false);
+			btnlistadocortesExportar.setEnabled(true);
+			btngenerar.setEnabled(true);
+			tipo_Reporte=4;
+			txtFolio.setText("");
+			btngenerar.doClick();
+		}
+	};
+	
+	
 	public String validar_fechas(){
 		String error = "";
 		@SuppressWarnings("unused")
@@ -132,6 +149,32 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 			int vista_previa_de_ventana=0;
 			String comando="";
 			String reporte = "";
+			
+			if(tipo_Reporte==4){
+				 basedatos="2.200";
+				 reporte = "Obj_Reporte_De_Cortes_Liqudados_Sin_Corte_En_SCOI.jrxml";
+				 comando = "SELECT [Asignacion]"
+				 		+ "       ,[Cajero]"
+				 		+ "       ,[Nombre_Cajero] as nombre"
+				 		+ "       ,[Cod_Estab]"
+				 		+ "       ,[Establecimiento] as establecimiento"
+				 		+ "       ,convert(varchar(20),[Fecha_Asignacion],103) as fecha_asignacion"
+				 		+ "       ,convert(varchar(20),[Fecha_Liquidacion],103)+' '+convert(varchar(20),[Fecha_Liquidacion],108) as fecha_liquidacion"
+				 		+ "       ,[Costo_Venta]"
+				 		+ "       ,[Iva]"
+				 		+ "       ,[IEPS]"
+				 		+ "       ,[Apartados]"
+				 		+ "       ,[Voucher]"
+				 		+ "       ,[Retiros_Clientes]"
+				 		+ "       ,[TALUZ]"
+				 		+ "       ,[Devoluciones_y_Cancelaciones]"
+				 		+ "       ,[Total]"
+				 		+ "       ,[status_corte]"
+				 		+ "   FROM [IZAGAR_Relacion_de_Asignaciones_Liquidadas]"
+				 		+ "  where status_corte=0 order by establecimiento,cajero, fecha_liquidacion" ;
+				     new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				     return;
+		     }
 			
 			if(tipo_Reporte==1){
 						if(!txtFolio.getText().equals("")){
@@ -150,14 +193,15 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 						   
 						   if(tipo_Reporte==3){
 							   reporte = "Obj_Reporte_De_Cortes_Del_Dia_Para_Exportar.jrxml";
-						   }else{
+						   }
+						   if(tipo_Reporte==2){
 							   reporte = "Obj_Reporte_De_Cortes_Del_Dia.jrxml";
 						   }
 						   String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
 							 comando = "exec sp_Reporte_De_Cortes_Del_Dia '"+usuario.getNombre_completo()+"','"+fecha+"'" ;
 							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-					   }
-			}
+				   }
+			 }
 		}
 	};
 	

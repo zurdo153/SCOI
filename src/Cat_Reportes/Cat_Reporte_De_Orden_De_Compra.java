@@ -48,13 +48,13 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 	
 	public Cat_Reporte_De_Orden_De_Compra(){
+		this.setTitle("Consulta De Orden De Compra");
 		this.setSize(350,250);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setResizable(false);
-		this.setTitle("Titulo");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/cesta-de-la-compra-verde-icono-9705-64.png"));
-		panel.setBorder(BorderFactory.createTitledBorder("Seleccione el Tipo de Reporte"));
+		panel.setBorder(BorderFactory.createTitledBorder("Seleccione Las Personas Que Van A Firmar El Documento"));
 		
 		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 		txtUsuario.setText(usuario.getNombre_completo());
