@@ -110,7 +110,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
         	 	case 9 : return true;
         	 	case 10 :	if(chb_habilitar.isSelected()){return true;}
         	 				else{return false;}
-        	 	case 11 :return true;
+        	 	case 11 :return false;
         	 	case 12 :return true; 
         	 	
         	 }
