@@ -11,14 +11,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.SQLException;
 
-import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.event.TableModelEvent;
@@ -113,7 +110,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
         	 	case 9 : return true;
         	 	case 10 :	if(chb_habilitar.isSelected()){return true;}
         	 				else{return false;}
-        	 	case 11 :return false;
+        	 	case 11 :return true;
         	 	case 12 :return true; 
         	 	
         	 }
