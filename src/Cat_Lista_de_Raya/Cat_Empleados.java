@@ -109,6 +109,7 @@ import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
 import Obj_Lista_de_Raya.Obj_Sueldos;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Principal.Componentes;
+import Obj_Principal.Obj_Filtro_Dinamico;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -2684,7 +2685,7 @@ public class Cat_Empleados extends JFrame{
 			cont.add(campo);
 			
 			txtFolioFiltroEmpleado.addKeyListener(opFiltroFolio);
-			txtNombre_Completo.addKeyListener(opFiltroNombre);
+			txtNombre_Completo.addKeyListener(opFiltroLoco);
 			cmbEstablecimientos.addActionListener(opFiltro);
 			
 			this.setSize(1040,650);
@@ -2757,9 +2758,9 @@ public class Cat_Empleados extends JFrame{
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		KeyListener opFiltroNombre = new KeyListener(){
+		KeyListener opFiltroLoco = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
+				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -2767,11 +2768,13 @@ public class Cat_Empleados extends JFrame{
 		
 		ActionListener opFiltro = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				if(cmbEstablecimientos.getSelectedIndex() != 0){
-					trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
-				}else{
-					trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-				}
+				
+				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
+//				if(cmbEstablecimientos.getSelectedIndex() != 0){
+//					trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
+//				}else{
+//					trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+//				}
 			}
 		};
 		

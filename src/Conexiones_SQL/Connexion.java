@@ -44,6 +44,7 @@ public class Connexion {
 												e.toString().substring(48,88),"Error",JOptionPane.WARNING_MESSAGE);
 			
 		}
+		
 		return conn;
 	}
 	

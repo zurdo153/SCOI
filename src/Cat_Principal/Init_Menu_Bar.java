@@ -2,6 +2,9 @@ package Cat_Principal;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -12,6 +15,8 @@ import Cat_Compras.Cat_Analisis_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
 import Cat_Compras.Cat_Reporte_De_Ventas;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
+import Cat_Lista_de_Raya.Cat_Aviso_Vencimiento_De_Contrato;
+import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.*;
@@ -214,6 +219,12 @@ public class Init_Menu_Bar extends Init_Login{
 					subMenusbotones();
 					user.Session();
 					txtContrasena.setEnabled(false);
+					
+					if(Integer.valueOf(buscarRegistro_Contrato()[0])>0){
+						if(Integer.valueOf(buscarRegistro_Contrato()[1])>0){
+							new Cat_Aviso_Vencimiento_De_Contrato().setVisible(true);
+						}
+					}
 				}
 			}else{
 				JOptionPane.showMessageDialog(null, "La contraseña está vacía...","Aviso",JOptionPane.WARNING_MESSAGE);
@@ -222,6 +233,31 @@ public class Init_Menu_Bar extends Init_Login{
 			}
 		}
 	};
+	
+	private String[] buscarRegistro_Contrato(){
+		Statement s;
+		ResultSet rs;
+		
+		String [] fila = new String[2];
+		try {
+			Connexion con = new Connexion();
+			s = con.conexion().createStatement();
+			
+			
+			rs = s.executeQuery("exec sp_select_mostrar_contratos_proximos_a_terminar "+new Obj_Usuario().LeerSession().getFolio());
+			
+			
+			while (rs.next())
+			{ 
+			   fila[0] = rs.getString(1).trim();
+			   fila[1] = rs.getString(2).trim();
+			}	
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en Cat_Establecimientos en la funcion refrestabla  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		return fila;
+	}
 
 	ActionListener Opciones = new ActionListener(){
 		@SuppressWarnings("rawtypes")

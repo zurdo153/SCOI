@@ -33,8 +33,12 @@ public class GuardarTablasModel {
 			
 			for(int i=0; i<tabla.length; i++){
 				
+//				System.out.println(tabla[i][0].toString().trim());
+//				System.out.println(tabla[i][3].toString().trim());
+//				System.out.println(tabla[i][4].toString().trim());
+				
 				pstmt.setInt(1, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmt.setFloat(2, Float.parseFloat(tabla[i][3].toString()));
+				pstmt.setString(2, tabla[i][3].toString());
 				pstmt.setFloat(3, Float.parseFloat(tabla[i][4].toString()));
 				pstmt.executeUpdate();
 			}

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-05-29T12:50:20 -->
+<!-- 2015-07-05T10:27:21 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Gafete_De_Empleados" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="479f4a9b-0156-454a-97f6-bf205e37a1c8">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -12,6 +11,7 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_Pruebas"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -40,9 +40,17 @@
 		</box>
 	</style>
 	<subDataset name="DSGafete2" uuid="be6ee4ae-8b48-4753-9509-4b894cda70c9">
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_Pruebas"/>
 		<queryString language="SQL">
-			<![CDATA[select tb_empleado.folio as folio
+			<![CDATA[declare @anios int, @meses int, @dias int, @folio_empleado int
+
+set @folio_empleado =(select dos from tb_ids);
+
+set @dias =(select (day(getdate())-day(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @meses =(select (month(getdate())-month(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @anios =(select (year(getdate())-year(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+
+select tb_empleado.folio as folio
 ,tb_empleado.nombre as nom_empleado
 ,tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as ap_empleado
 ,tb_empleado.no_checador as codigo
@@ -50,9 +58,18 @@
 ,tb_empleado.imss as imss
 ,tb_empleado.foto as foto
 ,tb_puesto.nombre as puesto
+,(select case when (@meses)<0 
+				then (@anios-1)
+			when (@meses)=0 
+					then (select case when (@dias)<0 
+										then (@anios-1)
+									  else @anios
+								 end)
+			else @anios
+		end) as edad
 from tb_empleado
 inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-where tb_empleado.folio =(select dos from tb_ids)]]>
+where tb_empleado.folio =@folio_empleado]]>
 		</queryString>
 		<field name="folio" class="java.lang.Integer"/>
 		<field name="nom_empleado" class="java.lang.String"/>
@@ -62,6 +79,7 @@ where tb_empleado.folio =(select dos from tb_ids)]]>
 		<field name="puesto" class="java.lang.String"/>
 		<field name="fecha_ingreso" class="java.lang.String"/>
 		<field name="imss" class="java.lang.String"/>
+		<field name="edad" class="java.lang.Integer"/>
 		<group name="folio">
 			<groupExpression><![CDATA[$F{folio}]]></groupExpression>
 		</group>
@@ -82,9 +100,17 @@ where tb_empleado.folio =(select dos from tb_ids)]]>
 		</group>
 	</subDataset>
 	<subDataset name="DSGafete3" uuid="2cccd9f1-31aa-4c8f-9957-ae0372fcb837">
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_Pruebas"/>
 		<queryString language="SQL">
-			<![CDATA[select tb_empleado.folio as folio
+			<![CDATA[declare @anios int, @meses int, @dias int, @folio_empleado int
+
+set @folio_empleado =(select tres from tb_ids);
+
+set @dias =(select (day(getdate())-day(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @meses =(select (month(getdate())-month(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @anios =(select (year(getdate())-year(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+
+select tb_empleado.folio as folio
 ,tb_empleado.nombre as nom_empleado
 ,tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as ap_empleado
 ,tb_empleado.no_checador as codigo
@@ -92,9 +118,18 @@ where tb_empleado.folio =(select dos from tb_ids)]]>
 ,tb_empleado.imss as imss
 ,tb_empleado.foto as foto
 ,tb_puesto.nombre as puesto
+,(select case when (@meses)<0 
+				then (@anios-1)
+			when (@meses)=0 
+					then (select case when (@dias)<0 
+										then (@anios-1)
+									  else @anios
+								 end)
+			else @anios
+		end) as edad
 from tb_empleado
 inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-where tb_empleado.folio =(select tres from tb_ids)]]>
+where tb_empleado.folio =@folio_empleado]]>
 		</queryString>
 		<field name="folio" class="java.lang.Integer"/>
 		<field name="nom_empleado" class="java.lang.String"/>
@@ -104,6 +139,7 @@ where tb_empleado.folio =(select tres from tb_ids)]]>
 		<field name="puesto" class="java.lang.String"/>
 		<field name="fecha_ingreso" class="java.lang.String"/>
 		<field name="imss" class="java.lang.String"/>
+		<field name="edad" class="java.lang.Integer"/>
 		<group name="folio">
 			<groupExpression><![CDATA[$F{folio}]]></groupExpression>
 		</group>
@@ -124,9 +160,17 @@ where tb_empleado.folio =(select tres from tb_ids)]]>
 		</group>
 	</subDataset>
 	<subDataset name="DSGafete4" uuid="3c31b993-e7d5-4f0d-9ba4-fa58e81a3eb0">
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_Pruebas"/>
 		<queryString language="SQL">
-			<![CDATA[select tb_empleado.folio as folio
+			<![CDATA[declare @anios int, @meses int, @dias int, @folio_empleado int
+
+set @folio_empleado =(select cuatro from tb_ids);
+
+set @dias =(select (day(getdate())-day(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @meses =(select (month(getdate())-month(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @anios =(select (year(getdate())-year(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+
+select tb_empleado.folio as folio
 ,tb_empleado.nombre as nom_empleado
 ,tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as ap_empleado
 ,tb_empleado.no_checador as codigo
@@ -134,9 +178,18 @@ where tb_empleado.folio =(select tres from tb_ids)]]>
 ,tb_empleado.imss as imss
 ,tb_empleado.foto as foto
 ,tb_puesto.nombre as puesto
+,(select case when (@meses)<0 
+				then (@anios-1)
+			when (@meses)=0 
+					then (select case when (@dias)<0 
+										then (@anios-1)
+									  else @anios
+								 end)
+			else @anios
+		end) as edad
 from tb_empleado
 inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-where tb_empleado.folio =(select cuatro from tb_ids)]]>
+where tb_empleado.folio =@folio_empleado]]>
 		</queryString>
 		<field name="folio" class="java.lang.Integer"/>
 		<field name="nom_empleado" class="java.lang.String"/>
@@ -146,6 +199,7 @@ where tb_empleado.folio =(select cuatro from tb_ids)]]>
 		<field name="puesto" class="java.lang.String"/>
 		<field name="fecha_ingreso" class="java.lang.String"/>
 		<field name="imss" class="java.lang.String"/>
+		<field name="edad" class="java.lang.Integer"/>
 		<group name="folio">
 			<groupExpression><![CDATA[$F{folio}]]></groupExpression>
 		</group>
@@ -178,7 +232,15 @@ where tb_empleado.folio =(select cuatro from tb_ids)]]>
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
-		<![CDATA[select tb_empleado.folio as folio
+		<![CDATA[declare @anios int, @meses int, @dias int, @folio_empleado int
+
+set @folio_empleado =(select uno from tb_ids);
+
+set @dias =(select (day(getdate())-day(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @meses =(select (month(getdate())-month(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @anios =(select (year(getdate())-year(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+
+select tb_empleado.folio as folio
 ,tb_empleado.nombre as nom_empleado
 ,tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as ap_empleado
 ,tb_empleado.no_checador as codigo
@@ -186,6 +248,15 @@ where tb_empleado.folio =(select cuatro from tb_ids)]]>
 ,tb_empleado.imss as imss
 ,tb_empleado.foto as foto
 ,tb_puesto.nombre as puesto
+,(select case when (@meses)<0 
+				then (@anios-1)
+			when (@meses)=0 
+					then (select case when (@dias)<0 
+										then (@anios-1)
+									  else @anios
+								 end)
+			else @anios
+		end) as edad
 ,(select case when uno = 0 then 0
 			else 1	end
 			+case when dos = 0 then 0
@@ -196,7 +267,7 @@ where tb_empleado.folio =(select cuatro from tb_ids)]]>
 					else 1 end  from tb_ids) AS CANTIDAD
 from tb_empleado
 inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-where tb_empleado.folio =(select uno from tb_ids)]]>
+where tb_empleado.folio =@folio_empleado]]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer"/>
 	<field name="codigo" class="java.lang.String"/>
@@ -207,6 +278,7 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 	<field name="CANTIDAD" class="java.lang.Integer"/>
 	<field name="fecha_ingreso" class="java.lang.String"/>
 	<field name="imss" class="java.lang.String"/>
+	<field name="edad" class="java.lang.Integer"/>
 	<group name="folio">
 		<groupExpression><![CDATA[$F{folio}]]></groupExpression>
 	</group>
@@ -337,6 +409,12 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 					<reportElement x="148" y="250" width="38" height="18" uuid="3cdf6c37-9d4a-4957-b783-c73075c8768b"/>
 					<imageExpression><![CDATA["C:/SCOI/imagen/Eslogans.png"]]></imageExpression>
 				</image>
+				<image>
+					<reportElement x="0" y="0" width="50" height="50" uuid="cde4c42c-29b6-4795-8381-37c27ab1bff9">
+						<printWhenExpression><![CDATA[$F{edad}<18]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/menor.png"]]></imageExpression>
+				</image>
 			</frame>
 			<componentElement>
 				<reportElement x="383" y="2" width="390" height="290" uuid="0fe72bc5-409e-4874-947c-2d54251fa6a1">
@@ -459,6 +537,12 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 								<imageExpression><![CDATA["C:/SCOI/imagen/Eslogans.png"]]></imageExpression>
 							</image>
 						</frame>
+						<image>
+							<reportElement x="4" y="5" width="50" height="50" uuid="a8903437-4590-4c1f-9800-f1d4c83b7a38">
+								<printWhenExpression><![CDATA[$F{edad}<18]]></printWhenExpression>
+							</reportElement>
+							<imageExpression><![CDATA["C:/SCOI/imagen/menor.png"]]></imageExpression>
+						</image>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
@@ -580,6 +664,12 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 							<reportElement x="152" y="253" width="38" height="18" uuid="4c02dcb9-5573-4381-844a-be7cfee17661"/>
 							<imageExpression><![CDATA["C:/SCOI/imagen/Eslogans.png"]]></imageExpression>
 						</image>
+						<image>
+							<reportElement x="4" y="3" width="50" height="50" uuid="c29fd8fa-d41c-43ee-a765-88590da6e9a4">
+								<printWhenExpression><![CDATA[$F{edad}<18]]></printWhenExpression>
+							</reportElement>
+							<imageExpression><![CDATA["C:/SCOI/imagen/menor.png"]]></imageExpression>
+						</image>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
@@ -700,6 +790,12 @@ where tb_empleado.folio =(select uno from tb_ids)]]>
 						<image>
 							<reportElement x="151" y="253" width="38" height="18" uuid="6243d591-f374-4154-88c2-f684832778b9"/>
 							<imageExpression><![CDATA["C:/SCOI/imagen/Eslogans.png"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="3" y="3" width="50" height="50" uuid="e0e75a55-07dc-415f-a431-0909d84c2662">
+								<printWhenExpression><![CDATA[$F{edad}<18]]></printWhenExpression>
+							</reportElement>
+							<imageExpression><![CDATA["C:/SCOI/imagen/menor.png"]]></imageExpression>
 						</image>
 					</jr:listContents>
 				</jr:list>

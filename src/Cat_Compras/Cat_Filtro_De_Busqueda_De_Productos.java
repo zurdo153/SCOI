@@ -28,16 +28,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -101,8 +100,8 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	public JTable tabla = new JTable(Tabla_Productos);
 	public JScrollPane scroll_tabla;
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public TableRowSorter trsfiltro = new TableRowSorter(Tabla_Productos); 
+//	@SuppressWarnings({ "unchecked", "rawtypes" })
+//	public TableRowSorter trsfiltro = new TableRowSorter(Tabla_Productos); 
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	
 	String valor_catalogo="";
@@ -179,7 +178,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		}
 
 		txtFolio.addKeyListener(op_filtro_cod_Prod);
-		txtProductoDescripcion.addKeyListener(op_filtro_Descripcion);
+		txtProductoDescripcion.addKeyListener(opFiltroDinamico);
 		txtClase_Producto.addKeyListener(op_filtro_Familia);
 		txtTallaProducto.addKeyListener(op_filtro_Talla);
 		
@@ -238,13 +237,14 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	
 	
 	ActionListener opCargar = new ActionListener(){
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent e){
 			int contador=0;
 	 		String Lista="('";	
-	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+//	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
+//	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+//	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+	 		txtProductoDescripcion.setText("");
+	 		new Obj_Filtro_Dinamico(tabla, "Descripcion","","","");
 	 		
 	 		if(tabla.isEditing()){
 				tabla.getCellEditor().stopCellEditing();
@@ -285,6 +285,8 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 						e1.printStackTrace();
 					}
 	 				
+ 					txtFolio.setText("");
+ 					txtProductoDescripcion.setText("");
 	 				if(valor_catalogo.equals("Reporte_De_Analisis_De_Precios_De_Competencia")){
 	 					new Cat_Analisis_De_Precios_De_Competencia(Lista,operador_ventas).setVisible(true);
 	 				}else{
@@ -380,11 +382,10 @@ public void init_tabla(){
 		  }
     }
 	
-	@SuppressWarnings("unchecked")
 	public void render(){
 	    this.tabla.getTableHeader().setReorderingAllowed(false) ;
 	    this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	    this.tabla.setRowSorter(trsfiltro);  
+//	    this.tabla.setRowSorter(trsfiltro);  
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(60);
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(60);		
     	this.tabla.getColumnModel().getColumn(1).setMaxWidth(1500);
@@ -444,9 +445,8 @@ public void init_tabla(){
 	}
 	
 	 KeyListener op_filtro_cod_Prod = new KeyListener(){
-			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
+//				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
 			}
 			public void keyTyped(KeyEvent arg0) {
 				char caracter = arg0.getKeyChar();
@@ -524,26 +524,18 @@ public void init_tabla(){
 									
 		};
 		
-		KeyListener op_filtro_Descripcion = new KeyListener(){
-			@SuppressWarnings({ "unchecked", "static-access" })
+		KeyListener opFiltroDinamico = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				char caracter = arg0.getKeyChar();
-				if(caracter==arg0.VK_ENTER){
-					tabla.requestFocus();
-				}else{
-					trsfiltro.setRowFilter(RowFilter.regexFilter(txtProductoDescripcion.getText().toUpperCase().trim(), 1));}
-					
-					
+				new Obj_Filtro_Dinamico(tabla, "Descripcion", txtProductoDescripcion.getText().toUpperCase(),"","");
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
 		KeyListener op_filtro_Familia = new KeyListener(){
-			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
 				
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtClase_Producto.getText().toUpperCase().trim(), 2));
+//				trsfiltro.setRowFilter(RowFilter.regexFilter(txtClase_Producto.getText().toUpperCase().trim(), 2));
 //				bandera_filtro_familia=1;
 			}
 			public void keyTyped(KeyEvent arg0) {}
@@ -551,9 +543,9 @@ public void init_tabla(){
 		};
 		
 		KeyListener op_filtro_Talla = new KeyListener(){
-			@SuppressWarnings("unchecked")
+//			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtTallaProducto.getText().toUpperCase().trim(), 3));
+//				trsfiltro.setRowFilter(RowFilter.regexFilter(txtTallaProducto.getText().toUpperCase().trim(), 3));
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
