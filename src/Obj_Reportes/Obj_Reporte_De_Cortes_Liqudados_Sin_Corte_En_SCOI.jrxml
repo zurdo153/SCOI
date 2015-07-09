@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-06-12T18:54:33 -->
+<!-- 2015-06-17T08:43:30 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="ireport.zoom" value="2.593742460100005"/>
 	<property name="ireport.x" value="302"/>
@@ -175,7 +175,7 @@ where status_corte=0 order by establecimiento,cajero, fecha_liquidacion]]>
 		<band height="12" splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="58" splitType="Stretch">
+		<band height="65" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="450" height="50" forecolor="#000080" backcolor="#000080" uuid="f40033e7-3b11-4284-9dc5-639e231aceba">
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -194,8 +194,8 @@ where status_corte=0 order by establecimiento,cajero, fecha_liquidacion]]>
 				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="560" y="0" width="50" height="50" uuid="4ec93b86-ccbe-44ed-8a6c-421429b0f272"/>
-				<imageExpression><![CDATA["M:/SISTEMA DE CONTROL OPERATIVO IZAGAR/SCOI/imagen/diferiencia_de_sueldos_entre_listas_de_raya2_128.jpg"]]></imageExpression>
+				<reportElement x="580" y="1" width="50" height="50" uuid="6c577c89-fef8-4391-aab6-fb40fb39a0ae"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/diferiencia_de_sueldos_entre_listas_de_raya2_128.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>
