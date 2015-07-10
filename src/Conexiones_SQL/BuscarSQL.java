@@ -6244,7 +6244,7 @@ public class BuscarSQL {
 	
 	public String[][] llenar_tabla_deduccion_inasistencia_sugerido_sistema(Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia)throws SQLException{
 		String query = "exec sp_buscar_sugerido_sistemas_inasistencia";
-		String[][] matriz = new String[getFilas(query)][7];
+		String[][] matriz = new String[getFilas(query)][10];
 		
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
@@ -6260,6 +6260,10 @@ public class BuscarSQL {
 				matriz[i][4] = rs.getString(5).trim().equals("0")?"":rs.getString(5).trim();
 				matriz[i][5] = rs.getString(6).trim().equals("0")?"":rs.getString(6).trim();
 				matriz[i][6] = rs.getString(7).trim().equals("0")?"":rs.getString(7).trim();
+				
+				matriz[i][7] = "";
+				matriz[i][8] = "";
+				matriz[i][9] = "true";
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -6288,6 +6292,8 @@ public class BuscarSQL {
 			return null;
 		}
 		
+//		falta agregar talla a consulta
+//		(ventas.getTallas().equals("''Todos''")?0:ventas.getTallas())
 		String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())
 				          +"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())
 				          +"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"',"+ventas.getPresentado();

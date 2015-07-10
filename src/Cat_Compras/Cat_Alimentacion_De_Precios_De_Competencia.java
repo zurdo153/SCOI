@@ -177,6 +177,8 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/estrategiadeprecios64.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccione o teclee un producto"));
+		
+		cfecha.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 
 		int x=10 ;
 		int y=20 ;
@@ -343,6 +345,7 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 			
                 Obj_Cotizaciones_De_Un_Producto cotizacion_prod = new Obj_Cotizaciones_De_Un_Producto();					
 				
+                cotizacion_prod.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate()));
                 cotizacion_prod.setCod_Prod(codigo_producto);
                 cotizacion_prod.setUltimo_Costo(ultimo_costo);
                 cotizacion_prod.setCosto_Promedio(costo_promedio);

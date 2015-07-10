@@ -54,7 +54,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	
 	Runtime R = Runtime.getRuntime();
     
-    private DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio", "Nombre Completo", "Establecimiento", "Inpuntualidad", "Sug.Impuntualidad", "Sug.Omisiones", "Sug.Gafete"}
+    private DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio", "Nombre Completo", "Establecimiento", "Inpuntualidad", "Sug.Impuntualidad", "Sug.Omisiones", "Sug.Gafete", "Falta", "Inasistencia", "P.Fisic."}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -65,6 +65,9 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	    	java.lang.Object.class, 
 	    	java.lang.Object.class,
 	    	java.lang.Object.class,
+	    	java.lang.Object.class, 
+	    	java.lang.Object.class,
+	    	java.lang.Boolean.class,
 
          };
 		@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -80,6 +83,10 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
         	 	case 4 : return true; 
         	 	case 5 : return true; 
         	 	case 6 : return true; 
+        	 	
+        	 	case 7 : return true; 
+        	 	case 8 : return true; 
+        	 	case 9 : return true; 
         	 		}
 			return false;
          }	 
@@ -236,6 +243,14 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 		this.tabla.getColumnModel().getColumn(5).setMinWidth(100);
 		this.tabla.getColumnModel().getColumn(6).setMaxWidth(100);
 		this.tabla.getColumnModel().getColumn(6).setMinWidth(100);
+		
+		this.tabla.getColumnModel().getColumn(7).setMaxWidth(100);
+		this.tabla.getColumnModel().getColumn(7).setMinWidth(100);
+		this.tabla.getColumnModel().getColumn(8).setMaxWidth(100);
+		this.tabla.getColumnModel().getColumn(8).setMinWidth(100);
+		this.tabla.getColumnModel().getColumn(9).setMaxWidth(50);
+		this.tabla.getColumnModel().getColumn(9).setMinWidth(50);
+		
 		JScrollPane scrol = new JScrollPane(tabla);
 		    return scrol; 
 	}
@@ -248,9 +263,9 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 		String[][] matriz = datos_sugerido_inasistencia.buscar_datos_sugerido_inasistencia();
 //		while(tabla.getRowCount()>0){modelo.removeRow(0);}
 		
-        String[] fila = new String[7];
+        String[] fila = new String[10];
 		for(int i=0; i<matriz.length; i++){
-			for(int j=0; j<7; j++){
+			for(int j=0; j<10; j++){
 				fila[j] = matriz[i][j ]+"";
 			}
 			modelo.addRow(fila);
@@ -270,6 +285,10 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 			tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 			tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 			tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+			
+			tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+			tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+			tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("CHB","centro","Arial","normal",12));
 	}
 	
 

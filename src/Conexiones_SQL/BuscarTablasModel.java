@@ -27,12 +27,14 @@ public class BuscarTablasModel {
 				matriz[i][0] = rs.getInt(1)+" ";
 				matriz[i][1] = "   "+rs.getString(2);
 				matriz[i][2] = "   "+rs.getString(3);
-				float banamex = rs.getFloat(4);
-				float banorte = rs.getFloat(5);
-				float total = rs.getFloat(6);
-				matriz[i][3] = banamex == Float.parseFloat("0.0") ? "" : banamex ;
-				matriz[i][4] = banorte == Float.parseFloat("0.0") ? "" : banorte ;
-				matriz[i][5] = total == Float.parseFloat("0.0") ? "" :Decimal( total) ;
+				
+//				float deposito = rs.getFloat(5);
+//				float total = rs.getFloat(6);
+//				
+				matriz[i][3] = rs.getString(4);
+				matriz[i][4] = rs.getFloat(5) ==  Float.parseFloat("0.0") ? "" : rs.getFloat(5) ;
+//						banorte == Float.parseFloat("0.0") ? "" : banorte ;
+				matriz[i][5] = rs.getFloat(6) == Float.parseFloat("0.0") ? "" :Decimal( rs.getFloat(6)) ;
 				
 //				Float.parseFloat(rs.getString(24)) == 0 ? "" : Decimal(Float.parseFloat(rs.getString(24)))
 				i++;
@@ -44,7 +46,28 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
-
+	public Object[][] tabla_model_bancos_empleados(){
+		String query_lista = "select nombre from tb_tipo_banco";
+		Object[][] matriz = new Object[get_filas(query_lista)+1][2];
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0] = rs.getString(1);
+				matriz[i][1] = "";
+				i++;
+			}
+			matriz[i][0] = "TOTAL";
+			matriz[i][1] = "";
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_bancos  procedimiento almacenado sp_lista_banco SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	    return matriz; 
+	}
 	
 	
 	public Object[][] tabla_model_deduccion_y_percepcionesde_lista_de_raya(){
@@ -57,27 +80,22 @@ public class BuscarTablasModel {
 			int i = 0;
 			while(rs.next()){
 				
-				int impunt 		= Integer.valueOf(rs.getString(4));
-	        	int omi 		= Integer.valueOf(rs.getString(5));
-	        	int dias_Falt 	= Integer.valueOf(rs.getString(6));
-	        	int inasist 	= Integer.valueOf(rs.getString(7));
-	        	int gafete 		= Integer.valueOf(rs.getString(8));
+				matriz[i][0] =  rs.getInt(1)+" ";
+				matriz[i][1] =  "   "+rs.getString(2);
+				matriz[i][2] =  "   "+rs.getString(3); 
 				
-				matriz[i][0] = rs.getInt(1)+" ";
-				matriz[i][1] = "   "+rs.getString(2);
-				matriz[i][2] = "   "+rs.getString(3);
+				matriz[i][3] =  rs.getInt(4)	== 0 ? "":rs.getInt(4);
+				matriz[i][4] =  rs.getInt(5)	== 0 ? "":rs.getInt(5);
+				matriz[i][5] =  rs.getInt(6)	== 0 ? "":rs.getInt(6);
+				matriz[i][6] =  rs.getInt(7)	== 1 ? "true" : "false" ;
 				
-				matriz[i][3] =  impunt == 0 ? "":impunt;
-				matriz[i][4] =  omi == 0 ? "":omi;
-				matriz[i][5] =  dias_Falt == 0 ? "":dias_Falt;
-				matriz[i][6] =  inasist==1?"true":"false";
+				matriz[i][7] =  rs.getInt(8) 	== 0 ? "": rs.getInt(8);
+				matriz[i][8] =  rs.getInt(9) 	== 0 ? "": rs.getInt(9);
+				matriz[i][9] =  rs.getFloat(10) == 0 ? "" : rs.getFloat(10);
+				matriz[i][10] = rs.getFloat(11) == 0 ? "" : rs.getFloat(11);
 				
-				matriz[i][7] =  gafete == 0 ? "":gafete;
-				matriz[i][8] =  Integer.valueOf(rs.getString(9)) == 0 ? "":Integer.valueOf(rs.getString(9));
-				matriz[i][9] =  Float.valueOf(rs.getString(10))  == 0 ? "":Float.valueOf(rs.getString(10));
-				matriz[i][10] = Float.valueOf(rs.getString(11))  == 0 ? "":Float.valueOf(rs.getString(11));
-				matriz[i][11] = ((impunt+omi+dias_Falt+inasist+gafete)==0)?true:false;
-				matriz[i][12] = rs.getString(12).toString().trim();
+				matriz[i][11] = rs.getBoolean(12)+"";
+				matriz[i][12] = rs.getString(13);
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -139,7 +157,7 @@ public class BuscarTablasModel {
 				matriz[i][15] = Float.parseFloat(rs.getString(16)) == 0 ? "" : Float.parseFloat(rs.getString(16));
 				matriz[i][16] = Float.parseFloat(rs.getString(17)) == 0 ? "" : Float.parseFloat(rs.getString(17));
 				matriz[i][17] = Float.parseFloat(rs.getString(18)) == 0 ? "" : Float.parseFloat(rs.getString(18));
-				matriz[i][18] = Float.parseFloat(rs.getString(19)) == 0 ? "" : Float.parseFloat(rs.getString(19));
+				matriz[i][18] = rs.getString(19);
 				matriz[i][19] = Float.parseFloat(rs.getString(20)) == 0 ? "" : Float.parseFloat(rs.getString(20));
 				matriz[i][20] = Float.parseFloat(rs.getString(21)) == 0 ? "" : Float.parseFloat(rs.getString(21));
 				matriz[i][21] = Float.parseFloat(rs.getString(22)) == 0 ? "" : Float.parseFloat(rs.getString(22));

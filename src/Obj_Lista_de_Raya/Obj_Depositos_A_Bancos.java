@@ -23,6 +23,10 @@ public class Obj_Depositos_A_Bancos {
 		return new BuscarTablasModel().tabla_model_bancos();
 	}
 	
+	public Object[][] get_tabla_model_bancos(){
+		return new BuscarTablasModel().tabla_model_bancos_empleados();
+	}
+	
 	public boolean guardar(Object[][] tabla){
 		return new GuardarTablasModel().tabla_model_bancos(tabla);
 	}

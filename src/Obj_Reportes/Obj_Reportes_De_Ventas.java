@@ -16,6 +16,7 @@ public class Obj_Reportes_De_Ventas {
 	String familias 		 ;
 	String lineas 			 ;
 	String presentado        ;
+	String tallas        ;
 	                         
 	public Obj_Reportes_De_Ventas(){
 		  fecha_inicio 	 ="";
@@ -29,6 +30,7 @@ public class Obj_Reportes_De_Ventas {
 		  familias 		= "";
 		  lineas 		= "";
 		  presentado    = "";
+		  tallas		= "";
 	}
 
 	public String getPresentado() {
@@ -111,6 +113,14 @@ public class Obj_Reportes_De_Ventas {
 		this.lineas = lineas;
 	}
 	
+	public String getTallas() {
+		return tallas;
+	}
+
+	public void setTallas(String tallas) {
+		this.tallas = tallas;
+	}
+
 	public String[][] reporte_de_ventas() throws SQLException{
 		return new BuscarSQL().Reporte_De_Ventas(this);
 	}

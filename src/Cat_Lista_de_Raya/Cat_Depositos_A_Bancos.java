@@ -1,7 +1,5 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
-import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -21,11 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -33,7 +28,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
-
 import Cat_IZAGAR.Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos;
 import Cat_IZAGAR.Cat_IZAGAR_Selecionar_Nomina_Para_Netos;
 import Cat_Reportes.Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos;
@@ -44,23 +38,24 @@ import IZAGAR_Obj.Obj_IZAGAR_Netos_Nominas;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Depositos_A_Bancos;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Depositos_A_Bancos extends Cat_Root {
 	Runtime R = Runtime.getRuntime();
 	
-	public static JCheckBox chbHabilitarBanamex = new JCheckBox("Habilitar");	
+//	public static JCheckBox chbHabilitarBanamex = new JCheckBox("Habilitar");	
 	public static JCheckBox chbHabilitarBanorte = new JCheckBox("Habilitar");
 	public JCheckBox chbNegativos = new JCheckBox("Valores Negativos");
 	
-	public JTextField txtBanamex = new JTextField();
-	public JTextField txtBanorte = new JTextField();
-	public JTextField txtTotales = new JTextField();
-	   
+//	public JTextField txtBanamex = new JTextField();
+//	public JTextField txtBanorte = new JTextField();
+//	public JTextField txtTotales = new JTextField();
+	
 	float numero=0;
 	
 	public static DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Depositos_A_Bancos().get_tabla_model(),
-            new String[]{"Folio", "Nombre Completo", "Establecimientos", "Banamex", "Banorte", "Total a Pagar","Sugerido" }
+            new String[]{"Folio", "Nombre Completo", "Establecimientos", "Banco", "Deposito", "Total a Pagar","Sugerido" }
 			){
         
         public boolean isCellEditable(int fila, int columna){
@@ -69,15 +64,15 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
         	 	case 1 : return false; 
         	 	case 2 : return false; 
         	 	case 3 :
-    	 	if(chbHabilitarBanamex.isSelected()){
-    	 				if(tabla_model.getValueAt(fila,4).toString().length() != 0){
-    	 					return false;
-    	 				}else{
-        	 				return true;
-    	 				}        	 				
-    	 			 }else{
+//    	 	if(chbHabilitarBanamex.isSelected()){
+//    	 				if(tabla_model.getValueAt(fila,4).toString().length() != 0){
+//    	 					return false;
+//    	 				}else{
+//        	 				return true;
+//    	 				}        	 				
+//    	 			 }else{
     	 				 return false;
-    	 			}        	 			
+//    	 			}        	 			
         	 	case 4 : 
     	 			if(chbHabilitarBanorte.isSelected()){
     	 				if(tabla_model.getValueAt(fila,3).toString().length() != 0){
@@ -99,6 +94,23 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	public static JTable tabla = new JTable(tabla_model);
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
+	public static DefaultTableModel tabla_model_totales = new DefaultTableModel(new Obj_Depositos_A_Bancos().get_tabla_model_bancos(),
+            new String[]{"Banco", "Totales"}
+			){
+        
+        public boolean isCellEditable(int fila, int columna){
+        	switch(columna){
+        		case 0 : return false; 
+        	 	case 1 : return false; 
+        	 } 				
+ 			return false;
+ 		}
+                
+	};
+	
+	public static JTable tabla_totales = new JTable(tabla_model_totales);
+	public JScrollPane scroll_tabla_totales = new JScrollPane(tabla_totales);
+	
 	JButton btn_lay_out = new JButton();
 	JButton btn_cargar_nomina = new JButton();
 	JButton btn_IDepositosBancLimpio  = new JButton();
@@ -116,7 +128,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.setTitle("Bancos");
 			
 		this.panel.add(cmbEstablecimientos).setBounds(385,35,190,20);
-		this.panel.add(chbHabilitarBanamex).setBounds(580,35,90,20);
+//		this.panel.add(chbHabilitarBanamex).setBounds(580,35,90,20);
 		this.panel.add(chbHabilitarBanorte).setBounds(700,35,90,20);
 		this.panel.add(chbNegativos).setBounds(800,35,130,20);
 		this.panel.add(btn_aplicar_Sugerido).setBounds(930,35,140,20);
@@ -125,31 +137,33 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.panel.add(txtNombre_Completo).setBounds(101,35,280,20);
 		
 		this.panel.add(scroll_tabla).setBounds(30,60,1035,615);
-		this.panel.add(btn_lay_out).setBounds(1085,160,40,40);
-		this.panel.add(new JLabel("Generar Lay Out")).setBounds(1150,170,130,20);
-		this.panel.add(btn_cargar_nomina).setBounds(1085,210,40,40);
-		this.panel.add(new JLabel("Cargar Nomina")).setBounds(1150,220,130,20);
-		this.panel.add(btn_IDepositosBancLimpio).setBounds(1085,260,40,40);
-		this.panel.add(new JLabel("Imprimir Reporte Para Exportar a Excel")).setBounds(1150,270,250,20);
-		this.panel.add(btn_IDepositosBancP_Estab).setBounds(1085,310,40,40);
-		this.panel.add(new JLabel("Imprimir Reporte Por Establecimiento")).setBounds(1150,320,250,20);
-		this.panel.add(btn_EmpleadosS_Dep).setBounds(1085,360,40,40);
-		this.panel.add(new JLabel("Reportes de Empleados Sin Depositos A Bancos")).setBounds(1150,370,300,20);
-		this.panel.add(btn_Empleados_Pagar_Negativo).setBounds(1085,410,40,40);
-		this.panel.add(new JLabel("Reportes de Empleados Con Deposito Excedido")).setBounds(1150,420,300,20);
+		this.panel.add(btn_lay_out).setBounds(1085,200,40,40);
+		this.panel.add(new JLabel("Generar Lay Out")).setBounds(1150,210,130,20);
+		this.panel.add(btn_cargar_nomina).setBounds(1085,250,40,40);
+		this.panel.add(new JLabel("Cargar Nomina")).setBounds(1150,260,130,20);
+		this.panel.add(btn_IDepositosBancLimpio).setBounds(1085,300,40,40);
+		this.panel.add(new JLabel("Imprimir Reporte Para Exportar a Excel")).setBounds(1150,310,250,20);
+		this.panel.add(btn_IDepositosBancP_Estab).setBounds(1085,350,40,40);
+		this.panel.add(new JLabel("Imprimir Reporte Por Establecimiento")).setBounds(1150,360,250,20);
+		this.panel.add(btn_EmpleadosS_Dep).setBounds(1085,400,40,40);
+		this.panel.add(new JLabel("Reportes de Empleados Sin Depositos A Bancos")).setBounds(1150,410,300,20);
+		this.panel.add(btn_Empleados_Pagar_Negativo).setBounds(1085,450,40,40);
+		this.panel.add(new JLabel("Reportes de Empleados Con Deposito Excedido")).setBounds(1150,460,300,20);
 		
-		this.panel.add(new JLabel("Total Banamex:")).setBounds(1080,70,100,20);
-		this.panel.add(txtBanamex).setBounds(1160,70,120,20);
-		this.txtBanamex.setEditable(false);
-		this.txtBanamex.setFont(new Font("",0,14));
+//		this.panel.add(new JLabel("Total Banamex:")).setBounds(1080,70,100,20);
+//		this.panel.add(txtBanamex).setBounds(1160,70,120,20);
+//		this.txtBanamex.setEditable(false);
+//		this.txtBanamex.setFont(new Font("",0,14));
+		this.panel.add(scroll_tabla_totales).setBounds(1085,60,270,120);
 		
-		this.panel.add(new JLabel("Total Banorte:")).setBounds(1080,95,250,20);
-		this.panel.add(txtBanorte).setBounds(1160,95,120,20);
-		this.txtBanorte.setEditable(false);
-		this.txtBanorte.setFont(new Font("",0,14));
 		
-		this.panel.add(new JLabel("Totales:")).setBounds(1080,120,250,20);
-		this.panel.add(txtTotales).setBounds(1160,120,120,20);
+//		this.panel.add(new JLabel("Total Banorte:")).setBounds(1080,95,250,20);
+//		this.panel.add(txtBanorte).setBounds(1400,95,120,20);
+//		this.txtBanorte.setEditable(false);
+//		this.txtBanorte.setFont(new Font("",0,14));
+		
+//		this.panel.add(new JLabel("Totales:")).setBounds(1080,120,250,20);
+//		this.panel.add(txtTotales).setBounds(1400,120,120,20);
 		
 		ImageIcon imagLayOut = new ImageIcon(System.getProperty("user.dir")+"/Iconos/PAG5.png");
 	    btn_lay_out.setIcon(new ImageIcon(imagLayOut.getImage().getScaledInstance(btn_lay_out.getWidth()-4,btn_lay_out.getHeight()-4, Image.SCALE_DEFAULT)));	
@@ -170,11 +184,13 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	    btn_Empleados_Pagar_Negativo.setIcon(new ImageIcon(imagempleadoExcedido.getImage().getScaledInstance(btn_lay_out.getWidth()-4,btn_lay_out.getHeight()-4, Image.SCALE_DEFAULT)));
 	    
 	    
-		this.txtTotales.setEditable(false);
-		this.txtTotales.setFont(new Font("",0,14));
+//		this.txtTotales.setEditable(false);
+//		this.txtTotales.setFont(new Font("",0,14));
 		
 		this.cont.add(panel);
 		
+		this.tabla_render(tabla);
+		this.tabla_render(tabla_totales);
 		this.init_tabla();
 		
 		this.btn_guardar.addActionListener(op_guardar);
@@ -204,18 +220,18 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
     
     public void calcularSugerido(){
  		for(int i=0; i<tabla.getRowCount(); i++){
- 			if(tabla_model.getValueAt(i,3).toString().equals("")&&tabla_model.getValueAt(i,4).toString().equals("")){
+ 			if(tabla_model.getValueAt(i,4).toString().equals("")){
  				tabla_model.setValueAt("", i, 6);
  			}else{
  				
 	 		if(tabla_model.getValueAt(i,5).toString().equals("")){numero=0;}else{ numero=Float.valueOf(tabla_model.getValueAt(i,5).toString());}
 	 			
 	 			if(numero < 0){
-        	 		if(tabla_model.getValueAt(i,3).toString().equals("")){ 	 		        	
+//        	 		if(tabla_model.getValueAt(i,3).toString().equals("")){ 	 		        	
 	 		        	tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,4).toString())+numero+"", i, 6) ;
-	 		           }else{
-	 		        	  tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,3).toString())+numero+"", i, 6) ;
-	 		           }
+//	 		           }else{
+//	 		        	  tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,3).toString())+numero+"", i, 6) ;
+//	 		           }
 	        }else{ tabla_model.setValueAt("", i, 6);
 	        }
 	        }
@@ -226,8 +242,11 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		public void actionPerformed(ActionEvent arg0) {
  		for(int i=0; i<tabla.getRowCount(); i++){
  			if(!tabla_model.getValueAt(i,6).toString().equals("")){		
-	 			if(tabla_model.getValueAt(i,3).toString().equals("")){tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,6).toString()), i, 4); }
-															 	 else{tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,6).toString()), i, 3); }
+//		 			if(tabla_model.getValueAt(i,3).toString().equals("")){
+		 				tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,6).toString()), i, 4); 
+//		 			}else{
+//		 				tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,6).toString()), i, 3); 
+//		 			}
 	 			}
  		}
  	
@@ -298,9 +317,19 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 							tabla_model.addRow(ps);
 						}
 						
-							txtBanamex.setText("$ "+returnBanamex());
-							txtBanorte.setText("$ "+returnBanorte());
-							txtTotales.setText("$ "+returnTotales());
+//							txtBanamex.setText("$ "+returnBanamex());
+						float total = 0;
+						for(int i = 0 , x=tabla_model_totales.getRowCount(); i < x ; i++){
+							if(i==(x-1)){
+								tabla_totales.setValueAt(total, i, 1);
+							}else{
+								total += returnTotales(tabla_model_totales.getValueAt(i, 0).toString().trim());
+								tabla_totales.setValueAt(returnTotales(tabla_model_totales.getValueAt(i, 0).toString().trim()), i, 1);
+							}
+						}
+						
+//							txtBanorte.setText("$ "+returnBanorte());
+//							txtTotales.setText("$ "+returnTotales());
 							
 							calcularSugerido();
 							
@@ -355,11 +384,11 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 							matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();
 							break;
 						case 3: 
-							if(tabla_model.getValueAt(i,j).toString().equals("")){
-								matriz[i][j] = Float.parseFloat("0.0");
-							}else{
-								matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString());
-							}
+//							if(tabla_model.getValueAt(i,j).toString().equals("")){
+//								matriz[i][j] = Float.parseFloat("0.0");
+//							}else{
+								matriz[i][j] = tabla_model.getValueAt(i,j).toString();
+//							}
 							break;
 						case 4: 
 							if(tabla_model.getValueAt(i,j).toString().equals("")){
@@ -380,14 +409,14 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 			
 			for(int i=0; i<tabla.getRowCount(); i++){
 			
-				for(int j=3; j<tabla.getColumnCount()-1; j++){
+				for(int j=4; j<tabla.getColumnCount()-1; j++){
 					
 					try{
 						if(!isNumeric(tabla_model.getValueAt(i,j).toString())){
 							switch(j){
-								case 3: 
-									error += "   La celda de la columna Banamex no es un número en el [Folio: "+tabla_model.getValueAt(i,0)+"]\t\n";
-									break;
+//								case 3: 
+//									error += "   La celda de la columna Banamex no es un número en el [Folio: "+tabla_model.getValueAt(i,0)+"]\t\n";
+//									break;
 								case 4:
 									error += "   La celda de la columna Banorte no es un número en el [Folio: "+tabla_model.getValueAt(i,0)+"]\t\n";
 									break;
@@ -401,10 +430,35 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		return error;
 	}
 		
+	public void tabla_render(JTable tbl){
+		tbl.getTableHeader().setReorderingAllowed(false) ;
+		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
+		
+		if(tbl.getName()=="tabla"){
+			for(int i=0; i<tbl.getColumnCount(); i++){
+				if(i==1 || i==2 || i==3){
+					tbl.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+				}else{
+					tbl.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+				}
+			}
+		}else{
+			for(int i=0; i<tbl.getColumnCount(); i++){
+				if(i==0){
+					tbl.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+				}else{
+					tbl.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+				}
+			}
+		}
+		
+		
+		
+
+	}
+		
     @SuppressWarnings({ "unchecked", "static-access" })
 	public void init_tabla(){
-    	
-    	this.tabla.getTableHeader().setReorderingAllowed(false) ;
     	
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(72);
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(72);		
@@ -421,44 +475,59 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
     	this.tabla.getColumnModel().getColumn(6).setMaxWidth(110);
     	this.tabla.getColumnModel().getColumn(6).setMinWidth(110);
     	
-		TableCellRenderer render = new TableCellRenderer() {
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-					boolean hasFocus, int row, int column) {
-					
-							JLabel lbl = new JLabel(value == null? "": value.toString());
-							
-							if(row%2==0){
-									lbl.setOpaque(true); 
-									lbl.setBackground(new java.awt.Color(177,177,177));
-							} 
-							
-							if(table.getSelectedRow() == row){
-								lbl.setOpaque(true); 
-								lbl.setBackground(new java.awt.Color(186,143,73));
-							}
-							
-							switch(column){
-								case 0 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-								case 1 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-								case 2 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-								case 3 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-								case 4 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-								case 5 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-								case 6 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-							}
-							return lbl; 
-					} 
-			}; 
-
-		for(int x = 0; x<tabla.getColumnCount(); x++){
-			this.tabla.getColumnModel().getColumn(x).setCellRenderer(render); 
-		}
+    	this.tabla_totales.getColumnModel().getColumn(0).setMaxWidth(140);
+    	this.tabla_totales.getColumnModel().getColumn(0).setMinWidth(140);		
+    	this.tabla_totales.getColumnModel().getColumn(1).setMaxWidth(110);
+    	this.tabla_totales.getColumnModel().getColumn(1).setMinWidth(110);
+    	
+//		TableCellRenderer render = new TableCellRenderer() {
+//			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+//					boolean hasFocus, int row, int column) {
+//					
+//							JLabel lbl = new JLabel(value == null? "": value.toString());
+//							
+//							if(row%2==0){
+//									lbl.setOpaque(true); 
+//									lbl.setBackground(new java.awt.Color(177,177,177));
+//							} 
+//							
+//							if(table.getSelectedRow() == row){
+//								lbl.setOpaque(true); 
+//								lbl.setBackground(new java.awt.Color(186,143,73));
+//							}
+//							
+//							switch(column){
+//								case 0 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//								case 1 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
+//								case 2 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
+//								case 3 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//								case 4 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//								case 5 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//								case 6 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
+//							}
+//							return lbl; 
+//					} 
+//			}; 
+//
+//		for(int x = 0; x<tabla.getColumnCount(); x++){
+//			this.tabla.getColumnModel().getColumn(x).setCellRenderer(render); 
+//		}
 		
 		this.tabla.setRowSorter(trsfiltro);  
 		
-		this.txtBanamex.setText("$ "+returnBanamex());
-		this.txtBanorte.setText("$ "+returnBanorte());
-		this.txtTotales.setText("$ "+returnTotales());
+		float total = 0;
+		for(int i = 0 , x=tabla_model_totales.getRowCount(); i < x ; i++){
+			if(i==(x-1)){
+				tabla_totales.setValueAt(total, i, 1);
+			}else{
+				total += returnTotales(tabla_model_totales.getValueAt(i, 0).toString().trim());
+				tabla_totales.setValueAt(returnTotales(tabla_model_totales.getValueAt(i, 0).toString().trim()), i, 1);
+			}
+		}
+		
+//		this.txtBanamex.setText("$ "+returnBanamex());
+//		this.txtBanorte.setText("$ "+returnBanorte());
+//		this.txtTotales.setText("$ "+returnTotales());
     }
     
     public static boolean isNumeric(String cadena){
@@ -547,16 +616,16 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		return valor;
 	}
 	
-	public float returnTotales(){
+	public float returnTotales(String banco){
 		
 		float valor = 0;
 		for(int i=0; i<tabla.getRowCount(); i++){
-			if(tabla_model.getValueAt(i,3).toString().length() != 0){
-				valor = valor + Float.parseFloat(tabla_model.getValueAt(i,3)+"");
+			
+			if(tabla_model.getValueAt(i,3).toString().trim().equals(banco)){
+				if(tabla_model.getValueAt(i,4).toString().length() != 0){
+					valor = valor + Float.parseFloat(formato.format(tabla_model.getValueAt(i,4))+"");
+				}	
 			}	
-			if(tabla_model.getValueAt(i,4).toString().length() != 0){
-				valor = valor + Float.parseFloat(formato.format(tabla_model.getValueAt(i,4))+"");
-			}		
 		}
 		return valor;
 	}
@@ -662,9 +731,19 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 								Object [][] lista2 = new Obj_Depositos_A_Bancos().get_tabla_model();
 									for(Object[] ps : lista2){tabla_model.addRow(ps);}
 // se calculan los totales nuevamente
-										txtBanamex.setText("$ "+returnBanamex());
-										txtBanorte.setText("$ "+returnBanorte());
-										txtTotales.setText("$ "+returnTotales());
+									
+									float total = 0;
+									for(int i = 0 , x=tabla_model_totales.getRowCount(); i < x ; i++){
+										if(i==(x-1)){
+											tabla_totales.setValueAt(total, i, 1);
+										}else{
+											total += returnTotales(tabla_model_totales.getValueAt(i, 0).toString().trim());
+											tabla_totales.setValueAt(returnTotales(tabla_model_totales.getValueAt(i, 0).toString().trim()), i, 1);
+										}
+									}
+//										txtBanamex.setText("$ "+returnBanamex());
+//										txtBanorte.setText("$ "+returnBanorte());
+//										txtTotales.setText("$ "+returnTotales());
 										calcularSugerido();
 											
 								JOptionPane.showMessageDialog(null,"El Transpaso Se a Realizado Exitosamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);

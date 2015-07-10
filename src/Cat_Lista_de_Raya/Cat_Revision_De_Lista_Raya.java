@@ -57,7 +57,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		new String[]{"","Folio", "Nombre Completo", "Establecimiento", "Sueldo",
 			"Bono", "P.Saldo ini", "Desc.Prest", "P.Saldo Fin", "F.Sodas",
 			"Imp.","Omi.", "Faltas", "Ina.", "Gafete", "Cortes", 
-			"Infvt", "Pension", "Banamex", "Banorte", "Hrs Ext", "Extra", 
+			"Infvt", "Pension", "Banco", "Deposito", "Hrs Ext", "Extra", 
 			"Día Ext", "A Pagar", "Observaciones D.H.", "Observaciones II" }){
 			
 		@SuppressWarnings("rawtypes")
@@ -1075,7 +1075,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							((JComponent) componente).setOpaque(true); 
 							componente.setBackground(new java.awt.Color(186,143,73));
 						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
+						((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
 						break;
 					case 19: 
 						componente = new JLabel(value == null? "": value.toString());
