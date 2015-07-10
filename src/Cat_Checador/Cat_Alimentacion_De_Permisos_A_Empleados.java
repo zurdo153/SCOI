@@ -795,7 +795,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 													  return;
 										              } else{
 //																if(permiso==7){
-																		if(new Obj_Alimentacion_De_Permisos_A_Empleados().buscar_doblada(Integer.parseInt(txtFolioEmpleado.getText()))==2){
+																		if(new Obj_Alimentacion_De_Permisos_A_Empleados().buscar_doblada(Integer.parseInt(txtFolioEmpleado.getText()))==3){
 																			
 																				JOptionPane.showMessageDialog(null,"El Empleado Ya Uso Sus 2 Dias De Dobla Extra!","Aviso",JOptionPane.WARNING_MESSAGE); 
 																				return;
