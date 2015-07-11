@@ -19,6 +19,7 @@ import java.util.Vector;
 
 
 
+
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -62,6 +63,7 @@ import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Menus;
 
 
@@ -735,9 +737,10 @@ public class Init_Login extends JFrame{
 			deshabilitarCambiarContrasena();
 			cargar_usuariotrue();
 			btnCambiarContrasena.setVisible(true);
+			btnSalir.doClick();
 
 			}else{
-				JOptionPane.showMessageDialog(null, "Las contraseñas son diferentes...","Aviso",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Las Contraseñas Son Diferentes...","Aviso",JOptionPane.WARNING_MESSAGE);
 				txtContrasenaNueva.setText("");
 				txtContrasenaConfirmar.setText("");
 				txtContrasenaNueva.requestFocus(true);
@@ -1014,22 +1017,16 @@ public class Submenusbtns{
 		};
 		
 		KeyListener opFiltroNombre = new KeyListener(){
-			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
+				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
 		ActionListener opFiltro = new ActionListener(){
-			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent arg0){
-				if(cmbEstablecimientos.getSelectedIndex() != 0){
-					trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
-				}else{
-					trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-				}
+				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
 			}
 		};
 		

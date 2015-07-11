@@ -778,7 +778,7 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] Usuario() throws SQLException{
-		String query = "select distinct tb_empleado.folio, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as usuario from tb_permisos_submenus_usuarios inner join tb_empleado on tb_empleado.folio=tb_permisos_submenus_usuarios.folio_empleado where tb_empleado.status=1";
+		String query = "select distinct tb_empleado.folio, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as usuario from tb_permisos_submenus_usuarios inner join tb_empleado on tb_empleado.folio=tb_permisos_submenus_usuarios.folio_empleado where tb_empleado.status=1 order by usuario";
 		
 		Statement stmt = null;
 		try {

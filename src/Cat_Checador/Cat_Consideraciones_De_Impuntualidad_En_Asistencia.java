@@ -495,6 +495,8 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 	KeyListener opFiltroFolioCajero = new KeyListener(){
 		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
+			
+			
 			trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre.getText().toUpperCase(), 1));
 		}
 		public void keyTyped(KeyEvent arg0) {}

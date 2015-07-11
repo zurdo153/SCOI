@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,6 +34,7 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Obj_Filtro_Dinamico;
 
 @SuppressWarnings("serial")
 public class Cat_Prestamos extends JFrame {
@@ -81,6 +84,12 @@ public class Cat_Prestamos extends JFrame {
 		txtFolio.addKeyListener(opFiltroFolio);
 		txtNombre_Completo.addKeyListener(opFiltroNombre);
 		cmbEstablecimientos.addActionListener(opFiltro);
+	
+		this.addWindowListener(new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+            	txtNombre_Completo.requestFocus();
+             }
+          });
 		
 		cont.add(panel);
 		
@@ -125,9 +134,8 @@ public class Cat_Prestamos extends JFrame {
 	};
 	
 	KeyListener opFiltroNombre = new KeyListener(){
-		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}
@@ -135,13 +143,8 @@ public class Cat_Prestamos extends JFrame {
 	};
 	
 	ActionListener opFiltro = new ActionListener(){
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0){
-			if(cmbEstablecimientos.getSelectedIndex() != 0){
-				trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
-			}else{
-			 	trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-			}
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
 		}
 	};
    

@@ -678,10 +678,7 @@ public class Cat_Empleados extends JFrame{
 	    getRootPane().getActionMap().put("foco", new AbstractAction(){
 	        @Override
 	        public void actionPerformed(ActionEvent e)
-	        {
-	    
-	        	btnFiltro.doClick();    	
-	        }
+	        {	        	btnFiltro.doClick();    	     }
 	    });
 	    
 	    
@@ -692,9 +689,7 @@ public class Cat_Empleados extends JFrame{
 	    getRootPane().getActionMap().put("horario", new AbstractAction(){
 	        @Override
 	        public void actionPerformed(ActionEvent e)
-	        {    
-	        	btnHorarioNew.doClick();    	
-	        }
+	        {    	        	btnHorarioNew.doClick();          }
 	    });
 						  ///deshacer con escape
 						        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
@@ -749,11 +744,7 @@ public class Cat_Empleados extends JFrame{
 						                      {                 	    btnEditar.doClick();
 							                    	    }
 						                 });
-	    
 	  	}
-	
-
-	
 	
 
 	ActionListener opCmbHorarioRotarivo = new ActionListener(){
@@ -2768,13 +2759,7 @@ public class Cat_Empleados extends JFrame{
 		
 		ActionListener opFiltro = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				
 				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
-//				if(cmbEstablecimientos.getSelectedIndex() != 0){
-//					trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
-//				}else{
-//					trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-//				}
 			}
 		};
 		
