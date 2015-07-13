@@ -1,5 +1,6 @@
 package Cat_Lista_de_Raya;
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -9,6 +10,7 @@ import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -2693,8 +2695,6 @@ public class Cat_Empleados extends JFrame{
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
-			tabla.addKeyListener(seleccionEmpleadoconteclado);
-			
 //          asigna el foco al JTextField del nombre deseado al arrancar la ventana
             this.addWindowListener(new WindowAdapter() {
                     public void windowOpened( WindowEvent e ){
@@ -2715,6 +2715,8 @@ public class Cat_Empleados extends JFrame{
                   }
               });
               
+              tabla.addKeyListener(seleccionEmpleadoconteclado);
+              
 //            pone el foco en la tabla al presionar f4
               getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                  KeyStroke.getKeyStroke(KeyEvent.VK_F4 , 0), "dtabla");
@@ -2724,16 +2726,39 @@ public class Cat_Empleados extends JFrame{
                   public void actionPerformed(ActionEvent e)
                   {
                 	tabla.requestFocus();
+                	iniciarSeleccionConTeclado();
                   }
               });
+              
+              
+				KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
+				tabla.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(tab, "TAB");
+				
+				tabla.getActionMap().put("TAB", new AbstractAction(){
+	                 public void actionPerformed(ActionEvent e)
+	                 {
+	                	iniciarSeleccionConTeclado();
+	                	
+//	                	fila=tabla.getSelectedRow();
+//	     				String folio = tabla.getValueAt(fila,0).toString().trim();
+//	     					
+//	     				txtFolioEmpleado.setText(folio);
+//	     				btnBuscar.doClick();
+//	     				dispose();
+	                 }
+	            });
 			 
 			
 		}
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {
+		        	
+		        	if(e.getClickCount() == 1){
+		        		iniciarSeleccionConTeclado();
+		        	}
 		        	if(e.getClickCount() == 2){
-		    			int fila = tabla.getSelectedRow();
+		    			fila = tabla.getSelectedRow();
 		    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
 		    			dispose();
 		    			txtFolioEmpleado.setText(folio+"");
@@ -2742,6 +2767,43 @@ public class Cat_Empleados extends JFrame{
 		        }
 	        });
 	    }
+		
+		int fila=0;
+		public void iniciarSeleccionConTeclado(){
+			Robot robot;
+			try {
+	            robot = new Robot();
+	            robot.keyPress(KeyEvent.VK_A);
+	            robot.keyRelease(KeyEvent.VK_A);
+	        } catch (AWTException e) {
+	            e.printStackTrace();
+	        }
+ 	     };
+ 	     
+		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+				KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+				tabla.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, "Enter");
+				
+				tabla.getActionMap().put("Enter", new AbstractAction(){
+	                 public void actionPerformed(ActionEvent e)
+	                 {
+	                	iniciarSeleccionConTeclado();
+	                	
+	                	fila=tabla.getSelectedRow();
+	     				String folio = tabla.getValueAt(fila,0).toString().trim();
+	     					
+	     				txtFolioEmpleado.setText(folio);
+	     				btnBuscar.doClick();
+	     				dispose();
+	                 }
+	            });
+			}
+			public void keyPressed(KeyEvent e){}
+			public void keyReleased(KeyEvent e){}
+		};
 		
 		KeyListener opFiltroFolio = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
@@ -3017,29 +3079,6 @@ public class Cat_Empleados extends JFrame{
 			public void keyReleased(KeyEvent e){}
 									
 		};
-		
-		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
-			@SuppressWarnings("static-access")
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char caracter = e.getKeyChar();
-				
-				if(caracter==e.VK_ENTER){
-				int fila=tabla.getSelectedRow()-1;
-				String folio = tabla.getValueAt(fila,0).toString().trim();
-					
-				txtFolioEmpleado.setText(folio);
-				btnBuscar.doClick();
-				dispose();
-				}
-			}
-			@Override
-			public void keyPressed(KeyEvent e){}
-			@Override
-			public void keyReleased(KeyEvent e){}
-									
-		};
-		
 	}
 
 	
