@@ -257,7 +257,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
         panel.add(btnFiltroProducto					).setBounds(x+590,y,a,a);
         panel.add(btnLimpiarFiltroProducto			).setBounds(x+613,y,a,a);
         
-        panel.add(JLBdescripcion).setBounds(x+650,y,l+50,a);
+        panel.add(JLBdescripcion).setBounds(x+650,y,l+350,a);
         
 		panel.add(new JLabel("Filtro De Clase De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Clase							 ).setBounds(x+80,y,l-12,a);  
