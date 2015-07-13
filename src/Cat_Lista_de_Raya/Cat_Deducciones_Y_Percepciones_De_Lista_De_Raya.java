@@ -403,7 +403,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 
 	KeyListener op_filtro_nombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -411,7 +411,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 
 	ActionListener op_filtro_establecimiento = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
 		}
 	};
 	

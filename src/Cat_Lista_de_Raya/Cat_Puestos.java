@@ -275,7 +275,7 @@ ActionListener guardar = new ActionListener(){
 	
 	KeyListener opFiltroNombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			new Obj_Filtro_Dinamico(tabla,"Puesto", txtPuestoFiltro.getText().toUpperCase(),"","");
+			new Obj_Filtro_Dinamico(tabla,"Puesto", txtPuestoFiltro.getText().toUpperCase(), "", "", "", "", "", "");
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

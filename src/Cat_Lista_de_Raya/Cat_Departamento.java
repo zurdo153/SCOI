@@ -192,7 +192,7 @@ public class Cat_Departamento extends JFrame{
 	
 	KeyListener opFiltroDepartamento = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			new Obj_Filtro_Dinamico(tabla,"Departamento", txtDepartamentoFiltro.getText().toUpperCase(),"","");
+			new Obj_Filtro_Dinamico(tabla,"Departamento", txtDepartamentoFiltro.getText().toUpperCase(), "", "", "", "", "", "");
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
