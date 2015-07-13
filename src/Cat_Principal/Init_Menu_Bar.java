@@ -28,7 +28,7 @@ public class Init_Menu_Bar extends Init_Login{
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
 		
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version: 2.4.57");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.32");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -208,11 +208,16 @@ public class Init_Menu_Bar extends Init_Login{
 				Obj_Usuario user = new Obj_Usuario().buscar(Integer.parseInt(txtFolio.getText()));
 				
 				if(!algoritmo.cryptMD5(txtContrasena.getText(), "izagar").trim().toLowerCase().equals(user.getContrasena().trim().toLowerCase())){
-					JOptionPane.showMessageDialog(null, "La contraseña no es válida...","Aviso",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "La Contraseña No Es Válida...","Aviso",JOptionPane.WARNING_MESSAGE , new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 					txtContrasena.setText("");
 					txtContrasena.requestFocus(true);
 					return;
 				}else{
+					if(txtContrasena.getText().toString().equals("1234567890")){
+						JOptionPane.showMessageDialog(null, "La Contraseña Es la de Default Necesita Cambiarla Para Poder Accesar","Aviso",JOptionPane.WARNING_MESSAGE , new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						btnCambiarContrasena.doClick();				
+					}else{
+
 					btnCambiarContrasena.setVisible(true); 
 					cargar_usuariotrue();
 					setJMenuBar(miMenuTop());
@@ -225,9 +230,10 @@ public class Init_Menu_Bar extends Init_Login{
 							new Cat_Aviso_Vencimiento_De_Contrato().setVisible(true);
 						}
 					}
+					}
 				}
 			}else{
-				JOptionPane.showMessageDialog(null, "La contraseña está vacía...","Aviso",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "La Contraseña Está Vacía...","Aviso",JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 				txtContrasena.requestFocus(true);
 				return;
 			}

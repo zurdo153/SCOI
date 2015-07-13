@@ -416,7 +416,7 @@ public class Cat_Filtro_De_Vauchers extends JDialog{
 						"inner join equipos_perifericos on equipos_perifericos.equipo_periferico=equipos_perifericos_equipo_bms.equipo_periferico " +
 						"inner join facremtick on facremtick.folio=autorizaciones_bancarias.folio " +
 						"left outer join liquidaciones_tickets on  liquidaciones_tickets.ticket=  autorizaciones_bancarias.folio and folio_documento = 'RetiroCte' " +
-						"where autorizaciones_bancarias.folio in(select folio from facremtick where folio_cajero in ("+cadenaAsignaciones+")) and equipos_perifericos.tipo_periferico='P' " +
+						"where autorizaciones_bancarias.folio in(select folio from facremtick where folio_cajero in ("+cadenaAsignaciones+")) and equipos_perifericos.tipo_periferico in('P','Y') " +
 						"and autorizaciones_bancarias.folio not in ("+cadena_de_vouchers_en_uso+")";		
 
 		Statement s;

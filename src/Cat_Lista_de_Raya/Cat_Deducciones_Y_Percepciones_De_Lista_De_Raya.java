@@ -29,6 +29,7 @@ import Conexiones_SQL.Cargar_Combo;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -158,24 +159,18 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 	public Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/percepciones_y_deducciones32.png"));
 		this.setTitle("Deducciónes y Precepciones De Lista De Raya");
-//		this.panel.add(cmbEstablecimientos).setBounds(463,35,300,20);
-//		this.panel.add(chb_habilitar).setBounds(1050,35,65,20);
-		
 		tabla.getModel().addTableModelListener(this);
-		
 		this.columna_dia_falta.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_dias));
 		this.columna_dia_gafete.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_gafete));
 		
 		this.columna_dias_ext.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_dias_ext));
 		this.columna_hrs_ext.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_horas));
-		
 		this.columna_conseptos.setCellEditor(new javax.swing.DefaultCellEditor(cmb_tabla_conseptos));
 
 		this.panel.remove(txtFolio);
 		this.panel.remove(txtNombre_Completo);
 		this.panel.remove(cmbEstablecimientos);
 		this.panel.remove(chb_habilitar);
-		
 		
 		this.panel.add(txtFolio).setBounds(30,35,35,20);
 		this.panel.add(txtNombre_Completo).setBounds(65,35,290,20);
@@ -407,22 +402,16 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 	};
 
 	KeyListener op_filtro_nombre = new KeyListener(){
-		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 
 	ActionListener op_filtro_establecimiento = new ActionListener(){
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0){
-			if(cmbEstablecimientos.getSelectedIndex() != 0){
-				trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
-			}else{
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-			}
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
 		}
 	};
 	

@@ -1335,8 +1335,6 @@ public class ActualizarSQL {
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
-			System.out.println(nuevacontrasena);
-			System.out.println(folio_empleado);
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			pstmt.executeUpdate();
@@ -1369,8 +1367,6 @@ public class ActualizarSQL {
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
-			System.out.println(empleado_de_clonar);
-			System.out.println(folio_empleado);
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			pstmt.executeUpdate();

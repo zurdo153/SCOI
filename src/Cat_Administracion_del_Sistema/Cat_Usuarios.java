@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -32,6 +34,8 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
+
+
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNode;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNodeEditor;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNodeRenderer;
@@ -39,6 +43,7 @@ import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_NombreVector;
 import Obj_Administracion_del_Sistema.Obj_SubMenus;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Principal.Obj_Filtro_Dinamico;
 
 
 
@@ -279,7 +284,7 @@ public class Cat_Usuarios extends JFrame{
 	@SuppressWarnings("unchecked")
 	public Cat_Usuarios(){
 		this.setTitle("Usuarios y Permisos");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Lock.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/usuario-grupo-icono-5183-64.png"));
 		
 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.jpg");
  		btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(110, 90, Image.SCALE_DEFAULT)));
@@ -341,6 +346,12 @@ public class Cat_Usuarios extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
+        this.addWindowListener(new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+            	txtNombre_CompletoFiltro.requestFocus();
+          }
+     });
+		
 	}
 	
 	boolean usuario = false;
@@ -350,18 +361,17 @@ public class Cat_Usuarios extends JFrame{
 			
 			
 			if(!validaCampos().equals("")){
-			    	JOptionPane.showMessageDialog(null,"Seleccione un Usuario","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+			    	JOptionPane.showMessageDialog(null,"Seleccione un Usuario","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			    	return;
 			}else{
 					usuario = tabla.getValueAt(tabla.getSelectedRow(), 2).equals("")?false:true;
 				
 					if(usuario){
-								if(JOptionPane.showConfirmDialog(null, "Se le asignara cotraseña default al usuario \n"+txtNombre_Completo.getText()+"\n¿desea continuar?") == 0){
+								if(JOptionPane.showConfirmDialog(null, "Se le Asignara la Cotraseña Default '1234567890'  al Usuario: \n"+txtNombre_Completo.getText()+"\n¿Desea Continuar?") == 0){
 									
 									String nuevacontrasena = new Obj_MD5().cryptMD5("1234567890", "izagar").trim().toLowerCase();
 									 new Obj_Usuario().CambiarContrasena(Integer.valueOf(txtFolio.getText()),nuevacontrasena);
-									 
-									 JOptionPane.showMessageDialog(null,"La contraseña se restauro correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+									 JOptionPane.showMessageDialog(null,"La Contraseña Se Restauro A La Default: 1234567890","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 								     return;
 								}
 					}else{
@@ -513,7 +523,7 @@ public class Cat_Usuarios extends JFrame{
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 			if(validaCampos()!="") {
-				JOptionPane.showMessageDialog(null, "Necesita Selecionar Un Empleado\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "Necesita Selecionar Un Empleado de la Tabla\n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				        return;
 			                      } else{ Obj_Usuario usuario = new Obj_Usuario().BuscarUsuario(Integer.valueOf(txtFolio.getText()));
 										  Vector subMenus = vectorComponentes(tree);
@@ -522,7 +532,7 @@ public class Cat_Usuarios extends JFrame{
 													if(cmbempleado_usuario.getSelectedIndex()==0){
 														usuario.setFolio(Integer.parseInt(txtFolio.getText()));
 												    	usuario.guardarPermisos(subMenus);
-												    	JOptionPane.showMessageDialog(null,"El usuario nuevo se guardó de forma segura con contraseña 1234567890","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+												    	JOptionPane.showMessageDialog(null,"El Usuario Nuevo:\n >>"+txtNombre_Completo.getText()+"\nSe Guardó de Forma Segura con Contraseña 1234567890","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 														dispose();
 														new Cat_Usuarios().setVisible(true);
 													
@@ -530,17 +540,15 @@ public class Cat_Usuarios extends JFrame{
 														String empleado_de_clonar = cmbempleado_usuario.getSelectedItem().toString().toUpperCase();
 														int folio_empleado = Integer.parseInt(txtFolio.getText());
 														usuario.Clonar_permisos(folio_empleado, empleado_de_clonar);
-														JOptionPane.showMessageDialog(null,"Al usuario nuevo se clonaron las opciones de forma segura con contraseña 1234567890","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+														JOptionPane.showMessageDialog(null,"Al Usuario Nuevo:\n >>"+txtNombre_Completo.getText()+"\nSe le Clonaron las opciones de forma segura con contraseña 1234567890 del Usuario:\n <<"+empleado_de_clonar,"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 														dispose();
 														new Cat_Usuarios().setVisible(true);
 														}
-													
-													    
 										   	} else{									        		
 										          if(cmbempleado_usuario.getSelectedIndex()==0){
 										        	  		  			if(JOptionPane.showConfirmDialog(null, "El usuario existe, ¿desea actualizarlo?") == 0){
 																				usuario.actualizar(Integer.valueOf(txtFolio.getText()), subMenus);
-																				JOptionPane.showMessageDialog(null,"El usuario se actualizó correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+																				JOptionPane.showMessageDialog(null,"El Usuario:"+txtNombre_Completo.getText()+" \n Se Actualizó Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 																				dispose();
 																				new Cat_Usuarios().setVisible(true);
 										        	  		  			}
@@ -549,15 +557,11 @@ public class Cat_Usuarios extends JFrame{
 																							String empleado_de_clonar = cmbempleado_usuario.getSelectedItem().toString().toUpperCase();
 																							int folio_empleado = Integer.parseInt(txtFolio.getText());
 																							usuario.Clonar_permisos(folio_empleado, empleado_de_clonar);
-																							JOptionPane.showMessageDialog(null,"Se Clonaron las Opciones del Usuario Selecionado","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+																							JOptionPane.showMessageDialog(null,"Al Usuario:\n >>"+txtNombre_Completo.getText()+"\nSe le Clonaron las Opciones del Usuario Selecionado:\n<<"+empleado_de_clonar,"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 																							dispose();
 																							new Cat_Usuarios().setVisible(true);
 													                               		}
-														     
-																		  			
-														
 										          }
-										          
 		                 }
 		             }
 		      }
@@ -580,9 +584,8 @@ public class Cat_Usuarios extends JFrame{
 	};
 	
 	KeyListener opFiltroNombre = new KeyListener(){
-		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_CompletoFiltro.getText().toUpperCase().trim(), 1));
+			new Obj_Filtro_Dinamico(tabla,"Nombre", txtNombre_CompletoFiltro.getText().toUpperCase(),"","");
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}

@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.DecimalFormat;
@@ -38,6 +39,7 @@ import IZAGAR_Obj.Obj_IZAGAR_Netos_Nominas;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Depositos_A_Bancos;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -55,7 +57,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	float numero=0;
 	
 	public static DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Depositos_A_Bancos().get_tabla_model(),
-            new String[]{"Folio", "Nombre Completo", "Establecimientos", "Banco", "Deposito", "Total a Pagar","Sugerido" }
+            new String[]{"Folio", "Nombre Completo", "Establecimiento", "Banco", "Deposito", "Total a Pagar","Sugerido" }
 			){
         
         public boolean isCellEditable(int fila, int columna){
@@ -206,6 +208,12 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		btn_lay_out.setToolTipText("Generar Lay Out");
 		btn_cargar_nomina.setToolTipText("Cargar Nomina");		
 		
+        this.addWindowListener(new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+           	 txtNombre_Completo.requestFocus();
+           }
+        });
+    
 		this.txtFolio.addKeyListener(op_filtro_folio);
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
@@ -562,22 +570,16 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	};
 	
 	KeyListener op_filtro_nombre = new KeyListener(){
-		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 	
 	ActionListener op_filtro_establecimiento = new ActionListener(){
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0){
-			if(cmbEstablecimientos.getSelectedIndex() != 0){
-				trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
-			}else{
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-			}
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"");
 		}
 	};
 	
