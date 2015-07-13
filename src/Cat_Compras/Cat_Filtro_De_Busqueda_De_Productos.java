@@ -244,7 +244,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 //	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 //	 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
 	 		txtProductoDescripcion.setText("");
-	 		new Obj_Filtro_Dinamico(tabla, "Descripcion","","","");
+	 		new Obj_Filtro_Dinamico(tabla, "Descripcion", "", "", "", "", "", "", "");
 	 		
 	 		if(tabla.isEditing()){
 				tabla.getCellEditor().stopCellEditing();
@@ -526,7 +526,7 @@ public void init_tabla(){
 		
 		KeyListener opFiltroDinamico = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				new Obj_Filtro_Dinamico(tabla, "Descripcion", txtProductoDescripcion.getText().toUpperCase(),"","");
+				new Obj_Filtro_Dinamico(tabla, "Descripcion", txtProductoDescripcion.getText().toUpperCase(), "", "", "", "", "", "");
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		

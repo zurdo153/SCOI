@@ -3875,7 +3875,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	
 	public boolean Guardar_captura_de_competencia(Obj_Cotizaciones_De_Un_Producto Cotizacion_Producto, String[][] comp){
 //			String query = "exec sp_insert_cotizacion_de_un_productos_en_proveedores ?,?,?,?,?,?,?,?,?,?,?,? ";
-		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?,?";
 			
 			Connection con = new Connexion().conexion_IZAGAR();
 			PreparedStatement pstmt = null;
@@ -3894,7 +3894,6 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				        pstmt.setDouble(6,  Double.valueOf(comp[i][1].toString()));  
 				        pstmt.setInt(7,  usuario.getFolio());   
 				        pstmt.setString(8, Cotizacion_Producto.getFecha().toString().trim());
-				        pstmt.setString(9, Cotizacion_Producto.getFecha().toString().trim());
 				        
 						pstmt.executeUpdate();
 					}
