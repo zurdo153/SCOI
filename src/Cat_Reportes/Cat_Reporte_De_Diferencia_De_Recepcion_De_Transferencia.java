@@ -4,8 +4,6 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -37,7 +35,7 @@ public class Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia extends JFr
 	
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio de la Rececion de Transferencia", 15, "String");
 	JButton btnReporte_actual = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
-	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
+	JButton btnReporte_actual_ticket = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
 	
 	int tipo_Reporte = 0;
 	
@@ -51,47 +49,34 @@ public class Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia extends JFr
 		panel.setBorder(BorderFactory.createTitledBorder("Teclea El Folio De La Recepcion"));
 
 		btnReporte_actual.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<CENTER><p>Reporte De Diferiencias De Recepciones De Transferencias</p></CENTER></FONT>" +
+				"		<CENTER><p>Reporte De Diferiencias De Recepciones De Transferencias (Carte)</p></CENTER></FONT>" +
 				"</html>");	
 		
-		panel.add(btnReporte_actual).setBounds(35,25,260,40);
-		panel.add(new JLabel("Folio Recepcion De Mercancia:")).setBounds(95,70,200,20);		
-		panel.add(txtFolio).setBounds(90,95,155,20);
-		panel.add(btngenerar).setBounds(110,125,120,25);
-//	    txtFolio.setEditable(false);
-//	    btngenerar.setEnabled(false);
-		cont.add(panel);
-		btngenerar.addActionListener(opGenerar);
-		btnReporte_actual.addActionListener(opReporte_Por_Folio);
-		txtFolio.addKeyListener(generar_enter);
-		
-	}
+		btnReporte_actual_ticket.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Diferiencias De Recepciones De Transferencias (Ticket)</p></CENTER></FONT>" +
+				"</html>");	
 	
-	ActionListener opReporte_Por_Folio = new ActionListener(){
-		public void actionPerformed(ActionEvent arg0) {
-			txtFolio.setEditable(true);
-			btngenerar.setEnabled(true);
-			btngenerar.setEnabled(true);
-			tipo_Reporte=2;
-			txtFolio.setText("");
-			txtFolio.requestFocus();
-		}
-	};
+		panel.add(new JLabel("Folio Recepcion De Mercancia:")).setBounds(95,15,200,20);		
+		panel.add(txtFolio).setBounds(90,30,155,20);
+		panel.add(btnReporte_actual).setBounds(35,60,260,45);
+		panel.add(btnReporte_actual_ticket).setBounds(35,115,260,45);
 
-	KeyListener generar_enter = new KeyListener() {
-		public void keyTyped(KeyEvent e){}
-		public void keyReleased(KeyEvent e) {}
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				btngenerar.doClick();
-			}
-		}
-	};
-	
+		cont.add(panel);
+		btnReporte_actual.addActionListener(opGenerar);
+		btnReporte_actual_ticket.addActionListener(opGenerar);
+	}
 	
 	ActionListener opGenerar = new ActionListener() {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void actionPerformed(ActionEvent e) {
+			
+			String nom_reporte = "";
+			if(e.getActionCommand().equals("<html> <FONT FACE=arial SIZE=3 COLOR=BLACk>		<CENTER><p>Reporte De Diferiencias De Recepciones De Transferencias (Carte)</p></CENTER></FONT></html>")){
+				nom_reporte = "Obj_Reporte_IZAGAR_de_Diferiencias_De_Recepciones_De_Transferencia.jrxml";
+			}else{
+				nom_reporte = "Obj_Reporte_IZAGAR_de_Diferiencias_De_Recepciones_De_Transferencia_Ticket.jrxml";
+			}
+			
 			tipo_Reporte=2;
 			if(tipo_Reporte==2){
 						if(!txtFolio.getText().equals("")){
@@ -100,7 +85,7 @@ public class Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia extends JFr
 								try {
 									stmt =  new Connexion().conexion_IZAGAR().createStatement();
 								    ResultSet rs = stmt.executeQuery(query);
-									JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_IZAGAR_de_Diferiencias_De_Recepciones_De_Transferencia.jrxml");
+									JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+nom_reporte);
 									JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
 									JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 									JasperViewer.viewReport(print, false);
