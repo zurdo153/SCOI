@@ -188,7 +188,9 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	    
 //		this.txtTotales.setEditable(false);
 //		this.txtTotales.setFont(new Font("",0,14));
-		
+	    
+	    llenado_de_tabla();
+	
 		this.cont.add(panel);
 		
 		this.tabla_render(tabla);
@@ -219,12 +221,29 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
 		this.chbNegativos.addActionListener(op_negativos);
 		
-		calcularSugerido();
 		
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		this.setLocationRelativeTo(null);
 		this.addWindowListener(op_cerrar);
 	}
+    
+    public void llenado_de_tabla(){
+//    	
+////    	while(tabla.getRowCount()>0){tabla_model.removeRow(0);}
+////    	while(tabla_totales.getRowCount()>0){tabla_model_totales.removeRow(0);}
+//    	
+//		Object [][] lista = new Obj_Depositos_A_Bancos().get_tabla_model();
+//		for(Object[] fila : lista){
+//			tabla_model.addRow(fila);
+//		}
+//		
+//		Object[][] depositos = new Obj_Depositos_A_Bancos().get_tabla_model_bancos();
+//		for(Object[] filaTotales : depositos){
+//			tabla_model_totales.addRow(filaTotales);
+//		}
+		
+	    calcularSugerido();
+    }
     
     public void calcularSugerido(){
  		for(int i=0; i<tabla.getRowCount(); i++){
