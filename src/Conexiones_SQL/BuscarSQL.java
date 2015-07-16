@@ -5936,6 +5936,67 @@ public class BuscarSQL {
     return existe;
 	}
 	
+	public String datos_pedido(String cod_prod) throws SQLException{
+		
+		String cadena = "''";
+		
+		String query = " declare @folio_pedido varchar(20), @cantidadProductos int, @contador int, @cadena nvarchar(max) "
+					+ " set @folio_pedido = '"+cod_prod+"' "
+					+ " set @cantidadProductos = (select count(FOLIO) from mpedestab where folio = @folio_pedido); "
+					+ " set @contador = 1; "
+					+ " set @cadena=''; "
+					+ " while(@contador <= @cantidadProductos) "
+					+ " begin "
+					+ "	 set @cadena=@cadena+(select a.cod_prod+'#' "
+					+ "							from (select RANK() OVER (ORDER BY cod_prod) as contador, ltrim(rtrim(cod_prod)) as cod_prod "
+					+ " 										from mpedestab mp where mp.folio = @folio_pedido ) a "
+					+ " 							where a.contador = @contador) "
+					+ "	 set @contador=@contador+1; "
+					+ " end "
+					+ " select @cadena as cadena ";
+		
+		Statement stmt= null;
+						try {
+							stmt= con.conexion_IZAGAR().createStatement();
+							ResultSet rs= stmt.executeQuery(query);
+							
+								   while(rs.next()){
+									   cadena += rs.getString(1).replace("#", "'',''");
+								   }
+								   cadena = cadena.substring(0, cadena.length()-3);
+							
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_producto \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+							return null;
+						}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return cadena;
+	}
+	
+	public boolean existe_Pedido(String cod_prod){
+		
+		String query = "	declare @folio_pedido varchar(20), @cantidadProductos int, @contador int, @cadena nvarchar(max) "
+					+ "	 set @folio_pedido = '"+cod_prod+"' " 
+					+ " 	if exists (select folio from mpedestab where folio = @folio_pedido) "
+					+ "		begin	select 'true' as existe end"
+					+ "		else begin	select 'false' as existe end";
+		
+		boolean existe = false;
+		try { Statement s = con.conexion_IZAGAR().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	existe = rs.getBoolean(1);
+			      }
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion existe_Producto \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+    return existe;
+	}
 	
 	public String  permiso_cancelar_ticket_o_abono(String clave){
 		String permiso_cancelarApartados ="";

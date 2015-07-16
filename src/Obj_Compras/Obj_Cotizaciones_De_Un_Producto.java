@@ -136,6 +136,10 @@ public class Obj_Cotizaciones_De_Un_Producto {
 		return new BuscarSQL().existe_Producto(cod_prod);
 	}
 	
+	public boolean Existe_Pedido(String cod_pedido) throws SQLException{ 
+		return new BuscarSQL().existe_Pedido(cod_pedido);
+	}
+	
 	public double getPrecio_de_venta() {
 		return precio_de_venta;
 	}
@@ -150,6 +154,15 @@ public class Obj_Cotizaciones_De_Un_Producto {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	return null; 
+	}
+	
+	public String buscardatos_productos_en_pedidos(String cod_prod){ 
+			try {
+				return new BuscarSQL().datos_pedido(cod_prod);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	return null; 
 	}
 	

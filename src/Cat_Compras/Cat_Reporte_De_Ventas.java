@@ -106,6 +106,9 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbOperador_Talla = new JComboBox(operadorTalla);
 	
+	String prodPed[] = {"¨Producto","Order de pedido"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbProdPed = new JComboBox(prodPed);	
 	
 //	JButton btnBuscar_Producto = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroProducto = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
@@ -250,11 +253,14 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		panel.add(sphora_fin).setBounds(x+=95,y,l-50,a);
 		panel.add(JLBrelog2).setBounds(x+=50,y,a,a);
 		
+		panel.add(cmbProdPed).setBounds(x+=20,y,l-15,a);
+        panel.add(txtcod_prod).setBounds(x+=85,y,80,a);
+		
 		x=100;
 		panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y+=30,l+50,a);
 		panel.add(cmbOperador_Productos				).setBounds(x+80,y,l-12,a);
-        panel.add(txtFiltroProducto					).setBounds(x+170,y,l*4-60,a);
-        panel.add(txtcod_prod						).setBounds(x+(l*5)+10,y,80,a);
+        panel.add(txtFiltroProducto					).setBounds(x+170,y,l*4+20,a);
+
         panel.add(btnFiltroProducto					).setBounds(x+590,y,a,a);
         panel.add(btnLimpiarFiltroProducto			).setBounds(x+613,y,a,a);
         
@@ -337,6 +343,8 @@ public class Cat_Reporte_De_Ventas extends JFrame {
         	btnLimpiarFiltroClase.setEnabled(true);
         	
         }
+        
+        cmbProdPed.addActionListener(op_cmb);
         
         btnFiltroProducto.addActionListener(op_filtro_productos);
         btnFiltroClase.addActionListener(op_filtro_clases);
@@ -456,6 +464,11 @@ public void filtroProductos(String cadena){
 		sphora_fin.setEditor(datofin);
 	}
 	
+	ActionListener op_cmb = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+				txtcod_prod.requestFocus();
+		}
+	};
 	
 	ActionListener op_filtro_productos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -770,29 +783,48 @@ public void filtroProductos(String cadena){
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
 				try {
-					
-					if(new Obj_Cotizaciones_De_Un_Producto().Existe_Producto(txtcod_prod.getText().trim().toUpperCase()+"")){
+					if(cmbProdPed.getSelectedIndex()==0){
 						
-				      Obj_Cotizaciones_De_Un_Producto  Datos_Producto= new Obj_Cotizaciones_De_Un_Producto().buscardatos_producto(txtcod_prod.getText().trim().toUpperCase()+"");
-			            
-					 if(!Datos_Producto.getDescripcion_Prod().toString().trim().equals("") || !txtcod_prod.getText().equals("")){
-								 cmbOperador_Productos.setSelectedItem("Igual");
-					 }else{
-						 cmbOperador_Productos.setSelectedIndex(0);
-					 }
-						 
-						txtFiltroProducto.setText("=(''"+Datos_Producto.getCod_Prod().toString().trim()+"'')");
-						
-						JLBdescripcion.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>"+Datos_Producto.getDescripcion_Prod().toString().trim()+"</p></b></CENTER></FONT></html>");
+						if(new Obj_Cotizaciones_De_Un_Producto().Existe_Producto(txtcod_prod.getText().toUpperCase().trim())){
+							
+						      Obj_Cotizaciones_De_Un_Producto  Datos_Producto= new Obj_Cotizaciones_De_Un_Producto().buscardatos_producto(txtcod_prod.getText().trim().toUpperCase()+"");
+					            
+								 if(!Datos_Producto.getDescripcion_Prod().toString().trim().equals("") || !txtcod_prod.getText().equals("")){
+										cmbOperador_Productos.setSelectedItem("Igual");
+								 }else{
+									 	cmbOperador_Productos.setSelectedIndex(0);
+								 }
+								txtFiltroProducto.setText("=(''"+Datos_Producto.getCod_Prod().toString().trim()+"'')");
+								JLBdescripcion.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>"+Datos_Producto.getDescripcion_Prod().toString().trim()+"</p></b></CENTER></FONT></html>");
+							}else{
+								JLBdescripcion.setText("");
+								JOptionPane.showMessageDialog(null, "El Codigo Esta Mal Escrito o El Producto No Existe" , "Aviso", JOptionPane.CANCEL_OPTION);
+		                    }
 						
 					}else{
-						JOptionPane.showMessageDialog(null, "El Codigo Esta Mal Escrito o El Producto No Existe" , "Aviso", JOptionPane.CANCEL_OPTION);
+						JLBdescripcion.setText("");
+						
+						if(new Obj_Cotizaciones_De_Un_Producto().Existe_Pedido(txtcod_prod.getText().toUpperCase().trim())){
+							
+						      String  Datos_Producto= new Obj_Cotizaciones_De_Un_Producto().buscardatos_productos_en_pedidos(txtcod_prod.getText().trim().toUpperCase());
+					            
+							 if(!Datos_Producto.equals("") || !txtcod_prod.getText().equals("")){
+								 	cmbOperador_Productos.setSelectedItem("Esta en lista");
+							 }else{
+								 	cmbOperador_Productos.setSelectedIndex(0);
+							 }
+							txtFiltroProducto.setText("in("+Datos_Producto+")");
+						}else{
+							JOptionPane.showMessageDialog(null, "El Codigo Esta Mal Escrito o El Pedido No Existe" , "Aviso", JOptionPane.CANCEL_OPTION);
+	                    }
+					}
 					
-                    }
 				} catch (SQLException e1) {
 					JOptionPane.showMessageDialog(null, "Error en Cat_Cotizaciones_De_Un_Producto_En_Proveedores  en la funcion existe_Producto \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				}
+				
+				txtcod_prod.setText("");
 			}
 		}
 	};
