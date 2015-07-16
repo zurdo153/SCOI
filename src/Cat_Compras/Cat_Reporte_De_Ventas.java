@@ -3,6 +3,7 @@ package Cat_Compras;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -106,7 +108,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbOperador_Talla = new JComboBox(operadorTalla);
 	
-	String prodPed[] = {"¨Producto","Order de pedido"};
+	String prodPed[] = {"Producto","Pedido"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbProdPed = new JComboBox(prodPed);	
 	
@@ -218,7 +220,20 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	
 	JLabel JLBdescripcion= new JLabel();
 	
+	JLabel lblmarco= new JLabel();
+	
+    static JLabel lblSemaforoRojo = new JLabel("");
+    static JLabel lblSemaforoVerde = new JLabel("");
+    Icon iconoSemaforoR;
+	String semaforoR = System.getProperty("user.dir")+"/Imagen/semaforo_rojo_chica.png";
+    ImageIcon tmpIconSemR = new ImageIcon(semaforoR);
+    
+    Icon iconoSemaforoV;
+    String semaforoV = System.getProperty("user.dir")+"/Imagen/semaforo_verde_chica.png";
+    ImageIcon tmpIconSemV = new ImageIcon(semaforoV);
+	
 	public Cat_Reporte_De_Ventas(String parametro, String operador){
+		
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
@@ -228,8 +243,11 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Sales-by-payment-method-icon-64.png"));
 		setTitle("Reportes de  Ventas");
 		panel.setBorder(BorderFactory.createTitledBorder("Reportes de Venta"));
+		lblmarco.setBorder(BorderFactory.createTitledBorder(""));
 		
-		txtcod_prod.setBackground(new Color(252,140,10));
+		txtcod_prod.setBackground(Color.lightGray);
+		txtcod_prod.setBorder(BorderFactory.createTitledBorder(""));
+		txtcod_prod.setHorizontalAlignment(4);
 		//      asigna el foco al JTextField deseado al arrancar la ventana
         this.addWindowListener(new WindowAdapter() {
                 public void windowOpened( WindowEvent e ){
@@ -253,8 +271,8 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		panel.add(sphora_fin).setBounds(x+=95,y,l-50,a);
 		panel.add(JLBrelog2).setBounds(x+=50,y,a,a);
 		
-		panel.add(cmbProdPed).setBounds(x+=20,y,l-15,a);
-        panel.add(txtcod_prod).setBounds(x+=85,y,80,a);
+		panel.add(cmbProdPed).setBounds(x+=40,y,l-30,a);
+        panel.add(txtcod_prod).setBounds(x+=70,y,75,a);
 		
 		x=100;
 		panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y+=30,l+50,a);
@@ -302,20 +320,28 @@ public class Cat_Reporte_De_Ventas extends JFrame {
         panel.add(btnFiltroLinea							 ).setBounds(x+590,y,a,a);    
         panel.add(btnLimpiarFiltroLinea						 ).setBounds(x+613,y,a,a); 
         
+        panel.add(lblmarco									 ).setBounds(x+800,y-5,a+93,a+45); 
+        panel.add(lblSemaforoVerde							 ).setBounds(x+823,y,a+10,a+10); 
+        panel.add(lblSemaforoRojo							 ).setBounds(x+860,y,a+10,a+10); 
+        
+        
         panel.add(new JLabel("Filtro De Talla De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Talla							 ).setBounds(x+80,y,l-12,a);  
         panel.add(txtFiltroTalla							 ).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroTalla							 ).setBounds(x+590,y,a,a);    
         panel.add(btnLimpiarFiltroTalla						 ).setBounds(x+613,y,a,a); 
         
-    	
-       
-        panel.add(btn_buscar).setBounds(x+810,y,l,a);
+        panel.add(btn_buscar).setBounds(x+807,y,l,a);
         
         panel.add(Tabla()).setBounds(10,y+=50,ancho-30,alto-y-75);
         
         cargar_fechas();
         render_tabla();
+        
+        iconoSemaforoR = new ImageIcon(tmpIconSemR.getImage().getScaledInstance(lblSemaforoRojo.getWidth(), lblSemaforoRojo.getHeight(), Image.SCALE_DEFAULT));
+        lblSemaforoRojo.setIcon(iconoSemaforoR);
+        iconoSemaforoV = new ImageIcon(tmpIconSemV.getImage().getScaledInstance(lblSemaforoVerde.getWidth(), lblSemaforoVerde.getHeight(), Image.SCALE_DEFAULT));
+        lblSemaforoVerde.setIcon(iconoSemaforoV);
         
         txtFiltroProducto.setEditable(false); 
         txtFiltroClase.setEditable(false);
@@ -366,6 +392,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		btn_buscar.addActionListener(op_generar);
 		
 		tiempodefault();
+		semaforo();
 	}
 	
 	
@@ -645,6 +672,9 @@ public void filtroProductos(String cadena){
 	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			
+			semaforo();
+			
 			if(validar_fechas().equals("")){
 				
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_inicio.getValue());
@@ -776,6 +806,16 @@ public void filtroProductos(String cadena){
 					}
 		c_final.setDate(date2);
 	};
+	
+	public void semaforo(){
+		if(new BuscarSQL().semaforo_rptVentas()){
+			lblSemaforoRojo.setEnabled(false);
+			lblSemaforoVerde.setEnabled(true);
+		}else{
+			lblSemaforoRojo.setEnabled(true);
+			lblSemaforoVerde.setEnabled(false);
+		}
+	}
 	
 	KeyListener Buscar_Datos_Producto = new KeyListener() {
 		public void keyTyped(KeyEvent e){}

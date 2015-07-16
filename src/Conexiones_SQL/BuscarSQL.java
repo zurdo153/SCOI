@@ -6530,4 +6530,19 @@ public class BuscarSQL {
 		}
 		return corte_calculado;
 	}
+	
+	public boolean semaforo_rptVentas(){
+		String query = " select case when (count(asignacion))=0 then 'true' else 'false' end from IZAGAR_AVI_facremtick  where status=2 ";
+		boolean semaforo = false;
+		try {
+			Statement stmt = new Connexion().conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){ semaforo = rs.getBoolean(1); }
+	
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return semaforo; 
+	}
 }
