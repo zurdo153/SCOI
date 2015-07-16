@@ -41,7 +41,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.RowFilter;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -54,10 +53,12 @@ import javax.swing.table.TableRowSorter;
 
 
 
+
 import Conexiones_SQL.Connexion;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.Obj_Filtro_Dinamico;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -1202,7 +1203,7 @@ public class Filtro_Permisos_Checador extends JFrame{
 		
 		txtBuscar.addKeyListener(new KeyAdapter() { 
 			public void keyReleased(final KeyEvent e) { 
-                filtro(); 
+				new Obj_Filtro_Dinamico(tabla, "Empleado", txtBuscar.getText().toString().trim().toUpperCase(), "", "", "", "", "", "");
             } 
         });
 	
@@ -1239,10 +1240,6 @@ public class Filtro_Permisos_Checador extends JFrame{
         });
     }
 	
-	@SuppressWarnings("unchecked")
-	public void filtro() { 
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText().toUpperCase().trim(), 1));
-	}  
 	private JScrollPane getPanelTabla()	{		
 		new Connexion();
 		
@@ -1357,7 +1354,7 @@ public class Filtro_Permiso_Empleado extends JFrame{
 		
 		txtBuscar.addKeyListener(new KeyAdapter() { 
 			public void keyReleased(final KeyEvent e) { 
-                filtro(); 
+				new Obj_Filtro_Dinamico(tabla, "Empleado", txtBuscar.getText().toString().trim().toUpperCase(), "", "", "", "", "", "");
             } 
         });
 	
@@ -1403,20 +1400,12 @@ public class Filtro_Permiso_Empleado extends JFrame{
         });
     }
 	
-	@SuppressWarnings("unchecked")
-	public void filtro() { 
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText().toUpperCase().trim(), 1));
-	}  
 	private JScrollPane getPanelTabla()	{		
 		new Connexion();
-		
 		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
 		tcr.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
-		
-
-		
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
 		tabla.getColumnModel().getColumn(0).setMaxWidth(70);
 		tabla.getColumnModel().getColumn(0).setMinWidth(70);
@@ -1450,7 +1439,6 @@ public class Filtro_Permiso_Empleado extends JFrame{
 						tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
 						tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
 						tabla.getColumnModel().getColumn(2).setCellRenderer(render); 
-		
 		Statement s;
 		ResultSet rs;
 		try {

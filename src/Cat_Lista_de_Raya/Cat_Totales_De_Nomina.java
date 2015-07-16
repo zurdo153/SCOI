@@ -219,8 +219,8 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
 	public void init_tabla(){
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 		
-    	this.tabla.getColumnModel().getColumn(0).setMaxWidth(300);
-    	this.tabla.getColumnModel().getColumn(0).setMinWidth(300);		
+    	this.tabla.getColumnModel().getColumn(0).setMaxWidth(280);
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(280);		
     	this.tabla.getColumnModel().getColumn(1).setMaxWidth(90);
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(90);
     	

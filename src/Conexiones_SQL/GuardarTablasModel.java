@@ -587,7 +587,7 @@ public class GuardarTablasModel {
 	
 	public boolean tabla_model_lista_raya_generar(Object[][] tabla, String fecha){
 		String query2 ="select max(numero_lista)+1 from tb_lista_raya";
-		String query = "exec sp_insert_lista_raya ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_lista_raya ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		int folio_lista = 0 ;
@@ -654,17 +654,16 @@ public class GuardarTablasModel {
 				pstmt.setFloat(15, Float.parseFloat(tabla[i][15].toString().trim()));//corte
 				pstmt.setFloat(16, Float.parseFloat(tabla[i][16].toString().trim()));//infonavit
 				pstmt.setFloat(17, Float.parseFloat(tabla[i][17].toString().trim()));//pension
-				pstmt.setFloat(18, Float.parseFloat(tabla[i][18].toString().trim()));//banamex
-				pstmt.setFloat(19, Float.parseFloat(tabla[i][19].toString().trim()));//banorte
-				pstmt.setFloat(20, Float.parseFloat(tabla[i][20].toString().trim()));//horas_extras
-				pstmt.setFloat(21, Float.parseFloat(tabla[i][21].toString().trim()));//extra
-				pstmt.setFloat(22, Float.parseFloat(tabla[i][22].toString().trim()));//dias_extra
-				pstmt.setFloat(23, Float.parseFloat(tabla[i][23].toString().trim()));//a_pagar
-				pstmt.setString(24, tabla[i][24].toString().trim());
-				pstmt.setString(25, fecha);
-				pstmt.setInt(26, 1);
-				pstmt.setInt(27, folio_lista);
-				pstmt.setInt(28, usuario.getFolio());
+				pstmt.setFloat(18, Float.parseFloat(tabla[i][19].toString().trim()));//deposito
+				pstmt.setFloat(19, Float.parseFloat(tabla[i][20].toString().trim()));//horas_extras
+				pstmt.setFloat(20, Float.parseFloat(tabla[i][21].toString().trim()));//extra
+				pstmt.setFloat(21, Float.parseFloat(tabla[i][22].toString().trim()));//dias_extra
+				pstmt.setFloat(22, Float.parseFloat(tabla[i][23].toString().trim()));//a_pagar
+				pstmt.setString(23, tabla[i][24].toString().trim());
+				pstmt.setString(24, fecha);
+				pstmt.setInt(25, 1);
+				pstmt.setInt(26, folio_lista);
+				pstmt.setInt(27, usuario.getFolio());
 				pstmt.executeUpdate();
 			}
 					

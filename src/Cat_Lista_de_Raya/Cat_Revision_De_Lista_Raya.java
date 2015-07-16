@@ -38,6 +38,7 @@ import javax.swing.table.TableRowSorter;
 
 
 
+
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -46,6 +47,7 @@ import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Lista_de_Raya.Obj_Revision_De_Lista_Raya;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
+import Obj_Principal.Obj_Filtro_Dinamico;
 
 @SuppressWarnings("serial")
 /** CTRL EN CAT_ROOT_LISTA_RAYA PARA AGREGAR BOTON **/
@@ -357,10 +359,11 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	ActionListener op_generar = new ActionListener() {
 		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-			trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-			trsfiltro.setRowFilter(RowFilter.regexFilter("", 3));
 			
+			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+			
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", "","Establecimiento","", "", "", "", "");
+
 			txtFolio.setText("");
 			txtNombre_Completo.setText("");
 			cmbEstablecimientos.setSelectedIndex(0);
@@ -513,14 +516,14 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Banamex*/					case 18 :
+/*banco*/					case 18 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+							matriz[i][j] = (tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Banorte*/					case 19 :
+/*deposito*/					case 19 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
@@ -638,8 +641,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-			trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-			trsfiltro.setRowFilter(RowFilter.regexFilter("", 3));
+			
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", "","Establecimiento", "", "", "", "", "");
 			
 			txtFolio.setText("");
 			txtNombre_Completo.setText("");
@@ -1201,22 +1204,16 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	};
 	
 	KeyListener op_filtro_nombre = new KeyListener(){
-		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 2));
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 	
 	ActionListener op_filtro_establecimiento = new ActionListener(){
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0){
-			if(cmbEstablecimientos.getSelectedIndex() != 0){
-				trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 3));
-			}else{
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-			}
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
 		}
 	};
 	

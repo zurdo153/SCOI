@@ -179,7 +179,9 @@ private void refrestabla(){
 			if(tabla.isEditing()){
 				tabla.getCellEditor().stopCellEditing();
 			}
+
 			new Guardar().setVisible(true);
+
 			
 		}
 	};
@@ -249,7 +251,8 @@ private void refrestabla(){
 					autorizacion.setAutorizar(true);
 					if(autorizacion.actualizar()){
 						dispose();
-					JOptionPane.showMessageDialog(null,"Los Totales De Cheque Se Guardaron Exitosamente! ", "Mensaje", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					JOptionPane.showMessageDialog(null,"Los Totales De Cheque Se Guardaron Exitosamente! \n Ahora Se Abrira La Ventana Para Impresion del Reporte  ", "Mensaje", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					 btn_imprimir.doClick();	
 					}else{
 						JOptionPane.showMessageDialog(null, "Error Al Guardar ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					}
@@ -284,7 +287,8 @@ private void refrestabla(){
 						autorizacion.setAutorizar(true);
 						if(autorizacion.actualizar()){
 							dispose();
-						JOptionPane.showMessageDialog(null,"Los Totales De Cheque Se Guardaron Exitosamente! ", "Mensaje", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						JOptionPane.showMessageDialog(null,"Los Totales De Cheque Se Guardaron Exitosamente! \n Ahora Se Abrira La Ventana Para Impresion del Reporte ", "Mensaje", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						btn_imprimir.doClick();	
 						}else{
 							JOptionPane.showMessageDialog(null, "Error Al Actualizar ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 

@@ -44,6 +44,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 import Obj_Reportes.Obj_Reportes_De_Ventas;
 
@@ -907,6 +908,12 @@ public void filtroProductos(String cadena){
 					setSize(405,450);
 					setResizable(false);
 					setLocationRelativeTo(null);
+					
+					 this.addWindowListener(new WindowAdapter() {
+		                    public void windowOpened( WindowEvent e ){
+		                    	txtNombre_Completo.requestFocus();
+		                 }
+		            });
 				}
 				
 				public void llamar_render(){
@@ -926,15 +933,14 @@ public void filtroProductos(String cadena){
 				ActionListener opAgregar = new ActionListener() {
 					@SuppressWarnings({ "unchecked" })
 					public void actionPerformed(ActionEvent arg0) {
-						
+						txtNombre_Completo.setText("");
+				 		new Obj_Filtro_Dinamico(tablaFiltro, "Nombre", "", "", "", "", "", "", "");
+				 		
 						if(tablaFiltro.isEditing()){
 				 			tablaFiltro.getCellEditor().stopCellEditing();
 						}
 						trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-						trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-						
 						txtFolio.setText("");
-						txtNombre_Completo.setText("");
 						
 						int contador=0;
 				 		 Lista="('";	
@@ -950,7 +956,6 @@ public void filtroProductos(String cadena){
 						 					}
 				 				}
 				 			}
-				 			
 				 			Lista=Lista+"')";
 
 				 			if(Lista.equals("('')")){
@@ -1063,9 +1068,8 @@ public void filtroProductos(String cadena){
 				};
 				
 				KeyListener opFiltroNombre = new KeyListener(){
-					@SuppressWarnings("unchecked")
 					public void keyReleased(KeyEvent arg0) {
-						trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
+						new Obj_Filtro_Dinamico(tablaFiltro,"Nombre", txtNombre_Completo.getText().toUpperCase(),"","", "", "", "", "");
 					}
 					public void keyTyped(KeyEvent arg0) {}
 					public void keyPressed(KeyEvent arg0) {}		
