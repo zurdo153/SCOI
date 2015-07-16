@@ -28,15 +28,9 @@ public class BuscarTablasModel {
 				matriz[i][1] = "   "+rs.getString(2);
 				matriz[i][2] = "   "+rs.getString(3);
 				
-//				float deposito = rs.getFloat(5);
-//				float total = rs.getFloat(6);
-//				
 				matriz[i][3] = rs.getString(4);
 				matriz[i][4] = rs.getFloat(5) ==  Float.parseFloat("0.0") ? "" : rs.getFloat(5) ;
-//						banorte == Float.parseFloat("0.0") ? "" : banorte ;
 				matriz[i][5] = rs.getFloat(6) == Float.parseFloat("0.0") ? "" :Decimal( rs.getFloat(6)) ;
-				
-//				Float.parseFloat(rs.getString(24)) == 0 ? "" : Decimal(Float.parseFloat(rs.getString(24)))
 				i++;
 			}
 		} catch (SQLException e1) {

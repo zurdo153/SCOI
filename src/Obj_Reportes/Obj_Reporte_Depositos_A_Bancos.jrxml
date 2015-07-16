@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-07-01T13:51:23 -->
+<!-- 2015-07-15T18:06:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte  de Depositos Bancos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d877fc95-687e-432b-bc71-4ca9584c39f8">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_Pruebas"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -36,22 +36,22 @@ order by establecimiento,nombre_completo]]>
 	<variable name="Suma_Banorte" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
 		<variableExpression><![CDATA[$F{banco}.equals("BANORTE")?$F{deposito}:0]]></variableExpression>
 	</variable>
-	<variable name="Suma_Banorte_Ferre" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Suma_Banorte_Ferre" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
 		<variableExpression><![CDATA[$F{banco}.equals("BANORTE FERRE")?$F{deposito}:0]]></variableExpression>
 	</variable>
-	<variable name="Suma_Santander" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Suma_Santander" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
 		<variableExpression><![CDATA[$F{banco}.equals("SANTANDER")?$F{deposito}:0]]></variableExpression>
 	</variable>
-	<variable name="Total_Banamex" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Total_Banamex" class="java.math.BigDecimal" incrementType="Group" incrementGroup="Group1" calculation="Sum">
 		<variableExpression><![CDATA[$V{Suma_Banamex}]]></variableExpression>
 	</variable>
-	<variable name="Total_Banorte" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Total_Banorte" class="java.math.BigDecimal" incrementType="Group" incrementGroup="Group1" calculation="Sum">
 		<variableExpression><![CDATA[$V{Suma_Banorte}]]></variableExpression>
 	</variable>
-	<variable name="Total_Banorte_Ferre" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Total_Banorte_Ferre" class="java.math.BigDecimal" incrementType="Group" incrementGroup="Group1" calculation="Sum">
 		<variableExpression><![CDATA[$V{Suma_Banorte_Ferre}]]></variableExpression>
 	</variable>
-	<variable name="Total_Santander" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Total_Santander" class="java.math.BigDecimal" incrementType="Group" incrementGroup="Group1" calculation="Sum">
 		<variableExpression><![CDATA[$V{Suma_Santander}]]></variableExpression>
 	</variable>
 	<group name="Group1">
@@ -281,7 +281,7 @@ order by establecimiento,nombre_completo]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 					<font fontName="Times New Roman" size="10" isBold="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Total_Banorte}]]></textFieldExpression>
@@ -304,7 +304,7 @@ order by establecimiento,nombre_completo]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Total_Banamex}]]></textFieldExpression>
@@ -327,7 +327,7 @@ order by establecimiento,nombre_completo]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Total_Banorte_Ferre}]]></textFieldExpression>
@@ -350,7 +350,7 @@ order by establecimiento,nombre_completo]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Total_Santander}]]></textFieldExpression>

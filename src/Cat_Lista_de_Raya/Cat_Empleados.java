@@ -2730,12 +2730,6 @@ public class Cat_Empleados extends JFrame{
 	                 {
 	                	iniciarSeleccionConTeclado();
 	                	
-//	                	fila=tabla.getSelectedRow();
-//	     				String folio = tabla.getValueAt(fila,0).toString().trim();
-//	     					
-//	     				txtFolioEmpleado.setText(folio);
-//	     				btnBuscar.doClick();
-//	     				dispose();
 	                 }
 	            });
 			 
