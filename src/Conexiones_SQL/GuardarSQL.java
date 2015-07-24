@@ -907,6 +907,8 @@ public class GuardarSQL {
 	
 	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte, Object[][] tb_asignaciones,Object[][] tb_vauchers,Object[][] tb_totales_por_fecha,  Object[] lista_de_asignaciones_en_uso){
 		String query_asignacion = 		 "exec sp_insert_asignacion_para_cortes  ?,?,?,?,?,?,?,?,?";		// <-9		11 ->  tb_tabla_de_asignaciones_para_cortes 
+		String Parametros_asignacion ="";
+		
 		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
 		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-16
@@ -923,17 +925,12 @@ public class GuardarSQL {
 		PreparedStatement pstmt_update_asignacion = null;
 		
 		try {
-			
 			con.setAutoCommit(false);
 			pstmt_asignacion 	  = con.prepareStatement(query_asignacion);
 			pstmt_vauchers		  = con.prepareStatement(query_vauchers);
 			pstmt_total_por_fecha = con.prepareStatement(query_totales_por_fecha);
 			pstmt_corte 		  = con.prepareStatement(query_corte);
-			
-			
 			pstmt_update_asignacion= con_IZAGAR.prepareStatement(query_status_corte_para_filtro);
-
-		
 			int i=1;
 			
 			for(int x= 0; x<tb_asignaciones.length; x++){
@@ -947,6 +944,16 @@ public class GuardarSQL {
 				pstmt_asignacion.setString(i+=1, 	tb_asignaciones[x][5].toString().trim());
 				pstmt_asignacion.setString(i+=1, 	tb_asignaciones[x][6].toString().trim());
 				pstmt_asignacion.setString(i+=1, 	tb_asignaciones[x][7].toString().trim());
+				
+				Parametros_asignacion=	corte.getFolio_corte().toUpperCase().trim()+","+
+										tb_asignaciones[x][0].toString().trim() +","+
+										tb_asignaciones[x][1].toString().trim() +","+
+										tb_asignaciones[x][2].toString().trim() +","+
+								 	    Float.valueOf(tb_asignaciones[x][3].toString().trim())+","+
+									 	Integer.valueOf(tb_asignaciones[x][4].toString().trim())+","+
+								 	    tb_asignaciones[x][5].toString().trim()+","+
+									 	tb_asignaciones[x][6].toString().trim()+","+
+										tb_asignaciones[x][7].toString().trim() ;
 				
 				pstmt_asignacion.executeUpdate();
 				
@@ -1022,15 +1029,16 @@ public class GuardarSQL {
 		    
 		
 		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Corte ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			System.out.println("SQLException: "+e.getMessage()+Parametros_asignacion);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Corte ] Insert  SQLException: "+e.getMessage()+"\n"+query_asignacion+Parametros_asignacion+"\n"+query_vauchers+"\n"+query_totales_por_fecha+"\n"+query_corte, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Corte ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Corte ] Insert  SQLException: "+e.getMessage()+"\n"+query_asignacion+"\n"+query_vauchers+"\n"+query_totales_por_fecha+"\n"+query_corte, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
