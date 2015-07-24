@@ -603,7 +603,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 			fNomina=folio_nomina;
 			
 			btnAplicar.addActionListener(optAplicar);
-//			btnReporte.addActionListener(optGenerarReporteConciliadosNomina);
+			btnReporte.addActionListener(optGenerarReporteConciliadosNomina);
 		}
 		
 		ActionListener optGenerarReporteConciliadosNomina = new ActionListener(){
