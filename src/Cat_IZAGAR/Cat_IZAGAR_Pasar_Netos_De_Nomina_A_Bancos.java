@@ -42,6 +42,8 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 	JButton btnAgregar = new JButton("Traspaso Por Nombre",new ImageIcon("imagen/double-arrow-icone-3883-16.png"));
 	public JButton btnAplicar = new JButton("Aplicar Nomina a Depositos Banco",new ImageIcon("imagen/Aplicar.png"));
 	JButton btnRemover = new JButton("Remover Conciliado",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+	
+	public JButton btnReporte = new JButton("Reporte Conciliado Nomina",new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
 
 	
 //TABLA PENDIENTES DE CONCILIAR SCOI-----------------------------------------------------------------------------------------
@@ -280,7 +282,10 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		campo.add(btnAgregar).setBounds(700,10,195,20);
 		campo.add(btnRemover).setBounds(700, 290,195, 20);
+		
+		campo.add(btnReporte).setBounds(650,560,240,20);
 		campo.add(btnAplicar).setBounds(650,583,240,20);
+
 		btnAplicar.setEnabled(false);
 		
 		cont.add(campo);

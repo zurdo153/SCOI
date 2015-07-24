@@ -3924,4 +3924,49 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
+	public boolean Archivar_Documentos_De_Empleados(int folio_empleado,String[][] archivos){
+		String query = "exec sp_insert_archivos_de_empleados ?,?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			for(int i=0; i<archivos.length; i++){
+				if(!archivos[i][1].toString().equals("")){
+					
+					pstmt.setInt(1, folio_empleado);
+					pstmt.setString(2, archivos[i][0].toString().toLowerCase().replace(" ","_"));
+					pstmt.setBinaryStream(3, new FileInputStream(new File(archivos[i][1].toString())));
+					pstmt.executeUpdate();
+				}
+			}
+			con.commit();
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Archivar_Documentos_De_Empleados ] Insert  SQLException: sp_insert_empleado "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Archivar_Documentos_De_Empleados ] Insert  SQLException: sp_insert_empleado "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 } 

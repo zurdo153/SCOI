@@ -10,6 +10,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
@@ -24,6 +26,7 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -593,10 +596,34 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	
 	public class asignarBancos extends Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos{
 
+		String fNomina = "";
 		public asignarBancos(String folio_nomina) {
 			super(folio_nomina);
+			
+			fNomina=folio_nomina;
+			
 			btnAplicar.addActionListener(optAplicar);
+			btnReporte.addActionListener(optGenerarReporteConciliadosNomina);
 		}
+		
+		ActionListener optGenerarReporteConciliadosNomina = new ActionListener(){
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			public void actionPerformed(ActionEvent arg0) {
+				String query = "exec IZAGAR_select_empleados_scoi_pre_conciliados '"+fNomina+"'"  ;
+				Statement stmt = null;
+					try {
+						stmt =  new Connexion().conexion().createStatement();
+					    ResultSet rs = stmt.executeQuery(query);
+						JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_Conciliados_De_Nomina.jrxml");
+						JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+						JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+						JasperViewer.viewReport(print, false);
+					} catch (Exception e2) {
+						System.out.println(e2.getMessage());
+						JOptionPane.showMessageDialog(null, "Error en Generar Reporte de Diferiencia sp_Reporte_De_Diferiencias_De_Recepciones_De_Transferencia SQLException: \n "+e2.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}	
+			}
+		};
 		
 			ActionListener optAplicar = new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
@@ -648,5 +675,6 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 				 	}
 			  }	
 		};
+		
 	}
 }
