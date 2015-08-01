@@ -54,7 +54,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	
 	Runtime R = Runtime.getRuntime();
     
-    private DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio", "Nombre Completo", "Establecimiento", "Inpuntualidad", "Sug.Impuntualidad", "Sug.Omisiones", "Sug.Gafete", "Falta", "Inasistencia", "P.Fisic."}
+    private DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio", "Nombre Completo", "Establecimiento", "Inpuntualidad", "Sug.Impuntualidad", "Sug.Omisiones", "Sug.Gafete", "Faltas", "Inasistencia", "P.Fisic."}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{

@@ -149,10 +149,12 @@ public class Componentes {
 				public void keyReleased(KeyEvent e) {}
 				public void keyPressed(KeyEvent e) {}
 			});
-		
+			
 		tmp.setToolTipText(caption);
 		return tmp;
 	}
+	
+	
 	
 	public JCheckBox check(final JCheckBox tmp, final String nombre, final boolean select, final String caption){
 		tmp.setText(nombre);

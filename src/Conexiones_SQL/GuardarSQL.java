@@ -3883,7 +3883,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	
 	public boolean Guardar_captura_de_competencia(Obj_Cotizaciones_De_Un_Producto Cotizacion_Producto, String[][] comp){
 //			String query = "exec sp_insert_cotizacion_de_un_productos_en_proveedores ?,?,?,?,?,?,?,?,?,?,?,? ";
-		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?,?,?";
 			
 			Connection con = new Connexion().conexion_IZAGAR();
 			PreparedStatement pstmt = null;
@@ -3902,6 +3902,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				        pstmt.setDouble(6,  Double.valueOf(comp[i][1].toString()));  
 				        pstmt.setInt(7,  usuario.getFolio());   
 				        pstmt.setString(8, Cotizacion_Producto.getFecha().toString().trim());
+				        pstmt.setDouble(9, Cotizacion_Producto.getPrecio_de_venta_normal());
 				        
 						pstmt.executeUpdate();
 					}
@@ -3916,7 +3917,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 						con.rollback();
 					} catch(SQLException ex) {
 						System.out.println(ex.getMessage());
-						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cotizacion_Producto ] Insert  SQLException: sp_insert_cotizacion_de_un_productos_en_proveedores "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_captura_de_competencia ] \nInsert  SQLException: sp_insert_precios_competencia "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					}
 				} 
 				return false;
@@ -3926,7 +3927,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 					con.close();
 				} catch(SQLException e){
 					e.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cotizacion_Producto ] Insert  SQLException: sp_insert_cotizacion_de_un_productos_en_proveedores "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_captura_de_competencia ] \nInsert  SQLException: sp_insert_precios_competencia "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}		
 		return true;

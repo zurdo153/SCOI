@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
-<!-- 2015-05-18T14:59:36 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-07-30T17:40:53 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="049781eb-654d-4971-ae7a-a5b8a568cb5c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<queryString language="SQL">
-		<![CDATA[exec sp_select_datos_completos_empleado 602]]>
+		<![CDATA[exec sp_select_datos_completos_empleado 1]]>
 	</queryString>
 	<field name="nombre_completo" class="java.lang.String"/>
 	<field name="folio_empleado" class="java.lang.Integer"/>
@@ -44,7 +44,7 @@
 	<field name="observaciones" class="java.lang.String"/>
 	<field name="vencimiento_licencia" class="java.lang.String"/>
 	<field name="COLUMN_38" class="java.lang.String"/>
-	<field name="infonavit" class="java.lang.String"/>
+	<field name="infonavit_status" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -76,16 +76,6 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 	</title>
 	<detail>
 		<band height="703" splitType="Stretch">
-			<image scaleImage="FillFrame">
-				<reportElement x="420" y="7" width="127" height="93" uuid="5fd164e2-6f2e-4afc-9fd5-400167b829ed"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<imageExpression><![CDATA["C:/SCOI/tmp/tmp.jpg"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="3" y="-3" width="190" height="30" uuid="610f76d5-f7cc-40d9-9b7a-51ace3270f8f"/>
 				<textElement verticalAlignment="Middle">
@@ -216,7 +206,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="176" y="100" width="114" height="30" uuid="33840da0-07a3-47da-b208-d68c5c7b6538"/>
+				<reportElement x="176" y="100" width="130" height="30" uuid="33840da0-07a3-47da-b208-d68c5c7b6538"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -592,8 +582,24 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 			<textField>
 				<reportElement x="75" y="406" width="132" height="30" uuid="e0f3daf5-d1ee-4b83-8c91-e654eede8b27"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{infonavit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{infonavit_status}]]></textFieldExpression>
 			</textField>
+			<frame>
+				<reportElement x="420" y="7" width="127" height="93" uuid="d5ca0915-6eab-4f7c-a5df-5078e04d6cd2"/>
+				<frame>
+					<reportElement x="0" y="0" width="127" height="93" uuid="9d6b6a33-b3b3-4221-ba23-cab0ece32fd9"/>
+					<image scaleImage="FillFrame">
+						<reportElement x="0" y="0" width="127" height="93" uuid="5fd164e2-6f2e-4afc-9fd5-400167b829ed"/>
+						<box>
+							<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<imageExpression><![CDATA["C:/SCOI/tmp/tmp.jpg"]]></imageExpression>
+					</image>
+				</frame>
+			</frame>
 		</band>
 	</detail>
 </jasperReport>

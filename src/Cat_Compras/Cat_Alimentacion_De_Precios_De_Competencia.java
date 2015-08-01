@@ -40,6 +40,7 @@ import javax.swing.table.TableModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import Cat_Filtros_IZAGAR.Cat_Filtro_De_Busqueda_De_Productos;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
@@ -62,6 +63,7 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 				JTextField txtultimo_costo= new JTextField();
 				JTextField txtcosto_promedio= new JTextField();
 				JTextField txtPrecioVenta= new JTextField();
+				JTextField txtPrecioNormal= new JTextField();
 				
 				JDateChooser cfecha = new JDateChooser();
 				Connexion con = new Connexion();
@@ -93,10 +95,11 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 				
 				
 				DefaultTableModel modelo_prv = new DefaultTableModel(null,
-			            new String[]{"Cod.Prod","Descripcion", "Ultimo Costo","Costo Promedio","P.Venta","Fol. Comp","P.Venta Comp","Realizo Captura","Fecha Captura"}
+			            new String[]{"Cod.Prod","Descripcion", "Ultimo Costo","Costo Promedio","P.Normal","P.Venta","Fol. Comp","P.Venta Comp","Realizo Captura","Fecha Captura"}
 						){
 				     @SuppressWarnings("rawtypes")
 					Class[] types = new Class[]{
+				    	java.lang.String.class,
 				    	java.lang.String.class,
 				    	java.lang.String.class,
 				    	java.lang.String.class,
@@ -123,6 +126,7 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 			        	 	case 6 : return false;
 			        	 	case 7 : return false;
 			        	 	case 8 : return false;
+			        	 	case 9 : return false;
 			        	 } 				
 			 			return false;
 			 		}
@@ -140,6 +144,7 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 			  double costo_promedio=0;
 			  double venta_total=0;
 			  double precio_de_venta=0;
+			  double precio_normal=0;
 			  
 				@SuppressWarnings("unused")
 				public void tableChanged(TableModelEvent e) {
@@ -166,9 +171,7 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 		
 		codigo_producto=cod_prod+"";
 		txtcod_prod.setText(codigo_producto+"");
-		
 		tabla_captura.getModel().addTableModelListener(this);
-
 		setSize(1024,635);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -177,7 +180,6 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/estrategiadeprecios64.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccione o teclee un producto"));
-		
 		cfecha.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 
 		int x=10 ;
@@ -196,20 +198,21 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 		
 		panel.add(JLBdescripcion).setBounds(x,y+=25,l+340,a);
 		
-		
 		panel.add(new JLabel("Ultimo Costo:")).setBounds(x,y+=25,l-40,a);
 		panel.add(txtultimo_costo).setBounds(x+85,y,l-35,a);
 		
+		panel.add(new JLabel("Precio De Venta:")).setBounds(x+170,y,l-20,a);
+		panel.add(txtPrecioVenta).setBounds(x+255,y,l-35,a);
+		
 		panel.add(new JLabel("Costo Promedio:")).setBounds(x,y+=25,l-30,a);
 		panel.add(txtcosto_promedio).setBounds(x+85,y,l-35,a);
-		panel.add(btnDeshacer).setBounds(x+165,y,l,a);
+		panel.add(btnDeshacer).setBounds(x+220,y,l,a);
+
+		panel.add(new JLabel("Precio Normal:")).setBounds(x,y+=25,l-20,a);
+		panel.add(txtPrecioNormal).setBounds(x+85,y,l-35,a);
 		
-		panel.add(new JLabel("Precio De Venta:")).setBounds(x,y+=25,l-20,a);
-		panel.add(txtPrecioVenta).setBounds(x+85,y,l-35,a);
-		panel.add(btnGuardar).setBounds(x+165,y,l,a);
-		
+		panel.add(btnGuardar).setBounds(x+220,y,l,a);
 		panel.add(Tabla_Proveedor()).setBounds(10,170,1000,430);
-		
 	    render_proveedor();
 	    Llenar_Tabla_proveedores();
 	    
@@ -217,8 +220,9 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 
 		txtcosto_promedio.setEditable(false);
 		txtPrecioVenta.setEditable(false);
+		txtPrecioNormal.setEditable(false);
 		txtultimo_costo.setEditable(false);
-		
+
 		Nombre_Catalogo_Para_Filtro=this.getClass().getSimpleName();
 		
 		btnBuscar_Producto.addActionListener(opBuscar_Producto);
@@ -229,11 +233,9 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscarLR");
           getRootPane().getActionMap().put("buscarLR", new AbstractAction(){
          public void actionPerformed(ActionEvent e)
-         {         
-        	 btnBuscar_Producto.doClick();
+         {      	 btnBuscar_Producto.doClick();
        	    }
          });
-          
           
           if(codigo_producto.equals("")){
 			          this.addWindowListener(new WindowAdapter() {
@@ -255,7 +257,6 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 			Date Fecha = new SimpleDateFormat("dd/MM/yyyy").parse(fecha);
 			cfecha.setDate(Fecha);
 		} catch (SQLException | ParseException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
           
@@ -268,7 +269,6 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
                	    btnBuscar_Producto.doClick();
                	    }
              });
-             
 		
 		///deshacer con escape
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
@@ -349,12 +349,14 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
                 cotizacion_prod.setCod_Prod(codigo_producto);
                 cotizacion_prod.setUltimo_Costo(ultimo_costo);
                 cotizacion_prod.setCosto_Promedio(costo_promedio);
-                
+                cotizacion_prod.setPrecio_de_venta_normal(precio_normal);
                 cotizacion_prod.setPrecio_de_venta(precio_de_venta);
                 cotizacion_prod.setDescripcion_Prod(JLBdescripcion.getText().toLowerCase().toString().trim());
+                
                 if(tabla_captura.isEditing()){
     				tabla_captura.getCellEditor().stopCellEditing();
     			}
+                
                 
                if(cotizacion_prod.Guardar_Captura_competencia(competencia())){
             	   limpiar();
@@ -385,6 +387,7 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 		 txtcod_prod.setText("");
 		 txtcosto_promedio.setText("");
 		 txtPrecioVenta.setText("");
+		 txtPrecioNormal.setText("");
 		 txtultimo_costo.setText("");
 		 JLBdescripcion.setText("");
 		 txtcod_prod.requestFocus();
@@ -413,12 +416,15 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 						ultimo_costo=Datos_Producto.getUltimo_Costo();
 						costo_promedio=Datos_Producto.getCosto_Promedio();
 						precio_de_venta = Datos_Producto.getPrecio_de_venta();
+						precio_normal = Datos_Producto.getPrecio_de_venta_normal();
+						
 						txtcod_prod.setText(Datos_Producto.getCod_Prod());
 						
 						JLBdescripcion.setText(descripcion);
 						txtultimo_costo.setText(ultimo_costo+"");
 						txtcosto_promedio.setText(costo_promedio+"");
 						txtPrecioVenta.setText(precio_de_venta+"");
+						txtPrecioNormal.setText(precio_normal+"");
 						
 						 codigo_producto=txtcod_prod.getText().trim().toUpperCase()+"";
 						 
@@ -457,13 +463,14 @@ public void render_proveedor(){
 	
 					tabla_Proveedor.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 					tabla_Proveedor.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("fecha","izquierda","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
+					tabla_Proveedor.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+					tabla_Proveedor.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("fecha","derecha","Arial","normal",12));
+					tabla_Proveedor.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+					tabla_Proveedor.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 					tabla_Proveedor.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 					tabla_Proveedor.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-					tabla_Proveedor.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
+					tabla_Proveedor.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+					tabla_Proveedor.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 			
 				}
 				
@@ -488,10 +495,12 @@ public void render_proveedor(){
 				tabla_Proveedor.getColumnModel().getColumn(5).setMinWidth(x);
 				tabla_Proveedor.getColumnModel().getColumn(6).setMaxWidth(x);
 				tabla_Proveedor.getColumnModel().getColumn(6).setMinWidth(x);
-				tabla_Proveedor.getColumnModel().getColumn(7).setMaxWidth(x*3);
-				tabla_Proveedor.getColumnModel().getColumn(7).setMinWidth(x*3);
-				tabla_Proveedor.getColumnModel().getColumn(8).setMaxWidth(x*2);
-				tabla_Proveedor.getColumnModel().getColumn(8).setMinWidth(x*2);
+				tabla_Proveedor.getColumnModel().getColumn(7).setMaxWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(7).setMinWidth(x);
+				tabla_Proveedor.getColumnModel().getColumn(8).setMaxWidth(x*3);
+				tabla_Proveedor.getColumnModel().getColumn(8).setMinWidth(x*3);
+				tabla_Proveedor.getColumnModel().getColumn(9).setMaxWidth(x*2);
+				tabla_Proveedor.getColumnModel().getColumn(9).setMinWidth(x*2);
 					
 					 JScrollPane scrol = new JScrollPane(tabla_Proveedor);
 				    return scrol; 
@@ -502,19 +511,18 @@ public void render_proveedor(){
 					ResultSet rs;
 					
 					try {
-						
 					s = con.conexion_IZAGAR().createStatement();
-						
-						rs = s.executeQuery("select tb_captura_de_competencia.cod_prod,productos.descripcion,tb_captura_de_competencia.ultimo_costo,tb_captura_de_competencia.costo_promedio,tb_captura_de_competencia.precio_de_venta"
-								+ "        ,tb_competencias.competencia,tb_captura_de_competencia.precio_de_venta_competencia,tb_captura_de_competencia.folio_realizo_captura as realizo_captura,convert(varchar(20),tb_captura_de_competencia.fecha,103)+' '+convert(varchar(20),tb_captura_de_competencia.fecha,108) as fecha_captura"
+					Statement s2 = con.conexion().createStatement();
+			       rs = s.executeQuery("select tb_captura_de_competencia.cod_prod,productos.descripcion,tb_captura_de_competencia.ultimo_costo,tb_captura_de_competencia.costo_promedio,tb_captura_de_competencia.precio_normal,tb_captura_de_competencia.precio_de_venta"
+								+ "        ,tb_competencias.competencia,tb_captura_de_competencia.precio_de_venta_competencia"
+								+ "        ,tb_captura_de_competencia.folio_realizo_captura as realizo_captura"
+								+ "        ,convert(varchar(20),tb_captura_de_competencia.fecha,103)+' '+convert(varchar(20),tb_captura_de_competencia.fecha,108) as fecha_captura"
 								+ "      from tb_captura_de_competencia "
 								+ "          inner join productos on productos.cod_prod=tb_captura_de_competencia.cod_prod"
 								+ "          inner join tb_competencias on tb_competencias.folio_competencia = tb_captura_de_competencia.folio_competencia "
 								+ "          order by fecha desc ");
-						
 						while (rs.next())
-						{ 
-						   String [] fila = new String[9];
+						{  String [] fila = new String[10];
 						   fila[0] = rs.getString(1).trim();
 						   fila[1] = rs.getString(2).trim();
 						   fila[2] = rs.getString(3).trim(); 
@@ -523,14 +531,20 @@ public void render_proveedor(){
 						   fila[5] = rs.getString(6).trim(); 
 						   fila[6] = rs.getString(7).trim();
 						   fila[7] = rs.getString(8).trim();
-						   fila[8] = rs.getString(9).trim();
 						   
+						   String query =("select nombre+' ' +ap_paterno+' '+ap_materno as nombre from tb_empleado where folio="+rs.getString(9).trim()).trim();	
+					       ResultSet rs2 = s2.executeQuery(query);
+					       String nombre="";
+						   while(rs2.next()){
+     					       nombre=rs2.getString(1);
+			                  }
+						   fila[8] = nombre;
+						   fila[9] = rs.getString(10).trim();
 						   modelo_prv.addRow(fila); 
 						}	
-
 					} catch (SQLException e1) {
 						e1.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Error en Cat_Costos_Competencia en la funcion Llenar_Tabla_proveedores  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Error en Cat_Alimentacion_De_Precios_De_Competencia en la funcion Llenar_Tabla_proveedores  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					}
 }
 	

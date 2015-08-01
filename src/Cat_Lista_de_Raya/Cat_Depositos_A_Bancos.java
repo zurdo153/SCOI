@@ -205,9 +205,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
  			if(tabla_model.getValueAt(i,4).toString().equals("")){
  				tabla_model.setValueAt("", i, 6);
  			}else{
- 				
  				if(tabla_model.getValueAt(i,5).toString().equals("")){numero=0;}else{ numero=Float.valueOf(tabla_model.getValueAt(i,5).toString());}
-	 			
 	 				if(numero < 0){
 	 						tabla_model.setValueAt(Float.valueOf(tabla_model.getValueAt(i,4).toString())+numero+"", i, 6) ;
 	 				}else{
@@ -485,14 +483,11 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	};
 	
 	ActionListener op_negativos = new ActionListener(){
-		@SuppressWarnings("unchecked")
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			if(chbNegativos.isSelected()){
-				trsfiltro.setRowFilter(RowFilter.regexFilter("-", 5));
-			}else{
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 5));
-			}
+			if(tabla.isEditing()){tabla.getCellEditor().stopCellEditing();}
+			String negativo = chbNegativos.isSelected()?"-":"";
+			new Obj_Filtro_Dinamico(tabla,"Nombre Completo",txtNombre_Completo.getText().toString().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem().toString(),"Total a Pagar",negativo,"","");
 		}
 		
 	};

@@ -76,15 +76,13 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		this.panel.add(btn_generar_consideraciones).setBounds(120,145,250,35);
 		this.panel.add(btn_generar_Permisos).setBounds(120,190,250,35);
 		this.panel.add(btn_generar_completo).setBounds(120,235,250,35);
-		
-		
+				
 		this.cont.add(panel);
 		this.setSize(510,330);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		 cargar_fechas();
-		
-		 
+				 
 		this.btn_generar_completo.addActionListener(op_generar);
 		this.btn_generar_Permisos.addActionListener(op_generar_permisos);
 		this.btn_generar_consideraciones.addActionListener(op_generar);

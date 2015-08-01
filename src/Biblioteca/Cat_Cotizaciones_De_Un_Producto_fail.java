@@ -20,10 +20,12 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 
+
 import com.toedter.calendar.JDateChooser;
 
 
-import Cat_Compras.Cat_Filtro_De_Busqueda_De_Productos;
+
+import Cat_Filtros_IZAGAR.Cat_Filtro_De_Busqueda_De_Productos;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")

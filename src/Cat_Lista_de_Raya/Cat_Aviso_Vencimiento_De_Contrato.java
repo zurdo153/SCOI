@@ -24,7 +24,7 @@ public class Cat_Aviso_Vencimiento_De_Contrato extends JDialog{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio", "Empleado", "Fecha Ingreso","Contrato","Dias Trab","Establecimiento","Puesto"}){
+	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio", "Empleado", "Fecha Ingreso","Contrato","Dias Trabajados","Establecimiento","Puesto"}){
          @SuppressWarnings("rawtypes")
          Class[] types = new Class[]{
                     java.lang.Object.class,
@@ -88,8 +88,8 @@ public class Cat_Aviso_Vencimiento_De_Contrato extends JDialog{
 	    this.tabla.getColumnModel().getColumn(2).setMaxWidth(90);
 	    this.tabla.getColumnModel().getColumn(3).setMinWidth(80);
 	    this.tabla.getColumnModel().getColumn(3).setMaxWidth(80);
-	    this.tabla.getColumnModel().getColumn(4).setMinWidth(50);
-	    this.tabla.getColumnModel().getColumn(4).setMaxWidth(50);
+	    this.tabla.getColumnModel().getColumn(4).setMinWidth(100);
+	    this.tabla.getColumnModel().getColumn(4).setMaxWidth(100);
 	    this.tabla.getColumnModel().getColumn(5).setMinWidth(130);
 	    this.tabla.getColumnModel().getColumn(5).setMaxWidth(170);
 	    

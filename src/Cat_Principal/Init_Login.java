@@ -166,7 +166,7 @@ public class Init_Login extends JFrame{
     JLabel lblcontrasena_Nueva=new JLabel("Nueva:");	
     JLabel lblcontrasena_Confirmar=new JLabel("Confirmar:");	
 	
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 50, "Int");
+	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 10, "Int");
 	JTextField txtUsuario = new JTextField("");
 	JPasswordField txtContrasena = new Componentes().textPassword(new JPasswordField(), "Contraseña", 50);
  	
@@ -181,6 +181,8 @@ public class Init_Login extends JFrame{
 	
 	JButton btnGuardarContrasena =new JButton ("Guardar Contraseña");
 	JButton btnValidarContrasena =new JButton ("Validar Contraseña",new ImageIcon ("imagen/Key.png"));
+	
+	JButton btnFoto = new JButton();
 	
 	JLabel lblLogo = new JLabel(new ImageIcon("imagen/LogPrincipal.png"));
 	
@@ -270,6 +272,7 @@ public class Init_Login extends JFrame{
 		btnCuadranteequipo.setEnabled(false);
 		btnFuenteSodasCajeras.setEnabled(false);
 		btnChecador.setEnabled(false);
+		btnFoto.setVisible(false);
 		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -286,6 +289,8 @@ public class Init_Login extends JFrame{
 //			panel.add(reloj.lblHora).setBounds(1030,230,400,100);
 			
 			panel.add(lblLogo).setBounds(920,0,400,218);
+			
+			panel.add(btnFoto).setBounds(1010,380,100,95);
 			
 			int   x = 30  ,y = 40, z = 65;
 			int  zl = 120 ,w = 20;
@@ -390,6 +395,7 @@ public class Init_Login extends JFrame{
 					
 //			reloj.lblHora.setFont(new java.awt.Font("Algerian",0,60));
 //			panel.add(reloj.lblHora).setBounds(813,200,400,100);
+			panel.add(btnFoto).setBounds(710,300,100,95);
 			
 			int   x = 10  ,y = 10, z = 65;
 			int  zl = 120 ,w = 20;

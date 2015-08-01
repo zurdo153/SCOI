@@ -20,8 +20,8 @@ public class Obj_Cotizaciones_De_Un_Producto {
 	double Costo_Nuevo;
 	double Cantidad_Requerida;
 	double precio_de_venta;
+	double precio_de_venta_normal;
 	
-
 	String Notas_Negociacion;
 	
 	String fecha;
@@ -147,6 +147,15 @@ public class Obj_Cotizaciones_De_Un_Producto {
 	public void setPrecio_de_venta(double precio_de_venta) {
 		this.precio_de_venta = precio_de_venta;
 	}
+	
+	public double getPrecio_de_venta_normal() {
+		return precio_de_venta_normal;
+	}
+
+	public void setPrecio_de_venta_normal(double precio_de_venta_normal) {
+		this.precio_de_venta_normal = precio_de_venta_normal;
+	}
+	
 
 	public Obj_Cotizaciones_De_Un_Producto buscardatos_producto(String cod_prod){ 
 		try {

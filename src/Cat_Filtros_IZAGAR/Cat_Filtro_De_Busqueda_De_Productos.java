@@ -1,4 +1,4 @@
-package Cat_Compras;
+package Cat_Filtros_IZAGAR;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -34,6 +34,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
+import Cat_Compras.Cat_Alimentacion_De_Precios_De_Competencia;
+import Cat_Compras.Cat_Analisis_De_Precios_De_Competencia;
+import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
+import Cat_Compras.Cat_Reporte_De_Ventas;
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 import Obj_Principal.Obj_Filtro_Dinamico;
@@ -100,8 +104,6 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	public JTable tabla = new JTable(Tabla_Productos);
 	public JScrollPane scroll_tabla;
 	
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	public TableRowSorter trsfiltro = new TableRowSorter(Tabla_Productos); 
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	
 	String valor_catalogo="";
@@ -109,14 +111,20 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	JTextField txtFolio ;
 	JTextField txtProductoDescripcion;
 	JTextField txtClase_Producto;
-	JTextField txtTallaProducto ;
+	JTextField txtCategoria;
 	
 	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador){
-		  setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+		this.cont.add(panel);
+		this.setSize(1024,620);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.addWindowListener(op_cerrar);
 		
+		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 		UIManager.put("nimbusBase", new Color(255,255,255));
-		UIManager.put("nimbusBlueGrey", new Color(255,250,250));
-		UIManager.put("control", new Color(255,250,250));
+		UIManager.put("nimbusBlueGrey", new Color(3,7,252));
+		UIManager.put("control", new Color(252,90,3));
 
 		
 		
@@ -143,23 +151,33 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		
 		
 	      scroll_tabla = new JScrollPane(tabla);
-		  JButton btnCargar = new JButton("Cargar", new ImageIcon("imagen/Aplicar.png"));
+		  JButton btnCargar = new JButton("", new ImageIcon("imagen/Aplicar.png"));
+		  btnCargar.setText(	"<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=WHITE><CENTER><p>Cargar</p></CENTER></FONT></html>");
+			
+			
 		  txtFolio = new Componentes().text(new JTextField(),"Busqueda Por Codigo del Producto",25, "Int");
 		  txtProductoDescripcion = new Componentes().text(new JTextField(),"Busqueda Por Descripcion del Producto",300, "String");
 		  txtClase_Producto = new Componentes().text(new JTextField(),"Busqueda Por Clase De Producto",300, "String");
-		  txtTallaProducto = new Componentes().text(new JTextField(),"Busqueda Por Categoria Del Producto",300, "String");
+		  txtCategoria = new Componentes().text(new JTextField(),"Busqueda Por Categoria Del Producto",300, "String");
 		
 		  valor_catalogo=bandera_origen_consulta_filro;
 		
+
+		  
+		  
+		  
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/Filter-List-icon16.png"));
 		this.setTitle("Filtro de Productos");
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline,"Busqueda y Seleccion De Un Producto"));
 		
-		this.panel.add(txtFolio).setBounds(10,20,59,25);
-		this.panel.add(txtProductoDescripcion).setBounds(70,20,450,25);
-		this.panel.add(btnCargar).setBounds(920,20,90,25);
+		this.panel.add(txtFolio).setBounds(10,20,62,25);
+		this.panel.add(txtProductoDescripcion).setBounds(70,20,455,25);
+		this.panel.add(txtClase_Producto).setBounds(520,20,205,25);
+		this.panel.add(txtCategoria).setBounds(720,20,250,25);
+		
+		this.panel.add(btnCargar).setBounds(915,560,90,25);
 		this.panel.add(scroll_tabla).setBounds(10,47,997,511);
 		
 		this.render();
@@ -179,19 +197,14 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 
 		txtFolio.addKeyListener(op_filtro_cod_Prod);
 		txtProductoDescripcion.addKeyListener(opFiltroDinamico);
-		txtClase_Producto.addKeyListener(op_filtro_Familia);
-		txtTallaProducto.addKeyListener(op_filtro_Talla);
+		txtClase_Producto.addKeyListener(op_filtro_clase_Producto);
+		txtCategoria.addKeyListener(op_filtro_categoria);
 		
 //		txtProductoDescripcion.addKeyListener(op_pasar_a_tabla);
 		
 		btnCargar.addActionListener(opCargar);
 		
-		this.cont.add(panel);
-		this.setSize(1024,600);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.addWindowListener(op_cerrar);
+
 		
 //      pone el foco en el txtProductoDescripcion al presionar la tecla scape y limpia lo buscado
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -406,8 +419,8 @@ public void init_tabla(){
 	
    	public Object[][] llenarTablaProductos(){
 		String todos = "select productos.cod_prod,productos.descripcion+' '+productos.codigo_barras_pieza as descripcion,"
-				+ "            case when clases_productos.nombre is null then '' else clases_productos.nombre end as clase_producto,"
-				+ "               case when categorias.nombre is null then '' else categorias.nombre end as categoria"
+				+ "            case when clases_productos.nombre is null then '' else upper(clases_productos.nombre) end as clase_producto,"
+				+ "               case when categorias.nombre is null then '' else upper(categorias.nombre) end as categoria"
 				+ " 				  from productos with (nolock)"
 				+ "  left outer join clases_productos on clases_productos.clase_producto= productos.clase_producto"
 				+ "  left outer join categorias on categorias.categoria=productos.categoria"
@@ -444,21 +457,7 @@ public void init_tabla(){
 		return filas;
 	}
 	
-	 KeyListener op_filtro_cod_Prod = new KeyListener(){
-			public void keyReleased(KeyEvent arg0) {
-//				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
-			}
-			public void keyTyped(KeyEvent arg0) {
-				char caracter = arg0.getKeyChar();
-				if(((caracter < '0') ||
-					(caracter > '9')) &&
-				    (caracter != KeyEvent.VK_BACK_SPACE)){
-					arg0.consume(); 
-				}	
-			}
-			public void keyPressed(KeyEvent arg0) {}
-		};
-		
+
 		KeyListener op_agregar_productoconteclado = new KeyListener() {
 			@SuppressWarnings("static-access")
 			@Override
@@ -524,28 +523,41 @@ public void init_tabla(){
 									
 		};
 		
+		 KeyListener op_filtro_cod_Prod = new KeyListener(){
+				public void keyReleased(KeyEvent arg0) {
+					new Obj_Filtro_Dinamico(tabla, "Descripcion", txtProductoDescripcion.getText().toUpperCase(), "Codigo", txtFolio.getText()+"", "Clase Producto",txtClase_Producto.getText().toUpperCase(), "Categoria",txtCategoria.getText().toUpperCase());
+   			  }
+				public void keyTyped(KeyEvent arg0) {
+					char caracter = arg0.getKeyChar();
+					if(((caracter < '0') ||
+						(caracter > '9')) &&
+					    (caracter != KeyEvent.VK_BACK_SPACE)){
+						arg0.consume(); 
+					}	
+				}
+				public void keyPressed(KeyEvent arg0) {}
+			};
+			
+			
 		KeyListener opFiltroDinamico = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				new Obj_Filtro_Dinamico(tabla, "Descripcion", txtProductoDescripcion.getText().toUpperCase(), "", "", "", "", "", "");
+				new Obj_Filtro_Dinamico(tabla, "Descripcion", txtProductoDescripcion.getText().toUpperCase(), "Codigo", txtFolio.getText()+"", "Clase Producto",txtClase_Producto.getText().toUpperCase(), "Categoria",txtCategoria.getText().toUpperCase());
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		KeyListener op_filtro_Familia = new KeyListener(){
+		KeyListener op_filtro_clase_Producto = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				
-//				trsfiltro.setRowFilter(RowFilter.regexFilter(txtClase_Producto.getText().toUpperCase().trim(), 2));
-//				bandera_filtro_familia=1;
-			}
+				new Obj_Filtro_Dinamico(tabla, "Descripcion", txtProductoDescripcion.getText().toUpperCase(), "Codigo", txtFolio.getText()+"", "Clase Producto",txtClase_Producto.getText().toUpperCase(), "Categoria",txtCategoria.getText().toUpperCase());
+		}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		KeyListener op_filtro_Talla = new KeyListener(){
-//			@SuppressWarnings("unchecked")
+		KeyListener op_filtro_categoria = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-//				trsfiltro.setRowFilter(RowFilter.regexFilter(txtTallaProducto.getText().toUpperCase().trim(), 3));
+				new Obj_Filtro_Dinamico(tabla, "Descripcion", txtProductoDescripcion.getText().toUpperCase(), "Codigo", txtFolio.getText()+"", "Clase Producto",txtClase_Producto.getText().toUpperCase(), "Categoria",txtCategoria.getText().toUpperCase());
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		

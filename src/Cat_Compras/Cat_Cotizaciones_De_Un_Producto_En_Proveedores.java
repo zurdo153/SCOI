@@ -38,9 +38,12 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 
+
 import com.toedter.calendar.JDateChooser;
 
 
+
+import Cat_Filtros_IZAGAR.Cat_Filtro_De_Busqueda_De_Productos;
 import Conexiones_SQL.Connexion;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Principal.Componentes;

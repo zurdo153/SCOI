@@ -89,6 +89,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Horarios;
+import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 //import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Personal_Con_Horario;
@@ -528,7 +529,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtFechaUltimasVacaciones).setBounds(x+(ancho*2)+65,y,ancho-40,20);
 		panel.add(btnFechaUltimasVacaciones).setBounds(x+(ancho*3)+25,y,25,20);
 		
-		panel.add(new JLabel("Ultima icapacidad:")).setBounds(x+(ancho*3)+55,y,ancho,20);
+		panel.add(new JLabel("Ultima incapacidad:")).setBounds(x+(ancho*3)+55,y,ancho,20);
 		panel.add(txtFechaIncapacidad).setBounds(x+(ancho*3)+145,y,ancho-40,20);
 		panel.add(btnFechaIncapacidad).setBounds(x+(ancho*4)+105,y,25,20);
 //Percepciones y Deducciones ------------------------------------------------------------------------------------------------------------------------------------------		
@@ -2002,7 +2003,7 @@ public class Cat_Empleados extends JFrame{
 	   
 	ActionListener Reporte_De_Altas_y_Bajas = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-//					new Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas().setVisible(true);
+					new Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas().setVisible(true);
 			}
 		};
 	   
@@ -2034,7 +2035,12 @@ public class Cat_Empleados extends JFrame{
 	
 	ActionListener opGenerarHorairo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Horarios().setVisible(true);
+			if(txtFolioEmpleado.getText().equals("")){
+				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
+			new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString())).setVisible(true);
+			}
 		}
 	};
 	

@@ -13,7 +13,6 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -33,12 +32,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
+import Cat_Filtros_IZAGAR.Cat_Filtro_De_Busqueda_De_Productos;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Renders.tablaRenderer;
@@ -109,7 +103,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	JTextField txtFiltroFamilia = new JTextField("");
 	JTextField txtFiltroLinea = new JTextField("");
 	
-	int cantidad_de_columnas =  (new Obj_Reportes_De_Ventas().cantidad_de_competidores()+6);
+	int cantidad_de_columnas =  (new Obj_Reportes_De_Ventas().cantidad_de_competidores()+8);
 	DefaultTableModel model = new DefaultTableModel(0,cantidad_de_columnas){
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
@@ -153,11 +147,17 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		tabla.getColumnModel().getColumn(5).setHeaderValue("Markup");
 		tabla.getColumnModel().getColumn(5).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(5).setMinWidth(a);
+		tabla.getColumnModel().getColumn(6).setHeaderValue("Precio Normal");
+		tabla.getColumnModel().getColumn(6).setMaxWidth(a);
+		tabla.getColumnModel().getColumn(6).setMinWidth(a);
+		tabla.getColumnModel().getColumn(7).setHeaderValue("Markup Normal");
+		tabla.getColumnModel().getColumn(7).setMaxWidth(a);
+		tabla.getColumnModel().getColumn(7).setMinWidth(a);
 		
 		try {
 			String[] competidor = new Obj_Reportes_De_Ventas().lista_de_competidores();
-			for(int i=6; i<cantidad_de_columnas; i++){
-				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-6)].toString());
+			for(int i=8; i<cantidad_de_columnas; i++){
+				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-8)].toString());
 				tabla.getColumnModel().getColumn(i).setMaxWidth(a);
 				tabla.getColumnModel().getColumn(i).setMinWidth(a);
 			}
@@ -321,45 +321,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		return date;
 	};
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void Reporte_de_Asistencia_completo(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
-			
-			String query = "exec sp_Reporte_De_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-			Statement stmt = null;
-				try {
-					
-					stmt =  new Connexion().conexion().createStatement();
-				    ResultSet rs = stmt.executeQuery(query);
-				    
-					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Asistencia_Por_Establecimiento.jrxml");
-					JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-					JasperViewer.viewReport(print, false);
-				} catch (Exception e1) {
-					System.out.println(e1.getMessage());
-					JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_General_de_Asistencia_Por_Establecimiento ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-		}
-	}
-	
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void Reporte_de_Asistencia_establecimiento(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
-		String query = "exec sp_Reporte_General_de_Asistencia_Por_Establecimiento '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-		Statement stmt = null;
-		try {
-			
-			stmt =  new Connexion().conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-		    
-			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_de_Asistencia_Por_Establecimiento_Sin_Observaciones.jrxml");
-			JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-			JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-			JasperViewer.viewReport(print, false);
-		} catch (Exception e1) {
-			System.out.println(e1.getMessage());
-			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_General_de_Asistencia_Por_Establecimiento ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-	}
-	}
+
 	
 	ActionListener op_filtro_productos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -520,7 +482,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 				String lineas 		= txtFiltroLinea.getText();
 				
 				if((productos+clases+categorias+familias+lineas).length() > 0 ){
-					
 						Obj_Reportes_De_Ventas ventas = new Obj_Reportes_De_Ventas();
 						
 						ventas.setFecha_inicio(fecha_inicio);
@@ -532,9 +493,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 						
 						try {
 							while(tabla.getRowCount()>0){model.removeRow(0);}
-							
 							Object[][] matriz_reporte_de_ventas = ventas.reporte_de_competencias(cantidad_de_columnas);
-							
 							if(matriz_reporte_de_ventas.length==0){
 								JOptionPane.showMessageDialog(null, "No se encontraron registros con las condiciones de busqueda proporcionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
@@ -743,8 +702,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 						 					}else{
 						 						Lista=Lista+"',''"+posicion+"'";
 						 					}
-//				 						}
-//				 					}
 				 				}
 				 			}
 				 			
@@ -754,11 +711,8 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 				 				JOptionPane.showMessageDialog(null, "Es necesario seleccionar un argunemto", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 	 							return;
 				 			}else{
-//				 				txtComparacionEmpleado.setText(ListaEmpleados);
-//					 			actionAplicar();
 				 				
 				 		        String operador_simbolo = "";
-				 		        
 				 		        	
 				 		            switch(Operador){
 				 			    		case "Igual"		:operador_simbolo=" = "; 
@@ -857,14 +811,10 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 			   		String condicion = "";
 			   		
 			   		if(!Lista.equals("")){
-			   			
 			   			condicion = " where jerarquia "+Lista.replace("''","'");
 			   		}
-			   		
-			   		
 					String todos = "select "+folio_columna+" as folio,upper(nombre) from "+nombre_de_tabla+condicion+" order by nombre";
 					
-					System.out.println(todos);
 					Statement s;
 					ResultSet rs;
 					try {
