@@ -180,13 +180,13 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 						if(!txtFolio.getText().equals("")){
 								new Cat_Reporte_De_Corte_De_Caja(txtFolio.getText()+"");
 						}else{
-							JOptionPane.showMessageDialog(null,"Debe de Teclear un Folio: ","Aviso!", JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null,"Debe de Teclear un Folio: ","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;		
 					    }
 			}else{
 				 String fechaNull = cfecha.getDate()+"";
 				   if(fechaNull.equals("null")){
-						JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Mensaje",JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					   }else{
 						   Obj_Usuario usuario = new Obj_Usuario().LeerSession();

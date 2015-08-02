@@ -16,8 +16,6 @@ public class Mantenimiento_BD {
         //se declara la variable  que prepara el query primero nula
 		PreparedStatement pstmt = null;
 	    //intenta o carga el error 	
-		
-		
 			
 		try {
 	    	//se inicializa ala transaccion en falto hasta el commit

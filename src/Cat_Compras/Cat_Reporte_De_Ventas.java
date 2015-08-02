@@ -41,6 +41,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Cat_Filtros_IZAGAR.Cat_Filtro_De_Busqueda_De_Productos;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
@@ -112,23 +113,18 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbProdPed = new JComboBox(prodPed);	
 	
-//	JButton btnBuscar_Producto = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroProducto = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroProducto = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-//	JButton btnBuscar_Clase = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroClase = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroClase= new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-//	JButton btnBuscar_Categoria = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroCategoria = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroCategoria = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-//	JButton btnBuscar_Familia = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroFamilia = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroFamilia = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-//	JButton btnBuscar_Linea = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroLinea = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroLinea = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
@@ -154,7 +150,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	JTextField txtFiltroTalla = new JTextField("");
 	
 	DefaultTableModel modelo_ventas = new DefaultTableModel(null,
-            new String[]{"Ticket","Establecimiento","Cod_Prod","Descripcion","Venta Unidades","Venta Piezas","Clase Producto","Categoria","Familias","Lineas Productos","Fecha Agotado","Importe","Imp. s/IVA","Costo","Markup","Dias De Venta","Fecha De Venta","Tipo Precio Venta","Forma De Pago","Cond. De Pago"}
+            new String[]{"Ticket","Establecimiento","Cod_Prod","Descripcion","Venta Unidades","Venta Piezas","Clase Producto","Categoria","Familias","Lineas Productos","Fecha Agotado","Importe","Imp. s/IVA","Costo","Porcentaje SCosto","Dias De Venta","Fecha De Venta","Tipo Precio Venta","Forma De Pago","Cond. De Pago"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -217,9 +213,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	
 	String parametroGeneral = "";
 	String Lista="";
-	
 	JLabel JLBdescripcion= new JLabel();
-	
 	JLabel lblmarco= new JLabel();
 	
     static JLabel lblSemaforoRojo = new JLabel("");
@@ -503,7 +497,7 @@ public void filtroProductos(String cadena){
 				dispose();
 				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas",cmbOperador_Productos.getSelectedItem().toString()).setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -514,7 +508,7 @@ public void filtroProductos(String cadena){
 			if(!cmbOperador_Clase.getSelectedItem().toString().equals("Todos")){
 				new Cat_Filtro_Dinamico(cmbOperador_Clase.getSelectedItem().toString(),"clases_productos","clase_producto").setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -524,7 +518,7 @@ public void filtroProductos(String cadena){
 			if(!cmbOperador_Categoria.getSelectedItem().toString().equals("Todos")){
 				new Cat_Filtro_Dinamico(cmbOperador_Categoria.getSelectedItem().toString(),"categorias","categoria").setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -534,7 +528,7 @@ public void filtroProductos(String cadena){
 			if(!cmbOperador_Familia.getSelectedItem().toString().equals("Todos")){
 				new Cat_Filtro_Dinamico(cmbOperador_Familia.getSelectedItem().toString(),"familias","familia").setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -545,7 +539,7 @@ public void filtroProductos(String cadena){
 			if(!cmbOperador_Linea.getSelectedItem().toString().equals("Todos")){
 				new Cat_Filtro_Dinamico(cmbOperador_Linea.getSelectedItem().toString(),"lineas_productos","linea_producto").setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -556,7 +550,7 @@ public void filtroProductos(String cadena){
 			if(!cmbOperador_Talla.getSelectedItem().toString().equals("Todos")){
 				new Cat_Filtro_Dinamico(cmbOperador_Talla.getSelectedItem().toString(),"tallas","talla").setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}

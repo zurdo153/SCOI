@@ -30,7 +30,8 @@ public class BuscarTablasModel {
 				
 				matriz[i][3] = rs.getString(4);
 				matriz[i][4] = rs.getFloat(5) ==  Float.parseFloat("0.0") ? "" : rs.getFloat(5) ;
-				matriz[i][5] = rs.getFloat(6) == Float.parseFloat("0.0") ? "" :Decimal( rs.getFloat(6)) ;
+				matriz[i][5] = rs.getFloat(6) == Float.parseFloat("0.0") ? "" : rs.getFloat(6) ;
+//				matriz[i][5] = rs.getFloat(6) == Float.parseFloat("0.0") ? "" :Decimal( rs.getFloat(6)) ;
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -1295,7 +1296,6 @@ public class BuscarTablasModel {
 				matriz[i][2] = "   "+rs.getString(3);
 				matriz[i][3] = "   "+rs.getString(4);
 				matriz[i][4] = "false";
-				
 				i++;
 			}
 
@@ -1354,7 +1354,6 @@ public class BuscarTablasModel {
 		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 		
 		String query_lista = "exec sp_Revision_De_Cortes_Auditoria '"+fecha_in+"','"+fecha_fin+"',"+usuario.getFolio()+","+seleccionar_todos;
-		System.out.print(query_lista);
 		String[][] matriz = new String[get_filas(query_lista)][35];
 		
 		Connection con = new Connexion().conexion();
@@ -1409,7 +1408,7 @@ public class BuscarTablasModel {
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_trabajo_de_cortes store procedure sp_select_trabajo_de_cortes  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_trabajo_de_cortes \n store procedure sp_Revision_De_Cortes_Auditoria  "+e1.getMessage()+query_lista, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return matriz; 
 	}
@@ -1432,7 +1431,7 @@ public class BuscarTablasModel {
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_trabajo_de_cortes store procedure sp_select_trabajo_de_cortes  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_trabajo_de_cortes \n store procedure sp_Permiso_Revision_De_Cortes  "+e1.getMessage()+query_lista, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	    return matriz; 
 	}

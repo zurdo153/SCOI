@@ -385,6 +385,17 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 	     if (btnSabado.isSelected()==true){Descanso=6;}
 	 }
 	
+	public Cat_Horarios()
+	{
+		pintarChb();
+		getContenedor();
+		camposFalse();
+		resestTextFieldDobladasExtras();
+		
+		btnAceptar.setEnabled(false);
+		btnEditar.setEnabled(false);
+	}
+	
 	@SuppressWarnings("deprecation")
 	public Cat_Horarios(int folio)//String nom
 	{
@@ -588,16 +599,7 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 			spSabado5.setValue(new Time(Integer.parseInt(sabadoRec[0]),Integer.parseInt(sabadoRec[1]),Integer.parseInt(sabadoRec[2])));
 		}
 	
-	public Cat_Horarios()
-	{
-		pintarChb();
-		getContenedor();
-		camposFalse();
-		resestTextFieldDobladasExtras();
-		
-		btnAceptar.setEnabled(false);
-		btnEditar.setEnabled(false);
-	}
+
 
 	@SuppressWarnings("unused")
 	public void CargarCajero()

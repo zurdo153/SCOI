@@ -198,8 +198,6 @@ public class Cat_Usuarios extends JFrame{
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Lista_de_RayaVector = new Obj_NombreVector("Lista De Raya", Lista_de_Raya);
-		
-	
 	
 	// MENU PRINCIPAL REPORTES ESPECIALES (7)
 		String[] Sub_Reportes_Especiales = new Obj_SubMenus().Relacion_de_SubMenus(7);

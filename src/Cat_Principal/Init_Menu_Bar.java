@@ -16,6 +16,8 @@ import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
 import Cat_Compras.Cat_Reporte_De_Ventas;
 import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
 import Cat_Lista_de_Raya.Cat_Aviso_Vencimiento_De_Contrato;
+import Cat_Reportes.Cat_Reportes_De_Apartados;
+import Cat_Reportes.Cat_Reportes_De_Vouchers;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -24,26 +26,22 @@ import Obj_Principal.*;
 @SuppressWarnings("serial")
 public class Init_Menu_Bar extends Init_Login{
 	public ArrayList<WP_Relation> relacion = new ArrayList<WP_Relation>();
-
+     
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
-		
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.36");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.45");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
 		
-		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+    	int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		this.setSize(ancho,alto);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-	}	
-	
-	
+	 }	
 	
 	@SuppressWarnings("rawtypes")
 	public JMenuBar miMenuTop(){
-		
 		Vector MenuVector = new Obj_Menus().getMenusNivel (Integer.parseInt(txtFolio.getText()));
 		ArrayList<WP_Menu> lsMenus = new ArrayList<WP_Menu>();
 		for(int i=0; i<MenuVector.size(); i++){
@@ -224,7 +222,14 @@ public class Init_Menu_Bar extends Init_Login{
 					subMenusbotones();
 					user.Session();
 					txtContrasena.setEnabled(false);
-					
+
+					///cargar foto del empleado///
+					btnFoto.setVisible(true);
+					int folio_empleado =Integer.valueOf(txtFolio.getText());
+	        		new Obj_Usuario().BuscarUsuario(folio_empleado);
+	    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
+	    	 		btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(110, 90, Image.SCALE_DEFAULT)));
+	    	 		
 					if(Integer.valueOf(buscarRegistro_Contrato()[0])>0){
 						if(Integer.valueOf(buscarRegistro_Contrato()[1])>0){
 							new Cat_Aviso_Vencimiento_De_Contrato().setVisible(true);
@@ -289,11 +294,17 @@ public class Init_Menu_Bar extends Init_Login{
 					    new Cat_Reporte_De_Ventas("","Todos").setVisible(true);
 					}else{if(e.getActionCommand().equalsIgnoreCase("Analisis De Precios De Competencia")){
 					    new Cat_Analisis_De_Precios_De_Competencia("","Todos").setVisible(true);
+					}else{if(e.getActionCommand().equalsIgnoreCase("Reportes De Vouchers")){
+					    new Cat_Reportes_De_Vouchers("").setVisible(true);
+					}else{if(e.getActionCommand().equalsIgnoreCase("Reportes De Apartados")){
+					    new Cat_Reportes_De_Apartados("").setVisible(true);
 					}else{
 						
 						Class instance = Class.forName(new Componentes().classExiste(e.getActionCommand()));
 						Object instanceObject = instance.newInstance();
 						((Window) instanceObject).setVisible(true);
+					}	
+					}
 					}
 					}
 					}
@@ -339,6 +350,7 @@ public class Init_Menu_Bar extends Init_Login{
 			btnListaComparacion.setEnabled(false);
 			btnChecador.setEnabled(false);
 			btnCambiarContrasena.setVisible(false);
+			btnFoto.setVisible(false);
 			deshabilitarCambiarContrasena ();
 			cargar_usuariotrue();
 			dispose();

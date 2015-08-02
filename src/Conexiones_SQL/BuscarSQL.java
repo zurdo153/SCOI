@@ -5873,12 +5873,13 @@ public class BuscarSQL {
 				+ "				          ,convert(numeric(10,2),prodestab.ultimo_costo) as ultimo_costo "
 				+ "				          ,convert(numeric(10,2),prodestab.costo_promedio) as costo_promedio "
 				+ "				          ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0)) as existencia_total "
-				+ "						  ,convert(numeric (10,2),case 1 WHEN 0 then "
-				+ "												dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0) "
-				+ "												  ELSE "
-				+ "													dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0) "
-				+ "													* (1 + dbo.Ieps(productos.cod_prod)/100) "
-				+ "													* (1 + (CASE 'I' WHEN 'I' THEN productos.iva_interior ELSE productos.iva_fronterizo END/100))  END) as precio_de_venta "
+				+ "						  ,convert(numeric (10,2),case 1 WHEN 0 then dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0) "
+				+ "												  ELSE 	dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0) "
+				+ "													* (1 + dbo.Ieps(productos.cod_prod)/100) * (1 + (CASE 'I' WHEN 'I' THEN productos.iva_interior ELSE productos.iva_fronterizo END/100))  END) as precio_de_venta "
+				+ "						  ,convert(numeric (10,2),case 1 WHEN 0 then dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '1', 1, 0, 0) "
+				+ "												  ELSE 	dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '1', 1, 0, 0) "
+				+ "													* (1 + dbo.Ieps(productos.cod_prod)/100) * (1 + (CASE 'I' WHEN 'I' THEN productos.iva_interior ELSE productos.iva_fronterizo END/100))  END) as precio_de_venta_normal "
+				
 				+ " from productos "
 				+ "				    left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod "
 				+ "				  where productos.cod_prod=@cod_prod "
@@ -5898,6 +5899,8 @@ public class BuscarSQL {
 									   datosproducto.setCosto_Promedio(rs2.getDouble("costo_promedio"));
 									   datosproducto.setExistencia_Total(rs2.getDouble("existencia_total"));
 									   datosproducto.setPrecio_de_venta(rs2.getDouble("precio_de_venta"));
+									   datosproducto.setPrecio_de_venta_normal(rs2.getDouble("precio_de_venta_normal"));
+									   
 								   }
 							
 						} catch (Exception e) {
@@ -6321,8 +6324,7 @@ public class BuscarSQL {
 				matriz[i][4] = rs.getString(5).trim().equals("0")?"":rs.getString(5).trim();
 				matriz[i][5] = rs.getString(6).trim().equals("0")?"":rs.getString(6).trim();
 				matriz[i][6] = rs.getString(7).trim().equals("0")?"":rs.getString(7).trim();
-				
-				matriz[i][7] = "";
+				matriz[i][7] = rs.getString(8).trim().equals("0")?"":rs.getString(8).trim();;
 				matriz[i][8] = "";
 				matriz[i][9] = "true";
 				i++;
@@ -6404,11 +6406,8 @@ public class BuscarSQL {
 		
 		String query = "exec sp_Reporte_IZAGAR_analisis_competidores '"+(ventas.getFecha_inicio()+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos()))+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"'";
 		
-		
-		
 		Object[][] rp_competencia = new Object[getFilasExterno(query)][cantidad_de_columnas];
 		
-		System.out.println(query);
 		try {
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -6423,6 +6422,8 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en el procedimiento sp_Reporte_IZAGAR_analisis_competidores \nSQLServerException:"+e+" \n Parametros:"+query,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
 			return null;
 		}
 		finally{

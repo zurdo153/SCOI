@@ -89,6 +89,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Horarios;
+import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 //import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Personal_Con_Horario;
@@ -357,10 +358,6 @@ public class Cat_Empleados extends JFrame{
 		
 		this.txaObservaciones.setBorder(BorderFactory.createTitledBorder(blackline));
 		
-//		agregando radio_button a grupo
-//		this.bgSexo.add(rbMasculino);
-//		this.bgSexo.add(rbFemenino);
-		
 		this.bgHorarios.add(rbHorario);
 		this.bgHorarios.add(rbHorario2);
 		this.bgHorarios.add(rbHorario3);
@@ -535,7 +532,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtFechaUltimasVacaciones).setBounds(x+(ancho*2)+65,y,ancho-40,20);
 		panel.add(btnFechaUltimasVacaciones).setBounds(x+(ancho*3)+25,y,25,20);
 		
-		panel.add(new JLabel("Ultima icapacidad:")).setBounds(x+(ancho*3)+55,y,ancho,20);
+		panel.add(new JLabel("Ultima incapacidad:")).setBounds(x+(ancho*3)+55,y,ancho,20);
 		panel.add(txtFechaIncapacidad).setBounds(x+(ancho*3)+145,y,ancho-40,20);
 		panel.add(btnFechaIncapacidad).setBounds(x+(ancho*4)+105,y,25,20);
 //Percepciones y Deducciones ------------------------------------------------------------------------------------------------------------------------------------------		
@@ -995,9 +992,6 @@ public class Cat_Empleados extends JFrame{
 						}else{
 							txtVencimientoLicencia.setDate(null);
 						}
-						
-						
-						
 					} catch (ParseException e1) {
 						e1.printStackTrace();
 					}
@@ -1016,7 +1010,6 @@ public class Cat_Empleados extends JFrame{
 					
 					txtRFC.setText(re.getRfc()+"");
 					txtCurp.setText(re.getCurp()+"");
-					
 					if(re.getSexo()==0){
 						cmbSexo.setSelectedItem("MASCULINO");
 					}else{
@@ -1026,15 +1019,12 @@ public class Cat_Empleados extends JFrame{
 					if(re.getEstado_civil().equals("0")){	cmbEstadoCivil.setSelectedIndex(0);		}else{	cmbEstadoCivil.setSelectedItem(re.getEstado_civil());	}
 					if(re.getTipo_sangre().equals("0")){	cmbTipoDeSangre.setSelectedIndex(0);	}else{	cmbTipoDeSangre.setSelectedItem(re.getTipo_sangre());	}
 					if(re.getEscolaridad().equals("0")){	cmbEscolaridad.setSelectedIndex(0);		}else{	cmbEscolaridad.setSelectedItem(re.getEscolaridad());	}
-					
 					if(re.getContrato() == 0){	cmbContratacion.setSelectedItem("INDETERMINADO");	 }else{	cmbContratacion.setSelectedItem(re.getContrato()+" DIAS");	}
 					if(re.getPresencia_fisica() == 1){	cmbPresenciaFisica.setSelectedItem("APLICA");}else{	cmbPresenciaFisica.setSelectedItem("NO APLICA");	}
-					
 					
 					ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 			         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
 			         btnFoto.setIcon(iconoDefault);
-			         
 					
 					Obj_Horario_Empleado comboFolioHorario = new Obj_Horario_Empleado().buscar_tur(re.getHorario());
 					if(re.getHorario()>0){
@@ -1043,7 +1033,6 @@ public class Cat_Empleados extends JFrame{
 						lblFolioHorario1.setText("");
 					}
 					txtHorario.setText(comboFolioHorario.getNombre());
-	
 					
 					Obj_Horario_Empleado comboFolioHorario2 = new Obj_Horario_Empleado().buscar_tur2(re.getHorario2());
 					if(re.getHorario2()>0){
@@ -2031,7 +2020,7 @@ public class Cat_Empleados extends JFrame{
 	   
 	ActionListener Reporte_De_Altas_y_Bajas = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-//					new Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas().setVisible(true);
+					new Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas().setVisible(true);
 			}
 		};
 	   
@@ -2063,7 +2052,12 @@ public class Cat_Empleados extends JFrame{
 	
 	ActionListener opGenerarHorairo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Horarios().setVisible(true);
+			if(txtFolioEmpleado.getText().equals("")){
+				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
+			new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString())).setVisible(true);
+			}
 		}
 	};
 	
