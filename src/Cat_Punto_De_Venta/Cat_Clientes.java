@@ -177,7 +177,7 @@ public class Cat_Clientes extends JDialog{
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 		
 		this.tabla.getColumnModel().getColumn(0).setMaxWidth(70);
-		this.tabla.getColumnModel().getColumn(0).setMinWidth(70);		
+		this.tabla.getColumnModel().getColumn(0).setMinWidth(20);		
 		this.tabla.getColumnModel().getColumn(1).setMaxWidth(300);
 		this.tabla.getColumnModel().getColumn(1).setMinWidth(300);
 		this.tabla.getColumnModel().getColumn(2).setMaxWidth(140);

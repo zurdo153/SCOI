@@ -95,7 +95,7 @@ public class Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia extends JFr
 								}	
 								return;	
 					    }
-		}
+			}
 		}
 	};
 	

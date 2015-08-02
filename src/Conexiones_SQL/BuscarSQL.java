@@ -6545,4 +6545,120 @@ public class BuscarSQL {
 		}
 	    return semaforo; 
 	}
+	
+	public int Archivos_Empleado(int folio) throws SQLException{
+		
+		int contadorDeArchivosGenerados=0;
+		
+		String query = "SELECT t_emp.nombre+' '+t_emp.ap_paterno+' '+t_emp.ap_materno as empleado "
+				+ "	,t_estab.nombre as establecimiento "
+				+ "	,isnull(t_aEmp.solicitud,'') "
+				+ "	,isnull(t_aEmp.acta_de_nacimiento,'') "
+				+ "	,isnull(t_aEmp.curp,'') "
+				+ "	,isnull(t_aEmp.hoja_de_seguro_social,'') "
+				+ "	,isnull(t_aEmp.hoja_de_retencion_infonavit,'') "
+				+ "	,isnull(t_aEmp.hoja_de_retencion_de_pension_alimenticia,'') "
+				+ "	,isnull(t_aEmp.credencial_de_identificacion,'') "
+				+ "	,isnull(t_aEmp.comprobante_de_domicilio,'') "
+		+ " FROM tb_archivos_empleados t_aEmp "
+		+ " left outer join tb_empleado t_emp on t_emp.folio = t_aEmp.folio_empleado "
+		+ " inner join tb_establecimiento t_estab on t_estab.folio = t_emp.establecimiento_id "
+		+ " where t_aEmp.folio_empleado = "+folio;
+
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				
+				String ruta = "C:\\DOCUMENTACION DE EMPLEADOS GENERADA EN SCOI\\"+rs.getString(1)+" ("+rs.getString(2)+")\\";
+				File archivos = new File(ruta);
+				
+					// creamos fichero si no existe y escribimos archivo 
+					if(!archivos.exists()){ 
+						archivos.mkdirs();
+					}
+					
+					for(int i=1; i<9; i++){
+	            		
+	            		Blob blob_pdf = rs.getBlob(i+2);
+	            		
+	            		if(blob_pdf.length() > 0){
+								File photo = new File(ruta+i+".pdf");
+								FileOutputStream fos = new FileOutputStream(photo);
+							
+					            byte[] buffer = new byte[1];
+					            InputStream is = rs.getBinaryStream(i+2);
+					            
+					            while (is.read(buffer) > 0) {
+					                fos.write(buffer);
+					            }fos.close();
+					            
+					            contadorDeArchivosGenerados++;
+	            		}
+					}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return contadorDeArchivosGenerados;
+	}
+	
+	public String[] Lista_Archivos_Empleado(int folio) throws SQLException{
+		
+		String[] lista = new String[8];
+		
+		String query = "SELECT t_emp.nombre+' '+t_emp.ap_paterno+' '+t_emp.ap_materno as empleado "
+				+ "	,t_estab.nombre as establecimiento "
+				+ "	,isnull(t_aEmp.solicitud,'') "
+				+ "	,isnull(t_aEmp.acta_de_nacimiento,'') "
+				+ "	,isnull(t_aEmp.curp,'') "
+				+ "	,isnull(t_aEmp.hoja_de_seguro_social,'') "
+				+ "	,isnull(t_aEmp.hoja_de_retencion_infonavit,'') "
+				+ "	,isnull(t_aEmp.hoja_de_retencion_de_pension_alimenticia,'') "
+				+ "	,isnull(t_aEmp.credencial_de_identificacion,'') "
+				+ "	,isnull(t_aEmp.comprobante_de_domicilio,'') "
+		+ " FROM tb_archivos_empleados t_aEmp "
+		+ " left outer join tb_empleado t_emp on t_emp.folio = t_aEmp.folio_empleado "
+		+ " inner join tb_establecimiento t_estab on t_estab.folio = t_emp.establecimiento_id "
+		+ " where t_aEmp.folio_empleado = "+folio;
+
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				
+				String ruta = "C:\\DOCUMENTACION DE EMPLEADOS GENERADA EN SCOI\\"+rs.getString(1)+" ("+rs.getString(2)+")\\";
+				File archivos = new File(ruta);
+				
+					// creamos fichero si no existe y escribimos archivo 
+					if(!archivos.exists()){ 
+						archivos.mkdirs();
+					}
+					
+					
+					for(int i=0; i<lista.length; i++){
+	            			lista[i] = rs.getString(i+3).length()>0 ?"Capturado":"";
+					}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return lista;
+	}
+	
 }
