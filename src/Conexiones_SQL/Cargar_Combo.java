@@ -9,7 +9,7 @@ public class Cargar_Combo {
 	Connexion con = new Connexion();
 	@SuppressWarnings("rawtypes")
 	Vector miVector = new Vector();
-	
+		
 	@SuppressWarnings("unchecked")
 	public String[] menus() throws SQLException{
 		String query = "select nombre from tb_menus";
@@ -156,6 +156,8 @@ public class Cargar_Combo {
 		return pila;
 			
 	}
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	public String[] Departamento(String tabla) throws SQLException{
@@ -1423,6 +1425,40 @@ public class Cargar_Combo {
 		
 		while(i < miVector.size()){
 			
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public String[] Datos_Combo_CuentasBancarias() throws SQLException{
+		String query = "select cuenta_bancaria from  cuentas_bancarias where status='V'" ;
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+				}
+				miVector.add(rs.getString("cuenta_bancaria"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
 			pila[i]= miVector.get(i).toString();
 			i++;
 		}

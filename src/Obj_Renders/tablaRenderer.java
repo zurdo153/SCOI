@@ -38,14 +38,37 @@ public class tablaRenderer extends DefaultTableCellRenderer {
      
      public Component getTableCellRendererComponent ( JTable table, Object value, boolean selected, boolean focused, int row, int column ){   
 		
+    	 
+    	 ///fuente 
+    	 int RFuente =0;
+    	 int GFuente =0;
+    	 int BFuente =0;
+    	 
+    	 ///fuente Seleccionada
+    	 int RFuenteS =255;
+    	 int GFuenteS =255;
+    	 int BFuenteS =255;
+    	 
+    	 ///fila non
+    	 int Rfila =177;
+    	 int Gfila =177;
+    	 int Bfila =190;
+    	 
+    	 //fila seleccionada
+    	 int RfilaS =186;
+    	 int GfilaS =143;
+    	 int BfilaS =73;
+    	 
+    	 
+    			 
     	 if(row %2 == 0){
-				this.setBackground(new java.awt.Color(177,177,190));	
+				this.setBackground(new java.awt.Color(Rfila,Gfila,Bfila));	
 		  }else{
 		      this.setBackground(Color.white);
 		  }
         
     	 if (selected) {  
-        	 this.setBackground(new java.awt.Color(186,143,73));
+        	 this.setBackground(new java.awt.Color(RfilaS,GfilaS,BfilaS));
          }
 
          if( tipo.toUpperCase().trim().equals("IMAGEN") || tipo.toUpperCase().trim().equals("IMAGENES") || tipo.toUpperCase().trim().equals("ICONO") || tipo.toUpperCase().trim().equals("ICONOS")){
@@ -85,15 +108,15 @@ public class tablaRenderer extends DefaultTableCellRenderer {
 				chb = new JCheckBox("",Boolean.parseBoolean(value.toString()));
 				if(row%2==0){
 					((JComponent) chb).setOpaque(true); 
-					chb.setBackground(new java.awt.Color(177,177,190));	
+					chb.setBackground(new java.awt.Color(Rfila,Gfila,Bfila));	
 				}
 				if(table.getSelectedRow() == row){
 					((JComponent) chb).setOpaque(true); 
-					chb.setBackground(new java.awt.Color(186,143,73));
+					chb.setBackground(new java.awt.Color(RfilaS,GfilaS,BfilaS));
 				}
 				if(selected){
 					((JComponent) chb).setOpaque(true); 
-					chb.setBackground(new java.awt.Color(186,143,73));
+					chb.setBackground(new java.awt.Color(RfilaS,GfilaS,BfilaS));
 				}
 				((AbstractButton) chb).setHorizontalAlignment(SwingConstants.CENTER);	
 				return chb;
@@ -102,7 +125,7 @@ public class tablaRenderer extends DefaultTableCellRenderer {
         	 
         	 this.alineacionOrizontal( alineacion );
              this.setText( value.toString() );
-             this.setForeground( (selected)?new Color(255,255,255):new Color(32,17,32) ); 
+             this.setForeground( (selected)?new Color(RFuenteS,GFuenteS,BFuenteS):new Color(RFuente,GFuente,BFuente) ); 
              this.setFont(fuente);            
 //             return this;
              

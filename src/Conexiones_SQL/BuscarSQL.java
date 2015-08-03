@@ -21,6 +21,7 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import IZAGAR_Obj.Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad;
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_2;
@@ -6546,4 +6547,29 @@ public class BuscarSQL {
 		}
 	    return semaforo; 
 	}
+	
+	public Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad datos_Cuenta_Bancaria(String Cuenta_Bancaria ) throws SQLException{
+		Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad cargar_datosCuentaBancaria = new Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad();
+		String query = "select rtrim(bancos.nombre) as banco,cuentas_bancarias.cuenta_contable from  cuentas_bancarias"
+				+ "  	    left outer join bancos on bancos.banco=cuentas_bancarias.banco where cuentas_bancarias.cuenta_bancaria='"+Cuenta_Bancaria+"'";
+		Statement stmt2= null;
+						try {
+							stmt2= con.conexion_IZAGAR().createStatement();
+							ResultSet rs= stmt2.executeQuery(query);
+							   while(rs.next()){
+								   cargar_datosCuentaBancaria.setBanco(rs.getString("banco"));
+								   cargar_datosCuentaBancaria.setCuenta_Contable(rs.getString("cuenta_contable"));
+								   }
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_Cuenta_Bancaria \n en la consulta: \n"+query+" \nSQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+							e.printStackTrace();
+							return null;
+						}
+		finally{
+			if(stmt2!=null){stmt2.close();}
+		}
+		return cargar_datosCuentaBancaria;
+	}
+	
+	
 }

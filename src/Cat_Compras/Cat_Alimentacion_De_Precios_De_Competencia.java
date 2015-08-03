@@ -444,6 +444,7 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 		}
 	};
 
+	
 public void render_proveedor(){
 			//		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
 	
