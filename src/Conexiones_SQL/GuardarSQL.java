@@ -3944,7 +3944,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			pstmt = con.prepareStatement(query);
 			
 			for(int i=0; i<archivos.length; i++){
-				if(!archivos[i][1].toString().equals("")){
+				if(!archivos[i][1].toString().equals("") || !archivos[i][1].toString().equals("Capturado")){
 					
 					pstmt.setInt(1, folio_empleado);
 					pstmt.setString(2, archivos[i][0].toString().toLowerCase().replace(" ","_"));

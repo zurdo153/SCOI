@@ -577,6 +577,23 @@ public class Obj_Empleados {
 		
 	}
 	
+	public int Generar_Archivos(int folio_empleado){ 
+		try {
+			return new BuscarSQL().Archivos_Empleado(folio_empleado);
+		} catch (SQLException e) {
+			return 0;
+		}
+	}
+	
+	public String[] Lista_De_Archivos_De_Empleados(int folio_empleado){ 
+			try {
+				return new BuscarSQL().Lista_Archivos_Empleado(folio_empleado);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return null;
+	}
+	
 //	TODO datos adicionales
 	public String[] Combo_Tipo_Sangre(){ 
 		try {

@@ -252,7 +252,8 @@ public class Cat_Empleados extends JFrame{
 	
 	JButton btnBaja = new JButton("No contratables");
 	
-
+	JButton btnDocumentacion = new JButton("Documentación");
+	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
 	
@@ -383,6 +384,8 @@ public class Cat_Empleados extends JFrame{
 		panel.add(btnLicencias).setBounds(x-5,y+=25,128,x);
 		panel.add(btnCumpleaños_del_Mes).setBounds(x+130,y,128,x);
 		panel.add(btnAltasBajas).setBounds(x+265,y,128,x);
+		
+		panel.add(btnDocumentacion).setBounds(x+400,y,128,x);
 		
 		y=y+=40;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
@@ -609,6 +612,7 @@ public class Cat_Empleados extends JFrame{
 		btnCumpleaños_del_Mes.addActionListener(Reporte_De_Cumpleanios_Del_Mes);
 		btnAltasBajas.addActionListener(Reporte_De_Altas_y_Bajas);
 		
+		btnDocumentacion.addActionListener(opDocumentacion);
 		
 		btnExaminar.addActionListener(opExaminar);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
@@ -935,6 +939,19 @@ public class Cat_Empleados extends JFrame{
 			}
 		}
 	};
+	
+	ActionListener opDocumentacion = new ActionListener() {
+		public void actionPerformed(ActionEvent e){
+			
+				if(!txtApPaterno.getText().equals("")){
+					new Cat_Documentacion_De_Empleado(txtFolioEmpleado.getText(),txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText(),cmbEstablecimiento.getSelectedItem()+"",cmbPuesto.getSelectedItem()+"").setVisible(true);
+				}else{
+					JOptionPane.showMessageDialog(null, "Primero Debe Buscar Un Empleado","Aviso",JOptionPane.WARNING_MESSAGE);
+					txtFolioEmpleado.requestFocus();
+					return;
+				}
+			}
+		};
 	
 	ActionListener buscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e){
@@ -2801,6 +2818,13 @@ public class Cat_Empleados extends JFrame{
 		
 		KeyListener opFiltroLoco = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
+				
+//				int[] columnas = new int[3];
+//				columnas[0] = tabla.getColumnModel().getColumnIndex("Folio");
+//				columnas[1] = tabla.getColumnModel().getColumnIndex("Nombre Completo");
+//				columnas[2] = tabla.getColumnModel().getColumnIndex("Puesto");
+//				new Obj_Filtro_Dinamico_Plus(tabla,txtNombre_Completo.getText().toUpperCase(),columnas);
+				
 				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
 			}
 			public void keyTyped(KeyEvent arg0) {}
