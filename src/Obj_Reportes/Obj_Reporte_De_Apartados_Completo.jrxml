@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-07-31T17:18:28 -->
+<!-- 2015-08-02T10:23:42 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="ireport.zoom" value="2.593742460100005"/>
 	<property name="ireport.x" value="302"/>
@@ -26,7 +26,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec sp_Reporte_de_Apartados_General '01/07/2015']]>
+		<![CDATA[exec sp_Reporte_de_Apartados_General '01/07/2015','02/07/2015','Reporte de Apartados']]>
 	</queryString>
 	<field name="Asignacion" class="java.lang.String"/>
 	<field name="Cajero" class="java.lang.String"/>
@@ -45,7 +45,9 @@
 	<field name="Fecha_de_Entrega" class="java.lang.String"/>
 	<field name="Fecha_Liquidacion" class="java.lang.String"/>
 	<field name="establecimiento" class="java.lang.String"/>
-	<field name="fecha_Apartir_de" class="java.sql.Timestamp"/>
+	<field name="fecha_Apartir_de" class="java.lang.String"/>
+	<field name="fecha_final" class="java.lang.String"/>
+	<field name="nombre_reporte" class="java.lang.String"/>
 	<variable name="Sum_Apartado" class="java.lang.Double" resetType="Group" resetGroup="Group2" incrementType="Group" incrementGroup="Group2" calculation="Sum">
 		<variableExpression><![CDATA[$F{Total_Apartado}]]></variableExpression>
 	</variable>
@@ -191,31 +193,41 @@
 		<band height="7" splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="56" splitType="Stretch">
-			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="380" height="50" forecolor="#000080" backcolor="#000080" uuid="f40033e7-3b11-4284-9dc5-639e231aceba">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<staticText>
-					<reportElement style="Title" x="3" y="0" width="367" height="49" uuid="31bea70f-4e17-4539-aad9-9162208eeb59"/>
-					<textElement textAlignment="Left">
-						<font size="20" isBold="false"/>
-					</textElement>
-					<text><![CDATA[Reporte  de Apartados Apartir De La Fecha:]]></text>
-				</staticText>
-				<textField>
-					<reportElement style="Title" mode="Transparent" x="90" y="20" width="190" height="30" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="b2e2e7f6-7812-4c52-9066-b3b155dea429"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-						<font fontName="Times New Roman" size="20" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{fecha_Apartir_de}]]></textFieldExpression>
-				</textField>
-			</frame>
+		<band height="89" splitType="Stretch">
 			<image>
 				<reportElement x="503" y="0" width="50" height="50" uuid="ae937403-f1d8-4348-b356-94187037f95a"/>
 				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 			</image>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="424" height="65" forecolor="#000080" backcolor="#000080" uuid="f40033e7-3b11-4284-9dc5-639e231aceba">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textField>
+					<reportElement style="Title" mode="Transparent" x="0" y="1" width="424" height="48" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="a321d0b4-9f1d-43c3-ac6e-a884c305917f"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="20" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombre_reporte}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement style="Title" mode="Transparent" x="0" y="50" width="160" height="15" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="cd39e6d4-751e-4129-92e4-9a0f77f8afe4">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["FECHA DE:"+$F{fecha_Apartir_de}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement key="" style="Title" mode="Transparent" x="231" y="48" width="193" height="17" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="81e67415-f134-4064-959a-1d09a59e4566"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["FECHA A:"+$F{fecha_final}]]></textFieldExpression>
+				</textField>
+			</frame>
 			<image>
 				<reportElement x="428" y="0" width="50" height="50" uuid="c40e0e65-de12-4647-a1d4-992381e234e1"/>
 				<imageExpression><![CDATA["C:/SCOI/imagen/documentos-de-gabinete-icono-4840-32.png"]]></imageExpression>

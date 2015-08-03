@@ -32,9 +32,13 @@ public class Cat_Reportes_De_Apartados extends JFrame {
 	JButton btnApartadoAsignacion =new JButton("",new ImageIcon("imagen/Accounting.png"));
 	JButton btnApartadoFecha =new JButton("",new ImageIcon("imagen/Calendar.png"));
     JButton btnApartadoApartirFecha= new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
+    JButton btnApartadoEntreFechas= new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
 	JButton btnSeleccionAsignacion =new JButton("",new ImageIcon ("imagen/Filter-List-icon16.png"));
 	
 	JDateChooser cfecha = new JDateChooser();
+	JDateChooser c_final = new JDateChooser();
+	JLabel Jlfecha_inicial =new JLabel("Fecha Inicial:");
+	
 	
 	int tipo_Reporte = 0;
 	String Asignacion;
@@ -43,7 +47,7 @@ public class Cat_Reportes_De_Apartados extends JFrame {
 		Asignacion=asignacion+"";
 		
 		cont.add(panel);
-		setSize(305,350);
+		setSize(305,400);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -63,20 +67,31 @@ public class Cat_Reportes_De_Apartados extends JFrame {
 				"		<CENTER><p>Reporte De Apartados A Partir De Una Fecha Selecionada</p></CENTER></FONT>" +
 				"</html>");
 		
+		btnApartadoEntreFechas.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Apartados En Un Rango de Fechas</p></CENTER></FONT>" +
+				"</html>");
+		
 		panel.add(btnApartadoAsignacion).setBounds(20,25,260,35);
 		panel.add(btnApartadoFecha).setBounds(20,75,260,35);
 		panel.add(btnApartadoApartirFecha).setBounds(20,125,260,35);
-		panel.add(new JLabel("Asignacion:")).setBounds(20,175,200,20);		
-		panel.add(txtAsignacion).setBounds(80,175,175,20);
-		panel.add(btnSeleccionAsignacion).setBounds(255,175,20,20);
+		panel.add(btnApartadoEntreFechas).setBounds(20,175,260,35);
 		
-		panel.add(new JLabel("Fecha:")).setBounds(20,205,200,20);		
-		panel.add(cfecha).setBounds(80,205,195,20);
+		panel.add(new JLabel("Asignacion:")).setBounds(20,235,200,20);		
+		panel.add(txtAsignacion).setBounds(90,235,165,20);
+		panel.add(btnSeleccionAsignacion).setBounds(255,235,20,20);
 		
-	    panel.add(btnGenerar).setBounds(100,240,120,30);
+		
+		panel.add(Jlfecha_inicial).setBounds(20,265,200,20);		
+		panel.add(cfecha).setBounds(90,265,185,20);
+		
+		panel.add(new JLabel("Fecha Final:")).setBounds(20,295,200,20);	
+		panel.add(c_final).setBounds(90,295,185,20);
+		
+	    panel.add(btnGenerar).setBounds(100,330,120,30);
 		
 	    txtAsignacion.setEditable(false);
 	    cfecha.setEnabled(false);
+		c_final.setEnabled(false);
 	    btnGenerar.setEnabled(false);
 	    btnSeleccionAsignacion.setEnabled(false);
 	    
@@ -93,6 +108,8 @@ public class Cat_Reportes_De_Apartados extends JFrame {
 		btnApartadoAsignacion.addActionListener(opReporte_Por_Asignacion);
 		btnApartadoFecha.addActionListener(opReporte_Por_Fecha);
 		btnApartadoApartirFecha.addActionListener(opReporte_Apartir_Fecha);
+		btnApartadoEntreFechas.addActionListener(opReporte_Entre_Fechas);
+		
 		btnSeleccionAsignacion.addActionListener(opfiltroAsignacion);
 	}
 	
@@ -122,25 +139,53 @@ public class Cat_Reportes_De_Apartados extends JFrame {
 	
 	ActionListener opReporte_Por_Fecha = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
+			Jlfecha_inicial.setText("Fecha:");
 			txtAsignacion.setEditable(false);
 			cfecha.setEnabled(true);
 			btnGenerar.setEnabled(true);
 		    btnSeleccionAsignacion.setEnabled(false);
+		    c_final.setEnabled(false);
+		    txtAsignacion.setText("");
+			c_final.setDate(null);
+			cfecha.setDate(null);
 			tipo_Reporte=2;
-			txtAsignacion.setText("");
+			
 		}
 	};
 	
 	ActionListener opReporte_Apartir_Fecha = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
+			Jlfecha_inicial.setText("Fecha:");
 			txtAsignacion.setEditable(false);
 			cfecha.setEnabled(true);
+			c_final.setEnabled(false);
+			txtAsignacion.setText("");
+			c_final.setDate(null);
+			cfecha.setDate(null);
 			btnGenerar.setEnabled(true);
 		    btnSeleccionAsignacion.setEnabled(false);
 			tipo_Reporte=3;
 			txtAsignacion.setText("");
 		}
 	};
+	
+	
+	ActionListener opReporte_Entre_Fechas = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			Jlfecha_inicial.setText("Fecha Inicial:");
+			txtAsignacion.setEditable(false);
+			cfecha.setEnabled(true);
+			c_final.setEnabled(true);
+			txtAsignacion.setText("");
+			c_final.setDate(null);
+			cfecha.setDate(null);
+			btnGenerar.setEnabled(true);
+		    btnSeleccionAsignacion.setEnabled(false);
+			tipo_Reporte=4;
+			txtAsignacion.setText("");
+		}
+	};
+	
 	
 	public String validar_fechas(){
 		String error = "";
@@ -189,7 +234,24 @@ public class Cat_Reportes_De_Apartados extends JFrame {
 						return;
 					   }else{
 						  String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate())+" 00:00:00";
-						  comando = "exec sp_Reporte_de_Apartados_General '"+fecha+"'" ;
+						  comando = "exec sp_Reporte_de_Apartados_General '"+fecha+"','0','Reporte de Apartados Apartir de la Fecha:'" ;
+						  reporte ="Obj_Reporte_De_Apartados_Completo.jrxml";
+						  new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);	
+							return;					   
+					   }
+				}
+			if(tipo_Reporte==4){
+				   String fechaNull = cfecha.getDate()+"";
+				   String fechaNull2 = c_final.getDate()+"";
+				   
+				   if(fechaNull.equals("null")||fechaNull2.equals("null")){
+						JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					   }else{
+						  String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate())+" 00:00:00";
+						  String fechafinal = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 00:00:00";
+
+						  comando = "exec sp_Reporte_de_Apartados_General '"+fecha+"','"+fechafinal+"','Reporte de Apartados en un Rango de Fechas:'" ;
 						  reporte ="Obj_Reporte_De_Apartados_Completo.jrxml";
 						  new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);	
 							return;					   
