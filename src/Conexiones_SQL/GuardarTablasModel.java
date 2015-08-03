@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.StringTokenizer;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -184,7 +185,7 @@ public class GuardarTablasModel {
 	}
 	
 	public boolean tabla_model_traspaso_de_deduccion_sugerido(Object[][] tabla){
-		String query = "exec sp_insert_traspaso_de_deducciones_sugerido ?,?,?,?,?";
+		String query = "exec sp_insert_traspaso_de_deducciones_sugerido ?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
@@ -200,10 +201,10 @@ public class GuardarTablasModel {
 				
 				pstmt.setInt(1, Integer.valueOf(tabla[i][0].toString().trim()));
 				pstmt.setInt(2, Integer.valueOf(tabla[i][4].toString().trim()));
-				
 				pstmt.setInt(3, Integer.valueOf(tabla[i][5].toString().trim()));
 				pstmt.setInt(4, Integer.valueOf(tabla[i][6].toString().trim()));
-				pstmt.setInt(5, usuario.getFolio());
+				pstmt.setInt(5, Integer.valueOf(tabla[i][7].toString().trim()));
+				pstmt.setInt(6, usuario.getFolio());
 				
 				pstmt.executeUpdate();
 			}
@@ -211,12 +212,14 @@ public class GuardarTablasModel {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion [ tabla_model_traspaso_de_deduccion_sugerido ]\n SQLException: "+e.getMessage()+"\nEn El Query:"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion [ tabla_model_traspaso_de_deduccion_sugerido ]\n SQLException: "+ex.getMessage()+"\nEn El Qry"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return false;

@@ -238,10 +238,11 @@ public class Cat_Empleados extends JFrame{
 	JButton btnExaminar = new JButton("Examinar");
 	JButton btnCamara = new JButton(new ImageIcon("Iconos/camara_icon&16.png"));
 	
-	JButton btnImp_Datos_Completos = new JButton("R. Impresion",new ImageIcon("Imagen/informacion-del-usuario-icono-8370-16.png"));
+	JButton btnImp_Datos_Completos = new JButton("Informacion",new ImageIcon("Imagen/informacion-del-usuario-icono-8370-16.png"));
 	JButton btnContratacion = new JButton("Contratacion",new ImageIcon("Imagen/contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png"));
-	JButton btnAsistencia_Empleado =new JButton("R.Asistencia",new ImageIcon("Imagen/archivo-icono-8809-16.png")); 
-	JButton btnCortes =new JButton("R.Cortes",new ImageIcon("Imagen/dinero-icono-8797-16.png")); 
+	JButton btnDocumentacion = new JButton("Documentación",new ImageIcon("imagen/carpeta-de-correo-icono-4002-16.png"));
+	JButton btnAsistencia_Empleado =new JButton("Asistencia",new ImageIcon("Imagen/archivo-icono-8809-16.png")); 
+	JButton btnCortes =new JButton("Cortes",new ImageIcon("Imagen/dinero-icono-8797-16.png")); 
 	JButton btn_plantilla = new JButton("R.Plantilla",new ImageIcon ("Imagen/plan-icono-5073-16.png"));
 	JButton btn_R_horarios = new JButton("R.Horarios",new ImageIcon("Imagen/horas-de-reloj-de-alarma-icono-5601-16.png"));
 	JButton btnIncontratables = new JButton("No Contratables",new ImageIcon("Imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
@@ -251,8 +252,7 @@ public class Cat_Empleados extends JFrame{
 	JButton btnAltasBajas = new JButton("R.Altas/Bajas",new ImageIcon("imagen/bajas_altas_16p.png"));
 	
 	JButton btnBaja = new JButton("No contratables");
-	
-	JButton btnDocumentacion = new JButton("Documentación");
+
 	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
@@ -328,7 +328,7 @@ public class Cat_Empleados extends JFrame{
 //		loweredbevel = BorderFactory.createLoweredBevelBorder();
 //		empty = BorderFactory.createEmptyBorder();
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/user_icon&16.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/de-configuracion-de-usuario-icono-7374-32.png"));
 		this.setTitle("Alta de Empleados");
 		
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Datos del Colaborador"));
@@ -375,17 +375,17 @@ public class Cat_Empleados extends JFrame{
 		
 		panel.add(btnImp_Datos_Completos).setBounds(x-5,y,128,x);
 		panel.add(btnContratacion).setBounds(x+130,y,128,x);
-		panel.add(btnAsistencia_Empleado).setBounds(x+265,y,128,x);
-		panel.add(btnCortes).setBounds(x+400,y,128,x);
-		panel.add(btn_R_horarios).setBounds(x+535,y,128,x);
+		panel.add(btnDocumentacion).setBounds(x+265,y,128,x);
+		panel.add(btnAsistencia_Empleado).setBounds(x+400,y,128,x);
+		panel.add(btnCortes).setBounds(x+535,y,128,x);
+		
 		panel.add(btn_plantilla).setBounds(x+670,y,128,x);
 		panel.add(btnIncontratables).setBounds(x*2+ancho*3+ancho+225,y,130,x);
-		
 		panel.add(btnLicencias).setBounds(x-5,y+=25,128,x);
 		panel.add(btnCumpleaños_del_Mes).setBounds(x+130,y,128,x);
 		panel.add(btnAltasBajas).setBounds(x+265,y,128,x);
+		panel.add(btn_R_horarios).setBounds(x+400,y,128,x);
 		
-		panel.add(btnDocumentacion).setBounds(x+400,y,128,x);
 		
 		y=y+=40;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
@@ -946,7 +946,7 @@ public class Cat_Empleados extends JFrame{
 				if(!txtApPaterno.getText().equals("")){
 					new Cat_Documentacion_De_Empleado(txtFolioEmpleado.getText(),txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText(),cmbEstablecimiento.getSelectedItem()+"",cmbPuesto.getSelectedItem()+"").setVisible(true);
 				}else{
-					JOptionPane.showMessageDialog(null, "Primero Debe Buscar Un Empleado","Aviso",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 					txtFolioEmpleado.requestFocus();
 					return;
 				}
@@ -956,7 +956,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener buscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Error",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				
@@ -1909,7 +1909,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opContratacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 			String Sexo ="",Estado_Civil="", NombreUsuario="";
@@ -1941,7 +1941,7 @@ public class Cat_Empleados extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				String comando="exec sp_select_datos_completos_empleado "+txtFolioEmpleado.getText()+"";
@@ -1959,7 +1959,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opAsistenciaEmpleado = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 			
@@ -1971,7 +1971,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener Reporte_Cortes_Por_empleado = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 			String reporte = "Obj_Reporte_De_Cortes_De_Lista_De_Raya_Actual.jrxml";
@@ -2053,7 +2053,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opGenerarHorairo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita seleccionar Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 			new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString())).setVisible(true);

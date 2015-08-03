@@ -27,8 +27,8 @@ public class Cat_Root extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
 	
-	public JButton btn_guardar = new JButton("Guardar",new ImageIcon("Iconos/save_icon&16.png"));
-	public JButton btn_refrescar = new JButton(new ImageIcon("Iconos/refresh_icon&16.png"));
+	public JButton btn_guardar = new JButton("Guardar",new ImageIcon("Imagen/Guardar.png"));
+	public JButton btn_refrescar = new JButton(new ImageIcon("Imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-16.png"));
 	
 	public Cat_Root(){
 		

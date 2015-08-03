@@ -171,8 +171,6 @@ public class Cat_Concialiacion_De_Movimientos_Bancarios_Vs_Movimientos_Contables
 	
     JTable tablaconciliados = new JTable(modeloconciliados);
     JScrollPane scrollconciliados = new JScrollPane(tablaconciliados);
-
-	
 	
 	//TODO INCIA CONSTRUCTOR
 	public Cat_Concialiacion_De_Movimientos_Bancarios_Vs_Movimientos_Contables() {
@@ -188,11 +186,9 @@ public class Cat_Concialiacion_De_Movimientos_Bancarios_Vs_Movimientos_Contables
 		lblTablaMovBancarios.setForeground(new java.awt.Color(0,0,100));
 		lblTablaMovContabilidad.setForeground(new java.awt.Color(0,0,100));
 		lblTablaConciliados.setForeground(new java.awt.Color(0,0,100));
-		
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
 		setTitle("Traspaso de Netos de Nomina a Bancos");
 		campo.setBorder(BorderFactory.createTitledBorder("Traspaso de Netos a Bancos"));
-		
 
 		scroll_Mov_Contabilidad = new JScrollPane(tabla_mov_contabilidad);
 
@@ -201,7 +197,6 @@ public class Cat_Concialiacion_De_Movimientos_Bancarios_Vs_Movimientos_Contables
 		campo.add(cmbCuentasBancarias).setBounds(60,y,100,20);
 		campo.add(txtBanco).setBounds(170,y,100,20);
 		campo.add(txtCuentaContable).setBounds(300,y,100,20);
-		
 		
 		campo.add(new JLabel ("Fecha:")).setBounds(15,y+=30,100,20);
 		campo.add(cfecha).setBounds(60,y,100,20);
@@ -328,7 +323,6 @@ public class Cat_Concialiacion_De_Movimientos_Bancarios_Vs_Movimientos_Contables
 	
 	////CONSULTA
 	public Object[][] Consulta_para_llenar_Mov_Contabilidad(){
-		
 		String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate())+" 00:00:00";
 		
 		String consulta = "DECLARE	   @FI smalldatetime,@FF smalldatetime,@Cuenta varchar(1024) SET @FI='Ene  8 2010 12:00:00:000AM' SET @FF='"+fecha+"' SET @Cuenta='"+txtCuentaContable.getText().toString()+"'"
@@ -341,7 +335,6 @@ public class Cat_Concialiacion_De_Movimientos_Bancarios_Vs_Movimientos_Contables
 				      + "        AND (RTRIM(mp.cuenta_contable) + RTRIM(mp.subcuenta_contable) + RTRIM(mp.subsubcuenta_contable) = @Cuenta)"
 				      + "        AND (CONVERT(varchar(15), mp.id) NOT IN (SELECT  id_mpolizas  FROM    movimientos_bancos "
 				      + "                                                 WHERE (id_mpolizas IS NOT NULL))) AND (mp.id_movimientos_bancarios IS NULL) AND (mp.fecha_conciliacion_bancos IS NULL) ";
-   		
 //   		String consulta="select 'false','c003','E','072015','08/07/2015 09:08:00','A,','25296.00','117321','PAGO DE VACACIONES A EMPLEADO: BEJARANO RIOS ROBERTO CARLOS','2','783135332'";
    		Statement s;
 		ResultSet rs2;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-08-02T08:33:45 -->
+<!-- 2015-08-03T09:22:18 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_General_de_Asistencia_Por_Establecimiento" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="24cc16d5-c483-4414-a6b0-717ab373dbf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="ireport.zoom" value="4.59497298635725"/>
@@ -101,10 +101,6 @@
 					</textElement>
 					<text><![CDATA[*Reporte De Abonos Y Diferiencias De Cortes]]></text>
 				</staticText>
-				<image scaleImage="FillFrame">
-					<reportElement x="528" y="0" width="44" height="40" uuid="cc4133a0-0b5a-4e0b-9abf-ed3c2c4adeee"/>
-					<imageExpression><![CDATA["C:/SCOI_SRC/SCOI/imagen/Abono_Cortes.png"]]></imageExpression>
-				</image>
 				<staticText>
 					<reportElement x="410" y="1" width="42" height="20" forecolor="#FFFFFF" uuid="a5dc0280-a528-4f29-911e-60255b2f42a1"/>
 					<textElement>

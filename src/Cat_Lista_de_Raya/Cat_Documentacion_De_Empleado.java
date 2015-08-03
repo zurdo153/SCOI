@@ -38,15 +38,15 @@ public class Cat_Documentacion_De_Empleado extends JDialog{
 	JTextField txtEstablecimiento = new JTextField("");
 	JTextField txtPuesto = new JTextField("");
 	
-	JButton btnCargarArchivo = new JButton("Subir Documentos");
-	JButton btnGenerarArchivos = new JButton("Descargar Documentos");
+	JButton btnCargarArchivo = new JButton("Subir Documentos", new ImageIcon("imagen/Up.png"));
+	JButton btnGenerarArchivos = new JButton("Descargar Documentos",new ImageIcon("imagen/Down.png"));
 	
 	Border blackline;
 	
 	public Cat_Documentacion_De_Empleado(String folio, String nombre, String establecimiento, String puesto){
 		this.setModal(true);
 		this.setTitle("Documentacion de empleados");
-		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/carpeta-de-correo-icono-4002-16.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Consulta Y Captura De Documentacion"));
 		
@@ -146,7 +146,7 @@ public class Cat_Cargar_Documentacion_De_Empleado extends JDialog{
         };
 		JTable tabla = new JTable(tabla_model);
 		
-		JButton btnGuardarArchivo = new JButton("Guardar Archivo",new ImageIcon("imagen/Aplicar.png"));
+		JButton btnGuardarArchivo = new JButton("Guardar Archivo",new ImageIcon("imagen/Guardar.png"));
 		
 		int folio_emp = 0;
 		

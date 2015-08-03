@@ -18,19 +18,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -49,8 +48,8 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	@SuppressWarnings("rawtypes")
 	public JComboBox cmbEstablecimientos ;
 	
-	public JButton btn_guardar = new JButton("Guardar",new ImageIcon("Iconos/save_icon&16.png"));
-	public JButton btn_refrescar = new JButton(new ImageIcon("Iconos/refresh_icon&16.png"));
+	public JButton btn_guardar = new JButton("Guardar",new ImageIcon("Imagen/Guardar.png"));
+	public JButton btn_refrescar = new JButton(new ImageIcon("Imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-16.png"));
 	
 	Runtime R = Runtime.getRuntime();
     
@@ -96,9 +95,6 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	public JTable tabla = new JTable(modelo);
     JScrollPane scroll_tabla = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public TableRowSorter trsfiltro = new TableRowSorter(modelo); 
-    
 	
 	@SuppressWarnings("unused")
 	public void tableChanged(TableModelEvent e) {
@@ -127,7 +123,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 //		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		alto=alto-50;
-		this.setSize(1100, alto);
+		this.setSize(1180, alto);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
@@ -144,7 +140,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 		this.panel.add(txtNombre_Completo).setBounds(101,30,359,25);
 		this.panel.add(cmbEstablecimientos).setBounds(463,30,300,25);
 		
-		panel.add(obtener_tabla()).setBounds(30,60,1024,alto-120);
+		panel.add(obtener_tabla()).setBounds(30,60,1100,alto-120);
 		llenar_tabla__sugerido ();
 		pitar_tabla();
 		
@@ -168,7 +164,6 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 
 
 	ActionListener op_guardar = new ActionListener() {
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
 			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
 			Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
@@ -181,9 +176,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 						JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificada Ninguna Deduccion o Percepcion de Lista de Raya....."
 						       +" \n Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<>>","Aviso",JOptionPane.WARNING_MESSAGE);
 				}else{
-						trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-						trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-						trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+					new Obj_Filtro_Dinamico(tabla, "Folio","","Nombre Completo", "","Establecimiento","", "","");
 			
 						txtFolio.setText("");
 						txtNombre_Completo.setText("");
@@ -198,7 +191,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 								Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya inasistencia = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya();
 								
 									if(inasistencia.guardar_traspaso_de_deduccion_sugerido(tabla_guardar())){
-										JOptionPane.showMessageDialog(null, "El traspaso por deducciones sugerido se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+										JOptionPane.showMessageDialog(null, "El Traspaso de Deducciones de Asistencia Sugerido Por Sistema \n Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 										return;
 									}else{
 										JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
@@ -220,11 +213,8 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 		}
 		return matriz;
 	}
-	
 
-	@SuppressWarnings("unchecked")
 	public JScrollPane obtener_tabla(){
-		this.tabla.setRowSorter(trsfiltro);  
 	    this.tabla.getTableHeader().setReorderingAllowed(false) ;
 	    this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    
@@ -293,9 +283,8 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 	
 
 	KeyListener op_filtro_folio = new KeyListener(){
-		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
+			new Obj_Filtro_Dinamico(tabla, "Folio",txtFolio.getText(),"Nombre Completo", txtNombre_Completo.getText().toUpperCase().toString(),"Establecimiento",cmbEstablecimientos.getSelectedItem().toString(), "","");
 		}
 		public void keyTyped(KeyEvent arg0) {
 			char caracter = arg0.getKeyChar();
@@ -306,26 +295,20 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 			}	
 		}
 		public void keyPressed(KeyEvent arg0) {}
-
 	};
 
+	
 	KeyListener op_filtro_nombre = new KeyListener(){
-		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
+			new Obj_Filtro_Dinamico(tabla, "Folio",txtFolio.getText(),"Nombre Completo", txtNombre_Completo.getText().toUpperCase().toString(),"Establecimiento",cmbEstablecimientos.getSelectedItem().toString(), "","");
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 
 	ActionListener op_filtro_establecimiento = new ActionListener(){
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0){
-			if(cmbEstablecimientos.getSelectedIndex() != 0){
-				trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimientos.getSelectedItem()+"", 2));
-			}else{
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-			}
+			new Obj_Filtro_Dinamico(tabla, "Folio",txtFolio.getText(),"Nombre Completo", txtNombre_Completo.getText().toUpperCase().toString(),"Establecimiento",cmbEstablecimientos.getSelectedItem().toString(), "","");
 		}
 	};
 	
