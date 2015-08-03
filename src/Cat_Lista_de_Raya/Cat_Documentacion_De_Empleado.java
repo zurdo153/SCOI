@@ -173,8 +173,8 @@ public class Cat_Cargar_Documentacion_De_Empleado extends JDialog{
     		tabla.getColumn("").setCellEditor(new ButtonEditor(new JCheckBox()));
     		
 //    		ACCION DEL BOTON DE LA table
-    		btnTabla.addActionListener(opExaminarXML_PDF);
-    		btnGuardarArchivo.addActionListener(opGauardarXMLpdf);
+    		btnTabla.addActionListener(opExaminarPDF);
+    		btnGuardarArchivo.addActionListener(opGauardarArchivos);
 			
 	        this.contenedor.add(panelxml);
 	        
@@ -265,7 +265,7 @@ public class Cat_Cargar_Documentacion_De_Empleado extends JDialog{
     		}
     	}
 		
-	ActionListener opGauardarXMLpdf = new ActionListener(){
+	ActionListener opGauardarArchivos = new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				
 				String[][] documentos = new String[8][2];
@@ -284,7 +284,7 @@ public class Cat_Cargar_Documentacion_De_Empleado extends JDialog{
 		}
 	};
 	
-	ActionListener opExaminarXML_PDF = new ActionListener(){
+	ActionListener opExaminarPDF = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 				
 			int filaSeleccionada = tabla.getSelectedRow();
