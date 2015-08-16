@@ -151,6 +151,12 @@ public class Componentes {
 			});
 			
 		tmp.setToolTipText(caption);
+		if(tmp.getClass().getSimpleName().equals("JCTextField")){
+		((JCTextField) tmp).setPlaceholder(caption);
+		((JCTextField) tmp).setPhColor( new Color(0,0,255) );
+		tmp.setFont( new Font("SansSerif",Font.PLAIN, 12) );
+		}
+
 		return tmp;
 	}
 	

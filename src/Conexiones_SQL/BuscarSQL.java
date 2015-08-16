@@ -1524,6 +1524,43 @@ public class BuscarSQL {
 		return usuario;
 	}
 	
+	public Obj_Usuario colores_usuario() throws SQLException{
+		Obj_Usuario usuario = new Obj_Usuario();
+		Obj_Usuario usuario_folio = new Obj_Usuario().LeerSession();
+				
+		String query = "exec sp_select_colores_del_usuario "+usuario_folio.getFolio();
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				usuario.setRFuente(rs.getInt("RFuente"));
+				usuario.setGFuente(rs.getInt("GFuente"));
+	          	usuario.setBFuente(rs.getInt("BFuente"));
+				usuario.setRFuenteS(rs.getInt("RFuenteS"));
+				usuario.setGFuenteS(rs.getInt("GFuenteS"));
+	          	usuario.setBFuenteS(rs.getInt("BFuenteS"));
+				usuario.setRfila(rs.getInt("RFila"));
+				usuario.setGfila(rs.getInt("GFila"));
+				usuario.setBfila(rs.getInt("BFila"));
+				usuario.setRfilaS(rs.getInt("RFilaS"));
+				usuario.setGfilaS(rs.getInt("GFilaS"));
+				usuario.setBfilaS(rs.getInt("BFilaS"));
+				usuario.setTamanio_fuente(rs.getInt("tamanio_fuente"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Obj_Usuario colores_usuario \n SQLException: "+e.getMessage()+" \nprocedure: "+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			 if (stmt != null) { stmt.close(); }
+		}
+		return usuario;
+	}
+	
+	
 	public Obj_Fue_Sodas_DH MaximoFuente() throws SQLException{
 		Obj_Fue_Sodas_DH bono = new Obj_Fue_Sodas_DH();
 		String query = "select max(folio) as 'Maximo' from tb_fuente_sodas_rh";
@@ -3773,24 +3810,19 @@ public class BuscarSQL {
 	public Obj_Usuario getSession() throws IOException {
 		Vector myVector = new Vector();
 		Obj_Usuario usuario = new Obj_Usuario();
-		
 		try{
 			FileReader archivo = new FileReader(System.getProperty("user.dir")+"\\Config\\users");
 			BufferedReader bufferedWriter = new BufferedReader(archivo);
 			String cadena = "";
 			while( (cadena = bufferedWriter.readLine()) !=null)
 				myVector.addElement(cadena);
-				
 				usuario.setFolio(Integer.parseInt(myVector.get(0).toString()));
 				usuario.setNombre_completo(myVector.get(1).toString());
-	
-				
 		}catch(FileNotFoundException e) {
 			System.out.println(e.getMessage());
 			return usuario=null;
 		}
 		return usuario;
-			
 	}
 	
 	public Obj_Captura_Del_Cuadrante_Personal EmpleadoNombre(String nombre) throws SQLException{

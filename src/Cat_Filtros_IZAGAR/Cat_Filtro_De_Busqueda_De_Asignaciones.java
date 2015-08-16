@@ -1,8 +1,6 @@
 package Cat_Filtros_IZAGAR;
 
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +25,7 @@ import Cat_Reportes.Cat_Reportes_De_Vouchers;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
@@ -73,9 +72,7 @@ public class Cat_Filtro_De_Busqueda_De_Asignaciones extends JDialog {
 		
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
-		
-  	    JTextField txtNombre = new JCTextField();
-  	    
+  	    JTextField txtNombre = new Componentes().text(new JCTextField(), "Nombre Cajero", 200, "String");
  		JTextField txtFolioAsignacion = new JTextField();
 		JTextField txtFolioCorte = new JTextField();
 		String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
@@ -110,10 +107,8 @@ public class Cat_Filtro_De_Busqueda_De_Asignaciones extends JDialog {
 				panel.add(txtFolioAsignacion).setBounds(15,20,80,20);
 				panel.add(txtFolioCorte).setBounds(96,20,79,20);
 				
-				((JCTextField) txtNombre).setPlaceholder("Nombre del Cajero");
-				((JCTextField) txtNombre).setPhColor( new Color(0,0,255) );
-				txtNombre.setFont( new Font("SansSerif",Font.PLAIN, 12) );
-				add(txtNombre);
+
+
 				panel.add(txtNombre).setBounds(176,20,320,20);
 				
 				panel.add(cmbEstablecimientos).setBounds(497,20, 170, 20);

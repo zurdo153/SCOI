@@ -114,7 +114,6 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
  	        	System.out.println("no es entero");
  	        }
         }
-       
     }
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -157,8 +156,6 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
 		this.txtFolio.addKeyListener(op_filtro_folio);
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
-
-
 		
 	}
 

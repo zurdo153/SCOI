@@ -214,8 +214,6 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 		tablaFiltro.getColumnModel().getColumn(3).setMaxWidth(40);
 		tablaFiltro.getColumnModel().getColumn(3).setMinWidth(40);
 		
-		
-		
 //		limpiar tablanomina
 		while(tablanomina.getRowCount()>0){	modelonomina.removeRow(0);	}
 //		llenar arreglo desde funcion
@@ -383,7 +381,6 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 			
 			Obj_IZAGAR_Netos_Nominas guardar_netos_nomina = new Obj_IZAGAR_Netos_Nominas();
 							if(guardar_netos_nomina.guardar_netos_nominas_temp(tabla_guardar_nomina_temp())){
-							System.out.println("se guardo AUTO");
 							
 							while(tablanomina.getRowCount()>0){
 								modelonomina.removeRow(0); }
@@ -484,12 +481,7 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 	}
 	
 	
-	
-	
-
-	
 	/////////////////EMPIEZAN LAS CONECCIONES A LA BASE DE DATOS
-	
 	
 	 	public Object[][] getTablaempleadoscoi(String folio_nomina){
 		String todos = "exec IZAGAR_select_empleados_scoi_traspaso_depositos_bancos_de_nomina '"+folio_nomina+"'";

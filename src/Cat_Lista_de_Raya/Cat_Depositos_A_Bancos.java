@@ -253,14 +253,11 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 			if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
 				JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Deposito a Bancos......"
 				       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria ","Aviso",JOptionPane.WARNING_MESSAGE);
-				
 			}else{
-				
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
 			trsfiltro.setRowFilter(RowFilter.regexFilter("", 3));
-			
 			txtFolio.setText("");
 			txtNombre_Completo.setText("");
 			cmbEstablecimientos.setSelectedIndex(0);
