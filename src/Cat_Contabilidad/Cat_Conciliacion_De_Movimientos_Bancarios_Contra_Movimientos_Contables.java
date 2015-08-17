@@ -803,7 +803,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			    	  }
 				   }	
 			   }
-		    btnConciliaAutoImporte.setEnabled(false);
+//		    btnConciliaAutoImporte.setEnabled(false);
 		   }
 	};
 	
@@ -851,7 +851,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			    	  }
 				   }	
 			   }
-		    btnConciliaAutoImporteyReferencia.setEnabled(false);
+//		    btnConciliaAutoImporteyReferencia.setEnabled(false);
 		   }
 	};
 	

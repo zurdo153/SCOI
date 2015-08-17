@@ -73,6 +73,8 @@ public class Cat_Filtro_De_Busqueda_De_Asignaciones extends JDialog {
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
   	    JTextField txtNombre = new Componentes().text(new JCTextField(), "Nombre Cajero", 200, "String");
+		
+  	    
  		JTextField txtFolioAsignacion = new JTextField();
 		JTextField txtFolioCorte = new JTextField();
 		String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
@@ -107,8 +109,6 @@ public class Cat_Filtro_De_Busqueda_De_Asignaciones extends JDialog {
 				panel.add(txtFolioAsignacion).setBounds(15,20,80,20);
 				panel.add(txtFolioCorte).setBounds(96,20,79,20);
 				
-
-
 				panel.add(txtNombre).setBounds(176,20,320,20);
 				
 				panel.add(cmbEstablecimientos).setBounds(497,20, 170, 20);
