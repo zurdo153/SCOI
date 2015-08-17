@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +23,7 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
 
@@ -53,22 +55,34 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		
 		txtFolioEmpleado.setText(folio_empleado);
 		
-		try {
-			Date fechaI = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/2015");
-			fechaIn.setDate(fechaI);
-			Date fechaF = new SimpleDateFormat("dd/MM/yyyy").parse("17/08/2015");
-			fechaFin.setDate(fechaF);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+			Date fechaI;
+			try {
+				fechaI = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/2015");
+				fechaIn.setDate(fechaI);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			fechaFin.setDate(cargar_fecha_Sugerida(0));
 		
 	}
 	
 	public Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual() {
 		Constructor();
 	}
+	
+	public Date cargar_fecha_Sugerida(Integer dias){
+		Date date1 = null;
+				  try {
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		return date1;
+	};
 
 	public void Constructor(){
 		
