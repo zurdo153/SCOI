@@ -20,6 +20,154 @@ public class Obj_Usuario {
 	private int status;
 	private int acceso_a_costos_y_precio_de_venta;
 	
+	 int RFuente;
+	 int GFuente;
+	 int BFuente;
+	 ///fuente Seleccionada
+	 int RFuenteS;
+	 int GFuenteS;
+	 int BFuenteS;
+	 ///fila non
+	 int Rfila;
+	 int Gfila;
+	 int Bfila;
+	 //fila seleccionada
+	 int RfilaS;
+	 int GfilaS;
+	 int BfilaS;
+	 
+	 int tamanio_fuente;
+	
+	public int getTamanio_fuente() {
+		return tamanio_fuente;
+	}
+
+
+	public void setTamanio_fuente(int tamanio_fuente) {
+		this.tamanio_fuente = tamanio_fuente;
+	}
+
+
+	public int getRFuente() {
+		return RFuente;
+	}
+
+
+	public void setRFuente(int rFuente) {
+		RFuente = rFuente;
+	}
+
+
+	public int getGFuente() {
+		return GFuente;
+	}
+
+
+	public void setGFuente(int gFuente) {
+		GFuente = gFuente;
+	}
+
+
+	public int getBFuente() {
+		return BFuente;
+	}
+
+
+	public void setBFuente(int bFuente) {
+		BFuente = bFuente;
+	}
+
+
+	public int getRFuenteS() {
+		return RFuenteS;
+	}
+
+
+	public void setRFuenteS(int rFuenteS) {
+		RFuenteS = rFuenteS;
+	}
+
+
+	public int getGFuenteS() {
+		return GFuenteS;
+	}
+
+
+	public void setGFuenteS(int gFuenteS) {
+		GFuenteS = gFuenteS;
+	}
+
+
+	public int getBFuenteS() {
+		return BFuenteS;
+	}
+
+
+	public void setBFuenteS(int bFuenteS) {
+		BFuenteS = bFuenteS;
+	}
+
+
+	public int getRfila() {
+		return Rfila;
+	}
+
+
+	public void setRfila(int rfila) {
+		Rfila = rfila;
+	}
+
+
+	public int getGfila() {
+		return Gfila;
+	}
+
+
+	public void setGfila(int gfila) {
+		Gfila = gfila;
+	}
+
+
+	public int getBfila() {
+		return Bfila;
+	}
+
+
+	public void setBfila(int bfila) {
+		Bfila = bfila;
+	}
+
+
+	public int getRfilaS() {
+		return RfilaS;
+	}
+
+
+	public void setRfilaS(int rfilaS) {
+		RfilaS = rfilaS;
+	}
+
+
+	public int getGfilaS() {
+		return GfilaS;
+	}
+
+
+	public void setGfilaS(int gfilaS) {
+		GfilaS = gfilaS;
+	}
+
+
+	public int getBfilaS() {
+		return BfilaS;
+	}
+
+
+	public void setBfilaS(int bfilaS) {
+		BfilaS = bfilaS;
+	}
+
+
 	public Obj_Usuario(){
 		this.folio=0; nombre_completo=""; contrasena=""; permiso_id=0; status=0; fecha_alta=""; fecha_actua=""; sesion="";vista_previa_impresion="";acceso_a_costos_y_precio_de_venta=0;
 	}
@@ -134,8 +282,15 @@ public class Obj_Usuario {
 		return null; 
 	}
 	
-//	public boolean actualizar(int folio){ return new ActualizarSQL().Usuario(this,folio); }
-		
+	public Obj_Usuario buscar_Colores() {
+		try {
+			return new BuscarSQL().colores_usuario();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public Obj_Usuario buscarMaximo() {
 		try {
 			return new BuscarSQL().Maximo();
@@ -144,6 +299,7 @@ public class Obj_Usuario {
 		}
 		return null;
 	}
+	
 	
 	@SuppressWarnings("rawtypes")
 	public boolean guardarPermisos(Vector Permisos){ 
@@ -191,12 +347,10 @@ public class Obj_Usuario {
 	
 	public boolean CambiarContrasena(int folio_empleado ,String nuevacontrasena){
 		return new ActualizarSQL().GuardaNuevaContrasena(folio_empleado,nuevacontrasena);
-		
 	}
 	
 	public boolean Clonar_permisos(int folio_empleado ,String empleado_de_clonar){
 		return new ActualizarSQL().GuardarOpciones_Clonadas(folio_empleado,empleado_de_clonar);
-		
 	}
 	
 	public Obj_Usuario LeerSession()

@@ -113,6 +113,7 @@ import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
 import Obj_Lista_de_Raya.Obj_Sueldos;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 
 import com.toedter.calendar.JDateChooser;
@@ -134,7 +135,7 @@ public class Cat_Empleados extends JFrame{
 	
 	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
 	
-	JTextField txtFolioEmpleado = new Componentes().text( new JTextField(), "Folio de Empleado", 9, "Int");
+	JTextField txtFolioEmpleado = new Componentes().text( new JCTextField(), "Folio de Empleado", 9, "Int");
 	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 70, "String");
 	JTextField txtApPaterno = new Componentes().text( new JTextField(), "Apellido Paterno", 20, "String");
 	JTextField txtApMaterno = new Componentes().text( new JTextField(), "Apellido Materno", 20, "String");

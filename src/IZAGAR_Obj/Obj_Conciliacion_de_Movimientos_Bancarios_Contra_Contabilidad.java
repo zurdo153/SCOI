@@ -12,6 +12,7 @@ public class Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad {
 	String Cuenta_Contable;
 	String Fecha;
 	String Fecha_Conciliacion;
+    
 
 	public String getCuenta_Bancaria() {
 		return Cuenta_Bancaria;
@@ -70,6 +71,19 @@ public class Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad {
 			e.printStackTrace();
 		}
 	return null; }
+	
+	public boolean guardar_movimientos_bancarios_iniciales(Object[][] tabla){
+		return new Conexiones_SQL.GuardarTablasModel().IZAGAR_insert_Movimientos_Bancarios_Iniciales(tabla );
+	}
+	
+	public boolean guardar_movimientos_contabilidad_iniciales(Object[][] tabla){
+		return new Conexiones_SQL.GuardarTablasModel().IZAGAR_insert_Movimientos_contabilidad_Iniciales(tabla );
+	}
+	
+	public boolean guardar_conciliacion(Object[][] tabla){
+		return new Conexiones_SQL.GuardarTablasModel().IZAGAR_Guardar_Conciliacion(tabla );
+	}
+	
 	
 	
 	public Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad buscar_datos_cuenta_Bancaria(String Cuenta_Bancaria) {

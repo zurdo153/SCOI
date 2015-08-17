@@ -1,4 +1,4 @@
-package Cat_Auditoria;
+package Cat_Evaluaciones;
 
 import java.awt.Color;
 import java.awt.Component;

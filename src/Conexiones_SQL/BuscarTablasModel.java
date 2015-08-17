@@ -1465,7 +1465,7 @@ public class BuscarTablasModel {
 				+ "		select Asignacion,convert(varchar(20),Fecha_liquidacion,103)+' '+convert(varchar(20),Fecha_liquidacion,108) as fecha_liquidacion,Iva,IEPS,Total,Nombre_Cajero "
 				+ " from IZAGAR_Relacion_de_Asignaciones_Liquidadas "
 				+ " where Cod_Estab = @folio_establecimiento "
-				+ "	and Fecha_Liquidacion > getdate()-4 order by asignacion";
+				+ "	and Fecha_Liquidacion > getdate()-8 order by asignacion";
 
 		String[][] matriz = new String[get_filas_izagar(query_lista)][6];
 		

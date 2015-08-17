@@ -20,6 +20,7 @@ import java.util.Vector;
 
 
 
+
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -63,6 +64,7 @@ import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Menus;
 
@@ -166,7 +168,7 @@ public class Init_Login extends JFrame{
     JLabel lblcontrasena_Nueva=new JLabel("Nueva:");	
     JLabel lblcontrasena_Confirmar=new JLabel("Confirmar:");	
 	
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 10, "Int");
+	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio Empleado", 10, "Int");
 	JTextField txtUsuario = new JTextField("");
 	JPasswordField txtContrasena = new Componentes().textPassword(new JPasswordField(), "Contraseña", 50);
  	

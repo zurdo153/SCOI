@@ -1529,7 +1529,6 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 			pstmt.setString(2, "CV");
 			pstmt.setInt(3, folio_trabajo);
 			pstmt.setInt(4, folio_usuario);
-			
 			pstmt.executeUpdate();
 		}
 		
@@ -1539,7 +1538,6 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 			pstmt.setString(2, "GR");
 			pstmt.setInt(3, folio_trabajo);
 			pstmt.setInt(4, folio_usuario);
-			
 			pstmt.executeUpdate();
 		}
 		
@@ -1558,9 +1556,6 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 		pstmtInsertTotales.setDouble(9, folio_trabajo);
 			
 		pstmtInsertTotales.executeUpdate();
-		
-		
-		
 		con.commit();
 	} catch (Exception e) {
 		System.out.println("SQLException: "+e.getMessage());
@@ -1585,6 +1580,134 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 	}		
 	return folio_trabajo;
 	}
+
+public boolean IZAGAR_insert_Movimientos_Bancarios_Iniciales(Object[][] tabla){
+	String query = "exec IZAGAR_insert_Movimientos_Bancarios ?,?,?,?,?,?,?,"+usuario.getFolio();
+	Connection con = new Connexion().conexion();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.length; i++){
+			pstmt.setString(1, tabla[i][0].toString().trim());
+			pstmt.setString(2, tabla[i][1].toString().trim());
+			pstmt.setString(3, tabla[i][2].toString().trim());
+			pstmt.setString(4, tabla[i][3].toString().trim());
+			pstmt.setString(5, tabla[i][4].toString().trim());
+			pstmt.setString(6, tabla[i][5].toString().trim());
+			pstmt.setString(7, tabla[i][6].toString().trim());
+		pstmt.executeUpdate();
+		}
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la  funcion IZAGAR_insert_Movimientos_Bancarios_Iniciales  \n procedimiento almacenado IZAGAR_insert_Movimientos_Bancarios SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_insert_Movimientos_Bancarios_Iniciales \n procedimiento almacenado IZAGAR_insert_Movimientos_Bancarios SQLException: \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_insert_Movimientos_Bancarios_Iniciales \n procedimiento almacenado IZAGAR_insert_Movimientos_Bancarios SQLException: \n "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+public boolean IZAGAR_insert_Movimientos_contabilidad_Iniciales(Object[][] tabla){
+	String query = "exec IZAGAR_insert_Movimientos_contabilidad ?,?,?,?,?,?,?,?,?,?,"+usuario.getFolio();
+	Connection con = new Connexion().conexion();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.length; i++){
+			pstmt.setString(1, tabla[i][0].toString().trim());
+			pstmt.setString(2, tabla[i][1].toString().trim());
+			pstmt.setString(3, tabla[i][2].toString().trim());
+			pstmt.setString(4, tabla[i][3].toString().trim());
+			pstmt.setString(5, tabla[i][4].toString().trim());
+			pstmt.setString(6, tabla[i][5].toString().trim());
+			pstmt.setString(7, tabla[i][6].toString().trim());
+			pstmt.setString(8, tabla[i][7].toString().trim());
+			pstmt.setString(9, tabla[i][8].toString().trim());
+			pstmt.setString(10, tabla[i][9].toString().trim());
+		pstmt.executeUpdate();
+		}
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la  funcion IZAGAR_insert_Movimientos_contabilidad_Iniciales  \n procedimiento almacenado IZAGAR_insert_Movimientos_Contabilidad SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_insert_Movimientos_contabilidad_Iniciales \n procedimiento almacenado IZAGAR_insert_Movimientos_Contabilidad SQLException: \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_insert_Movimientos_contabilidad_Iniciales \n procedimiento almacenado IZAGAR_insert_Movimientos_Contabilidad SQLException: \n "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+public boolean IZAGAR_Guardar_Conciliacion (Object[][] tabla){
+	String query = "exec sp_IZAGAR_insert_Conciliacion ?,?,?,?,?,?,"+usuario.getFolio();
+	Connection con = new Connexion().conexion();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.length; i++){
+			pstmt.setString(1, tabla[i][0].toString().trim());//fecha_conciliado
+			pstmt.setString(2, tabla[i][1].toString().trim());//id mov bancario
+			pstmt.setString(3, tabla[i][2].toString().trim());//poliza
+			pstmt.setString(4, tabla[i][3].toString().trim());//tipo
+			pstmt.setString(5, tabla[i][4].toString().trim());//poliza mes año
+			pstmt.setString(6, tabla[i][5].toString().trim());//importe poliza
+		pstmt.executeUpdate();
+		}
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la  funcion IZAGAR_Guardar_Conciliacion  \n procedimiento almacenado IZAGAR_insert_Conciliacion SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Guardar_Conciliacion \n procedimiento almacenado IZAGAR_insert_Conciliacion SQLException: \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion IZAGAR_Guardar_Conciliacion \n procedimiento almacenado IZAGAR_insert_Conciliacion SQLException: \n "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+
+
 
 }
 

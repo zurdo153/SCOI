@@ -13,8 +13,30 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import Obj_Administracion_del_Sistema.Obj_Usuario;
+
 @SuppressWarnings("serial")
 public class tablaRenderer extends DefaultTableCellRenderer {
+	
+	  Obj_Usuario usuario = new Obj_Usuario().buscar_Colores();
+	 ///fuente 
+	 int RFuente =usuario.getRFuente();
+	 int GFuente =usuario.getGFuente();
+	 int BFuente =usuario.getBFuente();
+	 ///fuente Seleccionada
+	 int RFuenteS =usuario.getRFuenteS();
+	 int GFuenteS =usuario.getGFuenteS();
+	 int BFuenteS =usuario.getBFuenteS();
+	 ///fila non
+	 int Rfila =usuario.getRfila();
+	 int Gfila =usuario.getGfila();
+	 int Bfila =usuario.getBfila();
+	 //fila seleccionada
+	 int RfilaS =usuario.getRfilaS();
+	 int GfilaS =usuario.getGfilaS();
+	 int BfilaS =usuario.getBfilaS();
+	 
+	 int tamanio_fuente=usuario.getTamanio_fuente();
   
      private String tipo="text";
      private String alineacion="text";
@@ -32,35 +54,14 @@ public class tablaRenderer extends DefaultTableCellRenderer {
      {
          this.tipo = tipo;
          this.alineacion = alineacionTexto;
-         
-         fuente(tipoDeLetra,estilo,tamanio);
+         if(tamanio_fuente==0){
+            fuente(tipoDeLetra,estilo,tamanio);
+           }else
+             {fuente(tipoDeLetra,estilo,tamanio_fuente);
+         }
      }
      
      public Component getTableCellRendererComponent ( JTable table, Object value, boolean selected, boolean focused, int row, int column ){   
-		
-    	 
-    	 ///fuente 
-    	 int RFuente =0;
-    	 int GFuente =0;
-    	 int BFuente =0;
-    	 
-    	 ///fuente Seleccionada
-    	 int RFuenteS =255;
-    	 int GFuenteS =255;
-    	 int BFuenteS =255;
-    	 
-    	 ///fila non
-    	 int Rfila =177;
-    	 int Gfila =177;
-    	 int Bfila =190;
-    	 
-    	 //fila seleccionada
-    	 int RfilaS =186;
-    	 int GfilaS =143;
-    	 int BfilaS =73;
-    	 
-    	 
-    			 
     	 if(row %2 == 0){
 				this.setBackground(new java.awt.Color(Rfila,Gfila,Bfila));	
 		  }else{
@@ -72,9 +73,7 @@ public class tablaRenderer extends DefaultTableCellRenderer {
          }
 
          if( tipo.toUpperCase().trim().equals("IMAGEN") || tipo.toUpperCase().trim().equals("IMAGENES") || tipo.toUpperCase().trim().equals("ICONO") || tipo.toUpperCase().trim().equals("ICONOS")){
-        	
         	 label.setHorizontalAlignment(JLabel.CENTER);
-        	 
              if( String.valueOf(value).equals("1")){
                  label.setIcon(entrada);
              }else {
@@ -86,7 +85,6 @@ public class tablaRenderer extends DefaultTableCellRenderer {
          if( tipo.toUpperCase().trim().equals("VENTA")){
          	
 				JLabel lbl = new JLabel(value == null? "": value.toString());
-				
 //				lbl.setFont(new Font("arial", Font.BOLD, 25));
 				lbl.setFont(fuente);
 				
@@ -123,7 +121,7 @@ public class tablaRenderer extends DefaultTableCellRenderer {
 			
          }else{
         	 
-        	 this.alineacionOrizontal( alineacion );
+        	 this.alineacionHorizontal( alineacion );
              this.setText( value.toString() );
              this.setForeground( (selected)?new Color(RFuenteS,GFuenteS,BFuenteS):new Color(RFuente,GFuente,BFuente) ); 
              this.setFont(fuente);            
@@ -134,7 +132,7 @@ public class tablaRenderer extends DefaultTableCellRenderer {
          return this;
      }
 
-	private void alineacionOrizontal(String alinear) {
+	private void alineacionHorizontal(String alinear) {
 		switch(alinear){
 			case "centro":	this.setHorizontalAlignment(JLabel.CENTER); break;
 			case "derecha":	this.setHorizontalAlignment(JLabel.RIGHT); break;

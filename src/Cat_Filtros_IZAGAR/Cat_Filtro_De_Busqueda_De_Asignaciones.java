@@ -72,9 +72,8 @@ public class Cat_Filtro_De_Busqueda_De_Asignaciones extends JDialog {
 		
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
+  	    JTextField txtNombre = new Componentes().text(new JCTextField(), "Nombre Cajero", 200, "String");
 		
-  	    JTextField txtNombre = new Componentes().text(new JCTextField(), "Nombre De Cajero", 25, "Int");
-//  	    		new JCTextField();
   	    
  		JTextField txtFolioAsignacion = new JTextField();
 		JTextField txtFolioCorte = new JTextField();
