@@ -90,6 +90,7 @@ import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Horarios;
 import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
+import Cat_Reportes.Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual;
 //import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Personal_Con_Horario;
@@ -1974,9 +1975,11 @@ public class Cat_Empleados extends JFrame{
 				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-			String reporte = "Obj_Reporte_De_Cortes_De_Lista_De_Raya_Actual.jrxml";
-			String comando = "exec sp_Reporte_De_Cortes_De_Lista_De_Raya_Actual_Para_Exportar 'status',"+txtFolioEmpleado.getText().toString();
-			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				
+				new Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual(txtFolioEmpleado.getText()).setVisible(true);
+//			String reporte = "Obj_Reporte_De_Cortes_De_Lista_De_Raya_Actual.jrxml";
+//			String comando = "exec sp_Reporte_De_Cortes_De_Lista_De_Raya_Actual_Para_Exportar 'status',"+txtFolioEmpleado.getText().toString();
+//			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			}
 		}
 	};
