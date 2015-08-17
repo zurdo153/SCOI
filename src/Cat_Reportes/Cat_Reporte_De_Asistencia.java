@@ -188,20 +188,14 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		 
 		 comando = "exec sp_Reporte_De_Faltas '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
 		 
-		 System.out.println(comando);
-		 
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
-	
-	
 	
 	public void Reporte_de_Permisos(String fecha_inicio, String fecha_final,String Establecimiento,String folios_empleados){
 		 reporte = "Obj_Reporte_De_Permisos_A_Empleados.jrxml";
 		 comando = "exec sp_Reporte_De_Permisos_A_Empleados '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+folios_empleados+"'";
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
-	
-	
 	
 	public void Reporte_de_Asistencia_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados,String solo_consideraciones){
 		 reporte = "Obj_Reporte_De_Asistencia_General.jrxml";

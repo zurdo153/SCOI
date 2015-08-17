@@ -38,6 +38,7 @@ import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import IZAGAR_Obj.Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad;
 import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
@@ -56,6 +57,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	JButton btnConciliar = new JButton("Conciliar",new ImageIcon("imagen/double-arrow-icone-3883-16.png"));
 	JButton btnConciliaAutoImporte = new JButton("Conciliacion Automatica Por Importe",new ImageIcon("imagen/reconstruir-icono-6593-16.png"));
 	JButton btnConciliaAutoImporteyReferencia = new JButton("Conciliacion Automatica Importe y Referencia",new ImageIcon("imagen/reconstruir-icono-6593-16.png"));
+	JButton btnMovimientosContablesPendientesConciliar = new JButton("Movimientos Contables Pendientes De Conciliar",new ImageIcon("imagen/Lista.png"));
 	
 	JButton btntabladesconciliar =new JButton("Desconciliar");
 	
@@ -242,7 +244,8 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		campo.add(new JLabel ("Cuenta Contable:")).setBounds(280,y,100,20);
 		campo.add(txtCuentaContable).setBounds(390,y,100,20);
 		campo.add(btnConciliaAutoImporte).setBounds(500,y,270,20);
-        campo.add(btnGuardar).setBounds(800,y,100,20);
+        campo.add(btnGuardar).setBounds(780,y,100,20);
+        campo.add(btnMovimientosContablesPendientesConciliar).setBounds(890, y, 300, 20);
 		
 		campo.add(new JLabel ("Fecha:")).setBounds(15,y+=30,100,20);
 		campo.add(cfecha).setBounds(60,y,100,20);
@@ -289,6 +292,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		btnConciliaAutoImporte.addActionListener(opConciliacion_por_importe);
 		btnConciliaAutoImporteyReferencia.addActionListener(opConciliacion_por_importe_y_Referencia);
 		btnGuardar.addActionListener(opGuardarConciliacion);
+		btnMovimientosContablesPendientesConciliar.addActionListener(opReporte_De_Movimientos_Contables_Pendientes_De_Conciliar);
 		
 		cmbCuentasBancarias.addActionListener(opBuscar_datoscuenta_bancaria);
 		tabla_mov_bancarios.addMouseListener(opTablaMovBancariosSeleccion);
@@ -516,28 +520,6 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 				tabla_mov_contabilidad.getColumnModel().getColumn(4).setMinWidth(0);
 				tabla_mov_contabilidad.getColumnModel().getColumn(4).setMaxWidth(130);
 				
-//				tabla_mov_contabilidad.getColumnModel().getColumn(0).setMinWidth(30);
-//			    tabla_mov_contabilidad.getColumnModel().getColumn(0).setMaxWidth(60);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(1).setMinWidth(45);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(1).setMaxWidth(45);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(2).setMinWidth(30);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(2).setMaxWidth(30);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(3).setMinWidth(55);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(3).setMaxWidth(55);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(4).setMinWidth(85);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(4).setMaxWidth(130);
-				
-//				tabla_mov_contabilidad.getColumnModel().getColumn(5).setMinWidth(30);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(5).setMaxWidth(30);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(6).setMinWidth(60);		
-//				tabla_mov_contabilidad.getColumnModel().getColumn(6).setMaxWidth(130);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(7).setMinWidth(80);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(7).setMaxWidth(130);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(8).setMinWidth(450);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(8).setMaxWidth(850);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(9).setMinWidth(40);
-//				tabla_mov_contabilidad.getColumnModel().getColumn(9).setMaxWidth(120);
-				
 				tabla_mov_contabilidad.getColumnModel().getColumn(5).setMinWidth(0);
 				tabla_mov_contabilidad.getColumnModel().getColumn(5).setMaxWidth(30);
 				tabla_mov_contabilidad.getColumnModel().getColumn(6).setMinWidth(0);		
@@ -721,6 +703,21 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		   }
 	};
 		
+	
+	   ActionListener opReporte_De_Movimientos_Contables_Pendientes_De_Conciliar = new ActionListener(){
+		   public void actionPerformed(ActionEvent arg0) {
+				String basedatos="2.26";
+				String vista_previa_reporte="no";
+				int vista_previa_de_ventana=0;
+				String comando="";
+				String reporte = "";
+				reporte = "Obj_Reporte_De_Movimientos_Contables_Pendientes_De_Conciliar.jrxml";
+			    comando = "exec sp_Reporte_De_Movimientos_Contables_Pendientes_De_Conciliar '"+txtCuentaContable.getText().toString()+"','"+txtBanco.getText().toString()+"','"+cmbCuentasBancarias.getSelectedItem().toString()+"'";
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		   }
+	};
+
+	
    ActionListener opActualizar = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			   String fechaNull = cfecha.getDate()+"";
@@ -854,7 +851,6 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 //		    btnConciliaAutoImporteyReferencia.setEnabled(false);
 		   }
 	};
-	
 		 
 	ActionListener opConciliar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
