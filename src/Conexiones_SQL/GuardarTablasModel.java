@@ -1582,7 +1582,7 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 	}
 
 public boolean IZAGAR_insert_Movimientos_Bancarios_Iniciales(Object[][] tabla){
-	String query = "exec IZAGAR_insert_Movimientos_Bancarios ?,?,?,?,?,?,"+usuario.getFolio();
+	String query = "exec IZAGAR_insert_Movimientos_Bancarios ?,?,?,?,?,?,?,"+usuario.getFolio();
 	Connection con = new Connexion().conexion();
 	try {
 		PreparedStatement pstmt = con.prepareStatement(query);
@@ -1594,6 +1594,7 @@ public boolean IZAGAR_insert_Movimientos_Bancarios_Iniciales(Object[][] tabla){
 			pstmt.setString(4, tabla[i][3].toString().trim());
 			pstmt.setString(5, tabla[i][4].toString().trim());
 			pstmt.setString(6, tabla[i][5].toString().trim());
+			pstmt.setString(7, tabla[i][6].toString().trim());
 		pstmt.executeUpdate();
 		}
 		con.commit();
@@ -1622,7 +1623,7 @@ public boolean IZAGAR_insert_Movimientos_Bancarios_Iniciales(Object[][] tabla){
 	}
 
 public boolean IZAGAR_insert_Movimientos_contabilidad_Iniciales(Object[][] tabla){
-	String query = "exec IZAGAR_insert_Movimientos_contabilidad ?,?,?,?,?,?,?,?,?,"+usuario.getFolio();
+	String query = "exec IZAGAR_insert_Movimientos_contabilidad ?,?,?,?,?,?,?,?,?,?,"+usuario.getFolio();
 	Connection con = new Connexion().conexion();
 	try {
 		PreparedStatement pstmt = con.prepareStatement(query);
@@ -1637,6 +1638,7 @@ public boolean IZAGAR_insert_Movimientos_contabilidad_Iniciales(Object[][] tabla
 			pstmt.setString(7, tabla[i][6].toString().trim());
 			pstmt.setString(8, tabla[i][7].toString().trim());
 			pstmt.setString(9, tabla[i][8].toString().trim());
+			pstmt.setString(10, tabla[i][9].toString().trim());
 		pstmt.executeUpdate();
 		}
 		con.commit();

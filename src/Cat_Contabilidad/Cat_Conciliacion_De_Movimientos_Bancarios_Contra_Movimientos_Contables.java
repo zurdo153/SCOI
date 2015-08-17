@@ -34,7 +34,6 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-
 import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
@@ -153,7 +152,6 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	DefaultTableModel modeloconciliados= new DefaultTableModel(null,
             new String[]{"Desconciliar","Fecha Conciliado","Concepto Banco", "Fecha Banco","MovBanco","Cod Estab + ID Banco","Importe Banco","Referencia Banco","Importe Pol","Referencia Pol","Poliza","Tipo","Mes Año Pol","Fecha Pol","Mov Pol","Concepto Pol","CodEstab + ID Poliza"}
 			){
-	
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
 			javax.swing.JButton.class,
@@ -205,6 +203,13 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	
     JTable tablaconciliados = new JTable(modeloconciliados);
     JScrollPane scrollconciliados = new JScrollPane(tablaconciliados);
+    
+    
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//     TableRowSorter Sorterbancarios = new TableRowSorter(modelobancarios); 
+    
+    
+    
 	
 	//TODO INCIA CONSTRUCTOR
 	public Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contables() {
@@ -293,6 +298,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 //	    tabla_mov_contabilidad.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    
 	    tabla_mov_bancarios.getTableHeader().setReorderingAllowed(false) ;
+    	
 //	    tabla_mov_bancarios.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 	    tablaconciliados.getTableHeader().setReorderingAllowed(false) ;
@@ -350,6 +356,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 //DIMENCIONES
 	public void tabla_Mov_Bancarios(){
 		llenado_tabla_mov_bancarios_inicial(2);
+
 	
 	tabla_mov_bancarios.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
 	tabla_mov_bancarios.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
@@ -435,7 +442,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	
 	///////GUARDADO INICIAL DESDE BMS
 	private Object[][] tabla_guardar_movimientos_bancarios_iniciales(){
-		Object[][] matriz_bancarios = new Object[tabla_mov_bancarios.getRowCount()][6];
+		Object[][] matriz_bancarios = new Object[tabla_mov_bancarios.getRowCount()][7];
 		for(int i=0; i<tabla_mov_bancarios.getRowCount(); i++){
 			matriz_bancarios[i][0] = modelobancarios.getValueAt(i,0).toString().trim();
 			matriz_bancarios[i][1] = modelobancarios.getValueAt(i,1).toString().trim();
@@ -443,6 +450,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			matriz_bancarios[i][3] = modelobancarios.getValueAt(i,3).toString().trim();
 			matriz_bancarios[i][4] = modelobancarios.getValueAt(i,4).toString().trim();
 			matriz_bancarios[i][5] = modelobancarios.getValueAt(i,5).toString().trim();
+			matriz_bancarios[i][6] = cmbCuentasBancarias.getSelectedItem().toString();
 		}
 		return matriz_bancarios;
 	}
@@ -451,7 +459,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	public Object[][] Consulta_para_llenar_Mov_Bancarios_desde_SCOI(){
 	
 	String consulta =" SELECT    concepto, convert(varchar(20),fecha,103)+' '+convert(varchar(20),fecha,108) as fecha, movimiento, convert(numeric(19,2),Importe) as Importe,referencia, id,'false' as conciliar "
-	                + " FROM IZAGAR_movimientos_bancarios where status_conciliado='PE' order by importe desc";
+	                + " FROM IZAGAR_movimientos_bancarios where status_conciliado='PE' and  cuenta_bancaria='"+cmbCuentasBancarias.getSelectedItem().toString()+"' order by importe asc";
 	Statement s;
 	ResultSet rs2;
 	try {
@@ -497,27 +505,49 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			    tabla_mov_contabilidad.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 			    tabla_mov_contabilidad.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 				
-				tabla_mov_contabilidad.getColumnModel().getColumn(0).setMinWidth(30);
+				tabla_mov_contabilidad.getColumnModel().getColumn(0).setMinWidth(0);
 			    tabla_mov_contabilidad.getColumnModel().getColumn(0).setMaxWidth(60);
-				tabla_mov_contabilidad.getColumnModel().getColumn(1).setMinWidth(45);
+				tabla_mov_contabilidad.getColumnModel().getColumn(1).setMinWidth(0);
 				tabla_mov_contabilidad.getColumnModel().getColumn(1).setMaxWidth(45);
-				tabla_mov_contabilidad.getColumnModel().getColumn(2).setMinWidth(30);
+				tabla_mov_contabilidad.getColumnModel().getColumn(2).setMinWidth(0);
 				tabla_mov_contabilidad.getColumnModel().getColumn(2).setMaxWidth(30);
-				tabla_mov_contabilidad.getColumnModel().getColumn(3).setMinWidth(55);
+				tabla_mov_contabilidad.getColumnModel().getColumn(3).setMinWidth(0);
 				tabla_mov_contabilidad.getColumnModel().getColumn(3).setMaxWidth(55);
-				tabla_mov_contabilidad.getColumnModel().getColumn(4).setMinWidth(85);
+				tabla_mov_contabilidad.getColumnModel().getColumn(4).setMinWidth(0);
 				tabla_mov_contabilidad.getColumnModel().getColumn(4).setMaxWidth(130);
 				
-				tabla_mov_contabilidad.getColumnModel().getColumn(5).setMinWidth(30);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(0).setMinWidth(30);
+//			    tabla_mov_contabilidad.getColumnModel().getColumn(0).setMaxWidth(60);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(1).setMinWidth(45);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(1).setMaxWidth(45);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(2).setMinWidth(30);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(2).setMaxWidth(30);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(3).setMinWidth(55);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(3).setMaxWidth(55);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(4).setMinWidth(85);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(4).setMaxWidth(130);
+				
+//				tabla_mov_contabilidad.getColumnModel().getColumn(5).setMinWidth(30);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(5).setMaxWidth(30);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(6).setMinWidth(60);		
+//				tabla_mov_contabilidad.getColumnModel().getColumn(6).setMaxWidth(130);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(7).setMinWidth(80);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(7).setMaxWidth(130);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(8).setMinWidth(450);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(8).setMaxWidth(850);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(9).setMinWidth(40);
+//				tabla_mov_contabilidad.getColumnModel().getColumn(9).setMaxWidth(120);
+				
+				tabla_mov_contabilidad.getColumnModel().getColumn(5).setMinWidth(0);
 				tabla_mov_contabilidad.getColumnModel().getColumn(5).setMaxWidth(30);
-				tabla_mov_contabilidad.getColumnModel().getColumn(6).setMinWidth(60);		
+				tabla_mov_contabilidad.getColumnModel().getColumn(6).setMinWidth(0);		
 				tabla_mov_contabilidad.getColumnModel().getColumn(6).setMaxWidth(130);
-				tabla_mov_contabilidad.getColumnModel().getColumn(7).setMinWidth(80);
+				tabla_mov_contabilidad.getColumnModel().getColumn(7).setMinWidth(0);
 				tabla_mov_contabilidad.getColumnModel().getColumn(7).setMaxWidth(130);
-				tabla_mov_contabilidad.getColumnModel().getColumn(8).setMinWidth(450);
+				tabla_mov_contabilidad.getColumnModel().getColumn(8).setMinWidth(0);
 				tabla_mov_contabilidad.getColumnModel().getColumn(8).setMaxWidth(850);
-				tabla_mov_contabilidad.getColumnModel().getColumn(9).setMinWidth(40);
-				tabla_mov_contabilidad.getColumnModel().getColumn(9).setMaxWidth(40);
+				tabla_mov_contabilidad.getColumnModel().getColumn(9).setMinWidth(0);
+				tabla_mov_contabilidad.getColumnModel().getColumn(9).setMaxWidth(120);
 
 	};
 	//BORRADO Y LLENADO
@@ -557,13 +587,12 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 				      + " WHERE        (mp.fecha_poliza BETWEEN @FI AND @FF) AND (mp.status = 'V') "
 				      + "        AND (RTRIM(mp.cuenta_contable) + RTRIM(mp.subcuenta_contable) + RTRIM(mp.subsubcuenta_contable) = @Cuenta)"
 				      + "        AND (CONVERT(varchar(15), mp.id) NOT IN (SELECT  id_mpolizas  FROM    movimientos_bancos "
-				      + "                                                 WHERE (id_mpolizas IS NOT NULL))) AND (mp.id_movimientos_bancarios IS NULL) AND (mp.fecha_conciliacion_bancos IS NULL) order by importe desc ";
+				      + "                                                 WHERE (id_mpolizas IS NOT NULL))) AND (mp.id_movimientos_bancarios IS NULL) AND (mp.fecha_conciliacion_bancos IS NULL) order by importe asc ";
    		Statement s;
 		ResultSet rs2;
 		try {
 			s = new Connexion().conexion_IZAGAR().createStatement();
 			rs2 = s.executeQuery(consulta);
-			System.out.println(consulta);
 			Matriz_Mov_Contabilidad = new Object[getFilasIZAGAR(consulta)][10];
 			int i=0;
 			while(rs2.next()){
@@ -588,7 +617,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	
 ///////GUARDADO CONTABILIDAD INICIAL DESDE BMS
     private Object[][] tabla_guardar_movimientos_contabilidad_iniciales(){
-	  Object[][] matriz_contabilidad = new Object[tabla_mov_contabilidad.getRowCount()][9];
+	  Object[][] matriz_contabilidad = new Object[tabla_mov_contabilidad.getRowCount()][10];
 		  for(int i=0; i<tabla_mov_contabilidad.getRowCount(); i++){
 			matriz_contabilidad[i][0] = modelocontabilidad.getValueAt(i,1).toString().trim();
 			matriz_contabilidad[i][1] = modelocontabilidad.getValueAt(i,2).toString().trim();
@@ -599,13 +628,14 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			matriz_contabilidad[i][6] = modelocontabilidad.getValueAt(i,7).toString().trim();
 			matriz_contabilidad[i][7] = modelocontabilidad.getValueAt(i,8).toString().trim();
 			matriz_contabilidad[i][8] = modelocontabilidad.getValueAt(i,9).toString().trim();
+			matriz_contabilidad[i][9] =txtCuentaContable.getText().toString();
 		}
 		return matriz_contabilidad;
 	  }
 
 	//CONSULTA SCOI
 	public Object[][] Consulta_para_llenar_Mov_Contabilidad_SCOI(){
-		String consulta = "SELECT  'false' as conciliar ,[poliza],[tipo],[MesAño],[fecha],[mov] as tipo_movimiento,convert(numeric(19,2),[importe])as importe,[referencia],[concepto],[cod_establecimiento] FROM  IZAGAR_movimientos_polizas where status_conciliado='PE' ";
+		String consulta = "SELECT  'false' as conciliar ,[poliza],[tipo],[MesAño],[fecha],[mov] as tipo_movimiento,convert(numeric(19,2),[importe])as importe,[referencia],[concepto],[cod_establecimiento] FROM  IZAGAR_movimientos_polizas where status_conciliado='PE' and cuenta_contable='"+txtCuentaContable.getText().toString()+"' order by importe asc";
    		Statement s;
 		ResultSet rs2;
 		try {
@@ -841,7 +871,16 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 				   seleccion=seleccion+1;;		   
 			   }		   
 		   }
+		 
 		 if(seleccion==2){
+			 
+				if(tabla_mov_contabilidad.isEditing()){
+				    tabla_mov_contabilidad.getCellEditor().stopCellEditing();
+				}
+				if(tabla_mov_bancarios.isEditing()){
+				    tabla_mov_bancarios.getCellEditor().stopCellEditing();
+				}
+			 
 				for(int i =0; i<tabla_mov_bancarios.getRowCount(); i++){
 			 	   if(tabla_mov_bancarios.getValueAt(i, 6).toString().trim().equals("true")){
 			 		  String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha_conciliado.getDate())+" 00:00:00";
