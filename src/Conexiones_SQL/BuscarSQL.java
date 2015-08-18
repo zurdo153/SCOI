@@ -6397,6 +6397,8 @@ public class BuscarSQL {
 		try {
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
+			
+            System.out.println(query);
             
 			int i=0;
 				while(rs.next()){
