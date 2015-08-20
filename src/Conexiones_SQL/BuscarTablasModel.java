@@ -1578,6 +1578,29 @@ public Object[][] tabla_model_competencia(){
 	}
     return matriz; 
 }
+
+public Object[][] tabla_model_empleados_abonos_y_diferencia_de_cortes(){
+	String query_lista = "exec sp_select_fiotro_empleados_para_abonos_y_diferencias_de_cortes";
+	Object[][] matriz = new Object[get_filas(query_lista)][4];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getInt(1)+"";
+			matriz[i][1] =  " "+rs.getString(2);
+			matriz[i][2] =  " "+rs.getString(3); 
+			matriz[i][3] =  rs.getString(4);
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_empleados_abonos_y_diferencia_de_cortes  procedimiento almacenado sp_select_fiotro_empleados_para_abonos_y_diferencias_de_cortes SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+    return matriz; 
+}
 	
 }
 
