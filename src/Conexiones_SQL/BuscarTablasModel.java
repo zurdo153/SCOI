@@ -1601,7 +1601,82 @@ public Object[][] tabla_model_empleados_abonos_y_diferencia_de_cortes(){
 	}
     return matriz; 
 }
+
+public Object[][] filtro_recepcion_de_mercancia_y_proovedores(String fecha){
 	
+	String query_lista = "declare @fecha varchar(20) "
+			+ "	set @fecha='"+fecha+"' "
+			+ "	select distinct entysal.folio "
+			+ "					,entysal.cod_prv "
+			+ "					,proveedores.razon_social "
+			+ "	from entysal with (nolock) "
+			+ "		left outer join proveedores on proveedores.cod_prv=entysal.cod_prv "
+			+ "	where transaccion=44 and convert(varchar(20),fecha,103)=convert(varchar(20),@fecha,103) and entysal.status='V'";
+	
+	Object[][] matriz = new Object[get_filas_izagar(query_lista)][3];
+	try {
+		Statement stmt = new Connexion().conexion_IZAGAR().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getString(1)+"";
+			matriz[i][1] =  " "+rs.getString(2);
+			matriz[i][2] =  " "+rs.getString(3); 
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_empleados_abonos_y_diferencia_de_cortes  procedimiento almacenado sp_select_fiotro_empleados_para_abonos_y_diferencias_de_cortes SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+    return matriz; 
+}
+	
+public Object[][] lista_recepcion_de_mercancia(String recepcion){
+	
+	String query_lista = " declare @folio_recepcion varchar(30) "
+			+ " set @folio_recepcion= '"+recepcion+"' "
+			+ " select  entysal.cod_prv "
+			+ "			,convert(varchar(20),entysal.fecha,103)+' '+convert(varchar(20),entysal.fecha,108) as fecha "
+			+ "			,entysal.folio "
+			+ "			,entysal.cod_prod "
+			+ "			,productos.descripcion "
+			+ "			, entysal.cantidad as cantidad_factura "
+			+ "			,0 cantidad_en_resguardo "
+			+ " from entysal with (nolock) "
+			+ " left outer join productos on productos.cod_prod=entysal.cod_prod "
+			+ " where transaccion=44 and entysal.folio=@folio_recepcion and entysal.status='V'";
+	
+	Object[][] matriz = new Object[get_filas_izagar(query_lista)][7];
+	try {
+		Statement stmt = new Connexion().conexion_IZAGAR().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			
+			
+			System.out.print(rs.getString(1)+"  ");
+			System.out.print(rs.getString(2)+"  ");
+			System.out.println(rs.getString(3));
+			
+			matriz[i][0] =  rs.getString(1)+"";
+			matriz[i][1] =  " "+rs.getString(2);
+			matriz[i][2] =  " "+rs.getString(3); 
+			
+			matriz[i][3] =  " "+rs.getString(4);
+			matriz[i][4] =  " "+rs.getString(5); 
+			matriz[i][5] =  " "+rs.getString(6);
+			matriz[i][6] =  " "+rs.getString(7); 
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_empleados_abonos_y_diferencia_de_cortes  procedimiento almacenado sp_select_fiotro_empleados_para_abonos_y_diferencias_de_cortes SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+    return matriz; 
+}
 }
 
 
