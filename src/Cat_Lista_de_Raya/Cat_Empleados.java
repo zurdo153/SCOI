@@ -2331,6 +2331,8 @@ public class Cat_Empleados extends JFrame{
 	        CaptureDeviceInfo cdi = (CaptureDeviceInfo)it.next();
 	        rpta+=cdi.getName()+"\n";
 	      }
+	      
+	      System.out.println(rpta);
 	      if(rpta.compareTo("")!=0)
 	          rpta="Dispositivos detectados:\n\n"+rpta;
 	      else

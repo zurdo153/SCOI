@@ -1714,15 +1714,7 @@ public boolean Guardar_captura_inicial_de_resguardo_de_mercancia (Object[][] tab
 		con.setAutoCommit(false);
 		for(int i=0; i<tabla.length; i++){
 			
-//			System.out.print(tabla[i][0].toString().trim()+"  ");
-//			System.out.print(tabla[i][1].toString().trim()+"  ");
-//			System.out.print(tabla[i][2].toString().trim()+"  ");
-//			System.out.print(tabla[i][3].toString().trim()+"  ");
-//			System.out.print(tabla[i][4].toString().trim()+"  ");
-//			System.out.println(tabla[i][5].toString().trim()+"  ");
-//			System.out.println(usuario.getFolio());
-			
-			float cantidad_resguardo = Float.valueOf(tabla[i][5].toString().trim());
+			float cantidad_resguardo= Float.valueOf(tabla[i][5].toString().trim().equals("")?"0":tabla[i][5].toString().trim());
 			
 			if(cantidad_resguardo>0){
 				pstmt.setString(1, tabla[i][0].toString().trim());
@@ -1737,6 +1729,51 @@ public boolean Guardar_captura_inicial_de_resguardo_de_mercancia (Object[][] tab
 			}
 			
 			
+		}
+		con.commit();
+	} catch (SQLException e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la  funcion Guardar_captura_inicial_de_resguardo_de_mercancia  \n procedimiento almacenado sp_insert_captura_de_recepcion_con_resguardo SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guardar_captura_inicial_de_resguardo_de_mercancia \n procedimiento almacenado sp_insert_captura_de_recepcion_con_resguardo SQLException: \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion Guardar_captura_inicial_de_resguardo_de_mercancia \n procedimiento almacenado sp_insert_captura_de_recepcion_con_resguardo SQLException: \n "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+public boolean Guardar_captura_inicial_de_resguardo_de_mercancia (String cod_prv,String f_recep, Object[][] tabla){
+	String query = "exec sp_insert_captura_de_productos_en_resguardo ?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.length; i++){
+			
+			float cantidad_a_recibir= Float.valueOf(tabla[i][1].toString().trim());
+			
+			if(cantidad_a_recibir>0){
+				pstmt.setString(1, cod_prv.trim());
+				pstmt.setString(2, f_recep.trim());
+				pstmt.setString(3, tabla[i][0].toString().trim());
+				pstmt.setFloat(4, cantidad_a_recibir);
+				pstmt.setInt(5, usuario.getFolio());
+				
+				pstmt.executeUpdate();
+			}
 		}
 		con.commit();
 	} catch (SQLException e) {

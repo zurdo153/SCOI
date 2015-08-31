@@ -32,7 +32,7 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Filtro_De_Recepcion_De_Mercancia_Por_Proveedor extends JFrame{
+public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -73,10 +73,10 @@ public class Cat_Filtro_De_Recepcion_De_Mercancia_Por_Proveedor extends JFrame{
 	JTable tabla = new JTable(modelo);
 	JScrollPane scroll = new JScrollPane(tabla);
 
-	public Cat_Filtro_De_Recepcion_De_Mercancia_Por_Proveedor(){
+	public Cat_Alimentacion_De_Mercancia_En_Resguardo(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/"));
-		this.setTitle("Texto Aqui");
-		panel.setBorder(BorderFactory.createTitledBorder("Seleccione una fecha para buscar recepciones"));		
+		this.setTitle("Filtro De Recepciones Para Resguardo");
+		panel.setBorder(BorderFactory.createTitledBorder("Seleccione Una Fecha Para Buscar Recepciones"));		
 		int x=15,y=20,ancho=80;
 		
 		panel.add(new JLabel("Fecha de Recepcion:")).setBounds(x,y,140,20);
@@ -205,7 +205,7 @@ public class Cat_Filtro_De_Recepcion_De_Mercancia_Por_Proveedor extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Filtro_De_Recepcion_De_Mercancia_Por_Proveedor().setVisible(true);
+			new Cat_Alimentacion_De_Mercancia_En_Resguardo().setVisible(true);
 		}catch(Exception e){	}
 	}
 	
@@ -264,8 +264,8 @@ public class Cat_Filtro_De_Recepcion_De_Mercancia_Por_Proveedor extends JFrame{
 		
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/"));
-		this.setTitle("Texto Aqui");
-		panel2.setBorder(BorderFactory.createTitledBorder("Seleccione una fecha para buscar recepciones"));		
+		this.setTitle("Recepcion Con Resguardo");
+		panel2.setBorder(BorderFactory.createTitledBorder("Ingresar Cantidades de Productos Que Hay En Resguardo"));		
 		int x=15,y=20,ancho=80;
 		
 		panel2.add(txtCodProducto  ).setBounds(x+70,y,70,20);
@@ -306,36 +306,64 @@ public class Cat_Filtro_De_Recepcion_De_Mercancia_Por_Proveedor extends JFrame{
 		}
 	}
 	
+	private String valida_tabla(){
+		String error = "";
+		for(int i=0; i<tablaRecep.getRowCount(); i++){
+//			try{
+				if(!isNumeric(tablaRecep.getValueAt(i,6).toString())){
+					error += "La Cant. A Recibir En El Codigo De Producto ["+modeloRecep.getValueAt(i,3).toString()+"] Esta Mal En Su Formato\n";
+					tablaRecep.setValueAt("",i, 6);
+				}
+//			} catch(Exception e){
+//				JOptionPane.showMessageDialog(null, "La tabla tiene una celda con texto en lugar de un valor numérico: \n"+e,"Error",JOptionPane.ERROR_MESSAGE);
+//			}
+		}
+		return error;
+	}
+	
+	 private boolean isNumeric(String cadena){
+	    	try {
+	    		if(cadena.equals("")){
+	        		return true;
+	    		}else{
+	    			Float.parseFloat(cadena);
+	        		return true;
+	    		}
+	    	} catch (NumberFormatException nfe){
+	    		return false;
+	    	}
+	    }
+	 
 	ActionListener opGuardar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			if(tabla.isEditing()){
-				tabla.getCellEditor().stopCellEditing();
+			if(tablaRecep.isEditing()){
+				tablaRecep.getCellEditor().stopCellEditing();
 			}
 			
-			String[][] matriz = new String[6][6];
-			for(int i=0; i<tablaRecep.getRowCount(); i++){
-				
-				matriz[i][0]=tablaRecep.getValueAt(i, 0).toString().trim();
-				matriz[i][1]=tablaRecep.getValueAt(i, 1).toString().trim();
-				matriz[i][2]=tablaRecep.getValueAt(i, 2).toString().trim();
-				matriz[i][3]=tablaRecep.getValueAt(i, 3).toString().trim();
-				matriz[i][4]=tablaRecep.getValueAt(i, 5).toString().trim();
-				matriz[i][5]=tablaRecep.getValueAt(i, 6).toString().trim();
-			}
-			
-//			public boolean guardar(Object[][] tabla){
-//				return new GuardarTablasModel().AAAA(tabla);
-//			}
-			if(new GuardarTablasModel().Guardar_captura_inicial_de_resguardo_de_mercancia(matriz)){
-				JOptionPane.showMessageDialog(null, "La Recepción Inicial Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+			if(!valida_tabla().equals("")){
+				JOptionPane.showMessageDialog(null, "Algunas Cantidades A Recibir Estan Mal En Su Formato","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 				return;
 			}else{
-				JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar La Recepción","Error",JOptionPane.ERROR_MESSAGE);
-				return;
+				String[][] matriz = new String[tablaRecep.getRowCount()][6];
+				for(int i=0; i<tablaRecep.getRowCount(); i++){
+					
+					matriz[i][0]=tablaRecep.getValueAt(i, 0).toString().trim();
+					matriz[i][1]=tablaRecep.getValueAt(i, 1).toString().trim();
+					matriz[i][2]=tablaRecep.getValueAt(i, 2).toString().trim();
+					matriz[i][3]=tablaRecep.getValueAt(i, 3).toString().trim();
+					matriz[i][4]=tablaRecep.getValueAt(i, 5).toString().trim();
+					matriz[i][5]=tablaRecep.getValueAt(i, 6).toString().trim();
+				}
+				
+				if(new GuardarTablasModel().Guardar_captura_inicial_de_resguardo_de_mercancia(matriz)){
+					JOptionPane.showMessageDialog(null, "La Recepción Inicial Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
+					return;
+				}else{
+					JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar La Recepción","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+					return;
+				}
 			}
-			
-			
 		}
 	};
 	

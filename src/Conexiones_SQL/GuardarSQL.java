@@ -3917,7 +3917,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 						con.rollback();
 					} catch(SQLException ex) {
 						System.out.println(ex.getMessage());
-						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_captura_de_competencia ] \nInsert  SQLException: sp_insert_precios_competencia "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_captura_de_competencia ] \nInsert  SQLException: sp_insert_precios_competencia "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 					}
 				} 
 				return false;
@@ -3957,14 +3957,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			
 		} catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Archivar_Documentos_De_Empleados ] Insert  SQLException: sp_insert_archivos_de_empleados "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Archivar_Documentos_De_Empleados ] Insert  SQLException: sp_insert_archivos_de_empleados "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Archivar_Documentos_De_Empleados ] Insert  SQLException: sp_insert_archivos_de_empleados "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Archivar_Documentos_De_Empleados ] Insert  SQLException: sp_insert_archivos_de_empleados "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 				}
 			} 
 			return false;
