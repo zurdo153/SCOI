@@ -4,6 +4,11 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,23 +17,34 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
+	
+	Container cont = getContentPane();
+	JLayeredPane panel = new JLayeredPane();
 	
 	JLabel lblFolioEmpleado = new JLabel("Folio Empleado:");
 	JTextField txtFolioEmpleado = new Componentes().text(new JTextField(), "Folio De Empleado", 10, "Int");
@@ -42,10 +58,6 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 	JDateChooser fechaFin = new JDateChooser();
 	JButton btnAbonos_Cortes = new JButton(new ImageIcon("imagen/plan-icono-5073-16.png"));
 	
-	Container cont = getContentPane();
-	JLayeredPane panel = new JLayeredPane();
-	
-
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	TitledBorder title4; 
 	
@@ -55,9 +67,8 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		
 		txtFolioEmpleado.setText(folio_empleado);
 		
-			Date fechaI;
 			try {
-				fechaI = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/2015");
+				Date fechaI = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/2015");
 				fechaIn.setDate(fechaI);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
@@ -129,6 +140,8 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		btnAbonos_Cortes.addActionListener(Reporte_Abonos_Cortes);
 		btncortes_Limpio.addActionListener(Reporte_Cortes_Lista_de_Raya_Actual_limpio);
 		
+		btnFiltroEmpleado.addActionListener(opFiltro);
+		
 		txtFolioEmpleado.setHorizontalAlignment(4);
 
 		cont.add(panel);
@@ -188,6 +201,150 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
+	
+	ActionListener opFiltro = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			new Cat_Filtro_Reporte_De_Cortes_De_Lista_De_Raya_Actual().setVisible(true);
+		}
+	};
+	
+	public class Cat_Filtro_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JDialog {
+		
+		Container contF = getContentPane();
+		JLayeredPane panelF = new JLayeredPane();
+		
+		JTextField txtFolio = new Componentes().text(new JTextField(), "Folio Empleado", 10, "Int");
+		JTextField txtEmpledo = new Componentes().text(new JCTextField(), "Folio Empleado", 100, "String");
+		
+		public Object[][] get_tabla(){
+			return new BuscarTablasModel().tabla_model_empleados_abonos_y_diferencia_de_cortes();
+		}
+	    private DefaultTableModel modelo = new DefaultTableModel(get_tabla(),
+	            new String[]{"Folio", "Nombre Completo", "Establecimiento", "Puesto" }
+				){
+		     @SuppressWarnings("rawtypes")
+			Class[] types = new Class[]{
+		    	java.lang.Object.class,
+		    	java.lang.Object.class, 
+		    	java.lang.Object.class,
+		    	java.lang.Object.class
+
+	         };
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+	             return types[columnIndex];
+	         }
+	         public boolean isCellEditable(int fila, int columna){
+	        	 
+	        	 switch(columna){
+	        	 	case 0 : return false; 
+	        	 	case 1 : return false; 
+	        	 	case 2 : return false; 
+	        	 	case 3 : return false; 
+	        	 }
+	 			return false;
+	 		}
+		};
+
+		public JTable tabla = new JTable(modelo);
+		public JScrollPane scroll = new JScrollPane(tabla);
+		
+		public Cat_Filtro_Reporte_De_Cortes_De_Lista_De_Raya_Actual(){
+			this.setModal(true);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-icono-8797-48.jpg"));
+			blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+			panelF.setBorder(BorderFactory.createTitledBorder(blackline,"Filtro De Empleados"));
+			this.setTitle("Seleccione Un Empleado");
+			
+			int x=15,y=20,ancho=50;
+			
+			panelF.add(txtFolio).setBounds(x,y,ancho,20);
+			panelF.add(txtEmpledo).setBounds(x+ancho,y,ancho*5+10,20);
+			panelF.add(scroll).setBounds(x,y+=20,ancho*12,200);
+			
+			llamar_render();
+
+//          asigna el foco al JTextField del nombre deseado al arrancar la ventana
+            this.addWindowListener(new WindowAdapter() {
+                    public void windowOpened( WindowEvent e ){
+                    	txtEmpledo.requestFocus();
+                 }
+            });
+			
+            agregar(tabla);
+            
+            txtFolio.addKeyListener(opFiltroDinamicoEmpleado);
+            txtEmpledo.addKeyListener(opFiltroDinamicoEmpleado);
+			
+			contF.add(panelF);
+			this.setSize(640,280);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		}
+		
+		KeyListener opFiltroDinamicoEmpleado = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				
+				if(arg0.getSource().getClass().getSimpleName().equals("JTextField")){
+					txtEmpledo.setText("");
+					new Obj_Filtro_Dinamico(tabla,"Nombre Completo", "","","", "", "", "", "");
+					new Obj_Filtro_Dinamico(tabla,"Folio", txtFolio.getText().toUpperCase(),"","", "", "", "", "");
+				}else{
+					txtFolio.setText("");
+					new Obj_Filtro_Dinamico(tabla,"Folio", "","","", "", "", "", "");
+					new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtEmpledo.getText().toUpperCase(),"","", "", "", "", "");
+				}
+				
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	
+		        	if(e.getClickCount() == 2){
+		    			int fila = tbl.getSelectedRow();
+		    			String folio =  tbl.getValueAt(fila, 0).toString().trim();
+		    			dispose();
+		    			txtFolioEmpleado.setText(folio);
+		    			
+		    			try {
+		    				Date fechaI = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/2015");
+		    				fechaIn.setDate(fechaI);
+		    			} catch (ParseException e2) {
+		    				// TODO Auto-generated catch block
+		    				e2.printStackTrace();
+		    			}
+		    			
+		    			fechaFin.setDate(cargar_fecha_Sugerida(0));
+		        	}
+		        }
+	        });
+	    }
+		
+		public void llamar_render(){
+			
+			this.tabla.getTableHeader().setReorderingAllowed(false) ;
+
+			this.tabla.getColumnModel().getColumn(0).setMaxWidth(50);
+			this.tabla.getColumnModel().getColumn(0).setMinWidth(50);
+			this.tabla.getColumnModel().getColumn(1).setMaxWidth(260);
+			this.tabla.getColumnModel().getColumn(1).setMinWidth(260);
+			this.tabla.getColumnModel().getColumn(2).setMaxWidth(120);
+			this.tabla.getColumnModel().getColumn(2).setMinWidth(120);
+			this.tabla.getColumnModel().getColumn(3).setMaxWidth(160);
+			this.tabla.getColumnModel().getColumn(3).setMinWidth(160);
+			
+			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+			tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		}
+		
+	}
 	
 	public static void main(String args[]){
 		try{

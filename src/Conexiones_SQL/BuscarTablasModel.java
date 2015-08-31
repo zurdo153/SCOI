@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -1578,7 +1579,312 @@ public Object[][] tabla_model_competencia(){
 	}
     return matriz; 
 }
+
+public Object[][] tabla_model_empleados_abonos_y_diferencia_de_cortes(){
+	String query_lista = "exec sp_select_fiotro_empleados_para_abonos_y_diferencias_de_cortes";
+	Object[][] matriz = new Object[get_filas(query_lista)][4];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getInt(1)+"";
+			matriz[i][1] =  " "+rs.getString(2);
+			matriz[i][2] =  " "+rs.getString(3); 
+			matriz[i][3] =  rs.getString(4);
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_empleados_abonos_y_diferencia_de_cortes  procedimiento almacenado sp_select_fiotro_empleados_para_abonos_y_diferencias_de_cortes SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
+public Object[][] filtro_recepcion_de_mercancia_y_proovedores(String fecha){
 	
+	String query_lista = "declare @fecha varchar(20) "
+			+ "	set @fecha='"+fecha+"' "
+			+ "	select distinct entysal.folio "
+			+ "					,entysal.cod_prv "
+			+ "					,proveedores.razon_social "
+			+ "	from entysal with (nolock) "
+			+ "		left outer join proveedores on proveedores.cod_prv=entysal.cod_prv "
+			+ "	where transaccion=44 and convert(varchar(20),fecha,103)=convert(varchar(20),@fecha,103) and entysal.status='V'";
+	
+	Object[][] matriz = new Object[get_filas_izagar(query_lista)][3];
+	try {
+		Statement stmt = new Connexion().conexion_IZAGAR().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getString(1)+"";
+			matriz[i][1] =  " "+rs.getString(2);
+			matriz[i][2] =  " "+rs.getString(3); 
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion filtro_recepcion_de_mercancia_y_proovedores SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+	
+public Object[][] lista_recepcion_de_mercancia(String recepcion){
+	
+	String query_lista = " declare @folio_recepcion varchar(30) "
+			+ " set @folio_recepcion= '"+recepcion+"' "
+			+ " select  entysal.cod_prv "
+			+ "			,convert(varchar(20),entysal.fecha,103)+' '+convert(varchar(20),entysal.fecha,108) as fecha "
+			+ "			,entysal.folio "
+			+ "			,entysal.cod_prod "
+			+ "			,productos.descripcion "
+			+ "			, entysal.cantidad as cantidad_factura "
+			+ "			,0 cantidad_en_resguardo "
+			+ " from entysal with (nolock) "
+			+ " left outer join productos on productos.cod_prod=entysal.cod_prod "
+			+ " where transaccion=44 and entysal.folio=@folio_recepcion and entysal.status='V'";
+	
+	Object[][] matriz = new Object[get_filas_izagar(query_lista)][7];
+	try {
+		Statement stmt = new Connexion().conexion_IZAGAR().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getString(1)+"";
+			matriz[i][1] =  " "+rs.getString(2);
+			matriz[i][2] =  " "+rs.getString(3); 
+			
+			matriz[i][3] =  " "+rs.getString(4);
+			matriz[i][4] =  " "+rs.getString(5); 
+			matriz[i][5] =  " "+rs.getString(6);
+			matriz[i][6] =  " "+rs.getString(7); 
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion lista_recepcion_de_mercancia SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
+public Object[][] filtro_de_proovedores_con_recepciones(){
+	
+	String query_lista = "select distinct cod_prv,folio_recepcion,CONVERT(VARCHAR(20),fecha_de_captura,103)+' '+CONVERT(VARCHAR(20), fecha_de_captura,108) as fecha from tb_productos_en_resguardo_por_recepcion where estatus_recepcion = 'PE'";
+	String query_prv = "select razon_social from proveedores where cod_prv = ";
+	
+	Object[][] matriz = new Object[get_filas(query_lista)][4];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		Statement stmtIz = new Connexion().conexion_IZAGAR().createStatement();
+		ResultSet rsIz = null;
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getString(1)+" ";
+			
+			rsIz = stmtIz.executeQuery(query_prv+rs.getString(1)+"");
+			while(rsIz.next()){	matriz[i][1] =  " "+rsIz.getString(1).trim();}
+			
+			matriz[i][2] =  " "+rs.getString(2);
+			matriz[i][3] =  " "+rs.getString(3);
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion filtro_de_proovedores_con_recepciones SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
+public Object[][] recepcion_de_mercancia_en_resguardo(String recepcion){
+	
+	String query_lista = "declare @recepcion varchar(15) "
+			+ "							set @recepcion = '"+recepcion.trim()+"'"
+			+ "							select tb_productos_en_resguardo_por_recepcion.cod_prod "
+			+ "									, tb_productos_en_resguardo_por_recepcion.cantidad_factura "
+			+ "									,tb_productos_en_resguardo_por_recepcion.cantidad_resguardo "
+			+ "									,isnull((select sum(tbresg.cantidad_recibida) "
+			+ "											from tb_productos_en_resguardo_por_recepcion tbresg "
+			+ "											where tbresg.folio_recepcion=tb_productos_en_resguardo_por_recepcion.folio_recepcion "
+			+ "											and tbresg.cod_prod = tb_productos_en_resguardo_por_recepcion.cod_prod and tbresg.estatus_pruducto = 'RB'),0) as recibida "
+			+ " 								, 0 as recibir "
+			+ "							from tb_productos_en_resguardo_por_recepcion "
+			+ "							where folio_recepcion=@recepcion "
+			+ "							and estatus_recepcion = 'PE' "
+			+ "						and estatus_pruducto = 'OR'"; 
+	
+	String query_desc = "select descripcion from productos where cod_prod = '"; 
+	
+	
+	Object[][] matriz = new Object[get_filas(query_lista)][6];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		Statement stmtIz = new Connexion().conexion_IZAGAR().createStatement();
+		ResultSet rsIz = null;
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getString(1)+"";
+			
+			rsIz = stmtIz.executeQuery(query_desc+rs.getString(1)+"'");
+			while(rsIz.next()){	matriz[i][1] = " "+rsIz.getString(1);}
+			
+			matriz[i][2] =  " "+rs.getString(2); 
+			matriz[i][3] =  " "+rs.getString(3);
+			matriz[i][4] =  " "+rs.getString(4); 
+			matriz[i][5] =  " "+rs.getString(5);
+			
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion recepcion_de_mercancia_en_resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
+public boolean reporte_de_recepcion_de_mercancia_en_resguardo(){
+	
+	boolean generado = false;
+	
+	String query_truncate = "truncate table tb_reporte_de_movimiento_de_mercancia_en_resguardo_temp"; 
+	
+	String query_select = "select tb_productos_en_resguardo_por_recepcion.folio_recepcion "
+			+ "		,CONVERT(VARCHAR(20),tb_productos_en_resguardo_por_recepcion.fecha_de_captura,103)+' '+CONVERT(VARCHAR(20),tb_productos_en_resguardo_por_recepcion.fecha_de_captura,108) AS fecha_de_captura "
+			+ "		,tb_productos_en_resguardo_por_recepcion.cod_prv "
+			+ "		,tb_productos_en_resguardo_por_recepcion.cod_prod "
+			+ "		,tb_productos_en_resguardo_por_recepcion.cantidad_factura "
+			+ "		,tb_productos_en_resguardo_por_recepcion.cantidad_resguardo "
+			+ "		,tb_productos_en_resguardo_por_recepcion.cantidad_recibida "
+			+ "		,CONVERT(VARCHAR(20),tb_productos_en_resguardo_por_recepcion.fecha_de_recepcion,103)+' '+CONVERT(VARCHAR(20),tb_productos_en_resguardo_por_recepcion.fecha_de_recepcion,108) AS fecha_de_recepcion "
+			+ "		,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado "
+			+ "		,CASE WHEN (tb_productos_en_resguardo_por_recepcion.estatus_recepcion='PE') THEN 'PENDIENTE' "
+			+ "				WHEN (tb_productos_en_resguardo_por_recepcion.estatus_recepcion='CA') THEN 'CANCELADO' "
+			+ "				ELSE 'COMPLETO' "
+			+ "			END AS estatus_recepcion "
+			+ "		,CASE WHEN (tb_productos_en_resguardo_por_recepcion.estatus_pruducto='OR') THEN 'ORIGINAL' "
+			+ "				WHEN (tb_productos_en_resguardo_por_recepcion.estatus_pruducto='CA') THEN 'CANCELADO' "
+			+ "				ELSE 'RECIBIDO' "
+			+ "				END AS estatus_pruducto "
+			+ "from tb_productos_en_resguardo_por_recepcion "
+			+ "INNER JOIN tb_empleado on tb_empleado.folio = tb_productos_en_resguardo_por_recepcion.folio_usuario_capturo "
+			+ "order by cod_prod,estatus_pruducto,fecha_de_recepcion"; 
+	
+	String query_insert ="exec sp_insert_movimientos_de_mercacion_en_resguardo ?,?,?,?,?,?,?,?,?,?,?,?,?";
+	
+	
+	
+	Object[][] matriz = new Object[get_filas(query_select)][13];
+	try {
+		
+//		truncate -----------------------------------------------------
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query_truncate);
+		pstmt.executeUpdate();
+//		--------------------------------------------------------------
+		
+//		select scoi -------------------------------------------------------------------------------------
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(query_select);
+//		-------------------------------------------------------------------------------------------------
+		
+		Statement stmtIz = new Connexion().conexion_IZAGAR().createStatement();
+		ResultSet rsIz = null;
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getString(1).trim()+"";
+			matriz[i][1] =  rs.getString(2).trim();
+			
+			
+			matriz[i][2] =  rs.getString(3);
+			rsIz = stmtIz.executeQuery("select razon_social from proveedores where cod_prv = '"+rs.getString(3)+"'");
+			while(rsIz.next()){	matriz[i][3] =  " "+rsIz.getString(1).trim();}
+			
+			
+			matriz[i][4] =  rs.getString(4);
+			rsIz = stmtIz.executeQuery("select descripcion from productos where cod_prod = '"+rs.getString(4)+"'");
+			while(rsIz.next()){	matriz[i][5] =  " "+rsIz.getString(1).trim();}
+			
+			matriz[i][6]  =  " "+rs.getString(5).trim();
+			matriz[i][7]  =  " "+rs.getString(6).trim(); 
+			matriz[i][8]  =  " "+rs.getString(7).trim();
+			matriz[i][9]  =  " "+rs.getString(8).trim(); 
+			matriz[i][10] =  " "+rs.getString(9).trim();
+			matriz[i][11] =  " "+rs.getString(10).trim(); 
+			matriz[i][12] =  " "+rs.getString(11);
+			
+			i++;
+		}
+		
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query_insert);
+		for(int a=0; a<matriz.length; a++){
+//			for(int b=0; b<13; b++){
+				
+//				if(b>=6 && b<=8){
+//					pstmt.setFloat(a+1, Float.valueOf(matriz[a][b].toString()));
+//				}else{
+//					pstmt.setString(a+1, matriz[a][b].toString());
+//				}
+			
+			
+				pstmt.setString(1, matriz[a][0].toString());
+			    pstmt.setString(2, matriz[a][1].toString());  
+		        pstmt.setString(3, matriz[a][2].toString());
+		        pstmt.setString(4, matriz[a][3].toString());  
+		        pstmt.setString(5, matriz[a][4].toString());
+			    pstmt.setString(6, matriz[a][5].toString());  
+			    
+		        pstmt.setFloat(7, Float.valueOf(matriz[a][6].toString()));
+		        pstmt.setFloat(8, Float.valueOf(matriz[a][7].toString()));  
+		        pstmt.setFloat(9, Float.valueOf(matriz[a][8].toString()));
+		        
+			    pstmt.setString(10, matriz[a][9].toString());  
+		        pstmt.setString(11, matriz[a][10].toString());
+		        pstmt.setString(12, matriz[a][11].toString());  
+		        
+		        pstmt.setString(13, matriz[a][12].toString());
+		        
+				
+				pstmt.executeUpdate();
+				
+//				if(b==12){
+//					System.out.println(matriz[a][b]+"   ");
+//				}else{
+//					System.out.print(matriz[a][b]+"   ");
+//				}
+//			}
+		}
+		con.commit();
+		
+		generado = true;
+		
+	} catch (SQLException e1) {
+		
+		generado=false;
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion recepcion_de_mercancia_en_resguardo SQLException: \n"+query_insert+"\n"+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return generado; 
+}
 }
 
 
