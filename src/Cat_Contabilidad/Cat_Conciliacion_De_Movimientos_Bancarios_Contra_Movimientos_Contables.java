@@ -7,8 +7,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
@@ -24,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -36,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import com.toedter.calendar.JDateChooser;
 
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
@@ -53,11 +55,15 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	Object[][] Matriz_Conciliados;
 	
 	JButton btnGuardar =new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnBorrar =new JButton("Corrección",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+	
 	JButton btnActualizar =new JButton("Actualizar",new ImageIcon("imagen/Actualizar.png"));
 	JButton btnConciliar = new JButton("Conciliar",new ImageIcon("imagen/double-arrow-icone-3883-16.png"));
 	JButton btnConciliaAutoImporte = new JButton("Conciliacion Automatica Por Importe",new ImageIcon("imagen/reconstruir-icono-6593-16.png"));
 	JButton btnConciliaAutoImporteyReferencia = new JButton("Conciliacion Automatica Importe y Referencia",new ImageIcon("imagen/reconstruir-icono-6593-16.png"));
-	JButton btnMovimientosContablesPendientesConciliar = new JButton("Movimientos Contables Pendientes De Conciliar",new ImageIcon("imagen/Lista.png"));
+	JButton btnMovimientosContablesPendientesConciliar = new JButton("Movimientos Contables Sin Conciliar",new ImageIcon("imagen/Lista.png"));
+	JButton btnReporteConciliado = new JButton("Movimientos Conciliados",new ImageIcon("imagen/Lista.png"));
+	JButton btnReporteComparacion_Entre_conciliaciones = new JButton("Diferencias De Conciliaciones",new ImageIcon("imagen/Lista.png"));
 	
 	JButton btntabladesconciliar =new JButton("Desconciliar");
 	
@@ -74,8 +80,8 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	
 	JTextField txtBanco = new Componentes().text( new JTextField(), "Nombre Del Banco", 100, "String");
 	JTextField txtCuentaContable = new Componentes().text( new JTextField(), "Cuenta Contable", 100, "String");
-    JTextField txtTotalSeleccionadoBanco = new Componentes().text(new JTextField(), "Total de Importe Selecionado de Movimiento Bancarios", 20, "Float");
-    JTextField txtTotalSeleccionadoContabilidad = new Componentes().text(new JTextField(), "Total de Importe Selecionado de Movimiento Contabilidad", 20, "Float");
+    JTextField txtSaldoBanco = new Componentes().text(new JTextField(), "Total de Importe Selecionado de Movimiento Bancarios", 20, "Float");
+    JTextField txtSaldoContabilidad = new Componentes().text(new JTextField(), "Total de Importe Selecionado de Movimiento Contabilidad", 20, "Float");
     
 //TABLA MOVIMIENTOS BANCARIOS
 	DefaultTableModel modelobancarios = new DefaultTableModel(null,
@@ -242,26 +248,29 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		campo.add(cmbCuentasBancarias).setBounds(60,y,100,20);
 		campo.add(txtBanco).setBounds(170,y,100,20);
 		campo.add(new JLabel ("Cuenta Contable:")).setBounds(280,y,100,20);
-		campo.add(txtCuentaContable).setBounds(390,y,100,20);
-		campo.add(btnConciliaAutoImporte).setBounds(500,y,270,20);
-        campo.add(btnGuardar).setBounds(780,y,100,20);
-        campo.add(btnMovimientosContablesPendientesConciliar).setBounds(890, y, 300, 20);
+		campo.add(txtCuentaContable).setBounds(375,y,100,20);
+		campo.add(btnConciliaAutoImporte).setBounds(485,y,270,20);
+        campo.add(btnGuardar).setBounds(765,y,120,20);
+        campo.add(btnMovimientosContablesPendientesConciliar).setBounds(895, y, 225, 20);
 		
 		campo.add(new JLabel ("Fecha:")).setBounds(15,y+=30,100,20);
 		campo.add(cfecha).setBounds(60,y,100,20);
         campo.add(btnActualizar).setBounds(170,y,100,20);
         campo.add(new JLabel ("Fecha Conciliacion:")).setBounds(280,y,100,20);
-        campo.add(cfecha_conciliado).setBounds(390,y,100,20);
-        campo.add(btnConciliaAutoImporteyReferencia).setBounds(500, y, 270, 20);
+        campo.add(cfecha_conciliado).setBounds(375,y,100,20);
+        campo.add(btnConciliaAutoImporteyReferencia).setBounds(485, y, 270, 20);
+        campo.add(btnBorrar).setBounds(765, y, 120, 20);
+        campo.add(btnReporteConciliado).setBounds(895, y, 225, 20);
+        campo.add(btnReporteComparacion_Entre_conciliaciones).setBounds(1130, y, 190, 20);
         
     	int y2=(alto/2);
         int x=(ancho/2);
         
 		campo.add(lblTablaMovBancarios).setBounds(15,y+=30,x-60, 35);
-		campo.add(txtTotalSeleccionadoBanco ).setBounds(x-115,y+5,100,20);;
+		campo.add(txtSaldoBanco ).setBounds(x-115,y+5,100,20);;
     	campo.add(scroll).setBounds(15,y+30,x-30,y2-80);
     	
-		campo.add(txtTotalSeleccionadoContabilidad).setBounds(x,y+5,100,20);;
+		campo.add(txtSaldoContabilidad).setBounds(x,y+5,100,20);;
 	    campo.add(btnConciliar).setBounds(x+120,y+5,100,20);; 
 	       
 	    campo.add(lblTablaMovContabilidad).setBounds(x+300,y, 300, 35);
@@ -272,11 +281,11 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
      	
 		txtBanco.setEnabled(false);
 		txtCuentaContable.setEnabled(false);
-		txtTotalSeleccionadoBanco.setEnabled(false);
-        txtTotalSeleccionadoContabilidad.setEnabled(false);
+		txtSaldoBanco.setEnabled(false);
+        txtSaldoContabilidad.setEnabled(false);
 		
-         cfecha.setDate(cargar_fecha_Sugerida(0));;
-         cfecha_conciliado.setDate(cargar_fecha_Sugerida(1));;
+        cfecha.setDate(cargar_fecha_Sugerida(1));;
+        cfecha_conciliado.setDate(cargar_fecha_Sugerida(1));;
 		cargar_datos_cuenta_bancaria();
 		
 //    	AGREGAR BOTON A LA TABLA 
@@ -292,21 +301,18 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		btnConciliaAutoImporte.addActionListener(opConciliacion_por_importe);
 		btnConciliaAutoImporteyReferencia.addActionListener(opConciliacion_por_importe_y_Referencia);
 		btnGuardar.addActionListener(opGuardarConciliacion);
+		btnBorrar.addActionListener(opBorrar_ventana_emergente);
 		btnMovimientosContablesPendientesConciliar.addActionListener(opReporte_De_Movimientos_Contables_Pendientes_De_Conciliar);
+		btnReporteConciliado.addActionListener(opReporte_De_Movimientos_Concialiados);
+		btnReporteComparacion_Entre_conciliaciones.addActionListener(opReporte_De_Diferencias_Entre_Conciliaciones);
 		
 		cmbCuentasBancarias.addActionListener(opBuscar_datoscuenta_bancaria);
-		tabla_mov_bancarios.addMouseListener(opTablaMovBancariosSeleccion);
-		tabla_mov_contabilidad.addMouseListener(opTablaMovContabilidadSeleccion);
+//		tabla_mov_bancarios.addMouseListener(opTablaMovBancariosSeleccion);
+//		tabla_mov_contabilidad.addMouseListener(opTablaMovContabilidadSeleccion);
 		
 	    tabla_mov_contabilidad.getTableHeader().setReorderingAllowed(false) ;
-//	    tabla_mov_contabilidad.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	    
 	    tabla_mov_bancarios.getTableHeader().setReorderingAllowed(false) ;
-    	
-//	    tabla_mov_bancarios.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
 	    tablaconciliados.getTableHeader().setReorderingAllowed(false) ;
-//	    tablaconciliados.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 	}
 	
@@ -617,7 +623,9 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 
 	//CONSULTA SCOI
 	public Object[][] Consulta_para_llenar_Mov_Contabilidad_SCOI(){
-		String consulta = "SELECT  'false' as conciliar ,[poliza],[tipo],[MesAño],[fecha],[mov] as tipo_movimiento,convert(numeric(19,2),[importe])as importe,[referencia],[concepto],[cod_establecimiento] FROM  IZAGAR_movimientos_polizas where status_conciliado='PE' and cuenta_contable='"+txtCuentaContable.getText().toString()+"' order by importe asc";
+		String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate())+" 23:59:00";
+		String consulta = "SELECT  'false' as conciliar ,[poliza],[tipo],[MesAño],[fecha],[mov] as tipo_movimiento,convert(numeric(19,2),[importe])as importe,[referencia],[concepto],[cod_establecimiento] "
+				+ "  FROM  IZAGAR_movimientos_polizas where status_conciliado='PE' and cuenta_contable='"+txtCuentaContable.getText().toString()+"' and fecha<'"+fecha+"' order by importe asc";
    		Statement s;
 		ResultSet rs2;
 		try {
@@ -680,6 +688,9 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		}
 		return matriz_conciliados;
 	 }
+	 
+	 
+	 
 	
  ///////////////////TODO LISTENERS
     ActionListener opGuardarConciliacion = new ActionListener() {
@@ -688,8 +699,10 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			 
 			if(tablaconciliados.isEditing()){
 				tablaconciliados.getCellEditor().stopCellEditing();
-			}
-          if(guardar_conciliados.guardar_conciliacion(tabla_guardar_conciliados())){
+			 }
+			
+            if(guardar_conciliados.guardar_conciliacion(tabla_guardar_conciliados())){
+            	
 				while(tablaconciliados.getRowCount()>0){
 					  modeloconciliados.removeRow(0); }
                           	  
@@ -702,17 +715,69 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			  cargar_datos_cuenta_bancaria();
 		   }
 	};
+	
+   ActionListener opBorrar_ventana_emergente = new ActionListener(){
+		   public void actionPerformed(ActionEvent arg0) {
+			  new Cat_Emergente_Correccion_de_Movimientos_Contables().setVisible(true);;
+		   }
+	};
 		
 	
-	   ActionListener opReporte_De_Movimientos_Contables_Pendientes_De_Conciliar = new ActionListener(){
+   ActionListener opReporte_De_Movimientos_Contables_Pendientes_De_Conciliar = new ActionListener(){
+		   public void actionPerformed(ActionEvent arg0) {
+		  		String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate())+" 23:59:00";    
+		  		
+				String basedatos="2.26";
+				String vista_previa_reporte="no";
+				int vista_previa_de_ventana=0;
+				String reporte = "Obj_Reporte_De_Movimientos_Contables_Pendientes_De_Conciliar.jrxml";
+			    String comando = "exec sp_Reporte_De_Movimientos_Contables_Pendientes_De_Conciliar '"+txtCuentaContable.getText().toString()+"','"+txtBanco.getText().toString()+"','"+cmbCuentasBancarias.getSelectedItem().toString()+"','"+fecha+"'";
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		   }
+	};
+	
+	
+	ActionListener opReporte_De_Diferencias_Entre_Conciliaciones = new ActionListener(){
+		   public void actionPerformed(ActionEvent arg0) {
+			   btnReporteComparacion_Entre_conciliaciones.setEnabled(false);
+			   String fechaNull = cfecha.getDate()+"";
+			    String cuenta_contable=txtCuentaContable.getText().toString();
+			   if(fechaNull.equals("null")){
+					JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				   }else{
+			          Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad guardar_movimientos = new Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad();
+ 
+					if(guardar_movimientos.guardar_movimientos_contabilidad_reporte_comparacion(Consulta_para_llenar_Mov_Contabilidad(),cuenta_contable)){
+				  		String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate())+" 23:59:00";    
+				  		
+						String basedatos="2.26";
+						String vista_previa_reporte="no";
+						int vista_previa_de_ventana=0;
+						String reporte = "Obj_Reporte_De_Diferencias_De_Movimientos_Contables_Pendientes_De_Conciliar.jrxml";
+					    String comando = "exec sp_Reporte_De_Diferencias_De_Movimientos_Contables_Pendientes_De_Conciliar '"+txtCuentaContable.getText().toString()+"','"+txtBanco.getText().toString()+"','"+cmbCuentasBancarias.getSelectedItem().toString()+"','"+fecha+"'";
+					    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+						   }else{
+			                   JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla_guardar_movimientos_contabilidad_iniciales","Avise Al Adiministrador",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			                   return;
+		                    }
+						 btnReporteComparacion_Entre_conciliaciones.setEnabled(true);
+		   }
+		   }
+	};
+	
+	
+	
+	ActionListener opReporte_De_Movimientos_Concialiados = new ActionListener(){
 		   public void actionPerformed(ActionEvent arg0) {
 				String basedatos="2.26";
 				String vista_previa_reporte="no";
 				int vista_previa_de_ventana=0;
 				String comando="";
 				String reporte = "";
-				reporte = "Obj_Reporte_De_Movimientos_Contables_Pendientes_De_Conciliar.jrxml";
-			    comando = "exec sp_Reporte_De_Movimientos_Contables_Pendientes_De_Conciliar '"+txtCuentaContable.getText().toString()+"','"+txtBanco.getText().toString()+"','"+cmbCuentasBancarias.getSelectedItem().toString()+"'";
+				String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha_conciliado.getDate());
+				reporte = "Obj_Reporte_De_Movimientos_Conciliados.jrxml";
+			    comando = "exec sp_Reporte_De_Movimientos_Conciliados '"+fecha+"','"+txtCuentaContable.getText().toString()+"'";
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		   }
 	};
@@ -726,8 +791,6 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 					return;
 				   }else{
 					   btnConciliaAutoImporte.setEnabled(true);
-					   txtTotalSeleccionadoBanco.setText("");
-					   txtTotalSeleccionadoContabilidad.setText("");
 				       Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad guardar_movimientos = new Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad();
 						
 					   llenado_tabla_mov_bancarios_inicial(1);
@@ -742,7 +805,6 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 						                   JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla_guardar_movimientos_bancarios_iniciales","Avise Al Adiministrador",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 						                  return;
 					                    }
-
 						llenado_tabla_mov_contabilidad(1);
 						if(tabla_mov_contabilidad.isEditing()){
 						    tabla_mov_contabilidad.getCellEditor().stopCellEditing();
@@ -771,7 +833,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		 float importe_mov_bancarios=0;
 		 float importe_mov_contabilidad=0;
 		 String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha_conciliado.getDate())+" 00:00:00";
-		 
+
 		 for(int i =0; i<tabla_mov_bancarios.getRowCount(); i++){
 			   importe_mov_bancarios=Float.valueOf(tabla_mov_bancarios.getValueAt(i, 3).toString().trim());
 			      for(int i1 =0; i1<tabla_mov_contabilidad.getRowCount(); i1++){
@@ -800,7 +862,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			    	  }
 				   }	
 			   }
-//		    btnConciliaAutoImporte.setEnabled(false);
+         //    btnConciliaAutoImporte.setEnabled(false);
 		   }
 	};
 	
@@ -810,20 +872,19 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 
 	ActionListener opConciliacion_por_importe_y_Referencia = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-		 Object[] vector = new Object[17];
-		 float importe_mov_bancarios=0;
-		 float importe_mov_contabilidad=0;
-		 String Referencia_Bancario ="";
-		 String Referencia_Contabilidad="";
-		 String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha_conciliado.getDate())+" 00:00:00";
-		 
+			 Object[] vector = new Object[17];
+			 float importe_mov_bancarios=0;
+			 float importe_mov_contabilidad=0;
+			 String Referencia_Bancario ="";
+			 String Referencia_Contabilidad="";
+			 String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha_conciliado.getDate())+" 00:00:00";
+			 
 		 for(int i =0; i<tabla_mov_bancarios.getRowCount(); i++){
 			   importe_mov_bancarios=Float.valueOf(tabla_mov_bancarios.getValueAt(i, 3).toString().trim());
 		       Referencia_Bancario=tabla_mov_bancarios.getValueAt(i,4).toString().trim();
 			      for(int i1 =0; i1<tabla_mov_contabilidad.getRowCount(); i1++){
 			    	  importe_mov_contabilidad=Float.valueOf(tabla_mov_contabilidad.getValueAt(i1, 6).toString().trim());
 			    	  Referencia_Contabilidad=tabla_mov_contabilidad.getValueAt(i1,7).toString().trim();
-	
 			    	  if(importe_mov_bancarios==importe_mov_contabilidad&&Referencia_Bancario.equals(Referencia_Contabilidad)){
 				 		  vector[0] =  "";
 				 		  vector[1] =  fecha; 
@@ -906,14 +967,13 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 				   }
 			    }
 				modeloconciliados.addRow(vector);
-				   txtTotalSeleccionadoBanco.setText("");
-				   txtTotalSeleccionadoContabilidad.setText("");
 	    }
 		 else{
 				JOptionPane.showMessageDialog(null, "Para Poder Conciliar Se Necesita Selecionar Un Movimiento Bancario y Un Movimiento de Contabilidad", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 		 }
 		}
 	};
+	
 	
     ActionListener opDesconciliar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -950,40 +1010,40 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		}
 	};
 	
-	MouseListener opTablaMovBancariosSeleccion = new MouseListener() {
-				public void mousePressed(MouseEvent e) {}
-					public void mouseClicked(MouseEvent e) {
-						txtTotalSeleccionadoBanco.setText("");
-						double Total_Seleccion_Bancos = 0;
-						   for(int i=0; i<tabla_mov_bancarios.getRowCount(); i++){
-									if(Boolean.valueOf(tabla_mov_bancarios.getValueAt(i, 6).toString())){ 
-										Total_Seleccion_Bancos+=Double.valueOf(tabla_mov_bancarios.getValueAt(i,3).toString());
-										txtTotalSeleccionadoBanco.setText(Total_Seleccion_Bancos+"");
-									}
-							}
-				}
-				public void mouseEntered(MouseEvent e) {}
-				public void mouseExited(MouseEvent e) {}
-				public void mouseReleased(MouseEvent e) {}
-	};
-			
-	MouseListener opTablaMovContabilidadSeleccion = new MouseListener() {
-				public void mousePressed(MouseEvent e) {}
-				public void mouseClicked(MouseEvent e) {
-					txtTotalSeleccionadoContabilidad.setText("");
-					double Total_Seleccion_Contabilidad = 0;
-					   for(int i=0; i<tabla_mov_contabilidad.getRowCount(); i++){
-								if(Boolean.valueOf(tabla_mov_contabilidad.getValueAt(i, 0).toString())){ 
-									Total_Seleccion_Contabilidad+=Double.valueOf(tabla_mov_contabilidad.getValueAt(i,6).toString());
-									txtTotalSeleccionadoContabilidad.setText(Total_Seleccion_Contabilidad+"");
-								}
-						}
-				}
-				public void mouseEntered(MouseEvent e) {}
-				public void mouseExited(MouseEvent e) {}
-				public void mouseReleased(MouseEvent e) {}
-	};
-			
+//	MouseListener opTablaMovBancariosSeleccion = new MouseListener() {
+//				public void mousePressed(MouseEvent e) {}
+//					public void mouseClicked(MouseEvent e) {
+//						txtTotalSeleccionadoBanco.setText("");
+//						double Total_Seleccion_Bancos = 0;
+//						   for(int i=0; i<tabla_mov_bancarios.getRowCount(); i++){
+//									if(Boolean.valueOf(tabla_mov_bancarios.getValueAt(i, 6).toString())){ 
+//										Total_Seleccion_Bancos+=Double.valueOf(tabla_mov_bancarios.getValueAt(i,3).toString());
+//										txtTotalSeleccionadoBanco.setText(Total_Seleccion_Bancos+"");
+//									}
+//							}
+//				}
+//				public void mouseEntered(MouseEvent e) {}
+//				public void mouseExited(MouseEvent e) {}
+//				public void mouseReleased(MouseEvent e) {}
+//	};
+//			
+//	MouseListener opTablaMovContabilidadSeleccion = new MouseListener() {
+//				public void mousePressed(MouseEvent e) {}
+//				public void mouseClicked(MouseEvent e) {
+//					txtTotalSeleccionadoContabilidad.setText("");
+//					double Total_Seleccion_Contabilidad = 0;
+//					   for(int i=0; i<tabla_mov_contabilidad.getRowCount(); i++){
+//								if(Boolean.valueOf(tabla_mov_contabilidad.getValueAt(i, 0).toString())){ 
+//									Total_Seleccion_Contabilidad+=Double.valueOf(tabla_mov_contabilidad.getValueAt(i,6).toString());
+//									txtTotalSeleccionadoContabilidad.setText(Total_Seleccion_Contabilidad+"");
+//								}
+//						}
+//				}
+//				public void mouseEntered(MouseEvent e) {}
+//				public void mouseExited(MouseEvent e) {}
+//				public void mouseReleased(MouseEvent e) {}
+//	};
+//			
     WindowListener op_cerrar = new WindowListener() {
 		public void windowOpened(WindowEvent e) {}
 		public void windowIconified(WindowEvent e) {}
@@ -998,6 +1058,135 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		public void windowActivated(WindowEvent e) {}
 	};
 	
+	 ///////////////////TODO CATALOGO DE BORRADO DE MOVIMIENTOS DE POLIZA CORREGIDOS
+	public class Cat_Emergente_Correccion_de_Movimientos_Contables extends JDialog{
+		Container cont = getContentPane();
+		JLayeredPane panel = new JLayeredPane();
+		JTextField txtid = new Componentes().text(new JTextField(), "ID del Movimiento Contable A Buscar", 25, "String");
+		JTextField txtpoliza = new Componentes().text(new JTextField(), "Poliza", 25, "String");
+		JTextField txtimporte = new Componentes().text(new JTextField(), "Importe", 25, "String");
+		JTextField txtreferencia = new Componentes().text(new JTextField(), "Referencia", 25, "String");
+		JTextField txtconcepto    = new Componentes().text(new JTextField(), "Concepto", 25, "String");
+		JButton btnBorrado_Movimiento = new JButton("",new ImageIcon("imagen/Delete.png"));
+		
+		public Cat_Emergente_Correccion_de_Movimientos_Contables(){
+			setSize(300,230);
+			setResizable(false);
+			setLocationRelativeTo(null);
+			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			setModal(true);
+			setTitle("Borrado de Movimientos Contables Modificados");
+			setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/listaRoja.png"));
+			panel.setBorder(BorderFactory.createTitledBorder(""));
+			btnBorrado_Movimiento.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+					"		<CENTER><p>Borrar Movimiento Tecleado</p></CENTER></FONT>" +
+					"</html>");	
+			
+			panel.add(new JLabel("ID:")).setBounds(10,25,100,20);		
+			panel.add(txtid).setBounds(70,25,210,20);
+			
+			panel.add(new JLabel("Poliza:")).setBounds(10,50,100,20);		
+			panel.add(txtpoliza).setBounds(70,50,210,20);
+			
+			panel.add(new JLabel("Importe:")).setBounds(10,75,100,20);		
+			panel.add(txtimporte).setBounds(70,75,210,20);
+			
+			panel.add(new JLabel("Referencia:")).setBounds(10,100,100,20);		
+			panel.add(txtreferencia).setBounds(70,100,210,20);
+			
+			panel.add(new JLabel("Concepto:")).setBounds(10,125,100,20);		
+			panel.add(txtconcepto).setBounds(70,125,210,20);
+			
+			panel.add(btnBorrado_Movimiento).setBounds(10,170,270,20);
+			cont.add(panel);
+			txtpoliza.setEditable(false);
+			txtimporte.setEditable(false);
+			txtreferencia.setEditable(false);
+			txtconcepto.setEditable(false);
+			btnBorrado_Movimiento.setEnabled(false);
+			
+			txtid.addKeyListener(opbuscar_datos_del_id);
+			btnBorrado_Movimiento.addActionListener(opBorrar_movimiento_tecleado);
+			
+			}
+		
+		          KeyListener opbuscar_datos_del_id = new KeyListener(){
+					public void keyReleased(KeyEvent e1) {
+					}
+					public void keyTyped(KeyEvent e1) {
+					}
+					public void keyPressed(KeyEvent e1) {
+						if(e1.getKeyCode()==KeyEvent.VK_ENTER){
+							if(existe_mov_contable()){
+								buscar_datos_del_id();
+								btnBorrado_Movimiento.setEnabled(true);
+							}else{
+					   			JOptionPane.showMessageDialog(null,"No Se Encontro El Movimiento Tecleado Por Alguna de Las Siguientes Razones\n-No Existe El ID Tecleado \n-Esta Conciliado El Movimiento","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+						    txtpoliza.setText("");
+						    txtconcepto.setText("");
+							btnBorrado_Movimiento.setEnabled(false);
+							}
+						   }    	   
+					    }
+				    };
+				    
+					public boolean existe_mov_contable(){
+						String query ="	IF(SELECT COUNT(POLIZA) FROM IZAGAR_movimientos_polizas  WHERE status_conciliado='PE' AND cod_establecimiento='"+txtid.getText().toString()+"')=1 "+
+								      "  SELECT 'true' ELSE SELECT 'false' ";
+						boolean existe = false;
+						try { Connexion con = new Connexion();
+							  Statement s = con.conexion().createStatement();
+							  ResultSet rs = s.executeQuery(query);
+							while(rs.next()){
+							    	existe = rs.getBoolean(1);
+							      }
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Error en la funcion existe_mov_contable \n SQLException: "+e1.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+						}
+				      return existe;
+					}
+					
+					public void buscar_datos_del_id(){
+						String query ="SELECT POLIZA ,IMPORTE ,REFERENCIA ,CONCEPTO FROM IZAGAR_movimientos_polizas  WHERE status_conciliado='PE' AND cod_establecimiento='"+txtid.getText().toString()+"'";
+						try { Connexion con = new Connexion();
+							  Statement s = con.conexion().createStatement();
+							  ResultSet rs = s.executeQuery(query);
+							while(rs.next()){
+							    	txtpoliza.setText(rs.getString(1).toString());
+							    	txtimporte.setText(rs.getString(2).toString());
+							    	txtreferencia.setText(rs.getString(3).toString());
+							    	txtconcepto.setText(rs.getString(4).toString());
+							      }
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Error en la funcion buscar_datos_del_id \n SQLException: "+e1.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+						}
+					}
+					
+				
+				   ActionListener opBorrar_movimiento_tecleado = new ActionListener(){
+					   public void actionPerformed(ActionEvent arg0) {
+						   if(new ActualizarSQL().Borrar_movimiento_contabilidad(txtid.getText().toString())){
+							JOptionPane.showMessageDialog(null, "El Registro Se Elimino Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							   
+								while(tablaconciliados.getRowCount()>0){
+									  modeloconciliados.removeRow(0); }
+								
+								while(tabla_mov_bancarios.getRowCount()>0){
+									modelobancarios.removeRow(0); }
+								
+								while(tabla_mov_contabilidad.getRowCount()>0){
+									modelocontabilidad.removeRow(0); }
+								   dispose();
+						   }else{
+								JOptionPane.showMessageDialog(null, "Error en la funcion opBorrar_movimiento_tecleado \n al intentar borrar el ID:"+txtid.getText().toString(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+						  }	 
+					   }
+				   };
+				};
+
+				
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

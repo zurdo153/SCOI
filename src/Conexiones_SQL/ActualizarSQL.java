@@ -3461,6 +3461,7 @@ public boolean Cargar_Cambios_De_Tickets_de_la_Asignacion(String Asignacion){
 
 }	
 
+
 public boolean Devolver_Cambios_De_Tickets_de_la_Asignacion(String Asignacion){
 	
 	String query =" update entysal   set entysal.cod_prod=IZAGAR_AVI_entysal.cod_prod, "
@@ -3539,6 +3540,37 @@ public boolean Devolver_Cambios_De_Tickets_de_la_Asignacion(String Asignacion){
 	return true;
 
 }	
+
+public boolean Borrar_movimiento_contabilidad(String id){
+	String delete =" DELETE FROM IZAGAR_movimientos_polizas WHERE IZAGAR_movimientos_polizas.cod_establecimiento='"+id+"'";
+			Connection con = new Connexion().conexion();
+  try {	con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(delete);
+		  pstmt.executeUpdate();
+		  con.commit();
+	} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [Borrar_movimiento_contabilidad] \n SQLException: "+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [Borrar_movimiento_contabilidad] \n SQLException: "+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+				}
+				return false;
+				}	
+	}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	}		
+	return true;
+}
+
 
 	
 }

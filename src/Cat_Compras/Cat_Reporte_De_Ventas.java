@@ -63,7 +63,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String[] inicioDefault ="1:00:00".split(":");
+	String[] inicioDefault ="00:00:00".split(":");
 	String[] finDefault ="23:59:59".split(":");
 	
 	SpinnerDateModel TiempoInicio =  new SpinnerDateModel();
@@ -671,8 +671,8 @@ public void filtroProductos(String cadena){
 			
 			if(validar_fechas().equals("")){
 				
-				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_inicio.getValue());
-				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_fin.getValue());
+				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" "+new SimpleDateFormat("HH:mm:ss").format(sphora_inicio.getValue());
+				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" "+new SimpleDateFormat("HH:mm:ss").format(sphora_fin.getValue());
 				
 				String Establecimiento = "''"+cmbEstablecimiento.getSelectedItem().toString()+"''";
 				String tipo_de_precio  ="''"+cmbTipoDePrecio.getSelectedItem().toString()+"''";
@@ -692,7 +692,6 @@ public void filtroProductos(String cadena){
 				  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
 
 				if(fecha1.before(fecha2)){
-//					Reporte_de_Asistencia_establecimiento(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados);
 					Obj_Reportes_De_Ventas ventas = new Obj_Reportes_De_Ventas();
 					
 					ventas.setFecha_inicio(fecha_inicio);

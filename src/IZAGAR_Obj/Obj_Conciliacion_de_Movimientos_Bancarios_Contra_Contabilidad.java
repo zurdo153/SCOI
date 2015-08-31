@@ -80,10 +80,14 @@ public class Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad {
 		return new Conexiones_SQL.GuardarTablasModel().IZAGAR_insert_Movimientos_contabilidad_Iniciales(tabla );
 	}
 	
+	public boolean guardar_movimientos_contabilidad_reporte_comparacion(Object[][] tabla, String cuenta_contable){
+		return new Conexiones_SQL.GuardarTablasModel().IZAGAR_insert_Movimientos_contabilidad_Reporte_comparacion(tabla,cuenta_contable );
+	}
+	
+	
 	public boolean guardar_conciliacion(Object[][] tabla){
 		return new Conexiones_SQL.GuardarTablasModel().IZAGAR_Guardar_Conciliacion(tabla );
 	}
-	
 	
 	
 	public Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad buscar_datos_cuenta_Bancaria(String Cuenta_Bancaria) {
