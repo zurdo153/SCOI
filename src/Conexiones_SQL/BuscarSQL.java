@@ -6387,19 +6387,13 @@ public class BuscarSQL {
 			e.printStackTrace();
 			return null;
 		}
-		
-//		falta agregar talla a consulta
-//		(ventas.getTallas().equals("''Todos''")?0:ventas.getTallas())
-		String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())
+	String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())
 				          +"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())
 				          +"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"',"+ventas.getPresentado()+",'"+(ventas.getTallas().equals("")?0:ventas.getTallas())+"'";
 		String[][] rp_ventas = new String[getFilasExterno(query)][20];
 		try {
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
-            System.out.println(query);
-            
 			int i=0;
 				while(rs.next()){
 						rp_ventas[i][0 ]= rs.getString(1 ).trim();
@@ -6440,10 +6434,11 @@ public class BuscarSQL {
 		Statement stmt = null;
 		
 		String query = "exec sp_Reporte_IZAGAR_analisis_competidores '"+(ventas.getFecha_inicio()+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos()))+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"'";
-		
 		Object[][] rp_competencia = new Object[getFilasExterno(query)][cantidad_de_columnas];
 		
 		try {
+			
+			System.out.println(query);
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
