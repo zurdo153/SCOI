@@ -1638,18 +1638,16 @@ public Object[][] lista_recepcion_de_mercancia(String recepcion){
 	
 	String query_lista = " declare @folio_recepcion varchar(30) "
 			+ " set @folio_recepcion= '"+recepcion+"' "
-			+ " select  entysal.cod_prv "
-			+ "			,convert(varchar(20),entysal.fecha,103)+' '+convert(varchar(20),entysal.fecha,108) as fecha "
-			+ "			,entysal.folio "
-			+ "			,entysal.cod_prod "
+			+ " select  entysal.cod_prod "
 			+ "			,productos.descripcion "
+			+ "			,convert(varchar(20),entysal.fecha,103)+' '+convert(varchar(20),entysal.fecha,108) as fecha "
 			+ "			, entysal.cantidad as cantidad_factura "
 			+ "			,0 cantidad_en_resguardo "
 			+ " from entysal with (nolock) "
 			+ " left outer join productos on productos.cod_prod=entysal.cod_prod "
 			+ " where transaccion=44 and entysal.folio=@folio_recepcion and entysal.status='V'";
 	
-	Object[][] matriz = new Object[get_filas_izagar(query_lista)][7];
+	Object[][] matriz = new Object[get_filas_izagar(query_lista)][5];
 	try {
 		Statement stmt = new Connexion().conexion_IZAGAR().createStatement();
 		ResultSet rs = stmt.executeQuery(query_lista);
@@ -1663,8 +1661,6 @@ public Object[][] lista_recepcion_de_mercancia(String recepcion){
 			
 			matriz[i][3] =  " "+rs.getString(4);
 			matriz[i][4] =  " "+rs.getString(5); 
-			matriz[i][5] =  " "+rs.getString(6);
-			matriz[i][6] =  " "+rs.getString(7); 
 			i++;
 		}
 	} catch (SQLException e1) {
@@ -1714,10 +1710,15 @@ public Object[][] recepcion_de_mercancia_en_resguardo(String recepcion){
 			+ "									, tb_productos_en_resguardo_por_recepcion.cantidad_factura "
 			+ "									,tb_productos_en_resguardo_por_recepcion.cantidad_resguardo "
 			+ "									,isnull((select sum(tbresg.cantidad_recibida) "
-			+ "											from tb_productos_en_resguardo_por_recepcion tbresg "
-			+ "											where tbresg.folio_recepcion=tb_productos_en_resguardo_por_recepcion.folio_recepcion "
-			+ "											and tbresg.cod_prod = tb_productos_en_resguardo_por_recepcion.cod_prod and tbresg.estatus_pruducto = 'RB'),0) as recibida "
-			+ " 								, 0 as recibir "
+			+ "												from tb_productos_en_resguardo_por_recepcion tbresg "
+			+ "												where tbresg.folio_recepcion=tb_productos_en_resguardo_por_recepcion.folio_recepcion "
+			+ "												and tbresg.cod_prod = tb_productos_en_resguardo_por_recepcion.cod_prod and tbresg.estatus_pruducto = 'RB'),0) as recibida "
+			+ " 					 			,tb_productos_en_resguardo_por_recepcion.cantidad_resguardo-(isnull((select sum(tbresg.cantidad_recibida) "
+			+ "																													from tb_productos_en_resguardo_por_recepcion tbresg "
+			+ "																													where tbresg.folio_recepcion=tb_productos_en_resguardo_por_recepcion.folio_recepcion "
+			+ "																													and tbresg.cod_prod = tb_productos_en_resguardo_por_recepcion.cod_prod and tbresg.estatus_pruducto = 'RB') "
+			+ "																													,0)) as pendiente						"
+			+ "									, 0 as recibir "
 			+ "							from tb_productos_en_resguardo_por_recepcion "
 			+ "							where folio_recepcion=@recepcion "
 			+ "							and estatus_recepcion = 'PE' "
@@ -1726,7 +1727,7 @@ public Object[][] recepcion_de_mercancia_en_resguardo(String recepcion){
 	String query_desc = "select descripcion from productos where cod_prod = '"; 
 	
 	
-	Object[][] matriz = new Object[get_filas(query_lista)][6];
+	Object[][] matriz = new Object[get_filas(query_lista)][7];
 	try {
 		Statement stmt = new Connexion().conexion().createStatement();
 		ResultSet rs = stmt.executeQuery(query_lista);
@@ -1746,6 +1747,7 @@ public Object[][] recepcion_de_mercancia_en_resguardo(String recepcion){
 			matriz[i][3] =  " "+rs.getString(3);
 			matriz[i][4] =  " "+rs.getString(4); 
 			matriz[i][5] =  " "+rs.getString(5);
+			matriz[i][6] =  " "+rs.getString(6);
 			
 			i++;
 		}

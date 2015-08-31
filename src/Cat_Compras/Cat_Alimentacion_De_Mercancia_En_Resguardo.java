@@ -149,9 +149,11 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 		        	if(e.getClickCount() == 2){
 		        		
 		    			int fila = tabla.getSelectedRow();
-		    			String folio =  tabla.getValueAt(fila, 0).toString();
+		    			String recepcion =  tabla.getValueAt(fila, 0).toString();
+		    			String codPrv =  tabla.getValueAt(fila, 1).toString();
+		    			String proveedor =  tabla.getValueAt(fila, 2).toString();
 		    			
-		    			new Cat_Recepcion_De_Resguardo(folio).setVisible(true);
+		    			new Cat_Recepcion_De_Resguardo(recepcion,codPrv,proveedor).setVisible(true);
 		    			
 //		    			dispose();
 		        	}
@@ -221,15 +223,18 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 	
 	JButton btnGuardar = new JButton("Guardar");
 	
+	JTextField txtCodPrv = new Componentes().text(new JTextField(), "Codigo De Proveedor", 20, "String");
+	JTextField txtProveedor 	= new Componentes().text(new JTextField(), "Proveedor", 180, "String");
+	
+	JTextField txtRecep = new Componentes().text(new JTextField(), "Recepcion", 20, "String");
+	
 	JTextField txtCodProducto = new Componentes().text(new JTextField(), "Codigo De Producto", 15, "String");
 	JTextField txtDescripcion 	= new Componentes().text(new JTextField(), "Descripcion", 100, "String");
 	
-		DefaultTableModel modeloRecep = new DefaultTableModel(null,new String[]{"Cod Prv","Fecha","Recepcion","Cod.Prod","Descripcion","Cant.Factura","Cant.Resguardo"}){
+		DefaultTableModel modeloRecep = new DefaultTableModel(null,new String[]{"Cod.Prod","Descripcion","Fecha","Cantidad Factura","Cantidad Resguardo"}){
 		
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
-				java.lang.Object.class,
-				java.lang.Object.class,
 				java.lang.Object.class,
 				java.lang.Object.class,
 				java.lang.Object.class,
@@ -248,9 +253,7 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
        	 	case 1 : return false; 
        	 	case 2 : return false; 
        	 	case 3 : return false; 
-       	 	case 4 : return false; 
-       	 	case 5 : return false; 
-       	 	case 6 : return true; 
+       	 	case 4 : return true; 
        	 	
        	 }
 			return false;
@@ -260,16 +263,23 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 	JTable tablaRecep = new JTable(modeloRecep);
 	JScrollPane scrollRecep = new JScrollPane(tablaRecep);
 
-	public Cat_Recepcion_De_Resguardo(String recepcion){
+	public Cat_Recepcion_De_Resguardo(String recepcion,String codProv,String Proveed){
 		
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/"));
 		this.setTitle("Recepcion Con Resguardo");
 		panel2.setBorder(BorderFactory.createTitledBorder("Ingresar Cantidades de Productos Que Hay En Resguardo"));		
-		int x=15,y=20,ancho=80;
+		int x=15,y=15,ancho=80;
 		
-		panel2.add(txtCodProducto  ).setBounds(x+70,y,70,20);
-		panel2.add(txtDescripcion).setBounds(x+140,y,ancho*4,20);
+		panel2.add(new JLabel("Proveedor:")).setBounds(x,y,70,20);
+		panel2.add(txtCodProv  ).setBounds(x+70,y,70,20);
+		panel2.add(txtProveedor).setBounds(x+140,y,ancho*5,20);
+		
+		panel2.add(new JLabel("Recepcion:")).setBounds(x,y+=25,70,20);
+		panel2.add(txtRecep  ).setBounds(x+70,y,70,20);
+		
+		panel2.add(txtCodProducto  ).setBounds(x,y+=25,70,20);
+		panel2.add(txtDescripcion).setBounds(x+70,y,ancho*6,20);
 		panel2.add(btnGuardar).setBounds(x+890,y,80,20);
 		
 		panel2.add(scrollRecep).setBounds(x,y+=20,ancho*12+10,600);
@@ -278,10 +288,16 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 		
 		llamar_render_Recep();
 		
-		txtCodProducto.addKeyListener(opFiltroDinamicoFolioPrv);
-		txtDescripcion.addKeyListener(opFiltroDinamicoProveedor);
+		txtCodProducto.addKeyListener(opFiltroDinamicoProducto);
+		txtDescripcion.addKeyListener(opFiltroDinamicoDescripcion);
+		
+		txtRecep.setText(recepcion);
+		txtCodProv.setText(codProv);
+		txtProveedor.setText(Proveed);
 		
 		llenarRecepcion(recepcion);
+		
+		
 		
 		btnGuardar.addActionListener(opGuardar);
 		
@@ -310,9 +326,9 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 		String error = "";
 		for(int i=0; i<tablaRecep.getRowCount(); i++){
 //			try{
-				if(!isNumeric(tablaRecep.getValueAt(i,6).toString())){
-					error += "La Cant. A Recibir En El Codigo De Producto ["+modeloRecep.getValueAt(i,3).toString()+"] Esta Mal En Su Formato\n";
-					tablaRecep.setValueAt("",i, 6);
+				if(!isNumeric(tablaRecep.getValueAt(i,4).toString())){
+					error += "La Cant. A Recibir En El Codigo De Producto ["+modeloRecep.getValueAt(i,0).toString()+"] Esta Mal En Su Formato\n";
+					tablaRecep.setValueAt("",i, 4);
 				}
 //			} catch(Exception e){
 //				JOptionPane.showMessageDialog(null, "La tabla tiene una celda con texto en lugar de un valor numérico: \n"+e,"Error",JOptionPane.ERROR_MESSAGE);
@@ -348,12 +364,13 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 				String[][] matriz = new String[tablaRecep.getRowCount()][6];
 				for(int i=0; i<tablaRecep.getRowCount(); i++){
 					
-					matriz[i][0]=tablaRecep.getValueAt(i, 0).toString().trim();
-					matriz[i][1]=tablaRecep.getValueAt(i, 1).toString().trim();
-					matriz[i][2]=tablaRecep.getValueAt(i, 2).toString().trim();
-					matriz[i][3]=tablaRecep.getValueAt(i, 3).toString().trim();
-					matriz[i][4]=tablaRecep.getValueAt(i, 5).toString().trim();
-					matriz[i][5]=tablaRecep.getValueAt(i, 6).toString().trim();
+					matriz[i][0]=txtCodProv.getText().trim();
+					matriz[i][1]=tablaRecep.getValueAt(i, 2).toString().trim();
+					matriz[i][2]=txtRecep.getText().trim();
+					matriz[i][3]=tablaRecep.getValueAt(i, 0).toString().trim();
+					matriz[i][4]=tablaRecep.getValueAt(i, 3).toString().trim();
+					matriz[i][5]=tablaRecep.getValueAt(i, 4).toString().trim();
+					
 				}
 				
 				if(new GuardarTablasModel().Guardar_captura_inicial_de_resguardo_de_mercancia(matriz)){
@@ -372,32 +389,25 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 	
 		public void llamar_render_Recep(){
 		tablaRecep.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
-		tablaRecep.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tablaRecep.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		tablaRecep.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		
+		tablaRecep.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tablaRecep.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
-		tablaRecep.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-		tablaRecep.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
-		tablaRecep.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+		tablaRecep.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		
 		this.tablaRecep.getTableHeader().setReorderingAllowed(false) ;
 
 		this.tablaRecep.getColumnModel().getColumn(0).setMaxWidth(70);
 		this.tablaRecep.getColumnModel().getColumn(0).setMinWidth(70);
-		this.tablaRecep.getColumnModel().getColumn(1).setMaxWidth(120);
-		this.tablaRecep.getColumnModel().getColumn(1).setMinWidth(120
-				);
-		this.tablaRecep.getColumnModel().getColumn(2).setMaxWidth(70);
-		this.tablaRecep.getColumnModel().getColumn(2).setMinWidth(70);
+		this.tablaRecep.getColumnModel().getColumn(1).setMaxWidth(480);
+		this.tablaRecep.getColumnModel().getColumn(1).setMinWidth(480);
 		
-		this.tablaRecep.getColumnModel().getColumn(3).setMaxWidth(70);
-		this.tablaRecep.getColumnModel().getColumn(3).setMinWidth(70);
-		this.tablaRecep.getColumnModel().getColumn(4).setMaxWidth(480);
-		this.tablaRecep.getColumnModel().getColumn(4).setMinWidth(480);
-		this.tablaRecep.getColumnModel().getColumn(5).setMaxWidth(70);
-		this.tablaRecep.getColumnModel().getColumn(5).setMinWidth(70);
-		this.tablaRecep.getColumnModel().getColumn(6).setMaxWidth(70);
-		this.tablaRecep.getColumnModel().getColumn(6).setMinWidth(70);
+		this.tablaRecep.getColumnModel().getColumn(2).setMaxWidth(140);
+		this.tablaRecep.getColumnModel().getColumn(2).setMinWidth(140);
+		this.tablaRecep.getColumnModel().getColumn(3).setMaxWidth(140);
+		this.tablaRecep.getColumnModel().getColumn(3).setMinWidth(140);
+		this.tablaRecep.getColumnModel().getColumn(4).setMaxWidth(140);
+		this.tablaRecep.getColumnModel().getColumn(4).setMinWidth(140);
 	}
 	
 	KeyListener opFiltroDinamicoProducto= new KeyListener(){
