@@ -35,7 +35,7 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JButton btnReporte = new JButton("Reporte");
+	JButton btnReporte = new JButton("Reporte",new ImageIcon("imagen/Lista.png"));
 	
 	JTextField txtRecepcion = new Componentes().text(new JTextField(), "Folio De Recepcion", 20, "String");
 	JTextField txtCodProv 	= new Componentes().text(new JTextField(), "Codigo De Proveedor", 15, "Int");
@@ -75,7 +75,7 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	JScrollPane scroll = new JScrollPane(tabla);
 
 	public Cat_Recibo_De_Mercancia_En_Resguardo(){
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/descargar-caja-de-madera-icono-5941-64.png"));
 		this.setTitle("Recibo De Mercancia En Resguardo");
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione Una Recepcion"));		
 		int x=15,y=20,ancho=80;
@@ -83,7 +83,7 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 		panel.add(txtCodProv).setBounds(x,y+=25,50,20);
 		panel.add(txtProveedor  ).setBounds(x+50,y,ancho*4+60,20);
 		panel.add(txtRecepcion).setBounds(x+(ancho*5)+30,y,70,20);
-		panel.add(btnReporte).setBounds(x+(ancho*7),y,80,20);
+		panel.add(btnReporte).setBounds(x+(ancho*7)-20,y,100,20);
 		panel.add(scroll).setBounds(x,y+=20,ancho*8,600);
 		
 		cont.add(panel);
@@ -222,7 +222,7 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	Container cont2 = getContentPane();
 	JLayeredPane panel2 = new JLayeredPane();
 	
-	JButton btnGuardar = new JButton("Guardar");
+	JButton btnGuardar = new JButton("Guardar", new ImageIcon("imagen/Guardar.png"));
 
 	JTextField txtCodProducto = new Componentes().text(new JTextField(), "Codigo De Producto", 15, "String");
 	JTextField txtDescripcion 	= new Componentes().text(new JTextField(), "Descripcion", 100, "String");
@@ -232,7 +232,7 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	JTextField txtRecepcion 	= new Componentes().text(new JTextField(), "Recepcion", 20, "String");
 	JTextField txtfecha			= new Componentes().text(new JTextField(), "Fecha", 20, "String");
 	
-		DefaultTableModel modeloRecep = new DefaultTableModel(null,new String[]{"Codigo","Producto","Cant.Factura","Cant.Resguardo","Cant.Recibida","Pendiente","Cant. A Recibir"}){
+		DefaultTableModel modeloRecep = new DefaultTableModel(null,new String[]{"Codigo","Producto","Cant. Factura","Cant. Resguardo","Cant. Recibida","Cant. Pendiente","Cant. A Recibir"}){
 		
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -275,7 +275,7 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	public Cat_Alimentacion_De_Resguardo(String cod_prv, String proveedor, String fol_recepcion, String fecha){
 		
 		this.setModal(true);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/descargar-caja-de-madera-icono-5941-64.png"));
 		this.setTitle("Captura De Mercancia En Resguardo Recibida");
 		panel2.setBorder(BorderFactory.createTitledBorder("Ingresar Cantidad De Productos A Recibir"));		
 		int x=15,y=20,ancho=80;
@@ -293,7 +293,7 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 		
 		panel2.add(txtCodProducto  ).setBounds(x,y+=25,75,20);
 		panel2.add(txtDescripcion).setBounds(x+75,y,ancho*6+20,20);
-		panel2.add(btnGuardar).setBounds(x+890,y,80,20);
+		panel2.add(btnGuardar).setBounds(x+870,y,100,20);
 		
 		panel2.add(scrollRecep).setBounds(x,y+=20,ancho*12+10,600);
 		
@@ -384,20 +384,20 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 				
 				for(int i=0; i<tablaRecep.getRowCount(); i++){
 					
-					if(Float.valueOf(tablaRecep.getValueAt(i, 3).toString())>=(Float.valueOf(tablaRecep.getValueAt(i, 4).toString())+Float.valueOf(tablaRecep.getValueAt(i, 5).toString()))){
+					if(Float.valueOf(tablaRecep.getValueAt(i, 3).toString())>=(Float.valueOf(tablaRecep.getValueAt(i, 4).toString())+Float.valueOf(tablaRecep.getValueAt(i, 6).toString()))){
 //						guardar
 						matriz[i][0]=tablaRecep.getValueAt(i, 0).toString().trim();
 						matriz[i][1]=tablaRecep.getValueAt(i, 6).toString().trim().equals("")?"0":tablaRecep.getValueAt(i, 6).toString().trim();
 					}else{
 //						aviso  (sfsdfsd)
-						JOptionPane.showMessageDialog(null, "La Cantidad Ingresada En El Codigo De Producto "+tablaRecep.getValueAt(i, 0).toString().trim()+" Sobrepasa La Cantidad De Resguardo","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+						JOptionPane.showMessageDialog(null, "La Cantidad a Recibir Ingresada Del Producto: "+tablaRecep.getValueAt(i, 1).toString().trim()+"\n Sobrepasa La Cantidad Pendiente del Resguardo:"+tablaRecep.getValueAt(i, 5).toString().trim(),"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}
 				}
 				
 				if(new GuardarTablasModel().Guardar_captura_inicial_de_resguardo_de_mercancia(txtCod_Prv.getText().trim(),txtRecepcion.getText().trim(),matriz)){
+					JOptionPane.showMessageDialog(null, "La Cantidad de Recibo Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
 					dispose();
-					JOptionPane.showMessageDialog(null, "La Recepción Inicial Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
 					return;
 				}else{
 					JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar La Recepción","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
@@ -410,10 +410,10 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	public void llamar_render_Recep(){
 		tablaRecep.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tablaRecep.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tablaRecep.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		tablaRecep.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		
 		tablaRecep.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
-		tablaRecep.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		tablaRecep.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tablaRecep.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tablaRecep.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		
@@ -429,10 +429,10 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 		
 		this.tablaRecep.getColumnModel().getColumn(3).setMaxWidth(largo+15);
 		this.tablaRecep.getColumnModel().getColumn(3).setMinWidth(largo+15);
-		this.tablaRecep.getColumnModel().getColumn(4).setMaxWidth(largo);
-		this.tablaRecep.getColumnModel().getColumn(4).setMinWidth(largo);
-		this.tablaRecep.getColumnModel().getColumn(5).setMaxWidth(largo);
-		this.tablaRecep.getColumnModel().getColumn(5).setMinWidth(largo);
+		this.tablaRecep.getColumnModel().getColumn(4).setMaxWidth(largo+5);
+		this.tablaRecep.getColumnModel().getColumn(4).setMinWidth(largo+5);
+		this.tablaRecep.getColumnModel().getColumn(5).setMaxWidth(largo+10);
+		this.tablaRecep.getColumnModel().getColumn(5).setMinWidth(largo+10);
 		this.tablaRecep.getColumnModel().getColumn(6).setMaxWidth(largo+10);
 		this.tablaRecep.getColumnModel().getColumn(6).setMinWidth(largo+10);
 	}
