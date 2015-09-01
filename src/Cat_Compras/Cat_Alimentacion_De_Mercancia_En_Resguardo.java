@@ -144,23 +144,35 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 		}
 	};
 	
-			private void agregar(final JTable tbl) {
-	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+	public boolean Existe_Recepcion(String recep){
+		return new BuscarTablasModel().Existr_Recepcion_De_Resguardo(recep);
+	}
+	private void agregar(final JTable tbl) {
+        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {
 		        	if(e.getClickCount() == 2){
 		        		
-		    			int fila = tabla.getSelectedRow();
-		    			String recepcion =  tabla.getValueAt(fila, 0).toString();
-		    			String codPrv =  tabla.getValueAt(fila, 1).toString();
-		    			String proveedor =  tabla.getValueAt(fila, 2).toString();
-		    			
-		    			new Cat_Recepcion_De_Resguardo(recepcion,codPrv,proveedor).setVisible(true);
-		    			
-//		    			dispose();
+			    			int fila = tabla.getSelectedRow();
+			    			String recepcion =  tabla.getValueAt(fila, 0).toString().trim();
+			    			String codPrv =  tabla.getValueAt(fila, 1).toString().trim();
+			    			String proveedor =  tabla.getValueAt(fila, 2).toString().trim();
+			    			
+			    			if(Existe_Recepcion(recepcion)){
+			    				txtRecepcion.setText("");
+			    				txtCodProv.setText("");
+			    				txtProveedor.setText("");
+			    				new Obj_Filtro_Dinamico(tabla,"Recepcion", "", "Cod Prv", "", "Proveedor", "", "", "");
+			    				txtRecepcion.requestFocus();
+			    				
+			    				JOptionPane.showMessageDialog(null, "La Recepcion  [ "+recepcion+" ]  Ya Fue Capturada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+			    			}else{
+			    				new Cat_Recepcion_De_Resguardo(recepcion,codPrv,proveedor).setVisible(true);
+			    			}
 		        	}
 		        }
-	        });
-	    }
+        });
+    }
 	
 	KeyListener opFiltroDinamicoRecepcion = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
@@ -230,7 +242,7 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 	JTextField txtRecep = new Componentes().text(new JTextField(), "Recepcion", 20, "String");
 	
 	JTextField txtCodProducto = new Componentes().text(new JTextField(), "Codigo De Producto", 15, "String");
-	JTextField txtDescripcion 	= new Componentes().text(new JCTextField(), "Teecle El Nombre Del Producto Para Su Busqueda En La Lista", 100, "String");
+	JTextField txtDescripcion 	= new Componentes().text(new JCTextField(), "Teclee El Nombre Del Producto Para Su Busqueda En La Lista", 100, "String");
 	
 		DefaultTableModel modeloRecep = new DefaultTableModel(null,new String[]{"Cod.Prod","Descripcion","Fecha","Cantidad De Factura","Cantidad A Resguardo"}){
 		
@@ -373,10 +385,11 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 					matriz[i][3]=tablaRecep.getValueAt(i, 0).toString().trim();
 					matriz[i][4]=tablaRecep.getValueAt(i, 3).toString().trim();
 					matriz[i][5]=tablaRecep.getValueAt(i, 4).toString().trim();
-				if(Double.valueOf(tablaRecep.getValueAt(i, 4).toString().trim())>Double.valueOf(tablaRecep.getValueAt(i, 3).toString().trim())){
-					JOptionPane.showMessageDialog(null, "La Cantidad Del Pruducto:"+tablaRecep.getValueAt(i, 1).toString().trim()+" \nEs Mayor A La Que Trae En La Cantidad De Factura","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-					return;
-				}
+					
+					if(Double.valueOf(tablaRecep.getValueAt(i, 4).toString().trim())>Double.valueOf(tablaRecep.getValueAt(i, 3).toString().trim())){
+						JOptionPane.showMessageDialog(null, "La Cantidad Del Pruducto:"+tablaRecep.getValueAt(i, 1).toString().trim()+" \nEs Mayor A La Que Trae En La Cantidad De Factura","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					}
 					
 				}
 				
@@ -430,7 +443,8 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
-		KeyListener opFiltroDinamicoDescripcion  = new KeyListener(){
+	
+	KeyListener opFiltroDinamicoDescripcion  = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
 			
 				txtCodProducto.setText("");
@@ -444,22 +458,6 @@ public class Cat_Alimentacion_De_Mercancia_En_Resguardo extends JFrame{
 	};
 	
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 
