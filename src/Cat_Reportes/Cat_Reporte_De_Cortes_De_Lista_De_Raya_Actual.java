@@ -127,7 +127,7 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		
 		panel.add(btnPrestamos_Por_Establecimiento).setBounds(x,y+=25,ancho,40);
 		
-		panel.add(lblLinea			).setBounds(x,y+=45,ancho,95);
+		panel.add(lblLinea			).setBounds(x,y+=65,ancho,95);
 		panel.add(new JLabel("De:")	).setBounds(x+30,y+=20,100,20);
 		panel.add(fechaIn			).setBounds(x+50,y,100,20);
 		panel.add(new JLabel("A:")	).setBounds(x*4+47,y,100,20);
