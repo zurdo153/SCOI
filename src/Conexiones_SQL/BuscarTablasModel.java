@@ -1887,6 +1887,32 @@ public boolean reporte_de_recepcion_de_mercancia_en_resguardo(){
 	}
     return generado; 
 }
+
+public boolean Existr_Recepcion_De_Resguardo(String recepcion){
+	
+	boolean existe = false;
+	
+	String query_lista = " if exists(select top 1 * from tb_productos_en_resguardo_por_recepcion where folio_recepcion = 'C25305')"
+						+ "	begin select 'true' as existe end "
+						+ "else "
+						+ "	begin select 'false' as existe end ";
+	
+	
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		while(rs.next()){
+			existe =  rs.getBoolean(1); 
+		}
+	} catch (SQLException e1) {
+		existe = false;
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion Existr_Recepcion_De_Resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return existe; 
+}
+
 }
 
 
