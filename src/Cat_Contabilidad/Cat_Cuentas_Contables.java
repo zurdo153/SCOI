@@ -128,14 +128,33 @@ public class Cat_Cuentas_Contables extends JFrame{
 		panel.add(btnGuardarCC).setBounds(x+=160,y, l, a);
 		x=10;
 		panel.add(scroll).setBounds(x, y+=25, ancho-20, alto/3-75);;
+		deshabilitarcomponentes();
 		
-		txtFolio_Cuenta_Contable.setEnabled(false);
-		txtCuenta_Contable.setEnabled(false);
-
-
+		btnNuevoCC.addActionListener(nuevo_cuentas_contables);
+		btnEditarCC.addActionListener(editar_cuentas_contables);
+		btnDeshacerCC.addActionListener(deshacer_cuentas_contables);
+        btnGuardarCC.addActionListener(guardar_cuentas_contables);
 		
 //		btnReporte_actual.addActionListener(opGenerar);
 	}
+	public void deshabilitarcomponentes(){
+		txtFolio_Cuenta_Contable.setEditable(false);
+		txtCuenta_Contable.setEditable(false);
+		cmbNaturaleza_Cuenta_Contable.setEnabled(false);
+		cmbGrupo_Cuenta_Contable.setEnabled(false);
+		cmbClasif_Cuenta_Contable.setEnabled(false);
+        cmbStatus_Cuenta_Contable.setEnabled(false);  
+	}
+	
+	public void habilitarcomponentes_cuentas_contables(){
+		txtFolio_Cuenta_Contable.setEditable(true);
+		txtCuenta_Contable.setEditable(true);
+		cmbNaturaleza_Cuenta_Contable.setEnabled(true);
+		cmbGrupo_Cuenta_Contable.setEnabled(true);
+		cmbClasif_Cuenta_Contable.setEnabled(true);
+        cmbStatus_Cuenta_Contable.setEnabled(true);  
+	}
+	
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 ///////TODO TABLA CUENTAS CONTABLES
@@ -184,7 +203,7 @@ public class Cat_Cuentas_Contables extends JFrame{
 			             modeloCuenta_Contable.addRow(fila); }
 		}
 		
-		////CONSULTA INICIAL CONTABILIDAD IZAGAR
+		////CONSULTA INICIAL
 		public Object[][] Consulta_para_llenar_Mov_Contabilidad(){
 //			String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate())+" 23:59:00";
 			String consulta = "Select 1,2,3,4,5,6";
@@ -241,11 +260,33 @@ public class Cat_Cuentas_Contables extends JFrame{
 	    
 ///////////////TODO ACTION LISTENERS
 	    
-		ActionListener deshacer = new ActionListener(){
+		ActionListener nuevo_cuentas_contables = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				habilitarcomponentes_cuentas_contables();
+
 			}
 		};
 		
+		ActionListener editar_cuentas_contables = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				habilitarcomponentes_cuentas_contables();
+
+			}
+		};
+		
+		ActionListener deshacer_cuentas_contables = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+
+				deshabilitarcomponentes();
+			}
+		};
+		
+		ActionListener guardar_cuentas_contables = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+
+				deshabilitarcomponentes();
+			}
+		};
 		
 	    
 	public static void main(String args[]){

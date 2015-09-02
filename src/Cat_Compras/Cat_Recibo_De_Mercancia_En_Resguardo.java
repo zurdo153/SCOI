@@ -36,6 +36,11 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	JButton btnReporte = new JButton("Reporte",new ImageIcon("imagen/Lista.png"));
+	JButton btnLimpiar = new JButton("Limpiar",new ImageIcon("imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
+	
+	JTextField txtRecepcionS = new Componentes().text(new JTextField(), "Folio De Recepcion Seleccionado", 20, "String");
+	JTextField txtCodProvS 	= new Componentes().text(new JTextField(), "Codigo De Proveedor Selecionado", 15, "Int");
+	JTextField txtProveedorS = new Componentes().text(new JTextField(), "Proveedor Selecionado", 110, "String");
 	
 	JTextField txtRecepcion = new Componentes().text(new JTextField(), "Folio De Recepcion", 20, "String");
 	JTextField txtCodProv 	= new Componentes().text(new JTextField(), "Codigo De Proveedor", 15, "Int");
@@ -65,7 +70,6 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
        	 	case 1 : return false; 
        	 	case 2 : return false; 
        	 	case 3 : return false; 
-       	 	
        	 }
 			return false;
 		}
@@ -77,28 +81,41 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	public Cat_Recibo_De_Mercancia_En_Resguardo(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/descargar-caja-de-madera-icono-5941-64.png"));
 		this.setTitle("Recibo De Mercancia En Resguardo");
-		panel.setBorder(BorderFactory.createTitledBorder("Seleccione Una Recepcion"));		
-		int x=15,y=20,ancho=80;
+		panel.setBorder(BorderFactory.createTitledBorder("Seleccione La Recepcion Con Dos Click Continuos Y Se Abrira La Ventana Para Alimentar La Mercancia A Recibir"));		
+		int x=15,y=15,ancho=80;
 		
-		panel.add(txtCodProv).setBounds(x,y+=25,50,20);
+		panel.add(txtCodProv).setBounds(x,y,50,20);
 		panel.add(txtProveedor  ).setBounds(x+50,y,ancho*4+60,20);
 		panel.add(txtRecepcion).setBounds(x+(ancho*5)+30,y,70,20);
-		panel.add(btnReporte).setBounds(x+(ancho*7)-20,y,100,20);
 		panel.add(scroll).setBounds(x,y+=20,ancho*8,600);
+		x=15;
+		panel.add(new JLabel ("Recepcion:")).setBounds(x,y+=615,55,20);
+		panel.add(txtRecepcionS).setBounds(x+=52,y,70,20);
+		panel.add(new JLabel ("Proveedor:")).setBounds(x+=80,y,55,20);
+		panel.add(txtCodProvS).setBounds(x+=55,y,60,20);
+		panel.add(txtProveedorS).setBounds(x+=60,y,ancho*4+73,20);
+		x=15;
+		panel.add(btnLimpiar).setBounds(x,y+=25,100,20);
+		panel.add(new JLabel ("Si Le Das Click  A Limpiar y Luego A Reporte Te Mostrara Todas Las Recepciones")).setBounds(x+120,y,420,20);
+		panel.add(new JLabel ("Si Seleccionas Con Un Click Una Recepcion De La Tabla Solo Esa Te Mostrara")).setBounds(x+130,y+15,400,20);
+		panel.add(btnReporte).setBounds(x+540,y,100,20);
 		
 		cont.add(panel);
-		
 		llamar_render();
-		
 		agregar(tabla);
 		
+		btnLimpiar.addActionListener(opLimpiar);
 		btnReporte.addActionListener(opGenerar);
 		
 		txtRecepcion.addKeyListener(opFiltroDinamicoRecepcion);
 		txtCodProv.addKeyListener(opFiltroDinamicoFolioPrv);
 		txtProveedor.addKeyListener(opFiltroDinamicoProveedor);
 		
-		this.setSize(685, 720);
+		txtRecepcionS.setEditable(false);
+		txtCodProvS.setEditable(false);
+		txtProveedorS.setEditable(false);
+		
+		this.setSize(685, 760);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
@@ -122,18 +139,21 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	}
 	
 	public boolean generarConsulta(){
-		return new BuscarTablasModel().reporte_de_recepcion_de_mercancia_en_resguardo();
+		String folio_Recepcion =txtRecepcionS.getText().toString().toUpperCase().trim();
+		if(!folio_Recepcion.equals("")){ folio_Recepcion="  where tb_productos_en_resguardo_por_recepcion.folio_recepcion='"+folio_Recepcion+"'";
+		}
+		
+		return new BuscarTablasModel().reporte_de_recepcion_de_mercancia_en_resguardo(folio_Recepcion);
 	}
+	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
 			if(generarConsulta()){
 				String basedatos="2.26";
 				String vista_previa_reporte="no";
 				int vista_previa_de_ventana=0;
-				
 					String reporte = "Obj_Reporte_De_Movimiento_De_Mercancia_En_Resguardo.jrxml";
-					String comando = "SELECT * FROM tb_reporte_de_movimiento_de_mercancia_en_resguardo_temp";
+					String comando = "exec sp_Reporte_De_Movimientos_De_Recepciones_De_Mercancia_En_Resguardo";
 			   	    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			}else{
 				JOptionPane.showMessageDialog(null, "No Se Ha Generado La Consulta Correctamente, Avise Al Administrador","Error", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
@@ -141,21 +161,32 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 			}
 	 	}
    };
+   
+	ActionListener opLimpiar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			txtRecepcionS.setText("");
+			txtCodProvS.setText("");
+			txtProveedorS.setText("");
+	 	}
+   };
 	
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {
-		        	if(e.getClickCount() == 2){
-		        		
+		        	if(e.getClickCount() == 1){
 		    			int fila			= tabla.getSelectedRow();
-		    			
+		    			txtCodProvS.setText(tabla.getValueAt(fila, 0).toString());
+		    			txtProveedorS.setText(tabla.getValueAt(fila, 1).toString());
+		    			txtRecepcionS.setText(tabla.getValueAt(fila, 2).toString());
+		        	}
+		        	
+		        	if(e.getClickCount() == 2){
+		    			int fila			= tabla.getSelectedRow();
 		    			String cod_prv		= tabla.getValueAt(fila, 0).toString();
 		    			String proveedor	= tabla.getValueAt(fila, 1).toString();
 		    			String fol_recepcion= tabla.getValueAt(fila, 2).toString();
 		    			String fecha 		= tabla.getValueAt(fila, 3).toString();
- 		    			
 		    			new Cat_Alimentacion_De_Resguardo(cod_prv,proveedor,fol_recepcion,fecha).setVisible(true);
-		    			
 //		    			dispose();
 		        	}
 		        }
@@ -164,13 +195,11 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	
 	KeyListener opFiltroDinamicoRecepcion = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			
 				txtCodProv.setText("");
 				txtProveedor.setText("");
 				new Obj_Filtro_Dinamico(tabla,"Cod Prv", "","","", "", "", "", "");
 				new Obj_Filtro_Dinamico(tabla,"Proveedor", "","","", "", "", "", "");
 				new Obj_Filtro_Dinamico(tabla,"Recepcion", txtRecepcion.getText().toUpperCase().trim(),"","", "", "", "", "");
-			
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -178,14 +207,11 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 	
 	KeyListener opFiltroDinamicoFolioPrv = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			
 				txtRecepcion.setText("");
 				txtProveedor.setText("");
 				new Obj_Filtro_Dinamico(tabla,"Proveedor", "","","", "", "", "", "");
 				new Obj_Filtro_Dinamico(tabla,"Recepcion","","","", "", "", "", "");
 				new Obj_Filtro_Dinamico(tabla,"Cod Prv",  txtCodProv.getText().toUpperCase().trim(),"","", "", "", "", "");
-				
-			
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -211,11 +237,6 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 			new Cat_Recibo_De_Mercancia_En_Resguardo().setVisible(true);
 		}catch(Exception e){	}
 	}
-	
-	
-	
-	
-	
 	
 	public class Cat_Alimentacion_De_Resguardo extends JDialog{
 	
@@ -277,7 +298,7 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/descargar-caja-de-madera-icono-5941-64.png"));
 		this.setTitle("Captura De Mercancia En Resguardo Recibida");
-		panel2.setBorder(BorderFactory.createTitledBorder("Ingresar Cantidad De Productos A Recibir"));		
+		panel2.setBorder(BorderFactory.createTitledBorder("Teclee La Cantidad De Productos En La Columna Cant. A Recibir"));		
 		int x=15,y=20,ancho=80;
 		
 		

@@ -1758,7 +1758,7 @@ public Object[][] recepcion_de_mercancia_en_resguardo(String recepcion){
     return matriz; 
 }
 
-public boolean reporte_de_recepcion_de_mercancia_en_resguardo(){
+public boolean reporte_de_recepcion_de_mercancia_en_resguardo(String folio_Recepcion){
 	
 	boolean generado = false;
 	
@@ -1782,8 +1782,9 @@ public boolean reporte_de_recepcion_de_mercancia_en_resguardo(){
 			+ "				ELSE 'RECIBIDO' "
 			+ "				END AS estatus_pruducto "
 			+ "from tb_productos_en_resguardo_por_recepcion "
-			+ "INNER JOIN tb_empleado on tb_empleado.folio = tb_productos_en_resguardo_por_recepcion.folio_usuario_capturo "
-			+ "order by cod_prod,estatus_pruducto,fecha_de_recepcion"; 
+			+ "INNER JOIN tb_empleado on tb_empleado.folio = tb_productos_en_resguardo_por_recepcion.folio_usuario_capturo  "
+			+folio_Recepcion
+			+ "  order by folio_recepcion,cod_prod,estatus_pruducto,fecha_de_recepcion"; 
 	
 	String query_insert ="exec sp_insert_movimientos_de_mercacion_en_resguardo ?,?,?,?,?,?,?,?,?,?,?,?,?";
 	
@@ -1868,11 +1869,6 @@ public boolean reporte_de_recepcion_de_mercancia_en_resguardo(){
 				
 				pstmt.executeUpdate();
 				
-//				if(b==12){
-//					System.out.println(matriz[a][b]+"   ");
-//				}else{
-//					System.out.print(matriz[a][b]+"   ");
-//				}
 //			}
 		}
 		con.commit();
@@ -1892,12 +1888,10 @@ public boolean Existr_Recepcion_De_Resguardo(String recepcion){
 	
 	boolean existe = false;
 	
-	String query_lista = " if exists(select top 1 * from tb_productos_en_resguardo_por_recepcion where folio_recepcion = 'C25305')"
+	String query_lista = " if exists(select top 1 * from tb_productos_en_resguardo_por_recepcion where folio_recepcion = '"+recepcion+"')"
 						+ "	begin select 'true' as existe end "
 						+ "else "
 						+ "	begin select 'false' as existe end ";
-	
-	
 	try {
 		Statement stmt = new Connexion().conexion().createStatement();
 		ResultSet rs = stmt.executeQuery(query_lista);
