@@ -1907,6 +1907,58 @@ public boolean Existr_Recepcion_De_Resguardo(String recepcion){
     return existe; 
 }
 
+public Object[][] configuracion_de_polizas(){
+	
+	String query_lista = "select * from tb_configuracion_de_polizas order by tipo"; 
+	
+	
+	Object[][] matriz = new Object[get_filas(query_lista)][5];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getString(1)+"";
+			matriz[i][1] =  " "+rs.getString(2); 
+			matriz[i][2] =  " "+rs.getString(3);
+			matriz[i][3] =  " "+rs.getString(4); 
+			matriz[i][4] =  " "+rs.getString(5);
+			
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion recepcion_de_mercancia_en_resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
+public boolean Existe_configuracion_de_poliza(String poliza){
+	
+	boolean existe = false;
+	
+	String query_lista = "	if exists (select * from tb_configuracion_de_polizas where nombre = '"+poliza+"') "
+			+ "					begin		select 'true' as existe	end "
+			+ "				 else "
+			+ "					begin		select 'false' as existe end ";
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		while(rs.next()){
+			existe =  rs.getBoolean(1); 
+		}
+	} catch (SQLException e1) {
+		existe = false;
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion Existr_Recepcion_De_Resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return existe; 
+}
+
 }
 
 
