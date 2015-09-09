@@ -4,12 +4,15 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -28,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Principal.Componentes;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -45,7 +49,8 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 	JTextField txtTipo = new Componentes().text(new JTextField(), "Tipo", 1, "String");
 	JTextField txtNombre 	= new Componentes().text(new JTextField(), "Codigo De Proveedor", 15, "String");
 	
-	SpinnerModel  relleno = new SpinnerNumberModel();
+	
+    SpinnerModel relleno = new SpinnerNumberModel(2015, 0, 2050, 1);
 	JSpinner spRelleno = new JSpinner(relleno);
 	
 	String[] Asiento_Contable = {"Seleccione un Asiento Cont.","Egresos","Ingresos","Varios"};
@@ -57,8 +62,9 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 	JComboBox cmbStatus =  new JComboBox(estatus);
 	
 //	int an =  Calendar.getInstance().get(Calendar.YEAR);
-	SpinnerModel  anio = new SpinnerNumberModel(/*an,an-100,an+100,1*/);
-	JSpinner spAnio = new JSpinner(anio);
+//	SpinnerModel  anio = new SpinnerNumberModel(/*an,an-100,an+100,1*/);
+	JSpinner spAnio = new JSpinner();
+	JComponent editor = new JSpinner.NumberEditor(spRelleno, "###0");
 	
 	
 	DefaultTableModel modelo_conf = new DefaultTableModel(null,
@@ -92,8 +98,7 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 	JTable tabla_conf = new JTable(modelo_conf);
 	JScrollPane scroll_conf = new JScrollPane(tabla_conf,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
-	String[][] prueba = {{"A","012015","123"},{"B","022015","125"}};
-	DefaultTableModel modelo_folios = new DefaultTableModel(prueba,new String[]{"Tipo","Mes y año","Siguiente folio"}
+	DefaultTableModel modelo_folios = new DefaultTableModel(null,new String[]{"Tipo","Mes y año","Siguiente folio"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -159,11 +164,15 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 		
 		cont.add(panel);
 		
+//		spAnio.setEditor(editor);
+		spAnio.setValue(2015);
+		
 		llamar_render();
 		componentes(false);
 		limpiar();
 		
 		llenarConfiguracionPolizas();
+		new Obj_Filtro_Dinamico(tabla_folios,"Mes y año",  spAnio.getValue().toString(),"","", "", "", "", "");
 		
 		tabla_folios.setEnabled(false);
 		
@@ -177,6 +186,7 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 		
 		spAnio.addChangeListener(opAnio);
 		
+		
 		this.setSize(645, 560);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -187,8 +197,11 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 		return new BuscarTablasModel().Existe_configuracion_de_poliza(txtNombre.getText().toUpperCase().trim());
 	}
 	
-	public Object[][] get_tabla(){
+	public Object[][] get_tabla_conf(){
 		return new BuscarTablasModel().configuracion_de_polizas();
+	}
+	public Object[][] get_tabla_folios(){
+		return new BuscarTablasModel().folios_de_polizas();
 	}
 	public void llenarConfiguracionPolizas(){
 		
@@ -196,17 +209,27 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 			modelo_conf.removeRow(0);
 		}
 		
-		Object[][] conf_pol = get_tabla();
+		Object[][] conf_pol = get_tabla_conf();
 		for(Object[] cp : conf_pol){
 			modelo_conf.addRow(cp);
+		}
+		
+		while(tabla_folios.getRowCount()>0){
+			modelo_folios.removeRow(0);
+		}
+		
+		Object[][] folios_pol = get_tabla_folios();
+		for(Object[] fp : folios_pol){
+			modelo_folios.addRow(fp);
 		}
 	}
 	
 	ChangeListener opAnio = new ChangeListener() {
 		public void stateChanged(ChangeEvent e) {
-			System.out.println("Imprimir spinner: "+spRelleno.getValue());
+			new Obj_Filtro_Dinamico(tabla_folios,"Mes y año",  spAnio.getValue().toString(),"","", "", "", "", "");
 		}
 	};
+	
 	
 	ActionListener opNuevaConf = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -332,6 +355,21 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			
 			if(tabla_folios.isEnabled()){
+				
+				Object[][] tb_folios = new Object[tabla_folios.getRowCount()][3];
+				
+				for(int i=0; i<tabla_folios.getRowCount(); i++){
+					
+					
+					tb_folios[i][0] = tabla_folios.getValueAt(i, 0);
+					tb_folios[i][1] = tabla_folios.getValueAt(i, 1);
+					tb_folios[i][2] = tabla_folios.getValueAt(i, 2);
+					
+					
+				}
+				
+				
+				
 				
 				System.out.println("Pendiente:   (verificar datos con formato correcto, actualizar informacion y mostrar mensaje de guardado)");
 				

@@ -568,21 +568,45 @@ public class Cat_Abono_Clientes extends JFrame{
 		//						else 	pedir fecha limite
 //								if(bandera.equals("")){
 									
-										if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
-												JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
-												return;
+								if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
+										JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
+										return;
 								}else{
-										if(fecha.getDate()==null){
-												JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
-												return;
-										}else{
+//										if(fecha.getDate()==null){
+//												JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
+//												return;
+//										}else{
 												if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
 														JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
 														return;
 												}else{
+													String existeTicket ="no";
+													
+													System.out.println(tabla_ticket.getRowCount());
+													
+//													if(tabla_ticket.getRowCount()>0){
+														for(int i=0; i<tabla_ticket.getRowCount(); i++){
+															if(txtTiket.getText().equals(tabla_ticket.getValueAt(i, 0).toString().trim())){
+																existeTicket="si";
+															}
+														}
+//													}
+													
+													
+													
+													if(existeTicket.equals("no")){
+														if(fecha.getDate()==null){
+															JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
+															return;
+														}else{
+															abonar();
+														}
+													}else{
 														abonar();
+													}
+														
 												}
-										}
+//										}
 								}
 			        		}
 			        	}

@@ -1936,6 +1936,33 @@ public Object[][] configuracion_de_polizas(){
     return matriz; 
 }
 
+public Object[][] folios_de_polizas(){
+	
+	String query_lista = "SELECT * FROM tb_folios_polizas"; 
+	
+	
+	Object[][] matriz = new Object[get_filas(query_lista)][3];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  rs.getString(1)+"";
+			matriz[i][1] =  " "+rs.getString(2); 
+			matriz[i][2] =  " "+rs.getString(3);
+			
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion recepcion_de_mercancia_en_resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
 public boolean Existe_configuracion_de_poliza(String poliza){
 	
 	boolean existe = false;
@@ -1957,6 +1984,25 @@ public boolean Existe_configuracion_de_poliza(String poliza){
 		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion Existr_Recepcion_De_Resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 	}
     return existe; 
+}
+
+public String folio_consecutivo_de_poliza(String fecha, String tipo){
+	
+	String query_lista = "exec sp_select_folio_de_poliza_siguiente '"+fecha+"','"+tipo+"'"; 
+	
+	String folio = "";
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		while(rs.next()){
+			folio =  rs.getString(1)+"";
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion [folio_consecutivo_de_poliza] SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return folio; 
 }
 
 }
