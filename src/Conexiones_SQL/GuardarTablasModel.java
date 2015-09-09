@@ -238,11 +238,8 @@ public class GuardarTablasModel {
 		Connection con = new Connexion().conexion();
 		
 		try {
-			
 			PreparedStatement pstmt = con.prepareStatement(query);
-
 			con.setAutoCommit(false);
-			
 			for(int i=0; i<tabla.length; i++){
 				pstmt.setInt(1, Integer.parseInt(tabla[i][0].toString().trim()));
 				pstmt.setString(2, tabla[i][1].toString().trim());
@@ -252,7 +249,6 @@ public class GuardarTablasModel {
 				pstmt.setInt(6, Integer.parseInt(tabla[i][5].toString()));
 				pstmt.executeUpdate();
 			}
-		
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
@@ -281,7 +277,6 @@ public class GuardarTablasModel {
 	public boolean tabla_model_lista_raya_update(){
 		String query = "exec sp_llenar_pre_lista_raya";
 		Connection con = new Connexion().conexion();
-		
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
 			con.setAutoCommit(false);

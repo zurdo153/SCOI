@@ -838,7 +838,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			   importe_mov_bancarios=Float.valueOf(tabla_mov_bancarios.getValueAt(i, 3).toString().trim());
 			      for(int i1 =0; i1<tabla_mov_contabilidad.getRowCount(); i1++){
 			    	  importe_mov_contabilidad=Float.valueOf(tabla_mov_contabilidad.getValueAt(i1, 6).toString().trim());
-			    	  if(importe_mov_bancarios==importe_mov_contabilidad){
+			    	  if(importe_mov_bancarios==importe_mov_contabilidad&&importe_mov_bancarios!=0){
 				 		  vector[0] =  "";
 				 		  vector[1] =  fecha; 
 				 		  vector[2] = tabla_mov_bancarios.getValueAt(i,0).toString().trim();
@@ -859,10 +859,11 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 					 	 modelobancarios.removeRow(i); 
 					 	 modelocontabilidad.removeRow(i1);
 					 	 modeloconciliados.addRow(vector);
+					 	importe_mov_bancarios=0;
+					 	 
 			    	  }
 				   }	
 			   }
-         //    btnConciliaAutoImporte.setEnabled(false);
 		   }
 	};
 	

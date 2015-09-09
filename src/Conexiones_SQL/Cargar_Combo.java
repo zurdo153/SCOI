@@ -1472,7 +1472,7 @@ public class Cargar_Combo {
 		
 		Statement stmt = null;
 		try {
-			stmt = con.conexion().createStatement();
+			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
 			int j=0;
@@ -1498,6 +1498,44 @@ public class Cargar_Combo {
 		}
 		return pila;
 			
+	}
+		
+		public String[] Datos_Combo_Clasificacion_Contable() throws SQLException{
+		String query = " select rtrim(ltrim(clasificacion_contable)) as clasificacion_contable from tb_clasificaciones_contables where status='V' " ;
+		return null;
+		
+//		Statement stmt = null;
+//		try {
+//			stmt = con.conexion().createStatement();
+//			ResultSet rs = stmt.executeQuery(query);
+//			
+//			int j=0;
+//			while(rs.next()){
+//				if(j == 0){
+//					miVector.add("Selecciona un Tipo");
+//				}
+//				miVector.add(rs.getString("nombre"));
+//			int j=0;
+//			while(rs.next()){
+//				if(j == 0){
+//				}
+//				miVector.add(rs.getString("clasificacion_contable"));
+//				j++;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}finally{
+//			if(stmt!=null){stmt.close();}
+//		}
+//		int i=0;
+//		String[] pila= new String[miVector.size()];
+//		
+//		while(i < miVector.size()){
+//			pila[i]= miVector.get(i).toString();
+//			i++;
+//		}
+//		return pila;
 	}
 	
 }
