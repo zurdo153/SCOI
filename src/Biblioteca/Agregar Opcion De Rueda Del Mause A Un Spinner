@@ -1,0 +1,19 @@
+spinner = new JSpinner();
+spinner.addMouseWheelListener(new MouseWheelListener() {//Añadimos el MouseWheelListener al spinner
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        int rueda = e.getWheelRotation();//Cojemos el valor de la rueda al girar
+        if (rueda < 0) {//Si el valor es mas pequeño de 0 quiere decir que estamos subiendo
+            int valor = (Integer) spinner.getValue();//Cojemos el valor del JSpinner
+                                                     //Aseguraros de hacer el Cast (Integer) solo en el caso 
+                                                     //que el constructor del JSpinner sea numérico
+                valor++;//Aumentamos el valor    
+            spinner.setValue(valor);//Y lo añadimos de nuevo al JSpinner
+        } else {//Si es mayor de 0 es que estamos bajando
+            int valor = (Integer) spinner.getValue();
+            if (valor!=0){//En este caso no dejamos que baje de 0 el JSpinner
+                valor--;//Disminuimos el valor
+            }
+            spinner.setValue(valor);//Y lo añadimos el JSpinner
+        }
+    }
+});
