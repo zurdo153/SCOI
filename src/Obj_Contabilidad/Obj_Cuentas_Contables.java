@@ -2,6 +2,7 @@ package Obj_Contabilidad;
 
 import java.sql.SQLException;
 
+import Conexiones_SQL.Cargar_Combo;
 
 public class Obj_Cuentas_Contables {
 	String folio_cuenta_contable ;
@@ -49,25 +50,13 @@ public class Obj_Cuentas_Contables {
 	}
 
 	
-//	public String[] Combo_Jefatura(){ 
-//		try {
-//			return new Cargar_Combo().jefatu("tb_Jefatura");
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null; 
-//	}
-//	
-//	
-//	
-//	public String[] Combo_Puesto(){ 
-//		try {
-//			return new Cargar_Combo().Puesto("tb_puesto");
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null; 
-//	}
+	public String[] Combo_clasificacion_contable(){
+		try {
+			return new Cargar_Combo().Datos_Combo_Clasificacion_Contable();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return null; }
 	
 //	public Obj_Cuentas_Contables buscar(int folio){
 //		try {

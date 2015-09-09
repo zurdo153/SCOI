@@ -4,7 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Statement;    
+
+
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -29,7 +31,7 @@ public class Init_Menu_Bar extends Init_Login{
      
 	JMenuBar Barra = new JMenuBar();
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.57");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.59");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
