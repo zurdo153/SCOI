@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+
 import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.ActualizarSQL;
@@ -215,16 +216,15 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
     JScrollPane scrollconciliados = new JScrollPane(tablaconciliados);
     
     
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
-//     TableRowSorter Sorterbancarios = new TableRowSorter(modelobancarios); 
-    
-    
-    
+//    @SuppressWarnings({ "rawtypes", "unchecked" })
+//    TableRowSorter OrdenarPorColumnaSeleccionada = new TableRowSorter(modelocontabilidad);
 	
 	//TODO INCIA CONSTRUCTOR
 	public Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contables() {
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+		
+//		tabla_mov_contabilidad.setRowSorter(OrdenarPorColumnaSeleccionada);
 		
 		cont.add(campo);
 		setSize(ancho,alto);

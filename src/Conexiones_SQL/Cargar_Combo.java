@@ -1467,6 +1467,40 @@ public class Cargar_Combo {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public String[] tipos_de_polizas() throws SQLException{
+		String query = "select ltrim(rtrim(nombre)) as nombre from tb_configuracion_de_polizas where estatus = 'V' order by nombre asc";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+//			int j=0;
+			while(rs.next()){
+//				if(j == 0){
+//					miVector.add("Selecciona un Tipo");
+//				}
+				miVector.add(rs.getString("nombre"));
+//				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+		
+	@SuppressWarnings("unchecked")
 	public String[] Datos_Combo_Clasificacion_Contable() throws SQLException{
 		String query = " select rtrim(ltrim(clasificacion_contable)) as clasificacion_contable from tb_clasificaciones_contables where status='V' " ;
 		
@@ -1477,8 +1511,74 @@ public class Cargar_Combo {
 			int j=0;
 			while(rs.next()){
 				if(j == 0){
+					miVector.add("No Aplica");
 				}
 				miVector.add(rs.getString("clasificacion_contable"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] cuentas() throws SQLException{
+		String query = "select ltrim(rtrim(transaccion)) as transaccion from tb_folios where status=1 and aplicacion='polizas' order by transaccion";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("No Aplica");
+				}
+				miVector.add(rs.getString("transaccion"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] EstablecimientoTb() throws SQLException{
+		String query = "select nombre from tb_establecimiento order by nombre desc";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("");
+				}
+				miVector.add(rs.getString("nombre"));
 				j++;
 			}
 		} catch (Exception e) {

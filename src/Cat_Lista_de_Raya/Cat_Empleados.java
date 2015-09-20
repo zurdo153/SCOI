@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.RenderedImage;
@@ -749,7 +751,43 @@ public class Cat_Empleados extends JFrame{
 						                      {                 	    btnEditar.doClick();
 							                    	    }
 						                 });
+						                  
+                  btnFoto.addMouseWheelListener(buscarConRueda);//añadimos el MouseWheelListener al spinner
+                  
 	  	}
+	
+	 int valor = 0;
+	MouseWheelListener buscarConRueda = new MouseWheelListener() {
+	    public void mouseWheelMoved(MouseWheelEvent e) {
+	    	
+	    	if(!txtNombre.isEnabled()){
+	    		
+			        int rueda = e.getWheelRotation();//tomamos el valor de la rueda al girar
+			       
+			        
+			        if (rueda < 0) {//si el valor es mas pequeño de 0 quiere decir que estamos subiendo
+			        	
+			            valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());//tomamos el valor del txt
+			            valor++;//aumentamos el valor  
+			            
+		                txtFolioEmpleado.setText(valor+"");//lo añadimos de nuevo al txt
+		                buscarEmpleado("rueda+"); //llamamos al metodo buscar
+			        } else {//Si es mayor de 0 es que estamos bajando
+			          
+			        	valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());
+			        	
+			            if (valor!=0){//En este caso no dejamos que baje de 0 el txt
+			                valor--;//Disminuimos el valor
+			            }
+			            txtFolioEmpleado.setText(valor==0?"":valor+"");//Y lo añadimos el txt (si es cero lo dejamos como vacio)
+			            buscarEmpleado("rueda-"); //llamamos al metodo buscar
+			        }
+			        
+			        
+			        
+			    }
+	 	  }
+	};
 	
 
 	ActionListener opCmbHorarioRotarivo = new ActionListener(){
@@ -957,6 +995,12 @@ public class Cat_Empleados extends JFrame{
 	
 	ActionListener buscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e){
+			buscarEmpleado("");
+		}
+	};
+			
+	public void buscarEmpleado(String funcion){
+			
 			if(txtFolioEmpleado.getText().equals("")){
 				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -1150,16 +1194,35 @@ public class Cat_Empleados extends JFrame{
 					btnHorario.setEnabled(false);
 					cmbHorarioRotativo.setEnabled(false);
 				}else{
-					JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
-					panelEnabledFalse();
-					txtFolioEmpleado.setEditable(true);
-					txtFolioEmpleado.requestFocus();
-					panelLimpiar();
+					
+					
+					if(funcion.equals("rueda+")){
+						valor++;
+						txtFolioEmpleado.setText(valor+"");
+						buscarEmpleado("rueda+");
+						
+					}
+					
+					if(funcion.equals("rueda-")){
+						valor--;
+						txtFolioEmpleado.setText(valor+"");
+						buscarEmpleado("rueda-");
+					}
+					
+					if(funcion.equals("")){
+						JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
+						panelEnabledFalse();
+						txtFolioEmpleado.setEditable(true);
+						txtFolioEmpleado.requestFocus();
+						panelLimpiar();
+					}
+					
+					
+					
 					return;
 				}
-			}
 		}
-	};
+	}
 	
 	public int validaIMSS(){
 		int valorIMSS = 0;

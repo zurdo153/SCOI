@@ -6720,4 +6720,117 @@ public class BuscarSQL {
 		return lista;
 	}
 	
+	public boolean existe_cuenta(String fol_cuenta){
+		String query = " if exists (select * from tb_cuentas_contables where folio_cuenta_contable = '"+fol_cuenta+"') "
+						+ " begin	select 'true' as existe end "
+						+ " else begin 	select 'false' as existe end ";
+		boolean existe = false;
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){ existe = rs.getBoolean(1); }
+	
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return existe; 
+	}
+	
+	public boolean existe_subcuenta(String fol_cuenta, String fol_subcuenta){
+		String query = " if exists (select * from tb_subcuentas_contables where folio_cuenta_contable= '"+fol_cuenta+"' and folio_subcuenta_contable = '"+fol_subcuenta+"') "
+						+ "	begin	select 'true' as existe end "
+						+ " else begin 	select 'false' as existe end ";
+		boolean existe = false;
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){ existe = rs.getBoolean(1); }
+	
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return existe; 
+	}
+	
+	public boolean existe_subsubcuenta(String fol_cuenta, String fol_subcuenta, String fol_subsubcuenta){
+		String query = " if exists (select * from tb_subsubcuentas_contables where folio_cuenta_contable= '"+fol_cuenta+"' and folio_subcuenta_contable = '"+fol_subcuenta+"' and folio_subsubcuenta_contable = '"+fol_subsubcuenta+"') "
+						+ " begin	select 'true' as existe end "
+						+ " else begin 	select 'false' as existe end";
+		boolean existe = false;
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){ existe = rs.getBoolean(1); }
+	
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return existe; 
+	}
+	
+	public Object[][] Filtro_De_Cuentas_polizas() throws SQLException{
+		Statement stmt = null;
+		
+		String query = "exec sp_select_filtro_de_polizas_contables ";
+		Object[][] rp_cuenta = new Object[getFilas(query)][4];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				for(int j=0; j<4; j++){
+					rp_cuenta[i][j] = rs.getObject(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en el procedimiento sp_select_filtro_de_polizas_contables \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return rp_cuenta;
+	}
+	
+	public Object[][] Filtro_De_Cuentas_polizas_con_parametro(String cuenta) throws SQLException{
+		Statement stmt = null;
+		
+		String query = "exec sp_select_filtro_de_polizas_contables_con_parametro '"+cuenta+"'";
+		Object[][] rp_cuenta = new Object[getFilas(query)][8];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				for(int j=0; j<8; j++){
+					rp_cuenta[i][j] = rs.getObject(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en el procedimiento sp_select_filtro_de_polizas_contables \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return rp_cuenta;
+	}
+	
 }
