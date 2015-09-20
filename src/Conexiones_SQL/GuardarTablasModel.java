@@ -1662,7 +1662,7 @@ public boolean IZAGAR_insert_Movimientos_contabilidad_Iniciales(Object[][] tabla
 	}
 
 public boolean IZAGAR_Guardar_Conciliacion (Object[][] tabla){
-	String query = "exec IZAGAR_insert_Conciliacion ?,?,?,?,?,?,"+usuario.getFolio();
+	String query = "exec IZAGAR_insert_Conciliacion ?,?,?,?,?,?,?,"+usuario.getFolio();
 	Connection con = new Connexion().conexion();
 	try {
 		PreparedStatement pstmt = con.prepareStatement(query);
@@ -1674,6 +1674,7 @@ public boolean IZAGAR_Guardar_Conciliacion (Object[][] tabla){
 			pstmt.setString(4, tabla[i][3].toString().trim());//tipo
 			pstmt.setString(5, tabla[i][4].toString().trim());//poliza mes año
 			pstmt.setString(6, tabla[i][5].toString().trim());//importe poliza
+			pstmt.setString(7, tabla[i][6].toString().trim());//id mov_contable
 		pstmt.executeUpdate();
 		}
 		con.commit();

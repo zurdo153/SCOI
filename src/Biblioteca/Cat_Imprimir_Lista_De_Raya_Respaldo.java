@@ -1,4 +1,4 @@
-package Cat_Lista_de_Raya;
+package Biblioteca;
 
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
@@ -32,12 +32,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import Cat_Lista_de_Raya.Cat_Root;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Imprimir_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Exportar_Excel;
 
 @SuppressWarnings("serial")
-public class Cat_Imprimir_Lista_De_Raya extends Cat_Root{
+public class Cat_Imprimir_Lista_De_Raya_Respaldo extends Cat_Root{
 	
 	private static GregorianCalendar calendar = new GregorianCalendar();
 	
@@ -53,7 +54,7 @@ public class Cat_Imprimir_Lista_De_Raya extends Cat_Root{
 	public JButton btn_imprimir = new JButton(new ImageIcon("Iconos/print_icon&16.png"));
 	public JButton btn_exportar = new JButton(new ImageIcon("Iconos/export_doc_icon&16.png"));
 	
-	public Cat_Imprimir_Lista_De_Raya(){
+	public Cat_Imprimir_Lista_De_Raya_Respaldo(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/print_orange_icon&16.png"));
 		this.setTitle("Impresión de Lista de Raya");
 		
@@ -715,6 +716,6 @@ public class Cat_Imprimir_Lista_De_Raya extends Cat_Root{
 	}
 	
 	public static void main (String [] arg){
-		new Cat_Imprimir_Lista_De_Raya().setVisible(true);
+		new Cat_Imprimir_Lista_De_Raya_Respaldo().setVisible(true);
 	}
 }

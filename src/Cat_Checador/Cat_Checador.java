@@ -132,13 +132,18 @@ public class Cat_Checador extends JFrame {
               
                 Font font;
                 
-                String semaforoR = System.getProperty("user.dir")+"/Imagen/semaforo_rojo_chica.png";
+//                String semaforoR = System.getProperty("user.dir")+"/Imagen/semaforo_rojo_chica.png";
+                String semaforoR = System.getProperty("user.dir")+"/Imagen/circulo-rojo-icono-9411-128.png";
+                
+                
                 ImageIcon tmpIconSemR = new ImageIcon(semaforoR);
                 
-                String semaforoV = System.getProperty("user.dir")+"/Imagen/semaforo_verde_chica.png";
+//                String semaforoV = System.getProperty("user.dir")+"/Imagen/semaforo_verde_chica.png";
+                String semaforoV = System.getProperty("user.dir")+"/Imagen/circulo-verde-icono-4055-128.png";
+                
                 ImageIcon tmpIconSemV = new ImageIcon(semaforoV);
                 
-                String fileLogo = System.getProperty("user.dir")+"/Imagen/LogPrincipal3.png";
+                String fileLogo = System.getProperty("user.dir")+"/Imagen/LogPrincipal.png";
                 ImageIcon tmpIconLogo = new ImageIcon(fileLogo);
                 
                 String fileCerrar = System.getProperty("user.dir")+"/Imagen/cerrar.png";
@@ -1130,7 +1135,7 @@ public class Cat_Checador extends JFrame {
                     barra_mensaje.setOpaque(false);
                     barra_mensaje.setViewportView(txaAvisos);
                     
-        			trae_hora.lblHora.setFont(new java.awt.Font("Algerian",0,100));
+        			trae_hora.lblHora.setFont(new java.awt.Font("Berlin Sans FB Demi",0,110));
         			
         			lblClave.setForeground(Color.BLUE);
                     lblClave.setFont(new Font("Arial",0,12));

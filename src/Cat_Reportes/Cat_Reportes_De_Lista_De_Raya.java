@@ -20,7 +20,6 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import Cat_Lista_de_Raya.Cat_Filtro_De_Listas_De_Raya_Pasadas;
-import Cat_Lista_de_Raya.Cat_Imprimir_Lista_De_Raya;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
 
@@ -31,9 +30,11 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 	
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Corte", 15, "String");
 	
-	JButton btnReporte_porfolio = new JButton("",new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
+	JButton btnReporte_Diferencias_Lista_Raya = new JButton("",new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
 	JButton btnReporte_porfecha = new JButton("",new ImageIcon("imagen/orange-folder-saved-search-icone-8197-16.png"));
 	JButton btnReporte_actual = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
+	JButton btnReporte_Firmas = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
+	
     JButton btnSeleccionLR =new JButton("",new ImageIcon ("imagen/Filter-List-icon16.png"));
 	
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
@@ -41,6 +42,16 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 	int tipo_Reporte = 0;
 	
 	public Cat_Reportes_De_Lista_De_Raya(){
+		btnReporte_actual.setEnabled(false);
+		Constructor();
+		
+	}
+	
+	public Cat_Reportes_De_Lista_De_Raya(int Parametro){
+		Constructor();
+	}
+	
+	public void Constructor(){
 		setSize(305,330);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -49,8 +60,8 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/plan-icono-5073-16.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione el Tipo de Reporte"));
 	
-		btnReporte_porfolio.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<CENTER><p>Reporte De Lista De Raya Con Exportador A Excel </p></CENTER></FONT>" +
+		btnReporte_Diferencias_Lista_Raya.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De  Diferencias De Lista De Raya Actual y Pasada</p></CENTER></FONT>" +
 				"</html>");
 		
 		btnReporte_porfecha.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
@@ -61,14 +72,22 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 				"		<CENTER><p>Reporte De Lista De Raya Actual</p></CENTER></FONT>" +
 				"</html>");	
 		
-		panel.add(btnReporte_porfolio).setBounds(20,25,260,40);
-		panel.add(btnReporte_porfecha).setBounds(20,75,260,40);
-		panel.add(btnReporte_actual).setBounds(20,125,260,40);
+		btnReporte_Firmas.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Firmas De Lista De Raya Actual</p></CENTER></FONT>" +
+				"</html>");	
 		
-		panel.add(new JLabel("Folio:")).setBounds(30,180,200,20);		
-		panel.add(txtFolio).setBounds(80,180,175,20);
-		panel.add(btnSeleccionLR).setBounds(255,180,20,20);
-		panel.add(btngenerar).setBounds(100,250,120,30);
+		int x=20,y=25;
+		
+		panel.add(btnReporte_Diferencias_Lista_Raya).setBounds(x,y,260,40);
+		panel.add(btnReporte_porfecha).setBounds(x,y+=50,260,40);
+		panel.add(btnReporte_actual).setBounds(x,y+=50,260,40);
+		panel.add(btnReporte_Firmas).setBounds(x,y+=50,260,40);
+		
+		panel.add(new JLabel("Folio:")).setBounds(x+10,y+=50,200,20);		
+		panel.add(txtFolio).setBounds(x+50,y,185,20);
+		panel.add(btnSeleccionLR).setBounds(255,y,20,20);
+				
+		panel.add(btngenerar).setBounds(100,y+=30,120,30);
 	    
 	    txtFolio.setEditable(false);
 	    btngenerar.setEnabled(false);
@@ -76,10 +95,13 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 	    
 		cont.add(panel);
 		btngenerar.addActionListener(opGenerar);
-		btnReporte_porfolio.addActionListener(opReporte_Por_Folio);
+		btnReporte_Diferencias_Lista_Raya.addActionListener(opReporte_Diferencias_Lista_de_Rayas);
 		btnReporte_porfecha.addActionListener(opReporte_Por_Fecha);
 		btnReporte_actual.addActionListener(opReporte_Actual);
 		btnSeleccionLR.addActionListener(opfiltroLR);
+		btnReporte_Firmas.addActionListener(opReporte_Lista_De_firmas);
+		
+		
 		
      	///filtro de Listas de Raya
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscarLR");
@@ -87,19 +109,38 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
          public void actionPerformed(ActionEvent e)
          {                 	    btnSeleccionLR.doClick();
        	    }
-     });
-		
+         });
 	}
-
 	
-	ActionListener opReporte_Por_Folio = new ActionListener(){
+	String basedatos="2.26";
+	String vista_previa_reporte="no";
+	int vista_previa_de_ventana=0;
+	String comando="";
+	String reporte = "";
+	
+	
+	ActionListener opReporte_Diferencias_Lista_de_Rayas = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			btnSeleccionLR.setEnabled(false);
 			txtFolio.setEditable(false);
 			btngenerar.setEnabled(false);
 			txtFolio.setText("");
 			tipo_Reporte=1;
-			new Cat_Imprimir_Lista_De_Raya().setVisible(true);
+			 reporte = "Obj_Reporte_De_Diferencias_Entre_Lista_De_Raya_Actal_y_Lista_De_Raya_Pasada.jrxml";
+			 comando = "exec sp_Reporte_De_Diferencias_De_lista_De_Raya_Actual_Contra_La_Semana_Pasada "  ;
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		}
+	};
+	
+	ActionListener opReporte_Actual = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			txtFolio.setEditable(false);
+			btngenerar.setEnabled(false);
+			btnSeleccionLR.setEnabled(false);
+			txtFolio.setText("");
+			 reporte = "Obj_Reporte_De_Lista_De_Raya_Actual.jrxml";
+			 comando = "exec sp_Reporte_De_lista_De_Raya_Actual " ;
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
 	
@@ -112,30 +153,27 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 			tipo_Reporte=2;
 			txtFolio.setText("");
 			txtFolio.requestFocus();
+			
 		}
 	};
-
-	ActionListener opReporte_Actual = new ActionListener(){
+	
+	
+	ActionListener opReporte_Lista_De_firmas = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			txtFolio.setEditable(false);
-			btngenerar.setEnabled(false);
-			btnSeleccionLR.setEnabled(false);
-			txtFolio.setText("");
-			Reporte_De_Lista_De_Raya_Actual();
+			dispose();
+			new Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual().setVisible(true);;
+			
 		}
 	};
+	
+	
 	
 	ActionListener opfiltroLR = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			 new Cat_Filtro_De_Listas_De_Raya_Pasadas(3).setVisible(true);
 		}
 	};
-	
-	String basedatos="2.26";
-	String vista_previa_reporte="no";
-	int vista_previa_de_ventana=0;
-	String comando="";
-	String reporte = "";
+
 	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -150,6 +188,7 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 		                      return;
 							}
 		}
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
 	
@@ -162,12 +201,6 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 			 return;	
 		}
 	
-		public void Reporte_De_Lista_De_Raya_Actual() {
-			 reporte = "Obj_Reporte_De_Lista_De_Raya_Actual.jrxml";
-			 comando = "exec sp_Reporte_De_lista_De_Raya_Actual " ;
-			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-		}
-
 	
 	public static void main(String args[]){
 		try{

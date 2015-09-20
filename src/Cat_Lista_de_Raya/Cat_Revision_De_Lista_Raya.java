@@ -705,7 +705,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		public void actionPerformed(ActionEvent arg0){
 			update_autorizar_finanzas();
 			cargar_autorizaciones();
-			new Cat_Reportes_De_Lista_De_Raya().setVisible(true);
+			new Cat_Reportes_De_Lista_De_Raya(1).setVisible(true);
 		}
 	};
 	

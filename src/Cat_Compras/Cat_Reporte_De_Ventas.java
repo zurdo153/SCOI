@@ -1,6 +1,5 @@
 package Cat_Compras;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -239,7 +238,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		panel.setBorder(BorderFactory.createTitledBorder("Reportes de Venta"));
 		lblmarco.setBorder(BorderFactory.createTitledBorder(""));
 		
-		txtcod_prod.setBackground(Color.lightGray);
+//		txtcod_prod.setBackground(Color.lightGray);
 		txtcod_prod.setBorder(BorderFactory.createTitledBorder(""));
 		txtcod_prod.setHorizontalAlignment(4);
 		//      asigna el foco al JTextField deseado al arrancar la ventana
@@ -265,18 +264,26 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		panel.add(sphora_fin).setBounds(x+=95,y,l-50,a);
 		panel.add(JLBrelog2).setBounds(x+=50,y,a,a);
 		
-		panel.add(cmbProdPed).setBounds(x+=40,y,l-30,a);
-        panel.add(txtcod_prod).setBounds(x+=70,y,75,a);
+		
+        
 		
 		x=100;
+		panel.add(new JLabel("Filtro De Pedido ó Producto:")).setBounds(x-85,y+=30,l+50,a);
+		panel.add(cmbProdPed).setBounds(x+80,y,l-12,a);
+		panel.add(txtcod_prod).setBounds(x+170,y,l,a);
+        panel.add(JLBdescripcion).setBounds(x+270,y,l+450,a);
+		
+		
 		panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y+=30,l+50,a);
 		panel.add(cmbOperador_Productos				).setBounds(x+80,y,l-12,a);
         panel.add(txtFiltroProducto					).setBounds(x+170,y,l*4+20,a);
-
         panel.add(btnFiltroProducto					).setBounds(x+590,y,a,a);
         panel.add(btnLimpiarFiltroProducto			).setBounds(x+613,y,a,a);
         
-        panel.add(JLBdescripcion).setBounds(x+650,y,l+350,a);
+		panel.add(new JLabel("Establecimiento:")).setBounds(x+650,y,l+50,a);
+	    panel.add(JLBestablecimiento).setBounds(x+720,y,a,a);
+		panel.add(cmbEstablecimiento).setBounds(x+740,y,l+70,a);
+
         
 		panel.add(new JLabel("Filtro De Clase De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Clase							 ).setBounds(x+80,y,l-12,a);  
@@ -284,19 +291,19 @@ public class Cat_Reporte_De_Ventas extends JFrame {
         panel.add(btnFiltroClase							 ).setBounds(x+590,y,a,a);    
         panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);
         
-		panel.add(new JLabel("Establecimiento:")).setBounds(x+650,y,l+50,a);
-	    panel.add(JLBestablecimiento).setBounds(x+720,y,a,a);
-		panel.add(cmbEstablecimiento).setBounds(x+740,y,l+70,a);
+		panel.add(new JLabel("Tipo De Precio:")).setBounds(x+650,y,l+50,a);
+	    panel.add(JLBTipoPrecio).setBounds(x+720,y,a,a);
+		panel.add(cmbTipoDePrecio).setBounds(x+740,y,l+70,a);
 		
 		panel.add(new JLabel("Filtro De Categoria De Productos:")).setBounds(x-85,y+=30,l+70,a); 
 		panel.add(cmbOperador_Categoria							 ).setBounds(x+80,y,l-12,a);  
         panel.add(txtFiltroCategoria							 ).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroCategoria							 ).setBounds(x+590,y,a,a);    
         panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);   
-        
-		panel.add(new JLabel("Tipo De Precio:")).setBounds(x+650,y,l+50,a);
-	    panel.add(JLBTipoPrecio).setBounds(x+720,y,a,a);
-		panel.add(cmbTipoDePrecio).setBounds(x+740,y,l+70,a);
+
+		panel.add(new JLabel("Presentado Por:")).setBounds(x+650,y,l+50,a);
+	    panel.add(JLBPresentado).setBounds(x+720,y,a,a);
+		panel.add(cmbPresentado).setBounds(x+740,y,l+70,a);
         
       	panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Familia						).setBounds(x+80,y,l-12,a);  
@@ -304,9 +311,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
         panel.add(btnFiltroFamilia							).setBounds(x+590,y,a,a);    
         panel.add(btnLimpiarFiltroFamilia					).setBounds(x+613,y,a,a);
         
-		panel.add(new JLabel("Presentado Por:")).setBounds(x+650,y,l+50,a);
-	    panel.add(JLBPresentado).setBounds(x+720,y,a,a);
-		panel.add(cmbPresentado).setBounds(x+740,y,l+70,a);
+
         
 		panel.add(new JLabel("Filtro De Linea De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Linea					 ).setBounds(x+80,y,l-12,a);  

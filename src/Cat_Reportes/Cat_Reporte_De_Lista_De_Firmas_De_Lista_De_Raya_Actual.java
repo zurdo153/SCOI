@@ -28,7 +28,7 @@ import javax.swing.table.TableCellRenderer;
 import Conexiones_SQL.Connexion;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_Lista_De_Firmas extends JFrame {
+public class Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
@@ -45,7 +45,7 @@ public class Cat_Reporte_Lista_De_Firmas extends JFrame {
 	
 	JLabel lblImprimir = new JLabel(new ImageIcon("imagen//imprimir-32.png"));
 	
-	public Cat_Reporte_Lista_De_Firmas()	{
+	public Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual()	{
 		this.setTitle("..:: Lista de pago por establecimiento ::..");
 		tabla.setFont(new java.awt.Font("Algerian",0,140));
 

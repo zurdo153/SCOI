@@ -6389,9 +6389,12 @@ public class BuscarSQL {
 		}
 	String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())
 				          +"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())
-				          +"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"',"+ventas.getPresentado()+",'"+(ventas.getTallas().equals("")?0:ventas.getTallas())+"'";
-		String[][] rp_ventas = new String[getFilasExterno(query)][20];
+				          +"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())
+				          +"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"',"+ventas.getPresentado()+",'"+(ventas.getTallas().equals("")?0:ventas.getTallas())+"','"+(ventas.getAsignaciones().equals("")?0:ventas.getTallas())+"'";
+
+	String[][] rp_ventas = new String[getFilasExterno(query)][20];
 		try {
+			System.out.println(query);
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			int i=0;
@@ -6430,10 +6433,12 @@ public class BuscarSQL {
 		return rp_ventas;
 	}
 	
-	public Object[][] Reporte_De_Competencia(Obj_Reportes_De_Ventas ventas, int cantidad_de_columnas) throws SQLException{
+	public Object[][] Reporte_De_Competencia(Obj_Reportes_De_Ventas ventas, int cantidad_de_columnas,int tipo) throws SQLException{
 		Statement stmt = null;
 		
-		String query = "exec sp_Reporte_IZAGAR_analisis_competidores '"+(ventas.getFecha_inicio()+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos()))+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"'";
+		String query = "exec sp_Reporte_IZAGAR_analisis_competidores '"+(ventas.getFecha_inicio()+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos()))+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+
+				                                                      "','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+
+				                                                      "','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"',"+tipo;
 		Object[][] rp_competencia = new Object[getFilasExterno(query)][cantidad_de_columnas];
 		
 		try {

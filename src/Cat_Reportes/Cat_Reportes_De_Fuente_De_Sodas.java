@@ -31,8 +31,10 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Corte", 15, "String");
 	
 	JButton btnReporte_porfolio = new JButton("",new ImageIcon("imagen/fast-food-icon16.png"));
-	JButton btnReporte_porfecha = new JButton("",new ImageIcon("imagen/Calendar.png"));
+
 	JButton btnReporte_actual = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
+	JButton btnReporte_porfecha = new JButton("",new ImageIcon("imagen/Calendar.png"));
+	JButton btnReporte_por_deunafecha = new JButton("",new ImageIcon("imagen/Calendar.png"));
     JButton btnSeleccionLR =new JButton("",new ImageIcon ("imagen/Filter-List-icon16.png"));
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 	JDateChooser cfecha = new JDateChooser();
@@ -40,7 +42,7 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 	int tipo_Reporte = 0;
 	
 	public Cat_Reportes_De_Fuente_De_Sodas(){
-		setSize(305,330);
+		setSize(305,370);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -48,28 +50,36 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/fast-food-icon32.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione el Tipo de Reporte"));
 	
+		btnReporte_actual.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Fuente De Sodas A Cobrar En Lista De Raya Actual </p></CENTER></FONT>" +
+				"</html>");	
+		
 		btnReporte_porfolio.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<CENTER><p>Reporte De Fuente De Sodas De Lista De Raya Por Folio </p></CENTER></FONT>" +
+				"		<CENTER><p>Reporte De Fuente De Sodas Cobrada Por Folio De Una Lista De Raya</p></CENTER></FONT>" +
 				"</html>");
 		
 		btnReporte_porfecha.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<CENTER><p>Reporte De Fuente De Sodas Sin Cobro Por Fecha </p></CENTER></FONT>" +
+				"		<CENTER><p>Reporte De Fuente De Sodas Sin Cobro  Hasta Una Fecha </p></CENTER></FONT>" +
+				"</html>");	
+		btnReporte_por_deunafecha.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Fuente De Sodas De Una Fecha</p></CENTER></FONT>" +
 				"</html>");	
 		
-		btnReporte_actual.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<CENTER><p>Reporte De Fuente De Sodas De Lista De Raya Actual </p></CENTER></FONT>" +
-				"</html>");	
+
 		
-		panel.add(btnReporte_porfolio).setBounds(20,25,260,40);
-		panel.add(btnReporte_porfecha).setBounds(20,75,260,40);
-		panel.add(btnReporte_actual).setBounds(20,125,260,40);
+		int x=20,y=25;
 		
-		panel.add(new JLabel("Folio:")).setBounds(30,180,200,20);		
-		panel.add(txtFolio).setBounds(80,180,175,20);
-		panel.add(btnSeleccionLR).setBounds(255,180,20,20);
-		panel.add(new JLabel("Fecha:")).setBounds(30,220,200,20);
-		panel.add(cfecha).setBounds(80,220,195,20);
-		panel.add(btngenerar).setBounds(100,250,120,30);
+		panel.add(btnReporte_actual).setBounds(x,y,260,40);
+		panel.add(btnReporte_porfolio).setBounds(x,y+=50,260,40);
+		panel.add(btnReporte_porfecha).setBounds(x,y+=50,260,40);
+		panel.add(btnReporte_por_deunafecha).setBounds(x,y+=50,260,40);		
+		
+		panel.add(new JLabel("Folio:")).setBounds(x+10,y+=50,200,20);		
+		panel.add(txtFolio).setBounds(x+60,y,175,20);
+		panel.add(btnSeleccionLR).setBounds(x+235,y,20,20);
+		panel.add(new JLabel("Fecha:")).setBounds(x+10,y+=25,200,20);
+		panel.add(cfecha).setBounds(x+60,y,195,20);
+		panel.add(btngenerar).setBounds(x+80,y+=50,120,30);
 	    
 	    txtFolio.setEditable(false);
 	    cfecha.setEnabled(false);
@@ -78,9 +88,11 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 	    
 		cont.add(panel);
 		btngenerar.addActionListener(opGenerar);
+		btnReporte_actual.addActionListener(opReporte_Actual);
 		btnReporte_porfolio.addActionListener(opReporte_Por_Folio);
 		btnReporte_porfecha.addActionListener(opReporte_Por_Fecha);
-		btnReporte_actual.addActionListener(opReporte_Actual);
+		btnReporte_por_deunafecha.addActionListener(opReporte_De_Una_Fecha);
+
 		btnSeleccionLR.addActionListener(opfiltroLR);
 		
      	///filtro de Listas de Raya
@@ -103,6 +115,18 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 			txtFolio.requestFocus();
 		}
 	};
+
+	ActionListener opReporte_Actual = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			txtFolio.setEditable(false);
+			cfecha.setEnabled(false);
+			btngenerar.setEnabled(false);
+			btnSeleccionLR.setEnabled(false);
+			txtFolio.setText("");
+			cfecha.setDate(null);
+			Reporte_De_Fuente_De_Sodas();
+		}
+	};
 	
 	ActionListener opReporte_Por_Fecha = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
@@ -114,16 +138,15 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 			txtFolio.setText("");
 		}
 	};
-
-	ActionListener opReporte_Actual = new ActionListener(){
+	
+	ActionListener opReporte_De_Una_Fecha = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			txtFolio.setEditable(false);
-			cfecha.setEnabled(false);
-			btngenerar.setEnabled(false);
+			cfecha.setEnabled(true);
+			btngenerar.setEnabled(true);
 			btnSeleccionLR.setEnabled(false);
+			tipo_Reporte=3;
 			txtFolio.setText("");
-			cfecha.setDate(null);
-			Reporte_De_Fuente_De_Sodas();
 		}
 	};
 	
@@ -164,14 +187,15 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 							 reporte="Obj_Reporte_De_Fuente_De_Sodas.jrxml";
 							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 						}else{
-							JOptionPane.showMessageDialog(null,"Debes de Teclear Un Folio de Lista de Raya \n O Seleccionarla de la Lista  Siguiente ","Aviso!", JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null,"Debes de Teclear Un Folio de Lista de Raya \n O Seleccionarla de la Lista  Siguiente ","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 							 new Cat_Filtro_De_Listas_De_Raya_Pasadas(1).setVisible(true);
 							return;		
 					    }
-			}else{
+			 }
+			if(tipo_Reporte==2){
 				 String fechaNull = cfecha.getDate()+"";
 				   if(fechaNull.equals("null")){
-						JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Mensaje",JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					   }else{
 						     String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
@@ -180,6 +204,20 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 					   }
 			}
+			if(tipo_Reporte==3){
+				 String fechaNull = cfecha.getDate()+"";
+				   if(fechaNull.equals("null")){
+						JOptionPane.showMessageDialog(null,"Necesita Selecionar una Fecha o la Fecha tecleada es Incorrecta","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					   }else{
+						     String fecha = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate());
+							 comando = "exec sp_Reporte_De_Fuente_De_Sodas_Por_Fecha'"+fecha+"'" ;
+							 reporte="Obj_Reporte_De_Fuente_De_Sodas_de_Empleados_Por_Fecha.jrxml";
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+					   }
+			}
+			
+			
 		}
 	};
 	

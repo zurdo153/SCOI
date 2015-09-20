@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -677,7 +679,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	 
 	
 	 private Object[][] tabla_guardar_conciliados(){
-		Object[][] matriz_conciliados = new Object[tablaconciliados.getRowCount()][6];
+		Object[][] matriz_conciliados = new Object[tablaconciliados.getRowCount()][7];
 		for(int i=0; i<tablaconciliados.getRowCount(); i++){
 			matriz_conciliados[i][0] = modeloconciliados.getValueAt(i,1).toString().trim();//fecha_conciliado
 			matriz_conciliados[i][1] = modeloconciliados.getValueAt(i,5).toString().trim();//id mov bancario
@@ -685,6 +687,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			matriz_conciliados[i][3] = modeloconciliados.getValueAt(i,11).toString().trim();//tipo
 			matriz_conciliados[i][4] = modeloconciliados.getValueAt(i,12).toString().trim();//poliza mes año
 			matriz_conciliados[i][5] = modeloconciliados.getValueAt(i,8).toString().trim();//importe poliza
+			matriz_conciliados[i][6] = modeloconciliados.getValueAt(i,16).toString().trim();//id mov contable
 		}
 		return matriz_conciliados;
 	 }
@@ -700,9 +703,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 			if(tablaconciliados.isEditing()){
 				tablaconciliados.getCellEditor().stopCellEditing();
 			 }
-			
             if(guardar_conciliados.guardar_conciliacion(tabla_guardar_conciliados())){
-            	
 				while(tablaconciliados.getRowCount()>0){
 					  modeloconciliados.removeRow(0); }
                           	  
@@ -1063,15 +1064,27 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	public class Cat_Emergente_Correccion_de_Movimientos_Contables extends JDialog{
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
-		JTextField txtid = new Componentes().text(new JTextField(), "ID del Movimiento Contable A Buscar", 25, "String");
-		JTextField txtpoliza = new Componentes().text(new JTextField(), "Poliza", 25, "String");
-		JTextField txtimporte = new Componentes().text(new JTextField(), "Importe", 25, "String");
-		JTextField txtreferencia = new Componentes().text(new JTextField(), "Referencia", 25, "String");
-		JTextField txtconcepto    = new Componentes().text(new JTextField(), "Concepto", 25, "String");
-		JButton btnBorrado_Movimiento = new JButton("",new ImageIcon("imagen/Delete.png"));
+		private JTextField txtid = new Componentes().text(new JTextField(), "ID del Movimiento Contable A Buscar", 25, "String");
+		private JTextField txtpoliza = new Componentes().text(new JTextField(), "Poliza", 25, "String");
+		private JTextField txtimporte = new Componentes().text(new JTextField(), "Importe", 25, "String");
+		private JTextField txtreferencia = new Componentes().text(new JTextField(), "Referencia", 25, "String");
+		private JTextField txtconcepto    = new Componentes().text(new JTextField(), "Concepto", 25, "String");
+		private JTextField txtcuenta_contable   = new Componentes().text(new JTextField(), "Cuenta Contable", 25, "String");
+		private JTextField txtestatus_conciliado    = new Componentes().text(new JTextField(), "Estatus Conciliado", 25, "String");
+		private JTextField txtmov_desconciliado    = new Componentes().text(new JTextField(), "Estatus Desconciliado", 25, "String");
+		private JTextField txtid_movimiento_bancario_conciliado    = new Componentes().text(new JTextField(), "ID Movimiento Bancario Conciliado", 25, "String");
+		private JTextField txtreferencia_mov_bancario_conciliado    = new Componentes().text(new JTextField(), "Referencia del Movimiento Bancario Conciliado", 25, "String");
+		
+		private JButton btnBorrado_Movimiento = new JButton("",new ImageIcon("imagen/Delete.png"));
+		private JButton btnDesconciliar = new JButton("",new ImageIcon("imagen/Delete.png"));
+		
+		 private ButtonGroup bgcorreccion = new ButtonGroup();
+		 private JRadioButton rbmcancelar = new JRadioButton("",true);
+		 private JRadioButton rb2desconciliar = new JRadioButton("",false);
 		
 		public Cat_Emergente_Correccion_de_Movimientos_Contables(){
-			setSize(300,230);
+			
+			setSize(300,400);
 			setResizable(false);
 			setLocationRelativeTo(null);
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -1083,31 +1096,75 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 					"		<CENTER><p>Borrar Movimiento Tecleado</p></CENTER></FONT>" +
 					"</html>");	
 			
-			panel.add(new JLabel("ID:")).setBounds(10,25,100,20);		
-			panel.add(txtid).setBounds(70,25,210,20);
+			btnDesconciliar.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+					"		<CENTER><p>Desconciliar</p></CENTER></FONT>" +
+					"</html>");	
+			this.bgcorreccion.add(rb2desconciliar);
+			this.bgcorreccion.add(rbmcancelar);
 			
-			panel.add(new JLabel("Poliza:")).setBounds(10,50,100,20);		
-			panel.add(txtpoliza).setBounds(70,50,210,20);
+			int x=10,y=15;
 			
-			panel.add(new JLabel("Importe:")).setBounds(10,75,100,20);		
-			panel.add(txtimporte).setBounds(70,75,210,20);
+			panel.add(new JLabel("Desconciliar")).setBounds(x,y,100,20);	
+			panel.add(rb2desconciliar).setBounds(x+55, y, 20,20);
+			panel.add(new JLabel("Borrar")).setBounds(x+120,y,100,20);	
+			panel.add(rbmcancelar).setBounds(x+160, y, 20,20);
 			
-			panel.add(new JLabel("Referencia:")).setBounds(10,100,100,20);		
-			panel.add(txtreferencia).setBounds(70,100,210,20);
 			
-			panel.add(new JLabel("Concepto:")).setBounds(10,125,100,20);		
-			panel.add(txtconcepto).setBounds(70,125,210,20);
+			panel.add(new JLabel("ID:")).setBounds(x,y+=25,100,20);		
+			panel.add(txtid).setBounds(x+70,y,210,20);
 			
-			panel.add(btnBorrado_Movimiento).setBounds(10,170,270,20);
+			panel.add(new JLabel("Poliza:")).setBounds(x,y+=25,100,20);		
+			panel.add(txtpoliza).setBounds(x+70,y,210,20);
+			
+			panel.add(new JLabel("Importe:")).setBounds(x,y+=25,100,20);		
+			panel.add(txtimporte).setBounds(x+70,y,210,20);
+			
+			panel.add(new JLabel("Referencia:")).setBounds(x,y+=25,100,20);		
+			panel.add(txtreferencia).setBounds(x+70,y,210,20);
+			
+			panel.add(new JLabel("Concepto:")).setBounds(x,y+=25,100,20);		
+			panel.add(txtconcepto).setBounds(x+70,y,210,20);
+			
+			panel.add(new JLabel("Cuenta:")).setBounds(x,y+=25,100,20);		
+			panel.add(txtcuenta_contable).setBounds(x+70,y,210,20);
+			
+			panel.add(new JLabel("Estatus Conciliado:")).setBounds(x,y+=25,100,20);		
+			panel.add(txtestatus_conciliado).setBounds(x+110,y,170,20);
+			
+			panel.add(new JLabel("Estatus Desconciliado:")).setBounds(x,y+=25,120,20);		
+			panel.add(txtmov_desconciliado).setBounds(x+110,y,170,20);
+			
+			panel.add(new JLabel("ID Bancario Conciliado:")).setBounds(x,y+=25,120,20);		
+			panel.add(txtid_movimiento_bancario_conciliado).setBounds(x+110,y,170,20);
+			
+			panel.add(new JLabel("Referecia Bancaria:")).setBounds(x,y+=25,120,20);		
+			panel.add(txtreferencia_mov_bancario_conciliado).setBounds(x+110,y,170,20);
+			
+			panel.add(btnBorrado_Movimiento).setBounds(x+30,y+=40,220,20);
+			panel.add(btnDesconciliar).setBounds(x+30,y+=30,220,20);
+			
 			cont.add(panel);
 			txtpoliza.setEditable(false);
 			txtimporte.setEditable(false);
 			txtreferencia.setEditable(false);
 			txtconcepto.setEditable(false);
-			btnBorrado_Movimiento.setEnabled(false);
+			txtcuenta_contable.setEditable(false);
+			txtestatus_conciliado.setEditable(false);
+			txtmov_desconciliado.setEditable(false);
+			txtid_movimiento_bancario_conciliado.setEditable(false);
+			txtreferencia_mov_bancario_conciliado.setEditable(false);
+			
+			 limpiar();
+			rbmcancelar.setSelected(true);
+			txtid.requestFocus();
 			
 			txtid.addKeyListener(opbuscar_datos_del_id);
+			txtreferencia.addKeyListener(opbuscar_datos_de_la_referencia);
 			btnBorrado_Movimiento.addActionListener(opBorrar_movimiento_tecleado);
+			btnDesconciliar.addActionListener(opdesconciliar_movimiento_contable_tecleado);
+			
+			rb2desconciliar.addActionListener(opseleccionarconcialiar_desconciliar);
+			rbmcancelar.addActionListener(opseleccionarconcialiar_desconciliar);
 			
 			}
 		
@@ -1118,22 +1175,49 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 					}
 					public void keyPressed(KeyEvent e1) {
 						if(e1.getKeyCode()==KeyEvent.VK_ENTER){
-							if(existe_mov_contable()){
-								buscar_datos_del_id();
+							if(existe_mov_contable(1)){
+								buscar_datos_del_mov(1);
 								btnBorrado_Movimiento.setEnabled(true);
+								btnDesconciliar.setEnabled(false);
+								txtid.setEditable(false);
 							}else{
 					   			JOptionPane.showMessageDialog(null,"No Se Encontro El Movimiento Tecleado Por Alguna de Las Siguientes Razones\n-No Existe El ID Tecleado \n-Esta Conciliado El Movimiento","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-						    txtpoliza.setText("");
-						    txtconcepto.setText("");
-							btnBorrado_Movimiento.setEnabled(false);
+					   			limpiar();
 							}
 						   }    	   
 					    }
 				    };
 				    
-					public boolean existe_mov_contable(){
-						String query ="	IF(SELECT COUNT(POLIZA) FROM IZAGAR_movimientos_polizas  WHERE status_conciliado='PE' AND cod_establecimiento='"+txtid.getText().toString()+"')=1 "+
+				    
+			        KeyListener opbuscar_datos_de_la_referencia = new KeyListener(){
+							public void keyReleased(KeyEvent e1) {
+							}
+							public void keyTyped(KeyEvent e1) {
+							}
+							public void keyPressed(KeyEvent e1) {
+								
+								if(e1.getKeyCode()==KeyEvent.VK_ENTER){
+									if(existe_mov_contable(2)){
+										buscar_datos_del_mov(2);
+									}else{
+							   			JOptionPane.showMessageDialog(null,"No Existe El la Referencia Tecleada ","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+							   			limpiar();
+									}
+								   }    	   
+							    }
+						    };
+						    
+				    
+					public boolean existe_mov_contable(int desconciliar_borrar){
+						String query ="";
+						if(desconciliar_borrar==1){
+						     query ="	IF(SELECT COUNT(POLIZA) FROM IZAGAR_movimientos_polizas  WHERE status_conciliado='PE' AND cod_establecimiento='"+txtid.getText().toString()+"')=1 "+
 								      "  SELECT 'true' ELSE SELECT 'false' ";
+						}
+						if(desconciliar_borrar==2){
+						     query ="	IF(SELECT COUNT(POLIZA) FROM IZAGAR_movimientos_polizas  WHERE referencia='"+txtreferencia.getText().toString().toUpperCase().trim()+"')=1 "+
+									    "   SELECT 'true' ELSE SELECT 'false' ";
+						}
 						boolean existe = false;
 						try { Connexion con = new Connexion();
 							  Statement s = con.conexion().createStatement();
@@ -1148,25 +1232,76 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 				      return existe;
 					}
 					
-					public void buscar_datos_del_id(){
-						String query ="SELECT POLIZA ,IMPORTE ,REFERENCIA ,CONCEPTO FROM IZAGAR_movimientos_polizas  WHERE status_conciliado='PE' AND cod_establecimiento='"+txtid.getText().toString()+"'";
+					public void buscar_datos_del_mov(int desconciliar_borrar){
+						String query ="";
+						if(desconciliar_borrar==1){ query ="SELECT cod_establecimiento,POLIZA ,IMPORTE ,REFERENCIA ,CONCEPTO,cuenta_contable,case WHEN status_conciliado='PE' then 'PENDIENTE' WHEN  status_conciliado='CO' then 'CONCILIADO' END AS status_conciliado ,mov_desconciliado,id_movimiento_bancario_conciliado"
+		                                                           +" ,isnull((SELECT referencia from IZAGAR_movimientos_bancarios where id=IZAGAR_movimientos_polizas.id_movimiento_bancario_conciliado),'') as referencia_banco  "
+								                                + "  FROM IZAGAR_movimientos_polizas  WHERE status_conciliado='PE' and mov_desconciliado='NO' AND cod_establecimiento='"+txtid.getText().toString()+"'";
+						}
+						if(desconciliar_borrar==2){query ="SELECT cod_establecimiento,POLIZA ,IMPORTE ,REFERENCIA ,CONCEPTO,cuenta_contable,case WHEN status_conciliado='PE' then 'PENDIENTE' WHEN  status_conciliado='CO' then 'CONCILIADO' END AS status_conciliado ,mov_desconciliado,id_movimiento_bancario_conciliado"
+								                        +" ,isnull((SELECT referencia from IZAGAR_movimientos_bancarios where id=IZAGAR_movimientos_polizas.id_movimiento_bancario_conciliado),'') as referencia_banco  "
+								                       + "  FROM IZAGAR_movimientos_polizas  WHERE REFERENCIA='"+txtreferencia.getText().toString().trim()+"'";
+						}
 						try { Connexion con = new Connexion();
 							  Statement s = con.conexion().createStatement();
 							  ResultSet rs = s.executeQuery(query);
 							while(rs.next()){
-							    	txtpoliza.setText(rs.getString(1).toString());
-							    	txtimporte.setText(rs.getString(2).toString());
-							    	txtreferencia.setText(rs.getString(3).toString());
-							    	txtconcepto.setText(rs.getString(4).toString());
+							 	    txtid.setText(rs.getString(1).toString());
+							    	txtpoliza.setText(rs.getString(2).toString());
+							    	txtimporte.setText(rs.getString(3).toString());
+							    	txtreferencia.setText(rs.getString(4).toString());
+							    	txtconcepto.setText(rs.getString(5).toString());
+							    	txtcuenta_contable.setText(rs.getString(6).toString());
+							    	txtestatus_conciliado.setText(rs.getString(7).toString());
+							    	txtmov_desconciliado.setText(rs.getString(8).toString());
+							    	txtid_movimiento_bancario_conciliado.setText(rs.getString(9).toString());
+							    	txtreferencia_mov_bancario_conciliado.setText(rs.getString(10).toString());
 							      }
-						} catch (SQLException e1) {
+							if(txtmov_desconciliado.getText().toString().trim().equals("NO")&&desconciliar_borrar==2&&!txtid_movimiento_bancario_conciliado.getText().toString().trim().equals("")){
+								btnDesconciliar.setEnabled(true);
+								txtreferencia.setEditable(false);
+							}else{
+								btnDesconciliar.setEnabled(false);
+							}
+						   } catch (SQLException e1) {
 							e1.printStackTrace();
 							JOptionPane.showMessageDialog(null, "Error en la funcion buscar_datos_del_id \n SQLException: "+e1.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 						}
 					}
 					
+			        public void limpiar(){
+						    txtid.setText("");
+							txtpoliza.setText("");
+							txtimporte.setText("");
+							txtreferencia.setText("");
+							txtconcepto.setText("");
+							txtcuenta_contable.setText("");
+							txtestatus_conciliado.setText("");
+							txtmov_desconciliado.setText("");
+							txtid_movimiento_bancario_conciliado.setText("");
+							txtreferencia_mov_bancario_conciliado.setText("");
+							btnBorrado_Movimiento.setEnabled(false);
+							btnDesconciliar.setEnabled(false);
+			         };
 				
-				   ActionListener opBorrar_movimiento_tecleado = new ActionListener(){
+			         ActionListener opseleccionarconcialiar_desconciliar = new ActionListener(){
+			 			   public void actionPerformed(ActionEvent arg0) {
+							   if(rbmcancelar.isSelected()){
+								   txtid.setEditable(true);
+								   txtreferencia.setEditable(false);
+								   limpiar();
+								txtid.requestFocus();
+						   }
+						   if(rb2desconciliar.isSelected()){
+								   txtid.setEditable(false);
+								   txtreferencia.setEditable(true);
+								   limpiar();
+								   txtreferencia.requestFocus();
+						   }
+					   };
+					 };
+					
+				    ActionListener opBorrar_movimiento_tecleado = new ActionListener(){
 					   public void actionPerformed(ActionEvent arg0) {
 						   if(new ActualizarSQL().Borrar_movimiento_contabilidad(txtid.getText().toString())){
 							JOptionPane.showMessageDialog(null, "El Registro Se Elimino Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
@@ -1183,9 +1318,31 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 						   }else{
 								JOptionPane.showMessageDialog(null, "Error en la funcion opBorrar_movimiento_tecleado \n al intentar borrar el ID:"+txtid.getText().toString(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 						  }	 
-					   }
-				   };
-				};
+					      }
+				        };
+				    
+				    ActionListener opdesconciliar_movimiento_contable_tecleado = new ActionListener(){
+					   public void actionPerformed(ActionEvent arg0) {
+						   if(new ActualizarSQL().desconciliar_movimiento_contabilidad(txtid.getText().toString(),txtreferencia.getText().toString(),txtpoliza.getText().toString(),txtid_movimiento_bancario_conciliado.getText().toString())){
+							JOptionPane.showMessageDialog(null, "El Registro Se Desconcilio Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							   
+								while(tablaconciliados.getRowCount()>0){
+									  modeloconciliados.removeRow(0); }
+								
+								while(tabla_mov_bancarios.getRowCount()>0){
+									modelobancarios.removeRow(0); }
+								
+								while(tabla_mov_contabilidad.getRowCount()>0){
+									modelocontabilidad.removeRow(0); }
+								   dispose();
+						   }else{
+								JOptionPane.showMessageDialog(null, "Error en la funcion opdesconciliar_movimiento_contable \n al intentar borrar el ID:"+txtid.getText().toString(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+						  }	 
+					      }
+				        };
+				    };
+				
+				
 
 				
 		public static void main(String args[]){

@@ -171,7 +171,6 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 	
 	ActionListener Reporte_Abonos_Cortes = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
 			String fechaInicio = (fechaIn.getDate()+"").equals("null")?"null":new SimpleDateFormat("dd/MM/yyyy").format(fechaIn.getDate());
 			String fechaFinal =  (fechaFin.getDate()+"").equals("null")?"null":new SimpleDateFormat("dd/MM/yyyy").format(fechaFin.getDate());
 			

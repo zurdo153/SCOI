@@ -27,11 +27,12 @@ import Obj_Principal.*;
 
 @SuppressWarnings("serial")
 public class Init_Menu_Bar extends Init_Login{
+
 	public ArrayList<WP_Relation> relacion = new ArrayList<WP_Relation>();
-     
-	JMenuBar Barra = new JMenuBar();
+    	JMenuBar Barra = new JMenuBar();
+	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.59");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.65");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -85,7 +86,6 @@ public class Init_Menu_Bar extends Init_Login{
 		public String Name;
 		public int Dependiente_id;
 		public String Name_Dependiente;
-
 		public WP_Menu(String nivel, String folio, String name, String dependiente_id, String name_dependiente){
 			this.Nivel = Integer.valueOf(nivel);
 			this.Folio = Integer.valueOf(folio);

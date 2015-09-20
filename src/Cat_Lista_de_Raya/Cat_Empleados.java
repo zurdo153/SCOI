@@ -97,6 +97,7 @@ import Cat_Reportes.Cat_Personal_Con_Horario;
 import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
 import Cat_Reportes.Cat_Reportes_De_Contratacion_Por_Empleado;
 import Cat_Reportes.Cat_Reportes_De_Horarios;
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
@@ -231,7 +232,6 @@ public class Cat_Empleados extends JFrame{
 	JButton btnHorario2 = new JButton(".");
 	JButton btnHorario3 = new JButton(".");
 	JButton btnHorarioNew = new JButton("new");
-//	JButton btnQuitarHorario3 = new JButton("x");
 	JButton btnFechaUltimasVacaciones = new JButton();
 	JButton btnFechaIncapacidad = new JButton();
 
@@ -1177,6 +1177,23 @@ public class Cat_Empleados extends JFrame{
 		return valorIMSS;
 	}
 	
+   public double tiene_deuda_fuente_sodas(){
+  	  String query ="select isnull(sum(importe),0) from tb_captura_fuente_sodas where folio_empleado="+txtFolioEmpleado.getText().toString()+" and ticket in(select ticket from tb_fuente_sodas_rh where status=1)";
+		double importe_fuente_sodas = 0;
+		try { Connexion con = new Connexion();
+			  Statement s = con.conexion().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+				importe_fuente_sodas = Double.valueOf(rs.getDouble(1));
+			      }
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en la funcion tiene_deuda_fuente_sodas \n SQLException: "+e1.getMessage()+query, "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		}
+      return importe_fuente_sodas;
+	}
+	
+	
 	ActionListener guardar = new ActionListener(){
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e){
@@ -1188,12 +1205,9 @@ public class Cat_Empleados extends JFrame{
 			boolean finanzasBoolean = finanzas.isAutorizar();
 			
 			if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
-				
 				JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Empleado .."
 				       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<Al dar Click en Aceptar SCOI se Cerrará>>","Aviso",JOptionPane.WARNING_MESSAGE);
-				
 				try {	R.exec("taskkill /f /im javaw.exe"); } catch (IOException e1) {	e1.printStackTrace(); }		
-				
 			}else{
 			
 			if(txtFolioEmpleado.getText().equals("")){
@@ -1213,7 +1227,7 @@ public class Cat_Empleados extends JFrame{
 							JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;
 						}else{
-
+							
 //					datos personales	
 							txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
 							empleado.setNo_checador(txtChecador.getText());
@@ -1373,15 +1387,10 @@ public class Cat_Empleados extends JFrame{
 							}
 							
 							empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
-//							if(txtTarjetaNomina.getText().length() != 0){
-//								empleado.setTargeta_nomina(txtTarjetaNomina.getText());
-//							}else{
-//								empleado.setTargeta_nomina("");
-//							}
 							
 							empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
 							
-//							TODO (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
+//							 (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
 							empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:0);
 							
 							empleado.setGafete(chbGafete.isSelected());
@@ -1394,6 +1403,26 @@ public class Cat_Empleados extends JFrame{
 //							}else{
 //								empleado.setObservasiones("");
 //							}
+							
+							
+							//TODO 
+						  if(!cmbStatus.getSelectedItem().toString().equals("Vigente")){
+							double importe_fuente_sodas =tiene_deuda_fuente_sodas();
+							  if(importe_fuente_sodas>0){
+ 								if(JOptionPane.showConfirmDialog(null,"El Empleado Tiene Una Deuda De Fuente De Sodas "
+ 										                              +"\nDe:$"+importe_fuente_sodas
+ 										                              +"\nQue Hiba Ser Cobrada En La Lista De Raya Actual "
+ 										                              +"\nDesea Que Se Active De Nuevo La Fuente Sodas?","Aviso", JOptionPane.INFORMATION_MESSAGE,seleccion_de_asignacion_de_Horario1Horario2Horario3, new ImageIcon("imagen/fast-food-icon32.png")) == 0){
+ 								
+ 									if(new ActualizarSQL().devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(txtFolioEmpleado.getText().toString())){
+ 										JOptionPane.showMessageDialog(null, "Se Ha Devuelto A Pendiente De Cobro La Fuente De Sodas Del Empleado Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+ 									}
+ 								 }else{
+ 									 return;
+ 								 }
+								}
+							}
+							
 							
 							if(empleado.actualizar(Integer.parseInt(txtFolioEmpleado.getText()))){
 								panelLimpiar();
@@ -1572,7 +1601,7 @@ public class Cat_Empleados extends JFrame{
 						empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
 						empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
 						
-//						TODO (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
+//						 (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
 						empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:0);
 						
 						empleado.setGafete(chbGafete.isSelected());

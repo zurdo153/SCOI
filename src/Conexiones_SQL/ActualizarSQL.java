@@ -3571,6 +3571,125 @@ public boolean Borrar_movimiento_contabilidad(String id){
 	return true;
 }
 
+public boolean desconciliar_movimiento_contabilidad(String id,String referencia,String poliza,String id_mov_bancario){
+	String query =" exec sp_desconciliar_movimientos_contables_y_movimientos_bancarios '"+id+"','"+referencia+"','"+poliza+"','"+id_mov_bancario+"'";
+			Connection con = new Connexion().conexion();
+  try {	con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		  pstmt.executeUpdate();
+		  con.commit();
+	} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [desconciliar_movimiento_contabilidad] \n SQLException: "+query+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [desconciliar_movimiento_contabilidad] \n SQLException: "+query+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+				}
+				return false;
+				}	
+	}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	}		
+	return true;
+}
+
+public boolean cancelar_ticket_de_fuente_de_sodas(String folio_empleado,String folio_ticket,String observacion){
+	String query =" exec sp_cancelar_ticket_de_fuente_de_sodas "+folio_empleado+",'"+folio_ticket+"','"+observacion+"',"+usuario.getFolio();
+			Connection con = new Connexion().conexion();
+  try {	con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		  pstmt.executeUpdate();
+		  con.commit();
+	} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [cancelar_ticket_de_fuente_de_sodas] \n SQLException: "+query+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [cancelar_ticket_de_fuente_de_sodas] \n SQLException: "+query+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+				}
+				return false;
+				}	
+	}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	}		
+	return true;
+}
+
+public boolean borrarr_ticket_de_fuente_de_sodas_capturado_porauxd_o_dh(String folio_empleado,String folio_ticket){
+	String query =" exec sp_borrar_ticket_de_fuente_de_sodas_capturado_por_aux_o_dh "+folio_empleado+",'"+folio_ticket+"',"+usuario.getFolio();
+			Connection con = new Connexion().conexion();
+  try {	con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		  pstmt.executeUpdate();
+		  con.commit();
+	} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [borrarr_ticket_de_fuente_de_sodas_capturado_porauxd_o_dh] \n SQLException: "+query+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [borrarr_ticket_de_fuente_de_sodas_capturado_porauxd_o_dh] \n SQLException: "+query+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+				}
+				return false;
+				}	
+	}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	}		
+	return true;
+}
+
+public boolean devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(String folio_empleado){
+	String query =" exec sp_reactivar_Fuente_de_sodas_de_Lista_de_raya_actual_capturado_por_aux_o_dh_por_cambio_de_estatus_del_empleado "+folio_empleado+","+usuario.getFolio();
+			Connection con = new Connexion().conexion();
+  try {	con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		  pstmt.executeUpdate();
+		  con.commit();
+	} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado] \n SQLException: "+query+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado] \n SQLException: "+query+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+				}
+				return false;
+				}	
+	}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	}		
+	return true;
+}
 
 	
 }

@@ -17,6 +17,7 @@ public class Obj_Reportes_De_Ventas {
 	String lineas 			 ;
 	String presentado        ;
 	String tallas        ;
+	String asignaciones  ;
 	                         
 	public Obj_Reportes_De_Ventas(){
 		  fecha_inicio 	 ="";
@@ -31,7 +32,10 @@ public class Obj_Reportes_De_Ventas {
 		  lineas 		= "";
 		  presentado    = "";
 		  tallas		= "";
+	      asignaciones  = "";
 	}
+
+
 
 	public String getPresentado() {
 		return presentado;
@@ -121,12 +125,20 @@ public class Obj_Reportes_De_Ventas {
 		this.tallas = tallas;
 	}
 
+	public String getAsignaciones() {
+		return asignaciones;
+	}
+
+	public void setAsignaciones(String asignaciones) {
+		this.asignaciones = asignaciones;
+	}
+	
 	public String[][] reporte_de_ventas() throws SQLException{
 		return new BuscarSQL().Reporte_De_Ventas(this);
 	}
 	
-	public Object[][] reporte_de_competencias(int cantidad_de_columnas) throws SQLException{
-		return new BuscarSQL().Reporte_De_Competencia(this,cantidad_de_columnas);
+	public Object[][] reporte_de_competencias(int cantidad_de_columnas, int tipo) throws SQLException{
+		return new BuscarSQL().Reporte_De_Competencia(this,cantidad_de_columnas,tipo);
 	}
 	public int cantidad_de_competidores(){
 		return new BuscarSQL().Numero_De_Competidores();
