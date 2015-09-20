@@ -29,6 +29,7 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 
+
 @SuppressWarnings("serial")
 public class Cat_Reporte_De_Venta_Por_Asignacion_De_Pilas_y_Cigarros extends JFrame{
 	Container cont = getContentPane();
