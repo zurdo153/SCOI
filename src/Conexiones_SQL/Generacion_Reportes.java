@@ -78,6 +78,8 @@ public class Generacion_Reportes {
 				return;
 			} catch (Exception e1) {
 				System.out.println(e1.getMessage());
+				System.out.println(comando);
+				
 				JOptionPane.showMessageDialog(null, "Error Al Intentar Generar El Reporte: \n En La Clase Generacion Reportes Reporte:"+reporte+"\n Comando: "+comando+"\n Mensaje Exception: "+e1.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
 			}
 		}

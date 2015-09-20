@@ -1,18 +1,17 @@
 package Cat_Compras;
 
+import java.awt.Color;
 import java.awt.Container;
-import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -33,21 +32,25 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Filtros_IZAGAR.Cat_Filtro_De_Busqueda_De_Productos;
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
-import Obj_Reportes.Obj_Reportes_De_Ventas;
-
-import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
-public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
+public class Cat_Reporte_De_Inventario_Parcial extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	Connexion con = new Connexion();
 	
-	JDateChooser c_inicio = new JDateChooser();
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	String operadorProducto[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -69,185 +72,126 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbOperador_Linea = new JComboBox(operadorLinea);
 	
+	String operadorTalla[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbOperador_Talla = new JComboBox(operadorTalla);
 	
-//	JButton btnBuscar_Producto = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroProducto = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroProducto = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-//	JButton btnBuscar_Clase = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroClase = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroClase= new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-//	JButton btnBuscar_Categoria = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroCategoria = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroCategoria = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-//	JButton btnBuscar_Familia = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroFamilia = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroFamilia = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-//	JButton btnBuscar_Linea = new JButton("",new ImageIcon("imagen/Filter-List-icon16.png"));
 	JButton btnFiltroLinea = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroLinea = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
+	JButton btnFiltroTalla = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
+	JButton btnLimpiarFiltroTalla = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
+	
 	JButton btn_buscar = new JButton  ("Buscar",new ImageIcon("imagen/buscar.png"));
 	
-	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
-	JLabel JLBTipoPrecio= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	
-//	JTextField txtcod_prod = new Componentes().text(new JTextField(), "Codigo del Producto", 15, "String");
 	JTextField txtFiltroProducto = new JTextField("");
+	JTextField txtcod_prod = new Componentes().text(new JTextField(), "Codigo del Producto", 15, "String");
 	JTextField txtFiltroClase = new JTextField("");
 	JTextField txtFiltroCategoria = new JTextField("");
 	JTextField txtFiltroFamilia = new JTextField("");
 	JTextField txtFiltroLinea = new JTextField("");
+	JTextField txtFiltroTalla = new JTextField("");
 	
-	int cantidad_de_columnas =  (new Obj_Reportes_De_Ventas().cantidad_de_competidores()+8);
-	DefaultTableModel model = new DefaultTableModel(0,cantidad_de_columnas){
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Class getColumnClass(int columnIndex) {
-	             return listacolumnas(cantidad_de_columnas)[columnIndex];
-	         }   
-		public boolean isCellEditable(int fila, int columna){
-			if(columna == 0)
-				return true;
-			return false;
-		}
-	};
-	
-	@SuppressWarnings("rawtypes")
-	public Class[] listacolumnas(int Columnas){
-	Class[] lista = new Class[Columnas];
-	for (int i = 0; i<lista.length; i++){
-			lista[i] =(String.class);
-	 }
-	 return lista;
-   };
-	
-	JTable tabla = new JTable(model);
-	private JScrollPane getPanelTabla()	{		
-		int a=90,b=300;
-		
-		tabla.getColumnModel().getColumn(0).setHeaderValue("Cod_Prod");
-		tabla.getColumnModel().getColumn(0).setMaxWidth(a);
-		tabla.getColumnModel().getColumn(0).setMinWidth(a);
-		tabla.getColumnModel().getColumn(1).setHeaderValue("Descripcion");
-		tabla.getColumnModel().getColumn(1).setMaxWidth(b*2+a);
-		tabla.getColumnModel().getColumn(1).setMinWidth(b+a);
-		tabla.getColumnModel().getColumn(2).setHeaderValue("Ultimo Costo");
-		tabla.getColumnModel().getColumn(2).setMaxWidth(a);
-		tabla.getColumnModel().getColumn(2).setMinWidth(a);
-		tabla.getColumnModel().getColumn(3).setHeaderValue("Costo Promedio");
-		tabla.getColumnModel().getColumn(3).setMaxWidth(a);
-		tabla.getColumnModel().getColumn(3).setMinWidth(a);
-		tabla.getColumnModel().getColumn(4).setHeaderValue("Precio De Venta");
-		tabla.getColumnModel().getColumn(4).setMaxWidth(a);
-		tabla.getColumnModel().getColumn(4).setMinWidth(a);
-		tabla.getColumnModel().getColumn(5).setHeaderValue("Markup");
-		tabla.getColumnModel().getColumn(5).setMaxWidth(a);
-		tabla.getColumnModel().getColumn(5).setMinWidth(a);
-		tabla.getColumnModel().getColumn(6).setHeaderValue("Precio Normal");
-		tabla.getColumnModel().getColumn(6).setMaxWidth(a);
-		tabla.getColumnModel().getColumn(6).setMinWidth(a);
-		tabla.getColumnModel().getColumn(7).setHeaderValue("Markup Normal");
-		tabla.getColumnModel().getColumn(7).setMaxWidth(a);
-		tabla.getColumnModel().getColumn(7).setMinWidth(a);
-		
-		try {
-			String[] competidor = new Obj_Reportes_De_Ventas().lista_de_competidores();
-			for(int i=8; i<cantidad_de_columnas; i++){
-				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-8)].toString());
-				tabla.getColumnModel().getColumn(i).setMaxWidth(a);
-				tabla.getColumnModel().getColumn(i).setMinWidth(a);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-    	tabla.getTableHeader().setReorderingAllowed(false) ;
-    	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-		 JScrollPane scrol = new JScrollPane(tabla);
-		   
-	    return scrol; 
-	}
-    
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	
 	String parametroGeneral = "";
 	String Lista="";
+	JLabel JLBdescripcion= new JLabel();
 	
-	public Cat_Analisis_De_Precios_De_Competencia(String parametro, String operador){
-		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
-		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+	public Cat_Reporte_De_Inventario_Parcial(String parametro, String operador, String establecimiento){
 		
-		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
-		
+		this.setSize(760, 290);
 		cont.add(panel);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Sales-by-payment-method-icon-64.png"));
-		setTitle("Analisis De Precios De Competencia");
-		panel.setBorder(BorderFactory.createTitledBorder("Analisis De Precios De Competencia"));
+		setTitle("Reportes De Inventario Parcial");
+		panel.setBorder(BorderFactory.createTitledBorder("Reportes De Inventario Parcial"));
 		
+		txtcod_prod.setBackground(Color.lightGray);
+		txtcod_prod.setBorder(BorderFactory.createTitledBorder(""));
+		txtcod_prod.setHorizontalAlignment(4);
+		//      asigna el foco al JTextField deseado al arrancar la ventana
+        this.addWindowListener(new WindowAdapter() {
+                public void windowOpened( WindowEvent e ){
+                	txtcod_prod.requestFocus();
+             }
+        });
+        
 		int x=15 ;
 		int y=20 ;
 		int l=100;
 		int a=20;
+		
+		panel.add(new JLabel("Establecimiento:")).setBounds(x,y,l+50,a);
+	    panel.add(JLBestablecimiento).setBounds(x+80,y,a,a);
+		panel.add(cmbEstablecimiento).setBounds(x+100,y,l+70,a);
 
-		panel.add(new JLabel("Fecha Inicio:")).setBounds(x,y,l,a);
-		panel.add(JLBlinicio).setBounds(x+=60,y,a,a);
-		panel.add(c_inicio).setBounds(x+=20,y,l-10,a);
+		panel.add(new JLabel("Buscar un producto: ")).setBounds(x+300,y,125,a);
+        panel.add(txtcod_prod).setBounds(x+400,y,75,a);
+        
+        panel.add(JLBdescripcion).setBounds(x+480,y-10,l+150,a*2);
 		
 		x=100;
 		panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y+=30,l+50,a);
 		panel.add(cmbOperador_Productos				).setBounds(x+80,y,l-12,a);
-		
         panel.add(txtFiltroProducto					).setBounds(x+170,y,l*4+20,a);
+
         panel.add(btnFiltroProducto					).setBounds(x+590,y,a,a);
         panel.add(btnLimpiarFiltroProducto			).setBounds(x+613,y,a,a);
         
 		panel.add(new JLabel("Filtro De Clase De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Clase							 ).setBounds(x+80,y,l-12,a);  
-		                                                                                  
         panel.add(txtFiltroClase							 ).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroClase							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);    
+        panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);
         
 		panel.add(new JLabel("Filtro De Categoria De Productos:")).setBounds(x-85,y+=30,l+70,a); 
 		panel.add(cmbOperador_Categoria							 ).setBounds(x+80,y,l-12,a);  
-		                                                                                      
         panel.add(txtFiltroCategoria							 ).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroCategoria							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);    
+        panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);   
         
-		panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
+      	panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Familia						).setBounds(x+80,y,l-12,a);  
-		                                                                                 
-        panel.add(txtFiltroFamilia							).setBounds(x+170,y,l*4+20,a);  
+		panel.add(txtFiltroFamilia							).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroFamilia							).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroFamilia					).setBounds(x+613,y,a,a);    
+        panel.add(btnLimpiarFiltroFamilia					).setBounds(x+613,y,a,a);
         
 		panel.add(new JLabel("Filtro De Linea De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Linea					 ).setBounds(x+80,y,l-12,a);  
-		                                                                                  
         panel.add(txtFiltroLinea							 ).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroLinea							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroLinea						 ).setBounds(x+613,y,a,a);    
-       
-        panel.add(btn_buscar).setBounds(x+810,y,l,a);
+        panel.add(btnLimpiarFiltroLinea						 ).setBounds(x+613,y,a,a); 
         
-        panel.add(getPanelTabla()).setBounds(10,y+=50,ancho-30,alto-y-75);
+        panel.add(new JLabel("Filtro De Talla De Productos:")).setBounds(x-85,y+=30,l+50,a); 
+		panel.add(cmbOperador_Talla							 ).setBounds(x+80,y,l-12,a);  
+        panel.add(txtFiltroTalla							 ).setBounds(x+170,y,l*4+20,a);  
+        panel.add(btnFiltroTalla							 ).setBounds(x+590,y,a,a);    
+        panel.add(btnLimpiarFiltroTalla						 ).setBounds(x+613,y,a,a); 
         
-        c_inicio.setDate(cargar_fechas(0));
-        render_tabla();
+        panel.add(btn_buscar).setBounds(x+530,y+=25,l,a);
         
         txtFiltroProducto.setEditable(false); 
         txtFiltroClase.setEditable(false);
         txtFiltroCategoria.setEditable(false);
         txtFiltroFamilia.setEditable(false);
         txtFiltroLinea.setEditable(false);
+        txtFiltroTalla.setEditable(false);
 
         String operador_simbolo = "";
         
@@ -262,19 +206,26 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
     		}
         	txtFiltroProducto.setText(operador_simbolo+parametro);
         	cmbOperador_Productos.setSelectedItem(operador);
+        	cmbEstablecimiento.setSelectedItem(establecimiento);
         	
         	panelEnableFalse();
-//        	btnFiltroProducto.setEnabled(true);
         	btnLimpiarFiltroProducto.setEnabled(true);
         	btnLimpiarFiltroClase.setEnabled(true);
         	
         }
+        
+        if(cmbEstablecimiento.getSelectedIndex()!=0){
+			btn_buscar.setEnabled(true);
+		}else{
+			btn_buscar.setEnabled(false);
+		}
         
         btnFiltroProducto.addActionListener(op_filtro_productos);
         btnFiltroClase.addActionListener(op_filtro_clases);
         btnFiltroCategoria.addActionListener(op_filtro_categorias);
         btnFiltroFamilia.addActionListener(op_filtro_familias);
         btnFiltroLinea.addActionListener(op_filtro_lineas);
+        btnFiltroTalla.addActionListener(op_filtro_talla);
         
 		
 		btnLimpiarFiltroProducto.addActionListener(limpiar_filtro_productos);
@@ -282,64 +233,47 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
         btnLimpiarFiltroCategoria.addActionListener(limpiar_filtro_categorias);
         btnLimpiarFiltroFamilia.addActionListener(limpiar_filtro_familias);
         btnLimpiarFiltroLinea.addActionListener(limpiar_filtro_lineas);
-	        
+        btnLimpiarFiltroTalla.addActionListener(limpiar_filtro_talla);
+        
+        txtcod_prod.addKeyListener(Buscar_Datos_Producto);
 		btn_buscar.addActionListener(op_generar);
+		
+		cmbEstablecimiento.addActionListener(op_cmb);
+		
 	}
+
+//public void filtroProductos(String cadena){
+//	txtFiltroProducto.setText(cadena);
+//}
 	
-	
-	public void render_tabla(){
-		for(int i = 0; i < cantidad_de_columnas; i++){
-			if(i<=1){
-				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+	ActionListener op_cmb = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(cmbEstablecimiento.getSelectedIndex()!=0){
+				btn_buscar.setEnabled(true);
 			}else{
-				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+				btn_buscar.setEnabled(false);
 			}
 		}
-	}
-
-	public void filtroProductos(String cadena){
-		txtFiltroProducto.setText(cadena);
-	}
-
-	public String validar_fechas(){
-		String error = "";
-		String fechainicioNull = c_inicio.getDate()+"";
-	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";
-		
-		return error;
-	}
-	
-	public Date cargar_fechas(int dias){
-		Date date = null;
-				  try {
-					date = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		return date;
 	};
-	
-
 	
 	ActionListener op_filtro_productos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Productos.getSelectedItem().toString().equals("Todos")){
 				dispose();
-				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Analisis_De_Precios_De_Competencia",cmbOperador_Productos.getSelectedItem().toString(),"").setVisible(true);
+				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Inventarios_Parciales",cmbOperador_Productos.getSelectedItem().toString(),cmbEstablecimiento.getSelectedItem().toString()).setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
 	};
+	
 	ActionListener op_filtro_clases = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Clase.getSelectedItem().toString().equals("Todos")){
 				new Cat_Filtro_Dinamico(cmbOperador_Clase.getSelectedItem().toString(),"clases_productos","clase_producto").setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -349,7 +283,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 			if(!cmbOperador_Categoria.getSelectedItem().toString().equals("Todos")){
 				new Cat_Filtro_Dinamico(cmbOperador_Categoria.getSelectedItem().toString(),"categorias","categoria").setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -359,17 +293,29 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 			if(!cmbOperador_Familia.getSelectedItem().toString().equals("Todos")){
 				new Cat_Filtro_Dinamico(cmbOperador_Familia.getSelectedItem().toString(),"familias","familia").setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
 	};
+	
 	ActionListener op_filtro_lineas = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Linea.getSelectedItem().toString().equals("Todos")){
 				new Cat_Filtro_Dinamico(cmbOperador_Linea.getSelectedItem().toString(),"lineas_productos","linea_producto").setVisible(true);
 			}else{
-				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+		}
+	};
+	
+	ActionListener op_filtro_talla = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(!cmbOperador_Talla.getSelectedItem().toString().equals("Todos")){
+				new Cat_Filtro_Dinamico(cmbOperador_Talla.getSelectedItem().toString(),"tallas","talla").setVisible(true);
+			}else{
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -385,7 +331,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
             txtFiltroLinea.setText("");
         	panelEnableTrue();
         	Lista="";
-        	limpiar_vacios();
+        	limpiar_vacios("");
 		}
 	};
 	
@@ -398,7 +344,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
             txtFiltroLinea.setText("");
         	panelEnableTrue();
         	Lista="";
-        	limpiar_vacios();
+        	limpiar_vacios("");
 		}
 	};
 	
@@ -407,7 +353,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
             
 			panelEnableFalse();
 			txtFiltroCategoria.setText("");
-			limpiar_vacios();
+			limpiar_vacios("");
 		}
 	};
 	
@@ -416,7 +362,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
            
 			panelEnableFalse();
 			txtFiltroFamilia.setText("");
-			limpiar_vacios();
+			limpiar_vacios("");
 		}
 	};
 	
@@ -425,30 +371,45 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 			
 			panelEnableFalse();
 			txtFiltroLinea.setText("");
-			limpiar_vacios();
+			limpiar_vacios("");
+            	
 		}
 	};
 	
-	public void limpiar_vacios(){
-		panelEnableFalse();
+	ActionListener limpiar_filtro_talla = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			panelEnableFalse();
+			txtFiltroTalla.setText("");
+			limpiar_vacios("boton talla");
+			
+            	
+		}
+	};
+	
+	public void limpiar_vacios(String boton){
+		
+		if(!boton.equals("boton talla")){
+			panelEnableFalse();
+		}
+		
+		
 		txtFiltroLinea.setText("");
-        
         btnFiltroLinea.setEnabled(true);
         btnLimpiarFiltroLinea.setEnabled(true);
-        
         btnLimpiarFiltroFamilia.setEnabled(true);
+        
+        btnFiltroTalla.setEnabled(true);
+        btnLimpiarFiltroTalla.setEnabled(true);
         
         	if(txtFiltroFamilia.getText().equals("")){
         		btnFiltroFamilia.setEnabled(true);
-        		
         		if(txtFiltroCategoria.getText().equals("")){
             		btnFiltroCategoria.setEnabled(true);
             		btnLimpiarFiltroCategoria.setEnabled(true);
-            		
             		if(txtFiltroClase.getText().equals("")){
 	            		btnFiltroClase.setEnabled(true);
 	            		btnLimpiarFiltroClase.setEnabled(true);
-	            		
 	            		btnFiltroProducto.setEnabled(true);
 	            	}
             		btnLimpiarFiltroClase.setEnabled(true);
@@ -456,7 +417,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
         		btnLimpiarFiltroCategoria.setEnabled(true);
         	}
         	btnLimpiarFiltroFamilia.setEnabled(true);
-        	
         	
         	cmbOperador_Productos.setSelectedIndex(0);
         	cmbOperador_Clase.setSelectedIndex(0);
@@ -471,56 +431,27 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if(validar_fechas().equals("")){
-				
-				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());//+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_inicio.getValue())+" "+sphora_inicio.getValue()+":00";
-				
-				String productos 	= txtFiltroProducto.getText();
-				String clases 		= txtFiltroClase.getText();
-				String categorias 	= txtFiltroCategoria.getText();
-				String familias 	= txtFiltroFamilia.getText();
-				String lineas 		= txtFiltroLinea.getText();
-				
-				if((productos+clases+categorias+familias+lineas).length() > 0 ){
-						Obj_Reportes_De_Ventas ventas = new Obj_Reportes_De_Ventas();
-						
-						ventas.setFecha_inicio(fecha_inicio);
-						ventas.setProductos(productos);
-						ventas.setClases(clases);
-						ventas.setCategorias(categorias);
-						ventas.setFamilias(familias);
-						ventas.setLineas(lineas);
-						
-						try {
-							while(tabla.getRowCount()>0){model.removeRow(0);}
-							Object[][] matriz_reporte_de_ventas = ventas.reporte_de_competencias(cantidad_de_columnas);
-							if(matriz_reporte_de_ventas.length==0){
-								JOptionPane.showMessageDialog(null, "No se encontraron registros con las condiciones de busqueda proporcionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-								return;
-							}else{
-								
-								 String[] fila = new String[cantidad_de_columnas];
-								 
-									for(int i=0; i<matriz_reporte_de_ventas.length; i++){
-										for(int j=0; j<cantidad_de_columnas; j++){
-											fila[j] = matriz_reporte_de_ventas[i][j ]+"";
-										}
-										model.addRow(fila);
-									}
-							}
-							
-						} catch (SQLException e2) {
-							e2.printStackTrace();
-						}
-					} else{
-						JOptionPane.showMessageDialog(null, "Para visualizar el reporte es necesario agregar un filtro","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-						return;
-					}	
-								
-			}else{
-				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
+			
+			String estabs = cmbEstablecimiento.getSelectedItem().toString();
+			
+			String productos 	= txtFiltroProducto.getText().equals("")?"0":txtFiltroProducto.getText();
+			String clases 		= txtFiltroClase.getText().equals("")?"0":txtFiltroClase.getText();
+			String categorias 	= txtFiltroCategoria.getText().equals("")?"0":txtFiltroCategoria.getText();
+			String familias 	= txtFiltroFamilia.getText().equals("")?"0":txtFiltroFamilia.getText();
+			String lineas 		= txtFiltroLinea.getText().equals("")?"0":txtFiltroLinea.getText();
+			String tallas 		= txtFiltroTalla.getText().equals("")?"0":txtFiltroTalla.getText();
+			
+			String basedatos="2.200";
+			String vista_previa_reporte="si";
+			int vista_previa_de_ventana=0;
+			
+			
+			String comando="exec sp_Reporte_IZAGAR_de_inventarios_parciales '"+ estabs +"','"+ productos +"','"+ clases +"','"+ categorias +"','"+ familias +"','"+ lineas +"','"+ tallas +"','"+ new Obj_Usuario().LeerSession().getNombre_completo()+"'";
+			
+			
+			String reporte = "Obj_Reporte_IZAGAR_De_Inventarios_Parciales.jrxml";
+			
+			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
 	
@@ -530,11 +461,11 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
     	btnFiltroCategoria.setEnabled(false);
     	btnFiltroFamilia.setEnabled(false);
     	btnFiltroLinea.setEnabled(false);
-    	
     	btnLimpiarFiltroClase.setEnabled(false);
     	btnLimpiarFiltroCategoria.setEnabled(false);
     	btnLimpiarFiltroFamilia.setEnabled(false);
     	btnLimpiarFiltroLinea.setEnabled(false);
+    	btnLimpiarFiltroTalla.setEnabled(false);
 	}
 	
 	public void panelEnableTrue(){
@@ -543,12 +474,44 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
     	btnFiltroCategoria.setEnabled(true);
     	btnFiltroFamilia.setEnabled(true);
     	btnFiltroLinea.setEnabled(true);
-    	
     	btnLimpiarFiltroClase.setEnabled(true);
     	btnLimpiarFiltroCategoria.setEnabled(true);
     	btnLimpiarFiltroFamilia.setEnabled(true);
     	btnLimpiarFiltroLinea.setEnabled(true);
+    	btnLimpiarFiltroTalla.setEnabled(true);
 	}
+	
+	KeyListener Buscar_Datos_Producto = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				try {
+						if(new Obj_Cotizaciones_De_Un_Producto().Existe_Producto(txtcod_prod.getText().toUpperCase().trim())){
+							
+						      Obj_Cotizaciones_De_Un_Producto  Datos_Producto= new Obj_Cotizaciones_De_Un_Producto().buscardatos_producto(txtcod_prod.getText().trim().toUpperCase()+"");
+					            
+								 if(!Datos_Producto.getDescripcion_Prod().toString().trim().equals("") || !txtcod_prod.getText().equals("")){
+										cmbOperador_Productos.setSelectedItem("Igual");
+								 }else{
+									 	cmbOperador_Productos.setSelectedIndex(0);
+								 }
+								txtFiltroProducto.setText("=(''"+Datos_Producto.getCod_Prod().toString().trim()+"'')");
+								JLBdescripcion.setText("<html> <FONT FACE="+"arial"+" SIZE=2 COLOR=BLUE><CENTER><b><p>"+Datos_Producto.getDescripcion_Prod().toString().trim()+"</p></b></CENTER></FONT></html>");
+							}else{
+								JLBdescripcion.setText("");
+								JOptionPane.showMessageDialog(null, "El Codigo Esta Mal Escrito o El Producto No Existe" , "Aviso", JOptionPane.CANCEL_OPTION);
+		                    }
+					
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, "Error en Cat_Cotizaciones_De_Un_Producto_En_Proveedores  en la funcion existe_Producto \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				}
+				
+				txtcod_prod.setText("");
+			}
+		}
+	};
 	
 // FILTRO
 		 	public class Cat_Filtro_Dinamico extends JDialog {
@@ -661,6 +624,12 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 					setSize(405,450);
 					setResizable(false);
 					setLocationRelativeTo(null);
+					
+					 this.addWindowListener(new WindowAdapter() {
+		                    public void windowOpened( WindowEvent e ){
+		                    	txtNombre_Completo.requestFocus();
+		                 }
+		            });
 				}
 				
 				public void llamar_render(){
@@ -680,15 +649,14 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 				ActionListener opAgregar = new ActionListener() {
 					@SuppressWarnings({ "unchecked" })
 					public void actionPerformed(ActionEvent arg0) {
-						
+						txtNombre_Completo.setText("");
+				 		new Obj_Filtro_Dinamico(tablaFiltro, "Nombre", "", "", "", "", "", "", "");
+				 		
 						if(tablaFiltro.isEditing()){
 				 			tablaFiltro.getCellEditor().stopCellEditing();
 						}
 						trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-						trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-						
 						txtFolio.setText("");
-						txtNombre_Completo.setText("");
 						
 						int contador=0;
 				 		 Lista="('";	
@@ -704,14 +672,12 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 						 					}
 				 				}
 				 			}
-				 			
 				 			Lista=Lista+"')";
 
 				 			if(Lista.equals("('')")){
 				 				JOptionPane.showMessageDialog(null, "Es necesario seleccionar un argunemto", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 	 							return;
 				 			}else{
-				 				
 				 		        String operador_simbolo = "";
 				 		        	
 				 		            switch(Operador){
@@ -774,6 +740,26 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 							 										btnLimpiarFiltroLinea.setEnabled(true);
 													 				btnFiltroProducto.setEnabled(false);
 	 										break;
+	 										
+							 				case "talla":			txtFiltroTalla.setText(Lista)		;
+												 					if(!txtFiltroTalla.getText().equals("")){
+												 						txtcod_prod.setText("");
+												 						txtFiltroProducto.setText("");
+												 						txtFiltroCategoria.setText("");
+												 						txtFiltroClase.setText("");
+												 						txtFiltroFamilia.setText("");
+												 						txtFiltroLinea.setText("");
+												 						
+												 						btnFiltroProducto.setEnabled(false);
+												 						btnFiltroCategoria.setEnabled(false);
+							 											btnFiltroClase.setEnabled(false);
+							 											btnFiltroFamilia.setEnabled(false);
+								 										btnFiltroLinea.setEnabled(false);
+								 										btnFiltroTalla.setEnabled(false);
+								 										
+								 										btnLimpiarFiltroTalla.setEnabled(true);
+							 										}
+											break;
 				 				}
 					 			dispose();
 				 			}
@@ -798,9 +784,8 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 				};
 				
 				KeyListener opFiltroNombre = new KeyListener(){
-					@SuppressWarnings("unchecked")
 					public void keyReleased(KeyEvent arg0) {
-						trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
+						new Obj_Filtro_Dinamico(tablaFiltro,"Nombre", txtNombre_Completo.getText().toUpperCase(),"","", "", "", "", "");
 					}
 					public void keyTyped(KeyEvent arg0) {}
 					public void keyPressed(KeyEvent arg0) {}		
@@ -811,10 +796,13 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 			   		String condicion = "";
 			   		
 			   		if(!Lista.equals("")){
+			   			
 			   			condicion = " where jerarquia "+Lista.replace("''","'");
 			   		}
+			   		
 					String todos = "select "+folio_columna+" as folio,upper(nombre) from "+nombre_de_tabla+condicion+" order by nombre";
 					
+					System.out.println(todos);
 					Statement s;
 					ResultSet rs;
 					try {
@@ -894,7 +882,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Analisis_De_Precios_De_Competencia("","Todos").setVisible(true);
+			new Cat_Reporte_De_Inventario_Parcial("","Todos", "Seleccione un Establecimiento").setVisible(true);
 		}catch(Exception e){	}
 	}
 

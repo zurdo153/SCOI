@@ -3997,14 +3997,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nombre_PC ] Insert   \nSQLException: sp_insert_nombre_de_PC_Para_Checador_Del_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Configuracion_De_Poliza ] Insert   \nSQLException: sp_insert_configuracion_de_polizas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nombre_PC ] Insert  \nSQLException: sp_insert_nombre_de_PC_Para_Checador_Del_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Configuracion_De_Poliza ] Insert  \nSQLException: sp_insert_configuracion_de_polizas "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -4013,7 +4013,227 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nombre_PC ] Insert  SQLException: insert_etapa "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Configuracion_De_Poliza ] Insert  SQLException: sp_insert_configuracion_de_polizas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Cuenta_Contable(String f_cuenta,String cuenta, String naturaleza, String grupo, String clasificacion,String status){
+		String query = "exec sp_insert_cuenta_contable ?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, f_cuenta.toUpperCase().trim());
+			pstmt.setString(2, cuenta.toUpperCase().trim());
+			pstmt.setString(3, naturaleza.toUpperCase().trim());
+			pstmt.setString(4, grupo.toUpperCase().trim());
+			pstmt.setString(5, clasificacion.toUpperCase().trim());
+			pstmt.setString(6, status.toUpperCase().trim());
+			pstmt.setInt(7, usuario.getFolio());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_Contable ] Insert   \nSQLException: sp_insert_cuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_Contable ] Insert  \nSQLException: sp_insert_cuenta_contable "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_Contable ] Insert  SQLException: sp_insert_cuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_SubCuenta_Contable(String f_cuenta, String f_scuenta,String scuenta, String transaccion, String status){
+		String query = "exec sp_insert_subcuenta_contable ?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, f_cuenta.toUpperCase().trim());
+			pstmt.setString(2, f_scuenta.toUpperCase().trim());
+			pstmt.setString(3, scuenta.toUpperCase().trim());
+			pstmt.setString(4, transaccion.trim());
+			pstmt.setString(5, status.toUpperCase().trim());
+			pstmt.setInt(6, usuario.getFolio());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_SubCuenta_Contable ] Insert   \nSQLException: sp_insert_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_SubCuenta_Contable ] Insert  \nSQLException: sp_insert_subcuenta_contable "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_SubCuenta_Contable ] Insert  SQLException: sp_insert_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Sub_SubCuenta_Contable(String f_cuenta, String f_scuenta, String f_sscuenta,String sscuenta, String transaccion, String status){
+		String query = "exec sp_insert_sub_subcuenta_contable ?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, f_cuenta.toUpperCase().trim());
+			pstmt.setString(2, f_scuenta.toUpperCase().trim());
+			pstmt.setString(3, f_sscuenta.toUpperCase().trim());
+			pstmt.setString(4, sscuenta.toUpperCase().trim());
+			pstmt.setString(5, transaccion.trim());
+			pstmt.setString(6, status.toUpperCase().trim());
+			pstmt.setInt(7, usuario.getFolio());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sub_SubCuenta_Contable ] Insert   \nSQLException: sp_insert_sub_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sub_SubCuenta_Contable ] Insert  \nSQLException: sp_insert_sub_subcuenta_contable "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sub_SubCuenta_Contable ] Insert  SQLException: sp_insert_sub_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Poliza(String folio, String tipo, String fecha_poliza, String referencia_trans, int referencia, String nota, Object[][] matriz){
+		String query = "exec sp_insert_polizas ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+		
+			float cargo = 0;
+			float abono = 0;
+			for(int i=0; i<matriz.length; i++){
+				
+				con.setAutoCommit(false);
+				pstmt = con.prepareStatement(query);
+				
+				pstmt.setString(1, folio.toUpperCase().trim());
+				pstmt.setString(2, tipo.toUpperCase().trim());
+				pstmt.setString(3, fecha_poliza.toUpperCase().trim());
+				pstmt.setString(4, referencia_trans.toUpperCase().trim());
+				pstmt.setInt(5, referencia);
+				pstmt.setString(6, nota.toUpperCase().trim());
+				pstmt.setInt(7, usuario.getFolio());
+				
+				pstmt.setString(8 , matriz[i][0].toString().trim().toUpperCase());//cuenta
+				pstmt.setString(9 , matriz[i][1].toString().trim().toUpperCase());//subcuenta
+				pstmt.setString(10, matriz[i][2].toString().trim().toUpperCase());//subsubcuenta
+				
+				cargo = Float.valueOf(matriz[i][4].toString().trim().toUpperCase().equals("")?"0":matriz[i][4].toString().trim().toUpperCase());
+				abono = Float.valueOf(matriz[i][5].toString().trim().toUpperCase().equals("")?"0":matriz[i][5].toString().trim().toUpperCase());
+			
+				pstmt.setFloat(11, (cargo==0)?abono:cargo);//importe
+				pstmt.setString(12, (cargo==0)?"A":"C");//cargo_abono
+				
+				pstmt.setString(13, matriz[i][6].toString().trim().toUpperCase());//concepto
+				pstmt.setString(14, matriz[i][7].toString().trim().toUpperCase());//establecimiento
+				
+				pstmt.executeUpdate();
+			}
+			
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Poliza ] Insert   \nSQLException: sp_insert_polizas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Poliza ] Insert  \nSQLException: sp_insert_polizas "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Poliza ] Insert  SQLException: sp_insert_polizas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Modificar_Folio_De_Poliza(String tipo,String mes_anio, int folio){
+		String query = "update tb_folios_polizas set folio_siguiente = "+folio+" where tipo_poliza = '"+tipo+"' and mes_año = '"+mes_anio+"'";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

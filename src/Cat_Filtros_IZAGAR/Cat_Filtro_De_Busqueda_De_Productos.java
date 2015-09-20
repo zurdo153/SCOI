@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
 import Cat_Compras.Cat_Alimentacion_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Analisis_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
+import Cat_Compras.Cat_Reporte_De_Inventario_Parcial;
 import Cat_Compras.Cat_Reporte_De_Ventas;
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
@@ -48,6 +49,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	String operador_ventas = "";
+	String establecimiento_inv_parcial = "";
 
 	Object[][] Matriz_Productos ;
 	DefaultTableModel Tabla_Productos= new DefaultTableModel(null,new String[]{"Codigo", "Descripcion","Clase Producto","Categoria","*"}
@@ -113,7 +115,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	JTextField txtClase_Producto;
 	JTextField txtCategoria;
 	
-	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador){
+	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador, String establecimiento){
 		this.cont.add(panel);
 		this.setSize(1024,620);
 		this.setResizable(false);
@@ -184,8 +186,9 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		this.init_tabla();
 		
 		operador_ventas = operador;
+		establecimiento_inv_parcial = establecimiento;
 		
-		if(bandera_origen_consulta_filro.equals("Reporte_De_Ventas") || bandera_origen_consulta_filro.equals("Reporte_De_Analisis_De_Precios_De_Competencia")){
+		if(bandera_origen_consulta_filro.equals("Reporte_De_Ventas") || bandera_origen_consulta_filro.equals("Reporte_De_Analisis_De_Precios_De_Competencia") || bandera_origen_consulta_filro.equals("Reporte_De_Inventarios_Parciales")){
 			btnCargar.setVisible(true);
 			tabla.removeMouseListener(opAgregar);
 			tabla.removeKeyListener(op_agregar_productoconteclado);
@@ -303,7 +306,11 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	 				if(valor_catalogo.equals("Reporte_De_Analisis_De_Precios_De_Competencia")){
 	 					new Cat_Analisis_De_Precios_De_Competencia(Lista,operador_ventas).setVisible(true);
 	 				}else{
-	 					new Cat_Reporte_De_Ventas(Lista,operador_ventas).setVisible(true);
+	 					if(valor_catalogo.equals("Reporte_De_Inventarios_Parciales")){
+		 					new Cat_Reporte_De_Inventario_Parcial(Lista,operador_ventas,establecimiento_inv_parcial).setVisible(true);
+		 				}else{
+		 					new Cat_Reporte_De_Ventas(Lista,operador_ventas).setVisible(true);
+		 				}
 	 				}
 	 				dispose();
 	 			}
@@ -567,7 +574,7 @@ public void init_tabla(){
 		
 		public static void main(String args[]){
 			try{
-				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas","Igual").setVisible(true);
+				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas","Igual","").setVisible(true);
 			}catch(Exception e){	}
 		}
 	

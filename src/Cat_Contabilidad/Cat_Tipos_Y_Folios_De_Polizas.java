@@ -4,8 +4,6 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
@@ -49,6 +47,9 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 	JTextField txtTipo = new Componentes().text(new JTextField(), "Tipo", 1, "String");
 	JTextField txtNombre 	= new Componentes().text(new JTextField(), "Codigo De Proveedor", 15, "String");
 	
+	JTextField txtTipoPoliza 	= new Componentes().text(new JTextField(), "Tipo De Poliza", 5, "String");
+	JTextField txtMesAnio 		= new Componentes().text(new JTextField(), "Mes Año", 6, "String");
+	JTextField txtFolio 		= new Componentes().text(new JTextField(), "Folio", 10, "Int");
 	
     SpinnerModel relleno = new SpinnerNumberModel(2015, 0, 2050, 1);
 	JSpinner spRelleno = new JSpinner(relleno);
@@ -63,9 +64,9 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 	
 //	int an =  Calendar.getInstance().get(Calendar.YEAR);
 //	SpinnerModel  anio = new SpinnerNumberModel(/*an,an-100,an+100,1*/);
+	
 	JSpinner spAnio = new JSpinner();
 	JComponent editor = new JSpinner.NumberEditor(spRelleno, "###0");
-	
 	
 	DefaultTableModel modelo_conf = new DefaultTableModel(null,
             new String[]{"Tipo","Nombre","Relleno","Asiento Cont.","Status"}
@@ -115,7 +116,7 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
         	 switch(columna){
         	 	case 0 : return false; 
         	 	case 1 : return false; 
-        	 	case 2 : return true;
+        	 	case 2 : return false;
         	 	} 				
  			return false;
  		}
@@ -157,10 +158,17 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 		panel.add(new JLabel("Año:")).setBounds(x,y+=(ancho*3)-30,70,20);
 		panel.add(spAnio  ).setBounds(x+40,y,70,20);
 		
-	panel.add(btnGuardarFolio  ).setBounds(x+140,y,85,20);
-	panel.add(btnEditarFolio  ).setBounds(x+235,y,85,20);
-		
 		panel.add(scroll_folios).setBounds(x,y+=25,ancho*4,200);
+		
+		panel.add(new JLabel("Tipo:")).setBounds(x+=((ancho*4)+35),y,ancho,20);
+		panel.add(txtTipoPoliza).setBounds(x+45,y,ancho,20);
+		panel.add(new JLabel("Mes Año:")).setBounds(x-20,y+=25,ancho,20);
+		panel.add(txtMesAnio).setBounds(x+45,y,ancho,20);
+		panel.add(btnEditarFolio).setBounds(x+ancho*2-35,y,85,20);
+		
+		panel.add(new JLabel("Folio:")).setBounds(x,y+=25,ancho,20);
+		panel.add(txtFolio).setBounds(x+45,y,ancho,20);
+		panel.add(btnGuardarFolio).setBounds(x+ancho*2-35,y,85,20);
 		
 		cont.add(panel);
 		
@@ -169,16 +177,16 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 		
 		llamar_render();
 		componentes(false);
+		componentesFolios(false);
 		limpiar();
 		
 		llenarConfiguracionPolizas();
 		new Obj_Filtro_Dinamico(tabla_folios,"Mes y año",  spAnio.getValue().toString(),"","", "", "", "", "");
 		
-		tabla_folios.setEnabled(false);
-		
 		btnNuevaConf.addActionListener(opNuevaConf);
 		btnEditarConf.addActionListener(opEditarConf);
-		agregar(tabla_conf);
+		agregar(tabla_conf,"config");
+		agregar(tabla_folios,"");
 		
 		btnGuardarConf.addActionListener(opGuardarConf);
 		btnEditarFolio.addActionListener(opEditarFolios);
@@ -239,23 +247,45 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 		}
 	};
 	
-	private void agregar(final JTable tbl) {
+	private void agregar(final JTable tbl,final String condicion) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 1){
 	        		
-	        		componentes(false);
-	    			int fila = tbl.getSelectedRow();
+	        		int fila = tbl.getSelectedRow();
+	        		
+	        		if(condicion.equals("config")){
+		        			componentes(false);
+			    			
+							
+							txtTipo.setText(tabla_conf.getValueAt(fila, 0).toString());
+							txtNombre.setText(tabla_conf.getValueAt(fila, 1).toString());
+							spRelleno.setValue(Integer.valueOf(tabla_conf.getValueAt(fila, 2).toString().trim()));
+							cmbAsiento_Cont.setSelectedItem((tabla_conf.getValueAt(fila, 3).toString().trim().equals("I"))?"Ingresos" : ((tabla_conf.getValueAt(fila, 3).toString().trim().equals("E"))?"Egresos" : "Varios") );
+							cmbStatus.setSelectedItem(tabla_conf.getValueAt(fila, 4).toString().trim().equals("V")?("Vigente"):("Cancelado"));
 					
-					txtTipo.setText(tabla_conf.getValueAt(fila, 0).toString());
-					txtNombre.setText(tabla_conf.getValueAt(fila, 1).toString());
-					spRelleno.setValue(Integer.valueOf(tabla_conf.getValueAt(fila, 2).toString().trim()));
-					cmbAsiento_Cont.setSelectedItem((tabla_conf.getValueAt(fila, 3).toString().trim().equals("I"))?"Ingresos" : ((tabla_conf.getValueAt(fila, 3).toString().trim().equals("E"))?"Egresos" : "Varios") );
-					cmbStatus.setSelectedItem(tabla_conf.getValueAt(fila, 4).toString().trim().equals("V")?("Vigente"):("Cancelado"));
+	        		}else{
+	        			
+	        			componentesFolios(false);
+	        			btnEditarFolio.setEnabled(true);
+	        			
+	        			txtTipoPoliza.setText(tbl.getValueAt(fila, 0).toString());
+	        			txtMesAnio.setText(tbl.getValueAt(fila, 1).toString());
+	        			txtFolio.setText(tbl.getValueAt(fila, 2).toString());
+	        		}
 	        	}
 	        }
         });
     }
+	
+	public void componentesFolios(boolean valor){
+		txtTipoPoliza.setEditable(valor);
+		txtMesAnio.setEditable(valor);
+		txtFolio.setEditable(valor);
+		
+		btnGuardarFolio.setEnabled(valor);
+		btnEditarFolio.setEnabled(valor);
+	}
 	
 	ActionListener opEditarConf = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -341,44 +371,34 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 	ActionListener opEditarFolios = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			if(tabla_folios.getRowCount()>0){
-				tabla_folios.setEnabled(true);
-			}else{
-				tabla_folios.setEnabled(false);
-				JOptionPane.showMessageDialog(null, "No Existen Folios Con El Tipo De Poliza Seleccionado En El Año Especificado","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-				return;
-			}
+			componentesFolios(false);
+			btnGuardarFolio.setEnabled(true);
+			txtFolio.setEditable(true);
+			
 		}
 	};
 	
 	ActionListener opGuardarFolios = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
-			if(tabla_folios.isEnabled()){
 				
-				Object[][] tb_folios = new Object[tabla_folios.getRowCount()][3];
-				
-				for(int i=0; i<tabla_folios.getRowCount(); i++){
-					
-					
-					tb_folios[i][0] = tabla_folios.getValueAt(i, 0);
-					tb_folios[i][1] = tabla_folios.getValueAt(i, 1);
-					tb_folios[i][2] = tabla_folios.getValueAt(i, 2);
-					
-					
+				if(!txtTipoPoliza.getText().equals("") && !txtFolio.getText().equals("")){
+							if( new GuardarSQL().Modificar_Folio_De_Poliza( txtTipoPoliza.getText().trim(), txtMesAnio.getText().trim(), Integer.valueOf(txtFolio.getText().trim()) ) ){
+									componentesFolios(false);
+									txtTipoPoliza.setText("");
+									txtMesAnio.setText("");
+									txtFolio.setText("");
+									llenarConfiguracionPolizas();
+									
+									JOptionPane.showMessageDialog(null, "El Folio De Poliza Se Modificó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
+									return;
+							}else{
+								JOptionPane.showMessageDialog(null, "No Se Pudo Guardar El Registro","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}
+				}else{
+					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar Un Registro De La Tabla De Folios E Ingresar Un Folio En El Campo Habilitado","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+					return;
 				}
-				
-				
-				
-				
-				System.out.println("Pendiente:   (verificar datos con formato correcto, actualizar informacion y mostrar mensaje de guardado)");
-				
-				tabla_folios.setEnabled(false);
-			}else{
-				tabla_folios.setEnabled(false);
-				JOptionPane.showMessageDialog(null, "Para Poder Modificar Un Folio En Necesario Editar Y Modificar El Folio De La Poliza Requerido Antes De Guardar","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-				return;
-			}
 		}
 	};
 	
