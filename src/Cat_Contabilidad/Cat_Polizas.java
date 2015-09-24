@@ -80,11 +80,12 @@ public class Cat_Polizas extends JFrame{
 	JDateChooser fhFecha 	= new JDateChooser();
 	
 	JButton btnNota = new JButton("Nota");
+	JButton btnReferencia = new JButton("Referencia");
 	JButton btnGuardarPoliza = new JButton("Guardar");
 	
 	JButton btnQuitar = new JButton("Quitar");
 	
-	JLabel lblMovimientos 	= new JLabel("");
+//	JLabel lblMovimientos 	= new JLabel("");
 	JLabel lblTotales 	= new JLabel("");
 	
 	public String[] referencia(){try {return new Cargar_Combo().cuentas();} catch (SQLException e) {e.printStackTrace();}return null;}
@@ -95,12 +96,12 @@ public class Cat_Polizas extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento());
 	
-    SpinnerModel cargoMov = new SpinnerNumberModel(0, 0, 50000, .1);
-	JSpinner spCargoMov = new JSpinner(cargoMov);
-	SpinnerModel abonoMov = new SpinnerNumberModel(0, 0, 50000, .1);
-	JSpinner spAbonoMov = new JSpinner(abonoMov);
-	SpinnerModel diferenciaMov = new SpinnerNumberModel(0, 0, 50000, .1);
-	JSpinner spDiferenciaMov = new JSpinner(diferenciaMov);
+//    SpinnerModel cargoMov = new SpinnerNumberModel(0, 0, 50000, .1);
+//	JSpinner spCargoMov = new JSpinner(cargoMov);
+//	SpinnerModel abonoMov = new SpinnerNumberModel(0, 0, 50000, .1);
+//	JSpinner spAbonoMov = new JSpinner(abonoMov);
+//	SpinnerModel diferenciaMov = new SpinnerNumberModel(0, 0, 50000, .1);
+//	JSpinner spDiferenciaMov = new JSpinner(diferenciaMov);
 	
     SpinnerModel cargoTotales = new SpinnerNumberModel(0, 0, 50000, .1);
 	JSpinner spCargoTotales = new JSpinner(cargoTotales);
@@ -113,12 +114,12 @@ public class Cat_Polizas extends JFrame{
 	JScrollPane Concepto = new JScrollPane(txaConcepto);	
 	
 	DefaultTableModel modelo = new DefaultTableModel(null,
-            new String[]{"Cuenta", "SCuenta", "SSCuenta","Nombre","Cargo","Abono","Concepto", "Establecimiento", "Folio"}
+            new String[]{"Cuenta", "SCuenta", "SSCuenta","Nombre","Cargo","Abono","Concepto", "Establecimiento", "Fila"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
 	    	java.lang.String.class,
-	    	java.lang.String.class,
+	    	java.lang.String.class, 
 	    	java.lang.String.class,
 	    	java.lang.String.class,
 	    	java.lang.String.class,
@@ -141,19 +142,20 @@ public class Cat_Polizas extends JFrame{
         	 	case 4 : if(Float.valueOf(tabla.getValueAt(fila, 5).toString().equals("")?"0":tabla.getValueAt(fila, 5).toString())>0){return false;}else{return true;}
         	 	case 5 : if(Float.valueOf(tabla.getValueAt(fila, 4).toString().equals("")?"0":tabla.getValueAt(fila, 4).toString())>0){return false;}else{return true;}
         	 	case 6 : return true;
-        	 	case 7 : return true;
+        	 	case 7 : return new BuscarSQL().activar_establecimiento_en_mpolizas(tabla.getValueAt(fila, 0).toString());
         	 	case 8 : return false;
         	 	} 				
  			return false;
  		}
 	};
-	
+
 	JTable tabla = new JTable(modelo);
 	JScrollPane scroll = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
 	public TableColumn columnaChb = tabla.getColumnModel().getColumn(7);
 	
 	String nota = "";
+	int folioReferencia = 0;
 	
 	Border borderline;
 	public Cat_Polizas(String nta){
@@ -164,7 +166,7 @@ public class Cat_Polizas extends JFrame{
 		nota=nta;
 		
 		borderline = BorderFactory.createLineBorder(new Color(45,48,48));
-		lblMovimientos.setBorder(BorderFactory.createTitledBorder(borderline,"Movimiento"));
+//		lblMovimientos.setBorder(BorderFactory.createTitledBorder(borderline,"Movimiento"));
 		lblTotales.setBorder(BorderFactory.createTitledBorder(borderline,"Totales"));
 		
 		this.columnaChb.setCellEditor(new javax.swing.DefaultCellEditor(cmbEstablecimiento));
@@ -180,13 +182,22 @@ public class Cat_Polizas extends JFrame{
 		panel.add(new JLabel("Folio:")).setBounds(x*23,y,70,20);
 		panel.add(txtFolio  ).setBounds(x*23+50,y,80,20);
 		
-		panel.add(lblMovimientos).setBounds(x-5,y+=20,180,95);                  panel.add(lblTotales).setBounds(x*11-10,y,180,95);            
-		panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);             panel.add(new JLabel("Cargo:")).setBounds(x*11,y,50,20);    	panel.add(btnNota  ).setBounds(x*23+50,y-10,80,20);   
-		panel.add(spCargoMov).setBounds(x+65,y,90,20);                       	panel.add(spCargoTotales).setBounds(x*11+60,y,90,20);               
-		panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);            	panel.add(new JLabel("Abono:")).setBounds(x*12,y,50,20);      	 panel.add(new JLabel("Referencia: ")).setBounds(x*17+70,y,80,20);		panel.add(cmbReferencia).setBounds(x*23+20,y,110,20); 
-		panel.add(spAbonoMov).setBounds(x+65,y,90,20);                       	panel.add(spAbonoTotales).setBounds(x*11+60,y,90,20);                 
-		panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20);       	panel.add(new JLabel("Diferencia:")).setBounds(x*11,y,70,20); 
-		panel.add(spDiferenciaMov).setBounds(x+65,y,90,20);                  	panel.add(spDiferenciaTotales).setBounds(x*11+60,y,90,20);      
+		
+//		panel.add(lblMovimientos).setBounds(x-5,y+=20,180,95);           
+//		panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);      
+//		panel.add(spCargoMov).setBounds(x+65,y,90,20);                   
+//		panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);      
+//		panel.add(spAbonoMov).setBounds(x+65,y,90,20);                   
+//		panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 
+//		panel.add(spDiferenciaMov).setBounds(x+65,y,90,20);              
+		
+        panel.add(lblTotales).setBounds(x-5,y+=25,180,95);            
+        panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);    																				panel.add(btnNota  ).setBounds(x*23+50,y-10,80,20);   
+    	panel.add(spCargoTotales).setBounds(x+70,y,90,20);               
+      	panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);      	 panel.add(new JLabel("Referencia: ")).setBounds(x*17+70,y,80,20);		panel.add(cmbReferencia).setBounds(x*23+20,y,110,20); 
+    	panel.add(spAbonoTotales).setBounds(x+70,y,90,20);                 
+      	panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 																			panel.add(btnReferencia).setBounds(x*23+20,y,110,20);
+    	panel.add(spDiferenciaTotales).setBounds(x+70,y,90,20);      
 		
 		panel.add(new JLabel("Concepto:")).setBounds(x-5,y+=55,70,20);
 		panel.add(Concepto).setBounds(x-5,y+=15,ancho*7+15,45);
@@ -206,10 +217,12 @@ public class Cat_Polizas extends JFrame{
 		
 		llamar_render();
 		componentes(false);
+		btnReferencia.setEnabled(false);
 		
 		fhFecha.setDate(cargar_fecha_Sugerida(0));
 		buscarFolioConsecutivo();
 		
+		cmbReferencia.addActionListener(tipoReferencia);
 		cmbTipo.addActionListener(opBuscar);
 		fhFecha.addPropertyChangeListener(opBusqueda);
 		
@@ -217,6 +230,7 @@ public class Cat_Polizas extends JFrame{
 		btnQuitar.addActionListener(opQuitar);
 		
 		btnNota.addActionListener(opNota);
+		btnReferencia.addActionListener(opFiltroRef);
 		
 		agregar(tabla);
 		tabla.addKeyListener(op_key);
@@ -235,6 +249,22 @@ public class Cat_Polizas extends JFrame{
 	        }
 	    });
 	    
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+	 	       KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "nuevaCuenta");
+	 	    
+	 	    getRootPane().getActionMap().put("nuevaCuenta", new AbstractAction(){
+	 	        @Override
+	 	        public void actionPerformed(ActionEvent e)
+	 	        {	      
+	 	        	txtCuenta.setText("");
+	 	        	txtCuenta.requestFocus();
+	 	        	
+//	 	    		if(FocusManager.getCurrentManager().getFocusOwner().getClass().getSimpleName().equals("JTextField")){
+//	 	    			new Cat_Filtro_Cuentas(txtCuenta.getText().trim()).setVisible(true);
+//	 	    		}
+	 	        }
+	 	    });
+	    
 		//  BBUSCAR CUENTA CON PARAMETRO Y AGREGAR A LA TABLA
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 	       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "BUSCA");
@@ -247,10 +277,11 @@ public class Cat_Polizas extends JFrame{
 	    			
 	    			Object[][] pol = Filtro_Cuentas(txtCuenta.getText().trim());
 	    			if(pol.length>0){
+	    				
 	    				for(Object[] p : pol){
+	    					p[6]=txaConcepto.getText().toUpperCase().trim();
 	    					modelo.addRow(p);
 	    				}
-	    				tabla.setValueAt(txaConcepto.getText().toUpperCase().trim(), 0, 6);
 	    				CalcularFoliosTabla();
 	    			}else{
 	    				JOptionPane.showMessageDialog(null, "No Se Encontraron Registros","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -380,6 +411,29 @@ public class Cat_Polizas extends JFrame{
 		}
 	};
 	
+	ActionListener tipoReferencia = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			folioReferencia=0;
+			if(cmbReferencia.getSelectedIndex()==0){
+				btnReferencia.setEnabled(false);
+			}else{
+				btnReferencia.setEnabled(true);
+			}
+		}
+	};
+	
+	ActionListener opFiltroRef = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				new Cat_Filtro_Referencia().setVisible(true);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	};
+	
 	ActionListener opGuardarPoliza = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 
@@ -400,14 +454,20 @@ public class Cat_Polizas extends JFrame{
 		
 		for(int i =0; i<tabla.getRowCount(); i++){
 			
-					cargo = Double.valueOf(tabla.getValueAt(i, 4).toString().equals("")?"0":tabla.getValueAt(i, 4).toString());
-					abono = Double.valueOf(tabla.getValueAt(i, 5).toString().equals("")?"0":tabla.getValueAt(i, 5).toString());
+				cargo = Double.valueOf(tabla.getValueAt(i, 4).toString().equals("")?"0":tabla.getValueAt(i, 4).toString());
+				abono = Double.valueOf(tabla.getValueAt(i, 5).toString().equals("")?"0":tabla.getValueAt(i, 5).toString());
 				
 				if((cargo+abono)==0){
 					JOptionPane.showMessageDialog(null, "La Fila [ "+(i+1)+" ] Requiere Un Cargo O Abono","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
-			}
+				
+				if(tabla.getValueAt(i, 7).toString().equals("")){
+					JOptionPane.showMessageDialog(null, "La Fila [ "+(i+1)+" ] Requiere El Establecimiento","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
+		}
+		
 		if(Float.valueOf(spDiferenciaTotales.getValue().toString())==0){
 			guardarPolizas();
 		}else{
@@ -422,25 +482,34 @@ public class Cat_Polizas extends JFrame{
 		Object[][] matriz_movPolizas = MovPolizas();
 		
 				if(matriz_movPolizas.length>0){
-				
-						if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),0, nota, matriz_movPolizas)){
-								buscarFolioConsecutivo();
-								
-								while(tabla.getRowCount()>0){
-									modelo.removeRow(0);
+					
+						if((cmbReferencia.getSelectedIndex()>0 && folioReferencia>0) || (cmbReferencia.getSelectedIndex()==0 && folioReferencia==0)){
+							
+								if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, matriz_movPolizas)){
+										buscarFolioConsecutivo();
+										
+										while(tabla.getRowCount()>0){
+											modelo.removeRow(0);
+										}
+										
+										CalcularCuadreDePoliza();
+										cmbReferencia.setSelectedIndex(0);
+										folioReferencia=0;
+										btnReferencia.setEnabled(false);
+										
+										JOptionPane.showMessageDialog(null, "La Poliza Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
+										return;
+								}else{
+										JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+										return;
 								}
-								
-								CalcularCuadreDePoliza();
-								
-								JOptionPane.showMessageDialog(null, "La Poliza Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-								return;
 						}else{
-								JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+								JOptionPane.showMessageDialog(null, "Es Necesario Que Agregue Un [ "+cmbReferencia.getSelectedItem().toString()+" ] Ya Que Es La Referencia Seleccionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 								return;
 						}
 				
 				}else{
-						JOptionPane.showMessageDialog(null, "En Necesario Que Agregue Movimientos De Polizas","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+						JOptionPane.showMessageDialog(null, "Es Necesario Que Agregue Movimientos De Polizas","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 						return;
 				}
 	}
@@ -465,34 +534,39 @@ public class Cat_Polizas extends JFrame{
 		public void keyPressed(KeyEvent e) {}
 	};
 	public boolean ValidaValor(){
+		
 		boolean valor=false;
-					if(isNumeric(modelo.getValueAt(fila,4).toString().trim()) && isNumeric(modelo.getValueAt(fila,5).toString().trim())){
-						
-						int cantidadDeFilas = tabla.getRowCount();
-						fila+=1;
-						
-						if(fila == cantidadDeFilas){ fila=0;	}
-						if(columna==4 && !tabla.getValueAt(fila, 5).toString().equals("")){	fila+=1; }
-						if(columna==5 && !tabla.getValueAt(fila, 4).toString().equals("")){	fila+=1; }
-						
-							tabla.getSelectionModel().setSelectionInterval(fila, fila);
-							tabla.editCellAt(fila, columna);
-							Component aComp=tabla.getEditorComponent();
-							aComp.requestFocus();
-							valor = true;
-							
-					}else{
-							tabla.getSelectionModel().setSelectionInterval(fila, fila);
-							
-							JOptionPane.showMessageDialog(null, "La Fila  [ "+(fila+1)+" ]  Esta Mal En Su Formato En La Columna [  "+((columna==4)?"Cargo":"Abono")+"  ]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-							modelo.setValueAt(0, fila, columna);
-							
-							tabla.editCellAt(fila, columna);
-							Component aComp=tabla.getEditorComponent();
-							aComp.requestFocus();
-					}
+		
+				if(columna!=7){
 					
-					CalcularCuadreDePoliza();
+						if(isNumeric(modelo.getValueAt(fila,4).toString().trim()) && isNumeric(modelo.getValueAt(fila,5).toString().trim())){
+							
+								int cantidadDeFilas = tabla.getRowCount();
+								fila+=1;
+								
+								if(fila == cantidadDeFilas){ fila=0;	}
+								if(columna==4 && !tabla.getValueAt(fila, 5).toString().equals("")){	fila+=1; }
+								if(columna==5 && !tabla.getValueAt(fila, 4).toString().equals("")){	fila+=1; }
+								
+									tabla.getSelectionModel().setSelectionInterval(fila, fila);
+									tabla.editCellAt(fila, columna);
+									Component aComp=tabla.getEditorComponent();
+									aComp.requestFocus();
+									valor = true;
+								
+						}else{
+								tabla.getSelectionModel().setSelectionInterval(fila, fila);
+								
+								JOptionPane.showMessageDialog(null, "La Fila  [ "+(fila+1)+" ]  Esta Mal En Su Formato En La Columna [  "+((columna==4)?"Cargo":"Abono")+"  ]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+								modelo.setValueAt(0, fila, columna);
+								
+								tabla.editCellAt(fila, columna);
+								Component aComp=tabla.getEditorComponent();
+								aComp.requestFocus();
+						}
+				}	
+			
+				CalcularCuadreDePoliza();
 					
 		return valor;
 	}
@@ -506,7 +580,7 @@ public class Cat_Polizas extends JFrame{
 			total_cargo += Double.valueOf(tabla.getValueAt(i, 4).toString().equals("")?"0":tabla.getValueAt(i, 4).toString());
 			total_abono += Double.valueOf(tabla.getValueAt(i, 5).toString().equals("")?"0":tabla.getValueAt(i, 5).toString());
 				
-			}
+		}
 		
 		spCargoTotales.setValue(total_cargo);
 		spAbonoTotales.setValue(total_abono);
@@ -527,9 +601,6 @@ public class Cat_Polizas extends JFrame{
 	    }
 	
 	public void componentes(boolean validar){
-		spCargoMov.setEnabled(validar);
-		spAbonoMov.setEnabled(validar);
-		spDiferenciaMov.setEnabled(validar);
 		spCargoTotales.setEnabled(validar);
 		spAbonoTotales.setEnabled(validar);
 		spDiferenciaTotales.setEnabled(validar);
@@ -592,7 +663,7 @@ public class Cat_Polizas extends JFrame{
 	PropertyChangeListener opBusqueda = new PropertyChangeListener() {
 	  	  public void propertyChange(PropertyChangeEvent e) {
 	  		  
-  	            if ("date".equals(e.getPropertyName())) {
+  	            if ("date".equals(e.getPropertyName())){
   	            	buscarFolioConsecutivo();
   	            }
 	  	  }
@@ -660,8 +731,8 @@ public class Cat_Polizas extends JFrame{
 			this.setModal(true);
 			
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
-			this.setTitle("Filtro de Empleados");
-			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Empleado"));
+			this.setTitle("Filtro De Cuentas");
+			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Cuentas"));
 			
 			campo.add(scroll_Filtro).setBounds(15,42,1000,565);
 			
@@ -828,6 +899,148 @@ public class Cat_Polizas extends JFrame{
 				dispose();
 			}
 		};
+	}
+	
+	
+	public class Cat_Filtro_Referencia extends JDialog{
+
+		Container cont = getContentPane();
+		JLayeredPane campo = new JLayeredPane();
+		
+		DefaultTableModel modelo_Filtro_Ref = new DefaultTableModel(null,
+	            new String[]{"Folio", "Nombre"}
+				){
+		     @SuppressWarnings("rawtypes")
+			Class[] types = new Class[]{
+		    	java.lang.String.class,
+		    	java.lang.String.class
+		    	                       };
+		     @SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {
+	             return types[columnIndex];
+	         }
+	         public boolean isCellEditable(int fila, int columna){
+	        	 switch(columna){
+		        	 	case 0 : return false; 
+		        	 	case 1 : return false; 
+	        	 	} 				
+	 			return false;
+	 		}
+		};
+		JTable tabla_Filtro_Ref = new JTable(modelo_Filtro_Ref);
+	    JScrollPane scroll_Filtro_Ref = new JScrollPane(tabla_Filtro_Ref);
+		
+		JTextField txtCodigo = new JTextField();
+		JTextField txtDescripcion = new JTextField();
+		
+		public Cat_Filtro_Referencia() throws SQLException{
+			
+			this.setModal(true);
+			
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setTitle("Filtro De Referencias");
+			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Referencias"));
+			
+			campo.add(scroll_Filtro_Ref).setBounds(15,42,470,565);
+			
+			campo.add(txtCodigo).setBounds(15,20,90,20);
+			campo.add(txtDescripcion).setBounds(104,20,360,20);
+			
+			llenarFiltro();
+			render();
+			agregar(tabla_Filtro_Ref);
+			
+			cont.add(campo);
+			
+			new Obj_Filtro_Dinamico(tabla_Filtro_Ref,"Codigo", txtCodigo.getText().toUpperCase(),"Nombre",txtDescripcion.getText(), "", "", "", "");
+			
+			txtCodigo.addKeyListener(opFiltroLoco);
+			txtDescripcion.addKeyListener(opFiltroLoco);
+			
+			this.setSize(510,650);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+//          asigna el foco al JTextField del nombre deseado al arrancar la ventana
+            this.addWindowListener(new WindowAdapter() {
+                    public void windowOpened( WindowEvent e ){
+                    	txtDescripcion.requestFocus();
+                 }
+            });
+              
+		}
+		
+		public void llenarFiltro() throws SQLException{
+			
+			modelo_Filtro_Ref.setRowCount(0);
+			
+			Object[][] datos = new BuscarSQL().Filtro_De_Referencia_Polizas(cmbReferencia.getSelectedItem().toString());
+			for(Object[] d : datos){
+				modelo_Filtro_Ref.addRow(d);
+			}
+		}
+		
+		public Object[][] Filtro_Cuentas( ){
+			try {
+				return new BuscarSQL().Filtro_De_Cuentas_polizas();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return null;
+	}
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	
+		        	if(e.getClickCount() == 2){
+		    			fila = tabla_Filtro_Ref.getSelectedRow();
+		    			int folio =  Integer.valueOf(tabla_Filtro_Ref.getValueAt(fila, 0).toString().trim());
+		    			folioReferencia= folio;
+		    			dispose();
+		        	}
+		        }
+	        });
+	    }
+		
+		int fila=0;
+		public void iniciarSeleccionConTeclado(){
+			Robot robot;
+			try {
+	            robot = new Robot();
+	            robot.keyPress(KeyEvent.VK_A);
+	            robot.keyRelease(KeyEvent.VK_A);
+	        } catch (AWTException e) {
+	            e.printStackTrace();
+	        }
+ 	     };
+ 	     
+		KeyListener opFiltroLoco = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				
+				new Obj_Filtro_Dinamico(tabla_Filtro_Ref,"Folio", txtCodigo.getText().toUpperCase(),"Nombre",txtDescripcion.getText(), "", "", "", "");
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+		
+	   	private void render(){		
+			
+			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+			tcr.setHorizontalAlignment(SwingConstants.CENTER);
+			
+			tabla_Filtro_Ref.getTableHeader().setReorderingAllowed(false) ;
+			
+    		tabla_Filtro_Ref.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		    tabla_Filtro_Ref.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+			
+			tabla_Filtro_Ref.getColumnModel().getColumn(0).setMinWidth(0);
+		    tabla_Filtro_Ref.getColumnModel().getColumn(0).setMaxWidth(100);
+			tabla_Filtro_Ref.getColumnModel().getColumn(1).setMinWidth(300);
+			tabla_Filtro_Ref.getColumnModel().getColumn(1).setMaxWidth(400);
+			
+		}
 	}
 	
 	public static void main(String[] args) {

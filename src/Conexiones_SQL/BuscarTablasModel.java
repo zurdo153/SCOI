@@ -2005,6 +2005,33 @@ public String folio_consecutivo_de_poliza(String fecha, String tipo){
     return folio; 
 }
 
+public String establecimientoCuenta(String cuenta){
+	
+	String query_lista =  " declare @folio_establecimiento int "
+						+ " set @folio_establecimiento = (select establecimiento_id "
+						+ "				 					from tb_cuentas_contables "
+						+ "									where folio_cuenta_contable = '"+cuenta+"') "
+						+ " if(@folio_establecimiento=0) "
+						+ " 	begin	select 'MULTIPLE' as establecimiento 	end "
+						+ " else "
+						+ " 	begin	select nombre from tb_establecimiento where folio = @folio_establecimiento end "; 
+	System.out.println(query_lista);
+	String folio = "";
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		while(rs.next()){
+			folio =  rs.getString(1)+"";
+			System.out.println(folio);
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion [folio_consecutivo_de_poliza] SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return folio; 
+}
+
 }
 
 

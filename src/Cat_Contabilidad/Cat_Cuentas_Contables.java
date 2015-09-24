@@ -27,6 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.GuardarSQL;
@@ -67,6 +68,10 @@ public class Cat_Cuentas_Contables extends JFrame{
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbStatus_Cuenta_Contable = new JComboBox(status);
+	
+	public String[] establecimiento(){try {return new Cargar_Combo().EstablecimientoPoliza();} catch (SQLException e) {e.printStackTrace();}return null;}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbEstablecimiento = new JComboBox(establecimiento());
 	
 	JButton btnNuevoCC = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
 	JButton btnEditarCC = new JButton("Editar",new ImageIcon("imagen/editara.png"));
@@ -238,6 +243,9 @@ DefaultTableModel modelo_Sub_Sub_Cuenta_Contable = new DefaultTableModel(null,
 		x=10;
 		panel.add(txtFolio_Cuenta_Contablebusqueda).setBounds(x, y+=25, l-40, a);
 		panel.add(txtCuenta_Contablebusqueda).setBounds(x+=60, y, l*3-50, a);
+		
+		panel.add(new JLabel("Establecimiento:")).setBounds(x+=385,y-3,l-10,a);
+		panel.add(cmbEstablecimiento).setBounds(x+=90, y-3, l+50, a);
 
 		x=10;
 		panel.add(scroll).setBounds(x, y+=20, 850, alto/3-85);
@@ -640,6 +648,10 @@ MouseListener opCuenta = new MouseListener() {
     		cmbGrupo_Cuenta_Contable.setSelectedItem(tabla_cuentas_contables.getValueAt(fila, 3).toString().trim());
     		cmbClasif_Cuenta_Contable.setSelectedItem(tabla_cuentas_contables.getValueAt(fila, 4).toString().trim().equals("")?"No Aplica":tabla_cuentas_contables.getValueAt(fila, 4).toString().trim());
     		cmbStatus_Cuenta_Contable.setSelectedItem(tabla_cuentas_contables.getValueAt(fila, 5).toString().trim());
+    		
+//    		CONSULTAR ESTABLECIMIENTO AL DAR CLICK CON EL FOLIO DE LA CUENTA
+    		cmbEstablecimiento.setSelectedItem(new BuscarTablasModel().establecimientoCuenta(txtFolio_Cuenta_Contable.getText()));
+    		
 			btnEditarCC.setEnabled(true);
 			
 			limpiarSC();
@@ -680,7 +692,8 @@ MouseListener opCuenta = new MouseListener() {
 			cmbNaturaleza_Cuenta_Contable.setEnabled(valor);
 			cmbGrupo_Cuenta_Contable.setEnabled(valor);
 			cmbClasif_Cuenta_Contable.setEnabled(valor);
-		    cmbStatus_Cuenta_Contable.setEnabled(valor);  
+		    cmbStatus_Cuenta_Contable.setEnabled(valor);
+		    cmbEstablecimiento.setEnabled(valor);
 		}
 	    
 		ActionListener nuevo_cuentas_contables = new ActionListener(){
@@ -794,6 +807,7 @@ MouseListener opCuenta = new MouseListener() {
 			cmbGrupo_Cuenta_Contable.setSelectedIndex(0);
 			cmbClasif_Cuenta_Contable.setSelectedIndex(0);
 			cmbStatus_Cuenta_Contable.setSelectedIndex(0);
+			cmbEstablecimiento.setSelectedIndex(0);
 			
 			txtFolio_Cuenta_Contablebusqueda.setText("");
 			txtCuenta_Contablebusqueda.setText("");
@@ -832,7 +846,8 @@ MouseListener opCuenta = new MouseListener() {
 														,cmbNaturaleza_Cuenta_Contable.getSelectedItem().toString()
 														,cmbGrupo_Cuenta_Contable.getSelectedItem().toString()
 														,cmbClasif_Cuenta_Contable.getSelectedItem().toString()
-														,cmbStatus_Cuenta_Contable.getSelectedItem().toString())){
+														,cmbStatus_Cuenta_Contable.getSelectedItem().toString()
+														,cmbEstablecimiento.getSelectedItem().toString())){
 
 				componentes_cuentas_contables(false);
 				llenado_tabla_cuentas_contables(2);
@@ -887,6 +902,7 @@ MouseListener opCuenta = new MouseListener() {
 	        		txtSC.setText(tablaSub_Cuenta_Contable.getValueAt(fila, 2).toString().trim());
 	        		cmbTransaccion.setSelectedItem(tablaSub_Cuenta_Contable.getValueAt(fila, 3).toString().trim());
 	        		cmbStatus_SC.setSelectedItem(tablaSub_Cuenta_Contable.getValueAt(fila, 4).toString().trim());
+	        		
 	        		btnEditarSC.setEnabled(true);
 					
 	        		limpiarSSC();

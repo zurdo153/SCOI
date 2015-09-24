@@ -6833,4 +6833,59 @@ public class BuscarSQL {
 		return rp_cuenta;
 	}
 	
+	public boolean activar_establecimiento_en_mpolizas(String fol_cuenta){
+		String query = "if(select establecimiento_id from tb_cuentas_contables where folio_cuenta_contable = '"+fol_cuenta+"')=0"
+					+ "	 		begin select 'true' as activo end"
+					+ " else 	begin select 'false' as activo end";
+		boolean existe = false;
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){ existe = rs.getBoolean(1); }
+	
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return existe; 
+	}
+	
+	public Object[][] Filtro_De_Referencia_Polizas(String ref) throws SQLException{
+		Statement stmt = null;
+		
+		String query = "";
+		switch(ref){
+			case "Departamento": 	query = "select folio,departamento as nombre from tb_departamento where status = 1 order by  nombre"; break;
+			case "Establecimiento": query = "select folio,nombre as nombre from tb_establecimiento where status = 1  order by nombre"; break;
+			case "Empleado": 		query = "select folio,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_empleado where status=1  order by nombre"; break;
+			case "Proveedor": 		query = "select folio,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_empleado where status=1  order by nombre"; break;
+		}
+		
+		Object[][] referencia = new Object[getFilas(query)][2];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				for(int j=0; j<2; j++){
+					referencia[i][j] = rs.getObject(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [Filtro_De_Referencia_Polizas] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return referencia;
+	}
+	
 }
