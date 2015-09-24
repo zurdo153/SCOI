@@ -202,23 +202,6 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 			ResultSet rs;
 			
 			
-//		String cadenaFinal="";
-//		String cadenaAsignacionesGuardadasEnSCOI="";
-//		
-//	
-//	 		String asignacionesSCOI ="select asignacion from tb_tabla_de_asignaciones_para_cortes";
-//			try {
-//				s = new Connexion().conexion().createStatement();
-//				rs = s.executeQuery(asignacionesSCOI);
-//				
-//				while(rs.next()){	cadenaAsignacionesGuardadasEnSCOI+= "'"+(rs.getString(1).trim())+"',";	}
-//									cadenaFinal = cadenaAsignacionesGuardadasEnSCOI+cadena_asignaciones_en_uso;
-//				rs.close();
-//			} catch (SQLException e1) {
-//				e1.printStackTrace();
-//			}	 
-
-			
 ////////////RECOPILACION DE ASIGNACIONES////////////////////////////////////////////////////				
 	 	String recopilacion_asignaciones="  exec sp_Recopilacion_IZAGAR_de_Asignaciones_y_cajeros  " ;	
 		Connection con = new Connexion().conexion_IZAGAR();
@@ -246,20 +229,6 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 				e.printStackTrace();
 			}
 			}
-////////////////////////////////////////////////////////////////////////	 	
-	 	
-//		String todos ="  DECLARE @fecha_inicial varchar(50)    ,@fecha_final varchar(50) " +
-//				"                SET @fecha_inicial=convert(varchar(20), getdate()-3" +
-//				",103)+' 00:00:00' " +
-//				"  		         SET @fecha_final=convert(varchar(20), getdate(),103)+' 23:59:59'" +
-//				"             SELECT Asignacion,Cajero,Nombre_Cajero,Total,Cod_Estab,Establecimiento" +
-//				"                   ,convert(varchar(20),Fecha_Asignacion,103)+' '+ convert(varchar(20), Fecha_Asignacion,108) as Fecha_Asignacion " +
-//				"                   ,convert(varchar(20),Fecha_Liquidacion,103)+' '+ convert(varchar(20), Fecha_Liquidacion,108) as Fecha_Liquidacion " +
-//				"                  FROM IZAGAR_Relacion_de_Asignaciones_Liquidadas" +
-//				"               WHERE (Fecha_Liquidacion>= @fecha_inicial and Fecha_Liquidacion <= @fecha_final) and Establecimiento='"+Establecimiento+ "' and Asignacion not in ("+cadenaFinal+")"+ 
-//				"		        ORDER BY Fecha_Liquidacion desc "   ;		
-//		
-//		cadenaFinal="";
 	 	
 		String todos ="exec sp_consulta_de_asignaciones  '"+Establecimiento+"'";
 		

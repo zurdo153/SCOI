@@ -42,6 +42,8 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
+	
+	
 	public Object[][] tabla_model_bancos_empleados(){
 		String query_lista = "select nombre from tb_tipo_banco";
 		Object[][] matriz = new Object[get_filas(query_lista)+1][2];
@@ -606,7 +608,7 @@ public class BuscarTablasModel {
 	
 	public Object[][] tabla_model_empleados_conpendiente_en_fuente_de_sodas_auxf(){
 		String query = "exec sp_select_filtro_empleados_con_pendiente_en_fuente_de_sodas";
-		Object[][] matriz = new Object[get_filas(query)][5];
+		Object[][] matriz = new Object[get_filas(query)][6];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -618,6 +620,7 @@ public class BuscarTablasModel {
 				matriz[i][2] = "   "+rs.getString(3);
 				matriz[i][3] = "   "+rs.getString(4);
 				matriz[i][4] = "   "+rs.getString(5);
+				matriz[i][5] = "   "+rs.getString(6);
 				
 				i++;
 			}

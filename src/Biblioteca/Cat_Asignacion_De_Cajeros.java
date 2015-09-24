@@ -1,4 +1,4 @@
-package Cat_Auditoria;
+package Biblioteca;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -138,6 +138,7 @@ public class Cat_Asignacion_De_Cajeros extends JFrame{
 		tabla.getColumnModel().getColumn(1).setHeaderValue("Nombre Completo");
 		tabla.getColumnModel().getColumn(1).setMaxWidth(335);
 		tabla.getColumnModel().getColumn(1).setMinWidth(335);
+		
 		
 		TableCellRenderer render = new TableCellRenderer() 
 		{ 

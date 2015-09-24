@@ -1,6 +1,5 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -25,7 +24,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -33,10 +31,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -55,24 +51,19 @@ import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
-	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	
 	Connexion con = new Connexion();
 	
-	public static Object[][] get_tabla(){
-		return new BuscarTablasModel().tabla_model_empleados_conpendiente_en_fuente_de_sodas_auxf();
-	}
-	
     public static DefaultTableModel tabla_model = new DefaultTableModel(
-    		get_tabla(),	new String[]{	"Folio",	"Nombre Completo", "Establecimiento", "Puesto", "Saldo"}){
+    		null,	new String[]{	"Folio",	"Nombre Completo", "Establecimiento", "Puesto", "Estatus", "Saldo"}){
                     @SuppressWarnings("rawtypes")
                     Class[] types = new Class[]{
                                java.lang.Object.class, 
                                java.lang.Object.class, 
                                java.lang.Object.class,  
                                java.lang.Object.class,  
+                               java.lang.Object.class,
                                java.lang.Object.class
                 };
                     @SuppressWarnings({ "rawtypes" })
@@ -86,6 +77,7 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
                                     case 2  : return false; 
                                     case 3  : return false; 
                                     case 4  : return false; 
+                                    case 5  : return false; 
                             }
                              return false;
                      }
@@ -107,13 +99,18 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	JButton btnRecorrer = new JButton("Recorrer",new ImageIcon("imagen/atras.png"));
 	JTextField txtPeriodo = new Componentes().text(new JTextField(), "Periodo", 2, "Int");
 	
-	JButton btnReporteGeneral = new JButton("Reporte General");
-	JButton btnReporte = new JButton("Reporte");
+	JButton btnReporteGeneral = new JButton("Reporte General",new ImageIcon("imagen/Lista.png"));
+	JButton btnReporte = new JButton("Reporte",new ImageIcon("imagen/Lista.png"));
 	JTextField txtReporte_Periodo = new Componentes().text(new JTextField(), "Folio de periodo", 2, "Int");
 	
 	@SuppressWarnings({ "rawtypes" })
 	public Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF()	{
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/sun_icon&16.png"));
+		this.setSize(930,445);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/fast-food-icon64.png"));
 		this.setTitle("Filtro de empleados con Saldo en fuente de sodas (Auxiliar y Finanzas)");
 		panel.setBorder(BorderFactory.createTitledBorder("Empleados consaldo en fuente de sodas"));
 
@@ -122,20 +119,21 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 		trsfiltro = new TableRowSorter(tabla_model); 
 		tabla.setRowSorter(trsfiltro);  
 		
-		panel.add(panelScroll).setBounds(15,42,800,327);
+		panel.add(panelScroll).setBounds(15,42,890,327);
 		
-		panel.add(txtFolio).setBounds(15,20,68,20);
-		panel.add(txtNombre_Completo).setBounds(85,20,300,20);
-		panel.add(cmbEstablecimientos).setBounds(387,20, 180, 20);
+		panel.add(txtFolio).setBounds(15,20,50,20);
+		panel.add(txtNombre_Completo).setBounds(65,20,290,20);
+		panel.add(cmbEstablecimientos).setBounds(355,20, 170, 20);
 		
-		panel.add(btnPeriodo).setBounds(572, 20, 100, 20);
-		panel.add(txtPeriodo).setBounds(672, 20, 35, 20);
-		panel.add(btnRecorrer).setBounds(707, 20, 110, 20);
+		panel.add(btnPeriodo).setBounds(652, 20, 100, 20);
+		panel.add(txtPeriodo).setBounds(752, 20, 35, 20);
+		panel.add(btnRecorrer).setBounds(787, 20, 110, 20);
 		
 		panel.add(btnReporteGeneral).setBounds(530, 375, 140, 20);
-		panel.add(txtReporte_Periodo).setBounds(685, 375, 40, 20);
-		panel.add(btnReporte).setBounds(725, 375, 90, 20);
+		panel.add(txtReporte_Periodo).setBounds(768, 375, 40, 20);
+		panel.add(btnReporte).setBounds(810, 375, 95, 20);
 		
+		llenartabla();
 		agregar(tabla);
 		
 		cont.add(panel);
@@ -173,10 +171,16 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 		txtPeriodo.setHorizontalAlignment(0);
 		txtPeriodo.setText(seleccionarPeriodo()+"");
 		
-		this.setSize(850,445);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+		
+	}
+	
+	public void llenartabla(){
+		Object[][] llenar = new BuscarTablasModel().tabla_model_empleados_conpendiente_en_fuente_de_sodas_auxf();
+		tabla_model.setRowCount(0);
+		for(Object[] reg : llenar){
+			tabla_model.addRow(reg);
+		}
 		
 	}
 	
@@ -194,12 +198,16 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 2){
-	    			
 	        		int fila = tabla.getSelectedRow();
 	    			int folio =  Integer.parseInt(tabla.getValueAt(fila, 0)+"");
 	    			Object empleado =  tabla.getValueAt(fila, 1);
 	    			
-	    			new Cat_Filtro_Ticket_Fuente_Sodas_AUXF(folio,empleado+"",Integer.valueOf(txtPeriodo.getText())).setVisible(true);
+	    			if(tabla.getValueAt(fila, 4).toString().trim().equals("VIGENTE")){
+	    				
+	    			   new Cat_Filtro_Ticket_Fuente_Sodas_AUXF(folio,empleado+"",Integer.valueOf(txtPeriodo.getText()),fila).setVisible(true);
+	    			}else{
+						JOptionPane.showMessageDialog(null, "El Empleado Seleccionado No Tiene Estatus Vigente \nNo Se Puede Capturar Fuente De Sodas", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+	    			}
 	        	}
 	        }
         });
@@ -207,15 +215,12 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	
 	ActionListener opPeriodo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
 			try {
 				int periodo = new BuscarSQL().periodos();
-				
 				if(Double.valueOf(txtPeriodo.getText())==periodo && e.getActionCommand().equals("Avanzar")){
 					JOptionPane.showMessageDialog(null, "El limite de periodos es ("+periodo+")", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}else{
-					
 					if(Double.valueOf(txtPeriodo.getText())==1 && e.getActionCommand().equals("Recorrer")){
 						JOptionPane.showMessageDialog(null, "El limite de periodos es (1)", "Aviso", JOptionPane.WARNING_MESSAGE);
 						return;
@@ -223,7 +228,6 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 						actualizarPeriodo(e.getActionCommand(),0);
 					}
 				}
-				
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -231,7 +235,6 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	};
 	
 	public void actualizarPeriodo(String accion, int valor){
-		
 		if(new ActualizarSQL().actualizar_folio_periodo_fs(accion,valor)){
 			txtPeriodo.setText(seleccionarPeriodo()+"");
 		}else{
@@ -240,15 +243,11 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 		}
 	}
 	
-	
 	ActionListener opReporte = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
 			try {
 				int periodo = new BuscarSQL().periodos();
-				
 				if(e.getActionCommand().equals("Reporte")){
-					
 					if(txtReporte_Periodo.getText().equals("")){
 						JOptionPane.showMessageDialog(null, "Ingrese Un Periodo Para Generar Reporte", "Aviso", JOptionPane.ERROR_MESSAGE);
 						return;
@@ -260,22 +259,17 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 							Cat_Reporte_De_Periodo(Integer.valueOf(txtReporte_Periodo.getText()));
 						}
 					}
-					
 				}else{
 					Cat_Reporte_De_Periodo(0);
 				}
-				
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
 		}
 	};
 	
 	@SuppressWarnings("rawtypes")
 	public void Cat_Reporte_De_Periodo(int periodo) {
-		
 		try {
 			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Periodos_Fuente_De_Sodas.jrxml");
 			
@@ -323,15 +317,11 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 	};
 	
 	public void init_tabla(){
-        this.tabla.getTableHeader().setReorderingAllowed(false) ;
-        
-        	   int w=60;
-               int x=330;
-               int y=160;
-               int z=80;
+               this.tabla.getTableHeader().setReorderingAllowed(false) ;
+        	  
+                int x=290,y=175,z=80,w=50;
                
                 this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                
                 this.tabla.getColumnModel().getColumn(0).setMaxWidth(w);
                 this.tabla.getColumnModel().getColumn(0).setMinWidth(w);
                 this.tabla.getColumnModel().getColumn(1).setMaxWidth(x);
@@ -340,101 +330,18 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
                 this.tabla.getColumnModel().getColumn(2).setMinWidth(y);
                 this.tabla.getColumnModel().getColumn(3).setMaxWidth(y);
                 this.tabla.getColumnModel().getColumn(3).setMinWidth(y);
-                this.tabla.getColumnModel().getColumn(4).setMaxWidth(z);
-                this.tabla.getColumnModel().getColumn(4).setMinWidth(z);
-                
-        TableCellRenderer render = new TableCellRenderer() { 
-                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-                boolean hasFocus, int row, int column) { 
-                        
-                        Component componente = null;
-                
-                        switch(column){
-                                case 0: 
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-                                        break;
-                                case 1:
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));        
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-                                        break;
-                                case 2: 
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));        
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                        break;
-                                case 3: 
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));        
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                        break;
-                                case 4: 
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));        
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                        break;
-                        }
-                        return componente;
-                } 
-        }; 
-        for(int i=0; i<tabla.getColumnCount(); i++){
-                this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
-        }
-}
-	
-	KeyListener validaCantidad = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e){
-			char caracter = e.getKeyChar();				
-			if(((caracter < '0') ||	
-			    	(caracter > '9')) && 
-			    	(caracter != '.' )){
-			    	e.consume();
-			    	}
-		}
-		@Override
-		public void keyReleased(KeyEvent e) {	
-		}
-		@Override
-		public void keyPressed(KeyEvent arg0) {
-		}	
-	};
-	
-	KeyListener validaNumericoConPunto = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e) {
-			char caracter = e.getKeyChar();
+                this.tabla.getColumnModel().getColumn(4).setMaxWidth(z+15);
+                this.tabla.getColumnModel().getColumn(4).setMinWidth(z+15);
+                this.tabla.getColumnModel().getColumn(5).setMaxWidth(z);
+                this.tabla.getColumnModel().getColumn(5).setMinWidth(z);
 
-			if(((caracter < '0') ||	
-		    	(caracter > '9')) && 
-		    	(caracter != '.')){
-		    	e.consume();
-		    	}
-		    		    		       	
-		}
-		@Override
-		public void keyPressed(KeyEvent e){}
-		@Override
-		public void keyReleased(KeyEvent e){}
-								
-	};
+                tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+        		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+        		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+        		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+        		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+        		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+}
 	
 	public static void main(String [] args){
 		try{
@@ -445,7 +352,6 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF extends JFrame {
 		Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF thisClass = new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF();
 		thisClass.setVisible(true);
 
-		//utilizacion del AWTUtilities con el metodo opaque
 		try {
 			   @SuppressWarnings("rawtypes")
 			Class clazz =  Class.forName("com.sun.awt.AWTUtilities");
@@ -490,7 +396,6 @@ public class Cat_Filtro_De_Periodos extends JDialog {
 			campo.add(txtFecha).setBounds(116,20,100,20);
 			
 			llamar_render();
-			
 			agregar(tabla);
 			cont.add(campo);
 			
@@ -510,7 +415,6 @@ public class Cat_Filtro_De_Periodos extends JDialog {
 		        	if(e.getClickCount() == 2){
 		        		int fila = tabla.getSelectedRow();
 		    			int periodo = Integer.parseInt(tabla.getValueAt(fila, 0).toString().trim());
-		    			
 		    			actualizarPeriodo("",periodo);
 		    			dispose();
 		        	}
@@ -524,14 +428,7 @@ public class Cat_Filtro_De_Periodos extends JDialog {
 			public void keyReleased(KeyEvent arg0) {
 				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
 			}
-			public void keyTyped(KeyEvent arg0) {
-//				char caracter = arg0.getKeyChar();
-//				if(((caracter < '0') ||
-//					(caracter > '9')) &&
-//				    (caracter != KeyEvent.VK_BACK_SPACE)){
-//					arg0.consume(); 
-//				}	
-			}
+			public void keyTyped(KeyEvent arg0) {			}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
@@ -544,7 +441,6 @@ public class Cat_Filtro_De_Periodos extends JDialog {
 		};
 		
 		public void llamar_render(){
-			
 			tabla.getTableHeader().setReorderingAllowed(false) ;
 	    	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -560,7 +456,6 @@ public class Cat_Filtro_De_Periodos extends JDialog {
 		}
 		
 	   	private JScrollPane getPanelTabla()	{		
-			
 			Statement s;
 			ResultSet rs;
 			try {
@@ -585,41 +480,6 @@ public class Cat_Filtro_De_Periodos extends JDialog {
 		    return scrol; 
 		}
 		
-		KeyListener validaCantidad = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();				
-				if(((caracter < '0') ||	
-			    	(caracter > '9')) && 
-			    	(caracter != '.' )){
-			    	e.consume();
-		    	}
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {	
-			}
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-			}	
-		};
-		
-		KeyListener validaNumericoConPunto = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char caracter = e.getKeyChar();
-				
-			    if(((caracter < '0') ||	
-			    	(caracter > '9')) && 
-			    	(caracter != '.')){
-			    	e.consume();
-		    	}
-			}
-			@Override
-			public void keyPressed(KeyEvent e){}
-			@Override
-			public void keyReleased(KeyEvent e){}
-									
-		};
 	}
 }
 

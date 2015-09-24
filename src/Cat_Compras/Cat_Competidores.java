@@ -1,6 +1,5 @@
 package Cat_Compras;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Toolkit;
@@ -31,15 +30,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Competidores extends JFrame{
@@ -244,29 +242,13 @@ public class Cat_Competidores extends JFrame{
 		    this.tabla.getColumnModel().getColumn(2).setMaxWidth(100);
 		    this.tabla.getColumnModel().getColumn(3).setMinWidth(60);
 		    this.tabla.getColumnModel().getColumn(3).setMaxWidth(100);
-						    
-						    TableCellRenderer render = new TableCellRenderer() { 
-								public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-								boolean hasFocus, int row, int column) { 
-						          		Component componente = null;
-											componente = new JLabel(value == null? "": value.toString());
-											if(row %2 == 0){
-												((JComponent) componente).setOpaque(true); 
-												componente.setBackground(new java.awt.Color(177,177,177));	
-											}
-											
-											if(table.getSelectedRow() == row){
-												((JComponent) componente).setOpaque(true); 
-												componente.setBackground(new java.awt.Color(186,143,73));
-											 }
-											((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-									return componente;
-								} 
-							}; 
-
-							for(int i=0; i<tabla.getColumnCount(); i++){
-							    this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
-							}
+						 
+		    
+		    tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",10)); 
+		    tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		    tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		    tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+			
 							refrestabla();
 					 JScrollPane scrol = new JScrollPane(tabla);
 				    return scrol; 

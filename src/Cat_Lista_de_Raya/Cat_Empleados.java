@@ -118,6 +118,7 @@ import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Renders.tablaRenderer;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -1329,15 +1330,6 @@ public class Cat_Empleados extends JFrame{
 							}
 
 //					laboral
-//							Obj_Horario_Empleado comboFolioHorario = new Obj_Horario_Empleado().buscar_tur(txtHorario.getText());
-//							empleado.setHorario(comboFolioHorario.getFolio());
-//							
-//							Obj_Horario_Empleado2 comboFolioHorario2 = new Obj_Horario_Empleado2().buscar_tur2(txtHorario2.getText());
-//							empleado.setHorario2(comboFolioHorario2.getFolio());
-//							
-//							Obj_Horario_Empleado3 comboFolioHorario3 = new Obj_Horario_Empleado3().buscar_tur3(txtHorario3.getText());
-//							empleado.setHorario3(comboFolioHorario3.getFolio());
-							
 							if(lblFolioHorario1.getText().equals("")){
 								empleado.setHorario(0);
 							}else{
@@ -1461,12 +1453,6 @@ public class Cat_Empleados extends JFrame{
 							empleado.setObservasiones(txaObservaciones.getText()+"");
 							
 							empleado.setFecha_actualizacion(txtFechaActualizacion.getText());
-//							if(txaObservaciones.getText().length() != 0){
-//								empleado.setObservasiones(txaObservaciones.getText());
-//							}else{
-//								empleado.setObservasiones("");
-//							}
-							
 							
 							//TODO 
 						  if(!cmbStatus.getSelectedItem().toString().equals("Vigente")){
@@ -2027,9 +2013,6 @@ public class Cat_Empleados extends JFrame{
 			}
 	};
 	
-
-	
-
 	
 	ActionListener opImprimir_Datos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -2047,9 +2030,6 @@ public class Cat_Empleados extends JFrame{
 	 	}
 	   };
 	   
-	    
-	
-	
 	ActionListener opAsistenciaEmpleado = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
@@ -2070,9 +2050,6 @@ public class Cat_Empleados extends JFrame{
 			}else{
 				
 				new Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual(txtFolioEmpleado.getText()).setVisible(true);
-//			String reporte = "Obj_Reporte_De_Cortes_De_Lista_De_Raya_Actual.jrxml";
-//			String comando = "exec sp_Reporte_De_Cortes_De_Lista_De_Raya_Actual_Para_Exportar 'status',"+txtFolioEmpleado.getText().toString();
-//			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			}
 		}
 	};
@@ -2243,9 +2220,7 @@ public class Cat_Empleados extends JFrame{
 		String error="";
 		String fechaNull = txtFechaNacimiento.getDate()+"";
 		String fechaIngresoNull = txtIngreso.getDate()+"";
-//		String fechaIngresoImssNull = txtIngresoImss.getDate()+"";
-//		String fechaVencimientoLicenciaNull = txtVencimientoLicencia.getDate()+"";
-		
+
 		if(txtFolioEmpleado.getText().equals("")) 		error+= "Folio\n";
 		if(txtNombre.getText().equals("")) 		error+= "Nombre\n";
 		if(txtApPaterno.getText().equals(""))	error+= "Ap Paterno\n";
@@ -2258,9 +2233,7 @@ public class Cat_Empleados extends JFrame{
 		if(cmbEstadoCivil.getSelectedIndex()==0)	error+= "Estado Civil\n";
 		if(cmbTipoDeSangre.getSelectedIndex()==0)	error+= "Tipo De Sangre\n";
 		if(cmbEscolaridad.getSelectedIndex()==0)	error+= "Escolaridad\n";
-		
 		if(cmbDepartamento.getSelectedItem().equals("Selecciona un Departamento"))	error+= "Departamento\n";
-		
 		if(cmbEstablecimiento.getSelectedItem().equals("Selecciona un Establecimiento")) error += "Establecimiento\n";
 		if(cmbPuesto.getSelectedItem().equals("Selecciona un Puesto")) error += "Puesto\n";
 		
@@ -2274,17 +2247,12 @@ public class Cat_Empleados extends JFrame{
 		}
 		
 		if(cmbContratacion.getSelectedIndex()==0)	error+= "Contrato\n";
-		
 		if(cmbSueldo.getSelectedItem().equals("Selecciona un Sueldo")) error += "Sueldo\n";
-//		if(cmbTipoBancos.getSelectedItem().equals("Selecciona un Banco")) error += "Tipo de Banco\n";
 		if(cmbBono.getSelectedItem().equals("Selecciona un Bono")) error += "Bono\n";
 		if(cmbPrestamos.getSelectedItem().equals("Selecciona un Rango de Prestamo")) error += "Rango de Prestamo\n";
 		if(fechaNull.equals("null"))error+= "Fecha de Nacimiento\n";	
 		if(fechaIngresoNull.equals("null"))error += "Fecha de ingreso\n";
 		if(cmbPresenciaFisica.getSelectedIndex()==0)	error+= "Presencia Fisica\n";
-//		if(fechaIngresoImssNull.equals("null"))error +="Fecha de ingreso IMSS\n";
-//		if(fechaVencimientoLicenciaNull.equals("null"))error += "Fecha de vencimiento de licencia de conducir\n";
-		
 		return error;
 	}
 	
@@ -2665,7 +2633,6 @@ public class Cat_Empleados extends JFrame{
 			
 			tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
 			tabla.getColumnModel().getColumn(1).setCellRenderer(tcr);
-
 			
 			// Creamos las columnas.
 			tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
@@ -2680,7 +2647,6 @@ public class Cat_Empleados extends JFrame{
 				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
 				boolean hasFocus, int row, int column) { 
 					JLabel lbl = new JLabel(value == null? "": value.toString());
-			
 					if(row%2==0){
 							lbl.setOpaque(true); 
 							lbl.setBackground(new java.awt.Color(177,177,177));
@@ -2719,27 +2685,6 @@ public class Cat_Empleados extends JFrame{
 		}
 	}
 
-//		setToolTipText en comboBox			---------------------------------------------------------------
-//	  class MyComboBoxRenderer extends BasicComboBoxRenderer {
-//	    @SuppressWarnings("rawtypes")
-//		public Component getListCellRendererComponent(JList list, Object value,
-//	        int index, boolean isSelected, boolean cellHasFocus) {
-//	      if (isSelected) {
-//	        setBackground(list.getSelectionBackground());
-//	        setForeground(list.getSelectionForeground());
-//	        if (-1 < index) {
-//	          list.setToolTipText(tooltips[index]);
-//	        }
-//	      } else {
-//	        setBackground(list.getBackground());
-//	        setForeground(list.getForeground());
-//	      }
-//	      setFont(list.getFont());
-//	      setText((value == null) ? "" : value.toString());
-//	      return this;
-//	    }
-//	  }
-	
 	public class Cat_Filtro_Empleado extends JDialog {
 		
 		Container cont = getContentPane();
@@ -2917,12 +2862,6 @@ public class Cat_Empleados extends JFrame{
 		KeyListener opFiltroLoco = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
 				
-//				int[] columnas = new int[3];
-//				columnas[0] = tabla.getColumnModel().getColumnIndex("Folio");
-//				columnas[1] = tabla.getColumnModel().getColumnIndex("Nombre Completo");
-//				columnas[2] = tabla.getColumnModel().getColumnIndex("Puesto");
-//				new Obj_Filtro_Dinamico_Plus(tabla,txtNombre_Completo.getText().toUpperCase(),columnas);
-				
 				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
 			}
 			public void keyTyped(KeyEvent arg0) {}
@@ -2936,21 +2875,10 @@ public class Cat_Empleados extends JFrame{
 		};
 		
 	   	private JScrollPane getPanelTabla()	{		
-			
+	   		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
 			tcr.setHorizontalAlignment(SwingConstants.CENTER);
-			
-			int a=2;
-			tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
-			tabla.getColumnModel().getColumn(a).setCellRenderer(tcr);
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(tcr);
-			
-			// Creamos las columnas.
+
 			tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
 			tabla.getColumnModel().getColumn(0).setMaxWidth(50);
 			tabla.getColumnModel().getColumn(0).setMinWidth(50);
@@ -2979,135 +2907,16 @@ public class Cat_Empleados extends JFrame{
 			tabla.getColumnModel().getColumn(8).setMaxWidth(50);
 			tabla.getColumnModel().getColumn(8).setMinWidth(50);
 			
-			TableCellRenderer render = new TableCellRenderer() { 
-				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-				boolean hasFocus, int row, int column) { 
-					
-					Component componente = null;
-					
-					switch(column){
-						case 0: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row %2 == 0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}				
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-							break;
-						case 1: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row %2 == 0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-							break;
-						case 2:
-							componente = new JLabel(value == null? "": value.toString());
-							if(row %2 == 0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-							break;
-						case 3: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row%2==0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-							break;
-						case 4: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row%2==0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-							break;
-						case 5: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row %2 == 0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-							break;
-						case 6: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row%2==0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-							break;
-						case 7: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row%2==0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-							break;
-						case 8: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row%2==0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-							break;
-					}
-					return componente;
-				} 
-			}; 
+			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
+			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+			tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+			tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+			tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+			tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+			tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+			tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 			
-			tabla.getColumnModel().getColumn(a=0).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render);
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
 			
 			Statement s;
 			ResultSet rs;
@@ -3138,47 +2947,10 @@ public class Cat_Empleados extends JFrame{
 			   
 		    return scrol; 
 		}
-		
-		KeyListener validaCantidad = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();				
-				if(((caracter < '0') ||	
-				    	(caracter > '9')) && 
-				    	(caracter != '.' )){
-				    	e.consume();
-				    	}
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {	
-			}
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-			}	
-		};
-		
-		KeyListener validaNumericoConPunto = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char caracter = e.getKeyChar();
-				
-			    if(((caracter < '0') ||	
-			    	(caracter > '9')) && 
-			    	(caracter != '.')){
-			    	e.consume();
-			    	}
-			}
-			@Override
-			public void keyPressed(KeyEvent e){}
-			@Override
-			public void keyReleased(KeyEvent e){}
-									
-		};
 	}
 
 	
 	public class JMenuFormato extends JMenuItem implements ActionListener{
-
 	    private int ancho;
 	    private int alto;
 	    @SuppressWarnings("unused")

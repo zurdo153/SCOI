@@ -1,4 +1,4 @@
-package Cat_Compras;
+package Cat_Reportes;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -13,10 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -112,92 +115,135 @@ public class Cat_Reporte_De_Inventario_Parcial extends JFrame {
 	String Lista="";
 	JLabel JLBdescripcion= new JLabel();
 	
+public void constructor(){
+	this.setSize(760, 290);
+	cont.add(panel);
+	setResizable(false);
+	setLocationRelativeTo(null);
+	setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Sales-by-payment-method-icon-64.png"));
+	setTitle("Reportes De Inventario Parcial");
+	panel.setBorder(BorderFactory.createTitledBorder("Reportes De Inventario Parcial"));
+	
+	txtcod_prod.setBackground(Color.lightGray);
+	txtcod_prod.setBorder(BorderFactory.createTitledBorder(""));
+	txtcod_prod.setHorizontalAlignment(4);
+	//      asigna el foco al JTextField deseado al arrancar la ventana
+    this.addWindowListener(new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+            	txtcod_prod.requestFocus();
+         }
+    });
+    
+	int x=15 ;
+	int y=20 ;
+	int l=100;
+	int a=20;
+	
+	panel.add(new JLabel("Establecimiento:")).setBounds(x,y,l+50,a);
+    panel.add(JLBestablecimiento).setBounds(x+80,y,a,a);
+	panel.add(cmbEstablecimiento).setBounds(x+100,y,l+70,a);
+
+	panel.add(new JLabel("Buscar un producto: ")).setBounds(x+300,y,125,a);
+    panel.add(txtcod_prod).setBounds(x+400,y,75,a);
+    
+    panel.add(JLBdescripcion).setBounds(x+480,y-10,l+150,a*2);
+	
+	x=100;
+	panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y+=30,l+50,a);
+	panel.add(cmbOperador_Productos				).setBounds(x+80,y,l-12,a);
+    panel.add(txtFiltroProducto					).setBounds(x+170,y,l*4+20,a);
+
+    panel.add(btnFiltroProducto					).setBounds(x+590,y,a,a);
+    panel.add(btnLimpiarFiltroProducto			).setBounds(x+613,y,a,a);
+    
+	panel.add(new JLabel("Filtro De Clase De Productos:")).setBounds(x-85,y+=30,l+50,a); 
+	panel.add(cmbOperador_Clase							 ).setBounds(x+80,y,l-12,a);  
+    panel.add(txtFiltroClase							 ).setBounds(x+170,y,l*4+20,a);  
+    panel.add(btnFiltroClase							 ).setBounds(x+590,y,a,a);    
+    panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);
+    
+	panel.add(new JLabel("Filtro De Categoria De Productos:")).setBounds(x-85,y+=30,l+70,a); 
+	panel.add(cmbOperador_Categoria							 ).setBounds(x+80,y,l-12,a);  
+    panel.add(txtFiltroCategoria							 ).setBounds(x+170,y,l*4+20,a);  
+    panel.add(btnFiltroCategoria							 ).setBounds(x+590,y,a,a);    
+    panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);   
+    
+  	panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
+	panel.add(cmbOperador_Familia						).setBounds(x+80,y,l-12,a);  
+	panel.add(txtFiltroFamilia							).setBounds(x+170,y,l*4+20,a);  
+    panel.add(btnFiltroFamilia							).setBounds(x+590,y,a,a);    
+    panel.add(btnLimpiarFiltroFamilia					).setBounds(x+613,y,a,a);
+    
+	panel.add(new JLabel("Filtro De Linea De Productos:")).setBounds(x-85,y+=30,l+50,a); 
+	panel.add(cmbOperador_Linea					 ).setBounds(x+80,y,l-12,a);  
+    panel.add(txtFiltroLinea							 ).setBounds(x+170,y,l*4+20,a);  
+    panel.add(btnFiltroLinea							 ).setBounds(x+590,y,a,a);    
+    panel.add(btnLimpiarFiltroLinea						 ).setBounds(x+613,y,a,a); 
+    
+    panel.add(new JLabel("Filtro De Talla De Productos:")).setBounds(x-85,y+=30,l+50,a); 
+	panel.add(cmbOperador_Talla							 ).setBounds(x+80,y,l-12,a);  
+    panel.add(txtFiltroTalla							 ).setBounds(x+170,y,l*4+20,a);  
+    panel.add(btnFiltroTalla							 ).setBounds(x+590,y,a,a);    
+    panel.add(btnLimpiarFiltroTalla						 ).setBounds(x+613,y,a,a); 
+    
+    panel.add(btn_buscar).setBounds(x+530,y+=25,l,a);
+    
+    txtFiltroProducto.setEditable(false); 
+    txtFiltroClase.setEditable(false);
+    txtFiltroCategoria.setEditable(false);
+    txtFiltroFamilia.setEditable(false);
+    txtFiltroLinea.setEditable(false);
+    txtFiltroTalla.setEditable(false);
+    
+
+	
+
+
+	if(cmbEstablecimiento.getSelectedIndex()!=0){
+		btn_buscar.setEnabled(true);
+	}else{
+		btn_buscar.setEnabled(false);
+	}
+	
+	btnFiltroProducto.addActionListener(op_filtro_productos);
+	btnFiltroClase.addActionListener(op_filtro_clases);
+	btnFiltroCategoria.addActionListener(op_filtro_categorias);
+	btnFiltroFamilia.addActionListener(op_filtro_familias);
+	btnFiltroLinea.addActionListener(op_filtro_lineas);
+	btnFiltroTalla.addActionListener(op_filtro_talla);
+	
+	
+	btnLimpiarFiltroProducto.addActionListener(limpiar_filtro_productos);
+	btnLimpiarFiltroClase.addActionListener(limpiar_filtro_claces);
+	btnLimpiarFiltroCategoria.addActionListener(limpiar_filtro_categorias);
+	btnLimpiarFiltroFamilia.addActionListener(limpiar_filtro_familias);
+	btnLimpiarFiltroLinea.addActionListener(limpiar_filtro_lineas);
+	btnLimpiarFiltroTalla.addActionListener(limpiar_filtro_talla);
+	
+	txtcod_prod.addKeyListener(Buscar_Datos_Producto);
+	btn_buscar.addActionListener(op_generar);
+	
+	cmbEstablecimiento.addActionListener(op_cmb);
+	
+    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+    getRootPane().getActionMap().put("escape", new AbstractAction(){
+        public void actionPerformed(ActionEvent e)
+        {                 	    btnLimpiarFiltroProducto.doClick();
+      	    }
+    });
+    
+  } ;
+  
+  public Cat_Reporte_De_Inventario_Parcial(){
+	  constructor();
+  };
+  
 	public Cat_Reporte_De_Inventario_Parcial(String parametro, String operador, String establecimiento){
-		
-		this.setSize(760, 290);
-		cont.add(panel);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Sales-by-payment-method-icon-64.png"));
-		setTitle("Reportes De Inventario Parcial");
-		panel.setBorder(BorderFactory.createTitledBorder("Reportes De Inventario Parcial"));
-		
-		txtcod_prod.setBackground(Color.lightGray);
-		txtcod_prod.setBorder(BorderFactory.createTitledBorder(""));
-		txtcod_prod.setHorizontalAlignment(4);
-		//      asigna el foco al JTextField deseado al arrancar la ventana
-        this.addWindowListener(new WindowAdapter() {
-                public void windowOpened( WindowEvent e ){
-                	txtcod_prod.requestFocus();
-             }
-        });
-        
-		int x=15 ;
-		int y=20 ;
-		int l=100;
-		int a=20;
-		
-		panel.add(new JLabel("Establecimiento:")).setBounds(x,y,l+50,a);
-	    panel.add(JLBestablecimiento).setBounds(x+80,y,a,a);
-		panel.add(cmbEstablecimiento).setBounds(x+100,y,l+70,a);
-
-		panel.add(new JLabel("Buscar un producto: ")).setBounds(x+300,y,125,a);
-        panel.add(txtcod_prod).setBounds(x+400,y,75,a);
-        
-        panel.add(JLBdescripcion).setBounds(x+480,y-10,l+150,a*2);
-		
-		x=100;
-		panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y+=30,l+50,a);
-		panel.add(cmbOperador_Productos				).setBounds(x+80,y,l-12,a);
-        panel.add(txtFiltroProducto					).setBounds(x+170,y,l*4+20,a);
-
-        panel.add(btnFiltroProducto					).setBounds(x+590,y,a,a);
-        panel.add(btnLimpiarFiltroProducto			).setBounds(x+613,y,a,a);
-        
-		panel.add(new JLabel("Filtro De Clase De Productos:")).setBounds(x-85,y+=30,l+50,a); 
-		panel.add(cmbOperador_Clase							 ).setBounds(x+80,y,l-12,a);  
-        panel.add(txtFiltroClase							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroClase							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);
-        
-		panel.add(new JLabel("Filtro De Categoria De Productos:")).setBounds(x-85,y+=30,l+70,a); 
-		panel.add(cmbOperador_Categoria							 ).setBounds(x+80,y,l-12,a);  
-        panel.add(txtFiltroCategoria							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroCategoria							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);   
-        
-      	panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
-		panel.add(cmbOperador_Familia						).setBounds(x+80,y,l-12,a);  
-		panel.add(txtFiltroFamilia							).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroFamilia							).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroFamilia					).setBounds(x+613,y,a,a);
-        
-		panel.add(new JLabel("Filtro De Linea De Productos:")).setBounds(x-85,y+=30,l+50,a); 
-		panel.add(cmbOperador_Linea					 ).setBounds(x+80,y,l-12,a);  
-        panel.add(txtFiltroLinea							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroLinea							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroLinea						 ).setBounds(x+613,y,a,a); 
-        
-        panel.add(new JLabel("Filtro De Talla De Productos:")).setBounds(x-85,y+=30,l+50,a); 
-		panel.add(cmbOperador_Talla							 ).setBounds(x+80,y,l-12,a);  
-        panel.add(txtFiltroTalla							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroTalla							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroTalla						 ).setBounds(x+613,y,a,a); 
-        
-        panel.add(btn_buscar).setBounds(x+530,y+=25,l,a);
-        
-        txtFiltroProducto.setEditable(false); 
-        txtFiltroClase.setEditable(false);
-        txtFiltroCategoria.setEditable(false);
-        txtFiltroFamilia.setEditable(false);
-        txtFiltroLinea.setEditable(false);
-        txtFiltroTalla.setEditable(false);
-
-        String operador_simbolo = "";
-        
+		constructor();
+		String operador_simbolo = "";
         if(!parametro.equals("")){
-        	
-            switch(operador){
+
+        	switch(operador){
 	    		case "Igual"		:operador_simbolo=" = "; break;
 	    		case "Esta en lista":operador_simbolo=" in "; break;
 	    		case "Menor que"	:operador_simbolo=" < "; break;
@@ -207,39 +253,10 @@ public class Cat_Reporte_De_Inventario_Parcial extends JFrame {
         	txtFiltroProducto.setText(operador_simbolo+parametro);
         	cmbOperador_Productos.setSelectedItem(operador);
         	cmbEstablecimiento.setSelectedItem(establecimiento);
-        	
-        	panelEnableFalse();
+            panelEnableFalse();
         	btnLimpiarFiltroProducto.setEnabled(true);
         	btnLimpiarFiltroClase.setEnabled(true);
-        	
         }
-        
-        if(cmbEstablecimiento.getSelectedIndex()!=0){
-			btn_buscar.setEnabled(true);
-		}else{
-			btn_buscar.setEnabled(false);
-		}
-        
-        btnFiltroProducto.addActionListener(op_filtro_productos);
-        btnFiltroClase.addActionListener(op_filtro_clases);
-        btnFiltroCategoria.addActionListener(op_filtro_categorias);
-        btnFiltroFamilia.addActionListener(op_filtro_familias);
-        btnFiltroLinea.addActionListener(op_filtro_lineas);
-        btnFiltroTalla.addActionListener(op_filtro_talla);
-        
-		
-		btnLimpiarFiltroProducto.addActionListener(limpiar_filtro_productos);
-		btnLimpiarFiltroClase.addActionListener(limpiar_filtro_claces);
-        btnLimpiarFiltroCategoria.addActionListener(limpiar_filtro_categorias);
-        btnLimpiarFiltroFamilia.addActionListener(limpiar_filtro_familias);
-        btnLimpiarFiltroLinea.addActionListener(limpiar_filtro_lineas);
-        btnLimpiarFiltroTalla.addActionListener(limpiar_filtro_talla);
-        
-        txtcod_prod.addKeyListener(Buscar_Datos_Producto);
-		btn_buscar.addActionListener(op_generar);
-		
-		cmbEstablecimiento.addActionListener(op_cmb);
-		
 	}
 
 //public void filtroProductos(String cadena){
@@ -433,7 +450,6 @@ public class Cat_Reporte_De_Inventario_Parcial extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			
 			String estabs = cmbEstablecimiento.getSelectedItem().toString();
-			
 			String productos 	= txtFiltroProducto.getText().equals("")?"0":txtFiltroProducto.getText();
 			String clases 		= txtFiltroClase.getText().equals("")?"0":txtFiltroClase.getText();
 			String categorias 	= txtFiltroCategoria.getText().equals("")?"0":txtFiltroCategoria.getText();
@@ -445,10 +461,7 @@ public class Cat_Reporte_De_Inventario_Parcial extends JFrame {
 			String vista_previa_reporte="si";
 			int vista_previa_de_ventana=0;
 			
-			
 			String comando="exec sp_Reporte_IZAGAR_de_inventarios_parciales '"+ estabs +"','"+ productos +"','"+ clases +"','"+ categorias +"','"+ familias +"','"+ lineas +"','"+ tallas +"','"+ new Obj_Usuario().LeerSession().getNombre_completo()+"'";
-			
-			
 			String reporte = "Obj_Reporte_IZAGAR_De_Inventarios_Parciales.jrxml";
 			
 			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);

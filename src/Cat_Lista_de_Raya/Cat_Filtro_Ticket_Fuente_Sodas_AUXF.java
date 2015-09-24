@@ -1,31 +1,25 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
 import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
+import Obj_Renders.tablaRenderer;
 
 //FILTRO DE TICKETS QUE NO SE LE AN DESCONTADO AL EMPLEADO SELECCIONADO	
 	 	@SuppressWarnings("serial")
@@ -71,7 +65,9 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 			
 			JButton btnAgregar = new JButton(new ImageIcon("Iconos/agregar.png"));
 			
-			public Cat_Filtro_Ticket_Fuente_Sodas_AUXF( int folio, String empleado, int folio_periodo) {
+			int fila = 0;
+			
+			public Cat_Filtro_Ticket_Fuente_Sodas_AUXF( int folio, String empleado, int folio_periodo, int fila_empleado) {
 				
 				this.setModal(true);
 				setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
@@ -82,6 +78,7 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				this.txtNombre_Completo.setEditable(false);
 				
 				folio_empleado=folio;
+				fila=fila_empleado;
 				
 				txtFolio.setText(folio_empleado+"");
 				txtNombre_Completo.setText(empleado);
@@ -123,86 +120,10 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				tablaFiltro.getColumnModel().getColumn(3).setMaxWidth(40);
 				tablaFiltro.getColumnModel().getColumn(3).setMinWidth(40);
 				
-				TableCellRenderer render = new TableCellRenderer() { 
-					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-					boolean hasFocus, int row, int column) { 
-						
-						Component componente = null;
-						
-						switch(column){
-							case 0: 
-								componente = new JLabel(value == null? "": value.toString());
-								if(row %2 == 0){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(177,177,177));	
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(table.getSelectedRow() == row){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-								break;
-							case 1: 
-								componente = new JLabel(value == null? "": value.toString());
-								if(row %2 == 0){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(177,177,177));	
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(table.getSelectedRow() == row){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-								break;
-							case 2: 
-								componente = new JLabel(value == null? "": value.toString());
-								if(row %2 == 0){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(177,177,177));	
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(table.getSelectedRow() == row){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-								break;
-							case 3: 
-								componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-								if(row%2==0){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(177,177,177));	
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(table.getSelectedRow() == row){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
-								break;
-						}
-						return componente;
-					} 
-				}; 
-			
-				tablaFiltro.getColumnModel().getColumn(0).setCellRenderer(render); 
-				tablaFiltro.getColumnModel().getColumn(1).setCellRenderer(render);
-				tablaFiltro.getColumnModel().getColumn(2).setCellRenderer(render);
-				tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(render);
+				tablaFiltro.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+				tablaFiltro.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+				tablaFiltro.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+				tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("CHB","centro","Arial","normal",12));
 			}
 			
 			ActionListener opAgregar = new ActionListener() {
@@ -212,7 +133,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 						if(tablaFiltro.isEditing()){
 				 			tablaFiltro.getCellEditor().stopCellEditing();
 						}
-					
 					if(new Obj_Filtro_Ticket_Fuente_Sodas().guardar(tabla_guardar(), Integer.parseInt(txtFolio.getText()), txtNombre_Completo.getText(), Integer.valueOf(txtPeriodo.getText().trim()))){
 
 						//tabla de tickets--------------------------------
@@ -221,15 +141,10 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 					    }
 						buscar_tabla(folio_empleado);
 						//------------------------------------------------
-						
 						if(tablaFiltro.getRowCount()==0){
 							dispose();
-							
 							//tabla de empleados con adeudo en fuente de sodas auxf--------------------------------
-							while(new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().tabla_model.getRowCount()>0){
-								new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().tabla_model.removeRow(0);
-						    }
-							buscar_tabla_empleado_con_pendiente_en_fuente_sodas();
+								new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().tabla_model.removeRow(fila);
 							//------------------------------------------------
 						}
 					}else{
@@ -240,7 +155,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 			};
 			
 			public void buscar_tabla(int folio_empleado){
-				
 				try {
 					String[][] tabla = new Obj_Captura_Fuente_Sodas().tabla(folio_empleado);
 										
@@ -258,25 +172,10 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				}
 			}
 			
-			@SuppressWarnings("static-access")
-			public void buscar_tabla_empleado_con_pendiente_en_fuente_sodas(){
-				Object [][] lista_tabla_empleados = new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().get_tabla();
-				 String[] fila = new String[9];
-				         for(int i=0; i<lista_tabla_empleados.length; i++){
-				                 fila[0] = lista_tabla_empleados[i][0]+"";
-				                 fila[1] = lista_tabla_empleados[i][1]+"";
-				                 fila[2] = lista_tabla_empleados[i][2]+"";
-				                 fila[3] = lista_tabla_empleados[i][3]+"";
-				                 fila[4] = lista_tabla_empleados[i][4]+"";
-				                 new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_AUXF().tabla_model.addRow(fila);
-				         }
-			}
-			
 			private Object[][] tabla_guardar(){
 
 				Object[][] matriz = new Object[tablaFiltro.getRowCount()][4];
 				for(int i=0; i<tablaFiltro.getRowCount(); i++){
-						
 						matriz[i][0] = modeloFiltro.getValueAt(i,0).toString().trim();
 						matriz[i][1] = modeloFiltro.getValueAt(i,1).toString().trim();
 						matriz[i][2] = modeloFiltro.getValueAt(i,2).toString().trim();

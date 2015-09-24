@@ -396,8 +396,6 @@ public class Cat_Filtro_De_Vauchers extends JDialog{
 	}
 	
 	 	public Object[][] getTablaFiltro(String cadenaAsignaciones, String cadena_de_vouchers_en_uso){
-//		String todos = "exec sp_Reporte_IZAGAR_de_Asignaciones_del_dia";
-//	 		System.out.println(cadenaAsignaciones);
 		String todos = "select  autorizaciones_bancarias.folio as Ticket " +
 						",equipos_perifericos.borrar as Afiliacion " +
 						",'************'+SUBSTRING(autorizaciones_bancarias.numero_tarjeta,4,4) as Numero_Tarjeta " +
@@ -441,7 +439,6 @@ public class Cat_Filtro_De_Vauchers extends JDialog{
 				MatrizFiltro[i][10] = "   "+(rs.getString(11).trim().equals("")?"-":rs.getString(11).trim());
 				MatrizFiltro[i][11] = "   "+(rs.getString(10).trim().equals("")?"-":rs.getString(12).trim());
 				MatrizFiltro[i][12] = 		(rs.getString(11).trim().equals("")?"-":rs.getString(13).trim());
-				
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -459,12 +456,12 @@ public class Cat_Filtro_De_Vauchers extends JDialog{
 			while(rs.next()){
 				filas++;
 			}
-			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 		return filas;
 	}	
+   	
 	public int getFilasSCOI(String qry){
 		int filas=0;
 		Statement stmt = null;

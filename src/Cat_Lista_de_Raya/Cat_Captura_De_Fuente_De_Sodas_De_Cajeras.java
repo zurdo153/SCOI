@@ -1,7 +1,6 @@
 package Cat_Lista_de_Raya;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -19,10 +18,12 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.GrayFilter;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -32,15 +33,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
 import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
@@ -237,6 +238,14 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		cont.add(panel);
 		CargarCajero();
+		
+        ///deshacer con escape
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+        getRootPane().getActionMap().put("escape", new AbstractAction(){
+            public void actionPerformed(ActionEvent e)
+            {                 	    btnCancelar.doClick();
+          	    }
+        });
 	}
 	
 	public Cat_Captura_De_Fuente_De_Sodas_De_Cajeras(){
@@ -248,7 +257,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		public void actionPerformed(ActionEvent arg0) 
 		{
 			if(txtClaveCajero.getText().toUpperCase().equals("")){
-				JOptionPane.showMessageDialog(null, "Se Necesita Pasar El Gafete Del Cajero!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Se Necesita Pasar El Gafete Del Cajero!!!","Aviso",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 				
 				}else{
@@ -264,7 +273,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 						return;
 						 }else{
 							 txtClaveCajero.setText("");
-								JOptionPane.showMessageDialog(null, "Clave Incorrecta Necesita Pasar El Gafete Del Cajero!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Clave Incorrecta Necesita Pasar El Gafete Del Cajero!!!","Aviso",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 						 }
 					} catch (SQLException e) {
@@ -304,7 +313,6 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 								
 							for(int i=0; i<tabla.length; i++){
 								 		Object[] dom = new Object[5];
-								 		
 								 		dom[0] = tabla[i][0]+"   ";
 								 		dom[1] = tabla[i][1]+"   ";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 								 		dom[2] = "   "+tabla[i][2];
@@ -316,32 +324,27 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 						} catch (SQLException e1) {
 							e1.printStackTrace();
 						}
-						
 						if(capturaFS.getTotal() <= 0){
-							
 							txtClave.setText("");
 							txtClave.requestFocus();
 							JOptionPane.showMessageDialog(null,"No cuenta con Saldo Suficiente","Aviso", JOptionPane.WARNING_MESSAGE);
 							return;
 						}else{
-						
 							txtClave.setEnabled(false);
-							
 							txtClaveCajero.setEnabled(true);
 							txtClaveCajero.requestFocus();
 					}
-							
 					}else{
 						
 						txtClave.setText("");
 						txtClave.requestFocus();
-						JOptionPane.showMessageDialog(null,"No Se Encontro Al Empleado o No Cuenta \n Con Fuente De Sodas Favor De Comunicarse \n a Desarrollo Humano","Aviso", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,"No Se Encontro Al Empleado O No Cuenta \n Con Fuente De Sodas Favor De Comunicarse \n A Desarrollo Humano","Aviso", JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}
 			}else{
 				txtClave.setText("");
 				txtClave.requestFocus();
-				JOptionPane.showMessageDialog(null,"Pase el Gafete para Confirmar el Cargo al Empleado","Aviso", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Pase el Gafete para Confirmar el Cargo al Empleado","Aviso", JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -349,29 +352,23 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	
 	ActionListener opTiket = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-			
 			if(txtTicket.getText().length() != 0 ){
-				
-				
 			try {
 				if(new Obj_Captura_Fuente_Sodas().validarticket(lblUsuario.getText().toUpperCase().trim(), txtTicket.getText().toUpperCase().trim())){
-					
 					txtTicket.setEnabled(false);
 					txtImporte.setEnabled(true);
 					txtImporte.requestFocus();
 					btnGuardar.setEnabled(true);
 				 }else{
-				JOptionPane.showMessageDialog(null,"El Folio del Ticket Tecleado Ya Existe ,Verifique El Folio ","Aviso", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"El Folio del Ticket Tecleado Ya Existe ,Verifique El Folio ","Aviso", JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 				}
-				
 			    } catch (SQLException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error al Buscar el ticket en Cat_Captura_De_Fuente_De_Sodas_Cajeras en la ActionListener opTiket!!","Aviso",JOptionPane.ERROR_MESSAGE);
 			 };
-
 			}else{
-				JOptionPane.showMessageDialog(null,"ingrese codigo de tiket para registrar compra","Aviso", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"ingrese codigo de tiket para registrar compra","Aviso", JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -383,20 +380,18 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 			
 			if(txtClave.getText().equals("")){
 				txtClave.requestFocus();
-				JOptionPane.showMessageDialog(null,"Pase gafete para obtener ultimo ticket\ndel empleado","Aviso", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Pase El Gafete Para Obtener El Ultimo Ticket\nDel Empleado","Aviso", JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 				
 			}else{
 				Obj_Captura_Fuente_Sodas capturaFS = new Obj_Captura_Fuente_Sodas().buscar(txtClave.getText());
 				if(txtClave.getText().toUpperCase().trim().equals(capturaFS.getClave())){
-
-//					new Reporte_Ticket_Fuente_Sodas(txtClave.getText().toUpperCase());
 					new Imprime_Ticket_Captura_Fuente_Sodas(txtClave.getText().toUpperCase()).setVisible(true);
 
 				}else{
 						txtClave.setText("");
 						txtClave.requestFocus();
-						JOptionPane.showMessageDialog(null,"El Empleado No Cuenta Con Fuente De Sodas","Aviso", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,"El Empleado No Cuenta Con Fuente De Sodas","Aviso", JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 				}
 			}
@@ -407,12 +402,12 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		public void actionPerformed(ActionEvent arg0) 
 		{
 			if(txtImporte.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "Ingrese una cantidad para continuar operacion!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Ingrese Una Cantidad Para Continuar La Operacion!!!","Aviso",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				
 				if(Float.parseFloat(txtImporte.getText())>Float.parseFloat(lblSaldo.getText())){
-					JOptionPane.showMessageDialog(null, "No cuenta con el saldo suficiente !!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "No Cuenta Con El Saldo Suficiente !!!","Aviso",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}else{
 					txtImporte.setEnabled(false);
@@ -428,26 +423,19 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent arg0) 
 		{
-			
 			if(txtConfirmarCompra.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "Pase El Gafete Del Empleado Para Confirmar La Compra!!!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Pase El Gafete Del Empleado Para Confirmar La Compra!!!","Aviso",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-				
 				if(txtConfirmarCompra.getText().toUpperCase().equals(txtClave.getText().toUpperCase())){
 					txtClave.setEnabled(false);
-					
 					Obj_Captura_Fuente_Sodas sodas = new Obj_Captura_Fuente_Sodas();
-					
-					    
-					    
 						sodas.setClave(txtClave.getText().toUpperCase().trim());
 						sodas.setEstablecimiento(lblEstablecimiento_Empleado.getText());
 						sodas.setPuesto(lblPuesto_Empleado.getText());
 						sodas.setTicket(txtTicket.getText());
 						sodas.setImporte(Float.parseFloat(txtImporte.getText()));
 						sodas.setUsuario(lblUsuario.getText());
-							
 						if(sodas.Guardar()){
 							 new Imprime_Ticket_Captura_Fuente_Sodas(txtClave.getText().toUpperCase()).setVisible(true);
 					}else{
@@ -456,7 +444,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 					}
 				}else{
 					txtConfirmarCompra.setText("");
-					JOptionPane.showMessageDialog(null, "No  Coincide La Clave Del Empleado\nPase El Gafete De Nuevo O Comuniquese\n A Desarrollo Humano","Aviso",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "No  Coincide La Clave Del Empleado\nPase El Gafete De Nuevo O Comuniquese\n A Desarrollo Humano","Aviso",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			}
@@ -499,7 +487,6 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		if(txtImporte.getText().length()!=0)
 		{
 			double variable;
-			
 			variable=Double.parseDouble(txtImporte.getText());
 			lblSaldo.setText(variable+"");
 			
@@ -512,7 +499,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 			row[5]=txtImporte.getText().toUpperCase();
 			tabla_model.addRow(row);
 		}else{
-			JOptionPane.showMessageDialog(null,"El campo de texto importe está vacío","Aviso", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,"El campo de texto importe está vacío","Aviso", JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			return;
 		}
 	}
@@ -557,51 +544,13 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(140);
     	this.tabla.getColumnModel().getColumn(4).setMaxWidth(140);
     	this.tabla.getColumnModel().getColumn(4).setMinWidth(140);		
-    	
-		TableCellRenderer render = new TableCellRenderer() { 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-				if(row%2==0){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-				
-				if(table.getSelectedRow() == row){
-					lbl.setOpaque(true); 
-					lbl.setBackground(new java.awt.Color(186,143,73));
-				}
-				
-				switch(column){
-					case 0 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-					case 1 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-					case 2 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-					case 3 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-					case 4 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-				}
-			return lbl; 
-			} 
-		}; 
-
-		for(int x = 0; x<tabla.getColumnCount(); x++){
-			this.tabla.getColumnModel().getColumn(x).setCellRenderer(render); 
-		}
+    	tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",10)); 
+    	tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+    	tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10)); 
+    	tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+    	tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10)); 
     }
  	
- 	KeyListener numerico_action = new KeyListener() {
-		public void keyTyped(KeyEvent e){
-			char caracter = e.getKeyChar();
-
-			if(((caracter < '0') ||
-		        (caracter > '9')) &&
-		        (caracter != KeyEvent.VK_BACK_SPACE)){
-		    	e.consume(); 
-		    }
-		}
-		public void keyReleased(KeyEvent e) {	
-		}
-		public void keyPressed(KeyEvent e) {}
-	};
 	
 	KeyListener numerico_action_punto = new KeyListener() {
 		public void keyTyped(KeyEvent e){
@@ -613,7 +562,6 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 				    	e.consume();
 		    }
 			 if (caracter==KeyEvent.VK_PERIOD){
- 		    	
 			    	String texto = txtImporte.getText().toString();
 					if (texto.indexOf(".")>-1) e.consume();
 					

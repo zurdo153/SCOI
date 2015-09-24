@@ -79,6 +79,7 @@ public class Cat_Usuarios extends JFrame{
 	    new Obj_CheckBoxNode(Sub_Auditoria[7], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[8], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[9], false),
+	    new Obj_CheckBoxNode(Sub_Auditoria[10], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector AuditoriaVector = new Obj_NombreVector("Auditoria", Auditoria);
