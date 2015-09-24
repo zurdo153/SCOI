@@ -4019,8 +4019,8 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
-	public boolean Guardar_Cuenta_Contable(String f_cuenta,String cuenta, String naturaleza, String grupo, String clasificacion,String status){
-		String query = "exec sp_insert_cuenta_contable ?,?,?,?,?,?,?";
+	public boolean Guardar_Cuenta_Contable(String f_cuenta,String cuenta, String naturaleza, String grupo, String clasificacion,String status, String establecimiento){
+		String query = "exec sp_insert_cuenta_contable ?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -4034,6 +4034,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			pstmt.setString(5, clasificacion.toUpperCase().trim());
 			pstmt.setString(6, status.toUpperCase().trim());
 			pstmt.setInt(7, usuario.getFolio());
+			pstmt.setString(8, establecimiento);
 			
 			pstmt.executeUpdate();
 			con.commit();
