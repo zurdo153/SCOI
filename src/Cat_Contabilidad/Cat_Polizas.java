@@ -84,8 +84,6 @@ public class Cat_Polizas extends JFrame{
 	JButton btnGuardarPoliza = new JButton("Guardar");
 	
 	JButton btnQuitar = new JButton("Quitar");
-	
-//	JLabel lblMovimientos 	= new JLabel("");
 	JLabel lblTotales 	= new JLabel("");
 	
 	public String[] referencia(){try {return new Cargar_Combo().cuentas();} catch (SQLException e) {e.printStackTrace();}return null;}
@@ -95,13 +93,6 @@ public class Cat_Polizas extends JFrame{
 	public String[] establecimiento(){try {return new Cargar_Combo().EstablecimientoTb();} catch (SQLException e) {e.printStackTrace();}return null;}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento());
-	
-//    SpinnerModel cargoMov = new SpinnerNumberModel(0, 0, 50000, .1);
-//	JSpinner spCargoMov = new JSpinner(cargoMov);
-//	SpinnerModel abonoMov = new SpinnerNumberModel(0, 0, 50000, .1);
-//	JSpinner spAbonoMov = new JSpinner(abonoMov);
-//	SpinnerModel diferenciaMov = new SpinnerNumberModel(0, 0, 50000, .1);
-//	JSpinner spDiferenciaMov = new JSpinner(diferenciaMov);
 	
     SpinnerModel cargoTotales = new SpinnerNumberModel(0, 0, 50000, .1);
 	JSpinner spCargoTotales = new JSpinner(cargoTotales);
@@ -175,39 +166,27 @@ public class Cat_Polizas extends JFrame{
 		
 		panel.add(new JLabel("Tipo:")).setBounds(x+5,y,50,20);
 		panel.add(cmbTipo).setBounds(x+35,y,120,20);
-		
 		panel.add(new JLabel("Fecha:")).setBounds(x*11,y,70,20);
 		panel.add(fhFecha  ).setBounds(x*11+60,y,100,20);
-		
 		panel.add(new JLabel("Folio:")).setBounds(x*23,y,70,20);
 		panel.add(txtFolio  ).setBounds(x*23+50,y,80,20);
-		
-		
-//		panel.add(lblMovimientos).setBounds(x-5,y+=20,180,95);           
-//		panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);      
-//		panel.add(spCargoMov).setBounds(x+65,y,90,20);                   
-//		panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);      
-//		panel.add(spAbonoMov).setBounds(x+65,y,90,20);                   
-//		panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 
-//		panel.add(spDiferenciaMov).setBounds(x+65,y,90,20);              
-		
         panel.add(lblTotales).setBounds(x-5,y+=25,180,95);            
-        panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);    																				panel.add(btnNota  ).setBounds(x*23+50,y-10,80,20);   
+        panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);    																				
+        panel.add(btnNota  ).setBounds(x*23+50,y-10,80,20);   
     	panel.add(spCargoTotales).setBounds(x+70,y,90,20);               
-      	panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);      	 panel.add(new JLabel("Referencia: ")).setBounds(x*17+70,y,80,20);		panel.add(cmbReferencia).setBounds(x*23+20,y,110,20); 
+      	panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);      	 
+      	panel.add(new JLabel("Referencia: ")).setBounds(x*17+70,y,80,20);		
+      	panel.add(cmbReferencia).setBounds(x*23+20,y,110,20); 
     	panel.add(spAbonoTotales).setBounds(x+70,y,90,20);                 
-      	panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 																			panel.add(btnReferencia).setBounds(x*23+20,y,110,20);
+      	panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 																			
+      	panel.add(btnReferencia).setBounds(x*23+20,y,110,20);
     	panel.add(spDiferenciaTotales).setBounds(x+70,y,90,20);      
-		
 		panel.add(new JLabel("Concepto:")).setBounds(x-5,y+=55,70,20);
 		panel.add(Concepto).setBounds(x-5,y+=15,ancho*7+15,45);
-		
 		panel.add(new JLabel("Cuenta:")).setBounds(x-5,y+=50,ancho,20);
 		panel.add(txtCuenta).setBounds(x+ancho-40,y,ancho+20,20);
-		
 		panel.add(btnQuitar  ).setBounds(x*22-15,y,80,20);
 		panel.add(btnGuardarPoliza  ).setBounds(x*23+50,y,80,20);
-		
 		panel.add(scroll).setBounds(x-5,y+=25,ancho*12+20,190);
 		
 		cont.add(panel);
