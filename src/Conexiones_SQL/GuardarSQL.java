@@ -4145,12 +4145,13 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
-	public boolean Guardar_Poliza(String folio, String tipo, String fecha_poliza, String referencia_trans, int referencia, String nota, Object[][] matriz){
-		String query = "exec sp_insert_polizas ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	public boolean Guardar_Poliza(String folio, String tipo, String fecha_poliza, String referencia_trans, int referencia, String nota, String concepto_gral, String cheque, Object[][] matriz){
+		String query = "exec sp_insert_polizas ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 		
+			int x=1;
 			float cargo = 0;
 			float abono = 0;
 			for(int i=0; i<matriz.length; i++){
@@ -4158,26 +4159,30 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.setAutoCommit(false);
 				pstmt = con.prepareStatement(query);
 				
-				pstmt.setString(1, folio.toUpperCase().trim());
-				pstmt.setString(2, tipo.toUpperCase().trim());
-				pstmt.setString(3, fecha_poliza.toUpperCase().trim());
-				pstmt.setString(4, referencia_trans.toUpperCase().trim());
-				pstmt.setInt(5, referencia);
-				pstmt.setString(6, nota.toUpperCase().trim());
-				pstmt.setInt(7, usuario.getFolio());
+				pstmt.setString(x, folio.toUpperCase().trim());
+				pstmt.setString(x++, tipo.toUpperCase().trim());
+				pstmt.setString(x++, fecha_poliza.toUpperCase().trim());
+				pstmt.setString(x++, referencia_trans.toUpperCase().trim());
+				pstmt.setInt(x++, referencia);
+				pstmt.setString(x++, nota.toUpperCase().trim());
 				
-				pstmt.setString(8 , matriz[i][0].toString().trim().toUpperCase());//cuenta
-				pstmt.setString(9 , matriz[i][1].toString().trim().toUpperCase());//subcuenta
-				pstmt.setString(10, matriz[i][2].toString().trim().toUpperCase());//subsubcuenta
+				pstmt.setString(x++, concepto_gral.toUpperCase().trim());
+				pstmt.setString(x++, cheque.toUpperCase().trim());
+				
+				pstmt.setInt(x++, usuario.getFolio());
+				
+				pstmt.setString(x++ , matriz[i][0].toString().trim().toUpperCase());//cuenta
+				pstmt.setString(x++ , matriz[i][1].toString().trim().toUpperCase());//subcuenta
+				pstmt.setString(x++ , matriz[i][2].toString().trim().toUpperCase());//subsubcuenta
 				
 				cargo = Float.valueOf(matriz[i][4].toString().trim().toUpperCase().equals("")?"0":matriz[i][4].toString().trim().toUpperCase());
 				abono = Float.valueOf(matriz[i][5].toString().trim().toUpperCase().equals("")?"0":matriz[i][5].toString().trim().toUpperCase());
 			
-				pstmt.setFloat(11, (cargo==0)?abono:cargo);//importe
-				pstmt.setString(12, (cargo==0)?"A":"C");//cargo_abono
+				pstmt.setFloat(x++ , (cargo==0)?abono:cargo);//importe
+				pstmt.setString(x++ , (cargo==0)?"A":"C");//cargo_abono
 				
-				pstmt.setString(13, matriz[i][6].toString().trim().toUpperCase());//concepto
-				pstmt.setString(14, matriz[i][7].toString().trim().toUpperCase());//establecimiento
+				pstmt.setString(x++ , matriz[i][6].toString().trim().toUpperCase());//concepto
+				pstmt.setString(x++ , matriz[i][7].toString().trim().toUpperCase());//establecimiento
 				
 				pstmt.executeUpdate();
 			}
