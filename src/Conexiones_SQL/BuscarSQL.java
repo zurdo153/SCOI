@@ -6888,4 +6888,22 @@ public class BuscarSQL {
 		return referencia;
 	}
 	
+	public boolean existe_folio_cheque(String folio_cheque){
+		String query = " if exists (select folio_cheque as folio_consecutivo from tb_polizas where folio_cheque = "+folio_cheque+") "
+					+ "		select 'true' as existe "
+					+ "	 else "
+					+ "		select 'false' as existe ";
+		boolean existe = false;
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){ existe = rs.getBoolean(1); }
+	
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return existe; 
+	}
+	
 }

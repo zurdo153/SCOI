@@ -87,7 +87,9 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 		panel.add(txtCodProv).setBounds(x,y,50,20);
 		panel.add(txtProveedor  ).setBounds(x+50,y,ancho*4+60,20);
 		panel.add(txtRecepcion).setBounds(x+(ancho*5)+30,y,70,20);
+		
 		panel.add(scroll).setBounds(x,y+=20,ancho*8,600);
+		
 		x=15;
 		panel.add(new JLabel ("Recepcion:")).setBounds(x,y+=615,55,20);
 		panel.add(txtRecepcionS).setBounds(x+=52,y,70,20);
@@ -169,7 +171,7 @@ public class Cat_Recibo_De_Mercancia_En_Resguardo extends JFrame{
 			txtProveedorS.setText("");
 	 	}
    };
-	
+   
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {

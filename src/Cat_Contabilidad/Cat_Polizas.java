@@ -25,6 +25,7 @@ import javax.swing.BorderFactory;
 import javax.swing.FocusManager;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -82,8 +83,8 @@ public class Cat_Polizas extends JFrame{
 	JButton btnNota = new JButton("Nota");
 	JButton btnReferencia = new JButton("Referencia");
 	JButton btnGuardarPoliza = new JButton("Guardar");
-	
 	JButton btnQuitar = new JButton("Quitar");
+	
 	JLabel lblTotales 	= new JLabel("");
 	
 	public String[] referencia(){try {return new Cargar_Combo().cuentas();} catch (SQLException e) {e.printStackTrace();}return null;}
@@ -100,6 +101,9 @@ public class Cat_Polizas extends JFrame{
 	JSpinner spAbonoTotales = new JSpinner(abonoTotales);
 	SpinnerModel diferenciaTotales = new SpinnerNumberModel(0, 0, 50000, .1);
 	JSpinner spDiferenciaTotales = new JSpinner(diferenciaTotales);
+	
+	JTextField txtCheque = new Componentes().text(new JTextField(), "Cheque", 15, "String");
+	JCheckBox chbCheque = new JCheckBox();
 	
 	JTextArea txaConcepto = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Concepto = new JScrollPane(txaConcepto);	
@@ -157,7 +161,6 @@ public class Cat_Polizas extends JFrame{
 		nota=nta;
 		
 		borderline = BorderFactory.createLineBorder(new Color(45,48,48));
-//		lblMovimientos.setBorder(BorderFactory.createTitledBorder(borderline,"Movimiento"));
 		lblTotales.setBorder(BorderFactory.createTitledBorder(borderline,"Totales"));
 		
 		this.columnaChb.setCellEditor(new javax.swing.DefaultCellEditor(cmbEstablecimiento));
@@ -171,15 +174,12 @@ public class Cat_Polizas extends JFrame{
 		panel.add(new JLabel("Folio:")).setBounds(x*23,y,70,20);
 		panel.add(txtFolio  ).setBounds(x*23+50,y,80,20);
         panel.add(lblTotales).setBounds(x-5,y+=25,180,95);            
-        panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);    																				
+        panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);    																																					
         panel.add(btnNota  ).setBounds(x*23+50,y-10,80,20);   
     	panel.add(spCargoTotales).setBounds(x+70,y,90,20);               
-      	panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);      	 
-      	panel.add(new JLabel("Referencia: ")).setBounds(x*17+70,y,80,20);		
-      	panel.add(cmbReferencia).setBounds(x*23+20,y,110,20); 
-    	panel.add(spAbonoTotales).setBounds(x+70,y,90,20);                 
-      	panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 																			
-      	panel.add(btnReferencia).setBounds(x*23+20,y,110,20);
+      	panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);      	 panel.add(new JLabel("Referencia: ")).setBounds(x*17+70,y,80,20);																										panel.add(cmbReferencia).setBounds(x*23+20,y,110,20); 
+    	panel.add(spAbonoTotales).setBounds(x+70,y,90,20);
+      	panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 	 panel.add(new JLabel("Cheque: ")).setBounds(x*11,y,80,20);		panel.add(txtCheque).setBounds(x*11+60,y,80,20);	panel.add(chbCheque).setBounds(x*13,y,20,20);	panel.add(btnReferencia).setBounds(x*23+20,y,110,20);
     	panel.add(spDiferenciaTotales).setBounds(x+70,y,90,20);      
 		panel.add(new JLabel("Concepto:")).setBounds(x-5,y+=55,70,20);
 		panel.add(Concepto).setBounds(x-5,y+=15,ancho*7+15,45);
@@ -197,6 +197,7 @@ public class Cat_Polizas extends JFrame{
 		llamar_render();
 		componentes(false);
 		btnReferencia.setEnabled(false);
+		txtCheque.setEditable(false);
 		
 		fhFecha.setDate(cargar_fecha_Sugerida(0));
 		buscarFolioConsecutivo();
@@ -209,6 +210,7 @@ public class Cat_Polizas extends JFrame{
 		btnQuitar.addActionListener(opQuitar);
 		
 		btnNota.addActionListener(opNota);
+		chbCheque.addActionListener(opCheque);
 		btnReferencia.addActionListener(opFiltroRef);
 		
 		agregar(tabla);
@@ -238,9 +240,6 @@ public class Cat_Polizas extends JFrame{
 	 	        	txtCuenta.setText("");
 	 	        	txtCuenta.requestFocus();
 	 	        	
-//	 	    		if(FocusManager.getCurrentManager().getFocusOwner().getClass().getSimpleName().equals("JTextField")){
-//	 	    			new Cat_Filtro_Cuentas(txtCuenta.getText().trim()).setVisible(true);
-//	 	    		}
 	 	        }
 	 	    });
 	    
@@ -352,15 +351,6 @@ public class Cat_Polizas extends JFrame{
 	        		
 		        		}
 	        		}
-	        		
-//	        		componentes(false);
-//	    			int fila = tbl.getSelectedRow();
-					
-//					txtTipo.setText(tabla_conf.getValueAt(fila, 0).toString());
-//					txtNombre.setText(tabla_conf.getValueAt(fila, 1).toString());
-//					spRelleno.setValue(Integer.valueOf(tabla_conf.getValueAt(fila, 2).toString().trim()));
-//					cmbAsiento_Cont.setSelectedItem((tabla_conf.getValueAt(fila, 3).toString().trim().equals("I"))?"Ingresos" : ((tabla_conf.getValueAt(fila, 3).toString().trim().equals("E"))?"Egresos" : "Varios") );
-//					cmbStatus.setSelectedItem(tabla_conf.getValueAt(fila, 4).toString().trim().equals("V")?("Vigente"):("Cancelado"));
 	        	}
 	        }
         });
@@ -387,6 +377,20 @@ public class Cat_Polizas extends JFrame{
 	ActionListener opNota = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			new Cat_notas(nota).setVisible(true);
+		}
+	};
+	
+	ActionListener opCheque = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			if(chbCheque.isSelected()){
+				txtCheque.setEditable(true);
+				txtCheque.setText("folio consec.");
+				txtCheque.requestFocus();
+			}else{
+				txtCheque.setEditable(false);
+				txtCheque.setText("");
+			}
 		}
 	};
 	
@@ -460,37 +464,62 @@ public class Cat_Polizas extends JFrame{
 		
 		Object[][] matriz_movPolizas = MovPolizas();
 		
-				if(matriz_movPolizas.length>0){
-					
-						if((cmbReferencia.getSelectedIndex()>0 && folioReferencia>0) || (cmbReferencia.getSelectedIndex()==0 && folioReferencia==0)){
-							
-								if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, matriz_movPolizas)){
-										buscarFolioConsecutivo();
-										
-										while(tabla.getRowCount()>0){
-											modelo.removeRow(0);
-										}
-										
-										CalcularCuadreDePoliza();
-										cmbReferencia.setSelectedIndex(0);
-										folioReferencia=0;
-										btnReferencia.setEnabled(false);
-										
-										JOptionPane.showMessageDialog(null, "La Poliza Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-										return;
-								}else{
-										JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
-										return;
-								}
-						}else{
-								JOptionPane.showMessageDialog(null, "Es Necesario Que Agregue Un [ "+cmbReferencia.getSelectedItem().toString()+" ] Ya Que Es La Referencia Seleccionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-								return;
-						}
+			if(matriz_movPolizas.length>0){
 				
-				}else{
-						JOptionPane.showMessageDialog(null, "Es Necesario Que Agregue Movimientos De Polizas","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-						return;
-				}
+					if((cmbReferencia.getSelectedIndex()>0 && folioReferencia>0) || (cmbReferencia.getSelectedIndex()==0 && folioReferencia==0)){
+						
+							if(chbCheque.isSelected()){
+								
+									if(!txtCheque.getText().equals("")){
+										
+											if(new BuscarSQL().existe_folio_cheque(txtCheque.getText().toString().trim())){
+												JOptionPane.showMessageDialog(null, "El Folio De Cheque Ya Fue Registrado","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+												return;
+											}else{
+												guardar(matriz_movPolizas);
+											}
+										
+									}else{
+										JOptionPane.showMessageDialog(null, "El Cheque No Cuenta Con Folio, Si No Se Ingresara Un Folio Desactive La Casilla De Cheque","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+										return;
+									}
+
+							}else{
+								guardar(matriz_movPolizas);
+							}
+
+					}else{
+							JOptionPane.showMessageDialog(null, "Es Necesario Que Agregue Un [ "+cmbReferencia.getSelectedItem().toString()+" ] Ya Que Es La Referencia Seleccionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+							return;
+					}
+								
+			}else{
+					JOptionPane.showMessageDialog(null, "Es Necesario Que Agregue Movimientos De Polizas","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+					return;
+			}
+	}
+	
+	public void guardar(Object[][] matriz){
+		
+			if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, txaConcepto.getText().toUpperCase().trim(), txtCheque.getText().toUpperCase().trim(), matriz)){
+					
+					buscarFolioConsecutivo();
+				
+					while(tabla.getRowCount()>0){
+						modelo.removeRow(0);
+					}
+				
+					CalcularCuadreDePoliza();
+					cmbReferencia.setSelectedIndex(0);
+					folioReferencia=0;
+					btnReferencia.setEnabled(false);
+				
+					JOptionPane.showMessageDialog(null, "La Poliza Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
+					return;
+			}else{
+					JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+					return;
+			}
 	}
 	
 //	que pasara si el cargo y el abono tienen cantidad  =  0  ??????????????????
@@ -512,6 +541,7 @@ public class Cat_Polizas extends JFrame{
 		}
 		public void keyPressed(KeyEvent e) {}
 	};
+	
 	public boolean ValidaValor(){
 		
 		boolean valor=false;
