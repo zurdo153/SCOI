@@ -265,10 +265,8 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 						if(new Obj_Captura_Fuente_Sodas().buscarcajero(txtClaveCajero.getText(),lblUsuario.getText().toUpperCase().trim())){
 						txtClaveCajero.setText("");	
 						txtClaveCajero.setEnabled(false);
-						
 						txtTicket.setEnabled(true);
 						txtTicket.requestFocus();
-						
 						
 						return;
 						 }else{

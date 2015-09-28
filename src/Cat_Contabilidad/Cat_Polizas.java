@@ -81,10 +81,12 @@ public class Cat_Polizas extends JFrame{
 	JDateChooser fhFecha 	= new JDateChooser();
 	
 	JButton btnNota = new JButton("Nota");
-	JButton btnReferencia = new JButton("Referencia");
-	JButton btnGuardarPoliza = new JButton("Guardar");
-	JButton btnQuitar = new JButton("Quitar");
+	JButton btnReferencia = new JButton("Referencia", new ImageIcon("imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
+	JButton btnGuardarPoliza = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnQuitar = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+	JButton btnImprimir = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
 	
+
 	JLabel lblTotales 	= new JLabel("");
 	
 	public String[] referencia(){try {return new Cargar_Combo().cuentas();} catch (SQLException e) {e.printStackTrace();}return null;}
@@ -185,8 +187,11 @@ public class Cat_Polizas extends JFrame{
 		panel.add(Concepto).setBounds(x-5,y+=15,ancho*7+15,45);
 		panel.add(new JLabel("Cuenta:")).setBounds(x-5,y+=50,ancho,20);
 		panel.add(txtCuenta).setBounds(x+ancho-40,y,ancho+20,20);
-		panel.add(btnQuitar  ).setBounds(x*22-15,y,80,20);
-		panel.add(btnGuardarPoliza  ).setBounds(x*23+50,y,80,20);
+		
+		panel.add(btnQuitar  ).setBounds(x+210,y,100,20);
+		panel.add(btnGuardarPoliza  ).setBounds(x+340,y,100,20);
+		panel.add(btnImprimir).setBounds(x+470,y,100,20);
+		
 		panel.add(scroll).setBounds(x-5,y+=25,ancho*12+20,190);
 		
 		cont.add(panel);
