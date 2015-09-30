@@ -198,7 +198,6 @@ public class Init_Menu_Bar extends Init_Login{
 		}
 	}
 	
-	
     ActionListener opLogin = new ActionListener(){
 		@SuppressWarnings({ "deprecation", "static-access" })
 		public void actionPerformed(ActionEvent arg0) {
@@ -223,7 +222,6 @@ public class Init_Menu_Bar extends Init_Login{
 					subMenusbotones();
 					user.Session();
 					txtContrasena.setEnabled(false);
-
 					///cargar foto del empleado///
 					btnFoto.setVisible(true);
 					int folio_empleado =Integer.valueOf(txtFolio.getText());
@@ -300,7 +298,6 @@ public class Init_Menu_Bar extends Init_Login{
 					}else{if(e.getActionCommand().equalsIgnoreCase("Reportes De Apartados")){
 					    new Cat_Reportes_De_Apartados("").setVisible(true);
 					}else{
-						
 						Class instance = Class.forName(new Componentes().classExiste(e.getActionCommand()));
 						Object instanceObject = instance.newInstance();
 						((Window) instanceObject).setVisible(true);

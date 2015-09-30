@@ -179,9 +179,21 @@ public class Cat_Polizas extends JFrame{
         panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);    																																					
         panel.add(btnNota  ).setBounds(x*23+50,y-10,80,20);   
     	panel.add(spCargoTotales).setBounds(x+70,y,90,20);               
-      	panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);      	 panel.add(new JLabel("Referencia: ")).setBounds(x*17+70,y,80,20);																										panel.add(cmbReferencia).setBounds(x*23+20,y,110,20); 
+      	panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);   
+      	
+      	panel.add(new JLabel("Referencia: ")).setBounds(x*11,y,80,20);																										
+      	panel.add(cmbReferencia).setBounds(x*11+60,y,135,20); 
+      	
     	panel.add(spAbonoTotales).setBounds(x+70,y,90,20);
-      	panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 	 panel.add(new JLabel("Cheque: ")).setBounds(x*11,y,80,20);		panel.add(txtCheque).setBounds(x*11+60,y,80,20);	panel.add(chbCheque).setBounds(x*13,y,20,20);	panel.add(btnReferencia).setBounds(x*23+20,y,110,20);
+      	panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 
+      	
+      	panel.add(new JLabel("Cheque: ")).setBounds(x*11,y,80,20);		
+      	panel.add(txtCheque).setBounds(x*11+60,y,100,20);	
+      	
+      	panel.add(chbCheque).setBounds(x*13,y,20,20);
+      	panel.add(btnReferencia).setBounds(x*23+20,y,110,20);
+      	
+      	
     	panel.add(spDiferenciaTotales).setBounds(x+70,y,90,20);      
 		panel.add(new JLabel("Concepto:")).setBounds(x-5,y+=55,70,20);
 		panel.add(Concepto).setBounds(x-5,y+=15,ancho*7+15,45);
@@ -386,10 +398,16 @@ public class Cat_Polizas extends JFrame{
 	};
 	
 	ActionListener opCheque = new ActionListener() {
+		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent e) {
 			
 			if(chbCheque.isSelected()){
 				txtCheque.setEditable(true);
+				cmbReferencia.removeAllItems();
+				cmbReferencia.addItem("Selecciona Beneficiario");
+				cmbReferencia.addItem("Proveedor");
+				cmbReferencia.addItem("Usuario");
+				
 				txtCheque.setText("folio consec.");
 				txtCheque.requestFocus();
 			}else{
