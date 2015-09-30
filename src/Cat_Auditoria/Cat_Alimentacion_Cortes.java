@@ -2386,7 +2386,16 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							Alim_Denom.setEmpleado(lblEmpleado.getText());
 							Alim_Denom.setEstablecimiento(lblFolio_Corte.getText());
 
+							for(int i=0; i<tabla_guardar().length; i++){
+								System.out.print(tabla_guardar()[i][0].toString()+"  ");
+								System.out.println(tabla_guardar()[i][1].toString());
+								
+							}
 							if(Alim_Denom.guardar_deposito(folio_usuario,tabla_guardar())){
+								
+								
+								
+								
 								
 								txtDeposito.setText(txtTotal.getText());
 								
