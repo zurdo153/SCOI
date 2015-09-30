@@ -1105,11 +1105,9 @@ public class Submenusbtns{
 					return componente;
 				} 
 			}; 
-			
 			tabla.getColumnModel().getColumn(a=0).setCellRenderer(render); 
 			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
 			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render);
-			
 			Statement s;
 			ResultSet rs;
 			try {
@@ -1122,7 +1120,6 @@ public class Submenusbtns{
 				   fila[0] = rs.getString(1)+"  ";
 				   fila[1] = "   "+rs.getString(2);
 				   fila[2] = "   "+rs.getString(3).trim();
-				
 				   model.addRow(fila); 
 				}	
 			} catch (SQLException e1) {
