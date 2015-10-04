@@ -6906,4 +6906,122 @@ public class BuscarSQL {
 	    return existe; 
 	}
 	
+	public Object[][] Filtro_De_Cuentas() throws SQLException{
+		Statement stmt = null;
+		
+		String query = " select a.* from (select folio_cuenta_contable as folio "
+				+ "						,cuenta_contable as cuenta "
+				+ "				from tb_cuentas_contables "
+				+ "				union "
+				+ "				select folio_cuenta_contable+folio_subcuenta_contable as folio "
+				+ "					,subcuenta_contable as cuenta "
+				+ "				from tb_subcuentas_contables "
+				+ "				union "
+				+ "				select folio_cuenta_contable+folio_subcuenta_contable+folio_subsubcuenta_contable as folio "
+				+ "						,subsubcuenta_contable as cuenta "
+				+ "				from tb_subsubcuentas_contables ) a";
+
+		Object[][] rp_cuenta = new Object[getFilas(query)][2];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				for(int j=0; j<2; j++){
+					rp_cuenta[i][j] = rs.getObject(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL en la funcion [ Filtro_De_Cuentas ] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return rp_cuenta;
+	}
+	
+	public Object[][] Filtro_De_Cuentas_Con_Parametro(String codigo) throws SQLException{
+		Statement stmt = null;
+		
+		String query = " select a.* from (select folio_cuenta_contable as folio "
+						+ "						,cuenta_contable as cuenta "
+						+ "				from tb_cuentas_contables "
+						+ "				union "
+						+ "				select folio_cuenta_contable+folio_subcuenta_contable as folio "
+						+ "					,subcuenta_contable as cuenta "
+						+ "				from tb_subcuentas_contables "
+						+ "				union "
+						+ "				select folio_cuenta_contable+folio_subcuenta_contable+folio_subsubcuenta_contable as folio "
+						+ "						,subsubcuenta_contable as cuenta "
+						+ "				from tb_subsubcuentas_contables ) a "
+						+ " where a.folio= '"+codigo+"' order by a.folio " ;
+		
+		Object[][] rp_cuenta = new Object[getFilas(query)][2];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				for(int j=0; j<2; j++){
+					rp_cuenta[i][j] = rs.getObject(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL en la funcion [ Filtro_De_Cuentas_Con_Parametro ] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return rp_cuenta;
+	}
+	
+	public Object[][] Reporte_Auxiliares(String cuentaIn, String cuentaFin, String fechaIn, String fechaFin) throws SQLException{
+		Statement stmt = null;
+		
+		String query = "exec sp_Reporte_De_Auxiliar_De_Cuentas '"+cuentaIn+"','"+cuentaFin+"','"+fechaIn+" 00:00:00"+"','"+fechaFin+" 23:59:59'";
+
+		System.out.println(query);
+		Object[][] rp_cuenta = new Object[getFilas(query)][12];
+		
+		try {
+			
+			stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				for(int j=0; j<12; j++){
+					rp_cuenta[i][j] = rs.getObject(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL en la funcion [ Reporte_Auxiliares ] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return rp_cuenta;
+	}
+	
 }

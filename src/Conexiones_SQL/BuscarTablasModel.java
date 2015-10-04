@@ -2035,6 +2035,25 @@ public String establecimientoCuenta(String cuenta){
     return folio; 
 }
 
+public String folio_consecutivo_cheque_de_poliza(){
+	
+	String query_lista = "SELECT (folio+1) from tb_folios WHERE folio_transaccion = 15"; 
+	
+	String folio = "";
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		while(rs.next()){
+			folio =  rs.getString(1);
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion [folio_consecutivo_cheque_de_poliza] SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return folio; 
+}
+
 }
 
 

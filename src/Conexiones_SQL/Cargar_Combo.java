@@ -1628,4 +1628,38 @@ public class Cargar_Combo {
 		return pila;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String[] tipos_de_banco_polizas() throws SQLException{
+		String query = "SELECT banco_contabilidad as nombre FROM tb_bancos_contabilidad WHERE (estatus = 'V') order by nombre asc";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+//			int j=0;
+			while(rs.next()){
+//				if(j == 0){
+//					miVector.add("Selecciona un Tipo");
+//				}
+				miVector.add(rs.getString("nombre"));
+//				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
 }
