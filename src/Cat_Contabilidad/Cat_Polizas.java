@@ -278,7 +278,7 @@ public class Cat_Polizas extends JFrame{
 		llamar_render();
 		componentes(false);
 		rbPoliza.setSelected(true);
-		
+		txtReferencia.setEditable(false);
 		btnReferencia.setEnabled(false);
 		
 		fhFecha.setDate(cargar_fecha_Sugerida(0));
@@ -290,6 +290,7 @@ public class Cat_Polizas extends JFrame{
 		
 		btnGuardarPoliza.addActionListener(opGuardarPoliza);
 		btnQuitar.addActionListener(opQuitar);
+		btnDeshacer.addActionListener(opDeshacer);
 		
 		btnNota.addActionListener(opNota);
 		chbCheque.addActionListener(opCheque);
@@ -460,6 +461,13 @@ public class Cat_Polizas extends JFrame{
 		}
 	};
 	
+	ActionListener opDeshacer = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			limpiar();
+		}
+	};
+	
 	ActionListener opNota = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			new Cat_notas(nota).setVisible(true);
@@ -506,6 +514,8 @@ public class Cat_Polizas extends JFrame{
 				cmbReferencia.addItem("Empleado");
 				cmbReferencia.addItem("Establecimiento");
 				cmbReferencia.addItem("Proveedor");
+				
+				cmbBanco.setSelectedIndex(0);
 				
 				componentes(false);
 				
@@ -606,7 +616,7 @@ public class Cat_Polizas extends JFrame{
 				}
 		}
 		
-		if(Float.valueOf(spDiferenciaTotales.getValue().toString())==0){
+		if(spDiferenciaTotales.getValue().toString().equals("0") || spDiferenciaTotales.getValue().toString().equals("-0")){
 			guardarPolizas();
 		}else{
 			JOptionPane.showMessageDialog(null, "La Poliza No Esta Cuadrada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -658,17 +668,17 @@ public class Cat_Polizas extends JFrame{
 		
 			if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, txaConcepto.getText().toUpperCase().trim(), txtCheque.getText().toUpperCase().trim(), matriz, txtReferencia.getText().toUpperCase().trim(), cmbFormaDePago.getSelectedItem().toString().toUpperCase(),cmbBanco.getSelectedItem().toString().trim(),Float.valueOf(txtTotal.getText().toString().equals("")?"0":txtTotal.getText().toString()))){
 					
-					buscarFolioPolizaConsecutivo();
+				limpiar();
 				
-					while(tabla.getRowCount()>0){
-						modelo.removeRow(0);
-					}
-				
-					CalcularCuadreDePoliza();
-					cmbReferencia.setSelectedIndex(0);
-					folioReferencia=0;
-					btnReferencia.setEnabled(false);
-				
+//					while(tabla.getRowCount()>0){
+//						modelo.removeRow(0);
+//					}
+//				
+//					CalcularCuadreDePoliza();
+//					cmbReferencia.setSelectedIndex(0);
+//					folioReferencia=0;
+//					btnReferencia.setEnabled(false);
+//				
 					JOptionPane.showMessageDialog(null, "La Poliza Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
 					return;
 			}else{
@@ -771,7 +781,6 @@ public class Cat_Polizas extends JFrame{
 		txtFolio.setEditable(false);
 		
 		txtCheque.setEditable(validar);
-		txtReferencia.setEditable(validar);
 		txtTotal.setEditable(validar);
 		cmbFormaDePago.setEnabled(validar);
 		
@@ -782,6 +791,50 @@ public class Cat_Polizas extends JFrame{
 		rbAnticipo.setEnabled(validar);
 		rbPoliza.setEnabled(validar);
 		rbCheque.setEnabled(validar);
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void limpiar(){
+		
+		modelo.setRowCount(0);
+		
+		spAbonoTotales.setValue(0);
+		spCargoTotales.setValue(0);
+		spDiferenciaTotales.setValue(0);
+		
+		txtCheque.setText("");
+		txtReferencia.setText("");
+		txtTotal.setText("");
+		txaConcepto.setText("");
+		txtCuenta.setText("");
+		
+		folioReferencia = 0;
+		nota="";
+		
+		chbCheque.setSelected(false);
+		cmbFormaDePago.setEnabled(false);
+		
+		cmbReferencia.removeAllItems();
+		cmbReferencia.addItem("No Aplica");
+		cmbReferencia.addItem("Departamento");
+		cmbReferencia.addItem("Empleado");
+		cmbReferencia.addItem("Establecimiento");
+		cmbReferencia.addItem("Proveedor");
+		
+		cmbTipo.setSelectedIndex(0);
+		cmbBanco.setSelectedIndex(0);
+		
+		componentes(false);
+		txtReferencia.setEditable(false);
+		
+		cmbTipo.setEnabled(true);
+		
+		fhFecha.setDate(cargar_fecha_Sugerida(0));
+		buscarFolioPolizaConsecutivo();
+		
+		resetRButton();
+		
 		
 	}
 	
@@ -1163,6 +1216,7 @@ public class Cat_Polizas extends JFrame{
 		    			int folio =  Integer.valueOf(tabla_Filtro_Ref.getValueAt(fila, 0).toString().trim());
 		    			folioReferencia= folio;
 		    			txtReferencia.setText(tabla_Filtro_Ref.getValueAt(fila, 1).toString());
+		    			txtReferencia.setEditable(true);
 		    			dispose();
 		        	}
 		        }
