@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -105,9 +104,7 @@ public class Cat_Reporte_De_Impresion_De_Polizas extends JFrame{
 		panel.add(btnDeshacer).setBounds(x+290, y, width, height); 
 		
 		
-//		btnReporte.setEnabled(false);
-		
-		txtFolio.addKeyListener(Buscar_Datos_Producto);
+//		txtFolio.addKeyListener(Buscar_Datos_Producto);
 		btnDeshacer.addActionListener(opDeshacer);
 		btnReporte.addActionListener(opGenerar);
 		
@@ -142,7 +139,6 @@ public class Cat_Reporte_De_Impresion_De_Polizas extends JFrame{
 	ActionListener opDeshacer = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			txtFolio.setText("");
-            btnReporte.setEnabled(false);
             txtFolio.setEditable(true);
             txtFolio.requestFocus();
             Fecha.setDate(null);
@@ -153,25 +149,25 @@ public class Cat_Reporte_De_Impresion_De_Polizas extends JFrame{
 	};
 	
 	
-	KeyListener Buscar_Datos_Producto = new KeyListener() {
-		public void keyTyped(KeyEvent e){}
-		public void keyReleased(KeyEvent e) {}
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				if(txtFolio.getText().equals("")){
-		   			JOptionPane.showMessageDialog(null,"Es Necesario Teclear Una Asignacion Para Hacer La Busqueda","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-		   			return;
-				}
-				if(existe_asignacion()){
-					btnReporte.setEnabled(true);
-					txtFolio.setEditable(false);
-				}else{
-		   			JOptionPane.showMessageDialog(null,"El Folio De Asignacion:"+txtFolio.getText().toString()+" No Existe","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-		   			return;
-				}
-		}
-		}
-	};
+//	KeyListener Buscar_Datos_Producto = new KeyListener() {
+//		public void keyTyped(KeyEvent e){}
+//		public void keyReleased(KeyEvent e) {}
+//		public void keyPressed(KeyEvent e) {
+//			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+//				if(txtFolio.getText().equals("")){
+//		   			JOptionPane.showMessageDialog(null,"Es Necesario Teclear Una Asignacion Para Hacer La Busqueda","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+//		   			return;
+//				}
+//				if(existe_asignacion()){
+//					btnReporte.setEnabled(true);
+//					txtFolio.setEditable(false);
+//				}else{
+//		   			JOptionPane.showMessageDialog(null,"El Folio De Asignacion:"+txtFolio.getText().toString()+" No Existe","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+//		   			return;
+//				}
+//		}
+//		}
+//	};
 	
 
 	public boolean existe_asignacion(){
