@@ -6991,21 +6991,22 @@ public class BuscarSQL {
 		return rp_cuenta;
 	}
 	
-	public Object[][] Reporte_Auxiliares(String cuentaIn, String cuentaFin, String fechaIn, String fechaFin, String establecimiento) throws SQLException{
+	public Object[][] Reporte_Auxiliares(String cuentaIn, String cuentaFin, String fechaIn, String fechaFin) throws SQLException{
 		Statement stmt = null;
 		
-		String query = "exec ----procedure----  '"+cuentaIn+"','"+cuentaFin+"','"+fechaIn+"','"+fechaFin+"','"+establecimiento+"'";
+		String query = "exec sp_Reporte_De_Auxiliar_De_Cuentas '"+cuentaIn+"','"+cuentaFin+"','"+fechaIn+" 00:00:00"+"','"+fechaFin+" 23:59:59'";
 
-		Object[][] rp_cuenta = new Object[getFilas(query)][11];
+		System.out.println(query);
+		Object[][] rp_cuenta = new Object[getFilas(query)][12];
 		
 		try {
 			
-			stmt = con.conexion().createStatement();
+			stmt = new Connexion().conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
 			int i=0;
 			while(rs.next()){
-				for(int j=0; j<11; j++){
+				for(int j=0; j<12; j++){
 					rp_cuenta[i][j] = rs.getObject(j+1);
 				}
 				i++;
@@ -7013,7 +7014,7 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL en la funcion [ Filtro_De_Cuentas ] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL en la funcion [ Reporte_Auxiliares ] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			
 			return null;
 		}
