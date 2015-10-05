@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-10-04T15:29:15 -->
+<!-- 2015-10-05T16:28:37 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Deducciones_Por_Fuente_De_Sodas_O_Diferencias_De_Cortes" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -23,7 +23,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString>
-		<![CDATA[exec sp_Reporte_De_Auxiliar_De_Cuentas  '1102','1102','01/09/2015','10/09/2015 00:00:00','A']]>
+		<![CDATA[exec sp_Reporte_De_Auxiliar_De_Cuentas  '1102','1102','01/09/2015','10/09/2015 00:00:00','A','MARCO ANTONIO BODART GUZMAN']]>
 	</queryString>
 	<field name="folio_completo" class="java.lang.String"/>
 	<field name="nombre" class="java.lang.String"/>
@@ -32,11 +32,16 @@
 	<field name="abono" class="java.math.BigDecimal"/>
 	<field name="saldo" class="java.math.BigDecimal"/>
 	<field name="orden" class="java.lang.String"/>
+	<field name="cuenta_inicial" class="java.lang.String"/>
+	<field name="cuenta_final" class="java.lang.String"/>
+	<field name="fecha_inicial" class="java.lang.String"/>
+	<field name="fecha_final" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="54" splitType="Stretch">
+		<band height="60" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="353" height="50" backcolor="#000066" uuid="6c6ca4e1-17cd-4913-93d6-5e670ea9ae8a"/>
 				<staticText>
@@ -46,7 +51,36 @@
 					</textElement>
 					<text><![CDATA[Reporte De Auxiliar Analitico]]></text>
 				</staticText>
+				<textField pattern="">
+					<reportElement x="0" y="35" width="352" height="13" forecolor="#FFFFFF" uuid="4bab679b-980d-4755-85f7-13301610bb38"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["De La Cuenta:"+$F{cuenta_inicial}+" A "+$F{cuenta_final}]]></textFieldExpression>
+				</textField>
 			</frame>
+			<image>
+				<reportElement x="500" y="0" width="59" height="55" uuid="e9e2d21c-5384-443d-beb9-5524edf53bc2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/Sales-report-icon.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="370" y="0" width="80" height="13" uuid="0f572790-cc1e-4ddc-8440-c829976718b5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DE:"+$F{fecha_inicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="18" width="80" height="14" uuid="71fcf409-1ecc-411d-b7b9-e0cc83bd4e11">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["A:"+$F{fecha_final}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -196,13 +230,20 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="4" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="1133a906-5b71-476e-9f3e-bc97c97058c1"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement mode="Transparent" x="170" y="-11" width="220" height="11" forecolor="#FFFFFF" uuid="c0d305db-9843-44b9-a4ef-9dd1f94101a2"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Usuario Consulto:"+$F{usuario}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
