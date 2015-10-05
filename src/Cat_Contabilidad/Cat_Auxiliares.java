@@ -1,8 +1,8 @@
 package Cat_Contabilidad;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -38,10 +39,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
-
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Cargar_Combo;
+import Conexiones_SQL.Generacion_Reportes;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
@@ -66,7 +68,6 @@ public class Cat_Auxiliares extends JFrame{
 				lista[0] = "TODOS";
 				return lista;
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return null;
@@ -74,7 +75,11 @@ public class Cat_Auxiliares extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento());
 	
-	JButton btnGenerar = new JButton("Generar");
+	JButton btnGenerar = new JButton("Buscar",new ImageIcon("imagen/buscar.png"));
+	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
+	
+	JButton btnReporteAnalitico = new JButton("Analitico",new ImageIcon("imagen/Sales-report-icon16.png"));
+	JButton btnReporteDetalle = new JButton("Detalle",new ImageIcon("imagen/Sales-report-icon16.png"));
 	
 	DefaultTableModel modelo = new DefaultTableModel(null,
             new String[]{"Cuenta", "SCuenta", "SSCuenta", "Nombre", "Referencia", "Concepto", "Poliza" , "Tipo P", "Fecha", "Cargos", "Abonos","Saldo" }
@@ -123,13 +128,19 @@ public class Cat_Auxiliares extends JFrame{
 	
 	Border borderline;
 	public Cat_Auxiliares(){
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/cajas-de-cajas-de-embalaje-de-envio-de-un-archivo-tar-icono-4009-64.png"));
+		int anchop = Toolkit.getDefaultToolkit().getScreenSize().width;
+		int altop = Toolkit.getDefaultToolkit().getScreenSize().height;
+		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+		
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Sales-report-icon64.png"));
 		this.setTitle("Auxiliares");
 		panel.setBorder(BorderFactory.createTitledBorder("Auxiliares"));	
 		
 		borderline = BorderFactory.createLineBorder(new Color(45,48,48));
 		
-		int x=20,y=20,ancho=80;
+		int x=20,y=20;
 		
 		panel.add(new JLabel("De:")	).setBounds(x,y,25,20);
 		panel.add(txtFolioCuentaIn	).setBounds(x+=25,y,100,20);
@@ -147,12 +158,15 @@ public class Cat_Auxiliares extends JFrame{
 		panel.add(fhFin  			).setBounds(x+25,y,100,20); 
 		
 		x=20;
-		panel.add(new JLabel("Establecimiento:")).setBounds(x,y+=25,90,20);
-		panel.add(cmbEstablecimiento  			).setBounds(x+=90,y,170,20); 
-		panel.add(btnGenerar  		).setBounds(x+=180,y,100,20);
+//		panel.add(new JLabel("Establecimiento:")).setBounds(x,y+=25,90,20);
+//		panel.add(cmbEstablecimiento  			).setBounds(x+=90,y,170,20); 
+		panel.add(btnGenerar  		).setBounds(x+=190,y+=25,100,20);
+		panel.add(btnDeshacer  		).setBounds(x+=120,y,100,20);
+		panel.add(btnReporteAnalitico  		).setBounds(x+=300,y,100,20);
+		panel.add(btnReporteDetalle   		).setBounds(x+=250,y,100,20);
 		
 		x=20;
-		panel.add(scroll			).setBounds(x,y+=25,ancho*12+20,350);
+		panel.add(scroll			).setBounds(x,y+=25,anchop-55,altop-y-90);
 		
 		cont.add(panel);
 		
@@ -162,8 +176,8 @@ public class Cat_Auxiliares extends JFrame{
 		fhFin.setDate(cargar_fecha_Sugerida(0));
 		
 		btnGenerar.addActionListener(opGenerar);
-		
-//		agregar(tabla);
+		btnDeshacer.addActionListener(opDeshacer);
+		btnReporteAnalitico.addActionListener(ReporteAnalitico);
 
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 	 	       KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "nuevaCuenta");
@@ -172,10 +186,7 @@ public class Cat_Auxiliares extends JFrame{
 	 	        @Override
 	 	        public void actionPerformed(ActionEvent e)
 	 	        {	      
-	 	        	txtCuentaIn.setText("");
-	 	        	txtCuentaFin.setText("");
-	 	        	txtCuentaIn.requestFocus();
-	 	        	
+	 	        	btnDeshacer.doClick();
 	 	        }
 	 	    });
 	    
@@ -185,9 +196,7 @@ public class Cat_Auxiliares extends JFrame{
 		buscar(txtFolioCuentaIn,txtCuentaIn);
 		buscar(txtFolioCuentaFin,txtCuentaFin);
 		
-		this.setSize(1024, 500);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
 	}
 	
 	
@@ -214,7 +223,6 @@ public class Cat_Auxiliares extends JFrame{
 	}
 	
 	public boolean buscarDirecto(JTextField txtFiledF, JTextField txtFiledT){
-		
 		boolean error = false;
 		Object[][] pol = Filtro_Cuentas_Con_Parametro(txtFiledF.getText().trim());
 		
@@ -230,6 +238,7 @@ public class Cat_Auxiliares extends JFrame{
 			if(txtFiledF == txtFolioCuentaIn){ txtCuentaIn.setText(""); } txtCuentaFin.setText("");
 			error = false;
 			JOptionPane.showMessageDialog(null, "No Se Encontraron Registros","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+			txtFolioCuentaFin.requestFocus();
 		}
 		return error;
 	}
@@ -270,57 +279,75 @@ public class Cat_Auxiliares extends JFrame{
 			modelo.addRow(p);
 		}
 	}
-	int fila = 0;
-//	int columna = 0;
-//	private void agregar(final JTable tbl) {
-//        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-//	        public void mouseClicked(MouseEvent e) {
-//	        	if(e.getClickCount() == 1){
-//	        		
-//	        		fila= tbl.getSelectedRow();
-//	        		columna= tbl.getSelectedColumn()<=4?4:tbl.getSelectedColumn();
-//	        		
-//	        		if(columna==4){
-//	        			if(Float.valueOf(tbl.getValueAt(fila, 5).toString().equals("")?"0":tbl.getValueAt(fila, 5).toString())==0){
-//	        				
-//	        				tbl.editCellAt(fila, columna);
-//							Component aComp=tbl.getEditorComponent();
-//							aComp.requestFocus();
-//		        		}
-//	        		}
-//	        		
-//	        		if(columna==5){
-//	        			if(Float.valueOf(tbl.getValueAt(fila, 4).toString().equals("")?"0":tbl.getValueAt(fila, 4).toString())==0){
-//	        				
-//	        				tbl.editCellAt(fila, columna);
-//							Component aComp=tbl.getEditorComponent();
-//							aComp.requestFocus();
-//		        		}
-//	        		}
-//	        	}
-//	        }
-//        });
-//    }
+	public String validar_fechas(){
+		String error = "";
+		String fechainicioNull = fhIn.getDate()+"";
+		String fechafinalNull = fhFin.getDate()+"";
+	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";
+		if(fechafinalNull.equals("null"))error+= "Fecha Final\n";
+		return error;
+	}
 	
+	int fila = 0;
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
-			if(!txtCuentaFin.equals("")){
-				try {
-						Object[][] rptAux = new BuscarSQL().Reporte_Auxiliares(txtFolioCuentaIn.getText().trim(), txtFolioCuentaFin.getText().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhIn.getDate()), new SimpleDateFormat("dd/MM/yyyy").format(fhFin.getDate()));
-					
-						modelo.setRowCount(0);
-						for(Object[] RA: rptAux){
-							modelo.addRow(RA);
-						}
-						
-				} catch (SQLException e1){
-					e1.printStackTrace();
-				}
+			if(txtCuentaFin.getText().equals("")||txtCuentaIn.getText().equals("")){
+				JOptionPane.showMessageDialog(null, "Debe Establecer Un Rango De Cuentas","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
 			}else{
-				JOptionPane.showMessageDialog(null, "Debe Establecer Un Rango De Cuentas","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(fhIn.getDate())+" 00:00:01";
+			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(fhFin.getDate())+" 00:03:03";
+			   if(validar_fechas().equals("")){
+					  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+					  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+					  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+					 if(fecha1.before(fecha2)){
+									try {
+										Object[][] rptAux = new BuscarSQL().Reporte_Auxiliares(txtFolioCuentaIn.getText().trim(), txtFolioCuentaFin.getText().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhIn.getDate()), new SimpleDateFormat("dd/MM/yyyy").format(fhFin.getDate()));
+										modelo.setRowCount(0);
+										for(Object[] RA: rptAux){
+											modelo.addRow(RA);
+										}
+								} catch (SQLException e1){
+									e1.printStackTrace();
+								}
+					}else{
+							JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE, new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+							return;
+			        }
+		     	}else{
+				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				return;
 			}
+			}
+		}
+	};
+	
+	ActionListener opDeshacer = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			txtCuentaIn.setText("");
+			txtCuentaFin.setText("");
+			txtFolioCuentaIn.setText("");
+			txtFolioCuentaFin.setText("");
+			fhIn.setDate(cargar_fecha_Sugerida(0));
+			fhFin.setDate(cargar_fecha_Sugerida(0));
+            modelo.setRowCount(0);;
+            txtFolioCuentaIn.requestFocus();
+		}
+	};
+	
+	ActionListener ReporteAnalitico = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String fechaini = new SimpleDateFormat("dd/MM/yyyy").format(fhIn.getDate())+" 00:00:00";
+			String fechafin = new SimpleDateFormat("dd/MM/yyyy").format(fhFin.getDate())+" 00:00:00";
+			
+  			   Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="exec sp_Reporte_De_Auxiliar_De_Cuentas '"+txtFolioCuentaIn.getText().toString().trim()+"','"+txtFolioCuentaFin.getText().toString().trim()+"','"+fechaini+"','"+fechafin+"','A','"+usuario.getNombre_completo()+"'" ;
+			String reporte = "Obj_Reporte_De_Auxiliar_Analitico.jrxml";
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
 	
@@ -342,6 +369,7 @@ public class Cat_Auxiliares extends JFrame{
 	    this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		int largo=60;
+		
 		tabla.getColumnModel().getColumn(0).setMinWidth(60);
 	    tabla.getColumnModel().getColumn(0).setMaxWidth(largo);
 	    tabla.getColumnModel().getColumn(1).setMinWidth(60);
@@ -349,19 +377,19 @@ public class Cat_Auxiliares extends JFrame{
 	    tabla.getColumnModel().getColumn(2).setMinWidth(60);
 	    tabla.getColumnModel().getColumn(2).setMaxWidth(largo);
 	    
-	    tabla.getColumnModel().getColumn(3).setMinWidth(largo*3);
-	    tabla.getColumnModel().getColumn(3).setMaxWidth(largo*6);
-	    tabla.getColumnModel().getColumn(4).setMinWidth(largo*2);
-	    tabla.getColumnModel().getColumn(4).setMaxWidth(largo*3);
-	    tabla.getColumnModel().getColumn(5).setMinWidth(largo*3);
-	    tabla.getColumnModel().getColumn(5).setMaxWidth(largo*7);
+	    tabla.getColumnModel().getColumn(3).setMinWidth(largo*7);
+	    tabla.getColumnModel().getColumn(3).setMaxWidth(largo*10);
+	    tabla.getColumnModel().getColumn(4).setMinWidth(largo*3);
+	    tabla.getColumnModel().getColumn(4).setMaxWidth(largo*4);
+	    tabla.getColumnModel().getColumn(5).setMinWidth(largo*7);
+	    tabla.getColumnModel().getColumn(5).setMaxWidth(largo*10);
 	    
 	    tabla.getColumnModel().getColumn(6).setMinWidth(80);
 	    tabla.getColumnModel().getColumn(6).setMaxWidth(100);
 	    tabla.getColumnModel().getColumn(7).setMinWidth(80);
 	    tabla.getColumnModel().getColumn(7).setMaxWidth(40);
-	    tabla.getColumnModel().getColumn(8).setMinWidth(100);
-	    tabla.getColumnModel().getColumn(8).setMaxWidth(largo*3);
+	    tabla.getColumnModel().getColumn(8).setMinWidth(largo*3);
+	    tabla.getColumnModel().getColumn(8).setMaxWidth(largo*6);
 	    
 	    tabla.getColumnModel().getColumn(9).setMinWidth(100);
 	    tabla.getColumnModel().getColumn(9).setMaxWidth(largo*2);
@@ -505,15 +533,6 @@ public class Cat_Auxiliares extends JFrame{
 			
 		}
 	}
-	
-//	public void CalcularFoliosTabla(){
-//		for(int i = 0; i<tabla.getRowCount(); i++){
-//			tabla.setBackground(Color.blue);
-//			tabla.setForeground(Color.white);
-//			tabla.setValueAt((i+1)+"", i, 8);
-//		}
-//	}
-	
 	
 	public static void main(String[] args) {
 		try{

@@ -149,26 +149,6 @@ public class Cat_Reporte_De_Impresion_De_Polizas extends JFrame{
 	};
 	
 	
-//	KeyListener Buscar_Datos_Producto = new KeyListener() {
-//		public void keyTyped(KeyEvent e){}
-//		public void keyReleased(KeyEvent e) {}
-//		public void keyPressed(KeyEvent e) {
-//			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-//				if(txtFolio.getText().equals("")){
-//		   			JOptionPane.showMessageDialog(null,"Es Necesario Teclear Una Asignacion Para Hacer La Busqueda","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-//		   			return;
-//				}
-//				if(existe_asignacion()){
-//					btnReporte.setEnabled(true);
-//					txtFolio.setEditable(false);
-//				}else{
-//		   			JOptionPane.showMessageDialog(null,"El Folio De Asignacion:"+txtFolio.getText().toString()+" No Existe","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-//		   			return;
-//				}
-//		}
-//		}
-//	};
-	
 
 	public boolean existe_asignacion(){
 		String query ="IF(SELECT COUNT(folio) FROM asignaciones_cajeros  where Folio='"+txtFolio.getText().toString().toUpperCase()+"' )=1 "
