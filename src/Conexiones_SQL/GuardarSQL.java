@@ -4145,8 +4145,8 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
-	public boolean Guardar_Poliza(String folio, String tipo, String fecha_poliza, String referencia_trans, int referencia, String nota, String concepto_gral, String cheque, Object[][] matriz, String ReferenciaText, String FormaPago, String tipoBanco, float total){
-		String query = "exec sp_insert_polizas ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	public boolean Guardar_Poliza(String folio, String tipo, String fecha_poliza, String referencia_trans, int referencia, String nota, String concepto_gral, String cheque, Object[][] matriz, String ReferenciaText, String FormaPago, String tipoBanco, float total,String tipo_documento){
+		String query = "exec sp_insert_polizas ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -4212,6 +4212,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				pstmt.setString(18 , FormaPago);
 				pstmt.setString(19 , tipoBanco);
 				pstmt.setFloat(20 , total);
+				pstmt.setString(21, tipo_documento);
 				
 				pstmt.executeUpdate();
 			}

@@ -6994,7 +6994,7 @@ public class BuscarSQL {
 	public Object[][] Reporte_Auxiliares(String cuentaIn, String cuentaFin, String fechaIn, String fechaFin) throws SQLException{
 		Statement stmt = null;
 		
-		String query = "exec sp_Reporte_De_Auxiliar_De_Cuentas '"+cuentaIn+"','"+cuentaFin+"','"+fechaIn+" 00:00:00"+"','"+fechaFin+" 23:59:59'";
+		String query = "exec sp_Reporte_De_Auxiliar_De_Cuentas '"+cuentaIn+"','"+cuentaFin+"','"+fechaIn+" 00:00:00"+"','"+fechaFin+" 23:59:59'"+",'N'";
 
 		System.out.println(query);
 		Object[][] rp_cuenta = new Object[getFilas(query)][12];

@@ -55,7 +55,9 @@ import com.toedter.calendar.JDateChooser;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Cargar_Combo;
+import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
@@ -169,8 +171,10 @@ public class Cat_Polizas extends JFrame{
         	 	case 1 : return false; 
         	 	case 2 : return false;
         	 	case 3 : return false;
-        	 	case 4 : if(Float.valueOf(tabla.getValueAt(fila, 5).toString().equals("")?"0":tabla.getValueAt(fila, 5).toString())>0){return false;}else{return true;}
-        	 	case 5 : if(Float.valueOf(tabla.getValueAt(fila, 4).toString().equals("")?"0":tabla.getValueAt(fila, 4).toString())>0){return false;}else{return true;}
+//        	 	case 4 : if(Float.valueOf(tabla.getValueAt(fila, 5).toString().equals("")?"0":tabla.getValueAt(fila, 5).toString())>0){return false;}else{return true;}
+//        	 	case 5 : if(Float.valueOf(tabla.getValueAt(fila, 4).toString().equals("")?"0":tabla.getValueAt(fila, 4).toString())>0){return false;}else{return true;}
+        	 	case 4 : return true;
+        	 	case 5 : return true;
         	 	case 6 : return true;
         	 	case 7 : return new BuscarSQL().activar_establecimiento_en_mpolizas(tabla.getValueAt(fila, 0).toString());
         	 	case 8 : return false;
@@ -295,6 +299,7 @@ public class Cat_Polizas extends JFrame{
 		btnNota.addActionListener(opNota);
 		chbCheque.addActionListener(opCheque);
 		btnReferencia.addActionListener(opFiltroRef);
+		btnImprimir.addActionListener(opImprimir);
 		
 		rbPagoPrv.addActionListener(opValidarImpresion);
 		rbNotaCreditoPrv.addActionListener(opValidarImpresion);
@@ -610,13 +615,26 @@ public class Cat_Polizas extends JFrame{
 					return;
 				}
 				
+				if(!tabla.getValueAt(i,4).toString().equals("") && !tabla.getValueAt(i,5).toString().equals("")){
+					JOptionPane.showMessageDialog(null, "La Fila [ "+(i+1)+" ] Tiene Cargo y Abono, Solo Se Permite Ingresar Uno De Los Dos Por Cuenta","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
+				
 				if(tabla.getValueAt(i, 7).toString().equals("")){
 					JOptionPane.showMessageDialog(null, "La Fila [ "+(i+1)+" ] Requiere El Establecimiento","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 		}
 		
-		if(spDiferenciaTotales.getValue().toString().equals("0") || spDiferenciaTotales.getValue().toString().equals("-0")){
+//		if(spDiferenciaTotales.getValue().toString().trim().equals("0") || spDiferenciaTotales.getValue().toString().trim().equals("-0")){
+//			guardarPolizas();
+//		}else{
+//			JOptionPane.showMessageDialog(null, "La Poliza No Esta Cuadrada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+//			return;
+//		}
+		
+		System.out.println(spDiferenciaTotales.getValue().toString().trim());
+		if(Float.valueOf(spCargoTotales.getValue().toString().trim())-Float.valueOf(spAbonoTotales.getValue().toString().trim())==0){
 			guardarPolizas();
 		}else{
 			JOptionPane.showMessageDialog(null, "La Poliza No Esta Cuadrada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -664,22 +682,33 @@ public class Cat_Polizas extends JFrame{
 			}
 	}
 	
+//	variables para reporte
+	String fecha = "";
+	String tipo = "";
+	String folio = "";
+	
 	public void guardar(Object[][] matriz){
-		
-			if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, txaConcepto.getText().toUpperCase().trim(), txtCheque.getText().toUpperCase().trim(), matriz, txtReferencia.getText().toUpperCase().trim(), cmbFormaDePago.getSelectedItem().toString().toUpperCase(),cmbBanco.getSelectedItem().toString().trim(),Float.valueOf(txtTotal.getText().toString().equals("")?"0":txtTotal.getText().toString()))){
+				
+				String tipo_documento = "";
+				if(rbPagoPrv.isSelected())
+					tipo_documento = "P";
+				if(rbNotaCreditoPrv.isSelected())
+					tipo_documento = "N";
+				if(rbAnticipoPrv.isSelected())
+					tipo_documento = "A";
 					
+		
+		
+		
+		
+			if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, txaConcepto.getText().toUpperCase().trim(), txtCheque.getText().toUpperCase().trim(), matriz, txtReferencia.getText().toUpperCase().trim(), cmbFormaDePago.getSelectedItem().toString().toUpperCase(),cmbBanco.getSelectedItem().toString().trim(),Float.valueOf(txtTotal.getText().toString().equals("")?"0":txtTotal.getText().toString()),tipo_documento)){
+
+				fecha = new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate())+" 00:00:00";
+				tipo = cmbTipo.getSelectedItem().toString().toUpperCase();
+				folio = txtFolio.getText();
+				
 				limpiar();
 				
-//					while(tabla.getRowCount()>0){
-//						modelo.removeRow(0);
-//					}
-//				
-//					CalcularCuadreDePoliza();
-//					cmbReferencia.setSelectedIndex(0);
-//					folioReferencia=0;
-//					btnReferencia.setEnabled(false);
-//				
-					JOptionPane.showMessageDialog(null, "La Poliza Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
 					return;
 			}else{
 					JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
@@ -719,8 +748,8 @@ public class Cat_Polizas extends JFrame{
 								fila+=1;
 								
 								if(fila == cantidadDeFilas){ fila=0;	}
-								if(columna==4 && !tabla.getValueAt(fila, 5).toString().equals("")){	fila+=1; }
-								if(columna==5 && !tabla.getValueAt(fila, 4).toString().equals("")){	fila+=1; }
+//								if(columna==4 && !tabla.getValueAt(fila, 5).toString().equals("")){	fila+=1; }
+//								if(columna==5 && !tabla.getValueAt(fila, 4).toString().equals("")){	fila+=1; }
 								
 									tabla.getSelectionModel().setSelectionInterval(fila, fila);
 									tabla.editCellAt(fila, columna);
@@ -898,6 +927,34 @@ public class Cat_Polizas extends JFrame{
       		txtFolio.setText("");
       	}
 	}
+	
+	ActionListener opImprimir = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			
+//			String fecha = new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate())+" 00:00:00";
+			Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="exec sp_consulta_de_poliza '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
+			String reporte = "Obj_Reporte_De_Consulta_De_Poliza.jrxml";
+							 
+								if(rbPoliza.isSelected()){
+									new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+								}
+								if(rbCheque.isSelected()){
+									
+								}
+								if(rbAnticipo.isSelected()){
+									
+								}
+								else{
+//									aviso
+								}
+								
+		}
+	};
 	
 	public class Cat_Filtro_Cuentas extends JDialog{
 
