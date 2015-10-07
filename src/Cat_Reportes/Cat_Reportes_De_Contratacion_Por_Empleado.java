@@ -194,8 +194,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		txtTestigo2.setEditable(false);
 		txtTestigo2.setText(NombreUsuario); 
        x=15;
-        
-       
+               
 		panel.add(new JLabel("Fecha Inicio:")).setBounds(x,y+=30,l*2,a);
 		panel.add(JLBlinicio).setBounds(x+=60,y,a,a);
 		panel.add(c_inicio).setBounds(x+=20,y,80,a);
@@ -205,11 +204,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		panel.add(JLBfin).setBounds(x+=60,y,a,a);
 		panel.add(c_final).setBounds(x+=20,y,80,a);
 		c_final.setEnabled(true);
-		
-		
-		
-
-		
+				
 		panel.add(btngenerar).setBounds(150, y+=80, l*2, a);
 		
 		cont.add(panel);
@@ -233,15 +228,14 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	
 	KeyListener oppasar_a_sueldo = new KeyListener(){
 		public void keyReleased(KeyEvent e1) {
-		}
+		 }
 		public void keyTyped(KeyEvent e1) {
-		}
+		  }
 		public void keyPressed(KeyEvent e1) {
 			if(e1.getKeyCode()==KeyEvent.VK_ENTER){
 		        	   txtSueldo_Base.requestFocus();
-				 
 			}
-		}	
+		 }	
 	    };
 
 	    
@@ -256,14 +250,10 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 					numero=0;
 				}else{				
 				numero=Double.valueOf(txtSueldo_Base.getText());}
-				
 		           if(numero>20000){ txtSueldo_Base.setText("");
 		                             numero=0;   }
-					
 		           if(numero==0){
 		   			JOptionPane.showMessageDialog(null,"El Sueldo Esta Vacio o El Numero Es Muy Grande ","Aviso!", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-		   			
-		        	   
 		           }else{
 		        	   Cargar_Cantidad_Letra();
 		        	   txtTemporada.requestFocus();
@@ -272,9 +262,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		}	
 	    };
 	    
-	    
 	public void cargar_fechas(){
-		
 		Date date1 = null;
 				  try {
 					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
@@ -284,7 +272,6 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 					e.printStackTrace();
 				}
 		c_inicio.setDate(date1);
-					
 	    Date date2 = null;
 					  try {
 						date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(-30));
@@ -296,21 +283,17 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		c_final.setDate(date2);
 	};
 	
-	
 	public void Cargar_Cantidad_Letra(){
-		
 	try {
 		Cantidad_Letra = (new BuscarSQL().numero_a_letra(numero));
 	     txtSueldo_Letra.setText(Cantidad_Letra);
 		  } catch (SQLException e1) {e1.printStackTrace();}
-	
 	}
 	
 	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
      if(validar_fechas().equals("")){
-    	 
     	    String Nombre_CompletoV =txtNombreEmpleado.getText()+"";
 			String EstablecimientoV=txtEstablecimiento.getText()+"";
 			String DepartamentoV=txtDepartamento.getText()+"";
@@ -328,17 +311,13 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
 			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 			String folio_empleado=txtFolio.getText()+"";
-
-			
 			String basedatos="2.26";
 			String vista_previa_reporte="no";
 			int vista_previa_de_ventana=0;
 			String comando="";
 			String reporte = "Obj_Reporte_De_Contrato.jrxml";
-				
 				comando = "exec sp_Reporte_De_Contrato '" +Nombre_CompletoV+"','"+EstablecimientoV+"','"+DepartamentoV+"','"+PuestoV+"','"+SexoV+"','"+Estado_CivilV+"','"+EdadV+"','"+DomicilioV+"','"+HorarioV
 						+"','"+SueldoV+"','"+Sueldo_LetraV+"','"+TemporadaV+"','"+Testigo1+"','"+testigo2+"','"+fecha_inicio+"','"+fecha_final+"',"+folio_empleado;
-				System.out.println(comando);
       		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
       		 
 	 	}else{

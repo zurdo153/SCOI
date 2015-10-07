@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-10-07T07:57:49 -->
+<!-- 2015-10-07T16:22:08 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte  de Depositos Bancos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d877fc95-687e-432b-bc71-4ca9584c39f8">
 	<property name="ireport.callouts" value="callouts.1.fg=0,0,0\n callouts.1.bg=255,255,0\n "/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -19,7 +19,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString>
-		<![CDATA[exec sp_consulta_de_poliza_cheque 'EGRESOS','25/09/2015','SI093','MARCO ANTONIO BODART']]>
+		<![CDATA[exec sp_consulta_de_poliza_cheque 'EGRESOS','29/10/2015','E006','MARCO ANTONIO BODART GUZMAN']]>
 	</queryString>
 	<field name="folio" class="java.lang.String"/>
 	<field name="tipo_poliza" class="java.lang.String"/>
@@ -273,15 +273,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_guardado}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="101" y="113" width="99" height="18" uuid="41539e8b-58e1-4042-9f26-64910c943c7a">
-					<printWhenExpression><![CDATA[]]></printWhenExpression>
-				</reportElement>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{folio_documento_pago}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="300" y="225" width="85" height="13" forecolor="#000000" uuid="c048a34e-5275-4ec9-add8-c415665b3b60">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -440,6 +431,13 @@
 				</textElement>
 				<text><![CDATA[CONCEPTO:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="108" y="113" width="93" height="20" uuid="b9825289-0060-4c38-ba9c-819c9f72e64c"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{folio_documento_pago}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

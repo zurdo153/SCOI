@@ -97,7 +97,8 @@ public class Cat_Reporte_De_Inventario_Parcial extends JFrame {
 	JButton btnFiltroTalla = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroTalla = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-	JButton btn_buscar = new JButton  ("Buscar",new ImageIcon("imagen/buscar.png"));
+	JButton btn_codcorto = new JButton  ("Reporte Codigo Corto",new ImageIcon("imagen/checklist-icon16.png"));
+	JButton btn_codbarras = new JButton  ("Reporte Codigo Barras",new ImageIcon("imagen/checklist-icon16.png"));
 	
 	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	
@@ -186,7 +187,8 @@ public void constructor(){
     panel.add(btnFiltroTalla							 ).setBounds(x+590,y,a,a);    
     panel.add(btnLimpiarFiltroTalla						 ).setBounds(x+613,y,a,a); 
     
-    panel.add(btn_buscar).setBounds(x+530,y+=25,l,a);
+    panel.add(btn_codcorto).setBounds(x+250,y+=25,l+80,a);
+    panel.add(btn_codbarras).setBounds(x+450,y,l+80,a);
     
     txtFiltroProducto.setEditable(false); 
     txtFiltroClase.setEditable(false);
@@ -200,9 +202,11 @@ public void constructor(){
 
 
 	if(cmbEstablecimiento.getSelectedIndex()!=0){
-		btn_buscar.setEnabled(true);
+		btn_codcorto.setEnabled(true);
+		btn_codbarras.setEnabled(true);
 	}else{
-		btn_buscar.setEnabled(false);
+		btn_codcorto.setEnabled(false);
+		btn_codbarras.setEnabled(false);
 	}
 	
 	btnFiltroProducto.addActionListener(op_filtro_productos);
@@ -221,7 +225,8 @@ public void constructor(){
 	btnLimpiarFiltroTalla.addActionListener(limpiar_filtro_talla);
 	
 	txtcod_prod.addKeyListener(Buscar_Datos_Producto);
-	btn_buscar.addActionListener(op_generar);
+	btn_codcorto.addActionListener(op_generar);
+	btn_codbarras.addActionListener(op_generar_cod_barras);
 	
 	cmbEstablecimiento.addActionListener(op_cmb);
 	
@@ -259,16 +264,14 @@ public void constructor(){
         }
 	}
 
-//public void filtroProductos(String cadena){
-//	txtFiltroProducto.setText(cadena);
-//}
-	
 	ActionListener op_cmb = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(cmbEstablecimiento.getSelectedIndex()!=0){
-				btn_buscar.setEnabled(true);
+				btn_codcorto.setEnabled(true);
+				btn_codbarras.setEnabled(true);
 			}else{
-				btn_buscar.setEnabled(false);
+				btn_codcorto.setEnabled(false);
+				btn_codbarras.setEnabled(false);
 			}
 		}
 	};
@@ -467,6 +470,29 @@ public void constructor(){
 			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
+	
+	ActionListener op_generar_cod_barras = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			String estabs = cmbEstablecimiento.getSelectedItem().toString();
+			String productos 	= txtFiltroProducto.getText().equals("")?"0":txtFiltroProducto.getText();
+			String clases 		= txtFiltroClase.getText().equals("")?"0":txtFiltroClase.getText();
+			String categorias 	= txtFiltroCategoria.getText().equals("")?"0":txtFiltroCategoria.getText();
+			String familias 	= txtFiltroFamilia.getText().equals("")?"0":txtFiltroFamilia.getText();
+			String lineas 		= txtFiltroLinea.getText().equals("")?"0":txtFiltroLinea.getText();
+			String tallas 		= txtFiltroTalla.getText().equals("")?"0":txtFiltroTalla.getText();
+			
+			String basedatos="2.200";
+			String vista_previa_reporte="si";
+			int vista_previa_de_ventana=0;
+			
+			String comando="exec sp_Reporte_IZAGAR_de_inventarios_parciales '"+ estabs +"','"+ productos +"','"+ clases +"','"+ categorias +"','"+ familias +"','"+ lineas +"','"+ tallas +"','"+ new Obj_Usuario().LeerSession().getNombre_completo()+"'";
+			String reporte = "Obj_Reporte_IZAGAR_De_Inventarios_Parciales_Con_Codigo_De_Barras.jrxml";
+			
+			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		}
+	};
+	
 	
 	public void panelEnableFalse(){
 		btnFiltroProducto.setEnabled(false);
@@ -753,7 +779,7 @@ public void constructor(){
 							 										btnLimpiarFiltroLinea.setEnabled(true);
 													 				btnFiltroProducto.setEnabled(false);
 	 										break;
-	 										
+
 							 				case "talla":			txtFiltroTalla.setText(Lista)		;
 												 					if(!txtFiltroTalla.getText().equals("")){
 												 						txtcod_prod.setText("");
@@ -762,7 +788,6 @@ public void constructor(){
 												 						txtFiltroClase.setText("");
 												 						txtFiltroFamilia.setText("");
 												 						txtFiltroLinea.setText("");
-												 						
 												 						btnFiltroProducto.setEnabled(false);
 												 						btnFiltroCategoria.setEnabled(false);
 							 											btnFiltroClase.setEnabled(false);
