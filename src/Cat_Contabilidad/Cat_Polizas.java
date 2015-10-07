@@ -101,7 +101,7 @@ public class Cat_Polizas extends JFrame{
 	JButton btnGuardarPoliza = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	JButton btnQuitar = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	JButton btnImprimir = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
-	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/Print.png"));
+	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	
 	String[] formaDePago = {"Forma De Pago","Cheque","Cheque Banco Interno","Efectivo","Transferencia","Vale"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -129,7 +129,7 @@ public class Cat_Polizas extends JFrame{
 	SpinnerModel diferenciaTotales = new SpinnerNumberModel(0, 0, 50000, .1);
 	JSpinner spDiferenciaTotales = new JSpinner(diferenciaTotales);
 	
-	JTextField txtCheque = new Componentes().text(new JTextField(), "Cheque", 15, "Double");
+	JTextField txtCheque = new Componentes().text(new JTextField(), "Cheque", 15, "String");
 	JCheckBox chbCheque = new JCheckBox();
 	
 	JTextArea txaConcepto = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
@@ -817,9 +817,9 @@ public class Cat_Polizas extends JFrame{
 		rbNotaCreditoPrv.setEnabled(validar);
 		rbAnticipoPrv.setEnabled(validar);
 		
-		rbAnticipo.setEnabled(validar);
-		rbPoliza.setEnabled(validar);
-		rbCheque.setEnabled(validar);
+//		rbAnticipo.setEnabled(validar);
+//		rbPoliza.setEnabled(validar);
+//		rbCheque.setEnabled(validar);
 		
 	}
 	
@@ -937,14 +937,18 @@ public class Cat_Polizas extends JFrame{
 			String basedatos="2.26";
 			String vista_previa_reporte="no";
 			int vista_previa_de_ventana=0;
-			String comando="exec sp_consulta_de_poliza '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
-			String reporte = "Obj_Reporte_De_Consulta_De_Poliza.jrxml";
+			String comando="" ;
+			String reporte = "";
 							 
 								if(rbPoliza.isSelected()){
+									comando="exec sp_consulta_de_poliza '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
+									reporte = "Obj_Reporte_De_Consulta_De_Poliza.jrxml";
 									new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 								}
 								if(rbCheque.isSelected()){
-									
+									comando="exec sp_consulta_de_poliza_cheque '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
+									reporte = "Obj_Reporte_De_Consulta_De_Poliza_De_Cheque.jrxml";
+									new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 								}
 								if(rbAnticipo.isSelected()){
 									

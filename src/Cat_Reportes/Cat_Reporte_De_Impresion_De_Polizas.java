@@ -101,9 +101,9 @@ public class Cat_Reporte_De_Impresion_De_Polizas extends JFrame{
 		cont.add(panel);
 		setTitle("Reporte De Impresion De Polizas");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/presentar-una-pluma-para-escribir-icono-9594-32.png"));
-		panel.setBorder(BorderFactory.createTitledBorder("p"));
+		panel.setBorder(BorderFactory.createTitledBorder("Impresion De Polizas"));
 		
-		lblImprime.setBorder(BorderFactory.createTitledBorder(borderline,"Impresion De Polizas"));
+		lblImprime.setBorder(BorderFactory.createTitledBorder(borderline,"Imprimir"));
 		
 		grupoImprimir.add(rbAnticipo );
 		grupoImprimir.add(rbPoliza );
@@ -201,14 +201,19 @@ public class Cat_Reporte_De_Impresion_De_Polizas extends JFrame{
 			String vista_previa_reporte="no";
 			int vista_previa_de_ventana=0;
 			String comando="exec sp_consulta_de_poliza '"+cmbTipo.getSelectedItem().toString().toUpperCase()+"','"+fecha+"','"+txtFolio.getText().toString().toUpperCase()+"','"+usuario.getNombre_completo()+"'" ;
-			String reporte = "Obj_Reporte_De_Consulta_De_Poliza.jrxml";
+			String reporte = "";
 //							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 							 
 							 if(rbPoliza.isSelected()){
+								 comando="exec sp_consulta_de_poliza '"+cmbTipo.getSelectedItem().toString().toUpperCase()+"','"+fecha+"','"+txtFolio.getText().toString().toUpperCase()+"','"+usuario.getNombre_completo()+"'" ;
+								 reporte = "Obj_Reporte_De_Consulta_De_Poliza.jrxml";
 									new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 								}
 								if(rbCheque.isSelected()){
-									
+//									exec sp_consulta_de_poliza_cheque 'EGRESOS','25/09/2015','SI093','MARCO ANTONIO BODART'
+									comando="exec sp_consulta_de_poliza_cheque '"+cmbTipo.getSelectedItem().toString().toUpperCase()+"','"+fecha+"','"+txtFolio.getText().toString().toUpperCase()+"','"+usuario.getNombre_completo()+"'" ;
+									reporte = "Obj_Reporte_De_Consulta_De_Poliza_De_Cheque.jrxml";
+									new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 								}
 								if(rbAnticipo.isSelected()){
 									
