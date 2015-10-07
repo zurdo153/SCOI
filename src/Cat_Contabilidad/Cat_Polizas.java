@@ -96,12 +96,12 @@ public class Cat_Polizas extends JFrame{
 	JTextField txtCuenta = new Componentes().text(new JTextField(), "Cuenta", 16, "Int");
 	JDateChooser fhFecha 	= new JDateChooser();
 	
-	JButton btnNota = new JButton("Nota");
+	JButton btnNota = new JButton("Nota", new ImageIcon("imagen/nota16.png"));
 	JButton btnReferencia = new JButton("Referencia", new ImageIcon("imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
 	JButton btnGuardarPoliza = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	JButton btnQuitar = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	JButton btnImprimir = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
-	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/Print.png"));
+	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	
 	String[] formaDePago = {"Forma De Pago","Cheque","Cheque Banco Interno","Efectivo","Transferencia","Vale"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -129,7 +129,7 @@ public class Cat_Polizas extends JFrame{
 	SpinnerModel diferenciaTotales = new SpinnerNumberModel(0, 0, 50000, .1);
 	JSpinner spDiferenciaTotales = new JSpinner(diferenciaTotales);
 	
-	JTextField txtCheque = new Componentes().text(new JTextField(), "Cheque", 15, "Double");
+	JTextField txtCheque = new Componentes().text(new JTextField(), "Cheque", 15, "String");
 	JCheckBox chbCheque = new JCheckBox();
 	
 	JTextArea txaConcepto = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
@@ -223,7 +223,7 @@ public class Cat_Polizas extends JFrame{
 		panel.add(fhFecha  ).setBounds(x*11+40,y,90,20);
 		panel.add(new JLabel("Folio Poliza:")).setBounds(x*20-10,y,70,20);
 		panel.add(txtFolio  ).setBounds(x*23,y,80,20);
-		panel.add(btnNota  ).setBounds(x*29,y,70,20);
+		panel.add(btnNota  ).setBounds(x*28,y,80,22);
 		
         panel.add(lblTotales).setBounds(x-5,y+=25,180,95);            
         panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);  
@@ -817,9 +817,9 @@ public class Cat_Polizas extends JFrame{
 		rbNotaCreditoPrv.setEnabled(validar);
 		rbAnticipoPrv.setEnabled(validar);
 		
-		rbAnticipo.setEnabled(validar);
-		rbPoliza.setEnabled(validar);
-		rbCheque.setEnabled(validar);
+//		rbAnticipo.setEnabled(validar);
+//		rbPoliza.setEnabled(validar);
+//		rbCheque.setEnabled(validar);
 		
 	}
 	
@@ -937,14 +937,18 @@ public class Cat_Polizas extends JFrame{
 			String basedatos="2.26";
 			String vista_previa_reporte="no";
 			int vista_previa_de_ventana=0;
-			String comando="exec sp_consulta_de_poliza '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
-			String reporte = "Obj_Reporte_De_Consulta_De_Poliza.jrxml";
+			String comando="" ;
+			String reporte = "";
 							 
 								if(rbPoliza.isSelected()){
+									comando="exec sp_consulta_de_poliza '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
+									reporte = "Obj_Reporte_De_Consulta_De_Poliza.jrxml";
 									new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 								}
 								if(rbCheque.isSelected()){
-									
+									comando="exec sp_consulta_de_poliza_cheque '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
+									reporte = "Obj_Reporte_De_Consulta_De_Poliza_De_Cheque.jrxml";
+									new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 								}
 								if(rbAnticipo.isSelected()){
 									

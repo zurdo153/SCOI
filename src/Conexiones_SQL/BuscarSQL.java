@@ -6889,7 +6889,7 @@ public class BuscarSQL {
 	}
 	
 	public boolean existe_folio_cheque(String folio_cheque){
-		String query = " if exists (select folio_cheque as folio_consecutivo from tb_polizas where folio_cheque = "+folio_cheque+") "
+		String query = " if exists (select folio_documento_pago as folio_consecutivo from tb_pagos_contabilidad where folio_documento_pago = '"+folio_cheque+"') "
 					+ "		select 'true' as existe "
 					+ "	 else "
 					+ "		select 'false' as existe ";
