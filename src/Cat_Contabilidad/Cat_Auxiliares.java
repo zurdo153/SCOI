@@ -155,16 +155,16 @@ public class Cat_Auxiliares extends JFrame{
 		panel.add(fhIn  			).setBounds(x+=25,y,100,20);
 		                                                        
 		panel.add(new JLabel("A:")	).setBounds(x+=110,y,25,20);
-		panel.add(fhFin  			).setBounds(x+25,y,100,20); 
+		panel.add(fhFin  			).setBounds(x+=25,y,100,20); 
+		
+		panel.add(btnGenerar  		).setBounds(x+=150,y,100,20);
+		panel.add(btnDeshacer  		).setBounds(x+=120,y,100,20);
+		panel.add(btnReporteAnalitico  		).setBounds(x+=180,y,100,20);
+		panel.add(btnReporteDetalle   		).setBounds(x+=250,y,100,20);
 		
 		x=20;
 //		panel.add(new JLabel("Establecimiento:")).setBounds(x,y+=25,90,20);
 //		panel.add(cmbEstablecimiento  			).setBounds(x+=90,y,170,20); 
-		panel.add(btnGenerar  		).setBounds(x+=190,y+=25,100,20);
-		panel.add(btnDeshacer  		).setBounds(x+=120,y,100,20);
-		panel.add(btnReporteAnalitico  		).setBounds(x+=300,y,100,20);
-		panel.add(btnReporteDetalle   		).setBounds(x+=250,y,100,20);
-		
 		x=20;
 		panel.add(scroll			).setBounds(x,y+=25,anchop-55,altop-y-90);
 		
