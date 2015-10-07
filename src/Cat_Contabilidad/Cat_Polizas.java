@@ -96,7 +96,7 @@ public class Cat_Polizas extends JFrame{
 	JTextField txtCuenta = new Componentes().text(new JTextField(), "Cuenta", 16, "Int");
 	JDateChooser fhFecha 	= new JDateChooser();
 	
-	JButton btnNota = new JButton("Nota");
+	JButton btnNota = new JButton("Nota", new ImageIcon("imagen/nota16.png"));
 	JButton btnReferencia = new JButton("Referencia", new ImageIcon("imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
 	JButton btnGuardarPoliza = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	JButton btnQuitar = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
@@ -223,7 +223,7 @@ public class Cat_Polizas extends JFrame{
 		panel.add(fhFecha  ).setBounds(x*11+40,y,90,20);
 		panel.add(new JLabel("Folio Poliza:")).setBounds(x*20-10,y,70,20);
 		panel.add(txtFolio  ).setBounds(x*23,y,80,20);
-		panel.add(btnNota  ).setBounds(x*29,y,70,20);
+		panel.add(btnNota  ).setBounds(x*28,y,80,22);
 		
         panel.add(lblTotales).setBounds(x-5,y+=25,180,95);            
         panel.add(new JLabel("Cargo:")).setBounds(x+5,y+=15,50,20);  
