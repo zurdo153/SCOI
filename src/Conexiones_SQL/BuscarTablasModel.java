@@ -1531,6 +1531,39 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
+public String[][] tabla_de_ajustes_ticket_ieps(String asignacion){
+		
+		String query_lista = "select folio,transaccion,convert(varchar(20),fecha,103)as fecha,importe,ieps,status,'false' from IZAGAR_AVIEP_facremtick where  status=1 and asignacion = '"+asignacion+"';";
+
+		String[][] matriz = new String[get_filas_izagar(query_lista)][7];
+		
+		Connection con = new Connexion().conexion_IZAGAR();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			int i = 0;
+			while(rs.next()){
+				matriz[i][0 ] = " "+rs.getString(1);
+				matriz[i][1 ] = " "+rs.getString(2);
+				matriz[i][2 ] = " "+rs.getString(3);
+				matriz[i][3 ] = " "+rs.getString(4);
+				matriz[i][4 ] = " "+rs.getString(5);
+				matriz[i][5 ] = " "+rs.getString(6);
+				matriz[i][6 ] = " "+rs.getString(7);
+				
+				i++;
+				
+
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_filtro_de_asignaciones_para_ajuste_de_ticket \n "+query_lista+" "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	    return matriz; 
+	}
+
+	
 public String[][] tabla_filtro_de_asignaciones_para_corregir_asignacion(){
 		
 		String query_lista = "select asignacion, convert(varchar(10),fecha,103)as fecha, sum(iva) as iva"
@@ -1558,6 +1591,34 @@ public String[][] tabla_filtro_de_asignaciones_para_corregir_asignacion(){
 		}
 	    return matriz; 
 	}
+
+public String[][] tabla_filtro_de_asignaciones_para_corregir_asignacion_ieps(){
+	
+	String query_lista = "select asignacion, convert(varchar(10),fecha,103)as fecha, sum(ieps) as ieps"
+			+ "   from IZAGAR_AVIEP_facremtick  where status=2"
+			+ " group by asignacion,convert(varchar(10),fecha,103) ";
+	
+	String[][] matriz = new String[get_filas_izagar(query_lista)][3];
+	Connection con = new Connexion().conexion_IZAGAR();
+	try {
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			matriz[i][0 ] = " "+rs.getString(1);
+			matriz[i][1 ] = " "+rs.getString(2);
+			matriz[i][2 ] = " "+rs.getString(3);
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_filtro_de_asignaciones_para_ajuste_de_ticket "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+    return matriz; 
+}
+
+
 
 public Object[][] tabla_model_competencia(){
 	

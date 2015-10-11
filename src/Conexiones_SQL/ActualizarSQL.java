@@ -3327,8 +3327,8 @@ public class ActualizarSQL {
 	
 	}	
 	
-	public boolean ajuste_avi(String asignacion){
-		String query ="exec sp_ajuste_avi '"+asignacion+"','R';";
+	public boolean ajuste_avi(String asignacion,String funcion){
+		String query ="exec sp_ajuste_avi '"+asignacion+"','"+funcion+"';";
 		
 		Connection con = new Connexion().conexion_IZAGAR();
 		PreparedStatement pstmt = null;
@@ -3405,6 +3405,53 @@ public boolean Actualizar_tickets_seleccionados_avi(String[][] tabla){
 		return true;
 	
 	}	
+
+public boolean Actualizar_tickets_seleccionados_avieps(String[][] tabla){
+	String query ="update IZAGAR_AVIEP_facremtick set status=0 where folio=?";
+	String query2 ="update IZAGAR_AVIEP_entysal set status=0 where folio=?";
+
+	Connection con = new Connexion().conexion_IZAGAR();
+		
+	try {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		PreparedStatement pstmt2 = con.prepareStatement(query2);
+		
+		for(int i=0; i<tabla.length; i++){
+			if(tabla[i][1].toString().equals("true")){
+				pstmt.setString (1, tabla[i][0].toString());
+		        pstmt.executeUpdate();	
+
+		        pstmt2.setString (1, tabla[i][0].toString());
+		        pstmt2.executeUpdate();	
+			}
+		}
+		con.commit();
+	} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_tickets_seleccionados_aviep ] update \n SQLException:"+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_tickets_seleccionados_aviep ] update \n SQLException:"+query+" "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+				return false;
+				}	
+	}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	}		
+	return true;
+
+}	
+
+
 
 public boolean Cargar_Cambios_De_Tickets_de_la_Asignacion(String Asignacion){
 	
@@ -3540,6 +3587,64 @@ public boolean Devolver_Cambios_De_Tickets_de_la_Asignacion(String Asignacion){
 	return true;
 
 }	
+
+
+public boolean Cargar_Cambios_De_Tickets_de_la_Asignacion_del_ieps(String Asignacion){
+	
+	String query ="update entysal set entysal.cod_prod=IZAGAR_AVIEP_entysal.cod_prod_aviep ,entysal.ieps=0 ,entysal.importe=(IZAGAR_AVIEP_entysal.importe+IZAGAR_AVIEP_entysal.ieps)"
+		    	   +"   from entysal "
+		    	   +"  inner join IZAGAR_AVIEP_entysal  on IZAGAR_AVIEP_entysal.id=entysal.id and IZAGAR_AVIEP_entysal.status=1 "
+		    	   +"  where IZAGAR_AVIEP_entysal.id=entysal.id  and IZAGAR_AVIEP_entysal.asignacion='"+Asignacion+"' ";
+	
+	String query2 ="update facremtick set facremtick.importe=(IZAGAR_AVIEP_facremtick.importe+IZAGAR_AVIEP_facremtick.ieps),facremtick.ieps=0"
+			     + "    from facremtick"
+			     + "   inner join IZAGAR_AVIEP_facremtick  on IZAGAR_AVIEP_facremtick.folio=facremtick.folio and IZAGAR_AVIEP_facremtick.status=1"
+			     + "  where IZAGAR_AVIEP_facremtick.folio=facremtick.folio and IZAGAR_AVIEP_facremtick.asignacion='"+Asignacion+"'";
+	
+	String query3 ="update IZAGAR_AVIEP_entysal set status=2 where status=1 and asignacion='"+Asignacion+"'";
+			
+	String query4 ="update IZAGAR_AVIEP_facremtick set status=2 where status=1 and asignacion='"+Asignacion+"'";
+
+	Connection con = new Connexion().conexion_IZAGAR();
+		
+	try {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		PreparedStatement pstmt2 = con.prepareStatement(query2);
+		PreparedStatement pstmt3 = con.prepareStatement(query3);
+		PreparedStatement pstmt4 = con.prepareStatement(query4);
+
+		pstmt.executeUpdate();
+		pstmt2.executeUpdate();	
+		pstmt3.executeUpdate();	
+		pstmt4.executeUpdate();	
+		
+		con.commit();
+	} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cargar_Cambios_De_Tickets_de_la_Asignacion ] \n SQLException:"+query+" \n"+query2+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cargar_Cambios_De_Tickets_de_la_Asignacion ] \n SQLException:"+query+" \n"+query2+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+				return false;
+				}	
+	}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	}		
+	return true;
+
+}	
+
+
 
 public boolean Borrar_movimiento_contabilidad(String id){
 	String delete =" DELETE FROM IZAGAR_movimientos_polizas WHERE IZAGAR_movimientos_polizas.cod_establecimiento='"+id+"'";

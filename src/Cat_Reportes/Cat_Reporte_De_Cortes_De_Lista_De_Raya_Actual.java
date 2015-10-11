@@ -48,7 +48,7 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 	
 	JLabel lblFolioEmpleado = new JLabel("Folio Empleado:");
 	JTextField txtFolioEmpleado = new Componentes().text(new JTextField(), "Folio De Empleado", 10, "Int");
-	JButton btnFiltroEmpleado = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
+	JButton btnFiltroEmpleado = new JButton(new ImageIcon("imagen/Filter-List-icon16.png"));
 	
 	JButton btncortes_Limpio = new JButton(new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
 	JButton btnPrestamos_Por_Establecimiento =new JButton(new ImageIcon("imagen/plan-icono-5073-16.png"));
@@ -83,17 +83,6 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		Constructor();
 	}
 	
-	public Date cargar_fecha_Sugerida(Integer dias){
-		Date date1 = null;
-				  try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		return date1;
-	};
 
 	public void Constructor(){
 		
@@ -121,21 +110,30 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		
 		int x= 35,y=30,ancho=300;
 		
-		panel.add(lblFolioEmpleado).setBounds(x,y,80,20);
-		panel.add(txtFolioEmpleado).setBounds(x+80,y,60,20);
-		panel.add(btnFiltroEmpleado).setBounds(x+140,y,30,20);
 		
-		panel.add(btnPrestamos_Por_Establecimiento).setBounds(x,y+=25,ancho,40);
+		panel.add(btnPrestamos_Por_Establecimiento).setBounds(x,y,ancho,40);
 		
-		panel.add(lblLinea			).setBounds(x,y+=65,ancho,95);
-		panel.add(new JLabel("De:")	).setBounds(x+30,y+=20,100,20);
-		panel.add(fechaIn			).setBounds(x+50,y,100,20);
-		panel.add(new JLabel("A:")	).setBounds(x*4+47,y,100,20);
-		panel.add(fechaFin			).setBounds(x*5+25,y,100,20);
+		panel.add(lblLinea			).setBounds(x,y+=65,ancho,130);
+		panel.add(lblFolioEmpleado).setBounds(x+10,y+=20,80,20);
+		panel.add(txtFolioEmpleado).setBounds(x+90,y,100,20);
+		panel.add(btnFiltroEmpleado).setBounds(x+190,y,30,20);
+		panel.add(new JLabel("De:")	).setBounds(x+10,y+=30,100,20);
+		panel.add(fechaIn			).setBounds(x+30,y,100,20);
+		panel.add(new JLabel("A:")	).setBounds(x*4+67,y,100,20);
+		panel.add(fechaFin			).setBounds(x*5+47,y,100,20);
+		panel.add(btnAbonos_Cortes	).setBounds(x+10,y+=30,ancho-20,40);
 		
-		panel.add(btnAbonos_Cortes	).setBounds(x+10,y+=25,ancho-20,40);
+		Date date1=null;
+		try {
+			date1 = new SimpleDateFormat("dd/MM/yyyy").parse("01/05/2015 00:00:01");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		fechaIn.setDate(date1);
+		fechaIn.setEnabled(false);
+		fechaFin.setDate(cargar_fecha_Sugerida(0));
 		
-//		panel.add(btncortes_Limpio).setBounds(40,100,300,40);
+		
 		btnPrestamos_Por_Establecimiento.addActionListener(Reporte_Cortes_Lista_de_Raya_Actual_Por_Establecimiento);
 		btnAbonos_Cortes.addActionListener(Reporte_Abonos_Cortes);
 		btncortes_Limpio.addActionListener(Reporte_Cortes_Lista_de_Raya_Actual_limpio);
@@ -145,12 +143,26 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		txtFolioEmpleado.setHorizontalAlignment(4);
 
 		cont.add(panel);
-		this.setSize(375,255);
+		this.setSize(375,275);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 	}
+	
+	public Date cargar_fecha_Sugerida(Integer dias){
+		Date date1 = null;
+				  try {
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		return date1;
+	};
+	
+	
 	
 	String basedatos="2.26";
 	String vista_previa_reporte="no";

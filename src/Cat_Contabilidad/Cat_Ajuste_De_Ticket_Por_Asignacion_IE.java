@@ -32,7 +32,7 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
+public class Cat_Ajuste_De_Ticket_Por_Asignacion_IE extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -40,21 +40,25 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
-	
 	JTextField txtAsignacion = new JTextField("");
-	JTextField txtiva= new JTextField("");
+	JTextField txtieps= new JTextField("");
 	JTextField txtAsignacionCorregir= new JTextField("");
-	
 	JButton btnAsignacion = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnQuitar = new JButton("Eliminar Tickets",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	JButton btnBuscarCambio = new JButton("Generar Cambios",new ImageIcon("imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-16.png"));
-
 	JButton btnAsignacionDCambio = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnDevolverCambio = new JButton("Corregir Cambios",new ImageIcon("imagen/actualizar-actualiza-icono-7372-16.png"));
-	
+	JLabel JlbLogI = new JLabel(new ImageIcon("Imagen/I1-icon.png")); 
+	JLabel JlbLogE = new JLabel(new ImageIcon("Imagen/E1-icon.png"));
+	JLabel JlbLogP = new JLabel(new ImageIcon("Imagen/P1-icon.png"));
+	JLabel JlbLogS = new JLabel(new ImageIcon("Imagen/S1-icon.png"));
+	JLabel JlbLogI2 = new JLabel(new ImageIcon("Imagen/I1-icon.png")); 
+	JLabel JlbLogE2 = new JLabel(new ImageIcon("Imagen/E1-icon.png"));
+	JLabel JlbLogP2 = new JLabel(new ImageIcon("Imagen/P1-icon.png"));
+	JLabel JlbLogS2 = new JLabel(new ImageIcon("Imagen/S1-icon.png"));
 	
 //  TODO Inicializar (modelo)
-  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Transaccion", "Fecha", "Importe", "IVA", "Estatus", "*"} ){
+  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Transaccion", "Fecha", "Importe", "IEPS", "Estatus", "*"} ){
                   
 		@SuppressWarnings({ "rawtypes" })
 		Class[] types = new Class[]{
@@ -84,55 +88,62 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
                return false;
        }
   };
-	
-//  TODO Inicializar (tabla y scroll)
+
+  //  TODO Inicializar (tabla y scroll)
   JTable tabla = new JTable(modelo);
 	JScrollPane scroll = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
 	double iva=0;
-	public Cat_Ajuste_De_Ticket_Por_Asignacion(){
+	public Cat_Ajuste_De_Ticket_Por_Asignacion_IE(){
 		int anchop = 755;
 		int altop = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 		
-		 this.setSize(anchop,altop);
+	    this.setSize(anchop,altop);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/actualizar-actualiza-icono-7372-128.png"));
 		
-		this.setTitle("Ajuste de ticket por asignacion");
-		this.panel.setBorder(BorderFactory.createTitledBorder( "Ajuste de ticket"));
-		int x=15,y=20,ancho=100;
-		
-		panel.add(new JLabel("Establecimiento: ")).setBounds(x,y,ancho,20);
+		this.setTitle("Ajuste De Ticket Por Asignacion IE");
+		this.panel.setBorder(BorderFactory.createTitledBorder( "Ticket IE"));
+		int x=15,y=20,ancho=100, height=20;
+		panel.add(new JLabel("Establecimiento: ")).setBounds(x,y,ancho,height);
 		panel.add(cmbEstablecimiento).setBounds(ancho,y,ancho*2,20);
-		panel.add(btnQuitar).setBounds(anchop-180,y,140,20);
-		panel.add(new JLabel("Asignacion: ")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtAsignacion).setBounds(ancho,y,ancho*2-30,20);
-		panel.add(btnAsignacion).setBounds((ancho*3)-30,y,30,20);
-		panel.add(new JLabel("Total IVA: ")).setBounds(x+(ancho*3)+220,y,ancho,20);
-		panel.add(txtiva).setBounds(x+(ancho*3)+284,y,ancho,20);
+		panel.add(btnQuitar).setBounds(anchop-180,y,140,height);
+		panel.add(new JLabel("Asignacion: ")).setBounds(x,y+=25,ancho,height);
+		panel.add(txtAsignacion).setBounds(ancho,y,ancho*2-30,height);
+		panel.add(btnAsignacion).setBounds((ancho*3)-30,y,30,height);
+		panel.add(JlbLogI).setBounds((ancho*3)+30,y,10,height);
+		panel.add(JlbLogE).setBounds((ancho*3)+45,y,10,height);
+		panel.add(JlbLogP).setBounds((ancho*3)+60,y,10,height);
+		panel.add(JlbLogS).setBounds((ancho*3)+75,y,10,height);
+
+		panel.add(new JLabel("Total IEPS: ")).setBounds(x+(ancho*3)+220,y,ancho,height);
+		panel.add(txtieps).setBounds(x+(ancho*3)+284,y,ancho,height);
 		panel.add(scroll).setBounds(x,y+=25, anchop-35, altop-130);
-		panel.add(btnBuscarCambio).setBounds(x,altop-55,ancho+40,20);
 		
-		panel.add(btnAsignacionDCambio).setBounds(x+435,altop-55,20,20);
-		panel.add(txtAsignacionCorregir).setBounds(x+455,altop-55,90,20);
-		panel.add(btnDevolverCambio).setBounds(x+545,altop-55,140,20);
+		y=altop-55;
+		panel.add(btnBuscarCambio).setBounds(x,y,ancho+40,height);
+		
+		panel.add(JlbLogI2).setBounds((ancho*3)+30,y,10,height);
+		panel.add(JlbLogE2).setBounds((ancho*3)+45,y,10,height);
+		panel.add(JlbLogP2).setBounds((ancho*3)+60,y,10,height);
+		panel.add(JlbLogS2).setBounds((ancho*3)+75,y,10,height);
+		
+		panel.add(btnAsignacionDCambio).setBounds(x+435,y,20,height);
+		panel.add(txtAsignacionCorregir).setBounds(x+455,y,90,height);
+		panel.add(btnDevolverCambio).setBounds(x+545,y,140,height);
 		
 		txtAsignacion.setEditable(false);
-		txtiva.setEditable(false);
+		txtieps.setEditable(false);
 		llamar_render(tabla);
-		
 		btnAsignacion.addActionListener(opFiltro);
 		btnQuitar.addActionListener(opEliminar_Tickets_Selecionado);
 		btnBuscarCambio.addActionListener(opCargar_Cambios_De_Tickets_de_la_Asignacion);
 		btnAsignacionDCambio.addActionListener(opFiltro_Asignaciones_Pendientes_corregir);
 		btnDevolverCambio.addActionListener(opDevolver_Cambios_De_Tickets_de_la_Asignacion);
 		
-		
 		btnBuscarCambio.setEnabled(false);
 		btnQuitar.setEnabled(false);
 		btnDevolverCambio.setEnabled(false);
 		txtAsignacionCorregir.setEditable(false);
-		
-		
 		cont.add(panel);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -142,7 +153,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	ActionListener opFiltro = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			txtAsignacion.setText("");
-			txtiva.setText("");
+			txtieps.setText("");
 			txtAsignacionCorregir.setText("");
 			iva=0;
 			 btnBuscarCambio.setEnabled(false);
@@ -165,12 +176,11 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			txtAsignacion.setText("");
 			txtAsignacionCorregir.setText("");
-			txtiva.setText("");
+			txtieps.setText("");
 			iva=0;
 			 btnBuscarCambio.setEnabled(false);
 			 btnDevolverCambio.setEnabled(false);
 			 btnQuitar.setEnabled(false);
-				
 				while(tabla.getRowCount()>0){
 					modelo.removeRow(0);
 				}
@@ -181,10 +191,10 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	
 	public void llenado_de_tabla_de_tickets(){
 		iva=0;
-		txtiva.setText("");
+		txtieps.setText("");
 		DecimalFormat df = new DecimalFormat("#0.0000");
 		
-		String[][] lista=new BuscarTablasModel().tabla_de_ajustes_ticket(txtAsignacion.getText().toString().trim());
+		String[][] lista=new BuscarTablasModel().tabla_de_ajustes_ticket_ieps(txtAsignacion.getText().toString().trim());
 		if(lista.length==0){
 			 btnBuscarCambio.setEnabled(false);
 			 btnQuitar.setEnabled(false);
@@ -203,7 +213,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 			iva=iva+Double.valueOf(lista[i][4]);
 			modelo.addRow(fila);
 		}
-		txtiva.setText(df.format(iva));
+		txtieps.setText(df.format(iva));
 		 btnBuscarCambio.setEnabled(true);
 		 btnQuitar.setEnabled(true);
 		}
@@ -262,7 +272,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 					matriz_tickets_eliminados[i][1] = tabla.getValueAt(i,6).toString().trim();
 			}
          
-		   new ActualizarSQL().Actualizar_tickets_seleccionados_avi(matriz_tickets_eliminados);
+		   new ActualizarSQL().Actualizar_tickets_seleccionados_avieps(matriz_tickets_eliminados);
 			while(tabla.getRowCount()>0){
 				modelo.removeRow(0);
 			}
@@ -365,7 +375,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		        		int fila= tbl.getSelectedRow();
 		        		txtAsignacion.setText(tbl.getValueAt(fila, 0).toString().trim());
 		        		dispose();
-						if(new ActualizarSQL().ajuste_avi(txtAsignacion.getText().toString().trim(),"R")){
+						if(new ActualizarSQL().ajuste_avi(txtAsignacion.getText().toString().trim(), "I")){
 	  			 	        llenado_de_tabla_de_tickets();
 						}else{
 							JOptionPane.showMessageDialog(null, "Error Al Intentar Llenar La Tabla de Tickets","ERROR",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
@@ -400,7 +410,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		
 		JTextField txtAsignacionFiltro = new JTextField("");
 		
-		  public DefaultTableModel modeloFiltro2 = new DefaultTableModel(null, new String[]{"Asignacion","Fecha Liquidacion","IVA"} ){
+		  public DefaultTableModel modeloFiltro2 = new DefaultTableModel(null, new String[]{"Asignacion","Fecha Liquidacion","IEPS"} ){
 		                  
 				@SuppressWarnings({ "rawtypes" })
 				Class[] types = new Class[]{
@@ -444,11 +454,9 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 			panel.add(scrollFiltro).setBounds(x,y+=20,345,350);
 			cont.add(panel);
 			llamar_render_filtro_de_asignaciones_pendientes_de_corregir(tablaFiltro);
+			modeloFiltro2.setRowCount(0);
 			
-			while(tablaFiltro.getRowCount()>0){
-				modeloFiltro2.removeRow(0);
-			}
-			String[][] lista=new BuscarTablasModel().tabla_filtro_de_asignaciones_para_corregir_asignacion();
+			String[][] lista=new BuscarTablasModel().tabla_filtro_de_asignaciones_para_corregir_asignacion_ieps();
 			String[] fila = new String[3];
 			for(int i=0; i<lista.length; i++){
 				fila[0] = lista[i][0]+"";
@@ -473,7 +481,6 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
              int x=100;
             tbl.getTableHeader().setReorderingAllowed(false) ;
             tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
             tbl.getColumnModel().getColumn(0 ).setMaxWidth(x+40);   
 			tbl.getColumnModel().getColumn(0 ).setMinWidth(x);	
 			tbl.getColumnModel().getColumn(1 ).setMaxWidth(x+40);   
@@ -507,21 +514,17 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		};
 	}
 	
-	
 //	TODO (KeyListener Hacer Cambio de valores del tickets antes de fac)
 	ActionListener opCargar_Cambios_De_Tickets_de_la_Asignacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-		  if( new ActualizarSQL().Cargar_Cambios_De_Tickets_de_la_Asignacion(txtAsignacion.getText()+"")){
-			  while(tabla.getRowCount()>0){
-					modelo.removeRow(0);
-				}
+		  if( new ActualizarSQL().Cargar_Cambios_De_Tickets_de_la_Asignacion_del_ieps(txtAsignacion.getText()+"")){
+			  modelo.setRowCount(0);
 			  txtAsignacion.setText("");
-			  txtiva.setText("");
+			  txtieps.setText("");
 				JOptionPane.showMessageDialog(null, "Se Cambiaron Correctamente Los Datos", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		  };
 		}
 	};
-	
 	
 //	TODO (KeyListener Hacer Cambio de valores del tickets antes de fac)
 	ActionListener opDevolver_Cambios_De_Tickets_de_la_Asignacion = new ActionListener(){
@@ -532,14 +535,11 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		  };
 		}
 	};
-
-	
-
 	
 	public static void main(String [] arg){
 		try{
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			new Cat_Ajuste_De_Ticket_Por_Asignacion().setVisible(true);
+			new Cat_Ajuste_De_Ticket_Por_Asignacion_IE().setVisible(true);
 		}catch(Exception e){}
 		
 
