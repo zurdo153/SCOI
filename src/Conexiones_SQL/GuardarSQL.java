@@ -39,6 +39,7 @@ import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
+import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Importar_Voucher;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
@@ -4159,29 +4160,6 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.setAutoCommit(false);
 				pstmt = con.prepareStatement(query);
 				
-//				System.out.println(folio.toUpperCase().trim());
-//				System.out.println(tipo.toUpperCase().trim());
-//				System.out.println(fecha_poliza.toUpperCase().trim());
-//				System.out.println(referencia_trans.toUpperCase().trim());
-//				System.out.println(referencia);
-//				System.out.println(nota.toUpperCase().trim());
-//				System.out.println(concepto_gral.toUpperCase().trim());
-//				System.out.println(cheque.toUpperCase().trim());
-//				System.out.println(usuario.getFolio());
-//				
-//				System.out.println(matriz[i][0].toString().trim().toUpperCase());
-//				System.out.println(matriz[i][1].toString().trim().toUpperCase().toUpperCase().trim());
-//				System.out.println(matriz[i][2].toString().trim().toUpperCase().toUpperCase().trim());
-//				System.out.println(matriz[i][4].toString().trim().toUpperCase().equals("")?"0":matriz[i][4].toString().trim().toUpperCase());
-//				System.out.println(matriz[i][5].toString().trim().toUpperCase().equals("")?"0":matriz[i][5].toString().trim().toUpperCase());
-//				System.out.println(matriz[i][6].toString().trim().toUpperCase().toUpperCase().trim());
-//				System.out.println(matriz[i][7].toString().trim().toUpperCase().toUpperCase().trim());
-//				
-//				System.out.println(ReferenciaText.toUpperCase().trim());
-//				System.out.println(FormaPago.toUpperCase().trim());
-//				System.out.println(tipoBanco.toUpperCase().trim());
-//				System.out.println(total);
-//	--------------------------------------------------------------------------------------------------			
 				pstmt.setString(1, folio.toUpperCase().trim());
 				pstmt.setString(2, tipo.toUpperCase().trim());
 				pstmt.setString(3, fecha_poliza.toUpperCase().trim());
@@ -4270,6 +4248,106 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			} catch(SQLException e){
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Proveedor(Obj_Alta_Proveedores_Polizas prv){
+		String query = "exec sp_insert_proveedor ?,?,?,?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			
+//			// insert bitacora
+//			String pc = InetAddress.getLocalHost().getHostName();
+//			String ip = InetAddress.getLocalHost().getHostAddress();
+//			pstmtb = con.prepareStatement(Qbitacora);
+//			pstmtb.setString(1, pc);
+//			pstmtb.setString(2, ip);
+//			pstmtb.setInt(3, usuario.getFolio());
+//			pstmtb.setString(4, "sp_insert_cliente alta "+cliente.getNombre().toUpperCase()+cliente.getAp_paterno().toUpperCase()+cliente.getAp_materno().toUpperCase());
+//			pstmtb.setString(5, "Cliente Nuevo");
+//			pstmtb.executeUpdate();
+//			
+			
+//			private String telefono_cuadrante;
+			int i=1;
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(i,	 	prv.getNombre().toUpperCase());
+			pstmt.setString(i+=1,	prv.getAp_paterno().toUpperCase());
+			pstmt.setString(i+=1,	prv.getAp_materno().toUpperCase());
+			pstmt.setString(i+=1,	prv.getDireccion().toUpperCase());
+			pstmt.setString(i+=1, 	prv.getTelefono().toUpperCase());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proveedor ] Insert  SQLException: sp_insert_cliente "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proveedor ] Insert  SQLException: sp_insert_empleado "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+
+	public boolean Guardar_Ordern_De_Pago_En_Efectivo(float cantidad, String fecha, String concepto, String autorizacion, String tipoBeneficiario, int folioBeneficiario){
+		String query = "exec sp_insert_orden_de_pago_en_efectivo ?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+		
+				con.setAutoCommit(false);
+				pstmt = con.prepareStatement(query);
+				
+				pstmt.setFloat(1, cantidad);
+				pstmt.setString(2, fecha.toUpperCase().trim());
+				pstmt.setString(3, concepto.toUpperCase().trim());
+				pstmt.setString(4, autorizacion.toUpperCase().trim());
+				pstmt.setString(5, tipoBeneficiario.toUpperCase().trim());
+				
+				pstmt.setInt(6, folioBeneficiario);
+				pstmt.setInt(7, usuario.getFolio());
+				
+				pstmt.executeUpdate();
+			
+			con.commit();
+		} catch (SQLException e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ordern_De_Pago_En_Efectivo ] Insert   \nSQLException: sp_insert_orden_de_pago_en_efectivo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ordern_De_Pago_En_Efectivo ] Insert  \nSQLException: sp_insert_orden_de_pago_en_efectivo "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ordern_De_Pago_En_Efectivo ] Insert  SQLException: sp_insert_orden_de_pago_en_efectivo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

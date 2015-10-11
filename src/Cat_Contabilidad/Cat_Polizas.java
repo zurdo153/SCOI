@@ -1,5 +1,5 @@
 package Cat_Contabilidad;
-
+//txtCheque.setText(new BuscarTablasModel().folio_consecutivo_cheque_de_poliza());
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
@@ -80,7 +80,7 @@ public class Cat_Polizas extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbTipo = new JComboBox(tipo());
 	
-	public String[] tipoBanco(){
+	public String[] cuentaBanco(){
 		try {
 			return new Cargar_Combo().tipos_de_banco_polizas();
 		} catch (SQLException e) {
@@ -90,7 +90,7 @@ public class Cat_Polizas extends JFrame{
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	JComboBox cmbBanco = new JComboBox(tipoBanco());
+	JComboBox cmbDepositoBanco = new JComboBox(cuentaBanco());
 	
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Tipo", 10, "String");
 	JTextField txtCuenta = new Componentes().text(new JTextField(), "Cuenta", 16, "Int");
@@ -103,7 +103,7 @@ public class Cat_Polizas extends JFrame{
 	JButton btnImprimir = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
 	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	
-	String[] formaDePago = {"Forma De Pago","Cheque","Cheque Banco Interno","Efectivo","Transferencia","Vale"};
+	String[] formaDePago = {"Forma De Pago","Cheque","Cheque Banco Interno","Transpaso","Vale"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbFormaDePago = new JComboBox(formaDePago);
 	
@@ -136,7 +136,6 @@ public class Cat_Polizas extends JFrame{
 	JScrollPane Concepto = new JScrollPane(txaConcepto);
 	
 	JRadioButton rbPagoPrv 			= new JRadioButton("Pago a proveedores");
-	JRadioButton rbNotaCreditoPrv 	= new JRadioButton("Nota de credito a proveedores");
 	JRadioButton rbAnticipoPrv 		= new JRadioButton("Anticipo a proveedores");
 	ButtonGroup grupo = new ButtonGroup();
 	
@@ -191,6 +190,8 @@ public class Cat_Polizas extends JFrame{
 	String nota = "";
 	int folioReferencia = 0;
 	
+	Date fechaRef = null;
+	
 	Border borderline;
 	public Cat_Polizas(String nta){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/cajas-de-cajas-de-embalaje-de-envio-de-un-archivo-tar-icono-4009-64.png"));
@@ -200,9 +201,7 @@ public class Cat_Polizas extends JFrame{
 		nota=nta;
 		
 		grupo.add(rbPagoPrv);
-		grupo.add(rbNotaCreditoPrv);
 		grupo.add(rbAnticipoPrv);
-		
 		
 		grupoImprimir.add(rbAnticipo );
 		grupoImprimir.add(rbPoliza );
@@ -232,16 +231,17 @@ public class Cat_Polizas extends JFrame{
         panel.add(lblPagos).setBounds(x*10,y-15,460,130); 
         panel.add(new JLabel("Cheque: ")).setBounds(x*11-10,y,80,20);	
       	panel.add(chbCheque).setBounds(x*13,y,20,20);
-      	panel.add(new JLabel("Folio Cheque: ")).setBounds(x*15,y,80,20);
-      	panel.add(txtCheque).setBounds(x*19,y,80,20);
-      	panel.add(cmbFormaDePago).setBounds(x*25,y,140,20);
+      	panel.add(cmbFormaDePago).setBounds(x*15,y,140,20);
+      	panel.add(new JLabel("C.Bancaria: ")).setBounds(x*23,y,70,20);
+      	panel.add(cmbDepositoBanco).setBounds(x*26+5,y,125,20);
     	            
       	panel.add(new JLabel("Abono:")).setBounds(x+5,y+=25,50,20);   
       	panel.add(spAbonoTotales).setBounds(x+70,y,90,20);
       	
         panel.add(rbPagoPrv).setBounds(x*11-15,y+5,130,20);																										
-      	panel.add(rbNotaCreditoPrv).setBounds(x*17,y+5,180,20); 
-      	panel.add(rbAnticipoPrv).setBounds(x*26,y+5,136,20);
+      	panel.add(rbAnticipoPrv).setBounds(x*17,y+5,136,20);
+      	panel.add(new JLabel("Folio Cheque: ")).setBounds(x*24+10,y+5,80,20);
+      	panel.add(txtCheque).setBounds(x*28+10,y+5,80,20);
       	
       	panel.add(new JLabel("Diferencia:")).setBounds(x+5,y+=25,70,20); 
     	panel.add(spDiferenciaTotales).setBounds(x+70,y,90,20);    
@@ -249,8 +249,6 @@ public class Cat_Polizas extends JFrame{
     	panel.add(new JLabel("Referencia: ")).setBounds(x*11-10,y+10,80,20);																										
       	panel.add(cmbReferencia).setBounds(x*11+50,y+10,135,20); 
       	panel.add(btnReferencia).setBounds(x*20+10,y+10,105,20);
-      	
-      	panel.add(cmbBanco).setBounds(x*26+5,y+10,125,20);
       	
       	panel.add(txtReferencia).setBounds(x*10+5,y+=35,308,20);
     	panel.add(new JLabel("Total:")).setBounds(x*26+5,y,70,20);
@@ -284,9 +282,13 @@ public class Cat_Polizas extends JFrame{
 		rbPoliza.setSelected(true);
 		txtReferencia.setEditable(false);
 		btnReferencia.setEnabled(false);
+		txtCheque.setEditable(false);
 		
+		fechaRef = cargar_fecha_Sugerida(0);
 		fhFecha.setDate(cargar_fecha_Sugerida(0));
 		buscarFolioPolizaConsecutivo();
+		
+		txtCheque.setText(new BuscarTablasModel().folio_consecutivo_cheque_de_poliza(cmbDepositoBanco.getSelectedItem().toString()));
 		
 		cmbReferencia.addActionListener(tipoReferencia);
 		cmbTipo.addActionListener(opBuscar);
@@ -302,8 +304,9 @@ public class Cat_Polizas extends JFrame{
 		btnImprimir.addActionListener(opImprimir);
 		
 		rbPagoPrv.addActionListener(opValidarImpresion);
-		rbNotaCreditoPrv.addActionListener(opValidarImpresion);
 		rbAnticipoPrv.addActionListener(opValidarImpresion);
+		
+		cmbDepositoBanco.addActionListener(opCuentaBanco);
 		
 		agregar(tabla);
 		tabla.addKeyListener(op_key);
@@ -448,6 +451,15 @@ public class Cat_Polizas extends JFrame{
         });
     }
 	
+	ActionListener opCuentaBanco = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			
+			txtCheque.setEditable(true);
+			txtCheque.requestFocus();
+			txtCheque.setText(new BuscarTablasModel().folio_consecutivo_cheque_de_poliza(cmbDepositoBanco.getSelectedItem().toString()));
+		}
+	};
+	
 	ActionListener opQuitar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
@@ -484,6 +496,7 @@ public class Cat_Polizas extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			
 			cmbFormaDePago.setSelectedIndex(0);
+			cmbDepositoBanco.setSelectedIndex(0);
 			
 			if(chbCheque.isSelected()){
 				
@@ -492,9 +505,6 @@ public class Cat_Polizas extends JFrame{
 				cmbReferencia.addItem("Selecciona Beneficiario");
 				cmbReferencia.addItem("Proveedor");
 				cmbReferencia.addItem("Empleado");
-				
-				txtCheque.setText(new BuscarTablasModel().folio_consecutivo_cheque_de_poliza());
-				txtCheque.requestFocus();
 				
 				componentes(true);
 				
@@ -505,13 +515,13 @@ public class Cat_Polizas extends JFrame{
 				ValidaImprimir();
 			}else{
 				
-				txtCheque.setText("");
 				txtReferencia.setText("");
 				txtTotal.setText("");
 				
 				folioReferencia = 0;
 				
 				cmbFormaDePago.setEnabled(false);
+				cmbDepositoBanco.setEnabled(false);
 				
 				cmbReferencia.removeAllItems();
 				cmbReferencia.addItem("No Aplica");
@@ -520,7 +530,7 @@ public class Cat_Polizas extends JFrame{
 				cmbReferencia.addItem("Establecimiento");
 				cmbReferencia.addItem("Proveedor");
 				
-				cmbBanco.setSelectedIndex(0);
+				cmbDepositoBanco.setSelectedIndex(0);
 				
 				componentes(false);
 				
@@ -541,15 +551,12 @@ public class Cat_Polizas extends JFrame{
 	 public void resetRButton(){
 		 
 			grupo.remove(rbPagoPrv);
-			grupo.remove(rbNotaCreditoPrv);
 			grupo.remove(rbAnticipoPrv);
 			
 			rbPagoPrv.setSelected(false);
-			rbNotaCreditoPrv.setSelected(false);
 			rbAnticipoPrv.setSelected(false);
 			
 			grupo.add(rbPagoPrv);
-			grupo.add(rbNotaCreditoPrv);
 			grupo.add(rbAnticipoPrv);
 			
 			rbPoliza.setSelected(true);
@@ -589,11 +596,29 @@ public class Cat_Polizas extends JFrame{
 	
 	ActionListener opGuardarPoliza = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-
-			verificarTabla();
+			
+			String fecha = fhFecha.getDate()+"";
+			if(fecha.equals("null")){
+				JOptionPane.showMessageDialog(null, "La Fecha Esta Vacia O Esta Mal En Su Formato","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}else{
+				
+				if(fechaRef.before(fhFecha.getDate())){
+					JOptionPane.showMessageDialog(null, "No Se Permite Alimentar Una Poliza Con Fechas Mayores Al Dia De Hoy","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}else{
+					if(txaConcepto.getText().equals("")){
+						JOptionPane.showMessageDialog(null, "Todas Las Polizas Deben Contar Con Un Concepto General","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+						return;
+					}else{
+						verificarTabla();
+					}
+				}
+			}
 		}
 	};
 	
+
 	public void verificarTabla(){
 		
 		if(tabla.isEditing()){
@@ -692,16 +717,10 @@ public class Cat_Polizas extends JFrame{
 				String tipo_documento = "";
 				if(rbPagoPrv.isSelected())
 					tipo_documento = "P";
-				if(rbNotaCreditoPrv.isSelected())
-					tipo_documento = "N";
 				if(rbAnticipoPrv.isSelected())
 					tipo_documento = "A";
-					
 		
-		
-		
-		
-			if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, txaConcepto.getText().toUpperCase().trim(), txtCheque.getText().toUpperCase().trim(), matriz, txtReferencia.getText().toUpperCase().trim(), cmbFormaDePago.getSelectedItem().toString().toUpperCase(),cmbBanco.getSelectedItem().toString().trim(),Float.valueOf(txtTotal.getText().toString().equals("")?"0":txtTotal.getText().toString()),tipo_documento)){
+			if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, txaConcepto.getText().toUpperCase().trim(), txtCheque.getText().toUpperCase().trim(), matriz, txtReferencia.getText().toUpperCase().trim(), cmbFormaDePago.getSelectedItem().toString().toUpperCase(),cmbDepositoBanco.getSelectedItem().toString().trim(),Float.valueOf(txtTotal.getText().toString().equals("")?"0":txtTotal.getText().toString()),tipo_documento)){
 
 				fecha = new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate())+" 00:00:00";
 				tipo = cmbTipo.getSelectedItem().toString().toUpperCase();
@@ -809,12 +828,11 @@ public class Cat_Polizas extends JFrame{
 		spDiferenciaTotales.setEnabled(false);
 		txtFolio.setEditable(false);
 		
-		txtCheque.setEditable(validar);
 		txtTotal.setEditable(validar);
 		cmbFormaDePago.setEnabled(validar);
+		cmbDepositoBanco.setEnabled(validar);
 		
 		rbPagoPrv.setEnabled(validar);
-		rbNotaCreditoPrv.setEnabled(validar);
 		rbAnticipoPrv.setEnabled(validar);
 		
 //		rbAnticipo.setEnabled(validar);
@@ -843,6 +861,7 @@ public class Cat_Polizas extends JFrame{
 		
 		chbCheque.setSelected(false);
 		cmbFormaDePago.setEnabled(false);
+		cmbDepositoBanco.setEnabled(false);
 		
 		cmbReferencia.removeAllItems();
 		cmbReferencia.addItem("No Aplica");
@@ -852,7 +871,7 @@ public class Cat_Polizas extends JFrame{
 		cmbReferencia.addItem("Proveedor");
 		
 		cmbTipo.setSelectedIndex(0);
-		cmbBanco.setSelectedIndex(0);
+		cmbDepositoBanco.setSelectedIndex(0);
 		
 		componentes(false);
 		txtReferencia.setEditable(false);

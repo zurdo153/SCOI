@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 
 
+
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
@@ -28,6 +29,7 @@ import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
+import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
@@ -3691,5 +3693,61 @@ public boolean devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(Str
 	return true;
 }
 
+public boolean Proveedor(Obj_Alta_Proveedores_Polizas prv){
+	String query = "exec sp_update_alta_proveedor ?,?,?,?,?,?";
+
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	try {
+		con.setAutoCommit(false);
+		
+//		// insert bitacora
+//		String pc = InetAddress.getLocalHost().getHostName();
+//		String ip = InetAddress.getLocalHost().getHostAddress();
+//		pstmtb = con.prepareStatement(Qbitacora);
+//		pstmtb.setString(1, pc);
+//		pstmtb.setString(2, ip);
+//		pstmtb.setInt(3, usuario.getFolio());
+//		pstmtb.setInt(4, folio);
+//		pstmtb.setString(5, "Empleados sp_update_alta_empleado");
+//		pstmtb.executeUpdate();
+		
+//		private String telefono_cuadrante;
+		int i=1;
+		pstmt = con.prepareStatement(query);
+		pstmt.setInt   (i,		prv.getFolio_proveedor());
+		pstmt.setString(i+=1,	prv.getNombre().toUpperCase().trim());
+		
+		pstmt.setString(i+=1,	prv.getAp_paterno().toUpperCase().trim());
+		pstmt.setString(i+=1,	prv.getAp_materno().toUpperCase().trim());
+		pstmt.setString(i+=1,	prv.getDireccion().toUpperCase().trim());
+		pstmt.setString(i+=1, 	prv.getTelefono().trim());
+		
+		pstmt.executeUpdate();
+		con.commit();
+		
+	}catch(SQLException ex){
+		
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proveedor ] update  SQLException: sp_update_alta_cliente "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}catch(SQLException ex1){
+				System.out.println(ex1.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proveedor ] update  SQLException: sp_update_alta_cliente "+ex1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proveedor ] update  SQLException: sp_update_alta_cliente "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		}
+	return true;
+}	
 	
 }

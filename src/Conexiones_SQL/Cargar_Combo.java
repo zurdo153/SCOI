@@ -1630,7 +1630,41 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] tipos_de_banco_polizas() throws SQLException{
-		String query = "SELECT banco_contabilidad as nombre FROM tb_bancos_contabilidad WHERE (estatus = 'V') order by nombre asc";
+		String query = "SELECT cuenta as nombre FROM tb_bancos_contabilidad WHERE (estatus = 'V') order by nombre asc";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+//			int j=0;
+			while(rs.next()){
+//				if(j == 0){
+//					miVector.add("Selecciona un Tipo");
+//				}
+				miVector.add(rs.getString("nombre"));
+//				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] autorizados_para_pago_efectivo() throws SQLException{
+		String query = "select nombre_completo as nombre from tb_autorizan_orden_de_pago where status = 'V' order by nombre asc";
 		
 		Statement stmt = null;
 		try {

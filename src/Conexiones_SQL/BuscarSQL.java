@@ -47,6 +47,7 @@ import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
+import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
@@ -6855,10 +6856,10 @@ public class BuscarSQL {
 		
 		String query = "";
 		switch(ref){
-			case "Departamento": 	query = "select folio,departamento as nombre from tb_departamento where status = 1 order by  nombre"; break;
-			case "Establecimiento": query = "select folio,nombre as nombre from tb_establecimiento where status = 1  order by nombre"; break;
+//			case "Departamento": 	query = "select folio,departamento as nombre from tb_departamento where status = 1 order by  nombre"; break;
+//			case "Establecimiento": query = "select folio,nombre as nombre from tb_establecimiento where status = 1  order by nombre"; break;
 			case "Empleado": 		query = "select folio,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_empleado where status=1  order by nombre"; break;
-			case "Proveedor": 		query = "select folio,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_empleado where status=1  order by nombre"; break;
+			case "Proveedor": 		query = "select folio_proveedor,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_proveedores where status=1  order by nombre"; break;
 		}
 		
 		Object[][] referencia = new Object[getFilas(query)][2];
@@ -7022,5 +7023,54 @@ public class BuscarSQL {
 		}
 		return rp_cuenta;
 	}
+	
+	public Obj_Alta_Proveedores_Polizas Proveedor_Nuevo() throws SQLException{
+		Obj_Alta_Proveedores_Polizas prv = new Obj_Alta_Proveedores_Polizas();
+		String query = "exec sp_nuevo_proveedor";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				prv.setFolio_proveedor(rs.getInt("Maximo"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return prv;
+	}
+	
+	public Obj_Alta_Proveedores_Polizas Proveedor(int folio_prv) throws SQLException{
+		Obj_Alta_Proveedores_Polizas prv = new Obj_Alta_Proveedores_Polizas();
+		
+		String query = "select folio_proveedor,nombre,ap_paterno,ap_materno,direccion,telefono from tb_proveedores where folio_proveedor = "+folio_prv;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				prv.setFolio_proveedor(rs.getInt("folio_proveedor"));
+				prv.setNombre(rs.getString("nombre"));
+				prv.setAp_paterno(rs.getString("ap_paterno"));
+				prv.setAp_materno(rs.getString("ap_materno"));
+				prv.setDireccion(rs.getString("direccion"));
+				prv.setTelefono(rs.getString("telefono"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return prv;
+	}
+	
 	
 }
