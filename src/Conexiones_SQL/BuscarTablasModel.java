@@ -868,7 +868,7 @@ public class BuscarTablasModel {
 	
 	public Object[][] tabla_model_cliente(){
 //		cambiar consulta
-		String query_lista = "select folio_cliente,nombre+' '+ap_paterno+' '+ap_materno as empleado,direccion from tb_clientes where status = 1";
+		String query_lista = "select folio_proveedor,nombre+' '+ap_paterno+' '+ap_materno as empleado,direccion from tb_proveedores where status = 1";
 		Object[][] matriz = new Object[get_filas(query_lista)][3];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
@@ -2069,6 +2069,29 @@ public String folio_consecutivo_de_poliza(String fecha, String tipo){
     return folio; 
 }
 
+public Object[][] tabla_model_proveedores(){
+//	cambiar consulta
+	String query_lista = "select folio_cliente,nombre+' '+ap_paterno+' '+ap_materno as empleado,direccion from tb_clientes where status = 1";
+	Object[][] matriz = new Object[get_filas(query_lista)][3];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			matriz[i][0] = rs.getString(1)+"   ";
+			matriz[i][1] = "   "+rs.getString(2);
+			matriz[i][2] = "   "+rs.getString(3);
+			
+			i++;
+		}
+
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+	}
+    return matriz; 
+}
+
 public String establecimientoCuenta(String cuenta){
 	
 	String query_lista =  " declare @folio_establecimiento int "
@@ -2096,9 +2119,9 @@ public String establecimientoCuenta(String cuenta){
     return folio; 
 }
 
-public String folio_consecutivo_cheque_de_poliza(){
+public String folio_consecutivo_cheque_de_poliza(String cuentaBanco){
 	
-	String query_lista = "SELECT (folio+1) from tb_folios WHERE folio_transaccion = 15"; 
+	String query_lista = "SELECT folio_consecutivo+1 FROM tb_bancos_contabilidad where cuenta = '"+cuentaBanco+"'"; 
 	
 	String folio = "";
 	try {
@@ -2111,6 +2134,25 @@ public String folio_consecutivo_cheque_de_poliza(){
 	} catch (SQLException e1) {
 		e1.printStackTrace();
 		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion [folio_consecutivo_cheque_de_poliza] SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return folio; 
+}
+
+public String folio_ordern_de_pago_en_efectivo(){
+	
+	String query_lista = "select (folio+1) from tb_folios where folio_transaccion = 16"; 
+	
+	String folio = "";
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		while(rs.next()){
+			folio =  rs.getString(1)+"";
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion [folio_consecutivo_de_poliza] SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 	}
     return folio; 
 }
