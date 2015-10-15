@@ -44,7 +44,6 @@ import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
-import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
@@ -220,7 +219,6 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 	};
 	
 	
-	@SuppressWarnings("serial")
 	public class Cat_Filtro_Referencia extends JDialog{
 
 		Container cont = getContentPane();
