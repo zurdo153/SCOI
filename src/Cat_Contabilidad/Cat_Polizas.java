@@ -193,12 +193,20 @@ public class Cat_Polizas extends JFrame{
 	Date fechaRef = null;
 	
 	Border borderline;
+	
+	public Cat_Polizas(){
+		Contructor();
+	}
+	
 	public Cat_Polizas(String nta){
+		nota=nta;
+		Contructor();
+	}
+	
+	public void Contructor(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/cajas-de-cajas-de-embalaje-de-envio-de-un-archivo-tar-icono-4009-64.png"));
 		this.setTitle("polizas");
 		panel.setBorder(BorderFactory.createTitledBorder("polizas"));	
-		
-		nota=nta;
 		
 		grupo.add(rbPagoPrv);
 		grupo.add(rbAnticipoPrv);
@@ -1366,7 +1374,7 @@ public class Cat_Polizas extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Polizas("").setVisible(true);
+			new Cat_Polizas().setVisible(true);
 		}catch(Exception e){	}		
 	}
 }

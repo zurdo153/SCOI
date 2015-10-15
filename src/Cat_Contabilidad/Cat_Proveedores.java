@@ -1,6 +1,7 @@
 package Cat_Contabilidad;
 
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -69,11 +70,11 @@ public class Cat_Proveedores extends JDialog{
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
 	
-	JButton btnNuevo = new JButton("Nuevo");
-	JButton btnGuardar = new JButton("Guardar");
-	JButton btnModificar = new JButton("Modificar");
+	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnModificar = new JButton("Modificar",new ImageIcon("imagen/Modify.png"));
 
-	JTextField txtFolioCliente = new Componentes().text(new JTextField(), "Folio Del Cliente", 20, "Int");
+	JTextField txtFolioProveedor = new Componentes().text(new JTextField(), "Folio Del Proveedor", 20, "Int");
 	JTextField txtNombre = new Componentes().text(new JTextField(), "Nombre de Empleado", 50, "String");
 	JTextField txtApPaterno = new Componentes().text(new JTextField(), "Apallido Paterno", 50, "String");
 	JTextField txtApMaterno = new Componentes().text(new JTextField(), "Apallido Materno", 50, "String");
@@ -86,6 +87,7 @@ public class Cat_Proveedores extends JDialog{
 	@SuppressWarnings("rawtypes")
 	public Cat_Proveedores(){
 		this.setModal(true);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
 		this.setTitle("Alta Proveedores");
 		
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
@@ -99,31 +101,31 @@ public class Cat_Proveedores extends JDialog{
 		panel.add(new JLabel("Nombre: ")).setBounds( x, y, ancho, 20);
 		panel.add(txtNombre).setBounds( x+65, y, ancho+20, 20);
 		
-		panel.add(new JLabel("Cliente #: ")).setBounds( x+210, y, 100, 20);
-		panel.add(txtFolioCliente).setBounds( x+265, y, 70, 20);
+		panel.add(new JLabel("Proveedor #: ")).setBounds( x+210, y, 100, 20);
+		panel.add(txtFolioProveedor).setBounds( x+275, y, 60, 20);
 		
-		panel.add(btnNuevo).setBounds( x+335 , y, 75, 20);
-		panel.add(btnGuardar).setBounds( x+430 , y, 75, 20);
+		panel.add(btnNuevo).setBounds( x+335 , y, 85, 20);
+		panel.add(btnGuardar).setBounds( x+420 , y, 95, 20);
 		
 		panel.add(new JLabel("Ap. Paterno: ")).setBounds( x, y+=25, 70, 20);
 		panel.add(txtApPaterno).setBounds( x+65, y, ancho+20, 20);
 		
 		panel.add(new JLabel("Telefono: ")).setBounds( x+210, y, 70, 20);
-		panel.add(txtTelefono).setBounds( x+265, y, ancho+34, 20);
+		panel.add(txtTelefono).setBounds( x+265, y, ancho+44, 20);
 		
-		panel.add(btnModificar).setBounds( x+430, y, 75, 20);
+		panel.add(btnModificar).setBounds( x+420, y, 95, 20);
 		
 		panel.add(new JLabel("Ap. Materno: ")).setBounds( x, y+=25, 70, 20);
 		panel.add(txtApMaterno).setBounds( x+65, y, ancho+20, 20);
 		
 		panel.add(new JLabel("Domicilio: ")).setBounds( x+210, y, ancho, 20);
-		panel.add(txtDomicilio).setBounds( x+265, y, ancho+130, 20);
+		panel.add(txtDomicilio).setBounds( x+265, y, ancho+140, 20);
 		
-		panel.add(panelScroll).setBounds(10,y+=25,515,330);
+		panel.add(panelScroll).setBounds(10,y+=25,525,330);
 		
 		cont.add(panel);
 		
-		txtFolioCliente.setEditable(false);
+		txtFolioProveedor.setEditable(false);
 		btnGuardar.setEnabled(false);
 		btnModificar.setEnabled(false);
 		
@@ -156,7 +158,7 @@ public class Cat_Proveedores extends JDialog{
 		}
 		});
 		
-		this.setSize(540,460);
+		this.setSize(550,460);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -200,7 +202,7 @@ public class Cat_Proveedores extends JDialog{
 					try {
 						Obj_Alta_Proveedores_Polizas prv = new Obj_Alta_Proveedores_Polizas().buscar(folio);
 						
-						txtFolioCliente.setText(prv.getFolio_proveedor()+"");
+						txtFolioProveedor.setText(prv.getFolio_proveedor()+"");
 						txtNombre.setText(prv.getNombre());
 						txtApPaterno.setText(prv.getAp_paterno());
 						txtApMaterno.setText(prv.getAp_materno());
@@ -236,7 +238,7 @@ public class Cat_Proveedores extends JDialog{
 					}
 				
 			}else{
-					if(txtFolioCliente.getText().equals("")){
+					if(txtFolioProveedor.getText().equals("")){
 						txtNombre.requestFocus();
 					}else{
 							if(txtNombre.getText().equals("")){		
@@ -275,7 +277,7 @@ public class Cat_Proveedores extends JDialog{
 				Obj_Alta_Proveedores_Polizas prov = new Obj_Alta_Proveedores_Polizas().buscar_nuevo();
 				
 				limpiarPantella();
-				txtFolioCliente.setText(prov.getFolio_proveedor()+"");
+				txtFolioProveedor.setText(prov.getFolio_proveedor()+"");
 				
 				btnNuevo.setEnabled(false);
 				btnGuardar.setEnabled(true);
@@ -297,7 +299,7 @@ public class Cat_Proveedores extends JDialog{
 		
 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 		
-		txtFolioCliente.setText("");
+		txtFolioProveedor.setText("");
 		txtNombre.setText("");
 		txtApPaterno.setText("");
 		txtApMaterno.setText("");
@@ -366,7 +368,7 @@ public class Cat_Proveedores extends JDialog{
 					
 					Obj_Alta_Proveedores_Polizas prv = new Obj_Alta_Proveedores_Polizas();
 							
-							prv.setFolio_proveedor(Integer.valueOf(txtFolioCliente.getText()));
+							prv.setFolio_proveedor(Integer.valueOf(txtFolioProveedor.getText()));
 							prv.setNombre(txtNombre.getText().toUpperCase().trim());
 							prv.setAp_paterno(txtApPaterno.getText().toUpperCase().trim());
 							prv.setAp_materno(txtApMaterno.getText().toUpperCase().trim());
