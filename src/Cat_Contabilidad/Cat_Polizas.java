@@ -229,7 +229,7 @@ public class Cat_Polizas extends JFrame{
         panel.add(spCargoTotales).setBounds(x+70,y,90,20);   
         
         panel.add(lblPagos).setBounds(x*10,y-15,460,130); 
-        panel.add(new JLabel("Cheque: ")).setBounds(x*11-10,y,80,20);	
+        panel.add(new JLabel("Pago: ")).setBounds(x*11+5,y,80,20);	
       	panel.add(chbCheque).setBounds(x*13,y,20,20);
       	panel.add(cmbFormaDePago).setBounds(x*15,y,140,20);
       	panel.add(new JLabel("C.Bancaria: ")).setBounds(x*23,y,70,20);
@@ -674,21 +674,42 @@ public class Cat_Polizas extends JFrame{
 		
 			if(matriz_movPolizas.length>0){
 				
-					if((cmbReferencia.getSelectedIndex()>0 && folioReferencia>0) || (cmbReferencia.getSelectedIndex()==0 && folioReferencia==0)){
+//					if((cmbReferencia.getSelectedIndex()>0 && folioReferencia>0) || (cmbReferencia.getSelectedIndex()==0 && folioReferencia==0)){
 						
 							if(chbCheque.isSelected()){
 								
 									if(!txtCheque.getText().equals("")){
 										
-											if(new BuscarSQL().existe_folio_cheque(txtCheque.getText().toString().trim())){
-												JOptionPane.showMessageDialog(null, "El Folio De Cheque Ya Fue Registrado","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-												return;
+											if(new BuscarSQL().existe_folio_cheque(cmbDepositoBanco.getSelectedItem().toString(),txtCheque.getText().toString().trim())){
+													JOptionPane.showMessageDialog(null, "El Folio De Cheque Ya Fue Registrado","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+													return;
 											}else{
-												guardar(matriz_movPolizas);
+												
+													if(cmbReferencia.getSelectedIndex()!=0){
+														
+															if(folioReferencia!=0){
+																
+																	if(!txtTotal.getText().equals("")){
+																			guardar(matriz_movPolizas);
+																	}else{
+																			JOptionPane.showMessageDialog(null, "El Pago No Cuenta Con Un Total","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+																			return;
+																	}
+																	
+															}else{
+																JOptionPane.showMessageDialog(null, "El Tipo De Referencia Especificado Requiere Seleccionar Un "+cmbReferencia.getSelectedItem().toString(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+																return;
+															}
+															
+													}else{
+														JOptionPane.showMessageDialog(null, "El Pago Requiere Un Tipo De Referencia","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+														return;
+													}
+												
 											}
 										
 									}else{
-										JOptionPane.showMessageDialog(null, "El Cheque No Cuenta Con Folio, Si No Se Ingresara Un Folio Desactive La Casilla De Cheque","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+										JOptionPane.showMessageDialog(null, "El Cheque No Cuenta Con Folio, Si No Se Ingresara Un Folio Desactive La Casilla De Pago","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 										return;
 									}
 
@@ -696,10 +717,10 @@ public class Cat_Polizas extends JFrame{
 								guardar(matriz_movPolizas);
 							}
 
-					}else{
-							JOptionPane.showMessageDialog(null, "Es Necesario Que Agregue Un [ "+cmbReferencia.getSelectedItem().toString()+" ] Ya Que Es La Referencia Seleccionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-							return;
-					}
+//					}else{
+//							JOptionPane.showMessageDialog(null, "Es Necesario Que Agregue Un [ "+cmbReferencia.getSelectedItem().toString()+" ] Ya Que Es La Referencia Seleccionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+//							return;
+//					}
 								
 			}else{
 					JOptionPane.showMessageDialog(null, "Es Necesario Que Agregue Movimientos De Polizas","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));

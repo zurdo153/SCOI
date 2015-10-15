@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-10-04T15:29:14 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-10-15T13:02:40 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte  de Depositos Bancos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d877fc95-687e-432b-bc71-4ca9584c39f8">
 	<property name="ireport.callouts" value="callouts.1.fg=0,0,0\n callouts.1.bg=255,255,0\n "/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -38,6 +38,7 @@
 	<field name="folio_cheque" class="java.lang.String"/>
 	<field name="notas" class="java.lang.String"/>
 	<field name="usuario_imprimio" class="java.lang.String"/>
+	<field name="cargo_abono" class="java.lang.String"/>
 	<variable name="Parcial" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{cargo}+$F{abono}]]></variableExpression>
 	</variable>
@@ -276,28 +277,6 @@
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_guardado}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="356" y="40" width="96" height="13" forecolor="#000000" uuid="002f9c4b-2744-46cc-bca7-80d2eb828d86">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<printWhenExpression><![CDATA[!$F{folio_cheque}.equals("")]]></printWhenExpression>
-				</reportElement>
-				<box>
-					<topPen lineColor="#000000"/>
-					<leftPen lineColor="#000000"/>
-					<bottomPen lineColor="#000000"/>
-					<rightPen lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[FOLIO DOC PAGO:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="447" y="40" width="60" height="13" uuid="41539e8b-58e1-4042-9f26-64910c943c7a">
-					<printWhenExpression><![CDATA[!$F{folio_cheque}.equals("")]]></printWhenExpression>
-				</reportElement>
-				<textFieldExpression><![CDATA[$F{folio_cheque}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="300" y="65" width="85" height="13" forecolor="#000000" uuid="c048a34e-5275-4ec9-add8-c415665b3b60">

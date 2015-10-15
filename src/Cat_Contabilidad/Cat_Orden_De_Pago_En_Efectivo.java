@@ -296,7 +296,6 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		return error;
 	}
 	
-	
 	public void imprimir_ultimo_guardado(){
 		String basedatos="2.26";
 		String vista_previa_reporte="no";
