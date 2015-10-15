@@ -1664,7 +1664,7 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] autorizados_para_pago_efectivo() throws SQLException{
-		String query = "select nombre_completo as nombre from tb_autorizan_orden_de_pago where status = 'V' order by nombre asc";
+		String query = "select nombre_completo as nombre from tb_autorizan_orden_de_pago where status = 'V' order by orden";
 		
 		Statement stmt = null;
 		try {

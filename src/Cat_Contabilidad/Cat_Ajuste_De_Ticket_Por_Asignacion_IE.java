@@ -529,7 +529,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion_IE extends JFrame{
 //	TODO (KeyListener Hacer Cambio de valores del tickets antes de fac)
 	ActionListener opDevolver_Cambios_De_Tickets_de_la_Asignacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-		  if( new ActualizarSQL().Devolver_Cambios_De_Tickets_de_la_Asignacion(txtAsignacionCorregir.getText()+"")){
+		  if( new ActualizarSQL().Devolver_Cambios_De_Tickets_de_la_Asignacion_IEPS(txtAsignacionCorregir.getText()+"")){
 			  txtAsignacionCorregir.setText("");
 				JOptionPane.showMessageDialog(null, "Se Devolvieron Correctamente Los Datos", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		  };

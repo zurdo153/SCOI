@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-10-07T16:22:08 -->
+<!-- 2015-10-15T12:57:01 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte  de Depositos Bancos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d877fc95-687e-432b-bc71-4ca9584c39f8">
 	<property name="ireport.callouts" value="callouts.1.fg=0,0,0\n callouts.1.bg=255,255,0\n "/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -19,7 +19,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString>
-		<![CDATA[exec sp_consulta_de_poliza_cheque 'EGRESOS','29/10/2015','E006','MARCO ANTONIO BODART GUZMAN']]>
+		<![CDATA[exec sp_consulta_de_poliza_cheque 'EGRESOS','25/10/2015','E012','MARCO ANTONIO BODART GUZMAN']]>
 	</queryString>
 	<field name="folio" class="java.lang.String"/>
 	<field name="tipo_poliza" class="java.lang.String"/>
@@ -29,6 +29,7 @@
 	<field name="cuenta" class="java.lang.String"/>
 	<field name="cuenta_contable" class="java.lang.String"/>
 	<field name="concepto_de_cuenta" class="java.lang.String"/>
+	<field name="mov_cargo_abono_orden" class="java.lang.String"/>
 	<field name="cargo" class="java.math.BigDecimal"/>
 	<field name="abono" class="java.math.BigDecimal"/>
 	<field name="concepto" class="java.lang.String"/>
@@ -46,6 +47,7 @@
 	<field name="total_pago_con_letra" class="java.lang.String"/>
 	<field name="tipo_de_documento_de_pago" class="java.lang.String"/>
 	<field name="usuario_imprimio" class="java.lang.String"/>
+	<field name="folio_pago" class="java.lang.Long"/>
 	<variable name="Parcial" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{cargo}+$F{abono}]]></variableExpression>
 	</variable>
@@ -89,10 +91,10 @@
 				<reportElement x="0" y="2" width="572" height="139" uuid="c9c604fe-5e17-4132-a77e-76b959e729b1"/>
 			</rectangle>
 			<rectangle radius="3">
-				<reportElement x="101" y="113" width="99" height="21" uuid="df1e373c-d777-40a9-a9b2-2074f1895f4d"/>
+				<reportElement x="87" y="116" width="99" height="21" uuid="df1e373c-d777-40a9-a9b2-2074f1895f4d"/>
 			</rectangle>
 			<rectangle radius="3">
-				<reportElement x="109" y="8" width="99" height="21" uuid="a161bf35-d3a7-415d-bb9e-7f8fbea748ad"/>
+				<reportElement x="296" y="8" width="99" height="21" uuid="a161bf35-d3a7-415d-bb9e-7f8fbea748ad"/>
 			</rectangle>
 			<frame>
 				<reportElement mode="Opaque" x="1" y="179" width="310" height="26" forecolor="#000066" backcolor="#000066" uuid="c7737351-b4be-4035-8f50-aa9b2f0bed14"/>
@@ -121,7 +123,7 @@
 				<textFieldExpression><![CDATA[$F{mes_anio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="112" y="8" width="96" height="21" uuid="ce38f6bb-c8db-48f0-a03c-2cf7a24d546a"/>
+				<reportElement x="299" y="8" width="96" height="21" uuid="ce38f6bb-c8db-48f0-a03c-2cf7a24d546a"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
@@ -336,7 +338,7 @@
 				<text><![CDATA[$]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="67" y="11" width="40" height="13" forecolor="#000000" uuid="10b40f30-6573-474d-aef7-5c78c1c4c278">
+				<reportElement x="256" y="13" width="40" height="13" forecolor="#000000" uuid="10b40f30-6573-474d-aef7-5c78c1c4c278">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -402,7 +404,7 @@
 				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="6" y="116" width="102" height="13" forecolor="#000000" uuid="66a598c3-1f05-4f70-a348-24a8c19c6ee1">
+				<reportElement x="6" y="119" width="86" height="13" forecolor="#000000" uuid="66a598c3-1f05-4f70-a348-24a8c19c6ee1">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -414,7 +416,7 @@
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[FOLIO DOC. PAGO:]]></text>
+				<text><![CDATA[FOLIO CHEQUE:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="150" width="68" height="13" forecolor="#000000" uuid="d1518ec3-431c-4770-9ff2-017835bdbde8">
@@ -432,12 +434,73 @@
 				<text><![CDATA[CONCEPTO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="108" y="113" width="93" height="20" uuid="b9825289-0060-4c38-ba9c-819c9f72e64c"/>
+				<reportElement x="90" y="116" width="93" height="20" uuid="b9825289-0060-4c38-ba9c-819c9f72e64c"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{folio_documento_pago}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="413" y="204" width="81" height="13" forecolor="#000000" uuid="f91c28d4-717c-43b0-ac48-8e564853e86d"/>
+				<box>
+					<topPen lineColor="#000000"/>
+					<leftPen lineColor="#000000"/>
+					<bottomPen lineColor="#000000"/>
+					<rightPen lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA POLIZA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="504" y="204" width="60" height="13" uuid="2b644577-9f71-4c61-82ec-209066672e13"/>
+				<textFieldExpression><![CDATA[$F{fecha_poliza}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="58" y="12" width="68" height="13" forecolor="#000000" uuid="554776c0-c6d9-4792-9983-8436e3e4f84b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineColor="#000000"/>
+					<leftPen lineColor="#000000"/>
+					<bottomPen lineColor="#000000"/>
+					<rightPen lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FOLIO PAGO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="126" y="9" width="100" height="20" uuid="ff1767b4-6e38-4513-bf5c-32cdf5b1c9f8"/>
+				<textElement textAlignment="Left">
+					<font size="14" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{folio_pago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="116" width="93" height="21" uuid="22d28a15-32f4-4040-a483-6ceb2a06cb19"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_bancaria}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="202" y="120" width="88" height="13" forecolor="#000000" uuid="803713c0-6aae-41dc-8548-12eaa569e4d6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineColor="#000000"/>
+					<leftPen lineColor="#000000"/>
+					<bottomPen lineColor="#000000"/>
+					<rightPen lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CUENTA BANCA.:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
@@ -574,10 +637,10 @@
 				<textFieldExpression><![CDATA["Notas:"+$F{notas}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="132" y="5" width="110" height="1" uuid="c0e6ae6b-9365-4719-88fd-1c4861b21972"/>
+				<reportElement x="120" y="5" width="110" height="1" uuid="c0e6ae6b-9365-4719-88fd-1c4861b21972"/>
 			</line>
 			<staticText>
-				<reportElement x="134" y="5" width="106" height="11" forecolor="#000000" uuid="c796376b-2f59-483f-9c54-b510b038ddab">
+				<reportElement x="122" y="5" width="106" height="11" forecolor="#000000" uuid="c796376b-2f59-483f-9c54-b510b038ddab">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -592,7 +655,7 @@
 				<text><![CDATA[REVISO CONTADOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="268" y="5" width="106" height="11" forecolor="#000000" uuid="e6318c38-e3f2-4fbc-aa0a-9c8a9efdd2be">
+				<reportElement x="241" y="5" width="106" height="11" forecolor="#000000" uuid="e6318c38-e3f2-4fbc-aa0a-9c8a9efdd2be">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -607,10 +670,10 @@
 				<text><![CDATA[REVISO TESORERIA]]></text>
 			</staticText>
 			<line>
-				<reportElement x="266" y="5" width="110" height="1" uuid="434d3361-e839-4ec0-8ab7-bb95f0271255"/>
+				<reportElement x="239" y="5" width="110" height="1" uuid="434d3361-e839-4ec0-8ab7-bb95f0271255"/>
 			</line>
 			<staticText>
-				<reportElement x="401" y="6" width="106" height="11" forecolor="#000000" uuid="3b04af81-02b6-4883-9379-a861b995e6e0">
+				<reportElement x="359" y="6" width="106" height="11" forecolor="#000000" uuid="3b04af81-02b6-4883-9379-a861b995e6e0">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -625,8 +688,26 @@
 				<text><![CDATA[REVISO FINANZAS]]></text>
 			</staticText>
 			<line>
-				<reportElement x="399" y="5" width="110" height="1" uuid="fac602b4-d9f3-466a-849e-f9767988188d"/>
+				<reportElement x="357" y="5" width="110" height="1" uuid="fac602b4-d9f3-466a-849e-f9767988188d"/>
 			</line>
+			<line>
+				<reportElement x="470" y="5" width="110" height="1" uuid="63ffe04f-8d95-4990-b850-88b8c51219f2"/>
+			</line>
+			<staticText>
+				<reportElement x="472" y="6" width="106" height="11" forecolor="#000000" uuid="99353596-9bf9-4eb0-a376-7edbaed71118">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineColor="#000000"/>
+					<leftPen lineColor="#000000"/>
+					<bottomPen lineColor="#000000"/>
+					<rightPen lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REVISO GERENCIA]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>

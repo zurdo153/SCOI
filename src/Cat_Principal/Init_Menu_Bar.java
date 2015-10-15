@@ -32,7 +32,7 @@ public class Init_Menu_Bar extends Init_Login{
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.69");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.70");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -362,7 +362,6 @@ public class Init_Menu_Bar extends Init_Login{
 //			UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 //			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 //			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel"); 
-			
 //			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			new Init_Menu_Bar().setVisible(true);
 		}catch(Exception e){}
