@@ -65,6 +65,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 	JButton btnConciliaAutoImporte = new JButton("Conciliacion Automatica Por Importe",new ImageIcon("imagen/reconstruir-icono-6593-16.png"));
 	JButton btnConciliaAutoImporteyReferencia = new JButton("Conciliacion Automatica Importe y Referencia",new ImageIcon("imagen/reconstruir-icono-6593-16.png"));
 	JButton btnMovimientosContablesPendientesConciliar = new JButton("Movimientos Contables Sin Conciliar",new ImageIcon("imagen/Lista.png"));
+	JButton btnMovimientosBancariosPendientesConciliar = new JButton("Movimientos Bancarios Sin Conciliar",new ImageIcon("imagen/Lista.png"));
 	JButton btnReporteConciliado = new JButton("Movimientos Conciliados",new ImageIcon("imagen/Lista.png"));
 	JButton btnReporteComparacion_Entre_conciliaciones = new JButton("Diferencias De Conciliaciones",new ImageIcon("imagen/Lista.png"));
 	
@@ -254,7 +255,8 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		campo.add(btnConciliaAutoImporte).setBounds(485,y,270,20);
         campo.add(btnGuardar).setBounds(765,y,120,20);
         campo.add(btnMovimientosContablesPendientesConciliar).setBounds(895, y, 225, 20);
-		
+        campo.add(btnMovimientosBancariosPendientesConciliar).setBounds(1130, y, 220, 20);
+        
 		campo.add(new JLabel ("Fecha:")).setBounds(15,y+=30,100,20);
 		campo.add(cfecha).setBounds(60,y,100,20);
         campo.add(btnActualizar).setBounds(170,y,100,20);
@@ -263,7 +265,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
         campo.add(btnConciliaAutoImporteyReferencia).setBounds(485, y, 270, 20);
         campo.add(btnBorrar).setBounds(765, y, 120, 20);
         campo.add(btnReporteConciliado).setBounds(895, y, 225, 20);
-        campo.add(btnReporteComparacion_Entre_conciliaciones).setBounds(1130, y, 190, 20);
+        campo.add(btnReporteComparacion_Entre_conciliaciones).setBounds(1130, y, 220, 20);
         
     	int y2=(alto/2);
         int x=(ancho/2);
@@ -305,6 +307,7 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		btnGuardar.addActionListener(opGuardarConciliacion);
 		btnBorrar.addActionListener(opBorrar_ventana_emergente);
 		btnMovimientosContablesPendientesConciliar.addActionListener(opReporte_De_Movimientos_Contables_Pendientes_De_Conciliar);
+		btnMovimientosBancariosPendientesConciliar.addActionListener(opReporte_De_Movimientos_Bancarios_Pendientes_De_Conciliar);
 		btnReporteConciliado.addActionListener(opReporte_De_Movimientos_Concialiados);
 		btnReporteComparacion_Entre_conciliaciones.addActionListener(opReporte_De_Diferencias_Entre_Conciliaciones);
 		
@@ -733,6 +736,19 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 				int vista_previa_de_ventana=0;
 				String reporte = "Obj_Reporte_De_Movimientos_Contables_Pendientes_De_Conciliar.jrxml";
 			    String comando = "exec sp_Reporte_De_Movimientos_Contables_Pendientes_De_Conciliar '"+txtCuentaContable.getText().toString()+"','"+txtBanco.getText().toString()+"','"+cmbCuentasBancarias.getSelectedItem().toString()+"','"+fecha+"'";
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		   }
+	};
+	
+   ActionListener opReporte_De_Movimientos_Bancarios_Pendientes_De_Conciliar = new ActionListener(){
+		   public void actionPerformed(ActionEvent arg0) {
+		  		String fecha  = new SimpleDateFormat("dd/MM/yyyy").format(cfecha.getDate())+" 23:59:00";    
+		  		
+				String basedatos="2.26";
+				String vista_previa_reporte="no";
+				int vista_previa_de_ventana=0;
+				String reporte = "Obj_Reporte_De_Movimientos_Bancarios_Pendientes_De_Conciliar.jrxml";
+			    String comando = "exec sp_Reporte_De_Movimientos_Bancarios_Pendientes_De_Conciliar '"+txtBanco.getText().toString()+"','"+cmbCuentasBancarias.getSelectedItem().toString()+"','"+fecha+"'";
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		   }
 	};
