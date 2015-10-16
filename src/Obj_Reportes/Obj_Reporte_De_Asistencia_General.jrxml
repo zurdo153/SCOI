@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-06-03T16:52:40 -->
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-10-16T09:42:58 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_General_de_Asistencia_Por_Establecimiento" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="24cc16d5-c483-4414-a6b0-717ab373dbf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="ireport.zoom" value="4.59497298635725"/>
@@ -295,14 +295,14 @@
 					<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="137" y="0" width="39" height="10" forecolor="#003333" uuid="8c2cead7-e6e7-4f12-8517-16049710a3df"/>
+					<reportElement style="Detail" positionType="Float" x="129" y="0" width="39" height="10" forecolor="#003333" uuid="8c2cead7-e6e7-4f12-8517-16049710a3df"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{hora_registro}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="83" y="0" width="53" height="10" forecolor="#003333" uuid="67403b6a-b59f-4a9a-85f1-02f9b6144001"/>
+					<reportElement style="Detail" positionType="Float" x="83" y="0" width="45" height="10" forecolor="#003333" uuid="67403b6a-b59f-4a9a-85f1-02f9b6144001"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
@@ -316,25 +316,18 @@
 					<textFieldExpression><![CDATA[$F{fecha_corta}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="175" y="0" width="40" height="10" forecolor="#003333" uuid="2332b884-8b1d-4ef7-ac58-0c57bf166f1d"/>
+					<reportElement x="167" y="0" width="40" height="10" forecolor="#003333" uuid="2332b884-8b1d-4ef7-ac58-0c57bf166f1d"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["imp:"+$F{inpuntualidad}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="213" y="0" width="40" height="10" forecolor="#003333" uuid="8ca575f0-fd13-496d-9aec-d9cfd64437c8"/>
+					<reportElement x="205" y="0" width="40" height="10" forecolor="#003333" uuid="8ca575f0-fd13-496d-9aec-d9cfd64437c8"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["fav:"+$F{minutos_a_favor}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="252" y="0" width="109" height="11" forecolor="#000000" uuid="7f561169-b238-4ae3-8095-cd87ca6a6a54"/>
-					<textElement>
-						<font fontName="Times New Roman" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA["T.R:"+$F{tipo_entrada}+"-"+$F{falto}+"-"+$F{omision}+"-"+$F{Desc_Extr}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="78" y="0" width="7" height="10" forecolor="#000000" uuid="a222ef9a-df22-4453-9061-0fa95f626e22"/>
@@ -344,7 +337,7 @@
 					<textFieldExpression><![CDATA[$F{comida_receso}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="361" y="0" width="209" height="14" isPrintWhenDetailOverflows="true" forecolor="#003333" backcolor="#FFFFFF" uuid="bbe76f8e-5a53-4abf-a434-faa3037d7ff9"/>
+					<reportElement mode="Transparent" x="245" y="0" width="325" height="14" isPrintWhenDetailOverflows="true" forecolor="#003333" backcolor="#FFFFFF" uuid="bbe76f8e-5a53-4abf-a434-faa3037d7ff9"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="Times New Roman" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>
@@ -364,14 +357,14 @@
 					<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" stretchType="RelativeToBandHeight" x="137" y="0" width="39" height="10" uuid="8b54eed8-f100-4ad8-9264-88071c941741"/>
+					<reportElement style="Detail" positionType="Float" stretchType="RelativeToBandHeight" x="129" y="0" width="39" height="10" uuid="8b54eed8-f100-4ad8-9264-88071c941741"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{hora_registro}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" stretchType="RelativeToBandHeight" x="83" y="0" width="53" height="10" uuid="25ac01b6-4b14-4ffb-a088-e3a9586ea250"/>
+					<reportElement style="Detail" positionType="Float" stretchType="RelativeToBandHeight" x="83" y="0" width="45" height="10" uuid="25ac01b6-4b14-4ffb-a088-e3a9586ea250"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
@@ -385,25 +378,18 @@
 					<textFieldExpression><![CDATA[$F{fecha_corta}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="175" y="0" width="40" height="10" uuid="dc2f6654-5244-49ea-b042-746e87202f59"/>
+					<reportElement stretchType="RelativeToBandHeight" x="167" y="0" width="40" height="10" uuid="dc2f6654-5244-49ea-b042-746e87202f59"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["imp:"+$F{inpuntualidad}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="213" y="0" width="40" height="10" uuid="f182813c-3aa4-45a5-83d3-4815ad3f4ce1"/>
+					<reportElement stretchType="RelativeToBandHeight" x="205" y="0" width="40" height="10" uuid="f182813c-3aa4-45a5-83d3-4815ad3f4ce1"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["fav:"+$F{minutos_a_favor}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="252" y="0" width="109" height="11" uuid="0b58a7d2-c850-43d9-a497-c7b48b424cbf"/>
-					<textElement>
-						<font fontName="Times New Roman" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA["T.R:"+$F{tipo_entrada}+"-"+$F{falto}+"-"+$F{omision}+"-"+$F{Desc_Extr}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement stretchType="RelativeToBandHeight" x="78" y="0" width="7" height="10" uuid="6c6c3f71-6cb4-4735-a74d-20a0a4028ed8"/>
@@ -413,7 +399,7 @@
 					<textFieldExpression><![CDATA[$F{comida_receso}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="361" y="0" width="209" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="a3cbec81-0f04-4150-adc5-f84c938ef302"/>
+					<reportElement mode="Transparent" x="245" y="0" width="325" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="a3cbec81-0f04-4150-adc5-f84c938ef302"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="Times New Roman" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>
@@ -433,14 +419,14 @@
 					<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="137" y="0" width="39" height="10" uuid="f6cac6c7-1321-46ff-b8cb-57fd20e3c401"/>
+					<reportElement style="Detail" positionType="Float" x="129" y="0" width="39" height="10" uuid="f6cac6c7-1321-46ff-b8cb-57fd20e3c401"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{hora_registro}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="83" y="0" width="53" height="10" uuid="4b6de286-281b-41e8-90b4-55722d84fa49"/>
+					<reportElement style="Detail" positionType="Float" x="83" y="0" width="45" height="10" uuid="4b6de286-281b-41e8-90b4-55722d84fa49"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
@@ -454,25 +440,18 @@
 					<textFieldExpression><![CDATA[$F{fecha_corta}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="175" y="0" width="40" height="10" uuid="c1273730-3af3-44dc-9c04-ff6c9630afb8"/>
+					<reportElement x="167" y="0" width="40" height="10" uuid="c1273730-3af3-44dc-9c04-ff6c9630afb8"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["imp:"+$F{inpuntualidad}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="213" y="0" width="40" height="10" uuid="b8037220-8fda-4fb9-8234-44f5cb409254"/>
+					<reportElement x="205" y="0" width="40" height="10" uuid="b8037220-8fda-4fb9-8234-44f5cb409254"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["fav:"+$F{minutos_a_favor}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="252" y="0" width="109" height="10" uuid="1f71db3a-a1e0-41bb-9bfd-c7ab205e4fd7"/>
-					<textElement>
-						<font fontName="Times New Roman" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA["T.R:"+$F{tipo_entrada}+"-"+$F{falto}+"-"+$F{omision}+"-"+$F{Desc_Extr}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="78" y="0" width="7" height="10" uuid="43a652af-32eb-4940-b8de-7da35a9811cc"/>
@@ -482,7 +461,7 @@
 					<textFieldExpression><![CDATA[$F{comida_receso}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="361" y="0" width="209" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="96eb2e9f-2f60-4448-aa6c-d6213509941e"/>
+					<reportElement mode="Transparent" x="245" y="0" width="325" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="96eb2e9f-2f60-4448-aa6c-d6213509941e"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="Times New Roman" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>
@@ -502,14 +481,16 @@
 					<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="137" y="0" width="39" height="10" forecolor="#000000" uuid="2d874aa5-0a2e-4755-aec1-0c10b55f73a3"/>
+					<reportElement style="Detail" positionType="Float" x="129" y="0" width="39" height="10" forecolor="#000000" uuid="2d874aa5-0a2e-4755-aec1-0c10b55f73a3"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{hora_registro}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="83" y="0" width="53" height="10" forecolor="#000000" uuid="53020c54-73ec-4ef3-b986-38c3455ab590"/>
+					<reportElement style="Detail" positionType="Float" x="83" y="0" width="45" height="10" forecolor="#000000" uuid="53020c54-73ec-4ef3-b986-38c3455ab590">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
@@ -523,25 +504,18 @@
 					<textFieldExpression><![CDATA[$F{fecha_corta}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="175" y="0" width="40" height="10" forecolor="#000000" uuid="5f356903-00a3-4f0a-97e1-3e2f5573c98b"/>
+					<reportElement x="167" y="0" width="40" height="10" forecolor="#000000" uuid="5f356903-00a3-4f0a-97e1-3e2f5573c98b"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["imp:"+$F{inpuntualidad}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="213" y="0" width="40" height="10" forecolor="#000000" uuid="1b5432b2-8c17-430c-ad7e-534ee59b1cc7"/>
+					<reportElement x="205" y="0" width="40" height="10" forecolor="#000000" uuid="1b5432b2-8c17-430c-ad7e-534ee59b1cc7"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["fav:"+$F{minutos_a_favor}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="252" y="0" width="109" height="11" forecolor="#000000" uuid="fe638e31-7154-4156-8251-0dcddc7c9e1e"/>
-					<textElement>
-						<font fontName="Times New Roman" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA["T.R:"+$F{tipo_entrada}+"-"+$F{falto}+"-"+$F{omision}+"-"+$F{Desc_Extr}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="78" y="0" width="7" height="10" forecolor="#000000" uuid="e611a7c7-0822-4d1f-b41a-717b0600e426"/>
@@ -551,7 +525,7 @@
 					<textFieldExpression><![CDATA[$F{comida_receso}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="361" y="0" width="209" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="bdf0ff35-a346-4eea-a4d5-04677e346330"/>
+					<reportElement mode="Transparent" x="245" y="0" width="325" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="bdf0ff35-a346-4eea-a4d5-04677e346330"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="Times New Roman" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>

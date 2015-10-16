@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-10-16T17:23:08 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Movimientos_Contables_Pendientes_De_Conciliar1" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[exec sp_Reporte_De_Movimientos_Bancarios_Pendientes_De_Conciliar  'Banorte','0137700237','28/10/2015']]>
+	</queryString>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="movimiento" class="java.lang.String"/>
+	<field name="importe" class="java.lang.Double"/>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="concepto" class="java.lang.String"/>
+	<field name="cuenta_Bancaria" class="java.lang.String"/>
+	<field name="Banco" class="java.lang.String"/>
+	<field name="id" class="java.lang.String"/>
+	<field name="fecha_maxima_de_movimientos" class="java.sql.Timestamp"/>
+	<variable name="Acumulado" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{movimiento}]]></groupExpression>
+		<groupHeader>
+			<band height="31">
+				<rectangle>
+					<reportElement x="0" y="0" width="555" height="15" backcolor="#FF9900" uuid="32a65bdf-aa58-425d-9f0f-bb5a4260544f"/>
+					<graphicElement>
+						<pen lineColor="rgba(0, 0, 0, 0.0)"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="270" y="0" width="285" height="15" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="018aedda-24cd-4c50-aefc-e2cbcd077252">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Movimientos Pendientes Hasta La Fecha:"+$F{fecha_maxima_de_movimientos}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="220" y="16" width="160" height="14" forecolor="#050505" backcolor="#050505" uuid="2210f59b-7b1f-487c-8b7f-7bf892f93e64"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Concepto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="147" y="16" width="70" height="14" forecolor="#050505" backcolor="#050505" uuid="e5847849-fa00-4e83-a161-3cdb7121a0eb"/>
+					<textElement textAlignment="Left">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="89" y="16" width="50" height="14" forecolor="#050505" backcolor="#050505" uuid="01a78d3f-e2ff-4236-81f0-be868426d7fd"/>
+					<textElement textAlignment="Right">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Importe]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="10" y="16" width="66" height="14" forecolor="#050505" backcolor="#050505" uuid="63ba0b73-d9a2-468f-8d3f-c8d43efad3c6">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Referencia]]></text>
+				</staticText>
+				<ellipse>
+					<reportElement x="4" y="2" width="10" height="10" uuid="910ab165-6bde-408e-ae49-a7e5e6716fe3"/>
+				</ellipse>
+				<textField>
+					<reportElement x="14" y="0" width="127" height="15" forecolor="#FFFFFF" uuid="101843a0-fb6b-4404-b200-15f1b086f5bc"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{movimiento}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<textField>
+					<reportElement x="68" y="0" width="66" height="14" uuid="c76af989-5851-4e6a-89e1-8c96e339123d"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{Acumulado}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="22" y="0" width="46" height="14" forecolor="#050505" backcolor="#050505" uuid="062b362e-db76-43c9-82d5-21dd8703addc">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total.:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="451" height="65" forecolor="#000066" backcolor="#000066" uuid="6c6ca4e1-17cd-4913-93d6-5e670ea9ae8a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textField pattern="">
+					<reportElement x="4" y="0" width="447" height="60" forecolor="#FFFFFF" uuid="8c520414-030c-4dc6-84e9-b49dc093c593"/>
+					<box>
+						<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Left" markup="none">
+						<font fontName="Times New Roman" size="21" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1252"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Reporte De Movimientos Bancarios Pendientes De Conciliar, De La Cuenta Bancaria:"+$F{cuenta_Bancaria}]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="96" y="48" width="197" height="15" forecolor="#FFFFFF" uuid="137d38c7-1a83-4fc5-b156-9d5f1b1a0ddc">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="5" y="50" width="96" height="15" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="98d83608-98ac-4938-bd69-6cd8fb52c997">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Fecha Impresion:"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<image>
+				<reportElement x="451" y="0" width="105" height="60" uuid="8a3d7040-139e-43b8-a6f0-157fd2d7f2d9"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/Conciliacion Bancaria_Vs_Contabilidad.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15" uuid="b50221b5-8254-440b-8c6f-1f0b138c9259"/>
+				<textField isStretchWithOverflow="true" pattern="¤#,##0.00;¤-#,##0.00">
+					<reportElement style="Detail" positionType="Float" x="81" y="0" width="59" height="13" uuid="7f542cfd-7063-4543-86af-1dc229594e07"/>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="220" y="0" width="332" height="13" uuid="91092d21-57f1-4863-8985-571b8aa859e3"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ID:"+$F{id}+" "+$F{concepto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="10" y="0" width="71" height="13" uuid="2e2ce693-9387-474c-924e-a9cae658bbae"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="M/d/yy">
+					<reportElement style="Detail" positionType="Float" x="147" y="0" width="70" height="13" uuid="0422c8fd-6ee9-4f45-987e-79515a915b19"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="4" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="1133a906-5b71-476e-9f3e-bc97c97058c1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000066" uuid="729c3539-f946-4d0e-a0a7-bda2815ea1b0"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="4834e99c-7f6c-485a-b098-50e5187f2ab4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="433" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="9825b46e-76f1-469a-abb8-a1cc27aad685"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
