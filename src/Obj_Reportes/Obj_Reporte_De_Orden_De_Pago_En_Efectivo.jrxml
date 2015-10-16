@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-10-15T13:27:14 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-10-16T11:17:45 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Orden_De_Pago_En_Efectivo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1680c4b3-ed3f-448e-b482-3446bd4d59e5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<queryString>
@@ -16,9 +16,11 @@ right('000000'+convert(varchar(20),tb_orden_de_pago_en_efectivo.folio),6) as fol
 ,case when tb_orden_de_pago_en_efectivo.tipo_beneficiario = 'P' then 'PROVEEDOR' else 'EMPLEADO' end as tipo_beneficiario
 ,case when tb_orden_de_pago_en_efectivo.tipo_beneficiario = 'P' then (select nombre+' '+ap_paterno+' '+ap_materno as beneficiario FROM tb_proveedores where folio_proveedor = tb_orden_de_pago_en_efectivo.folio_beneficiario) else (SELECT nombre+' '+ap_paterno+' '+ap_materno FROM tb_empleado where folio = tb_orden_de_pago_en_efectivo.folio_beneficiario) end as beneficiario
 ,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as elaboro
+,isnull(tb_establecimiento.nombre,'SIN ESTABLECIMIENTO') as establecimiento
 from tb_orden_de_pago_en_efectivo
 inner join tb_autorizan_orden_de_pago on tb_autorizan_orden_de_pago.folio = tb_orden_de_pago_en_efectivo.folio_autorizo
 inner join tb_empleado on tb_empleado.folio = tb_orden_de_pago_en_efectivo.usuario
+left outer join tb_establecimiento on tb_establecimiento.folio = tb_orden_de_pago_en_efectivo.folio_establecimiento
 where tb_orden_de_pago_en_efectivo.folio = @folio_orden_de_pago]]>
 	</queryString>
 	<field name="folio" class="java.lang.String"/>
@@ -30,6 +32,7 @@ where tb_orden_de_pago_en_efectivo.folio = @folio_orden_de_pago]]>
 	<field name="tipo_beneficiario" class="java.lang.String"/>
 	<field name="beneficiario" class="java.lang.String"/>
 	<field name="elaboro" class="java.lang.String"/>
+	<field name="establecimiento" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -116,17 +119,17 @@ where tb_orden_de_pago_en_efectivo.folio = @folio_orden_de_pago]]>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="370" y="-6" width="78" height="19" uuid="95e44517-fcc6-4c71-8ee8-5bc386b32df1"/>
+				<reportElement x="398" y="-6" width="78" height="19" uuid="95e44517-fcc6-4c71-8ee8-5bc386b32df1"/>
 				<textElement>
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CANTIDAD :  $]]></text>
 			</staticText>
 			<line>
-				<reportElement x="445" y="9" width="100" height="1" uuid="91826a5d-3c88-4fb9-84b5-c7c79cd90c29"/>
+				<reportElement x="474" y="9" width="69" height="1" uuid="91826a5d-3c88-4fb9-84b5-c7c79cd90c29"/>
 			</line>
 			<textField pattern="#,##0.00#">
-				<reportElement x="449" y="-6" width="96" height="19" uuid="8459bc8c-44cb-4e29-baae-1324d7411289"/>
+				<reportElement x="474" y="-6" width="69" height="19" uuid="8459bc8c-44cb-4e29-baae-1324d7411289"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -165,17 +168,17 @@ where tb_orden_de_pago_en_efectivo.folio = @folio_orden_de_pago]]>
 				<text><![CDATA[CANTIDAD CON LETRA]]></text>
 			</staticText>
 			<line>
-				<reportElement x="55" y="9" width="75" height="1" uuid="baa0881b-1555-42cd-97b7-83cbd36374cf"/>
+				<reportElement x="65" y="9" width="71" height="1" uuid="baa0881b-1555-42cd-97b7-83cbd36374cf"/>
 			</line>
 			<staticText>
-				<reportElement x="10" y="-6" width="50" height="19" uuid="0bf0b244-1761-4d40-84c5-9bd8e4eabfd4"/>
+				<reportElement x="15" y="-6" width="50" height="19" uuid="0bf0b244-1761-4d40-84c5-9bd8e4eabfd4"/>
 				<textElement>
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FECHA :  ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="55" y="-6" width="76" height="18" uuid="3d03dee7-e520-4b51-8c50-cecab2029ff8"/>
+				<reportElement x="65" y="-6" width="71" height="18" uuid="3d03dee7-e520-4b51-8c50-cecab2029ff8"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -248,7 +251,7 @@ where tb_orden_de_pago_en_efectivo.folio = @folio_orden_de_pago]]>
 				<textFieldExpression><![CDATA["BENEFICIARIO ("+$F{tipo_beneficiario}+"): "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="138" y="133" width="310" height="16" uuid="00cfcc0c-e14b-44e3-8c17-394c46c547e3">
+				<reportElement x="123" y="133" width="310" height="16" uuid="00cfcc0c-e14b-44e3-8c17-394c46c547e3">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -257,7 +260,7 @@ where tb_orden_de_pago_en_efectivo.folio = @folio_orden_de_pago]]>
 				<text><![CDATA[FIRMA RECIBIDO]]></text>
 			</staticText>
 			<line>
-				<reportElement x="136" y="134" width="310" height="1" uuid="6904aed9-af45-4e50-9f67-bb63be040a7a">
+				<reportElement x="121" y="134" width="310" height="1" uuid="6904aed9-af45-4e50-9f67-bb63be040a7a">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -284,6 +287,40 @@ where tb_orden_de_pago_en_efectivo.folio = @folio_orden_de_pago]]>
 			</staticText>
 			<line>
 				<reportElement x="35" y="173" width="150" height="1" uuid="f7d08e8e-d001-4e72-918a-b3dcb8d06322">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="205" y="-6" width="154" height="19" uuid="33b9630e-057c-4da3-88f5-a6d8e12dfd81">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="205" y="9" width="154" height="1" uuid="95c4a19b-b558-459b-abbe-d1a767b82856">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="202" y="175" width="150" height="12" uuid="10a4fcb0-d221-48de-a9e8-b79fd1936461">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIRMA AUDITO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="202" y="173" width="150" height="1" uuid="a5a8541f-e147-402f-afdf-95d1a418f906">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>

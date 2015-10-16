@@ -4308,8 +4308,8 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 
-	public boolean Guardar_Ordern_De_Pago_En_Efectivo(float cantidad, String fecha, String concepto, String autorizacion, String tipoBeneficiario, int folioBeneficiario){
-		String query = "exec sp_insert_orden_de_pago_en_efectivo ?,?,?,?,?,?,?";
+	public boolean Guardar_Ordern_De_Pago_En_Efectivo(float cantidad, String fecha, String concepto, String autorizacion, String tipoBeneficiario, int folioBeneficiario, String establecimiento){
+		String query = "exec sp_insert_orden_de_pago_en_efectivo ?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -4325,6 +4325,8 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				
 				pstmt.setInt(6, folioBeneficiario);
 				pstmt.setInt(7, usuario.getFolio());
+				
+				pstmt.setString(8, establecimiento.toUpperCase().trim());
 				
 				pstmt.executeUpdate();
 			
