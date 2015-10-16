@@ -7072,5 +7072,46 @@ public class BuscarSQL {
 		return prv;
 	}
 	
+	public Object[][] Filtro_De_Orden_De_Pago_Efectivo(String fechaInicial) throws SQLException{
+		Statement stmt = null;
+		
+		String query = " select folio "
+						+ " ,CONVERT(varchar(20),tb_orden_de_pago_en_efectivo.fecha_mov,103)+' '+CONVERT(varchar(20),tb_orden_de_pago_en_efectivo.fecha_mov,108) as fecha "
+						+ " ,tb_orden_de_pago_en_efectivo.cantidad as importe "
+						+ " ,CASE WHEN (tb_orden_de_pago_en_efectivo.tipo_beneficiario = 'E') "
+						+ "		THEN (select tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno from tb_empleado where tb_empleado.folio = tb_orden_de_pago_en_efectivo.folio_beneficiario) "
+						+ "	  ELSE (select tb_proveedores.nombre+' '+tb_proveedores.ap_paterno+' '+tb_proveedores.ap_materno from tb_proveedores where tb_proveedores.folio_proveedor = tb_orden_de_pago_en_efectivo.folio_beneficiario) "
+						+ "	END beneficiario "
+						+ " ,tb_orden_de_pago_en_efectivo.concepto "
+						+ " from tb_orden_de_pago_en_efectivo "
+						+ " where tb_orden_de_pago_en_efectivo.fecha_mov > '"+fechaInicial+"'"
+						+ "order by fecha_mov desc";
+		
+		Object[][] referencia = new Object[getFilas(query)][5];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				for(int j=0; j<5; j++){
+					referencia[i][j] = rs.getObject(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [Filtro_De_Referencia_Polizas] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return referencia;
+	}
 	
 }
