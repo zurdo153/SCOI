@@ -1608,6 +1608,7 @@ public class Cargar_Combo {
 			while(rs.next()){
 				if(j == 0){
 					miVector.add("MULTIPLE");
+					miVector.add("NO APLICA");
 				}
 				miVector.add(rs.getString("nombre"));
 				j++;

@@ -2101,7 +2101,12 @@ public String establecimientoCuenta(String cuenta){
 						+ " if(@folio_establecimiento=0) "
 						+ " 	begin	select 'MULTIPLE' as establecimiento 	end "
 						+ " else "
-						+ " 	begin	select nombre from tb_establecimiento where folio = @folio_establecimiento end "; 
+						+ " 	begin "
+						+ "			if(@folio_establecimiento=999) "
+						+ "	 			begin	select 'NO APLICA' as establecimiento 	end "
+						+ "			 else "
+						+ "	 			begin	select nombre as establecimieto from tb_establecimiento where folio = @folio_establecimiento end "
+						+ "		end "; 
 	System.out.println(query_lista);
 	String folio = "";
 	try {

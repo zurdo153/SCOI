@@ -130,7 +130,7 @@ public class Cat_Polizas extends JFrame{
 	JSpinner spDiferenciaTotales = new JSpinner(diferenciaTotales);
 	
 	JTextField txtCheque = new Componentes().text(new JTextField(), "Cheque", 15, "String");
-	JCheckBox chbCheque = new JCheckBox();
+	JCheckBox chbPago = new JCheckBox();
 	
 	JTextArea txaConcepto = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Concepto = new JScrollPane(txaConcepto);
@@ -238,7 +238,7 @@ public class Cat_Polizas extends JFrame{
         
         panel.add(lblPagos).setBounds(x*10,y-15,460,130); 
         panel.add(new JLabel("Pago: ")).setBounds(x*11+5,y,80,20);	
-      	panel.add(chbCheque).setBounds(x*13,y,20,20);
+      	panel.add(chbPago).setBounds(x*13,y,20,20);
       	panel.add(cmbFormaDePago).setBounds(x*15,y,140,20);
       	panel.add(new JLabel("C.Bancaria: ")).setBounds(x*23,y,70,20);
       	panel.add(cmbDepositoBanco).setBounds(x*26+5,y,125,20);
@@ -307,7 +307,7 @@ public class Cat_Polizas extends JFrame{
 		btnDeshacer.addActionListener(opDeshacer);
 		
 		btnNota.addActionListener(opNota);
-		chbCheque.addActionListener(opCheque);
+		chbPago.addActionListener(opPago);
 		btnReferencia.addActionListener(opFiltroRef);
 		btnImprimir.addActionListener(opImprimir);
 		
@@ -499,14 +499,14 @@ public class Cat_Polizas extends JFrame{
 		}
 	};
 	
-	ActionListener opCheque = new ActionListener() {
+	ActionListener opPago = new ActionListener() {
 		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent e) {
 			
 			cmbFormaDePago.setSelectedIndex(0);
 			cmbDepositoBanco.setSelectedIndex(0);
 			
-			if(chbCheque.isSelected()){
+			if(chbPago.isSelected()){
 				
 				
 				cmbReferencia.removeAllItems();
@@ -583,6 +583,7 @@ public class Cat_Polizas extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			
 			folioReferencia=0;
+			txtReferencia.setText("");
 			if(cmbReferencia.getSelectedIndex()==0){
 				btnReferencia.setEnabled(false);
 			}else{
@@ -684,7 +685,7 @@ public class Cat_Polizas extends JFrame{
 				
 //					if((cmbReferencia.getSelectedIndex()>0 && folioReferencia>0) || (cmbReferencia.getSelectedIndex()==0 && folioReferencia==0)){
 						
-							if(chbCheque.isSelected()){
+							if(chbPago.isSelected()){
 								
 									if(!txtCheque.getText().equals("")){
 										
@@ -755,9 +756,10 @@ public class Cat_Polizas extends JFrame{
 				tipo = cmbTipo.getSelectedItem().toString().toUpperCase();
 				folio = txtFolio.getText();
 				
+				imprimir();
 				limpiar();
 				
-					return;
+//					return;
 			}else{
 					JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 					return;
@@ -788,22 +790,12 @@ public class Cat_Polizas extends JFrame{
 		
 		boolean valor=false;
 		
-				if(columna!=7){
+				if(columna!=8){
 					
 						if(isNumeric(modelo.getValueAt(fila,4).toString().trim()) && isNumeric(modelo.getValueAt(fila,5).toString().trim())){
 							
-								int cantidadDeFilas = tabla.getRowCount();
-								fila+=1;
-								
-								if(fila == cantidadDeFilas){ fila=0;	}
-//								if(columna==4 && !tabla.getValueAt(fila, 5).toString().equals("")){	fila+=1; }
-//								if(columna==5 && !tabla.getValueAt(fila, 4).toString().equals("")){	fila+=1; }
-								
-									tabla.getSelectionModel().setSelectionInterval(fila, fila);
-									tabla.editCellAt(fila, columna);
-									Component aComp=tabla.getEditorComponent();
-									aComp.requestFocus();
-									valor = true;
+								RecorridoFoco();
+								valor = true;
 								
 						}else{
 								tabla.getSelectionModel().setSelectionInterval(fila, fila);
@@ -820,6 +812,81 @@ public class Cat_Polizas extends JFrame{
 				CalcularCuadreDePoliza();
 					
 		return valor;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void RecorridoFoco(){
+		
+		int cantidadDeFilas = tabla.getRowCount();
+		String sacarFocoDeTabla = "no";
+		
+		if(fila == cantidadDeFilas-1){
+				if(columna==7){
+					sacarFocoDeTabla="si";
+				}else{
+						if(columna==6  && tabla.isCellEditable(fila, 7)){
+							columna+=1;
+						}else{
+							if(columna==6 && !tabla.isCellEditable(fila, 7)){
+								sacarFocoDeTabla="si";
+							}else{
+								columna+=1;
+							}
+						}
+				}
+		}else{
+			sacarFocoDeTabla = "no";
+			
+				if(columna==7){
+					fila+=1;
+					columna = 4;
+				}else{
+						if(columna==6  && tabla.isCellEditable(fila, 7)){
+							columna+=1;
+						}else{
+							if(columna==6 && !tabla.isCellEditable(fila, 7)){
+								fila+=1;
+								columna = 4;
+							}else{
+								columna+=1;
+							}
+						}
+				}
+		}
+		
+		tabla.getSelectionModel().setSelectionInterval(fila, fila);
+		tabla.editCellAt(fila, columna);
+		Component aComp=tabla.getEditorComponent();
+		aComp.requestFocus();
+		
+		if(sacarFocoDeTabla.equals("si")){
+			tabla.lostFocus(null, null);
+			txtCuenta.requestFocus();
+		}
+		
+		
+//		if(columna==7 && fila == cantidadDeFilas-1){
+////			regresar foco a txtCuenta
+//			tabla.lostFocus(null, null);
+//			txtCuenta.requestFocus();
+//			
+//		}else{
+//			
+//			if(columna==7){
+////				saltar fila y resetear columna
+//				fila+=1;
+//				columna = 4;
+//			}else{
+////				saltar columna
+//				columna+=1;
+//			}
+//			
+//			tabla.getSelectionModel().setSelectionInterval(fila, fila);
+//			tabla.editCellAt(fila, columna);
+//			Component aComp=tabla.getEditorComponent();
+//			aComp.requestFocus();
+//			
+//		}
 	}
 	
 	public void CalcularCuadreDePoliza(){
@@ -857,6 +924,8 @@ public class Cat_Polizas extends JFrame{
 		spDiferenciaTotales.setEnabled(false);
 		txtFolio.setEditable(false);
 		
+		txtCheque.setEditable(validar);
+		
 		txtTotal.setEditable(validar);
 		cmbFormaDePago.setEnabled(validar);
 		cmbDepositoBanco.setEnabled(validar);
@@ -888,7 +957,7 @@ public class Cat_Polizas extends JFrame{
 		folioReferencia = 0;
 		nota="";
 		
-		chbCheque.setSelected(false);
+		chbPago.setSelected(false);
 		cmbFormaDePago.setEnabled(false);
 		cmbDepositoBanco.setEnabled(false);
 		
@@ -979,34 +1048,38 @@ public class Cat_Polizas extends JFrame{
 	ActionListener opImprimir = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			
-//			String fecha = new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate())+" 00:00:00";
-			Obj_Usuario usuario = new Obj_Usuario().LeerSession();
-			String basedatos="2.26";
-			String vista_previa_reporte="no";
-			int vista_previa_de_ventana=0;
-			String comando="" ;
-			String reporte = "";
-							 
-								if(rbPoliza.isSelected()){
-									comando="exec sp_consulta_de_poliza '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
-									reporte = "Obj_Reporte_De_Consulta_De_Poliza.jrxml";
-									new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-								}
-								if(rbCheque.isSelected()){
-									comando="exec sp_consulta_de_poliza_cheque '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
-									reporte = "Obj_Reporte_De_Consulta_De_Poliza_De_Cheque.jrxml";
-									new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-								}
-								if(rbAnticipo.isSelected()){
-									
-								}
-								else{
-//									aviso
-								}
-								
+			imprimir();
 		}
 	};
+	
+	public void imprimir(){
+//		String fecha = new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate())+" 00:00:00";
+		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+		String basedatos="2.26";
+		String vista_previa_reporte="no";
+		int vista_previa_de_ventana=0;
+		String comando="" ;
+		String reporte = "";
+						 
+							if(rbPoliza.isSelected()){
+								comando="exec sp_consulta_de_poliza '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
+								reporte = "Obj_Reporte_De_Consulta_De_Poliza.jrxml";
+								new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+							}
+							if(rbCheque.isSelected()){
+								comando="exec sp_consulta_de_poliza_cheque '"+tipo+"','"+fecha+"','"+folio+"','"+usuario.getNombre_completo()+"'" ;
+								reporte = "Obj_Reporte_De_Consulta_De_Poliza_De_Cheque.jrxml";
+								new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+							}
+							if(rbAnticipo.isSelected()){
+								
+							}
+							else{
+//								aviso
+							}
+	}
+	
+	
 	
 	public class Cat_Filtro_Cuentas extends JDialog{
 
