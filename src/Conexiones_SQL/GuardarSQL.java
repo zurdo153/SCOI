@@ -39,6 +39,7 @@ import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
+import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Importar_Voucher;
 import Obj_Contabilidad.Obj_Proveedores;
@@ -3750,6 +3751,47 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
+	public boolean Guardar_Punto_Venta_TA(Obj_Puntos_De_Venta_De_Tiempo_Aire tpc){
+		String query = "exec sp_insert_nombre_punto_de_venta_de_TA_por_establecimiento ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, tpc.getFolio());
+			pstmt.setString(2, tpc.getNombre_Pc().toUpperCase().trim());
+			pstmt.setString(3, tpc.getEstablecimiento().toUpperCase().trim());
+			pstmt.setString(4, tpc.getNombre_Punto_Venta_TA().toUpperCase().trim());
+			pstmt.setInt(5, tpc.getStatus());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Punto_Venta_TA ]\nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Punto_Venta_TA ]\nSQLException:"+query+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Punto_Venta_TA ] \nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	
 	public boolean Guardar_Sugerido_Sistema(Object[][] matriz1, Object[][] matriz2, int folio_sugerido) throws SQLException{
 		
 		Connection con = new Connexion().conexion();
@@ -4104,6 +4146,10 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
+	
+	
+	
+	
 	public boolean Guardar_Sub_SubCuenta_Contable(String f_cuenta, String f_scuenta, String f_sscuenta,String sscuenta, String transaccion, String status){
 		String query = "exec sp_insert_sub_subcuenta_contable ?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
@@ -4261,19 +4307,6 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		try {
 			con.setAutoCommit(false);
 			
-//			// insert bitacora
-//			String pc = InetAddress.getLocalHost().getHostName();
-//			String ip = InetAddress.getLocalHost().getHostAddress();
-//			pstmtb = con.prepareStatement(Qbitacora);
-//			pstmtb.setString(1, pc);
-//			pstmtb.setString(2, ip);
-//			pstmtb.setInt(3, usuario.getFolio());
-//			pstmtb.setString(4, "sp_insert_cliente alta "+cliente.getNombre().toUpperCase()+cliente.getAp_paterno().toUpperCase()+cliente.getAp_materno().toUpperCase());
-//			pstmtb.setString(5, "Cliente Nuevo");
-//			pstmtb.executeUpdate();
-//			
-			
-//			private String telefono_cuadrante;
 			int i=1;
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(i,	 	prv.getNombre().toUpperCase());
@@ -4354,5 +4387,45 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		}		
 		return true;
 	}
+
+	public boolean GuardarSaldo_TA(Integer folio_cajero, Integer folio_supervisor,String establecimiento, String saldo, String asignacion) {
+		String pc="";
+		try { pc = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+		String query = "sp_insert_saldo_TA_entrada_y_salida_cajeras "+folio_cajero+","+folio_supervisor+",'"+establecimiento+"','"+pc+"','"+saldo+"','"+asignacion+"'";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardarsaldo_TA ] "+e.getMessage()+"\nconsulta:"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardarsaldo_TA ] "+ex.getMessage()+"\nconsulta:"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardarsaldo_TA ] "+e.getMessage()+"\nconsulta:"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}		
+		return true;
+	}
+
+
 	
 } 

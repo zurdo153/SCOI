@@ -220,7 +220,6 @@ public class Cat_Usuarios extends JFrame{
 		@SuppressWarnings("rawtypes")
 		Vector ReportesEspecialesVector = new Obj_NombreVector("Reportes Especiales", Reportes_Especiales);
 		
-		
 	// MENU PRINCIPAL COMPRAS (8)
 			String[] Sub_Compras = new Obj_SubMenus().Relacion_de_SubMenus(8);
 			Obj_CheckBoxNode Compras[] = {
@@ -232,6 +231,7 @@ public class Cat_Usuarios extends JFrame{
 				new Obj_CheckBoxNode(Sub_Compras[5], false),
 				new Obj_CheckBoxNode(Sub_Compras[6], false),
 				new Obj_CheckBoxNode(Sub_Compras[7], false),
+				new Obj_CheckBoxNode(Sub_Compras[8], false),
 			};
 			@SuppressWarnings("rawtypes")
 			Vector ComprasVector = new Obj_NombreVector("Compras", Compras);

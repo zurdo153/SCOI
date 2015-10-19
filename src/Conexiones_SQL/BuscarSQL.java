@@ -47,6 +47,7 @@ import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
+import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
@@ -136,6 +137,29 @@ public class BuscarSQL {
 		}
 		return fecha;
 	}
+	
+	public String inicio_final_TA(int cajero) throws SQLException{
+		String inicio_final_TA="";
+		String query = "     SELECT top 1 isnull(movimiento,'N') FROM tb_saldo_TA_entrada_y_salida_cajeras where estatus='V' and convert(varchar(20),fecha,103)=convert(varchar(20),getdate(),103) and folio_cajero="+cajero+" order by fecha desc";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				inicio_final_TA=(rs.getString(""));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en inicio_final_TA \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return inicio_final_TA;
+	}
+	
 	
 	public String edad(String fecha_nacimiento) throws SQLException{
 		String fecha="";
@@ -6286,6 +6310,34 @@ public class BuscarSQL {
 		return nombrepc;
 	}
 	
+	public Obj_Puntos_De_Venta_De_Tiempo_Aire Existepunto_de_venta_establecimiento(int folio){
+		Obj_Puntos_De_Venta_De_Tiempo_Aire nombrepc = new Obj_Puntos_De_Venta_De_Tiempo_Aire();
+		String query = "select tb_pc_asignadas_a_un_punto_de_venta_TA.folio"
+				+ "      ,tb_establecimiento.nombre as establecimiento"
+				+ "	  ,tb_pc_asignadas_a_un_punto_de_venta_TA.nombre_pc"
+				+ "	  ,tb_pc_asignadas_a_un_punto_de_venta_TA.nombre_punto_de_venta"
+				+ "	  ,tb_pc_asignadas_a_un_punto_de_venta_TA.status"
+				+ "	   from tb_pc_asignadas_a_un_punto_de_venta_TA"
+				+ " inner join tb_establecimiento on tb_establecimiento.folio=tb_pc_asignadas_a_un_punto_de_venta_TA.folio_establecimiento  where  tb_pc_asignadas_a_un_punto_de_venta_TA.folio="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				nombrepc.setFolio(rs.getInt("folio"));
+				nombrepc.setNombre_Pc(rs.getString("nombre_pc").trim());
+				nombrepc.setNombre_Punto_Venta_TA(rs.getString("nombre_punto_de_venta").trim());
+				nombrepc.setEstablecimiento(rs.getString("establecimiento").trim());
+				nombrepc.setStatus(rs.getInt("status"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Existepunto_de_venta_establecimiento En"+query+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return nombrepc;
+	}
+	
 	public int periodos() throws SQLException{
 		int periodos = 0;
 
@@ -6395,7 +6447,6 @@ public class BuscarSQL {
 
 	String[][] rp_ventas = new String[getFilasExterno(query)][20];
 		try {
-			System.out.println(query);
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			int i=0;
@@ -6439,12 +6490,11 @@ public class BuscarSQL {
 		
 		String query = "exec sp_Reporte_IZAGAR_analisis_competidores '"+(ventas.getFecha_inicio()+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos()))+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+
 				                                                      "','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+
-				                                                      "','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"',"+tipo;
+				                                                      "','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+(ventas.getTallas().equals("")?0:ventas.getTallas())+"',"+tipo;
 		Object[][] rp_competencia = new Object[getFilasExterno(query)][cantidad_de_columnas];
 		
 		try {
 			
-			System.out.println(query);
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
@@ -6858,7 +6908,7 @@ public class BuscarSQL {
 		switch(ref){
 //			case "Departamento": 	query = "select folio,departamento as nombre from tb_departamento where status = 1 order by  nombre"; break;
 //			case "Establecimiento": query = "select folio,nombre as nombre from tb_establecimiento where status = 1  order by nombre"; break;
-			case "Empleado": 		query = "select folio,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_empleado where status=1  order by nombre"; break;
+			case "Empleado": 		query = "select folio,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_empleado order by nombre"; break;
 			case "Proveedor": 		query = "select folio_proveedor,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_proveedores where status=1  order by nombre"; break;
 		}
 		

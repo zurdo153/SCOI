@@ -263,9 +263,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		panel.add(c_final).setBounds(x+=20,y,l-10,a);
 		panel.add(sphora_fin).setBounds(x+=95,y,l-50,a);
 		panel.add(JLBrelog2).setBounds(x+=50,y,a,a);
-		
-		
-        
+		      
 		
 		x=100;
 		panel.add(new JLabel("Filtro De Pedido ó Producto:")).setBounds(x-85,y+=30,l+50,a);
@@ -377,7 +375,6 @@ public class Cat_Reporte_De_Ventas extends JFrame {
         btnFiltroFamilia.addActionListener(op_filtro_familias);
         btnFiltroLinea.addActionListener(op_filtro_lineas);
         btnFiltroTalla.addActionListener(op_filtro_talla);
-        
 		
 		btnLimpiarFiltroProducto.addActionListener(limpiar_filtro_productos);
 		btnLimpiarFiltroClase.addActionListener(limpiar_filtro_claces);

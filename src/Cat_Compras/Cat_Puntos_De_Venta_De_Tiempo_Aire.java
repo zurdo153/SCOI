@@ -1,4 +1,4 @@
-package Cat_Checador;
+package Cat_Compras;
 
 import java.awt.Container;
 import java.awt.Event;
@@ -28,28 +28,29 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
-import Obj_Checador.Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento;
+import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento extends JFrame{
+public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 	int foliosiguiente=0;
 	String Activo ="";
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 9, "Int");
-	JTextField txtNombre_pc= new Componentes().text(new JTextField(), "Nombre Computadora",80,"String");
-	JTextField txtEstablecimientoFiltro = new JTextField();
-	JTextField txtEtapaFiltro = new Componentes().text(new JTextField(), "Filtro Por Nombre de Computadora", 30, "String");
+	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
+	JTextField txtNombre_pc= new Componentes().text(new JCTextField(), "Nombre Computadora",80,"String");
+	JTextField txtfiltro_tabla = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 30, "String");
+	JTextField txtNombre_Punto_De_Venta= new Componentes().text(new JCTextField(), "Nombre Punto De Venta De Tiempo Aire",80,"String");
 	
 	JLabel JLBactivo= new JLabel();
 	
@@ -68,11 +69,12 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
 	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
 	
-	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio","Establecimiento", "Computadora","Estatus"}){
+	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio","Establecimiento", "Computadora","Punto Venta","Estatus"}){
 	            @SuppressWarnings("rawtypes")
 	            Class[] types = new Class[]{
 	                       java.lang.Object.class,
 	                       java.lang.Object.class,  
+	                       java.lang.Object.class, 
 	                       java.lang.Object.class, 
 	                       java.lang.Object.class   
 	        };
@@ -83,8 +85,9 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 	        public boolean isCellEditable(int fila, int columna){
 	                    switch(columna){
 	                            case 0  : return false; 
+	                            case 1  : return false; 
 	                            case 2  : return false; 
-	                            case 3  : return false; 
+	                            case 3  : return false;
 	                            case 4  : return false; 
 	                    }
 	                     return false;
@@ -96,26 +99,20 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 		private TableRowSorter trsfiltro;
 		
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento(){
-			this.setSize(924,345);
+	public Cat_Puntos_De_Venta_De_Tiempo_Aire(){
+			this.setSize(1000,345);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/pantalla-de-monitor-de-ordenador-icono-9301-64.png"));
-			panel.setBorder(BorderFactory.createTitledBorder("Escribe En Nombre De Una Computadora y Selecciona El Establecimiento Al Que Quieres Asignarla"));
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/telefono-celular-hp-ipaq-2-de-telefonia-movil-icono-6906-64.png"));
+			panel.setBorder(BorderFactory.createTitledBorder("Escribe El Nombre De Una Computadora, El Punto De Venta y Selecciona El Establecimiento Al Que Le Corresponde"));
 			
-			this.setTitle("Asignacion De Computadoras A Establecimientos Para Checador");
-			
+			this.setTitle("Puntos De Venta De Tiempo Aire");
 			trsfiltro = new TableRowSorter(modelo); 
 			tabla.setRowSorter(trsfiltro);
 			
-			txtEstablecimientoFiltro.setToolTipText("Filtro Por Folio");
-			txtEtapaFiltro.setToolTipText("Filtro Por Nombre De Computadora");
-			
 			int x = 45, y=30, ancho=100;
-			
-			
 			
 			panel.add(new JLabel("Folio Del Registro:")).setBounds(x-25,y-5,ancho,20);
 			panel.add(txtFolio).setBounds(x+-25,y+=20,250,20);
@@ -125,26 +122,27 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 			panel.add(txtNombre_pc).setBounds(x+-25,y+=20,250,20);
 			panel.add(cmb_status).setBounds(277,y,98,20);
 			
+			panel.add(new JLabel("Nombre Del Punto De Venta:")).setBounds(x-25,y+=30,150,20);
+			panel.add(txtNombre_Punto_De_Venta).setBounds(x-25,y+=20,250,20);
+			panel.add(btnNuevo).setBounds(277,y,98,20);
+			
 			panel.add(new JLabel("Nombre Del Establecimiento:")).setBounds(x-25,y+=30,150,20);
 			panel.add(cmbEstablecimiento).setBounds(x-25,y+=20,250,20);
-			panel.add(btnGuardar).setBounds(277,y,98,20);
-			
-			panel.add(btnNuevo).setBounds(x-25,y+=55,100,20);
-			panel.add(btnEditar).setBounds(x+105,y,100,20);
+
 			panel.add(btnDeshacer).setBounds(277,y,98,20);
+			panel.add(btnGuardar).setBounds(x-25,y+=55,100,20);
+			panel.add(btnEditar).setBounds(x+105,y,100,20);
+			panel.add(btnSalir).setBounds(277,y,98,20);
 			
-			panel.add(btnSalir).setBounds(277,y+55,98,20);
+			panel.add(txtfiltro_tabla).setBounds(380,15,400,20);
 			
-			
-			panel.add(txtEstablecimientoFiltro).setBounds(420,15,180,20);
-			panel.add(txtEtapaFiltro).setBounds(600,15,180,20);
-			
-			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-10,35,523,240);
+			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-10,35,603,240);
 			
 			txtNombre_pc.setEditable(false);
 			cmb_status.setEnabled(false);
 			cmbEstablecimiento.setEnabled(false);
 			btnEditar.setEnabled(false);
+			txtNombre_Punto_De_Venta.setEnabled(false);
 			
 			btnGuardar.addActionListener(guardar);
 			btnSalir.addActionListener(salir);
@@ -154,22 +152,14 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 			btnBuscar.addActionListener(buscar);
 			
 			txtFolio.addKeyListener(buscar_action);
-			txtEstablecimientoFiltro.addKeyListener(opFiltroFolio);
-			txtEtapaFiltro.addKeyListener(opFiltroEtapa);
 			
-			txtNombre_pc.addKeyListener(enterpasaraEstablecimiento);
+			txtfiltro_tabla.addKeyListener(opFiltroGeneral);
+			txtNombre_pc.addKeyListener(enterpasaraPunto_De_Venta);
+			txtNombre_Punto_De_Venta.addKeyListener(enterpasaraEstablecimiento);
 			cmbEstablecimiento.addKeyListener(enterpasaraNombre_Pc);
 
-			Checar_Activo();
-			panel.add(JLBactivo).setBounds(680,285,350,20);
-			if(Activo.equals("Activada"))
-		        {JLBactivo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>Esta Funcion Se Encuentra: "+Activo+"</p></b></CENTER></FONT></html>");}
-		    else{JLBactivo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=RED><CENTER><b><p>Esta Funcion Se Encuentra: "+Activo+"</p></b></CENTER></FONT></html>");}
-			
 			agregar(tabla);
 			cont.add(panel);
-			
-
 			
               ///asigna el foco al filtro
 						 this.addWindowListener(new WindowAdapter() {
@@ -255,12 +245,16 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 		    this.tabla.getColumnModel().getColumn(2).setMinWidth(180);
 		    this.tabla.getColumnModel().getColumn(2).setMaxWidth(500);
 		    this.tabla.getColumnModel().getColumn(3).setMinWidth(100);
-		    this.tabla.getColumnModel().getColumn(3).setMaxWidth(100);
-						    
+		    this.tabla.getColumnModel().getColumn(3).setMaxWidth(500);
+		    this.tabla.getColumnModel().getColumn(4).setMinWidth(100);
+		    this.tabla.getColumnModel().getColumn(4).setMaxWidth(100);
+		    
 		    tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 	
 		    tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
 		    tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
 		    tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
+		    tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
+			
 							refrestabla();
 					 JScrollPane scrol = new JScrollPane(tabla);
 				    return scrol; 
@@ -272,19 +266,21 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 		try {
 			Connexion con = new Connexion();
 			s = con.conexion().createStatement();
-			rs = s.executeQuery("select  tb_pc_asignadas_a_establecimiento_para_checador.folio" +
-					"                   ,tb_establecimiento.nombre" +
-					"                   ,tb_pc_asignadas_a_establecimiento_para_checador.nombre_pc_checador" +
-					"                   ,case when tb_pc_asignadas_a_establecimiento_para_checador.status='1' then (select 'VIGENTE') when tb_pc_asignadas_a_establecimiento_para_checador.status=0 then (select 'CANCELADO') end as status " +
-					"              from tb_pc_asignadas_a_establecimiento_para_checador" +
-					"           inner join tb_establecimiento on tb_establecimiento.folio=tb_pc_asignadas_a_establecimiento_para_checador.folio_establecimiento order by tb_establecimiento.nombre asc");
+			rs = s.executeQuery("select tb_pc_asignadas_a_un_punto_de_venta_TA.folio"
+					+ "      ,tb_establecimiento.nombre"
+					+ "	  ,tb_pc_asignadas_a_un_punto_de_venta_TA.nombre_pc"
+					+ "	  ,tb_pc_asignadas_a_un_punto_de_venta_TA.nombre_punto_de_venta"
+					+ "	  ,case when tb_pc_asignadas_a_un_punto_de_venta_TA.status='1' then (select 'VIGENTE') when tb_pc_asignadas_a_un_punto_de_venta_TA.status=0 then (select 'CANCELADO') end as status"
+					+ "	   from tb_pc_asignadas_a_un_punto_de_venta_TA"
+					+ " inner join tb_establecimiento on tb_establecimiento.folio=tb_pc_asignadas_a_un_punto_de_venta_TA.folio_establecimiento order by tb_establecimiento.nombre asc");
 			while (rs.next())
 			{ 
-			   String [] fila = new String[4];
+			   String [] fila = new String[5];
 			   fila[0] = rs.getString(1).trim();
 			   fila[1] = rs.getString(2).trim();
 			   fila[2] = rs.getString(3).trim(); 
 			   fila[3] = rs.getString(4).trim();
+			   fila[4] = rs.getString(5).trim();
 			   modelo.addRow(fila); 
 			}	
 		} catch (SQLException e1) {
@@ -309,26 +305,25 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 	};
 	
     
-	KeyListener opFiltroFolio = new KeyListener(){
-		@SuppressWarnings("unchecked")
+	KeyListener opFiltroGeneral = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtEstablecimientoFiltro.getText().toUpperCase().trim(), 1));
+			int[] columnas = {0,1,2,3,4};
+			new Obj_Filtro_Dinamico_Plus(tabla, txtfiltro_tabla.getText().toUpperCase(), columnas);
 		}
 		public void keyPressed(KeyEvent arg0) {}
 		@Override
 		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-			
 		}		
 	};
 	
-	KeyListener opFiltroEtapa = new KeyListener(){
-		@SuppressWarnings("unchecked")
-		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtEtapaFiltro.getText().toUpperCase().trim(), 2));
+	KeyListener enterpasaraPunto_De_Venta = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				txtNombre_Punto_De_Venta.requestFocus();
+			}
 		}
-		public void keyTyped(KeyEvent arg0) {}
-		public void keyPressed(KeyEvent arg0) {}		
 	};
 	
 	KeyListener enterpasaraEstablecimiento = new KeyListener() {
@@ -362,12 +357,15 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 		public void actionPerformed(ActionEvent e){
 			if(txtFolio.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "Seleccione Un Registro De La Tabla A La Derecha Para Editar o Teclee El Folio","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				txtFolio.requestFocus();
 				return;
 			}else{
-			Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento tpc = new Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento().buscar(Integer.parseInt(txtFolio.getText()));
+				Obj_Puntos_De_Venta_De_Tiempo_Aire tpc = new Obj_Puntos_De_Venta_De_Tiempo_Aire().buscar(Integer.parseInt(txtFolio.getText()));
 			if(tpc.getFolio() != 0){
 			txtNombre_pc.setText(tpc.getNombre_Pc().toString()+"");
-			cmbEstablecimiento.setSelectedItem(tpc.getEstablecimiento().toString()+"");
+			txtNombre_Punto_De_Venta.setText(tpc.getNombre_Punto_Venta_TA()+"");
+			cmbEstablecimiento.setSelectedItem(tpc.getEstablecimiento()+"");
+			cmb_status.setSelectedItem(tpc.getStatus()==1?"VIGENTE":"CANCELADO");
 			btnEditar.setEnabled(true);
 			btnGuardar.setEnabled(false);
 			}else{
@@ -382,8 +380,9 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 		public void actionPerformed(ActionEvent e){
 			txtFolio.setText("");
 			txtFolio.setEnabled(true);
-			txtEstablecimientoFiltro.setText("");
-			txtEtapaFiltro.setText("");
+			txtNombre_Punto_De_Venta.setText("");
+			txtNombre_Punto_De_Venta.setEnabled(false);
+			txtfiltro_tabla.setText("");
 			btnNuevo.setEnabled(true);
 			btnEditar.setEnabled(true);
 			txtNombre_pc.setText("");
@@ -411,6 +410,7 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 				btnGuardar.setEnabled(true);
 				txtNombre_pc.setEditable(true);
 				txtNombre_pc.requestFocus(true);
+				txtNombre_Punto_De_Venta.setEnabled(true);
 			}
 		}
 	};
@@ -426,6 +426,7 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 				btnGuardar.setEnabled(true);
 				txtNombre_pc.setEditable(true);
 				txtNombre_pc.requestFocus();
+				txtNombre_Punto_De_Venta.setEnabled(true);
 				btnEditar.setEnabled(false);
 				cmb_status.setSelectedIndex(0);
 				cmb_status.setEnabled(true);
@@ -446,14 +447,13 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 	
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
 				try {
 					if(validaCampos()!="") {
 						JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 						return;
 					} else{
 						
-						Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento tpc = new Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento().buscar(Integer.parseInt(txtFolio.getText()));
+						Obj_Puntos_De_Venta_De_Tiempo_Aire tpc = new Obj_Puntos_De_Venta_De_Tiempo_Aire().buscar(Integer.parseInt(txtFolio.getText()));
 					if(tpc.getFolio() == Integer.parseInt(txtFolio.getText())){
 						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
 							if(validaCampos()!="") {
@@ -462,12 +462,12 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 							}else{
 								tpc.setNombre_Pc(txtNombre_pc.getText().toString().toUpperCase().trim());
 								tpc.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().toUpperCase().trim());
+								tpc.setNombre_Punto_Venta_TA(txtNombre_Punto_De_Venta.getText().toString().toUpperCase().trim());
 									switch(cmb_status.getSelectedIndex()){
 															case 0: tpc.setStatus(1); break;
 															case 1: tpc.setStatus(0); break;	}
-									
-														if(tpc.actualizar(Integer.parseInt(txtFolio.getText()))){
-															while(tabla.getRowCount()>0){ modelo.removeRow(0);}
+											if(tpc.actualizar(Integer.parseInt(txtFolio.getText()))){
+															modelo.setRowCount(0);
 															refrestabla();
 									JOptionPane.showMessageDialog(null,"El Registró Se Actualizó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
 									btnDeshacer.doClick();
@@ -483,25 +483,21 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 							return;
 						}
 					}else{
-						
 						tpc.setFolio(Integer.parseInt(txtFolio.getText()));
 						tpc.setNombre_Pc(txtNombre_pc.getText().toUpperCase().trim());
 						tpc.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().toUpperCase().trim());
+						tpc.setNombre_Punto_Venta_TA(txtNombre_Punto_De_Venta.getText().toUpperCase().trim());
 							switch(cmb_status.getSelectedIndex()){
 							case 0: tpc.setStatus(1); break;
 							case 1: tpc.setStatus(0); break;	}
-							
 								if(tpc.guardar()){
-									
-									while(tabla.getRowCount()>0){ modelo.removeRow(0);}
+						        	modelo.setRowCount(0);
 									refrestabla();
-									
 									JOptionPane.showMessageDialog(null,"El Registró Se Guardó  Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
 									btnDeshacer.doClick();
 									txtFolio.setEditable(true);
 									txtFolio.requestFocus();
 									return;
-									
 								}else{
 									JOptionPane.showMessageDialog(null, "El Registro No Se Guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 									return;
@@ -511,7 +507,6 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
 				} 				
-					
 		}
 	};
 	
@@ -524,13 +519,15 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 	        		    txtFolio.setText(tabla.getValueAt(fila,0).toString().substring(0,tabla.getValueAt(fila,0).toString().length()));
 					    cmbEstablecimiento.setSelectedItem(tabla.getValueAt(fila,1).toString().substring(0,tabla.getValueAt(fila,1).toString().length()));
 						txtNombre_pc.setText(tabla.getValueAt(fila,2).toString().substring(0,tabla.getValueAt(fila,2).toString().length()));
-						cmb_status.setSelectedItem(tabla.getValueAt(fila,3).toString().substring(0,tabla.getValueAt(fila,3).toString().length()));
+						txtNombre_Punto_De_Venta.setText(tabla.getValueAt(fila,3).toString().substring(0,tabla.getValueAt(fila,3).toString().length()));
+						cmb_status.setSelectedItem(tabla.getValueAt(fila,4).toString().substring(0,tabla.getValueAt(fila,4).toString().length()));
 						btnEditar.setEnabled(true);
 						cmb_status.setEnabled(false);
                         cmbEstablecimiento.setEnabled(false);
 						btnEditar.setEnabled(true);
 						txtNombre_pc.setEditable(false);
 						txtNombre_pc.requestFocus();
+						txtNombre_Punto_De_Venta.setEnabled(false);
 						txtFolio.setEnabled(true);
 	        	}
 	        }
@@ -539,7 +536,7 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 	
 	public int  busqueda_proximo_folio() {
 		Connexion con = new Connexion();
-		String query = "select max(folio)+1 as 'Maximo' from tb_pc_asignadas_a_establecimiento_para_checador ";
+		String query = "select max(folio)+1 as 'Maximo' from tb_pc_asignadas_a_un_punto_de_venta_TA ";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -551,48 +548,18 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Error");
-			JOptionPane.showMessageDialog(null, "Error en Cat_Asignacion_De_computadoras_Para_Checador_Por_Establecimiento  en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			JOptionPane.showMessageDialog(null, "Error en Cat_Puntos_De_Venta_De_Tiempo_Aire  en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			return foliosiguiente ;
 		}
 		finally{
 			 if (stmt != null) { try {
 				stmt.close();
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Error en Cat_Asignacion_De_computadoras_Para_Checador_Por_Establecimiento   en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				JOptionPane.showMessageDialog(null, "Error en Cat_Puntos_De_Venta_De_Tiempo_Aire   en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				e.printStackTrace();
 			} }
 		}
 		return foliosiguiente;
-			}
-	
-	public String  Checar_Activo() {
-		Connexion con = new Connexion();
-		String query = "select case when validacion_pc_por_establecimiento_para_checador='true' then 'Activada' else 'Desactivada' end as Status" +
-				"                from tb_configuracion_sistema ";
-		
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				Activo =(rs.getString(1));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error");
-			JOptionPane.showMessageDialog(null, "Error en Cat_Asignacion_De_computadoras_Para_Checador_Por_Establecimiento  en la funcion Checar_Activo()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-			return Activo ;
-		}
-		finally{
-			 if (stmt != null) { try {
-				stmt.close();
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Error en Cat_Asignacion_De_computadoras_Para_Checador_Por_Establecimiento   en la funcion Checar_Activo()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-				e.printStackTrace();
-			} }
-		}
-		return Activo;
 			}
 	
 	
@@ -601,13 +568,14 @@ public class Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento ex
 		String error="";
 		if(txtNombre_pc.getText().equals("")) 		error+= "-Nombre De La Computadora\n";
 		if(cmbEstablecimiento.getSelectedIndex()==(0))error+= " -Nombre Establecimiento\n";
+		if(txtNombre_Punto_De_Venta.getText().equals("")) 	error+= "-Nombre Del Punto De Venta\n";
 		return error;
 	}
 	
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento().setVisible(true);
+			new Cat_Puntos_De_Venta_De_Tiempo_Aire().setVisible(true);
 		}catch(Exception e){	}
 	}
 	

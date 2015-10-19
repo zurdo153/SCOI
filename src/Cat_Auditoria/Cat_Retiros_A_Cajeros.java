@@ -16,7 +16,6 @@ import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -39,16 +38,14 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
+import Conexiones_SQL.GuardarSQL;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
 
 
 @SuppressWarnings("serial")
@@ -67,14 +64,20 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	JTextField txtpuesto =new Componentes().text(new JTextField(),"Puesto", 150, "String");
 	JTextField txtasignacion =new Componentes().text(new JTextField(),"Asignacion", 150, "String");
 	JTextField txtpc = new Componentes().text(new JTextField(),"Nombre Pc", 150, "String");
+	JTextField txtsaldoTA = new Componentes().text(new JCTextField(),"Saldo TA", 150, "Double");
 
 	JButton btnFoto = new JButton();
 	JButton btnaviso = new JButton();
 	JButton btnImpresion_Retiros_Pasados=new JButton("Retiros",new ImageIcon("imagen/Print.png"));
+	JButton btnISaldoTA=new JButton("Captura Saldo TA",new ImageIcon("imagen/telefono-celular-hp-ipaq-2-de-telefonia-movil-icono-6906-16.png"));
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	
 	Icon iconoFondo_cajero;
 	ImageIcon ImagenconFondo_cajero;
 	JLabel jlFondo_cajero =new JLabel();
+	JLabel JLBlinicioTA= new JLabel(new ImageIcon("Imagen/flecha-verde-icono-8451-16.png") );
+	JLabel JLBlsalidaTA= new JLabel(new ImageIcon("Imagen/flecha-azul-hacia-abajo-icono-7343-16.png") );
+	
 	
 	int folio_empleado =0;
     float importe_retiros_guardados =0;
@@ -82,12 +85,12 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
     float valor_a_retirar_deacuerdo_al_dia =0;
     
     String Asignacion =""; 
-    
     boolean cerrarhilo = false;
+    String  saldoinicialfinal=""; 
     
 	public Cat_Retiros_A_Cajeros(){
 		this.cont.add(panel);
-		this.setSize(355,119);
+		this.setSize(355,139);
 		this.setResizable(false);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-32.png"));
 		this.cont.add(panel);
@@ -96,14 +99,11 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		folio_empleado=new Obj_Usuario().LeerSession().getFolio();
 		
 		Obj_Retiros_Cajeros datosEmpleado= new Obj_Retiros_Cajeros().buscarEmpleado(folio_empleado);
-		
 		if(datosEmpleado.getAsignacion()== null){
-            
 			JOptionPane.showMessageDialog(null, "El Usuario No Esta Asignado ", "Aviso", JOptionPane.WARNING_MESSAGE);
 			btnaviso.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=BLUE>" +
 					"		<CENTER><p> CIERRA ESTA VENTANA Y VUELVE A INTENTARLO CUANDO TE ASIGNEN Y HAGAS LA PRIMER VENTA</p></CENTER></FONT></html>"); 
 			panel.add(btnaviso).setBounds(1,1,350,90);
-    		
 		}else{
 			
 		this.setUndecorated(true);
@@ -124,6 +124,12 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		panel.add(txtEstablecimiento).setBounds(145,47,200,20);
 		panel.add(txtpuesto).setBounds(145,67,200,20);
 		panel.add(txtpc).setBounds(145,87,200,20);
+		panel.add(btnISaldoTA).setBounds(5,118,137,20);
+		
+		panel.add(JLBlinicioTA).setBounds(150,118,20,20);
+		panel.add(txtsaldoTA).setBounds(170,118,70,20);
+		panel.add(JLBlsalidaTA).setBounds(240,118,20,20);
+		panel.add(btnGuardar).setBounds(260,118,95,20);
 		
 		txtFolio_empleado.setEditable(false);
 		txtasignacion.setEditable(false);
@@ -131,8 +137,14 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		txtEstablecimiento.setEditable(false);
 		txtpuesto.setEditable(false);
 		txtpc.setEditable(false);
+		txtsaldoTA.setEnabled(false);
+		JLBlinicioTA.setEnabled(false);
+		JLBlsalidaTA.setEnabled(false);
+		btnGuardar.setEnabled(false);
 		
 		btnImpresion_Retiros_Pasados.addActionListener(op_filtro_reimpresion_de_Retiros);
+		btnISaldoTA.addActionListener(op_captura_saldo_TA);
+		btnGuardar.addActionListener(op_guardar_saldo);
 		
          //////fondo		
 		ImagenconFondo_cajero = new ImageIcon("imagen/marco_aux_caja.png");
@@ -172,19 +184,56 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
   	    txtasignacion.setText(datosEmpleado.getAsignacion()+"");
   	    btnFoto.doClick();
   	    
-  	    
 	    String  Guardo_sesion=new Obj_Retiros_Cajeros().guardar_sesion(datosEmpleado.getEstablecimiento()+"",folio_empleado);
 	 
 		   if(Guardo_sesion !="Error en GuardarSQL"){
 		  }else{
 			  JOptionPane.showMessageDialog(null, "Error en Cat_Retiros_A_Cajeros  en la funcion Guardo_sesion \n no se pudo obtener el nombre de la pc ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		            }
-	  
 	}
 	
 	ActionListener op_filtro_reimpresion_de_Retiros = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
          new Cat_Filtro_De_Retiros_Guardados().setVisible(true);
+		}
+	};
+	
+	ActionListener op_captura_saldo_TA = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0){
+			try {
+			if(new BuscarSQL().inicio_final_TA(folio_empleado).equals("E"))
+			{
+				JLBlinicioTA.setEnabled(false);
+				JLBlsalidaTA.setEnabled(true);
+				saldoinicialfinal="Saldo Final";
+			}else{
+			   	JLBlinicioTA.setEnabled(true);
+				JLBlsalidaTA.setEnabled(false);
+			    saldoinicialfinal="Saldo Inicial";
+		   	}
+			;
+			} catch (SQLException e) {
+				       e.printStackTrace();
+			}
+            txtsaldoTA.setEnabled(true);
+            txtsaldoTA.setText("");
+            btnGuardar.setEnabled(true);
+            txtsaldoTA.requestFocus();
+		}
+	};
+	
+	ActionListener op_guardar_saldo = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0){
+			if(txtsaldoTA.getText().toString().equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Necesita Teclear Una Cantidad >En Saldo TA< Para Poder Guardar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+			   txtsaldoTA.requestFocus();	
+				return;
+			}else{
+			txtsaldoTA.setEnabled(false);
+			btnGuardar.setEnabled(false);
+         new Cat_Validar_Clave_Supervisor().setVisible(true);
+			}
 		}
 	};
 	
@@ -224,21 +273,16 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
    	public float Consulta_El_Importe__de_los_Retiros_Guardados(){
 
    		importe_retiros_guardados=0;
-   		
    		String query_importe_retiros="exec sp_consulta_acumulado_de_retiros_a_cajeros_del_dia_2 "+folio_empleado+",'"+Asignacion.trim()+"'";
-   	
-   		
 		Statement s;
 		ResultSet rs2;
 		
 		try {
 			s = new Connexion().conexion().createStatement();
 			rs2 = s.executeQuery(query_importe_retiros);
-			
 			while(rs2.next()){
 				importe_retiros_guardados = rs2.getFloat("importe_retiro");
 			}
-			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en Cat_Retiros_a_Cajeros  en la funcion [ Consulta_de_Importe_Nuevo ]   SQLException: sp_consulta_acumulado_de_retiros_a_cajeros_del_dia  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
@@ -269,7 +313,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	}
    	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////ACTUALIZAR
+/////////TODO CALCULO DEL SALDOACTUALIZAR
 
 ActionListener Buscar_Cambios = new ActionListener(){
 public void actionPerformed(ActionEvent e){
@@ -279,14 +323,12 @@ try {
 	valor_a_retirar_deacuerdo_al_dia = 0;
 	
 importe_nuevo_devuelto           = Consulta_de_Importe_Nuevo();	
-
-
 importe_retiros_guardados        = Consulta_El_Importe__de_los_Retiros_Guardados();	
 valor_a_retirar_deacuerdo_al_dia = Consulta_del_Importe_del_retiro_del_dia();
 
-System.out.println("importe_retiros_guardados:"+importe_retiros_guardados);
-System.out.println("importe_nuevo_devuelto:"+importe_nuevo_devuelto);
-System.out.println("valor_a_retirar_deacuerdo_al_dia:"+valor_a_retirar_deacuerdo_al_dia);
+//System.out.println("importe_retiros_guardados:"+importe_retiros_guardados);
+//System.out.println("importe_nuevo_devuelto:"+importe_nuevo_devuelto);
+//System.out.println("valor_a_retirar_deacuerdo_al_dia:"+valor_a_retirar_deacuerdo_al_dia);
 
 
 if(importe_nuevo_devuelto-importe_retiros_guardados >= valor_a_retirar_deacuerdo_al_dia){
@@ -335,22 +377,14 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		    	}
 		    }
 		    	
-				@SuppressWarnings({ "rawtypes", "unchecked" })
+	////////////TODO REPORTE DEL RETIRO				
 				public void Reporte_De_Retiros_Cajeros(String folio_retiro) {
-					
-					String query_corte_caja = "exec sp_Reporte_De_Retiros_A_Cajeros '"+folio_retiro+"';";
-					Statement stmt = null;
-					try {
-						stmt =  new Connexion().conexion().createStatement();
-					    ResultSet rs = stmt.executeQuery(query_corte_caja);
-						JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Retiro_A_Cajeros.jrxml");
-						JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-						JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-						JasperViewer.viewReport(print, false);
-					} catch (Exception e) {
-						System.out.println(e.getMessage());
-						JOptionPane.showMessageDialog(null, "Error En Cat_Retiros_A_Cajeros en la funcion Reporte_De_Retiros_Cajeros impresion ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-					}
+					String basedatos="2.26";
+					String vista_previa_reporte="no";
+					int vista_previa_de_ventana=0;
+					String reporte = "Obj_Reporte_De_Retiro_A_Cajeros.jrxml";
+					String comando = "exec sp_Reporte_De_Retiros_A_Cajeros '"+folio_retiro+"';";
+			   	    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 				 }
 		    	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -774,8 +808,62 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 			    return scrol; 
 			 }
 			}
+	  
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////CATALOGO IMPRESION DE SALDO//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	    	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	  	public class Cat_Validar_Clave_Supervisor extends JDialog{
+			JPasswordField txtClaveSupervisor_validacion = new Componentes().textPassword(new JPasswordField(), "Clave", 30);
+			JButton btnReporte = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
+			
+	  		public Cat_Validar_Clave_Supervisor(){
+	  			this.setSize(250, 120);
+	  			this.setResizable(false);
+	  			this.setLocationRelativeTo(null);
+	  			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+	  			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/plan-icono-5073-16.png"));
+	  			this.setTitle("Guardado Saldo TA");
+	  			Container cont = getContentPane();
+	  			JLayeredPane panel = new JLayeredPane();
+	  			this.setModal(true);
+	  			
+	  			panel.setBorder(BorderFactory.createTitledBorder("Pase El Gafete Del Supervisor"));
+	  			panel.add(txtClaveSupervisor_validacion).setBounds(10, 20, 220, 20);
+	  			panel.add(btnReporte).setBounds(70, 50, 100, 20);;
+	  			cont.add(panel);
+	  			
+	  			txtClaveSupervisor_validacion.addKeyListener(buscar_supervisor_existe);
+	  			txtClaveSupervisor_validacion.setEnabled(true);
+	  			btnReporte.setEnabled(false);
 
-	  	
+	  		}
+	  		
+	  		KeyListener buscar_supervisor_existe = new KeyListener() {
+    			@SuppressWarnings("deprecation")
+				public void keyPressed(KeyEvent e) {	
+    				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+ 					   Obj_Retiros_Cajeros datosSupervisor= new Obj_Retiros_Cajeros().buscarSupervisor(txtClaveSupervisor_validacion.getText().toUpperCase().trim());
+	    			if(datosSupervisor.getExiste_supervisor().equals("NO EXISTE")){
+	    				txtClaveSupervisor_validacion.setText("");
+	    				txtClaveSupervisor_validacion.requestFocus();
+						JOptionPane.showMessageDialog(null,"Se Requiere Clave De Un Supervisor","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+	    			}else{
+	    				if(new GuardarSQL().GuardarSaldo_TA(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),datosSupervisor.getFolio_supervisor(),txtEstablecimiento.getText().toString().trim(),txtsaldoTA.getText().toString().trim(),txtasignacion.getText().toString().trim())){
+		    				txtClaveSupervisor_validacion.setEnabled(false);
+		    				JOptionPane.showMessageDialog(null,"Se Guardo El >"+saldoinicialfinal+"< Exitosamente","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+	    					btnReporte.setEnabled(true);
+	    					saldoinicialfinal="";
+	    				}
+	    			}
+    				}
+    			}
+    			public void keyReleased(KeyEvent e) {}
+    			public void keyTyped(KeyEvent e) {}
+            };
+	  	}
 	  	
 	  	
 		public static void main(String [] arg){

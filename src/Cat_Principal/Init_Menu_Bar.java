@@ -32,7 +32,7 @@ public class Init_Menu_Bar extends Init_Login{
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.72");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.73");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -253,8 +253,6 @@ public class Init_Menu_Bar extends Init_Login{
 			Connexion con = new Connexion();
 			s = con.conexion().createStatement();
 			
-			System.out.println(new Obj_Usuario().LeerSession().getFolio());
-			
 			String query = ("exec sp_select_mostrar_contratos_proximos_a_terminar "+new Obj_Usuario().LeerSession().getFolio());
 			rs = s.executeQuery(query);
 			
@@ -263,9 +261,6 @@ public class Init_Menu_Bar extends Init_Login{
 			   fila[0] = rs.getString(1).trim();
 			   fila[1] = rs.getString(2).trim();
 			}
-			
-			System.out.println(fila[0].toString()+"  "+fila[1].toString());
-			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en Cat_Establecimientos en la funcion refrestabla  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);

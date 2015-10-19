@@ -583,7 +583,6 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			
 			modelo_Filtro_Ref.setRowCount(0);
 			
-			
 			Object[][] datos = new BuscarSQL().Filtro_De_Orden_De_Pago_Efectivo(new SimpleDateFormat("dd/MM/yyyy").format(fhFechaReporte.getDate())+" 00:00:00");
 			for(Object[] d : datos){
 				modelo_Filtro_Ref.addRow(d);

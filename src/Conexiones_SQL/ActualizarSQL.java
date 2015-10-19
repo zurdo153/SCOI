@@ -29,6 +29,7 @@ import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
+import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
@@ -3177,6 +3178,43 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
+	
+	public boolean PCAPunto_De_Venta_TA_Estab(Obj_Puntos_De_Venta_De_Tiempo_Aire pcnombre, int folio){
+		String query = " exec sp_actualizar_pc_para_punto_de_venta_TA_por_Establecimiento ?,?,?,?," + folio;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, pcnombre.getNombre_Pc().toUpperCase().trim());
+			pstmt.setString(2, pcnombre.getEstablecimiento().toUpperCase().trim());
+			pstmt.setString(3, pcnombre.getNombre_Punto_Venta_TA().toUpperCase().trim());
+			pstmt.setInt(4, pcnombre.getStatus());
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ PCAPunto_De_Venta_TA_Estab ] \nupdate  SQLException:"+query+"\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ PCAPunto_De_Venta_TA_Estab ] \nupdate  SQLException:"+query+"\n"+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 	
 	public boolean Aceptar_Negar_Sueldo_o_Bono(Object[][] guardarAN_sueldo_bono){
 		int  folio_usuario= usuario.getFolio();
