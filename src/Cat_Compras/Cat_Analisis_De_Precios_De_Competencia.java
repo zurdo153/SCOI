@@ -73,6 +73,9 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbOperador_Linea = new JComboBox(operadorLinea);
 	
+	String operadorTalla[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbOperador_Talla = new JComboBox(operadorTalla);
 	
 	JButton btnFiltroProducto = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroProducto = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
@@ -88,6 +91,9 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	
 	JButton btnFiltroLinea = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroLinea = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
+	
+	JButton btnFiltroTalla = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
+	JButton btnLimpiarFiltroTalla = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
 	JButton btn_buscar = new JButton  ("Buscar",new ImageIcon("imagen/buscar.png"));
 	JButton btn_buscar_ultimos_mov = new JButton  ("Buscar Ultimos",new ImageIcon("imagen/editar-sustituir-la-busqueda-icono-8072-16.png"));
