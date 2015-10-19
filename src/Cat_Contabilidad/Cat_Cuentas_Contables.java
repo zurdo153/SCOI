@@ -409,18 +409,26 @@ DefaultTableModel modelo_Sub_Sub_Cuenta_Contable = new DefaultTableModel(null,
 		
 		//BORRADO Y LLENADO
 		public void llenado_tabla_cuentas_contables(Integer consulta){
-		  while(tabla_cuentas_contables.getRowCount()>0){	modeloCuenta_Contable.removeRow(0);	}
-		  Object[][] getTablaCuentaContable = null;
- 		     getTablaCuentaContable = Consulta_para_llenar_Mov_Contabilidad();
-			 Object[] fila = new Object[6];
-			     for(int i=0; i<getTablaCuentaContable.length; i++){
-			             fila[0] = getTablaCuentaContable[i][0];
-			             fila[1] = getTablaCuentaContable[i][1]+"";
-			             fila[2] = getTablaCuentaContable[i][2]+"";
-			             fila[3] = getTablaCuentaContable[i][3]+"";
-			             fila[4] = getTablaCuentaContable[i][4]+"";
-			             fila[5] = getTablaCuentaContable[i][5]+"";
-			             modeloCuenta_Contable.addRow(fila); }
+			
+			modeloCuenta_Contable.setRowCount(0);
+			  Object[][] getTablaCuentaContable = Consulta_para_llenar_Mov_Contabilidad();
+			  for(Object[] fila : getTablaCuentaContable){
+				  modeloCuenta_Contable.addRow(fila);
+			  }
+			
+			
+//		  while(tabla_cuentas_contables.getRowCount()>0){	modeloCuenta_Contable.removeRow(0);	}
+//		  Object[][] getTablaCuentaContable = Consulta_para_llenar_Mov_Contabilidad();
+//		  
+//			 Object[] fila = new Object[6];
+//			     for(int i=0; i<getTablaCuentaContable.length; i++){
+//			             fila[0] = getTablaCuentaContable[i][0];
+//			             fila[1] = getTablaCuentaContable[i][1]+"";
+//			             fila[2] = getTablaCuentaContable[i][2]+"";
+//			             fila[3] = getTablaCuentaContable[i][3]+"";
+//			             fila[4] = getTablaCuentaContable[i][4]+"";
+//			             fila[5] = getTablaCuentaContable[i][5]+"";
+//			             modeloCuenta_Contable.addRow(fila); }
 		}
 		
 		////CONSULTA 
@@ -505,17 +513,24 @@ public void tabla_Subcuentas_Contables(){
 
 //BORRADO Y LLENADO
 public void llenado_tabla_subcuentas_contables(Integer consulta){
-	while(tablaSub_Cuenta_Contable.getRowCount()>0){	modeloSub_Cuenta_Contable.removeRow(0);	}
-	Object[][] getTablaCuentaContable = null;
-	getTablaCuentaContable = Consulta_para_llenar_Subcuenas();
-	Object[] fila = new Object[5];
-	for(int i=0; i<getTablaCuentaContable.length; i++){
-	fila[0] = getTablaCuentaContable[i][0];
-	fila[1] = getTablaCuentaContable[i][1]+"";
-	fila[2] = getTablaCuentaContable[i][2]+"";
-	fila[3] = getTablaCuentaContable[i][3]+"";
-	fila[4] = getTablaCuentaContable[i][4]+"";
-	modeloSub_Cuenta_Contable.addRow(fila); }
+	
+	modeloSub_Cuenta_Contable.setRowCount(0);
+	  Object[][] getTablaCuentaContable = Consulta_para_llenar_Subcuenas();
+	  for(Object[] fila : getTablaCuentaContable){
+		  modeloSub_Cuenta_Contable.addRow(fila);
+	  }
+	
+//	while(tablaSub_Cuenta_Contable.getRowCount()>0){	modeloSub_Cuenta_Contable.removeRow(0);	}
+//	Object[][] getTablaCuentaContable = null;
+//	getTablaCuentaContable = Consulta_para_llenar_Subcuenas();
+//	Object[] fila = new Object[5];
+//	for(int i=0; i<getTablaCuentaContable.length; i++){
+//	fila[0] = getTablaCuentaContable[i][0];
+//	fila[1] = getTablaCuentaContable[i][1]+"";
+//	fila[2] = getTablaCuentaContable[i][2]+"";
+//	fila[3] = getTablaCuentaContable[i][3]+"";
+//	fila[4] = getTablaCuentaContable[i][4]+"";
+//	modeloSub_Cuenta_Contable.addRow(fila); }
 }
 
 ////CONSULTA 
@@ -579,18 +594,26 @@ public void tabla_Sub_Subcuentas_Contables(){
 
 //BORRADO Y LLENADO
 public void llenado_tabla_sub_subcuentas_contables(Integer consulta){
-	while(tabla_Sub_Sub_Cuenta_Contable.getRowCount()>0){	modelo_Sub_Sub_Cuenta_Contable.removeRow(0);	}
-	Object[][] getTablaCuentaContable = null;
-	getTablaCuentaContable = Consulta_para_llenar_Sub_Subcuenas();
-	Object[] fila = new Object[6];
-	for(int i=0; i<getTablaCuentaContable.length; i++){
-	fila[0] = getTablaCuentaContable[i][0]+"";
-	fila[1] = getTablaCuentaContable[i][1]+"";
-	fila[2] = getTablaCuentaContable[i][2]+"";
-	fila[3] = getTablaCuentaContable[i][3]+"";
-	fila[4] = getTablaCuentaContable[i][4]+"";
-	fila[5] = getTablaCuentaContable[i][5]+"";
-	modelo_Sub_Sub_Cuenta_Contable.addRow(fila); }
+	
+	modelo_Sub_Sub_Cuenta_Contable.setRowCount(0);
+	Object[][] getTablaCuentaContable = Consulta_para_llenar_Sub_Subcuenas();
+	for(Object[] fila : getTablaCuentaContable){
+		modelo_Sub_Sub_Cuenta_Contable.addRow(fila);
+	}
+	
+	
+//	while(tabla_Sub_Sub_Cuenta_Contable.getRowCount()>0){	modelo_Sub_Sub_Cuenta_Contable.removeRow(0);	}
+//	Object[][] getTablaCuentaContable = null;
+//	getTablaCuentaContable = Consulta_para_llenar_Sub_Subcuenas();
+//	Object[] fila = new Object[6];
+//	for(int i=0; i<getTablaCuentaContable.length; i++){
+//	fila[0] = getTablaCuentaContable[i][0]+"";
+//	fila[1] = getTablaCuentaContable[i][1]+"";
+//	fila[2] = getTablaCuentaContable[i][2]+"";
+//	fila[3] = getTablaCuentaContable[i][3]+"";
+//	fila[4] = getTablaCuentaContable[i][4]+"";
+//	fila[5] = getTablaCuentaContable[i][5]+"";
+//	modelo_Sub_Sub_Cuenta_Contable.addRow(fila); }
 }
 
 ////CONSULTA 

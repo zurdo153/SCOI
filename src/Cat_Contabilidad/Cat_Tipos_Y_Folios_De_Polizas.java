@@ -44,6 +44,8 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 	JButton btnGuardarFolio = new JButton("Guardar");
 	JButton btnEditarFolio = new JButton("Editar");
 	
+	JButton btnLimpiar = new JButton("Limpiar");
+	
 	JTextField txtTipo = new Componentes().text(new JTextField(), "Tipo", 1, "String");
 	JTextField txtNombre 	= new Componentes().text(new JTextField(), "Codigo De Proveedor", 15, "String");
 	
@@ -151,7 +153,8 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 		panel.add(new JLabel("Status:")).setBounds(x+270,y,70,20);
 		panel.add(cmbStatus  ).setBounds(x+320,y,90,20);
 		
-	panel.add(btnEditarConf  ).setBounds(x+420,y,180,20);
+	panel.add(btnEditarConf).setBounds(x+420,y,85,20);
+	panel.add(btnLimpiar).setBounds(x+515,y,85,20);
 		
 		panel.add(scroll_conf).setBounds(x,y+=25,ancho*7+40,200);
 		
@@ -194,6 +197,7 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 		
 		spAnio.addChangeListener(opAnio);
 		
+		btnLimpiar.addActionListener(opLimpiar);		
 		
 		this.setSize(645, 560);
 		this.setLocationRelativeTo(null);
@@ -234,7 +238,17 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 	
 	ChangeListener opAnio = new ChangeListener() {
 		public void stateChanged(ChangeEvent e) {
-			new Obj_Filtro_Dinamico(tabla_folios,"Mes y año",  spAnio.getValue().toString(),"","", "", "", "", "");
+			new Obj_Filtro_Dinamico(tabla_folios,"Mes y año",  spAnio.getValue().toString(),"Tipo",txtTipo.getText(), "", "", "", "");
+		}
+	};
+	
+	ActionListener opLimpiar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			limpiar();
+			txtTipoPoliza.setText("");
+			txtMesAnio.setText("");
+			txtFolio.setText("");
+			new Obj_Filtro_Dinamico(tabla_folios,"Mes y año",  spAnio.getValue().toString(),"Tipo",txtTipo.getText(), "", "", "", "");
 		}
 	};
 	
@@ -263,6 +277,8 @@ public class Cat_Tipos_Y_Folios_De_Polizas extends JFrame{
 							spRelleno.setValue(Integer.valueOf(tabla_conf.getValueAt(fila, 2).toString().trim()));
 							cmbAsiento_Cont.setSelectedItem((tabla_conf.getValueAt(fila, 3).toString().trim().equals("I"))?"Ingresos" : ((tabla_conf.getValueAt(fila, 3).toString().trim().equals("E"))?"Egresos" : "Varios") );
 							cmbStatus.setSelectedItem(tabla_conf.getValueAt(fila, 4).toString().trim().equals("V")?("Vigente"):("Cancelado"));
+							
+							new Obj_Filtro_Dinamico(tabla_folios,"Mes y año",  spAnio.getValue().toString(),"Tipo",txtTipo.getText(), "", "", "", "");
 					
 	        		}else{
 	        			
