@@ -39,6 +39,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
+
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Cargar_Combo;
@@ -178,6 +179,7 @@ public class Cat_Auxiliares extends JFrame{
 		btnGenerar.addActionListener(opGenerar);
 		btnDeshacer.addActionListener(opDeshacer);
 		btnReporteAnalitico.addActionListener(ReporteAnalitico);
+		btnReporteDetalle.addActionListener(ReporteDetalle);
 
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 	 	       KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "nuevaCuenta");
@@ -348,6 +350,36 @@ public class Cat_Auxiliares extends JFrame{
 			String comando="exec sp_Reporte_De_Auxiliar_De_Cuentas '"+txtFolioCuentaIn.getText().toString().trim()+"','"+txtFolioCuentaFin.getText().toString().trim()+"','"+fechaini+"','"+fechafin+"','A','"+usuario.getNombre_completo()+"'" ;
 			String reporte = "Obj_Reporte_De_Auxiliar_Analitico.jrxml";
 							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		}
+	};
+	
+	ActionListener ReporteDetalle = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			Object[][] matriz = new Object[12][tabla.getRowCount()];
+			
+			for(int i=0; i<tabla.getRowCount(); i++){
+				for(int j=0; j<tabla.getColumnCount(); j++){
+					matriz[i][j] = tabla.getValueAt(i,j);
+				}
+			}
+			
+			
+			
+			
+			
+			
+			
+//			String fechaini = new SimpleDateFormat("dd/MM/yyyy").format(fhIn.getDate())+" 00:00:00";
+//			String fechafin = new SimpleDateFormat("dd/MM/yyyy").format(fhFin.getDate())+" 00:00:00";
+//			
+//  			   Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+//			String basedatos="2.26";
+//			String vista_previa_reporte="no";
+//			int vista_previa_de_ventana=0;
+//			String comando="exec sp_Reporte_De_Auxiliar_De_Cuentas '"+txtFolioCuentaIn.getText().toString().trim()+"','"+txtFolioCuentaFin.getText().toString().trim()+"','"+fechaini+"','"+fechafin+"','A','"+usuario.getNombre_completo()+"'" ;
+//			String reporte = "Obj_Reporte_De_Auxiliar_Analitico.jrxml";
+//							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
 	
