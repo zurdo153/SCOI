@@ -1028,40 +1028,6 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 		}
 	};
 	
-//	MouseListener opTablaMovBancariosSeleccion = new MouseListener() {
-//				public void mousePressed(MouseEvent e) {}
-//					public void mouseClicked(MouseEvent e) {
-//						txtTotalSeleccionadoBanco.setText("");
-//						double Total_Seleccion_Bancos = 0;
-//						   for(int i=0; i<tabla_mov_bancarios.getRowCount(); i++){
-//									if(Boolean.valueOf(tabla_mov_bancarios.getValueAt(i, 6).toString())){ 
-//										Total_Seleccion_Bancos+=Double.valueOf(tabla_mov_bancarios.getValueAt(i,3).toString());
-//										txtTotalSeleccionadoBanco.setText(Total_Seleccion_Bancos+"");
-//									}
-//							}
-//				}
-//				public void mouseEntered(MouseEvent e) {}
-//				public void mouseExited(MouseEvent e) {}
-//				public void mouseReleased(MouseEvent e) {}
-//	};
-//			
-//	MouseListener opTablaMovContabilidadSeleccion = new MouseListener() {
-//				public void mousePressed(MouseEvent e) {}
-//				public void mouseClicked(MouseEvent e) {
-//					txtTotalSeleccionadoContabilidad.setText("");
-//					double Total_Seleccion_Contabilidad = 0;
-//					   for(int i=0; i<tabla_mov_contabilidad.getRowCount(); i++){
-//								if(Boolean.valueOf(tabla_mov_contabilidad.getValueAt(i, 0).toString())){ 
-//									Total_Seleccion_Contabilidad+=Double.valueOf(tabla_mov_contabilidad.getValueAt(i,6).toString());
-//									txtTotalSeleccionadoContabilidad.setText(Total_Seleccion_Contabilidad+"");
-//								}
-//						}
-//				}
-//				public void mouseEntered(MouseEvent e) {}
-//				public void mouseExited(MouseEvent e) {}
-//				public void mouseReleased(MouseEvent e) {}
-//	};
-//			
     WindowListener op_cerrar = new WindowListener() {
 		public void windowOpened(WindowEvent e) {}
 		public void windowIconified(WindowEvent e) {}

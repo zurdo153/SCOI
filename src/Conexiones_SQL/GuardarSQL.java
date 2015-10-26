@@ -2105,22 +2105,20 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Mensaje_Personal(Obj_Mensaje_Personal MsjPersonal){
-		String query = "exec sp_insert_mensaje ?,?,?,?,?";
+		String query = "exec sp_insert_mensaje ?,?,?,?,?,?,"+usuario.getFolio()+",?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
-			
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			
 			pstmt.setString (1, MsjPersonal.getFechaInicial().trim());
 			pstmt.setString (2, MsjPersonal.getFechaFin().trim());
 			pstmt.setString(3, MsjPersonal.getAsunto().toUpperCase().trim());
-			pstmt.setString(4, MsjPersonal.getMensaje().toUpperCase().trim());
-			pstmt.setBoolean(5, (MsjPersonal.getStatus())? true: false);
-			
+			pstmt.setString(4, MsjPersonal.getMensaje().trim());
+			pstmt.setString(5, MsjPersonal.getRuta_imagen_mensaje().trim());
+			pstmt.setString(6, MsjPersonal.getColor_fuente().trim());
+			pstmt.setInt(7, (MsjPersonal.getStatus()));
 			pstmt.executeUpdate();
-		
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
@@ -4388,13 +4386,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 
-	public boolean GuardarSaldo_TA(Integer folio_cajero, Integer folio_supervisor,String establecimiento, String saldo, String asignacion) {
-		String pc="";
-		try { pc = InetAddress.getLocalHost().getHostName();
+	public boolean GuardarSaldo_TA(Integer folio_cajero, Integer folio_supervisor,String establecimiento, String saldo,double venta, String asignacion) {
+		String nombrepc="";
+		try { nombrepc = InetAddress.getLocalHost().getHostName();
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
-		String query = "sp_insert_saldo_TA_entrada_y_salida_cajeras "+folio_cajero+","+folio_supervisor+",'"+establecimiento+"','"+pc+"','"+saldo+"','"+asignacion+"'";
+		
+		String query = "sp_insert_saldo_TA_entrada_y_salida_cajeras "+folio_cajero+","+folio_supervisor+",'"+establecimiento+"','"+nombrepc+"','"+saldo+"','"+venta+"','"+asignacion+"'";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -4421,6 +4420,39 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			} catch(SQLException e){
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardarsaldo_TA ] "+e.getMessage()+"\nconsulta:"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}		
+		return true;
+	}
+	
+	public boolean GuardarTrasaso_TA(String Nombre_Punto_De_venta_TA,String Nombre_establecimiento, String Importe_Traspaso ) {
+		String query = "sp_insert_traspaso_de_saldo_TA "+usuario.getFolio()+",'"+Nombre_Punto_De_venta_TA+"','"+Nombre_establecimiento+"',"+Importe_Traspaso;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ GuardarTrasaso_TA ] "+e.getMessage()+"\nconsulta:"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ GuardarTrasaso_TA ] "+ex.getMessage()+"\nconsulta:"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ GuardarTrasaso_TA ] "+e.getMessage()+"\nconsulta:"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}		
 		return true;

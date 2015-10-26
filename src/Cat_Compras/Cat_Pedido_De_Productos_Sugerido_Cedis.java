@@ -132,15 +132,11 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 
 	JTable tabla = new JTable(modelo);
 	JScrollPane scroll = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
     JTable tablaEliminados = new JTable(modeloEliminados);
     JScrollPane scrollEliminados = new JScrollPane(tablaEliminados,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
     JButton btnConsultar = new JButton("Consultar");
-    
     JTextField txtCodProd = new JTextField();
     JTextField txtDesc = new JTextField();
-    
     JDateChooser c_fecha = new JDateChooser();
     
     JButton btnQuitarFila = new JButton("Quitar",new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
@@ -174,22 +170,17 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 		
 		panel.add(btnConsultar).setBounds(15,20,100,20);
 		panel.add(btnGuardar).setBounds(257,20,160,20);
-		
 		panel.add(new JLabel("Fecha Del Pedido Para Reporte:")).setBounds(550,20,200,20);
 		panel.add(c_fecha).setBounds(740,20,90,20);
 		panel.add(btnReporte).setBounds(840,20,165,20);
 		panel.add(btnReporteNSugerido).setBounds(840,40,165,20);
-		
 		panel.add(txtCodProd).setBounds(15, 45, 80, 20);
 		panel.add(txtDesc).setBounds(95, 45, 320, 20);
 		panel.add(btnQuitarFila).setBounds(415,45,100,20);
-		
 		panel.add(scroll).setBounds(15, 65, 990, 525);
-		
 		panel.add(txtCodProdRestaurar).setBounds(15, 595, 80, 20);
 		panel.add(txtDescRestaurar).setBounds(95, 595, 320, 20);
 		panel.add(btnRestaurarFila).setBounds(415,595,100,20);
-		
 		panel.add(scrollEliminados).setBounds(15, 615, 990, 115);
 		
 		cont.add(panel);
@@ -320,12 +311,9 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 		Color textoEncabezado = Color.black;
 		
 		for(int i=0; i<table.getColumnCount(); i++){
-			
 			table.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado,textoEncabezado,"centro","Arial","negrita",10));
-			
 			switch(tabla.getColumnClass(i).getSimpleName()){
 				case "String": tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
-//				Object = fechas
 				case "Object": 		table.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11))	;  break;
 				case "Double": 		table.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11))	;  break;
 				case "Float": 		table.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11))	;  break;
@@ -346,7 +334,6 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
     	table.getColumnModel().getColumn(1 ).setMinWidth(x*4);
     	table.getColumnModel().getColumn(2 ).setMaxWidth(x);
     	table.getColumnModel().getColumn(2 ).setMinWidth(x);
-    	                                         
     	table.getColumnModel().getColumn(3 ).setMaxWidth(x);
     	table.getColumnModel().getColumn(3 ).setMinWidth(x);		
     	table.getColumnModel().getColumn(4 ).setMaxWidth(x);
@@ -355,7 +342,6 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
     	table.getColumnModel().getColumn(5 ).setMinWidth(x/2);
     	table.getColumnModel().getColumn(6 ).setMaxWidth(x+20);
     	table.getColumnModel().getColumn(6 ).setMinWidth(x+20);
-    	                                               
     	table.getColumnModel().getColumn(7 ).setMaxWidth(x*3);
     	table.getColumnModel().getColumn(7 ).setMinWidth(x*3);	
 	}

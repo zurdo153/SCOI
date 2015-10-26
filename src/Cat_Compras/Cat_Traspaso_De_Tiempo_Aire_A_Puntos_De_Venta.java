@@ -33,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.GuardarSQL;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
@@ -41,7 +42,7 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
+public class Cat_Traspaso_De_Tiempo_Aire_A_Puntos_De_Venta extends JFrame{
 	int foliosiguiente=0;
 	String Activo ="";
 	Container cont = getContentPane();
@@ -51,6 +52,8 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 	JTextField txtNombre_pc= new Componentes().text(new JCTextField(), "Nombre Computadora",80,"String");
 	JTextField txtfiltro_tabla = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 30, "String");
 	JTextField txtNombre_Punto_De_Venta= new Componentes().text(new JCTextField(), "Nombre Punto De Venta De Tiempo Aire",80,"String");
+	JTextField txtCantidad_Del_Traspaso= new Componentes().text(new JCTextField(), "Cantidad Del Traspaso $ ",80,"Int");
+	JTextField txtFolio_Transpaso= new Componentes().text(new JCTextField(), "Folio Traspaso",80,"String");
 	
 	JLabel JLBactivo= new JLabel();
 	
@@ -66,7 +69,6 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
 	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
-	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
 	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
 	
 	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio","Establecimiento", "Computadora","Punto Venta","Estatus"}){
@@ -100,21 +102,19 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 		private TableRowSorter trsfiltro;
 		
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Puntos_De_Venta_De_Tiempo_Aire(){
+	public Cat_Traspaso_De_Tiempo_Aire_A_Puntos_De_Venta(){
 			this.setSize(1000,345);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/telefono-celular-hp-ipaq-2-de-telefonia-movil-icono-6906-64.png"));
+
 			panel.setBorder(BorderFactory.createTitledBorder("Escribe El Nombre De Una Computadora, El Punto De Venta y Selecciona El Establecimiento Al Que Le Corresponde"));
-			
-			this.setTitle("Puntos De Venta De Tiempo Aire");
+			this.setTitle("Traspaso De Tiempo Aire A Puntos De Venta");
 			trsfiltro = new TableRowSorter(modelo); 
 			tabla.setRowSorter(trsfiltro);
 			
 			int x = 45, y=30, ancho=100;
-			
 			panel.add(new JLabel("Folio Del Registro:")).setBounds(x-25,y-5,ancho,20);
 			panel.add(txtFolio).setBounds(x+-25,y+=20,250,20);
 			panel.add(btnBuscar).setBounds(277,y,98,20);
@@ -125,39 +125,42 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 			
 			panel.add(new JLabel("Nombre Del Punto De Venta:")).setBounds(x-25,y+=30,150,20);
 			panel.add(txtNombre_Punto_De_Venta).setBounds(x-25,y+=20,250,20);
-			panel.add(btnNuevo).setBounds(277,y,98,20);
 			
 			panel.add(new JLabel("Nombre Del Establecimiento:")).setBounds(x-25,y+=30,150,20);
+			panel.add(new JLabel("Folio Traspaso:")).setBounds(277,y,150,20);
+			
 			panel.add(cmbEstablecimiento).setBounds(x-25,y+=20,250,20);
+			panel.add(txtFolio_Transpaso).setBounds(277,y,98,20);
+			
+			panel.add(new JLabel("Cantidad Del Traspaso:")).setBounds(x-25,y+=30,150,20);
+			panel.add(txtCantidad_Del_Traspaso).setBounds(x-25,y+=20,250,20);
+			
+			panel.add(btnNuevo).setBounds(277,y,98,20);
 
-			panel.add(btnDeshacer).setBounds(277,y,98,20);
-			panel.add(btnGuardar).setBounds(x-25,y+=55,100,20);
-			panel.add(btnEditar).setBounds(x+105,y,100,20);
+			panel.add(btnGuardar).setBounds(x-25,y+=35,100,20);
 			panel.add(btnSalir).setBounds(277,y,98,20);
 			
 			panel.add(txtfiltro_tabla).setBounds(380,15,400,20);
+			panel.add(btnDeshacer).setBounds(885,15,98,20);
 			
-			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-10,35,603,240);
+			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-10,35,603,270);
 			
 			txtNombre_pc.setEditable(false);
 			cmb_status.setEnabled(false);
 			cmbEstablecimiento.setEnabled(false);
-			btnEditar.setEnabled(false);
 			txtNombre_Punto_De_Venta.setEnabled(false);
+			txtCantidad_Del_Traspaso.setEnabled(false);
+			txtFolio_Transpaso.setEnabled(false);
+			btnNuevo.setEnabled(false);
+			btnGuardar.setEnabled(false);
 			
 			btnGuardar.addActionListener(guardar);
 			btnSalir.addActionListener(salir);
 			btnDeshacer.addActionListener(deshacer);
 			btnNuevo.addActionListener(nuevo);
-			btnEditar.addActionListener(editar);
 			btnBuscar.addActionListener(buscar);
-			
 			txtFolio.addKeyListener(buscar_action);
-			
 			txtfiltro_tabla.addKeyListener(opFiltroGeneral);
-			txtNombre_pc.addKeyListener(enterpasaraPunto_De_Venta);
-			txtNombre_Punto_De_Venta.addKeyListener(enterpasaraEstablecimiento);
-			cmbEstablecimiento.addKeyListener(enterpasaraNombre_Pc);
 
 			agregar(tabla);
 			cont.add(panel);
@@ -168,7 +171,6 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 				                	txtFolio.requestFocus();
 				             }
 				        });
-		
              ///deshacer con escape
 			             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
 			             getRootPane().getActionMap().put("escape", new AbstractAction(){
@@ -176,7 +178,6 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 			                 {                 	    btnDeshacer.doClick();
 			               	    }
 			             });
-			             
 			///guardar con F2
 			              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscar");
 			                  getRootPane().getActionMap().put("buscar", new AbstractAction(){
@@ -184,8 +185,6 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 			                      {                 	    btnBuscar.doClick();
 				                    	    }
 			                 });
-			                  
-			                  
              ///guardar con control+G
 			             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
 			                  getRootPane().getActionMap().put("guardar", new AbstractAction(){
@@ -193,7 +192,6 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 			                      {                 	    btnGuardar.doClick();
 			                    	    }
 			                 });
-			                  
 		    ///guardar con F12
 				              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
 				                  getRootPane().getActionMap().put("guardar", new AbstractAction(){
@@ -201,7 +199,6 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 				                      {                 	    btnGuardar.doClick();
 					                    	    }
 				                 });
-			                  
 			///nuevo con F9
 			              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
 			                  getRootPane().getActionMap().put("nuevo", new AbstractAction(){
@@ -209,22 +206,6 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 			                      {                 	    btnNuevo.doClick();
 				                    	    }
 			                 });
-			                  
-		      ///nuevo con F10
-				              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
-				                  getRootPane().getActionMap().put("editar", new AbstractAction(){
-				                      public void actionPerformed(ActionEvent e)
-				                      {                 	    btnEditar.doClick();
-					                    	    }
-				                 });
-			///editar con Ctrl+E
-				              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,Event.CTRL_MASK), "editar");
-				                  getRootPane().getActionMap().put("editar", new AbstractAction(){
-				                      public void actionPerformed(ActionEvent e)
-				                      {                 	    btnEditar.doClick();
-					                    	    }
-				                 });
-			                  
 			 ///nuevo con control+N
 			              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
 			                   getRootPane().getActionMap().put("nuevo", new AbstractAction(){
@@ -255,7 +236,6 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 		    tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
 		    tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
 		    tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
-			
 							refrestabla();
 					 JScrollPane scrol = new JScrollPane(tabla);
 				    return scrol; 
@@ -273,7 +253,8 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 					+ "	  ,tb_pc_asignadas_a_un_punto_de_venta_TA.nombre_punto_de_venta"
 					+ "	  ,case when tb_pc_asignadas_a_un_punto_de_venta_TA.status='1' then (select 'VIGENTE') when tb_pc_asignadas_a_un_punto_de_venta_TA.status=0 then (select 'CANCELADO') end as status"
 					+ "	   from tb_pc_asignadas_a_un_punto_de_venta_TA"
-					+ " inner join tb_establecimiento on tb_establecimiento.folio=tb_pc_asignadas_a_un_punto_de_venta_TA.folio_establecimiento order by tb_establecimiento.nombre asc");
+					+ " inner join tb_establecimiento on tb_establecimiento.folio=tb_pc_asignadas_a_un_punto_de_venta_TA.folio_establecimiento "
+					+ " where tb_pc_asignadas_a_un_punto_de_venta_TA.status=1 order by tb_establecimiento.nombre asc");
 			while (rs.next())
 			{ 
 			   String [] fila = new String[5];
@@ -286,7 +267,7 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 			}	
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en Cat_Etapas en la funcion refrestabla  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en la funcion refrestabla  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -316,37 +297,6 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 		}		
 	};
 	
-	KeyListener enterpasaraPunto_De_Venta = new KeyListener() {
-		public void keyTyped(KeyEvent e){}
-		public void keyReleased(KeyEvent e) {}
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				txtNombre_Punto_De_Venta.requestFocus();
-			}
-		}
-	};
-	
-	KeyListener enterpasaraEstablecimiento = new KeyListener() {
-		public void keyTyped(KeyEvent e){}
-		public void keyReleased(KeyEvent e) {}
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				cmbEstablecimiento.requestFocus();
-			}
-		}
-	};
-	
-	KeyListener enterpasaraNombre_Pc = new KeyListener() {
-		public void keyTyped(KeyEvent e){}
-		public void keyReleased(KeyEvent e) {}
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				txtNombre_pc.requestFocus();
-			}
-		}
-	};
-	
-	
 	ActionListener salir = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			dispose();
@@ -366,7 +316,7 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 			txtNombre_Punto_De_Venta.setText(tpc.getNombre_Punto_Venta_TA()+"");
 			cmbEstablecimiento.setSelectedItem(tpc.getEstablecimiento()+"");
 			cmb_status.setSelectedItem(tpc.getStatus()==1?"VIGENTE":"CANCELADO");
-			btnEditar.setEnabled(true);
+			txtCantidad_Del_Traspaso.setEnabled(false);
 			btnGuardar.setEnabled(false);
 			}else{
 				JOptionPane.showMessageDialog(null, "El Folio Buscado No Existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
@@ -381,138 +331,56 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 			txtFolio.setText("");
 			txtFolio.setEnabled(true);
 			txtNombre_Punto_De_Venta.setText("");
-			txtNombre_Punto_De_Venta.setEnabled(false);
 			txtfiltro_tabla.setText("");
-			btnNuevo.setEnabled(true);
-			btnEditar.setEnabled(true);
+			btnNuevo.setEnabled(false);
 			txtNombre_pc.setText("");
-			txtNombre_pc.setEditable(false);
-			cmbEstablecimiento.setEnabled(false);
-			cmb_status.setEnabled(false);
 			cmb_status.setSelectedIndex(0);
 			cmbEstablecimiento.setSelectedIndex(0);
 			txtFolio.requestFocus();
+			txtFolio_Transpaso.setText("");
+			txtCantidad_Del_Traspaso.setText("");
+			txtCantidad_Del_Traspaso.setEnabled(false);
+			int[] columnas = {0,1,2,3,4};
+			new Obj_Filtro_Dinamico_Plus(tabla, "".toUpperCase(), columnas);
 		}
 	};
-	
-	ActionListener editar = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			if(txtNombre_pc.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "Seleccione Un Registro De La Tabla A La Derecha Para Editar o Teclee El Folio","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-				return;
-			}else{
-				txtFolio.setEnabled(false);
-				btnEditar.setEnabled(false);
-				btnNuevo.setEnabled(true);
-				cmb_status.setEnabled(true);
-				cmbEstablecimiento.setEnabled(true);
-				btnEditar.setEnabled(false);
-				btnGuardar.setEnabled(true);
-				txtNombre_pc.setEditable(true);
-				txtNombre_pc.requestFocus(true);
-				txtNombre_Punto_De_Venta.setEnabled(true);
-			}
-		}
-	};
-	
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 			busqueda_proximo_folio();
 			if(foliosiguiente != 0){
-				btnDeshacer.doClick();
-				txtFolio.setText( busqueda_proximo_folio()+"");
-				txtFolio.setEnabled(false);
+				txtFolio_Transpaso.setText( busqueda_proximo_folio()+"");
 				btnGuardar.setEnabled(true);
-				txtNombre_pc.setEditable(true);
-				txtNombre_pc.requestFocus();
-				txtNombre_Punto_De_Venta.setEnabled(true);
-				btnEditar.setEnabled(false);
-				cmb_status.setSelectedIndex(0);
-				cmb_status.setEnabled(true);
-				cmbEstablecimiento.setSelectedIndex(0);
-				cmbEstablecimiento.setEnabled(true);
+				txtCantidad_Del_Traspaso.setEnabled(true);
+				txtCantidad_Del_Traspaso.requestFocus();
 			}else{
-				btnDeshacer.doClick();
-				txtFolio.setText(1+"");
-				txtFolio.setEditable(false);
+				txtFolio_Transpaso.setText(1+"");
 				btnGuardar.setEnabled(true);
-				txtNombre_pc.requestFocus();
-				btnEditar.setEnabled(false);
-				cmb_status.setSelectedIndex(0);
-				cmb_status.setEnabled(true);
+				txtCantidad_Del_Traspaso.setEnabled(true);
+				txtCantidad_Del_Traspaso.requestFocus();
 			}
 		}
 	};
 	
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				try {
-					if(validaCampos()!="") {
-						JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+			if(validaCampos()!="") {
+						JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					} else{
-						
-						int[] columnas = {0,1,2,3,4};
-						new Obj_Filtro_Dinamico_Plus(tabla,"", columnas);
-						
-						Obj_Puntos_De_Venta_De_Tiempo_Aire tpc = new Obj_Puntos_De_Venta_De_Tiempo_Aire().buscar(Integer.parseInt(txtFolio.getText()));
-					if(tpc.getFolio() == Integer.parseInt(txtFolio.getText())){
-						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
-							if(validaCampos()!="") {
-								JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-								return;
-							}else{
-								tpc.setNombre_Pc(txtNombre_pc.getText().toString().toUpperCase().trim());
-								tpc.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().toUpperCase().trim());
-								tpc.setNombre_Punto_Venta_TA(txtNombre_Punto_De_Venta.getText().toString().toUpperCase().trim());
-									switch(cmb_status.getSelectedIndex()){
-															case 0: tpc.setStatus(1); break;
-															case 1: tpc.setStatus(0); break;	}
-											if(tpc.actualizar(Integer.parseInt(txtFolio.getText()))){
-															modelo.setRowCount(0);
-															refrestabla();
-									JOptionPane.showMessageDialog(null,"El Registró Se Actualizó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-									btnDeshacer.doClick();
-									txtFolio.setEditable(true);
-									txtFolio.requestFocus();
-									return;
-								}else{
-									JOptionPane.showMessageDialog(null, "El Registro No Se Actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
-									return;
-								}
-							}
-						}else{
-							return;
-						}
-					}else{
-						tpc.setFolio(Integer.parseInt(txtFolio.getText()));
-						tpc.setNombre_Pc(txtNombre_pc.getText().toUpperCase().trim());
-						tpc.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().toUpperCase().trim());
-						tpc.setNombre_Punto_Venta_TA(txtNombre_Punto_De_Venta.getText().toUpperCase().trim());
-							switch(cmb_status.getSelectedIndex()){
-							case 0: tpc.setStatus(1); break;
-							case 1: tpc.setStatus(0); break;	}
-								if(tpc.guardar()){
-						        	modelo.setRowCount(0);
-									refrestabla();
+								if(new GuardarSQL().GuardarTrasaso_TA(txtNombre_Punto_De_Venta.getText().toString().trim(), cmbEstablecimiento.getSelectedItem().toString().trim(),txtCantidad_Del_Traspaso.getText().toString().trim())){
 									JOptionPane.showMessageDialog(null,"El Registró Se Guardó  Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
 									btnDeshacer.doClick();
 									txtFolio.setEditable(true);
 									txtFolio.requestFocus();
 									return;
 								}else{
-									JOptionPane.showMessageDialog(null, "El Registro No Se Guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+									JOptionPane.showMessageDialog(null, "Error El Registro No Se Guardó", "Avise A Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 									return;
 								}
 							}
-					}
-				} catch (NumberFormatException e1) {
-					e1.printStackTrace();
-				} 				
 		}
 	};
-	
 	
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -524,14 +392,9 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 						txtNombre_pc.setText(tabla.getValueAt(fila,2).toString().substring(0,tabla.getValueAt(fila,2).toString().length()));
 						txtNombre_Punto_De_Venta.setText(tabla.getValueAt(fila,3).toString().substring(0,tabla.getValueAt(fila,3).toString().length()));
 						cmb_status.setSelectedItem(tabla.getValueAt(fila,4).toString().substring(0,tabla.getValueAt(fila,4).toString().length()));
-						btnEditar.setEnabled(true);
-						cmb_status.setEnabled(false);
-                        cmbEstablecimiento.setEnabled(false);
-						btnEditar.setEnabled(true);
-						txtNombre_pc.setEditable(false);
 						txtNombre_pc.requestFocus();
-						txtNombre_Punto_De_Venta.setEnabled(false);
 						txtFolio.setEnabled(true);
+						btnNuevo.setEnabled(true);
 	        	}
 	        }
         });
@@ -539,7 +402,7 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 	
 	public int  busqueda_proximo_folio() {
 		Connexion con = new Connexion();
-		String query = "select max(folio)+1 as 'Maximo' from tb_pc_asignadas_a_un_punto_de_venta_TA ";
+		String query = "select max(folio)+1 as 'Maximo' from tb_traspaso_de_saldo_TA_a_punto_de_venta ";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -551,34 +414,30 @@ public class Cat_Puntos_De_Venta_De_Tiempo_Aire extends JFrame{
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Error");
-			JOptionPane.showMessageDialog(null, "Error en Cat_Puntos_De_Venta_De_Tiempo_Aire  en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			JOptionPane.showMessageDialog(null, "Error  en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			return foliosiguiente ;
 		}
 		finally{
 			 if (stmt != null) { try {
 				stmt.close();
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Error en Cat_Puntos_De_Venta_De_Tiempo_Aire   en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				JOptionPane.showMessageDialog(null, "Error en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				e.printStackTrace();
 			} }
 		}
 		return foliosiguiente;
-			}
-	
-	
+	 }
 	
 	private String validaCampos(){
 		String error="";
-		if(txtNombre_pc.getText().equals("")) 		error+= "-Nombre De La Computadora\n";
-		if(cmbEstablecimiento.getSelectedIndex()==(0))error+= " -Nombre Establecimiento\n";
-		if(txtNombre_Punto_De_Venta.getText().equals("")) 	error+= "-Nombre Del Punto De Venta\n";
+		if(txtCantidad_Del_Traspaso.getText().equals("")) 		error+= "-Cantidad Del Transpaso\n";
 		return error;
 	}
 	
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Puntos_De_Venta_De_Tiempo_Aire().setVisible(true);
+			new Cat_Traspaso_De_Tiempo_Aire_A_Puntos_De_Venta().setVisible(true);
 		}catch(Exception e){	}
 	}
 	

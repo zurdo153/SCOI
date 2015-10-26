@@ -1842,7 +1842,7 @@ public class ActualizarSQL {
 				pstmtabla.setString (3, msjPersonal.getFechaFin());
 				pstmtabla.setString (4, msjPersonal.getAsunto());
 				pstmtabla.setString (5, msjPersonal.getMensaje());
-				pstmtabla.setString (6,(msjPersonal.getStatus())?"1":"0");
+				pstmtabla.setInt (6,(msjPersonal.getStatus()));
 				pstmtabla.executeUpdate();
 				con.commit();
 		} catch (Exception e) {

@@ -111,6 +111,8 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 					}
 		c_final.setDate(date2);
 	};
+	
+	
 	String basedatos="2.26";
 	String vista_previa_reporte="no";
 	int vista_previa_de_ventana=0;

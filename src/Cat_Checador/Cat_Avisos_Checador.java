@@ -23,47 +23,44 @@ import javax.swing.KeyStroke;
 public class Cat_Avisos_Checador extends JComponent {
 	
 		private Image background;
-		
 		JLabel lblAviso = new JLabel();
-		String fileFoto = System.getProperty("user.dir")+"/Imagen/avisos/aviso.png";
+		JLabel JLBMensaje= new JLabel();
 		
-		ImageIcon tmpIconAuxFoto = new ImageIcon(fileFoto);
-
-		public Cat_Avisos_Checador(final JDialog frame,String ruta) {
-			//fileFoto=ruta;
+		public Cat_Avisos_Checador(final JDialog frame,String ruta,String mensaje, String color) {
+			frame.setLayout(new BorderLayout( ));
+			String fileFoto = System.getProperty("user.dir")+ruta;
+			ImageIcon tmpIconAuxFoto = new ImageIcon(fileFoto);
+			
+			
+			System.out.println(mensaje);
 			
 			frame.setModal(true);
-			updateBackground( );
-			
 			frame.add(lblAviso).setBounds(0, 0, 500, 400);
-			 Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(lblAviso.getWidth(), lblAviso.getHeight(), Image.SCALE_DEFAULT));
-             lblAviso.setIcon(iconoFoto);
-             
-			frame.setLayout(new BorderLayout( ));
+			Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(lblAviso.getWidth(), lblAviso.getHeight(), Image.SCALE_DEFAULT));
+            lblAviso.setIcon(iconoFoto);
+            
+            lblAviso.setHorizontalTextPosition(JLabel.CENTER);
+            lblAviso.setVerticalTextPosition(JLabel.CENTER);
+
+            frame.add(JLBMensaje).setBounds(100,100,300,400);
 			frame.getContentPane( ).add("Center",this);
 			frame.pack( );
+			updateBackground( );
 			
-			frame.setSize(500,500);
+			
+			lblAviso.setText("<html> <FONT FACE="+"arial"+" SIZE=6 COLOR="+color+"><CENTER><b><p>"+mensaje+"</p></b></CENTER></FONT></html>");
+			
+			frame.setSize(500,450);
 			frame.setLocationRelativeTo(null);
 			
-			//  abre el filtro de busqueda de empleado al presionar la tecla f2
-		    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-		       KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "foco");
-		    
-		    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "foco");
-		    
+		    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "foco");
+		    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "foco");
 		    getRootPane().getActionMap().put("foco", new AbstractAction(){
-		        @Override
-		        public void actionPerformed(ActionEvent e)
-		        {
-		        	frame.dispose();
-//		        	new Cat_Checador().txtClaveReal.requestFocus();
-		        }
-		    });
+																        @Override
+																        public void actionPerformed(ActionEvent e)
+																        {	frame.dispose();   }
+																    });
 		}
-
-		
 		
 		public void updateBackground( ) {
 		try {
@@ -84,13 +81,4 @@ public class Cat_Avisos_Checador extends JComponent {
 		repaint();
 		}
 		
-//		public static void main(String[] args) {
-//			JDialog frame = new JDialog();
-////			JFrame frame = new JFrame();
-//			
-//		    frame.setUndecorated(true);
-//		    new Cat_Avisos_Checador(frame);
-//      
-//		    frame.setVisible(true);
-//		}
 	}
