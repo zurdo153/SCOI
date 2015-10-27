@@ -16,7 +16,6 @@ import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -37,7 +36,6 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
@@ -78,7 +76,6 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	JLabel JLBlinicioTA= new JLabel(new ImageIcon("Imagen/flecha-verde-icono-8451-16.png") );
 	JLabel JLBlsalidaTA= new JLabel(new ImageIcon("Imagen/flecha-azul-hacia-abajo-icono-7343-16.png") );
 	
-	
 	int folio_empleado =0;
     float importe_retiros_guardados =0;
     float importe_nuevo_devuelto=0;
@@ -86,7 +83,8 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
     
     String Asignacion =""; 
     boolean cerrarhilo = false;
-    String  saldoinicialfinal=""; 
+    String  saldoinicialfinal="";
+    float saldo_nuevo_tecleado=0;
     
 	public Cat_Retiros_A_Cajeros(){
 		this.cont.add(panel);
@@ -97,13 +95,14 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		this.setTitle("Retiros A Cajeros");
 		
 		folio_empleado=new Obj_Usuario().LeerSession().getFolio();
-		
+		///todo revisar
 		Obj_Retiros_Cajeros datosEmpleado= new Obj_Retiros_Cajeros().buscarEmpleado(folio_empleado);
 		if(datosEmpleado.getAsignacion()== null){
 			JOptionPane.showMessageDialog(null, "El Usuario No Esta Asignado ", "Aviso", JOptionPane.WARNING_MESSAGE);
 			btnaviso.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=BLUE>" +
-					"		<CENTER><p> CIERRA ESTA VENTANA Y VUELVE A INTENTARLO CUANDO TE ASIGNEN Y HAGAS LA PRIMER VENTA</p></CENTER></FONT></html>"); 
+					"		<CENTER><p> CIERRA ESTA VENTANA Y VUELVE A INTENTARLO UN MINUTO DESPUES QUE TE ASIGNEN</p></CENTER></FONT></html>"); 
 			panel.add(btnaviso).setBounds(1,1,350,90);
+			
 		}else{
 			
 		this.setUndecorated(true);
@@ -171,10 +170,9 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	}
 
 	public void cargar_datos_del_empleado(Integer folio_empleado){
-		
 		Obj_Retiros_Cajeros datosEmpleado= new Obj_Retiros_Cajeros().buscarEmpleado(folio_empleado);
-				
- 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
+
+		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
   	    btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(120, 95, Image.SCALE_DEFAULT)));	
   	    txtFolio_empleado.setText(datosEmpleado.getFolio_empleado()+"");
   	    txtNombre.setText(datosEmpleado.getNombre()+"");
@@ -201,7 +199,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	ActionListener op_captura_saldo_TA = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
 			try {
-			if(new BuscarSQL().inicio_final_TA(folio_empleado).equals("E"))
+			if(new BuscarSQL().inicio_final_TA(folio_empleado).equals("I"))
 			{
 				JLBlinicioTA.setEnabled(false);
 				JLBlsalidaTA.setEnabled(true);
@@ -221,6 +219,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
             txtsaldoTA.requestFocus();
 		}
 	};
+
 	
 	ActionListener op_guardar_saldo = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
@@ -230,18 +229,17 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 			   txtsaldoTA.requestFocus();	
 				return;
 			}else{
+				saldo_nuevo_tecleado= Float.valueOf(txtsaldoTA.getText().toString());
 			txtsaldoTA.setEnabled(false);
 			btnGuardar.setEnabled(false);
          new Cat_Validar_Clave_Supervisor().setVisible(true);
 			}
 		}
 	};
-	
 			
 /////////CONSULTA EL IMPORTE NUEVO
    	public float Consulta_de_Importe_Nuevo(){
-   		float importe_nuevo =0;
-   		
+   		   float importe_nuevo =0;
 	   	   String pc_nombre="";
 //	   	pc_nombre ="SIV_CAJA1";
 			try {
@@ -250,11 +248,10 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
-			
-			String query_importe_nvo="exec IZAGAR_efectivo_en_caja'"+pc_nombre+"','"+folio_empleado+"'";
+
+		String query_importe_nvo="exec IZAGAR_efectivo_en_caja'"+pc_nombre+"','"+folio_empleado+"'";
 		Statement s;
 		ResultSet rs2;
-		
 		try {
 			s = new Connexion().conexion_IZAGAR().createStatement();
 			rs2 = s.executeQuery(query_importe_nvo);
@@ -330,9 +327,7 @@ valor_a_retirar_deacuerdo_al_dia = Consulta_del_Importe_del_retiro_del_dia();
 //System.out.println("importe_nuevo_devuelto:"+importe_nuevo_devuelto);
 //System.out.println("valor_a_retirar_deacuerdo_al_dia:"+valor_a_retirar_deacuerdo_al_dia);
 
-
 if(importe_nuevo_devuelto-importe_retiros_guardados >= valor_a_retirar_deacuerdo_al_dia){
-	
 	String establecimiento= txtEstablecimiento.getText()+"" ;
 	        cerrarhilo=true;
 			//   apartado para configurar el uso de la pantalla de avisos--------------------------------
@@ -612,9 +607,7 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		  			        		btnError.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=RED>" +
 											"		<CENTER><p> EL MONTO MAYOR A RETIRAR DEBE DE SER DE:"+10000+"</p></CENTER></FONT></html>"); 
 				                    btnError.setVisible(true);
-		    						  
 		    					  }else{
-		    						  
 		    					  folio_retiro=new Obj_Retiros_Cajeros().guardar(Establecimiento,folio_empleado,Integer.valueOf(txtfolio_Supervisor.getText()),Float.valueOf(txtRetiro.getText()),Asignacion)+"";
 		    					  
 		    					  if(folio_retiro !="Error en GuardarSQL"){
@@ -721,7 +714,6 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 			
 			JTable tabla = new JTable(modelo);
 			String folio_retiro_reimpresion ="";
-			
 			public Cat_Filtro_De_Retiros_Guardados()	{
 				this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/Filter-List-icon32.png"));
 				this.setTitle("Filtro Reimpresion De Retiros");
@@ -812,15 +804,18 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////CATALOGO IMPRESION DE SALDO//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	    	
+///////////TODO CATALOGO VALIDACION E IMPRESION DE SALDO TA//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	    	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	  	public class Cat_Validar_Clave_Supervisor extends JDialog{
 			JPasswordField txtClaveSupervisor_validacion = new Componentes().textPassword(new JPasswordField(), "Clave", 30);
+			JTextField txtventa = new Componentes().text(new JCTextField(), "Venta TA", 30, "String");
+			
 			JButton btnReporte = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
+			double venta=0;
 			
 	  		public Cat_Validar_Clave_Supervisor(){
-	  			this.setSize(250, 120);
+	  			this.setSize(250, 140);
 	  			this.setResizable(false);
 	  			this.setLocationRelativeTo(null);
 	  			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -831,14 +826,22 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 	  			this.setModal(true);
 	  			
 	  			panel.setBorder(BorderFactory.createTitledBorder("Pase El Gafete Del Supervisor"));
-	  			panel.add(txtClaveSupervisor_validacion).setBounds(10, 20, 220, 20);
-	  			panel.add(btnReporte).setBounds(70, 50, 100, 20);;
+	  			panel.add(txtventa).setBounds(10, 20, 220, 20);
+	  			panel.add(txtClaveSupervisor_validacion).setBounds(10, 50, 220, 20);
+	  			panel.add(btnReporte).setBounds(70, 75, 100, 20);;
 	  			cont.add(panel);
 	  			
+
 	  			txtClaveSupervisor_validacion.addKeyListener(buscar_supervisor_existe);
 	  			txtClaveSupervisor_validacion.setEnabled(true);
+	  			
+	  			txtventa.setEditable(false);
 	  			btnReporte.setEnabled(false);
-
+	  			
+				 this.addWindowListener(new WindowAdapter() { public void windowOpened( WindowEvent e ){
+		    	  			txtClaveSupervisor_validacion.requestFocus();
+		             }  });
+				 
 	  		}
 	  		
 	  		KeyListener buscar_supervisor_existe = new KeyListener() {
@@ -851,10 +854,14 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 	    				txtClaveSupervisor_validacion.requestFocus();
 						JOptionPane.showMessageDialog(null,"Se Requiere Clave De Un Supervisor","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 	    			}else{
-	    				if(new GuardarSQL().GuardarSaldo_TA(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),datosSupervisor.getFolio_supervisor(),txtEstablecimiento.getText().toString().trim(),txtsaldoTA.getText().toString().trim(),txtasignacion.getText().toString().trim())){
+	    				venta_ta_asignacion();
+	    				if(new GuardarSQL().GuardarSaldo_TA(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),datosSupervisor.getFolio_supervisor(),txtEstablecimiento.getText().toString().trim(),txtsaldoTA.getText().toString().trim(),venta,txtasignacion.getText().toString().trim())){
 		    				txtClaveSupervisor_validacion.setEnabled(false);
 		    				JOptionPane.showMessageDialog(null,"Se Guardo El >"+saldoinicialfinal+"< Exitosamente","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 	    					btnReporte.setEnabled(true);
+	    					txtventa.setText(venta+"");
+	    					reporte (datosSupervisor.getNombre_Supervisor().toString());
+	    					venta=0;
 	    					saldoinicialfinal="";
 	    				}
 	    			}
@@ -863,8 +870,88 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
     			public void keyReleased(KeyEvent e) {}
     			public void keyTyped(KeyEvent e) {}
             };
+            
+            public double  venta_ta_asignacion() {
+    			Connexion con = new Connexion();
+    			String query = "select 	sum(total) from entysal with (nolock)   where cod_prod='52401' and folio in(select folio from facremtick with (nolock) where folio_cajero='"+txtasignacion.getText().trim()+"' and status='V')";
+    			Statement stmt = null;
+    			try {
+    				stmt = con.conexion_IZAGAR().createStatement();
+    			    ResultSet rs = stmt.executeQuery(query);
+    				while(rs.next()){
+    					venta =(rs.getDouble(1));
+    				}
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    				System.err.println("Error");
+    				JOptionPane.showMessageDialog(null, "Error  en la funcion venta_ta_asignacion()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+    				return venta ;
+    			}
+    			finally{
+    				 if (stmt != null) { try {
+    					stmt.close();
+    				} catch (SQLException e) {
+    					JOptionPane.showMessageDialog(null, "Error en la funcion venta_ta_asignacion()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+    					e.printStackTrace();
+    				} }
+    			}
+    			return venta;
+    		 }
 	  	}
-	  	
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  	
+       
+	  	public double  diferencia() {
+	  		double diferencia=0;
+			Connexion con = new Connexion();
+			String query = "select 	sum(total) from entysal with (nolock)   where cod_prod='52401' and folio in(select folio from facremtick with (nolock) where folio_cajero='"+txtasignacion.getText().trim()+"' and status='V')";
+			Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+			    ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					diferencia =(rs.getDouble(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.err.println("Error");
+				JOptionPane.showMessageDialog(null, "Error  en la funcion venta_ta_asignacion()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				return diferencia ;
+			}
+			finally{
+				 if (stmt != null) { try {
+					stmt.close();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Error en la funcion venta_ta_asignacion()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					e.printStackTrace();
+				} }
+			}
+			return diferencia;
+		 }
+        
+			public void reporte (String nombre_supervisor) {
+				
+				String basedatos="2.200";
+				String vista_previa_reporte="no";
+				int vista_previa_de_ventana=0;
+				String comando="select folio as ticket"
+						+ "            ,convert(varchar(15),fecha,108) as hora"
+						+ "            ,total"
+						+ "            ,'"+txtNombre.getText().toString().trim()+"' as cajero "
+						+ "            ,'"+txtasignacion.getText().trim()+"' as asignacion "
+						+ "            ,'"+nombre_supervisor+"' as supervisor "
+						+ "            ,"+txtsaldoTA.getText().toString()+" as saldo_tecleado"
+						+ "            ,125.55 as saldo_final_tecleado "
+						+ "            ,'"+txtpc.getText().toString().trim()+"' as nombre_pc "
+						+ "            ,'"+txtEstablecimiento.getText().toString().trim()+"' as establecimiento"
+						+ "            ,getdate() as fecha_mov "
+						+ "  from entysal with (nolock)   "
+				+ " where  cod_prod='52401' and folio in(select folio from facremtick with (nolock) where folio_cajero='"+txtasignacion.getText().trim()+"') order by fecha" ;
+				
+				String reporte = "Obj_Reporte_De_Saldo_Tiempo_Aire_Capturado_Supervisor_Ticket.jrxml";
+				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		};
+		
 	  	
 		public static void main(String [] arg){
 			try{

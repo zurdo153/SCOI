@@ -139,8 +139,15 @@ public class BuscarSQL {
 	}
 	
 	public String inicio_final_TA(int cajero) throws SQLException{
+		String nombrepc="";
+		try { nombrepc = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+		
 		String inicio_final_TA="";
-		String query = "     SELECT top 1 isnull(movimiento,'N') FROM tb_saldo_TA_entrada_y_salida_cajeras where estatus='V' and convert(varchar(20),fecha,103)=convert(varchar(20),getdate(),103) and folio_cajero="+cajero+" order by fecha desc";
+		String query = "     SELECT top 1 isnull(traspaso_saldoini_saldofin,'I') FROM tb_traspaso_de_saldo_TA_a_punto_de_venta where estatus='V' and convert(varchar(20),fecha_mov,103)=convert(varchar(20),getdate(),103) "
+				+ "      and usuario="+cajero+" and folio_punto_de_venta_TA=(select folio from tb_pc_asignadas_a_un_punto_de_venta_TA where nombre_pc='"+nombrepc+"') and traspaso_saldoini_saldofin in('I','S') order by fecha_mov desc";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -3654,7 +3661,9 @@ public class BuscarSQL {
 				MsjPersonal.setFechaInicial(rs.getString("fecha_inicio"));
 				MsjPersonal.setFechaFin(rs.getString("fecha_fin"));
 				MsjPersonal.setMensaje(rs.getString("mensaje"));
-				MsjPersonal.setStatus(rs.getInt("status")==1 ? true : false);
+				MsjPersonal.setColor_fuente(rs.getString("color_fuente"));
+				MsjPersonal.setRuta_imagen_mensaje(rs.getString("ruta_imagen_mensaje"));
+				MsjPersonal.setStatus(rs.getInt("status") );
 			}
 			
 		} catch (Exception e) {
@@ -4452,9 +4461,6 @@ public class BuscarSQL {
 			while(rs.next()){
 				     desc_pc.setValor_Descanso(rs.getString("valor_descanso"));
 				     desc_pc.setValor_Pc(rs.getString("valor_pc"));
-				     
-				     System.out.println(rs.getString("valor_descanso"));
-				     System.out.println(rs.getString("valor_pc"));
 			}
 			
 		} catch (Exception e) {
@@ -4636,25 +4642,6 @@ public class BuscarSQL {
 					stmt = con.conexion().createStatement();
 					ResultSet rs = stmt.executeQuery(query);
 					while(rs.next()){
-						
-//						txtNo_Checador_Cliente.setText(soda.getNo_cliente()+"");
-//						txtClave.setText(soda.getNo_cliente()+"");
-//						txtTicket.setText(soda.getTicket()+"");
-//						txtImporte.setText(soda.getImporte()+"");
-//						
-//						lblNombre_Empleado.setText(soda.getNombre_cliente()+"");
-//						lblEstablecimiento_empleado.setText(soda.getEstablecimiento_cliente()+"");
-//						lblpuesto_empleado.setText(soda.getPuesto_cliente()+"");
-//						
-//						sodas.setNombre_cajera(rs.getString("nombre_empleado"));
-//						sodas.setNo_cliente(rs.getInt("no_cliente"));
-//						sodas.setTicket(rs.getString("ticket"));
-//						sodas.setImporte(rs.getInt("importe"));
-//						
-//						sodas.setNombre_cliente(rs.getString("nombre_cliente"));
-//						sodas.setEstablecimiento_cliente(rs.getString("establecimiento_cliente"));
-//						sodas.setPuesto_cliente(rs.getString("puesto_cliente"));
-//						
 						File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 						FileOutputStream fos = new FileOutputStream(photo);
 						
@@ -5642,19 +5629,17 @@ public class BuscarSQL {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					}
-		
 					
 		String query = "exec sp_select_datos_cajero '"+folio_empleado+"'";
 		
-		String query_2="SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe " +
-						       " ,asignaciones_cajeros.folio as folio_asignacion " +
-						       " ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento " +
-					 "  FROM liquidaciones_tickets" +
-				    "      LEFT OUTER JOIN  asignaciones_cajeros on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion  and asignaciones_cajeros.status='V'" +
-				     "  WHERE liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1" +
-						         "  and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))" +
-						         		" group by asignaciones_cajeros.folio";
-		
+		String query_2="SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe "
+				+ "						        ,asignaciones_cajeros.folio as folio_asignacion"
+				+ "						        ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento"
+				+ "					  FROM asignaciones_cajeros"
+				+ "				        LEFT OUTER JOIN  liquidaciones_tickets on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion AND liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1"
+				+ "						          and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))"
+				+ "				      WHERE asignaciones_cajeros.status='V' and folio=(select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"')"
+				+ "						         		 group by asignaciones_cajeros.folio ";
 				
 		Statement stmt = null;
 		Statement stmt2= null;
@@ -5662,16 +5647,14 @@ public class BuscarSQL {
 						try {
 							stmt = con.conexion().createStatement();
 							stmt2= con.conexion_IZAGAR().createStatement();
-									
+								
 							ResultSet rs = stmt.executeQuery(query);
 							ResultSet rs2= stmt2.executeQuery(query_2);
-							
 									while(rs.next()){
 										datos_empleado.setFolio_empleado(rs.getInt("Folio_Empleado"));
 										datos_empleado.setNombre(rs.getString("Nombre"));
 										datos_empleado.setPuesto(rs.getString("Puesto"));
 										datos_empleado.setPc(pc_nombre);
-										
 										File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
 										FileOutputStream fos = new FileOutputStream(photo);
 										        byte[] buffer = new byte[1];
@@ -5681,20 +5664,16 @@ public class BuscarSQL {
 										        }
 										        fos.close();
 							    	}
-
-									
 								   while(rs2.next()){
 								 			datos_empleado.setEstablecimiento(rs2.getString("establecimiento"));
 											datos_empleado.setImporte_total(rs2.getFloat("importe"));
 											datos_empleado.setAsignacion(rs2.getString("folio_asignacion"));
 								    }
-							
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
 							return null;
 						}
-
 		finally{
 			if(stmt!=null){stmt.close();}
 		}

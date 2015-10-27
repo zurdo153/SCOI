@@ -13,59 +13,94 @@ public class Obj_Mensaje_Personal {
 	String fechaFin;
 	String asunto;
 	String mensaje;
-	boolean status;
+	String ruta_imagen_mensaje;
+	String color_fuente;
+	int status;
 	
 	public Obj_Mensaje_Personal(){
-		folioMensaje=0;		fechaInicial="";	fechaFin="";	asunto="";		mensaje="";		status=false;
+		folioMensaje=0;		fechaInicial="";	fechaFin="";	asunto="";		mensaje="";		status=0;	color_fuente="";ruta_imagen_mensaje="";
 	}
+
+
+	public String getRuta_imagen_mensaje() {
+		return ruta_imagen_mensaje;
+	}
+
+
+	public void setRuta_imagen_mensaje(String ruta_imagen_mensaje) {
+		this.ruta_imagen_mensaje = ruta_imagen_mensaje;
+	}
+
+
+	public String getColor_fuente() {
+		return color_fuente;
+	}
+
+
+	public void setColor_fuente(String color_fuente) {
+		this.color_fuente = color_fuente;
+	}
+
 
 	public int getFolioMensaje() {
 		return folioMensaje;
 	}
 
+
 	public void setFolioMensaje(int folioMensaje) {
 		this.folioMensaje = folioMensaje;
 	}
+
 
 	public String getFechaInicial() {
 		return fechaInicial;
 	}
 
+
 	public void setFechaInicial(String fechaInicial) {
 		this.fechaInicial = fechaInicial;
 	}
+
 
 	public String getFechaFin() {
 		return fechaFin;
 	}
 
+
 	public void setFechaFin(String fechaFin) {
 		this.fechaFin = fechaFin;
 	}
+
 
 	public String getAsunto() {
 		return asunto;
 	}
 
+
 	public void setAsunto(String asunto) {
 		this.asunto = asunto;
 	}
+
 
 	public String getMensaje() {
 		return mensaje;
 	}
 
+
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
-	
-	public boolean getStatus() {
+
+
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+
+	public void setStatus(int status) {
 		this.status = status;
 	}
+
 
 	public boolean guardar_mensaje(){ return new GuardarSQL().Guardar_Mensaje_Personal(this); }
 	

@@ -401,7 +401,6 @@ public class Cat_Checador extends JFrame {
 		            lblSemaforoVerde.setEnabled(false);
                          JOptionPane.showMessageDialog(null, "El Dia De Hoy Lo Tienes Registrado Como Tu Dia De Descanso,\nAvisa A Desarrollo Humano Para Que Puedas Registrar Tu Entrada \nA Trabajar, De Lo Contrario No Te Sera Valido El Pago De Este Dia","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
                          JOptionPane.showMessageDialog(null, "El Dia De Hoy Lo Tienes Registrado Como Tu Dia De Descanso,\nAvisa A Desarrollo Humano Para Que Puedas Registrar Tu Entrada \nA Trabajar, De Lo Contrario No Te Sera Valido El Pago De Este Dia","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/red-de-usuario-icono-6758-64.png"));
-                                                        
                                                 txtClaveReal.setText("");
                                                 txtClaveReal.requestFocus();
                          return;
@@ -741,23 +740,21 @@ public class Cat_Checador extends JFrame {
                                         tabla_model.addRow(fila);
                                 }
                                 
-                                                        
-                                Object [] vectormensaje = new Object[5];
+                            	
+                           //TODO   apartado para configurar el uso de la pantalla de avisos--------------------------------
                                 
+                                Object [] vectormensaje = new Object[5];
                                 Vector fila_mensaje=new Obj_Entosal().Obj_Mensaje_respuesta(folio_empleado);
                                 
                                 if(fila_mensaje.get(0).toString().trim().equals("true")){
-                                	
-                               //   apartado para configurar el uso de la pantalla de avisos--------------------------------
-                                    JDialog frame = new JDialog();
-                                String ruta=fila_mensaje.get(3).toString().trim();
-                                    
-                        		    frame.setUndecorated(true);
-                        		    new Cat_Avisos_Checador(frame,ruta);
-                              
-                        		    frame.setVisible(true);
-                                	System.out.println(fila_mensaje);
-                                	
+		                                    JDialog frame = new JDialog();
+			                                String ruta=fila_mensaje.get(3).toString().trim();
+			                                String mensaje=fila_mensaje.get(2).toString().trim();
+			                                String color_fuente=fila_mensaje.get(4).toString().trim();
+			                        	           frame.setUndecorated(true);
+			                        	           
+			                        		    new Cat_Avisos_Checador(frame,ruta,mensaje,color_fuente);
+			                        		    frame.setVisible(true);
                                 }
                                               
                                 
