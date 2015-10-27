@@ -2162,6 +2162,60 @@ public String folio_ordern_de_pago_en_efectivo(){
     return folio; 
 }
 
+public String[][] denominaciones_pedido_de_monedas(){
+	
+	String query_lista = "SELECT valor_denominacion as moneda, valor_de_bolsa, 0 pedido_de_bolsas, 0 total_pedido "
+						+ " FROM tb_denominaciones "
+						+ " WHERE (folio > 5) AND (folio NOT IN (12, 13)) and status = 1 "
+						+ " ORDER BY valor_denominacion DESC "; 
+	
+	
+	String[][] matriz = new String[get_filas(query_lista)][4];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		
+		int i = 0;
+		while(rs.next()){
+			
+			matriz[i][0] =  df.format(rs.getDouble(1))+"";
+			matriz[i][1] =  " "+df.format(rs.getDouble(2)); 
+			matriz[i][2] =  " "+(rs.getString(3).equals("0")?"":rs.getString(3));
+			matriz[i][3] =  " "+(rs.getString(4).equals("0")?"":rs.getString(4));
+			
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion recepcion_de_mercancia_en_resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
+public boolean checar_Pedido_De_Monedas_Cajero(){
+	
+	String query_lista = "  IF EXISTS (select * from tb_pedido_de_monedas where status_pedido in ('PEDIDO','SURTIDO','ENTREGADO'))"
+						+ "			BEGIN 		select 'true' 	END "
+						+ " ELSE 	BEGIN		select 'false' 	END "; 
+	
+	
+	boolean tipoPedido = false;
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		
+		while(rs.next()){
+			tipoPedido =  rs.getBoolean(1);
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion checar_Pedido_De_Monedas_Cajero() SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return tipoPedido; 
+}
+
 }
 
 

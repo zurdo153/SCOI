@@ -356,30 +356,52 @@ public class Cat_Auxiliares extends JFrame{
 	ActionListener ReporteDetalle = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			Object[][] matriz = new Object[12][tabla.getRowCount()];
+		   Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+			
+		   String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			
+			String comando = "declare @tabla as table("
+							+ "	[cuenta] [varchar](20) NOT NULL default '', "
+							+ " [scuenta] [varchar](20) NOT NULL default '', "
+							+ "	[sscuenta] [varchar](20) NOT NULL default '', "
+							+ "	[nombre] [varchar](250) NOT NULL default '', "
+							+ "	[referencia] [varchar](250) NOT NULL default '', "
+							+ "	[concepto] [varchar](250) NOT NULL default '', "
+							+ "	[poliza] [varchar](50) NOT NULL default '', "
+							+ "	[tipo_p] [varchar](20) NOT NULL default '', "
+							+ "	[fecha] [varchar](20) NOT NULL default '', "
+							+ "	[cargos] [varchar](20) NOT NULL default '', "
+							+ "	[abonos] [varchar](20) NOT NULL default '', "
+							+ "	[saldo] [varchar](20) NOT NULL default '', "
+							+ "	[consulto] [varchar](250) NOT NULL default '', "
+							+ "	[fecha_consulta] [varchar](20) NOT NULL default '' ) ";
 			
 			for(int i=0; i<tabla.getRowCount(); i++){
-				for(int j=0; j<tabla.getColumnCount(); j++){
-					matriz[i][j] = tabla.getValueAt(i,j);
-				}
+				
+				comando += " insert into @tabla  VALUES ('"+tabla.getValueAt(i,0).toString().trim()+"','"
+									+tabla.getValueAt(i,1).toString().trim()+"','"
+									+tabla.getValueAt(i,2).toString().trim()+"','"
+									+tabla.getValueAt(i,3).toString().trim()+"','"
+									+tabla.getValueAt(i,4).toString().trim()+"','"
+									+tabla.getValueAt(i,5).toString().trim()+"','"
+									+tabla.getValueAt(i,6).toString().trim()+"','"
+									+tabla.getValueAt(i,7).toString().trim()+"','"
+									+/*tabla.getValueAt(i,8).toString().trim()*/""+"','"
+									+tabla.getValueAt(i,9).toString().trim()+"','"
+									+tabla.getValueAt(i,10).toString().trim()+"','"
+									+tabla.getValueAt(i,11).toString().trim()+"','"
+									+usuario.getNombre_completo()+"',"
+									+"convert(varchar(20),getdate(),103)+' '+convert(varchar(20),getdate(),108) )";
 			}
 			
+			comando += " select * from @tabla ";
 			
-			
-			
-			
-			
-			
-//			String fechaini = new SimpleDateFormat("dd/MM/yyyy").format(fhIn.getDate())+" 00:00:00";
-//			String fechafin = new SimpleDateFormat("dd/MM/yyyy").format(fhFin.getDate())+" 00:00:00";
-//			
-//  			   Obj_Usuario usuario = new Obj_Usuario().LeerSession();
-//			String basedatos="2.26";
-//			String vista_previa_reporte="no";
-//			int vista_previa_de_ventana=0;
-//			String comando="exec sp_Reporte_De_Auxiliar_De_Cuentas '"+txtFolioCuentaIn.getText().toString().trim()+"','"+txtFolioCuentaFin.getText().toString().trim()+"','"+fechaini+"','"+fechafin+"','A','"+usuario.getNombre_completo()+"'" ;
-//			String reporte = "Obj_Reporte_De_Auxiliar_Analitico.jrxml";
-//							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+//			System.out.println(comando);
+
+			String reporte = "Obj_Reporte_De_Auxiliar_Analitico.jrxml";
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
 	

@@ -30,6 +30,7 @@ import Obj_Auditoria.Obj_Alimentacion_Denominacion;
 import Obj_Auditoria.Obj_Denominaciones;
 import Obj_Auditoria.Obj_Divisas_Y_Tipo_De_Cambio;
 import Obj_Auditoria.Obj_Movimiento_De_Asignacion;
+import Obj_Auditoria.Obj_Pedido_De_Monedas;
 import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento;
@@ -4426,6 +4427,56 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 
+	public boolean Guardar_Pedido_De_Monedas(Obj_Pedido_De_Monedas pedido){
+		
+		String query ="exec sp_insert_deposito ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			PreparedStatement pstmt = con.prepareStatement(query);
 
+			con.setAutoCommit(false);
+			
+			for(int i=0; i<pedido.getMatriz().length; i++){
+				
+				System.out.print(pedido.getFolioUsuario()+"    ");
+				System.out.print(pedido.getStatus_pedido()+"    ");
+				
+				System.out.print(Float.valueOf(pedido.getMatriz()[i][0].toString())+"    ");
+				System.out.print(Float.valueOf(pedido.getMatriz()[i][2].toString())+"    ");
+				System.out.println(Float.valueOf(pedido.getMatriz()[i][3].toString()));
+				
+				
+//				pstmt.setInt(1, pedido.getFolioUsuario());
+//				pstmt.setString(2, pedido.getStatus_pedido());
+//				
+//				pstmt.setFloat(3, Float.valueOf(pedido.getMatriz()[i][0].toString()));
+//				pstmt.setFloat(4, Float.valueOf(pedido.getMatriz()[i][2].toString()));
+//				pstmt.setFloat(5, Float.valueOf(pedido.getMatriz()[i][3].toString()));
+				
+//				pstmt.execute();
+			}
+					
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 	
 } 
