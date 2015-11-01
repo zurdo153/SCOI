@@ -1697,4 +1697,43 @@ public class Cargar_Combo {
 			
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String[] entregoMonedas() throws SQLException{
+		
+		String query = " declare @sqlquery nvarchar(max) "
+					+ " set @sqlquery = ('select nombre+'' ''+ap_paterno+'' ''+ap_materno as empleado from tb_empleado where puesto_id in ('+(select puestos_supervisores_de_retiros_a_cajeros "
+					+ "																															from tb_configuracion_sistema)+') and status in (1,6) "
+					+ " order by nombre+'' ''+ap_paterno+'' ''+ap_materno asc ') "
+					+ " execute sp_executesql @sqlquery ";
+
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("");
+				}
+				miVector.add(rs.getString("empleado"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}	
 }

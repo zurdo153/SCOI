@@ -11,10 +11,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -28,19 +30,28 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
+import Cat_Auditoria.Cat_Notas;
 import Conexiones_SQL.BuscarTablasModel;
-import Obj_Auditoria.Obj_Alimentacion_Denominacion;
+import Conexiones_SQL.Cargar_Combo;
 import Obj_Auditoria.Obj_Pedido_De_Monedas;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Pedido_De_Monedas extends JDialog {
 	
+	String nota = "";
+	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
 	public JToolBar menu_toolbar = new JToolBar();
 	JButton btn_guardar= new JButton(new ImageIcon("Iconos/save_icon&16.png"));
+	
+	JButton btnNota = new JButton("Nota", new ImageIcon("imagen/nota16.png"));
+	
+	public String[] empleadosAutorizadosParaEnrtegar(){try {return new Cargar_Combo().entregoMonedas();} catch (SQLException e) {e.printStackTrace();}return null;}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbEntrega = new JComboBox(empleadosAutorizadosParaEnrtegar());
 	
 	JLabel lblEmpleado = new JLabel();
 	JTextField txtTotal = new JTextField();
@@ -78,16 +89,29 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 	int filaDep = 0;
 	int columnaDep = 2;
 	
-	public Cat_Pedido_De_Monedas(int folioEmp,String empleado, String status_pedido, String tipo_usuario, boolean pedirRecibir){
+	public Cat_Pedido_De_Monedas(int folioEmp,String empleado, String status_pedido, String tipo_usuario){
 		
 //		pedirRecibir = true     --->   activar recibir pedido	
 //		pedirRecibir = true     --->   activar realizar pedido
-		
+		boolean entregoMonedas = false;
 		switch(tipo_usuario){
-			case "CAJERA":	this.setTitle(pedirRecibir?"Recibir Pedido De Monedas":"Realizar Pedido De Monedas");break;
-			case "CORTES":	this.setTitle("Surtir Pedido De Monedas");	break;
-			default:		this.setTitle("Recibir Pedido De Monedas");	break;//	recibir por (ENCARGADO / CAJERA)
+			case "CAJERA":	this.setTitle(status_pedido.equals("RECIBIDO")?"Recibir Pedido De Monedas ("+tipo_usuario+")":"Realizar Pedido De Monedas ("+tipo_usuario+")");break;
+			case "CORTES":	this.setTitle("Surtir Pedido De Monedas ("+tipo_usuario+")");	break;
+			default:		this.setTitle(status_pedido.equals("RECIBIDO")?"Recibir Pedido De Monedas ("+tipo_usuario+")":"Realizar Pedido De Monedas ("+tipo_usuario+")");break;//	recibir por (ENCARGADO / CAJERA)
 		}
+		
+		
+		switch(status_pedido){
+		case "PEDIDO":		entregoMonedas=false;	break;
+		case "SURTIDO":		entregoMonedas=false;	break;
+//		case "ENTREGADO":	entregoMonedas=false;	break;
+		default:			entregoMonedas=true;	break;
+	}
+		
+		
+		
+//		System.out.println(entregoMonedas);
+		cmbEntrega.setEnabled(entregoMonedas);
 		
 		Constructor();
 		this.lblEmpleado.setText("EMPLEADO:  "+folioEmp+"  "+empleado);
@@ -113,9 +137,14 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 		lblEmpleado.setForeground(Color.GRAY);
 		
 		this.panel.add(menu_toolbar).setBounds(0,0,200,25);
-		this.panel.add(lblEmpleado).setBounds(30,35,350,20);
+		this.panel.add(lblEmpleado).setBounds(30,60,350,20);
 		
-		this.panel.add(scroll_tabla_depositos).setBounds(20,60,400,420);
+		this.panel.add(scroll_tabla_depositos).setBounds(20,80,400,400);
+		
+		this.panel.add(btnNota).setBounds(330,5,90,20);
+		
+		this.panel.add(new JLabel("Entrego Pedido: ")).setBounds(30,30,100,20);
+		this.panel.add(cmbEntrega).setBounds(120,30,300,20);
 		
 		this.panel.add(new JLabel("Total de Cantidades:")).setBounds(220,485,100,20);
 		this.panel.add(txtTotal).setBounds(330,485,90,20);
@@ -129,10 +158,9 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 		this.cont.add(panel);
 		
 		this.tabla_depositos.addKeyListener(op_key);
-//		this.addWindowListener(op_limpiar);
+		this.btnNota.addActionListener(opNota);		
 		
-		
-		//  guardar al presionar la tecla f2
+		//  guardar al presionar la tecla f5
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 	       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "foco");
 	    
@@ -151,6 +179,12 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
+	
+	ActionListener opNota = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			new Cat_notas(nota).setVisible(true);
+		}
+	};
 	
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -192,26 +226,26 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 								pedido.setFolioUsuario(folioEmpleado);
 								pedido.setStatus_pedido(status_pedido);
 								pedido.setMatriz(tabla_guardar());
+								pedido.setObservacion(nota);
+								pedido.setEmpleado_entrego(cmbEntrega.getSelectedItem().toString().trim());
 	
 //								for(int i=0; i<tabla_guardar().length; i++){
 //									System.out.print(tabla_guardar()[i][0].toString()+"  ");
 //									System.out.print(tabla_guardar()[i][1].toString()+"  ");
 //									System.out.print(tabla_guardar()[i][2].toString()+"  ");
 //									System.out.println(tabla_guardar()[i][3].toString());
-//									
 //								}
 								
 								if(pedido.guardar()){
 								
-									CalcularImporte();
-//									calculoDinamico();
 									dispose();
 									
 //									new Cat_Reporte_De_Depositos_Cortes(lblFolio_Corte.getText().trim());
 //									JOptionPane.showMessageDialog(null, "La tabla Depodito se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
 //									return;
+									
 								}else{
-									txtTotal.setText("0.0");
+//									txtTotal.setText("0.0");
 									JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar modificar la tabla","Error",JOptionPane.ERROR_MESSAGE);
 									return;
 								}
@@ -359,11 +393,28 @@ public class Cat_Pedido_De_Monedas extends JDialog {
     	}
     }
     
-    public static boolean pedirRecibir(){return new BuscarTablasModel().checar_Pedido_De_Monedas_Cajero();}
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Pedido_De_Monedas(491,"EDGAR EDUARDO JIMENEZ MOLINA", "PEDIDO", "CAJERA", pedirRecibir()).setVisible(true);
-		}catch(Exception e){	}	}
+			new Cat_Pedido_De_Monedas(491,"EDGAR EDUARDO JIMENEZ MOLINA", "RECIBIDO", "CAJERA").setVisible(true);
+		}catch(Exception e){	}	
+	}
+	
+	public class Cat_notas extends Cat_Notas{
+		
+		public Cat_notas(String nta){
+			txaNota.setText(nta);
+			
+			btnAgregar.addActionListener(opAgregar);
+		}
+		
+		ActionListener opAgregar = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				nota = txaNota.getText().toString().toUpperCase().trim();
+				dispose();
+			}
+		};
+	}
 
 }

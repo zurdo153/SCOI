@@ -2193,27 +2193,94 @@ public String[][] denominaciones_pedido_de_monedas(){
     return matriz; 
 }
 
-public boolean checar_Pedido_De_Monedas_Cajero(){
+public String checar_Pedido_De_Monedas_Cajero(){
 	
-	String query_lista = "  IF EXISTS (select * from tb_pedido_de_monedas where status_pedido in ('PEDIDO','SURTIDO','ENTREGADO'))"
-						+ "			BEGIN 		select 'true' 	END "
-						+ " ELSE 	BEGIN		select 'false' 	END "; 
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+	
+//	String query_lista = "  IF EXISTS (select * from tb_pedido_de_monedas where folio_cajera = "+usuario.getFolio()+" and status_pedido in ('PEDIDO','SURTIDO','ENTREGADO'))"
+//						+ "			BEGIN 		select 'true' 	END "
+//						+ " ELSE 	BEGIN		select 'false' 	END "; 
+	
+	String query_lista = " select top 1 status_pedido from tb_pedido_de_monedas where folio_cajera = "+usuario.getFolio()+" order by fecha_pedido_cajera desc ";
 	
 	
-	boolean tipoPedido = false;
+	String tipoPedido = "";
 	try {
 		Statement stmt = new Connexion().conexion().createStatement();
 		ResultSet rs = stmt.executeQuery(query_lista);
 		
 		
 		while(rs.next()){
-			tipoPedido =  rs.getBoolean(1);
+			tipoPedido =  rs.getString(1);
 		}
 	} catch (SQLException e1) {
 		e1.printStackTrace();
 		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion checar_Pedido_De_Monedas_Cajero() SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 	}
     return tipoPedido; 
+}
+
+public String tipoDeUsuarioParaPedidoDeMonedas(){
+	
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+	
+	System.out.println(usuario.getFolio());
+	
+	String query_lista = "exec sp_select_tipo_de_usuario_para_filtro_de_pedido__de_monedas "+usuario.getFolio(); 
+	
+	
+	String tipoPedido = "";
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		
+		while(rs.next()){
+			tipoPedido =  rs.getString(1);
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tipoDeUsuarioParaPedidoDeMonedas() SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+	System.out.println(tipoPedido);
+    return tipoPedido; 
+}
+
+public String[][] listaDePedidoDeMonedas(String status){
+	
+	String query_lista = "exec sp_select_filtro_de_pedidos_de_monedas "+status; 
+	
+	String[][] matriz = new String[get_filas(query_lista)][7];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			
+			System.out.print(rs.getString(1)+"  ");
+			System.out.print(rs.getString(2)+"  ");
+			System.out.print(rs.getString(3)+"  ");
+			System.out.print(rs.getString(4)+"  ");
+			System.out.print(rs.getString(5)+"  ");
+			System.out.print(rs.getString(6)+"  ");
+			System.out.println(rs.getString(7)+"  ");
+			
+			matriz[i][0] =  rs.getString(1);
+			matriz[i][1] =  " "+rs.getString(2); 
+			matriz[i][2] =  " "+rs.getString(3); 
+			matriz[i][3] =  " "+rs.getString(4); 
+			matriz[i][4] =  " "+rs.getString(5); 
+			matriz[i][5] =  " "+rs.getString(6); 
+			matriz[i][6] =  " "+rs.getString(7); 
+			
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion listaDePedidoDeMponedas() SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
 }
 
 }

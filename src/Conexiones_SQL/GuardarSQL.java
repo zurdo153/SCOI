@@ -4460,36 +4460,49 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	}
 
 	public boolean Guardar_Pedido_De_Monedas(Obj_Pedido_De_Monedas pedido){
-		
-		String query ="exec sp_insert_deposito ?,?,?,?,?";
+		String query ="exec sp_insert_pedido_de_monedas ?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
-		
+		PreparedStatement pstmt = null;
 		try {
-			PreparedStatement pstmt = con.prepareStatement(query);
-
-			con.setAutoCommit(false);
 			
-			for(int i=0; i<pedido.getMatriz().length; i++){
-				
-				System.out.print(pedido.getFolioUsuario()+"    ");
-				System.out.print(pedido.getStatus_pedido()+"    ");
-				
-				System.out.print(Float.valueOf(pedido.getMatriz()[i][0].toString())+"    ");
-				System.out.print(Float.valueOf(pedido.getMatriz()[i][2].toString())+"    ");
-				System.out.println(Float.valueOf(pedido.getMatriz()[i][3].toString()));
-				
-				
-//				pstmt.setInt(1, pedido.getFolioUsuario());
-//				pstmt.setString(2, pedido.getStatus_pedido());
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+//			if(pedido.getStatus_pedido().equals("CANCELADO")){
 //				
-//				pstmt.setFloat(3, Float.valueOf(pedido.getMatriz()[i][0].toString()));
-//				pstmt.setFloat(4, Float.valueOf(pedido.getMatriz()[i][2].toString()));
-//				pstmt.setFloat(5, Float.valueOf(pedido.getMatriz()[i][3].toString()));
-				
-//				pstmt.execute();
-			}
+//				pstmt.setInt(1, usuario.getFolio());
+//				pstmt.setInt(2, pedido.getFolioUsuario());
+//				pstmt.setString(3, pedido.getStatus_pedido());
+//				
+//				pstmt.setFloat(4, 0);
+//				pstmt.setInt(5, 0);
+//				pstmt.setFloat(6, 0);
+//				
+//				pstmt.setString(7, "");
+//				pstmt.setString(8, "");
+//				
+//				pstmt.executeUpdate();
+//				
+//			}else{
+				for(int i=0; i<pedido.getMatriz().length; i++){
+					
+					pstmt.setInt(1, usuario.getFolio());
+					pstmt.setInt(2, pedido.getFolioUsuario());
+					pstmt.setString(3, pedido.getStatus_pedido());
+					
+					pstmt.setFloat(4, Float.valueOf(pedido.getMatriz()[i][0].toString()));
+					pstmt.setInt(5, Integer.valueOf(pedido.getMatriz()[i][2].toString()));
+					pstmt.setFloat(6, Float.valueOf(pedido.getMatriz()[i][3].toString()));
+					
+					pstmt.setString(7, pedido.getObservacion());
+					pstmt.setString(8, pedido.getEmpleado_entrego());
+					
+					pstmt.executeUpdate();
+				}
+//			}
 					
 			con.commit();
+			
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
 			if(con != null){

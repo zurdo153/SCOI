@@ -7,9 +7,12 @@ public class Obj_Pedido_De_Monedas {
 	int folioUsuario ;
 	String status_pedido;
 	Object[][] matriz;
+	String observacion;
+	String empleado_entrego;
 	
 	public Obj_Pedido_De_Monedas(){
 		folioUsuario = 0;	status_pedido="";		matriz = null;
+		observacion="";		empleado_entrego="";
 	}
 
 	public int getFolioUsuario() {
@@ -36,7 +39,23 @@ public class Obj_Pedido_De_Monedas {
 		this.matriz = matriz;
 	}
 	
-//	deposito
+	public String getObservacion() {
+		return observacion;
+	}
+
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+
+	public String getEmpleado_entrego() {
+		return empleado_entrego;
+	}
+
+	public void setEmpleado_entrego(String empleado_entrego) {
+		this.empleado_entrego = empleado_entrego;
+	}
+
+	//	deposito
 	public boolean guardar(){ 
 		return new GuardarSQL().Guardar_Pedido_De_Monedas(this);
 	}
