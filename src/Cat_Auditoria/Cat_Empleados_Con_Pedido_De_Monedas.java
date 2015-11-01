@@ -36,12 +36,12 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Filtro_De_Empleados_Con_Padido_De_Monedas extends JFrame{
+public class Cat_Empleados_Con_Pedido_De_Monedas extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
 	
-	JButton btnCancelar = new JButton("Cancelar Pedido");
+	JButton btnCancelar = new JButton("Cancelar Pedido",new ImageIcon("imagen/Delete.png"));
 	
 	public Object[][] Filtro_Cuentas( ){
 			try {
@@ -102,7 +102,7 @@ public class Cat_Filtro_De_Empleados_Con_Padido_De_Monedas extends JFrame{
 //	esta funcion se usara en la venta de retiros programados para avilitar el boton de pedido o de recibir
 	public static String tipoDeUsuarioQuePidio(){return new BuscarTablasModel().tipoDeUsuarioParaPedidoDeMonedas();}
 	
-	public Cat_Filtro_De_Empleados_Con_Padido_De_Monedas(){
+	public Cat_Empleados_Con_Pedido_De_Monedas(){
 		
 		String tipoDeUsuarioDePedidodeMonedas = tipoDeUsuarioQuePidio();
 		
@@ -140,10 +140,9 @@ public void constructor(String tipoDeUsuarioDePedidodeMonedas){
 		campo.add(txtDescripcion).setBounds(214,20,320,20);
 		campo.add(cmbEstablecimiento).setBounds(535,20,160,20);
 		campo.add(cmbStatusPedido).setBounds(815,20,100,20);
-		campo.add(btnCancelar).setBounds(15,20,120,20);
+		campo.add(btnCancelar).setBounds(15,20,130,20);
 		
 		btnCancelar.setEnabled(false);
-		
 		
 		if(status_parametro.equals("ENTREGADO")){
 			cmbStatusPedido.setSelectedItem("SURTIDO");
@@ -239,8 +238,17 @@ public void llenarTablaDePedidos(){
 	        	
 	        	if(e.getClickCount() == 2){
 	        		fila = tabla.getSelectedRow();
+	        		if( tabla.getValueAt(fila,5).toString().trim().equals("CANCELADO")){
+	    				JOptionPane.showMessageDialog(null, "El Registro Esta Con El Estatus de CANCELADO  No Puede Ser Surtido","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+	        	       return;
+	        		}else{
+	        			if(tabla.getValueAt(fila,5).toString().trim().equals("SURTIDO")||tabla.getValueAt(fila,5).toString().trim().equals("RECIBIDO")||tabla.getValueAt(fila,5).toString().trim().equals("ENTREGADO")){
+		    				JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO O ENTREGADO  No Pueden Volverse a Capturar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+			        	       return;
+	        			}else{
 	    			new Cat_Pedido_De_Monedas(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()),tabla.getValueAt(fila, 2).toString().trim(), tipoDeUsuarioDePedidodeMonedas, tipoDeUsuarioDePedidodeMonedas.equals("SURTIDO")?"CORTES":"ENCARGADO").setVisible(true);
-	    			dispose();
+	        		}
+	        		}
 	        	}
 	        }
         });
@@ -250,7 +258,10 @@ public void llenarTablaDePedidos(){
 	
 	ActionListener opCancelar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
+			if(tabla.getValueAt(fila,5).toString().trim().equals("SURTIDO")||tabla.getValueAt(fila,5).toString().trim().equals("RECIBIDO")||tabla.getValueAt(fila,5).toString().trim().equals("ENTREGADO")||tabla.getValueAt(fila,5).toString().trim().equals("CANCELADO")){
+				JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO, ENTREGADO O CANCELADO  No Pueden Cancelarse","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+        	       return;
+			}else{
 			
 			Obj_Pedido_De_Monedas pedido = new Obj_Pedido_De_Monedas();
 			
@@ -275,7 +286,8 @@ public void llenarTablaDePedidos(){
 				JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar cancelar el pedido","Error",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-
+			}
+			
 		}
 	};	
 	
@@ -331,7 +343,7 @@ public void llenarTablaDePedidos(){
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Filtro_De_Empleados_Con_Padido_De_Monedas().setVisible(true);
+			new Cat_Empleados_Con_Pedido_De_Monedas().setVisible(true);
 		}catch(Exception e){	}		
 	}
 }

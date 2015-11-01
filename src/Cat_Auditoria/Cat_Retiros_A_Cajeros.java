@@ -74,8 +74,8 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	JButton btnImpresion_Retiros_Pasados=new JButton("Retiros",new ImageIcon("imagen/Print.png"));
 	JButton btnISaldoTA=new JButton("Captura Saldo TA",new ImageIcon("imagen/telefono-celular-hp-ipaq-2-de-telefonia-movil-icono-6906-16.png"));
 	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
-	JButton btnPedido=new JButton("Pedir Monedas",new ImageIcon("imagen/telefono-celular-hp-ipaq-2-de-telefonia-movil-icono-6906-16.png"));
-	JButton btnRecibir=new JButton("Recibir Monedas",new ImageIcon("imagen/telefono-celular-hp-ipaq-2-de-telefonia-movil-icono-6906-16.png"));
+	JButton btnPedido=new JButton("Pedir Monedas",new ImageIcon("imagen/monedas-en-efectivo-en-moneda-icono-4023-16.png"));
+	JButton btnRecibir=new JButton("Recibir Monedas",new ImageIcon("imagen/monedas-en-efectivo-en-moneda-icono-4023-16.png"));
 	
 	Icon iconoFondo_cajero;
 	ImageIcon ImagenconFondo_cajero;

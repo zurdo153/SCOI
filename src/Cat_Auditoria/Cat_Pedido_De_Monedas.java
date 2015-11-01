@@ -177,7 +177,7 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 		this.setSize(450,550);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+//		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	
 	ActionListener opNota = new ActionListener() {
@@ -202,11 +202,6 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 	private void guardar(final JButton btn,final int folioEmpleado, final String status_pedido) {
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-//				System.out.println(folioEmpleado);
-//				System.out.println(estab);
-//				System.out.println(tipoUsuario);
-				
 				if(tabla_depositos.isEditing()){
 					tabla_depositos.getCellEditor().stopCellEditing();
 					tabla_depositos.addKeyListener(op_key);
@@ -219,8 +214,6 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 				}else{
 						
 					if(Float.valueOf(txtTotal.getText().equals("")?"0":txtTotal.getText())>0){
-						
-							if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de Denominaciones?") == 0){
 								Obj_Pedido_De_Monedas pedido = new Obj_Pedido_De_Monedas();
 								
 								pedido.setFolioUsuario(folioEmpleado);
@@ -238,20 +231,17 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 								
 								if(pedido.guardar()){
 								
-									dispose();
+									
 									
 //									new Cat_Reporte_De_Depositos_Cortes(lblFolio_Corte.getText().trim());
-//									JOptionPane.showMessageDialog(null, "La tabla Depodito se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+									JOptionPane.showMessageDialog(null, "El Registro Se Guardó Exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 //									return;
-									
+									dispose();
 								}else{
 //									txtTotal.setText("0.0");
 									JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar modificar la tabla","Error",JOptionPane.ERROR_MESSAGE);
 									return;
 								}
-							}else{
-								return;
-							}
 							
 					}else{
 						JOptionPane.showMessageDialog(null, "No Se Puede Guardar En Movimiento En Ceros","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -368,11 +358,11 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 		
     	this.tabla_depositos.getColumnModel().getColumn(0).setMaxWidth(100);
     	this.tabla_depositos.getColumnModel().getColumn(0).setMinWidth(100);		
-    	this.tabla_depositos.getColumnModel().getColumn(1).setMaxWidth(130);
-    	this.tabla_depositos.getColumnModel().getColumn(1).setMinWidth(130);
+    	this.tabla_depositos.getColumnModel().getColumn(1).setMaxWidth(100);
+    	this.tabla_depositos.getColumnModel().getColumn(1).setMinWidth(100);
     	
-    	this.tabla_depositos.getColumnModel().getColumn(2).setMaxWidth(80);
-    	this.tabla_depositos.getColumnModel().getColumn(2).setMinWidth(80);		
+    	this.tabla_depositos.getColumnModel().getColumn(2).setMaxWidth(100);
+    	this.tabla_depositos.getColumnModel().getColumn(2).setMinWidth(100);		
     	this.tabla_depositos.getColumnModel().getColumn(3).setMaxWidth(130);
     	this.tabla_depositos.getColumnModel().getColumn(3).setMinWidth(130);
     	
