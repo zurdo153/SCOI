@@ -40,7 +40,9 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
@@ -72,6 +74,8 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	JButton btnImpresion_Retiros_Pasados=new JButton("Retiros",new ImageIcon("imagen/Print.png"));
 	JButton btnISaldoTA=new JButton("Captura Saldo TA",new ImageIcon("imagen/telefono-celular-hp-ipaq-2-de-telefonia-movil-icono-6906-16.png"));
 	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnPedido=new JButton("Pedir Monedas",new ImageIcon("imagen/telefono-celular-hp-ipaq-2-de-telefonia-movil-icono-6906-16.png"));
+	JButton btnRecibir=new JButton("Recibir Monedas",new ImageIcon("imagen/telefono-celular-hp-ipaq-2-de-telefonia-movil-icono-6906-16.png"));
 	
 	Icon iconoFondo_cajero;
 	ImageIcon ImagenconFondo_cajero;
@@ -90,7 +94,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
     
 	public Cat_Retiros_A_Cajeros(){
 		this.cont.add(panel);
-		this.setSize(355,139);
+		this.setSize(355,165);
 		this.setResizable(false);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-32.png"));
 		this.cont.add(panel);
@@ -117,20 +121,27 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		Hilo_1_Minuto();
 		cargar_datos_del_empleado(folio_empleado);
 		
-		panel.add(btnFoto).setBounds(6,6,135,105);
-		panel.add(txtFolio_empleado).setBounds(145,7,30,20);
-		panel.add(btnImpresion_Retiros_Pasados).setBounds(175,7,100,20);
-		panel.add(txtasignacion).setBounds(275,7,70,20);
-		panel.add(txtNombre).setBounds(145,27,200,20);
-		panel.add(txtEstablecimiento).setBounds(145,47,200,20);
-		panel.add(txtpuesto).setBounds(145,67,200,20);
-		panel.add(txtpc).setBounds(145,87,200,20);
-		panel.add(btnISaldoTA).setBounds(5,118,137,20);
+		panel.add(btnFoto).setBounds(7,8,135,105);
+		panel.add(txtFolio_empleado).setBounds(145,8,30,20);
+		panel.add(btnImpresion_Retiros_Pasados).setBounds(175,8,100,20);
+		panel.add(txtasignacion).setBounds(275,8,70,20);
+		panel.add(txtNombre).setBounds(145,28,200,20);
+		panel.add(txtEstablecimiento).setBounds(145,48,200,20);
+		panel.add(txtpuesto).setBounds(145,68,200,20);
+		panel.add(txtpc).setBounds(145,88,200,20);
+		panel.add(btnISaldoTA).setBounds(7,113,137,20);
 		
-		panel.add(JLBlinicioTA).setBounds(150,118,20,20);
-		panel.add(txtsaldoTA).setBounds(170,118,70,20);
-		panel.add(JLBlsalidaTA).setBounds(240,118,20,20);
-		panel.add(btnGuardar).setBounds(260,118,95,20);
+		panel.add(JLBlinicioTA).setBounds(140,113,20,20);
+		panel.add(txtsaldoTA).setBounds(160,113,70,20);
+		panel.add(JLBlsalidaTA).setBounds(230,113,20,20);
+		panel.add(btnGuardar).setBounds(250,113,95,20);
+		
+		panel.add(btnPedido).setBounds(7,135,137,20);
+		panel.add(btnRecibir).setBounds(208,135,137,20);
+		
+		ValidaPedido();
+		pedidoDeMonedas(btnPedido);
+		pedidoDeMonedas(btnRecibir);
 		
 		txtFolio_empleado.setEditable(false);
 		txtasignacion.setEditable(false);
@@ -149,9 +160,9 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		
          //////fondo		
 		ImagenconFondo_cajero = new ImageIcon("imagen/marco_aux_caja.png");
-	    iconoFondo_cajero = new ImageIcon(ImagenconFondo_cajero.getImage().getScaledInstance(355,117, Image.SCALE_DEFAULT));
+	    iconoFondo_cajero = new ImageIcon(ImagenconFondo_cajero.getImage().getScaledInstance(355,165, Image.SCALE_DEFAULT));
 	    jlFondo_cajero.setIcon(iconoFondo_cajero);
-	    panel.add(jlFondo_cajero).setBounds(0,0,355,117);
+	    panel.add(jlFondo_cajero).setBounds(0,0,355,165);
              
            //  Buscar Con F5
                   getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -170,7 +181,30 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		}    
 		dispose();
 	}
+	
+	public void ValidaPedido(){
+//			System.out.println(new BuscarTablasModel().checar_Pedido_De_Monedas_Cajero());
+		switch(new BuscarTablasModel().checar_Pedido_De_Monedas_Cajero()){
+			case "PEDIDO": 		btnPedido.setEnabled(false);		btnRecibir.setEnabled(false); break;
+			case "SURTIDO": 	btnPedido.setEnabled(false);		btnRecibir.setEnabled(true); break;
+			case "ENTREGADO": 	btnPedido.setEnabled(false);		btnRecibir.setEnabled(true); break;
+			case "CANCELADO": 	btnPedido.setEnabled(true);			btnRecibir.setEnabled(false); break;
+			default: 			btnPedido.setEnabled(true);			btnRecibir.setEnabled(false); break; //RECIBIDO
+		}
+	}
 
+	public void pedidoDeMonedas(final JButton btn){
+		btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(btn.getActionCommand().equals("Pedir Monedas")){
+					new Cat_Pedido_De_Monedas(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "PEDIDO", "CAJERA").setVisible(true);
+				}else{
+					new Cat_Pedido_De_Monedas(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "RECIBIDO", "CAJERA").setVisible(true);
+				}
+			}
+		});
+	}
+	
 	public void cargar_datos_del_empleado(Integer folio_empleado){
 		Obj_Retiros_Cajeros datosEmpleado= new Obj_Retiros_Cajeros().buscarEmpleado(folio_empleado);
 
@@ -350,6 +384,9 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 
 ActionListener Buscar_Cambios = new ActionListener(){
 public void actionPerformed(ActionEvent e){
+	
+	ValidaPedido();
+	
 try {
 	importe_retiros_guardados        = 0;
 	importe_nuevo_devuelto           = 0;
