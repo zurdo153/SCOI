@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-10-22T13:40:42 -->
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-10-27T09:00:15 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Gafete_De_Empleados" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="479f4a9b-0156-454a-97f6-bf205e37a1c8">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -453,18 +453,18 @@ where tb_empleado.folio =@folio_empleado]]>
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Justified">
 						<font size="6" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Somos un equipo apasionado y comprometido en brindar una sensación única y amigable a nuestros clientes.
 ]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="200" y="24" width="30" height="9" forecolor="#0027D6" uuid="e1d17523-a8df-4f68-8d72-1d335c368e5f">
+					<reportElement x="200" y="24" width="173" height="9" forecolor="#0027D6" uuid="e1d17523-a8df-4f68-8d72-1d335c368e5f">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[MISIÓN:]]></text>
@@ -474,17 +474,17 @@ where tb_empleado.folio =@folio_empleado]]>
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Justified">
 						<font size="6" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Ser una empresa institucionalizada enfocada a procesos eficientes, eficaces y medibles, a través de un equipo competente y apasionado por satisfacer las expectativas de compra del cliente, lograr una rentabilidad creciente y contribuyendo a la economía de la región.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="200" y="48" width="30" height="9" forecolor="#0027D6" uuid="847d6bff-58a5-44ee-97c3-2733b961cb7f">
+					<reportElement x="200" y="48" width="173" height="9" forecolor="#0027D6" uuid="847d6bff-58a5-44ee-97c3-2733b961cb7f">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[VISIÓN:]]></text>
@@ -494,20 +494,20 @@ where tb_empleado.folio =@folio_empleado]]>
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Justified">
 						<font size="6" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Realizar con entrega y amor todos nuestros actos que nos llevarán a ser mejores personas en beneficio de nuestras familias y la sociedad.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="200" y="94" width="70" height="9" forecolor="#0027D6" uuid="80e49df8-badb-4c75-b90e-da7e4e9bf14d">
+					<reportElement x="200" y="94" width="174" height="9" forecolor="#0027D6" uuid="80e49df8-badb-4c75-b90e-da7e4e9bf14d">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font size="7" isBold="true"/>
 					</textElement>
-					<text><![CDATA[PASIÓN DE IZAGAR:]]></text>
+					<text><![CDATA[PASIÓN:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="201" y="133" width="44" height="8" forecolor="#000000" uuid="88ccedc7-2dfe-4cc8-b821-b170b206fb02">
@@ -613,11 +613,11 @@ where tb_empleado.folio =@folio_empleado]]>
 					<text><![CDATA[                         Somos transparentes en lo que pensamos y hacemos.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="201" y="125" width="70" height="9" forecolor="#0027D6" uuid="bccf678e-3894-41dc-9cf7-d8ba05b24db4">
+					<reportElement x="201" y="125" width="172" height="9" forecolor="#0027D6" uuid="bccf678e-3894-41dc-9cf7-d8ba05b24db4">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[VALORES:]]></text>
@@ -777,11 +777,11 @@ where tb_empleado.folio =@folio_empleado]]>
 								<imageExpression><![CDATA["C:/SCOI/imagen/izarin.png"]]></imageExpression>
 							</image>
 							<staticText>
-								<reportElement x="200" y="24" width="30" height="9" forecolor="#0027D6" uuid="db772717-47e8-4d7b-9d11-f2851e678016">
+								<reportElement x="200" y="24" width="173" height="9" forecolor="#0027D6" uuid="db772717-47e8-4d7b-9d11-f2851e678016">
 									<property name="local_mesure_unitheight" value="pixel"/>
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement textAlignment="Center">
 									<font size="7" isBold="true"/>
 								</textElement>
 								<text><![CDATA[MISIÓN:]]></text>
@@ -791,17 +791,17 @@ where tb_empleado.folio =@folio_empleado]]>
 									<property name="local_mesure_unitheight" value="pixel"/>
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								</reportElement>
-								<textElement textAlignment="Center">
+								<textElement textAlignment="Justified">
 									<font size="6" isBold="false"/>
 								</textElement>
 								<text><![CDATA[Ser una empresa institucionalizada enfocada a procesos eficientes, eficaces y medibles, a través de un equipo competente y apasionado por satisfacer las expectativas de compra del cliente, lograr una rentabilidad creciente y contribuyendo a la economía de la región.]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="200" y="48" width="30" height="9" forecolor="#0027D6" uuid="bb3efe85-1011-4aeb-8df1-d4fa78eb0156">
+								<reportElement x="200" y="48" width="172" height="9" forecolor="#0027D6" uuid="bb3efe85-1011-4aeb-8df1-d4fa78eb0156">
 									<property name="local_mesure_unitheight" value="pixel"/>
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement textAlignment="Center">
 									<font size="7" isBold="true"/>
 								</textElement>
 								<text><![CDATA[VISIÓN:]]></text>
@@ -811,20 +811,20 @@ where tb_empleado.folio =@folio_empleado]]>
 									<property name="local_mesure_unitheight" value="pixel"/>
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								</reportElement>
-								<textElement textAlignment="Center">
+								<textElement textAlignment="Justified">
 									<font size="6" isBold="false"/>
 								</textElement>
 								<text><![CDATA[Realizar con entrega y amor todos nuestros actos que nos llevarán a ser mejores personas en beneficio de nuestras familias y la sociedad.]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="200" y="94" width="70" height="9" forecolor="#0027D6" uuid="42cdaf7e-86c4-4e3f-a921-7a94d3cb89c5">
+								<reportElement x="200" y="94" width="172" height="9" forecolor="#0027D6" uuid="42cdaf7e-86c4-4e3f-a921-7a94d3cb89c5">
 									<property name="local_mesure_unitheight" value="pixel"/>
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement textAlignment="Center">
 									<font size="7" isBold="true"/>
 								</textElement>
-								<text><![CDATA[PASIÓN DE IZAGAR:]]></text>
+								<text><![CDATA[PASIÓN:]]></text>
 							</staticText>
 							<staticText>
 								<reportElement x="201" y="133" width="44" height="8" forecolor="#000000" uuid="47a2af66-05b3-473c-86ed-5576bbff1b41">
@@ -930,11 +930,11 @@ where tb_empleado.folio =@folio_empleado]]>
 								<text><![CDATA[                         Somos transparentes en lo que pensamos y hacemos.]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="201" y="125" width="70" height="9" forecolor="#0027D6" uuid="68b3321d-1bfe-4b93-b45b-87c3247376df">
+								<reportElement x="201" y="125" width="172" height="9" forecolor="#0027D6" uuid="68b3321d-1bfe-4b93-b45b-87c3247376df">
 									<property name="local_mesure_unitheight" value="pixel"/>
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement textAlignment="Center">
 									<font size="7" isBold="true"/>
 								</textElement>
 								<text><![CDATA[VALORES:]]></text>
@@ -944,7 +944,7 @@ where tb_empleado.folio =@folio_empleado]]>
 									<property name="local_mesure_unitheight" value="pixel"/>
 									<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								</reportElement>
-								<textElement textAlignment="Center">
+								<textElement textAlignment="Justified">
 									<font size="6" isBold="false"/>
 								</textElement>
 								<text><![CDATA[Somos un equipo apasionado y comprometido en brindar una sensación única y amigable a nuestros clientes.
@@ -1122,11 +1122,11 @@ where tb_empleado.folio =@folio_empleado]]>
 							<imageExpression><![CDATA["C:/SCOI/imagen/izarin.png"]]></imageExpression>
 						</image>
 						<staticText>
-							<reportElement x="203" y="26" width="30" height="9" forecolor="#0027D6" uuid="7afa6626-12a2-4901-aa64-d9df14cbab26">
+							<reportElement x="203" y="26" width="172" height="9" forecolor="#0027D6" uuid="7afa6626-12a2-4901-aa64-d9df14cbab26">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement>
+							<textElement textAlignment="Center">
 								<font size="7" isBold="true"/>
 							</textElement>
 							<text><![CDATA[MISIÓN:]]></text>
@@ -1136,17 +1136,17 @@ where tb_empleado.folio =@folio_empleado]]>
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement textAlignment="Center">
+							<textElement textAlignment="Justified">
 								<font size="6" isBold="false"/>
 							</textElement>
 							<text><![CDATA[Ser una empresa institucionalizada enfocada a procesos eficientes, eficaces y medibles, a través de un equipo competente y apasionado por satisfacer las expectativas de compra del cliente, lograr una rentabilidad creciente y contribuyendo a la economía de la región.]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="203" y="50" width="30" height="9" forecolor="#0027D6" uuid="723bc7ab-0714-4fed-90d7-277f7faab698">
+							<reportElement x="203" y="50" width="172" height="9" forecolor="#0027D6" uuid="723bc7ab-0714-4fed-90d7-277f7faab698">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement>
+							<textElement textAlignment="Center">
 								<font size="7" isBold="true"/>
 							</textElement>
 							<text><![CDATA[VISIÓN:]]></text>
@@ -1156,20 +1156,20 @@ where tb_empleado.folio =@folio_empleado]]>
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement textAlignment="Center">
+							<textElement textAlignment="Justified">
 								<font size="6" isBold="false"/>
 							</textElement>
 							<text><![CDATA[Realizar con entrega y amor todos nuestros actos que nos llevarán a ser mejores personas en beneficio de nuestras familias y la sociedad.]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="203" y="96" width="70" height="9" forecolor="#0027D6" uuid="3dc9dc52-a328-42e5-ad7d-5b6fab057ba7">
+							<reportElement x="203" y="96" width="172" height="9" forecolor="#0027D6" uuid="3dc9dc52-a328-42e5-ad7d-5b6fab057ba7">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement>
+							<textElement textAlignment="Center">
 								<font size="7" isBold="true"/>
 							</textElement>
-							<text><![CDATA[PASIÓN DE IZAGAR:]]></text>
+							<text><![CDATA[PASIÓN:]]></text>
 						</staticText>
 						<staticText>
 							<reportElement x="204" y="135" width="44" height="8" forecolor="#000000" uuid="d4a671c0-571d-40bf-80bc-47a95733a500">
@@ -1275,11 +1275,11 @@ where tb_empleado.folio =@folio_empleado]]>
 							<text><![CDATA[                         Somos transparentes en lo que pensamos y hacemos.]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="204" y="127" width="70" height="9" forecolor="#0027D6" uuid="ccadc171-bf8d-4cf7-beeb-284160143308">
+							<reportElement x="204" y="127" width="170" height="9" forecolor="#0027D6" uuid="ccadc171-bf8d-4cf7-beeb-284160143308">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement>
+							<textElement textAlignment="Center">
 								<font size="7" isBold="true"/>
 							</textElement>
 							<text><![CDATA[VALORES:]]></text>
@@ -1289,7 +1289,7 @@ where tb_empleado.folio =@folio_empleado]]>
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement textAlignment="Center">
+							<textElement textAlignment="Justified">
 								<font size="6" isBold="false"/>
 							</textElement>
 							<text><![CDATA[Somos un equipo apasionado y comprometido en brindar una sensación única y amigable a nuestros clientes.
@@ -1461,11 +1461,11 @@ where tb_empleado.folio =@folio_empleado]]>
 							<imageExpression><![CDATA["C:/SCOI/imagen/izarin.png"]]></imageExpression>
 						</image>
 						<staticText>
-							<reportElement x="202" y="26" width="30" height="9" forecolor="#0027D6" uuid="b54be956-b56d-4dc7-b2ea-7c227f637860">
+							<reportElement x="202" y="26" width="175" height="9" forecolor="#0027D6" uuid="b54be956-b56d-4dc7-b2ea-7c227f637860">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement>
+							<textElement textAlignment="Center">
 								<font size="7" isBold="true"/>
 							</textElement>
 							<text><![CDATA[MISIÓN:]]></text>
@@ -1475,17 +1475,17 @@ where tb_empleado.folio =@folio_empleado]]>
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement textAlignment="Center">
+							<textElement textAlignment="Justified">
 								<font size="6" isBold="false"/>
 							</textElement>
 							<text><![CDATA[Ser una empresa institucionalizada enfocada a procesos eficientes, eficaces y medibles, a través de un equipo competente y apasionado por satisfacer las expectativas de compra del cliente, lograr una rentabilidad creciente y contribuyendo a la economía de la región.]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="202" y="50" width="30" height="9" forecolor="#0027D6" uuid="68a57c6d-1894-42d5-9a17-b4fdf61cd668">
+							<reportElement x="202" y="50" width="173" height="9" forecolor="#0027D6" uuid="68a57c6d-1894-42d5-9a17-b4fdf61cd668">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement>
+							<textElement textAlignment="Center">
 								<font size="7" isBold="true"/>
 							</textElement>
 							<text><![CDATA[VISIÓN:]]></text>
@@ -1495,20 +1495,20 @@ where tb_empleado.folio =@folio_empleado]]>
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement textAlignment="Center">
+							<textElement textAlignment="Justified">
 								<font size="6" isBold="false"/>
 							</textElement>
 							<text><![CDATA[Realizar con entrega y amor todos nuestros actos que nos llevarán a ser mejores personas en beneficio de nuestras familias y la sociedad.]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="202" y="96" width="70" height="9" forecolor="#0027D6" uuid="1ecf0a00-ff65-4597-9e62-2ca29db2e105">
+							<reportElement x="202" y="96" width="173" height="9" forecolor="#0027D6" uuid="1ecf0a00-ff65-4597-9e62-2ca29db2e105">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement>
+							<textElement textAlignment="Center">
 								<font size="7" isBold="true"/>
 							</textElement>
-							<text><![CDATA[PASIÓN DE IZAGAR:]]></text>
+							<text><![CDATA[PASIÓN:]]></text>
 						</staticText>
 						<staticText>
 							<reportElement x="203" y="135" width="44" height="8" forecolor="#000000" uuid="4b848dee-3809-45c8-ba80-25ad57658cd6">
@@ -1614,11 +1614,11 @@ where tb_empleado.folio =@folio_empleado]]>
 							<text><![CDATA[                         Somos transparentes en lo que pensamos y hacemos.]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="203" y="127" width="70" height="9" forecolor="#0027D6" uuid="e633f79b-d260-4269-bd7b-516e57b8a758">
+							<reportElement x="203" y="127" width="174" height="9" forecolor="#0027D6" uuid="e633f79b-d260-4269-bd7b-516e57b8a758">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement>
+							<textElement textAlignment="Center">
 								<font size="7" isBold="true"/>
 							</textElement>
 							<text><![CDATA[VALORES:]]></text>
@@ -1628,7 +1628,7 @@ where tb_empleado.folio =@folio_empleado]]>
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement textAlignment="Center">
+							<textElement textAlignment="Justified">
 								<font size="6" isBold="false"/>
 							</textElement>
 							<text><![CDATA[Somos un equipo apasionado y comprometido en brindar una sensación única y amigable a nuestros clientes.

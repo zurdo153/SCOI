@@ -364,16 +364,6 @@ public class Cat_Polizas extends JFrame{
 	    					modelo.addRow(p);
 	    				}
 	    				CalcularFoliosTabla();
-	    				
-    					fila= tabla.getRowCount()-1;
-    					columna=4;
-    						
-    						tabla.getSelectionModel().setSelectionInterval(fila, fila);
-    						tabla.setEnabled(true);
-    		    			tabla.editCellAt(fila, columna);
-    		    			Component aComp=tabla.getEditorComponent();
-    		    			aComp.requestFocus();
-	    		    			
 	    			}else{
 	    				JOptionPane.showMessageDialog(null, "No Se Encontraron Registros","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 	    				return;
@@ -440,10 +430,10 @@ public class Cat_Polizas extends JFrame{
 	        public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 1){
 	        		
+//	        		45
+	        		
 	        		fila= tbl.getSelectedRow();
 	        		columna= tbl.getSelectedColumn()<=4?4:tbl.getSelectedColumn();
-	        		
-	        		System.out.println("fila: "+fila+" columna: "+columna);
 	        		
 	        		if(columna==4){
 	        			if(Float.valueOf(tbl.getValueAt(fila, 5).toString().equals("")?"0":tbl.getValueAt(fila, 5).toString())==0){
@@ -481,28 +471,16 @@ public class Cat_Polizas extends JFrame{
 	ActionListener opQuitar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			if(tabla.isEditing()){
-				tabla.getCellEditor().stopCellEditing();
-			}
+			int seleccion = tabla.getSelectedRow();
 			
-			fila= tabla.getSelectedRow();
-			
-			if(fila<0){
+			if(seleccion<0){
 				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-				if(fila < tabla.getRowCount()){
-					modelo.removeRow(fila);
-					tabla.getSelectionModel().setSelectionInterval(fila, fila);
+				if(seleccion < tabla.getRowCount()){
+					modelo.removeRow(seleccion);
+					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
 					CalcularFoliosTabla();
-					
-					fila= tabla.getRowCount()-1;
-					columna=4;
-						
-					tabla.setEnabled(true);
-	    			tabla.editCellAt(fila, columna);
-	    			Component aComp=tabla.getEditorComponent();
-	    			aComp.requestFocus();
 				}
 			}
 		}
@@ -682,14 +660,6 @@ public class Cat_Polizas extends JFrame{
 				}
 		}
 		
-//		if(spDiferenciaTotales.getValue().toString().trim().equals("0") || spDiferenciaTotales.getValue().toString().trim().equals("-0")){
-//			guardarPolizas();
-//		}else{
-//			JOptionPane.showMessageDialog(null, "La Poliza No Esta Cuadrada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-//			return;
-//		}
-		
-		System.out.println(spDiferenciaTotales.getValue().toString().trim());
 		if(Float.valueOf(spCargoTotales.getValue().toString().trim())-Float.valueOf(spAbonoTotales.getValue().toString().trim())==0){
 			guardarPolizas();
 		}else{
@@ -883,9 +853,6 @@ public class Cat_Polizas extends JFrame{
 		
 		if(sacarFocoDeTabla.equals("si")){
 			tabla.lostFocus(null, null);
-			if(tabla.isEditing()){
-				tabla.getCellEditor().stopCellEditing();
-			}
 			txtCuenta.requestFocus();
 		}
 		

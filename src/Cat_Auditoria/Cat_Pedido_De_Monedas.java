@@ -29,7 +29,6 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.BuscarTablasModel;
-import Obj_Auditoria.Obj_Alimentacion_Denominacion;
 import Obj_Auditoria.Obj_Pedido_De_Monedas;
 import Obj_Renders.tablaRenderer;
 

@@ -3488,9 +3488,6 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			
-//			int i=1;
-//			pstmt.setString(i, corte.getFolio_corte());
-			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -4479,14 +4476,13 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				System.out.println(Float.valueOf(pedido.getMatriz()[i][3].toString()));
 				
 				
-//				pstmt.setInt(1, pedido.getFolioUsuario());
-//				pstmt.setString(2, pedido.getStatus_pedido());
-//				
-//				pstmt.setFloat(3, Float.valueOf(pedido.getMatriz()[i][0].toString()));
-//				pstmt.setFloat(4, Float.valueOf(pedido.getMatriz()[i][2].toString()));
-//				pstmt.setFloat(5, Float.valueOf(pedido.getMatriz()[i][3].toString()));
+				pstmt.setInt(1, pedido.getFolioUsuario());
+				pstmt.setString(2, pedido.getStatus_pedido());
 				
-//				pstmt.execute();
+				pstmt.setFloat(3, Float.valueOf(pedido.getMatriz()[i][0].toString()));
+				pstmt.setFloat(4, Float.valueOf(pedido.getMatriz()[i][2].toString()));
+				pstmt.setFloat(5, Float.valueOf(pedido.getMatriz()[i][3].toString()));
+				pstmt.execute();
 			}
 					
 			con.commit();

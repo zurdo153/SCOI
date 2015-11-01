@@ -22,15 +22,6 @@ public class Obj_Establecimiento {
 	public String rfc;
 	public String telefono;
 	
-//	public Obj_Establecimiento(){
-//		folio=0;
-//		establecimiento="";
-//		abreviatura="";
-//		serie="";
-//		grupo_cheque="";
-//		status="";
-//	}
-
 	
 
 		public String[] Combo_Establecimiento_Empleados() {

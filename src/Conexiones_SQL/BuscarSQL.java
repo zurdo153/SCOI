@@ -291,7 +291,6 @@ public class BuscarSQL {
 			
 			while(rs.next()){
 				folio_corte = rs.getString("folio_corte");
-//				folio.setFolio_corte(rs.getString("folio_corte"));
 			}
 			
 		} catch (SQLException e1) {

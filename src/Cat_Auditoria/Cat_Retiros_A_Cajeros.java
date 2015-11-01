@@ -11,11 +11,15 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -44,7 +48,6 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
-
 
 @SuppressWarnings("serial")
 public class Cat_Retiros_A_Cajeros extends JFrame {
@@ -84,7 +87,6 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
     String Asignacion =""; 
     boolean cerrarhilo = false;
     String  saldoinicialfinal="";
-    float saldo_nuevo_tecleado=0;
     
 	public Cat_Retiros_A_Cajeros(){
 		this.cont.add(panel);
@@ -229,19 +231,56 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 			   txtsaldoTA.requestFocus();	
 				return;
 			}else{
-				saldo_nuevo_tecleado= Float.valueOf(txtsaldoTA.getText().toString());
-			txtsaldoTA.setEnabled(false);
-			btnGuardar.setEnabled(false);
-         new Cat_Validar_Clave_Supervisor().setVisible(true);
+				if(Actualizar_ta_tira()){
+					txtsaldoTA.setEnabled(false);
+					btnGuardar.setEnabled(false);
+					new Cat_Validar_Clave_Supervisor().setVisible(true);
+				}else{
+					JOptionPane.showMessageDialog(null, "Error en Actualizar_ta_tira  en la funcion SQLException: ", "Avisa al Administrador del sistema", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			}
 		}
 	};
+
+////////////UPDATE DE MOVIMIENTOS VIEJOS PARA QUE NO SE REVUELVAN CON LOS NUEVOS EN EL REPORTE DE LA TIRA DE TIEMPO AIRE	
+	public boolean Actualizar_ta_tira(){
+		String query = "update tb_venta_por_cada_tira_ta set estatus='R' " +
+				       " where folio_empleado="+folio_empleado+" and estatus='V' ";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en Actualizar_ta_tira  en la funcion SQLException: "+e.getMessage()+" "+ex.getMessage(), "Avisa al Administrador del sistema", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 			
+	
 /////////CONSULTA EL IMPORTE NUEVO
    	public float Consulta_de_Importe_Nuevo(){
    		   float importe_nuevo =0;
 	   	   String pc_nombre="";
-//	   	pc_nombre ="SIV_CAJA1";
 			try {
 			    	pc_nombre = InetAddress.getLocalHost().getHostName();
 			} catch (UnknownHostException e1) {
@@ -268,7 +307,6 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
    	
 /////////CONSULTA EL DE LOS RETIROS YA GUARDADOS
    	public float Consulta_El_Importe__de_los_Retiros_Guardados(){
-
    		importe_retiros_guardados=0;
    		String query_importe_retiros="exec sp_consulta_acumulado_de_retiros_a_cajeros_del_dia_2 "+folio_empleado+",'"+Asignacion.trim()+"'";
 		Statement s;
@@ -290,9 +328,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 /////////CONSULTA DEL VALOR A RETIRAR DE ACUERDO AL DIA
    	public float Consulta_del_Importe_del_retiro_del_dia(){
    		valor_a_retirar_deacuerdo_al_dia=0;
-   		
    		String query_importe_retiros_del_dia="exec sp_obtener_importe_del_retiro_del_dia";
-   		
 		Statement s;
 		ResultSet rs2;
 		
@@ -626,7 +662,6 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 												"		<CENTER><p>ERROR INTERNO EN EL GUARDADO AVISAR A SISTEMAS</p></CENTER></FONT></html>"); 
 					                    btnError.setVisible(true);	
 		    					 }
-		    					  
 		    					  }
 		    					 
 		    				   }else{
@@ -636,7 +671,6 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 											"		<CENTER><p> NO COINCIDEN LAS CONTRASEÑAS </p></CENTER></FONT></html>"); 
 				                    btnError.setVisible(true);	
 		    				        }
-		    				
 		    			}
 		    		}
 		    		
@@ -810,7 +844,7 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 	  	public class Cat_Validar_Clave_Supervisor extends JDialog{
 			JPasswordField txtClaveSupervisor_validacion = new Componentes().textPassword(new JPasswordField(), "Clave", 30);
 			JTextField txtventa = new Componentes().text(new JCTextField(), "Venta TA", 30, "String");
-			
+			String Supervisor ="";
 			JButton btnReporte = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
 			double venta=0;
 			
@@ -824,26 +858,36 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 	  			Container cont = getContentPane();
 	  			JLayeredPane panel = new JLayeredPane();
 	  			this.setModal(true);
+	  			this.addWindowListener(op_cerrar);
 	  			
 	  			panel.setBorder(BorderFactory.createTitledBorder("Pase El Gafete Del Supervisor"));
 	  			panel.add(txtventa).setBounds(10, 20, 220, 20);
 	  			panel.add(txtClaveSupervisor_validacion).setBounds(10, 50, 220, 20);
 	  			panel.add(btnReporte).setBounds(70, 75, 100, 20);;
 	  			cont.add(panel);
-	  			
 
 	  			txtClaveSupervisor_validacion.addKeyListener(buscar_supervisor_existe);
+	  			btnReporte.addActionListener(imprimir_Reporte);
 	  			txtClaveSupervisor_validacion.setEnabled(true);
 	  			
 	  			txtventa.setEditable(false);
 	  			btnReporte.setEnabled(false);
-	  			
 				 this.addWindowListener(new WindowAdapter() { public void windowOpened( WindowEvent e ){
 		    	  			txtClaveSupervisor_validacion.requestFocus();
 		             }  });
-				 
 	  		}
-	  		
+	  		WindowListener op_cerrar = new WindowListener() {
+	  			public void windowOpened(WindowEvent e) {}
+	  			public void windowIconified(WindowEvent e) {}
+	  			public void windowDeiconified(WindowEvent e) {}
+	  			public void windowDeactivated(WindowEvent e) {}
+	  			public void windowClosing(WindowEvent e) {
+	  				Actualizar_ta_tira();
+	  			}
+	  			public void windowClosed(WindowEvent e) {}
+	  			public void windowActivated(WindowEvent e) {}
+	  		};
+
 	  		KeyListener buscar_supervisor_existe = new KeyListener() {
     			@SuppressWarnings("deprecation")
 				public void keyPressed(KeyEvent e) {	
@@ -854,13 +898,14 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 	    				txtClaveSupervisor_validacion.requestFocus();
 						JOptionPane.showMessageDialog(null,"Se Requiere Clave De Un Supervisor","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 	    			}else{
-	    				venta_ta_asignacion();
-	    				if(new GuardarSQL().GuardarSaldo_TA(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),datosSupervisor.getFolio_supervisor(),txtEstablecimiento.getText().toString().trim(),txtsaldoTA.getText().toString().trim(),venta,txtasignacion.getText().toString().trim())){
+	    				cargar_lista_de_asignaciones();
+	    				if(new GuardarSQL().GuardarSaldo_TA(folio_empleado,datosSupervisor.getFolio_supervisor(),txtEstablecimiento.getText().toString().trim(),txtsaldoTA.getText().toString().trim(),venta,txtasignacion.getText().toString().trim())){
 		    				txtClaveSupervisor_validacion.setEnabled(false);
 		    				JOptionPane.showMessageDialog(null,"Se Guardo El >"+saldoinicialfinal+"< Exitosamente","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 	    					btnReporte.setEnabled(true);
 	    					txtventa.setText(venta+"");
-	    					reporte (datosSupervisor.getNombre_Supervisor().toString());
+	    					Supervisor=datosSupervisor.getNombre_Supervisor().toString();
+	    					reporte (Supervisor);
 	    					venta=0;
 	    					saldoinicialfinal="";
 	    				}
@@ -871,93 +916,116 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
     			public void keyTyped(KeyEvent e) {}
             };
             
-            public double  venta_ta_asignacion() {
-    			Connexion con = new Connexion();
-    			String query = "select 	sum(total) from entysal with (nolock)   where cod_prod='52401' and folio in(select folio from facremtick with (nolock) where folio_cajero='"+txtasignacion.getText().trim()+"' and status='V')";
-    			Statement stmt = null;
-    			try {
-    				stmt = con.conexion_IZAGAR().createStatement();
-    			    ResultSet rs = stmt.executeQuery(query);
-    				while(rs.next()){
-    					venta =(rs.getDouble(1));
-    				}
-    			} catch (Exception e) {
-    				e.printStackTrace();
-    				System.err.println("Error");
-    				JOptionPane.showMessageDialog(null, "Error  en la funcion venta_ta_asignacion()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-    				return venta ;
-    			}
-    			finally{
-    				 if (stmt != null) { try {
-    					stmt.close();
-    				} catch (SQLException e) {
-    					JOptionPane.showMessageDialog(null, "Error en la funcion venta_ta_asignacion()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-    					e.printStackTrace();
-    				} }
-    			}
-    			return venta;
-    		 }
-	  	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  	
-       
-	  	public double  diferencia() {
-	  		double diferencia=0;
-			Connexion con = new Connexion();
-			String query = "select 	sum(total) from entysal with (nolock)   where cod_prod='52401' and folio in(select folio from facremtick with (nolock) where folio_cajero='"+txtasignacion.getText().trim()+"' and status='V')";
-			Statement stmt = null;
-			try {
-				stmt = con.conexion().createStatement();
-			    ResultSet rs = stmt.executeQuery(query);
-				while(rs.next()){
-					diferencia =(rs.getDouble(1));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.err.println("Error");
-				JOptionPane.showMessageDialog(null, "Error  en la funcion venta_ta_asignacion()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-				return diferencia ;
-			}
-			finally{
-				 if (stmt != null) { try {
-					stmt.close();
-				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Error en la funcion venta_ta_asignacion()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-					e.printStackTrace();
-				} }
-			}
-			return diferencia;
-		 }
-        
-			public void reporte (String nombre_supervisor) {
-				
-				String basedatos="2.200";
-				String vista_previa_reporte="no";
-				int vista_previa_de_ventana=0;
-				String comando="select folio as ticket"
-						+ "            ,convert(varchar(15),fecha,108) as hora"
-						+ "            ,total"
-						+ "            ,'"+txtNombre.getText().toString().trim()+"' as cajero "
-						+ "            ,'"+txtasignacion.getText().trim()+"' as asignacion "
-						+ "            ,'"+nombre_supervisor+"' as supervisor "
-						+ "            ,"+txtsaldoTA.getText().toString()+" as saldo_tecleado"
-						+ "            ,125.55 as saldo_final_tecleado "
-						+ "            ,'"+txtpc.getText().toString().trim()+"' as nombre_pc "
-						+ "            ,'"+txtEstablecimiento.getText().toString().trim()+"' as establecimiento"
-						+ "            ,getdate() as fecha_mov "
+        	ActionListener imprimir_Reporte = new ActionListener(){
+        		public void actionPerformed(ActionEvent e){
+        			reporte (Supervisor);
+        		}
+        	};
+        	
+         public boolean cargar_lista_de_asignaciones(){
+         		boolean registrado = false;
+         		
+         		Connection con_scoi = new Connexion().conexion();
+        		PreparedStatement pstmt_SCOI = null;
+       			String consulta_ta= "select folio as ticket"
+						+ "                 ,convert(varchar(15),fecha,103) +' '+convert(varchar(15),fecha,108)  as fecha"
+						+ "                 ,isnull(total,0) as total"
+						+ "                 ,'"+folio_empleado+"' as folio_empleado"
+						+ "                 ,'"+txtasignacion.getText().trim()+"' as asignacion "
 						+ "  from entysal with (nolock)   "
-				+ " where  cod_prod='52401' and folio in(select folio from facremtick with (nolock) where folio_cajero='"+txtasignacion.getText().trim()+"') order by fecha" ;
-				
-				String reporte = "Obj_Reporte_De_Saldo_Tiempo_Aire_Capturado_Supervisor_Ticket.jrxml";
-				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-		};
-		
-	  	
-		public static void main(String [] arg){
+				        + " where  cod_prod='52401' and folio in(select folio from facremtick with (nolock) where folio_cajero='"+txtasignacion.getText().trim()+"') order by fecha";
+       			
+  				String query_ta_guardado = "exec sp_insert_venta_tiempo_aire_por_tira_de_saldo_de_cajero ?,?,?,?,?";
+    			Statement s_IZAGAR;
+        		ResultSet rs_IZAGAR;
+        				try {
+        						s_IZAGAR = new Connexion().conexion_IZAGAR().createStatement();
+        						rs_IZAGAR = s_IZAGAR.executeQuery(consulta_ta);
+        						while(rs_IZAGAR.next()){
+        							    con_scoi.setAutoCommit(false);
+        							    pstmt_SCOI =  con_scoi.prepareStatement(query_ta_guardado);
+        							    pstmt_SCOI.setString(1, 	rs_IZAGAR.getString(1));
+        							    pstmt_SCOI.setString(2, 	rs_IZAGAR.getString(2));
+        							    pstmt_SCOI.setString(3,	    rs_IZAGAR.getString(3));
+        							    pstmt_SCOI.setString(4,	    rs_IZAGAR.getString(4));
+        							    pstmt_SCOI.setString(5, 	rs_IZAGAR.getString(5));
+        							    pstmt_SCOI.executeUpdate();
+        								registrado = true;
+        								venta=venta+rs_IZAGAR.getDouble(3);
+        						}
+        				} catch (SQLException e1) {
+        							e1.printStackTrace();
+        							JOptionPane.showMessageDialog(null, "Error en la funcion cargar_lista_de_asignaciones  SQLException: "+e1.getMessage(), "Avisa al Administrador del sistema", JOptionPane.ERROR_MESSAGE);
+        							registrado = false;
+        				}
+        			try {
+        				con_scoi.commit();
+        			} catch (SQLException e) {
+        					e.printStackTrace();
+        			}
+        		return registrado;
+        	}
+         
+    	    public void reporte (String nombre_supervisor) {
+    					String basedatos="2.26";
+    					String vista_previa_reporte="no";
+    					int vista_previa_de_ventana=0;
+    					String comando="exec sp_select_saldos_ta "+folio_empleado+",'"+txtpc.getText().toString().trim()+"','"+txtasignacion.getText().toString().trim()+"','"+nombre_supervisor+"','"+txtEstablecimiento.getText().toString().trim()+"'";
+    					String reporte = "Obj_Reporte_De_Saldo_Tiempo_Aire_Capturado_Supervisor_Ticket.jrxml";
+    					 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+    			};
+        	
+	  	}
+        	
+	  	public static void main(String [] arg){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				new Cat_Retiros_A_Cajeros().setVisible(true);
 			}catch(Exception e){	}
 		}
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  	
+	
+		
+	////EJEMPLO DE VECTOR
+//		@SuppressWarnings({ "rawtypes", "unchecked" })
+//		public Vector busqueda_datos_saldo() throws SQLException{
+//			Vector fila = new Vector();
+//			String query = "exec sp_select_saldos_ta "+txtFolio_empleado.getText().toString()+",'"+txtpc.getText().toString().trim()+"'";
+//			Statement stmt = null;
+//			try {
+//				stmt = con.conexion().createStatement();
+//			    ResultSet rs = stmt.executeQuery(query);
+//				while(rs.next()){
+//					fila.add(rs.getObject(1));
+//					fila.add(rs.getObject(2));
+//					fila.add(rs.getObject(3));
+//					fila.add(rs.getObject(4));
+//					fila.add(rs.getObject(5));
+//					fila.add(rs.getObject(6));
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				System.err.println("Error");
+//				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Vector buscar_entosal  store procedure sp_select_entosal: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//				return null;
+//			}
+//			finally{
+//				 if (stmt != null) { stmt.close(); }
+//			}
+//			return fila;
+//		}
+////COMO SE USA EL VECTOR
+//		Vector vector=new Vector();
+//		try {
+//			vector=busqueda_datos_saldo();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//			    + "            ,"+vector.get(0).toString()+" as saldo_inicial"
+//				+ "            ,"+vector.get(1).toString()+" as total_traspaso"
+//				+ "            ,"+vector.get(2).toString()+" as venta "
+//				+ "            ,"+vector.get(3).toString()+" as saldo_final_de_movimientos"
+//				+ "            ,"+vector.get(3).toString()+" as saldo_final_tecleado "
+//				+ "            ,"+vector.get(5).toString()+" as diferiencia "
 
 }

@@ -241,6 +241,7 @@ public class Cat_Traspaso_De_Tiempo_Aire_A_Puntos_De_Venta extends JFrame{
 				    return scrol; 
 	    
 	    }
+	
 	private void refrestabla(){
 		Statement s;
 		ResultSet rs;
@@ -410,7 +411,6 @@ public class Cat_Traspaso_De_Tiempo_Aire_A_Puntos_De_Venta extends JFrame{
 			while(rs.next()){
 				 foliosiguiente =(rs.getInt(1));
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Error");
