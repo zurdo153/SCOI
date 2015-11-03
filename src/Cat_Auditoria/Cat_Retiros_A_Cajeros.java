@@ -1,6 +1,7 @@
 package Cat_Auditoria;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -197,9 +198,9 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btn.getActionCommand().equals("Pedir Monedas")){
-					new Cat_Pedido_De_Monedas(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "PEDIDO", "CAJERA").setVisible(true);
+					new CapturarPedido(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "PEDIDO", "CAJERA").setVisible(true);
 				}else{
-					new Cat_Pedido_De_Monedas(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "RECIBIDO", "CAJERA").setVisible(true);
+					new CapturarPedido(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "RECIBIDO", "CAJERA").setVisible(true);
 				}
 			}
 		});
@@ -1019,6 +1020,74 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				new Cat_Retiros_A_Cajeros().setVisible(true);
 			}catch(Exception e){	}
+		}
+	  	
+		public class CapturarPedido extends Cat_Pedido_De_Monedas{
+			
+			public CapturarPedido(int folioEmp,String empleado, String status_pedido, String tipo_usuario){
+				activarColumna = status_pedido;
+				
+//				pedirRecibir = true     --->   activar recibir pedido	
+//				pedirRecibir = true     --->   activar realizar pedido
+				boolean entregoMonedas = false;
+				switch(tipo_usuario){
+					case "CAJERA":	this.setTitle(status_pedido.equals("RECIBIDO")?"Recibir Pedido De Monedas ("+tipo_usuario+")":"Realizar Pedido De Monedas ("+tipo_usuario+")");break;
+					case "CORTES":	this.setTitle("Surtir Pedido De Monedas ("+tipo_usuario+")");	break;
+					default:		this.setTitle(status_pedido.equals("RECIBIDO")?"Recibir Pedido De Monedas ("+tipo_usuario+")":"Realizar Pedido De Monedas ("+tipo_usuario+")");break;//	recibir por (ENCARGADO / CAJERA)
+				}
+				
+				switch(status_pedido){
+					case "PEDIDO":		entregoMonedas=false;	columna = 2;	break;
+					case "SURTIDO":		entregoMonedas=false;	columna = 4;	break;
+					case "ENTREGADO":	entregoMonedas=true;	columna = 6;	break;
+					case "RECIBIDO":	entregoMonedas=true;	columna = 8;	break;
+//					default:			entregoMonedas=true;	break;
+				}
+				
+//				System.out.println(entregoMonedas);
+				cmbEntrega.setEnabled(entregoMonedas);
+				
+				Constructor();
+				calcularTotales();
+				
+				this.lblEmpleado.setText("EMPLEADO:  "+folioEmp+"  "+empleado);
+				agregar(tabla);
+				tablaKey(status_pedido.equals("PEDIDO")?txtTotalPedido:( status_pedido.equals("SURTIDO")?txtTotalSurtido:( status_pedido.equals("ENTREGADO")?txtTotalEntregado:( txtTotalRecibido ) ) ));
+			    guardar(btn_guardar, folioEmp, status_pedido, status_pedido.equals("PEDIDO")?txtTotalPedido:( status_pedido.equals("SURTIDO")?txtTotalSurtido:( status_pedido.equals("ENTREGADO")?txtTotalEntregado:( txtTotalRecibido ) )));
+			    
+			}
+			
+			private void agregar(final JTable tbl) {
+		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+			        public void mouseClicked(MouseEvent e) {
+			        	fila= tbl.getSelectedRow();
+			        	tabla.getSelectionModel().setSelectionInterval(fila, fila);
+			        	tabla.setEnabled(true);
+			        	tabla.editCellAt(fila, columna);
+		    			Component aComp=tabla.getEditorComponent();
+		    			aComp.requestFocus();
+			        }
+		        });
+		    }
+			
+			private void guardar(final JButton btn,final int folioEmpleado, final String status_pedido, final JTextField txt) {
+				btn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						if(activarColumna.equals("ENTREGADO") || activarColumna.equals("RECIBIDO")){
+							if(cmbEntrega.getSelectedIndex()==0){
+								JOptionPane.showMessageDialog(null, "Favor De Seleccionar Quien Le Entrego El Pedido","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}else{
+								guardado(btn, folioEmpleado, status_pedido, txt);
+							}
+						}else{
+							guardado(btn, folioEmpleado, status_pedido, txt);
+						}
+							ValidaPedido();
+					}
+				});
+		    }
 		}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  	
 	
