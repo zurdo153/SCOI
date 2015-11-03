@@ -961,7 +961,6 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
         	
          public boolean cargar_lista_de_asignaciones(){
          		boolean registrado = false;
-         		
          		Connection con_scoi = new Connexion().conexion();
         		PreparedStatement pstmt_SCOI = null;
        			String consulta_ta= "select folio as ticket"
