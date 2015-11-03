@@ -1,5 +1,6 @@
 package Cat_Auditoria;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -132,7 +133,7 @@ public class Cat_Empleados_Con_Pedido_De_Monedas extends JFrame{
 	
 public void constructor(String tipoDeUsuarioDePedidodeMonedas){
 		
-	status_parametro = tipoDeUsuarioDePedidodeMonedas;
+		status_parametro = tipoDeUsuarioDePedidodeMonedas;
 	
 		campo.add(scroll).setBounds(15,42,1000,565);
 		
@@ -154,7 +155,7 @@ public void constructor(String tipoDeUsuarioDePedidodeMonedas){
 		llenarTablaDePedidos();
 		
 		render();
-		agregar(tabla,tipoDeUsuarioDePedidodeMonedas);
+		agregar(tabla);
 		btnCancelar.addActionListener(opCancelar);
 		cmbStatusPedido.addActionListener(opBuscarConCmbStatus);
 		
@@ -229,7 +230,7 @@ public void llenarTablaDePedidos(){
 	
 }
 	
-	private void agregar(final JTable tbl, final String tipoDeUsuarioDePedidodeMonedas) {
+	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
 	        	
@@ -237,18 +238,33 @@ public void llenarTablaDePedidos(){
 	        	btnCancelar.setEnabled(true);
 	        	
 	        	if(e.getClickCount() == 2){
-	        		fila = tabla.getSelectedRow();
-	        		if( tabla.getValueAt(fila,5).toString().trim().equals("CANCELADO")){
-	    				JOptionPane.showMessageDialog(null, "El Registro Esta Con El Estatus de CANCELADO  No Puede Ser Surtido","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-	        	       return;
-	        		}else{
-	        			if(tabla.getValueAt(fila,5).toString().trim().equals("SURTIDO")||tabla.getValueAt(fila,5).toString().trim().equals("RECIBIDO")||tabla.getValueAt(fila,5).toString().trim().equals("ENTREGADO")){
-		    				JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO O ENTREGADO  No Pueden Volverse a Capturar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-			        	       return;
-	        			}else{
-	    			new Cat_Pedido_De_Monedas(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()),tabla.getValueAt(fila, 2).toString().trim(), tipoDeUsuarioDePedidodeMonedas, tipoDeUsuarioDePedidodeMonedas.equals("SURTIDO")?"CORTES":"ENCARGADO").setVisible(true);
-	        		}
-	        		}
+	        		
+		        		fila = tabla.getSelectedRow();
+		        		
+		        		if( tabla.getValueAt(fila,5).toString().trim().equals("CANCELADO")){
+			    				JOptionPane.showMessageDialog(null, "El Registro Esta Con El Estatus de CANCELADO  No Puede Ser Surtido","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+			    				return;
+		        		}else{
+		        			
+			        			if(status_parametro.equals("SURTIDO")){
+				        				if(!tabla.getValueAt(fila,5).toString().trim().equals("PEDIDO")){
+				        						JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO, ENTREGADO O CANCELADO  No Pueden Cancelarse","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				        						return;
+				        				}else{
+					        				new CapturarPedido(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()),tabla.getValueAt(fila, 2).toString().trim(), status_parametro, status_parametro.equals("SURTIDO")?"CORTES":"ENCARGADO").setVisible(true);
+				        				}
+			        			}else{
+//			  		      				ENTREGADO
+					        			new CapturarPedido(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()),tabla.getValueAt(fila, 2).toString().trim(), status_parametro, status_parametro.equals("SURTIDO")?"CORTES":"ENCARGADO").setVisible(true);
+			        			}
+			        			
+//			        			if(tabla.getValueAt(fila,5).toString().trim().equals("SURTIDO")||tabla.getValueAt(fila,5).toString().trim().equals("RECIBIDO")||tabla.getValueAt(fila,5).toString().trim().equals("ENTREGADO")||tabla.getValueAt(fila,5).toString().trim().equals("CANCELADO")){
+//				    					JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO, ENTREGADO O CANCELADO  No Pueden Volverse a Capturar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+//				    					return;
+//			        			}else{
+//			        					new Cat_Pedido_De_Monedas(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()),tabla.getValueAt(fila, 2).toString().trim(), tipoDeUsuarioDePedidodeMonedas, tipoDeUsuarioDePedidodeMonedas.equals("SURTIDO")?"CORTES":"ENCARGADO").setVisible(true);
+//				        		}
+		        		}
 	        	}
 	        }
         });
@@ -258,7 +274,8 @@ public void llenarTablaDePedidos(){
 	
 	ActionListener opCancelar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if(tabla.getValueAt(fila,5).toString().trim().equals("SURTIDO")||tabla.getValueAt(fila,5).toString().trim().equals("RECIBIDO")||tabla.getValueAt(fila,5).toString().trim().equals("ENTREGADO")||tabla.getValueAt(fila,5).toString().trim().equals("CANCELADO")){
+			
+			if(!tabla.getValueAt(fila,5).toString().trim().equals("PEDIDO")){
 				JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO, ENTREGADO O CANCELADO  No Pueden Cancelarse","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
         	       return;
 			}else{
@@ -346,4 +363,77 @@ public void llenarTablaDePedidos(){
 			new Cat_Empleados_Con_Pedido_De_Monedas().setVisible(true);
 		}catch(Exception e){	}		
 	}
+	
+	public class CapturarPedido extends Cat_Pedido_De_Monedas{
+		
+		public CapturarPedido(int folioEmp,String empleado, String status_pedido, String tipo_usuario){
+			activarColumna = status_pedido;
+			
+//			pedirRecibir = true     --->   activar recibir pedido	
+//			pedirRecibir = true     --->   activar realizar pedido
+			boolean entregoMonedas = false;
+			switch(tipo_usuario){
+				case "CAJERA":	this.setTitle(status_pedido.equals("RECIBIDO")?"Recibir Pedido De Monedas ("+tipo_usuario+")":"Realizar Pedido De Monedas ("+tipo_usuario+")");break;
+				case "CORTES":	this.setTitle("Surtir Pedido De Monedas ("+tipo_usuario+")");	break;
+				default:		this.setTitle(status_pedido.equals("RECIBIDO")?"Recibir Pedido De Monedas ("+tipo_usuario+")":"Realizar Pedido De Monedas ("+tipo_usuario+")");break;//	recibir por (ENCARGADO / CAJERA)
+			}
+			
+			switch(status_pedido){
+				case "PEDIDO":		entregoMonedas=false;	columna = 2;	break;
+				case "SURTIDO":		entregoMonedas=false;	columna = 4;	break;
+				case "ENTREGADO":	entregoMonedas=true;	columna = 6;	break;
+				case "RECIBIDO":	entregoMonedas=true;	columna = 8;	break;
+//				default:			entregoMonedas=true;	break;
+			}
+			
+//			System.out.println(entregoMonedas);
+			cmbEntrega.setEnabled(entregoMonedas);
+			
+			Constructor();
+			calcularTotales();
+			
+			this.lblEmpleado.setText("EMPLEADO:  "+folioEmp+"  "+empleado);
+			agregar(tabla);
+			tablaKey(status_pedido.equals("PEDIDO")?txtTotalPedido:( status_pedido.equals("SURTIDO")?txtTotalSurtido:( status_pedido.equals("ENTREGADO")?txtTotalEntregado:( txtTotalRecibido ) ) ));
+		    guardar(btn_guardar, folioEmp, status_pedido, status_pedido.equals("PEDIDO")?txtTotalPedido:( status_pedido.equals("SURTIDO")?txtTotalSurtido:( status_pedido.equals("ENTREGADO")?txtTotalEntregado:( txtTotalRecibido ) )));
+		    
+		}
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	fila= tbl.getSelectedRow();
+		        	tabla.getSelectionModel().setSelectionInterval(fila, fila);
+		        	tabla.setEnabled(true);
+		        	tabla.editCellAt(fila, columna);
+	    			Component aComp=tabla.getEditorComponent();
+	    			aComp.requestFocus();
+		        }
+	        });
+	    }
+		
+		private void guardar(final JButton btn,final int folioEmpleado, final String status_pedido, final JTextField txt) {
+			btn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					if(activarColumna.equals("ENTREGADO") || activarColumna.equals("RECIBIDO")){
+						if(cmbEntrega.getSelectedIndex()==0){
+							JOptionPane.showMessageDialog(null, "Favor De Seleccionar Quien Le Entrego El Pedido","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+							return;
+						}else{
+							guardado(btn, folioEmpleado, status_pedido, txt);
+						}
+					}else{
+						guardado(btn, folioEmpleado, status_pedido, txt);
+					}
+					
+					if(activarColumna.equals("SURTIDO") || activarColumna.equals("ENTREGADO")){
+						llenarTablaDePedidos();
+					}
+					
+				}
+			});
+	    }
+	}
+	
 }

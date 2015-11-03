@@ -2164,13 +2164,10 @@ public String folio_ordern_de_pago_en_efectivo(){
 
 public String[][] denominaciones_pedido_de_monedas(){
 	
-	String query_lista = "SELECT valor_denominacion as moneda, valor_de_bolsa, 0 pedido_de_bolsas, 0 total_pedido "
-						+ " FROM tb_denominaciones "
-						+ " WHERE (folio > 5) AND (folio NOT IN (12, 13)) and status = 1 "
-						+ " ORDER BY valor_denominacion DESC "; 
+	String query_lista = "exec sp_select_tabla_pedido_de_monedas_pendientes "; 
 	
 	
-	String[][] matriz = new String[get_filas(query_lista)][4];
+	String[][] matriz = new String[get_filas(query_lista)][10];
 	try {
 		Statement stmt = new Connexion().conexion().createStatement();
 		ResultSet rs = stmt.executeQuery(query_lista);
@@ -2180,9 +2177,15 @@ public String[][] denominaciones_pedido_de_monedas(){
 		while(rs.next()){
 			
 			matriz[i][0] =  df.format(rs.getDouble(1))+"";
-			matriz[i][1] =  " "+df.format(rs.getDouble(2)); 
-			matriz[i][2] =  " "+(rs.getString(3).equals("0")?"":rs.getString(3));
-			matriz[i][3] =  " "+(rs.getString(4).equals("0")?"":rs.getString(4));
+			matriz[i][1] =  ""+df.format(rs.getDouble(2)); 
+			matriz[i][2] =  ""+(rs.getInt(3)==0?"":rs.getInt(3));
+			matriz[i][3] =  ""+(rs.getDouble(4)==0?"":rs.getDouble(4));
+			matriz[i][4] =  ""+(rs.getInt(5)==0?"":rs.getInt(5));
+			matriz[i][5] =  ""+(rs.getDouble(6)==0?"":rs.getDouble(6));
+			matriz[i][6] =  ""+(rs.getInt(7)==0?"":rs.getInt(7));
+			matriz[i][7] =  ""+(rs.getDouble(8)==0?"":rs.getDouble(8));
+			matriz[i][8] =  ""+(rs.getInt(9)==0?"":rs.getInt(9));
+			matriz[i][9] =  ""+(rs.getDouble(10)==0?"":rs.getDouble(10));
 			
 			i++;
 		}
