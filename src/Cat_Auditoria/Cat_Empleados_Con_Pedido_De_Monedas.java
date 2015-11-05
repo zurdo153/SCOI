@@ -32,9 +32,10 @@ import javax.swing.table.DefaultTableModel;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Cargar_Combo;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Auditoria.Obj_Pedido_De_Monedas;
 import Obj_Principal.Obj_Filtro_Dinamico;
-import Obj_Renders.tablaRenderer;
+import Obj_Renders.tablaRenderer;       
 
 @SuppressWarnings("serial")
 public class Cat_Empleados_Con_Pedido_De_Monedas extends JFrame{
@@ -97,8 +98,12 @@ public class Cat_Empleados_Con_Pedido_De_Monedas extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbStatusPedido = new JComboBox(statusPedido);
 	
+	JButton btnReporte		= new JButton("Reporte");
+	JButton btnActualizar 	= new JButton("Actualizar");
 	
 	String status_parametro = "";
+	
+	int fila=-1;
 	
 //	esta funcion se usara en la venta de retiros programados para avilitar el boton de pedido o de recibir
 	public static String tipoDeUsuarioQuePidio(){return new BuscarTablasModel().tipoDeUsuarioParaPedidoDeMonedas();}
@@ -135,13 +140,18 @@ public void constructor(String tipoDeUsuarioDePedidodeMonedas){
 		
 		status_parametro = tipoDeUsuarioDePedidodeMonedas;
 	
-		campo.add(scroll).setBounds(15,42,1000,565);
+		campo.add(new JLabel("<html><color><FONT SIZE=3 COLOR=#0000FF>Para Generar Un Reporte Por Empleado Debe Seleccionarlo Y Dar Click En Reporte,"
+				+ " Para Un Reporte Completo Actualize Y Luego Click En Reporte</FONT><color></html>")).setBounds(15,15,900,20);
+		campo.add(btnActualizar).setBounds(815,15,100,20);
+		campo.add(btnReporte).setBounds(915,15,100,20);
 		
-		campo.add(txtCodigo).setBounds(145,20,70,20);
-		campo.add(txtDescripcion).setBounds(214,20,320,20);
-		campo.add(cmbEstablecimiento).setBounds(535,20,160,20);
-		campo.add(cmbStatusPedido).setBounds(815,20,100,20);
-		campo.add(btnCancelar).setBounds(15,20,130,20);
+		campo.add(btnCancelar).setBounds(15,40,130,20);
+		campo.add(txtCodigo).setBounds(145,40,50,20);
+		campo.add(txtDescripcion).setBounds(195,40,320,20);
+		campo.add(cmbEstablecimiento).setBounds(515,40,160,20);
+		campo.add(cmbStatusPedido).setBounds(795,40,100,20);
+		
+		campo.add(scroll).setBounds(15,60,1000,565);
 		
 		btnCancelar.setEnabled(false);
 		
@@ -157,6 +167,9 @@ public void constructor(String tipoDeUsuarioDePedidodeMonedas){
 		render();
 		agregar(tabla);
 		btnCancelar.addActionListener(opCancelar);
+		
+		btnReporte.addActionListener(ReportePedidodeMonedas);
+		btnActualizar.addActionListener(opActualizar);
 		cmbStatusPedido.addActionListener(opBuscarConCmbStatus);
 		
 		cmbEstablecimiento.addActionListener(opFiltroDimanicoEstab);
@@ -165,7 +178,7 @@ public void constructor(String tipoDeUsuarioDePedidodeMonedas){
 		
 		cont.add(campo);
 		
-		this.setSize(1040,650);
+		this.setSize(1040,670);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -257,54 +270,66 @@ public void llenarTablaDePedidos(){
 //			  		      				ENTREGADO
 					        			new CapturarPedido(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()),tabla.getValueAt(fila, 2).toString().trim(), status_parametro, status_parametro.equals("SURTIDO")?"CORTES":"ENCARGADO").setVisible(true);
 			        			}
-			        			
-//			        			if(tabla.getValueAt(fila,5).toString().trim().equals("SURTIDO")||tabla.getValueAt(fila,5).toString().trim().equals("RECIBIDO")||tabla.getValueAt(fila,5).toString().trim().equals("ENTREGADO")||tabla.getValueAt(fila,5).toString().trim().equals("CANCELADO")){
-//				    					JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO, ENTREGADO O CANCELADO  No Pueden Volverse a Capturar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-//				    					return;
-//			        			}else{
-//			        					new Cat_Pedido_De_Monedas(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()),tabla.getValueAt(fila, 2).toString().trim(), tipoDeUsuarioDePedidodeMonedas, tipoDeUsuarioDePedidodeMonedas.equals("SURTIDO")?"CORTES":"ENCARGADO").setVisible(true);
-//				        		}
 		        		}
 	        	}
 	        }
         });
     }
 	
-	int fila=0;
+	ActionListener ReportePedidodeMonedas = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			
+			String comando="exec sp_select_pedido_de_monedas_con_status_pendiente "+(fila<0 ? (-1) : Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()));
+			
+			String reporte = "Obj_Reporte_De_Pedido_Monedas.jrxml";
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		}
+	};
+	
+	ActionListener opActualizar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			fila = -1;
+			llenarTablaDePedidos();
+			new Obj_Filtro_Dinamico(tabla,"Folio", txtCodigo.getText().toUpperCase(),"Empleado",txtDescripcion.getText(), "Establecimiento", cmbEstablecimiento.getSelectedItem().toString(), "", "");
+		}
+	};
 	
 	ActionListener opCancelar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
 			if(!tabla.getValueAt(fila,5).toString().trim().equals("PEDIDO")){
-				JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO, ENTREGADO O CANCELADO  No Pueden Cancelarse","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO, ENTREGADO O CANCELADO  No Pueden Cancelarse","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
         	       return;
 			}else{
 			
-			Obj_Pedido_De_Monedas pedido = new Obj_Pedido_De_Monedas();
+					Obj_Pedido_De_Monedas pedido = new Obj_Pedido_De_Monedas();
+					
+					pedido.setFolioUsuario(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()));
+					pedido.setStatus_pedido("CANCELADO");
+					
+					Object[][] relleno = {{0,0,0,0}};
+					pedido.setMatriz(relleno);
+					
+					pedido.setObservacion("");
+					pedido.setEmpleado_entrego("");
 			
-			pedido.setFolioUsuario(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()));
-			pedido.setStatus_pedido("CANCELADO");
-			
-			Object[][] relleno = {{0,0,0,0}};
-			pedido.setMatriz(relleno);
-			
-			pedido.setObservacion("");
-			pedido.setEmpleado_entrego("");
-			
-			if(pedido.guardar()){
-				
-				llenarTablaDePedidos();
-				
-				if(tabla.getRowCount()==0){btnCancelar.setEnabled(false);}
-				
-				JOptionPane.showMessageDialog(null, "El Pedido De Monedas Fue Cancelado","Aviso",JOptionPane.INFORMATION_MESSAGE);
-				return;
-			}else{
-				JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar cancelar el pedido","Error",JOptionPane.ERROR_MESSAGE);
-				return;
+					if(pedido.guardar()){
+						
+							llenarTablaDePedidos();
+							new Obj_Filtro_Dinamico(tabla,"Folio", txtCodigo.getText().toUpperCase(),"Empleado",txtDescripcion.getText(), "Establecimiento", cmbEstablecimiento.getSelectedItem().toString(), "", "");
+							
+							if(tabla.getRowCount()==0){btnCancelar.setEnabled(false);}
+							
+							JOptionPane.showMessageDialog(null, "El Pedido De Monedas Fue Cancelado","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							return;
+					}else{
+							JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar cancelar el pedido","Error",JOptionPane.ERROR_MESSAGE);
+							return;
+					}
 			}
-			}
-			
 		}
 	};	
 	
@@ -330,19 +355,18 @@ public void llenarTablaDePedidos(){
 		tabla.getTableHeader().setReorderingAllowed(false) ;
 		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
-		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-	    tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
+	    tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
 	    tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 	    tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 	    tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 	    tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-	    tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-//	    tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+	    tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
 		
 		tabla.getColumnModel().getColumn(0).setMinWidth(130);
 		tabla.getColumnModel().getColumn(0).setMaxWidth(130);
-		tabla.getColumnModel().getColumn(1).setMinWidth(70);
-	    tabla.getColumnModel().getColumn(1).setMaxWidth(70);
+		tabla.getColumnModel().getColumn(1).setMinWidth(50);
+	    tabla.getColumnModel().getColumn(1).setMaxWidth(50);
 		tabla.getColumnModel().getColumn(2).setMinWidth(320);
 		tabla.getColumnModel().getColumn(2).setMaxWidth(320);
 		tabla.getColumnModel().getColumn(3).setMinWidth(160);
@@ -351,7 +375,7 @@ public void llenarTablaDePedidos(){
 		tabla.getColumnModel().getColumn(4).setMaxWidth(180);
 		tabla.getColumnModel().getColumn(5).setMinWidth(100);
 	    tabla.getColumnModel().getColumn(5).setMaxWidth(100);
-		tabla.getColumnModel().getColumn(6).setMinWidth(80);
+		tabla.getColumnModel().getColumn(6).setMinWidth(100);
 		tabla.getColumnModel().getColumn(6).setMaxWidth(100);
 		
 	}
@@ -391,6 +415,11 @@ public void llenarTablaDePedidos(){
 			
 			Constructor();
 			calcularTotales();
+			
+			String[] observaciones = new BuscarTablasModel().observacionesPedidoDeMonedas(folioEmp);
+			lblObservacionCajero.setText(observaciones[0].toString().trim());
+			lblObservacionCortes.setText(observaciones[1].toString().trim());
+			lblObservacionEncargado.setText(observaciones[2].toString().trim());
 			
 			this.lblEmpleado.setText("EMPLEADO:  "+folioEmp+"  "+empleado);
 			agregar(tabla);

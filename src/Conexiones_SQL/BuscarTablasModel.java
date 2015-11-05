@@ -866,9 +866,11 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
-	public Object[][] tabla_model_cliente(){
+	public Object[][] tabla_model_cliente_proveedores(String cltPrv){
 //		cambiar consulta
-		String query_lista = "select folio_proveedor,nombre+' '+ap_paterno+' '+ap_materno as empleado,direccion from tb_proveedores where status = 1";
+		
+		String query_lista = cltPrv.equals("CLIENTES") ? "select folio_cliente,nombre+' '+ap_paterno+' '+ap_materno as empleado,direccion from tb_clientes where status = 1" : "select folio_proveedor,nombre+' '+ap_paterno+' '+ap_materno as empleado,direccion from tb_proveedores where status = 1";
+		
 		Object[][] matriz = new Object[get_filas(query_lista)][3];
 		try {
 			Statement stmt = new Connexion().conexion().createStatement();
@@ -2164,8 +2166,7 @@ public String folio_ordern_de_pago_en_efectivo(){
 
 public String[][] denominaciones_pedido_de_monedas(){
 	
-	String query_lista = "exec sp_select_tabla_pedido_de_monedas_pendientes "; 
-	
+	String query_lista = "exec sp_select_tabla_pedido_de_monedas_pendientes "+ (new Obj_Usuario().getFolio()); 
 	
 	String[][] matriz = new String[get_filas(query_lista)][10];
 	try {
@@ -2199,6 +2200,8 @@ public String[][] denominaciones_pedido_de_monedas(){
 public String checar_Pedido_De_Monedas_Cajero(){
 	
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+	
+	System.out.println(usuario.getFolio());
 	
 //	String query_lista = "  IF EXISTS (select * from tb_pedido_de_monedas where folio_cajera = "+usuario.getFolio()+" and status_pedido in ('PEDIDO','SURTIDO','ENTREGADO'))"
 //						+ "			BEGIN 		select 'true' 	END "
@@ -2275,13 +2278,36 @@ public String[][] listaDePedidoDeMonedas(String status){
 			matriz[i][3] =  " "+rs.getString(4); 
 			matriz[i][4] =  " "+rs.getString(5); 
 			matriz[i][5] =  " "+rs.getString(6); 
-			matriz[i][6] =  " "+rs.getString(7); 
+			matriz[i][6] =  " "+df.format(rs.getDouble(7)); 
 			
 			i++;
 		}
 	} catch (SQLException e1) {
 		e1.printStackTrace();
 		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion listaDePedidoDeMponedas() SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
+public String[] observacionesPedidoDeMonedas(int folio_empleado){
+	
+	String query_lista = "exec sp_select_observaciones_de_pedido_de_monedas_por_usuario "+ (folio_empleado); 
+	System.out.println(query_lista);
+	String[] matriz = new String[3];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		
+		while(rs.next()){
+			
+			matriz[0] = "Observacion Cajero(a): "+rs.getString(1);
+			matriz[1] = "Observacion Cortes: "+rs.getString(2); 
+			matriz[2] = "Observacion Encargado: "+rs.getString(3);
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion recepcion_de_mercancia_en_resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 	}
     return matriz; 
 }

@@ -68,8 +68,8 @@ public class Obj_Clientes {
 		this.telefono = telefono;
 	}
 	
-	public Object[][] get_tabla_model(){
-		return new BuscarTablasModel().tabla_model_cliente();
+	public Object[][] get_tabla_model(String busqueda){
+		return new BuscarTablasModel().tabla_model_cliente_proveedores(busqueda);
 	}
 	
 	public Obj_Clientes buscar_nuevo() throws SQLException{ return new BuscarSQL().Cliente_Nuevo(); }

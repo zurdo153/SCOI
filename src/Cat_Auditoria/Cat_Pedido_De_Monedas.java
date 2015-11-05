@@ -57,6 +57,10 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 	JTextField txtTotalEntregado 	= new JTextField();
 	JTextField txtTotalRecibido 	= new JTextField();
 	
+	JLabel lblObservacionCajero 	= new JLabel("aaaa");
+	JLabel lblObservacionCortes 	= new JLabel("bbbb");
+	JLabel lblObservacionEncargado = new JLabel("cccc");
+	
 	String activarColumna = "";
 	
 	String columnNames[] = { "Moneda", "Valor De Bolsa", "Pedido De Bolsas", "Total De Pedido", "Surtido De Bolsas", "Total Surtido", "Entregado De Bolsas", "Total Entregado", "Recibo De Bolsas", "Total Recibido"};
@@ -139,6 +143,10 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 		this.panel.add(txtTotalSurtido).setBounds(465,280,80,20);
 		this.panel.add(txtTotalEntregado).setBounds(665,280,100,20);
 		this.panel.add(txtTotalRecibido).setBounds(865,280,90,20); 	
+		
+		this.panel.add(lblObservacionCajero).setBounds(15,315,350,20);
+		this.panel.add(lblObservacionCortes).setBounds(15,340,350,20);
+		this.panel.add(lblObservacionEncargado).setBounds(15,365,350,20);
 		                                                            
 		this.menu_toolbar.add(btn_guardar);                          
 		this.menu_toolbar.setEnabled(true);
@@ -146,7 +154,7 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 		this.txtTotalSurtido.setEditable(false);
 		this.txtTotalEntregado.setEditable(false);
 		this.txtTotalRecibido.setEditable(false);
-		                                                               
+		
 		this.init_tabla();                                              
 		
 		this.cont.add(panel);
@@ -169,7 +177,7 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 	    fila=0;
 	    tabla.getSelectionModel().setSelectionInterval(fila, fila);
 		
-		this.setSize(995,350);
+		this.setSize(995,430);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 //		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -188,6 +196,7 @@ public class Cat_Pedido_De_Monedas extends JDialog {
 			sumaEntregado 	+= Float.parseFloat(modelo.getValueAt(i,7).toString().trim().equals("")?"0":modelo.getValueAt(i,7).toString().trim());
 			sumaRecibido  	+= Float.parseFloat(modelo.getValueAt(i,9).toString().trim().equals("")?"0":modelo.getValueAt(i,9).toString().trim());
 		}
+		
 		txtTotalPedido.setText(sumaPedido+"");
 		txtTotalSurtido.setText(sumaSurtido+"");
 		txtTotalEntregado.setText(sumaEntregado+"");

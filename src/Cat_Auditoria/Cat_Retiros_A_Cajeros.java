@@ -1050,6 +1050,11 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 				Constructor();
 				calcularTotales();
 				
+				String[] observaciones = new BuscarTablasModel().observacionesPedidoDeMonedas(folioEmp);
+				lblObservacionCajero.setText(observaciones[0].toString().trim());
+				lblObservacionCortes.setText(observaciones[1].toString().trim());
+				lblObservacionEncargado.setText(observaciones[2].toString().trim());
+				
 				this.lblEmpleado.setText("EMPLEADO:  "+folioEmp+"  "+empleado);
 				agregar(tabla);
 				tablaKey(status_pedido.equals("PEDIDO")?txtTotalPedido:( status_pedido.equals("SURTIDO")?txtTotalSurtido:( status_pedido.equals("ENTREGADO")?txtTotalEntregado:( txtTotalRecibido ) ) ));
