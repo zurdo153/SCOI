@@ -7142,4 +7142,179 @@ public class BuscarSQL {
 		return referencia;
 	}
 	
+	public Object[][] Filtro_Polizas_Guardadas(String fecha) throws SQLException{
+		Statement stmt = null;
+		
+		String query = "sp_select_polizas_guardadas '"+fecha+"'";
+		
+		Object[][] referencia = new Object[getFilas(query)][5];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				for(int j=0; j<5; j++){
+					referencia[i][j] = rs.getObject(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [Filtro_Polizas_Guardadas] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return referencia;
+	}
+	
+	public Object[] registro_Polizas_Guardadas(String folio_poliza, String tipo_poliza, String fecha_poliza){
+		Statement stmt = null;
+		
+		String query = " SELECT tb_polizas.folio "
+				+ " ,tb_configuracion_de_polizas.nombre AS tipo_de_poliza "
+				+ " ,convert(varchar(20),tb_polizas.fecha_poliza,103) as fecha_poliza "
+				+ " ,tb_polizas.notas "
+				+ " ,tb_polizas.concepto "
+				+ " ,tb_folios.transaccion "
+				+ " ,tb_polizas.referencia	"
+				+ " ,case when (tb_folios.transaccion = 'Empleado') then (select nombre+' '+ap_paterno+' '+ap_materno from tb_empleado where folio = tb_polizas.referencia) "
+				+ " 	 when (tb_folios.transaccion = 'Establecimiento') then (select nombre from tb_establecimiento where folio = tb_polizas.referencia) "
+				+ "		 when (tb_folios.transaccion = 'Departamento') then (select departamento from tb_departamento where folio = tb_polizas.referencia) "
+				+ "		 when (tb_folios.transaccion = 'Proveedor') then (select nombre+' '+ap_paterno+' '+ap_materno from tb_proveedores where folio_proveedor = tb_polizas.referencia) "
+				+ "	else '' end	 as beneficiario "
+				+ " ,ISNULL(tb_pagos_contabilidad.folio_documento_pago,'') AS folio_documento_pago "
+				+ " ,ISNULL(tb_pagos_contabilidad.cuenta_bancaria,'') AS cuenta_bancaria"
+				+ " ,CASE WHEN (tb_pagos_contabilidad.forma_pago 	=1) THEN 'Cheque' "
+				+ "			WHEN (tb_pagos_contabilidad.forma_pago=2) THEN 'Cheque Banco Interno' "
+				+ "			WHEN (tb_pagos_contabilidad.forma_pago=3) THEN 'Transpaso' "
+				+ "			WHEN (tb_pagos_contabilidad.forma_pago=4) THEN 'Vale'"
+				+ "	ELSE 'Forma De Pago' END as forma_pago "
+				+ " ,ISNULL(tb_pagos_contabilidad.total,'') as total"
+				+ " ,ISNULL(tb_pagos_contabilidad.tipo_de_documento_de_pago,'') AS   tipo_de_documento_de_pago "
+				+ " from tb_polizas "
+				+ " inner join tb_configuracion_de_polizas on tb_configuracion_de_polizas.tipo = tb_polizas.tipo_poliza "
+				+ " left outer join tb_pagos_contabilidad on tb_pagos_contabilidad.folio_poliza = tb_polizas.folio AND tb_pagos_contabilidad.tipo_poliza='"+tipo_poliza+"' AND CONVERT(VARCHAR(20),tb_pagos_contabilidad.fecha_poliza,103) = SUBSTRING('"+fecha_poliza+"',0,CHARINDEX(' ', '"+fecha_poliza+"')) "
+				+ " inner join tb_folios on tb_folios.folio_transaccion = tb_polizas.referencia_folio_transaccion "
+				+ " where ltrim(rtrim(tb_polizas.folio)) = '"+folio_poliza+"' "
+				+ " AND tb_polizas.tipo_poliza='"+tipo_poliza+"' "
+				+ " AND CONVERT(VARCHAR(20),tb_polizas.fecha_poliza,103) = SUBSTRING('"+fecha_poliza+"',0,CHARINDEX(' ', '"+fecha_poliza+"')) " ;
+//		SUBSTRING('01/01-1090 01:12:45',0,CHARINDEX(' ', '01/01-1090 01:12:45'))
+		System.out.println(query);
+		
+		Object[] Poliza = new Object[13];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+//			int i=0;
+			while(rs.next()){
+				for(int j=0; j<Poliza.length; j++){
+					Poliza[j] = rs.getObject(j+1);
+				}
+//				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [Filtro_De_Referencia_Polizas] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return Poliza;
+	}
+	
+	public String[][] registro_mPolizas_Guardadas(String folio_poliza, String tipo_poliza, String fecha_poliza){
+		Statement stmt = null;
+		
+		String query = "select tb_mpolizas.folio_cuenta_contable "
+						+ " 	,tb_mpolizas.folio_subcuenta_contable "
+						+ " 	,tb_mpolizas.folio_subsubcuenta_contable "
+						+ " 	,(SELECT a.NOMBRE FROM(SELECT tb_subsubcuentas_contables.subsubcuenta_contable       AS NOMBRE "
+						+ "									,tb_subsubcuentas_contables.folio_cuenta_contable+tb_subsubcuentas_contables.folio_subcuenta_contable+tb_subsubcuentas_contables.folio_subsubcuenta_contable AS codigo"
+						+ "		 				FROM tb_cuentas_contables "
+						+ "							inner join tb_subcuentas_contables ON tb_subcuentas_contables.folio_cuenta_contable = tb_cuentas_contables.folio_cuenta_contable "
+						+ "							inner join tb_subsubcuentas_contables ON tb_subsubcuentas_contables.folio_cuenta_contable = tb_cuentas_contables.folio_cuenta_contable and tb_subsubcuentas_contables.folio_subcuenta_contable = tb_subcuentas_contables.folio_subcuenta_contable "
+						+ "				union all "
+						+ "						SELECT tb_subcuentas_contables.subcuenta_contable       AS NOMBRE "
+						+ "								,tb_subcuentas_contables.folio_cuenta_contable+tb_subcuentas_contables.folio_subcuenta_contable AS codigo"
+						+ "						FROM tb_cuentas_contables "
+						+ "								inner join tb_subcuentas_contables ON tb_subcuentas_contables.folio_cuenta_contable = tb_cuentas_contables.folio_cuenta_contable and  tb_subcuentas_contables.folio_cuenta_contable+tb_subcuentas_contables.folio_subcuenta_contable not in(select folio_cuenta_contable+folio_subcuenta_contable  from tb_subsubcuentas_contables) "
+						+ "				union all "
+						+ "						SELECT tb_cuentas_contables.cuenta_contable             AS NOMBRE "
+						+ "								, tb_cuentas_contables.folio_cuenta_contable AS codigo"
+						+ "						FROM tb_cuentas_contables "
+						+ "							WHERE tb_cuentas_contables.folio_cuenta_contable not in(select folio_subcuenta_contable from tb_subcuentas_contables) )a "
+						+ " where a.codigo= tb_mpolizas.folio_cuenta_contable+tb_mpolizas.folio_subcuenta_contable+tb_mpolizas.folio_subsubcuenta_contable ) "
+						+ " 	,CASE WHEN tb_mpolizas.cargo_abono = 'C' THEN convert(varchar(20),tb_mpolizas.importe)  ELSE '' END AS Cargo "
+						+ " 	,CASE WHEN tb_mpolizas.cargo_abono = 'A' THEN convert(varchar(20),tb_mpolizas.importe)  ELSE '' END AS Abono "
+						+ " 	,tb_mpolizas.concepto as Concepto "
+						+ " 	,isnull(tb_establecimiento.nombre,'NO APLICA') "
+						+ " from tb_mpolizas "
+						+ " left outer join tb_establecimiento on tb_establecimiento.folio = tb_mpolizas.establecimiento_id "
+						+ " where ltrim(rtrim(tb_mpolizas.folio)) = '"+folio_poliza+"' "
+						+ " AND tb_mpolizas.tipo_poliza='"+tipo_poliza+"' "
+						+ "  AND tb_mpolizas.fecha_poliza= CONVERT(datetime,'"+fecha_poliza+"')" ;
+		
+		System.out.println(query);
+		
+		String[][] mPoliza = new String[getFilas(query)][8];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+//				mPoliza[i][0] = rs.getString(1);
+//				mPoliza[i][1] = rs.getString(2);
+//				mPoliza[i][2] = rs.getString(3);
+//				mPoliza[i][3] = rs.getString(4);
+//				mPoliza[i][4] = Float.parseFloat(rs.getString(5))>0?"1":"" ;
+//				mPoliza[i][5] =Float.parseFloat(rs.getString(5))>0?"1":"" ;
+//				mPoliza[i][6] = rs.getString(7);
+//				mPoliza[i][7] = rs.getString(8);
+				
+				for(int j=0; j<8; j++){
+					mPoliza[i][j] = rs.getString(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [Filtro_De_Referencia_Polizas] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return mPoliza;
+	}
+	
 }

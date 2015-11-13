@@ -4188,8 +4188,8 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
-	public boolean Guardar_Poliza(String folio, String tipo, String fecha_poliza, String referencia_trans, int referencia, String nota, String concepto_gral, String cheque, Object[][] matriz, String ReferenciaText, String FormaPago, String tipoBanco, float total,String tipo_documento){
-		String query = "exec sp_insert_polizas ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	public boolean Guardar_Poliza(String folio, String tipo, String fecha_poliza, String referencia_trans, int referencia, String nota, String concepto_gral, String cheque, Object[][] matriz, String ReferenciaText, String FormaPago, String tipoBanco, float total,String tipo_documento,String folio_poliza_a_modificar, String tipo_poliza_a_modificar, String fecha_a_modificar){
+		String query = "exec sp_insert_polizas2 ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -4201,6 +4201,32 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				
 				con.setAutoCommit(false);
 				pstmt = con.prepareStatement(query);
+				
+				System.out.println(folio.toUpperCase().trim());
+				System.out.println(tipo.toUpperCase().trim());
+				System.out.println(fecha_poliza.toUpperCase().trim());
+				System.out.println(referencia_trans.toUpperCase().trim());
+				System.out.println(referencia);
+				System.out.println(nota.toUpperCase().trim());
+				System.out.println(concepto_gral.toUpperCase().trim());
+				System.out.println(cheque.toUpperCase().trim());
+				System.out.println(usuario.getFolio());
+				System.out.println(matriz[i][0].toString().trim().toUpperCase());
+				System.out.println(matriz[i][1].toString().trim().toUpperCase());
+				System.out.println(matriz[i][2].toString().trim().toUpperCase());
+				System.out.println(matriz[i][3].toString().trim().toUpperCase());
+				cargo = Float.valueOf(matriz[i][4].toString().trim().toUpperCase().equals("")?"0":matriz[i][4].toString().trim().toUpperCase());
+				abono = Float.valueOf(matriz[i][5].toString().trim().toUpperCase().equals("")?"0":matriz[i][5].toString().trim().toUpperCase());
+				System.out.println((cargo==0)?abono:cargo);
+				System.out.println((cargo==0)?"A":"C");
+				System.out.println(ReferenciaText);
+				System.out.println(FormaPago);
+				System.out.println(tipoBanco);
+				System.out.println(total);
+				System.out.println(tipo_documento);
+				System.out.println(folio_poliza_a_modificar);
+				System.out.println(tipo_poliza_a_modificar);
+				System.out.println(fecha_a_modificar);
 				
 				pstmt.setString(1, folio.toUpperCase().trim());
 				pstmt.setString(2, tipo.toUpperCase().trim());
@@ -4226,13 +4252,17 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				
 				pstmt.setString(15 , matriz[i][6].toString().trim().toUpperCase());//concepto
 				pstmt.setString(16 , matriz[i][7].toString().trim().toUpperCase());//establecimiento
+				pstmt.setInt(17 , Integer.valueOf(matriz[i][8].toString().trim()));//contador de registro
 				
-				pstmt.setString(17 , ReferenciaText);
+				pstmt.setString(18 , ReferenciaText);
 				
-				pstmt.setString(18 , FormaPago);
-				pstmt.setString(19 , tipoBanco);
-				pstmt.setFloat(20 , total);
-				pstmt.setString(21, tipo_documento);
+				pstmt.setString(19 , FormaPago);
+				pstmt.setString(20 , tipoBanco);
+				pstmt.setFloat(21 , total);
+				pstmt.setString(22, tipo_documento);
+				pstmt.setString(23, folio_poliza_a_modificar);
+				pstmt.setString(24, tipo_poliza_a_modificar);
+				pstmt.setString(25, fecha_a_modificar);
 				
 				pstmt.executeUpdate();
 			}

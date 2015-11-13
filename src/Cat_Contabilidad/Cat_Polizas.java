@@ -103,6 +103,9 @@ public class Cat_Polizas extends JFrame{
 	JButton btnImprimir = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
 	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	
+	JButton btnFiltroPoliza = new JButton("Modificar Poliza", new ImageIcon("imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
+	
+	
 	String[] formaDePago = {"Forma De Pago","Cheque","Cheque Banco Interno","Transpaso","Vale"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbFormaDePago = new JComboBox(formaDePago);
@@ -189,6 +192,11 @@ public class Cat_Polizas extends JFrame{
 	
 	String nota = "";
 	int folioReferencia = 0;
+	String folio_poliza_a_modificar="";
+	String tipo_poliza_a_modificar="";
+	String fecha_a_modificar="";
+	
+	String titulo = "Generar Poliza";
 	
 	Date fechaRef = null;
 	
@@ -206,7 +214,7 @@ public class Cat_Polizas extends JFrame{
 	public void Contructor(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/cajas-de-cajas-de-embalaje-de-envio-de-un-archivo-tar-icono-4009-64.png"));
 		this.setTitle("polizas");
-		panel.setBorder(BorderFactory.createTitledBorder("polizas"));	
+		panel.setBorder(BorderFactory.createTitledBorder(titulo));	
 		
 		grupo.add(rbPagoPrv);
 		grupo.add(rbAnticipoPrv);
@@ -257,6 +265,8 @@ public class Cat_Polizas extends JFrame{
     	panel.add(new JLabel("Referencia: ")).setBounds(x*11-10,y+10,80,20);																										
       	panel.add(cmbReferencia).setBounds(x*11+50,y+10,135,20); 
       	panel.add(btnReferencia).setBounds(x*20+10,y+10,105,20);
+      	
+      	panel.add(btnFiltroPoliza).setBounds(x*26+5,y+10,125,20);
       	
       	panel.add(txtReferencia).setBounds(x*10+5,y+=35,308,20);
     	panel.add(new JLabel("Total:")).setBounds(x*26+5,y,70,20);
@@ -309,6 +319,7 @@ public class Cat_Polizas extends JFrame{
 		btnNota.addActionListener(opNota);
 		chbPago.addActionListener(opPago);
 		btnReferencia.addActionListener(opFiltroRef);
+		btnFiltroPoliza.addActionListener(opFiltroPolizas);
 		btnImprimir.addActionListener(opImprimir);
 		
 		rbPagoPrv.addActionListener(opValidarImpresion);
@@ -364,6 +375,15 @@ public class Cat_Polizas extends JFrame{
 	    					modelo.addRow(p);
 	    				}
 	    				CalcularFoliosTabla();
+	    				
+	    				fila = tabla.getRowCount()-1;
+	    				columna = 4;
+	    				
+	    				tabla.getSelectionModel().setSelectionInterval(fila, fila);
+	    				tabla.editCellAt(fila, columna);
+	    				Component aComp=tabla.getEditorComponent();
+	    				aComp.requestFocus();
+	    				
 	    			}else{
 	    				JOptionPane.showMessageDialog(null, "No Se Encontraron Registros","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 	    				return;
@@ -435,25 +455,25 @@ public class Cat_Polizas extends JFrame{
 	        		fila= tbl.getSelectedRow();
 	        		columna= tbl.getSelectedColumn()<=4?4:tbl.getSelectedColumn();
 	        		
-	        		if(columna==4){
-	        			if(Float.valueOf(tbl.getValueAt(fila, 5).toString().equals("")?"0":tbl.getValueAt(fila, 5).toString())==0){
+//	        		if(columna==4){
+//	        			if(Float.valueOf(tbl.getValueAt(fila, 5).toString().equals("")?"0":tbl.getValueAt(fila, 5).toString())==0){
 	        				
 	        				tbl.editCellAt(fila, columna);
 							Component aComp=tbl.getEditorComponent();
 							aComp.requestFocus();
 	        		
-		        		}
-	        		}
-	        		
-	        		if(columna==5){
-	        			if(Float.valueOf(tbl.getValueAt(fila, 4).toString().equals("")?"0":tbl.getValueAt(fila, 4).toString())==0){
-	        				
-	        				tbl.editCellAt(fila, columna);
-							Component aComp=tbl.getEditorComponent();
-							aComp.requestFocus();
-	        		
-		        		}
-	        		}
+//		        		}
+//	        		}
+//	        		
+//	        		if(columna==5){
+//	        			if(Float.valueOf(tbl.getValueAt(fila, 4).toString().equals("")?"0":tbl.getValueAt(fila, 4).toString())==0){
+//	        				
+//	        				tbl.editCellAt(fila, columna);
+//							Component aComp=tbl.getEditorComponent();
+//							aComp.requestFocus();
+//	        		
+//		        		}
+//	        		}
 	        	}
 	        }
         });
@@ -462,7 +482,12 @@ public class Cat_Polizas extends JFrame{
 	ActionListener opCuentaBanco = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			
-			txtCheque.setEditable(true);
+			if(folio_poliza_a_modificar.equals("")/*cmbTipo.getSelectedItem().equals("EGRESOS")*/){
+				txtCheque.setEditable(true);
+			}else{
+				txtCheque.setEditable(false);
+			}
+			
 			txtCheque.requestFocus();
 			txtCheque.setText(new BuscarTablasModel().folio_consecutivo_cheque_de_poliza(cmbDepositoBanco.getSelectedItem().toString()));
 		}
@@ -500,55 +525,63 @@ public class Cat_Polizas extends JFrame{
 	};
 	
 	ActionListener opPago = new ActionListener() {
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent e) {
-			
-			cmbFormaDePago.setSelectedIndex(0);
-			cmbDepositoBanco.setSelectedIndex(0);
-			
-			if(chbPago.isSelected()){
-				
-				
-				cmbReferencia.removeAllItems();
-				cmbReferencia.addItem("Selecciona Beneficiario");
-				cmbReferencia.addItem("Proveedor");
-				cmbReferencia.addItem("Empleado");
-				
-				componentes(true);
-				
-				rbPagoPrv.setSelected(true);
-				cmbTipo.setSelectedItem("EGRESOS");
-				cmbTipo.setEnabled(false);
-				
-				ValidaImprimir();
-			}else{
-				
-				txtReferencia.setText("");
-				txtTotal.setText("");
-				
-				folioReferencia = 0;
-				
-				cmbFormaDePago.setEnabled(false);
-				cmbDepositoBanco.setEnabled(false);
-				
-				cmbReferencia.removeAllItems();
-				cmbReferencia.addItem("No Aplica");
-				cmbReferencia.addItem("Departamento");
-				cmbReferencia.addItem("Empleado");
-				cmbReferencia.addItem("Establecimiento");
-				cmbReferencia.addItem("Proveedor");
-				
-				cmbDepositoBanco.setSelectedIndex(0);
-				
-				componentes(false);
-				
-				cmbTipo.setSelectedIndex(0);
-				cmbTipo.setEnabled(true);
-				
-				resetRButton();
-			}
+			funcionDeChbPago();
 		}
 	};
+	
+	@SuppressWarnings("unchecked")
+	public void funcionDeChbPago(){
+
+		
+		cmbFormaDePago.setSelectedIndex(0);
+		cmbDepositoBanco.setSelectedIndex(0);
+		
+		if(chbPago.isSelected()){
+			
+			
+			cmbReferencia.removeAllItems();
+			cmbReferencia.addItem("Selecciona Beneficiario");
+			cmbReferencia.addItem("Proveedor");
+			cmbReferencia.addItem("Empleado");
+			
+			componentes(true);
+			
+			rbPagoPrv.setSelected(true);
+			cmbTipo.setSelectedItem("EGRESOS");
+			cmbTipo.setEnabled(false);
+			
+			ValidaImprimir();
+		}else{
+			
+			txtReferencia.setText("");
+			txtTotal.setText("");
+			
+			folioReferencia = 0;
+			
+			cmbFormaDePago.setEnabled(false);
+			cmbDepositoBanco.setEnabled(false);
+			
+			cmbReferencia.removeAllItems();
+			cmbReferencia.addItem("No Aplica");
+			cmbReferencia.addItem("Departamento");
+			cmbReferencia.addItem("Empleado");
+			cmbReferencia.addItem("Establecimiento");
+			cmbReferencia.addItem("Proveedor");
+			
+			cmbDepositoBanco.setSelectedIndex(0);
+			
+			componentes(false);
+			
+			if(tipo_poliza_a_modificar.equals("")){
+				cmbTipo.setSelectedIndex(0);	
+			}		
+			cmbTipo.setEnabled(true);
+			
+			resetRButton();
+		}
+	
+	}
 	
 	ActionListener opValidarImpresion = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -596,6 +629,17 @@ public class Cat_Polizas extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				new Cat_Filtro_Referencia().setVisible(true);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	};
+	
+	ActionListener opFiltroPolizas = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				new Cat_Filtro_De_Polizas().setVisible(true);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -681,7 +725,7 @@ public class Cat_Polizas extends JFrame{
 								
 									if(!txtCheque.getText().equals("")){
 										
-											if(new BuscarSQL().existe_folio_cheque(cmbDepositoBanco.getSelectedItem().toString(),txtCheque.getText().toString().trim())){
+											if(folio_poliza_a_modificar.equals("")  && (new BuscarSQL().existe_folio_cheque(cmbDepositoBanco.getSelectedItem().toString(),txtCheque.getText().toString().trim()))){
 													JOptionPane.showMessageDialog(null, "El Folio De Cheque Ya Fue Registrado","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 													return;
 											}else{
@@ -742,12 +786,12 @@ public class Cat_Polizas extends JFrame{
 				if(rbAnticipoPrv.isSelected())
 					tipo_documento = "A";
 		
-			if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, txaConcepto.getText().toUpperCase().trim(), txtCheque.getText().toUpperCase().trim(), matriz, txtReferencia.getText().toUpperCase().trim(), cmbFormaDePago.getSelectedItem().toString().toUpperCase(),cmbDepositoBanco.getSelectedItem().toString().trim(),Float.valueOf(txtTotal.getText().toString().equals("")?"0":txtTotal.getText().toString()),tipo_documento)){
-
+			if(new GuardarSQL().Guardar_Poliza(txtFolio.getText().trim(), cmbTipo.getSelectedItem().toString().trim(), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),cmbReferencia.getSelectedItem().toString(),folioReferencia, nota, txaConcepto.getText().toUpperCase().trim(), txtCheque.getText().toUpperCase().trim(), matriz, txtReferencia.getText().toUpperCase().trim(), cmbFormaDePago.getSelectedItem().toString().toUpperCase(),cmbDepositoBanco.getSelectedItem().toString().trim(),Float.valueOf(txtTotal.getText().toString().equals("")?"0":txtTotal.getText().toString()),tipo_documento,folio_poliza_a_modificar, tipo_poliza_a_modificar, fecha_a_modificar)){
+				
 				fecha = new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate())+" 00:00:00";
 				tipo = cmbTipo.getSelectedItem().toString().toUpperCase();
 				folio = txtFolio.getText();
-				
+
 				imprimir();
 				limpiar();
 				
@@ -934,6 +978,7 @@ public class Cat_Polizas extends JFrame{
 	@SuppressWarnings("unchecked")
 	public void limpiar(){
 		
+		panel.setBorder(BorderFactory.createTitledBorder("Generar Poliza"));	
 		modelo.setRowCount(0);
 		
 		spAbonoTotales.setValue(0);
@@ -973,6 +1018,9 @@ public class Cat_Polizas extends JFrame{
 		
 		resetRButton();
 		
+		folio_poliza_a_modificar="";
+		tipo_poliza_a_modificar="";
+		fecha_a_modificar="";
 		
 	}
 	
@@ -1372,14 +1420,14 @@ public class Cat_Polizas extends JFrame{
 			}
 		}
 		
-		public Object[][] Filtro_Cuentas( ){
-			try {
-				return new BuscarSQL().Filtro_De_Cuentas_polizas();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return null;
-	}
+//		public Object[][] Filtro_Cuentas( ){
+//			try {
+//				return new BuscarSQL().Filtro_De_Cuentas_polizas();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			return null;
+//	}
 		
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1435,6 +1483,278 @@ public class Cat_Polizas extends JFrame{
 			
 		}
 	}
+	
+	
+	public class Cat_Filtro_De_Polizas extends JDialog{
+
+	Container cont = getContentPane();
+	JLayeredPane campo = new JLayeredPane();
+	
+	DefaultTableModel modelo_poliza = new DefaultTableModel(null,
+            new String[]{"Folio", "Tipo","Fecha De Poliza", "Establecimiento", "Concepto"}
+			){
+	     @SuppressWarnings("rawtypes")
+		Class[] types = new Class[]{
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class,
+	    	java.lang.String.class
+	    	                       };
+	     @SuppressWarnings({ "rawtypes", "unchecked" })
+		public Class getColumnClass(int columnIndex) {
+             return types[columnIndex];
+         }
+         public boolean isCellEditable(int fila, int columna){
+        	 switch(columna){
+	        	 	case 0 : return false; 
+	        	 	case 1 : return false; 
+	        	 	case 2 : return false; 
+	        	 	case 3 : return false; 
+	        	 	case 4 : return false; 
+        	 	} 				
+ 			return false;
+ 		}
+	};
+	JTable tabla_poliza = new JTable(modelo_poliza);
+    JScrollPane scroll_polina = new JScrollPane(tabla_poliza);
+	
+	JTextField txtCodigo = new JTextField();
+	JTextField txtDescripcion = new JTextField();
+	
+	JDateChooser fhFechaBusquedaDePolizas = new JDateChooser();
+	
+	public Cat_Filtro_De_Polizas() throws SQLException{
+		
+		this.setModal(true);
+		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+		this.setTitle("Filtro De Referencias");
+		campo.setBorder(BorderFactory.createTitledBorder("Filtro De Referencias"));
+		
+		campo.add(new JLabel("<html><FONT color='BLUE'>Buscar Por Fecha: </FONT></html>")).setBounds(15,20,90,20);
+		campo.add(fhFechaBusquedaDePolizas).setBounds(104,20,120,20);
+		
+		campo.add(txtCodigo).setBounds(15,45,60,20);
+		campo.add(txtDescripcion).setBounds(414,45,440,20);
+
+		campo.add(scroll_polina).setBounds(15,65,860,535);
+		
+		render();
+		fhFechaBusquedaDePolizas.setDate(cargar_fecha_Sugerida(0));
+		buscarMPolizas();
+		
+		agregar(tabla_poliza);
+		fhFechaBusquedaDePolizas.addPropertyChangeListener(opBusquedaPolizasPorFecha);
+		
+		cont.add(campo);
+		
+//		new Obj_ Filtro_Dinamico(tabla_poliza,"Codigo", txtCodigo.getText().toUpperCase(),"Nombre",txtDescripcion.getText(), "", "", "", "");
+		
+		txtCodigo.addKeyListener(opFiltroLoco);
+		txtDescripcion.addKeyListener(opFiltroLoco);
+		
+		this.setSize(900,650);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+//      asigna el foco al JTextField del nombre deseado al arrancar la ventana
+        this.addWindowListener(new WindowAdapter() {
+                public void windowOpened( WindowEvent e ){
+                	txtDescripcion.requestFocus();
+             }
+        });
+          
+	}
+	
+	PropertyChangeListener opBusquedaPolizasPorFecha = new PropertyChangeListener() {
+	  	  public void propertyChange(PropertyChangeEvent e) {
+	  		  
+	            if ("date".equals(e.getPropertyName())){
+	            	buscarMPolizas();
+	            }
+	  	  }
+	};
+	
+	public void buscarMPolizas(){
+		
+		modelo_poliza.setRowCount(0);
+		try {
+			String fecha = new SimpleDateFormat("dd/MM/yyyy").format(fhFechaBusquedaDePolizas.getDate());
+			System.out.println(fecha);
+			
+			Object[][] llenarFiltro = new BuscarSQL().Filtro_Polizas_Guardadas(fecha);
+			for(Object[] filaMPoliza  : llenarFiltro){
+				modelo_poliza.addRow(filaMPoliza);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+//	public Object[][] Filtro_Cuentas( ){
+//		try {
+//			return new BuscarSQL().Filtro_De_Cuentas_polizas();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//}
+	
+	private void agregar(final JTable tbl) {
+        tbl.addMouseListener(new java.awt.event.MouseAdapter(){
+	        public void mouseClicked(MouseEvent e) {
+	        	
+	        	if(e.getClickCount() == 2){
+	        		
+	    			fila = tabla_poliza.getSelectedRow();
+	    			String folio =  tabla_poliza.getValueAt(fila, 0).toString().trim();
+    				Object[] poliza = new BuscarSQL().registro_Polizas_Guardadas(folio,tabla_poliza.getValueAt(fila, 1).toString().trim(),tabla_poliza.getValueAt(fila, 2).toString().trim());
+
+//	    			System.out.println(poliza[0].toString().trim());
+//	    			System.out.println(poliza[1].toString().trim());
+//	    			System.out.println(poliza[2].toString().trim());
+//	    			System.out.println(poliza[3].toString().trim());
+//	    			System.out.println(poliza[4].toString().trim());
+//	    			System.out.println(poliza[5].toString().trim());
+//	    			System.out.println(poliza[6].toString().trim());
+//	    			System.out.println(poliza[7].toString().trim());
+//	    			System.out.println(poliza[8].toString().trim());
+//	    			System.out.println(poliza[9].toString().trim());
+//	    			System.out.println(poliza[10].toString().trim());
+//	    			System.out.println(poliza[11].toString().trim());
+//	    			System.out.println(poliza[12].toString().trim());
+    				
+    				panel.setBorder(BorderFactory.createTitledBorder("Modificar Poliza"));
+    				
+	    			cmbTipo.setSelectedItem(poliza[1].toString());
+    				System.out.println(poliza[1].toString());
+    				
+    				try {
+						fhFecha.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(poliza[2].toString()));
+					} catch (ParseException e1) {
+						e1.printStackTrace();
+					}
+						
+    				nota = poliza[3].toString();
+    				chbPago.setSelected(cmbTipo.getSelectedItem().equals("EGRESOS")?true:false);
+    				funcionDeChbPago();
+    				
+    				folio_poliza_a_modificar=poliza[0].toString();
+    				tipo_poliza_a_modificar=poliza[1].toString();
+    				fecha_a_modificar=poliza[2].toString();
+    				
+    				txtFolio.setText(poliza[0].toString());
+    				
+    				txaConcepto.setText(poliza[4].toString().trim());
+    				txtTotal.setText(poliza[11].toString().trim());
+    				
+    				
+    				
+	    			if(poliza[1].toString().equals("EGRESOS")){
+	    				    				
+	    				if(poliza[5].toString().trim().equals("No Aplica")){
+	    					cmbReferencia.setSelectedIndex(0);
+	    				}else{
+	    					cmbReferencia.setSelectedItem(poliza[5].toString().trim());
+	    				}
+	    				
+	    				folioReferencia = Integer.valueOf(poliza[6].toString().trim());
+	    				txtReferencia.setText(poliza[7].toString().trim());
+	    				
+	    				txtCheque.setText(poliza[8].toString().trim());
+	    				
+	    				cmbDepositoBanco.setSelectedItem(poliza[9].toString().trim());
+	    				cmbFormaDePago.setSelectedItem(poliza[10].toString().trim());
+	    				
+	    				
+						if(poliza[12].toString().trim().equals("P")){ rbPagoPrv.setSelected(true); }
+						if(poliza[12].toString().trim().equals("A")){ rbAnticipoPrv.setSelected(true); }
+						
+						txtReferencia.setEditable(true);
+    				}else{
+    					cmbReferencia.setSelectedIndex(0);
+    					folioReferencia = 0;
+	    				txtReferencia.setText("");
+	    				txtCheque.setText("");
+	    				cmbDepositoBanco.setSelectedIndex(0);
+	    				cmbFormaDePago.setSelectedIndex(0);
+	    				
+	    				grupo.remove(rbAnticipoPrv);
+	    				grupo.remove(rbPagoPrv);
+	    				rbAnticipoPrv.setSelected(false);
+	    				rbPagoPrv.setSelected(false);
+	    				grupo.add(rbAnticipoPrv);
+	    				grupo.add(rbPagoPrv);
+    				}
+
+    				
+    				
+	    			
+	    			
+	    				modelo.setRowCount(0);
+	    				Object[][] mpolizas = new BuscarSQL().registro_mPolizas_Guardadas(folio,tabla_poliza.getValueAt(fila, 1).toString().trim(),tabla_poliza.getValueAt(fila, 2).toString().trim());
+	    				for(Object[] d : mpolizas){
+	    					modelo.addRow(d);
+	    				}
+	    				CalcularFoliosTabla();
+	    				CalcularCuadreDePoliza();
+	    			dispose();
+	        	}
+	        }
+        });
+    }
+	
+	int fila=0;
+	public void iniciarSeleccionConTeclado(){
+		Robot robot;
+		try {
+            robot = new Robot();
+            robot.keyPress(KeyEvent.VK_A);
+            robot.keyRelease(KeyEvent.VK_A);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+	     };
+	     
+	KeyListener opFiltroLoco = new KeyListener(){
+		public void keyReleased(KeyEvent arg0) {
+			
+			new Obj_Filtro_Dinamico(tabla_poliza,"Folio", txtCodigo.getText().toUpperCase(),"Concepto",txtDescripcion.getText(), "", "", "", "");
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
+	
+   	private void render(){	
+		
+		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+		tcr.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		tabla_poliza.getTableHeader().setReorderingAllowed(false) ;
+		
+		tabla_poliza.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		tabla_poliza.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
+		tabla_poliza.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
+		tabla_poliza.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		tabla_poliza.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		
+		tabla_poliza.getColumnModel().getColumn(0).setMinWidth(60);
+		tabla_poliza.getColumnModel().getColumn(0).setMaxWidth(60);
+		tabla_poliza.getColumnModel().getColumn(1).setMinWidth(80);
+		tabla_poliza.getColumnModel().getColumn(1).setMaxWidth(80);
+		tabla_poliza.getColumnModel().getColumn(2).setMinWidth(140);
+		tabla_poliza.getColumnModel().getColumn(2).setMaxWidth(140);
+		tabla_poliza.getColumnModel().getColumn(3).setMinWidth(120);
+		tabla_poliza.getColumnModel().getColumn(3).setMaxWidth(120);
+		tabla_poliza.getColumnModel().getColumn(4).setMinWidth(500);
+		tabla_poliza.getColumnModel().getColumn(4).setMaxWidth(500);
+		
+	}
+}
 	
 	public static void main(String[] args) {
 		try{
