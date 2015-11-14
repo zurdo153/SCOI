@@ -68,7 +68,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 	JTextField txtpuesto =new Componentes().text(new JTextField(),"Puesto", 150, "String");
 	JTextField txtasignacion =new Componentes().text(new JTextField(),"Asignacion", 150, "String");
 	JTextField txtpc = new Componentes().text(new JTextField(),"Nombre Pc", 150, "String");
-	JTextField txtsaldoTA = new Componentes().text(new JCTextField(),"Saldo TA", 150, "Double");
+	JTextField txtsaldoTA = new Componentes().text(new JCTextField(),"Saldo TA", 150, "Int");
 
 	JButton btnFoto = new JButton();
 	JButton btnaviso = new JButton();
@@ -109,7 +109,6 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 			btnaviso.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=BLUE>" +
 					"		<CENTER><p> CIERRA ESTA VENTANA Y VUELVE A INTENTARLO UN MINUTO DESPUES QUE TE ASIGNEN</p></CENTER></FONT></html>"); 
 			panel.add(btnaviso).setBounds(1,1,350,90);
-			
 		}else{
 			
 		this.setUndecorated(true);
@@ -138,11 +137,11 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		panel.add(btnGuardar).setBounds(250,113,95,20);
 		
 		panel.add(btnPedido).setBounds(7,135,137,20);
-		panel.add(btnRecibir).setBounds(208,135,137,20);
+		panel.add(btnRecibir).setBounds(214,135,130,20);
 		
 		ValidaPedido();
-		pedidoDeMonedas(btnPedido);
-		pedidoDeMonedas(btnRecibir);
+//		pedidoDeMonedas(btnPedido);
+//		pedidoDeMonedas(btnRecibir);
 		
 		txtFolio_empleado.setEditable(false);
 		txtasignacion.setEditable(false);
@@ -158,6 +157,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		btnImpresion_Retiros_Pasados.addActionListener(op_filtro_reimpresion_de_Retiros);
 		btnISaldoTA.addActionListener(op_captura_saldo_TA);
 		btnGuardar.addActionListener(op_guardar_saldo);
+		txtsaldoTA.addKeyListener(Pasar_Guarda_Saldo_TA);
 		
          //////fondo		
 		ImagenconFondo_cajero = new ImageIcon("imagen/marco_aux_caja.png");
@@ -182,6 +182,17 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		}    
 		dispose();
 	}
+	
+	KeyListener Pasar_Guarda_Saldo_TA = new KeyListener() {
+		public void keyPressed(KeyEvent e) {	
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				btnGuardar.doClick();
+			}
+		}
+		public void keyReleased(KeyEvent e) {}
+		public void keyTyped(KeyEvent e) {}
+    };
+    
 	
 	public void ValidaPedido(){
 //			System.out.println(new BuscarTablasModel().checar_Pedido_De_Monedas_Cajero());
@@ -783,7 +794,7 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 					return false;
 				}
 			};
-			
+
 			JTable tabla = new JTable(modelo);
 			String folio_retiro_reimpresion ="";
 			public Cat_Filtro_De_Retiros_Guardados()	{
@@ -881,13 +892,14 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	  	public class Cat_Validar_Clave_Supervisor extends JDialog{
 			JPasswordField txtClaveSupervisor_validacion = new Componentes().textPassword(new JPasswordField(), "Clave", 30);
-			JTextField txtventa = new Componentes().text(new JCTextField(), "Venta TA", 30, "String");
+			JTextField txtcomprobar_saldoTA = new Componentes().text(new JCTextField(), "Teclee El Saldo TA de Nuevo", 30, "Int");
 			String Supervisor ="";
 			JButton btnReporte = new JButton("Imprimir",new ImageIcon("imagen/Print.png"));
 			double venta=0;
+			JLabel JblAvisosupervisor = new JLabel("");
 			
 	  		public Cat_Validar_Clave_Supervisor(){
-	  			this.setSize(250, 140);
+	  			this.setSize(220, 160);
 	  			this.setResizable(false);
 	  			this.setLocationRelativeTo(null);
 	  			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -898,21 +910,20 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 	  			this.setModal(true);
 	  			this.addWindowListener(op_cerrar);
 	  			
-	  			panel.setBorder(BorderFactory.createTitledBorder("Pase El Gafete Del Supervisor"));
-	  			panel.add(txtventa).setBounds(10, 20, 220, 20);
-	  			panel.add(txtClaveSupervisor_validacion).setBounds(10, 50, 220, 20);
-	  			panel.add(btnReporte).setBounds(70, 75, 100, 20);;
+	  			panel.setBorder(BorderFactory.createTitledBorder( "  Teclee El Saldo De Nuevo Para Validar"));
+	  			panel.add(txtcomprobar_saldoTA).setBounds(10, 20, 190, 20);
+	  			panel.add(JblAvisosupervisor).setBounds(10,50,200,20);
+	  			panel.add(txtClaveSupervisor_validacion).setBounds(10, 70, 190, 20);
+	  			panel.add(btnReporte).setBounds(50, 100, 100, 20);;
 	  			cont.add(panel);
 
 	  			txtClaveSupervisor_validacion.addKeyListener(buscar_supervisor_existe);
+	  			txtcomprobar_saldoTA.addActionListener(ValidarTA_Tecleado);
 	  			btnReporte.addActionListener(imprimir_Reporte);
-	  			txtClaveSupervisor_validacion.setEnabled(true);
+	  			txtClaveSupervisor_validacion.setEnabled(false);
 	  			
-	  			txtventa.setEditable(false);
+	  			txtcomprobar_saldoTA.setEditable(true);
 	  			btnReporte.setEnabled(false);
-				 this.addWindowListener(new WindowAdapter() { public void windowOpened( WindowEvent e ){
-		    	  			txtClaveSupervisor_validacion.requestFocus();
-		             }  });
 	  		}
 	  		WindowListener op_cerrar = new WindowListener() {
 	  			public void windowOpened(WindowEvent e) {}
@@ -925,6 +936,28 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 	  			public void windowClosed(WindowEvent e) {}
 	  			public void windowActivated(WindowEvent e) {}
 	  		};
+	  		
+	  		ActionListener ValidarTA_Tecleado = new ActionListener(){
+        		public void actionPerformed(ActionEvent e){
+        		if(!txtcomprobar_saldoTA.getText().toString().trim().equals("")){	
+    			if((Integer.valueOf(txtsaldoTA.getText().toString().trim())-Integer.valueOf(txtcomprobar_saldoTA.getText().toString().trim()))==0){
+    						txtcomprobar_saldoTA.setEnabled(false);
+    						txtClaveSupervisor_validacion.setEnabled(true);
+    						txtClaveSupervisor_validacion.requestFocus();
+    						JblAvisosupervisor.setText("      Pase El Gafete Del Supervisor");
+    				 }else{
+ 						JOptionPane.showMessageDialog(null,"No Coinciden Las Cantidades Tecleadas de Saldo Vefique E Intente De Nuevo \n *1er Saldo Tecleado:"
+    				                                     +Integer.valueOf(txtsaldoTA.getText().toString().trim())+"\n*2do Saldo Tecleado:"+Integer.valueOf(txtcomprobar_saldoTA.getText().toString().trim()),"Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png")); 
+    				 return;
+    				 
+        			}
+        		}else{
+						JOptionPane.showMessageDialog(null,"Necesitas Teclear De Nuevo El Valor Del Tiempo Aire","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png")); 
+
+        			return;
+        		}
+        		}
+        	};
 
 	  		KeyListener buscar_supervisor_existe = new KeyListener() {
     			@SuppressWarnings("deprecation")
@@ -941,7 +974,6 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		    				txtClaveSupervisor_validacion.setEnabled(false);
 		    				JOptionPane.showMessageDialog(null,"Se Guardo El >"+saldoinicialfinal+"< Exitosamente","Mensaje",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 	    					btnReporte.setEnabled(true);
-	    					txtventa.setText(venta+"");
 	    					Supervisor=datosSupervisor.getNombre_Supervisor().toString();
 	    					reporte (Supervisor);
 	    					venta=0;

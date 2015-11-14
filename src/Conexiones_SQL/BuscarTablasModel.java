@@ -2260,15 +2260,6 @@ public String[][] listaDePedidoDeMonedas(String status){
 		
 		int i = 0;
 		while(rs.next()){
-			
-			System.out.print(rs.getString(1)+"  ");
-			System.out.print(rs.getString(2)+"  ");
-			System.out.print(rs.getString(3)+"  ");
-			System.out.print(rs.getString(4)+"  ");
-			System.out.print(rs.getString(5)+"  ");
-			System.out.print(rs.getString(6)+"  ");
-			System.out.println(rs.getString(7)+"  ");
-			
 			matriz[i][0] =  rs.getString(1);
 			matriz[i][1] =  " "+rs.getString(2); 
 			matriz[i][2] =  " "+rs.getString(3); 

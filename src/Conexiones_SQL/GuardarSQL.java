@@ -42,6 +42,7 @@ import Obj_Checador.Obj_Solicitud_De_Empleados;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
+import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Importar_Voucher;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
@@ -3787,6 +3788,42 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 	
+	public boolean Guardar_Concepto_De_Orden_De_Pago(Obj_Conceptos_De_Ordenes_De_Pago concepto){
+		String query = "exec sp_insert_concepto_de_orden_de_pago ?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, concepto.getFolio());
+			pstmt.setString(2, concepto.getConcepto().toUpperCase().trim());
+			pstmt.setString(3, concepto.getEstatus().toUpperCase().trim());
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Concepto_De_Orden_De_Pago ]\nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Concepto_De_Orden_De_Pago ]\nSQLException:"+query+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Concepto_De_Orden_De_Pago ] \nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
 	
 	public boolean Guardar_Sugerido_Sistema(Object[][] matriz1, Object[][] matriz2, int folio_sugerido) throws SQLException{
 		
@@ -4337,8 +4374,8 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 
-	public boolean Guardar_Ordern_De_Pago_En_Efectivo(float cantidad, String fecha, String concepto, String autorizacion, String tipoBeneficiario, int folioBeneficiario, String establecimiento){
-		String query = "exec sp_insert_orden_de_pago_en_efectivo ?,?,?,?,?,?,?,?";
+	public boolean Guardar_Orden_De_Pago_En_Efectivo(float cantidad, String fecha, String concepto, String autorizacion, String tipoBeneficiario, int folioBeneficiario, String establecimiento, String Concepto){
+		String query = "exec sp_insert_orden_de_pago_en_efectivo ?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -4356,6 +4393,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				pstmt.setInt(7, usuario.getFolio());
 				
 				pstmt.setString(8, establecimiento.toUpperCase().trim());
+				pstmt.setString(9, Concepto.toUpperCase().trim());
 				
 				pstmt.executeUpdate();
 			

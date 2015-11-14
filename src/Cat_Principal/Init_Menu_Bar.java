@@ -27,12 +27,11 @@ import Obj_Principal.*;
 
 @SuppressWarnings("serial")
 public class Init_Menu_Bar extends Init_Login{
-
 	public ArrayList<WP_Relation> relacion = new ArrayList<WP_Relation>();
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.78");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.82");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -41,8 +40,7 @@ public class Init_Menu_Bar extends Init_Login{
 		this.setSize(ancho,alto);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	 }	
-	
-	
+		
 	@SuppressWarnings("rawtypes")
 	public JMenuBar miMenuTop(){
 		Vector MenuVector = new Obj_Menus().getMenusNivel (Integer.parseInt(txtFolio.getText()));

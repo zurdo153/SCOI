@@ -72,6 +72,10 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento());
 	
+	public String[] concepto(){try {return new Cargar_Combo().conceptos_de_ordenes_de_pago();} catch (SQLException e) {e.printStackTrace();}return null;}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbConcepto = new JComboBox(concepto());
+	
 	JTextArea txaConcepto = new Componentes().textArea(new JTextArea(), "Concepto", 135);
 	JScrollPane Concepto = new JScrollPane(txaConcepto);
 	
@@ -101,7 +105,7 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 	
 	int folioBeneficiario = 0;
 	public Cat_Orden_De_Pago_En_Efectivo(){
-		this.setSize(430, 310);
+		this.setSize(430, 350);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Pay-Per-Click-icon64px.png"));
@@ -125,7 +129,10 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		panel.add(new JLabel("Establecimiento:")).setBounds(185,y,80,20);
 		panel.add(cmbEstablecimiento  ).setBounds(270,y,130,20);
 		
-		panel.add(new JLabel("Concepto:")).setBounds(15,y+=25,70,20);
+		panel.add(new JLabel("Concepto De La Orden:")).setBounds(15,y+=25,150,20);
+		panel.add(cmbConcepto).setBounds(150,y,250,20);
+		
+		panel.add(new JLabel("Detalle:")).setBounds(15,y+=25,70,20);
 		panel.add(Concepto  ).setBounds(15,y+=20,385,50);
 		panel.add(new JLabel("Autorizo: ")).setBounds(15,y+=60,70,20);
 		panel.add(cmbAutorizados).setBounds(85,y,250,20);
@@ -157,8 +164,15 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		btnDeshacer.addActionListener(deshacer);
 		btnReporte.addActionListener(opReporte);
 		btnAltaproveedor.addActionListener(opproveedor);
-		txtCantidad.addKeyListener(enterpasarafecha);
-		txaConcepto.addKeyListener(enterpasaratexareaConcepto);	
+		txtCantidad.addKeyListener(enterpasaraEstablecmiento);
+		cmbEstablecimiento.addKeyListener(enterpasaraConcepto);
+		cmbConcepto.addKeyListener(enterpasaratexareaConcepto);
+		txaConcepto.addKeyListener(enterpasaraAurorizado);	
+		cmbAutorizados.addKeyListener(enterpasaraBeneficiario);
+		rbEmpleado.addKeyListener(enterpasarafiltroBeneficiario);
+		rbProveedor.addKeyListener(enterpasarafiltroBeneficiario);
+		txtBeneficiario.addKeyListener(enterpasaracantidad);
+		
 		///guardar con control+G
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
              getRootPane().getActionMap().put("guardar", new AbstractAction(){
@@ -215,6 +229,7 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			txtFolio.setText(new BuscarTablasModel().folio_ordern_de_pago_en_efectivo());
 			fhFecha.setDate(cargar_fecha_Sugerida(0));
 			cmbAutorizados.setSelectedIndex(0);
+			txtCantidad.requestFocus();
 		 }
 		};
 		
@@ -257,21 +272,15 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		}
 	};
 	
-	
-	
 	ActionListener opGuardar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
 			if(!validaCampos().equals("")){
 				JOptionPane.showMessageDialog(null, "Los Siguiente Campos Son Requeridos:\n"+validaCampos(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-				
 					if(cmbEstablecimiento.getSelectedIndex()!=0){
-						 
-						fhFecha.setDate(cargar_fecha_Sugerida(0));
-							
-							if(new GuardarSQL().Guardar_Ordern_De_Pago_En_Efectivo(Float.valueOf(txtCantidad.getText().toString().trim()), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),cmbAutorizados.getSelectedItem().toString(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbEstablecimiento.getSelectedItem().toString())){
+						   fhFecha.setDate(cargar_fecha_Sugerida(0));
+							if(new GuardarSQL().Guardar_Orden_De_Pago_En_Efectivo(Float.valueOf(txtCantidad.getText().toString().trim()), new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),cmbAutorizados.getSelectedItem().toString(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbEstablecimiento.getSelectedItem().toString(),cmbConcepto.getSelectedItem().toString())){
 								imprimir_ultimo_guardado(Integer.valueOf(txtFolio.getText()));
 								btnDeshacer.doClick();
 							}else{
@@ -289,12 +298,22 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 	};
 
 	
-	KeyListener enterpasarafecha = new KeyListener() {
+	KeyListener enterpasaraEstablecmiento = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				txaConcepto.requestFocus();
+				cmbEstablecimiento.requestFocus();
+			}
+		}
+	};
+	
+	KeyListener enterpasaraConcepto = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				cmbConcepto.requestFocus();
 			}
 		}
 	};
@@ -304,10 +323,51 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				txaConcepto.requestFocus();
+			}
+		}
+	};
+	
+	KeyListener enterpasaraAurorizado = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
 				cmbAutorizados.requestFocus();
 			}
 		}
 	};
+	
+	KeyListener enterpasaraBeneficiario = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				rbProveedor.requestFocus();
+			}
+		}
+	};
+	
+	KeyListener enterpasarafiltroBeneficiario = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				btnBuscar.doClick();
+			}
+		}
+	};
+	
+	KeyListener enterpasaracantidad = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				txtCantidad.requestFocus();
+			}
+		}
+	};
+	
 	
 	private String validaCampos(){
 		String error="";
@@ -315,8 +375,9 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		fecha = fhFecha.getDate()+"";
 		if(txtCantidad.getText().equals(""))error+= "Cantidad\n";
 		if(fecha.equals("null"))error+= "Fecha\n";
-		if(txaConcepto.getText().equals(""))error+= "Concepto\n";
-		if(txtBeneficiario.getText().equals(""))error+= "Seleccione Un Beneficiario\n";
+		if(txaConcepto.getText().equals(""))error+= "Detalle\n";
+		if(txtBeneficiario.getText().equals(""))error+= "Beneficiario\n";
+		if(cmbConcepto.getSelectedItem().toString().equals(""))error+="Concepto\n";
 		return error;
 	}
 	
@@ -378,8 +439,8 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			this.setModal(true);
 			
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
-			this.setTitle("Filtro De Ordern De Pago En Efectivo");
-			campo.setBorder(BorderFactory.createTitledBorder("Seleccionar Orden De Pago"));
+			this.setTitle("Filtro De Beneficiario De La Orden De Pago En Efectivo");
+			campo.setBorder(BorderFactory.createTitledBorder("Selecciona El Beneficiario"));
 			
 			campo.add(scroll_Filtro_Ref).setBounds(15,42,470,565);
 			
@@ -396,6 +457,9 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			
 			txtCodigo.addKeyListener(opFiltroLoco);
 			txtDescripcion.addKeyListener(opFiltroLoco);
+			txtDescripcion.addKeyListener(enterpasaraTabla);
+			txtDescripcion.addKeyListener(enterpasaraTablaENTER);
+			tabla_Filtro_Ref.addKeyListener(enterpasaraaOrden_Pago);
 			
 			this.setSize(510,650);
 			this.setResizable(false);
@@ -466,6 +530,44 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
+		KeyListener enterpasaraTabla = new KeyListener() {
+			public void keyTyped(KeyEvent e){}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_DOWN){
+					tabla_Filtro_Ref.requestFocus();
+					tabla_Filtro_Ref.getSelectionModel().setSelectionInterval(0,0);;
+				}
+			}
+		};
+		
+		KeyListener enterpasaraTablaENTER = new KeyListener() {
+			public void keyTyped(KeyEvent e){}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					tabla_Filtro_Ref.requestFocus();
+					tabla_Filtro_Ref.getSelectionModel().setSelectionInterval(0,0);;
+				}
+			}
+		};
+		
+		KeyListener enterpasaraaOrden_Pago = new KeyListener() {
+			public void keyTyped(KeyEvent e){}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					fila = tabla_Filtro_Ref.getSelectedRow();
+	    			int folio =  Integer.valueOf(tabla_Filtro_Ref.getValueAt(fila, 0).toString().trim());
+	    			folioBeneficiario= folio;
+	    			txtBeneficiario.setText(tabla_Filtro_Ref.getValueAt(fila, 1).toString());
+	    			dispose();
+	    			txtBeneficiario.requestFocus();
+				}
+			}
+		};
+		
+		
 	   	private void render(){		
 			
 			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
@@ -527,7 +629,7 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			
 			this.setModal(true);
 			
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 			this.setTitle("Filtro De Ordern De Pago En Efectivo");
 			campo.setBorder(BorderFactory.createTitledBorder("Seleccionar Orden De Pago"));
 			
@@ -589,14 +691,6 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			}
 		}
 		
-		public Object[][] Filtro_Cuentas( ){
-			try {
-				return new BuscarSQL().Filtro_De_Cuentas_polizas();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return null;
-	}
 		
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {

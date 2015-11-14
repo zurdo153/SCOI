@@ -49,6 +49,7 @@ import Obj_Checador.Obj_Mensajes;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
+import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
@@ -6316,6 +6317,30 @@ public class BuscarSQL {
 		return nombrepc;
 	}
 	
+	public Obj_Conceptos_De_Ordenes_De_Pago Existe_concepto_de_Orden_de_Compra(int folio){
+		Obj_Conceptos_De_Ordenes_De_Pago concepto = new Obj_Conceptos_De_Ordenes_De_Pago();
+		String query = "SELECT [folio_concepto]"
+				+ "           ,[concepto_orden_de_pago]"
+				+ "           ,case when status='V'then 'VIGENTE'else 'CANCELADO' end as estatus"
+				+ "     FROM  tb_conceptos_de_orden_de_pago"
+				+ "  where folio_concepto="+folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				concepto.setFolio(rs.getInt("folio_concepto"));
+				concepto.setConcepto(rs.getString("concepto_orden_de_pago").trim());
+				concepto.setEstatus(rs.getString("estatus").trim());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Existe_concepto_de_Orden_de_Compra En"+query+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return concepto;
+	}
+	
 	public int periodos() throws SQLException{
 		int periodos = 0;
 
@@ -7110,7 +7135,7 @@ public class BuscarSQL {
 						+ "		THEN (select tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno from tb_empleado where tb_empleado.folio = tb_orden_de_pago_en_efectivo.folio_beneficiario) "
 						+ "	  ELSE (select tb_proveedores.nombre+' '+tb_proveedores.ap_paterno+' '+tb_proveedores.ap_materno from tb_proveedores where tb_proveedores.folio_proveedor = tb_orden_de_pago_en_efectivo.folio_beneficiario) "
 						+ "	END beneficiario "
-						+ " ,tb_orden_de_pago_en_efectivo.concepto "
+						+ " ,detalle "
 						+ " from tb_orden_de_pago_en_efectivo "
 						+ " where tb_orden_de_pago_en_efectivo.fecha_mov > '"+fechaInicial+"'"
 						+ "order by fecha_mov desc";

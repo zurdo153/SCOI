@@ -37,7 +37,7 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Empleados_Con_Pedido_De_Monedas extends JFrame{
+public class Cat_Control_De_Pedidos_De_Monedas extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
@@ -103,10 +103,8 @@ public class Cat_Empleados_Con_Pedido_De_Monedas extends JFrame{
 //	esta funcion se usara en la venta de retiros programados para avilitar el boton de pedido o de recibir
 	public static String tipoDeUsuarioQuePidio(){return new BuscarTablasModel().tipoDeUsuarioParaPedidoDeMonedas();}
 	
-	public Cat_Empleados_Con_Pedido_De_Monedas(){
-		
+	public Cat_Control_De_Pedidos_De_Monedas(){
 		String tipoDeUsuarioDePedidodeMonedas = tipoDeUsuarioQuePidio();
-		
 		String titulo = "";
 
 		switch(tipoDeUsuarioDePedidodeMonedas){
@@ -115,28 +113,21 @@ public class Cat_Empleados_Con_Pedido_De_Monedas extends JFrame{
 			default:				titulo="";							break;
 		}
 		
-		
 		if(titulo.equals("")){
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen//usuario-de-alerta-icono-4069-64.png"));
 			this.setTitle("Aviso");
-			
 			constructorAviso();
 		}else{
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/monedas-en-efectivo-en-moneda-icono-4023-64.png"));
 			this.setTitle(titulo);
 			campo.setBorder(BorderFactory.createTitledBorder("Seleccionar Un Cajero(a)"));
-			
 			constructor(tipoDeUsuarioDePedidodeMonedas);
 		}
-		
 	}
 	
 public void constructor(String tipoDeUsuarioDePedidodeMonedas){
-		
 		status_parametro = tipoDeUsuarioDePedidodeMonedas;
-	
 		campo.add(scroll).setBounds(15,42,1000,565);
-		
 		campo.add(txtCodigo).setBounds(145,20,70,20);
 		campo.add(txtDescripcion).setBounds(214,20,320,20);
 		campo.add(cmbEstablecimiento).setBounds(535,20,160,20);
@@ -162,14 +153,12 @@ public void constructor(String tipoDeUsuarioDePedidodeMonedas){
 		cmbEstablecimiento.addActionListener(opFiltroDimanicoEstab);
 		txtCodigo.addKeyListener(opFiltroDimanico);
 		txtDescripcion.addKeyListener(opFiltroDimanico);
-		
 		cont.add(campo);
 		
 		this.setSize(1040,650);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
 //      asigna el foco al JTextField del nombre deseado al arrancar la ventana
         this.addWindowListener(new WindowAdapter() {
                 public void windowOpened( WindowEvent e ){
@@ -180,10 +169,7 @@ public void constructor(String tipoDeUsuarioDePedidodeMonedas){
 	}
 
 public void constructorAviso(){
-	
 	JLabel imagen = new JLabel(new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-	
-	
 	campo.add(imagen).setBounds(15,20,64,64);
 	campo.add(new JLabel("El Usuario No Esta Autorizado Para Realizar Movimientos En Esta Opción")).setBounds(100,45,550,20);
 	cont.add(campo);
@@ -200,12 +186,10 @@ public void constructorAviso(){
         	dispose();
         }
     });
-	
 	this.setSize(500,150);
 	this.setResizable(false);
 	this.setLocationRelativeTo(null);
 	this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-	
 }
 
 ActionListener opBuscarConCmbStatus = new ActionListener() {
@@ -215,14 +199,12 @@ ActionListener opBuscarConCmbStatus = new ActionListener() {
 };
 
 public void llenarTablaDePedidos(){
-	
 	Object[][] registros = null;
 	if(status_parametro.equals("SURTIDO")){
 		registros = new BuscarTablasModel().listaDePedidoDeMonedas(cmbStatusPedido.getSelectedItem().toString());
 	}else{
 		registros = new BuscarTablasModel().listaDePedidoDeMonedas("SURTIDO");
 	}
-	
 	modelo.setRowCount(0);
 	for(Object[] fila : registros){
 		modelo.addRow(fila);
@@ -257,13 +239,6 @@ public void llenarTablaDePedidos(){
 //			  		      				ENTREGADO
 					        			new CapturarPedido(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()),tabla.getValueAt(fila, 2).toString().trim(), status_parametro, status_parametro.equals("SURTIDO")?"CORTES":"ENCARGADO").setVisible(true);
 			        			}
-			        			
-//			        			if(tabla.getValueAt(fila,5).toString().trim().equals("SURTIDO")||tabla.getValueAt(fila,5).toString().trim().equals("RECIBIDO")||tabla.getValueAt(fila,5).toString().trim().equals("ENTREGADO")||tabla.getValueAt(fila,5).toString().trim().equals("CANCELADO")){
-//				    					JOptionPane.showMessageDialog(null, "los Pedidos SURTIDO, RECIBIDO, ENTREGADO O CANCELADO  No Pueden Volverse a Capturar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-//				    					return;
-//			        			}else{
-//			        					new Cat_Pedido_De_Monedas(Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()),tabla.getValueAt(fila, 2).toString().trim(), tipoDeUsuarioDePedidodeMonedas, tipoDeUsuarioDePedidodeMonedas.equals("SURTIDO")?"CORTES":"ENCARGADO").setVisible(true);
-//				        		}
 		        		}
 	        	}
 	        }
@@ -337,7 +312,6 @@ public void llenarTablaDePedidos(){
 	    tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 	    tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 	    tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-//	    tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 		
 		tabla.getColumnModel().getColumn(0).setMinWidth(130);
 		tabla.getColumnModel().getColumn(0).setMaxWidth(130);
@@ -351,7 +325,7 @@ public void llenarTablaDePedidos(){
 		tabla.getColumnModel().getColumn(4).setMaxWidth(180);
 		tabla.getColumnModel().getColumn(5).setMinWidth(100);
 	    tabla.getColumnModel().getColumn(5).setMaxWidth(100);
-		tabla.getColumnModel().getColumn(6).setMinWidth(80);
+		tabla.getColumnModel().getColumn(6).setMinWidth(90);
 		tabla.getColumnModel().getColumn(6).setMaxWidth(100);
 		
 	}
@@ -360,7 +334,7 @@ public void llenarTablaDePedidos(){
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Empleados_Con_Pedido_De_Monedas().setVisible(true);
+			new Cat_Control_De_Pedidos_De_Monedas().setVisible(true);
 		}catch(Exception e){	}		
 	}
 	
@@ -383,10 +357,8 @@ public void llenarTablaDePedidos(){
 				case "SURTIDO":		entregoMonedas=false;	columna = 4;	break;
 				case "ENTREGADO":	entregoMonedas=true;	columna = 6;	break;
 				case "RECIBIDO":	entregoMonedas=true;	columna = 8;	break;
-//				default:			entregoMonedas=true;	break;
 			}
 			
-//			System.out.println(entregoMonedas);
 			cmbEntrega.setEnabled(entregoMonedas);
 			
 			Constructor();
