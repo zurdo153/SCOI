@@ -37,7 +37,7 @@ public class Cat_Clientes extends JDialog{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	public static DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Clientes().get_tabla_model(),
+	public static DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Clientes().get_tabla_model("CLIENTES"),
 			new String[]{"Folio", "Cliente", "Direccion"}){
 			
 			@SuppressWarnings("rawtypes")
@@ -339,18 +339,9 @@ public class Cat_Clientes extends JDialog{
 									btnGuardar.setEnabled(false);
 									btnModificar.setEnabled(false);
 									
-									while(tabla.getRowCount()>0){
-										tabla_model.removeRow(0);
-									}
-									
-									Object [][] lista_tabla = new Obj_Clientes().get_tabla_model();
-									String[] fila = new String[3];
-									for(int i=0; i<lista_tabla.length; i++){
-										fila[0] = lista_tabla[i][0]+"   ";
-										fila[1] = "   "+lista_tabla[i][1];
-										fila[2] = "   "+lista_tabla[i][2];
-												tabla_model.addRow(fila);
-									}
+									tabla_model.setRowCount(0);
+									Object [][] lista_tabla = new Obj_Clientes().get_tabla_model("CLIENTES");
+									for(Object[]  clt: lista_tabla){ tabla_model.addRow(clt); }
 									
 									txtNombre.requestFocus();
 									contador=0;
@@ -390,19 +381,9 @@ public class Cat_Clientes extends JDialog{
 									btnGuardar.setEnabled(false);
 									btnModificar.setEnabled(false);
 									
-									
-										while(tabla.getRowCount()>0){
-											tabla_model.removeRow(0);
-										}
-										
-										Object [][] lista_tabla = new Obj_Clientes().get_tabla_model();
-										String[] fila = new String[3];
-										for(int i=0; i<lista_tabla.length; i++){
-												fila[0] = lista_tabla[i][0]+"   ";
-												fila[1] = "   "+lista_tabla[i][1];
-												fila[2] = "   "+lista_tabla[i][2];
-												tabla_model.addRow(fila);
-										}
+									tabla_model.setRowCount(0);
+									Object [][] lista_tabla = new Obj_Clientes().get_tabla_model("CLIENTES");
+									for(Object[]  clt: lista_tabla){ tabla_model.addRow(clt); }
 										
 										txtNombre.requestFocus();
 										contador=0;

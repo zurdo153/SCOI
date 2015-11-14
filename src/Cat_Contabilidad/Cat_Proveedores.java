@@ -38,7 +38,7 @@ public class Cat_Proveedores extends JDialog{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	public static DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Alta_Proveedores_Polizas().get_tabla_model(),
+	public static DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Alta_Proveedores_Polizas().get_tabla_model("PROVEEDORES"),
 			new String[]{"Folio", "Cliente", "Direccion"}){
 			
 			@SuppressWarnings("rawtypes")
@@ -338,11 +338,8 @@ public class Cat_Proveedores extends JDialog{
 									btnModificar.setEnabled(false);
 									
 									tabla_model.setRowCount(0);	
-									
-									Object [][] lista_tabla = new Obj_Alta_Proveedores_Polizas().get_tabla_model();
-									for(Object [] pr : lista_tabla){
-										tabla_model.addRow(pr);
-									}
+									Object [][] lista_tabla = new Obj_Alta_Proveedores_Polizas().get_tabla_model("PROVEEDORES");
+									for(Object [] pr : lista_tabla){ tabla_model.addRow(pr); }
 									
 									txtNombre.requestFocus();
 									contador=0;
@@ -382,12 +379,9 @@ public class Cat_Proveedores extends JDialog{
 									btnGuardar.setEnabled(false);
 									btnModificar.setEnabled(false);
 									
-									
 									tabla_model.setRowCount(0);
-									Object [][] lista_tabla = new Obj_Alta_Proveedores_Polizas().get_tabla_model();
-									for(Object[] pr: lista_tabla){
-										tabla_model.addRow(pr);
-									}
+									Object [][] lista_tabla = new Obj_Alta_Proveedores_Polizas().get_tabla_model("PROVEEDORES");
+									for(Object[] pr: lista_tabla){ tabla_model.addRow(pr);	}
 									
 										txtNombre.requestFocus();
 										contador=0;
