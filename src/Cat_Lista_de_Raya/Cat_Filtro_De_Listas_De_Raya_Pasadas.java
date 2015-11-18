@@ -1,6 +1,5 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -12,21 +11,18 @@ import java.sql.Statement;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Reportes.Cat_Reporte_De_Prestamos_De_Lista_De_Raya;
+import Cat_Reportes.Cat_Reportes_De_Diferencias_Entre_Dos_Listas_De_Raya;
+import Cat_Reportes.Cat_Reportes_De_Prestamos_De_Lista_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Fuente_De_Sodas;
 import Cat_Reportes.Cat_Reportes_De_Infonavit_De_Lista_De_Raya;
@@ -34,6 +30,7 @@ import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Revision_De_Lista_Raya;
 import Obj_Principal.Componentes;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
@@ -61,7 +58,7 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
 		public Cat_Filtro_De_Listas_De_Raya_Pasadas(Integer catalogo)	{
 			Catalogo=catalogo;
 			
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/Filter-List-icon16.png"));
 			this.setTitle("Reporte de Listas de Raya Pasadas");
 
 			campo.setBorder(BorderFactory.createTitledBorder("Seleccione La Lista de Raya a Consultar"));
@@ -97,7 +94,7 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
 		    			           	dispose();
 		    				break;
 		    				
-		    				case 2:		new Cat_Reporte_De_Prestamos_De_Lista_De_Raya().Impresion_de_Reporte_Prestamos_LRPasadas(folio);
+		    				case 2:		new Cat_Reportes_De_Prestamos_De_Lista_De_Raya().Impresion_de_Reporte_Prestamos_LRPasadas(folio);
     			           	dispose();
     				           break;
     				           
@@ -110,6 +107,13 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
 		    				case 5:		new Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya().obtiene_lista_de_raya_selecionada(folio);
     			           	dispose();
     				           break;
+		    				case 6:		new  Cat_Reportes_De_Diferencias_Entre_Dos_Listas_De_Raya().obtiene_lista_de_raya_selecionadac1(folio);
+    			           	dispose();
+    				           break;
+		    				case 7:		new  Cat_Reportes_De_Diferencias_Entre_Dos_Listas_De_Raya().obtiene_lista_de_raya_selecionadac2(folio);
+    			           	dispose();
+    				           break;
+    				           
 		    				}
 		    			}
 		    			else{
@@ -148,10 +152,8 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
 		};
 		
 	   	private JScrollPane getPanelTabla()	{		
-			
-			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-			tcr.setHorizontalAlignment(SwingConstants.CENTER);
-			
+	    	tabla.getTableHeader().setReorderingAllowed(false) ;
+	    	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			tabla.getColumnModel().getColumn(0).setHeaderValue("Num. Lista Raya");
 			tabla.getColumnModel().getColumn(0).setMaxWidth(100);
 			tabla.getColumnModel().getColumn(0).setMinWidth(100);
@@ -159,33 +161,8 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
 			tabla.getColumnModel().getColumn(1).setMaxWidth(100);
 			tabla.getColumnModel().getColumn(1).setMinWidth(100);
 			
-	    	tabla.getTableHeader().setReorderingAllowed(false) ;
-	    	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			
-			TableCellRenderer render = new TableCellRenderer() { 
-				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-				boolean hasFocus, int row, int column) { 
-					JLabel lbl = new JLabel(value == null? "": value.toString());
-					if(row%2==0){
-							lbl.setOpaque(true); 
-							lbl.setBackground(new java.awt.Color(177,177,177));
-					} 
-					
-					if(table.getSelectedRow() == row){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(186,143,73));
-					}
-					
-					switch(column){
-						case 0 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-						case 1 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-					}
-				return lbl; 
-				} 
-			}; 
-
-			this.tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-			this.tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
+		    tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 	
+		    tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 					
 			Statement s;
 			ResultSet rs;
@@ -207,43 +184,6 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
 		    return scrol; 
 		}
 		
-		KeyListener validaCantidad = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();				
-				if(((caracter < '0') ||	
-			    	(caracter > '9')) && 
-			    	(caracter != '.' )){
-			    	e.consume();
-		    	}
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {	
-			}
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-			}	
-		};
-		
-		KeyListener validaNumericoConPunto = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char caracter = e.getKeyChar();
-				
-			    if(((caracter < '0') ||	
-			    	(caracter > '9')) && 
-			    	(caracter != '.')){
-			    	e.consume();
-		    	}
-			}
-			@Override
-			public void keyPressed(KeyEvent e){}
-			@Override
-			public void keyReleased(KeyEvent e){}
-									
-		};
-		
-
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

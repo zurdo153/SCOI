@@ -101,8 +101,6 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 		btnSeleccionLR.addActionListener(opfiltroLR);
 		btnReporte_Firmas.addActionListener(opReporte_Lista_De_firmas);
 		
-		
-		
      	///filtro de Listas de Raya
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscarLR");
           getRootPane().getActionMap().put("buscarLR", new AbstractAction(){

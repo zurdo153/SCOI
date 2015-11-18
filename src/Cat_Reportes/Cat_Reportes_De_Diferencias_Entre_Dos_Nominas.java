@@ -23,7 +23,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Diferencias_Entre_Dos_Nominas extends JFrame {
+public class Cat_Reportes_De_Diferencias_Entre_Dos_Nominas extends JFrame {
 	
 	 JTextField txtnomina1 = new Componentes().text(new JCTextField(), "Nomina 1", 10, "Int");
 	 JTextField txtnomina2 = new Componentes().text(new JCTextField(), "Nomina 2", 10, "Int");
@@ -35,7 +35,7 @@ public class Cat_Reporte_De_Diferencias_Entre_Dos_Nominas extends JFrame {
 	 Border blackline, etched, raisedbevel, loweredbevel, empty;
 	 TitledBorder title4; 
 
-	public Cat_Reporte_De_Diferencias_Entre_Dos_Nominas() {
+	public Cat_Reportes_De_Diferencias_Entre_Dos_Nominas() {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-en-efectivo-cartera-monedero-icono-7127-32.png"));
 		 blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		 panel.setBorder(BorderFactory.createTitledBorder(blackline,"Teclee Los Folios De Nomina Que Desea Comparar"));
@@ -146,7 +146,7 @@ public class Cat_Reporte_De_Diferencias_Entre_Dos_Nominas extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Diferencias_Entre_Dos_Nominas().setVisible(true);
+			new Cat_Reportes_De_Diferencias_Entre_Dos_Nominas().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

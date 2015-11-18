@@ -3917,6 +3917,42 @@ public boolean devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(Str
 	return true;
 }
 
+public boolean Actualizar_Pagos_en_un_Corte_de_Ordenes_de_Pago(Object[] tabla,String folio){
+	String query =  "exec sp_actualizar_ordenes_de_pago_a_un_corte ?,"+folio+","+usuario.getFolio();
+	Connection con = new Connexion().conexion();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.length; i++){
+			pstmt.setString(1, tabla[i].toString().trim());
+			pstmt.executeUpdate();
+		}
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Actualizar_Pagos_en_un_Corte_de_Ordenes_de_Pago  \n procedimiento almacenado sp_actualizar_ordenes_de_pago_a_un_corte \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Actualizar_Pagos_en_un_Corte_de_Ordenes_de_Pago  \n procedimiento almacenado sp_actualizar_ordenes_de_pago_a_un_corte \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Actualizar_Pagos_en_un_Corte_de_Ordenes_de_Pago  \n procedimiento almacenado sp_actualizar_ordenes_de_pago_a_un_corte \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+		
+
 public boolean Proveedor(Obj_Alta_Proveedores_Polizas prv){
 	String query = "exec sp_update_alta_proveedor ?,?,?,?,?,?";
 

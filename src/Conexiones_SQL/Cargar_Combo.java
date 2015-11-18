@@ -1632,19 +1632,12 @@ public class Cargar_Combo {
 	@SuppressWarnings("unchecked")
 	public String[] tipos_de_banco_polizas() throws SQLException{
 		String query = "SELECT cuenta as nombre FROM tb_bancos_contabilidad WHERE (estatus = 'V') order by nombre asc";
-		
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
-//			int j=0;
 			while(rs.next()){
-//				if(j == 0){
-//					miVector.add("Selecciona un Tipo");
-//				}
 				miVector.add(rs.getString("nombre"));
-//				j++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1660,8 +1653,41 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] conceptos_de_ordenes_de_pago() throws SQLException{
+		String query = "SELECT concepto_orden_de_pago FROM tb_conceptos_de_orden_de_pago WHERE (status = 'V') order by concepto_orden_de_pago asc";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("");
+				}
+				miVector.add(rs.getString("concepto_orden_de_pago"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+	}
+	
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	public String[] autorizados_para_pago_efectivo() throws SQLException{

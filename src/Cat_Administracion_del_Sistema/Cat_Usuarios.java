@@ -80,6 +80,7 @@ public class Cat_Usuarios extends JFrame{
 	    new Obj_CheckBoxNode(Sub_Auditoria[8], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[9], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[10], false),
+	    new Obj_CheckBoxNode(Sub_Auditoria[11], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector AuditoriaVector = new Obj_NombreVector("Auditoria", Auditoria);
@@ -127,6 +128,8 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Contabilidad[14], false),
 		new Obj_CheckBoxNode(Sub_Contabilidad[15], false),
 		new Obj_CheckBoxNode(Sub_Contabilidad[16], false),
+		new Obj_CheckBoxNode(Sub_Contabilidad[17], false),
+		new Obj_CheckBoxNode(Sub_Contabilidad[18], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector ContabilidadVector = new Obj_NombreVector("Contabilidad", Contabilidad);
