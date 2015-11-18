@@ -39,6 +39,7 @@ import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
+import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
@@ -4529,6 +4530,49 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Productos(Obj_Alta_De_Productos prod){
+		String query = "exec sp_insert_establecimiento ?,?,?,?,?,?,?,?,?,?,? ";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, prod.getFolio().trim());
+			pstmt.setString(2, prod.getDescripcion().toUpperCase().trim());
+			pstmt.setString(3, prod.getUnidadDeMedida().toUpperCase().trim());
+			pstmt.setString(4, prod.getUso().toUpperCase().trim());
+			pstmt.setString(5, prod.getCodigoDeBarras());
+			pstmt.setDouble(6, prod.getCosto());
+			pstmt.setDouble(7, prod.getPrecioDeVenta());
+			pstmt.setString(8, prod.getStatus().toUpperCase().trim());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Productos ] Insert  SQLException: sp_insert_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

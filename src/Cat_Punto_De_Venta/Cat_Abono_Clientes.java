@@ -111,8 +111,7 @@ public class Cat_Abono_Clientes extends JFrame{
 //         {new Double(150), "01/01/1900", "ferre","edgar"},
 //     };
      
-	static Object[][] data = new BuscarTablasModel().denominaciones_apartados();
-    public static DefaultTableModel tabla_model_cobro = new DefaultTableModel( data, new String[]{"Efectivo", "Valor", "Pago", "Importe"} ){
+    public static DefaultTableModel tabla_model_cobro = new DefaultTableModel( null, new String[]{"Efectivo", "Valor", "Pago", "Importe"} ){
                     
 			@SuppressWarnings({ "rawtypes" })
 			Class[] types = new Class[]{
@@ -411,6 +410,13 @@ public class Cat_Abono_Clientes extends JFrame{
 				
 				btnGuardarAbono.setEnabled(false);
 				btnNuevaCuenta.setEnabled(false);
+				
+				
+				tabla_model_cobro.setRowCount(0);
+				Object[][] data = new BuscarTablasModel().denominaciones_apartados();
+				for(Object[] pago:data){
+					tabla_model_cobro.addRow(pago);
+				}
 				
 				pintar_botones();
 		
@@ -789,23 +795,22 @@ public class Cat_Abono_Clientes extends JFrame{
 								
 								pintar_botones();
 			        		
-				        		while(tabla_cobros.getRowCount()>0)
-				        			tabla_model_cobro.removeRow(0);
-				        		while(tabla_ticket.getRowCount()>0)
-				        			tabla_model_ticket.removeRow(0);
-				        		while(tabla_abonos.getRowCount()>0)
-				        			tabla_model_abonos.removeRow(0);
-				        		
+//				        		while(tabla_cobros.getRowCount()>0)
+//				        			tabla_model_cobro.removeRow(0);
+//				        		while(tabla_ticket.getRowCount()>0)
+//				        			tabla_model_ticket.removeRow(0);
+//				        		while(tabla_abonos.getRowCount()>0)
+//				        			tabla_model_abonos.removeRow(0);
 //				        		Object [][] lista_tabla = data;
 			
-				        		String[] fila = new String[4];
-				                        for(int i=0; i<data.length; i++){
-				                                fila[0] = data[i][0]+"";
-				                                fila[1] = data[i][1]+"";
-				                                fila[2] = data[i][2]+"";
-				                                fila[3] = data[i][3]+"";
-				                                tabla_model_cobro.addRow(fila);
-				                        }
+								tabla_model_cobro.setRowCount(0);
+								tabla_model_ticket.setRowCount(0);
+								tabla_model_abonos.setRowCount(0);
+								
+								Object[][] data = new BuscarTablasModel().denominaciones_apartados();
+								for(Object[] pago:data){
+									tabla_model_cobro.addRow(pago);
+								}
 				                        
 				                 txtFolioCliente.requestFocus();       
 				                        new Cat_Genera_Ticket_De_Abono_Cliente(ticket,"abono");
@@ -836,10 +841,13 @@ public class Cat_Abono_Clientes extends JFrame{
 		txtDomicilio.setText("");
 		fecha.setDate(null);
 		
-		while(tabla_ticket.getRowCount()>0)
-			tabla_model_ticket.removeRow(0);
-		while(tabla_abonos.getRowCount()>0)
-			tabla_model_abonos.removeRow(0);
+		tabla_model_ticket.setRowCount(0);
+		tabla_model_abonos.setRowCount(0);
+		
+//		while(tabla_ticket.getRowCount()>0)
+//			tabla_model_ticket.removeRow(0);
+//		while(tabla_abonos.getRowCount()>0)DS
+//			tabla_model_abonos.removeRow(0);
 		
 		txtFolioCliente.requestFocus();
 	}
@@ -1097,10 +1105,13 @@ public class Cat_Abono_Clientes extends JFrame{
 					txtCliente.setText(cliente.getNombre()+" "+cliente.getAp_paterno()+" "+cliente.getAp_materno());
 					txtDomicilio.setText(cliente.getDireccion());
 					
-	        		while(tabla_ticket.getRowCount()>0)
-	        			tabla_model_ticket.removeRow(0);
-	        		while(tabla_abonos.getRowCount()>0)
-	        			tabla_model_abonos.removeRow(0);
+					tabla_model_ticket.setRowCount(0);
+					tabla_model_abonos.setRowCount(0);
+					
+//	        		while(tabla_ticket.getRowCount()>0)
+//	        			tabla_model_ticket.removeRow(0);
+//	        		while(tabla_abonos.getRowCount()>0)
+//	        			tabla_model_abonos.removeRow(0);
 	        		
 //	        buscar ticket del cliente
 	            Object [][] lista_ticket = new Obj_Abono_Clientes().get_tabla_tickets(folio_cliente);
@@ -1123,8 +1134,10 @@ public class Cat_Abono_Clientes extends JFrame{
 //							String nuevoTicket = new Obj_Abono_Clientes().nuevoTicket("NS");
 //							txtTiket.setText(nuevoTicket);
 							
-							while(tabla_ticket.getRowCount()>0){tabla_model_ticket.removeRow(0);}
-							while(tabla_abonos.getRowCount()>0){tabla_model_abonos.removeRow(0);}
+							tabla_model_ticket.setRowCount(0);
+							tabla_model_abonos.setRowCount(0);
+//							while(tabla_ticket.getRowCount()>0){tabla_model_ticket.removeRow(0);}
+//							while(tabla_abonos.getRowCount()>0){tabla_model_abonos.removeRow(0);}
 							
 //							mensaje (no tiene un numero de ticket, generar uno nuevo)
 							JOptionPane.showMessageDialog(null, "El cliente no tiene cuenta abierta","Aviso",JOptionPane.INFORMATION_MESSAGE);
@@ -1133,7 +1146,8 @@ public class Cat_Abono_Clientes extends JFrame{
 						case 1: 
 			    			txtTiket.setText(tabla_ticket.getValueAt(0, 0).toString().trim());	
 			    			
-							while(tabla_abonos.getRowCount()>0){tabla_model_abonos.removeRow(0);}
+							tabla_model_abonos.setRowCount(0);
+//							while(tabla_abonos.getRowCount()>0){tabla_model_abonos.removeRow(0);}
 //			              	buscar abonos del cliente
 		                    Object [][] lista_abonos = new Obj_Abono_Clientes().get_tabla_abonos(txtTiket.getText());
 		            		String[] filaA = new String[5];
@@ -1377,7 +1391,7 @@ public class Cat_Abono_Clientes extends JFrame{
 		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Cat_Filtro_Clientes(){
-			this.setTitle("Filtro Empleados");
+			this.setTitle("Filtro Clientes");
 			
 			cont.setBackground(new Color(0,17 ,255));
 			lblBuscar.setForeground(Color.white);

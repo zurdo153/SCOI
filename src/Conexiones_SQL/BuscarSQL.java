@@ -46,6 +46,7 @@ import Obj_Checador.Obj_Encargado_De_Solicitudes;
 import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
+import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
@@ -7315,6 +7316,37 @@ public class BuscarSQL {
 			}
 		}
 		return mPoliza;
+	}
+	
+	public Obj_Alta_De_Productos Productos(String folio) throws SQLException{
+		Obj_Alta_De_Productos prod = new Obj_Alta_De_Productos();
+		String query = "select * from tb_establecimiento where folio = '"+folio+"'";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				prod.setFolio(rs.getString("folio"));
+				prod.setDescripcion(rs.getString("nombre").trim());
+				prod.setUnidadDeMedida(rs.getString("abreviatura").trim());
+				prod.setUso(rs.getString("serie").trim());
+				prod.setCodigoDeBarras(rs.getString("grupo_para_cheque"));
+				prod.setCosto(rs.getDouble("status"));
+				prod.setPrecioDeVenta(rs.getDouble("folio_grupo_para_cortes"));
+				prod.setStatus(rs.getString("permitir_nc"));
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Productos ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			 if (stmt != null) { stmt.close(); }
+		}
+		return prod;
 	}
 	
 }
