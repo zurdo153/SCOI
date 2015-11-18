@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-11-15T15:36:15 -->
+<!-- 2015-11-17T12:11:19 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Lista_De_Raya_Actual" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="977" leftMargin="11" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ce16253a-bb1f-44b9-a6e2-b3ad2f994469">
 	<property name="ireport.zoom" value="1.4641000000000088"/>
 	<property name="ireport.x" value="0"/>
@@ -244,16 +244,20 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="49" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<staticText>
-				<reportElement style="Title" mode="Opaque" x="1" y="0" width="521" height="35" forecolor="#FFFFFF" backcolor="#000066" uuid="fd58f6f7-5544-4827-ba2e-f5c9542246f4">
+				<reportElement style="Title" mode="Opaque" x="1" y="0" width="679" height="35" forecolor="#FFFFFF" backcolor="#000066" uuid="fd58f6f7-5544-4827-ba2e-f5c9542246f4">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
 					<font size="30" pdfFontName="Times-Roman"/>
 				</textElement>
-				<text><![CDATA[Diferiencias Entre Dos Lista De Raya]]></text>
+				<text><![CDATA[Diferiencias Entre Dos Lista De Raya Por Concepto]]></text>
 			</staticText>
+			<image>
+				<reportElement x="728" y="0" width="42" height="40" uuid="901e35d5-fc8f-41ba-bb66-cee93490c8f3"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/listaR.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

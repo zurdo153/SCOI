@@ -2201,8 +2201,6 @@ public String checar_Pedido_De_Monedas_Cajero(){
 	
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
-	System.out.println(usuario.getFolio());
-	
 //	String query_lista = "  IF EXISTS (select * from tb_pedido_de_monedas where folio_cajera = "+usuario.getFolio()+" and status_pedido in ('PEDIDO','SURTIDO','ENTREGADO'))"
 //						+ "			BEGIN 		select 'true' 	END "
 //						+ " ELSE 	BEGIN		select 'false' 	END "; 

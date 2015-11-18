@@ -1,6 +1,7 @@
 package Cat_Reportes;
 
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos extends JFrame {
+public class Cat_Reportes_De_Empleados_Sin_Deposito_A_Bancos extends JFrame {
 	JButton btnDepositos_A_Bancos_Limpio = new JButton();
 	JButton btnDepositos_Bancos_Por_Establecimiento = new JButton();
 	Container cont = getContentPane();
@@ -30,8 +31,10 @@ public class Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos extends JFrame {
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 
 	
-	public Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos() {
+	public Cat_Reportes_De_Empleados_Sin_Deposito_A_Bancos() {
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/banco.png"));
+		
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccion Del Reporte De Empleados Sin Depositos En Bancos"));
 		this.setTitle("Reportes de Empleados Sin Depositos En Bancos");
 		
@@ -89,7 +92,7 @@ public class Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Empleados_Sin_Deposito_A_Bancos().setVisible(true);
+			new Cat_Reportes_De_Empleados_Sin_Deposito_A_Bancos().setVisible(true);
 		}catch(Exception e){	}
 	}
 

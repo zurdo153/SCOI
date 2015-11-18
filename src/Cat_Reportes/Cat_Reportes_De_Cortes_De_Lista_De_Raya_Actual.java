@@ -41,7 +41,7 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
+public class Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -61,7 +61,7 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	TitledBorder title4; 
 	
-	public Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual(String folio_empleado) {
+	public Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual(String folio_empleado) {
 		
 		Constructor();
 		
@@ -79,7 +79,7 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		
 	}
 	
-	public Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual() {
+	public Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual() {
 		Constructor();
 	}
 	
@@ -360,7 +360,7 @@ public class Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual().setVisible(true);
+			new Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual().setVisible(true);
 		}catch(Exception e){	}
 	}
 

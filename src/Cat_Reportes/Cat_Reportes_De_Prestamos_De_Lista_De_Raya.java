@@ -28,7 +28,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Prestamos_De_Lista_De_Raya extends JFrame {
+public class Cat_Reportes_De_Prestamos_De_Lista_De_Raya extends JFrame {
 	JButton btnPrestamos_Limpio = new JButton();
 	JButton btnPrestamos_Por_Establecimiento = new JButton("Impresion de Reporte De Prestamos Por Establecimiento");
 	JButton btnPrestamos_Listaraya_pasadas = new JButton();
@@ -39,7 +39,7 @@ public class Cat_Reporte_De_Prestamos_De_Lista_De_Raya extends JFrame {
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	TitledBorder title4; 
 
-	public Cat_Reporte_De_Prestamos_De_Lista_De_Raya() {
+	public Cat_Reportes_De_Prestamos_De_Lista_De_Raya() {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-en-efectivo-cartera-monedero-icono-7127-32.png"));
 		
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
@@ -141,7 +141,7 @@ public class Cat_Reporte_De_Prestamos_De_Lista_De_Raya extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Prestamos_De_Lista_De_Raya().setVisible(true);
+			new Cat_Reportes_De_Prestamos_De_Lista_De_Raya().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

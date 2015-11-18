@@ -195,7 +195,6 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
     
 	
 	public void ValidaPedido(){
-//			System.out.println(new BuscarTablasModel().checar_Pedido_De_Monedas_Cajero());
 		switch(new BuscarTablasModel().checar_Pedido_De_Monedas_Cajero()){
 			case "PEDIDO": 		btnPedido.setEnabled(false);		btnRecibir.setEnabled(false); break;
 			case "SURTIDO": 	btnPedido.setEnabled(false);		btnRecibir.setEnabled(true); break;

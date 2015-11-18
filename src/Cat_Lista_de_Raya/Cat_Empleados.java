@@ -92,7 +92,7 @@ import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Horarios;
 import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
-import Cat_Reportes.Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual;
+import Cat_Reportes.Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual;
 //import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
 import Cat_Reportes.Cat_Personal_Con_Horario;
@@ -2049,7 +2049,7 @@ public class Cat_Empleados extends JFrame{
 				return;
 			}else{
 				
-				new Cat_Reporte_De_Cortes_De_Lista_De_Raya_Actual(txtFolioEmpleado.getText()).setVisible(true);
+				new Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual(txtFolioEmpleado.getText()).setVisible(true);
 			}
 		}
 	};
