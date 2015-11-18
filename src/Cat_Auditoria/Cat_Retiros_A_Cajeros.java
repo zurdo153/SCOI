@@ -94,6 +94,7 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
     String  saldoinicialfinal="";
     
 	public Cat_Retiros_A_Cajeros(){
+		
 		this.cont.add(panel);
 		this.setSize(355,165);
 		this.setResizable(false);

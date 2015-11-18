@@ -1762,4 +1762,69 @@ public class Cargar_Combo {
 		return pila;
 			
 	}	
+	
+	@SuppressWarnings("unchecked")
+	public String[] unidadDeMedida() throws SQLException {
+		String query = "SELECT descripcion as unidadDeMedida from tb_unidad_de_medida_de_productos where status = 'V'";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("");
+				}
+				miVector.add(rs.getString("unidadDeMedida"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] uso() throws SQLException {
+		String query = "SELECT descripcion as uso from tb_uso_de_productos where status = 'V'";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("");
+				}
+				miVector.add(rs.getString("uso"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+	}
+	
 }
