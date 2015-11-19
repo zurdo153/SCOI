@@ -141,8 +141,8 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		panel.add(btnRecibir).setBounds(214,135,130,20);
 		
 		ValidaPedido();
-//		pedidoDeMonedas(btnPedido);
-//		pedidoDeMonedas(btnRecibir);
+		pedidoDeMonedas(btnPedido);
+		pedidoDeMonedas(btnRecibir);
 		
 		txtFolio_empleado.setEditable(false);
 		txtasignacion.setEditable(false);

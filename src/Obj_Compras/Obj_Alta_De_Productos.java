@@ -2,7 +2,6 @@ package Obj_Compras;
 
 import java.sql.SQLException;
 
-import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
@@ -96,10 +95,6 @@ public class Obj_Alta_De_Productos {
 		return null; 
 	}
 	
-	public boolean actualizar(String folio){ 
-		return new ActualizarSQL().Productos(this,folio); 
-	}
- 
 	public boolean guardar(){
 		return new GuardarSQL().Guardar_Productos(this); 
 	}
