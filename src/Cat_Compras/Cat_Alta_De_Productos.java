@@ -385,13 +385,8 @@ public class Cat_Alta_De_Productos extends JFrame{
 	};
 	
 	KeyListener buscar_action = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e){
-		}
-		@Override
-		public void keyReleased(KeyEvent e) {	
-		}
-		@Override
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
 				btnBuscar.doClick();
@@ -420,7 +415,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 			
 			txtPrecioDeVenta.setText("");
 			
-			cmb_status.setSelectedIndex(1);
+			cmb_status.setSelectedIndex(0);
 			
 			cmbUnidadDeMedida.setSelectedIndex(0);
 			cmbUso.setSelectedIndex(0);
@@ -465,7 +460,6 @@ public class Cat_Alta_De_Productos extends JFrame{
 	
 	ActionListener buscar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
 			busqueda(txtFolio.getText().toString());
 		}
 	};
@@ -530,7 +524,6 @@ public class Cat_Alta_De_Productos extends JFrame{
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-//			 busqueda_proximo_folio();
 			
 			if(foliosiguiente.equals("")){
 				btnDeshacer.doClick();
@@ -549,7 +542,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 				
 				cmbUnidadDeMedida.setSelectedIndex(0);
 				cmbUso.setSelectedIndex(0);
-				cmb_status.setSelectedIndex(1);
+				cmb_status.setSelectedIndex(0);
 				
                 cmbUnidadDeMedida.setEnabled(true);
                 cmbUso.setEnabled(true);
@@ -570,12 +563,13 @@ public class Cat_Alta_De_Productos extends JFrame{
 				
 				cmbUnidadDeMedida.setSelectedIndex(0);
 				cmbUso.setSelectedIndex(0);
-				cmb_status.setSelectedIndex(1);
+				cmb_status.setSelectedIndex(0);
 				
                 cmbUnidadDeMedida.setEnabled(true);
                 cmbUso.setEnabled(true);
 				cmb_status.setEnabled(true);
 			}
+			
 			txtFolio.setText( busqueda_proximo_folio());
 		}
 	};
@@ -583,74 +577,73 @@ public class Cat_Alta_De_Productos extends JFrame{
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
-				try {
+			try {
 					if(validaCampos()!="") {
 						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 						return;
-							} else{
-										Obj_Alta_De_Productos prod = new Obj_Alta_De_Productos().buscar(txtFolio.getText());
-										if(prod.getFolio().equals(txtFolio.getText())){
-												if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
-														if(validaCampos()!="") {
-															JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-															return;
-														}else{
-															prod.setFolio(txtFolio.getText().toString());
-															prod.setDescripcion(txtDescricion.getText().toLowerCase().toString());
-															prod.setCodigoDeBarras(txtCodigoDeBarras.getText().toLowerCase().toString());
-															prod.setCosto(Double.valueOf(txtCosto.getText().toLowerCase().toString()));
-							  							    prod.setUnidadDeMedida(cmbUnidadDeMedida.getSelectedItem().toString());
-							  							    prod.setUso(cmbUso.getSelectedItem().toString());
-							  							    
-							  							    prod.setPrecioDeVenta(Double.valueOf(txtPrecioDeVenta.getText().toString()));
-							  							
-							  							    prod.setStatus(cmb_status.getSelectedItem().toString());
-							  							    
-																if(prod.actualizar(txtFolio.getText())){
-																			refrestabla();
-																	JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+					} else{
+							Obj_Alta_De_Productos prod = new Obj_Alta_De_Productos().buscar(txtFolio.getText());
+								if(prod.getFolio().equals(txtFolio.getText())){
+										if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
+												if(validaCampos()!="") {
+													JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+													return;
+												}else{
+													prod.setFolio(txtFolio.getText().toString());
+													prod.setDescripcion(txtDescricion.getText().toLowerCase().toString());
+													prod.setCodigoDeBarras(txtCodigoDeBarras.getText().toLowerCase().toString());
+													prod.setCosto(Double.valueOf(txtCosto.getText().toLowerCase().toString()));
+					  							    prod.setUnidadDeMedida(cmbUnidadDeMedida.getSelectedItem().toString());
+					  							    prod.setUso(cmbUso.getSelectedItem().toString());
+					  							    
+					  							    prod.setPrecioDeVenta(Double.valueOf(txtPrecioDeVenta.getText().toString()));
+					  							
+					  							    prod.setStatus(cmb_status.getSelectedItem().toString());
+					  							    
+														if(prod.guardar()){
+																refrestabla();
+																JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
 																	btnDeshacer.doClick();
 																	txtFolio.setEditable(true);
 																	txtFolio.requestFocus();
-																	return;
-																}else{
-																	JOptionPane.showMessageDialog(null, "El registro no se actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-																	return;
-																}
+																return;
+														}else{
+															JOptionPane.showMessageDialog(null, "El registro no se actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+															return;
 														}
-												}else{
-													return;
 												}
 										}else{
-												prod.setFolio(txtFolio.getText().toString());
-												prod.setDescripcion(txtDescricion.getText().toLowerCase().toString());
-												prod.setCodigoDeBarras(txtCodigoDeBarras.getText().toLowerCase().toString());
-												prod.setCosto(Double.valueOf(txtCosto.getText().toLowerCase().toString()));
-				  							    prod.setUnidadDeMedida(cmbUnidadDeMedida.getSelectedItem().toString());
-				  							    prod.setUso(cmbUso.getSelectedItem().toString());
-				  							    
-				  							    prod.setPrecioDeVenta(Double.valueOf(txtPrecioDeVenta.getText().toLowerCase().toString()));
-				  							
-				  							    prod.setStatus(cmb_status.getSelectedItem().toString());
+											return;
+										}
+								}else{
+										prod.setFolio(txtFolio.getText().toString());
+										prod.setDescripcion(txtDescricion.getText().toLowerCase().toString());
+										prod.setCodigoDeBarras(txtCodigoDeBarras.getText().toLowerCase().toString());
+										prod.setCosto(Double.valueOf(txtCosto.getText().toLowerCase().toString()));
+		  							    prod.setUnidadDeMedida(cmbUnidadDeMedida.getSelectedItem().toString());
+		  							    prod.setUso(cmbUso.getSelectedItem().toString());
+		  							    
+		  							    prod.setPrecioDeVenta(Double.valueOf(txtPrecioDeVenta.getText().toLowerCase().toString()));
+		  							
+		  							    prod.setStatus(cmb_status.getSelectedItem().toString());
+									
+										if(prod.guardar()){
+											refrestabla();
+											JOptionPane.showMessageDialog(null,"El registró se guardó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+												btnDeshacer.doClick();
+												txtFolio.setEditable(true);
+												txtFolio.requestFocus();
+											return;
 											
-												if(prod.guardar()){
-													refrestabla();
-													
-													JOptionPane.showMessageDialog(null,"El registró se guardó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
-													btnDeshacer.doClick();
-													txtFolio.setEditable(true);
-													txtFolio.requestFocus();
-													return;
-													
-												}else{
-													JOptionPane.showMessageDialog(null, "El registro no se guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-													return;
-											}
-							      }
-				               }
-						 } catch (NumberFormatException e1) {
-							e1.printStackTrace();
-						} 				
+										}else{
+											JOptionPane.showMessageDialog(null, "El registro no se guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+											return;
+										}
+								}
+		               }
+				 } catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} 				
 							
 		}
 	};

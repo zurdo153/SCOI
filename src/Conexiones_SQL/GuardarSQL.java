@@ -4581,11 +4581,22 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	}
 	
 	public boolean Guardar_Productos(Obj_Alta_De_Productos prod){
-		String query = "exec sp_insert_establecimiento ?,?,?,?,?,?,?,?,?,?,? ";
+		String query = "exec sp_insert_productos ?,?,?,?,?,?,?,? ";
+		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
+			
+//			System.out.println(prod.getFolio());
+//			System.out.println(prod.getDescripcion());
+//			System.out.println(prod.getUnidadDeMedida());
+//			System.out.println(prod.getUso());
+//			System.out.println(prod.getCodigoDeBarras());
+//			System.out.println(prod.getCosto());
+//			System.out.println(prod.getPrecioDeVenta());
+//			System.out.println(prod.getStatus());
+			
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, prod.getFolio().trim());
 			pstmt.setString(2, prod.getDescripcion().toUpperCase().trim());
@@ -4606,7 +4617,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Productos ] Insert  SQLException: sp_insert_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Productos ] Insert  SQLException: sp_insert_productos "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 
 				}
 			} 

@@ -103,11 +103,12 @@ public class Cat_Trabajos_Cortes extends JFrame{
         }
     public boolean isCellEditable(int fila, int columna){
                 switch(columna){
-                        case 0  : if(tabla_model_grupos.getValueAt(fila, 1).toString().trim().equals("IZACEL") || Double.valueOf(tabla_model_grupos.getValueAt(fila, 11).toString()) > 0){
-                        				return false; 
-			                        }else{
-			                        	return true; 
-			                        }             	
+//                        case 0  : if(tabla_model_grupos.getValueAt(fila, 1).toString().trim().equals("IZACEL") || Double.valueOf(tabla_model_grupos.getValueAt(fila, 11).toString()) > 0){
+//                        				return false; 
+//			                        }else{
+//			                        	return true; 
+//			                        }      
+                		case 0	: return true;
                         case 1  : return false; 
                         case 2  : return false; 
                         case 3  : return false; 
@@ -623,19 +624,25 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	
 	public void refresh(){
 		
-		while(tabla_grupos.getRowCount()>0){
-			tabla_model_grupos.removeRow(0);
+//		while(tabla_grupos.getRowCount()>0){
+//			tabla_model_grupos.removeRow(0);
+//		}
+//		String[][] matriz = new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde(),grupo_corte);
+//		String[] fila = new String[20];
+//        for(int i=0; i<matriz.length; i++){
+//        	
+//        	for(int j=0; j<20; j++){
+//        		fila[j] = matriz[i][j]+"";
+//        	}
+//        		tabla_model_grupos.addRow(fila);
+//        }
+		
+		tabla_model_grupos.setRowCount(0);
+		String[][] matriz = new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde(),grupo_corte);
+		for(String[] fila: matriz){
+			tabla_model_grupos.addRow(fila);
 		}
-			String[][] matriz = new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde(),grupo_corte);
- 
-			String[] fila = new String[20];
-	        for(int i=0; i<matriz.length; i++){
-	        	
-	        	for(int j=0; j<20; j++){
-	        		fila[j] = matriz[i][j]+"";
-	        	}
-	        		tabla_model_grupos.addRow(fila);
-	        }
+
 			calcular();
 			calcular_caja_verde();
 			calcular_totales();
@@ -660,13 +667,11 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		double luz       = 0;
 		double apartados = 0;
 		
-		while(tabla_concentrado.getRowCount()>0){
-			tabla_model_concentrado.removeRow(0);
-		}
+		tabla_model_concentrado.setRowCount(0);
 		
 		if(tabla_grupos.getRowCount()<=0){
-				while(tabla_concentrado.getRowCount()>0){
-					tabla_model_concentrado.removeRow(0);}
+			
+			tabla_model_concentrado.setRowCount(0);
 				JOptionPane.showMessageDialog(null, "No existen cortes en el establecimiento seleccionado, por lo cual no puede realizarce un calculo","Aviso",JOptionPane.WARNING_MESSAGE);
 				return;
 		}else{

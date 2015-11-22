@@ -31,7 +31,6 @@ import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
-import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Proveedores;
@@ -4010,44 +4009,4 @@ public boolean Proveedor(Obj_Alta_Proveedores_Polizas prv){
 	return true;
 }	
 	
-public boolean Productos(Obj_Alta_De_Productos prod, String folio){
-	String query = "update tb_establecimiento set nombre=?, abreviatura=?,serie=?, grupo_para_cheque=?, status=?, " +
-					" folio_grupo_para_cortes=?, permitir_nc=?, domicilio=?, razon_social=?, rfc=?, telefono=? where folio='" + folio + "'";
-	Connection con = new Connexion().conexion();
-	PreparedStatement pstmt = null;
-	try {
-		con.setAutoCommit(false);
-		pstmt = con.prepareStatement(query);
-		pstmt.setString(1, prod.getFolio().trim());
-		pstmt.setString(2, prod.getDescripcion().toUpperCase().trim());
-		pstmt.setString(3, prod.getUnidadDeMedida().toUpperCase().trim());
-		pstmt.setString(4, prod.getUso().toUpperCase().trim());
-		pstmt.setString(5, prod.getCodigoDeBarras());
-		pstmt.setDouble(6, prod.getCosto());
-		pstmt.setDouble(7, prod.getPrecioDeVenta());
-		pstmt.setString(8, prod.getStatus().toUpperCase().trim());
-		pstmt.executeUpdate();
-		con.commit();
-	} catch (Exception e) {
-		System.out.println("SQLException: "+e.getMessage());
-		if(con != null){
-			try{
-				System.out.println("La transacción ha sido abortada");
-				con.rollback();
-				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Productos ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}catch(SQLException ex){
-				System.out.println(ex.getMessage());
-			}
-		}
-		return false;
-	}finally{
-		try {
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			
-		}
-	}		
-	return true;
-}
 }

@@ -7346,20 +7346,34 @@ public class BuscarSQL {
 	
 	public Obj_Alta_De_Productos Productos(String folio) throws SQLException{
 		Obj_Alta_De_Productos prod = new Obj_Alta_De_Productos();
-		String query = "select * from tb_establecimiento where folio = '"+folio+"'";
+		String query = " select tb_productos.folio_producto "
+				+ "		,tb_productos.descripcion "
+				+ "		,tb_unidad_de_medida_de_productos.descripcion as unidad_de_medida"
+				+ "		,tb_uso_de_productos.descripcion as uso"
+				+ "		,tb_productos.codigo_de_barras_principal "
+				+ "		,tb_productos.costo "
+				+ "		,tb_productos.precio_de_venta "
+				+ "		,case when ( tb_productos.status = 'V') then 'VIGENTE' "
+				+ "			else 'CANCELAR' "
+				+ "		 end as status "
+				+ " from tb_productos "
+				+ " inner join tb_unidad_de_medida_de_productos on tb_unidad_de_medida_de_productos.folio = tb_productos.folio_unidad_de_medida "
+				+ " inner join tb_uso_de_productos on tb_uso_de_productos.folio = tb_productos.folio_uso "
+				+ " where tb_productos.status = 'V' and tb_productos.folio_producto = '"+folio+"'";
+		
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				prod.setFolio(rs.getString("folio"));
-				prod.setDescripcion(rs.getString("nombre").trim());
-				prod.setUnidadDeMedida(rs.getString("abreviatura").trim());
-				prod.setUso(rs.getString("serie").trim());
-				prod.setCodigoDeBarras(rs.getString("grupo_para_cheque"));
-				prod.setCosto(rs.getDouble("status"));
-				prod.setPrecioDeVenta(rs.getDouble("folio_grupo_para_cortes"));
-				prod.setStatus(rs.getString("permitir_nc"));
+				prod.setFolio(rs.getString("folio_producto"));
+				prod.setDescripcion(rs.getString("descripcion").trim());
+				prod.setUnidadDeMedida(rs.getString("unidad_de_medida").trim());
+				prod.setUso(rs.getString("uso").trim());
+				prod.setCodigoDeBarras(rs.getString("codigo_de_barras_principal"));
+				prod.setCosto(rs.getDouble("costo"));
+				prod.setPrecioDeVenta(rs.getDouble("precio_de_venta"));
+				prod.setStatus(rs.getString("status"));
 				
 			}
 			
