@@ -1,4 +1,4 @@
-package Cat_Contabilidad;
+package Cat_Compras;
 
 import java.awt.Container;
 import java.awt.Event;
@@ -33,21 +33,21 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
-import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
+import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
+public class Cat_Unidades_De_Medida_De_Producto extends JFrame{
 	int foliosiguiente=0;
 	String Activo ="";
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
 	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
-	JTextField txtConcepto= new Componentes().text(new JCTextField(), "Concepto De La Orden De Pago",100,"String");
+	JTextField txtUnidad= new Componentes().text(new JCTextField(), "Teclea El Nombre De La Unidad De Medida De Producto",100,"String");
 	JTextField txtfiltro_tabla = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 30, "String");
 	
 	JLabel JLBactivo= new JLabel();
@@ -63,7 +63,7 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
 	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
 	
-	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio","Concepto", "Estatus"}){
+	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio","Unidad", "Estatus"}){
 	            @SuppressWarnings("rawtypes")
 	            Class[] types = new Class[]{
 	                       java.lang.Object.class,
@@ -90,16 +90,16 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 		private TableRowSorter trsfiltro;
 		
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Conceptos_De_Orden_De_Pago(){
+	public Cat_Unidades_De_Medida_De_Producto(){
 			this.setSize(640,700);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/tamano-del-guion-menos-icono-8053-64.png"));
-			panel.setBorder(BorderFactory.createTitledBorder("Catalogo de Conceptos De Una Orden De Pago"));
+			panel.setBorder(BorderFactory.createTitledBorder("Alta De Las Unidades De Medida De Producto"));
 			
-			this.setTitle("Conceptos De Orden De Pago");
+			this.setTitle("Unidades De Medida De Producto");
 			trsfiltro = new TableRowSorter(modelo); 
 			tabla.setRowSorter(trsfiltro);
 			
@@ -111,17 +111,18 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 			panel.add(btnNuevo).setBounds               (x+=115 ,y   ,width  ,height);
 			panel.add(btnDeshacer).setBounds            (x+=115 ,y   ,width  ,height);
 			x=10;
-			panel.add(new JLabel("Concepto:")).setBounds(x     ,y+=25,width  ,height);
-			panel.add(txtConcepto).setBounds            (x+50  ,y    ,width*4,height);
+			panel.add(new JLabel("Unidad:")).setBounds(x     ,y+=25,width  ,height);
+			panel.add(txtUnidad).setBounds            (x+50  ,y    ,width*4,height);
 			panel.add(new JLabel("Estatus:")).setBounds (x+460 ,y    ,width  ,height);
 			panel.add(cmb_status).setBounds             (x+510 ,y    ,width  ,height);
 			panel.add(txtfiltro_tabla).setBounds        (x     ,y+=35,width*5,height);
 			panel.add(btnGuardar).setBounds             (x+510 ,y    ,width  ,height);
 			panel.add(getPanelTabla()).setBounds        (x     ,y+=20,608    ,550);
 			
-			txtConcepto.setEditable(false);
+			txtUnidad.setEditable(false);
 			cmb_status.setEnabled(false);
 			btnEditar.setEnabled(false);
+			btnGuardar.setEnabled(false);
 			
 			btnGuardar.addActionListener(guardar);
 			btnSalir.addActionListener(salir);
@@ -234,7 +235,7 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 		try {
 			Connexion con = new Connexion();
 			s = con.conexion().createStatement();
-			rs = s.executeQuery("select folio_concepto,concepto_orden_de_pago, case when status='V' then 'VIGENTE' else 'CANCELADO' end  as status from tb_conceptos_de_orden_de_pago order by concepto_orden_de_pago asc");
+			rs = s.executeQuery("select folio,descripcion, case when status='V' then 'VIGENTE' else 'CANCELADO' end  as status from tb_unidad_de_medida_de_productos order by descripcion asc");
 			while (rs.next())
 			{  String [] fila = new String[3];
 			   fila[0] = rs.getString(1).trim();
@@ -279,7 +280,7 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				txtConcepto.requestFocus();
+				txtUnidad.requestFocus();
 			}
 		}
 	};
@@ -297,12 +298,13 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 				txtFolio.requestFocus();
 				return;
 			}else{
-				Obj_Conceptos_De_Ordenes_De_Pago concepto = new Obj_Conceptos_De_Ordenes_De_Pago().buscar(Integer.parseInt(txtFolio.getText()));
-			if(concepto.getFolio() != 0){
-			txtConcepto.setText(concepto.getConcepto().toString()+"");
-			cmb_status.setSelectedItem(concepto.getEstatus().toString());
+				Obj_Unidades_De_Medida_De_Producto unidad = new Obj_Unidades_De_Medida_De_Producto().buscar(Integer.parseInt(txtFolio.getText()));
+			if(unidad.getFolio() != 0){
+			txtUnidad.setText(unidad.getUnidad().toString()+"");
+			cmb_status.setSelectedItem(unidad.getEstatus().toString());
 			btnEditar.setEnabled(true);
 			btnGuardar.setEnabled(false);
+			txtFolio.setEnabled(false);
 			}else{
 				JOptionPane.showMessageDialog(null, "El Folio Buscado No Existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				return;
@@ -318,17 +320,19 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 			txtfiltro_tabla.setText("");
 			btnNuevo.setEnabled(true);
 			btnEditar.setEnabled(true);
-			txtConcepto.setText("");
-			txtConcepto.setEditable(false);
+			txtUnidad.setText("");
+			btnGuardar.setEnabled(false);
+			txtUnidad.setEditable(false);
 			cmb_status.setEnabled(false);
 			cmb_status.setSelectedIndex(0);
 			txtFolio.requestFocus();
+			txtFolio.setEnabled(true);
 		}
 	};
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			if(txtConcepto.getText().equals("")){
+			if(txtUnidad.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "Seleccione Un Registro De La Tabla A La Derecha Para Editar o Teclee El Folio","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
@@ -338,8 +342,8 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 				cmb_status.setEnabled(true);
 				btnEditar.setEnabled(false);
 				btnGuardar.setEnabled(true);
-				txtConcepto.setEditable(true);
-				txtConcepto.requestFocus(true);
+				txtUnidad.setEditable(true);
+				txtUnidad.requestFocus(true);
 			}
 		}
 	};
@@ -352,8 +356,8 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 				txtFolio.setText( busqueda_proximo_folio()+"");
 				txtFolio.setEnabled(false);
 				btnGuardar.setEnabled(true);
-				txtConcepto.setEditable(true);
-				txtConcepto.requestFocus();
+				txtUnidad.setEditable(true);
+				txtUnidad.requestFocus();
 				btnEditar.setEnabled(false);
 				cmb_status.setSelectedIndex(0);
 				cmb_status.setEnabled(true);
@@ -362,8 +366,8 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 				txtFolio.setText(1+"");
 				txtFolio.setEditable(false);
 				btnGuardar.setEnabled(true);
-				txtConcepto.setEditable(true);
-				txtConcepto.requestFocus();
+				txtUnidad.setEditable(true);
+				txtUnidad.requestFocus();
 				btnEditar.setEnabled(false);
 				cmb_status.setSelectedIndex(0);
 				cmb_status.setEnabled(true);
@@ -381,12 +385,12 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 						int[] columnas = {0,1,2};
 						new Obj_Filtro_Dinamico_Plus(tabla,"", columnas);
 						
-						Obj_Conceptos_De_Ordenes_De_Pago concepto = new Obj_Conceptos_De_Ordenes_De_Pago().buscar(Integer.parseInt(txtFolio.getText()));
+						Obj_Unidades_De_Medida_De_Producto concepto = new Obj_Unidades_De_Medida_De_Producto().buscar(Integer.parseInt(txtFolio.getText()));
 						
 					if(concepto.getFolio() == Integer.parseInt(txtFolio.getText())){
 						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
 							concepto.setFolio(Integer.parseInt(txtFolio.getText()));
-							concepto.setConcepto(txtConcepto.getText().toUpperCase().trim());
+							concepto.setUnidad(txtUnidad.getText().toUpperCase().trim());
 							concepto.setEstatus(cmb_status.getSelectedItem().toString().trim());
 							if(validaCampos()!="") {
 								JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -407,7 +411,7 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 						}
 					}else{
 						concepto.setFolio(Integer.parseInt(txtFolio.getText()));
-						concepto.setConcepto(txtConcepto.getText().toUpperCase().trim());
+						concepto.setUnidad(txtUnidad.getText().toUpperCase().trim());
 						concepto.setEstatus(cmb_status.getSelectedItem().toString().trim());
 								if(concepto.guardar()){
 									
@@ -433,14 +437,15 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 	        	if(e.getClickCount()==1){
 	        		int fila = tabla.getSelectedRow();
 	        		    txtFolio.setText(tabla.getValueAt(fila,0).toString().substring(0,tabla.getValueAt(fila,0).toString().length()));
-						txtConcepto.setText(tabla.getValueAt(fila,1).toString().substring(0,tabla.getValueAt(fila,1).toString().length()));
+						txtUnidad.setText(tabla.getValueAt(fila,1).toString().substring(0,tabla.getValueAt(fila,1).toString().length()));
 						cmb_status.setSelectedItem(tabla.getValueAt(fila,2).toString().substring(0,tabla.getValueAt(fila,2).toString().length()));
 						btnEditar.setEnabled(true);
 						cmb_status.setEnabled(false);
 						btnEditar.setEnabled(true);
-						txtConcepto.setEditable(false);
-						txtConcepto.requestFocus();
-						txtFolio.setEditable(true);
+						txtUnidad.setEditable(false);
+						txtUnidad.requestFocus();
+						txtFolio.setEditable(false);
+						
 	        	}
 	        }
         });
@@ -448,7 +453,7 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 	
 	public int  busqueda_proximo_folio() {
 		Connexion con = new Connexion();
-		String query = "select max(folio_concepto)+1 as 'Maximo' from tb_conceptos_de_orden_de_pago ";
+		String query = "select max(folio)+1 as 'Maximo' from tb_unidad_de_medida_de_productos";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -476,14 +481,14 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 	
 	private String validaCampos(){
 		String error="";
-		if(txtConcepto.getText().equals("")) 		error+= "-Nombre Del Concepto\n";
+		if(txtUnidad.getText().equals("")) 		error+= "-Nombre Del Concepto\n";
 		return error;
 	}
 	
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Conceptos_De_Orden_De_Pago().setVisible(true);
+			new Cat_Unidades_De_Medida_De_Producto().setVisible(true);
 		}catch(Exception e){	}
 	}
 	

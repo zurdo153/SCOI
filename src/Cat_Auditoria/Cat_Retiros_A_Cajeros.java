@@ -141,8 +141,8 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		panel.add(btnRecibir).setBounds(214,135,130,20);
 		
 		ValidaPedido();
-//		pedidoDeMonedas(btnPedido);
-//		pedidoDeMonedas(btnRecibir);
+		pedidoDeMonedas(btnPedido);
+		pedidoDeMonedas(btnRecibir);
 		
 		txtFolio_empleado.setEditable(false);
 		txtasignacion.setEditable(false);
@@ -209,9 +209,9 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btn.getActionCommand().equals("Pedir Monedas")){
-					new CapturarPedido(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "PEDIDO", "CAJERA").setVisible(true);
+					new CapturarPedido(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "PEDIDO", "CAJER@").setVisible(true);
 				}else{
-					new CapturarPedido(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "RECIBIDO", "CAJERA").setVisible(true);
+					new CapturarPedido(Integer.valueOf(txtFolio_empleado.getText().toString().trim()),txtNombre.getText().toString().trim(), "RECIBIDO", "CAJER@").setVisible(true);
 				}
 			}
 		});
@@ -1046,12 +1046,7 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
         	
 	  	}
         	
-	  	public static void main(String [] arg){
-			try{
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Retiros_A_Cajeros().setVisible(true);
-			}catch(Exception e){	}
-		}
+
 	  	
 		public class CapturarPedido extends Cat_Pedido_De_Monedas{
 			
@@ -1078,7 +1073,7 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 //				System.out.println(entregoMonedas);
 				cmbEntrega.setEnabled(entregoMonedas);
 				
-				Constructor();
+				Constructor(txtFolio_empleado.getText().toString().trim(),busqueda_proximo_folio()+"");
 				calcularTotales();
 				
 				String[] observaciones = new BuscarTablasModel().observacionesPedidoDeMonedas(folioEmp);
@@ -1092,6 +1087,7 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 			    guardar(btn_guardar, folioEmp, status_pedido, status_pedido.equals("PEDIDO")?txtTotalPedido:( status_pedido.equals("SURTIDO")?txtTotalSurtido:( status_pedido.equals("ENTREGADO")?txtTotalEntregado:( txtTotalRecibido ) )));
 			    
 			}
+			
 			
 			private void agregar(final JTable tbl) {
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1125,6 +1121,46 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 				});
 		    }
 		}
+		
+		 int foliosiguiente=0;
+		 
+		public int  busqueda_proximo_folio() {
+			Connexion con = new Connexion();
+			String query = "declare @sqlqry nvarchar(max),@folio varchar(7)                        "
+		 		     + "   set nocount on"
+		 		     + "   set @folio=(select folio+1 from tb_folios Where folio_transaccion='19' and status=1)"
+		 		     + "  set @sqlqry='update tb_folios set folio='+@folio+' Where folio_transaccion=''19'' and status=1'"
+		 		     + "  exec sp_executesql @sqlqry"
+		 		     + "  set nocount off"
+		 		     + " set @sqlqry='select '+@folio"
+		 		     + " exec sp_executesql @sqlqry";
+			
+			Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+			    ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					 foliosiguiente =(rs.getInt(1));
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.err.println("Error");
+				JOptionPane.showMessageDialog(null, "Error en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				return foliosiguiente ;
+			}
+			finally{
+				 if (stmt != null) { try {
+					stmt.close();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Error en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					e.printStackTrace();
+				} }
+			}
+			return foliosiguiente;
+				}
+		
+		
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  	
 	
 		
@@ -1170,4 +1206,10 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 //				+ "            ,"+vector.get(3).toString()+" as saldo_final_tecleado "
 //				+ "            ,"+vector.get(5).toString()+" as diferiencia "
 
+	  	public static void main(String [] arg){
+			try{
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				new Cat_Retiros_A_Cajeros().setVisible(true);
+			}catch(Exception e){	}
+		}
 }

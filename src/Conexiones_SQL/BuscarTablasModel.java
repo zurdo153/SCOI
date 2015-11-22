@@ -2164,38 +2164,38 @@ public String folio_ordern_de_pago_en_efectivo(){
     return folio; 
 }
 
-public String[][] denominaciones_pedido_de_monedas(){
-	
-	String query_lista = "exec sp_select_tabla_pedido_de_monedas_pendientes "+ (new Obj_Usuario().getFolio()); 
-	
-	String[][] matriz = new String[get_filas(query_lista)][10];
-	try {
-		Statement stmt = new Connexion().conexion().createStatement();
-		ResultSet rs = stmt.executeQuery(query_lista);
-		
-		
-		int i = 0;
-		while(rs.next()){
-			
-			matriz[i][0] =  df.format(rs.getDouble(1))+"";
-			matriz[i][1] =  ""+df.format(rs.getDouble(2)); 
-			matriz[i][2] =  ""+(rs.getInt(3)==0?"":rs.getInt(3));
-			matriz[i][3] =  ""+(rs.getDouble(4)==0?"":rs.getDouble(4));
-			matriz[i][4] =  ""+(rs.getInt(5)==0?"":rs.getInt(5));
-			matriz[i][5] =  ""+(rs.getDouble(6)==0?"":rs.getDouble(6));
-			matriz[i][6] =  ""+(rs.getInt(7)==0?"":rs.getInt(7));
-			matriz[i][7] =  ""+(rs.getDouble(8)==0?"":rs.getDouble(8));
-			matriz[i][8] =  ""+(rs.getInt(9)==0?"":rs.getInt(9));
-			matriz[i][9] =  ""+(rs.getDouble(10)==0?"":rs.getDouble(10));
-			
-			i++;
-		}
-	} catch (SQLException e1) {
-		e1.printStackTrace();
-		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion recepcion_de_mercancia_en_resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
-	}
-    return matriz; 
-}
+//public String[][] denominaciones_pedido_de_monedas(){
+//	
+//	String query_lista = "exec sp_select_tabla_pedido_de_monedas_pendientes "+ (new Obj_Usuario().getFolio()); 
+//	
+//	String[][] matriz = new String[get_filas(query_lista)][10];
+//	try {
+//		Statement stmt = new Connexion().conexion().createStatement();
+//		ResultSet rs = stmt.executeQuery(query_lista);
+//		
+//		
+//		int i = 0;
+//		while(rs.next()){
+//			
+//			matriz[i][0] =  df.format(rs.getDouble(1))+"";
+//			matriz[i][1] =  ""+df.format(rs.getDouble(2)); 
+//			matriz[i][2] =  ""+(rs.getInt(3)==0?"":rs.getInt(3));
+//			matriz[i][3] =  ""+(rs.getDouble(4)==0?"":rs.getDouble(4));
+//			matriz[i][4] =  ""+(rs.getInt(5)==0?"":rs.getInt(5));
+//			matriz[i][5] =  ""+(rs.getDouble(6)==0?"":rs.getDouble(6));
+//			matriz[i][6] =  ""+(rs.getInt(7)==0?"":rs.getInt(7));
+//			matriz[i][7] =  ""+(rs.getDouble(8)==0?"":rs.getDouble(8));
+//			matriz[i][8] =  ""+(rs.getInt(9)==0?"":rs.getInt(9));
+//			matriz[i][9] =  ""+(rs.getDouble(10)==0?"":rs.getDouble(10));
+//			
+//			i++;
+//		}
+//	} catch (SQLException e1) {
+//		e1.printStackTrace();
+//		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion recepcion_de_mercancia_en_resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+//	}
+//    return matriz; 
+//}
 
 public String checar_Pedido_De_Monedas_Cajero(){
 	

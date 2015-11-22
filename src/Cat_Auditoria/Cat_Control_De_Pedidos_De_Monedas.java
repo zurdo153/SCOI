@@ -98,12 +98,13 @@ public class Cat_Control_De_Pedidos_De_Monedas extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbStatusPedido = new JComboBox(statusPedido);
 	
-	JButton btnReporte		= new JButton("Reporte");
-	JButton btnActualizar 	= new JButton("Actualizar");
+	JButton btnReporte		= new JButton("Reporte",new ImageIcon("imagen/Lista.png"));
+	JButton btnActualizar 	= new JButton("Actualizar",new ImageIcon("imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-16.png"));
 	
 	String status_parametro = "";
 	
 	int fila=-1;
+	int foliosiguiente=0;
 	
 //	esta funcion se usara en la venta de retiros programados para avilitar el boton de pedido o de recibir
 	public static String tipoDeUsuarioQuePidio(){return new BuscarTablasModel().tipoDeUsuarioParaPedidoDeMonedas();}
@@ -261,11 +262,19 @@ public void llenarTablaDePedidos(){
 	
 	ActionListener ReportePedidodeMonedas = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			int folio=0;
+			if(Integer.valueOf(modelo.getRowCount())==0)
+			{
+				folio=-1;
+			}else
+			{
+				folio=(fila<0 ? (-1) : Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()));
+			}
 			String basedatos="2.26";
 			String vista_previa_reporte="no";
 			int vista_previa_de_ventana=0;
-			
-			String comando="exec sp_select_pedido_de_monedas_con_status_pendiente "+(fila<0 ? (-1) : Integer.valueOf(tabla.getValueAt(fila, 1).toString().trim()));
+		
+			String comando="exec sp_select_pedido_de_monedas_con_status_pendiente "+folio;
 			
 			String reporte = "Obj_Reporte_De_Pedido_Monedas.jrxml";
 							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
@@ -299,7 +308,7 @@ public void llenarTablaDePedidos(){
 					pedido.setObservacion("");
 					pedido.setEmpleado_entrego("");
 			
-					if(pedido.guardar()){
+					if(pedido.guardar("")){
 						
 							llenarTablaDePedidos();
 							new Obj_Filtro_Dinamico(tabla,"Folio", txtCodigo.getText().toUpperCase(),"Empleado",txtDescripcion.getText(), "Establecimiento", cmbEstablecimiento.getSelectedItem().toString(), "", "");
@@ -364,12 +373,7 @@ public void llenarTablaDePedidos(){
 	}
    	
    	
-	public static void main(String[] args) {
-		try{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Control_De_Pedidos_De_Monedas().setVisible(true);
-		}catch(Exception e){	}		
-	}
+
 	
 	public class CapturarPedido extends Cat_Pedido_De_Monedas{
 		
@@ -394,7 +398,7 @@ public void llenarTablaDePedidos(){
 			
 			cmbEntrega.setEnabled(entregoMonedas);
 			
-			Constructor();
+			Constructor(folioEmp+"","");
 			calcularTotales();
 			
 			String[] observaciones = new BuscarTablasModel().observacionesPedidoDeMonedas(folioEmp);
@@ -444,6 +448,13 @@ public void llenarTablaDePedidos(){
 				}
 			});
 	    }
+	}
+	
+	public static void main(String[] args) {
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Control_De_Pedidos_De_Monedas().setVisible(true);
+		}catch(Exception e){	}		
 	}
 	
 }
