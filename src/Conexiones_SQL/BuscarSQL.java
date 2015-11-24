@@ -7363,6 +7363,30 @@ public class BuscarSQL {
 		return prod;
 	}
 	
+	public int  Folio_De_Trabajo(String fecha_trabajo, String concentrado){
+		int folio=0;
+		
+		String query = "select top 1 folio_trabajo_de_cortes from tb_alimentacion_de_cortes where convert(datetime,convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_trabajo,103)) = convert(datetime,'"+fecha_trabajo+"') "
+					+ "  and tb_alimentacion_de_cortes.folio_grupo_para_cortes = (select folio_grupo_para_cortes from tb_grupos_para_cortes where grupo_para_cortes = '"+concentrado+"')";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				folio=(rs.getInt("folio_trabajo_de_cortes"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return folio;
+	}
 	public Obj_Unidades_De_Medida_De_Producto existe_unidad_de_medida(int folio){
 		Obj_Unidades_De_Medida_De_Producto unidad = new Obj_Unidades_De_Medida_De_Producto();
 		String query = "select folio,"

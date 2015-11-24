@@ -1827,4 +1827,39 @@ public class Cargar_Combo {
 		return pila;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String[] tipos_de_concentrados(){
+		String query = "select grupo_para_cortes from tb_grupos_para_cortes where status = 1";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+//			int j=0;
+			while(rs.next()){
+				miVector.add(rs.getString("grupo_para_cortes"));
+//				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
 }

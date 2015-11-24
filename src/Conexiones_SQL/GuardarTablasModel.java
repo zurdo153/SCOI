@@ -1485,14 +1485,14 @@ public boolean Borra_departamento_y_puestos_dependientes(int folio_establecimine
 	return true;
 	}
 
-public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double TotalDelCorte,double TotalRetiroCliente, double TotalRecibosDeLuz, double Izacel, double Planes, double Pines, double Depositos, double CajaVerde){
+public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double TotalDelCorte,double TotalRetiroCliente, double TotalRecibosDeLuz, double Izacel, double Planes, double Pines, double Depositos, double CajaVerde, String grupo_corte){
 	
-	int folio_usuario = new Obj_Usuario().getFolio();
+	int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
 	
 	String queryUpdate = "update tb_folios set folio = (select folio+1 from tb_folios where transaccion = 'Trabajo De Cortes') where transaccion = 'Trabajo De Cortes'";
 	String querySelect = "select folio as folio_trabajo_cortes from  tb_folios as folio_trabajo_cortes where transaccion = 'Trabajo De Cortes'";
 //	String query = "exec sp_insert_trabajo_de_cortes ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
-	String query = "exec sp_update_trabajo_de_cortes ?,?,?,?";
+	String query = "exec sp_update_trabajo_de_cortes ?,?,?,?,?";
 	
 	String queryInsertTotales = "exec sp_insert_totales_trabajo_de_cortes ?,?,?,?,?,?,?,?,?";
 
@@ -1524,6 +1524,7 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 			pstmt.setString(2, "CV");
 			pstmt.setInt(3, folio_trabajo);
 			pstmt.setInt(4, folio_usuario);
+			pstmt.setString(5, grupo_corte);
 			pstmt.executeUpdate();
 		}
 		
@@ -1533,6 +1534,7 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 			pstmt.setString(2, "GR");
 			pstmt.setInt(3, folio_trabajo);
 			pstmt.setInt(4, folio_usuario);
+			pstmt.setString(5, grupo_corte);
 			pstmt.executeUpdate();
 		}
 		
