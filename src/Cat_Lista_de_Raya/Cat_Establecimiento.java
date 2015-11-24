@@ -338,7 +338,7 @@ public class Cat_Establecimiento extends JFrame{
 	    }
 	private void refrestabla(){
 
-		while(tabla.getRowCount()>0){ modelo.removeRow(0);}
+		modelo.setRowCount(0);
 		
 		Statement s;
 		ResultSet rs;
