@@ -1,5 +1,6 @@
 package Cat_Compras;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Toolkit;
@@ -16,6 +17,7 @@ import java.sql.Statement;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.FocusManager;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -47,9 +49,9 @@ public class Cat_Compra_De_Cascos extends JFrame{
 	
 	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
 	JTextField txtBeneficiario= new Componentes().text(new JCTextField(), "Captura El Nombre Del Beneficiario",100,"String");
+	JTextField txtTotalAPagar= new Componentes().text(new JCTextField(), "Total A Pagar",100,"String");
 	
 	JLabel JLBactivo= new JLabel();
-	
 	
 	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
@@ -82,6 +84,7 @@ public class Cat_Compra_De_Cascos extends JFrame{
 		JScrollPane scrollAsignado = new JScrollPane(tabla);
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
+		int fila=0,columna=3;
 		
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Compra_De_Cascos(){
@@ -105,7 +108,9 @@ public class Cat_Compra_De_Cascos extends JFrame{
 			panel.add(btnGuardar).setBounds             (x+=115 ,y   ,width  ,height);
 			x=10;
 			panel.add(new JLabel("Beneficiario:")).setBounds(x     ,y+=25,width  ,height);
-			panel.add(txtBeneficiario).setBounds            (x+60  ,y    ,width*4+42,height);
+			panel.add(txtBeneficiario).setBounds            (x+60  ,y    ,width*3+42,height);
+			panel.add(txtTotalAPagar).setBounds             (x+420  ,y-3    ,width,height);
+			
 			panel.add(getPanelTabla()).setBounds        (x     ,y+=25,503    ,130);
 			
 			txtBeneficiario.setEditable(false);
@@ -115,7 +120,7 @@ public class Cat_Compra_De_Cascos extends JFrame{
 			btnDeshacer.addActionListener(deshacer);
 			btnNuevo.addActionListener(nuevo);
 			cont.add(panel);
-
+			tabla.addKeyListener(op_key);
 			
              ///deshacer con escape
 			             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
@@ -148,8 +153,92 @@ public class Cat_Compra_De_Cascos extends JFrame{
 				                    	    }
 			                 });
 			                  
+		  ///DEL JTEXTFIELD A LA TABLA
+			          	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+			          	       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "BUSCA");
+			     	        getRootPane().getActionMap().put("BUSCA", new AbstractAction(){
+			        	        @Override
+			        	        public void actionPerformed(ActionEvent e)
+			        	        {
+			        	                   fila=0;
+			        	                   columna=3;			        	        
+			        	    				tabla.getSelectionModel().setSelectionInterval(fila, fila);
+			        	    				tabla.editCellAt(fila, columna);
+			        	    				Component aComp=tabla.getEditorComponent();
+			        	    				aComp.requestFocus();
+			        	    		}
+			        	    });
+			                  
 			                  
 	}
+	
+	
+	KeyListener op_key = new KeyListener() {
+		public void keyTyped(KeyEvent e) {}
+		public void keyReleased(KeyEvent e) {
+			ValidaValor();	
+		}
+		public void keyPressed(KeyEvent e) {}
+	};
+	
+	public boolean ValidaValor(){
+			boolean valor=false;
+						if(isNumeric(modelo.getValueAt(fila,3).toString().trim())){
+									RecorridoFoco();
+									valor = true;
+							}else{
+									tabla.getSelectionModel().setSelectionInterval(fila, fila);
+									JOptionPane.showMessageDialog(null, "La Fila  [ "+(fila+1)+" ] En La Columna Cantidad Solo Acepta Numeros Enteros","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+									modelo.setValueAt(0, fila, columna);
+									tabla.editCellAt(fila, columna);
+									Component aComp=tabla.getEditorComponent();
+									aComp.requestFocus();
+							}
+			return valor;
+		}
+
+		private boolean isNumeric(String cadena){
+			try {
+				if(cadena.equals("")){
+		    		return true;
+				}else{
+					Integer.parseInt(cadena);
+		    		return true;
+				}
+			} catch (NumberFormatException nfe){
+				return false;
+			}
+		}
+	
+	@SuppressWarnings("deprecation")
+	public void RecorridoFoco(){
+		int cantidadDeFilas = tabla.getRowCount();
+		String sacarFocoDeTabla = "no";
+		if(fila == cantidadDeFilas-1){
+				if(columna==3){
+					sacarFocoDeTabla="si";
+					
+						}
+		}else{
+			sacarFocoDeTabla = "no";
+			fila=fila+1;
+		}
+            
+		tabla.getSelectionModel().setSelectionInterval(fila, fila);
+		tabla.editCellAt(fila, columna);
+		Component aComp=tabla.getEditorComponent();
+		aComp.requestFocus();
+
+		if(sacarFocoDeTabla.equals("si")){
+			tabla.lostFocus(null, null);
+			txtBeneficiario.requestFocus();
+		}
+	};
+
+	
+	
+	
+
 	private JScrollPane getPanelTabla()	{	
 			tabla.getTableHeader().setReorderingAllowed(false) ;
 			tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -254,43 +343,43 @@ public class Cat_Compra_De_Cascos extends JFrame{
 						int[] columnas = {0,1,2};
 						new Obj_Filtro_Dinamico_Plus(tabla,"", columnas);
 						
-						Obj_Conceptos_De_Ordenes_De_Pago concepto = new Obj_Conceptos_De_Ordenes_De_Pago().buscar(Integer.parseInt(txtFolio.getText()));
-						
-					if(concepto.getFolio() == Integer.parseInt(txtFolio.getText())){
-						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
-							concepto.setFolio(Integer.parseInt(txtFolio.getText()));
-							concepto.setConcepto(txtBeneficiario.getText().toUpperCase().trim());
-							if(validaCampos()!="") {
-								JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-								return;
-							}else{
-								if(concepto.guardar()){
-								    refrestabla();
-									JOptionPane.showMessageDialog(null,"El Registró Se Actualizó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-									btnDeshacer.doClick();
-									return;
-								}else{
-									JOptionPane.showMessageDialog(null, "El Registro No Se Actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
-									return;
-								}
-							}
-						}else{
-							return;
-						}
-					}else{
-						concepto.setFolio(Integer.parseInt(txtFolio.getText()));
-						concepto.setConcepto(txtBeneficiario.getText().toUpperCase().trim());
-								if(concepto.guardar()){
-									
-									refrestabla();
-									JOptionPane.showMessageDialog(null,"El Registró Se Guardó  Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-									btnDeshacer.doClick();
-									return;
-								}else{
-									JOptionPane.showMessageDialog(null, "El Registro No Se Guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
-									return;
-								}
-							}
+//						Obj_Conceptos_De_Ordenes_De_Pago concepto = new Obj_Conceptos_De_Ordenes_De_Pago().buscar(Integer.parseInt(txtFolio.getText()));
+//						
+//					if(concepto.getFolio() == Integer.parseInt(txtFolio.getText())){
+//						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
+//							concepto.setFolio(Integer.parseInt(txtFolio.getText()));
+//							concepto.setConcepto(txtBeneficiario.getText().toUpperCase().trim());
+//							if(validaCampos()!="") {
+//								JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+//								return;
+//							}else{
+//								if(concepto.guardar()){
+//								    refrestabla();
+//									JOptionPane.showMessageDialog(null,"El Registró Se Actualizó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
+//									btnDeshacer.doClick();
+//									return;
+//								}else{
+//									JOptionPane.showMessageDialog(null, "El Registro No Se Actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+//									return;
+//								}
+//							}
+//						}else{
+//							return;
+//						}
+//					}else{
+//						concepto.setFolio(Integer.parseInt(txtFolio.getText()));
+//						concepto.setConcepto(txtBeneficiario.getText().toUpperCase().trim());
+//								if(concepto.guardar()){
+//									
+//									refrestabla();
+//									JOptionPane.showMessageDialog(null,"El Registró Se Guardó  Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
+//									btnDeshacer.doClick();
+//									return;
+//								}else{
+//									JOptionPane.showMessageDialog(null, "El Registro No Se Guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+//									return;
+//								}
+//							}
 					}
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();

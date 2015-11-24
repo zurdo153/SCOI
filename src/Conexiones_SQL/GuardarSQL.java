@@ -42,6 +42,7 @@ import Obj_Checador.Obj_Solicitud_De_Empleados;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
+import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Importar_Voucher;
@@ -4525,8 +4526,11 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		return true;
 	}
 
-	public boolean Guardar_Pedido_De_Monedas(Obj_Pedido_De_Monedas pedido){
-		String query ="exec sp_insert_pedido_de_monedas ?,?,?,?,?,?,?,?";
+	
+	
+	
+	public boolean Guardar_Pedido_De_Monedas(Obj_Pedido_De_Monedas pedido, String folio_Guardado){
+		String query ="exec sp_insert_pedido_de_monedas ?,?,?,?,?,?,?,?,"+folio_Guardado;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -4535,7 +4539,6 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			pstmt = con.prepareStatement(query);
 			
 				for(int i=0; i<pedido.getMatriz().length; i++){
-					
 					pstmt.setInt(1, usuario.getFolio());
 					pstmt.setInt(2, pedido.getFolioUsuario());
 					pstmt.setString(3, pedido.getStatus_pedido());
@@ -4554,12 +4557,16 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pedido_De_Monedas ] \nEn el Procedimiento almacenado "+query+"\n"+e.getMessage(), "Avisa al Administrador del sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null,"Error en GuardarSQL  en la funcion [ Guardar_Pedido_De_Monedas ] \nEn el Procedimiento almacenado "+query+"\n"+e.getMessage(), "Avisa al Administrador del sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+
 				}
 			}
 			return false;
@@ -4622,6 +4629,43 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			} catch(SQLException e){
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Unidades_De_Medida_De_Producto(Obj_Unidades_De_Medida_De_Producto unidad){
+		String query = "exec sp_insert_unidades_de_medida_De_producto ?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, unidad.getFolio());
+			pstmt.setString(2, unidad.getUnidad().toUpperCase().trim());
+			pstmt.setString(3, unidad.getEstatus().toUpperCase().trim());
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidades_De_Medida_De_Producto ]\nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidades_De_Medida_De_Producto ]\nSQLException:"+query+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidades_De_Medida_De_Producto ] \nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

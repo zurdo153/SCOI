@@ -49,6 +49,7 @@ import Obj_Checador.Obj_Mensajes;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
+import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Proveedores;
@@ -7411,6 +7412,28 @@ public class BuscarSQL {
 			}}
 		}
 		return folio;
+	}
+	public Obj_Unidades_De_Medida_De_Producto existe_unidad_de_medida(int folio){
+		Obj_Unidades_De_Medida_De_Producto unidad = new Obj_Unidades_De_Medida_De_Producto();
+		String query = "select folio,"
+				+ " descripcion,"
+				+ " case when status='V' then 'VIGENTE' else 'CANCELADO' end  as status"
+				+ " from tb_unidad_de_medida_de_productos where folio ="+folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				unidad.setFolio(rs.getInt("folio"));
+				unidad.setUnidad(rs.getString("descripcion").trim());
+				unidad.setEstatus(rs.getString("status").trim());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Existe_unidad_de_medida En"+query+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return unidad;
 	}
 	
 }

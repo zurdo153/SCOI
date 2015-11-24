@@ -2,8 +2,11 @@ package Cat_Auditoria;
 
 import java.awt.Container;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -20,14 +23,14 @@ public class Cat_Notas extends JDialog{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JButton btnAgregar = new JButton("Agregar");
+	JButton btnAgregar = new JButton("Aplicar", new ImageIcon("imagen/Aplicar.png"));
 	
 	JTextArea txaNota 	= new Componentes().textArea(new JTextArea(), "Nota", 500);
 	JScrollPane Nota = new JScrollPane(txaNota);
 	
 	public Cat_Notas(){
 		this.setModal(true);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/cajas-de-cajas-de-embalaje-de-envio-de-un-archivo-tar-icono-4009-64.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Service-icon.png"));
 		this.setTitle("Nota");
 		panel.setBorder(BorderFactory.createTitledBorder("Escribir Nota"));	
 		
@@ -41,10 +44,16 @@ public class Cat_Notas extends JDialog{
 		
 		txaNota.setLineWrap(true); 
 		txaNota.setWrapStyleWord(true);
-		
+		txaNota.requestFocus();
 		this.setSize(545, 300);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		 this.addWindowListener(new WindowAdapter() {
+             public void windowOpened( WindowEvent e ){
+            	 txaNota.requestFocus();
+          }
+     });
 		
 	}
 	

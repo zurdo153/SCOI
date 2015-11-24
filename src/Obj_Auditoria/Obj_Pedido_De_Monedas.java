@@ -56,8 +56,8 @@ public class Obj_Pedido_De_Monedas {
 	}
 
 	//	deposito
-	public boolean guardar(){ 
-		return new GuardarSQL().Guardar_Pedido_De_Monedas(this);
+	public boolean guardar(String folio_Guardado){ 
+		return new GuardarSQL().Guardar_Pedido_De_Monedas(this,folio_Guardado);
 	}
 
 }
