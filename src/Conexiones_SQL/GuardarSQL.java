@@ -40,6 +40,7 @@ import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
 import Obj_Compras.Obj_Alta_De_Productos;
+import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
@@ -4588,15 +4589,6 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		try {
 			con.setAutoCommit(false);
 			
-//			System.out.println(prod.getFolio());
-//			System.out.println(prod.getDescripcion());
-//			System.out.println(prod.getUnidadDeMedida());
-//			System.out.println(prod.getUso());
-//			System.out.println(prod.getCodigoDeBarras());
-//			System.out.println(prod.getCosto());
-//			System.out.println(prod.getPrecioDeVenta());
-//			System.out.println(prod.getStatus());
-			
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, prod.getFolio().trim());
 			pstmt.setString(2, prod.getDescripcion().toUpperCase().trim());
@@ -4670,5 +4662,46 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		}		
 		return true;
 	}
+	
+	public boolean Guardar_Compra_De_Cascos(Object[][] tabla,Obj_Compra_De_Cascos objeto){
+		String query =  "exec sp_insert_compra_de_cascos ?,?,?,?,?,?,"+usuario.getFolio();
+		Connection con = new Connexion().conexion();
+		try {
+			PreparedStatement pstmt = con.prepareStatement(query);
+			con.setAutoCommit(false);
+			for(int i=0; i<tabla.length; i++){
+				pstmt.setString(1, tabla[i][0].toString().trim());
+				pstmt.setString(2, tabla[i][1].toString().trim());
+				pstmt.setString(3, tabla[i][2].toString().trim());
+				pstmt.setInt   (4, objeto.getFolio_compra());
+				pstmt.setString(5, objeto.getBeneficiario());
+				pstmt.setDouble(6, objeto.getTotal());
+				pstmt.executeUpdate();
+			}
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Compra_De_Cascos  \n procedimiento almacenado sp_actualizar_ordenes_de_pago_a_un_corte \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Compra_De_Cascos  \n procedimiento almacenado sp_actualizar_ordenes_de_pago_a_un_corte \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Compra_De_Cascos  \n procedimiento almacenado sp_actualizar_ordenes_de_pago_a_un_corte \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+		}
+	
 	
 } 

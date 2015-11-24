@@ -8,16 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.FocusManager;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -34,10 +31,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
-import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
+import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
-import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -100,7 +96,6 @@ public class Cat_Compra_De_Cascos extends JFrame{
 			tabla.setRowSorter(trsfiltro);
 			
 			int x = 10, y=30, width=100,height=20 ;
-			
 			panel.add(new JLabel("Folio:")).setBounds   (x      ,y   ,width  ,height);
 			panel.add(txtFolio).setBounds               (x+=60  ,y   ,width  ,height);
 			panel.add(btnNuevo).setBounds               (x+=115 ,y   ,width  ,height);
@@ -109,12 +104,13 @@ public class Cat_Compra_De_Cascos extends JFrame{
 			x=10;
 			panel.add(new JLabel("Beneficiario:")).setBounds(x     ,y+=25,width  ,height);
 			panel.add(txtBeneficiario).setBounds            (x+60  ,y    ,width*3+42,height);
-			panel.add(txtTotalAPagar).setBounds             (x+420  ,y-3    ,width,height);
-			
+			panel.add(txtTotalAPagar).setBounds             (x+415  ,y    ,width-12,height);
 			panel.add(getPanelTabla()).setBounds        (x     ,y+=25,503    ,130);
 			
 			txtBeneficiario.setEditable(false);
 			txtFolio.setEditable(false);
+			txtTotalAPagar.setEditable(false);
+			btnGuardar.setEnabled(false);
 			
 			btnGuardar.addActionListener(guardar);
 			btnDeshacer.addActionListener(deshacer);
@@ -168,12 +164,9 @@ public class Cat_Compra_De_Cascos extends JFrame{
 			        	    				aComp.requestFocus();
 			        	    		}
 			        	    });
-			                  
-			                  
 	}
 	
-	
-	KeyListener op_key = new KeyListener() {
+  KeyListener op_key = new KeyListener() {
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {
 			ValidaValor();	
@@ -181,7 +174,7 @@ public class Cat_Compra_De_Cascos extends JFrame{
 		public void keyPressed(KeyEvent e) {}
 	};
 	
-	public boolean ValidaValor(){
+  public boolean ValidaValor(){
 			boolean valor=false;
 						if(isNumeric(modelo.getValueAt(fila,3).toString().trim())){
 									RecorridoFoco();
@@ -197,7 +190,7 @@ public class Cat_Compra_De_Cascos extends JFrame{
 			return valor;
 		}
 
-		private boolean isNumeric(String cadena){
+   private boolean isNumeric(String cadena){
 			try {
 				if(cadena.equals("")){
 		    		return true;
@@ -216,33 +209,35 @@ public class Cat_Compra_De_Cascos extends JFrame{
 		String sacarFocoDeTabla = "no";
 		if(fila == cantidadDeFilas-1){
 				if(columna==3){
+					double total=0;
+					 for(int i =0; i<tabla.getRowCount(); i++){
+						total=total+(Float.valueOf(tabla.getValueAt(i, 2).toString().trim())*( (tabla.getValueAt(i, 3).toString().trim().equals(""))?0:(Float.valueOf(tabla.getValueAt(i, 3).toString().trim()))));
+					 }
+					txtTotalAPagar.setText(total+"");
 					sacarFocoDeTabla="si";
-					
 						}
 		}else{
 			sacarFocoDeTabla = "no";
+			double total=0;
+			for(int i =0; i<tabla.getRowCount(); i++){
+				total=total+(Float.valueOf(tabla.getValueAt(i, 2).toString().trim())*( (tabla.getValueAt(i, 3).toString().trim().equals(""))?0:(Float.valueOf(tabla.getValueAt(i, 3).toString().trim()))));
+			}
+			txtTotalAPagar.setText(total+"");
 			fila=fila+1;
 		}
-            
 		tabla.getSelectionModel().setSelectionInterval(fila, fila);
 		tabla.editCellAt(fila, columna);
 		Component aComp=tabla.getEditorComponent();
 		aComp.requestFocus();
-
 		if(sacarFocoDeTabla.equals("si")){
 			tabla.lostFocus(null, null);
 			txtBeneficiario.requestFocus();
 		}
 	};
 
-	
-	
-	
-
 	private JScrollPane getPanelTabla()	{	
 			tabla.getTableHeader().setReorderingAllowed(false) ;
 			tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			
 		    this.tabla.getColumnModel().getColumn(0).setMinWidth(90);
 		    this.tabla.getColumnModel().getColumn(0).setMaxWidth(90);
 		    this.tabla.getColumnModel().getColumn(1).setMinWidth(240);
@@ -256,7 +251,6 @@ public class Cat_Compra_De_Cascos extends JFrame{
 		    tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 		    tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 		    tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-			
 			refrestabla();
 		    JScrollPane scrol = new JScrollPane(tabla);
 		    return scrol; 
@@ -269,7 +263,7 @@ public class Cat_Compra_De_Cascos extends JFrame{
 		try {
 			Connexion con = new Connexion();
 			s = con.conexion().createStatement();
-			rs = s.executeQuery("select folio_producto, descripcion, costo,'' as cantidad  from tb_productos where status='V' and folio_uso=1");
+			rs = s.executeQuery("select folio_producto, descripcion, costo,'' as cantidad  from tb_productos where status='V' and folio_uso=2");
 			while (rs.next())
 			{  String [] fila = new String[4];
 			   fila[0] = rs.getString(1).trim();
@@ -290,6 +284,8 @@ public class Cat_Compra_De_Cascos extends JFrame{
 			btnNuevo.setEnabled(true);
 			txtBeneficiario.setText("");
 			txtBeneficiario.setEditable(false);
+			btnGuardar.setEnabled(false);
+			txtTotalAPagar.setText("");
 			txtFolio.requestFocus();
 		}
 	};
@@ -332,54 +328,62 @@ public class Cat_Compra_De_Cascos extends JFrame{
 		return foliosiguiente;
 			}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String[][] tabla_guardar(){
+		Vector vector = new Vector();
+		for(int i=0; i<tabla.getRowCount(); i++){
+			 if(Integer.valueOf(tabla.getValueAt(i,3).toString().trim().equals("")?"0":tabla.getValueAt(i,3).toString().trim())>0){
+				  vector.add(modelo.getValueAt(i,0).toString().trim());
+				  vector.add(modelo.getValueAt(i,2).toString().trim());
+				  vector.add(modelo.getValueAt(i,3).toString().trim());
+		     }
+		}
+		String[][] matriz = new String[vector.size()/3][3];
+		int j =0,i=0;
+		while(i<vector.size()){
+			matriz[j][0] = vector.get(i).toString();
+			i++;
+			matriz[j][1] = vector.get(i).toString();
+			i++;
+			matriz[j][2] = vector.get(i).toString();
+			i++;
+			j++;
+		}
+		return matriz;
+	}
 	
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 				try {
+					if(tabla.isEditing()){
+						tabla.getCellEditor().stopCellEditing();
+					}
+					
+					double total=0;
+					for(int i =0; i<tabla.getRowCount(); i++){
+						total=total+(Float.valueOf(tabla.getValueAt(i, 2).toString().trim())*( (tabla.getValueAt(i, 3).toString().trim().equals(""))?0:(Float.valueOf(tabla.getValueAt(i, 3).toString().trim()))));
+					}
+					txtTotalAPagar.setText(total+"");
+					
 					if(validaCampos()!="") {
 						JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 						return;
 					} else{
-						int[] columnas = {0,1,2};
-						new Obj_Filtro_Dinamico_Plus(tabla,"", columnas);
-						
-//						Obj_Conceptos_De_Ordenes_De_Pago concepto = new Obj_Conceptos_De_Ordenes_De_Pago().buscar(Integer.parseInt(txtFolio.getText()));
-//						
-//					if(concepto.getFolio() == Integer.parseInt(txtFolio.getText())){
-//						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
-//							concepto.setFolio(Integer.parseInt(txtFolio.getText()));
-//							concepto.setConcepto(txtBeneficiario.getText().toUpperCase().trim());
-//							if(validaCampos()!="") {
-//								JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-//								return;
-//							}else{
-//								if(concepto.guardar()){
-//								    refrestabla();
-//									JOptionPane.showMessageDialog(null,"El Registró Se Actualizó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-//									btnDeshacer.doClick();
-//									return;
-//								}else{
-//									JOptionPane.showMessageDialog(null, "El Registro No Se Actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
-//									return;
-//								}
-//							}
-//						}else{
-//							return;
-//						}
-//					}else{
-//						concepto.setFolio(Integer.parseInt(txtFolio.getText()));
-//						concepto.setConcepto(txtBeneficiario.getText().toUpperCase().trim());
-//								if(concepto.guardar()){
-//									
-//									refrestabla();
-//									JOptionPane.showMessageDialog(null,"El Registró Se Guardó  Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
-//									btnDeshacer.doClick();
-//									return;
-//								}else{
-//									JOptionPane.showMessageDialog(null, "El Registro No Se Guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
-//									return;
-//								}
-//							}
+						 Obj_Compra_De_Cascos compracascos = new Obj_Compra_De_Cascos();
+						 
+						 compracascos.setFolio_compra(busca_y_actualiza_proximo_folio());
+						 compracascos.setBeneficiario(txtBeneficiario.getText().toUpperCase().trim());
+						 compracascos.setTotal(Double.valueOf(txtTotalAPagar.getText().toUpperCase().trim()));
+					   if(compracascos.guardar(tabla_guardar())){
+						            txtFolio.setText(compracascos.getFolio_compra()+""); 
+									refrestabla();
+									JOptionPane.showMessageDialog(null,"El Registró Se Guardó  Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
+									btnDeshacer.doClick();
+									return;
+								}else{
+									JOptionPane.showMessageDialog(null, "El Registro No Se Guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+									return;
+								}
 					}
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
@@ -387,9 +391,45 @@ public class Cat_Compra_De_Cascos extends JFrame{
 		}
 	};
 	
+	public int  busca_y_actualiza_proximo_folio() {
+		Connexion con = new Connexion();
+		String query = "declare @sqlqry nvarchar(max),@folio varchar(7)                        "
+	 		     + "   set nocount on"
+	 		     + "   set @folio=(select folio+1 from tb_folios Where folio_transaccion='18' and status=1)"
+	 		     + "  set @sqlqry='update tb_folios set folio='+@folio+' Where folio_transaccion=''18'' and status=1'"
+	 		     + "  exec sp_executesql @sqlqry"
+	 		     + "  set nocount off"
+	 		     + " set @sqlqry='select '+@folio"
+	 		     + " exec sp_executesql @sqlqry";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				 foliosiguiente =(rs.getInt(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en la funcion busca_y_actualiza_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return foliosiguiente ;
+		}
+		finally{
+			 if (stmt != null) { try {
+				stmt.close();
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Error en la funcion busca_y_actualiza_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				e.printStackTrace();
+			} }
+		}
+		return foliosiguiente;
+			}
+	
 	private String validaCampos(){
 		String error="";
-		if(txtBeneficiario.getText().equals("")) 		error+= "-Nombre Del Concepto\n";
+		if(txtBeneficiario.getText().equals("")) 		error+= "-Nombre Del Beneficiario\n";
+		if(txtTotalAPagar.getText().equals("")) 		error+= "-Cantidad A Comprar\n";
 		return error;
 	}
 	

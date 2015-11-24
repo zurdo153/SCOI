@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -37,22 +36,22 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.Connexion;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Alta_De_Productos extends JFrame{
+public class Cat_Productos extends JFrame{
 	String foliosiguiente="";
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 9, "Int");
-	JTextField txtDescricion = new Componentes().text(new JTextField(), "Descricion",250,"String");
-	JTextField txtCodigoDeBarras = new Componentes().text(new JTextField(), "Codigo De Barras", 40, "String");
-	JTextField txtCosto = new Componentes().text(new JTextField(), "Costo", 10, "Double");
-	JTextField txtPrecioDeVenta = new Componentes().text(new JTextField(), "Precio De Venta", 15, "Double");
-	
-	JTextField txtFolioFiltro = new JTextField();
-	JTextField txtDescripciondFiltro = new Componentes().text(new JTextField(), "Filtro Por Descripcion", 30, "String");
+	JTextField txtFolio = new Componentes().text(new JCTextField(), "Teclea el Folio Del Producto", 9, "String");
+	JTextField txtDescripcion = new Componentes().text(new JCTextField(), "Descripcion Del Producto",250,"String");
+	JTextField txtCodigoDeBarras = new Componentes().text(new JCTextField(), "Codigo De Barras", 40, "String");
+	JTextField txtCosto = new Componentes().text(new JCTextField(), "Costo", 10, "Double");
+	JTextField txtPrecioDeVenta = new Componentes().text(new JCTextField(), "Precio De Venta", 15, "Double");
+	JTextField txtDescripciondFiltro = new Componentes().text(new JCTextField(), "Teclea Folio o Descripcion o Unidad De Medida o Uso Del Producto Para Buscar En La Tabla", 30, "String");
 	
 	String UnidadDeMedida[] = new Obj_Alta_De_Productos().ComboUnidadDeMedida();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -109,57 +108,51 @@ public class Cat_Alta_De_Productos extends JFrame{
 		private TableRowSorter trsfiltro;
 		
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Alta_De_Productos(){
-		
-		
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/folder-home-home-icone-5663-32.png"));
+	public Cat_Productos(){
+			this.setSize(1024,768);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
 			panel.setBorder(BorderFactory.createTitledBorder("Alta De Productos"));
-			
 			this.setTitle("Alta De Productos");
-			
 			trsfiltro = new TableRowSorter(modelo); 
 			tabla.setRowSorter(trsfiltro);
 			
-			int x = 45, y=30, ancho=100;
+			int x = 10, y=20, ancho=100;
 			
+			panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);
+			panel.add(txtFolio).setBounds            (x+=60,y,ancho*2,20);
+			panel.add(btnBuscar).setBounds           (x+=230,y,ancho,20);
+			panel.add(btnNuevo).setBounds            (x+=120,y,ancho,20);
+			panel.add(btnEditar).setBounds           (x+=120,y,ancho,20);
+			panel.add(btnGuardar).setBounds          (x+=120,y,ancho,20);
+			panel.add(btnDeshacer).setBounds         (x+=120,y,ancho,20);
+			panel.add(btnSalir).setBounds            (x+=120,y,ancho,20);
 			
-			panel.add(new JLabel("Folio:")).setBounds(x-25,y-15,ancho,20);
-			panel.add(txtFolio).setBounds(90,y-15,ancho-20,20);
-			panel.add(btnBuscar).setBounds(x+(ancho)+30,y-15,100,20);
-			panel.add(btnNuevo).setBounds(x+(ancho*2)+30,y-15,100,20);
+			x=10;
+			panel.add(new JLabel("Descripcion:")).setBounds      (x,y+=30,80,20);
+			panel.add(txtDescripcion).setBounds                   (x+=60,y,ancho*5,20);
+			panel.add(new JLabel("UDM:")).setBounds              (x+=510,y,ancho,20);
+			panel.add(cmbUnidadDeMedida).setBounds               (x+=30,y,ancho+70,20);
+			panel.add(new JLabel("Uso:")).setBounds              (x+=190,y,ancho,20);
+			panel.add(cmbUso).setBounds                          (x+=30,y,ancho+70,20);
 			
-			panel.add(new JLabel("Descripcion:")).setBounds(x-25,y+=15,80,20);
-			panel.add(txtDescricion).setBounds(90,y,ancho*3-15,20);
+			x=10;
+			panel.add(new JLabel("Codigo De Barras:")).setBounds (x,y+=30,ancho,20);
+			panel.add(txtCodigoDeBarras).setBounds               (x+=90,y,ancho+70,20);
+			panel.add(new JLabel("Costo:")).setBounds            (x+=190,y,ancho,20);
+			panel.add(txtCosto).setBounds                        (x+=40,y,ancho,20);
+			panel.add(new JLabel("Precio De Venta:")).setBounds  (x+=120,y,ancho,20);
+			panel.add(txtPrecioDeVenta).setBounds                (x+=90,y,ancho,20);
+			panel.add(new JLabel("Estatus:")).setBounds          (x+=240,y,ancho,20);
+			panel.add(cmb_status).setBounds                      (x+=50,y,ancho+70,20);
 			
-			panel.add(new JLabel("Unidad De Medida:")).setBounds(x-25,y+=30,ancho,20);
-			panel.add(cmbUnidadDeMedida).setBounds(110,y,ancho+50,20);
-			panel.add(btnEditar).setBounds(x+(ancho*2)+30,y,100,20);
+			x=10;
+			panel.add(txtDescripciondFiltro).setBounds(x,y+=30,720,20);
+			panel.add(getPanelTabla()).setBounds(x,y+=20,1000,600);
 			
-			panel.add(new JLabel("Uso:")).setBounds(x-25,y+=30,ancho,20);
-			panel.add(cmbUso).setBounds(90,y,ancho+70,20);
-			panel.add(btnGuardar).setBounds(x+ancho*2+30,y,100,20);
-			
-			panel.add(new JLabel("Codigo De Barrar:")).setBounds(x-25,y+=30,ancho,20);
-			panel.add(txtCodigoDeBarras).setBounds(110,y,ancho+50,20);
-			panel.add(btnDeshacer).setBounds(x+ancho*2+30,y,100,20);
-			
-			panel.add(new JLabel("Costo:")).setBounds(x-25,y+=30,ancho,20);
-			panel.add(txtCosto).setBounds(90,y,ancho+70,20);
-			panel.add(btnSalir).setBounds(x+ancho*2+30,y,100,20);
-			
-			panel.add(new JLabel("Precio De Venta:")).setBounds(x-25,y+=30,ancho,20);
-			panel.add(txtPrecioDeVenta).setBounds(110,y,ancho+50,20);
-			
-			panel.add(new JLabel("Estatus:")).setBounds(x-25,y+=30,ancho,20);
-			panel.add(cmb_status).setBounds(90,y,ancho+70,20);
-			
-			panel.add(txtFolioFiltro).setBounds((x*2)+(ancho*3)-5,15,58,20);
-			panel.add(txtDescripciondFiltro).setBounds((x*2)+(ancho*3)+53,15,240,20);
-			
-			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-5,35,623,355);
-			
-			
-			txtDescricion.setEditable(false);
+			txtDescripcion.setEditable(false);
 			txtCodigoDeBarras.setEditable(false);
 			txtCosto.setEditable(false);
 			
@@ -180,19 +173,18 @@ public class Cat_Alta_De_Productos extends JFrame{
 			btnNuevo.addActionListener(nuevo);
 			btnEditar.addActionListener(editar);
 			
-			txtFolioFiltro.addKeyListener(opFiltroFolio);
-//			txtDescripciondFiltro.addKeyListener(opFiltrounidad);
+			txtDescripciondFiltro.addKeyListener(opFiltroFolio);
 			
-			txtDescricion.addKeyListener(enterpasaraAbreviatura);
-			txtCodigoDeBarras.addKeyListener(enterpasaraunidad);
-			
+			txtDescripcion.addKeyListener(enterpasaraUDM);
+			cmbUnidadDeMedida.addKeyListener(enterpasaraUSO);
+			cmbUso.addKeyListener(enterpasaraCodigo);
+			txtCodigoDeBarras.addKeyListener(enterpasaraCosto);
+			txtCosto.addKeyListener(enterpasaraPrecioVenta);
+            txtPrecioDeVenta.addKeyListener(enterpasaraEstatus);
+			cmb_status.addKeyListener(enterpasaraDescripcion);
+            
 			agregar_de_tabla(tabla);
 			cont.add(panel);
-			this.setSize(1024,430);
-			this.setResizable(false);
-			this.setLocationRelativeTo(null);
-			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			
               ///asigna el foco al filtro
 						 this.addWindowListener(new WindowAdapter() {
 				                public void windowOpened( WindowEvent e ){
@@ -261,21 +253,21 @@ public class Cat_Alta_De_Productos extends JFrame{
 		
 	    this.tabla.getColumnModel().getColumn(0).setMinWidth(70);
 	    this.tabla.getColumnModel().getColumn(0).setMaxWidth(70);
-	    this.tabla.getColumnModel().getColumn(1).setMinWidth(240);
+	    this.tabla.getColumnModel().getColumn(1).setMinWidth(250);
 	    this.tabla.getColumnModel().getColumn(1).setMaxWidth(800);
 	    this.tabla.getColumnModel().getColumn(2).setMinWidth(100);
 	    this.tabla.getColumnModel().getColumn(2).setMaxWidth(180);
 	    this.tabla.getColumnModel().getColumn(3).setMinWidth(160);
 	    this.tabla.getColumnModel().getColumn(3).setMaxWidth(220);
-	    this.tabla.getColumnModel().getColumn(4).setMinWidth(110);
-	    this.tabla.getColumnModel().getColumn(4).setMaxWidth(140);
-	    this.tabla.getColumnModel().getColumn(5).setMinWidth(60);
+	    this.tabla.getColumnModel().getColumn(4).setMinWidth(140);
+	    this.tabla.getColumnModel().getColumn(4).setMaxWidth(200);
+	    this.tabla.getColumnModel().getColumn(5).setMinWidth(90);
 	    this.tabla.getColumnModel().getColumn(5).setMaxWidth(100);
 	    
-	    this.tabla.getColumnModel().getColumn(6).setMinWidth(100);
+	    this.tabla.getColumnModel().getColumn(6).setMinWidth(90);
 	    this.tabla.getColumnModel().getColumn(6).setMaxWidth(100);
-	    this.tabla.getColumnModel().getColumn(7).setMinWidth(60);
-	    this.tabla.getColumnModel().getColumn(7).setMaxWidth(60);
+	    this.tabla.getColumnModel().getColumn(7).setMinWidth(100);
+	    this.tabla.getColumnModel().getColumn(7).setMaxWidth(100);
 		    
 						    
 		for(int i=0; i<tabla.getColumnCount(); i++){
@@ -311,12 +303,11 @@ public class Cat_Alta_De_Productos extends JFrame{
 								+ "		,tb_productos.costo "
 								+ "		,tb_productos.precio_de_venta "
 								+ "		,case when ( tb_productos.status = 'V') then 'VIGENTE' "
-								+ "			else 'CANCELAR' "
+								+ "			else 'CANCELADO' "
 								+ "		 end as status "
 								+ " from tb_productos "
 								+ " inner join tb_unidad_de_medida_de_productos on tb_unidad_de_medida_de_productos.folio = tb_productos.folio_unidad_de_medida "
-								+ " inner join tb_uso_de_productos on tb_uso_de_productos.folio = tb_productos.folio_uso "
-								+ " where tb_productos.status = 'V' ");
+								+ " inner join tb_uso_de_productos on tb_uso_de_productos.folio = tb_productos.folio_uso ");
 			
 			while (rs.next())
 			{ 
@@ -340,31 +331,36 @@ public class Cat_Alta_De_Productos extends JFrame{
 	
     
 	KeyListener opFiltroFolio = new KeyListener(){
-		@SuppressWarnings("unchecked")
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioFiltro.getText(), 0));
+			int[] columnas = {0,1,2,3,4};
+			new Obj_Filtro_Dinamico_Plus(tabla, txtDescripciondFiltro.getText().toUpperCase(), columnas);
 		}
 		public void keyTyped(KeyEvent arg0) {
-			char caracter = arg0.getKeyChar();
-			if(((caracter < '0') ||
-				(caracter > '9')) &&
-			    (caracter != KeyEvent.VK_BACK_SPACE)){
-				arg0.consume(); 
-			}	
 		}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 	
-//	KeyListener opFiltrounidad = new KeyListener(){
-//		@SuppressWarnings("unchecked")
-//		public void keyReleased(KeyEvent arg0) {
-//			trsfiltro.setRowFilter(RowFilter.regexFilter(txtUnidadFiltro.getText().toUpperCase().trim(), 1));
-//		}
-//		public void keyTyped(KeyEvent arg0) {}
-//		public void keyPressed(KeyEvent arg0) {}		
-//	};
+	KeyListener enterpasaraUDM = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				cmbUnidadDeMedida.requestFocus();
+			}
+		}
+	};
 	
-	KeyListener enterpasaraAbreviatura = new KeyListener() {
+	KeyListener enterpasaraUSO = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				cmbUso.requestFocus();
+			}
+		}
+	};
+	
+	KeyListener enterpasaraCodigo = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
@@ -374,15 +370,46 @@ public class Cat_Alta_De_Productos extends JFrame{
 		}
 	};
 	
-	KeyListener enterpasaraunidad = new KeyListener() {
+	KeyListener enterpasaraCosto = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				txtDescricion.requestFocus();
+				txtCosto.requestFocus();
 			}
 		}
 	};
+	
+	KeyListener enterpasaraPrecioVenta = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				txtPrecioDeVenta.requestFocus();
+			}
+		}
+	};
+	
+	KeyListener enterpasaraEstatus = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				cmb_status.requestFocus();
+			}
+		}
+	};
+	
+	KeyListener enterpasaraDescripcion = new KeyListener() {
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				txtDescripcion.requestFocus();
+			}
+		}
+	};
+	
 	
 	KeyListener buscar_action = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
@@ -393,6 +420,8 @@ public class Cat_Alta_De_Productos extends JFrame{
 			}
 		}
 	};
+	
+	
 	
 	ActionListener salir = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -409,7 +438,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 			btnEditar.setEnabled(true);
 			
 			txtFolio.setText("");
-			txtDescricion.setText("");
+			txtDescripcion.setText("");
 			txtCodigoDeBarras.setText("");
 			txtCosto.setText("");
 			
@@ -420,7 +449,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 			cmbUnidadDeMedida.setSelectedIndex(0);
 			cmbUso.setSelectedIndex(0);
 			
-			txtDescricion.setEditable(false);
+			txtDescripcion.setEditable(false);
 			txtCodigoDeBarras.setEditable(false);
 			txtCosto.setEditable(false);
 			
@@ -435,11 +464,11 @@ public class Cat_Alta_De_Productos extends JFrame{
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolio.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "No hay registro que Editar","Error",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "No hay registro que Editar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				txtFolio.setEditable(false);
-				txtDescricion.setEditable(true);
+				txtDescripcion.setEditable(true);
 				txtCodigoDeBarras.setEditable(true);
 				txtCosto.setEditable(true);
 				
@@ -453,7 +482,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 				btnNuevo.setEnabled(true);
 				btnEditar.setEnabled(false);
 				btnGuardar.setEnabled(true);
-				txtDescricion.requestFocus(true);
+				txtDescripcion.requestFocus(true);
 			}
 		}
 	};
@@ -479,7 +508,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 	
 	public void busqueda(String folio){
 		if(folio.equals("")){
-			JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Error",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Ingrese El Folio Del Producto","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			return;
 		}else{
 			try {
@@ -487,7 +516,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 				if(!prod.getFolio().equals("")){
 					
 					txtFolio.setText(prod.getFolio()+"");
-					txtDescricion.setText(prod.getDescripcion()+"");
+					txtDescripcion.setText(prod.getDescripcion()+"");
 					txtCodigoDeBarras.setText(prod.getCodigoDeBarras()+"");
 					txtCosto.setText(prod.getCosto()+"");
 					
@@ -501,7 +530,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 					btnEditar.setEnabled(true);
 					
 					txtFolio.setEditable(false);
-					txtDescricion.setEditable(false);
+					txtDescripcion.setEditable(false);
 					txtCodigoDeBarras.setEditable(false);
 					txtCosto.setEditable(false);
 					
@@ -513,7 +542,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 					
 					txtFolio.requestFocus();
 				} else{
-					JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "El Registro No Existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			} catch (NumberFormatException e1) {
@@ -529,7 +558,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 				btnDeshacer.doClick();
 				btnGuardar.setEnabled(true);
 				
-				txtDescricion.setEditable(true);
+				txtDescripcion.setEditable(true);
 				txtCodigoDeBarras.setEditable(true);
 				txtCosto.setEditable(true);
 				
@@ -537,7 +566,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 				
 				
 				txtFolio.setEditable(false);
-				txtDescricion.requestFocus();
+				txtDescripcion.requestFocus();
 				btnEditar.setEnabled(false);
 				
 				cmbUnidadDeMedida.setSelectedIndex(0);
@@ -551,14 +580,14 @@ public class Cat_Alta_De_Productos extends JFrame{
 				btnDeshacer.doClick();
 				btnGuardar.setEnabled(true);
 				
-				txtDescricion.setEditable(true);
+				txtDescripcion.setEditable(true);
 				txtCodigoDeBarras.setEditable(true);
 				txtCosto.setEditable(true);
 				
 				txtPrecioDeVenta.setEditable(true);
 				
 				txtFolio.setEditable(false);
-				txtDescricion.requestFocus();
+				txtDescripcion.requestFocus();
 				btnEditar.setEnabled(false);
 				
 				cmbUnidadDeMedida.setSelectedIndex(0);
@@ -579,36 +608,33 @@ public class Cat_Alta_De_Productos extends JFrame{
 			
 			try {
 					if(validaCampos()!="") {
-						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					} else{
 							Obj_Alta_De_Productos prod = new Obj_Alta_De_Productos().buscar(txtFolio.getText());
 								if(prod.getFolio().equals(txtFolio.getText())){
 										if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
 												if(validaCampos()!="") {
-													JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+													JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 													return;
 												}else{
 													prod.setFolio(txtFolio.getText().toString());
-													prod.setDescripcion(txtDescricion.getText().toLowerCase().toString());
-													prod.setCodigoDeBarras(txtCodigoDeBarras.getText().toLowerCase().toString());
-													prod.setCosto(Double.valueOf(txtCosto.getText().toLowerCase().toString()));
+													prod.setDescripcion(txtDescripcion.getText().toUpperCase().toString());
+													prod.setCodigoDeBarras(txtCodigoDeBarras.getText().toUpperCase().toString());
+													prod.setCosto(Double.valueOf(txtCosto.getText().toUpperCase().toString()));
 					  							    prod.setUnidadDeMedida(cmbUnidadDeMedida.getSelectedItem().toString());
 					  							    prod.setUso(cmbUso.getSelectedItem().toString());
-					  							    
 					  							    prod.setPrecioDeVenta(Double.valueOf(txtPrecioDeVenta.getText().toString()));
-					  							
 					  							    prod.setStatus(cmb_status.getSelectedItem().toString());
-					  							    
 														if(prod.guardar()){
 																refrestabla();
-																JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+																JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 																	btnDeshacer.doClick();
 																	txtFolio.setEditable(true);
 																	txtFolio.requestFocus();
 																return;
 														}else{
-															JOptionPane.showMessageDialog(null, "El registro no se actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+															JOptionPane.showMessageDialog(null, "El registro no se actualizó","Avisa al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 															return;
 														}
 												}
@@ -617,26 +643,23 @@ public class Cat_Alta_De_Productos extends JFrame{
 										}
 								}else{
 										prod.setFolio(txtFolio.getText().toString());
-										prod.setDescripcion(txtDescricion.getText().toLowerCase().toString());
-										prod.setCodigoDeBarras(txtCodigoDeBarras.getText().toLowerCase().toString());
-										prod.setCosto(Double.valueOf(txtCosto.getText().toLowerCase().toString()));
+										prod.setDescripcion(txtDescripcion.getText().toUpperCase().toString());
+										prod.setCodigoDeBarras(txtCodigoDeBarras.getText().toUpperCase().toString());
+										prod.setCosto(Double.valueOf(txtCosto.getText().toUpperCase().toString()));
 		  							    prod.setUnidadDeMedida(cmbUnidadDeMedida.getSelectedItem().toString());
 		  							    prod.setUso(cmbUso.getSelectedItem().toString());
-		  							    
-		  							    prod.setPrecioDeVenta(Double.valueOf(txtPrecioDeVenta.getText().toLowerCase().toString()));
-		  							
+		  							    prod.setPrecioDeVenta(Double.valueOf(txtPrecioDeVenta.getText().toUpperCase().toString()));
 		  							    prod.setStatus(cmb_status.getSelectedItem().toString());
-									
 										if(prod.guardar()){
 											refrestabla();
-											JOptionPane.showMessageDialog(null,"El registró se guardó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+											JOptionPane.showMessageDialog(null,"El registró se guardó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 												btnDeshacer.doClick();
 												txtFolio.setEditable(true);
 												txtFolio.requestFocus();
 											return;
 											
 										}else{
-											JOptionPane.showMessageDialog(null, "El registro no se guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+											JOptionPane.showMessageDialog(null, "El registro no se guardó", "Avisa al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 											return;
 										}
 								}
@@ -650,7 +673,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 	
 	public String  busqueda_proximo_folio() {
 		Connexion con = new Connexion();
-		String query = "select right('0000000000'+convert(varchar(10),(folio+1)),7) from tb_folios where folio_transaccion = 17";
+		String query = "select case when (folio)>999999 THEN convert(varchar(10),(folio+1)) ELSE right('00000000'+convert(varchar(10),(folio+1)),6) END from tb_folios where folio_transaccion = 17";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -679,15 +702,12 @@ public class Cat_Alta_De_Productos extends JFrame{
 	
 	private String validaCampos(){
 		String error="";
-		if(txtDescricion.getText().equals("")) 		error+= "Descricion\n";
+		if(txtDescripcion.getText().equals("")) 		error+= "Descricion\n";
 		if(txtCodigoDeBarras.getText().equals("")) 		error+= "Codigo De Barras\n";
 		if(txtCosto.getText().equals("")) 		error+= "Costo\n";
-		
 		if(cmbUnidadDeMedida.getSelectedIndex()==0) 		error+= "Unidad De Medida\n";
 		if(cmbUso.getSelectedIndex()==0) 		error+= "Uso\n";
-		
 		if(txtPrecioDeVenta.getText().equals("")) 		error+= "Precio De Venta\n";
-		
 		return error;
 	}
 	
@@ -695,7 +715,7 @@ public class Cat_Alta_De_Productos extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Alta_De_Productos().setVisible(true);
+			new Cat_Productos().setVisible(true);
 		}catch(Exception e){	}
 	}
 	

@@ -38,13 +38,6 @@ public class Obj_Conceptos_De_Ordenes_De_Pago {
 	private String Concepto;
 	private String Estatus;
 
-	
-
-	
-//	public boolean actualizar(int folio){ 
-//		return new 	ActualizarSQL().PCAPunto_De_Venta_TA_Estab(this,folio); }
-//	
-
 	public Obj_Conceptos_De_Ordenes_De_Pago buscar(int folio) {
 	return new BuscarSQL().Existe_concepto_de_Orden_de_Compra(folio);	}
 	

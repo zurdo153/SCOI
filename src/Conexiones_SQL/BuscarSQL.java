@@ -6663,9 +6663,7 @@ public class BuscarSQL {
 	
 	
 	public int Archivos_Empleado(int folio) throws SQLException{
-		
 		int contadorDeArchivosGenerados=0;
-		
 		String query = "SELECT t_emp.nombre+' '+t_emp.ap_paterno+' '+t_emp.ap_materno as empleado "
 				+ "	,t_estab.nombre as establecimiento "
 				+ "	,isnull(t_aEmp.solicitud,'') "
@@ -7171,16 +7169,12 @@ public class BuscarSQL {
 	
 	public Object[][] Filtro_Polizas_Guardadas(String fecha) throws SQLException{
 		Statement stmt = null;
-		
 		String query = "sp_select_polizas_guardadas '"+fecha+"'";
-		
 		Object[][] referencia = new Object[getFilas(query)][5];
 		
 		try {
-			
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
 			int i=0;
 			while(rs.next()){
 				for(int j=0; j<5; j++){
@@ -7188,11 +7182,9 @@ public class BuscarSQL {
 				}
 				i++;
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error al Buscar en [Filtro_Polizas_Guardadas] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-			
 			return null;
 		}
 		finally{
@@ -7203,7 +7195,6 @@ public class BuscarSQL {
 	
 	public Object[] registro_Polizas_Guardadas(String folio_poliza, String tipo_poliza, String fecha_poliza){
 		Statement stmt = null;
-		
 		String query = " SELECT tb_polizas.folio "
 				+ " ,tb_configuracion_de_polizas.nombre AS tipo_de_poliza "
 				+ " ,convert(varchar(20),tb_polizas.fecha_poliza,103) as fecha_poliza "
@@ -7232,28 +7223,21 @@ public class BuscarSQL {
 				+ " where ltrim(rtrim(tb_polizas.folio)) = '"+folio_poliza+"' "
 				+ " AND tb_polizas.tipo_poliza='"+tipo_poliza+"' "
 				+ " AND CONVERT(VARCHAR(20),tb_polizas.fecha_poliza,103) = SUBSTRING('"+fecha_poliza+"',0,CHARINDEX(' ', '"+fecha_poliza+"')) " ;
-//		SUBSTRING('01/01-1090 01:12:45',0,CHARINDEX(' ', '01/01-1090 01:12:45'))
-		System.out.println(query);
 		
 		Object[] Poliza = new Object[13];
 		
 		try {
-			
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
-//			int i=0;
 			while(rs.next()){
 				for(int j=0; j<Poliza.length; j++){
 					Poliza[j] = rs.getObject(j+1);
 				}
-//				i++;
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error al Buscar en [Filtro_De_Referencia_Polizas] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-			
 			return null;
 		}
 		finally{
@@ -7300,8 +7284,6 @@ public class BuscarSQL {
 						+ " AND tb_mpolizas.tipo_poliza='"+tipo_poliza+"' "
 						+ "  AND tb_mpolizas.fecha_poliza= CONVERT(datetime,'"+fecha_poliza+"')" ;
 		
-		System.out.println(query);
-		
 		String[][] mPoliza = new String[getFilas(query)][8];
 		
 		try {
@@ -7311,14 +7293,6 @@ public class BuscarSQL {
 			
 			int i=0;
 			while(rs.next()){
-//				mPoliza[i][0] = rs.getString(1);
-//				mPoliza[i][1] = rs.getString(2);
-//				mPoliza[i][2] = rs.getString(3);
-//				mPoliza[i][3] = rs.getString(4);
-//				mPoliza[i][4] = Float.parseFloat(rs.getString(5))>0?"1":"" ;
-//				mPoliza[i][5] =Float.parseFloat(rs.getString(5))>0?"1":"" ;
-//				mPoliza[i][6] = rs.getString(7);
-//				mPoliza[i][7] = rs.getString(8);
 				
 				for(int j=0; j<8; j++){
 					mPoliza[i][j] = rs.getString(j+1);
@@ -7354,12 +7328,12 @@ public class BuscarSQL {
 				+ "		,tb_productos.costo "
 				+ "		,tb_productos.precio_de_venta "
 				+ "		,case when ( tb_productos.status = 'V') then 'VIGENTE' "
-				+ "			else 'CANCELAR' "
+				+ "			else 'CANCELADO' "
 				+ "		 end as status "
 				+ " from tb_productos "
 				+ " inner join tb_unidad_de_medida_de_productos on tb_unidad_de_medida_de_productos.folio = tb_productos.folio_unidad_de_medida "
 				+ " inner join tb_uso_de_productos on tb_uso_de_productos.folio = tb_productos.folio_uso "
-				+ " where tb_productos.status = 'V' and tb_productos.folio_producto = '"+folio+"'";
+				+ " where tb_productos.folio_producto = '"+folio+"'";
 		
 		Statement stmt = null;
 		try {

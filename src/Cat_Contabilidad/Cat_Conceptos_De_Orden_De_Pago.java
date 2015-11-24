@@ -303,6 +303,7 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 			cmb_status.setSelectedItem(concepto.getEstatus().toString());
 			btnEditar.setEnabled(true);
 			btnGuardar.setEnabled(false);
+			txtFolio.setEnabled(false);
 			}else{
 				JOptionPane.showMessageDialog(null, "El Folio Buscado No Existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				return;
@@ -323,6 +324,7 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 			cmb_status.setEnabled(false);
 			cmb_status.setSelectedIndex(0);
 			txtFolio.requestFocus();
+			txtFolio.setEnabled(true);
 		}
 	};
 	
@@ -441,6 +443,7 @@ public class Cat_Conceptos_De_Orden_De_Pago extends JFrame{
 						txtConcepto.setEditable(false);
 						txtConcepto.requestFocus();
 						txtFolio.setEditable(true);
+						txtFolio.setEnabled(false);
 	        	}
 	        }
         });
