@@ -82,7 +82,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 							cadena+=tabla_model_grupos.getValueAt(i, 2).toString().trim()+"'',''";
 						}
 					}
-				cadena=cadena.substring(0,cadena.length()-5);
+				cadena= cadena.equals("")?cadena:cadena.substring(0,cadena.length()-5);
 			}
 		return cadena;
 	}
