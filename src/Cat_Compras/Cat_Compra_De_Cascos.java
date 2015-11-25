@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
@@ -52,6 +53,7 @@ public class Cat_Compra_De_Cascos extends JFrame{
 	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
+	JButton btnReporte = new JButton("Reporte",new ImageIcon("imagen/Print.png"));
 	
 	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio Prod","Descripcion", "Costo","Cantidad"}){
 	            @SuppressWarnings("rawtypes")
@@ -95,7 +97,8 @@ public class Cat_Compra_De_Cascos extends JFrame{
 			trsfiltro = new TableRowSorter(modelo); 
 			tabla.setRowSorter(trsfiltro);
 			
-			int x = 10, y=30, width=100,height=20 ;
+			int x = 10, y=35, width=100,height=20 ;
+			panel.add(btnReporte).setBounds             (415  ,10    ,width  ,height);
 			panel.add(new JLabel("Folio:")).setBounds   (x      ,y   ,width  ,height);
 			panel.add(txtFolio).setBounds               (x+=60  ,y   ,width  ,height);
 			panel.add(btnNuevo).setBounds               (x+=115 ,y   ,width  ,height);
@@ -115,8 +118,10 @@ public class Cat_Compra_De_Cascos extends JFrame{
 			btnGuardar.addActionListener(guardar);
 			btnDeshacer.addActionListener(deshacer);
 			btnNuevo.addActionListener(nuevo);
+			btnReporte.addActionListener(opReporte);
 			cont.add(panel);
 			tabla.addKeyListener(op_key);
+			txtFolio.setText( busqueda_proximo_folio()+"");
 			
              ///deshacer con escape
 			             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
@@ -280,13 +285,14 @@ public class Cat_Compra_De_Cascos extends JFrame{
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			txtFolio.setText("");
+			txtFolio.setText( busqueda_proximo_folio()+"");
 			btnNuevo.setEnabled(true);
 			txtBeneficiario.setText("");
 			txtBeneficiario.setEditable(false);
 			btnGuardar.setEnabled(false);
 			txtTotalAPagar.setText("");
 			txtFolio.requestFocus();
+			refrestabla();
 		}
 	};
 	
@@ -300,6 +306,18 @@ public class Cat_Compra_De_Cascos extends JFrame{
 		}
 	};
 	
+	ActionListener opReporte = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			int folio=Integer.valueOf(txtFolio.getText().toString())-1;
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String reporte = "Obj_Reporte_De_Compra_De_Cascos.jrxml";
+			String comando = "exec sp_Reporte_De_Compra_De_Casco "+folio;
+	   	    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+	 	}
+	   };
+	   
 	public int  busqueda_proximo_folio() {
 		Connexion con = new Connexion();
 		String query = "select folio+1 from tb_folios where status=1 and folio_transaccion=18";
@@ -375,10 +393,11 @@ public class Cat_Compra_De_Cascos extends JFrame{
 						 compracascos.setBeneficiario(txtBeneficiario.getText().toUpperCase().trim());
 						 compracascos.setTotal(Double.valueOf(txtTotalAPagar.getText().toUpperCase().trim()));
 					   if(compracascos.guardar(tabla_guardar())){
-						            txtFolio.setText(compracascos.getFolio_compra()+""); 
-									refrestabla();
+
+						           refrestabla();
 									JOptionPane.showMessageDialog(null,"El Registró Se Guardó  Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
 									btnDeshacer.doClick();
+									btnReporte.doClick();
 									return;
 								}else{
 									JOptionPane.showMessageDialog(null, "El Registro No Se Guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
@@ -429,7 +448,7 @@ public class Cat_Compra_De_Cascos extends JFrame{
 	private String validaCampos(){
 		String error="";
 		if(txtBeneficiario.getText().equals("")) 		error+= "-Nombre Del Beneficiario\n";
-		if(txtTotalAPagar.getText().equals("")) 		error+= "-Cantidad A Comprar\n";
+		if(txtTotalAPagar.getText().equals("0.0")) 		error+= "-Cantidad A Comprar\n";
 		return error;
 	}
 	

@@ -48,10 +48,11 @@ public class Cat_Trabajos_Cortes extends JFrame{
 //	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	JButton btnRegresarCortes = new JButton("Restaurar Quitados");
-	JButton btnRestaurar = new JButton("Restaurar");
-	JButton btnQuitarCorte = new JButton("Quitar Corte");
-	JButton btnCV = new JButton("A Caja Verde");
-	JButton btnGenerar = new JButton("Generar");
+	JButton btnQuitarCorte = new JButton("Quitar Corte",new ImageIcon("imagen/Delete.png"));
+
+	JButton btnRestaurar = new JButton("Restaurar", new ImageIcon("imagen/flecha-naranja-alerta-de-descarga-de-la-actualizacion-icono-8872-16.png"));
+	JButton btnCV = new JButton("A Caja Verde",new ImageIcon("imagen/flecha-verde-icono-8451-16.png"));
+	JButton btnGenerar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	
 	JTextField txtDepositos = new JTextField();
 	JTextField txtIzacel = new JTextField();
@@ -297,8 +298,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		 
 		 
 //		blackline = BorderFactory.createLineBorder(new Color(255,171,0));
-		this.setTitle("Abonos Clientes");
-		this.panel.setBorder(BorderFactory.createTitledBorder( "Captura de abonos clientes"));
+		this.setTitle("Trabajos De Cortes");
+		this.panel.setBorder(BorderFactory.createTitledBorder( "Concentrados De Cortes"));
 		
 		trsfiltro = new TableRowSorter(tabla_model_grupos); 
 		tabla_grupos.setRowSorter(trsfiltro);  
@@ -307,9 +308,9 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		panel.add(scroll).setBounds(20, 30, 970, 130);
 		
 //		panel.add(cmbEstablecimiento).setBounds(45, 165, 160, 20);
-		panel.add(btnRegresarCortes).setBounds(640, 165, 130, 20);
-		panel.add(btnQuitarCorte).setBounds(780, 165, 100, 20);
-		panel.add(btnCV).setBounds(890, 165, 100, 20);
+		panel.add(btnRegresarCortes).setBounds(530, 165, 130, 20);
+		panel.add(btnQuitarCorte).setBounds(680, 165, 130, 20);
+		panel.add(btnCV).setBounds(870, 165, 120, 20);
 		panel.add(scroll_grupos).setBounds(20, 185, 970, 290);
 //		panel.add(btnCalcular).setBounds(20, 0, 160, 20);
 		panel.add(scroll_concentrado).setBounds(20, 480, 970, 130);
@@ -322,7 +323,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		panel.add(txtIzacel 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalRetiroCliente				).setBounds(x+ancho+320, y, ancho, 20);  
 		panel.add(new JLabel("PLAN TELCEL: ")).setBounds(x, y+=25, ancho, 20);       panel.add(new JLabel("TOTAL RECIBOS DE LUZ: ")	).setBounds(x+250, y, ancho+50, 20);    
 		panel.add(txtPlanes 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalRecibosDeLuz 				).setBounds(x+ancho+320, y, ancho, 20);  
-		panel.add(new JLabel("PINES: ")		 ).setBounds(x, y+=25, ancho, 20);       panel.add(btnGenerar							).setBounds(x+ancho+320, y, ancho, 20);        
+		panel.add(new JLabel("PINES: ")		 ).setBounds(x, y+=25, ancho, 20);       panel.add(btnGenerar							).setBounds(x+ancho+310, y, ancho+10, 20);        
 		panel.add(txtPines 					 ).setBounds(x+ancho+10, y, ancho, 20);             
 		panel.add(new JLabel("CAJA VERDE: ") ).setBounds(x, y+=25, ancho, 20);
 		panel.add(txtCajaVerde				 ).setBounds(x+ancho+10, y, ancho, 20);
