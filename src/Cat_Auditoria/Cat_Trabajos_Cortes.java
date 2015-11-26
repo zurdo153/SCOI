@@ -666,9 +666,9 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		
 		tabla_model_grupos.setRowCount(0);
 		
-//		System.out.println(cadenaCajaVerde().equals("") ? quitarCortes : quitarCortes.equals("")?cadenaCajaVerde():cadenaCajaVerde()+"'',''"+quitarCortes);
+		System.out.println(cadenaCajaVerde().equals("") ? quitarCortes : (quitarCortes.equals("")?cadenaCajaVerde():cadenaCajaVerde()+"'',''"+quitarCortes));
 		
-		String[][] matriz = new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde().equals("") ? quitarCortes : quitarCortes.equals("")?cadenaCajaVerde():cadenaCajaVerde()+"'',''"+quitarCortes, grupo_corte);
+		String[][] matriz = new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde().equals("") ? quitarCortes : (quitarCortes.equals("")?cadenaCajaVerde():cadenaCajaVerde()+"'',''"+quitarCortes), grupo_corte);
 		for(String[] fila: matriz){
 			tabla_model_grupos.addRow(fila);
 		}
@@ -857,7 +857,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		}
 	}
 	
-	double t_corte_totales  = 0;
+	double total_de_corte_real = 0;
 	public void calcular_totales(){
 		
 //		double t_efect   = 0;
@@ -872,6 +872,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 //		double ta        = 0;
 		double luz       = 0;
 //		double apartados = 0;
+		double t_corte_totales  = 0;
 		
 		double total_izacel    = 0;
 		double total_ta		   = 0;
@@ -950,6 +951,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			}
 					
 			txtTotalDelCorte.setText( 	df.format(		t_corte_totales + (	Double.valueOf(	txtPlanes.getText().equals("")?"0":txtPlanes.getText()	)	)	) 	);
+			total_de_corte_real = (	Double.valueOf(	txtTotalDelCorte.getText().equals("")?"0":txtTotalDelCorte.getText()	)	);
+			
 			txtTotalRetiroCliente.setText(	df.format(r_clt));
 			
 			txtTotalRecibosDeLuz.setText(	df.format(luz+total_rluz_cv));
@@ -976,8 +979,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	KeyListener opTeclearPlanes = new KeyListener() {
 		public void keyTyped(KeyEvent e) {	}
 		public void keyReleased(KeyEvent e) {
-		
-					txtTotalDelCorte.setText(	 	df.format(	t_corte_totales + (	Double.valueOf(	txtPlanes.getText().equals("")?"0":txtPlanes.getText()	)	)	) );
+			
+					txtTotalDelCorte.setText(	 	df.format(	total_de_corte_real + (	Double.valueOf(	txtPlanes.getText().equals("")?"0":txtPlanes.getText()	)	)	) );
 					txtDepositos.setText(	df.format (	Double.valueOf(txtTotalDelCorte.getText().equals("")?"0":txtTotalDelCorte.getText())+
 														 Double.valueOf(txtTotalRetiroCliente.getText().equals("")?"0":txtTotalRetiroCliente.getText())+
 														 Double.valueOf(txtTotalRecibosDeLuz.getText().equals("")?"0":txtTotalRecibosDeLuz.getText())-
