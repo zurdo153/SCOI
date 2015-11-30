@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-11-23T12:39:31 -->
+<!-- 2015-11-26T18:24:43 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_Para_Trabajo_De_Cortes" language="groovy" printOrder="Horizontal" pageWidth="791" pageHeight="612" orientation="Landscape" columnWidth="751" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="527b8c71-0150-4c5e-ab8d-96445c8baa40">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -34,6 +34,7 @@
 		</box>
 	</style>
 	<subDataset name="totales_de_concentrado_de_cortes" uuid="16f3e582-be0f-4538-a9f4-58d390b05d2d">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 		<parameter name="FOLIO_TRABAJO_PARAMETRO" class="java.lang.Integer"/>
 		<queryString>
 			<![CDATA[select TotalDelCorte,TotalRetiroCliente,TotalRecibosDeLuz,Izacel,Planes,Pines,CajaVerde,Depositos from tb_totales_de_trabajo_de_cortes  where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
@@ -49,7 +50,7 @@
 	</subDataset>
 	<parameter name="folio_trabajo" class="java.lang.Integer" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA[10]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[--declare @folio_trabajo datetime
@@ -249,7 +250,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 		<groupFooter>
 			<band height="17">
 				<rectangle radius="10">
-					<reportElement x="230" y="1" width="519" height="15" forecolor="#FFFFFF" backcolor="#DEEDFC" uuid="aa83158e-c267-4933-b274-88a6f25efe1a"/>
+					<reportElement x="99" y="1" width="650" height="15" forecolor="#FFFFFF" backcolor="#DEEDFC" uuid="aa83158e-c267-4933-b274-88a6f25efe1a"/>
 				</rectangle>
 				<textField pattern="###0.00;-###0.00">
 					<reportElement x="242" y="3" width="35" height="12" uuid="3413e846-2f7c-436a-b48d-407d957f89ee"/>
@@ -342,6 +343,16 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 					</textElement>
 					<textFieldExpression><![CDATA[$V{apartadosGral}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement style="Column header" x="198" y="3" width="40" height="12" forecolor="#000000" uuid="17a83379-f7c2-475e-abee-7d00a0cb93db">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total:]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
@@ -479,7 +490,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 		<groupFooter>
 			<band height="15">
 				<rectangle radius="10">
-					<reportElement x="231" y="0" width="519" height="15" uuid="81779e9f-c53d-4bdd-a0f3-c83b726c04a7"/>
+					<reportElement x="100" y="0" width="650" height="15" uuid="81779e9f-c53d-4bdd-a0f3-c83b726c04a7"/>
 				</rectangle>
 				<textField pattern="###0.00;-###0.00">
 					<reportElement x="555" y="1" width="35" height="12" uuid="399dba4b-f288-4625-aaeb-eb82b0aaade1"/>
@@ -572,6 +583,16 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 					</textElement>
 					<textFieldExpression><![CDATA[$V{efectivo}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement style="Column header" x="100" y="1" width="139" height="12" forecolor="#000000" uuid="4774663a-2c02-4551-8da0-a40c1d857819">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Totales Por Establecimiento:]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
@@ -870,9 +891,18 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="68" splitType="Stretch">
+		<band height="94" splitType="Stretch">
+			<rectangle radius="4">
+				<reportElement x="570" y="4" width="180" height="90" uuid="e8c58714-8245-47f8-95b8-50deb1df38e5"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="4">
+				<reportElement x="9" y="3" width="355" height="61" uuid="69f7fa80-efd0-4e6b-a541-5af589340369"/>
+			</rectangle>
 			<componentElement>
-				<reportElement x="17" y="4" width="416" height="60" forecolor="#000000" backcolor="#FFCC99" uuid="f438c736-3422-4f2f-9b1e-679853bbd4ab"/>
+				<reportElement x="17" y="4" width="342" height="60" forecolor="#000000" backcolor="#FFCC99" uuid="f438c736-3422-4f2f-9b1e-679853bbd4ab"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical" ignoreWidth="true">
 					<datasetRun subDataset="totales_de_concentrado_de_cortes" uuid="044decf3-9459-476a-9a72-b9ff390deee2">
 						<datasetParameter name="FOLIO_TRABAJO_PARAMETRO">
@@ -880,7 +910,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:listContents height="60" width="416">
+					<jr:listContents height="60" width="342">
 						<textField pattern="###0.00;-###0.00">
 							<reportElement x="62" y="2" width="60" height="10" uuid="05755ca9-85c4-4b10-a0fe-1c4ddc9e0e64"/>
 							<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -1020,6 +1050,92 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
+			<line>
+				<reportElement x="640" y="49" width="110" height="1" uuid="e796f004-dc3d-4a29-8d59-a30ad07f7e27"/>
+			</line>
+			<line>
+				<reportElement x="640" y="60" width="110" height="1" uuid="81bcbe3f-259f-4b1e-8c70-15ff79e618d2"/>
+			</line>
+			<line>
+				<reportElement x="640" y="39" width="110" height="1" uuid="9345bf5b-dca1-4894-8935-554332655b16"/>
+			</line>
+			<line>
+				<reportElement x="640" y="70" width="110" height="1" uuid="a4a8b1d5-a120-41e2-8169-f5d12d5a7810"/>
+			</line>
+			<line>
+				<reportElement x="640" y="28" width="110" height="1" uuid="8420d1c0-a330-4dc6-be74-7a66e7e13f9e"/>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="570" y="4" width="180" height="12" forecolor="#000000" uuid="bd85ce53-edeb-4914-a3b6-c4c21d70b3f4"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FICHAS DE DEPOSITO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="570" y="81" width="180" height="1" uuid="b9003061-d8ea-4da1-810a-a8915c342a7b"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="570" y="16" width="69" height="12" forecolor="#000000" uuid="67ba5338-f86c-4dec-a202-2fd9fdd1e5dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="570" y="27" width="69" height="12" forecolor="#000000" uuid="fa8b984f-40f5-4a5a-a17d-8121fdf87c75"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="570" y="38" width="69" height="12" forecolor="#000000" uuid="afe4ed4d-25ab-493a-9f26-b4de183491e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="570" y="49" width="69" height="12" forecolor="#000000" uuid="5497580d-2f0c-411c-bdbc-3071e552054b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="570" y="59" width="69" height="12" forecolor="#000000" uuid="70a3e760-40e9-4d52-87e0-c4ddccd2f48f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="570" y="70" width="69" height="12" forecolor="#000000" uuid="a3602675-cde2-45e7-9683-b0e44b932e41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CHEQUES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="570" y="82" width="75" height="12" forecolor="#000000" uuid="fdf5bb0c-7fff-4edf-b1bf-000a9ddac0d3">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:      $]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

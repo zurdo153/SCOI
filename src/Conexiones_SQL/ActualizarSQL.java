@@ -4008,5 +4008,49 @@ public boolean Proveedor(Obj_Alta_Proveedores_Polizas prv){
 		}
 	return true;
 }	
+
+public boolean Modificacion_De_Corte_Para_Trabajos(String fCorte, double efectivo, double fSodas, double pines){
+	String query = "exec sp_update_alimentacion_de_cortes_desde_trabajos ?,?,?,?,?";
+
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	try {
+		con.setAutoCommit(false);
+		
+		int i=1;
+		pstmt = con.prepareStatement(query);
+		
+		pstmt.setString(i,	 fCorte);
+		pstmt.setDouble(i+=1,efectivo);
+		pstmt.setDouble(i+=1,fSodas);
+		pstmt.setDouble(i+=1,pines);
+		pstmt.setInt(i+=1,	 usuario.getFolio());
+		
+		pstmt.executeUpdate();
+		con.commit();
+		
+	}catch(SQLException ex){
+		
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Modificacion_De_Corte_Para_Trabajos ] update  SQLException: sp_update_alimentacion_de_cortes_desde_trabajos "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}catch(SQLException ex1){
+				System.out.println(ex1.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Modificacion_De_Corte_Para_Trabajos ] update  SQLException: sp_update_alimentacion_de_cortes_desde_trabajos "+ex1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Modificacion_De_Corte_Para_Trabajos ] update  SQLException: sp_update_alimentacion_de_cortes_desde_trabajos "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		}
+	return true;
+}	
 	
 }

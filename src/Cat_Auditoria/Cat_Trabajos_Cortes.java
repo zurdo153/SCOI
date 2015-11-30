@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -30,6 +33,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.GuardarTablasModel;
@@ -272,9 +276,13 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Trabajos_Cortes(String grupo_de_concentrado){
 		
+		tabla_model_c_verde.setRowCount(0);
+		tabla_model_grupos.setRowCount(0);
+		tabla_model_concentrado.setRowCount(0);
+		
 		grupo_corte = grupo_de_concentrado;
 		
-//		if(new ActualizarSQL().actualizar_tabla_cortes_con_asignaciones()){
+//		if(new ActualizarSQL().actualizar_tabla_cortes_con_asignaciones()){ 
 			refresh();
 //			while(tabla_grupos.getRowCount()>0){
 //				tabla_model_grupos.removeRow(0);
@@ -305,27 +313,27 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		tabla_grupos.setRowSorter(trsfiltro);  
 		
 		panel.add(btnRestaurar).setBounds(890, 10, 100, 20);
-		panel.add(scroll).setBounds(20, 30, 970, 130);
+		panel.add(scroll).setBounds(20, 30, 970, 80);
 		
 //		panel.add(cmbEstablecimiento).setBounds(45, 165, 160, 20);
-		panel.add(btnRegresarCortes).setBounds(530, 165, 130, 20);
-		panel.add(btnQuitarCorte).setBounds(680, 165, 130, 20);
-		panel.add(btnCV).setBounds(870, 165, 120, 20);
-		panel.add(scroll_grupos).setBounds(20, 185, 970, 290);
+		panel.add(btnRegresarCortes).setBounds(530, 115, 130, 20);
+		panel.add(btnQuitarCorte).setBounds(680, 115, 130, 20);
+		panel.add(btnCV).setBounds(870, 115, 120, 20);
+		panel.add(scroll_grupos).setBounds(20, 135, 970, 290);
 //		panel.add(btnCalcular).setBounds(20, 0, 160, 20);
-		panel.add(scroll_concentrado).setBounds(20, 480, 970, 130);
+		panel.add(scroll_concentrado).setBounds(20, 430, 970, 130);
 		
-		int x=20, y= 615,ancho=90;
+		int x=20, y= 565,ancho=90;
 		
 		panel.add(new JLabel("DEPOSITOS: ")	 ).setBounds(x, y, ancho, 20);           panel.add(new JLabel("TOTAL DEL CORTE: ")		).setBounds(x+250, y, ancho+50, 20);       
 		panel.add(txtDepositos 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalDelCorte						).setBounds(x+ancho+320, y, ancho, 20);    
-		panel.add(new JLabel("IZACEL: ")	 ).setBounds(x, y+=25, ancho, 20);       panel.add(new JLabel("TOTAL RETIRO CLIENTES: ")).setBounds(x+250, y, ancho+50, 20);    
+		panel.add(new JLabel("IZACEL: ")	 ).setBounds(x, y+=22, ancho, 20);       panel.add(new JLabel("TOTAL RETIRO CLIENTES: ")).setBounds(x+250, y, ancho+50, 20);    
 		panel.add(txtIzacel 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalRetiroCliente				).setBounds(x+ancho+320, y, ancho, 20);  
-		panel.add(new JLabel("PLAN TELCEL: ")).setBounds(x, y+=25, ancho, 20);       panel.add(new JLabel("TOTAL RECIBOS DE LUZ: ")	).setBounds(x+250, y, ancho+50, 20);    
+		panel.add(new JLabel("PLAN TELCEL: ")).setBounds(x, y+=22, ancho, 20);       panel.add(new JLabel("TOTAL RECIBOS DE LUZ: ")	).setBounds(x+250, y, ancho+50, 20);    
 		panel.add(txtPlanes 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalRecibosDeLuz 				).setBounds(x+ancho+320, y, ancho, 20);  
-		panel.add(new JLabel("PINES: ")		 ).setBounds(x, y+=25, ancho, 20);       panel.add(btnGenerar							).setBounds(x+ancho+310, y, ancho+10, 20);        
+		panel.add(new JLabel("PINES: ")		 ).setBounds(x, y+=22, ancho, 20);       panel.add(btnGenerar							).setBounds(x+ancho+310, y, ancho+10, 20);        
 		panel.add(txtPines 					 ).setBounds(x+ancho+10, y, ancho, 20);             
-		panel.add(new JLabel("CAJA VERDE: ") ).setBounds(x, y+=25, ancho, 20);
+		panel.add(new JLabel("CAJA VERDE: ") ).setBounds(x, y+=22, ancho, 20);
 		panel.add(txtCajaVerde				 ).setBounds(x+ancho+10, y, ancho, 20);
 		
 		llamar_render();
@@ -341,7 +349,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		btnRegresarCortes.addActionListener(opRegresarCorte);
 		
 		txtPlanes.addKeyListener(opTeclearPlanes);
-
+		agregar(tabla_grupos);
+		
 		cont.add(panel);
 		
 		txtDepositos.setEditable(false); 			
@@ -352,9 +361,23 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		txtTotalRetiroCliente.setEditable(false);
 		txtTotalRecibosDeLuz.setEditable(false);
 
-		this.setSize(1024,768);
+		this.setSize(1024,710);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
+	}
+	
+	public void agregar(final JTable tb){
+		tb.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				
+				int fila = tb.getSelectedRow();
+				
+				if(e.getClickCount()==2){
+					new Cat_Modificacion_De_Corte(tb.getValueAt(fila, 2).toString().trim(),tb.getValueAt(fila, 3).toString().trim(),tb.getValueAt(fila, 4).toString().trim(),tb.getValueAt(fila, 5).toString().trim(),tb.getValueAt(fila, 10).toString().trim(),tb.getValueAt(fila, 11).toString().trim()).setVisible(true);
+				}
+			}
+		});
+		
 	}
 	
 	@SuppressWarnings("static-access")
@@ -391,14 +414,14 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			tabla_grupos.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_grupos,textoEncabezado,"centro","Arial","negrita",10));
 			
 			switch(i){
-					case 0: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
-					case 1: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9)); break;
+					case 0: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
+					case 1: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
 					case 2: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
-					case 3: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9)); break;
+					case 3: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
 					case 4: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
-					case 17:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
+					case 17:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
 					case 19:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
-					default: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11)); break;
+					default: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha"	,"Arial","negrita",11)); break;
 				}
 		}
 		
@@ -1018,5 +1041,99 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}
+	}
+	
+	public class Cat_Modificacion_De_Corte extends JDialog{
+		
+		Container contModif = getContentPane();
+		JLayeredPane panelModif = new JLayeredPane();
+		
+		JTextField txtCajero = new Componentes().text(new JTextField(), "Nombre Del Cajero(a)", 160, "String");
+		JTextField txtFolioCorte = new Componentes().text(new JTextField(), "Folio Del Corte", 60, "String");
+		JTextField txtAsignacion = new Componentes().text(new JTextField(), "Folio De Asignacion", 60, "String");
+		
+		JTextField txtTotalDeEfectivo = new Componentes().text(new JTextField(), "Total De Efectivo", 160, "Double");
+		JTextField txtTotalPines = new Componentes().text(new JTextField(), "Total De Pines", 160, "Double");
+		JTextField txtTotalFuenteDeSodas = new Componentes().text(new JTextField(), "Total De Fuente De Sodas", 160, "Double");
+		
+		JButton btnGuardarModificacion = new JButton("Guardar");
+		
+		public Cat_Modificacion_De_Corte(String fCorte, String fAsignacion, String cajero, String efectivo, String fSodas, String pines){
+			this.setTitle("Modificacion De Trabajo De Corte");
+			
+			int x=15,y=20,ancho=90;
+			
+			panelModif.add(new JLabel("Cajero(a):")).setBounds(x,y,ancho,20);
+			panelModif.add(txtCajero).setBounds(x+ancho,y,ancho*3+10,20);
+			
+			panelModif.add(new JLabel("Folio De Corte:")).setBounds(x,y+=25,ancho,20);
+			panelModif.add(txtFolioCorte).setBounds(x+ancho,y,ancho,20);
+			
+			panelModif.add(new JLabel("Asignacion:")).setBounds(x+210,y,ancho,20);
+			panelModif.add(txtAsignacion).setBounds(x+ancho+190,y,ancho,20);
+			
+			panelModif.add(new JLabel("Total De Efectivo:")).setBounds(x,y+=25,ancho,20);
+			panelModif.add(txtTotalDeEfectivo).setBounds(x+ancho+30,y,ancho,20);
+			
+			panelModif.add(new JLabel("Total De Pines:")).setBounds(x,y+=25,ancho,20);
+			panelModif.add(txtTotalPines).setBounds(x+ancho+30,y,ancho,20);
+			
+			panelModif.add(new JLabel("Total De Fuente De Sodas:")).setBounds(x,y+=25,ancho+50,20);
+			panelModif.add(txtTotalFuenteDeSodas).setBounds(x+ancho+50,y,ancho-20,20);
+			
+			panelModif.add(btnGuardarModificacion).setBounds(x+ancho+180,y,ancho+10,20);
+			
+			contModif.add(panelModif);
+			
+			txtCajero.setEditable(false);
+			txtFolioCorte.setEditable(false);
+			txtAsignacion.setEditable(false);
+			
+			txtCajero.setText(cajero);
+			txtFolioCorte.setText(fCorte);
+			txtAsignacion.setText(fAsignacion);
+			                        
+			txtTotalDeEfectivo.setText(efectivo);
+			txtTotalPines.setText(pines);
+			txtTotalFuenteDeSodas.setText(fSodas);
+			
+			btnGuardarModificacion.addActionListener(opGuardarModif);
+			
+			this.setSize(420, 200);
+			this.setResizable(true);
+			this.setLocationRelativeTo(null);
+		}
+		
+		ActionListener opGuardarModif = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(validaCampos().equals("")){
+						if(new ActualizarSQL().Modificacion_De_Corte_Para_Trabajos(txtFolioCorte.getText().trim(), Double.valueOf(txtTotalDeEfectivo.getText()), Double.valueOf(txtTotalFuenteDeSodas.getText()), Double.valueOf(txtTotalPines.getText())) ){
+							refresh();
+							dispose();
+							JOptionPane.showMessageDialog(null, "El Corte Se Modifico Correctamente"+validaCampos(),"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
+		    				return;
+						}else{
+							JOptionPane.showMessageDialog(null, "El Corte No Se Pudo Modificar","Error",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+		    				return;
+						}
+				}else{
+					JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+validaCampos(),"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+    				return;
+				}
+				
+			}
+		};
+		
+		public String validaCampos(){
+			String error = "";
+			
+			if(txtTotalDeEfectivo.getText().equals("")) error+="Total De Efectivo\n";
+			if(txtTotalPines.getText().equals("")) error+="Total De Pines\n";
+			if(txtTotalFuenteDeSodas.getText().equals("")) error+="Total De Fuentes De Sodas\n";
+			
+			return error;
+		}
+		
 	}
 }
