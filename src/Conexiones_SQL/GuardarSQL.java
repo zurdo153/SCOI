@@ -919,7 +919,7 @@ public class GuardarSQL {
 		
 		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
-		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-16
+		String query_corte =      		 "exec sp_insert_corte_caja_2 ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-16
 		String query_status_corte_para_filtro="update IZAGAR_Relacion_de_Asignaciones_Liquidadas set status_corte=1 where Asignacion = ?";
 
 		
@@ -1026,6 +1026,7 @@ public class GuardarSQL {
 			pstmt_corte.setFloat(i+=1, corte.getTotal_de_vauchers());
 			pstmt_corte.setFloat(i+=1, corte.getDiferencia_corte());
 			pstmt_corte.setString(i+=1, corte.getComentario().toUpperCase());
+			pstmt_corte.setString(i+=1, tb_asignaciones[0][0].toString().trim());
 			pstmt_corte.executeUpdate();
 			
 			
