@@ -39,6 +39,7 @@ import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
+import Obj_Compras.Obj_Alimentacion_De_Codigos_Adicionales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
@@ -4119,14 +4120,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_Contable ] Insert   \nSQLException: sp_insert_cuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_Contable ] Insert   \nSQLException: sp_insert_cuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_Contable ] Insert  \nSQLException: sp_insert_cuenta_contable "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_Contable ] Insert  \nSQLException: sp_insert_cuenta_contable "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return false;
@@ -4135,7 +4136,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_Contable ] Insert  SQLException: sp_insert_cuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_Contable ] Insert  SQLException: sp_insert_cuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}		
 		return true;
@@ -4167,7 +4168,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_SubCuenta_Contable ] Insert  \nSQLException: sp_insert_subcuenta_contable "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_SubCuenta_Contable ] Insert  \nSQLException: sp_insert_subcuenta_contable "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return false;
@@ -4176,7 +4177,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_SubCuenta_Contable ] Insert  SQLException: sp_insert_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_SubCuenta_Contable ] Insert  SQLException: sp_insert_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}		
 		return true;
@@ -4206,14 +4207,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sub_SubCuenta_Contable ] Insert   \nSQLException: sp_insert_sub_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sub_SubCuenta_Contable ] Insert   \nSQLException: sp_insert_sub_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sub_SubCuenta_Contable ] Insert  \nSQLException: sp_insert_sub_subcuenta_contable "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sub_SubCuenta_Contable ] Insert  \nSQLException: sp_insert_sub_subcuenta_contable "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return false;
@@ -4222,7 +4223,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sub_SubCuenta_Contable ] Insert  SQLException: sp_insert_sub_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Sub_SubCuenta_Contable ] Insert  SQLException: sp_insert_sub_subcuenta_contable "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}		
 		return true;
@@ -4310,14 +4311,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			con.commit();
 		} catch (SQLException e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Poliza ] Insert   \nSQLException: sp_insert_polizas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Poliza ] Insert   \nSQLException: sp_insert_polizas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Poliza ] Insert  \nSQLException: sp_insert_polizas "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Poliza ] Insert  \nSQLException: sp_insert_polizas "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return false;
@@ -4326,7 +4327,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Poliza ] Insert  SQLException: sp_insert_polizas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Poliza ] Insert  SQLException: sp_insert_polizas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}		
 		return true;
@@ -4343,14 +4344,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return false;
@@ -4359,7 +4360,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Modificar_Folio_De_Poliza ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}		
 		return true;
@@ -4385,14 +4386,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proveedor ] Insert  SQLException: sp_insert_cliente "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proveedor ] Insert  SQLException: sp_insert_cliente "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proveedor ] Insert  SQLException: sp_insert_empleado "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proveedor ] Insert  SQLException: sp_insert_empleado "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			} 
 			return false;
@@ -4433,14 +4434,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			con.commit();
 		} catch (SQLException e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ordern_De_Pago_En_Efectivo ] Insert   \nSQLException: sp_insert_orden_de_pago_en_efectivo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ordern_De_Pago_En_Efectivo ] Insert   \nSQLException: sp_insert_orden_de_pago_en_efectivo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ordern_De_Pago_En_Efectivo ] Insert  \nSQLException: sp_insert_orden_de_pago_en_efectivo "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ordern_De_Pago_En_Efectivo ] Insert  \nSQLException: sp_insert_orden_de_pago_en_efectivo "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return false;
@@ -4449,7 +4450,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ordern_De_Pago_En_Efectivo ] Insert  SQLException: sp_insert_orden_de_pago_en_efectivo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Ordern_De_Pago_En_Efectivo ] Insert  SQLException: sp_insert_orden_de_pago_en_efectivo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}		
 		return true;
@@ -4609,7 +4610,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Productos ] Insert  SQLException: sp_insert_productos "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Productos ] \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 
 				}
 			} 
@@ -4620,7 +4621,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}		
 		return true;
@@ -4641,14 +4642,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidades_De_Medida_De_Producto ]\nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidades_De_Medida_De_Producto ]\nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidades_De_Medida_De_Producto ]\nSQLException:"+query+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidades_De_Medida_De_Producto ]\nSQLException:"+query+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return false;
@@ -4657,7 +4658,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidades_De_Medida_De_Producto ] \nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Unidades_De_Medida_De_Producto ] \nSQLException:"+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}		
 		return true;
@@ -4681,15 +4682,15 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Compra_De_Cascos  \n procedimiento almacenado sp_actualizar_ordenes_de_pago_a_un_corte \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Compra_De_Cascos  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Compra_De_Cascos  \n procedimiento almacenado sp_actualizar_ordenes_de_pago_a_un_corte \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Compra_De_Cascos \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Compra_De_Cascos  \n procedimiento almacenado sp_actualizar_ordenes_de_pago_a_un_corte \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Compra_De_Cascos  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return false;
@@ -4702,6 +4703,48 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 		}		
 		return true;
 		}
+	
+	public boolean Guardar_Codigo_Adicional(Obj_Alimentacion_De_Codigos_Adicionales Datos_Producto){
+		String query = "exec sp_insert_codigo_adicional ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, Datos_Producto.getFolio_Producto().trim());
+			pstmt.setString(2, Datos_Producto.getCodigo_Tecleado().trim());
+			pstmt.setString(3, Datos_Producto.getCodigo_Barras().trim().equals("")?"0.0":Datos_Producto.getCodigo_Barras().trim());
+	        pstmt.setString(4, usuario.getFolio()+"");
+	        		
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Codigo_Adicional ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Codigo_Adicional ]\n"+query+"\nSQLException:"+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Codigo_Adicional ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}		
+	return true;
+}
+	
+	
 	
 	
 } 

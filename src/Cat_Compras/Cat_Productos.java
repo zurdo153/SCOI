@@ -2,6 +2,7 @@ package Cat_Compras;
 
 import java.awt.Container;
 import java.awt.Event;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
+import Obj_Compras.Obj_Alimentacion_De_Codigos_Adicionales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
@@ -46,9 +48,9 @@ public class Cat_Productos extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JTextField txtFolio = new Componentes().text(new JCTextField(), "Teclea el Folio Del Producto", 9, "String");
+	JTextField txtFolio = new Componentes().text(new JCTextField(), "Teclea el Folio Del Producto", 20, "String");
 	JTextField txtDescripcion = new Componentes().text(new JCTextField(), "Descripcion Del Producto",250,"String");
-	JTextField txtCodigoDeBarras = new Componentes().text(new JCTextField(), "Codigo De Barras", 40, "String");
+	JTextField txtCodigoDeBarras = new Componentes().text(new JCTextField(), "Codigo De Barras", 20, "String");
 	JTextField txtCosto = new Componentes().text(new JCTextField(), "Costo", 10, "Double");
 	JTextField txtPrecioDeVenta = new Componentes().text(new JCTextField(), "Precio De Venta", 15, "Double");
 	JTextField txtDescripciondFiltro = new Componentes().text(new JCTextField(), "Teclea Folio o Descripcion o Unidad De Medida o Uso Del Producto Para Buscar En La Tabla", 30, "String");
@@ -106,7 +108,7 @@ public class Cat_Productos extends JFrame{
 		JScrollPane scrollAsignado = new JScrollPane(tabla);
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
-		
+		String codigo_barras_="";
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Productos(){
 			this.setSize(1024,768);
@@ -251,8 +253,8 @@ public class Cat_Productos extends JFrame{
 		tabla.getTableHeader().setReorderingAllowed(false) ;
 		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
-	    this.tabla.getColumnModel().getColumn(0).setMinWidth(70);
-	    this.tabla.getColumnModel().getColumn(0).setMaxWidth(70);
+	    this.tabla.getColumnModel().getColumn(0).setMinWidth(80);
+	    this.tabla.getColumnModel().getColumn(0).setMaxWidth(80);
 	    this.tabla.getColumnModel().getColumn(1).setMinWidth(250);
 	    this.tabla.getColumnModel().getColumn(1).setMaxWidth(800);
 	    this.tabla.getColumnModel().getColumn(2).setMinWidth(100);
@@ -286,10 +288,8 @@ public class Cat_Productos extends JFrame{
 	    
 	    }
 	private void refrestabla(){
-
 		DecimalFormat df = new DecimalFormat("#0.00");
 		modelo.setRowCount(0);
-		
 		Statement s;
 		ResultSet rs;
 		try {
@@ -505,7 +505,7 @@ public class Cat_Productos extends JFrame{
 	        }
         });
     }
-	
+
 	public void busqueda(String folio){
 		if(folio.equals("")){
 			JOptionPane.showMessageDialog(null, "Ingrese El Folio Del Producto","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -518,8 +518,8 @@ public class Cat_Productos extends JFrame{
 					txtFolio.setText(prod.getFolio()+"");
 					txtDescripcion.setText(prod.getDescripcion()+"");
 					txtCodigoDeBarras.setText(prod.getCodigoDeBarras()+"");
+					codigo_barras_=prod.getCodigoDeBarras()+"";
 					txtCosto.setText(prod.getCosto()+"");
-					
 					txtPrecioDeVenta.setText(prod.getPrecioDeVenta()+"");
 					
 					cmbUnidadDeMedida.setSelectedItem(prod.getUnidadDeMedida());
@@ -611,6 +611,11 @@ public class Cat_Productos extends JFrame{
 						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					} else{
+						
+						
+						if(new Obj_Alimentacion_De_Codigos_Adicionales().Existe_Producto(txtCodigoDeBarras.getText().trim().toUpperCase()+"")&&!txtCodigoDeBarras.getText().toString().equals(codigo_barras_)){	
+							JOptionPane.showMessageDialog(null, "El Codigo De Barras Ya Existe y No Debe De Haber Codigos Duplicados" , "Aviso", JOptionPane.WARNING_MESSAGE, new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+						}else{
 							Obj_Alta_De_Productos prod = new Obj_Alta_De_Productos().buscar(txtFolio.getText());
 								if(prod.getFolio().equals(txtFolio.getText())){
 										if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
@@ -663,8 +668,13 @@ public class Cat_Productos extends JFrame{
 											return;
 										}
 								}
+						}
 		               }
 				 } catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} catch (HeadlessException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
 					e1.printStackTrace();
 				} 				
 							

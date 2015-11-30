@@ -46,6 +46,7 @@ import Obj_Checador.Obj_Encargado_De_Solicitudes;
 import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
+import Obj_Compras.Obj_Alimentacion_De_Codigos_Adicionales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
@@ -5978,6 +5979,7 @@ public class BuscarSQL {
     return existe;
 	}
 	
+	
 	public String datos_pedido(String cod_prod) throws SQLException{
 		
 		String cadena = "''";
@@ -7410,4 +7412,47 @@ public class BuscarSQL {
 		return unidad;
 	}
 	
+	public boolean existe_Producto_SCOI(String folio_producto){
+		String query = "exec sp_existe_producto '"+folio_producto+"' ";
+		boolean existe = false;
+		try { Statement s = con.conexion().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	existe = rs.getBoolean(1);
+			      }
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion existe_Producto \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		}
+    return existe;
+	}
+	
+	public Obj_Alimentacion_De_Codigos_Adicionales datos_producto_scoi(String cod_prod) throws SQLException{
+		Obj_Alimentacion_De_Codigos_Adicionales datosproducto = new Obj_Alimentacion_De_Codigos_Adicionales();
+		String query = "exec sp_select_datos_producto '"+cod_prod+"' ";
+		Statement stmt2= null;
+						try {
+							stmt2= con.conexion().createStatement();
+							ResultSet rs2= stmt2.executeQuery(query);
+								   while(rs2.next()){
+									   datosproducto.setFolio_Producto(rs2.getString("folio_producto"));
+									   datosproducto.setDescripcion(rs2.getString("descripcion"));
+									   datosproducto.setUDM(rs2.getString("UDM"));
+									   datosproducto.setUso(rs2.getString("uso"));
+									   datosproducto.setCosto(rs2.getDouble("Costo"));
+									   datosproducto.setPrecio_Venta(rs2.getDouble("precio_de_venta"));
+									   datosproducto.setEstatus(rs2.getString("Estatus"));
+									   datosproducto.setCodigo_Barras(rs2.getString("codigo_de_barras_principal"));
+									   datosproducto.setCodigo_Tecleado(rs2.getString("codigo_tecleado"));									   
+								   }
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_producto \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+							e.printStackTrace();
+							return null;
+						}
+		finally{
+			if(stmt2!=null){stmt2.close();}
+		}
+		return datosproducto;
+	}
 }
