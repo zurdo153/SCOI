@@ -58,9 +58,9 @@ public class Cat_Reportes_De_Entradas_y_Salidas_De_Cascos extends JFrame {
 //		this.panel.add(new JLabel("Fecha Inicio:")).setBounds(15,25,100,20);
 //		this.panel.add(JLBlinicio).setBounds(75,25,20,20);
 //		this.panel.add(c_inicio).setBounds(95,25,100,20);
-		this.panel.add(new JLabel("Fecha Final:")).setBounds(15,55,100,20);
-		this.panel.add(JLBfin).setBounds(75,55,20,20);
-		this.panel.add(c_final).setBounds(95,55,100,20);
+		this.panel.add(new JLabel("Fecha Final:")).setBounds(115,55,100,20);
+		this.panel.add(JLBfin).setBounds(175,55,20,20);
+		this.panel.add(c_final).setBounds(195,55,100,20);
 //	    this.panel.add(new JLabel("Establecimiento:")).setBounds(220,25,150,20);
 //		this.panel.add(cmbEstablecimiento).setBounds(320,25,170,20);
 	
