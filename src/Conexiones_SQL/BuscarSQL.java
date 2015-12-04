@@ -7455,4 +7455,92 @@ public class BuscarSQL {
 		}
 		return datosproducto;
 	}
+	
+	//Buscamos la fecha y hora del ultimo movimiento de cascos y la actual
+	public String[] fechas_de_movimiento_de_cascos(){
+		String[] fechas_horas = new String[4];
+		String query = "declare @fecha_fin datetime "
+				+ " set @fecha_fin = GETDATE(); "
+				+ " select convert(varchar(20),ultima_fecha_de_transpaso_de_movimientos_de_cascos,103) as fecha_inicial "
+				+ " 		 ,convert(varchar(20),ultima_fecha_de_transpaso_de_movimientos_de_cascos,108) as hora_inicial "
+				+ "		 ,convert(varchar(20),@fecha_fin,103) as fecha_final "
+				+ "		 , convert(varchar(4),datepart(HOUR,@fecha_fin))+':'+convert(varchar(4),(datepart(MINUTE,@fecha_fin)-5))+':'+convert(varchar(4),datepart(SECOND,@fecha_fin)) as hora_final "
+				+ " from tb_configuracion_sistema";
+		
+		Statement stmt = null;
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				
+				fechas_horas[0]=rs.getString("fecha_inicial").trim();
+				fechas_horas[1]=rs.getString("hora_inicial").trim();
+				fechas_horas[2]=rs.getString("fecha_final").trim();
+				fechas_horas[3]=rs.getString("hora_final").trim();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Obj_Horarios store procedure sp_select_horarios: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+		}
+		return fechas_horas;
+	}
+	
+	public String[][] buscarCascosPendientes(String fecha_in, String fecha_fin){
+		Statement stmt = null;
+		
+//		String query = "SELECT [folio_origen] "
+//				+ "	  ,[folio_transaccion] "
+//				+ "	  ,[nombre_transaccion] "
+//				+ "	  ,convert(varchar(20),[fecha],103)+' '+convert(varchar(20),[fecha],108) as fecha "
+//				+ "	  ,[folio_producto] "
+//				+ "	  ,[Descripcion] "
+//				+ "	  ,[cantidad] "
+//				+ "   	  ,[status] "
+//				+ "   FROM tb_entysal_mov_cascos  where status_traspaso=1" ;
+		String query = "exec sp_traspaso_de_movimientos_de_cascos '"+fecha_in+"','"+fecha_fin+"'";
+		
+		
+		String[][] cascosPendientes = new String[getFilas(query)][8];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i=0;
+			while(rs.next()){
+				
+				for(int j=0; j<8; j++){
+					cascosPendientes[i][j] = rs.getString(j+1);
+				}
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [buscarCascosPendientes] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return cascosPendientes;
+	}
 }
