@@ -26,7 +26,6 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -38,6 +37,8 @@ import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.GuardarTablasModel;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.CaveceraTablaRenderer;
 import Obj_Renders.tablaRenderer;
 
@@ -52,11 +53,14 @@ public class Cat_Trabajos_Cortes extends JFrame{
 //	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	JButton btnRegresarCortes = new JButton("Restaurar Quitados");
-	JButton btnQuitarCorte = new JButton("Quitar Corte",new ImageIcon("imagen/Delete.png"));
+	JButton btnQuitarSeleccionado = new JButton("Quitar Seleccionado",new ImageIcon("imagen/Delete.png"));
+	JButton btnQuitarDesmarcados = new JButton("Quitar NO Seleccionado",new ImageIcon("imagen/Delete.png"));
 
 	JButton btnRestaurar = new JButton("Restaurar", new ImageIcon("imagen/flecha-naranja-alerta-de-descarga-de-la-actualizacion-icono-8872-16.png"));
 	JButton btnCV = new JButton("A Caja Verde",new ImageIcon("imagen/flecha-verde-icono-8451-16.png"));
 	JButton btnGenerar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	
+	JTextField txtFiltroPorAsignacion = new Componentes().text(new JCTextField(), "      Asignación", 15, "String");
 	
 	JTextField txtDepositos = new JTextField();
 	JTextField txtIzacel = new JTextField();
@@ -79,11 +83,11 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		return cadena;
 	}
 	
-	public static String cadenaCortesQuitados(){
+	public static String cadenaCortesQuitados(String marcados_vs_desmarcados){
 		String cadena = "";
 			if(tabla_grupos.getRowCount()>0){
 					for(int i=0; i<tabla_model_grupos.getRowCount(); i++){
-						if(tabla_grupos.getValueAt(i, 0).toString().trim().equals("true")){
+						if(tabla_grupos.getValueAt(i, 0).toString().trim().equals(marcados_vs_desmarcados)){
 							cadena+=tabla_model_grupos.getValueAt(i, 2).toString().trim()+"'',''";
 						}
 					}
@@ -262,8 +266,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
     JTable tabla_concentrado = new JTable(tabla_model_concentrado);
 	JScrollPane scroll_concentrado = new JScrollPane(tabla_concentrado,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-	@SuppressWarnings("rawtypes")
-	private TableRowSorter trsfiltro;
 	Border blackline;
 	
 	Object[] fila_cacl= new Object[14];
@@ -273,7 +275,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	int folio_trabajo_realizado=0;
 	String grupo_corte="";
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Trabajos_Cortes(String grupo_de_concentrado){
 		
 		tabla_model_c_verde.setRowCount(0);
@@ -309,16 +310,19 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		this.setTitle("Trabajos De Cortes");
 		this.panel.setBorder(BorderFactory.createTitledBorder( "Concentrados De Cortes"));
 		
-		trsfiltro = new TableRowSorter(tabla_model_grupos); 
-		tabla_grupos.setRowSorter(trsfiltro);  
+//		trsfiltro = new TableRowSorter(tabla_model_grupos); 
+//		tabla_grupos.setRowSorter(trsfiltro);  
 		
 		panel.add(btnRestaurar).setBounds(890, 10, 100, 20);
 		panel.add(scroll).setBounds(20, 30, 970, 80);
 		
 //		panel.add(cmbEstablecimiento).setBounds(45, 165, 160, 20);
-		panel.add(btnRegresarCortes).setBounds(530, 115, 130, 20);
-		panel.add(btnQuitarCorte).setBounds(680, 115, 130, 20);
-		panel.add(btnCV).setBounds(870, 115, 120, 20);
+		panel.add(btnRegresarCortes).setBounds(400, 115, 130, 20);
+		panel.add(btnQuitarSeleccionado).setBounds(545, 115, 150, 20);
+		panel.add(btnQuitarDesmarcados).setBounds(710, 115, 150, 20);
+		panel.add(btnCV).setBounds(875, 115, 115, 20);
+		
+		panel.add(txtFiltroPorAsignacion).setBounds(275, 115, 110, 20);
 		panel.add(scroll_grupos).setBounds(20, 135, 970, 290);
 //		panel.add(btnCalcular).setBounds(20, 0, 160, 20);
 		panel.add(scroll_concentrado).setBounds(20, 430, 970, 130);
@@ -345,10 +349,13 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		btnRestaurar.addActionListener(opRestaurar);
 		btnGenerar.addActionListener(opGenerar);
 		
-		btnQuitarCorte.addActionListener(opQuitarCorte);
+		opQuitar(btnQuitarDesmarcados);
+		opQuitar(btnQuitarSeleccionado);
 		btnRegresarCortes.addActionListener(opRegresarCorte);
 		
 		txtPlanes.addKeyListener(opTeclearPlanes);
+		txtFiltroPorAsignacion.addKeyListener(opFiltroDinamico);
+		
 		agregar(tabla_grupos);
 		
 		cont.add(panel);
@@ -379,6 +386,15 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		});
 		
 	}
+	
+	KeyListener opFiltroDinamico = new KeyListener(){
+		public void keyReleased(KeyEvent arg0) {
+			
+			new Obj_Filtro_Dinamico(tabla_grupos,"F.Asignacion", txtFiltroPorAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
 	
 	@SuppressWarnings("static-access")
 	public void llamar_render(){
@@ -442,7 +458,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				}
 		}
     	
-		int x=60;
+		int x=70;
 		
     	this.tabla_c_verde.getTableHeader().setReorderingAllowed(false) ;
     	this.tabla_c_verde.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -502,7 +518,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
     	this.tabla_grupos.getColumnModel().getColumn(3 ).setMinWidth(x+40); 
     	                                               
     	this.tabla_grupos.getColumnModel().getColumn(4 ).setMaxWidth(x*4);
-    	this.tabla_grupos.getColumnModel().getColumn(4 ).setMinWidth(x*3-42);		
+    	this.tabla_grupos.getColumnModel().getColumn(4 ).setMinWidth(x*3);		
     	this.tabla_grupos.getColumnModel().getColumn(5 ).setMaxWidth(x);
     	this.tabla_grupos.getColumnModel().getColumn(5 ).setMinWidth(x);
     	this.tabla_grupos.getColumnModel().getColumn(6 ).setMaxWidth(x);
@@ -670,14 +686,41 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	}
 	
 	String quitarCortes="";
-	ActionListener opQuitarCorte = new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-				
-			quitarCortes=quitarCortes.equals("")?cadenaCortesQuitados():quitarCortes+"'',''"+cadenaCortesQuitados();
-			refresh();
-			
-		}
-	};
+	
+	public void opQuitar(final JButton btn){
+		
+		btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.print(btn.getActionCommand());
+				if(btn.getActionCommand().equals("Quitar Seleccionado")){
+					quitarCortes=quitarCortes.equals("")?cadenaCortesQuitados("true"):quitarCortes+"'',''"+cadenaCortesQuitados("true");
+				}else{
+					quitarCortes=quitarCortes.equals("")?cadenaCortesQuitados("false"):quitarCortes+"'',''"+cadenaCortesQuitados("false");
+				}
+				refresh();
+			}
+		});
+		
+//		tb.addMouseListener(new MouseAdapter(){
+//			public void mouseClicked(MouseEvent e){
+//				
+//				int fila = tb.getSelectedRow();
+//				
+//				if(e.getClickCount()==2){
+//					new Cat_Modificacion_De_Corte(tb.getValueAt(fila, 2).toString().trim(),tb.getValueAt(fila, 3).toString().trim(),tb.getValueAt(fila, 4).toString().trim(),tb.getValueAt(fila, 5).toString().trim(),tb.getValueAt(fila, 10).toString().trim(),tb.getValueAt(fila, 11).toString().trim()).setVisible(true);
+//				}
+//			}
+//		});
+		
+	}
+//	ActionListener opQuitarCorte = new ActionListener() {
+//		public void actionPerformed(ActionEvent arg0) {
+//				
+//			quitarCortes=quitarCortes.equals("")?cadenaCortesQuitados():quitarCortes+"'',''"+cadenaCortesQuitados();
+//			refresh();
+//			
+//		}
+//	};
 	ActionListener opRegresarCorte = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			quitarCortes="";
@@ -1037,7 +1080,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Trabajos_Cortes("CONCENTRADO 4").setVisible(true);
+			new Cat_Trabajos_Cortes("CONCENTRADO 3").setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}
