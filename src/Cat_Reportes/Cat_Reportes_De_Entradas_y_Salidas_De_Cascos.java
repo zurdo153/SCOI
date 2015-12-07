@@ -53,8 +53,8 @@ public class Cat_Reportes_De_Entradas_y_Salidas_De_Cascos extends JFrame {
 	
 	public Cat_Reportes_De_Entradas_y_Salidas_De_Cascos(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bajas_altas.png"));
-		this.setTitle("Reportes de Altas Y Bajas de Personal En Un Rango de Fechas");
-		this.panel.setBorder(BorderFactory.createTitledBorder("Reportes de Altas y Bajas de Personal"));
+		this.setTitle("Reportes de Movimientos De Cascos");
+		this.panel.setBorder(BorderFactory.createTitledBorder("Reportes de Movimientos De Cascos"));
 //		this.panel.add(new JLabel("Fecha Inicio:")).setBounds(15,25,100,20);
 //		this.panel.add(JLBlinicio).setBounds(75,25,20,20);
 //		this.panel.add(c_inicio).setBounds(95,25,100,20);

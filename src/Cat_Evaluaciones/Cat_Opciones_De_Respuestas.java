@@ -270,4 +270,6 @@ public class Cat_Opciones_De_Respuestas extends JFrame {
 		}
 	};
 	
+	
+	
 }

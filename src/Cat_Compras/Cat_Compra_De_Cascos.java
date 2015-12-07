@@ -268,7 +268,7 @@ public class Cat_Compra_De_Cascos extends JFrame{
 		try {
 			Connexion con = new Connexion();
 			s = con.conexion().createStatement();
-			rs = s.executeQuery("select folio_producto, descripcion, costo,'' as cantidad  from tb_productos where status='V' and folio_uso=2");
+			rs = s.executeQuery("select folio_producto, descripcion, costo,'' as cantidad  from tb_productos where status='V' and folio_uso=2 ORDER BY costo");
 			while (rs.next())
 			{  String [] fila = new String[4];
 			   fila[0] = rs.getString(1).trim();
@@ -393,7 +393,6 @@ public class Cat_Compra_De_Cascos extends JFrame{
 						 compracascos.setBeneficiario(txtBeneficiario.getText().toUpperCase().trim());
 						 compracascos.setTotal(Double.valueOf(txtTotalAPagar.getText().toUpperCase().trim()));
 					   if(compracascos.guardar(tabla_guardar())){
-
 						           refrestabla();
 									JOptionPane.showMessageDialog(null,"El Registró Se Guardó  Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
 									btnDeshacer.doClick();
