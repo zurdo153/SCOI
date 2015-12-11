@@ -1,7 +1,8 @@
 package Obj_Planeacion;
 
 public class Obj_Opciones_De_Respuesta {
-	String Resuelta ="",Incumplida="",Pendiente="",EnProceso="",PasoAOtroDepartamento="",No_Exige_Evidencia="",Exige_Evidencia="",NoExigeObservacion="",ExigeObservacion="";
+	//defecto
+	String Resuelta ="true",Incumplida="true",Pendiente="true",EnProceso="true",PasoAOtroDepartamento="true",No_Exige_Evidencia="true",Exige_Evidencia="false",NoExigeObservacion="true",ExigeObservacion="false";
 
 	public String getResuelta() {
 		return Resuelta;

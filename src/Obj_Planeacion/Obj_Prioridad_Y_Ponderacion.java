@@ -1,8 +1,9 @@
 package Obj_Planeacion;
 
 public class Obj_Prioridad_Y_Ponderacion {
-	String Importante ="",Urgente="",Preventivo="",Normal="";
-	Integer Ponderacion=0;
+	//Default
+	String Importante ="false",Urgente="false",Preventivo="false",Normal="true";
+	Integer Ponderacion=1;
 	public String getImportante() {
 		return Importante;
 	}

@@ -1,4 +1,4 @@
-package Cat_Evaluaciones;
+package Biblioteca;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -32,7 +32,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import Conexiones_SQL.BuscarSQL;
-import Obj_Evaluaciones.Obj_Frecuencia_De_Actividades;
+import Obj_Planeacion.Obj_Frecuencia_De_Actividades;
 import Obj_Principal.Componentes;
 
 import com.toedter.calendar.JDateChooser;
@@ -676,7 +676,7 @@ public class Cat_Frecuencia_De_Actividades extends JFrame{
 		
 		frecuencia.setSelecciona_dia_de_la_semana(rbDiaDeLaSemana.isSelected());
 		frecuencia.setNivel_de_dias(cmbNivelDeDias.getSelectedItem().toString());
-		frecuencia.setDia_de_la_semana(cmbDiaDeLaSemana.getSelectedItem().toString());
+//		frecuencia.setDia_de_la_semana(cmbDiaDeLaSemana.getSelectedItem().toString());
 		frecuencia.setMes2(Integer.valueOf(spMeses2.getValue().toString()));
 		
 //		semana------
