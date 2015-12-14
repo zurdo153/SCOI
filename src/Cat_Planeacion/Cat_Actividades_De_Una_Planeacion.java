@@ -171,22 +171,27 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
           	
 	ActionListener opAprovar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
-//			Obj_Seleccion_De_Usuarios usuarios= new Obj_Seleccion_De_Usuarios();
-//			Obj_Frecuencia_De_Actividades frecuencia = new Obj_Frecuencia_De_Actividades();
 			if(txa_Resultado_Configuracion.getText().toString().equals("")){
-				JOptionPane.showMessageDialog(null, "Necesitas Escribir El Detalle De La Actividad", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null, "Necesitas Escribir El Detalle De La Actividad", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
+				if((usuarios.getUsuarios_nombres()==null)){
+					String[][] matriz =new String[1][2];
+					           matriz[0][0]= String.valueOf(usuario.getFolio());
+					           matriz[0][1]= usuario.getNombre_completo();
+					usuarios.setUsuarios_nombres(matriz);
+				}
 				
 				Obj_Actividades_De_Una_Planeacion Actividad_plan = new Obj_Actividades_De_Una_Planeacion();
 				Actividad_plan.setDescripcion_de_la_actividad(txa_Resultado_Configuracion.getText().toString().trim());
 				if(Actividad_plan.guardar(OpRespuesta,OpPonderacion,usuarios,frecuencia, usuario.getFolio())){
-					
+					dispose();
+				}else{
+					JOptionPane.showMessageDialog(null, "Error Al Guardar La Actividad", "Avisa Al Administrador Del Sistema", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+					return;
 				}
 				
 			}
-			
 			
 		}
 	};
@@ -729,7 +734,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					return;
 				}
 				usuarios.setUsuarios_nombres(tabla_folio_y_nombre_completo());
-				
 									dispose();
 			}
 		};
