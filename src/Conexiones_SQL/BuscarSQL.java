@@ -7543,4 +7543,87 @@ public class BuscarSQL {
 		}
 		return cascosPendientes;
 	}
+	
+	public String[] buscarFolioSemanaParaPlanSemanal(int dias){
+		Statement stmt = null;
+		
+		String query = "declare @mover int set @mover = "+dias+"; "
+				+ " select case when DATENAME(WEEK,GETDATE()+@mover)>52 "
+				+ "		then convert(varchar(20),(DATENAME(YEAR,GETDATE()+@mover)+1))+'01' "
+				+ "				 else DATENAME(YEAR,GETDATE()+@mover)+ RIGHT('00'+CONVERT(VARCHAR(2),DATENAME(WEEK,GETDATE()+@mover)),2) "
+				+ "			end, "
+				+ "		 convert(varchar(20),GETDATE()+@mover-datepart(WEEKDAY,GETDATE()-1),103)+' - '+convert(varchar(20),GETDATE()+@mover-datepart(WEEKDAY,GETDATE()-1)+6,103)";
+		String[] datos = new String[2];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+					datos[0] = rs.getString(1);
+					datos[1] = rs.getString(2);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [buscarFolioSemanaParaPlanSemanal] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return datos;
+	}
+	
+	public String[] buscarEmpleadoParaPlanSemanal(){
+		Statement stmt = null;
+		
+		String query = " select tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado "
+				+ " ,tb_establecimiento.nombre as establecimiento "
+				+ " ,tb_departamento.departamento as departamento "
+				+ " ,tb_puesto.nombre as puesto "
+				+ "  from tb_empleado "
+				+ " inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id "
+				+ " inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento "
+				+ " inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id "
+				+ " where tb_empleado.folio = "+(new Obj_Usuario().LeerSession().getFolio());
+		String[] datos = new String[4];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+					datos[0] = rs.getString(1);
+					datos[1] = rs.getString(2);
+					datos[2] = rs.getString(3);
+					datos[3] = rs.getString(4);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [buscarEmpleadoParaPlanSemanal] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return datos;
+	}
 }
