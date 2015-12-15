@@ -7626,4 +7626,195 @@ public class BuscarSQL {
 		}
 		return datos;
 	}
+	
+	public int  cantidad_de_actividades(){
+		int cantidad=0;
+		String query = "select objetivos_de_plan_semanal from tb_configuracion_sistema ";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				cantidad=(rs.getInt("objetivos_de_plan_semanal"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return cantidad;
+	}
+	
+	public String[][] buscarObjetivos_De_Plan_Semanal(int folio){
+		Statement stmt = null;
+		
+		String query = " select objetivo,estatus from tb_objetivos_de_plan_semanal where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" and folio = "+folio
+					   +" union all ( select objetivo,estatus from tb_objetivos_de_plan_semanal where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" and folio < "+folio+" and estatus <> 'RES') ";
+		String[][] datos = new String[getFilas(query)][3];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int i = 0;
+			while(rs.next()){
+					datos[i][0] = "  "+rs.getString(1);
+					datos[i][1] = rs.getString(2)+"  ";
+					datos[i][2] = "  "+(i+1);
+					
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [buscarObjetivos_De_Plan_Semanal] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return datos;
+	}
+	
+	public String[][] buscarObjetivos_De_Plan_Semanal_Editable(int folio){
+		Statement stmt = null;
+		
+		String query = " select objetivo from tb_objetivos_de_plan_semanal "
+						+ " where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" "
+						+ " and folio = "+folio+" "
+						+ " and estatus = 'PLA'";
+		
+		String[][] datos = new String[getFilas(query)][2];
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int i = 0;
+			while(rs.next()){
+					datos[i][0] = "";
+					datos[i][1] = ""+rs.getString(1);
+					
+				i++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [buscarObjetivos_De_Plan_Semanal_Editable] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return datos;
+	}
+	
+	public boolean fila_Objetivos_de_la_semana(int folio){
+		String query = "declare @folio int "
+					 + " set @folio = "+folio+" "
+					 + " if(select case when DATENAME(WEEK,GETDATE())>52 "
+					 + "						then convert(varchar(20),(DATENAME(YEAR,GETDATE())+1))+'01' "
+					 + "								 else DATENAME(YEAR,GETDATE())+ RIGHT('00'+CONVERT(VARCHAR(2),DATENAME(WEEK,GETDATE())),2) "
+					 + "							end)<=@folio "
+					 + "	begin "
+					 + "		if(select datepart(dw,GETDATE()))<2 "// 2 es el dia martes
+					 + "				begin "
+					 + "					select 'true' "
+					 + "				end "
+					 + "			else "
+					 + "				begin "
+					 + "					select 'false' "
+					 + "				end "
+					 + "	end "
+					 + "else "
+					 + "	begin "
+					 + "			select 'false' "
+					 + "	end ";
+		
+		boolean editable = false;
+		try {				
+			Statement s = con.conexion().createStatement();
+			ResultSet rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				editable = rs.getBoolean(1);
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+			
+		return editable;
+	}
+	
+	public int  cantidad_de_Objetivos_por_folio(int folio){
+		int cantidad=0;
+		String query = "select count(folio) as cantidad from tb_objetivos_de_plan_semanal where folio = "+folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				cantidad=(rs.getInt("cantidad"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+		}
+		return cantidad;
+	}
+	
+	public String[][] getTablaActividadesDiarias(String fecha,int dia){
+		String[][] Matriz = null;
+		
+		String actividades = "exec sp_consulta_de_actividades_del_dia "+(new Obj_Usuario().LeerSession().getFolio())+",'"+fecha+"',"+dia;
+		System.out.println(actividades);
+		
+		Matriz = new String[getFilas(actividades)][5];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(actividades);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = rs.getString(4);
+				Matriz[i][4] = rs.getString(5);
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		return Matriz;
+	}
 }

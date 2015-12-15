@@ -18,7 +18,7 @@ public class Obj_Frecuencia_De_Actividades {
 //frecuencia
 	String sucede="DIARIA";
 	boolean selecciona_dia_del_mes=true;
-	int dias_a_repetir_por_suceso_de_dias=0;		
+	int dias_a_repetir_por_suceso_de_dias=1;		
 	int dias_a_repetir_por_suceso_de_semanas=0;	//dependen del tipo de suceso
 	int dias_a_repetir_por_suceso_de_meses=0;		
 	int mes1=1;

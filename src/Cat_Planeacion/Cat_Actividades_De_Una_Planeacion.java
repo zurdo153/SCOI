@@ -976,7 +976,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		JScrollPane scrollDescripcion = new JScrollPane(txaDescripcion);
 		
 		JButton btnAceptar = new JButton("Aplicar",new ImageIcon("imagen/Aplicar.png"));
-		JButton btnCancelar = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
+		JButton btnDeshacerFrecuencia = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 		Border blackline;
 		
 		public Cat_Frecuencia_De_Actividades() {
@@ -1075,7 +1075,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			panel.add(scrollDescripcion).setBounds(x, y+=25, ancho*8+50, 100);
 
 			ancho=100;
-			panel.add(btnCancelar).setBounds(x, y+=105, ancho, 20);
+			panel.add(btnDeshacerFrecuencia).setBounds(x, y+=105, ancho, 20);
 			panel.add(btnAceptar).setBounds(x+590, y, ancho, 20);
 			
 			leerObjeto();
@@ -1089,6 +1089,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			rbEnLaFechaIndicada.addActionListener(opRbTipoPRogramacion);
 			
 			chbConHora.addActionListener(opConHora);
+			spHoraUnicaRepeticion.addChangeListener(opDescripcion);
 			
 			rbDiaDeLaSemana.addActionListener(opRbFrecuencia);
 			rbDiaDelMes.addActionListener(opRbFrecuencia);
@@ -1120,6 +1121,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			cmbDiaDeLaSemana.addActionListener(opDescripcion3);
 
 			btnAceptar.addActionListener(opGuardar);
+			btnDeshacerFrecuencia.addActionListener(opDeshacerFrecuencia);
 			cont.add(panel);
 		}
 		
@@ -1127,6 +1129,13 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				llenarObjeto();
 				dispose();
+			}
+		};
+		
+		ActionListener opDeshacerFrecuencia = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cmbTipoDeProgramacion.setSelectedItem("UNA VEZ");
+				leerObjeto();
 			}
 		};
 		
@@ -1451,7 +1460,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				
 				cadena += " La frecuencia De La Actividad Inicia A Partir Del Dia "+(new SimpleDateFormat("dd/MM/yyyy").format(fh_inicial_de_duracion.getDate()))+(rbFechaDeFinalizacion.isSelected()?
 																																										" Y Termina El Dia "+(new SimpleDateFormat("dd/MM/yyyy").format(fh_final_de_duracion.getDate()))+".":
-																																										" Hasta Que Se Cumpla.");
+																																										/*" Hasta Que Se Cumpla."*/".");
 			}
 			return cadena;
 		}

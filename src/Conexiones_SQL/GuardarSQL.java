@@ -4925,6 +4925,49 @@ public int  busca_y_actualiza_proximo_folio(int transaccion) {
 	return foliosiguiente;
 		}
 
+@SuppressWarnings("rawtypes")
+public boolean Guardar_Objetivos_De_La_Semana(Vector objetivos, String folioObjetivo, String periodoObjetivo){
+	String query =  "exec sp_insert_objetivos_plan_semanal ?,?,?,?,"+usuario.getFolio();
+	Connection con = new Connexion().conexion();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		
+//		System.out.println(periodoObjetivo.substring(0, periodoObjetivo.indexOf("-")).trim()+" 00:00:00");
+//		System.out.println(periodoObjetivo.substring(periodoObjetivo.indexOf("-")+1, periodoObjetivo.length()).trim()+" 23:59:00");
+		for(int i=0; i<objetivos.size(); i++){
+			
+			pstmt.setString(1, folioObjetivo.toString().trim());
+			pstmt.setString(2, periodoObjetivo.substring(0, periodoObjetivo.indexOf("-")).trim()+" 00:00:00");
+			pstmt.setString(3, periodoObjetivo.substring(periodoObjetivo.indexOf("-")+1, periodoObjetivo.length()).trim()+" 23:59:00");
+			pstmt.setString(4, objetivos.get(i).toString().trim());
+			
+			pstmt.executeUpdate();
+		}
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Objetivos_De_La_Semana  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Objetivos_De_La_Semana \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Objetivos_De_La_Semana  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
 	
 	
 } 
