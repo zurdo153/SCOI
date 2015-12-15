@@ -4767,36 +4767,36 @@ public boolean Guardar_Actividad_Planeacion(Obj_Actividades_De_Una_Planeacion Ac
 			PreparedStatement pstmt     = con.prepareStatement(query     );
 			PreparedStatement pstmtabla = con.prepareStatement(querytabla);
 			
-			System.out.println(folio_empleado);
-			System.out.println(Actividades_plan.getDescripcion_de_la_actividad().toString());
-			////////////////////////////////////////////////////////////////////////////////////////////////////			
-			System.out.println("\nopcion_respuesta");
-			System.out.println((opRespuesta.getResuelta().toString().equals("true"))?"S":"N");
-			System.out.println((opRespuesta.getIncumplida().toString().equals("true"))?"S":"N");
-			System.out.println((opRespuesta.getPendiente().toString().equals("true"))?"S":"N");
-			System.out.println((opRespuesta.getEnProceso().toString().equals("true"))?"S":"N");
-			System.out.println((opRespuesta.getPasoAOtroDepartamento().toString().equals("true"))?"S":"N");
-			System.out.println((opRespuesta.getNo_Exige_Evidencia().toString().equals("true"))?"S":"N");
-			System.out.println((opRespuesta.getExige_Evidencia().toString().equals("true"))?"S":"N");
-			System.out.println((opRespuesta.getNoExigeObservacion().toString().equals("true"))?"S":"N");
-			System.out.println((opRespuesta.getExigeObservacion().toString().equals("true"))?"S":"N");
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			System.out.println("\nponderacion");
-			System.out.println((opPonderacion.getImportante().toString().equals("true"))?"S":"N");
-			System.out.println((opPonderacion.getUrgente().toString().equals("true"))?"S":"N");
-			System.out.println((opPonderacion.getPreventivo().toString().equals("true"))?"S":"N");
-			System.out.println((opPonderacion.getNormal().toString().equals("true"))?"S":"N");
-			System.out.println(opPonderacion.getPonderacion().toString());
-			////////////////////////////////////////////////////////////////////////////////////////////////////
-			//frecuencia
-			System.out.println("\nfrecuencia");
-			System.out.println((frecuencia.getTipo_de_frecuencia().toString().equals("UNA VEZ"))?"U":"P"); //tipo_de_frecuencia
-			System.out.println((String.valueOf(frecuencia.isSeleccion_hasta_que_se_cumpla()).toString().equals("true"))?"S":"N");//seleccion_hasta_que_se_cumpla
-			System.out.println((String.valueOf(frecuencia.isSeleccion_en_la_fecha_indicada()).toString().equals("true"))?"S":"N");//seleccion_en_la_fecha_indicada
-			//unica repeticion
-			System.out.println( frecuencia.getFh_unica_repeticion().toString().trim());//fecha_unica_repeticion
-			System.out.println((String.valueOf(frecuencia.isSeleccion_con_hora()).toString().equals("true"))?"S":"N");//seleccion_con_hora
-			System.out.println(frecuencia.getHora_unica_repeticion().toString().trim());//hora_unica_repeticion
+//			System.out.println(folio_empleado);
+//			System.out.println(Actividades_plan.getDescripcion_de_la_actividad().toString());
+//			////////////////////////////////////////////////////////////////////////////////////////////////////			
+//			System.out.println("\nopcion_respuesta");
+//			System.out.println((opRespuesta.getResuelta().toString().equals("true"))?"S":"N");
+//			System.out.println((opRespuesta.getIncumplida().toString().equals("true"))?"S":"N");
+//			System.out.println((opRespuesta.getPendiente().toString().equals("true"))?"S":"N");
+//			System.out.println((opRespuesta.getEnProceso().toString().equals("true"))?"S":"N");
+//			System.out.println((opRespuesta.getPasoAOtroDepartamento().toString().equals("true"))?"S":"N");
+//			System.out.println((opRespuesta.getNo_Exige_Evidencia().toString().equals("true"))?"S":"N");
+//			System.out.println((opRespuesta.getExige_Evidencia().toString().equals("true"))?"S":"N");
+//			System.out.println((opRespuesta.getNoExigeObservacion().toString().equals("true"))?"S":"N");
+//			System.out.println((opRespuesta.getExigeObservacion().toString().equals("true"))?"S":"N");
+//			////////////////////////////////////////////////////////////////////////////////////////////////////
+//			System.out.println("\nponderacion");
+//			System.out.println((opPonderacion.getImportante().toString().equals("true"))?"S":"N");
+//			System.out.println((opPonderacion.getUrgente().toString().equals("true"))?"S":"N");
+//			System.out.println((opPonderacion.getPreventivo().toString().equals("true"))?"S":"N");
+//			System.out.println((opPonderacion.getNormal().toString().equals("true"))?"S":"N");
+//			System.out.println(opPonderacion.getPonderacion().toString());
+//			////////////////////////////////////////////////////////////////////////////////////////////////////
+//			//frecuencia
+//			System.out.println("\nfrecuencia");
+//			System.out.println((frecuencia.getTipo_de_frecuencia().toString().equals("UNA VEZ"))?"U":"P"); //tipo_de_frecuencia
+//			System.out.println((String.valueOf(frecuencia.isSeleccion_hasta_que_se_cumpla()).toString().equals("true"))?"S":"N");//seleccion_hasta_que_se_cumpla
+//			System.out.println((String.valueOf(frecuencia.isSeleccion_en_la_fecha_indicada()).toString().equals("true"))?"S":"N");//seleccion_en_la_fecha_indicada
+//			//unica repeticion
+//			System.out.println( frecuencia.getFh_unica_repeticion().toString().trim());//fecha_unica_repeticion
+//			System.out.println((String.valueOf(frecuencia.isSeleccion_con_hora()).toString().equals("true"))?"S":"N");//seleccion_con_hora
+//			System.out.println(frecuencia.getHora_unica_repeticion().toString().trim());//hora_unica_repeticion
             
 			//actividades
 			pstmt.setInt    (1, folio_empleado                                                                                     );//folio_empleado
