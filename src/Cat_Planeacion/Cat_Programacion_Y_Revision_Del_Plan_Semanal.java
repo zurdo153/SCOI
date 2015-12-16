@@ -12,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -35,22 +34,16 @@ import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
-import Obj_Evaluaciones.Obj_Cuadrante;
 import Obj_Renders.ColorCeldas;
 
 @SuppressWarnings("serial")
-public class Cat_Plan_Semanal extends Cat_Plan_Semanal_Base {
+public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Semanal_Base {
+	JButton btnderecha          = new JButton(              new ImageIcon("imagen/la-flecha-verde-de-la-derecha-icono-8326-32.png")  );
+	JButton btnizquierda        = new JButton(              new ImageIcon("imagen/la-flecha-verde-de-la-izquierda-icono-8326-32.png"));
+	JButton btnObjetivos        = new JButton("Objetivos"  ,new ImageIcon("imagen/mas-icono-4156-32.png")                            );
+	JButton btnAgregarActividad = new JButton("Actividades",new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     );
 	
-//	boolean status_update = false;
-	
-	JButton btnderecha = new JButton(new ImageIcon("Iconos/right_icon&16.png"));
-	JButton btnizquierda = new JButton(new ImageIcon("Iconos/left_icon&16.png"));
-	
-	JButton btnObjetivos = new JButton("Objetivo Semanal");
-	JButton btnAgregarActividad = new JButton("Agregar Actividad");
-	
-	
-	public Cat_Plan_Semanal (){
+	public Cat_Programacion_Y_Revision_Del_Plan_Semanal (){
 		init();
 	}
 	
@@ -64,21 +57,19 @@ public class Cat_Plan_Semanal extends Cat_Plan_Semanal_Base {
 		int y=30;
 		
 		if(anchoMon<=1024){
-			this.panel.add(btnizquierda).setBounds(180, y, 21,21);
-			this.panel.add(btnderecha).setBounds(215, y, 21, 21);
-			this.panel.add(btnObjetivos).setBounds(835,20,120,20);
-			this.panel.add(btnAgregarActividad).setBounds(955,20,120,20);
+			this.panel.add(btnizquierda).setBounds(170, y, 38,38);
+			this.panel.add(btnderecha).setBounds(215, y, 38, 38);
+			this.panel.add(btnObjetivos).setBounds(800,10,150,38);
+			this.panel.add(btnAgregarActividad).setBounds(955,10,150,38);
 		}else{
-			this.panel.add(btnizquierda).setBounds(265, y, 21,21);
-			this.panel.add(btnderecha).setBounds(295, y, 21, 21);
-			this.panel.add(btnObjetivos).setBounds(930,20,120,20);
-			this.panel.add(btnAgregarActividad).setBounds(1060,20,120,20);
+			this.panel.add(btnizquierda).setBounds(250, y, 38,38);
+			this.panel.add(btnderecha).setBounds(320, y, 38, 38);
+			this.panel.add(btnObjetivos).setBounds(900,10,130,38);
+			this.panel.add(btnAgregarActividad).setBounds(1050,10,130,38);
 		}
 		
 		cargarObjetivos();
 		PintarEstatusTabla(tabla_objetivos);
-		
-		buscarActividadesPorDia(modelLunes);
 		
 		this.btnizquierda.addActionListener(opAtras);
 		this.btnderecha.addActionListener(opAdelante);
@@ -95,15 +86,47 @@ public class Cat_Plan_Semanal extends Cat_Plan_Semanal_Base {
 	}
 	
 	private void SeleccionarPestaniaDia(final JLayeredPane panelDia,int dia) {
-		diaDeLaSemana = dia;
 		panelDia.addAncestorListener(new AncestorListener() {
 			public void ancestorRemoved(AncestorEvent event) {}
 			public void ancestorMoved(AncestorEvent event) {}
 			public void ancestorAdded(AncestorEvent event) {
-				buscarActividadesPorDia(modelLunes);
+				switch(dia){
+				case 0:
+					buscarActividadesPorDia(modelLunes,dia);
+					 break;
+				case 1:
+					buscarActividadesPorDia(modelMartes,dia);
+					 break;
+				case 2:
+					buscarActividadesPorDia(modelMiercoles,dia);
+					 break;
+				case 3:
+					buscarActividadesPorDia(modelJueves,dia);
+					 break;
+				case 4:
+					buscarActividadesPorDia(modelViernes,dia);	
+					 break;
+				case 5:
+					buscarActividadesPorDia(modelSabado,dia);
+				    break;
+				case 6:
+					buscarActividadesPorDia(modelDomingo,dia);
+				    break;
+				default: 
+					buscarActividadesPorDia(modelLunes,dia);
+				    break;
+		     }
 			}
 		});
     }
+	
+	public void buscarActividadesPorDia(final DefaultTableModel modeloDia, Integer dia){
+		modeloDia.setRowCount(0);
+		String[][] actividades = new BuscarSQL().getTablaActividadesDiarias(txtPeriodo.getText().substring(0, txtPeriodo.getText().indexOf("-")).trim(), dia);
+		for(String[] act: actividades){
+			modeloDia.addRow(act);
+		}
+	}
 	
 	int recorreFolio = 0;
 	ActionListener opAtras = new ActionListener() {
@@ -112,22 +135,17 @@ public class Cat_Plan_Semanal extends Cat_Plan_Semanal_Base {
 			String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(recorreFolio);
 		    txtFolio.setText(folioPlan[0].toString());
 		    txtPeriodo.setText(folioPlan[1].toString());
-		    
 		    cargarObjetivos();
-//		    buscarActividadesPorDia();
 		}
 	};	
 	
-	int diaDeLaSemana = 0;
 	ActionListener opAdelante = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			recorreFolio+=7;
 			String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(recorreFolio);
 		    txtFolio.setText(folioPlan[0].toString());
 		    txtPeriodo.setText(folioPlan[1].toString());
-		    
 		    cargarObjetivos();
-//		    buscarActividadesPorDia();
 		}
 	};
 	
@@ -136,15 +154,6 @@ public class Cat_Plan_Semanal extends Cat_Plan_Semanal_Base {
 		String[][] objetivos = new BuscarSQL().buscarObjetivos_De_Plan_Semanal(Integer.valueOf(txtFolio.getText()));
 		for(String[] dt: objetivos){
 			model_objetivos.addRow(dt);
-		}
-	}
-	
-	public void buscarActividadesPorDia(final DefaultTableModel modeloDia){
-		tabla_limpiar();
-		String[][] actividades = new BuscarSQL().getTablaActividadesDiarias(txtPeriodo.getText().substring(0, txtPeriodo.getText().indexOf("-")).trim(), diaDeLaSemana);
-							
-		for(String[] act: actividades){
-			modeloDia.addRow(act);
 		}
 	}
 	
@@ -158,23 +167,43 @@ public class Cat_Plan_Semanal extends Cat_Plan_Semanal_Base {
 		public void actionPerformed(ActionEvent arg0) {
 			new Cat_Objectivos_De_La_Semana().setVisible(true);
 		}
-	};	
+	};
 	
 	
-	public void tabla_limpiar(){		
-		modelLunes.setRowCount(0);
-		modelMartes.setRowCount(0);
-		modelMiercoles.setRowCount(0);
-		modelJueves.setRowCount(0);
-		modelViernes.setRowCount(0);
-		modelSabado.setRowCount(0);
-		modelDomingo.setRowCount(0);
-	}
+//	public void tabla_limpiar(){		
+//		modelLunes.setRowCount(0);
+//		modelMartes.setRowCount(0);
+//		modelMiercoles.setRowCount(0);
+//		modelJueves.setRowCount(0);
+//		modelViernes.setRowCount(0);
+//		modelSabado.setRowCount(0);
+//		modelDomingo.setRowCount(0);
+//	}
+//	
+//	public void limpiar(){
+//		txtFolio.setEditable(true);
+//		txtFolio.requestFocus();
+//		txtFolio.setText("");
+//		txtPeriodo.setText("");
+//		txtEstablecimiento.setText("");
+//		
+//		model_objetivos.setRowCount(0);
+//		
+//		btnAgregarActividad.setEnabled(false);
+//		
+//		tablaDomingo.setEnabled(false);
+//		tablaLunes.setEnabled(false);
+//		tablaMartes.setEnabled(false);
+//		tablaMiercoles.setEnabled(false);
+//		tablaJueves.setEnabled(false);
+//		tablaViernes.setEnabled(false);
+//		tablaSabado.setEnabled(false);
+//		
+//		tabla_limpiar();
+//	}
 	
 	public String[][] DiasTablas(){
-		
 		int filas = tablaDomingo.getRowCount()+tablaLunes.getRowCount()+tablaMartes.getRowCount()+tablaMiercoles.getRowCount()+tablaJueves.getRowCount()+tablaViernes.getRowCount()+tablaSabado.getRowCount();
-		
 		String[][] tablas = new String[filas][7];
 		
 		int renglonesdomingo = tablaDomingo.getRowCount();
@@ -283,33 +312,11 @@ public class Cat_Plan_Semanal extends Cat_Plan_Semanal_Base {
 				fila+=1;
 				renglonesSabado--;
 		}
-		
 		return tablas;
 	}
 	
-	public void limpiar(){
-		txtFolio.setEditable(true);
-		txtFolio.requestFocus();
-		txtFolio.setText("");
-		txtPeriodo.setText("");
-		txtEstablecimiento.setText("");
-		
-		model_objetivos.setRowCount(0);
-		
-		btnAgregarActividad.setEnabled(false);
-		
-		tablaDomingo.setEnabled(false);
-		tablaLunes.setEnabled(false);
-		tablaMartes.setEnabled(false);
-		tablaMiercoles.setEnabled(false);
-		tablaJueves.setEnabled(false);
-		tablaViernes.setEnabled(false);
-		tablaSabado.setEnabled(false);
-		
-		tabla_limpiar();
-		
-	}
-	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////TODO CATATOGO DE OBJETIVOS	
 	public class Cat_Objectivos_De_La_Semana extends JFrame{
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
@@ -362,13 +369,13 @@ public class Cat_Plan_Semanal extends Cat_Plan_Semanal_Base {
 			
 			int x=15,y=20,width=150,height=20;
 			
-			panel.add(new JLabel("Folio: ")).setBounds          (x    ,y		,80      ,20);
-			panel.add(txtFolioObjetivo).setBounds          		(x+50 ,y		,80      ,20);
+			panel.add(new JLabel("Folio: ")).setBounds          (x    ,y		,80      ,height);
+			panel.add(txtFolioObjetivo).setBounds          		(x+50 ,y		,80      ,height);
 			panel.add(btnIzquierdaObjetivo).setBounds      		(x+135 ,y		,21      ,21);
 			panel.add(btnDerechaObjetivo).setBounds        		(x+160 ,y		,21      ,21);
 			
-			panel.add(new JLabel("Periodo: ")).setBounds		(x+320,y		,130     ,20);
-			panel.add(txtPeriodoObjetivo).setBounds				(x+370,y		,130     ,20);
+			panel.add(new JLabel("Periodo: ")).setBounds		(x+320,y		,130     ,height);
+			panel.add(txtPeriodoObjetivo).setBounds				(x+370,y		,130     ,height);
 			panel.add(scroll_objetivos_de_la_semana).setBounds  (x    ,y+=25	,680     ,height*9+7);
 			panel.add(btnDeshacer).setBounds                    (x    ,y+=195	,width   ,height*2  );
 			panel.add(btnAprovar).setBounds                     (x+205,y     	,width   ,height*2  );
@@ -589,7 +596,7 @@ public class Cat_Plan_Semanal extends Cat_Plan_Semanal_Base {
 	public static void main(String [] arg){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Plan_Semanal().setVisible(true);
+				new Cat_Programacion_Y_Revision_Del_Plan_Semanal().setVisible(true);
 			}catch(Exception e){
 				System.err.println("Error :"+ e.getMessage());
 			}

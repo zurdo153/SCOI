@@ -200,20 +200,26 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 	int anchoMon = Toolkit.getDefaultToolkit().getScreenSize().width;
     int ancho_nivel_critico=0;
 	public Cat_Plan_Semanal_Base(){
-		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/cuadrante_icon&16.png"));
-		this.panel.setBorder(BorderFactory.createTitledBorder("Plan Semanal"));
-		this.setTitle("Plan Semanal");
+		if(anchoMon<=1024){
+			this.setSize(1000,600);
+		}else{
+			this.setSize(1200,600);
+		}
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/calendario almacen.png"));
+		this.setTitle("Revisión y Programación del Plan Semanal");
+		this.panel.setBorder(BorderFactory.createTitledBorder("Detalle Del Plan Semanal"));
 		
 		lblFoto.setBorder(LineBorder.createGrayLineBorder());
 		
 		int x = 30, y=30;
 		
-		this.panel.add(new JLabel("Folio:")).setBounds(x,y,100,20);
-		this.panel.add(txtFolio).setBounds(130,y,130,20);
-		
-		this.panel.add(new JLabel("Periodo:")).setBounds(x,y+=25,100,20);
-		this.panel.add(txtPeriodo).setBounds(130, y, 200,20);
+		this.panel.add(new JLabel("Folio:")).setBounds  (x    ,y    ,100,20);
+		this.panel.add(txtFolio).setBounds              (x+40,y    ,140,20);
+		this.panel.add(new JLabel("Periodo:")).setBounds(x    ,y+=25,100,20);
+		this.panel.add(txtPeriodo).setBounds            (x+40,y    ,140,20);
 		
 		panel.add(lblFoto).setBounds(x,y+=40,100,100);
 		
@@ -233,14 +239,13 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		this.panel.add(scroll_objetivos).setBounds(x, y+=15, 410,250);	
 		
 		if(anchoMon<=1024){
-			this.panel.add(pestanas).setBounds(450,30,525, 500);
+			this.panel.add(pestanas).setBounds(450,30,525, 450);
 			ancho_nivel_critico=110;
 		}else{
-			this.panel.add(pestanas).setBounds(450,30,730, 500);
+			this.panel.add(pestanas).setBounds(450,30,730, 450);
 			ancho_nivel_critico=145;
 		}
 			
-//		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.jpg");
 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
 	    lblFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(lblFoto.getWidth(),lblFoto.getHeight(), Image.SCALE_DEFAULT)));	
 	    
@@ -281,28 +286,9 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 
 		this.cont.add(panel);
 		
-		if(anchoMon<=1024){
-			this.setSize(1000,600);
-		}else{
-			this.setSize(1200,600);
-		}
-		
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
-		Dias diaswitch = Dias.valueOf("Lunes");
+
 	}
 	
-	public enum Dias{
-		Lunes,
-		Martes,
-		Miércoles,
-		Jueves,
-		Viernes,
-		Sábado,
-		Domingo
-	}
 	
 	public void renders_objetivos(final JTable tb, String nombre_tabla){
 		
@@ -336,24 +322,24 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		panelRender.setBackground(new Color(Integer.parseInt(color.equals("Azul")?"C9C9C9":"AFAFAF",16)));
 		
 		if(anchoMon<=1024){
-			panelRender.add(scrollRender).setBounds(15,50,490,405);
+			panelRender.add(scrollRender).setBounds(15,20,490,390);
 		}else{
-			panelRender.add(scrollRender).setBounds(15,50,690,405);
+			panelRender.add(scrollRender).setBounds(15,20,695,390);
 		}
 		
 		tb.getTableHeader().setReorderingAllowed(false) ;
 		tb.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
-		tb.getColumnModel().getColumn(0).setMaxWidth(60);
-		tb.getColumnModel().getColumn(0).setMinWidth(60);
-		tb.getColumnModel().getColumn(1).setMaxWidth(620);
-		tb.getColumnModel().getColumn(1).setMinWidth(270);
-		tb.getColumnModel().getColumn(2).setMaxWidth(ancho_nivel_critico);
-		tb.getColumnModel().getColumn(2).setMinWidth(ancho_nivel_critico);
-		tb.getColumnModel().getColumn(3).setMaxWidth(50);
-		tb.getColumnModel().getColumn(3).setMinWidth(50);
-		tb.getColumnModel().getColumn(4).setMaxWidth(80);
-		tb.getColumnModel().getColumn(4).setMinWidth(80);
+		tb.getColumnModel().getColumn(0).setMaxWidth(50);
+		tb.getColumnModel().getColumn(0).setMinWidth(200);
+		tb.getColumnModel().getColumn(1).setMinWidth(390);
+		tb.getColumnModel().getColumn(1).setMaxWidth(900);
+		tb.getColumnModel().getColumn(2).setMaxWidth(90);
+		tb.getColumnModel().getColumn(2).setMinWidth(100);
+		tb.getColumnModel().getColumn(3).setMaxWidth(100);
+		tb.getColumnModel().getColumn(3).setMinWidth(100);
+		tb.getColumnModel().getColumn(4).setMaxWidth(60);
+		tb.getColumnModel().getColumn(4).setMinWidth(100);
 		
 		tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
 		tb.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));

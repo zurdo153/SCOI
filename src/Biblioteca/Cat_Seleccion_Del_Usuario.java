@@ -1,4 +1,4 @@
-package Cat_Planeacion;
+package Biblioteca;
 
 import java.awt.Container;
 import java.awt.Toolkit;

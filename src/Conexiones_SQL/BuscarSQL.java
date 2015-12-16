@@ -7792,10 +7792,7 @@ public class BuscarSQL {
 	
 	public String[][] getTablaActividadesDiarias(String fecha,int dia){
 		String[][] Matriz = null;
-		
 		String actividades = "exec sp_consulta_de_actividades_del_dia "+(new Obj_Usuario().LeerSession().getFolio())+",'"+fecha+"',"+dia;
-		System.out.println(actividades);
-		
 		Matriz = new String[getFilas(actividades)][5];
 		Statement s;
 		ResultSet rs;
@@ -7813,8 +7810,8 @@ public class BuscarSQL {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en Buscar SQL  en la funcion getTablaActividadesDiarias\nen el procedimiento almacenado \n"+actividades+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 		}
-		
 		return Matriz;
 	}
 }
