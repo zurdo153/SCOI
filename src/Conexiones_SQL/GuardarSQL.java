@@ -4757,7 +4757,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	
 public boolean Guardar_Actividad_Planeacion(Obj_Actividades_De_Una_Planeacion Actividades_plan, Obj_Opciones_De_Respuesta opRespuesta, Obj_Prioridad_Y_Ponderacion opPonderacion, Obj_Seleccion_De_Usuarios usuarios, Obj_Frecuencia_De_Actividades frecuencia, int folio_empleado){
 		int folio_actividad=busca_y_actualiza_proximo_folio(20);
-		String query ="sp_insert_actividad_de_plan "+folio_actividad+",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query ="sp_insert_actividad_de_plan "+folio_actividad+",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		
 		 String querytabla = "INSERT INTO [tb_asignacion_de_empleados_a_una_actividad] ([folio_actividad]  ,[folio_empleado] ,[Estatus])"
 		 		           + "                                                  VALUES ("+folio_actividad+",?                ,'V'      )";
@@ -4767,37 +4767,6 @@ public boolean Guardar_Actividad_Planeacion(Obj_Actividades_De_Una_Planeacion Ac
 			PreparedStatement pstmt     = con.prepareStatement(query     );
 			PreparedStatement pstmtabla = con.prepareStatement(querytabla);
 			
-//			System.out.println(folio_empleado);
-//			System.out.println(Actividades_plan.getDescripcion_de_la_actividad().toString());
-//			////////////////////////////////////////////////////////////////////////////////////////////////////			
-//			System.out.println("\nopcion_respuesta");
-//			System.out.println((opRespuesta.getResuelta().toString().equals("true"))?"S":"N");
-//			System.out.println((opRespuesta.getIncumplida().toString().equals("true"))?"S":"N");
-//			System.out.println((opRespuesta.getPendiente().toString().equals("true"))?"S":"N");
-//			System.out.println((opRespuesta.getEnProceso().toString().equals("true"))?"S":"N");
-//			System.out.println((opRespuesta.getPasoAOtroDepartamento().toString().equals("true"))?"S":"N");
-//			System.out.println((opRespuesta.getNo_Exige_Evidencia().toString().equals("true"))?"S":"N");
-//			System.out.println((opRespuesta.getExige_Evidencia().toString().equals("true"))?"S":"N");
-//			System.out.println((opRespuesta.getNoExigeObservacion().toString().equals("true"))?"S":"N");
-//			System.out.println((opRespuesta.getExigeObservacion().toString().equals("true"))?"S":"N");
-//			////////////////////////////////////////////////////////////////////////////////////////////////////
-//			System.out.println("\nponderacion");
-//			System.out.println((opPonderacion.getImportante().toString().equals("true"))?"S":"N");
-//			System.out.println((opPonderacion.getUrgente().toString().equals("true"))?"S":"N");
-//			System.out.println((opPonderacion.getPreventivo().toString().equals("true"))?"S":"N");
-//			System.out.println((opPonderacion.getNormal().toString().equals("true"))?"S":"N");
-//			System.out.println(opPonderacion.getPonderacion().toString());
-//			////////////////////////////////////////////////////////////////////////////////////////////////////
-//			//frecuencia
-//			System.out.println("\nfrecuencia");
-//			System.out.println((frecuencia.getTipo_de_frecuencia().toString().equals("UNA VEZ"))?"U":"P"); //tipo_de_frecuencia
-//			System.out.println((String.valueOf(frecuencia.isSeleccion_hasta_que_se_cumpla()).toString().equals("true"))?"S":"N");//seleccion_hasta_que_se_cumpla
-//			System.out.println((String.valueOf(frecuencia.isSeleccion_en_la_fecha_indicada()).toString().equals("true"))?"S":"N");//seleccion_en_la_fecha_indicada
-//			//unica repeticion
-//			System.out.println( frecuencia.getFh_unica_repeticion().toString().trim());//fecha_unica_repeticion
-//			System.out.println((String.valueOf(frecuencia.isSeleccion_con_hora()).toString().equals("true"))?"S":"N");//seleccion_con_hora
-//			System.out.println(frecuencia.getHora_unica_repeticion().toString().trim());//hora_unica_repeticion
-            
 			//actividades
 			pstmt.setInt    (1, folio_empleado                                                                                     );//folio_empleado
 			pstmt.setString (2, Actividades_plan.getDescripcion_de_la_actividad().toString()                                       );//Descripcion_de_la_actividad
@@ -4808,55 +4777,53 @@ public boolean Guardar_Actividad_Planeacion(Obj_Actividades_De_Una_Planeacion Ac
 			pstmt.setString (5,  (opRespuesta.getPendiente().toString().equals("true"))?"S":"N"                                    );//Pendiente
 			pstmt.setString (6,  (opRespuesta.getEnProceso().toString().equals("true"))?"S":"N"                                    );//EnProceso
 			pstmt.setString (7,  (opRespuesta.getPasoAOtroDepartamento().toString().equals("true"))?"S":"N"                        );//PasoAOtroDepartamento
-			pstmt.setString (8,  (opRespuesta.getNo_Exige_Evidencia().toString().equals("true"))?"S":"N"                           );//No_Exige_Evidencia
-			pstmt.setString (9,  (opRespuesta.getExige_Evidencia().toString().equals("true"))?"S":"N"                              );//Exige_Evidencia
-			pstmt.setString (10, (opRespuesta.getNoExigeObservacion().toString().equals("true"))?"S":"N"                           );//NoExigeObservacion
-			pstmt.setString (11, (opRespuesta.getExigeObservacion().toString().equals("true"))?"S":"N"                             );//ExigeObservacion
+			pstmt.setString (8,  (opRespuesta.getExige_Evidencia().toString().equals("true"))?"S":"N"                              );//Exige_Evidencia
+			pstmt.setString (9, (opRespuesta.getExigeObservacion().toString().equals("true"))?"S":"N"                             );//ExigeObservacion
 			
 			//ponderacion
-			pstmt.setString (12, (opPonderacion.getImportante().toString().equals("true"))?"S":"N"                                 );//Importante
-			pstmt.setString (13, (opPonderacion.getUrgente().toString().equals("true"))?"S":"N"                                    );//Urgente
-			pstmt.setString (14, (opPonderacion.getPreventivo().toString().equals("true"))?"S":"N"                                 );//Preventivo
-			pstmt.setString (15, (opPonderacion.getNormal().toString().equals("true"))?"S":"N"                                     );//Normal
-			pstmt.setInt    (16,  Integer.valueOf(opPonderacion.getPonderacion().toString())                                       );//Ponderacion
+			pstmt.setString (10, (opPonderacion.getImportante().toString().equals("true"))?"S":"N"                                 );//Importante
+			pstmt.setString (11, (opPonderacion.getUrgente().toString().equals("true"))?"S":"N"                                    );//Urgente
+			pstmt.setString (12, (opPonderacion.getPreventivo().toString().equals("true"))?"S":"N"                                 );//Preventivo
+			pstmt.setString (13, (opPonderacion.getNormal().toString().equals("true"))?"S":"N"                                     );//Normal
+			pstmt.setInt    (14,  Integer.valueOf(opPonderacion.getPonderacion().toString())                                       );//Ponderacion
 			
 			//frecuencia
-			pstmt.setString (17,  (frecuencia.getTipo_de_frecuencia().toString().equals("UNA VEZ"))?"U":"P"                        );//tipo_de_frecuencia
-			pstmt.setString (18,  (String.valueOf(frecuencia.isSeleccion_hasta_que_se_cumpla()).toString().equals("true"))?"S":"N" );//seleccion_hasta_que_se_cumpla
-			pstmt.setString (19,  (String.valueOf(frecuencia.isSeleccion_en_la_fecha_indicada()).toString().equals("true"))?"S":"N");//seleccion_en_la_fecha_indicada
+			pstmt.setString (15,  (frecuencia.getTipo_de_frecuencia().toString().equals("UNA VEZ"))?"U":"P"                        );//tipo_de_frecuencia
+			pstmt.setString (16,  (String.valueOf(frecuencia.isSeleccion_hasta_que_se_cumpla()).toString().equals("true"))?"S":"N" );//seleccion_hasta_que_se_cumpla
+			pstmt.setString (17,  (String.valueOf(frecuencia.isSeleccion_en_la_fecha_indicada()).toString().equals("true"))?"S":"N");//seleccion_en_la_fecha_indicada
 			//unica repeticion
-			pstmt.setString (20,  (frecuencia.getFh_unica_repeticion().toString().trim())                                          );//fecha_unica_repeticion
-			pstmt.setString (21,  (String.valueOf(frecuencia.isSeleccion_con_hora()).toString().equals("true"))?"S":"N"            );//seleccion_con_hora
-			pstmt.setString (22,  frecuencia.getHora_unica_repeticion().toString().trim()                                          );//hora_unica_repeticion
+			pstmt.setString (18,  (frecuencia.getFh_unica_repeticion().toString().trim())                                          );//fecha_unica_repeticion
+			pstmt.setString (19,  (String.valueOf(frecuencia.isSeleccion_con_hora()).toString().equals("true"))?"S":"N"            );//seleccion_con_hora
+			pstmt.setString (20,  frecuencia.getHora_unica_repeticion().toString().trim()                                          );//hora_unica_repeticion
 			
 			//frecuencia
-			pstmt.setString (23,  (frecuencia.getSucede().toString().equals("DIARIA"))?"D":((frecuencia.getSucede().toString().equals("SEMANAL"))?"S":"M"));//sucede
-			pstmt.setString (24,  (String.valueOf(frecuencia.isSelecciona_dia_del_mes()).toString().equals("true"))?"S":"N"        );//selecciona_dia_del_mes
-			pstmt.setInt    (25,  Integer.valueOf(frecuencia.getDias_a_repetir_por_suceso_de_dias())                               );//dias_a_repetir_por_suceso_de_dias
-			pstmt.setInt    (26,  Integer.valueOf(frecuencia.getDias_a_repetir_por_suceso_de_semanas())                            );//dias_a_repetir_por_suceso_de_semanas
-			pstmt.setInt    (27,  Integer.valueOf(frecuencia.getDias_a_repetir_por_suceso_de_meses())                              );//dias_a_repetir_por_suceso_de_meses
-			pstmt.setInt    (28,  Integer.valueOf(frecuencia.getMes1())                                                            );//el_dia_del_mes1
-			pstmt.setString (29,  (String.valueOf(frecuencia.isSelecciona_dia_de_la_semana()).toString().equals("true"))?"S":"N"   );//selecciona_dia_de_la_semana
-			pstmt.setString (30,  (frecuencia.getNivel_de_dias().toString().equals("Primer"))?"P":(frecuencia.getNivel_de_dias().toString().equals("Segundo"))?"S":
+			pstmt.setString (21,  (frecuencia.getSucede().toString().equals("DIARIA"))?"D":((frecuencia.getSucede().toString().equals("SEMANAL"))?"S":"M"));//sucede
+			pstmt.setString (22,  (String.valueOf(frecuencia.isSelecciona_dia_del_mes()).toString().equals("true"))?"S":"N"        );//selecciona_dia_del_mes
+			pstmt.setInt    (23,  Integer.valueOf(frecuencia.getDias_a_repetir_por_suceso_de_dias())                               );//dias_a_repetir_por_suceso_de_dias
+			pstmt.setInt    (24,  Integer.valueOf(frecuencia.getDias_a_repetir_por_suceso_de_semanas())                            );//dias_a_repetir_por_suceso_de_semanas
+			pstmt.setInt    (25,  Integer.valueOf(frecuencia.getDias_a_repetir_por_suceso_de_meses())                              );//dias_a_repetir_por_suceso_de_meses
+			pstmt.setInt    (26,  Integer.valueOf(frecuencia.getMes1())                                                            );//el_dia_del_mes1
+			pstmt.setString (27,  (String.valueOf(frecuencia.isSelecciona_dia_de_la_semana()).toString().equals("true"))?"S":"N"   );//selecciona_dia_de_la_semana
+			pstmt.setString (28,  (frecuencia.getNivel_de_dias().toString().equals("Primer"))?"P":(frecuencia.getNivel_de_dias().toString().equals("Segundo"))?"S":
 				                  (frecuencia.getNivel_de_dias().toString().equals("Tercer"))?"T":(frecuencia.getNivel_de_dias().toString().equals("Cuarto" ))?"C":"U");//nivel_de_dias
-			pstmt.setInt    (31,  Integer.valueOf(frecuencia.getDia_de_la_semana().toString())                                     );//dia_de_la_semana
-			pstmt.setInt    (32,  Integer.valueOf(frecuencia.getMes2())                                                            );//el_segundo_por_mes_mes2
+			pstmt.setInt    (29,  Integer.valueOf(frecuencia.getDia_de_la_semana().toString())                                     );//dia_de_la_semana
+			pstmt.setInt    (30,  Integer.valueOf(frecuencia.getMes2())                                                            );//el_segundo_por_mes_mes2
 			//semana
-			pstmt.setString (33,  (String.valueOf(frecuencia.isDomingo()).toString().equals("true"))?"S":"N"                       );//domingo			
-			pstmt.setString (34,  (String.valueOf(frecuencia.isLunes()).toString().equals("true"))?"S":"N"                         );//lunes		
-			pstmt.setString (35,  (String.valueOf(frecuencia.isMartes()).toString().equals("true"))?"S":"N"                        );//martes		
-			pstmt.setString (36,  (String.valueOf(frecuencia.isMiercoles()).toString().equals("true"))?"S":"N"                     );//miercoles		
-			pstmt.setString (37,  (String.valueOf(frecuencia.isJueves()).toString().equals("true"))?"S":"N"                        );//jueves		
-			pstmt.setString (38,  (String.valueOf(frecuencia.isViernes()).toString().equals("true"))?"S":"N"                       );//viernes		
-			pstmt.setString (39,  (String.valueOf(frecuencia.isSabado()).toString().equals("true"))?"S":"N"                        );//sabado		
+			pstmt.setString (31,  (String.valueOf(frecuencia.isDomingo()).toString().equals("true"))?"S":"N"                       );//domingo			
+			pstmt.setString (32,  (String.valueOf(frecuencia.isLunes()).toString().equals("true"))?"S":"N"                         );//lunes		
+			pstmt.setString (33,  (String.valueOf(frecuencia.isMartes()).toString().equals("true"))?"S":"N"                        );//martes		
+			pstmt.setString (34,  (String.valueOf(frecuencia.isMiercoles()).toString().equals("true"))?"S":"N"                     );//miercoles		
+			pstmt.setString (35,  (String.valueOf(frecuencia.isJueves()).toString().equals("true"))?"S":"N"                        );//jueves		
+			pstmt.setString (36,  (String.valueOf(frecuencia.isViernes()).toString().equals("true"))?"S":"N"                       );//viernes		
+			pstmt.setString (37,  (String.valueOf(frecuencia.isSabado()).toString().equals("true"))?"S":"N"                        );//sabado		
             //frecuencia diaria
-			pstmt.setString (40,  (String.valueOf(frecuencia.isSeleccion_asignar_hora()).toString().equals("true"))?"S":"N"        );//seleccion_asignar_hora		
-			pstmt.setString (41,  frecuencia.getHora_frecuencia_diaria().toString().trim()                                         );//hora_frecuencia_diaria
+			pstmt.setString (38,  (String.valueOf(frecuencia.isSeleccion_asignar_hora()).toString().equals("true"))?"S":"N"        );//seleccion_asignar_hora		
+			pstmt.setString (39,  frecuencia.getHora_frecuencia_diaria().toString().trim()                                         );//hora_frecuencia_diaria
             //Duracion
-			pstmt.setString (42,  (frecuencia.getFecha_inicio_duracion().toString().trim())                                        );//fecha_inicio_duracion
-			pstmt.setString (43,  (String.valueOf(frecuencia.isSeleccion_fecha_finaliza()).toString().equals("true"))?"S":"N"      );//seleccion_fecha_finaliza
-			pstmt.setString (44,  (frecuencia.getFecha_final_duracion().toString().trim())                                         );//fecha_final_duracion
-			pstmt.setString (45,  (String.valueOf(frecuencia.isSeleccion_sin_fecha_final()).toString().equals("true"))?"S":"N"     );//seleccion_sin_fecha_final			
+			pstmt.setString (40,  (frecuencia.getFecha_inicio_duracion().toString().trim())                                        );//fecha_inicio_duracion
+			pstmt.setString (41,  (String.valueOf(frecuencia.isSeleccion_fecha_finaliza()).toString().equals("true"))?"S":"N"      );//seleccion_fecha_finaliza
+			pstmt.setString (42,  (frecuencia.getFecha_final_duracion().toString().trim())                                         );//fecha_final_duracion
+			pstmt.setString (43,  (String.valueOf(frecuencia.isSeleccion_sin_fecha_final()).toString().equals("true"))?"S":"N"     );//seleccion_sin_fecha_final			
 			
 			for(int i=0; i<usuarios.getUsuarios_nombres().length; i++){
 				pstmtabla.setString(1, usuarios.getUsuarios_nombres()[i][0].toString().trim());
