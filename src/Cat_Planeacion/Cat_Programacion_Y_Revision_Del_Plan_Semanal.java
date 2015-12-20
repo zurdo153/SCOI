@@ -47,7 +47,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		init();
 	}
 	
-//	public Cat_Plan_Semanal (int folio){
+//	public Cat_Programacion_Y_Revision_Del_Plan_Semanal (int folio){
 //		init();
 //		buscar(folio);
 //		txtFolio.setText(folio+"");
@@ -83,9 +83,17 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		SeleccionarPestaniaDia(pViernes,4);
 		SeleccionarPestaniaDia(pSabado,5);
 		SeleccionarPestaniaDia(pDomingo,6);
+		
+		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
+		renders(tablaMartes,pMarte,scrollMartes,"Martes");
+		renders(tablaMiercoles,pMiercoles,scrollMiercoles,"Miercoles");		
+		renders(tablaJueves,pJueves,scrollJueves,"Jueves");
+		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
+		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
+		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
 	}
-	
-	private void SeleccionarPestaniaDia(final JLayeredPane panelDia,int dia) {
+	 
+	private void SeleccionarPestaniaDia(final JLayeredPane panelDia,final int dia) {
 		panelDia.addAncestorListener(new AncestorListener() {
 			public void ancestorRemoved(AncestorEvent event) {}
 			public void ancestorMoved(AncestorEvent event) {}
@@ -120,9 +128,10 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		});
     }
 	
+	
 	public void buscarActividadesPorDia(final DefaultTableModel modeloDia, Integer dia){
 		modeloDia.setRowCount(0);
-		String[][] actividades = new BuscarSQL().getTablaActividadesDiarias(txtPeriodo.getText().substring(0, txtPeriodo.getText().indexOf("-")).trim(), dia);
+		String[][] actividades = new BuscarSQL().getTablaActividadesDiarias(txtPeriodo.getText().substring(0, txtPeriodo.getText().indexOf("-")).trim(), dia, "Revision");
 		for(String[] act: actividades){
 			modeloDia.addRow(act);
 		}
@@ -170,151 +179,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	};
 	
 	
-//	public void tabla_limpiar(){		
-//		modelLunes.setRowCount(0);
-//		modelMartes.setRowCount(0);
-//		modelMiercoles.setRowCount(0);
-//		modelJueves.setRowCount(0);
-//		modelViernes.setRowCount(0);
-//		modelSabado.setRowCount(0);
-//		modelDomingo.setRowCount(0);
-//	}
-//	
-//	public void limpiar(){
-//		txtFolio.setEditable(true);
-//		txtFolio.requestFocus();
-//		txtFolio.setText("");
-//		txtPeriodo.setText("");
-//		txtEstablecimiento.setText("");
-//		
-//		model_objetivos.setRowCount(0);
-//		
-//		btnAgregarActividad.setEnabled(false);
-//		
-//		tablaDomingo.setEnabled(false);
-//		tablaLunes.setEnabled(false);
-//		tablaMartes.setEnabled(false);
-//		tablaMiercoles.setEnabled(false);
-//		tablaJueves.setEnabled(false);
-//		tablaViernes.setEnabled(false);
-//		tablaSabado.setEnabled(false);
-//		
-//		tabla_limpiar();
-//	}
-	
-	public String[][] DiasTablas(){
-		int filas = tablaDomingo.getRowCount()+tablaLunes.getRowCount()+tablaMartes.getRowCount()+tablaMiercoles.getRowCount()+tablaJueves.getRowCount()+tablaViernes.getRowCount()+tablaSabado.getRowCount();
-		String[][] tablas = new String[filas][7];
-		
-		int renglonesdomingo = tablaDomingo.getRowCount();
-		int rengloneslunes = tablaLunes.getRowCount();
-		int renglonesMartes = tablaMartes.getRowCount();
-		int renglonesMiercoles = tablaMiercoles.getRowCount();
-		int renglonesJueves = tablaJueves.getRowCount();
-		int renglonesViernes = tablaViernes.getRowCount();
-		int renglonesSabado = tablaSabado.getRowCount();
-		
-		int fila=0;
-		int i=0;
-		
-		while(renglonesdomingo > 0){
-				tablas[i][0] = modelDomingo.getValueAt(fila, 0)+"";
-				tablas[i][1] = modelDomingo.getValueAt(fila, 1)+"";
-				tablas[i][2] = modelDomingo.getValueAt(fila, 2)+"";
-				tablas[i][3] = modelDomingo.getValueAt(fila, 3)+"";
-				tablas[i][4] = modelDomingo.getValueAt(fila, 4)+"";
-				tablas[i][5] = modelDomingo.getValueAt(fila, 5)+"";
-				tablas[i][6] = "Domingo";
-				i+=1;
-				fila+=1;
-			renglonesdomingo--;
-		}
-		fila=0;
-		while(rengloneslunes > 0){
-				tablas[i][0] = modelLunes.getValueAt(fila, 0)+"";
-				tablas[i][1] = modelLunes.getValueAt(fila, 1)+"";
-				tablas[i][2] = modelLunes.getValueAt(fila, 2)+"";
-				tablas[i][3] = modelLunes.getValueAt(fila, 3)+"";
-				tablas[i][4] = modelLunes.getValueAt(fila, 4)+"";
-				tablas[i][5] = modelLunes.getValueAt(fila, 5)+"";
-				tablas[i][6] = "Lunes";
-				i+=1;
-				fila+=1;
-				rengloneslunes--;
-		}
-		
-		fila=0;
-		while(renglonesMartes > 0){
-				tablas[i][0] = modelMartes.getValueAt(fila, 0)+"";
-				tablas[i][1] = modelMartes.getValueAt(fila, 1)+"";
-				tablas[i][2] = modelMartes.getValueAt(fila, 2)+"";
-				tablas[i][3] = modelMartes.getValueAt(fila, 3)+"";
-				tablas[i][4] = modelMartes.getValueAt(fila, 4)+"";
-				tablas[i][5] = modelMartes.getValueAt(fila, 5)+"";
-				tablas[i][6] = "Martes";
-				i+=1;
-				fila+=1;
-				renglonesMartes--;
-		}
-		
-		fila=0;
-		while(renglonesMiercoles > 0){
-				tablas[i][0] = modelMiercoles.getValueAt(fila, 0)+"";
-				tablas[i][1] = modelMiercoles.getValueAt(fila, 1)+"";
-				tablas[i][2] = modelMiercoles.getValueAt(fila, 2)+"";
-				tablas[i][3] = modelMiercoles.getValueAt(fila, 3)+"";
-				tablas[i][4] = modelMiercoles.getValueAt(fila, 4)+"";
-				tablas[i][5] = modelMiercoles.getValueAt(fila, 5)+"";
-				tablas[i][6] = "Miércoles";
-				i+=1;
-				fila+=1;
-				renglonesMiercoles--;
-		}
-		
-		fila=0;
-		while(renglonesJueves > 0){
-				tablas[i][0] = modelJueves.getValueAt(fila, 0)+"";
-				tablas[i][1] = modelJueves.getValueAt(fila, 1)+"";
-				tablas[i][2] = modelJueves.getValueAt(fila, 2)+"";
-				tablas[i][3] = modelJueves.getValueAt(fila, 3)+"";
-				tablas[i][4] = modelJueves.getValueAt(fila, 4)+"";
-				tablas[i][5] = modelJueves.getValueAt(fila, 5)+"";
-				tablas[i][6] = "Jueves";
-				i+=1;
-				fila+=1;
-				renglonesJueves--;
-		}
-		
-		fila=0;
-		while(renglonesViernes > 0){
-				tablas[i][0] = modelViernes.getValueAt(fila, 0)+"";
-				tablas[i][1] = modelViernes.getValueAt(fila, 1)+"";
-				tablas[i][2] = modelViernes.getValueAt(fila, 2)+"";
-				tablas[i][3] = modelViernes.getValueAt(fila, 3)+"";
-				tablas[i][4] = modelViernes.getValueAt(fila, 4)+"";
-				tablas[i][5] = modelViernes.getValueAt(fila, 5)+"";
-				tablas[i][6] = "Viernes";
-				i+=1;
-				fila+=1;
-				renglonesViernes--;
-		}
-		
-		fila=0;
-		while(renglonesSabado > 0){
-				tablas[i][0] = modelSabado.getValueAt(fila, 0)+"";
-				tablas[i][1] = modelSabado.getValueAt(fila, 1)+"";
-				tablas[i][2] = modelSabado.getValueAt(fila, 2)+"";
-				tablas[i][3] = modelSabado.getValueAt(fila, 3)+"";
-				tablas[i][4] = modelSabado.getValueAt(fila, 4)+"";
-				tablas[i][5] = modelSabado.getValueAt(fila, 5)+"";
-				tablas[i][6] = "Sábado";
-				i+=1;
-				fila+=1;
-				renglonesSabado--;
-		}
-		return tablas;
-	}
-	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////TODO CATATOGO DE OBJETIVOS	
 	public class Cat_Objectivos_De_La_Semana extends JFrame{
@@ -344,7 +208,17 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	        	 switch(columna){
 	        	 	case 0 : return false; 
 	        	 	case 1 : 
-	        	 		if(fila<cantidadDeFilas){return editable;}else{return true;}      	 		
+	        	 		if(fila<cantidadDeFilas){
+//	        	 			System.out.println(fila+" if "+cantidadDeFilas);
+	        	 			if(cantidadDeFilas==0){
+	        	 				return true;
+	        	 			}else{
+	        	 				return editable;
+	        	 			}
+	        	 			
+	        	 		}else{
+//	        	 			System.out.println(fila+" else "+cantidadDeFilas);
+	        	 			return true;}      	 		
 	        	 } 				
 	 			return false;
 	 		}
@@ -433,23 +307,25 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		        	
 		        	if(e.getClickCount() == 1){
 		        		
-		        		 if(model_objetivos_de_la_semana.isCellEditable(tabla_objetivos_de_la_semana.getSelectedRow(), 1)){
-		      			   
-		        			 fila_objetivos=tabla_objetivos_de_la_semana.getSelectedRow();
-								
-								tabla_objetivos_de_la_semana.getSelectionModel().setSelectionInterval(fila_objetivos, fila_objetivos);
-								tabla_objetivos_de_la_semana.editCellAt(fila_objetivos, 1);
-								Component aComp=tabla_objetivos_de_la_semana.getEditorComponent();
-								aComp.requestFocus();
-		      			   
-		      		   }
-		        		 
-//						fila_objetivos=tabla_objetivos_de_la_semana.getSelectedRow();
-//						
-//						tabla_objetivos_de_la_semana.getSelectionModel().setSelectionInterval(fila_objetivos, fila_objetivos);
-//						tabla_objetivos_de_la_semana.editCellAt(fila_objetivos, 1);
-//						Component aComp=tabla_objetivos_de_la_semana.getEditorComponent();
-//						aComp.requestFocus();
+		        		
+		        		
+		        		if(model_objetivos_de_la_semana.isCellEditable(tabla_objetivos_de_la_semana.getSelectedRow(), 1)){
+		        			
+		        			fila_objetivos=tabla_objetivos_de_la_semana.getSelectedRow();
+		        			
+		        		}else{
+		        			for(int i=0; i<tabla_objetivos_de_la_semana.getRowCount(); i++){
+		        				if(model_objetivos_de_la_semana.isCellEditable(i, 1)){
+		        					fila_objetivos=i;
+		        					break;
+		        				}
+		        			}
+		        		}
+		        		
+						tabla_objetivos_de_la_semana.getSelectionModel().setSelectionInterval(fila_objetivos, fila_objetivos);
+						tabla_objetivos_de_la_semana.editCellAt(fila_objetivos, 1);
+						Component aComp=tabla_objetivos_de_la_semana.getEditorComponent();
+						aComp.requestFocus();
 		        	}
 		        }
 	        });
@@ -505,28 +381,24 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		public void cargarObjetivosEdicion(){
 			
 			if(tabla_objetivos_de_la_semana.isEditing()){ tabla_objetivos_de_la_semana.getCellEditor().stopCellEditing(); }
-			
 			model_objetivos_de_la_semana.setRowCount(0);
+			
 			String[][] objetivos = new BuscarSQL().buscarObjetivos_De_Plan_Semanal_Editable(Integer.valueOf(txtFolioObjetivo.getText()));
 			
 			String[] reg = {"",""};
-			if(objetivos.length==0){
-				model_objetivos_de_la_semana.addRow(reg);
-				fila_objetivos=0;
-			}else{
-				for(String[] dt: objetivos){
-					model_objetivos_de_la_semana.addRow(dt);
-				}
-				model_objetivos_de_la_semana.addRow(reg);
-				cantidadDeFilas = new BuscarSQL().cantidad_de_Objetivos_por_folio(Integer.valueOf(txtFolioObjetivo.getText()));
-				editable = new BuscarSQL().fila_Objetivos_de_la_semana(Integer.valueOf(txtFolioObjetivo.getText()));
+			for(String[] dt: objetivos){
+				model_objetivos_de_la_semana.addRow(dt);
 			}
+			model_objetivos_de_la_semana.addRow(reg);
 			
+			editable = new BuscarSQL().fila_Objetivos_de_la_semana(Integer.valueOf(txtFolioObjetivo.getText()));
+			cantidadDeFilas = new BuscarSQL().cantidad_de_Objetivos_por_folio(Integer.valueOf(txtFolioObjetivo.getText()));
+			
+			fila_objetivos = tabla_objetivos_de_la_semana.getRowCount()-1;
 			
 			tabla_objetivos_de_la_semana.requestFocus();
 			CalcularFoliosTabla(tabla_objetivos_de_la_semana);
-			
-		    fila_objetivos = tabla_objetivos_de_la_semana.getRowCount()==1 ? 0 : tabla_objetivos_de_la_semana.getRowCount()-1;
+		  
 		    tabla_objetivos_de_la_semana.getSelectionModel().setSelectionInterval(fila_objetivos, fila_objetivos);
 		    
 		    tabla_objetivos_de_la_semana.editCellAt(fila_objetivos, 1);
@@ -540,7 +412,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 				model_objetivos_de_la_semana.setRowCount(0);
 				Object[] filaNueva = {"",""};
 				model_objetivos_de_la_semana.addRow(filaNueva);
-				fila_objetivos=0;
+				fila_objetivos = tabla_objetivos_de_la_semana.getRowCount()-1;
 				
 				tabla_objetivos_de_la_semana.getSelectionModel().setSelectionInterval(fila_objetivos, fila_objetivos);
 				tabla_objetivos_de_la_semana.editCellAt(fila_objetivos, 1);

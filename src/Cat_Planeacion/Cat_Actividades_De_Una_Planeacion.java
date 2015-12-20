@@ -19,6 +19,7 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -1469,48 +1470,87 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			return cadena;
 		}
 
+		Date fechaInicialDefault = null;
 		public void llenarObjeto(){
 			
-			frecuencia.setTipo_de_frecuencia(cmbTipoDeProgramacion.getSelectedItem().toString());
-			frecuencia.setSeleccion_hasta_que_se_cumpla(rbHastaQueSeCumpla.isSelected());
-			frecuencia.setSeleccion_en_la_fecha_indicada(rbEnLaFechaIndicada.isSelected());
+			String llenar_objeto = "no";
+			if(cmbTipoDeProgramacion.getSelectedItem().toString().equals("UNA VEZ")){
+				if(fh_unica_repeticion.getDate().before(fechaInicialDefault)){
+					llenar_objeto = "no";
+				}else{
+					llenar_objeto = "si";
+				}
+			}else{
+				if(fh_inicial_de_duracion.getDate().before(fechaInicialDefault)){
+					llenar_objeto = "no";
+				}else{
+					
+					if(rbFechaDeFinalizacion.isSelected()==true){
+						
+						if(fh_final_de_duracion.getDate().before(fh_inicial_de_duracion.getDate())){
+							llenar_objeto = "no(fechas invertidas)";
+						}else{
+							llenar_objeto = "si";
+						}
+					}else{
+						llenar_objeto = "si";
+					}
+					
+				}
+			}
 			
-		//unica repeticion
-			frecuencia.setFh_unica_repeticion(new SimpleDateFormat("dd/MM/yyyy").format(fh_unica_repeticion.getDate()));
-			frecuencia.setSeleccion_con_hora(chbConHora.isSelected());
-			frecuencia.setHora_unica_repeticion(new SimpleDateFormat("HH:mm:ss").format(spHoraUnicaRepeticion.getValue()));
+			if(llenar_objeto.equals("no(fechas invertidas)")){
+				JOptionPane.showMessageDialog(null, "No Se Puede Guardar La Configuración Con Las Fecha De Duracion Invertidas"
+                        , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+			}
+			if(llenar_objeto.equals("no")){
+				JOptionPane.showMessageDialog(null, "No Se Puede Guardar La Configuración Con La Fecha "+(cmbTipoDeProgramacion.getSelectedItem().toString().equals("UNA VEZ")?"De Unica Repetición  Menor Al Dia Actual":"Inicial De Duracion  Menor Al Dia Actual")+" Menor Al Dia Actual"
+                        , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+			}else{
 			
-		//frecuencia
-			frecuencia.setSucede(cmbSucede.getSelectedItem().toString());
-			frecuencia.setSelecciona_dia_del_mes(rbDiaDelMes.isSelected());
-			frecuencia.setDias_a_repetir_por_suceso_de_dias(cmbSucede.getSelectedItem().toString().equals("DIARIA")?Integer.valueOf(spDiasARepetir.getValue().toString()):0);
-			frecuencia.setDias_a_repetir_por_suceso_de_semanas(cmbSucede.getSelectedItem().toString().equals("SEMANAL")?Integer.valueOf(spDiasARepetir.getValue().toString()):0);
-			frecuencia.setDias_a_repetir_por_suceso_de_meses(cmbSucede.getSelectedItem().toString().equals("MENSUAL")?Integer.valueOf(spDiasARepetir.getValue().toString()):0);
-			frecuencia.setMes1(Integer.valueOf(spMeses.getValue().toString()));
-			frecuencia.setSelecciona_dia_de_la_semana(rbDiaDeLaSemana.isSelected());
-			frecuencia.setNivel_de_dias(cmbNivelDeDias.getSelectedItem().toString());
-			frecuencia.setDia_de_la_semana(Integer.valueOf(cmbDiaDeLaSemana.getSelectedIndex()));
-			frecuencia.setMes2(Integer.valueOf(spMeses2.getValue().toString()));
-       
-	   //semana
-			frecuencia.setDomingo(chbDomingo.isSelected());
-			frecuencia.setLunes(chbLunes.isSelected());
-			frecuencia.setMartes(chbMartes.isSelected());
-			frecuencia.setMiercoles(chbMiercoles.isSelected());
-			frecuencia.setJueves(chbJueves.isSelected());
-			frecuencia.setViernes(chbViernes.isSelected());
-			frecuencia.setSabado(chbSabado.isSelected());
-			 
-       //frecuencia diaria
-			frecuencia.setSeleccion_asignar_hora(chAsignarHora.isSelected());
-			frecuencia.setHora_frecuencia_diaria(new SimpleDateFormat("HH:mm:ss").format(spHoraFrecuenciaDiaria.getValue()));
-			
-       //Duracion
-			frecuencia.setFecha_inicio_duracion(new SimpleDateFormat("dd/MM/yyyy").format(fh_inicial_de_duracion.getDate()));
-			
-			frecuencia.setSeleccion_fecha_finaliza(rbFechaDeFinalizacion.isSelected());
-			frecuencia.setFecha_final_duracion(rbFechaDeFinalizacion.isSelected()?(new SimpleDateFormat("dd/MM/yyyy").format(fh_final_de_duracion.getDate())):"16/11/2094");
-			frecuencia.setSeleccion_sin_fecha_final(rbSinFechaDeFinalizacion.isSelected());
+					frecuencia.setTipo_de_frecuencia(cmbTipoDeProgramacion.getSelectedItem().toString());
+					frecuencia.setSeleccion_hasta_que_se_cumpla(rbHastaQueSeCumpla.isSelected());
+					frecuencia.setSeleccion_en_la_fecha_indicada(rbEnLaFechaIndicada.isSelected());
+					
+//				unica repeticion
+					frecuencia.setFh_unica_repeticion(new SimpleDateFormat("dd/MM/yyyy").format(fh_unica_repeticion.getDate()));
+					frecuencia.setSeleccion_con_hora(chbConHora.isSelected());
+					frecuencia.setHora_unica_repeticion(new SimpleDateFormat("HH:mm:ss").format(spHoraUnicaRepeticion.getValue()));
+					
+//				frecuencia
+					frecuencia.setSucede(cmbSucede.getSelectedItem().toString());
+					frecuencia.setSelecciona_dia_del_mes(rbDiaDelMes.isSelected());
+					frecuencia.setDias_a_repetir_por_suceso_de_dias(cmbSucede.getSelectedItem().toString().equals("DIARIA")?Integer.valueOf(spDiasARepetir.getValue().toString()):0);
+					frecuencia.setDias_a_repetir_por_suceso_de_semanas(cmbSucede.getSelectedItem().toString().equals("SEMANAL")?Integer.valueOf(spDiasARepetir.getValue().toString()):0);
+					frecuencia.setDias_a_repetir_por_suceso_de_meses(cmbSucede.getSelectedItem().toString().equals("MENSUAL")?Integer.valueOf(spDiasARepetir.getValue().toString()):0);
+					frecuencia.setMes1(Integer.valueOf(spMeses.getValue().toString()));
+					frecuencia.setSelecciona_dia_de_la_semana(rbDiaDeLaSemana.isSelected());
+					frecuencia.setNivel_de_dias(cmbNivelDeDias.getSelectedItem().toString());
+					frecuencia.setDia_de_la_semana(Integer.valueOf(cmbDiaDeLaSemana.getSelectedIndex()));
+					frecuencia.setMes2(Integer.valueOf(spMeses2.getValue().toString()));
+		       
+   //			semana
+					frecuencia.setDomingo(chbDomingo.isSelected());
+					frecuencia.setLunes(chbLunes.isSelected());
+					frecuencia.setMartes(chbMartes.isSelected());
+					frecuencia.setMiercoles(chbMiercoles.isSelected());
+					frecuencia.setJueves(chbJueves.isSelected());
+					frecuencia.setViernes(chbViernes.isSelected());
+					frecuencia.setSabado(chbSabado.isSelected());
+					 
+   //			frecuencia diaria
+					frecuencia.setSeleccion_asignar_hora(chAsignarHora.isSelected());
+					frecuencia.setHora_frecuencia_diaria(new SimpleDateFormat("HH:mm:ss").format(spHoraFrecuenciaDiaria.getValue()));
+					
+   //			Duracion
+					frecuencia.setFecha_inicio_duracion(new SimpleDateFormat("dd/MM/yyyy").format(fh_inicial_de_duracion.getDate()));
+					
+					frecuencia.setSeleccion_fecha_finaliza(rbFechaDeFinalizacion.isSelected());
+					frecuencia.setFecha_final_duracion(rbFechaDeFinalizacion.isSelected()?(new SimpleDateFormat("dd/MM/yyyy").format(fh_final_de_duracion.getDate())):"16/11/2094");
+					frecuencia.setSeleccion_sin_fecha_final(rbSinFechaDeFinalizacion.isSelected());
+			}
 		}
 		
 		@SuppressWarnings("deprecation")
@@ -1519,8 +1559,9 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			rbHastaQueSeCumpla.setSelected(frecuencia.isSeleccion_hasta_que_se_cumpla());
 			rbEnLaFechaIndicada.setSelected(frecuencia.isSeleccion_en_la_fecha_indicada());
 			
-		//unica repeticion
+//			unica repeticion
 			try {
+				fechaInicialDefault = new SimpleDateFormat("dd/MM/yyyy").parse(frecuencia.cargar_fechas(0));
 				fh_unica_repeticion.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(frecuencia.getFh_unica_repeticion()));
 			} catch (ParseException e) {// Auto-generated catch block
 				e.printStackTrace();	}
@@ -1531,7 +1572,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			spHoraUnicaRepeticion.setValue(new Time(Integer.parseInt(horaunicaRepeticion[0]),Integer.parseInt(horaunicaRepeticion[1]),Integer.parseInt(horaunicaRepeticion[2])));
 			spHoraUnicaRepeticion.setEditor(spDHoraUnicaRepeticion);
 			
-		//frecuencia
+//			frecuencia
 			cmbSucede.setSelectedItem(frecuencia.getSucede().toString());
 			rbDiaDelMes.setSelected(frecuencia.isSelecciona_dia_del_mes());
 			spDiasARepetir.setValue(frecuencia.getDias_a_repetir_por_suceso_de_dias()+frecuencia.getDias_a_repetir_por_suceso_de_semanas()+frecuencia.getDias_a_repetir_por_suceso_de_meses());

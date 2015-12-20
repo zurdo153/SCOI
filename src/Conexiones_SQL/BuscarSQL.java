@@ -7692,9 +7692,7 @@ public class BuscarSQL {
 		Statement stmt = null;
 		
 		String query = " select objetivo from tb_objetivos_de_plan_semanal "
-						+ " where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" "
-						+ " and folio = "+folio+" "
-						+ " and estatus = 'PLA'";
+						+ " where estatus = 'PLA' and folio = "+folio+"and usuario = "+(new Obj_Usuario().LeerSession().getFolio());
 		
 		String[][] datos = new String[getFilas(query)][2];
 		
@@ -7705,7 +7703,7 @@ public class BuscarSQL {
 			int i = 0;
 			while(rs.next()){
 					datos[i][0] = "";
-					datos[i][1] = ""+rs.getString(1);
+					datos[i][1] = rs.getString(1);
 					
 				i++;
 			}
@@ -7750,6 +7748,8 @@ public class BuscarSQL {
 					 + "			select 'false' "
 					 + "	end ";
 		
+		System.out.println(query);
+		
 		boolean editable = false;
 		try {				
 			Statement s = con.conexion().createStatement();
@@ -7768,7 +7768,9 @@ public class BuscarSQL {
 	
 	public int  cantidad_de_Objetivos_por_folio(int folio){
 		int cantidad=0;
-		String query = "select count(folio) as cantidad from tb_objetivos_de_plan_semanal where folio = "+folio;
+		String query = "select count(folio) as cantidad from tb_objetivos_de_plan_semanal where estatus = 'PLA' and folio = "+folio+" and usuario = "+(new Obj_Usuario().LeerSession().getFolio());
+//		String query = "select count(folio) as cantidad from tb_objetivos_de_plan_semanal where folio = "+folio;
+		System.out.println(query);
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -7790,10 +7792,13 @@ public class BuscarSQL {
 		return cantidad;
 	}
 	
-	public String[][] getTablaActividadesDiarias(String fecha,int dia){
+	public String[][] getTablaActividadesDiarias(String fecha,int dia, String Ventana){
+		
+		int columnas =  Ventana.equals("Alimentacion")   ?   7  :   5   ;
+		
 		String[][] Matriz = null;
 		String actividades = "exec sp_consulta_de_actividades_del_dia "+(new Obj_Usuario().LeerSession().getFolio())+",'"+fecha+"',"+dia;
-		Matriz = new String[getFilas(actividades)][5];
+		Matriz = new String[getFilas(actividades)][columnas];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -7806,6 +7811,12 @@ public class BuscarSQL {
 				Matriz[i][2] = rs.getString(3);
 				Matriz[i][3] = rs.getString(4);
 				Matriz[i][4] = rs.getString(5);
+				
+				if(columnas==7){
+					Matriz[i][5] = "";
+					Matriz[i][6] = "";
+				}
+				
 				i++;
 			}
 		} catch (SQLException e1) {

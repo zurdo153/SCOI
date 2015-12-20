@@ -73,24 +73,33 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		JLayeredPane pViernes = new JLayeredPane(); 
 		JLayeredPane pSabado = new JLayeredPane(); 
 		JLayeredPane pDomingo = new JLayeredPane();
-	
+		
+		
+	String activarColumna = "no";
 	String[] columnas ={"Folio", "Descripcion","Exige Evidencia","Exige Observacion","Prioridad"};
+			
 	@SuppressWarnings("rawtypes")
 	Class[] tipos = {
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
+	    	java.lang.Object.class,
+	    	java.lang.Object.class,
+	    	java.lang.Object.class,
+			java.lang.Object.class,
+	    	java.lang.Object.class,
+	    	java.lang.Object.class,
+	    	java.lang.Object.class,
          };
+	
 	
 	public boolean celdasEditables(int filaPar, int ColumnaPar){
 			switch(ColumnaPar){
 		 	case 0 : return false; 
 		 	case 1 : return false; 
-		 	case 2 : return false;
-		 	case 3 : return false;
-		 	case 4 : return false;
+		 	case 2 : return activarColumna.equals("no")?false:true;
+		 	case 3 : return activarColumna.equals("no")?false:true;
+		 	case 4 : return activarColumna.equals("no")?false:true;
+		 	case 5 : return false;
+		 	case 6 : return false;
+		 	
 		 }
 			return false;
 	}
@@ -200,6 +209,9 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 	int anchoMon = Toolkit.getDefaultToolkit().getScreenSize().width;
     int ancho_nivel_critico=0;
 	public Cat_Plan_Semanal_Base(){
+		
+		activarColumna = "no";
+		
 		if(anchoMon<=1024){
 			this.setSize(1000,600);
 		}else{
@@ -273,22 +285,26 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		this.pestanas.addTab("Viernes", pViernes);
 		this.pestanas.addTab("Sábado", pSabado);
 		this.pestanas.addTab("Domingo", pDomingo);
-
+		
 		renders_objetivos(tabla_objetivos,"tb_principal");
 		
-		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
-		renders(tablaMartes,pMarte,scrollMartes,"Martes");
-		renders(tablaMiercoles,pMiercoles,scrollMiercoles,"Miercoles");		
-		renders(tablaJueves,pJueves,scrollJueves,"Jueves");
-		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
-		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
-		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
+//		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
+//		renders(tablaMartes,pMarte,scrollMartes,"Martes");
+//		renders(tablaMiercoles,pMiercoles,scrollMiercoles,"Miercoles");		
+//		renders(tablaJueves,pJueves,scrollJueves,"Jueves");
+//		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
+//		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
+//		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
 
 		this.cont.add(panel);
 		
 
 	}
 	
+	public void agregarColumnas(final DefaultTableModel modelo){
+		modelo.addColumn("Evidencia");
+		modelo.addColumn("Observacion");
+	}
 	
 	public void renders_objetivos(final JTable tb, String nombre_tabla){
 		

@@ -18,6 +18,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -107,12 +108,12 @@ public class Cat_Documentacion_De_Empleado extends JDialog{
 		}
 	};
 
-//	public static void main(String [] arg){
-//		try{
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//			new Cat_Documentacion_De_Empleado("491","edgar","sistemas","programador").setVisible(true);
-//		}catch(Exception e){	}
-//	}
+	public static void main(String [] arg){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Documentacion_De_Empleado("491","edgar","sistemas","programador").setVisible(true);
+		}catch(Exception e){	}
+	}
 
 public class Cat_Cargar_Documentacion_De_Empleado extends JDialog{
 		

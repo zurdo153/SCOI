@@ -190,10 +190,10 @@ public class Cat_Actividades_Por_Proyecto extends JFrame{
     		}
     	};
     	
-        ActionListener opFiltroEntable = new ActionListener() {
+        ActionListener opFiltroEntable = new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				
-				 filaseleccionada = table.getSelectedRow();
+				filaseleccionada = table.getSelectedRow();
     			folioseleccionado =  Integer.parseInt(table.getValueAt(filaseleccionada, 0).toString());
     			
     			System.out.println(filaseleccionada);
