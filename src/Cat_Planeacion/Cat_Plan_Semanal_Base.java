@@ -31,7 +31,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 	
 //	JTextArea txaDescripcion = new Componentes().textArea(new JTextArea(), "Descripción", 700);
 //	JScrollPane Descripcion = new JScrollPane(txaDescripcion);
-	DefaultTableModel model_objetivos = new DefaultTableModel(null, new String[]{"Objetivos", "Status", "Folio"}
+	DefaultTableModel model_objetivos = new DefaultTableModel(null, new String[]{"Status", "Objetivos", "Folio"}
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -45,7 +45,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
          }
          public boolean isCellEditable(int fila, int columna){
         	 switch(columna){
-        	 	case 0 : return false; 
+        	 	case 0 : return activarColumna.equals("si")?true:false; 
         	 	case 1 : return false; 
         	 	case 2 : return false; 
         	 } 				
@@ -213,9 +213,9 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		activarColumna = "no";
 		
 		if(anchoMon<=1024){
-			this.setSize(1000,600);
+			this.setSize(1110,600);
 		}else{
-			this.setSize(1200,600);
+			this.setSize(1310,600);
 		}
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -251,10 +251,10 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		this.panel.add(scroll_objetivos).setBounds(x, y+=15, 410,250);	
 		
 		if(anchoMon<=1024){
-			this.panel.add(pestanas).setBounds(450,30,525, 450);
+			this.panel.add(pestanas).setBounds(450,30,665, 450);
 			ancho_nivel_critico=110;
 		}else{
-			this.panel.add(pestanas).setBounds(450,30,730, 450);
+			this.panel.add(pestanas).setBounds(450,30,840, 450);
 			ancho_nivel_critico=145;
 		}
 			
@@ -301,27 +301,22 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 
 	}
 	
-	public void agregarColumnas(final DefaultTableModel modelo){
-		modelo.addColumn("Evidencia");
-		modelo.addColumn("Observacion");
-	}
-	
 	public void renders_objetivos(final JTable tb, String nombre_tabla){
 		
 		tb.getTableHeader().setReorderingAllowed(false) ;
 		tb.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		if(nombre_tabla.equals("tb_principal")){
-			tb.getColumnModel().getColumn(0).setMaxWidth(620);
-			tb.getColumnModel().getColumn(0).setMinWidth(620);
-			tb.getColumnModel().getColumn(1).setMaxWidth(50);
-			tb.getColumnModel().getColumn(1).setMinWidth(50);
-			tb.getColumnModel().getColumn(2).setMaxWidth(40);
-			tb.getColumnModel().getColumn(2).setMinWidth(40);
+			tb.getColumnModel().getColumn(0).setMaxWidth(80);
+			tb.getColumnModel().getColumn(0).setMinWidth(80);
+			tb.getColumnModel().getColumn(1).setMaxWidth(620);
+			tb.getColumnModel().getColumn(1).setMinWidth(620);
+			tb.getColumnModel().getColumn(2).setMaxWidth(80);
+			tb.getColumnModel().getColumn(2).setMinWidth(80);
 			
 		}else{
-			tb.getColumnModel().getColumn(0).setMaxWidth(50);
-			tb.getColumnModel().getColumn(0).setMinWidth(50);
+			tb.getColumnModel().getColumn(0).setMaxWidth(80);
+			tb.getColumnModel().getColumn(0).setMinWidth(80);
 			tb.getColumnModel().getColumn(1).setMaxWidth(620);
 			tb.getColumnModel().getColumn(1).setMinWidth(620);
 			
@@ -338,24 +333,27 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		panelRender.setBackground(new Color(Integer.parseInt(color.equals("Azul")?"C9C9C9":"AFAFAF",16)));
 		
 		if(anchoMon<=1024){
-			panelRender.add(scrollRender).setBounds(15,20,490,390);
+			panelRender.add(scrollRender).setBounds(15,20,600,390);
 		}else{
-			panelRender.add(scrollRender).setBounds(15,20,695,390);
+			panelRender.add(scrollRender).setBounds(15,20,805,390);
 		}
 		
 		tb.getTableHeader().setReorderingAllowed(false) ;
 		tb.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
+		int ancho=activarColumna.equals("si")?170:100;
+		int ancho2=activarColumna.equals("si")?100:170;
+		
 		tb.getColumnModel().getColumn(0).setMaxWidth(50);
 		tb.getColumnModel().getColumn(0).setMinWidth(200);
 		tb.getColumnModel().getColumn(1).setMinWidth(390);
 		tb.getColumnModel().getColumn(1).setMaxWidth(900);
-		tb.getColumnModel().getColumn(2).setMaxWidth(90);
-		tb.getColumnModel().getColumn(2).setMinWidth(100);
+		tb.getColumnModel().getColumn(2).setMaxWidth(ancho);
+		tb.getColumnModel().getColumn(2).setMinWidth(ancho);
 		tb.getColumnModel().getColumn(3).setMaxWidth(100);
 		tb.getColumnModel().getColumn(3).setMinWidth(100);
-		tb.getColumnModel().getColumn(4).setMaxWidth(60);
-		tb.getColumnModel().getColumn(4).setMinWidth(100);
+		tb.getColumnModel().getColumn(4).setMaxWidth(ancho2);
+		tb.getColumnModel().getColumn(4).setMinWidth(ancho2);
 		
 		tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
 		tb.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));

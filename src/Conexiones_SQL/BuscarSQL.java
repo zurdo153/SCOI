@@ -7653,8 +7653,31 @@ public class BuscarSQL {
 	public String[][] buscarObjetivos_De_Plan_Semanal(int folio){
 		Statement stmt = null;
 		
-		String query = " select objetivo,estatus from tb_objetivos_de_plan_semanal where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" and folio = "+folio
-					   +" union all ( select objetivo,estatus from tb_objetivos_de_plan_semanal where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" and folio < "+folio+" and estatus <> 'RES') ";
+//		String query = " select objetivo,estatus from tb_objetivos_de_plan_semanal where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" and folio = "+folio
+//					   +" union all ( select objetivo,estatus from tb_objetivos_de_plan_semanal where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" and folio < "+folio+" and estatus <> 'RES') ";
+		
+		String query = " select case when (estatus='PLA') then 'PLANEADO' "
+					  +" 			 when (estatus='PRO') then 'PROCESO' "
+					  +" 	 		else 'RESUELTO' "
+					  +" end as estatus "
+					  + " ,objetivo "
+					  + " ,folio_objetivo "
+					  + " from tb_objetivos_de_plan_semanal "
+					  + " where usuario = "+(new Obj_Usuario().LeerSession().getFolio())
+					  + " and folio = "+folio
+					  + " union all ( select case when (estatus='PLA') then 'PLANEADO' "
+					  + " 							when (estatus='PRO') then 'PROCESO' "
+					  + "						 else 'RESUELTO' "
+					  + "					end as estatus "
+					  + "					,objetivo "
+					  + "					,folio_objetivo "
+					  + "				from tb_objetivos_de_plan_semanal "
+					  + "				where usuario = "+(new Obj_Usuario().LeerSession().getFolio())
+					  + "				and folio < "+folio
+					  + "				and estatus <> 'RES')"
+					  + " order by folio_objetivo ";
+		
+		
 		String[][] datos = new String[getFilas(query)][3];
 		
 		try {
@@ -7663,10 +7686,9 @@ public class BuscarSQL {
 			ResultSet rs = stmt.executeQuery(query);
 			int i = 0;
 			while(rs.next()){
-					datos[i][0] = "  "+rs.getString(1);
+					datos[i][0] = rs.getString(1);
 					datos[i][1] = rs.getString(2)+"  ";
-					datos[i][2] = "  "+(i+1);
-					
+					datos[i][2] = rs.getString(3)+"  ";
 				i++;
 			}
 			
@@ -7808,14 +7830,28 @@ public class BuscarSQL {
 			while(rs.next()){
 				Matriz[i][0] = rs.getString(1);
 				Matriz[i][1] = rs.getString(2);
-				Matriz[i][2] = rs.getString(3);
-				Matriz[i][3] = rs.getString(4);
-				Matriz[i][4] = rs.getString(5);
 				
 				if(columnas==7){
+					
+					Matriz[i][2] = "RESPUESTA";
+					Matriz[i][3] = rs.getString(3);
+					Matriz[i][4] = rs.getString(4);
+					
 					Matriz[i][5] = "";
 					Matriz[i][6] = "";
+				}else{
+					Matriz[i][2] = rs.getString(3);
+					Matriz[i][3] = rs.getString(4);
+					Matriz[i][4] = rs.getString(5);
 				}
+				
+//				System.out.print(Matriz[i][0].toString()+"  ");
+//				System.out.print(Matriz[i][1].toString()+"  ");
+//				System.out.print(Matriz[i][2].toString()+"  ");
+//				System.out.print(Matriz[i][3].toString()+"  ");
+//				System.out.print(Matriz[i][4].toString()+"  ");
+//				System.out.print(Matriz[i][5].toString()+"  ");
+//				System.out.println(Matriz[i][6].toString()+"  ");
 				
 				i++;
 			}

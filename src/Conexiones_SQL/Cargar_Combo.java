@@ -1862,4 +1862,38 @@ public class Cargar_Combo {
 			
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String[] ComboTiposDeRespuesta_Plan_Semanal(int actividad) throws SQLException{
+		String query = "select * from dbo.tipos_de_respuesta_plan_semanal("+actividad+")";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("RESPUESTA");
+				}
+				miVector.add(rs.getString("item").trim());
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
 }

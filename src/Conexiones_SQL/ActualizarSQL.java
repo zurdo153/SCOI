@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 
 
 
+import javax.swing.JTable;
+
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
@@ -4052,5 +4054,45 @@ public boolean Modificacion_De_Corte_Para_Trabajos(String fCorte, double efectiv
 		}
 	return true;
 }	
+
+public boolean Actualizar_Objetivos_De_Plan_Semanal(final JTable tabla){
+	String query =  "exec sp_actualizar_objetivos_de_plan_semanal ?,?";
+	Connection con = new Connexion().conexion();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.getRowCount(); i++){
+			
+//			System.out.print(tabla.getValueAt(i, 0)+"  ");
+//			System.out.println(tabla.getValueAt(i, 2));
+			
+			pstmt.setString(1, tabla.getValueAt(i, 0).toString());
+			pstmt.setInt(2, Integer.valueOf(tabla.getValueAt(i, 2).toString().trim()));
+			pstmt.executeUpdate();
+		}
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Actualizar_Objetivos_De_Plan_Semanal  \n procedimiento almacenado sp_actualizar_objetivos_de_plan_semanal \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Actualizar_Objetivos_De_Plan_Semanal  \n procedimiento almacenado sp_actualizar_objetivos_de_plan_semanal \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Actualizar_Objetivos_De_Plan_Semanal  \n procedimiento almacenado sp_actualizar_objetivos_de_plan_semanal \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
 	
 }

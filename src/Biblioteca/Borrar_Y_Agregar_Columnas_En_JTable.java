@@ -62,7 +62,7 @@ public class Borrar_Y_Agregar_Columnas_En_JTable extends JFrame{
 		
 		ActionListener opAgregar = new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				tabla.addColumn(tabla.getColumnModel().getColumn(1));
+				tabla.moveColumn(4, 2);
 			}
 		};
 		
