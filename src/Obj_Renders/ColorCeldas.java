@@ -18,7 +18,7 @@ public class ColorCeldas extends DefaultTableCellRenderer{
 
     public Component getTableCellRendererComponent ( JTable table, Object value, boolean selected, boolean focused, int row, int column){
     	
-    	Color cFondo = table.getValueAt(row, columna_patron).toString().trim().equals("PLA") ? Color.white : table.getValueAt(row, columna_patron).toString().trim().equals("RES") ? Color.green : Color.yellow;
+    	Color cFondo = table.getValueAt(row, columna_patron).toString().trim().equals("PLANEADO") ? Color.white : table.getValueAt(row, columna_patron).toString().trim().equals("RESUELTO") ? Color.green : Color.yellow;
 		setBackground(cFondo);
 
         super.getTableCellRendererComponent(table, value, selected, focused, row, column);

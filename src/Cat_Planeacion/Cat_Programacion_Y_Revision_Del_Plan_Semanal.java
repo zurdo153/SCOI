@@ -37,7 +37,7 @@ import Conexiones_SQL.GuardarSQL;
 import Obj_Renders.ColorCeldas;
 
 @SuppressWarnings("serial")
-public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Semanal_Base {
+public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	JButton btnderecha          = new JButton(              new ImageIcon("imagen/la-flecha-verde-de-la-derecha-icono-8326-32.png")  );
 	JButton btnizquierda        = new JButton(              new ImageIcon("imagen/la-flecha-verde-de-la-izquierda-icono-8326-32.png"));
 	JButton btnObjetivos        = new JButton("Objetivos"  ,new ImageIcon("imagen/mas-icono-4156-32.png")                            );

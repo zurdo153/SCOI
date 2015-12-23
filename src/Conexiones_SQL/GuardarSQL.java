@@ -4946,5 +4946,55 @@ public boolean Guardar_Objetivos_De_La_Semana(Vector objetivos, String folioObje
 	return true;
 	}
 	
+public boolean Guardar_Actividades_Con_Respuesta(String[][] actividades, String dia){
 	
+	String query =  "exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	
+	PreparedStatement pstmt = null;
+	
+	try {
+		String ip = InetAddress.getLocalHost().getHostAddress();
+		
+		pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		
+		for(int i=0; i<actividades.length; i++){
+			
+			String ruta = actividades[i][4].toString().equals("")?"C:\\SCOI\\imagen\\SIN EVIDENCIA.jpg":actividades[i][4].toString();
+			
+				pstmt.setInt(1, Integer.valueOf(actividades[i][0].toString()));                       //folio actividad  
+				pstmt.setString(2, actividades[i][1].toString().toUpperCase());                       //respuesta        
+				pstmt.setBinaryStream(3, new FileInputStream(ruta));								  //evidencia
+				pstmt.setString(4, ruta.substring(ruta.indexOf(".")).toLowerCase());				  //tipo de archivo
+				pstmt.setString(5, actividades[i][5].toString().toUpperCase());                       //observacion    
+				pstmt.setInt(6, usuario.getFolio());												  //usuario
+				pstmt.setString(7, ip); 					  										  //ip_pc
+				pstmt.executeUpdate();
+		}
+		
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Actividades_Con_Respuesta  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Actividades_Con_Respuesta \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Actividades_Con_Respuesta  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
 } 
