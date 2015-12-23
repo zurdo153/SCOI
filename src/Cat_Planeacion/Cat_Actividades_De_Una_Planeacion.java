@@ -73,7 +73,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	JTextArea txa_Resultado_Configuracion = new Componentes().textArea(new JTextArea(), "Detalle De La Actividad", 250);
 	JScrollPane JPActividad = new JScrollPane(txa_Resultado_Configuracion);
 	
-	JButton btnAprovar = new JButton("Aplicar",new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+	JButton btnAprovar = new JButton("Guardar",new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer-icono-4321-32.png"));
 	
 	JButton btnOpcionesRespuesta = new JButton("Opciones De Respuesta",new ImageIcon("imagen/ver-info-boton-icono-8754-32.png"));
@@ -218,7 +218,9 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				Actividad_plan.setHora_termina(new SimpleDateFormat("HH:mm:ss").format(jspHorafinal.getValue()));
 				
 				if(Actividad_plan.guardar(OpRespuesta,OpPonderacion,usuarios,frecuencia, usuario.getFolio())){
+					new Cat_Programacion_Y_Revision_Del_Plan_Semanal().setVisible(true);
 					dispose();
+					
 				}else{
 					JOptionPane.showMessageDialog(null, "Error Al Guardar La Actividad", "Avisa Al Administrador Del Sistema", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 					return;
@@ -1519,9 +1521,18 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					
 				}
 			}
-			if(cmbSucede.getSelectedItem().toString().equals("SEMANAL")&& ((chbLunes.isSelected()==true?1:0)+(chbMartes.isSelected()==true?1:0)+(chbMiercoles.isSelected()==true?1:0)+(chbJueves.isSelected()==true?1:0)+(chbViernes.isSelected()==true?1:0)+(chbSabado.isSelected()==true?1:0)+(chbDomingo.isSelected()==true?1:0) )>0?false:true ){
-				JOptionPane.showMessageDialog(null, "Si Selecciona Un Periodo Semanal Es Necesario \n Que Seleccione Un Dia De La Semana Antes De Aplicar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-					return;
+//			System.out.println(cmbTipoDeProgramacion.getSelectedItem().toString());
+//			
+//			System.out.println(cmbTipoDeProgramacion.getSelectedItem().toString().equals("PERIODICA") && cmbSucede.getSelectedItem().toString().equals("SEMANAL")
+//					   &&((chbLunes.isSelected()==true?1:0)+(chbMartes.isSelected()==true?1:0)+(chbMiercoles.isSelected()==true?1:0)+(chbJueves.isSelected()==true?1:0)+(chbViernes.isSelected()==true?1:0)+(chbSabado.isSelected()==true?1:0)+(chbDomingo.isSelected()==true?1:0) )>0?false:true );
+			
+			if(cmbTipoDeProgramacion.getSelectedItem().toString().equals("PERIODICA")){
+				 if(cmbSucede.getSelectedItem().toString().equals("SEMANAL")){	
+			        if(((chbLunes.isSelected()==true?1:0)+(chbMartes.isSelected()==true?1:0)+(chbMiercoles.isSelected()==true?1:0)+(chbJueves.isSelected()==true?1:0)+(chbViernes.isSelected()==true?1:0)+(chbSabado.isSelected()==true?1:0)+(chbDomingo.isSelected()==true?1:0) )>0?false:true ){
+				       JOptionPane.showMessageDialog(null, "Si Selecciona Un Periodo Semanal Es Necesario \n Que Seleccione Un Dia De La Semana Antes De Aplicar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					  return;
+			       }
+			    }
 			}
 			
 			if(llenar_objeto.equals("no(fechas invertidas)")){

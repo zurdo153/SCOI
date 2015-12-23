@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-12-22T19:05:56 -->
+<!-- 2015-12-23T11:36:15 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="ireport.zoom" value="2.593742460100005"/>
 	<property name="ireport.x" value="302"/>
@@ -225,7 +225,7 @@
 				<reportElement key="" x="0" y="0" width="105" height="58" uuid="7b8c0ce5-d095-4ff3-a313-5162f7a29a51">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
-				<box padding="1">
+				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -238,7 +238,7 @@
 			</textField>
 			<textField>
 				<reportElement x="105" y="0" width="105" height="58" uuid="f69e27e7-f0e9-4aea-a7c9-40f69f59224b"/>
-				<box padding="1">
+				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -251,7 +251,7 @@
 			</textField>
 			<textField>
 				<reportElement key="" x="210" y="0" width="105" height="58" uuid="a210ed66-a915-4530-81b4-e16097715fae"/>
-				<box padding="1">
+				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -264,7 +264,7 @@
 			</textField>
 			<textField>
 				<reportElement key="" x="315" y="0" width="105" height="58" uuid="f2e244d1-8569-4866-bc06-999a566e691d"/>
-				<box padding="1">
+				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -277,7 +277,7 @@
 			</textField>
 			<textField>
 				<reportElement key="" x="420" y="0" width="105" height="58" uuid="acbb4cd6-4480-40ed-a6a9-27f5777884f6"/>
-				<box padding="1">
+				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -290,7 +290,7 @@
 			</textField>
 			<textField>
 				<reportElement key="" x="525" y="0" width="105" height="58" uuid="41a642f6-21dd-4452-956c-ca745fa61ed9"/>
-				<box padding="1">
+				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -305,7 +305,7 @@
 				<reportElement key="" x="630" y="0" width="105" height="58" uuid="4670caae-4557-464d-b963-15a7fdda1e5c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
-				<box padding="1">
+				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>

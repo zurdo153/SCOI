@@ -33,15 +33,19 @@ import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Renders.ColorCeldas;
 
 @SuppressWarnings("serial")
 public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Semanal_Base{
-	JButton btnderecha          = new JButton(              new ImageIcon("imagen/la-flecha-verde-de-la-derecha-icono-8326-32.png")  );
-	JButton btnizquierda        = new JButton(              new ImageIcon("imagen/la-flecha-verde-de-la-izquierda-icono-8326-32.png"));
-	JButton btnObjetivos        = new JButton("Objetivos"  ,new ImageIcon("imagen/mas-icono-4156-32.png")                            );
-	JButton btnAgregarActividad = new JButton("Actividades",new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     );
+	JButton btnderecha          = new JButton(                  new ImageIcon("imagen/la-flecha-verde-de-la-derecha-icono-8326-32.png")  );
+	JButton btnizquierda        = new JButton(                  new ImageIcon("imagen/la-flecha-verde-de-la-izquierda-icono-8326-32.png"));
+	JButton btnObjetivos        = new JButton("Objetivos"      ,new ImageIcon("imagen/mas-icono-4156-32.png")                            );
+	JButton btnAgregarActividad = new JButton("Actividades"    ,new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     );
+	JButton btnReporte_cuadros  = new JButton("Reporte Cuadros",new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public Cat_Programacion_Y_Revision_Del_Plan_Semanal (){
 		init();
@@ -61,11 +65,13 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			this.panel.add(btnderecha).setBounds(215, y, 38, 38);
 			this.panel.add(btnObjetivos).setBounds(800,10,150,38);
 			this.panel.add(btnAgregarActividad).setBounds(955,10,150,38);
+			this.panel.add(btnReporte_cuadros).setBounds(450,500,180,38);
 		}else{
 			this.panel.add(btnizquierda).setBounds(250, y, 38,38);
 			this.panel.add(btnderecha).setBounds(320, y, 38, 38);
 			this.panel.add(btnObjetivos).setBounds(900,10,130,38);
 			this.panel.add(btnAgregarActividad).setBounds(1050,10,130,38);
+			this.panel.add(btnReporte_cuadros).setBounds(450,500,180,38);
 		}
 		
 		cargarObjetivos();
@@ -75,6 +81,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		this.btnderecha.addActionListener(opAdelante);
 		this.btnObjetivos.addActionListener(opAgregarObjetivo);
 		this.btnAgregarActividad.addActionListener(opAgregarActividad);
+		this.btnReporte_cuadros.addActionListener(opReporteCuadros);
 		
 		SeleccionarPestaniaDia(pLunes,0);
 		SeleccionarPestaniaDia(pMarte,1);
@@ -91,6 +98,8 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
 		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
 		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
+		
+
 	}
 	 
 	private void SeleccionarPestaniaDia(final JLayeredPane panelDia,final int dia) {
@@ -158,6 +167,20 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		}
 	};
 	
+	ActionListener opReporteCuadros = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="exec sp_reporte_de_plan_semanal_por_dia "+usuario.getFolio()+",'"+txtPeriodo.getText().toString().substring(0,10)+"'"  ;
+			String reporte = "Obj_Reporte_De_Plan_Semanal_Cuadros.jrxml";
+			System.out.println(comando);;
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		
+		}
+	};
+	
+	
 	public void cargarObjetivos(){
 		model_objetivos.setRowCount(0);
 		String[][] objetivos = new BuscarSQL().buscarObjetivos_De_Plan_Semanal(Integer.valueOf(txtFolio.getText()));
@@ -169,6 +192,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	ActionListener opAgregarActividad = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			new Cat_Actividades_De_Una_Planeacion().setVisible(true);
+			dispose();
 		}
 	};
 	
