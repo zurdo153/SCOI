@@ -18,6 +18,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.BuscarSQL;
+import Obj_Renders.ColorCeldas;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -288,17 +289,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		
 		renders_objetivos(tabla_objetivos,"tb_principal");
 		
-//		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
-//		renders(tablaMartes,pMarte,scrollMartes,"Martes");
-//		renders(tablaMiercoles,pMiercoles,scrollMiercoles,"Miercoles");		
-//		renders(tablaJueves,pJueves,scrollJueves,"Jueves");
-//		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
-//		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
-//		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
-
 		this.cont.add(panel);
-		
-
 	}
 	
 	public void renders_objetivos(final JTable tb, String nombre_tabla){
@@ -360,6 +351,12 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		tb.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
 		tb.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
 		tb.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
+	}
+	
+	public void PintarEstatusTabla(final JTable tb){
+		//se crea instancia a clase FormatoTable y se indica columna patron
+        ColorCeldas ft = new ColorCeldas(0);
+        tb.setDefaultRenderer (Object.class, ft );
 	}
 	
 }
