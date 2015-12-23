@@ -7828,7 +7828,7 @@ public class BuscarSQL {
 			rs = s.executeQuery(actividades);
 			int i=0;
 			while(rs.next()){
-				Matriz[i][0] = rs.getString(1);
+				Matriz[i][0] = rs.getString(1)+"  ";
 				Matriz[i][1] = rs.getString(2);
 				
 				if(columnas==7){

@@ -40,6 +40,7 @@ import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Principal.Componentes;
 import Obj_Renders.ColorCeldas;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
@@ -128,16 +129,9 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	ActionListener opGuardarObjetivos = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 			
-			Object[][] objetivos = new Object[tabla_objetivos.getRowCount()][2];
-			
-//			for(int i=0; i<tabla_objetivos.getRowCount(); i++){
-//				objetivos[i][0] = tabla_objetivos.getValueAt(i, 0);
-//				objetivos[i][1] = tabla_objetivos.getValueAt(i, 1);
-//			}
-			
 			if(new ActualizarSQL().Actualizar_Objetivos_De_Plan_Semanal(tabla_objetivos)){
-//				aviso de guardado
-				System.out.println("Guardado bien echo cabron");
+				JOptionPane.showMessageDialog(null, "Los Objetivos Se Guardaron Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+				return;
 			}
 		}
 	};
@@ -174,7 +168,8 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 								
 								if(JOptionPane.showConfirmDialog(null, "Usted Esta Intentando Guardar Las Actividades Del Dia "+dia+" Desea Continuar?") == 0){	
 									if(new GuardarSQL().Guardar_Actividades_Con_Respuesta(tb_actividades_con_respuesta, dia)){
-//										aviso de guardado
+											JOptionPane.showMessageDialog(null, "Las Actividades Contestadas Se Guardaron Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+											return;
 									}
 								}
 							}
@@ -211,7 +206,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 			  matriz[j][columnafor] = vector.get(i).toString();
 			  }
 			  j++;
-		}
+			}
 		return matriz;
 	}
 	
@@ -268,13 +263,21 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
     }
 	
 	public void agregarColumnas(final JTable tb,final DefaultTableModel modelo){
-		modelo.addColumn("Evidencia");
-		modelo.addColumn("Observacion");
+		modelo.addColumn("E");
+		modelo.addColumn("O");
 		
 //		tabla.moveColumn(4, 2);
 		tb.getColumnModel().getColumn(2).setHeaderValue("Respuestas");
 		tb.getColumnModel().getColumn(3).setHeaderValue("Exige Evidencia");
 		tb.getColumnModel().getColumn(4).setHeaderValue("Exige Observacion");
+		
+		tb.getColumnModel().getColumn(5).setMaxWidth(25);
+		tb.getColumnModel().getColumn(5).setMinWidth(25);
+		tb.getColumnModel().getColumn(6).setMaxWidth(25);
+		tb.getColumnModel().getColumn(6).setMinWidth(25);
+		
+		tb.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		tb.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 	}
 	
 	public void botonesEnTablas(){
@@ -319,12 +322,6 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		}
 	}
 	
-	public void PintarEstatusTabla(final JTable tb){
-		//se crea instancia a clase FormatoTable y se indica columna patron
-        ColorCeldas ft = new ColorCeldas(0);
-        tb.setDefaultRenderer (Object.class, ft );
-	}
-	
 //	combobox en tabla actividades--------------------------------------------------------------------------------------
 	private class MyComboEditor extends DefaultCellEditor{
         @SuppressWarnings("rawtypes")
@@ -339,7 +336,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
         	combo.removeAllItems();
 			try {
 				
-				String[] tipo_de_respuestas = new Cargar_Combo().ComboTiposDeRespuesta_Plan_Semanal(Integer.valueOf(table.getValueAt(row, 0).toString()));
+				String[] tipo_de_respuestas = new Cargar_Combo().ComboTiposDeRespuesta_Plan_Semanal(Integer.valueOf(table.getValueAt(row, 0).toString().trim()));
 				for(int i=0; i<tipo_de_respuestas.length; i++)
 	            	combo.addItem(tipo_de_respuestas[i]);
 				

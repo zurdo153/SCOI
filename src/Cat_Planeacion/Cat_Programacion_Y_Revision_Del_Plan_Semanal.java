@@ -483,12 +483,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		}
 	}
 	
-	public void PintarEstatusTabla(final JTable tb){
-		//se crea instancia a clase FormatoTable y se indica columna patron
-        ColorCeldas ft = new ColorCeldas(1);
-        tb.setDefaultRenderer (Object.class, ft );
-	}
-	
 	public static void main(String [] arg){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
