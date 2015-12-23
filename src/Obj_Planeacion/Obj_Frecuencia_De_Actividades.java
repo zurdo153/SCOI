@@ -29,14 +29,13 @@ public class Obj_Frecuencia_De_Actividades {
 	int mes2=1;
 	
 //	semana------
-	boolean domingo=false;
 	boolean lunes=false;
 	boolean martes=false;
 	boolean miercoles=false;
 	boolean jueves=false;
 	boolean viernes=false;
 	boolean sabado=false;
-	
+	boolean domingo=false;
 //	frecuencia diaria
 	boolean seleccion_asignar_hora=false;
 	String hora_frecuencia_diaria="12:00:00";

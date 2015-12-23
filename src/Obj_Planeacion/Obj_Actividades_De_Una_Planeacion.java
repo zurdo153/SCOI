@@ -2,10 +2,32 @@ package Obj_Planeacion;
 
 import Conexiones_SQL.GuardarSQL;
 
+
 public class Obj_Actividades_De_Una_Planeacion {
 	String descripcion_de_la_actividad = "";
+	String hora_inicia = "00:00:00";
+	String hora_termina= "23:59:00";
 	
-	
+	public String getHora_inicia() {
+		return hora_inicia;
+	}
+
+
+	public void setHora_inicia(String hora_inicia) {
+		this.hora_inicia = hora_inicia;
+	}
+
+
+	public String getHora_termina() {
+		return hora_termina;
+	}
+
+
+	public void setHora_termina(String hora_termina) {
+		this.hora_termina = hora_termina;
+	}
+
+
 	public String getDescripcion_de_la_actividad() {
 		return descripcion_de_la_actividad;
 	}

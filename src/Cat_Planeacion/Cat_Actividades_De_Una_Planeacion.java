@@ -81,26 +81,47 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	JButton btnFrecuencia        = new JButton("Programación,Frecuencia",new ImageIcon("imagen/tiempo-de-botones-icono-4873-32.png"));
 	JButton btnUsuarios          = new JButton("Asignación De Usuarios",new ImageIcon("imagen/ayudar-a-ver-el-boton-icono-4900-32.png"));
 	
+	JLabel lblGrupoOrdenActividad= new JLabel("");
+	SpinnerDateModel sdmHoraincio= new SpinnerDateModel();
+	  JSpinner jspHoraInicio     = new JSpinner(sdmHoraincio);                                         
+	  JSpinner.DateEditor spDHoraInicio = new JSpinner.DateEditor(jspHoraInicio,"HH:mm:ss"); 
+	
+	SpinnerDateModel sdmHorafinal =  new SpinnerDateModel();
+	  JSpinner jspHorafinal       = new JSpinner(sdmHorafinal);                                         
+	  JSpinner.DateEditor spDHorafinal = new JSpinner.DateEditor(jspHorafinal,"HH:mm:ss"); 
+		  
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	Obj_Opciones_De_Respuesta OpRespuesta= new Obj_Opciones_De_Respuesta();
 	Obj_Prioridad_Y_Ponderacion OpPonderacion= new Obj_Prioridad_Y_Ponderacion();
 	Obj_Seleccion_De_Usuarios usuarios= new Obj_Seleccion_De_Usuarios();
 	Obj_Frecuencia_De_Actividades frecuencia = new Obj_Frecuencia_De_Actividades();
-	
+	Obj_Actividades_De_Una_Planeacion Actividad_plan = new Obj_Actividades_De_Una_Planeacion();
+	Border linea;
+	@SuppressWarnings("deprecation")
 	public Cat_Actividades_De_Una_Planeacion(){
-		this.setSize(610, 280);
+		this.setSize(610, 350);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/reinicio-pelota-cute-icono-7443-64.png"));
 		this.setTitle("Actividades De Una Planeacion");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Selecciona Los Datos Deseados De Respuesta"));
+		this.linea = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+		this.lblGrupoOrdenActividad.setBorder(BorderFactory.createTitledBorder(linea,"Orden De La Actividad Por Hora"));
 		
 		int x=15,y=20,width=150,height=20;
 		
 		panel.add(new JLabel("Detalle De La Actividad:")).setBounds                (x    ,y     ,width*3 ,height     );
 		panel.add(JPActividad).setBounds                                           (x    ,y+=20 ,355     ,height*6+10);
-		panel.add(btnDeshacer).setBounds                                           (x    ,y+=135,width   ,height*2   );
+		
+		panel.add(lblGrupoOrdenActividad).setBounds                                (x    ,y+=145,355     ,height+35  );
+		panel.add(new JLabel("Inicia:")).setBounds                                 (x+10 ,y+=20 ,width   ,height     );
+		panel.add(jspHoraInicio).setBounds                                         (x+50 ,y     ,width-70,height     );
+		panel.add(new JLabel("Termina:")).setBounds                                (x+210,y     ,width   ,height     );
+		panel.add(jspHorafinal).setBounds                                          (x+260,y     ,width-70,height     );
+		
+		
+		panel.add(btnDeshacer).setBounds                                           (x    ,y+=55,width   ,height*2    );
 		panel.add(btnAprovar).setBounds                                            (x+205,y     ,width   ,height*2   );
 
 		x=400;y=40;height=40; 
@@ -119,6 +140,15 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
         btnUsuarios.addActionListener(CatUsuarios);
         btnFrecuencia.addActionListener(CatFrecuencia);
         
+		String[] horainicio = Actividad_plan.getHora_inicia().split(":");
+		jspHoraInicio.setValue(new Time(Integer.parseInt(horainicio[0]),Integer.parseInt(horainicio[1]),Integer.parseInt(horainicio[2])));
+		jspHoraInicio.setEditor(spDHoraInicio);
+		
+		String[] horatermina = Actividad_plan.getHora_termina().split(":");
+		jspHorafinal.setValue(new Time(Integer.parseInt(horatermina[0]),Integer.parseInt(horatermina[1]),Integer.parseInt(horatermina[2])));
+		jspHorafinal.setEditor(spDHorafinal);
+		
+		
 		///guardar con control+A
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A,Event.CTRL_MASK),"guardar");
              getRootPane().getActionMap().put("guardar", new AbstractAction(){
@@ -182,18 +212,18 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					           matriz[0][1]= usuario.getNombre_completo();
 					usuarios.setUsuarios_nombres(matriz);
 				}
-				
-				Obj_Actividades_De_Una_Planeacion Actividad_plan = new Obj_Actividades_De_Una_Planeacion();
+
 				Actividad_plan.setDescripcion_de_la_actividad(txa_Resultado_Configuracion.getText().toString().trim());
+				Actividad_plan.setHora_inicia(new SimpleDateFormat("HH:mm:ss").format(jspHoraInicio.getValue()));
+				Actividad_plan.setHora_termina(new SimpleDateFormat("HH:mm:ss").format(jspHorafinal.getValue()));
+				
 				if(Actividad_plan.guardar(OpRespuesta,OpPonderacion,usuarios,frecuencia, usuario.getFolio())){
 					dispose();
 				}else{
 					JOptionPane.showMessageDialog(null, "Error Al Guardar La Actividad", "Avisa Al Administrador Del Sistema", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 					return;
 				}
-				
 			}
-			
 		}
 	};
 	
@@ -918,12 +948,14 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		JDateChooser fh_unica_repeticion = new JDateChooser();
 		
 		JCheckBox chbConHora = new JCheckBox();
+		
 		SpinnerDateModel sdmUnicaRepeticion =  new SpinnerDateModel();
 		  JSpinner spHoraUnicaRepeticion = new JSpinner(sdmUnicaRepeticion);                                         
 		  JSpinner.DateEditor spDHoraUnicaRepeticion = new JSpinner.DateEditor(spHoraUnicaRepeticion,"HH:mm:ss"); 
 		
 	//frecuencia  -----------------------------------------------------------------------------
-		  String[] secede = {"DIARIA","SEMANAL","MENSUAL"};
+		  String[] secede = {"DIARIA","SEMANAL"};
+//		  String[] secede = {"DIARIA","SEMANAL","MENSUAL"};
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			JComboBox cmbSucede = new JComboBox(secede);
 			
@@ -960,7 +992,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			JLabel lblMeses2 = new JLabel("Meses");
 			
 	//frecuencia diaria
-			
 			JCheckBox chAsignarHora = new JCheckBox("Asignar Hora");
 			
 			SpinnerDateModel sdmFrecuenciaDiaria =  new SpinnerDateModel();
@@ -976,7 +1007,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			JDateChooser fh_final_de_duracion = new JDateChooser();
 
 	//resumen
-		
 		JTextArea txaDescripcion = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 		JScrollPane scrollDescripcion = new JScrollPane(txaDescripcion);
 		
@@ -985,7 +1015,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		Border blackline;
 		
 		public Cat_Frecuencia_De_Actividades() {
-			this.setSize(800,625);
+			this.setSize(660,550);
 			this.setLocationRelativeTo(null);
 			this.setResizable(false);
 			this.setModal(true);
@@ -1008,80 +1038,71 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			
 			int x=50,y=15,ancho=80;
 			
-			panel.add(new JLabel("Tipo De Programación: ")).setBounds(x, y, ancho+50, 20);
-			panel.add(cmbTipoDeProgramacion).setBounds(x+ancho+60, y, ancho*2, 20);
-			
-			panel.add(rbHastaQueSeCumpla).setBounds(x+ancho*4+60, y, ancho*2, 20);
-			panel.add(rbEnLaFechaIndicada).setBounds(x+ancho*6+60, y, ancho*2, 20);
-					
+			panel.add(new JLabel("Tipo De Programación: ")).setBounds(x    ,y    ,ancho+50  ,20);
+			panel.add(cmbTipoDeProgramacion).setBounds               (x+140,y    ,ancho+20  ,20);
+			panel.add(new JSeparator()).setBounds                    (x-30 ,y+28 ,ancho+530 ,20);
 		//unica repeticion
-			panel.add(lblUnicarepeticion).setBounds(x-40, y+=25, ancho, 20);
-			panel.add(new JSeparator()).setBounds(x+ancho-60, y+11, ancho*8+70, 20);
-			
-			panel.add(new JLabel("Fecha: ")).setBounds(x, y+=25, ancho, 20);
-			panel.add(fh_unica_repeticion).setBounds(x+ancho-10, y, ancho+40, 20);
-			panel.add(new JLabel("Hora: ")).setBounds(x+ancho*3, y, ancho, 20);
-			panel.add(chbConHora).setBounds(x+ancho*4-40, y, 30, 20);
-			panel.add(spHoraUnicaRepeticion).setBounds(x+ancho*4-10, y, ancho+20, 20);
-			
+			panel.add(rbHastaQueSeCumpla).setBounds                  (x    ,y+=35,ancho*2   ,20);
+			panel.add(lblUnicarepeticion).setBounds                  (x+220,y    ,ancho     ,20);
+			panel.add(fh_unica_repeticion).setBounds                 (x+270,y    ,ancho+40  ,20);
+			panel.add(rbEnLaFechaIndicada).setBounds                 (x    ,y+=25,ancho*2   ,20);
+//			panel.add(new JLabel("Hora: ")).setBounds                (x+220,y    ,ancho     ,20);
+//			panel.add(chbConHora).setBounds                          (x+250,y    ,30        ,20);
+//			panel.add(spHoraUnicaRepeticion).setBounds               (x+280,y    ,ancho+30  ,20);
 		//frecuencia
 			panel.add(new JLabel("Frecuencia")).setBounds(x-40, y+=25, ancho, 20);
-			panel.add(new JSeparator()).setBounds(x+ancho-50, y+11, ancho*8+60, 20);
+			panel.add(new JSeparator()).setBounds     (x+ancho-50, y+11, ancho*7-10, 20);
 			
 			panel.add(new JLabel("Sucede: ")).setBounds(x, y+=25, ancho, 20);
-			panel.add(cmbSucede).setBounds(x+ancho, y, ancho+30, 20);
+			panel.add(cmbSucede).setBounds             (x+90, y, ancho, 20);
+			panel.add(rbDiaDelMes).setBounds   (x-40, y+=25, 60, 20);
 			
-			panel.add(rbDiaDelMes).setBounds(x-40, y+=25, 60, 20);
 			panel.add(lblSeRepiteCada).setBounds(x, y, ancho+30, 20);
-			panel.add(spDiasARepetir).setBounds(x+ancho+30, y, ancho, 20);
-			panel.add(lblDias_Semana).setBounds(x+ancho*2+50, y, ancho, 20);
+			panel.add(spDiasARepetir).setBounds(x+90, y, ancho, 20);
+			panel.add(lblDias_Semana).setBounds(x+ancho*2+20, y, ancho, 20);
 			
 			panel.add(spMeses).setBounds(x+ancho*3+20, y, ancho, 20);
 			panel.add(lblMeses).setBounds(x+ancho*4+40, y, ancho, 20);
-			
 			panel.add(rbDiaDeLaSemana).setBounds(x-40, y+=25, 60, 20);
-			
 			panel.add(cmbNivelDeDias).setBounds(x+110, y, ancho, 20);
 			panel.add(cmbDiaDeLaSemana).setBounds(x+210, y, ancho, 20);
+			
 			panel.add(lblDeCada).setBounds(x+300, y, ancho, 20);
 			panel.add(spMeses2).setBounds(x+350, y, ancho, 20);
 			panel.add(lblMeses2).setBounds(x+450, y, ancho, 20);
 			
 //			semana------
-			panel.add(chbLunes).setBounds(x+110, y, ancho, 20);
-			panel.add(chbMartes).setBounds(x+210, y, ancho, 20);
-			panel.add(chbMiercoles).setBounds(x+310, y, ancho, 20);
-			panel.add(chbJueves).setBounds(x+410, y, ancho, 20);
+			panel.add(chbLunes).setBounds       (x+20  ,y    ,ancho ,20);
+			panel.add(chbMartes).setBounds      (x+110 ,y    ,ancho ,20);
+			panel.add(chbMiercoles).setBounds   (x+210 ,y    ,ancho ,20);
+			panel.add(chbJueves).setBounds      (x+310 ,y    ,ancho ,20);
+			panel.add(chbViernes).setBounds     (x+410 ,y    ,ancho ,20);
+			panel.add(chbSabado).setBounds      (x+510 ,y    ,ancho ,20);
+			panel.add(chbDomingo).setBounds     (x+510 ,y+=25,ancho ,20);
 			
-			panel.add(chbViernes).setBounds(x+110, y+=25, ancho, 20);
-			panel.add(chbSabado).setBounds(x+210, y, ancho, 20);
-			panel.add(chbDomingo).setBounds(x+310, y, ancho, 20);
-			
-//			frecuencia diaria
-			panel.add(new JLabel("Frecuencia Diaria")).setBounds(x-40, y+=25, ancho+20, 20);
-			panel.add(new JSeparator()).setBounds(x+ancho-20, y+11, ancho*8+30, 20);
-			
-			panel.add(chAsignarHora).setBounds(x, y+=25, ancho+40, 20);
-			panel.add(spHoraFrecuenciaDiaria).setBounds(x+ancho+40, y, ancho+20, 20);
+////			frecuencia diaria
+//			panel.add(new JLabel("Frecuencia Diaria")).setBounds(x-40, y+=25, ancho+20, 20);
+//			panel.add(new JSeparator()).setBounds(x+ancho-20, y+11, ancho*7-40, 20);
+//			panel.add(chAsignarHora).setBounds(x, y+=25, ancho+40, 20);
+//			panel.add(spHoraFrecuenciaDiaria).setBounds(x+ancho+40, y, ancho+20, 20);
 			
 //			Duracion
-			panel.add(new JLabel("Duracion")).setBounds(x-40, y+=25, ancho, 20);
-			panel.add(new JSeparator()).setBounds(x+ancho-60, y+11, ancho*8+70, 20);
-			
-			panel.add(new JLabel("Fecha De Inicio: ")).setBounds(x+30, y+=25, ancho, 20);
-			panel.add(fh_inicial_de_duracion).setBounds(x+ancho+40, y, ancho+40, 20);
-			panel.add(rbFechaDeFinalizacion).setBounds(x+ancho*3+30, y, ancho+60, 20);
-			panel.add(fh_final_de_duracion).setBounds(x+ancho*5+10, y, ancho+40, 20);
-			panel.add(rbSinFechaDeFinalizacion).setBounds(x+ancho*3+30, y+=25, ancho*2, 20);
+			panel.add(new JLabel("Duracion")).setBounds         (x-40, y+=25, ancho, 20);
+			panel.add(new JSeparator()).setBounds               (x+ancho-60, y+11, ancho*7, 20);
+			panel.add(new JLabel("Fecha De Inicio: ")).setBounds(x, y+=25, ancho, 20);
+			panel.add(fh_inicial_de_duracion).setBounds         (x+90, y, ancho+40, 20);
+			panel.add(rbFechaDeFinalizacion).setBounds          (x+220, y, ancho+60, 20);
+			panel.add(fh_final_de_duracion).setBounds           (x+360, y, ancho+40, 20);
+			panel.add(rbSinFechaDeFinalizacion).setBounds       (x+220, y+=25, ancho*2, 20);
 			
 //			resumen
 			panel.add(new JLabel("Resumen")).setBounds(x-40, y+=25, ancho, 20);
-			panel.add(new JSeparator()).setBounds(x+ancho-60, y+11, ancho*8+70, 20);
-			panel.add(scrollDescripcion).setBounds(x, y+=25, ancho*8+50, 100);
+			panel.add(new JSeparator()).setBounds(x+ancho-60, y+11, ancho*7, 20);
+			panel.add(scrollDescripcion).setBounds(x, y+=25, ancho*7+20, 100);
 
 			ancho=100;
-			panel.add(btnDeshacerFrecuencia).setBounds(x, y+=105, ancho, 20);
-			panel.add(btnAceptar).setBounds(x+590, y, ancho, 20);
+			panel.add(btnDeshacerFrecuencia).setBounds(x, y+=115, ancho, 20);
+			panel.add(btnAceptar).setBounds(x+480, y, ancho, 20);
 			
 			leerObjeto();
 			programacion();
@@ -1133,7 +1154,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		ActionListener opGuardar = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				llenarObjeto();
-				dispose();
+				
 			}
 		};
 		
@@ -1308,7 +1329,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					spMeses2.setVisible(false);
 					lblMeses2.setVisible(false);
 					
-					lblDias_Semana.setText("Dias");
+					lblDias_Semana.setText("Dia(s)");
 					
 				break;
 				case "SEMANAL":
@@ -1335,7 +1356,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					spMeses2.setVisible(false);
 					lblMeses2.setVisible(false);
 					
-					lblDias_Semana.setText("Semanas, el");
+					lblDias_Semana.setText("Semana(s), el");
 					
 				break;
 				case "MENSUAL":
@@ -1498,6 +1519,10 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					
 				}
 			}
+			if(cmbSucede.getSelectedItem().toString().equals("SEMANAL")&& ((chbLunes.isSelected()==true?1:0)+(chbMartes.isSelected()==true?1:0)+(chbMiercoles.isSelected()==true?1:0)+(chbJueves.isSelected()==true?1:0)+(chbViernes.isSelected()==true?1:0)+(chbSabado.isSelected()==true?1:0)+(chbDomingo.isSelected()==true?1:0) )>0?false:true ){
+				JOptionPane.showMessageDialog(null, "Si Selecciona Un Periodo Semanal Es Necesario \n Que Seleccione Un Dia De La Semana Antes De Aplicar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+			}
 			
 			if(llenar_objeto.equals("no(fechas invertidas)")){
 				JOptionPane.showMessageDialog(null, "No Se Puede Guardar La Configuración Con Las Fecha De Duracion Invertidas"
@@ -1546,10 +1571,11 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					
    //			Duracion
 					frecuencia.setFecha_inicio_duracion(new SimpleDateFormat("dd/MM/yyyy").format(fh_inicial_de_duracion.getDate()));
-					
 					frecuencia.setSeleccion_fecha_finaliza(rbFechaDeFinalizacion.isSelected());
 					frecuencia.setFecha_final_duracion(rbFechaDeFinalizacion.isSelected()?(new SimpleDateFormat("dd/MM/yyyy").format(fh_final_de_duracion.getDate())):"16/11/2094");
 					frecuencia.setSeleccion_sin_fecha_final(rbSinFechaDeFinalizacion.isSelected());
+					
+					dispose();
 			}
 		}
 		
@@ -1612,8 +1638,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			rbSinFechaDeFinalizacion.setSelected(frecuencia.isSeleccion_sin_fecha_final());
 		}
 	}
-	
-	
 		
 	public static void main(String[] args) {
 		try{
