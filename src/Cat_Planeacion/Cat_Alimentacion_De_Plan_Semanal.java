@@ -39,7 +39,6 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Principal.Componentes;
-import Obj_Renders.ColorCeldas;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -49,17 +48,21 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbRespuesta = new JComboBox();
 	
-	JButton btnGuardarObjetivos = new JButton("Guardar Objetivos");
-	JButton btnGuardarActividades = new JButton("Guardar Actividades");
+	JButton btnGuardarObjetivos = new JButton("Guardar Objetivos", new ImageIcon("imagen/guardar-documento-icono-7840-32.png"));
+	JButton btnGuardarActividades = new JButton("Guardar Actividades", new ImageIcon("imagen/guardar-documento-icono-7840-32.png"));
+	JButton btnAgregarActividad = new JButton("Actividades Extras"    ,new ImageIcon("imagen/boton-anadir-mas-azul-icono-7396-32.png")  );
 	
 	JTable tabla = tablaLunes;
 	
 	public Cat_Alimentacion_De_Plan_Semanal(){
+		this.setTitle("Plan Semanal");
+		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione El Dia Que Desea Contestar Del Plan Semanal"));
 		
 		activarColumna = "si";
 		
-		this.panel.add(btnGuardarObjetivos).setBounds(140, 490, 150, 50);
-		this.panel.add(btnGuardarActividades).setBounds(1140, 490, 150, 50);
+		this.panel.add(btnGuardarObjetivos).setBounds(30, 490, 190, 38);
+		this.panel.add(btnAgregarActividad).setBounds(450, 490, 190, 38);
+		this.panel.add(btnGuardarActividades).setBounds(1100, 490, 190, 38);
 		
 		agregarColumnas(tablaLunes,modelLunes);
 		agregarColumnas(tablaMartes,modelMartes);
@@ -83,6 +86,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		button.addActionListener(opButton);
 		btnGuardarActividades.addActionListener(opGuardarActividades);
 		btnGuardarObjetivos.addActionListener(opGuardarObjetivos);
+		btnAgregarActividad.addActionListener(opActividadesExtras);
 		
 		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
 		renders(tablaMartes,pMarte,scrollMartes,"Martes");
@@ -135,6 +139,14 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 			}
 		}
 	};
+	
+	ActionListener opActividadesExtras = new ActionListener(){
+		public void actionPerformed(ActionEvent e) {
+               new Cat_Actividades_De_Una_Planeacion("Cat_Alimentacion_De_Plan_Semanal",txtPeriodo.getText().toString().substring(0,10)).setVisible(true); 	
+               dispose();
+		}
+	};
+	
 	
 	ActionListener opGuardarActividades = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
@@ -308,7 +320,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	
 	public void cargarObjetivos(){
 		model_objetivos.setRowCount(0);
-		String[][] objetivos = new BuscarSQL().buscarObjetivos_De_Plan_Semanal(Integer.valueOf(txtFolio.getText()));
+		String[][] objetivos = new BuscarSQL().buscarObjetivos_De_Plan_Semanal(txtPeriodo.getText().toString().substring(0,10));
 		for(String[] dt: objetivos){
 			model_objetivos.addRow(dt);
 		}

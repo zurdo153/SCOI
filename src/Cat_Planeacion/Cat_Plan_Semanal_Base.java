@@ -222,8 +222,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/calendario almacen.png"));
-		this.setTitle("Revisión y Programación del Plan Semanal");
-		this.panel.setBorder(BorderFactory.createTitledBorder("Detalle Del Plan Semanal"));
+
 		
 		lblFoto.setBorder(LineBorder.createGrayLineBorder());
 		

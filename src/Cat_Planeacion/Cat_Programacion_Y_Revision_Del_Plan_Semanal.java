@@ -36,7 +36,6 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Renders.ColorCeldas;
 
 @SuppressWarnings("serial")
 public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Semanal_Base{
@@ -48,6 +47,8 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public Cat_Programacion_Y_Revision_Del_Plan_Semanal (){
+		this.setTitle("Revisión y Programación del Plan Semanal");
+		this.panel.setBorder(BorderFactory.createTitledBorder("Detalle Del Plan Semanal"));
 		init();
 	}
 	
@@ -58,6 +59,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 //	}
 	
 	public void init(){
+		
 		int y=30;
 		
 		if(anchoMon<=1024){
@@ -82,15 +84,8 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		this.btnObjetivos.addActionListener(opAgregarObjetivo);
 		this.btnAgregarActividad.addActionListener(opAgregarActividad);
 		this.btnReporte_cuadros.addActionListener(opReporteCuadros);
-		
-		SeleccionarPestaniaDia(pLunes,0);
-		SeleccionarPestaniaDia(pMarte,1);
-		SeleccionarPestaniaDia(pMiercoles,2);
-		SeleccionarPestaniaDia(pJueves,3);
-		SeleccionarPestaniaDia(pViernes,4);
-		SeleccionarPestaniaDia(pSabado,5);
-		SeleccionarPestaniaDia(pDomingo,6);
-		
+
+		cargarActividades();
 		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
 		renders(tablaMartes,pMarte,scrollMartes,"Martes");
 		renders(tablaMiercoles,pMiercoles,scrollMiercoles,"Miercoles");		
@@ -98,9 +93,18 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
 		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
 		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
-		
-
 	}
+	
+	private void cargarActividades() {
+		SeleccionarPestaniaDia(pLunes,0);
+		SeleccionarPestaniaDia(pMarte,1);
+		SeleccionarPestaniaDia(pMiercoles,2);
+		SeleccionarPestaniaDia(pJueves,3);
+		SeleccionarPestaniaDia(pViernes,4);
+		SeleccionarPestaniaDia(pSabado,5);
+		SeleccionarPestaniaDia(pDomingo,6);
+	}
+	
 	 
 	private void SeleccionarPestaniaDia(final JLayeredPane panelDia,final int dia) {
 		panelDia.addAncestorListener(new AncestorListener() {
@@ -154,6 +158,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		    txtFolio.setText(folioPlan[0].toString());
 		    txtPeriodo.setText(folioPlan[1].toString());
 		    cargarObjetivos();
+		    cargarActividades();
 		}
 	};	
 	
@@ -164,6 +169,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		    txtFolio.setText(folioPlan[0].toString());
 		    txtPeriodo.setText(folioPlan[1].toString());
 		    cargarObjetivos();
+		    cargarActividades();
 		}
 	};
 	
@@ -183,7 +189,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	
 	public void cargarObjetivos(){
 		model_objetivos.setRowCount(0);
-		String[][] objetivos = new BuscarSQL().buscarObjetivos_De_Plan_Semanal(Integer.valueOf(txtFolio.getText()));
+		String[][] objetivos = new BuscarSQL().buscarObjetivos_De_Plan_Semanal(txtPeriodo.getText().toString().substring(0,10));
 		for(String[] dt: objetivos){
 			model_objetivos.addRow(dt);
 		}
@@ -191,7 +197,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	
 	ActionListener opAgregarActividad = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			new Cat_Actividades_De_Una_Planeacion().setVisible(true);
+			new Cat_Actividades_De_Una_Planeacion("Cat_Programacion_Y_Revision_Del_Plan_Semanal",txtPeriodo.getText().toString().substring(0,10)).setVisible(true);
 			dispose();
 		}
 	};
