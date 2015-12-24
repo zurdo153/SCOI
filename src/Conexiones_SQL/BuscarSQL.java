@@ -7861,4 +7861,29 @@ public class BuscarSQL {
 		}
 		return Matriz;
 	}
+	
+	public boolean validar_si_el_usuario_puede_cancelar_la_actividad(int folio_actividad){
+		String query = "declare @usuario int = "+(new Obj_Usuario().LeerSession().getFolio())+", @folio_actividad int = "+folio_actividad
+						+ " if(select usuario from tb_actividades_plan where folio_actividad = @folio_actividad)=@usuario "
+						+ " begin	select 'true'	end "
+						+ " else "
+						+ " begin	select 'false'	end";
+		
+		System.out.println(query);
+		
+		boolean modificar = false;
+		try {				
+			Statement s = con.conexion().createStatement();
+			ResultSet rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				modificar = rs.getBoolean(1);
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+			
+		return modificar;
+	}
 }

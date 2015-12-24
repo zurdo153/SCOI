@@ -32,6 +32,7 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
@@ -44,8 +45,13 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	JButton btnizquierda        = new JButton(                  new ImageIcon("imagen/la-flecha-verde-de-la-izquierda-icono-8326-32.png"));
 	JButton btnObjetivos        = new JButton("Objetivos"      ,new ImageIcon("imagen/mas-icono-4156-32.png")                            );
 	JButton btnAgregarActividad = new JButton("Actividades"    ,new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     );
+	JButton btnCancelarActividad = new JButton("Cancelar"    ,new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     	 );
 	JButton btnReporte_cuadros  = new JButton("Reporte Cuadros",new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+	
+	JTable tabla = tablaLunes;
+	DefaultTableModel modeloDia = modelLunes;
+	Integer dia = 0;
 	
 	public Cat_Programacion_Y_Revision_Del_Plan_Semanal (){
 		init();
@@ -63,14 +69,20 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		if(anchoMon<=1024){
 			this.panel.add(btnizquierda).setBounds(170, y, 38,38);
 			this.panel.add(btnderecha).setBounds(215, y, 38, 38);
-			this.panel.add(btnObjetivos).setBounds(800,10,150,38);
-			this.panel.add(btnAgregarActividad).setBounds(955,10,150,38);
+			
+			this.panel.add(btnObjetivos).setBounds(700,10,150,38);
+			this.panel.add(btnAgregarActividad).setBounds(855,10,150,38);
+			this.panel.add(btnCancelarActividad).setBounds(1005,10,150,38);
+			
 			this.panel.add(btnReporte_cuadros).setBounds(450,500,180,38);
 		}else{
 			this.panel.add(btnizquierda).setBounds(250, y, 38,38);
 			this.panel.add(btnderecha).setBounds(320, y, 38, 38);
-			this.panel.add(btnObjetivos).setBounds(900,10,130,38);
-			this.panel.add(btnAgregarActividad).setBounds(1050,10,130,38);
+			
+			this.panel.add(btnObjetivos).setBounds(800,10,130,38);
+			this.panel.add(btnAgregarActividad).setBounds(950,10,130,38);
+			this.panel.add(btnCancelarActividad).setBounds(1100,10,130,38);
+			
 			this.panel.add(btnReporte_cuadros).setBounds(450,500,180,38);
 		}
 		
@@ -81,6 +93,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		this.btnderecha.addActionListener(opAdelante);
 		this.btnObjetivos.addActionListener(opAgregarObjetivo);
 		this.btnAgregarActividad.addActionListener(opAgregarActividad);
+		this.btnCancelarActividad.addActionListener(opCancelarActividad);
 		this.btnReporte_cuadros.addActionListener(opReporteCuadros);
 		
 		SeleccionarPestaniaDia(pLunes,0);
@@ -102,43 +115,61 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 
 	}
 	 
-	private void SeleccionarPestaniaDia(final JLayeredPane panelDia,final int dia) {
+	private void SeleccionarPestaniaDia(final JLayeredPane panelDia,final int diaa) {
 		panelDia.addAncestorListener(new AncestorListener() {
 			public void ancestorRemoved(AncestorEvent event) {}
 			public void ancestorMoved(AncestorEvent event) {}
-			public void ancestorAdded(AncestorEvent event) {
-				switch(dia){
-				case 0:
-					buscarActividadesPorDia(modelLunes,dia);
-					 break;
-				case 1:
-					buscarActividadesPorDia(modelMartes,dia);
-					 break;
-				case 2:
-					buscarActividadesPorDia(modelMiercoles,dia);
-					 break;
-				case 3:
-					buscarActividadesPorDia(modelJueves,dia);
-					 break;
-				case 4:
-					buscarActividadesPorDia(modelViernes,dia);	
-					 break;
-				case 5:
-					buscarActividadesPorDia(modelSabado,dia);
-				    break;
-				case 6:
-					buscarActividadesPorDia(modelDomingo,dia);
-				    break;
-				default: 
-					buscarActividadesPorDia(modelLunes,dia);
-				    break;
-		     }
+			public void ancestorAdded(AncestorEvent event){
+				
+				dia = diaa;
+				
+					switch(dia){
+						case 0:
+							tabla = tablaLunes;
+							modeloDia = modelLunes;
+							buscarActividadesPorDia();
+							 break;
+						case 1:
+							tabla = tablaMartes;
+							modeloDia = modelMartes;
+							buscarActividadesPorDia();
+							 break;
+						case 2:
+							tabla = tablaMiercoles;
+							modeloDia = modelMiercoles;
+							buscarActividadesPorDia();
+							 break;
+						case 3:
+							tabla = tablaJueves;
+							modeloDia = modelJueves;
+							buscarActividadesPorDia();
+							 break;
+						case 4:
+							tabla = tablaViernes;
+							modeloDia = modelViernes;
+							buscarActividadesPorDia();	
+							 break;
+						case 5:
+							tabla = tablaSabado;
+							modeloDia = modelSabado;
+							buscarActividadesPorDia();
+						    break;
+						case 6:
+							tabla = tablaDomingo;
+							modeloDia = modelDomingo;
+							buscarActividadesPorDia();
+						    break;
+						default: 
+							tabla = tablaLunes;
+							modeloDia = modelLunes;
+							buscarActividadesPorDia();
+						    break;
+			     }
 			}
 		});
     }
 	
-	
-	public void buscarActividadesPorDia(final DefaultTableModel modeloDia, Integer dia){
+	public void buscarActividadesPorDia(){
 		modeloDia.setRowCount(0);
 		String[][] actividades = new BuscarSQL().getTablaActividadesDiarias(txtPeriodo.getText().substring(0, txtPeriodo.getText().indexOf("-")).trim(), dia, "Revision");
 		for(String[] act: actividades){
@@ -193,6 +224,34 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		public void actionPerformed(ActionEvent arg0) {
 			new Cat_Actividades_De_Una_Planeacion().setVisible(true);
 			dispose();
+		}
+	};
+	
+	ActionListener opCancelarActividad = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			
+			int fila = tabla.getSelectedRow();
+			
+			if(fila<0){
+				System.out.println("Seleccione La Actividad Que Desea Cancelar");
+			}else{
+				
+				int folio_actividad = Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
+				
+				if(new BuscarSQL().validar_si_el_usuario_puede_cancelar_la_actividad(folio_actividad)){
+					
+					if(new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad)){
+						System.out.println("Se Cancelo La Actividar Con Folio "+folio_actividad+" Correctamente");
+						
+						buscarActividadesPorDia();
+						
+//						 refrescar la tabla
+					}
+					
+				}else{
+					System.out.println("El Usuario No Puede Cancelar Una Actividad Que No Asigno");
+				}
+			}
 		}
 	};
 	
