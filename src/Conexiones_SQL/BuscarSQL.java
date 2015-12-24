@@ -7650,33 +7650,10 @@ public class BuscarSQL {
 		return cantidad;
 	}
 	
-	public String[][] buscarObjetivos_De_Plan_Semanal(int folio){
+	public String[][] buscarObjetivos_De_Plan_Semanal(String fecha){
 		Statement stmt = null;
 		
-//		String query = " select objetivo,estatus from tb_objetivos_de_plan_semanal where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" and folio = "+folio
-//					   +" union all ( select objetivo,estatus from tb_objetivos_de_plan_semanal where usuario = "+(new Obj_Usuario().LeerSession().getFolio())+" and folio < "+folio+" and estatus <> 'RES') ";
-		
-		String query = " select case when (estatus='PLA') then 'PLANEADO' "
-					  +" 			 when (estatus='PRO') then 'PROCESO' "
-					  +" 	 		else 'RESUELTO' "
-					  +" end as estatus "
-					  + " ,objetivo "
-					  + " ,folio_objetivo "
-					  + " from tb_objetivos_de_plan_semanal "
-					  + " where usuario = "+(new Obj_Usuario().LeerSession().getFolio())
-					  + " and folio = "+folio
-					  + " union all ( select case when (estatus='PLA') then 'PLANEADO' "
-					  + " 							when (estatus='PRO') then 'PROCESO' "
-					  + "						 else 'RESUELTO' "
-					  + "					end as estatus "
-					  + "					,objetivo "
-					  + "					,folio_objetivo "
-					  + "				from tb_objetivos_de_plan_semanal "
-					  + "				where usuario = "+(new Obj_Usuario().LeerSession().getFolio())
-					  + "				and folio < "+folio
-					  + "				and estatus <> 'RES')"
-					  + " order by folio_objetivo ";
-		
+		String query = "exec sp_select_objetivos_del_periodo "+(new Obj_Usuario().LeerSession().getFolio())+",'"+fecha+"'";
 		
 		String[][] datos = new String[getFilas(query)][3];
 		

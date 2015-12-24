@@ -89,6 +89,17 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	SpinnerDateModel sdmHorafinal =  new SpinnerDateModel();
 	  JSpinner jspHorafinal       = new JSpinner(sdmHorafinal);                                         
 	  JSpinner.DateEditor spDHorafinal = new JSpinner.DateEditor(jspHorafinal,"HH:mm:ss"); 
+	
+	JDateChooser fecha_de_la_actividad = new JDateChooser();
+	  
+	JCheckBox chbLunes     = new JCheckBox("Lunes");
+	JCheckBox chbMartes    = new JCheckBox("Martes");
+	JCheckBox chbMiercoles = new JCheckBox("Miercoles");
+	JCheckBox chbJueves    = new JCheckBox("Jueves");
+	JCheckBox chbViernes   = new JCheckBox("Viernes");
+	JCheckBox chbSabado    = new JCheckBox("Sabado");
+	JCheckBox chbDomingo   = new JCheckBox("Domingo"); 
+	ButtonGroup Grupodias= new ButtonGroup();
 		  
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	Obj_Opciones_De_Respuesta OpRespuesta= new Obj_Opciones_De_Respuesta();
@@ -96,9 +107,13 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	Obj_Seleccion_De_Usuarios usuarios= new Obj_Seleccion_De_Usuarios();
 	Obj_Frecuencia_De_Actividades frecuencia = new Obj_Frecuencia_De_Actividades();
 	Obj_Actividades_De_Una_Planeacion Actividad_plan = new Obj_Actividades_De_Una_Planeacion();
+	
 	Border linea;
+	String Catalogo_Origen="";
+	
 	@SuppressWarnings("deprecation")
-	public Cat_Actividades_De_Una_Planeacion(){
+	public Cat_Actividades_De_Una_Planeacion(String catalogo_origen, String fecha){
+		Catalogo_Origen=catalogo_origen;
 		this.setSize(610, 350);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -113,22 +128,56 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		
 		panel.add(new JLabel("Detalle De La Actividad:")).setBounds                (x    ,y     ,width*3 ,height     );
 		panel.add(JPActividad).setBounds                                           (x    ,y+=20 ,355     ,height*6+10);
-		
-		panel.add(lblGrupoOrdenActividad).setBounds                                (x    ,y+=145,355     ,height+35  );
-		panel.add(new JLabel("Inicia:")).setBounds                                 (x+10 ,y+=20 ,width   ,height     );
-		panel.add(jspHoraInicio).setBounds                                         (x+50 ,y     ,width-70,height     );
-		panel.add(new JLabel("Termina:")).setBounds                                (x+210,y     ,width   ,height     );
-		panel.add(jspHorafinal).setBounds                                          (x+260,y     ,width-70,height     );
-		
-		
-		panel.add(btnDeshacer).setBounds                                           (x    ,y+=55,width   ,height*2    );
+		panel.add(btnDeshacer).setBounds                                           (x    ,y+=230,width   ,height*2   );
 		panel.add(btnAprovar).setBounds                                            (x+205,y     ,width   ,height*2   );
-
-		x=400;y=40;height=40; 
-		panel.add(btnOpcionesRespuesta).setBounds                                  (x    ,y     ,width+40,height     );
-		panel.add(btnPrioridad).setBounds                                          (x    ,y+=45 ,width+40,height     );
-		panel.add(btnUsuarios).setBounds                                           (x    ,y+=45 ,width+40,height     );
-		panel.add(btnFrecuencia).setBounds                                         (x    ,y+=45 ,width+40,height     );
+		
+		
+		if(!Catalogo_Origen.equals("Cat_Alimentacion_De_Plan_Semanal")){
+			y=40;
+			panel.add(lblGrupoOrdenActividad).setBounds                            (x    ,y+=145,355     ,height+35  );
+			panel.add(new JLabel("Inicia:")).setBounds                             (x+10 ,y+=20 ,width   ,height     );
+			panel.add(jspHoraInicio).setBounds                                     (x+50 ,y     ,width-70,height     );
+			panel.add(new JLabel("Termina:")).setBounds                            (x+210,y     ,width   ,height     );
+			panel.add(jspHorafinal).setBounds                                      (x+260,y     ,width-70,height     );
+			
+			x=400;	y=40;  height=40; 	
+		    panel.add(btnOpcionesRespuesta).setBounds                              (x    ,y     ,width+40,height     );
+	    	panel.add(btnPrioridad).setBounds                                      (x    ,y+=45 ,width+40,height     );
+			panel.add(btnUsuarios).setBounds                                       (x    ,y+=45 ,width+40,height     );
+			panel.add(btnFrecuencia).setBounds                                     (x    ,y+=45 ,width+40,height     );
+			this.setSize(610, 350);
+		}else{
+		    x=15;	y=175;  height=20; width=70; 
+		    
+		    try {
+				fecha_de_la_actividad.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(fecha));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    panel.add(new JLabel("Fecha Selecionada:")).setBounds                  (x    ,y     ,width+100,height    );
+		    panel.add(fecha_de_la_actividad).setBounds                             (x+100,y     ,width+50,height     );
+			panel.add(chbLunes).setBounds                                          (x    ,y+=35 ,width   ,height     );
+			panel.add(chbMartes).setBounds                                         (x+=90,y     ,width   ,height     );
+			panel.add(chbMiercoles).setBounds                                      (x+=90,y     ,width   ,height     );
+			panel.add(chbJueves).setBounds                                         (x+=90,y     ,width   ,height     );
+			panel.add(chbViernes).setBounds                                        (x-=180,y+=25,width   ,height     );
+			panel.add(chbSabado).setBounds                                         (x+=90,y     ,width   ,height     );
+			panel.add(chbDomingo).setBounds                                        (x+=90,y     ,width   ,height     );
+			
+			Grupodias.add(chbLunes);
+			Grupodias.add(chbMartes);
+			Grupodias.add(chbMiercoles);
+			Grupodias.add(chbJueves);
+			Grupodias.add(chbViernes);
+			Grupodias.add(chbSabado);
+			Grupodias.add(chbDomingo);
+			
+			fecha_de_la_actividad.setEnabled(false);
+			chbLunes.setSelected(true);
+			
+			this.setSize(400, 350);
+		}
 		
 		txa_Resultado_Configuracion.setLineWrap(true); 
 		txa_Resultado_Configuracion.setWrapStyleWord(true);
@@ -218,8 +267,15 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				Actividad_plan.setHora_termina(new SimpleDateFormat("HH:mm:ss").format(jspHorafinal.getValue()));
 				
 				if(Actividad_plan.guardar(OpRespuesta,OpPonderacion,usuarios,frecuencia, usuario.getFolio())){
+					if(Catalogo_Origen.equals("Cat_Programacion_Y_Revision_Del_Plan_Semanal")){
 					new Cat_Programacion_Y_Revision_Del_Plan_Semanal().setVisible(true);
 					dispose();
+					}
+					
+					if(Catalogo_Origen.equals("Cat_Alimentacion_De_Plan_Semanal")){
+					new Cat_Alimentacion_De_Plan_Semanal().setVisible(true);
+					dispose();
+					}
 					
 				}else{
 					JOptionPane.showMessageDialog(null, "Error Al Guardar La Actividad", "Avisa Al Administrador Del Sistema", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
@@ -1521,11 +1577,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					
 				}
 			}
-//			System.out.println(cmbTipoDeProgramacion.getSelectedItem().toString());
-//			
-//			System.out.println(cmbTipoDeProgramacion.getSelectedItem().toString().equals("PERIODICA") && cmbSucede.getSelectedItem().toString().equals("SEMANAL")
-//					   &&((chbLunes.isSelected()==true?1:0)+(chbMartes.isSelected()==true?1:0)+(chbMiercoles.isSelected()==true?1:0)+(chbJueves.isSelected()==true?1:0)+(chbViernes.isSelected()==true?1:0)+(chbSabado.isSelected()==true?1:0)+(chbDomingo.isSelected()==true?1:0) )>0?false:true );
-			
 			if(cmbTipoDeProgramacion.getSelectedItem().toString().equals("PERIODICA")){
 				 if(cmbSucede.getSelectedItem().toString().equals("SEMANAL")){	
 			        if(((chbLunes.isSelected()==true?1:0)+(chbMartes.isSelected()==true?1:0)+(chbMiercoles.isSelected()==true?1:0)+(chbJueves.isSelected()==true?1:0)+(chbViernes.isSelected()==true?1:0)+(chbSabado.isSelected()==true?1:0)+(chbDomingo.isSelected()==true?1:0) )>0?false:true ){
@@ -1653,7 +1704,8 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Actividades_De_Una_Planeacion().setVisible(true);
+//			new Cat_Actividades_De_Una_Planeacion("Cat_Programacion_Y_Revision_Del_Plan_Semanal","14/12/2015").setVisible(true);
+			new Cat_Actividades_De_Una_Planeacion("Cat_Alimentacion_De_Plan_Semanal","21/12/2015").setVisible(true);
 		}catch(Exception e){	}	
 	}
 }
