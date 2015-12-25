@@ -7793,7 +7793,7 @@ public class BuscarSQL {
 	
 	public String[][] getTablaActividadesDiarias(String fecha,int dia, String Ventana){
 		
-		int columnas =  Ventana.equals("Alimentacion")   ?   7  :   5   ;
+		int columnas =  Ventana.equals("Alimentacion")   ?   7  :   6   ;
 		
 		String[][] Matriz = null;
 		String actividades = "exec sp_consulta_de_actividades_del_dia "+(new Obj_Usuario().LeerSession().getFolio())+",'"+fecha+"',"+dia;
@@ -7820,6 +7820,7 @@ public class BuscarSQL {
 					Matriz[i][2] = rs.getString(3);
 					Matriz[i][3] = rs.getString(4);
 					Matriz[i][4] = rs.getString(5);
+					Matriz[i][5] = rs.getString(7);
 				}
 				
 //				System.out.print(Matriz[i][0].toString()+"  ");
@@ -7839,28 +7840,28 @@ public class BuscarSQL {
 		return Matriz;
 	}
 	
-	public boolean validar_si_el_usuario_puede_cancelar_la_actividad(int folio_actividad){
-		String query = "declare @usuario int = "+(new Obj_Usuario().LeerSession().getFolio())+", @folio_actividad int = "+folio_actividad
-						+ " if(select usuario from tb_actividades_plan where folio_actividad = @folio_actividad)=@usuario "
-						+ " begin	select 'true'	end "
-						+ " else "
-						+ " begin	select 'false'	end";
-		
-		System.out.println(query);
-		
-		boolean modificar = false;
-		try {				
-			Statement s = con.conexion().createStatement();
-			ResultSet rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				modificar = rs.getBoolean(1);
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return modificar;
-	}
+//	public boolean validar_si_el_usuario_puede_cancelar_la_actividad(int folio_actividad){
+//		String query = "declare @usuario int = "+(new Obj_Usuario().LeerSession().getFolio())+", @folio_actividad int = "+folio_actividad
+//						+ " if(select usuario from tb_actividades_plan where folio_actividad = @folio_actividad)=@usuario "
+//						+ " begin	select 'true'	end "
+//						+ " else "
+//						+ " begin	select 'false'	end";
+//		
+//		System.out.println(query);
+//		
+//		boolean modificar = false;
+//		try {				
+//			Statement s = con.conexion().createStatement();
+//			ResultSet rs = s.executeQuery(query);
+//			
+//			while(rs.next()){
+//				modificar = rs.getBoolean(1);
+//			}
+//			
+//		} catch (SQLException e1) {
+//			e1.printStackTrace();
+//		}
+//			
+//		return modificar;
+//	}
 }

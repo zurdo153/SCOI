@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -4095,38 +4097,72 @@ public boolean Actualizar_Objetivos_De_Plan_Semanal(final JTable tabla){
 	return true;
 	}
 	
-public boolean Cancelar_Actividad_De_Usuario(int folio_actividad){
-	String query =  " update tb_actividades_plan set status_actividad = 'C', fecha_de_cancelacion = GETDATE() "
-					+ "	where folio_actividad = "+folio_actividad;
-	Connection con = new Connexion().conexion();
-	try {
-		PreparedStatement pstmt = con.prepareStatement(query);
-		con.setAutoCommit(false);
+//public boolean Cancelar_Actividad_De_Usuario(int folio_actividad,String movimiento){
+//	
+//	String query = "";
+//	
+////	if(movimiento.equals("CANCELAR ACTIVIDAD")){
+////			query =  " update tb_actividades_plan set status_actividad = 'C', fecha_de_cancelacion = GETDATE() "
+////					+ "	where folio_actividad = "+folio_actividad;
+////	}else{
+////			query =  "update tb_asignacion_de_empleados_a_una_actividad set Estatus = 'S', fecha_de_cancelacion = GETDATE() "
+////				+ "			where folio_actividad = "+folio_actividad
+////				+ "			and folio_empleado = "+(new Obj_Usuario().LeerSession().getFolio());
+////	}
+//	
+//	query = "exec sp_update_actividades_por_empleado "+folio_actividad+","+(new Obj_Usuario().LeerSession().getFolio());
+//	
+//	Connection con = new Connexion().conexion();
+//	try {
+//		PreparedStatement pstmt = con.prepareStatement(query);
+//		con.setAutoCommit(false);
+//		
+//		pstmt.executeUpdate();
+//		con.commit();
+//	} catch (Exception e) {
+//		System.out.println("SQLException: "+e.getMessage());
+//		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Cancelar_Actividad_De_Usuario   \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+//		if(con != null){
+//			try{
+//				System.out.println("La transacción ha sido abortada");
+//				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Cancelar_Actividad_De_Usuario  \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+//				con.rollback();
+//			}catch(SQLException ex){
+//				System.out.println(ex.getMessage());
+//				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Cancelar_Actividad_De_Usuario \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+//			}
+//		}
+//		return false;
+//	}finally{
+//		try {
+//			con.close();
+//		} catch(SQLException e){
+//			e.printStackTrace();
+//		}
+//	}		
+//	return true;
+//	}
+
+public String Cancelar_Actividad_De_Usuario(int folio_actividad){
+	
+	String aviso = "";
+	String query = "exec sp_update_actividades_por_empleado "+folio_actividad+","+(new Obj_Usuario().LeerSession().getFolio());
+	
+	Statement s;
+	ResultSet rs;
+	try {			
+		s = new Connexion().conexion().createStatement();
+		rs = s.executeQuery(query);
 		
-		pstmt.executeUpdate();
-		con.commit();
-	} catch (Exception e) {
-		System.out.println("SQLException: "+e.getMessage());
-		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Cancelar_Actividad_De_Usuario   \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-		if(con != null){
-			try{
-				System.out.println("La transacción ha sido abortada");
-				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Cancelar_Actividad_De_Usuario  \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-				con.rollback();
-			}catch(SQLException ex){
-				System.out.println(ex.getMessage());
-				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Cancelar_Actividad_De_Usuario \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			while(rs.next()){
+				aviso = rs.getString(1);
 			}
-		}
-		return false;
-	}finally{
-		try {
-			con.close();
-		} catch(SQLException e){
-			e.printStackTrace();
-		}
-	}		
-	return true;
+		
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en Buscar SQL  en la funcion Cancelar_Actividad_De_Usuario\nen el procedimiento almacenado \n"+query+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 	}
+	return aviso;
+}
 
 }

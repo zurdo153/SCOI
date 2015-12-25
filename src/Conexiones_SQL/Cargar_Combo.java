@@ -1871,13 +1871,9 @@ public class Cargar_Combo {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
-			int j=0;
+			miVector.add("RESPUESTA");
 			while(rs.next()){
-				if(j == 0){
-					miVector.add("RESPUESTA");
-				}
 				miVector.add(rs.getString("item").trim());
-				j++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
