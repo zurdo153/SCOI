@@ -37,6 +37,7 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Semanal_Base{
@@ -91,6 +92,14 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		cargarObjetivos();
 		PintarEstatusTabla(tabla_objetivos);
 		
+		agregarColumnas(tablaLunes,modelLunes);
+		agregarColumnas(tablaMartes,modelMartes);
+		agregarColumnas(tablaMiercoles,modelMiercoles);
+		agregarColumnas(tablaJueves,modelJueves);
+		agregarColumnas(tablaViernes,modelViernes);
+		agregarColumnas(tablaSabado,modelSabado);
+		agregarColumnas(tablaDomingo,modelDomingo);
+		
 		this.btnizquierda.addActionListener(opAtras);
 		this.btnderecha.addActionListener(opAdelante);
 		this.btnObjetivos.addActionListener(opAgregarObjetivo);
@@ -106,6 +115,12 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
 		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
 		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
+	}
+	
+	public void agregarColumnas(final JTable tb,final DefaultTableModel modelo){
+		
+		modelo.addColumn("Usuario");
+		tb.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 	}
 	
 	private void cargarActividades() {
@@ -211,12 +226,11 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			int vista_previa_de_ventana=0;
 			String comando="exec sp_reporte_de_plan_semanal_por_dia "+usuario.getFolio()+",'"+txtPeriodo.getText().toString().substring(0,10)+"'"  ;
 			String reporte = "Obj_Reporte_De_Plan_Semanal_Cuadros.jrxml";
-			System.out.println(comando);;
+			System.out.println(comando);
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		
 		}
 	};
-	
 	
 	public void cargarObjetivos(){
 		model_objetivos.setRowCount(0);
@@ -236,27 +250,39 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	ActionListener opCancelarActividad = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			
-			int fila = tabla.getSelectedRow();
+			int filaSeleccionada = tabla.getSelectedRow();
 			
-			if(fila<0){
-				System.out.println("Seleccione La Actividad Que Desea Cancelar");
+			if(filaSeleccionada<0){
+				JOptionPane.showMessageDialog(null, "Seleccione La Actividad Que Desea Cancelar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
 			}else{
 				
-				int folio_actividad = Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
+				int folio_actividad = Integer.valueOf(tabla.getValueAt(filaSeleccionada, 0).toString().trim());
 				
-				if(new BuscarSQL().validar_si_el_usuario_puede_cancelar_la_actividad(folio_actividad)){
+//				if(new Obj_Usuario().LeerSession().getFolio() == Integer.valueOf(tabla.getValueAt(filaSeleccionada, tabla.getColumnCount()-1).toString())){
+//					
+//						if(new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad,"CANCELAR ACTIVIDAD")){
+//							buscarActividadesPorDia();
+//							JOptionPane.showMessageDialog(null, "Se Cancelo La Actividar Con Folio [ "+folio_actividad+" ] Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+//							return;
+//						}
+//						
+//				}else{
 					
-					if(new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad)){
-						System.out.println("Se Cancelo La Actividar Con Folio "+folio_actividad+" Correctamente");
-						
-						buscarActividadesPorDia();
-						
-//						 refrescar la tabla
-					}
-					
-				}else{
-					System.out.println("El Usuario No Puede Cancelar Una Actividad Que No Asigno");
-				}
+//						if(new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad,"QUITAR USUARIO DE ACTIVIDAD")){
+							String aviso =  new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad);
+							buscarActividadesPorDia();
+							JOptionPane.showMessageDialog(null,aviso+" Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							return;
+//						}
+//				}
+				
+//				if(new BuscarSQL().validar_si_el_usuario_puede_cancelar_la_actividad(folio_actividad)){
+//					
+//				}else{
+//					JOptionPane.showMessageDialog(null, "El Usuario No Puede Cancelar Una Actividad Que No Asigno", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//					return;
+//				}
 			}
 		}
 	};
