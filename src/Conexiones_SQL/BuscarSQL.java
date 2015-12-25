@@ -142,6 +142,28 @@ public class BuscarSQL {
 		return fecha;
 	}
 	
+	public String fecha_mas_dias(String fechaant,int dias) throws SQLException{
+		String fecha="";
+		String query = " declare @fecha datetime='"+fechaant+"', @dia int="+dias
+				+ "        select convert(varchar(15),@fecha+@dia,103) as fecha";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				fecha=(rs.getString("fecha"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return fecha;
+	}
+	
 	public String inicio_final_TA(int cajero) throws SQLException{
 		String nombrepc="";
 		try { nombrepc = InetAddress.getLocalHost().getHostName();

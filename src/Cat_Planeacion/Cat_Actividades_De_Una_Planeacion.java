@@ -54,6 +54,7 @@ import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Planeacion.Obj_Actividades_De_Una_Planeacion;
@@ -110,10 +111,12 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	
 	Border linea;
 	String Catalogo_Origen="";
+	String fecha_extra ="";
 	
 	@SuppressWarnings("deprecation")
 	public Cat_Actividades_De_Una_Planeacion(String catalogo_origen, String fecha){
 		Catalogo_Origen=catalogo_origen;
+		fecha_extra=fecha;
 		this.setSize(610, 350);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -148,13 +151,16 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			this.setSize(610, 350);
 		}else{
 		    x=15;	y=175;  height=20; width=70; 
-		    
-		    try {
-				fecha_de_la_actividad.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(fecha));
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		  
+				try {
+					fecha_de_la_actividad.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0)));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+
+				
 		    panel.add(new JLabel("Fecha Selecionada:")).setBounds                  (x    ,y     ,width+100,height    );
 		    panel.add(fecha_de_la_actividad).setBounds                             (x+100,y     ,width+50,height     );
 			panel.add(chbLunes).setBounds                                          (x    ,y+=35 ,width   ,height     );
@@ -173,8 +179,18 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			Grupodias.add(chbSabado);
 			Grupodias.add(chbDomingo);
 			
+			cargadfecha(0,chbLunes);
+			cargadfecha(1,chbMartes);
+			cargadfecha(2,chbMiercoles);
+			cargadfecha(3,chbJueves);
+			cargadfecha(4,chbViernes);
+			cargadfecha(5,chbSabado);
+			cargadfecha(6,chbDomingo);
+			
 			fecha_de_la_actividad.setEnabled(false);
 			chbLunes.setSelected(true);
+			
+			
 			
 			this.setSize(400, 350);
 		}
@@ -197,7 +213,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		jspHorafinal.setValue(new Time(Integer.parseInt(horatermina[0]),Integer.parseInt(horatermina[1]),Integer.parseInt(horatermina[2])));
 		jspHorafinal.setEditor(spDHorafinal);
 		
-		
 		///guardar con control+A
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A,Event.CTRL_MASK),"guardar");
              getRootPane().getActionMap().put("guardar", new AbstractAction(){
@@ -218,6 +233,21 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
  	    cont.add(panel);
 	}
 	
+	public void cargadfecha(int dias, JCheckBox checkclick){
+		checkclick.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				  try {
+					  fecha_de_la_actividad.setDate( new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha_mas_dias(fecha_extra,dias)));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		} );
+	}
+
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			txa_Resultado_Configuracion.setText("");
@@ -248,7 +278,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
            		new Cat_Frecuencia_De_Actividades().setVisible(true);;
                 }
           	};       
-          	
+
 	ActionListener opAprovar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(txa_Resultado_Configuracion.getText().toString().equals("")){
@@ -261,10 +291,19 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					           matriz[0][1]= usuario.getNombre_completo();
 					usuarios.setUsuarios_nombres(matriz);
 				}
-
+				
+				Actividad_plan.setEstatus_Actividad("V");
 				Actividad_plan.setDescripcion_de_la_actividad(txa_Resultado_Configuracion.getText().toString().trim());
 				Actividad_plan.setHora_inicia(new SimpleDateFormat("HH:mm:ss").format(jspHoraInicio.getValue()));
 				Actividad_plan.setHora_termina(new SimpleDateFormat("HH:mm:ss").format(jspHorafinal.getValue()));
+				
+		///////actividades no planeadas de la semana		
+				if(Catalogo_Origen.equals("Cat_Alimentacion_De_Plan_Semanal")){
+					Actividad_plan.setEstatus_Actividad("E");
+					frecuencia.setSeleccion_hasta_que_se_cumpla(false);
+					frecuencia.setSeleccion_en_la_fecha_indicada(true);
+					frecuencia.setFh_unica_repeticion(new SimpleDateFormat("dd/MM/yyyy").format(fecha_de_la_actividad.getDate()));
+				}
 				
 				if(Actividad_plan.guardar(OpRespuesta,OpPonderacion,usuarios,frecuencia, usuario.getFolio())){
 					if(Catalogo_Origen.equals("Cat_Programacion_Y_Revision_Del_Plan_Semanal")){

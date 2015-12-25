@@ -44,7 +44,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	JButton btnizquierda        = new JButton(                  new ImageIcon("imagen/la-flecha-verde-de-la-izquierda-icono-8326-32.png"));
 	JButton btnObjetivos        = new JButton("Objetivos"      ,new ImageIcon("imagen/mas-icono-4156-32.png")                            );
 	JButton btnAgregarActividad = new JButton("Actividades"    ,new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     );
-	JButton btnCancelarActividad = new JButton("Cancelar"    ,new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     	 );
+	JButton btnCancelarActividad = new JButton("Cancelar"      ,new ImageIcon("imagen/boton-rojo-menos-icono-5393-32.png")            	 );
 	JButton btnReporte_cuadros  = new JButton("Reporte Cuadros",new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
@@ -189,7 +189,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		    txtFolio.setText(folioPlan[0].toString());
 		    txtPeriodo.setText(folioPlan[1].toString());
 		    cargarObjetivos();
-		    cargarActividades();
+		    buscarActividadesPorDia();
 		}
 	};	
 	
@@ -200,7 +200,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		    txtFolio.setText(folioPlan[0].toString());
 		    txtPeriodo.setText(folioPlan[1].toString());
 		    cargarObjetivos();
-		    cargarActividades();
+		    buscarActividadesPorDia();
 		}
 	};
 	

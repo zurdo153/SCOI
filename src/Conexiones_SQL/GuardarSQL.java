@@ -4757,7 +4757,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	
 public boolean Guardar_Actividad_Planeacion(Obj_Actividades_De_Una_Planeacion Actividades_plan, Obj_Opciones_De_Respuesta opRespuesta, Obj_Prioridad_Y_Ponderacion opPonderacion, Obj_Seleccion_De_Usuarios usuarios, Obj_Frecuencia_De_Actividades frecuencia, int folio_empleado){
 		int folio_actividad=busca_y_actualiza_proximo_folio(20);
-		String query ="sp_insert_actividad_de_plan "+folio_actividad+",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query ="sp_insert_actividad_de_plan "+folio_actividad+",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		
 		 String querytabla = "INSERT INTO [tb_asignacion_de_empleados_a_una_actividad] ([folio_actividad]  ,[folio_empleado] ,[Estatus])"
 		 		           + "                                                  VALUES ("+folio_actividad+",?                ,'V'      )";
@@ -4826,7 +4826,8 @@ public boolean Guardar_Actividad_Planeacion(Obj_Actividades_De_Una_Planeacion Ac
 			pstmt.setString (43,  (String.valueOf(frecuencia.isSeleccion_sin_fecha_final()).toString().equals("true"))?"S":"N"     );//seleccion_sin_fecha_final
 			
 			pstmt.setString (44,  Actividades_plan.getHora_inicia().toString().trim()                                              );//hora_inicia_actividad
-			pstmt.setString (45,  Actividades_plan.getHora_termina().toString().trim()                                              );//hora_termina_actividad
+			pstmt.setString (45,  Actividades_plan.getHora_termina().toString().trim()                                             );//hora_termina_actividad
+			pstmt.setString (46,  Actividades_plan.getEstatus_Actividad().toString().trim()                                        );//estatus_actividad
 			
 			for(int i=0; i<usuarios.getUsuarios_nombres().length; i++){
 				pstmtabla.setString(1, usuarios.getUsuarios_nombres()[i][0].toString().trim());
