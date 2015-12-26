@@ -5,10 +5,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+import Obj_Administracion_del_Sistema.Obj_Usuario;
+
+
 public class Cargar_Combo {
 	Connexion con = new Connexion();
 	@SuppressWarnings("rawtypes")
 	Vector miVector = new Vector();
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 		
 	@SuppressWarnings("unchecked")
 	public String[] menus() throws SQLException{
@@ -1836,10 +1840,8 @@ public class Cargar_Combo {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
-//			int j=0;
 			while(rs.next()){
 				miVector.add(rs.getString("grupo_para_cortes"));
-//				j++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1862,19 +1864,20 @@ public class Cargar_Combo {
 			
 	}
 	
+	
+	
 	@SuppressWarnings("unchecked")
-	public String[] ComboTiposDeRespuesta_Plan_Semanal(int actividad) throws SQLException{
-		String query = "select * from dbo.tipos_de_respuesta_plan_semanal("+actividad+")";
-		
+	public String[] ComboTiposDeRespuesta_Plan_Semanal(int actividad, int dia) throws SQLException{
+		String query = "select * from dbo.tipos_de_respuesta_plan_semanal("+actividad+","+dia+","+usuario.getFolio()+")";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
-			miVector.add("RESPUESTA");
+
 			while(rs.next()){
 				miVector.add(rs.getString("item").trim());
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

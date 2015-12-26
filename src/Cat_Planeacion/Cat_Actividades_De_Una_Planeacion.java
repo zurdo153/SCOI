@@ -136,6 +136,9 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		
 		
 		if(!Catalogo_Origen.equals("Cat_Alimentacion_De_Plan_Semanal")){
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/reinicio-pelota-cute-icono-7443-64.png"));
+			this.setTitle("Actividades De Una Planeacion");
+			
 			y=40;
 			panel.add(lblGrupoOrdenActividad).setBounds                            (x    ,y+=145,355     ,height+35  );
 			panel.add(new JLabel("Inicia:")).setBounds                             (x+10 ,y+=20 ,width   ,height     );
@@ -150,6 +153,9 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			panel.add(btnFrecuencia).setBounds                                     (x    ,y+=45 ,width+40,height     );
 			this.setSize(610, 350);
 		}else{
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/reinicio-pelota-cute-icono-7443-32 -azul.png"));
+			this.setTitle("Actividades Extras De Una Planeacion");
+			
 		    x=15;	y=175;  height=20; width=70; 
 		  
 				try {
@@ -159,7 +165,85 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
-
+			
+				int  dia_de_la_semana=0;
+	            try {
+					  dia_de_la_semana= new BuscarSQL().dias_de_la_semana();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+	           switch (dia_de_la_semana) {
+	           case 0:
+	        	   chbLunes.setSelected   (true );
+	   			   chbMartes.setEnabled   (false);
+	   			   chbMiercoles.setEnabled(false);
+	   			   chbJueves.setEnabled   (false);
+	   			   chbViernes.setEnabled  (false);
+	   			   chbSabado.setEnabled   (false);
+	   			   chbDomingo.setEnabled  (false);
+	           break;
+	           case 1:
+	        	   chbLunes.setEnabled    (true );
+	   			   chbMartes.setSelected  (true );
+	   			   chbMiercoles.setEnabled(false);
+	   			   chbJueves.setEnabled   (false);
+	   			   chbViernes.setEnabled  (false);
+	   			   chbSabado.setEnabled   (false);
+	   			   chbDomingo.setEnabled  (false);
+	           break;
+	           
+	           case 2:
+	        	   chbLunes.setEnabled    (true );
+	   			   chbMartes.setEnabled   (true );
+	   			   chbMiercoles.setSelected(true);
+	   			   chbJueves.setEnabled   (false);
+	   			   chbViernes.setEnabled  (false);
+	   			   chbSabado.setEnabled   (false);
+	   			   chbDomingo.setEnabled  (false);
+	           break;
+	           
+	           case 3:
+	        	   chbLunes.setEnabled    (true );
+	   			   chbMartes.setEnabled   (true );
+	   			   chbMiercoles.setEnabled(true );
+	   			   chbJueves.setSelected  (true );
+	   			   chbViernes.setEnabled  (false);
+	   			   chbSabado.setEnabled   (false);
+	   			   chbDomingo.setEnabled  (false);
+	           break;
+	           
+	           case 4:
+	        	   chbLunes.setEnabled    (true );
+	   			   chbMartes.setEnabled   (true );
+	   			   chbMiercoles.setEnabled(true );
+	   			   chbJueves.setEnabled   (true );
+	   			   chbViernes.setSelected (true );
+	   			   chbSabado.setEnabled   (false);
+	   			   chbDomingo.setEnabled  (false);
+	           break;
+	           
+	           case 5:
+	        	   chbLunes.setEnabled    (true );
+	   			   chbMartes.setEnabled   (true );
+	   			   chbMiercoles.setEnabled(true );
+	   			   chbJueves.setEnabled   (true );
+	   			   chbViernes.setEnabled  (true );
+	   			   chbSabado.setSelected  (true );
+	   			   chbDomingo.setEnabled  (false);
+	           break;
+	           
+	           case 6:
+	        	   chbLunes.setEnabled    (true );
+	   			   chbMartes.setEnabled   (true );
+	   			   chbMiercoles.setEnabled(true );
+	   			   chbJueves.setEnabled   (true );
+	   			   chbViernes.setEnabled  (true );
+	   			   chbSabado.setEnabled   (true );
+	   			   chbDomingo.setSelected (true );
+	           break;
+	           
+	           }
+	            
 				
 		    panel.add(new JLabel("Fecha Selecionada:")).setBounds                  (x    ,y     ,width+100,height    );
 		    panel.add(fecha_de_la_actividad).setBounds                             (x+100,y     ,width+50,height     );
@@ -188,10 +272,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			cargadfecha(6,chbDomingo);
 			
 			fecha_de_la_actividad.setEnabled(false);
-			chbLunes.setSelected(true);
-			
-			
-			
 			this.setSize(400, 350);
 		}
 		

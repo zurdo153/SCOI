@@ -46,7 +46,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	JButton btnObjetivos        = new JButton("Objetivos"      ,new ImageIcon("imagen/mas-icono-4156-32.png")                            );
 	JButton btnAgregarActividad = new JButton("Actividades"    ,new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     );
 	JButton btnCancelarActividad = new JButton("Cancelar"      ,new ImageIcon("imagen/boton-rojo-menos-icono-5393-32.png")            	 );
-	JButton btnReporte_cuadros  = new JButton("Reporte Cuadros",new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
+	JButton btnReporte_cuadros  = new JButton("Plan Semanal",new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	JTable tabla = tablaLunes;
@@ -58,12 +58,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		this.panel.setBorder(BorderFactory.createTitledBorder("Detalle Del Plan Semanal"));
 		init();
 	}
-	
-//	public Cat_Programacion_Y_Revision_Del_Plan_Semanal (int folio){
-//		init();
-//		buscar(folio);
-//		txtFolio.setText(folio+"");
-//	}
 	
 	public void init(){
 		
@@ -132,7 +126,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		SeleccionarPestaniaDia(pSabado,5);
 		SeleccionarPestaniaDia(pDomingo,6);
 	}
-	
 	 
 	private void SeleccionarPestaniaDia(final JLayeredPane panelDia,final int diaa) {
 		panelDia.addAncestorListener(new AncestorListener() {

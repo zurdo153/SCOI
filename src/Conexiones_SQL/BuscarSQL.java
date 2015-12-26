@@ -164,6 +164,27 @@ public class BuscarSQL {
 		return fecha;
 	}
 	
+	public int dias_de_la_semana() throws SQLException{
+		int dia=0;
+		String query = " select  case when datepart(dw, getdate())=0 then 0 else datepart(dw, getdate())-1 end";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				dia=(rs.getInt(1));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return dia;
+	}
+	
 	public String inicio_final_TA(int cajero) throws SQLException{
 		String nombrepc="";
 		try { nombrepc = InetAddress.getLocalHost().getHostName();
@@ -192,7 +213,6 @@ public class BuscarSQL {
 		}
 		return inicio_final_TA;
 	}
-	
 	
 	public String edad(String fecha_nacimiento) throws SQLException{
 		String fecha="";
@@ -7832,7 +7852,7 @@ public class BuscarSQL {
 				
 				if(columnas==7){
 					
-					Matriz[i][2] = "RESPUESTA";
+					Matriz[i][2] = rs.getString(10);
 					Matriz[i][3] = rs.getString(3);
 					Matriz[i][4] = rs.getString(4);
 					
@@ -7844,14 +7864,6 @@ public class BuscarSQL {
 					Matriz[i][4] = rs.getString(5);
 					Matriz[i][5] = rs.getString(7);
 				}
-				
-//				System.out.print(Matriz[i][0].toString()+"  ");
-//				System.out.print(Matriz[i][1].toString()+"  ");
-//				System.out.print(Matriz[i][2].toString()+"  ");
-//				System.out.print(Matriz[i][3].toString()+"  ");
-//				System.out.print(Matriz[i][4].toString()+"  ");
-//				System.out.print(Matriz[i][5].toString()+"  ");
-//				System.out.println(Matriz[i][6].toString()+"  ");
 				
 				i++;
 			}
