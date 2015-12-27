@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -47,6 +49,9 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	JButton btnAgregarActividad = new JButton("Actividades"    ,new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     );
 	JButton btnCancelarActividad = new JButton("Cancelar"      ,new ImageIcon("imagen/boton-rojo-menos-icono-5393-32.png")            	 );
 	JButton btnReporte_cuadros  = new JButton("Plan Semanal",new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
+	
+//	JButton btnReporte_lista  = new JButton("Actividades Con Respuesta",new ImageIcon("imagen/checklist.png"));
+    JButton btnReporte_lista  = new JButton("Actividades Con Respuesta");
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	JTable tabla = tablaLunes;
@@ -72,6 +77,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			this.panel.add(btnCancelarActividad).setBounds(1005,10,150,38);
 			
 			this.panel.add(btnReporte_cuadros).setBounds(450,500,180,38);
+			this.panel.add(btnReporte_lista).setBounds(650,500,200,38);
 		}else{
 			this.panel.add(btnizquierda).setBounds(250, y, 38,38);
 			this.panel.add(btnderecha).setBounds(320, y, 38, 38);
@@ -81,8 +87,13 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			this.panel.add(btnCancelarActividad).setBounds(1100,10,130,38);
 			
 			this.panel.add(btnReporte_cuadros).setBounds(450,500,180,38);
+			this.panel.add(btnReporte_lista).setBounds(650,500,200,38);
 		}
 		
+		ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/imagen/checklistbtn.png");
+	    Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	    btnReporte_lista.setIcon(iconoDefault);
+	    
 		cargarObjetivos();
 		PintarEstatusTabla(tabla_objetivos);
 		
@@ -100,6 +111,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		this.btnAgregarActividad.addActionListener(opAgregarActividad);
 		this.btnCancelarActividad.addActionListener(opCancelarActividad);
 		this.btnReporte_cuadros.addActionListener(opReporteCuadros);
+		this.btnReporte_lista.addActionListener(opReporteLista);
 
 		cargarActividades();
 		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
@@ -219,6 +231,19 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			int vista_previa_de_ventana=0;
 			String comando="exec sp_reporte_de_plan_semanal_por_dia "+usuario.getFolio()+",'"+txtPeriodo.getText().toString().substring(0,10)+"'"  ;
 			String reporte = "Obj_Reporte_De_Plan_Semanal_Cuadros.jrxml";
+			System.out.println(comando);
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		
+		}
+	};
+	
+	ActionListener opReporteLista = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="exec sp_Reporte_De_Actividades_Contestadas_Del_Plan_Semanal "+usuario.getFolio()+",'"+txtPeriodo.getText().toString().substring(0,10)+"'"  ;
+			String reporte = "Obj_Reportes_De_Actividades_Contestadas.jrxml";
 			System.out.println(comando);
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		

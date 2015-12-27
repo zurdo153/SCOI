@@ -313,9 +313,8 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
  	    cont.add(panel);
 	}
 	
-	public void cargadfecha(int dias, JCheckBox checkclick){
+	public void cargadfecha(final int dias, JCheckBox checkclick){
 		checkclick.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				  try {
 					  fecha_de_la_actividad.setDate( new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha_mas_dias(fecha_extra,dias)));

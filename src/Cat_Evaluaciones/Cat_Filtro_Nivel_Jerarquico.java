@@ -86,7 +86,7 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
 	        		int fila = tabla.getSelectedRow();
 	    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
 	    			dispose();
-	    			new Cat_Nivel_Jerarquico(folio+"").setVisible(true);
+	    			new Cat_Nivel_Jerarquico2(folio+"").setVisible(true);
 	        	}
 	        }
         });
