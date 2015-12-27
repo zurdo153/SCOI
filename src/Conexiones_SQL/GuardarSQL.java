@@ -4947,9 +4947,9 @@ public boolean Guardar_Objetivos_De_La_Semana(Vector objetivos, String folioObje
 	return true;
 	}
 	
-public boolean Guardar_Actividades_Con_Respuesta(String[][] actividades, String dia){
+public boolean Guardar_Actividades_Con_Respuesta(String[][] actividades, int dia){
 	
-	String query =  "exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?";
+	String query =  "exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?";
 	Connection con = new Connexion().conexion();
 	
 	PreparedStatement pstmt = null;
@@ -4971,6 +4971,7 @@ public boolean Guardar_Actividades_Con_Respuesta(String[][] actividades, String 
 				pstmt.setString(5, actividades[i][5].toString().toUpperCase());                       //observacion    
 				pstmt.setInt(6, usuario.getFolio());												  //usuario
 				pstmt.setString(7, ip); 					  										  //ip_pc
+				pstmt.setInt(8, dia);                                                                 //dia    
 				pstmt.executeUpdate();
 		}
 		

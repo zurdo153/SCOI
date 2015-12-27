@@ -106,12 +106,10 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 			columnaSeleccionada = tabla.getSelectedColumn();
 			
 //			obtiene en nombre de la columnas seleccionada
-//			System.out.println(tabla.getTableHeader().getColumnModel().getColumn(columnaSeleccionada).getHeaderValue());
 			
 			switch(tabla.getTableHeader().getColumnModel().getColumn(columnaSeleccionada).getHeaderValue().toString()){
 				case "Exige Evidencia":
 						JFileChooser elegir = new JFileChooser();
-		            	
 		            	int opcion = elegir.showOpenDialog(button);
 				                	
 		                 //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
@@ -171,15 +169,21 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 //								se obtiene el dia seleccionado el la pestaña
 								String dia = pLunes.isShowing()==true?"Lunes"
 												 : (pMarte.isShowing()==true?"Martes"
-														 : (pMarte.isShowing()==true?"Martes"
-																 : (pMiercoles.isShowing()==true?"Miercoles"
+																: (pMiercoles.isShowing()==true?"Miercoles"
 																		 : (pJueves.isShowing()==true?"Jueves"
 																				 : (pViernes.isShowing()==true?"Viernes"
 																						 : (pSabado.isShowing()==true?"Sabado"
-																								 : "Domingo"))))));
+																								 : "Domingo")))));
+								int dianum = pLunes.isShowing()==true?0
+										 : (pMarte.isShowing()==true?1
+														 : (pMiercoles.isShowing()==true?2
+																 : (pJueves.isShowing()==true?3
+																		 : (pViernes.isShowing()==true?4
+																				 : (pSabado.isShowing()==true?5
+																						  : 6)))));
 								
-								if(JOptionPane.showConfirmDialog(null, "Usted Esta Intentando Guardar Las Actividades Del Dia \n>>>>>>>> "+dia+" >>>>>>>> \nDesea Continuar?","Aviso",0,1,new ImageIcon("imagen/usuario-icono-noes_usuario9131-64.png")) == 0){	
-									if(new GuardarSQL().Guardar_Actividades_Con_Respuesta(tb_actividades_con_respuesta, dia)){
+								if(JOptionPane.showConfirmDialog(null, "Usted Esta Intentando Guardar Las Actividades Del Dia \n>>>>>>>> "+dia.toUpperCase()+" >>>>>>>> \nDesea Continuar?","Aviso",0,1,new ImageIcon("imagen/usuario-icono-noes_usuario9131-64.png")) == 0){	
+									if(new GuardarSQL().Guardar_Actividades_Con_Respuesta(tb_actividades_con_respuesta, dianum)){									
 											JOptionPane.showMessageDialog(null, "Las Actividades Contestadas Se Guardaron Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 											return;
 									}

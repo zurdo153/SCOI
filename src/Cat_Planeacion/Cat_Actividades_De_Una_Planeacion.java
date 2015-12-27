@@ -383,6 +383,10 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					frecuencia.setSeleccion_hasta_que_se_cumpla(false);
 					frecuencia.setSeleccion_en_la_fecha_indicada(true);
 					frecuencia.setFh_unica_repeticion(new SimpleDateFormat("dd/MM/yyyy").format(fecha_de_la_actividad.getDate()));
+					OpRespuesta.setPendiente("N");
+					OpRespuesta.setEnProceso("N");
+					OpRespuesta.setIncumplida("N");
+					OpRespuesta.setPasoAOtroDepartamento("N");
 				}
 				
 				if(Actividad_plan.guardar(OpRespuesta,OpPonderacion,usuarios,frecuencia, usuario.getFolio())){
@@ -446,7 +450,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			this.linea = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 			this.lblLineaContestacion.setBorder(BorderFactory.createTitledBorder(linea,"Opciones Para Contestación"));
 			this.lblLineaEvidencia.setBorder(BorderFactory.createTitledBorder(linea,"Opciones Para Evidencia"));
-			this.lblLineaObservacion.setBorder(BorderFactory.createTitledBorder(linea,"Opciones Para Evidencia"));
+			this.lblLineaObservacion.setBorder(BorderFactory.createTitledBorder(linea,"Opciones Para Observación"));
 			int x=15,y=30,width=150,height=20,i=18;
 			
 			panel.add(lblLineaContestacion).setBounds       (x-5 ,y-10 ,width+22, 110);

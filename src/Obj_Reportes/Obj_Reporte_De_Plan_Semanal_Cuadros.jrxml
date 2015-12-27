@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-12-23T11:36:15 -->
+<!-- 2015-12-27T12:22:39 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="ireport.zoom" value="2.593742460100005"/>
 	<property name="ireport.x" value="302"/>
@@ -65,14 +65,14 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement x="70" y="34" width="194" height="14" forecolor="#FFFFFF" uuid="41ad3de9-fc9f-4d8a-aebe-4edb4d77148d">
+					<reportElement x="70" y="34" width="250" height="14" forecolor="#FFFFFF" uuid="41ad3de9-fc9f-4d8a-aebe-4edb4d77148d">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{folio_empleado}+":"+$F{nombre}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="64" y="48" width="200" height="14" forecolor="#FFFFFF" uuid="3f4e2bd9-5acc-4490-a033-25bf62da02ae">
+					<reportElement x="64" y="48" width="256" height="14" forecolor="#FFFFFF" uuid="3f4e2bd9-5acc-4490-a033-25bf62da02ae">
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
@@ -91,14 +91,14 @@
 					<imageExpression><![CDATA[$F{foto}]]></imageExpression>
 				</image>
 				<staticText>
-					<reportElement x="75" y="1" width="220" height="30" forecolor="#FFFFFF" uuid="1f24a432-910b-4937-a104-60985bf9bc99"/>
+					<reportElement x="75" y="1" width="244" height="30" forecolor="#FFFFFF" uuid="1f24a432-910b-4937-a104-60985bf9bc99"/>
 					<box>
 						<topPen lineColor="#FFFFFF"/>
 						<leftPen lineColor="#FFFFFF"/>
 						<bottomPen lineColor="#FFFFFF"/>
 						<rightPen lineColor="#FFFFFF"/>
 					</box>
-					<textElement textAlignment="Left">
+					<textElement textAlignment="Center">
 						<font size="22" isBold="true"/>
 					</textElement>
 					<text><![CDATA[PLAN SEMANAL]]></text>
