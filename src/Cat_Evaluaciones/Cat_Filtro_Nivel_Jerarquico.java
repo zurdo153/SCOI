@@ -1,7 +1,7 @@
 package Cat_Evaluaciones;
 
-import java.awt.Component;
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -19,10 +19,12 @@ import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
+import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
@@ -46,11 +48,7 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
 	private TableRowSorter trsfiltro;
 	
 	JLabel lblBuscar = new JLabel("BUSCAR : ");
-	JTextField txtBuscar = new JTextField();
-	
-//	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Empleados();
-//	@SuppressWarnings("rawtypes")
-//	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+	JTextField txtBuscar =new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 	
 	@SuppressWarnings("rawtypes")
 	public Cat_Filtro_Nivel_Jerarquico()	{
@@ -64,19 +62,19 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
 		trsfiltro = new TableRowSorter(model); 
 		tabla.setRowSorter(trsfiltro);  
 		
-		campo.add(getPanelTabla()).setBounds(10,100,720,450);
+		campo.add(getPanelTabla()).setBounds(10,60,720,500);
 		
 		agregar(tabla);
 		
 		campo.add(lblBuscar).setBounds(30,30,70,20);
-		campo.add(txtBuscar).setBounds(95,30,215,20);
+		campo.add(txtBuscar).setBounds(95,30,400,20);
 		
 		cont.add(campo);
-		
 		this.setSize(750,600);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon16.png"));
 		
 	}
 	private void agregar(final JTable tbl) {
@@ -86,7 +84,7 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
 	        		int fila = tabla.getSelectedRow();
 	    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
 	    			dispose();
-	    			new Cat_Nivel_Jerarquico2(folio+"").setVisible(true);
+	    			new Cat_Nivel_Jerarquico(folio+"").setVisible(true);
 	        	}
 	        }
         });
@@ -116,35 +114,10 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
     	tabla.getTableHeader().setReorderingAllowed(false) ;
     	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     	
-		TableCellRenderer render = new TableCellRenderer() 
-
-		{ 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-				
-				if(row%2==0){
-					lbl.setOpaque(true); 
-					lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-			
-				if(table.getSelectedRow() == row){
-					lbl.setOpaque(true); 
-					lbl.setBackground(new java.awt.Color(186,143,73));
-				}
-			
-				switch(column){
-					case 0 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-					case 1 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-					case 2 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-				}
-				return lbl; 
-			} 
-		};
-		
-		tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-		tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-		tabla.getColumnModel().getColumn(2).setCellRenderer(render); 
+		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+    	
 		
 		Statement s;
 		ResultSet rs;

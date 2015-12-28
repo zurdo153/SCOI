@@ -1,6 +1,5 @@
 package Cat_Evaluaciones;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -24,10 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Evaluaciones.Cat_Filtro_Nivel_Jerarquico;
@@ -36,6 +33,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -43,22 +41,22 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JTextField txtFolio = new JTextField();
-	JTextField txtDescripcion = new JTextField();
+	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio", 100, "Int");
+	JTextField txtDescripcion = new Componentes().text(new JCTextField(), "Descripcion", 100, "String");
 	
 //	JCheckBox chStatus = new JCheckBox("Status",true);
+	JButton btnBuscar = new JButton(new ImageIcon("Imagen/buscar.png"));
+	JButton btnFiltro = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
+	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
+	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
+	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
+	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
+	JButton btnEliminar = new JButton("Quitar", new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
 	
-	JButton btnNuevo = new JButton("Nuevo");
-	JButton btnModificar = new JButton("Modificar");
-	JButton btnSalir = new JButton("Salir");
-	JButton btnAgregar = new JButton("Agregar");
-	JButton btnLimpiar = new JButton("Limpiar");
-	JButton btnGuardar = new JButton("Guardar");
-	JButton btnEliminar = new JButton("Remover");
-	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
-	
+	JButton btnAgregar = new JButton("Agregar",new ImageIcon("imagen/double-arrow-icone-3883-16.png"));
+
 	JButton btnAltaPuesto = new JButton("Puesto");
-	JButton btnFiltro = new JButton(new ImageIcon("Iconos/filter_iconBlue&16.png"));
 	JButton btnFiltroPuestosPrincipal 	= new JButton("Puestos Principal");
 	JButton btnFiltroPuestosDependiente = new JButton("Puesto Dependiente");
 
@@ -95,61 +93,53 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		
 		render();
 		
-		int y=30;
+		int y=30,width=100,height=20;
 		
-		this.panel.add(new JLabel("Folio:")).setBounds(20,y,50,20);
-		this.panel.add(txtFolio).setBounds(140,y,100,20);
-		this.panel.add(btnBuscar).setBounds(270,y,32,20);
-		this.panel.add(btnFiltro).setBounds(305,y,32,20);
-		this.panel.add(btnNuevo).setBounds(340,y,87,20);
-		this.panel.add(btnAltaPuesto).setBounds(450,y,87,20);
+		this.panel.add(new JLabel("Folio:")).setBounds(20,y,50,height);
+		this.panel.add(txtFolio).setBounds(130,y,width,height);
+		this.panel.add(btnBuscar).setBounds(235,y,height,height);
+		this.panel.add(btnFiltro).setBounds(255,y,height,height);
+		this.panel.add(btnNuevo).setBounds(300,y,width,height);
+		this.panel.add(btnAltaPuesto).setBounds(430,y,width,height);
 		
-		this.panel.add(new JLabel("Estatus:")).setBounds(20,y+=30,100,20);
-		this.panel.add(cmb_status).setBounds(140,y,100,20);
+		this.panel.add(new JLabel("Estatus:")).setBounds(20,y+=30,width,height);
+		this.panel.add(cmb_status).setBounds(130,y,width,height);
 		
-		this.panel.add(new JLabel("Descripcion:")).setBounds(20,y+=30,100,20);
-		this.panel.add(txtDescripcion).setBounds(140,y,340,20);
+		this.panel.add(new JLabel("Descripcion:")).setBounds(20,y+=30,width,height);
+		this.panel.add(txtDescripcion).setBounds(130,y,340,height);
 		
-		this.panel.add(btnFiltroPuestosPrincipal).setBounds(350,y+=30,130,20);
-		this.panel.add(new JLabel("Puesto Pricipal:")).setBounds(20,y,120,20);
-		this.panel.add(txtPuestoPrincipal).setBounds(140,y,190,20);
+		this.panel.add(btnFiltroPuestosPrincipal).setBounds(340,y+=30,130,height);
+		this.panel.add(new JLabel("Puesto Principal:")).setBounds(20,y,120,height);
+		this.panel.add(txtPuestoPrincipal).setBounds(130,y,190,height);
 		
-		this.panel.add(new JLabel("Puesto Dependiente:")).setBounds(20,y+=30,120,20);
-		this.panel.add(txtP_Dependiente).setBounds(140,y,190,20);
-		this.panel.add(btnFiltroPuestosDependiente).setBounds(350,y,130,20);
+		this.panel.add(new JLabel("Puesto Dependiente:")).setBounds(20,y+=30,120,height);
+		this.panel.add(txtP_Dependiente).setBounds(130,y,190,height);
+		this.panel.add(btnFiltroPuestosDependiente).setBounds(340,y,130,height);
 		
-		this.panel.add(new JLabel("Establecimiento:")).setBounds(20,y+=30,120,20);
-		this.panel.add(cmb_Establecimiento).setBounds(140,y,190,20);
+		this.panel.add(new JLabel("Establecimiento:")).setBounds(20,y+=30,120,height);
+		this.panel.add(cmb_Establecimiento).setBounds(130,y,190,height);
 		
-		this.panel.add(btnAgregar).setBounds(350,y,85,20);
-		this.panel.add(btnEliminar).setBounds(450,y,85,20);
+		this.panel.add(btnAgregar).setBounds(340,y,width,height);
+		this.panel.add(btnEliminar).setBounds(440,y,width,height);
 		
 		this.panel.add(panelScroll).setBounds(20,y+=30,520,195);
 		
-		this.panel.add(btnSalir).setBounds(20,410,80,20);
-		this.panel.add(btnLimpiar).setBounds(150,410,80,20);
-		this.panel.add(btnModificar).setBounds(290,410,80,20);
-		this.panel.add(btnGuardar).setBounds(430,410,80,20);
-		
-		
-//		this.tabla.getColumnModel().getColumn(0).setHeaderValue("Puesto Dependiente");
-//		this.tabla.getColumnModel().getColumn(0).setMinWidth(150);
-//		this.tabla.getColumnModel().getColumn(0).setMinWidth(150);
-//		this.tabla.getColumnModel().getColumn(1).setHeaderValue("Establecimiento");
-//		this.tabla.getColumnModel().getColumn(1).setMinWidth(150);
-//		this.tabla.getColumnModel().getColumn(1).setMinWidth(150);
+		this.panel.add(btnSalir).setBounds(20,410,width,height);
+		this.panel.add(btnDeshacer).setBounds(150,410,width,height);
+		this.panel.add(btnEditar).setBounds(290,410,width,height);
+		this.panel.add(btnGuardar).setBounds(430,410,width,height);
 		
 		this.btnSalir.addActionListener(salir);
 		this.txtFolio.addKeyListener(guardaAction);
 		this.btnEliminar.addActionListener(opRemover);
 		this.btnNuevo.addActionListener(opNuevo);
-		this.btnLimpiar.addActionListener(opLimpiar);
+		this.btnDeshacer.addActionListener(opLimpiar);
 		this.txtFolio.addKeyListener(valida);
 		this.btnAgregar.addActionListener(opAgregar);
 		
 		this.btnGuardar.addActionListener(guardar);
 		this.btnBuscar.addActionListener(buscar);
-		this.btnModificar.addActionListener(modifica);
+		this.btnEditar.addActionListener(modifica);
 		
 		this.btnAltaPuesto.addActionListener(puesto);
 		this.btnFiltro.addActionListener(filtro);
