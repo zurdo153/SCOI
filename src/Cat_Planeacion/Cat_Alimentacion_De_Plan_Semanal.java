@@ -60,10 +60,15 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		
 		activarColumna = "si";
 		
-		this.panel.add(btnGuardarObjetivos).setBounds(30, 490, 190, 38);
-		this.panel.add(btnAgregarActividad).setBounds(450, 490, 190, 38);
-		this.panel.add(btnGuardarActividades).setBounds(1100, 490, 190, 38);
-		
+		if(anchoMon<=1024){
+			this.panel.add(btnGuardarObjetivos).setBounds(15, 490, 190, 38);
+			this.panel.add(btnAgregarActividad).setBounds(410, 490, 190, 38);
+			this.panel.add(btnGuardarActividades).setBounds(815, 490, 190, 38);
+		}else{
+			this.panel.add(btnGuardarObjetivos).setBounds(30, 490, 190, 38);
+			this.panel.add(btnAgregarActividad).setBounds(450, 490, 190, 38);
+			this.panel.add(btnGuardarActividades).setBounds(1100, 490, 190, 38);
+		}
 		agregarColumnas(tablaLunes,modelLunes);
 		agregarColumnas(tablaMartes,modelMartes);
 		agregarColumnas(tablaMiercoles,modelMiercoles);
