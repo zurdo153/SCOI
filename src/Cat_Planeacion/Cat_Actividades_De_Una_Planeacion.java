@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.ResultSet;
@@ -69,6 +70,7 @@ import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Actividades_De_Una_Planeacion extends JFrame{
+	Runtime R = Runtime.getRuntime();
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	JTextArea txa_Resultado_Configuracion = new Componentes().textArea(new JTextArea(), "Detalle De La Actividad", 250);
@@ -117,6 +119,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	public Cat_Actividades_De_Una_Planeacion(String catalogo_origen, String fecha){
 		Catalogo_Origen=catalogo_origen;
 		fecha_extra=fecha;
+		this.addWindowListener(op_cerrar);
 		this.setSize(610, 350);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -327,10 +330,38 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		} );
 	}
 
+	WindowListener op_cerrar = new WindowListener() {
+		public void windowOpened(WindowEvent e) {}
+		public void windowIconified(WindowEvent e) {}
+		public void windowDeiconified(WindowEvent e) {}
+		public void windowDeactivated(WindowEvent e) {}
+		public void windowClosing(WindowEvent e) {
+			if(!Catalogo_Origen.equals("Cat_Alimentacion_De_Plan_Semanal")){
+					new Cat_Programacion_Y_Revision_Del_Plan_Semanal().setVisible(true);			
+			}else{
+				new Cat_Alimentacion_De_Plan_Semanal().setVisible(true);
+		  }
+		}
+		public void windowClosed(WindowEvent e) {}
+		public void windowActivated(WindowEvent e) {}
+	};
+	
 	ActionListener deshacer = new ActionListener(){
+		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e){
 			txa_Resultado_Configuracion.setText("");
+			
+			String[] horainicio = Actividad_plan.getHora_inicia().split(":");
+			jspHoraInicio.setValue(new Time(Integer.parseInt(horainicio[0]),Integer.parseInt(horainicio[1]),Integer.parseInt(horainicio[2])));
+			jspHoraInicio.setEditor(spDHoraInicio);
+			
+			String[] horatermina = Actividad_plan.getHora_termina().split(":");
+			jspHorafinal.setValue(new Time(Integer.parseInt(horatermina[0]),Integer.parseInt(horatermina[1]),Integer.parseInt(horatermina[2])));
+			jspHorafinal.setEditor(spDHorafinal);
+			
 			//falta reiniciar_los_objetos
+			
+			
 		 }
 		};
 		
@@ -1134,10 +1165,10 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		  JSpinner.DateEditor spDHoraUnicaRepeticion = new JSpinner.DateEditor(spHoraUnicaRepeticion,"HH:mm:ss"); 
 		
 	//frecuencia  -----------------------------------------------------------------------------
-		  String[] secede = {"DIARIA","SEMANAL"};
+		  String[] sucede = {"DIARIA","SEMANAL"};
 //		  String[] secede = {"DIARIA","SEMANAL","MENSUAL"};
 			@SuppressWarnings({ "rawtypes", "unchecked" })
-			JComboBox cmbSucede = new JComboBox(secede);
+			JComboBox cmbSucede = new JComboBox(sucede);
 			
 			JRadioButton rbDiaDelMes = new JRadioButton("El Dia");
 			JRadioButton rbDiaDeLaSemana = new JRadioButton("EL");
@@ -1607,7 +1638,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			if(rbHastaQueSeCumpla.isSelected()){
 				lblUnicarepeticion.setText("Desde");
 			}else{
-				lblUnicarepeticion.setText("Antes de");
+				lblUnicarepeticion.setText("Sucede El Dia");
 			}
 		}
 		
