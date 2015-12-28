@@ -44,7 +44,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio", 100, "Int");
 	JTextField txtDescripcion = new Componentes().text(new JCTextField(), "Descripcion", 100, "String");
 	
-//	JCheckBox chStatus = new JCheckBox("Status",true);
 	JButton btnBuscar = new JButton(new ImageIcon("Imagen/buscar.png"));
 	JButton btnFiltro = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
@@ -60,13 +59,12 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	JButton btnFiltroPuestosPrincipal 	= new JButton("Puestos Principal");
 	JButton btnFiltroPuestosDependiente = new JButton("Puesto Dependiente");
 
-	JTextField txtPuestoPrincipal = new JTextField();
+	JTextField txtPuestoPrincipal = new Componentes().text(new JCTextField(), "Puesto Principal", 300, "String");
+	JTextField txtP_Dependiente = new Componentes().text(new JCTextField(), "Puesto Dependiente", 300, "String");
 	
 	String lista[] ={"VIGENTE","CANCELADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(lista);
-	
-	JTextField txtP_Dependiente = new Componentes().text(new JTextField(), "SDF", 80, "String");
 	
 	String lista3[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -83,11 +81,9 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	JTable tabla = new JTable(modelo);
 	JScrollPane panelScroll = new JScrollPane(tabla);
 	
-//	int valor_referencia=0;
-	
 	public void getContenedor(){
 				
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/nivel_jerarquico_icon&16.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/plan-de-organizacion-de-la-red-de-sitio-icono-5788-32.png"));
 		this.panel.setBorder(BorderFactory.createTitledBorder("Nivel Jerarquico"));	
 		this.setTitle("Nivel Jerarquico");
 		
@@ -166,9 +162,10 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	public void render(){
 		tabla.getTableHeader().setReorderingAllowed(false) ;
 		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		
-		tabla.getColumnModel().getColumn(0).setMaxWidth(250);
-		tabla.getColumnModel().getColumn(0).setMinWidth(250);
+		tabla.getColumnModel().getColumn(0).setHeaderValue("Puesto Dependiente");
+		tabla.getColumnModel().getColumn(0).setMaxWidth(267);
+		tabla.getColumnModel().getColumn(0).setMinWidth(267);
+		tabla.getColumnModel().getColumn(1).setHeaderValue("Establecimiento");
 		tabla.getColumnModel().getColumn(1).setMaxWidth(250);
 		tabla.getColumnModel().getColumn(1).setMinWidth(250);
 		
