@@ -7589,12 +7589,17 @@ public class BuscarSQL {
 	public String[] buscarFolioSemanaParaPlanSemanal(int dias){
 		Statement stmt = null;
 		
-		String query = "declare @mover int set @mover = "+dias+"; "
-				+ " select case when DATENAME(WEEK,GETDATE()+@mover)>52 "
-				+ "		then convert(varchar(20),(DATENAME(YEAR,GETDATE()+@mover)+1))+'01' "
-				+ "				 else DATENAME(YEAR,GETDATE()+@mover)+ RIGHT('00'+CONVERT(VARCHAR(2),DATENAME(WEEK,GETDATE()+@mover)),2) "
-				+ "			end, "
-				+ "		 convert(varchar(20),GETDATE()+@mover-datepart(WEEKDAY,GETDATE()-1),103)+' - '+convert(varchar(20),GETDATE()+@mover-datepart(WEEKDAY,GETDATE()-1)+6,103)";
+//		String query = "declare @mover int set @mover = "+dias+"; "
+//				+ " select case when DATENAME(WEEK,GETDATE()+@mover)>52 "
+//				+ "		then convert(varchar(20),(DATENAME(YEAR,GETDATE()+@mover)+1))+'01' "
+//				+ "				 else DATENAME(YEAR,GETDATE()+@mover)+ RIGHT('00'+CONVERT(VARCHAR(2),DATENAME(WEEK,GETDATE()+@mover)),2) "
+//				+ "			end, "
+//				+ "		 convert(varchar(20),GETDATE()+@mover-datepart(WEEKDAY,GETDATE()-1),103)+' - '+convert(varchar(20),GETDATE()+@mover-datepart(WEEKDAY,GETDATE()-1)+6,103)";
+		
+		String query =" declare @fecha_inicial datetime=dbo.Primer_Dia_De_La_Semana(getdate()),@mover int set @mover = "+dias+"; " 
+					+ " select DATENAME(YEAR,GETDATE()+@mover)+ RIGHT('00'+CONVERT(VARCHAR(2),DATENAME(WEEK,GETDATE()+@mover)),2) as folio, "
+					+ " convert(varchar(20),@fecha_inicial+@mover,103)+' - '+convert(varchar(20),@fecha_inicial+6+@mover,103) as periodo ";
+					
 		String[] datos = new String[2];
 		
 		try {

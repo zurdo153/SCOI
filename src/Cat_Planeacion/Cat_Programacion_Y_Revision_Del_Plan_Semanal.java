@@ -69,27 +69,27 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		int y=30;
 		
 		if(anchoMon<=1024){
-			this.panel.add(btnizquierda).setBounds(170, y, 38,38);
-			this.panel.add(btnderecha).setBounds(215, y, 38, 38);
+			this.panel.add(btnizquierda).setBounds(220, y, 38,38);
+			this.panel.add(btnderecha).setBounds(265, y, 38, 38);
 			
-			this.panel.add(btnObjetivos).setBounds(700,10,150,38);
-			this.panel.add(btnAgregarActividad).setBounds(855,10,150,38);
-			this.panel.add(btnCancelarActividad).setBounds(1005,10,150,38);
+			this.panel.add(btnReporte_cuadros).setBounds(15,500,150,38);
+			this.panel.add(btnReporte_cntestad).setBounds(185,500,150,38);
+			this.panel.add(btnReporte_lista).setBounds(410,500,200,38);
 			
-			this.panel.add(btnReporte_cuadros).setBounds(30,500,150,38);
-			this.panel.add(btnReporte_cntestad).setBounds(200,500,150,38);
-			this.panel.add(btnReporte_lista).setBounds(650,500,200,38);
+			this.panel.add(btnObjetivos).setBounds(630,500,120,38);
+			this.panel.add(btnAgregarActividad).setBounds(750,500,125,38);
+			this.panel.add(btnCancelarActividad).setBounds(875,500,130,38);
 		}else{
 			this.panel.add(btnizquierda).setBounds(250, y, 38,38);
 			this.panel.add(btnderecha).setBounds(320, y, 38, 38);
 			
-			this.panel.add(btnObjetivos).setBounds(825,500,130,38);
-			this.panel.add(btnAgregarActividad).setBounds(975,500,130,38);
-			this.panel.add(btnCancelarActividad).setBounds(1125,500,160,38);
-			
 			this.panel.add(btnReporte_cuadros).setBounds(30,500,150,38);
 			this.panel.add(btnReporte_cntestad).setBounds(200,500,150,38);
 			this.panel.add(btnReporte_lista).setBounds(450,500,200,38);
+			
+			this.panel.add(btnObjetivos).setBounds(825,500,130,38);
+			this.panel.add(btnAgregarActividad).setBounds(975,500,130,38);
+			this.panel.add(btnCancelarActividad).setBounds(1125,500,160,38);
 		}
 		
 		ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/imagen/checklistbtn.png");

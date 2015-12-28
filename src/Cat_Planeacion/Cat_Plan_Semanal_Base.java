@@ -214,7 +214,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		activarColumna = "no";
 		
 		if(anchoMon<=1024){
-			this.setSize(1110,600);
+			this.setSize(1020,600);
 		}else{
 			this.setSize(1310,600);
 		}
@@ -228,32 +228,55 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		
 		int x = 30, y=30;
 		
-		this.panel.add(new JLabel("Folio:")).setBounds  (x    ,y    ,100,20);
-		this.panel.add(txtFolio).setBounds              (x+40,y    ,140,20);
-		this.panel.add(new JLabel("Periodo:")).setBounds(x    ,y+=25,100,20);
-		this.panel.add(txtPeriodo).setBounds            (x+40,y    ,140,20);
-		
-		panel.add(lblFoto).setBounds(x,y+=40,100,100);
-		
-		this.panel.add(new JLabel("Empleado:")).setBounds(x+110,y+=3,100,20);
-		this.panel.add(txtEmpleado).setBounds(200, y,240,20);
-		
-		this.panel.add(new JLabel("Establecimiento:")).setBounds(x+110,y+=25,100,20);
-		this.panel.add(txtEstablecimiento).setBounds(220, y,220,20);
-		
-		this.panel.add(new JLabel("Departamento:")).setBounds(x+110,y+=25,100,20);
-		this.panel.add(txtDepartamento).setBounds(220, y,220,20);
-		
-		this.panel.add(new JLabel("Puesto:")).setBounds(x+110,y+=25,100,20);
-		this.panel.add(txtPuesto).setBounds(200, y,240,20);
-		
-		this.panel.add(new JLabel("Objetivos De La Semana:")).setBounds(x,y+=40,150,20);
-		this.panel.add(scroll_objetivos).setBounds(x, y+=15, 410,250);	
-		
 		if(anchoMon<=1024){
-			this.panel.add(pestanas).setBounds(450,30,665, 450);
+			this.panel.add(new JLabel("Folio:")).setBounds  (15    ,y    ,100,20);
+			this.panel.add(txtFolio).setBounds              (x+25  ,y    ,140,20);
+			this.panel.add(new JLabel("Periodo:")).setBounds(15    ,y+=25,100,20);
+			this.panel.add(txtPeriodo).setBounds            (x+25  ,y    ,140,20);
+			
+			panel.add(lblFoto).setBounds(15,y+=40,100,100);
+			
+			this.panel.add(new JLabel("Empleado:")).setBounds(x+95,y+=3,100,20);
+			this.panel.add(txtEmpleado).setBounds(185, y,220,20);
+			
+			this.panel.add(new JLabel("Establecimiento:")).setBounds(x+95,y+=25,100,20);
+			this.panel.add(txtEstablecimiento).setBounds(205, y,200,20);
+			
+			this.panel.add(new JLabel("Departamento:")).setBounds(x+95,y+=25,100,20);
+			this.panel.add(txtDepartamento).setBounds(205, y,200,20);
+			
+			this.panel.add(new JLabel("Puesto:")).setBounds(x+95,y+=25,100,20);
+			this.panel.add(txtPuesto).setBounds(185, y,220,20);
+			
+			this.panel.add(new JLabel("Objetivos De La Semana:")).setBounds(15,y+=40,150,20);
+			this.panel.add(scroll_objetivos).setBounds(15, y+=15, 390,250);	
+			
+			this.panel.add(pestanas).setBounds(410,30,595, 450);
 			ancho_nivel_critico=110;
 		}else{
+			
+			this.panel.add(new JLabel("Folio:")).setBounds  (x    ,y    ,100,20);
+			this.panel.add(txtFolio).setBounds              (x+40,y    ,140,20);
+			this.panel.add(new JLabel("Periodo:")).setBounds(x    ,y+=25,100,20);
+			this.panel.add(txtPeriodo).setBounds            (x+40,y    ,140,20);
+			
+			panel.add(lblFoto).setBounds(x,y+=40,100,100);
+			
+			this.panel.add(new JLabel("Empleado:")).setBounds(x+110,y+=3,100,20);
+			this.panel.add(txtEmpleado).setBounds(200, y,240,20);
+			
+			this.panel.add(new JLabel("Establecimiento:")).setBounds(x+110,y+=25,100,20);
+			this.panel.add(txtEstablecimiento).setBounds(220, y,220,20);
+			
+			this.panel.add(new JLabel("Departamento:")).setBounds(x+110,y+=25,100,20);
+			this.panel.add(txtDepartamento).setBounds(220, y,220,20);
+			
+			this.panel.add(new JLabel("Puesto:")).setBounds(x+110,y+=25,100,20);
+			this.panel.add(txtPuesto).setBounds(200, y,240,20);
+			
+			this.panel.add(new JLabel("Objetivos De La Semana:")).setBounds(x,y+=40,150,20);
+			this.panel.add(scroll_objetivos).setBounds(x, y+=15, 410,250);	
+			
 			this.panel.add(pestanas).setBounds(450,30,840, 450);
 			ancho_nivel_critico=145;
 		}
@@ -323,7 +346,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		panelRender.setBackground(new Color(Integer.parseInt(color.equals("Azul")?"C9C9C9":"AFAFAF",16)));
 		
 		if(anchoMon<=1024){
-			panelRender.add(scrollRender).setBounds(15,20,600,390);
+			panelRender.add(scrollRender).setBounds(10,20,570,390);
 		}else{
 			panelRender.add(scrollRender).setBounds(15,20,805,390);
 		}
@@ -331,7 +354,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		tb.getTableHeader().setReorderingAllowed(false) ;
 		tb.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
-		int ancho=activarColumna.equals("si")?170:100;
+		int ancho=activarColumna.equals("si")?170:90;
 		int ancho2=activarColumna.equals("si")?100:170;
 		
 		tb.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -340,8 +363,8 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		tb.getColumnModel().getColumn(1).setMaxWidth(900);
 		tb.getColumnModel().getColumn(2).setMaxWidth(ancho);
 		tb.getColumnModel().getColumn(2).setMinWidth(ancho);
-		tb.getColumnModel().getColumn(3).setMaxWidth(100);
-		tb.getColumnModel().getColumn(3).setMinWidth(100);
+		tb.getColumnModel().getColumn(3).setMaxWidth(90);
+		tb.getColumnModel().getColumn(3).setMinWidth(90);
 		tb.getColumnModel().getColumn(4).setMaxWidth(ancho2);
 		tb.getColumnModel().getColumn(4).setMinWidth(ancho2);
 		
