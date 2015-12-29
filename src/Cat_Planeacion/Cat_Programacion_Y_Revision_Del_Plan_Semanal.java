@@ -65,9 +65,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	}
 	
 	public void init(){
-		
 		int y=30;
-		
 		if(anchoMon<=1024){
 			this.panel.add(btnizquierda).setBounds(220, y, 38,38);
 			this.panel.add(btnderecha).setBounds(265, y, 38, 38);

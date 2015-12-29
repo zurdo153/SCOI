@@ -1,20 +1,25 @@
 package Cat_Evaluaciones;
 
 import java.awt.Container;
+import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -22,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -66,7 +72,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(lista);
 	
-	String lista3[] = new Obj_Establecimiento().Combo_Establecimiento();
+	String lista3[] = new Obj_Establecimiento().Combo_Establecimiento_Todos();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_Establecimiento = new JComboBox(lista3);
 	
@@ -82,7 +88,10 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	JScrollPane panelScroll = new JScrollPane(tabla);
 	
 	public void getContenedor(){
-				
+		this.setSize(560,480);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/plan-de-organizacion-de-la-red-de-sitio-icono-5788-32.png"));
 		this.panel.setBorder(BorderFactory.createTitledBorder("Nivel Jerarquico"));	
 		this.setTitle("Nivel Jerarquico");
@@ -102,15 +111,16 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		this.panel.add(cmb_status).setBounds(130,y,width,height);
 		
 		this.panel.add(new JLabel("Descripcion:")).setBounds(20,y+=30,width,height);
-		this.panel.add(txtDescripcion).setBounds(130,y,340,height);
+		this.panel.add(txtDescripcion).setBounds(130,y,410,height);
 		
-		this.panel.add(btnFiltroPuestosPrincipal).setBounds(340,y+=30,130,height);
-		this.panel.add(new JLabel("Puesto Principal:")).setBounds(20,y,120,height);
-		this.panel.add(txtPuestoPrincipal).setBounds(130,y,190,height);
+	
+		this.panel.add(new JLabel("Puesto Principal:")).setBounds(20,y+=30,120,height);
+		this.panel.add(txtPuestoPrincipal).setBounds(130,y,270,height);
+		this.panel.add(btnFiltroPuestosPrincipal).setBounds(410,y,130,height);
 		
 		this.panel.add(new JLabel("Puesto Dependiente:")).setBounds(20,y+=30,120,height);
-		this.panel.add(txtP_Dependiente).setBounds(130,y,190,height);
-		this.panel.add(btnFiltroPuestosDependiente).setBounds(340,y,130,height);
+		this.panel.add(txtP_Dependiente).setBounds(130,y,270,height);
+		this.panel.add(btnFiltroPuestosDependiente).setBounds(410,y,130,height);
 		
 		this.panel.add(new JLabel("Establecimiento:")).setBounds(20,y+=30,120,height);
 		this.panel.add(cmb_Establecimiento).setBounds(130,y,190,height);
@@ -130,7 +140,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		this.btnEliminar.addActionListener(opRemover);
 		this.btnNuevo.addActionListener(opNuevo);
 		this.btnDeshacer.addActionListener(opLimpiar);
-		this.txtFolio.addKeyListener(valida);
 		this.btnAgregar.addActionListener(opAgregar);
 		
 		this.btnGuardar.addActionListener(guardar);
@@ -153,21 +162,29 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		
 		this.cont.add(panel);
 		
-		this.setSize(560,480);
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"guardar");
+             getRootPane().getActionMap().put("guardar", new AbstractAction(){
+                 public void actionPerformed(ActionEvent e)
+                 {                 	    btnNuevo.doClick();           	    }
+            });
+             
+	     //deshacer con escape
+         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+           getRootPane().getActionMap().put("escape", new AbstractAction(){
+          public void actionPerformed(ActionEvent e)
+          {                btnDeshacer.doClick();           	    }
+      });
 	}
 	
 	public void render(){
 		tabla.getTableHeader().setReorderingAllowed(false) ;
 		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Puesto Dependiente");
-		tabla.getColumnModel().getColumn(0).setMaxWidth(267);
-		tabla.getColumnModel().getColumn(0).setMinWidth(267);
+		tabla.getColumnModel().getColumn(0).setMinWidth(367);
+		tabla.getColumnModel().getColumn(0).setMaxWidth(667);
 		tabla.getColumnModel().getColumn(1).setHeaderValue("Establecimiento");
-		tabla.getColumnModel().getColumn(1).setMaxWidth(250);
-		tabla.getColumnModel().getColumn(1).setMinWidth(250);
+		tabla.getColumnModel().getColumn(1).setMinWidth(150);
+		tabla.getColumnModel().getColumn(1).setMaxWidth(350);
 		
 		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
@@ -198,8 +215,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	
 	ActionListener opFiltroPuestos = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-			
-			
 			new Cat_Filtro_puestos_jerarquico(e.getActionCommand()).setVisible(true);
 		}
 		
@@ -208,8 +223,9 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			status_botones(false);
+			
 			if(txtFolio.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "El Folio Es Requerido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Folio Es Requerido Para Hacer Una Busqueda", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				if(validacampos().equals("")){
@@ -235,10 +251,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 										
 										if(gerarquico.actualizar2(listadatos())){
 												limpiaGuardar();
-												////////////////  limpia la tabla antes de acer otra busqueda   ////////////////
-												/**/	    while(modelo.getRowCount() > 0){modelo.removeRow(0);}			/**/
 												/**/	   		 getTabla(Integer.parseInt(txtFolio.getText()));			/**/
-												////////////////////////////////////////////////////////////////////////////////
 												JOptionPane.showMessageDialog(null,"El registro se actualizo exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
 												return;
 										}else{
@@ -271,10 +284,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 									if(gerarquico.guardar_multiple2(listadatos())){
 										btnFiltroPuestosPrincipal.setEnabled(false);
 											limpiaGuardar();
-											////////////////  limpia la tabla antes de acer otra busqueda   ////////////////
-											/**/	    while(modelo.getRowCount() > 0){modelo.removeRow(0);}			/**/
 											/**/	   		 getTabla(Integer.parseInt(txtFolio.getText()));			/**/
-											////////////////////////////////////////////////////////////////////////////////
 											JOptionPane.showMessageDialog(null,"El registro se guardó exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
 											return;
 									}else{
@@ -313,9 +323,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	ActionListener opLimpiar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			 limpia();
-			 	while(modelo.getRowCount() > 0){
-				 	modelo.removeRow(0);
-			 	}
+			 modelo.setRowCount(0);
 		}
 	};
 	
@@ -335,7 +343,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 					}
 				}
 			}else{
-				JOptionPane.showMessageDialog(null,"No ha seleccionado ningún renglón", "Aviso!", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Necesita Seleccionar Un Renglom Primero De La Tabla", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			}
 		}
 	};
@@ -344,13 +352,14 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			if(txtP_Dependiente.getText().equals(""))
 			{
-				JOptionPane.showMessageDialog(null, "Favor de seleccionar un puesto","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Necesita Agregar Un Puesto", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-				if (cmb_Establecimiento.getSelectedItem().equals("Todos")) {
-						JOptionPane.showMessageDialog(null, "Favor de seleccionar un establecimiento","Aviso",JOptionPane.INFORMATION_MESSAGE);
-						return;
-				}else{
+//				if (Integer.valueOf(cmb_Establecimiento.getSelectedIndex())==0){
+//					JOptionPane.showMessageDialog(null, "Necesita Seleccionar Un Establecimiento", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//					cmb_Establecimiento.requestFocus();
+//					return;	
+//				}else{
 					String[] arreglo = new String[2];
 					
 					arreglo[0] =txtP_Dependiente.getText();
@@ -360,7 +369,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 					
 					txtP_Dependiente.setText("");
 					cmb_Establecimiento.setSelectedIndex(0);
-				}
+//				}
 			}
 		}
 	};
@@ -382,7 +391,8 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		{
 			if(txtFolio.getText().equals(""))
 			{
-				JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Error",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Ingrese Un Folio Primero Para Buscar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				txtFolio.requestFocus();
 				return;
 			}else{
 				Obj_Nivel_Jerarquico nivelbuscar = new Obj_Nivel_Jerarquico().buscar(Integer.parseInt(txtFolio.getText()));
@@ -398,20 +408,18 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 					btnFiltroPuestosDependiente.setEnabled(true);
 					cmb_Establecimiento.setEnabled(true);
 				    cmb_status.setEnabled(true);
-//				    chStatus.setSelected(true);
 				    
 				    txtP_Dependiente.setText("");
 				    cmb_Establecimiento.setSelectedIndex(0);
 				    
-			////////////////  limpia la tabla antes de acer otra busqueda   ////////////////
-			/**/	    while(modelo.getRowCount() > 0){modelo.removeRow(0);}			/**/
-			/**/	   		 getTabla(Integer.parseInt(txtFolio.getText()));			/**/
-			////////////////////////////////////////////////////////////////////////////////
-			btnFiltroPuestosPrincipal.setEnabled(false);
+				    getTabla(Integer.parseInt(txtFolio.getText()));
+			        btnFiltroPuestosPrincipal.setEnabled(false);
 					panelfalse();
 				}
 				else{
-					JOptionPane.showMessageDialog(null,"El Folio no existe","Aviso",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "El Folio Buscado No Existe", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					txtFolio.setText("");
+					txtFolio.requestFocus();
 					return;
 				}
 			}     
@@ -419,6 +427,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	};
 	
 	public void getTabla(int folio){
+		modelo.setRowCount(0);
 		String todos1 = "exec sp_select_nivel_jerarquico "+folio;
 		Statement stmt = null;
 		ResultSet rs;
@@ -430,7 +439,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 			while(rs.next()){
 				vector[0] = (rs.getString(2));
 				vector[1] = (rs.getString(3));
-//				vector[2] = (rs.getString(3));
 				modelo.addRow(vector);
 			}
 		} catch (SQLException e1) {
@@ -507,26 +515,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		}
 	};
 	
-	KeyListener valida = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();
-				int limite=10;
-
-				if(((caracter < '0') ||
-			        (caracter > '9')) &&
-			        (caracter != KeyEvent.VK_BACK_SPACE)){
-			    	e.consume(); 
-			    }
-					if (txtFolio.getText().length()== limite)
-				     e.consume();
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {	
-			}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-		};
 	
 	KeyListener guardaAction = new KeyListener() {
 		@Override
@@ -551,7 +539,10 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		txtPuestoPrincipal.setText("");
 		cmb_Establecimiento.setSelectedIndex(0);
 	    cmb_status.setEnabled(false);
-	    
+	    btnAgregar.setEnabled(false);
+	    btnEliminar.setEnabled(false);
+	    btnFiltroPuestosDependiente.setEnabled(false);
+	    btnFiltroPuestosPrincipal.setEnabled(false);
 	    txtFolio.requestFocus();
 	    txtFolio.setEditable(true);
 	    panelfalse();
@@ -561,11 +552,15 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		txtP_Dependiente.setText("");
 		cmb_Establecimiento.setSelectedIndex(0);
 	    cmb_status.setEnabled(false);
-//	    txtP_Dependiente.requestFocus();
+	    txtPuestoPrincipal.setEnabled(false);
 	    txtFolio.setEditable(true);
+	    btnAgregar.setEnabled(false);
+	    btnEliminar.setEnabled(false);
+	    btnFiltroPuestosDependiente.setEnabled(false);
+	    btnFiltroPuestosPrincipal.setEnabled(false);
 	    panelfalseGuardar();
 	}
-	
+/////TODO filtro de puestos	
 	public class Cat_Filtro_puestos_jerarquico extends JFrame {
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
@@ -584,32 +579,35 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		private TableRowSorter trsfiltro;
 		
 		JTextField txtFolio = new JTextField();
-		JTextField txtNombre_Completo = new JTextField();
+		JTextField txtNombre_Completo =new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 		
 		String botonPresionado = "";
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Cat_Filtro_puestos_jerarquico(String boton)	{
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon16.png"));
 			this.setTitle("Filtro de Puestos");
 			campo.setBorder(BorderFactory.createTitledBorder("Filtro de Puestos"));
 			trsfiltro = new TableRowSorter(model); 
 			tabla.setRowSorter(trsfiltro);  
-			
 			botonPresionado = boton;
 			
-			campo.add(getPanelTabla()).setBounds(15,42,400,420);
-			
-			campo.add(txtFolio).setBounds(15,20,48,20);
-			campo.add(txtNombre_Completo).setBounds(64,20,229,20);
+			campo.add(getPanelTabla()).setBounds(10,42,575,440);
+			campo.add(txtFolio).setBounds(10,20,53,20);
+			campo.add(txtNombre_Completo).setBounds(64,20,500,20);
 			
 			agregar(tabla);
-			
 			cont.add(campo);
 			
 			txtFolio.addKeyListener(opFiltroFolio);
 			txtNombre_Completo.addKeyListener(opFiltroNombre);
 			
-			this.setSize(435,520);
+			this.addWindowListener(new WindowAdapter() {
+                 public void windowOpened( WindowEvent e ){
+                	 txtNombre_Completo.requestFocus();
+              }
+            });
+			
+			this.setSize(600,520);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -632,8 +630,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 					if(botonPresionado.equals("")){
 						txtPuestoPrincipal.setText(nombre+""); 
 					}
-		    			
-		    			
 		        	}
 		        }
 	        });
@@ -664,10 +660,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		
-		
 	   	private JScrollPane getPanelTabla()	{		
-	   		
 	   		tabla.getTableHeader().setReorderingAllowed(false) ;
 			tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			
@@ -675,15 +668,15 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 			tabla.getColumnModel().getColumn(0).setMaxWidth(50);
 			tabla.getColumnModel().getColumn(0).setMinWidth(50);
 			tabla.getColumnModel().getColumn(1).setHeaderValue("Puesto");
-			tabla.getColumnModel().getColumn(1).setMaxWidth(230);
-			tabla.getColumnModel().getColumn(1).setMinWidth(230);
+			tabla.getColumnModel().getColumn(1).setMinWidth(370);
+			tabla.getColumnModel().getColumn(1).setMaxWidth(600);
 			tabla.getColumnModel().getColumn(2).setHeaderValue("Abreviatura");
-			tabla.getColumnModel().getColumn(2).setMaxWidth(100);
-			tabla.getColumnModel().getColumn(2).setMinWidth(100);
+			tabla.getColumnModel().getColumn(2).setMinWidth(135);
+			tabla.getColumnModel().getColumn(2).setMaxWidth(300);
 			
 			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 			
 			Statement s;
 			ResultSet rs;
@@ -696,7 +689,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 				   fila[0] = rs.getString(1)+"  ";
 				   fila[1] = "   "+rs.getString(2);
 				   fila[2] = "   "+rs.getString(3).trim();
-	
 				   model.addRow(fila); 
 				}	
 			} catch (SQLException e1) {
@@ -705,8 +697,8 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 			 JScrollPane scrol = new JScrollPane(tabla);
 		    return scrol; 
 		}
-	   	
 	}
+	
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

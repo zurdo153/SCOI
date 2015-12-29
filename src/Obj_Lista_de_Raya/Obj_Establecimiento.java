@@ -116,6 +116,17 @@ public class Obj_Establecimiento {
 		}
 	return null; }
 	
+	public String[] Combo_Establecimiento_Todos(){
+		try {
+			return new Cargar_Combo().Establecimiento_Todos("tb_establecimiento");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return null; }
+	
+	
+	
+	
 	public String[] Combo_Establecimiento201(){
 		try {
 			return new Cargar_Combo().Establecimiento("establecimientos");

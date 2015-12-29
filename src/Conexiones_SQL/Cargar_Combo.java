@@ -93,6 +93,51 @@ public class Cargar_Combo {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public String[] Establecimiento_Todos(String tabla) throws SQLException{
+		String query = "";
+		if(tabla.equals("tb_establecimiento")){
+			query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 1 order by nombre asc";
+		}else{
+			query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 'V' order by nombre asc";
+		}
+		Statement stmt = null;
+		try {
+			if(tabla.equals("tb_establecimiento")){
+				stmt = con.conexion().createStatement();
+			}else{
+				stmt = con.conexion_IZAGAR().createStatement();
+			}
+			
+			
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Todos Los Establecimientos");
+				}
+				miVector.add(rs.getString("nombre"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	public String[] Responsables(String tabla) throws SQLException{
 		
 		String 	query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 1 order by nombre asc";

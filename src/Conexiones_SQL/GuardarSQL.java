@@ -2209,7 +2209,6 @@ public class GuardarSQL {
 			pstmt = con.prepareStatement(query);
 			pstmtabla=con.prepareStatement(querytabla);
 			
-			
 			pstmt.setString (1, pond.getDescripcion());
 			pstmt.setString (2, pond.getPuesto_principal());
 			

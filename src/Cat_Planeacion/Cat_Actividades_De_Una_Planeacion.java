@@ -1252,6 +1252,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			panel.add(new JLabel("Tipo De Programación: ")).setBounds(x    ,y    ,ancho+50  ,20);
 			panel.add(cmbTipoDeProgramacion).setBounds               (x+140,y    ,ancho+20  ,20);
 			panel.add(new JSeparator()).setBounds                    (x-30 ,y+28 ,ancho+530 ,20);
+			
 		//unica repeticion
 			panel.add(rbHastaQueSeCumpla).setBounds                  (x    ,y+=35,ancho*2   ,20);
 			panel.add(lblUnicarepeticion).setBounds                  (x+220,y    ,ancho     ,20);
@@ -1260,6 +1261,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 //			panel.add(new JLabel("Hora: ")).setBounds                (x+220,y    ,ancho     ,20);
 //			panel.add(chbConHora).setBounds                          (x+250,y    ,30        ,20);
 //			panel.add(spHoraUnicaRepeticion).setBounds               (x+280,y    ,ancho+30  ,20);
+			
 		//frecuencia
 			panel.add(new JLabel("Frecuencia")).setBounds(x-40, y+=25, ancho, 20);
 			panel.add(new JSeparator()).setBounds     (x+ancho-50, y+11, ancho*7-10, 20);

@@ -108,7 +108,7 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
 		tabla.getColumnModel().getColumn(1).setMaxWidth(600);
 		tabla.getColumnModel().getColumn(1).setMinWidth(400);
 		tabla.getColumnModel().getColumn(2).setHeaderValue("Nivel Jerarquico");
-		tabla.getColumnModel().getColumn(2).setMaxWidth(500);
+		tabla.getColumnModel().getColumn(2).setMaxWidth(480);
 		tabla.getColumnModel().getColumn(2).setMinWidth(250);
 		
     	tabla.getTableHeader().setReorderingAllowed(false) ;
@@ -116,7 +116,7 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
     	
 		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
     	
 		
 		Statement s;
