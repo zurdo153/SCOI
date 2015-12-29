@@ -4897,17 +4897,17 @@ public int  busca_y_actualiza_proximo_folio(int transaccion) {
 
 @SuppressWarnings("rawtypes")
 public boolean Guardar_Objetivos_De_La_Semana(Vector objetivos, String folioObjetivo, String periodoObjetivo){
-	String queryUpdate =  " delete tb_objetivos_de_plan_semanal  where estatus = 'PLA' and folio = "+folioObjetivo+"and usuario = "+(new Obj_Usuario().LeerSession().getFolio());
+//	String queryUpdate =  " delete tb_objetivos_de_plan_semanal  where estatus = 'PLA' and folio = "+folioObjetivo+"and usuario = "+(new Obj_Usuario().LeerSession().getFolio());
 	String query =  "exec sp_insert_objetivos_plan_semanal ?,?,?,?,"+usuario.getFolio();
 	Connection con = new Connexion().conexion();
 	
 	PreparedStatement pstmt = null;
 	try {
 		
-		pstmt = con.prepareStatement(queryUpdate);
-		con.setAutoCommit(false);
-		pstmt.executeUpdate();
-		
+//		pstmt = con.prepareStatement(queryUpdate);
+//		con.setAutoCommit(false);
+//		pstmt.executeUpdate();
+//		
 		
 		pstmt = con.prepareStatement(query);
 		con.setAutoCommit(false);
