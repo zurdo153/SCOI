@@ -7737,10 +7737,10 @@ public class BuscarSQL {
 	public String[][] buscarObjetivos_De_Plan_Semanal_Editable(int folio){
 		Statement stmt = null;
 		
-		String query = " select objetivo from tb_objetivos_de_plan_semanal "
+		String query = " select objetivo,folio_objetivo from tb_objetivos_de_plan_semanal "
 						+ " where estatus = 'PLA' and folio = "+folio+"and usuario = "+(new Obj_Usuario().LeerSession().getFolio());
 		
-		String[][] datos = new String[getFilas(query)][2];
+		String[][] datos = new String[getFilas(query)][3];
 		
 		try {
 			
@@ -7750,6 +7750,7 @@ public class BuscarSQL {
 			while(rs.next()){
 					datos[i][0] = "";
 					datos[i][1] = rs.getString(1);
+					datos[i][2] = rs.getString(2);
 					
 				i++;
 			}

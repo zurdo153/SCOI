@@ -4165,4 +4165,37 @@ public String Cancelar_Actividad_De_Usuario(int folio_actividad){
 	return aviso;
 }
 
+public boolean Cancelar_Objetivo_De_Usuario(int folio_objetivo){
+	String query =  "update tb_objetivos_de_plan_semanal set estatus = 'C', fecha_cancelacion = GETDATE() where folio_objetivo = "+folio_objetivo;
+	Connection con = new Connexion().conexion();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+			
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Cancelar_Objetivo_De_Usuario \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Cancelar_Objetivo_De_Usuario \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Cancelar_Objetivo_De_Usuario \n SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
 }

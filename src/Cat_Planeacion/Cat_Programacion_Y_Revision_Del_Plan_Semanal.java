@@ -50,7 +50,9 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	JButton btnCancelarActividad= new JButton("Cancelar Actividad",new ImageIcon("imagen/boton-rojo-menos-icono-5393-32.png")               );
 	JButton btnReporte_cuadros  = new JButton("Plan Semanal"      ,new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
 	JButton btnReporte_cntestad = new JButton("Plan Contestado "  ,new ImageIcon("imagen/mensual-de-la-agenda-contestado-7455-32.png")      );
-	JButton btnReporte_lista  = new JButton("Actividades Con Respuesta");
+	JButton btnReporte_lista  	= new JButton("Actividades Con Respuesta");
+	
+	JButton btnCancelarObjetivo = new JButton("Cancelar Objetivo",new ImageIcon("imagen/boton-rojo-menos-icono-5393-32.png")				);
 	
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
@@ -76,12 +78,16 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			this.panel.add(btnReporte_cntestad).setBounds(185,500,150,38);
 			this.panel.add(btnReporte_lista).setBounds(410,500,200,38);
 			
+			this.panel.add(btnCancelarObjetivo).setBounds(235,200,170,35);
+			
 			this.panel.add(btnObjetivos).setBounds(630,500,120,38);
 			this.panel.add(btnAgregarActividad).setBounds(750,500,125,38);
 			this.panel.add(btnCancelarActividad).setBounds(875,500,130,38);
 		}else{
 			this.panel.add(btnizquierda).setBounds(250, y, 38,38);
 			this.panel.add(btnderecha).setBounds(320, y, 38, 38);
+			
+			this.panel.add(btnCancelarObjetivo).setBounds(270,200,170,35);
 			
 			this.panel.add(btnReporte_cuadros).setBounds(30,500,150,38);
 			this.panel.add(btnReporte_cntestad).setBounds(200,500,150,38);
@@ -115,6 +121,8 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		this.btnReporte_cuadros.addActionListener(opReporteCuadros);
 		this.btnReporte_lista.addActionListener(opReporteLista);
 		this.btnReporte_cntestad.addActionListener(opReporteCuadroscontestado);
+		
+		this.btnCancelarObjetivo.addActionListener(opCacelarObjetivo);
 		
 		cargarActividades();
 		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
@@ -224,6 +232,29 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		    txtPeriodo.setText(folioPlan[1].toString());
 		    cargarObjetivos();
 		    buscarActividadesPorDia();
+		}
+	};
+	
+	ActionListener opCacelarObjetivo = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			
+			int filaSeleccionada = tabla_objetivos.getSelectedRow();
+			if(filaSeleccionada<0){
+				JOptionPane.showMessageDialog(null, "Seleccione El Objetivo Que Desea Cancelar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}else{
+				if(!tabla_objetivos.getValueAt(filaSeleccionada, 0).toString().trim().equals("PLANEADO")){
+					JOptionPane.showMessageDialog(null, "No Puede Cancelar Un Objetivo Que Ya Fue Calificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}else{
+					
+					if(new ActualizarSQL().Cancelar_Objetivo_De_Usuario(Integer.valueOf(tabla_objetivos.getValueAt(filaSeleccionada, 2).toString().trim()))){
+						cargarObjetivos();
+						JOptionPane.showMessageDialog(null, "El Objetivo Se Cancelo Correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						return;
+					}
+				}
+			}
 		}
 	};
 	
@@ -337,10 +368,11 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		boolean editable = false;
 		int cantidadDeFilas=0;
 //		Object[][] filaDefault = {{"",""}};
-		DefaultTableModel model_objetivos_de_la_semana = new DefaultTableModel(null, new String[]{"Folio", "Objetivos"}
+		DefaultTableModel model_objetivos_de_la_semana = new DefaultTableModel(null, new String[]{"Folio", "Objetivos", "Folio Objetivo"}
 				){
 		     @SuppressWarnings("rawtypes")
 			Class[] types = new Class[]{
+		    	java.lang.String.class,
 		    	java.lang.String.class,
 		    	java.lang.String.class
 	         };
@@ -362,7 +394,9 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	        	 			
 	        	 		}else{
 //	        	 			System.out.println(fila+" else "+cantidadDeFilas);
-	        	 			return true;}      	 		
+	        	 			return true;
+	        	 		}
+	        	 	case 2 : return false; 
 	        	 } 				
 	 			return false;
 	 		}
@@ -371,9 +405,8 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		
 		JTable tabla_objetivos_de_la_semana = new JTable(model_objetivos_de_la_semana);
 	    JScrollPane scroll_objetivos_de_la_semana = new JScrollPane(tabla_objetivos_de_la_semana,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	    
+	                         
 		JButton btnAprovar = new JButton("Aplicar",new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-		JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer-icono-4321-32.png"));
 		
 		int fila_objetivos = 0;
 		public Cat_Objectivos_De_La_Semana(){
@@ -395,7 +428,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			panel.add(new JLabel("Periodo: ")).setBounds		(x+320,y		,130     ,height);
 			panel.add(txtPeriodoObjetivo).setBounds				(x+370,y		,130     ,height);
 			panel.add(scroll_objetivos_de_la_semana).setBounds  (x    ,y+=25	,680     ,height*9+7);
-			panel.add(btnDeshacer).setBounds                    (x    ,y+=195	,width   ,height*2  );
 			panel.add(btnAprovar).setBounds                     (x+205,y     	,width   ,height*2  );
 
 		    String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(0);
@@ -414,7 +446,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			btnIzquierdaObjetivo.addActionListener(opAtrasObjetivo);
 			btnDerechaObjetivo.addActionListener(opAdelanteObjetivo);
 			btnAprovar.addActionListener(opAprovar);
-			btnDeshacer.addActionListener(deshacer);
 	        
 			///guardar con control+A
 	        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A,Event.CTRL_MASK),"guardar");
@@ -422,12 +453,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	                 public void actionPerformed(ActionEvent e)
 	                 {                 	    btnAprovar.doClick();           	    }
 	            });
-	 	     //deshacer con escape
-	 	                 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
-	 	                   getRootPane().getActionMap().put("escape", new AbstractAction(){
-	 	                  public void actionPerformed(ActionEvent e)
-	 	                  {                btnDeshacer.doClick();           	    }
-	 	              });
 	 	    this.addWindowListener(new WindowAdapter() {
 	 	                     public void windowOpened( WindowEvent e ){
 	 	                    	 
@@ -482,7 +507,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			if(tabla_objetivos_de_la_semana.getSelectedRow()+1!=limiteObjetivos){
 					
 					if(tabla_objetivos_de_la_semana.getSelectedRow()+1==tabla_objetivos_de_la_semana.getRowCount()){
-						Object[] filaNueva = {"",""};
+						Object[] filaNueva = {"","",""};
 						model_objetivos_de_la_semana.addRow(filaNueva);
 					}
 					fila_objetivos+=1;
@@ -527,9 +552,10 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			if(tabla_objetivos_de_la_semana.isEditing()){ tabla_objetivos_de_la_semana.getCellEditor().stopCellEditing(); }
 			model_objetivos_de_la_semana.setRowCount(0);
 			
+			System.out.println("------------------------------>  "+txtFolioObjetivo.getText());
 			String[][] objetivos = new BuscarSQL().buscarObjetivos_De_Plan_Semanal_Editable(Integer.valueOf(txtFolioObjetivo.getText()));
 			
-			String[] reg = {"",""};
+			String[] reg = {"","",""};
 			for(String[] dt: objetivos){
 				model_objetivos_de_la_semana.addRow(dt);
 			}
@@ -551,22 +577,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			
 		}
 		
-		ActionListener deshacer = new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				model_objetivos_de_la_semana.setRowCount(0);
-				Object[] filaNueva = {"",""};
-				model_objetivos_de_la_semana.addRow(filaNueva);
-				fila_objetivos = tabla_objetivos_de_la_semana.getRowCount()-1;
-				
-				tabla_objetivos_de_la_semana.getSelectionModel().setSelectionInterval(fila_objetivos, fila_objetivos);
-				tabla_objetivos_de_la_semana.editCellAt(fila_objetivos, 1);
-				Component aComp=tabla_objetivos_de_la_semana.getEditorComponent();
-				aComp.requestFocus();
-				
-				CalcularFoliosTabla(tabla_objetivos_de_la_semana);
-			}
-		};
-			
 		ActionListener opAprovar = new ActionListener() {
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public void actionPerformed(ActionEvent e) {
@@ -576,9 +586,14 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 					}
 					
 					Vector vector = new Vector();
+//					recorrer tabla
 					for(int i = 0; i<tabla_objetivos_de_la_semana.getRowCount(); i++){
-						if(!tabla_objetivos_de_la_semana.getValueAt(i, 1).toString().equals("")){
-							vector.addElement(tabla_objetivos_de_la_semana.getValueAt(i, 1).toString().toUpperCase().trim());
+//						validar que no tenga folio para poder guardar
+						if(tabla_objetivos_de_la_semana.getValueAt(i, 2).toString().equals("")){
+//							si no tiene folio es nuevo y se agregara al vector
+							if(!tabla_objetivos_de_la_semana.getValueAt(i, 1).toString().equals("")){
+								vector.addElement(tabla_objetivos_de_la_semana.getValueAt(i, 1).toString().toUpperCase().trim());
+							}
 						}
 					}
 

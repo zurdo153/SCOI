@@ -248,8 +248,8 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 			this.panel.add(new JLabel("Puesto:")).setBounds(x+95,y+=25,100,20);
 			this.panel.add(txtPuesto).setBounds(185, y,220,20);
 			
-			this.panel.add(new JLabel("Objetivos De La Semana:")).setBounds(15,y+=40,150,20);
-			this.panel.add(scroll_objetivos).setBounds(15, y+=15, 390,250);	
+			this.panel.add(new JLabel("Objetivos De La Semana:")).setBounds(15,y+=50,150,20);
+			this.panel.add(scroll_objetivos).setBounds(15, y+=15, 390,240);	
 			
 			this.panel.add(pestanas).setBounds(410,30,595, 450);
 			ancho_nivel_critico=110;
@@ -274,8 +274,8 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 			this.panel.add(new JLabel("Puesto:")).setBounds(x+110,y+=25,100,20);
 			this.panel.add(txtPuesto).setBounds(200, y,240,20);
 			
-			this.panel.add(new JLabel("Objetivos De La Semana:")).setBounds(x,y+=40,150,20);
-			this.panel.add(scroll_objetivos).setBounds(x, y+=15, 410,250);	
+			this.panel.add(new JLabel("Objetivos De La Semana:")).setBounds(x,y+=50,150,20);
+			this.panel.add(scroll_objetivos).setBounds(x, y+=15, 410,240);	
 			
 			this.panel.add(pestanas).setBounds(450,30,840, 450);
 			ancho_nivel_critico=145;
@@ -327,14 +327,18 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 			tb.getColumnModel().getColumn(2).setMaxWidth(80);
 			tb.getColumnModel().getColumn(2).setMinWidth(80);
 			
+			
 		}else{
 			tb.getColumnModel().getColumn(0).setMaxWidth(80);
 			tb.getColumnModel().getColumn(0).setMinWidth(80);
 			tb.getColumnModel().getColumn(1).setMaxWidth(620);
 			tb.getColumnModel().getColumn(1).setMinWidth(620);
+			tb.getColumnModel().getColumn(2).setMaxWidth(80);
+			tb.getColumnModel().getColumn(2).setMinWidth(80);
 			
 			tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
 			tb.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+			tb.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 		}
 	}
 	
