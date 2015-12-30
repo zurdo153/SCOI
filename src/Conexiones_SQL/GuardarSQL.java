@@ -88,6 +88,7 @@ import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Planeacion.Obj_Actividades_De_Una_Planeacion;
 import Obj_Planeacion.Obj_Frecuencia_De_Actividades;
 import Obj_Planeacion.Obj_Opciones_De_Respuesta;
+import Obj_Planeacion.Obj_Pendientes;
 import Obj_Planeacion.Obj_Prioridad_Y_Ponderacion;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
@@ -4857,6 +4858,45 @@ public boolean Guardar_Actividad_Planeacion(Obj_Actividades_De_Una_Planeacion Ac
 		}		
 		return true;
 	}
+
+public boolean Guardar_Pendiente(Obj_Pendientes pendiente){
+	int folio_transaccion=busca_y_actualiza_proximo_folio(21);
+	String query ="sp_insert_pendientes "+folio_transaccion+","+usuario.getFolio()+",?,?";
+	
+	Connection con = new Connexion().conexion();
+	try {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt     = con.prepareStatement(query);
+		
+		//actividades
+		pstmt.setString (1, pendiente.getPendiente().toString()     );
+        pstmt.setString (2, pendiente.getColaboradores().toString() );
+		
+		pstmt.executeUpdate();
+		con.commit();
+		
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pendiente ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pendiente ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+}
 
 
 public int  busca_y_actualiza_proximo_folio(int transaccion) {

@@ -45,11 +45,14 @@ import Obj_Renders.tablaRenderer;
 public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	JButton btnderecha          = new JButton(                     new ImageIcon("imagen/la-flecha-verde-de-la-derecha-icono-8326-32.png")  );
 	JButton btnizquierda        = new JButton(                     new ImageIcon("imagen/la-flecha-verde-de-la-izquierda-icono-8326-32.png"));
+	JButton btnPendientes       = new JButton("Pendientes "       ,new ImageIcon("imagen/equipos-de-tarea-asignada-icono-7668-32.png")      );
+	
 	JButton btnObjetivos        = new JButton("Objetivos"         ,new ImageIcon("imagen/mas-icono-4156-32.png")                            );
 	JButton btnAgregarActividad = new JButton("Actividades"       ,new ImageIcon("imagen/anadir-mas-icono-6734-32.png")                     );
 	JButton btnCancelarActividad= new JButton("Cancelar Actividad",new ImageIcon("imagen/boton-rojo-menos-icono-5393-32.png")               );
 	JButton btnReporte_cuadros  = new JButton("Plan Semanal"      ,new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
 	JButton btnReporte_cntestad = new JButton("Plan Contestado "  ,new ImageIcon("imagen/mensual-de-la-agenda-contestado-7455-32.png")      );
+
 	JButton btnReporte_lista  	= new JButton("Actividades Con Respuesta");
 	
 	JButton btnCancelarObjetivo = new JButton("Cancelar Objetivo",new ImageIcon("imagen/boton-rojo-menos-icono-5393-32.png")				);
@@ -67,7 +70,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	}
 	
 	public void init(){
-		int y=30;
+		  int y=30;
 		if(anchoMon<=1024){
 			this.panel.add(btnizquierda).setBounds(220, y, 38,38);
 			this.panel.add(btnderecha).setBounds(265, y, 38, 38);
@@ -77,23 +80,22 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			this.panel.add(btnReporte_lista).setBounds(410,500,200,38);
 			
 			this.panel.add(btnCancelarObjetivo).setBounds(235,200,170,35);
-			
 			this.panel.add(btnObjetivos).setBounds(630,500,120,38);
 			this.panel.add(btnAgregarActividad).setBounds(750,500,125,38);
 			this.panel.add(btnCancelarActividad).setBounds(875,500,130,38);
 		}else{
+			
 			this.panel.add(btnizquierda).setBounds(250, y, 38,38);
 			this.panel.add(btnderecha).setBounds(320, y, 38, 38);
+			this.panel.add(btnPendientes).setBounds(265,y+175,170,38);
+			this.panel.add(btnObjetivos).setBounds(15,y+=465,170,38);
+			this.panel.add(btnCancelarObjetivo).setBounds(265,y,170,38);
 			
-			this.panel.add(btnCancelarObjetivo).setBounds(270,200,170,35);
-			
-			this.panel.add(btnReporte_cuadros).setBounds(30,500,150,38);
-			this.panel.add(btnReporte_cntestad).setBounds(200,500,150,38);
-			this.panel.add(btnReporte_lista).setBounds(450,500,200,38);
-			
-			this.panel.add(btnObjetivos).setBounds(825,500,130,38);
-			this.panel.add(btnAgregarActividad).setBounds(975,500,130,38);
-			this.panel.add(btnCancelarActividad).setBounds(1125,500,160,38);
+			this.panel.add(btnReporte_lista).setBounds(450,y,200,38);
+			this.panel.add(btnReporte_cuadros).setBounds(663,y,150,38);
+			this.panel.add(btnReporte_cntestad).setBounds(825,y,150,38);
+			this.panel.add(btnAgregarActividad).setBounds(985,y,135,38);
+			this.panel.add(btnCancelarActividad).setBounds(1129,y,160,38);
 		}
 		
 		ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/imagen/checklistbtn.png");
@@ -119,6 +121,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		this.btnReporte_cuadros.addActionListener(opReporteCuadros);
 		this.btnReporte_lista.addActionListener(opReporteLista);
 		this.btnReporte_cntestad.addActionListener(opReporteCuadroscontestado);
+		this.btnPendientes.addActionListener(pendientes);
 		
 		this.btnCancelarObjetivo.addActionListener(opCacelarObjetivo);
 		
@@ -133,9 +136,10 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	}
 	
 	public void agregarColumnas(final JTable tb,final DefaultTableModel modelo){
-		
 		modelo.addColumn("Usuario");
 		tb.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		tb.getColumnModel().getColumn(5).setMinWidth(350);
+		tb.getColumnModel().getColumn(5).setMaxWidth(480);
 	}
 	
 	private void cargarActividades() {
@@ -210,6 +214,12 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		}
 	}
 	
+	ActionListener pendientes = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			new Cat_Pendientes_Para_El_Plan().setVisible(true);;
+		}
+	};
+	
 	int recorreFolio = 0;
 	ActionListener opAtras = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
@@ -235,7 +245,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	
 	ActionListener opCacelarObjetivo = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			
+
 			int filaSeleccionada = tabla_objetivos.getSelectedRow();
 			if(filaSeleccionada<0){
 				JOptionPane.showMessageDialog(null, "Seleccione El Objetivo Que Desea Cancelar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -316,31 +326,10 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			}else{
 				
 				int folio_actividad = Integer.valueOf(tabla.getValueAt(filaSeleccionada, 0).toString().trim());
-				
-//				if(new Obj_Usuario().LeerSession().getFolio() == Integer.valueOf(tabla.getValueAt(filaSeleccionada, tabla.getColumnCount()-1).toString())){
-//					
-//						if(new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad,"CANCELAR ACTIVIDAD")){
-//							buscarActividadesPorDia();
-//							JOptionPane.showMessageDialog(null, "Se Cancelo La Actividar Con Folio [ "+folio_actividad+" ] Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
-//							return;
-//						}
-//						
-//				}else{
-					
-//						if(new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad,"QUITAR USUARIO DE ACTIVIDAD")){
 							String aviso =  new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad);
 							buscarActividadesPorDia();
 							JOptionPane.showMessageDialog(null,aviso+" Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							return;
-//						}
-//				}
-				
-//				if(new BuscarSQL().validar_si_el_usuario_puede_cancelar_la_actividad(folio_actividad)){
-//					
-//				}else{
-//					JOptionPane.showMessageDialog(null, "El Usuario No Puede Cancelar Una Actividad Que No Asigno", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//					return;
-//				}
 			}
 		}
 	};
@@ -403,12 +392,11 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		
 		JTable tabla_objetivos_de_la_semana = new JTable(model_objetivos_de_la_semana);
 	    JScrollPane scroll_objetivos_de_la_semana = new JScrollPane(tabla_objetivos_de_la_semana,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	                         
 		JButton btnAprovar = new JButton("Aplicar",new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		
 		int fila_objetivos = 0;
 		public Cat_Objectivos_De_La_Semana(){
-			this.setSize(710, 320);
+			this.setSize(710, 270);
 			this.setLocationRelativeTo(null);
 			this.setResizable(false);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -418,15 +406,15 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			
 			int x=15,y=20,width=150,height=20;
 			
-			panel.add(new JLabel("Folio: ")).setBounds          (x    ,y		,80      ,height);
-			panel.add(txtFolioObjetivo).setBounds          		(x+50 ,y		,80      ,height);
+			panel.add(new JLabel("Folio: ")).setBounds          (x     ,y		,80      ,height);
+			panel.add(txtFolioObjetivo).setBounds          		(x+50  ,y		,80      ,height);
 			panel.add(btnIzquierdaObjetivo).setBounds      		(x+135 ,y		,21      ,21);
 			panel.add(btnDerechaObjetivo).setBounds        		(x+160 ,y		,21      ,21);
 			
-			panel.add(new JLabel("Periodo: ")).setBounds		(x+320,y		,130     ,height);
-			panel.add(txtPeriodoObjetivo).setBounds				(x+370,y		,130     ,height);
-			panel.add(scroll_objetivos_de_la_semana).setBounds  (x    ,y+=25	,680     ,height*9+7);
-			panel.add(btnAprovar).setBounds                     (x+205,y     	,width   ,height*2  );
+			panel.add(new JLabel("Periodo: ")).setBounds		(x+320 ,y		,130     ,height);
+			panel.add(txtPeriodoObjetivo).setBounds				(x+370 ,y		,130     ,height);
+			panel.add(scroll_objetivos_de_la_semana).setBounds  (x     ,y+=25	,680     ,height*7);
+			panel.add(btnAprovar).setBounds                     (x+=530,y+=150	,width   ,height*2  );
 
 		    String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(0);
 		    txtFolioObjetivo.setText(folioPlan[0].toString());
@@ -471,13 +459,8 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {
-		        	
 		        	if(e.getClickCount() == 1){
-		        		
-		        		
-		        		
 		        		if(model_objetivos_de_la_semana.isCellEditable(tabla_objetivos_de_la_semana.getSelectedRow(), 1)){
-		        			
 		        			fila_objetivos=tabla_objetivos_de_la_semana.getSelectedRow();
 		        			
 		        		}else{

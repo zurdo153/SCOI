@@ -1166,7 +1166,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		
 	//frecuencia  -----------------------------------------------------------------------------
 		  String[] sucede = {"DIARIA","SEMANAL"};
-//		  String[] secede = {"DIARIA","SEMANAL","MENSUAL"};
+//		  String[] sucede = {"DIARIA","SEMANAL","MENSUAL"};
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			JComboBox cmbSucede = new JComboBox(sucede);
 			
