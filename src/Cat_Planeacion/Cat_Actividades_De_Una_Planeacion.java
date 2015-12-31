@@ -51,7 +51,6 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -476,7 +475,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/ver-info-boton-icono-8754-64.png"));
 			this.setTitle("Configuracion De La Respuesta");
-			this.panel.setBorder(BorderFactory.createTitledBorder("Teclea El Detalle De La Actividad y Selecciona La configuracion Deseada"));
+			this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione Las Opciones De Respuesta"));
 			this.linea = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 			this.lblLineaContestacion.setBorder(BorderFactory.createTitledBorder(linea,"Opciones Para Contestación"));
 			this.lblLineaEvidencia.setBorder(BorderFactory.createTitledBorder(linea,"Opciones Para Evidencia"));
@@ -900,14 +899,11 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		JTable tabla = new JTable(model);
 	    JScrollPane scroll = new JScrollPane(tabla);
 		
-		@SuppressWarnings("rawtypes")
-		private TableRowSorter trsfiltro;
 		JTextField txtFiltro= new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 		
 		JButton btnAgregar = new JButton("Aplicar",new ImageIcon("imagen/Aplicar.png"));
 		JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 		
-		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Cat_Seleccion_Del_Usuario()	{
 			this.setSize(1024,740);
 			this.setLocationRelativeTo(null);
@@ -916,9 +912,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/ayudar-a-ver-el-boton-icono-4900-64.png"));
 			this.setTitle("Filtro De Seleccion De Colaboradores");
-		    this.panel.setBorder(BorderFactory.createTitledBorder("Selecciona A El (Los) Colaborador(es) A El (Los) Que Aplicara La Actividad"));
-			this.trsfiltro = new TableRowSorter(model); 
-			this.tabla.setRowSorter(trsfiltro);  
+		    this.panel.setBorder(BorderFactory.createTitledBorder("Selecciona (El/Los) Colaborador(es) Que Aplique(n) A La Actividad"));
 			this.txa_Resultado_Seleccion.setEditable(false);
 			this.txa_Resultado_Seleccion.setLineWrap(true); 
 			this.txa_Resultado_Seleccion.setWrapStyleWord(true);
@@ -1082,7 +1076,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		}
 	
 		
-		@SuppressWarnings("unchecked")
 		public void init_tabla(){
 			this.tabla.getTableHeader().setReorderingAllowed(false) ;
 			this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -1106,7 +1099,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			this.tabla.getColumnModel().getColumn(4).setMaxWidth(500);
 			this.tabla.getColumnModel().getColumn(5).setMinWidth(20);
 			this.tabla.getColumnModel().getColumn(5).setMaxWidth(30);
-			this.tabla.setRowSorter(trsfiltro);  
+//			this.tabla.setRowSorter(trsfiltro);  
 			refrestabla();
 			
 			if(!(usuarios.getUsuarios_nombres()==null)){
@@ -1165,8 +1158,8 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		  JSpinner.DateEditor spDHoraUnicaRepeticion = new JSpinner.DateEditor(spHoraUnicaRepeticion,"HH:mm:ss"); 
 		
 	//frecuencia  -----------------------------------------------------------------------------
-		  String[] sucede = {"DIARIA","SEMANAL"};
-//		  String[] sucede = {"DIARIA","SEMANAL","MENSUAL"};
+//		  String[] sucede = {"DIARIA","SEMANAL"};
+		  String[] sucede = {"DIARIA","SEMANAL","MENSUAL"};
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			JComboBox cmbSucede = new JComboBox(sucede);
 			
@@ -1255,7 +1248,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			
 		//unica repeticion
 			panel.add(rbHastaQueSeCumpla).setBounds                  (x    ,y+=35,ancho*2   ,20);
-			panel.add(lblUnicarepeticion).setBounds                  (x+220,y    ,ancho     ,20);
+			panel.add(lblUnicarepeticion).setBounds                  (x+200,y    ,ancho     ,20);
 			panel.add(fh_unica_repeticion).setBounds                 (x+270,y    ,ancho+40  ,20);
 			panel.add(rbEnLaFechaIndicada).setBounds                 (x    ,y+=25,ancho*2   ,20);
 //			panel.add(new JLabel("Hora: ")).setBounds                (x+220,y    ,ancho     ,20);
@@ -1268,7 +1261,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			
 			panel.add(new JLabel("Sucede: ")).setBounds(x, y+=25, ancho, 20);
 			panel.add(cmbSucede).setBounds             (x+90, y, ancho, 20);
-			panel.add(rbDiaDelMes).setBounds   (x-40, y+=25, 60, 20);
+			panel.add(rbDiaDelMes).setBounds   (x, y+=25, 60, 20);
 			
 			panel.add(lblSeRepiteCada).setBounds(x, y, ancho+30, 20);
 			panel.add(spDiasARepetir).setBounds(x+90, y, ancho, 20);
@@ -1276,13 +1269,13 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			
 			panel.add(spMeses).setBounds(x+ancho*3+20, y, ancho, 20);
 			panel.add(lblMeses).setBounds(x+ancho*4+40, y, ancho, 20);
-			panel.add(rbDiaDeLaSemana).setBounds(x-40, y+=25, 60, 20);
-			panel.add(cmbNivelDeDias).setBounds(x+110, y, ancho, 20);
-			panel.add(cmbDiaDeLaSemana).setBounds(x+210, y, ancho, 20);
-			
-			panel.add(lblDeCada).setBounds(x+300, y, ancho, 20);
-			panel.add(spMeses2).setBounds(x+350, y, ancho, 20);
-			panel.add(lblMeses2).setBounds(x+450, y, ancho, 20);
+
+//			panel.add(rbDiaDeLaSemana).setBounds(x-40, y+=25, 60, 20);
+//			panel.add(cmbNivelDeDias).setBounds(x+110, y, ancho, 20);
+//			panel.add(cmbDiaDeLaSemana).setBounds(x+210, y, ancho, 20);
+//			panel.add(lblDeCada).setBounds(x+300, y, ancho, 20);
+//			panel.add(spMeses2).setBounds(x+350, y, ancho, 20);
+//			panel.add(lblMeses2).setBounds(x+450, y, ancho, 20);
 			
 //			semana------
 			panel.add(chbLunes).setBounds       (x+20  ,y    ,ancho ,20);
@@ -1521,7 +1514,9 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				case "DIARIA":
 					
 					lblSeRepiteCada.setVisible(true);
-					
+					spDiasARepetir.setVisible(true);
+				    lblDias_Semana.setVisible(true);
+				    
 					spMeses.setVisible(false);
 					lblMeses.setVisible(false);
 					
@@ -1547,8 +1542,10 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				break;
 				case "SEMANAL":
 					
-					lblSeRepiteCada.setVisible(true);
-					
+					lblSeRepiteCada.setVisible(false);
+					spDiasARepetir.setVisible(false);
+				    lblDias_Semana.setVisible(false);
+							
 					spMeses.setVisible(false);
 					lblMeses.setVisible(false);
 					
@@ -1575,6 +1572,8 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				case "MENSUAL":
 					
 					lblSeRepiteCada.setVisible(false);
+					spDiasARepetir.setVisible(true);
+				    lblDias_Semana.setVisible(true);
 					
 					spMeses.setVisible(true);
 					lblMeses.setVisible(true);
@@ -1859,8 +1858,8 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//			new Cat_Actividades_De_Una_Planeacion("Cat_Programacion_Y_Revision_Del_Plan_Semanal","14/12/2015").setVisible(true);
-			new Cat_Actividades_De_Una_Planeacion("Cat_Alimentacion_De_Plan_Semanal","21/12/2015").setVisible(true);
+			new Cat_Actividades_De_Una_Planeacion("Cat_Programacion_Y_Revision_Del_Plan_Semanal","14/12/2015").setVisible(true);
+//			new Cat_Actividades_De_Una_Planeacion("Cat_Alimentacion_De_Plan_Semanal","21/12/2015").setVisible(true);
 		}catch(Exception e){	}	
 	}
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-12-27T15:29:17 -->
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-12-30T16:47:28 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reportes_De_Actividades_Contestadas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c4f90b4f-e338-408f-a4d2-5a6dc00656db">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -14,108 +14,20 @@
 		</conditionalStyle>
 	</style>
 	<queryString>
-		<![CDATA[declare @folio_empleado int=1 ,@fecha datetime='29/12/2015 23:59:59'
- set nocount on
-declare @fecha_inicia_semana datetime=(dbo.Primer_Dia_De_La_Semana(@fecha))
-  set @fecha=@fecha_inicia_semana
-
-select DATENAME(DW,a.fecha) as dia
-		, a.*
-		, tb_empleado.foto
-		, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
-		, tb_establecimiento.nombre as establecimiento
-		, tb_departamento.departamento, tb_puesto.nombre as puesto 
-	from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha  ) a 
-	inner join tb_empleado on tb_empleado.folio = @folio_empleado 
-	inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
-	inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
-	inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-union all
-select DATENAME(DW,a.fecha) as dia
-		, a.*
-		, tb_empleado.foto
-		, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
-		, tb_establecimiento.nombre as establecimiento
-		, tb_departamento.departamento, tb_puesto.nombre as puesto 
-	from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha+1) a 
-	inner join tb_empleado on tb_empleado.folio = @folio_empleado 
-	inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
-	inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
-	inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-union all
-select DATENAME(DW,a.fecha) as dia
-		, a.*
-		, tb_empleado.foto
-		, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
-		, tb_establecimiento.nombre as establecimiento
-		, tb_departamento.departamento, tb_puesto.nombre as puesto 
-	from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha+2) a 
-	inner join tb_empleado on tb_empleado.folio = @folio_empleado 
-	inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
-	inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
-	inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-union all
-select DATENAME(DW,a.fecha) as dia
-		, a.*
-		, tb_empleado.foto
-		, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
-		, tb_establecimiento.nombre as establecimiento
-		, tb_departamento.departamento, tb_puesto.nombre as puesto 
-	from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha+3) a 
-	inner join tb_empleado on tb_empleado.folio = @folio_empleado 
-	inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
-	inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
-	inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-union all
-select DATENAME(DW,a.fecha) as dia
-		, a.*
-		, tb_empleado.foto
-		, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
-		, tb_establecimiento.nombre as establecimiento
-		, tb_departamento.departamento, tb_puesto.nombre as puesto 
-	from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha+4) a 
-	inner join tb_empleado on tb_empleado.folio = @folio_empleado 
-	inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
-	inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
-	inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-union all
-select DATENAME(DW,a.fecha) as dia
-		, a.*
-		, tb_empleado.foto
-		, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
-		, tb_establecimiento.nombre as establecimiento
-		, tb_departamento.departamento, tb_puesto.nombre as puesto 
-	from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha+5) a 
-	inner join tb_empleado on tb_empleado.folio = @folio_empleado 
-	inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
-	inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
-	inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
-union all
-select DATENAME(DW,a.fecha) as dia
-		, a.*
-		, tb_empleado.foto
-		, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
-		, tb_establecimiento.nombre as establecimiento
-		, tb_departamento.departamento, tb_puesto.nombre as puesto 
-	from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha+6) a 
-	inner join tb_empleado on tb_empleado.folio = @folio_empleado 
-	inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
-	inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
-	inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id]]>
+		<![CDATA[exec sp_Reporte_De_Actividades_Contestadas_Del_Plan_Semanal 1,'29/12/2015 23:59:59']]>
 	</queryString>
 	<field name="dia" class="java.lang.String"/>
 	<field name="folio_actividad" class="java.lang.Integer"/>
 	<field name="actividad" class="java.lang.String"/>
-	<field name="prioridad_orden" class="java.lang.String"/>
-	<field name="fecha" class="java.lang.String"/>
+	<field name="prioridad_actividad" class="java.lang.String"/>
 	<field name="respuesta" class="java.lang.String"/>
 	<field name="observacion" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="foto" class="java.io.InputStream"/>
 	<field name="empleado" class="java.lang.String"/>
 	<field name="establecimiento" class="java.lang.String"/>
 	<field name="departamento" class="java.lang.String"/>
 	<field name="puesto" class="java.lang.String"/>
-	<field name="prioridad_actividad" class="java.lang.String"/>
-	<field name="foto" class="java.io.InputStream"/>
 	<group name="Group1" keepTogether="true">
 		<groupExpression><![CDATA[$F{dia}]]></groupExpression>
 		<groupHeader>
@@ -190,9 +102,6 @@ select DATENAME(DW,a.fecha) as dia
 	</group>
 	<group name="actividad">
 		<groupExpression><![CDATA[$F{actividad}]]></groupExpression>
-	</group>
-	<group name="prioridad_orden">
-		<groupExpression><![CDATA[$F{prioridad_orden}]]></groupExpression>
 	</group>
 	<group name="fecha">
 		<groupExpression><![CDATA[$F{fecha}]]></groupExpression>

@@ -220,7 +220,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	
 	ActionListener pendientes = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			new Cat_Pendientes_Para_El_Plan().setVisible(true);;
+			new Cat_Pendientes().setVisible(true);;
 		}
 	};
 	
@@ -358,7 +358,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		
 		boolean editable = false;
 		int cantidadDeFilas=0;
-//		Object[][] filaDefault = {{"",""}};
 		DefaultTableModel model_objetivos_de_la_semana = new DefaultTableModel(null, new String[]{"Folio", "Objetivos", "Folio Objetivo"}
 				){
 		     @SuppressWarnings("rawtypes")
@@ -376,22 +375,18 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	        	 	case 0 : return false; 
 	        	 	case 1 : 
 	        	 		if(fila<cantidadDeFilas){
-//	        	 			System.out.println(fila+" if "+cantidadDeFilas);
 	        	 			if(cantidadDeFilas==0){
 	        	 				return true;
 	        	 			}else{
 	        	 				return editable;
 	        	 			}
-	        	 			
 	        	 		}else{
-//	        	 			System.out.println(fila+" else "+cantidadDeFilas);
 	        	 			return true;
 	        	 		}
 	        	 	case 2 : return false; 
 	        	 } 				
 	 			return false;
 	 		}
-			
 		};
 		
 		JTable tabla_objetivos_de_la_semana = new JTable(model_objetivos_de_la_semana);
