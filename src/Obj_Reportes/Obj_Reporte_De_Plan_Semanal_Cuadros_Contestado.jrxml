@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-12-27T16:08:13 -->
+<!-- 2015-12-30T16:27:52 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="ireport.zoom" value="2.593742460100005"/>
 	<property name="ireport.x" value="302"/>
@@ -18,7 +18,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec sp_reporte_de_plan_semanal_por_dia_contestado  1 ,'25/12/2015 08:50:25']]>
+		<![CDATA[exec sp_reporte_de_plan_semanal_por_dia_contestado  1 ,'30/12/2015 23:59:25']]>
 	</queryString>
 	<field name="folio_empleado" class="java.lang.Integer"/>
 	<field name="nombre" class="java.lang.String"/>
@@ -170,7 +170,7 @@
 					<textElement textAlignment="Center">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["JUEVES"+$F{fecha_jueves}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["JUEVES:"+$F{fecha_jueves}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="420" y="1" width="105" height="14" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="62e7a4b7-f8e3-4c02-9e7a-963afb0e7948"/>
@@ -221,9 +221,9 @@
 					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="12" isBold="true" isUnderline="false"/>
+					<font size="10" isBold="true" isUnderline="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["OBJETIVOS:                                                                 "+$F{objetivos}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["OBJETIVOS:"+$F{objetivos}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -235,6 +235,327 @@
 	</columnHeader>
 	<detail>
 		<band height="58">
+			<textField>
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="105" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="3bb0f971-76d2-401b-963b-ecace8e73cde">
+					<printWhenExpression><![CDATA[($F{respuesta_martes}.equals("EN PROCESO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_martes}==null)?"":$F{actividad_martes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="2bfb7d79-5446-41d6-a858-8ae33f85025c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[($F{respuesta_lunes}.equals("EN PROCESO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_lunes}==null)?"":$F{actividad_lunes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="210" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="b0e71fdb-58ce-4981-ba59-dc59ecccf85c">
+					<printWhenExpression><![CDATA[($F{respuesta_miercoles}.equals("EN PROCESO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_miercoles}==null)?"":$F{actividad_miercoles}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="315" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="5161d873-f41a-4d19-8a31-3d51bef36dcb">
+					<printWhenExpression><![CDATA[($F{respuesta_jueves}.equals("EN PROCESO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_jueves}==null)?"":$F{actividad_jueves}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="525" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="fd979c1e-4268-48bf-9788-92c1b0ce96c0">
+					<printWhenExpression><![CDATA[($F{respuesta_sabado}.equals("EN PROCESO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_sabado}==null)?"":$F{actividad_sabado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="630" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="10b3edb3-6099-4381-8e7f-1b68a8eacc4e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[($F{respuesta_domingo}.equals("EN PROCESO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_domingo}==null)?"":$F{actividad_domingo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="420" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="b9d56604-e3e3-4504-9aea-449d9d39a734">
+					<printWhenExpression><![CDATA[($F{respuesta_viernes}.equals("EN PROCESO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_viernes}==null)?"":$F{actividad_viernes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement key="" x="0" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="7b8c0ce5-d095-4ff3-a313-5162f7a29a51">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[($F{respuesta_lunes}.equals("EN TIEMPO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_lunes}==null)?"":$F{actividad_lunes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="105" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="f69e27e7-f0e9-4aea-a7c9-40f69f59224b">
+					<printWhenExpression><![CDATA[($F{respuesta_martes}.equals("EN TIEMPO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_martes}==null)?"":$F{actividad_martes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="210" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="a210ed66-a915-4530-81b4-e16097715fae">
+					<printWhenExpression><![CDATA[($F{respuesta_miercoles}.equals("EN TIEMPO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_miercoles}==null)?"":$F{actividad_miercoles}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="315" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="f2e244d1-8569-4866-bc06-999a566e691d">
+					<printWhenExpression><![CDATA[($F{respuesta_jueves}.equals("EN TIEMPO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_jueves}==null)?"":$F{actividad_jueves}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="525" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="41a642f6-21dd-4452-956c-ca745fa61ed9">
+					<printWhenExpression><![CDATA[($F{respuesta_sabado}.equals("EN TIEMPO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_sabado}==null)?"":$F{actividad_sabado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="630" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="4670caae-4557-464d-b963-15a7fdda1e5c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[($F{respuesta_domingo}.equals("EN TIEMPO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_domingo}==null)?"":$F{actividad_domingo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="420" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="acbb4cd6-4480-40ed-a6a9-27f5777884f6">
+					<printWhenExpression><![CDATA[($F{respuesta_viernes}.equals("EN TIEMPO"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_viernes}==null)?"":$F{actividad_viernes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="b884ec6f-8109-4ece-87c1-8bc5fd115c36">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[($F{respuesta_lunes}.equals("RESUELTA"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_lunes}==null)?"":$F{actividad_lunes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="210" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="f86b0193-cb58-47bc-97ef-56bbb4863dd7">
+					<printWhenExpression><![CDATA[($F{respuesta_miercoles}.equals("RESUELTA"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_miercoles}==null)?"":$F{actividad_miercoles}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="525" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="e072bd45-8384-4e81-aca4-c6e873e927ae">
+					<printWhenExpression><![CDATA[($F{respuesta_sabado}.equals("RESUELTA"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_sabado}==null)?"":$F{actividad_sabado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="315" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="e9305241-599f-448f-9617-dd5dd79fd443">
+					<printWhenExpression><![CDATA[($F{respuesta_jueves}.equals("RESUELTA"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_jueves}==null)?"":$F{actividad_jueves}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="630" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="2b05a92d-c4b0-4657-8e77-5714a9a54b7b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[($F{respuesta_domingo}.equals("RESUELTA"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_domingo}==null)?"":$F{actividad_domingo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="105" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="5e5275b5-6325-4fb8-8045-ab242f8fa1bd">
+					<printWhenExpression><![CDATA[($F{respuesta_martes}.equals("RESUELTA"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_martes}==null)?"":$F{actividad_martes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="420" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="269a4f62-1bf2-460b-ac93-ef985d3c289d">
+					<printWhenExpression><![CDATA[($F{respuesta_viernes}.equals("RESUELTA"))]]></printWhenExpression>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{actividad_viernes}==null)?"":$F{actividad_viernes}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="315" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#33CCFF" uuid="e0c2551d-4220-41b3-ad3f-e065609d4ace">
 					<printWhenExpression><![CDATA[($F{respuesta_jueves}.equals("EXTRA"))]]></printWhenExpression>
@@ -343,23 +664,8 @@
 				<textFieldExpression><![CDATA[($F{actividad_sabado}==null)?"":$F{actividad_sabado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="420" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="b9d56604-e3e3-4504-9aea-449d9d39a734">
-					<printWhenExpression><![CDATA[($F{respuesta_viernes}.equals("EN PROCESO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_viernes}==null)?"":$F{actividad_viernes}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="105" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FF3300" uuid="149116e5-14c7-4456-80f3-a676d4f46f1b">
-					<printWhenExpression><![CDATA[($F{respuesta_martes}.equals("INCUMPLIDA"))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[($F{respuesta_martes}.equals("INCUMPLIDA"))||($F{respuesta_martes}.equals("PASO A OTRO DEPARTAMENTO"))]]></printWhenExpression>
 				</reportElement>
 				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -374,7 +680,7 @@
 			</textField>
 			<textField>
 				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="210" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FF3300" uuid="5143a7cd-e81f-40f0-ab50-755fac5d6836">
-					<printWhenExpression><![CDATA[($F{respuesta_miercoles}.equals("INCUMPLIDA"))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[($F{respuesta_miercoles}.equals("INCUMPLIDA"))||($F{respuesta_miercoles}.equals("PASO A OTRO DEPARTAMENTO"))]]></printWhenExpression>
 				</reportElement>
 				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -389,7 +695,7 @@
 			</textField>
 			<textField>
 				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="525" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FF3300" uuid="99d92de4-84a3-4f7a-8259-4263143fd162">
-					<printWhenExpression><![CDATA[($F{respuesta_sabado}.equals("INCUMPLIDA"))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[($F{respuesta_sabado}.equals("INCUMPLIDA"))||($F{respuesta_sabado}.equals("PASO A OTRO DEPARTAMENTO"))]]></printWhenExpression>
 				</reportElement>
 				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -404,7 +710,7 @@
 			</textField>
 			<textField>
 				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="315" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FF3300" uuid="acca3f58-a55e-4484-b058-6f51234ba827">
-					<printWhenExpression><![CDATA[($F{respuesta_jueves}.equals("INCUMPLIDA"))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[($F{respuesta_jueves}.equals("INCUMPLIDA"))||($F{respuesta_jueves}.equals("PASO A OTRO DEPARTAMENTO"))]]></printWhenExpression>
 				</reportElement>
 				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -420,7 +726,7 @@
 			<textField>
 				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="630" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FF3300" uuid="21b62784-0969-44a2-b954-69ad13738352">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<printWhenExpression><![CDATA[($F{respuesta_domingo}.equals("INCUMPLIDA"))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[($F{respuesta_domingo}.equals("INCUMPLIDA"))||($F{respuesta_domingo}.equals("PASO A OTRO DEPARTAMENTO"))]]></printWhenExpression>
 				</reportElement>
 				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -436,7 +742,7 @@
 			<textField pattern="">
 				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FF3300" uuid="3cbfefc1-2983-472a-b9d8-907f06fc11e6">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<printWhenExpression><![CDATA[($F{respuesta_lunes}.equals("INCUMPLIDA"))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[($F{respuesta_lunes}.equals("INCUMPLIDA"))||($F{respuesta_lunes}.equals("PASO A OTRO DEPARTAMENTO"))]]></printWhenExpression>
 				</reportElement>
 				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
@@ -451,313 +757,7 @@
 			</textField>
 			<textField>
 				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="420" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FF3300" uuid="60a89a83-1ed0-4909-8e75-16722fd47f00">
-					<printWhenExpression><![CDATA[($F{respuesta_viernes}.equals("INCUMPLIDA"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_viernes}==null)?"":$F{actividad_viernes}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="105" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="3bb0f971-76d2-401b-963b-ecace8e73cde">
-					<printWhenExpression><![CDATA[($F{respuesta_martes}.equals("EN PROCESO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_martes}==null)?"":$F{actividad_martes}]]></textFieldExpression>
-			</textField>
-			<textField pattern="">
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="2bfb7d79-5446-41d6-a858-8ae33f85025c">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<printWhenExpression><![CDATA[($F{respuesta_lunes}.equals("EN PROCESO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_lunes}==null)?"":$F{actividad_lunes}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="210" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="b0e71fdb-58ce-4981-ba59-dc59ecccf85c">
-					<printWhenExpression><![CDATA[($F{respuesta_miercoles}.equals("EN PROCESO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_miercoles}==null)?"":$F{actividad_miercoles}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="315" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="5161d873-f41a-4d19-8a31-3d51bef36dcb">
-					<printWhenExpression><![CDATA[($F{respuesta_jueves}.equals("EN PROCESO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_jueves}==null)?"":$F{actividad_jueves}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="525" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="fd979c1e-4268-48bf-9788-92c1b0ce96c0">
-					<printWhenExpression><![CDATA[($F{respuesta_sabado}.equals("EN PROCESO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_sabado}==null)?"":$F{actividad_sabado}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="630" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#FFFF33" uuid="10b3edb3-6099-4381-8e7f-1b68a8eacc4e">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<printWhenExpression><![CDATA[($F{respuesta_domingo}.equals("EN PROCESO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_domingo}==null)?"":$F{actividad_domingo}]]></textFieldExpression>
-			</textField>
-			<textField pattern="">
-				<reportElement key="" x="0" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="7b8c0ce5-d095-4ff3-a313-5162f7a29a51">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<printWhenExpression><![CDATA[($F{respuesta_lunes}.equals("EN TIEMPO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_lunes}==null)?"":$F{actividad_lunes}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" x="105" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="f69e27e7-f0e9-4aea-a7c9-40f69f59224b">
-					<printWhenExpression><![CDATA[($F{respuesta_martes}.equals("EN TIEMPO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_martes}==null)?"":$F{actividad_martes}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" x="210" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="a210ed66-a915-4530-81b4-e16097715fae">
-					<printWhenExpression><![CDATA[($F{respuesta_miercoles}.equals("EN TIEMPO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_miercoles}==null)?"":$F{actividad_miercoles}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" x="315" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="f2e244d1-8569-4866-bc06-999a566e691d">
-					<printWhenExpression><![CDATA[($F{respuesta_jueves}.equals("EN TIEMPO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_jueves}==null)?"":$F{actividad_jueves}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" x="420" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="acbb4cd6-4480-40ed-a6a9-27f5777884f6">
-					<printWhenExpression><![CDATA[($F{respuesta_viernes}.equals("EN TIEMPO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_viernes}==null)?"":$F{actividad_viernes}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" x="525" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="41a642f6-21dd-4452-956c-ca745fa61ed9">
-					<printWhenExpression><![CDATA[($F{respuesta_sabado}.equals("EN TIEMPO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_sabado}==null)?"":$F{actividad_sabado}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" x="630" y="0" width="105" height="58" isRemoveLineWhenBlank="true" uuid="4670caae-4557-464d-b963-15a7fdda1e5c">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<printWhenExpression><![CDATA[($F{respuesta_domingo}.equals("EN TIEMPO"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_domingo}==null)?"":$F{actividad_domingo}]]></textFieldExpression>
-			</textField>
-			<textField pattern="">
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="b884ec6f-8109-4ece-87c1-8bc5fd115c36">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<printWhenExpression><![CDATA[($F{respuesta_lunes}.equals("RESUELTA"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_lunes}==null)?"":$F{actividad_lunes}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="210" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="f86b0193-cb58-47bc-97ef-56bbb4863dd7">
-					<printWhenExpression><![CDATA[($F{respuesta_miercoles}.equals("RESUELTA"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_miercoles}==null)?"":$F{actividad_miercoles}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="525" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="e072bd45-8384-4e81-aca4-c6e873e927ae">
-					<printWhenExpression><![CDATA[($F{respuesta_sabado}.equals("RESUELTA"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_sabado}==null)?"":$F{actividad_sabado}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="315" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="e9305241-599f-448f-9617-dd5dd79fd443">
-					<printWhenExpression><![CDATA[($F{respuesta_jueves}.equals("RESUELTA"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_jueves}==null)?"":$F{actividad_jueves}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="630" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="2b05a92d-c4b0-4657-8e77-5714a9a54b7b">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<printWhenExpression><![CDATA[($F{respuesta_domingo}.equals("RESUELTA"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_domingo}==null)?"":$F{actividad_domingo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="105" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="5e5275b5-6325-4fb8-8045-ab242f8fa1bd">
-					<printWhenExpression><![CDATA[($F{respuesta_martes}.equals("RESUELTA"))]]></printWhenExpression>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{actividad_martes}==null)?"":$F{actividad_martes}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" isPrintRepeatedValues="false" mode="Opaque" x="420" y="0" width="105" height="58" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#009933" uuid="269a4f62-1bf2-460b-ac93-ef985d3c289d">
-					<printWhenExpression><![CDATA[($F{respuesta_viernes}.equals("RESUELTA"))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[($F{respuesta_viernes}.equals("INCUMPLIDA"))||($F{respuesta_viernes}.equals("PASO A OTRO DEPARTAMENTO"))]]></printWhenExpression>
 				</reportElement>
 				<box padding="2">
 					<topPen lineWidth="0.8" lineStyle="Solid" lineColor="#000000"/>

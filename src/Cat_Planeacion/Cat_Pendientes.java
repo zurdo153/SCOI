@@ -47,7 +47,7 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Pendientes_Para_El_Plan extends JFrame{
+public class Cat_Pendientes extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
@@ -82,9 +82,6 @@ public class Cat_Pendientes_Para_El_Plan extends JFrame{
 	
 	JTable tabla = new JTable(model);
     JScrollPane scroll = new JScrollPane(tabla);
-	
-	@SuppressWarnings("rawtypes")
-	private TableRowSorter trsfiltro;
 	
 	DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Pendiente","Fecha","Colaboradores"}
 			){
@@ -133,7 +130,7 @@ public class Cat_Pendientes_Para_El_Plan extends JFrame{
 	Obj_Pendientes ObjPendientes= new Obj_Pendientes();
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Cat_Pendientes_Para_El_Plan()	{
+	public Cat_Pendientes()	{
 		this.setSize(1024,740);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -141,8 +138,6 @@ public class Cat_Pendientes_Para_El_Plan extends JFrame{
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/equipos-de-tarea-asignada-icono-7668-64.png"));
 		this.setTitle("Pendientes");
 	    this.panel.setBorder(BorderFactory.createTitledBorder("         PENDIENTES DEL COLABORADOR: "+usuario.getNombre_completo()));
-		this.trsfiltro = new TableRowSorter(model); 
-		this.tabla.setRowSorter(trsfiltro); 
 		this.trsfiltroP = new TableRowSorter(modelo); 
 		this.tablaPendientes.setRowSorter(trsfiltroP);  
 		this.txa_Pendiente.setLineWrap(true); 
@@ -408,8 +403,6 @@ public class Cat_Pendientes_Para_El_Plan extends JFrame{
 		}
 	}
 	
-	
-	@SuppressWarnings("unchecked")
 	public void init_tabla(){
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -433,7 +426,6 @@ public class Cat_Pendientes_Para_El_Plan extends JFrame{
 		this.tabla.getColumnModel().getColumn(4).setMaxWidth(500);
 		this.tabla.getColumnModel().getColumn(5).setMinWidth(20);
 		this.tabla.getColumnModel().getColumn(5).setMaxWidth(30);
-		this.tabla.setRowSorter(trsfiltro);  
 		refrestabla();
 	}
 	
@@ -465,7 +457,7 @@ public class Cat_Pendientes_Para_El_Plan extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Pendientes_Para_El_Plan().setVisible(true);
+			new Cat_Pendientes().setVisible(true);
 		}catch(Exception e){	}	
 	}
 }
