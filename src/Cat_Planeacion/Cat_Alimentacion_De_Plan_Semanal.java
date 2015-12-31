@@ -52,8 +52,6 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	JButton btnGuardarActividades = new JButton("Guardar Actividades", new ImageIcon("imagen/guardar-documento-icono-7840-32.png"));
 	JButton btnAgregarActividad = new JButton("Actividades Extras"    ,new ImageIcon("imagen/boton-anadir-mas-azul-icono-7396-32.png")  );
 	
-	JTable tabla = tablaLunes;
-	
 	public Cat_Alimentacion_De_Plan_Semanal(){
 		this.setTitle("Alimentacion De Plan Semanal");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione El Dia Que Desea Contestar Del Plan Semanal"));
@@ -78,21 +76,14 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		agregarColumnas(tablaDomingo,modelDomingo);
 		
 		cargarObjetivos();
-		PintarEstatusTabla(tabla_objetivos);
-		
-		SeleccionarPestaniaDia(pLunes,0);
-		SeleccionarPestaniaDia(pMarte,1);
-		SeleccionarPestaniaDia(pMiercoles,2);
-		SeleccionarPestaniaDia(pJueves,3);
-		SeleccionarPestaniaDia(pViernes,4);
-		SeleccionarPestaniaDia(pSabado,5);
-		SeleccionarPestaniaDia(pDomingo,6);
+		PintarEstatusTabla(tabla_objetivos,"Objetivos_De_La_Semana",0);//tipo_de_tabla , columnas 
 		
 		button.addActionListener(opButton);
 		btnGuardarActividades.addActionListener(opGuardarActividades);
 		btnGuardarObjetivos.addActionListener(opGuardarObjetivos);
 		btnAgregarActividad.addActionListener(opActividadesExtras);
 		
+		cargarActividades();
 		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
 		renders(tablaMartes,pMarte,scrollMartes,"Martes");
 		renders(tablaMiercoles,pMiercoles,scrollMiercoles,"Miercoles");		
@@ -100,6 +91,16 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
 		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
 		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
+	}
+	
+	private void cargarActividades() {
+		SeleccionarPestaniaDia(pLunes,0);
+		SeleccionarPestaniaDia(pMarte,1);
+		SeleccionarPestaniaDia(pMiercoles,2);
+		SeleccionarPestaniaDia(pJueves,3);
+		SeleccionarPestaniaDia(pViernes,4);
+		SeleccionarPestaniaDia(pSabado,5);
+		SeleccionarPestaniaDia(pDomingo,6);
 	}
 	
 	int filaSeleccionada = 0;
@@ -279,6 +280,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 							botonesEnTablas();
 						    break;
 			     }
+				PintarEstatusTabla(tabla,"Actividades_De_La_Semana",7);//tipo_de_tabla , columnas 
 			}
 		});
     }
@@ -286,6 +288,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	public void agregarColumnas(final JTable tb,final DefaultTableModel modelo){
 		modelo.addColumn("E");
 		modelo.addColumn("O");
+		modelo.addColumn("Status Actividad");
 		
 //		tabla.moveColumn(4, 2);
 		tb.getColumnModel().getColumn(2).setHeaderValue("Respuestas");
@@ -296,9 +299,11 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		tb.getColumnModel().getColumn(5).setMinWidth(25);
 		tb.getColumnModel().getColumn(6).setMaxWidth(25);
 		tb.getColumnModel().getColumn(6).setMinWidth(25);
+		tb.getColumnModel().getColumn(7).setMaxWidth(125);
+		tb.getColumnModel().getColumn(7).setMinWidth(125);
 		
-		tb.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-		tb.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+//		tb.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+//		tb.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 	}
 	
 	public void botonesEnTablas(){

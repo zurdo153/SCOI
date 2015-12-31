@@ -7841,7 +7841,7 @@ public class BuscarSQL {
 	
 	public String[][] getTablaActividadesDiarias(String fecha,int dia, String Ventana){
 		
-		int columnas =  Ventana.equals("Alimentacion")   ?   7  :   6   ;
+		int columnas =  Ventana.equals("Alimentacion")   ?   8  :   7   ;
 		
 		String[][] Matriz = null;
 		String actividades = "exec sp_consulta_de_actividades_del_dia "+(new Obj_Usuario().LeerSession().getFolio())+",'"+fecha+"',"+dia;
@@ -7856,7 +7856,7 @@ public class BuscarSQL {
 				Matriz[i][0] = rs.getString(1)+"  ";
 				Matriz[i][1] = rs.getString(2);
 				
-				if(columnas==7){
+				if(columnas==8){
 					
 					Matriz[i][2] = rs.getString(10);
 					Matriz[i][3] = rs.getString(3);
@@ -7864,11 +7864,13 @@ public class BuscarSQL {
 					
 					Matriz[i][5] = "";
 					Matriz[i][6] = "";
+					Matriz[i][7] = rs.getString(8);
 				}else{
 					Matriz[i][2] = rs.getString(3);
 					Matriz[i][3] = rs.getString(4);
 					Matriz[i][4] = rs.getString(5);
 					Matriz[i][5] = rs.getString(7);
+					Matriz[i][6] = rs.getString(8);
 				}
 				
 				i++;

@@ -73,6 +73,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		JLayeredPane pSabado = new JLayeredPane(); 
 		JLayeredPane pDomingo = new JLayeredPane();
 		
+	JTable tabla = null;
 	String activarColumna = "no";
 	String[] columnas ={"Folio", "Descripcion","Exige Evidencia","Exige Observacion","Prioridad"};
 			
@@ -82,6 +83,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 	    	java.lang.Object.class,
 	    	java.lang.Object.class,
 			java.lang.Object.class,
+	    	java.lang.Object.class,
 	    	java.lang.Object.class,
 	    	java.lang.Object.class,
 	    	java.lang.Object.class,
@@ -96,6 +98,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		 	case 4 : return activarColumna.equals("no")?false:true;
 		 	case 5 : return false;
 		 	case 6 : return false;
+		 	case 7 : return false;
 		 	
 		 }
 			return false;
@@ -206,6 +209,8 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 	int anchoMon = Toolkit.getDefaultToolkit().getScreenSize().width;
     int ancho_nivel_critico=0;
 	public Cat_Plan_Semanal_Base(){
+		
+		tabla = tablaLunes;
 		
 		activarColumna = "no";
 		
@@ -366,16 +371,16 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		tb.getColumnModel().getColumn(4).setMaxWidth(ancho2);
 		tb.getColumnModel().getColumn(4).setMinWidth(ancho2);
 		
-		tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
-		tb.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-		tb.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
-		tb.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
-		tb.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
+//		tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
+//		tb.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+//		tb.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
+//		tb.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
+//		tb.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
 	}
 	
-	public void PintarEstatusTabla(final JTable tb){
+	public void PintarEstatusTabla(final JTable tb, String tipo_de_tabla, int columnas){
 		//se crea instancia a clase FormatoTable y se indica columna patron
-        ColorCeldas ft = new ColorCeldas(0);
+        ColorCeldas ft = new ColorCeldas(tipo_de_tabla,columnas);
         tb.setDefaultRenderer (Object.class, ft );
 	}
 	

@@ -5004,10 +5004,10 @@ public boolean Guardar_Actividades_Con_Respuesta(String[][] actividades, int dia
 			String ruta = actividades[i][4].toString().equals("")?"C:\\SCOI\\imagen\\SIN EVIDENCIA.jpg":actividades[i][4].toString();
 			
 				pstmt.setInt(1, Integer.valueOf(actividades[i][0].toString()));                       //folio actividad  
-				pstmt.setString(2, actividades[i][1].toString().toUpperCase());                       //respuesta        
+				pstmt.setString(2, actividades[i][1].toString().trim().toUpperCase());                //respuesta        
 				pstmt.setBinaryStream(3, new FileInputStream(ruta));								  //evidencia
 				pstmt.setString(4, ruta.substring(ruta.indexOf(".")).toLowerCase());				  //tipo de archivo
-				pstmt.setString(5, actividades[i][5].toString().toUpperCase());                       //observacion    
+				pstmt.setString(5, actividades[i][5].toString().trim().toUpperCase());                //observacion    
 				pstmt.setInt(6, usuario.getFolio());												  //usuario
 				pstmt.setString(7, ip); 					  										  //ip_pc
 				pstmt.setInt(8, dia);                                                                 //dia    

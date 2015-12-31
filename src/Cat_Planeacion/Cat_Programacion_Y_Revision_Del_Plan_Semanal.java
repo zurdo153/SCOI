@@ -59,7 +59,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
-	JTable tabla = tablaLunes;
 	DefaultTableModel modeloDia = modelLunes;
 	Integer dia = 0;
 	
@@ -103,7 +102,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	    btnReporte_lista.setIcon(iconoDefault);
 	    
 		cargarObjetivos();
-		PintarEstatusTabla(tabla_objetivos);
+		PintarEstatusTabla(tabla_objetivos,"Objetivos_De_La_Semana",0);//catalogo , columnas 0 , usuario_login
 		
 		agregarColumnas(tablaLunes,modelLunes);
 		agregarColumnas(tablaMartes,modelMartes);
@@ -137,9 +136,13 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	
 	public void agregarColumnas(final JTable tb,final DefaultTableModel modelo){
 		modelo.addColumn("Usuario");
-		tb.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+		modelo.addColumn("Status Actividad");
+		
+//		tb.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 		tb.getColumnModel().getColumn(5).setMinWidth(350);
 		tb.getColumnModel().getColumn(5).setMaxWidth(480);
+		tb.getColumnModel().getColumn(6).setMinWidth(125);
+		tb.getColumnModel().getColumn(6).setMaxWidth(125);
 	}
 	
 	private void cargarActividades() {
@@ -202,6 +205,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 							buscarActividadesPorDia();
 						    break;
 			     }
+				PintarEstatusTabla(tabla,"Actividades_De_La_Semana",6);//tipo_de_tabla , columnas 0 
 			}
 		});
     }
