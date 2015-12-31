@@ -2216,8 +2216,8 @@ public class GuardarSQL {
 			for (int i = 0; i < tabla.length; i++) {
 
 				pstmtabla.setInt (1, pond.getFolio());
-				pstmtabla.setString (2, tabla[i][0]);
-				pstmtabla.setString (3, tabla[i][1]);
+				pstmtabla.setInt (2, Integer.valueOf(tabla[i][0].trim()));
+				pstmtabla.setString (3, tabla[i][2]);
 				
 				pstmtabla.executeUpdate();
 				

@@ -3531,6 +3531,7 @@ public class BuscarSQL {
 		Obj_Nivel_Jerarquico nivel_gerarquico = new Obj_Nivel_Jerarquico();
 		String query = "select tb_nivel_jerarquico.folio as folio" +
 						",tb_nivel_jerarquico.descripcion as descripcion" +
+						",tb_puesto.folio as folio_puesto_principal " +
 						",tb_puesto.nombre as puesto_principal " +
 						"from tb_nivel_jerarquico " +
 						"inner join tb_puesto on tb_puesto.folio=tb_nivel_jerarquico.puesto_principal " +
@@ -3545,6 +3546,7 @@ public class BuscarSQL {
 				nivel_gerarquico.setFolio(rs.getInt("folio"));
 				
 				nivel_gerarquico.setDescripcion(rs.getString("descripcion"));
+				nivel_gerarquico.setFolio_puesto_principal(rs.getInt("folio_puesto_principal"));
 				nivel_gerarquico.setPuesto_principal(rs.getString("puesto_principal"));
 			}
 			

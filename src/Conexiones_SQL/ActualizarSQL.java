@@ -1919,25 +1919,29 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean nivelGerarquico2(Obj_Nivel_Jerarquico niv, String[][]tabla){
+	public boolean nivelGerarquico2(Obj_Nivel_Jerarquico niv, String[][] tabla){
 		
 		String queryDelete="delete from tb_tabla_nivel_jerarquico where tb_tabla_nivel_jerarquico.folio_tb_nivel_jerarquico = "+niv.getFolio();
 		String query = "exec sp_insert_tabla_nivel_jerarquico ?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmtDelete = null;
 		PreparedStatement pstmtabla = null;
+		
 		try {
+			
 			con.setAutoCommit(false);
 			pstmtDelete= con.prepareStatement(queryDelete);
 			pstmtDelete.executeUpdate();
 			pstmtabla = con.prepareStatement(query);
-			for (int i = 0; i < tabla.length; i++) {
+			
+			for (int i = 0; i < tabla.length; i++){
 				pstmtabla.setInt (1, niv.getFolio());
 				System.out.print(tabla[i][0] +"   ");	System.out.println(tabla[i][1]);
-				pstmtabla.setString (2, tabla[i][0]);
-				pstmtabla.setString (3, tabla[i][1]);
+				pstmtabla.setInt (2, Integer.valueOf(tabla[i][0].trim()));
+				pstmtabla.setString (3, tabla[i][2]);
 				pstmtabla.executeUpdate();
 			}
+			
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
@@ -1955,10 +1959,10 @@ public class ActualizarSQL {
 		}finally{
 			try {
 				con.close();
-			} catch (SQLException e) {
+			} catch (SQLException e){
 				e.printStackTrace();
 			}
-			}
+		}
 		return true;
 	}
 
