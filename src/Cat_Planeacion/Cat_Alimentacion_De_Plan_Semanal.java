@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Vector;
 
@@ -39,7 +40,6 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Principal.Componentes;
-import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
@@ -122,7 +122,17 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		                 if(opcion == JFileChooser.APPROVE_OPTION){
 		                    String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
 		                    
-		            	 	tabla.setValueAt(pathArchivo, filaSeleccionada, columnaSeleccionada+2);
+		                    File mi_fichero = new File ( pathArchivo );
+		                    double tamano_bytes = mi_fichero.length ( );
+		                    double tamano_megas = tamano_bytes/(1024*1024);
+		                    
+		                    if(tamano_megas>3){
+		                    	tabla.setValueAt("", filaSeleccionada, columnaSeleccionada+2);
+		                    	JOptionPane.showMessageDialog(null, "El Archivo Que Intenta Agregar Es Muy Grande,\nEl Archivo Debe Medir Maximo 3 MB", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+		        				return;
+		                    }else{
+		                    	tabla.setValueAt(pathArchivo, filaSeleccionada, columnaSeleccionada+2);
+		                    }
 		                 }
 				break;
 				

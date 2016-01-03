@@ -4988,7 +4988,7 @@ public boolean Guardar_Objetivos_De_La_Semana(Vector objetivos, String folioObje
 	
 public boolean Guardar_Actividades_Con_Respuesta(String[][] actividades, int dia){
 	
-	String query =  "exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?";
+	String query =  "exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?,?";
 	Connection con = new Connexion().conexion();
 	
 	PreparedStatement pstmt = null;
@@ -5001,21 +5001,23 @@ public boolean Guardar_Actividades_Con_Respuesta(String[][] actividades, int dia
 		
 		for(int i=0; i<actividades.length; i++){
 			
-			String ruta = actividades[i][4].toString().equals("")?"C:\\SCOI\\imagen\\SIN EVIDENCIA.jpg":actividades[i][4].toString();
+			String ruta 	 = actividades[i][4].toString().equals("")?"C:\\SCOI\\imagen\\SIN EVIDENCIA.jpg":actividades[i][4].toString();
+			String evidencia = actividades[i][4].toString().equals("")?"NO":"SI";
 			
 				pstmt.setInt(1, Integer.valueOf(actividades[i][0].toString()));                       //folio actividad  
 				pstmt.setString(2, actividades[i][1].toString().trim().toUpperCase());                //respuesta        
-				pstmt.setBinaryStream(3, new FileInputStream(ruta));								  //evidencia
+				pstmt.setBinaryStream(3, new FileInputStream(ruta));								  //ruta_evidencia
 				pstmt.setString(4, ruta.substring(ruta.indexOf(".")).toLowerCase());				  //tipo de archivo
 				pstmt.setString(5, actividades[i][5].toString().trim().toUpperCase());                //observacion    
 				pstmt.setInt(6, usuario.getFolio());												  //usuario
 				pstmt.setString(7, ip); 					  										  //ip_pc
 				pstmt.setInt(8, dia);                                                                 //dia    
+				pstmt.setString(9, evidencia);                                                        //con_sin_evidencia
 				pstmt.executeUpdate();
 		}
 		
 		con.commit();
-	} catch (Exception e) {
+	} catch (Exception e){
 		System.out.println("SQLException: "+e.getMessage());
 		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Actividades_Con_Respuesta  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 		if(con != null){
