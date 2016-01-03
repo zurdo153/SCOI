@@ -34,7 +34,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Evaluaciones.Cat_Filtro_Nivel_Jerarquico;
-import Cat_Lista_de_Raya.Cat_Puestos;
 import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
@@ -61,7 +60,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	
 	JButton btnAgregar = new JButton("Agregar",new ImageIcon("imagen/double-arrow-icone-3883-16.png"));
 
-	JButton btnAltaPuesto = new JButton("Puesto");
 	JButton btnFiltroPuestosPrincipal 	= new JButton("Puestos Principal");
 	JButton btnFiltroPuestosDependiente = new JButton("Puesto Dependiente");
 
@@ -107,7 +105,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		this.panel.add(btnBuscar).setBounds(235,y,height,height);
 		this.panel.add(btnFiltro).setBounds(255,y,height,height);
 		this.panel.add(btnNuevo).setBounds(300,y,width,height);
-		this.panel.add(btnAltaPuesto).setBounds(430,y,width,height);
 		
 		this.panel.add(new JLabel("Estatus:")).setBounds(20,y+=30,width,height);
 		this.panel.add(cmb_status).setBounds(130,y,width,height);
@@ -150,7 +147,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		this.btnBuscar.addActionListener(buscar);
 		this.btnEditar.addActionListener(modifica);
 		
-		this.btnAltaPuesto.addActionListener(puesto);
 		this.btnFiltro.addActionListener(filtro);
 		this.btnFiltroPuestosPrincipal.addActionListener(opFiltroPuestos);
 		this.btnFiltroPuestosDependiente.addActionListener(opFiltroPuestos);
@@ -204,7 +200,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	
 	public void status_botones(boolean variable){
 		btnFiltroPuestosPrincipal.setEnabled(variable);
-		btnAltaPuesto.setEnabled(variable);
 		btnAgregar.setEnabled(variable);
 		btnEliminar.setEnabled(variable);		
 	}
@@ -255,15 +250,8 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 									
 									gerarquico.setFolio_puesto_principal(Integer.valueOf(txtFolioPuestoPrincipal.getText()));
 									gerarquico.setPuesto_principal(txtPuestoPrincipal.getText());
-									gerarquico.setFoliopuesto_dependiente(Integer.valueOf(txtFolioP_Dependiente.getText()));
-									gerarquico.setPuesto_dependiente(txtP_Dependiente.getText());
 									gerarquico.setEstablecimiento(cmb_Establecimiento.getSelectedItem().toString());
 									
-//									String[] arreglo = new String[2];
-//									
-//									arreglo[0] =txtP_Dependiente.getText();
-//									arreglo[1] = cmb_Establecimiento.getSelectedItem()+"";
-										
 										if(gerarquico.actualizar2(listadatos())){
 												limpiaGuardar();
 												/**/	   		 getTabla(Integer.parseInt(txtFolio.getText()));			/**/
@@ -289,14 +277,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 								
 								gerarquico.setFolio_puesto_principal(Integer.valueOf(txtFolioPuestoPrincipal.getText()));
 								gerarquico.setPuesto_principal(txtPuestoPrincipal.getText());
-								gerarquico.setFoliopuesto_dependiente(Integer.valueOf(txtFolioP_Dependiente.getText()));
-								gerarquico.setPuesto_dependiente(txtP_Dependiente.getText());
 								gerarquico.setEstablecimiento(cmb_Establecimiento.getSelectedItem().toString());
-								
-//								String[] arreglo = new String[2];
-//								
-//								arreglo[0] =txtP_Dependiente.getText();
-//								arreglo[1] = cmb_Establecimiento.getSelectedItem()+"";
 								
 									if(gerarquico.guardar_multiple2(listadatos())){
 										btnFiltroPuestosPrincipal.setEnabled(false);
@@ -348,11 +329,11 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			if(tablaP.isRowSelected(tablaP.getSelectedRow())){
 				int fila = tablaP.getSelectedRow();
-				String nombre =  tablaP.getValueAt(fila, 0).toString().trim();
-				String establecimiento =  tablaP.getValueAt(fila, 1).toString().trim();
+				int folio_puesto_dependiente =  Integer.valueOf(tablaP.getValueAt(fila, 0).toString().trim());
+				String establecimiento =  tablaP.getValueAt(fila, 2).toString().trim();
 
 				if(JOptionPane.showConfirmDialog(null, "¿desea eliminar el puesto dependiente seleccionado?","aviso",JOptionPane.YES_NO_OPTION) == 0){
-					if(new Obj_Nivel_Jerarquico().buscarYborraPuestoDependiente(nombre, Integer.parseInt(txtFolio.getText()),establecimiento)){
+					if(new Obj_Nivel_Jerarquico().buscarYborraPuestoDependiente(folio_puesto_dependiente, Integer.parseInt(txtFolio.getText()),establecimiento)){
 						JOptionPane.showMessageDialog(null,"Se eliminó exitosamente","Exito", JOptionPane.INFORMATION_MESSAGE);
 						modeloP.removeRow(fila);
 					}else{
@@ -514,13 +495,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 			txtDescripcion.setEnabled(false);
 			status_botones(true);
 			btnFiltroPuestosPrincipal.setEnabled(false);
-		}
-	};
-	
-	ActionListener puesto = new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) 
-		{
-			new Cat_Puestos().setVisible(true);
 		}
 	};
 	
