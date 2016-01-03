@@ -39,7 +39,6 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Principal.Componentes;
-import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
