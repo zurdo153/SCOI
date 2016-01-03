@@ -708,7 +708,7 @@ public class Init_Login extends JFrame{
 			
 			
 			Obj_Usuario user = new Obj_Usuario().buscar(Integer.parseInt(txtFolio.getText()));
-			if(!algoritmo.cryptMD5(txtContrasenaActual.getText(), "izagar").trim().toLowerCase().equals(user.getContrasena().trim().toLowerCase())){
+			if(!algoritmo.cryptMD5(txtContrasenaActual.getText(), "izagar").trim().equals(user.getContrasena().trim())){
 				
 			JOptionPane.showMessageDialog(null, "La contraseña no es válida...","Aviso",JOptionPane.WARNING_MESSAGE);
 			
@@ -736,7 +736,7 @@ public class Init_Login extends JFrame{
 		@SuppressWarnings({ "deprecation", "static-access", "unused" })
 		public void actionPerformed(ActionEvent arg0) {
 			if(txtContrasenaNueva.getText().trim().toLowerCase().equals(txtContrasenaConfirmar.getText().trim().toLowerCase())) {
-			String nuevacontrasena = algoritmo.cryptMD5(txtContrasenaNueva.getText().trim().toLowerCase(), "izagar").trim().toLowerCase();
+			String nuevacontrasena = algoritmo.cryptMD5(txtContrasenaNueva.getText().trim(), "izagar").trim();
 			boolean user = new Obj_Usuario().CambiarContrasena( Integer.valueOf(txtFolio.getText()),nuevacontrasena);
 			System.out.println("valido"+nuevacontrasena);
 			txtContrasenaActual.setText("");
