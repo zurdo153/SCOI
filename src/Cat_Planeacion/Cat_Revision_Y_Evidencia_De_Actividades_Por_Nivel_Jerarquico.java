@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
@@ -41,6 +43,7 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -163,6 +166,8 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
 		this.init_tabla();
 		
 		renders(tabla_actividades);
+		
+		txtFiltro.addKeyListener(opFiltroFolio);
 		
 		fch_busqueda.setDate(cargar_fecha(0));
 		fch_busqueda.addPropertyChangeListener(calendario);
@@ -367,7 +372,7 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
 		try {
 			Connexion con = new Connexion();
 			s = con.conexion().createStatement();
-			rs = s.executeQuery("exec sp_select_empleados_por_nivel_jerarquico_para_revision_y_asignacion_de_actividades "+usuario.getFolio());
+			rs = s.executeQuery("exec sp_filtro_empleado_actividades_status_vigente "+usuario.getFolio());
 			while (rs.next())
 			{  String [] fila = new String[5];
 			   fila[0] = rs.getString(1).trim();
@@ -379,9 +384,40 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
 			}	
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en la Subclase Cat_Seleccion_Del_Ususario SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			JOptionPane.showMessageDialog(null, "Error en la Clase Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 		}
 	}
+	
+	KeyListener opFiltroFolio = new KeyListener(){
+		public void keyReleased(KeyEvent arg0) {
+			int[] columnas = {0,1,2,3,4};
+			new Obj_Filtro_Dinamico_Plus(tabla, txtFiltro.getText().toUpperCase(), columnas);
+		}
+		public void keyTyped(KeyEvent arg0)   {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
+//	private void refrestabla(){
+//		model.setRowCount(0);
+//		Statement s;
+//		ResultSet rs;
+//		try {
+//			Connexion con = new Connexion();
+//			s = con.conexion().createStatement();
+//			rs = s.executeQuery("exec sp_select_empleados_por_nivel_jerarquico_para_revision_y_asignacion_de_actividades "+usuario.getFolio());
+//			while (rs.next())
+//			{  String [] fila = new String[5];
+//			   fila[0] = rs.getString(1).trim();
+//			   fila[1] = rs.getString(2).trim();
+//			   fila[2] = rs.getString(3).trim(); 
+//			   fila[3] = rs.getString(4).trim(); 
+//			   fila[4] = rs.getString(5).trim(); 
+//			   model.addRow(fila); 
+//			}	
+//		} catch (SQLException e1) {
+//			e1.printStackTrace();
+//			JOptionPane.showMessageDialog(null, "Error en la Clase Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+//		}
+//	}
 	
 	public static void main(String [] arg){
 		try{
