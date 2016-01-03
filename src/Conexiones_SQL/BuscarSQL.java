@@ -3531,6 +3531,7 @@ public class BuscarSQL {
 		Obj_Nivel_Jerarquico nivel_gerarquico = new Obj_Nivel_Jerarquico();
 		String query = "select tb_nivel_jerarquico.folio as folio" +
 						",tb_nivel_jerarquico.descripcion as descripcion" +
+						",tb_puesto.folio as folio_puesto_principal " +
 						",tb_puesto.nombre as puesto_principal " +
 						"from tb_nivel_jerarquico " +
 						"inner join tb_puesto on tb_puesto.folio=tb_nivel_jerarquico.puesto_principal " +
@@ -3545,6 +3546,7 @@ public class BuscarSQL {
 				nivel_gerarquico.setFolio(rs.getInt("folio"));
 				
 				nivel_gerarquico.setDescripcion(rs.getString("descripcion"));
+				nivel_gerarquico.setFolio_puesto_principal(rs.getInt("folio_puesto_principal"));
 				nivel_gerarquico.setPuesto_principal(rs.getString("puesto_principal"));
 			}
 			
@@ -7906,4 +7908,92 @@ public class BuscarSQL {
 //			
 //		return modificar;
 //	}
+	
+	public String[][] actividadesConEvidencia(String fecha,int folio_empleado){
+		
+		String[][] Matriz = null;
+		String query = "exec sp_select_actividades_con_evidencia '"+fecha+"',"+folio_empleado;
+		Matriz = new String[getFilas(query)][5];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = rs.getString(4);
+				Matriz[i][4] = rs.getString(5);
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en Buscar SQL  en la funcion actividadesConEvidencia\nen el procedimiento almacenado \n"+query+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		}
+		return Matriz;
+	}
+	
+	public int Evidencia_De_Actividades_Capturadas(String fecha, int folio_empleado){
+		int contadorDeArchivosGenerados=0;
+		String query = "exec sp_select_actividades_con_evidencia_para_generar '"+fecha+"',"+folio_empleado;
+
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+
+			while(rs.next()){
+				
+				String ruta = "C:\\EVIDENCIA_DE_ACTIVIDADES_PLAN_SEMANAL_SCOI\\"+rs.getString(1).replace(" ", "_")+"\\";
+				File archivos = new File(ruta);
+				
+					// creamos fichero si no existe y escribimos archivo 
+					if(!archivos.exists()){ 
+						archivos.mkdirs();
+					}
+	            		
+	            		Blob blob_pdf = rs.getBlob(3);
+	            		
+	            		if(blob_pdf.length() > 0){
+	            			
+	            			String rutaCompleta = ruta+rs.getString(2)+"-"+rs.getString(6).replace(" ","_")+"-"+"("+rs.getString(5).replace("/","-")+")"+rs.getString(4);
+	            			File photo = new File(rutaCompleta);
+								FileOutputStream fos = new FileOutputStream(photo);
+							
+					            byte[] buffer = new byte[1];
+					            InputStream is = rs.getBinaryStream(3);
+					            
+					            while (is.read(buffer) > 0) {
+					                fos.write(buffer);
+					            }fos.close();
+
+//-----------------------------abrir archivo Descargado
+					           try{ 
+					        	   Runtime.getRuntime().exec("cmd /c start "+rutaCompleta);
+			            	   }catch(IOException e){
+			            	      e.printStackTrace();
+			            	   } 
+					            
+					            contadorDeArchivosGenerados++;
+	            		}
+//					}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return contadorDeArchivosGenerados;
+	}
+	
 }

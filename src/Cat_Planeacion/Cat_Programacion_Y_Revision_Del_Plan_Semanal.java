@@ -219,7 +219,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	
 	ActionListener pendientes = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			new Cat_Pendientes().setVisible(true);;
+			new Cat_Pendientes().setVisible(true);
 		}
 	};
 	
@@ -329,9 +329,9 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			}else{
 				
 				int folio_actividad = Integer.valueOf(tabla.getValueAt(filaSeleccionada, 0).toString().trim());
-							String aviso =  new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad);
+							String avisoSQL =  new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad);
 							buscarActividadesPorDia();
-							JOptionPane.showMessageDialog(null,aviso+" Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							JOptionPane.showMessageDialog(null,avisoSQL,"Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							return;
 			}
 		}

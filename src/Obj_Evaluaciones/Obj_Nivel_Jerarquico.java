@@ -10,7 +10,9 @@ import Conexiones_SQL.GuardarSQL;
 public class Obj_Nivel_Jerarquico {
 	private int folio;
 	private String descripcion;
+	private int folio_puesto_principal;
 	private String puesto_principal;
+	private int foliopuesto_dependiente;
 	private String puesto_dependiente;
 	private String puesto;
 	private String establecimiento;
@@ -18,7 +20,9 @@ public class Obj_Nivel_Jerarquico {
 	
 	public Obj_Nivel_Jerarquico()
 	{
-		this.folio=0; this.descripcion=""; this.puesto_principal=""; this.puesto_dependiente="";
+		this.folio=0; this.descripcion=""; 
+		this.folio_puesto_principal = 0; this.puesto_principal=""; 
+		this.foliopuesto_dependiente = 0; this.puesto_dependiente="";
 		this.puesto=""; this.establecimiento=""; this.status=false;
 	}
 
@@ -54,12 +58,28 @@ public class Obj_Nivel_Jerarquico {
 		this.status = status;
 	}
 	
+	public int getFolio_puesto_principal() {
+		return folio_puesto_principal;
+	}
+
+	public void setFolio_puesto_principal(int folio_puesto_principal) {
+		this.folio_puesto_principal = folio_puesto_principal;
+	}
+
 	public String getPuesto_principal() {
 		return puesto_principal;
 	}
 
 	public void setPuesto_principal(String puesto_principal) {
 		this.puesto_principal = puesto_principal;
+	}
+
+	public int getFoliopuesto_dependiente() {
+		return foliopuesto_dependiente;
+	}
+
+	public void setFoliopuesto_dependiente(int foliopuesto_dependiente) {
+		this.foliopuesto_dependiente = foliopuesto_dependiente;
 	}
 
 	public String getPuesto_dependiente() {
