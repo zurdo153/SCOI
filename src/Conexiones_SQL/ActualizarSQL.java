@@ -1936,7 +1936,7 @@ public class ActualizarSQL {
 			
 			for (int i = 0; i < tabla.length; i++){
 				pstmtabla.setInt (1, niv.getFolio());
-				System.out.print(tabla[i][0] +"   ");	System.out.println(tabla[i][1]);
+//				System.out.print(tabla[i][0] +"   ");	System.out.println(tabla[i][1]);
 				pstmtabla.setInt (2, Integer.valueOf(tabla[i][0].trim()));
 				pstmtabla.setString (3, tabla[i][2]);
 				pstmtabla.executeUpdate();

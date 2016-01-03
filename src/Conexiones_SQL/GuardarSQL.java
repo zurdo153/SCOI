@@ -2831,8 +2831,8 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			return true;
 		}
 	
-		public boolean buscarBorrarPDependiente(String nombre, int folio_tabla,String establecimineto){
-			String query = "exec sp_folio_puesto_dependiente '"+nombre+"', "+folio_tabla+",'"+establecimineto+"'";
+		public boolean buscarBorrarPDependiente(int folio_puesto_dependiente, int folio,String establecimineto){
+			String query = "exec sp_folio_puesto_dependiente "+folio_puesto_dependiente+", "+folio+",'"+establecimineto+"'";
 			Connection con = new Connexion().conexion();
 			PreparedStatement pstmt = null;
 			try {

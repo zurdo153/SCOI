@@ -421,12 +421,10 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				if(Actividad_plan.guardar(OpRespuesta,OpPonderacion,usuarios,frecuencia, usuario.getFolio())){
 					if(Catalogo_Origen.equals("Cat_Programacion_Y_Revision_Del_Plan_Semanal")){
 					new Cat_Programacion_Y_Revision_Del_Plan_Semanal().setVisible(true);
-					dispose();
 					}
 					
 					if(Catalogo_Origen.equals("Cat_Alimentacion_De_Plan_Semanal")){
 					new Cat_Alimentacion_De_Plan_Semanal().setVisible(true);
-					dispose();
 					}
 					
 				}else{
@@ -1278,7 +1276,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 //			panel.add(lblMeses2).setBounds(x+450, y, ancho, 20);
 			
 //			semana------
-			panel.add(chbLunes).setBounds       (x+20  ,y    ,ancho ,20);
+			panel.add(chbLunes).setBounds       (x+20  ,y+=25,ancho ,20);
 			panel.add(chbMartes).setBounds      (x+110 ,y    ,ancho ,20);
 			panel.add(chbMiercoles).setBounds   (x+210 ,y    ,ancho ,20);
 			panel.add(chbJueves).setBounds      (x+310 ,y    ,ancho ,20);
@@ -1542,9 +1540,9 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				break;
 				case "SEMANAL":
 					
-					lblSeRepiteCada.setVisible(false);
-					spDiasARepetir.setVisible(false);
-				    lblDias_Semana.setVisible(false);
+					lblSeRepiteCada.setVisible(true);
+					spDiasARepetir.setVisible(true);
+				    lblDias_Semana.setVisible(true);
 							
 					spMeses.setVisible(false);
 					lblMeses.setVisible(false);
