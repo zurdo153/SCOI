@@ -136,7 +136,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		panel.add(btnDeshacer).setBounds                                           (x    ,y+=230,width   ,height*2   );
 		panel.add(btnAprovar).setBounds                                            (x+205,y     ,width   ,height*2   );
 		
-		txa_Resultado_Configuracion.setText("AAAA");
+		
 		if(!Catalogo_Origen.equals("Cat_Alimentacion_De_Plan_Semanal")){
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/reinicio-pelota-cute-icono-7443-64.png"));
 			this.setTitle("Actividades De Una Planeacion");
@@ -348,22 +348,19 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	ActionListener deshacer = new ActionListener(){
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e){
+			txa_Resultado_Configuracion.setText("");
 			
-			System.out.println(txa_Resultado_Configuracion.grabFocus());
+			String[] horainicio = Actividad_plan.getHora_inicia().split(":");
+			jspHoraInicio.setValue(new Time(Integer.parseInt(horainicio[0]),Integer.parseInt(horainicio[1]),Integer.parseInt(horainicio[2])));
+			jspHoraInicio.setEditor(spDHoraInicio);
 			
-//			txa_Resultado_Configuracion.setText("");
-//			
-//			String[] horainicio = Actividad_plan.getHora_inicia().split(":");
-//			jspHoraInicio.setValue(new Time(Integer.parseInt(horainicio[0]),Integer.parseInt(horainicio[1]),Integer.parseInt(horainicio[2])));
-//			jspHoraInicio.setEditor(spDHoraInicio);
-//			
-//			String[] horatermina = Actividad_plan.getHora_termina().split(":");
-//			jspHorafinal.setValue(new Time(Integer.parseInt(horatermina[0]),Integer.parseInt(horatermina[1]),Integer.parseInt(horatermina[2])));
-//			jspHorafinal.setEditor(spDHorafinal);
-//			
-//			//falta reiniciar_los_objetos
-//			
-//			
+			String[] horatermina = Actividad_plan.getHora_termina().split(":");
+			jspHorafinal.setValue(new Time(Integer.parseInt(horatermina[0]),Integer.parseInt(horatermina[1]),Integer.parseInt(horatermina[2])));
+			jspHorafinal.setEditor(spDHorafinal);
+			
+			//falta reiniciar_los_objetos
+			
+			
 		 }
 		};
 		
