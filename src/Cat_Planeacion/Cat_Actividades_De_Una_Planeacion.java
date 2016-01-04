@@ -86,11 +86,11 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	JLabel lblGrupoOrdenActividad= new JLabel("");
 	SpinnerDateModel sdmHoraincio= new SpinnerDateModel();
 	  JSpinner jspHoraInicio     = new JSpinner(sdmHoraincio);                                         
-	  JSpinner.DateEditor spDHoraInicio = new JSpinner.DateEditor(jspHoraInicio,"HH:mm:ss"); 
+	  JSpinner.DateEditor spDHoraInicio = new JSpinner.DateEditor(jspHoraInicio,"HH:mm"); 
 	
 	SpinnerDateModel sdmHorafinal =  new SpinnerDateModel();
 	  JSpinner jspHorafinal       = new JSpinner(sdmHorafinal);                                         
-	  JSpinner.DateEditor spDHorafinal = new JSpinner.DateEditor(jspHorafinal,"HH:mm:ss"); 
+	  JSpinner.DateEditor spDHorafinal = new JSpinner.DateEditor(jspHorafinal,"HH:mm"); 
 	
 	JDateChooser fecha_de_la_actividad = new JDateChooser();
 	  
@@ -136,7 +136,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		panel.add(btnDeshacer).setBounds                                           (x    ,y+=230,width   ,height*2   );
 		panel.add(btnAprovar).setBounds                                            (x+205,y     ,width   ,height*2   );
 		
-		
+		txa_Resultado_Configuracion.setText("AAAA");
 		if(!Catalogo_Origen.equals("Cat_Alimentacion_De_Plan_Semanal")){
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/reinicio-pelota-cute-icono-7443-64.png"));
 			this.setTitle("Actividades De Una Planeacion");
@@ -348,19 +348,22 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	ActionListener deshacer = new ActionListener(){
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e){
-			txa_Resultado_Configuracion.setText("");
 			
-			String[] horainicio = Actividad_plan.getHora_inicia().split(":");
-			jspHoraInicio.setValue(new Time(Integer.parseInt(horainicio[0]),Integer.parseInt(horainicio[1]),Integer.parseInt(horainicio[2])));
-			jspHoraInicio.setEditor(spDHoraInicio);
+			System.out.println(txa_Resultado_Configuracion.grabFocus());
 			
-			String[] horatermina = Actividad_plan.getHora_termina().split(":");
-			jspHorafinal.setValue(new Time(Integer.parseInt(horatermina[0]),Integer.parseInt(horatermina[1]),Integer.parseInt(horatermina[2])));
-			jspHorafinal.setEditor(spDHorafinal);
-			
-			//falta reiniciar_los_objetos
-			
-			
+//			txa_Resultado_Configuracion.setText("");
+//			
+//			String[] horainicio = Actividad_plan.getHora_inicia().split(":");
+//			jspHoraInicio.setValue(new Time(Integer.parseInt(horainicio[0]),Integer.parseInt(horainicio[1]),Integer.parseInt(horainicio[2])));
+//			jspHoraInicio.setEditor(spDHoraInicio);
+//			
+//			String[] horatermina = Actividad_plan.getHora_termina().split(":");
+//			jspHorafinal.setValue(new Time(Integer.parseInt(horatermina[0]),Integer.parseInt(horatermina[1]),Integer.parseInt(horatermina[2])));
+//			jspHorafinal.setEditor(spDHorafinal);
+//			
+//			//falta reiniciar_los_objetos
+//			
+//			
 		 }
 		};
 		
