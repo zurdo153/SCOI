@@ -928,8 +928,10 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			
 			this.cont.add(panel);
 			this.init_tabla();
-			comentario();
-			this.tabla.addMouseListener(opcomentario);
+			
+			tabla_seleccion_default_usuario();
+//			this.tabla.addMouseListener(opcomentario);
+			actionTabla(tabla);
 			
 			this.tabla.addKeyListener(opseleccioncontecladocomentario);
 			this.txtFiltro.addKeyListener(opFiltroFolio);
@@ -950,6 +952,15 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	 	                  {                btnDeshacer.doClick();           	    }
 	 	              });
 
+// 	 	     //SELECCIONAR CON SPACE
+//                 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "espacio");
+//                   getRootPane().getActionMap().put("espacio", new AbstractAction(){
+//                  public void actionPerformed(ActionEvent e)
+//                  {                int fila = tabla.getSelectedRow();
+//      			System.out.println(fila);
+//      			llenar_arreglo();           	    }
+//              });
+
 		}
 		
 		ActionListener Agregar = new ActionListener() {
@@ -964,7 +975,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					txtFiltro.setText("");
 					int[] columnas = {0,1,2,3,4};
 					new Obj_Filtro_Dinamico_Plus(tabla,txtFiltro.getText(), columnas);
-					comentario();
+//					comentario();
 					return;
 				}
 				usuarios.setUsuarios_nombres(tabla_folio_y_nombre_completo());
@@ -976,23 +987,52 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				txa_Resultado_Seleccion.setText("");
 				refrestabla();
-				comentario();
+//				comentario();
 			 }
 			};
 		
-		MouseListener opcomentario = new MouseListener() {
-			public void mouseReleased(MouseEvent arg0) {}
-			public void mousePressed(MouseEvent arg0) {}
-			public void mouseExited(MouseEvent arg0) {}
-			public void mouseEntered(MouseEvent arg0) {}
-			public void mouseClicked(MouseEvent arg0) {
-				comentario();
-			}
-		};
+//		MouseListener opcomentario = new MouseListener() {
+//			public void mouseReleased(MouseEvent arg0) {}
+//			public void mousePressed(MouseEvent arg0) {}
+//			public void mouseExited(MouseEvent arg0) {}
+//			public void mouseEntered(MouseEvent arg0) {}
+//			public void mouseClicked(MouseEvent arg0) {
+//				llenar_arreglo();
+////				comentario();
+//			}
+//		};
+		
+		public void actionTabla(final JTable tb){
+			tb.addMouseListener(new MouseListener() {
+				public void mouseReleased(MouseEvent arg0) {}
+				public void mousePressed(MouseEvent arg0) {}
+				public void mouseExited(MouseEvent arg0) {}
+				public void mouseEntered(MouseEvent arg0) {}
+				public void mouseClicked(MouseEvent arg0) {
+					llenar_arreglo();
+				}
+			});
+			
+			tb.addKeyListener(new KeyListener() {
+				public void keyTyped(KeyEvent e) {
+				}
+				public void keyReleased(KeyEvent e) {
+					
+					System.out.println(e.getKeyCode());
+					try {
+			            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			            	llenar_arreglo();
+			            }
+			        }catch(Exception ex){}
+				}
+				public void keyPressed(KeyEvent e) {
+				}
+			});
+		}
 		
 		KeyListener opseleccioncontecladocomentario = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				comentario();
+//				comentario();
 			}
 			public void keyTyped(KeyEvent arg0)   {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -1002,50 +1042,98 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			public void keyReleased(KeyEvent arg0) {
 				int[] columnas = {0,1,2,3,4};
 				new Obj_Filtro_Dinamico_Plus(tabla, txtFiltro.getText().toUpperCase(), columnas);
-				comentario();
+//				comentario();
 			}
 			public void keyTyped(KeyEvent arg0)   {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		public void comentario(){
-			txa_Resultado_Seleccion.setText("");
-			String Comentario_colaboradores="";
-			int testigo=0;
-			 if(!txtFiltro.getText().toString().equals("")){
-				 Comentario_colaboradores="Esta Filtrando La Tabla No Se Pueden Mostrar Los Empleado Seleccionados:";
-				 testigo=1;
-			 }else{
-				Object[][] colaboradores = tabla_folio_y_nombre_completo();
-    			 Comentario_colaboradores="Esta actividad Aplica Para Los Siguientes Colaboradores:";
-    			for(int i=0; i<colaboradores.length; i++){
-    				Comentario_colaboradores=Comentario_colaboradores+"\n  *"+colaboradores[i][1].toString().trim();
-    				testigo=1;
-    			}
-			 }	
-    			
-    		if(testigo>0){
-    			txa_Resultado_Seleccion.setText(Comentario_colaboradores);
-    			}else{
-    				tabla_seleccion_default_usuario();
-    				txa_Resultado_Seleccion.setText(Comentario_colaboradores+"\n  *"+usuario.getNombre_completo());
-    			}
-		}
+//		public void comentario(){
+//			txa_Resultado_Seleccion.setText("");
+//			String Comentario_colaboradores="";
+//			int testigo=0;
+//			 if(!txtFiltro.getText().toString().equals("")){
+//				 Comentario_colaboradores="Esta Filtrando La Tabla No Se Pueden Mostrar Los Empleado Seleccionados:";
+//				 testigo=1;
+//			 }else{
+//				Object[][] colaboradores = tabla_folio_y_nombre_completo();
+//    			 Comentario_colaboradores="Esta actividad Aplica Para Los Siguientes Colaboradores:";
+//    			for(int i=0; i<colaboradores.length; i++){
+//    				Comentario_colaboradores=Comentario_colaboradores+"\n  *"+colaboradores[i][1].toString().trim();
+//    				testigo=1;
+//    			}
+//			 }	
+//    			
+//    		if(testigo>0){
+//    			txa_Resultado_Seleccion.setText(Comentario_colaboradores);
+//    			}else{
+//    				tabla_seleccion_default_usuario();
+//    				txa_Resultado_Seleccion.setText(Comentario_colaboradores+"\n  *"+usuario.getNombre_completo());
+//    			}
+//		}
 		
+//		public void tabla_seleccion_default_usuario(){
+//			for(int i=0; i<tabla.getRowCount(); i++){
+//				 if(Integer.valueOf(tabla.getValueAt(i,0).toString().trim())==(usuario.getFolio())){
+//					  model.setValueAt("true", i, 5);
+//			     }
+//			}
+//		}
+		
+		@SuppressWarnings("rawtypes")
+		Vector vectorFolios = new Vector();
+		
+		@SuppressWarnings("unchecked")
 		public void tabla_seleccion_default_usuario(){
+			String Comentario_colaboradores_default="";
 			for(int i=0; i<tabla.getRowCount(); i++){
 				 if(Integer.valueOf(tabla.getValueAt(i,0).toString().trim())==(usuario.getFolio())){
 					  model.setValueAt("true", i, 5);
+					  vectorFolios.add(tabla.getValueAt(i, 1));
+					  Comentario_colaboradores_default=Comentario_colaboradores_default+" / "+tabla.getValueAt(i, 1);
+					  txa_Resultado_Seleccion.setText(Comentario_colaboradores_default);
 			     }
 			}
 		}
+				
+		@SuppressWarnings("unchecked")
+		public void llenar_arreglo(){
+			int fila = tabla.getSelectedRow();
+			System.out.println(fila);
+			
+			if(Boolean.valueOf(tabla.getValueAt(fila, 5).toString())){
+				vectorFolios.add(tabla.getValueAt(fila, 1));
+			}else{
+				
+				for(int i = 0; i < vectorFolios.size(); i++){
+					if(vectorFolios.get(i).toString().equals(tabla.getValueAt(fila, 1).toString())){
+						vectorFolios.remove(i);
+					}
+				}
+			}
+			String Comentario_colaboradores="";
+			for(int i = 0; i < vectorFolios.size(); i++){
+				Comentario_colaboradores=Comentario_colaboradores+" / "+vectorFolios.get(i);
+			}
+			
+			if(Comentario_colaboradores.equals("")){
+				txa_Resultado_Seleccion.setText(Comentario_colaboradores+" / "+usuario.getNombre_completo());
+			}else{
+				txa_Resultado_Seleccion.setText(Comentario_colaboradores);
+			}
+		}
 		
+		@SuppressWarnings("unchecked")
 		public void Carga_Desde_El_Objeto(){
 			Object[][] colaboradores=usuarios.getUsuarios_nombres();
+			String Comentario_colaboradores_default="";
 				for(int i2=0; i2<colaboradores.length; i2++){
 					for(int i=0; i<tabla.getRowCount(); i++){
 					   if( (tabla.getValueAt(i,1).toString().trim()).equals(colaboradores[i2][1].toString().trim())){
 					  model.setValueAt("true", i, 5);
+					  vectorFolios.add(tabla.getValueAt(i, 1));
+					  Comentario_colaboradores_default=Comentario_colaboradores_default+" / "+tabla.getValueAt(i, 1);
+					  txa_Resultado_Seleccion.setText(Comentario_colaboradores_default);
 			      }
 				}
 			}

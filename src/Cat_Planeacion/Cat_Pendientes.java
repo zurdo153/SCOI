@@ -170,7 +170,8 @@ public class Cat_Pendientes extends JFrame{
 		this.init_tabla();
 		this.init_tabla_pendientes();
 		
-		comentario();
+//		comentario();
+		tabla_seleccion_default_usuario();
 		this.tabla.addMouseListener(opcomentario);
 		
 		this.tabla.addKeyListener(opseleccioncontecladocomentario);
@@ -222,7 +223,7 @@ public class Cat_Pendientes extends JFrame{
 				txtFiltro.setText("");
 				int[] columnas = {0,1,2,3,4};
 				new Obj_Filtro_Dinamico_Plus(tabla,txtFiltro.getText(), columnas);
-				comentario();
+//				comentario();
 				return;
 			}
 			
@@ -261,7 +262,7 @@ public class Cat_Pendientes extends JFrame{
 			txtFiltro_Pendientes.setText("");
 			refrestabla();
 			refrestabla_pendientes();
-			comentario();
+//			comentario();
 			 txtFiltro_Pendientes.requestFocus();
 		 }
 		};
@@ -272,13 +273,14 @@ public class Cat_Pendientes extends JFrame{
 		public void mouseExited(MouseEvent arg0) {}
 		public void mouseEntered(MouseEvent arg0) {}
 		public void mouseClicked(MouseEvent arg0) {
-			comentario();
+			llenar_arreglo();
+//			comentario();
 		}
 	};
 	
 	KeyListener opseleccioncontecladocomentario = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			comentario();
+//			comentario();
 		}
 		public void keyTyped(KeyEvent arg0)   {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -288,7 +290,7 @@ public class Cat_Pendientes extends JFrame{
 		public void keyReleased(KeyEvent arg0) {
 			int[] columnas = {0,1,2,3,4};
 			new Obj_Filtro_Dinamico_Plus(tabla, txtFiltro.getText().toUpperCase(), columnas);
-			comentario();
+//			comentario();
 		}
 		public void keyTyped(KeyEvent arg0)   {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -304,59 +306,94 @@ public class Cat_Pendientes extends JFrame{
 	};
 	
 	
-	public void comentario(){
-		txa_Resultado_Seleccion.setText("");
-		String Comentario_colaboradores="";
-		int testigo=0;
-		 if(!txtFiltro.getText().toString().equals("")){
-			 Comentario_colaboradores="Esta Filtrando La Tabla No Se Pueden Mostrar Los Empleado Seleccionados:";
-			 testigo=1;
-		 }else{
-			Object[][] colaboradores = tabla_folio_y_nombre_completo();
-			for(int i=0; i<colaboradores.length; i++){
-				Comentario_colaboradores=Comentario_colaboradores+" / "+colaboradores[i][1].toString().trim();
-				testigo=1;
-			}
-		 }	
-			
-		if(testigo>0){
-			txa_Resultado_Seleccion.setText(Comentario_colaboradores);
-			}else{
-				tabla_seleccion_default_usuario();
-				txa_Resultado_Seleccion.setText(Comentario_colaboradores+"\n"+usuario.getNombre_completo());
-			}
-	}
+//	public void comentario(){
+//		txa_Resultado_Seleccion.setText("");
+//		String Comentario_colaboradores="";
+//		int testigo=0;
+//		 if(!txtFiltro.getText().toString().equals("")){
+//			 Comentario_colaboradores="Esta Filtrando La Tabla No Se Pueden Mostrar Los Empleado Seleccionados:";
+//			 testigo=1;
+//		 }else{
+//			Object[][] colaboradores = tabla_folio_y_nombre_completo();
+//			for(int i=0; i<colaboradores.length; i++){
+//				Comentario_colaboradores=Comentario_colaboradores+" / "+colaboradores[i][1].toString().trim();
+//				testigo=1;
+//			}
+//		 }	
+//			
+//		if(testigo>0){
+//			txa_Resultado_Seleccion.setText(Comentario_colaboradores);
+//			}else{
+//				tabla_seleccion_default_usuario();
+//				txa_Resultado_Seleccion.setText(Comentario_colaboradores+"\n"+usuario.getNombre_completo());
+//			}
+//	}
 	
+	@SuppressWarnings("rawtypes")
+	
+	Vector vectorFolios = new Vector();
+	@SuppressWarnings("unchecked")
 	public void tabla_seleccion_default_usuario(){
+		String Comentario_colaboradores_default="";
 		for(int i=0; i<tabla.getRowCount(); i++){
 			 if(Integer.valueOf(tabla.getValueAt(i,0).toString().trim())==(usuario.getFolio())){
 				  model.setValueAt("true", i, 5);
+				  vectorFolios.add(tabla.getValueAt(i, 1));
+				  Comentario_colaboradores_default=Comentario_colaboradores_default+" / "+tabla.getValueAt(i, 1);
+				  txa_Resultado_Seleccion.setText(Comentario_colaboradores_default);
 		     }
+		}
+	}
+			
+	@SuppressWarnings("unchecked")
+	public void llenar_arreglo(){
+		int fila = tabla.getSelectedRow();
+		
+		if(Boolean.valueOf(tabla.getValueAt(fila, 5).toString())){
+			vectorFolios.add(tabla.getValueAt(fila, 1));
+		}else{
+			
+			for(int i = 0; i < vectorFolios.size(); i++){
+				if(vectorFolios.get(i).toString().equals(tabla.getValueAt(fila, 1).toString())){
+					vectorFolios.remove(i);
+				}
+			}
+		}
+		String Comentario_colaboradores="";
+		for(int i = 0; i < vectorFolios.size(); i++){
+			Comentario_colaboradores=Comentario_colaboradores+" / "+vectorFolios.get(i);
+		}
+		
+		if(Comentario_colaboradores.equals("")){
+			txa_Resultado_Seleccion.setText(Comentario_colaboradores+" / "+usuario.getNombre_completo());
+		}else{
+			txa_Resultado_Seleccion.setText(Comentario_colaboradores);
 		}
 	}
 	
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String[][] tabla_folio_y_nombre_completo(){
-		int cantidad_de_columnas_matriz=2;
-		Vector vector = new Vector();
-		for(int i=0; i<tabla.getRowCount(); i++){
-			 if(Boolean.valueOf(tabla.getValueAt(i,5).toString().trim())){
-				  vector.add(model.getValueAt(i,0).toString().trim());
-				  vector.add(model.getValueAt(i,1).toString().trim());
-		     }
-		}
-			String[][] matriz = new String[vector.size()/cantidad_de_columnas_matriz][cantidad_de_columnas_matriz];
-			 int i=0,j =0,columnafor=0;
-			while(i<vector.size()){
-				columnafor=0;
-			      for(int f =0;  f<cantidad_de_columnas_matriz;  f++,columnafor++,i++  ){	
-			  matriz[j][columnafor] = vector.get(i).toString();
-			  }
-			  j++;
-		}
-		return matriz;
-	}
+	
+//	@SuppressWarnings({ "unchecked", "rawtypes" })
+//	public String[][] tabla_folio_y_nombre_completo(){ 
+//		int cantidad_de_columnas_matriz=2;
+//		Vector vector = new Vector();
+//		for(int i=0; i<tabla.getRowCount(); i++){
+//			 if(Boolean.valueOf(tabla.getValueAt(i,5).toString().trim())){
+//				  vector.add(model.getValueAt(i,0).toString().trim());
+//				  vector.add(model.getValueAt(i,1).toString().trim());
+//		     }
+//		}
+//			String[][] matriz = new String[vector.size()/cantidad_de_columnas_matriz][cantidad_de_columnas_matriz];
+//			 int i=0,j =0,columnafor=0;
+//			while(i<vector.size()){
+//				columnafor=0;
+//			      for(int f =0;  f<cantidad_de_columnas_matriz;  f++,columnafor++,i++  ){	
+//			  matriz[j][columnafor] = vector.get(i).toString();
+//			  }
+//			  j++;
+//		}
+//		return matriz;
+//	}
 
 	@SuppressWarnings("unchecked")
 	public void init_tabla_pendientes(){
