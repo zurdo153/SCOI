@@ -420,11 +420,13 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				
 				if(Actividad_plan.guardar(OpRespuesta,OpPonderacion,usuarios,frecuencia, usuario.getFolio())){
 					if(Catalogo_Origen.equals("Cat_Programacion_Y_Revision_Del_Plan_Semanal")){
-					new Cat_Programacion_Y_Revision_Del_Plan_Semanal().setVisible(true);
+					btnDeshacer.doClick();
+					JOptionPane.showMessageDialog(null, "Se Guardo Correctamente La Actividad", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 					}
 					
 					if(Catalogo_Origen.equals("Cat_Alimentacion_De_Plan_Semanal")){
-					new Cat_Alimentacion_De_Plan_Semanal().setVisible(true);
+						btnDeshacer.doClick();
+						JOptionPane.showMessageDialog(null, "Se Guardo Correctamente La Actividad", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 					}
 					
 				}else{
