@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -38,7 +40,9 @@ import javax.swing.table.TableColumn;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
+import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
@@ -52,20 +56,35 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	JButton btnGuardarActividades = new JButton("Guardar Actividades", new ImageIcon("imagen/guardar-documento-icono-7840-32.png"));
 	JButton btnAgregarActividad = new JButton("Actividades Extras"    ,new ImageIcon("imagen/boton-anadir-mas-azul-icono-7396-32.png")  );
 	
+
+	JButton btnReporte_cntestad = new JButton("Plan Contestado "  ,new ImageIcon("imagen/mensual-de-la-agenda-contestado-7455-32.png")      );
+	JButton btnReporte_lista  	= new JButton("Actividades Con Respuesta");
+	
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+	
 	public Cat_Alimentacion_De_Plan_Semanal(){
 		this.setTitle("Alimentacion De Plan Semanal");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione El Dia Que Desea Contestar Del Plan Semanal"));
 		
-		activarColumna = "si";
+		ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/imagen/checklistbtn.png");
+	    Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+	    btnReporte_lista.setIcon(iconoDefault);
 		
+		activarColumna = "si";
+		int y=490;
 		if(anchoMon<=1024){
 			this.panel.add(btnGuardarObjetivos).setBounds(15, 490, 190, 38);
 			this.panel.add(btnAgregarActividad).setBounds(410, 490, 190, 38);
 			this.panel.add(btnGuardarActividades).setBounds(815, 490, 190, 38);
 		}else{
+			
 			this.panel.add(btnGuardarObjetivos).setBounds(30, 490, 190, 38);
 			this.panel.add(btnAgregarActividad).setBounds(450, 490, 190, 38);
 			this.panel.add(btnGuardarActividades).setBounds(1100, 490, 190, 38);
+			
+			this.panel.add(btnReporte_lista).setBounds(660,y,200,38);
+			this.panel.add(btnReporte_cntestad).setBounds(875,y,150,38);
+			
 		}
 		agregarColumnas(tablaLunes,modelLunes);
 		agregarColumnas(tablaMartes,modelMartes);
@@ -91,6 +110,10 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
 		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
 		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
+		
+		this.btnReporte_lista.addActionListener(opReporteLista);
+		this.btnReporte_cntestad.addActionListener(opReporteCuadroscontestado);
+		
 	}
 	
 	private void cargarActividades() {
@@ -144,6 +167,27 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		}
 	};
 	
+	ActionListener opReporteLista = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="exec sp_Reporte_De_Actividades_Contestadas_Del_Plan_Semanal "+usuario.getFolio()+",'"+txtPeriodo.getText().toString().substring(0,10)+"'"  ;
+			String reporte = "Obj_Reportes_De_Actividades_Contestadas.jrxml";
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		}
+	};
+	
+	ActionListener opReporteCuadroscontestado = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="exec sp_reporte_de_plan_semanal_por_dia_contestado "+usuario.getFolio()+",'"+txtPeriodo.getText().toString().substring(0,10)+" 23:59:59'"  ;
+			String reporte = "Obj_Reporte_De_Plan_Semanal_Cuadros_Contestado.jrxml";
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		}
+	};
 	ActionListener opGuardarObjetivos = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 			
