@@ -226,10 +226,14 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	int recorreFolio = 0;
 	ActionListener opAtras = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
+			
 			recorreFolio-=7;
-			String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(recorreFolio);
-		    txtFolio.setText(folioPlan[0].toString());
-		    txtPeriodo.setText(folioPlan[1].toString());
+//			String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(recorreFolio);
+//		    txtFolio.setText(folioPlan[0].toString());
+//		    txtPeriodo.setText(folioPlan[1].toString());
+		    
+		    AccionDePeriodoYPestanas(recorreFolio);
+		    pintarPeriodo();
 		    cargarObjetivos();
 		    buscarActividadesPorDia();
 		}
@@ -237,10 +241,14 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	
 	ActionListener opAdelante = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
+			
 			recorreFolio+=7;
-			String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(recorreFolio);
-		    txtFolio.setText(folioPlan[0].toString());
-		    txtPeriodo.setText(folioPlan[1].toString());
+//			String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(recorreFolio);
+//		    txtFolio.setText(folioPlan[0].toString());
+//		    txtPeriodo.setText(folioPlan[1].toString());
+		    
+		    AccionDePeriodoYPestanas(recorreFolio);
+		    pintarPeriodo();
 		    cargarObjetivos();
 		    buscarActividadesPorDia();
 		}

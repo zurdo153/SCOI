@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -208,6 +209,11 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 	
 	int anchoMon = Toolkit.getDefaultToolkit().getScreenSize().width;
     int ancho_nivel_critico=0;
+    
+    int bandera_periodo_actual = 0;
+    
+    int diaActual = 0;
+    
 	public Cat_Plan_Semanal_Base(){
 		
 		tabla = tablaLunes;
@@ -284,35 +290,89 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
 	    lblFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(lblFoto.getWidth(),lblFoto.getHeight(), Image.SCALE_DEFAULT)));	
 	    
-	    String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(0);
-	    txtFolio.setText(folioPlan[0].toString());
-	    txtPeriodo.setText(folioPlan[1].toString());
-	    
 	    String[] datosEmpleado = new BuscarSQL().buscarEmpleadoParaPlanSemanal();
 	    txtEmpleado.setText(datosEmpleado[0].toString());
 	    txtEstablecimiento.setText(datosEmpleado[1].toString());
 	    txtDepartamento.setText(datosEmpleado[2].toString());
 	    txtPuesto.setText(datosEmpleado[3].toString());
 	    
+	    String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(0);
+	    bandera_periodo_actual = Integer.valueOf(folioPlan[0].toString().trim());
+	    txtFolio.setText(folioPlan[0].toString());
+	    txtPeriodo.setText(folioPlan[1].toString());
+	    
+	    pintarPeriodo();
+	    
+		this.pestanas.addTab("", pLunes);
+		this.pestanas.addTab("", pMarte);
+		this.pestanas.addTab("", pMiercoles);
+		this.pestanas.addTab("", pJueves);
+		this.pestanas.addTab("", pViernes);
+		this.pestanas.addTab("", pSabado);
+		this.pestanas.addTab("", pDomingo);
+	    
+//	    seleccionar pestaña del dia actual automaticamente
+		diaActual = Integer.valueOf(folioPlan[9].toString().trim());
+	    pestanas.setSelectedIndex(diaActual);
+	    
+		AccionDePeriodoYPestanas(0);
+
 	    txtFolio.setEditable(false);
 	    txtPeriodo.setEditable(false);
 	    txtEmpleado.setEditable(false);
 	    txtEstablecimiento.setEditable(false);
 	    txtDepartamento.setEditable(false);
 	    txtPuesto.setEditable(false);
-	    
-		this.pestanas.addTab("Lunes", pLunes);
-		this.pestanas.addTab("Martes", pMarte);
-		this.pestanas.addTab("Miércoles", pMiercoles);
-		this.pestanas.addTab("Jueves", pJueves);
-		this.pestanas.addTab("Viernes", pViernes);
-		this.pestanas.addTab("Sábado", pSabado);
-		this.pestanas.addTab("Domingo", pDomingo);
 		
 		renders_objetivos(tabla_objetivos,"tb_principal");
 		
 		this.cont.add(panel);
 	}
+	
+	public void pintarPeriodo(){
+		if(bandera_periodo_actual == Integer.valueOf(txtFolio.getText().trim())){
+			txtFolio.setBackground(Color.GREEN);
+			txtPeriodo.setBackground(Color.GREEN);
+		}else{
+			txtFolio.setBackground(Color.WHITE);
+			txtPeriodo.setBackground(Color.WHITE);
+		}
+	}
+	
+	public void AccionDePeriodoYPestanas(int diasRecorridos){
+		
+		String[] folioPlan = new BuscarSQL().buscarFolioSemanaParaPlanSemanal(diasRecorridos);
+//	    bandera_periodo_actual = Integer.valueOf(folioPlan[0].toString().trim());
+	    txtFolio.setText(folioPlan[0].toString());
+	    txtPeriodo.setText(folioPlan[1].toString());
+	    
+		pestanas.setTitleAt(0, folioPlan[2].toString().substring(0, 2)+"-Lunes");
+		pestanas.setTitleAt(1, folioPlan[3].toString().substring(0, 2)+"-Martes");
+		pestanas.setTitleAt(2, folioPlan[4].toString().substring(0, 2)+"-Miércoles");
+		pestanas.setTitleAt(3, folioPlan[5].toString().substring(0, 2)+"-Jueves");
+		pestanas.setTitleAt(4, folioPlan[6].toString().substring(0, 2)+"-Viernes");
+		pestanas.setTitleAt(5, folioPlan[7].toString().substring(0, 2)+"-Sábado");
+		pestanas.setTitleAt(6, folioPlan[8].toString().substring(0, 2)+"-Domingo");
+		
+		pestanas.setToolTipTextAt(0, folioPlan[2].toString());
+		pestanas.setToolTipTextAt(1, folioPlan[3].toString());
+		pestanas.setToolTipTextAt(2, folioPlan[4].toString());
+		pestanas.setToolTipTextAt(3, folioPlan[5].toString());
+		pestanas.setToolTipTextAt(4, folioPlan[6].toString());
+		pestanas.setToolTipTextAt(5, folioPlan[7].toString());
+		pestanas.setToolTipTextAt(6, folioPlan[8].toString());
+		
+		ImageIcon tmpIconDefault = new ImageIcon("imagen/mas-icono-4156-32.png");
+		pestanas.setIconAt(0, new ImageIcon(tmpIconDefault.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+		pestanas.setIconAt(1, new ImageIcon(tmpIconDefault.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+		pestanas.setIconAt(2, new ImageIcon(tmpIconDefault.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+		pestanas.setIconAt(3, new ImageIcon(tmpIconDefault.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+		pestanas.setIconAt(4, new ImageIcon(tmpIconDefault.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+		pestanas.setIconAt(5, new ImageIcon(tmpIconDefault.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+		pestanas.setIconAt(6, new ImageIcon(tmpIconDefault.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+		
+	}
+	
 	
 	public void renders_objetivos(final JTable tb, String nombre_tabla){
 		

@@ -83,6 +83,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		btnGuardarObjetivos.addActionListener(opGuardarObjetivos);
 		btnAgregarActividad.addActionListener(opActividadesExtras);
 		
+		inabilitarPestanas();
 		cargarActividades();
 		renders(tablaLunes,pLunes,scrollLunes,"Lunes");
 		renders(tablaMartes,pMarte,scrollMartes,"Martes");
@@ -91,6 +92,20 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		renders(tablaViernes,pViernes,scrollViernes,"Viernes");
 		renders(tablaSabado,pSabado,scrollSabado,"Sabado");		
 		renders(tablaDomingo,pDomingo,scrollDomingo,"Domingo");
+		
+		
+	}
+	
+	public void inabilitarPestanas(){
+		
+		for(int i = 0; i < 7; i++){
+			if((diaActual-1)==i || diaActual==i){
+				pestanas.setEnabledAt(i, true);
+			}else{
+				pestanas.setEnabledAt(i, false);
+			}
+		}
+		
 	}
 	
 	private void cargarActividades() {

@@ -7600,9 +7600,17 @@ public class BuscarSQL {
 		
 		String query =" declare @fecha_inicial datetime=dbo.Primer_Dia_De_La_Semana(getdate()),@mover int set @mover = "+dias+"; " 
 					+ " select DATENAME(YEAR,GETDATE()+@mover)+ RIGHT('00'+CONVERT(VARCHAR(2),DATENAME(WEEK,GETDATE()+@mover)),2) as folio, "
-					+ " convert(varchar(20),@fecha_inicial+@mover,103)+' - '+convert(varchar(20),@fecha_inicial+6+@mover,103) as periodo ";
+					+ " convert(varchar(20),@fecha_inicial+@mover,103)+' - '+convert(varchar(20),@fecha_inicial+6+@mover,103) as periodo, "
+					+ "	convert(varchar(20),@fecha_inicial+0+@mover,103) as lunes , "
+					+ " convert(varchar(20),@fecha_inicial+1+@mover,103) as martes ,	"
+					+ " convert(varchar(20),@fecha_inicial+2+@mover,103) as miercoles , "
+					+ " convert(varchar(20),@fecha_inicial+3+@mover,103) as jueves , "
+					+ " convert(varchar(20),@fecha_inicial+4+@mover,103) as viernes , "
+					+ " convert(varchar(20),@fecha_inicial+5+@mover,103) as sabado , "
+					+ " convert(varchar(20),@fecha_inicial+6+@mover,103) as domingo , "
+					+ " DATEPART(DW,getdate()-1) as dia_actual ";
 					
-		String[] datos = new String[2];
+		String[] datos = new String[10];
 		
 		try {
 			
@@ -7612,6 +7620,15 @@ public class BuscarSQL {
 			while(rs.next()){
 					datos[0] = rs.getString(1);
 					datos[1] = rs.getString(2);
+					
+					datos[2] = rs.getString(3);
+					datos[3] = rs.getString(4);
+					datos[4] = rs.getString(5);
+					datos[5] = rs.getString(6);
+					datos[6] = rs.getString(7);
+					datos[7] = rs.getString(8);
+					datos[8] = rs.getString(9);
+					datos[9] = rs.getString(10);
 			}
 			
 		} catch (Exception e) {

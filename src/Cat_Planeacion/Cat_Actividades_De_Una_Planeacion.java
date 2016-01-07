@@ -295,6 +295,9 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		jspHorafinal.setValue(new Time(Integer.parseInt(horatermina[0]),Integer.parseInt(horatermina[1]),Integer.parseInt(horatermina[2])));
 		jspHorafinal.setEditor(spDHorafinal);
 		
+		funcionSpinner(jspHoraInicio);
+		funcionSpinner(jspHorafinal);
+		
 		///guardar con control+A
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A,Event.CTRL_MASK),"guardar");
              getRootPane().getActionMap().put("guardar", new AbstractAction(){
@@ -363,6 +366,66 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			
 		 }
 		};
+		
+		int posicionDeSeparador =0;
+		public void funcionSpinner(final JSpinner spHr){
+			
+			posicionDeSeparador = ((JSpinner.DefaultEditor)spHr.getEditor()).getTextField().getText().indexOf(":");
+			
+			((JSpinner.DefaultEditor)spHr.getEditor()).getTextField().addKeyListener(new KeyListener() {
+				public void keyTyped(KeyEvent e) {}
+				public void keyReleased(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_DELETE) {//tecla suprimir
+						posicionDeSeparador = ((JSpinner.DefaultEditor)spHr.getEditor()).getTextField().getText().indexOf(":");
+		            	System.out.println("---1");
+//		            	System.out.println(((JSpinner.DefaultEditor)spHr.getEditor()).getTextField().getText());
+		            	System.out.println(posicionDeSeparador);
+//		            	if(){
+//		            		
+//		            	}
+		            	
+		            }
+					if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {//tecla retroceso
+						posicionDeSeparador = ((JSpinner.DefaultEditor)spHr.getEditor()).getTextField().getText().indexOf(":");
+						System.out.println("---2");
+//						System.out.println(((JSpinner.DefaultEditor)spHr.getEditor()).getTextField().getText());
+						System.out.println(posicionDeSeparador);
+		            }
+				}
+				public void keyPressed(KeyEvent e) {}
+			});
+		}
+
+//		KeyListener spiner = new KeyListener() {
+//			public void keyTyped(KeyEvent e) {System.out.println(e.getKeyCode());}
+//			public void keyReleased(KeyEvent e) {
+//				
+//				System.out.println(e.getKeyCode());
+//		            if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+//		            	System.out.println("1");
+//		            }
+//					if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+//						System.out.println("2");
+//		            }
+//			}
+//			public void keyPressed(KeyEvent e) {System.out.println(e.getKeyCode());}
+//		};
+
+//		tb.addKeyListener(new KeyListener() {
+//			public void keyTyped(KeyEvent e) {
+//			}
+//			public void keyReleased(KeyEvent e) {
+//				
+//				System.out.println(e.getKeyCode());
+//				try {
+//		            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+//		            	llenar_arreglo();
+//		            }
+//		        }catch(Exception ex){}
+//			}
+//			public void keyPressed(KeyEvent e) {
+//			}
+//		});
 		
 	ActionListener CatOpciones_Repuesta = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -1011,7 +1074,23 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				public void mouseExited(MouseEvent arg0) {}
 				public void mouseEntered(MouseEvent arg0) {}
 				public void mouseClicked(MouseEvent arg0) {
-					llenar_arreglo();
+					
+//					SI EL BOTON ES CLICK IZQUIERDO ENTRA
+					if (arg0.getButton() == MouseEvent.BUTTON1) {
+						llenar_arreglo();
+//						System.out.println("BOTON 1");
+					}
+					
+//					SI EL BOTON ES CLICK EN RUEDA ENTRA
+//					if (arg0.getButton() == MouseEvent.BUTTON2) {
+//						System.out.println("BOTON 2");
+//					}
+					
+//					SI EL BOTON ES CLICK DERECHO ENTRA
+//					if (arg0.getButton() == MouseEvent.BUTTON3) {
+//						System.out.println("BOTON 3");
+//					}
+					
 				}
 			});
 			
@@ -1103,26 +1182,31 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			int fila = tabla.getSelectedRow();
 			System.out.println(fila);
 			
-			if(Boolean.valueOf(tabla.getValueAt(fila, 5).toString())){
-				vectorFolios.add(tabla.getValueAt(fila, 1));
-			}else{
+			if(tabla.getSelectedColumn()==5){
 				
-				for(int i = 0; i < vectorFolios.size(); i++){
-					if(vectorFolios.get(i).toString().equals(tabla.getValueAt(fila, 1).toString())){
-						vectorFolios.remove(i);
+					if(Boolean.valueOf(tabla.getValueAt(fila, 5).toString())){
+						vectorFolios.add(tabla.getValueAt(fila, 1));
+					}else{
+						
+						for(int i = 0; i < vectorFolios.size(); i++){
+							if(vectorFolios.get(i).toString().equals(tabla.getValueAt(fila, 1).toString())){
+								vectorFolios.remove(i);
+							}
+						}
 					}
-				}
-			}
-			String Comentario_colaboradores="";
-			for(int i = 0; i < vectorFolios.size(); i++){
-				Comentario_colaboradores=Comentario_colaboradores+" / "+vectorFolios.get(i);
+					String Comentario_colaboradores="";
+					for(int i = 0; i < vectorFolios.size(); i++){
+						Comentario_colaboradores=Comentario_colaboradores+" / "+vectorFolios.get(i);
+					}
+					
+					if(Comentario_colaboradores.equals("")){
+						txa_Resultado_Seleccion.setText(Comentario_colaboradores+" / "+usuario.getNombre_completo());
+					}else{
+						txa_Resultado_Seleccion.setText(Comentario_colaboradores);
+					}
 			}
 			
-			if(Comentario_colaboradores.equals("")){
-				txa_Resultado_Seleccion.setText(Comentario_colaboradores+" / "+usuario.getNombre_completo());
-			}else{
-				txa_Resultado_Seleccion.setText(Comentario_colaboradores);
-			}
+			
 		}
 		
 		@SuppressWarnings("unchecked")
