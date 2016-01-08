@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-12-30T16:47:28 -->
+<!-- 2016-01-05T11:55:30 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reportes_De_Actividades_Contestadas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c4f90b4f-e338-408f-a4d2-5a6dc00656db">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -262,16 +262,19 @@
 				</rectangle>
 				<textField>
 					<reportElement positionType="Float" x="2" y="1" width="28" height="16" forecolor="#000000" uuid="5863db60-5083-45ed-ac47-7082059856cf"/>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Left">
 						<font fontName="Times New Roman" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{folio_actividad}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="41" y="1" width="274" height="16" uuid="d918777f-1317-4aca-a8ea-b9ae79fb02b5">
+					<reportElement x="30" y="1" width="284" height="16" uuid="d918777f-1317-4aca-a8ea-b9ae79fb02b5">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
 				</textField>
 				<textField>
@@ -289,8 +292,8 @@
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
 						<paragraph lineSpacing="Single"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>

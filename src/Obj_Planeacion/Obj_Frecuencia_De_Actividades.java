@@ -43,7 +43,7 @@ public class Obj_Frecuencia_De_Actividades {
 //	Duracion
 	String fecha_inicio_duracion=cargar_fechas(0);
 	boolean seleccion_fecha_finaliza=false;
-	String fecha_final_duracion=cargar_fechas(-15);
+	String fecha_final_duracion=cargar_fechas(-365);
 	boolean seleccion_sin_fecha_final=true;
 	
 	

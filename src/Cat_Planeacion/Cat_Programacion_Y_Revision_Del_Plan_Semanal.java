@@ -51,7 +51,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	JButton btnCancelarActividad= new JButton("Cancelar Actividad",new ImageIcon("imagen/boton-rojo-menos-icono-5393-32.png")               );
 	JButton btnReporte_cuadros  = new JButton("Plan Semanal"      ,new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
 	JButton btnReporte_cntestad = new JButton("Plan Contestado "  ,new ImageIcon("imagen/mensual-de-la-agenda-contestado-7455-32.png")      );
-
 	JButton btnReporte_lista  	= new JButton("Actividades Con Respuesta");
 	
 	JButton btnCancelarObjetivo = new JButton("Cancelar Objetivo",new ImageIcon("imagen/boton-rojo-menos-icono-5393-32.png")				);
@@ -62,7 +61,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	Integer dia = 0;
 	
 	public Cat_Programacion_Y_Revision_Del_Plan_Semanal (){
-		this.setTitle("Revisión y Programación del Plan Semanal");
+		this.setTitle("Programación y Revisión del Plan Semanal");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Detalle Del Plan Semanal"));
 		init();
 	}
