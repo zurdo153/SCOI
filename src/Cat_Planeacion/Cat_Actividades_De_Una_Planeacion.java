@@ -169,13 +169,15 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				}
 			
 				int  dia_de_la_semana=0;
+				int  dia_de_descanso=0;
 	            try {
 					  dia_de_la_semana= new BuscarSQL().dias_de_la_semana();
+					  dia_de_descanso= new BuscarSQL().dia_descanso_colaborador(usuario.getFolio());
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
-	           switch (dia_de_la_semana) {
-	           case 0:
+	            
+	           if(dia_de_la_semana==0){ 
 	        	   chbLunes.setSelected   (true );
 	   			   chbMartes.setEnabled   (false);
 	   			   chbMiercoles.setEnabled(false);
@@ -183,69 +185,118 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	   			   chbViernes.setEnabled  (false);
 	   			   chbSabado.setEnabled   (false);
 	   			   chbDomingo.setEnabled  (false);
-	           break;
-	           case 1:
-	        	   chbLunes.setEnabled    (true );
-	   			   chbMartes.setSelected  (true );
-	   			   chbMiercoles.setEnabled(false);
-	   			   chbJueves.setEnabled   (false);
-	   			   chbViernes.setEnabled  (false);
-	   			   chbSabado.setEnabled   (false);
-	   			   chbDomingo.setEnabled  (false);
-	           break;
+		           };
 	           
-	           case 2:
-	        	   chbLunes.setEnabled    (true );
-	   			   chbMartes.setEnabled   (true );
-	   			   chbMiercoles.setSelected(true);
-	   			   chbJueves.setEnabled   (false);
-	   			   chbViernes.setEnabled  (false);
-	   			   chbSabado.setEnabled   (false);
-	   			   chbDomingo.setEnabled  (false);
-	           break;
-	           
-	           case 3:
-	        	   chbLunes.setEnabled    (true );
+		       if(dia_de_la_semana==1){
+			       chbLunes.setEnabled    (true );
+			       chbMartes.setSelected  (true );
+			   	   chbMiercoles.setEnabled(false);
+			   	   chbJueves.setEnabled   (false);
+			   	   chbViernes.setEnabled  (false);
+			   	   chbSabado.setEnabled   (false);
+			   	   chbDomingo.setEnabled  (false);
+			       };
+		       
+			   if(dia_de_la_semana==2 && dia_de_descanso==1){
+				   chbLunes.setEnabled    (true );
+				   chbMartes.setEnabled   (true );
+				   chbMiercoles.setSelected(true);
+				   chbJueves.setEnabled   (false);
+				   chbViernes.setEnabled  (false);
+				   chbSabado.setEnabled   (false);
+				   chbDomingo.setEnabled  (false);
+		    	   };
+			   
+			   if(dia_de_la_semana==2 && !(dia_de_descanso==1)){
+				   chbLunes.setEnabled    (false);
+				   chbMartes.setEnabled   (true );
+				   chbMiercoles.setSelected(true);
+				   chbJueves.setEnabled   (false);
+				   chbViernes.setEnabled  (false);
+				   chbSabado.setEnabled   (false);
+				   chbDomingo.setEnabled  (false);         		   
+				   };
+				   
+			   if(dia_de_la_semana==3 && dia_de_descanso==2){
+	        	   chbLunes.setEnabled    (false);
 	   			   chbMartes.setEnabled   (true );
 	   			   chbMiercoles.setEnabled(true );
 	   			   chbJueves.setSelected  (true );
 	   			   chbViernes.setEnabled  (false);
 	   			   chbSabado.setEnabled   (false);
 	   			   chbDomingo.setEnabled  (false);
-	           break;
-	           
-	           case 4:
-	        	   chbLunes.setEnabled    (true );
-	   			   chbMartes.setEnabled   (true );
+			   	   };	 
+			    	   
+		       if(dia_de_la_semana==3 && !(dia_de_descanso==2)){
+			   	   chbLunes.setEnabled    (false);
+				   chbMartes.setEnabled   (false);
+			       chbMiercoles.setEnabled(true );
+			   	   chbJueves.setSelected  (true );
+			   	   chbViernes.setEnabled  (false);
+			   	   chbSabado.setEnabled   (false);
+			   	   chbDomingo.setEnabled  (false);
+			   	   };	    	   
+	            		
+		       if(dia_de_la_semana==4 && dia_de_descanso==3){
+	        	   chbLunes.setEnabled    (false);
+	   			   chbMartes.setEnabled   (false);
 	   			   chbMiercoles.setEnabled(true );
 	   			   chbJueves.setEnabled   (true );
 	   			   chbViernes.setSelected (true );
 	   			   chbSabado.setEnabled   (false);
-	   			   chbDomingo.setEnabled  (false);
-	           break;
-	           
-	           case 5:
-	        	   chbLunes.setEnabled    (true );
-	   			   chbMartes.setEnabled   (true );
-	   			   chbMiercoles.setEnabled(true );
+	   		       chbDomingo.setEnabled  (false);
+				   };	 
+				   	   
+			   if(dia_de_la_semana==4 && !(dia_de_descanso==3)){
+			   	   chbLunes.setEnabled    (false);
+			       chbMartes.setEnabled   (false);
+			   	   chbMiercoles.setEnabled(false);
+			   	   chbJueves.setEnabled   (true );
+			   	   chbViernes.setSelected (true );
+			   	   chbSabado.setEnabled   (false);
+			   	   chbDomingo.setEnabled  (false);
+				   };
+				   
+			   if(dia_de_la_semana==5 && dia_de_descanso==4){
+	        	   chbLunes.setEnabled    (false);
+	   			   chbMartes.setEnabled   (false);
+	   			   chbMiercoles.setEnabled(false);
 	   			   chbJueves.setEnabled   (true );
 	   			   chbViernes.setEnabled  (true );
 	   			   chbSabado.setSelected  (true );
 	   			   chbDomingo.setEnabled  (false);
-	           break;
-	           
-	           case 6:
-	        	   chbLunes.setEnabled    (true );
-	   			   chbMartes.setEnabled   (true );
-	   			   chbMiercoles.setEnabled(true );
-	   			   chbJueves.setEnabled   (true );
+			       }
+			   
+			   if(dia_de_la_semana==5 && !(dia_de_descanso==4)){
+	        	   chbLunes.setEnabled    (false);
+	   			   chbMartes.setEnabled   (false);
+	   			   chbMiercoles.setEnabled(false);
+	   			   chbJueves.setEnabled   (false);
+	   			   chbViernes.setEnabled  (true );
+	   			   chbSabado.setSelected  (true );
+	   			   chbDomingo.setEnabled  (false);
+			       }
+				 
+			   if(dia_de_la_semana==6 && (dia_de_descanso==5)){
+	        	   chbLunes.setEnabled    (false);
+	   			   chbMartes.setEnabled   (false);
+	   			   chbMiercoles.setEnabled(false);
+	   			   chbJueves.setEnabled   (false);
 	   			   chbViernes.setEnabled  (true );
 	   			   chbSabado.setEnabled   (true );
 	   			   chbDomingo.setSelected (true );
-	           break;
-	           
-	           }
-	            
+			       }
+			   
+			   if(dia_de_la_semana==6 && !(dia_de_descanso==5)){
+	        	   chbLunes.setEnabled    (false);
+	   			   chbMartes.setEnabled   (false);
+	   			   chbMiercoles.setEnabled(false);
+	   			   chbJueves.setEnabled   (false);
+	   			   chbViernes.setEnabled  (false);
+	   			   chbSabado.setEnabled   (true );
+	   			   chbDomingo.setSelected (true );
+			       }
+			   
 				
 		    panel.add(new JLabel("Fecha Selecionada:")).setBounds                  (x    ,y     ,width+100,height    );
 		    panel.add(fecha_de_la_actividad).setBounds                             (x+100,y     ,width+50,height     );
@@ -1055,17 +1106,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 //				comentario();
 			 }
 			};
-		
-//		MouseListener opcomentario = new MouseListener() {
-//			public void mouseReleased(MouseEvent arg0) {}
-//			public void mousePressed(MouseEvent arg0) {}
-//			public void mouseExited(MouseEvent arg0) {}
-//			public void mouseEntered(MouseEvent arg0) {}
-//			public void mouseClicked(MouseEvent arg0) {
-//				llenar_arreglo();
-////				comentario();
-//			}
-//		};
 		
 		public void actionTabla(final JTable tb){
 			tb.addMouseListener(new MouseListener() {
@@ -2032,7 +2072,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			new Cat_Actividades_De_Una_Planeacion("Cat_Programacion_Y_Revision_Del_Plan_Semanal","14/12/2015").setVisible(true);
-//			new Cat_Actividades_De_Una_Planeacion("Cat_Alimentacion_De_Plan_Semanal","21/12/2015").setVisible(true);
+//			new Cat_Actividades_De_Una_Planeacion("Cat_Alimentacion_De_Plan_Semanal","07/01/2016").setVisible(true);
 		}catch(Exception e){	}	
 	}
 }
