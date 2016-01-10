@@ -185,6 +185,28 @@ public class BuscarSQL {
 		return dia;
 	}
 	
+	public int dia_descanso_colaborador(int folio_colaborador) throws SQLException{
+		int dia=0;
+		String query = " select dbo.dia_de_descanso_del_colaborador("+folio_colaborador+")-1";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				dia=(rs.getInt(1));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return dia;
+	}
+	
+	
 	public String inicio_final_TA(int cajero) throws SQLException{
 		String nombrepc="";
 		try { nombrepc = InetAddress.getLocalHost().getHostName();

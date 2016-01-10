@@ -136,7 +136,6 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 		modelo.addColumn("Usuario");
 		modelo.addColumn("Status Actividad");
 		
-//		tb.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 		tb.getColumnModel().getColumn(5).setMinWidth(350);
 		tb.getColumnModel().getColumn(5).setMaxWidth(480);
 		tb.getColumnModel().getColumn(6).setMinWidth(125);
@@ -265,12 +264,16 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 					JOptionPane.showMessageDialog(null, "No Puede Cancelar Un Objetivo Que Ya Fue Calificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}else{
-					
-					if(new ActualizarSQL().Cancelar_Objetivo_De_Usuario(Integer.valueOf(tabla_objetivos.getValueAt(filaSeleccionada, 2).toString().trim()))){
-						cargarObjetivos();
-						JOptionPane.showMessageDialog(null, "El Objetivo Se Cancelo Correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					if(JOptionPane.showConfirmDialog(null, "Esta Apunto De Cancelar El Objetivo Selecionado:\n>>>>>>>> "+filaSeleccionada+" >>>>>>>> \nDesea Continuar?","Aviso",0,1,new ImageIcon("imagen/usuario-icono-noes_usuario9131-64.png")) == 0){
+						if(new ActualizarSQL().Cancelar_Objetivo_De_Usuario(Integer.valueOf(tabla_objetivos.getValueAt(filaSeleccionada, 2).toString().trim()))){
+							cargarObjetivos();
+							JOptionPane.showMessageDialog(null, "El Objetivo Se Cancelo Correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							return;
+						}
+					}else{
 						return;
 					}
+					
 				}
 			}
 		}

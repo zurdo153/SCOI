@@ -118,14 +118,134 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	}
 	
 	public void inabilitarPestanas(){
-		
-		for(int i = 0; i < 7; i++){
-			if((diaActual-1)==i || diaActual==i){
-				pestanas.setEnabledAt(i, true);
-			}else{
-				pestanas.setEnabledAt(i, false);
-			}
+		int  dia_de_la_semana=0;
+		int  dia_de_descanso=0;
+        try {
+			  dia_de_la_semana= new BuscarSQL().dias_de_la_semana();
+			  dia_de_descanso= new BuscarSQL().dia_descanso_colaborador(usuario.getFolio());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
+        
+       if(dia_de_la_semana==0){ 
+			pestanas.setEnabledAt(0, true);
+			pestanas.setEnabledAt(1, false);
+			pestanas.setEnabledAt(2, false);
+			pestanas.setEnabledAt(3, false);
+			pestanas.setEnabledAt(4, false);
+			pestanas.setEnabledAt(5, false);
+			pestanas.setEnabledAt(6, false);
+           };
+       
+       if(dia_de_la_semana==1){
+			pestanas.setEnabledAt(0, true);
+			pestanas.setEnabledAt(1, true);
+			pestanas.setEnabledAt(2, false);
+			pestanas.setEnabledAt(3, false);
+			pestanas.setEnabledAt(4, false);
+			pestanas.setEnabledAt(5, false);
+			pestanas.setEnabledAt(6, false);
+	       };
+       
+	   if(dia_de_la_semana==2 && dia_de_descanso==1){
+			pestanas.setEnabledAt(0, true);
+			pestanas.setEnabledAt(1, true);
+			pestanas.setEnabledAt(2, true);
+			pestanas.setEnabledAt(3, false);
+			pestanas.setEnabledAt(4, false);
+			pestanas.setEnabledAt(5, false);
+			pestanas.setEnabledAt(6, false);
+    	   };
+	   
+	   if(dia_de_la_semana==2 && !(dia_de_descanso==1)){
+			pestanas.setEnabledAt(0, false);
+			pestanas.setEnabledAt(1, true);
+			pestanas.setEnabledAt(2, true);
+			pestanas.setEnabledAt(3, false);
+			pestanas.setEnabledAt(4, false);
+			pestanas.setEnabledAt(5, false);
+			pestanas.setEnabledAt(6, false);
+		   };
+		   
+	   if(dia_de_la_semana==3 && dia_de_descanso==2){
+			pestanas.setEnabledAt(0, false);
+			pestanas.setEnabledAt(1, true);
+			pestanas.setEnabledAt(2, true);
+			pestanas.setEnabledAt(3, true);
+			pestanas.setEnabledAt(4, false);
+			pestanas.setEnabledAt(5, false);
+			pestanas.setEnabledAt(6, false);
+	   	   };	 
+	    	   
+       if(dia_de_la_semana==3 && !(dia_de_descanso==2)){
+			pestanas.setEnabledAt(0, false);
+			pestanas.setEnabledAt(1, false);
+			pestanas.setEnabledAt(2, true);
+			pestanas.setEnabledAt(3, true);
+			pestanas.setEnabledAt(4, false);
+			pestanas.setEnabledAt(5, false);
+			pestanas.setEnabledAt(6, false);
+	   	   };	    	   
+        		
+       if(dia_de_la_semana==4 && dia_de_descanso==3){
+			pestanas.setEnabledAt(0, false);
+			pestanas.setEnabledAt(1, false);
+			pestanas.setEnabledAt(2, true);
+			pestanas.setEnabledAt(3, true);
+			pestanas.setEnabledAt(4, true);
+			pestanas.setEnabledAt(5, false);
+			pestanas.setEnabledAt(6, false);
+		   };	 
+		   	   
+	   if(dia_de_la_semana==4 && !(dia_de_descanso==3)){
+			pestanas.setEnabledAt(0, false);
+			pestanas.setEnabledAt(1, false);
+			pestanas.setEnabledAt(2, false);
+			pestanas.setEnabledAt(3, true);
+			pestanas.setEnabledAt(4, true);
+			pestanas.setEnabledAt(5, false);
+			pestanas.setEnabledAt(6, false);
+		   };
+		   
+	   if(dia_de_la_semana==5 && dia_de_descanso==4){
+			pestanas.setEnabledAt(0, false);
+			pestanas.setEnabledAt(1, false);
+			pestanas.setEnabledAt(2, false);
+			pestanas.setEnabledAt(3, true);
+			pestanas.setEnabledAt(4, true);
+			pestanas.setEnabledAt(5, true);
+			pestanas.setEnabledAt(6, false);
+	       }
+	   
+	   if(dia_de_la_semana==5 && !(dia_de_descanso==4)){
+			pestanas.setEnabledAt(0, false);
+			pestanas.setEnabledAt(1, false);
+			pestanas.setEnabledAt(2, false);
+			pestanas.setEnabledAt(3, false);
+			pestanas.setEnabledAt(4, true);
+			pestanas.setEnabledAt(5, true);
+			pestanas.setEnabledAt(6, false);
+	       }
+		 
+	   if(dia_de_la_semana==6 && (dia_de_descanso==5)){
+			pestanas.setEnabledAt(0, false);
+			pestanas.setEnabledAt(1, false);
+			pestanas.setEnabledAt(2, false);
+			pestanas.setEnabledAt(3, false);
+			pestanas.setEnabledAt(4, true);
+			pestanas.setEnabledAt(5, true);
+			pestanas.setEnabledAt(6, true);
+	       }
+	   
+	   if(dia_de_la_semana==6 && !(dia_de_descanso==5)){
+			pestanas.setEnabledAt(0, false);
+			pestanas.setEnabledAt(1, false);
+			pestanas.setEnabledAt(2, false);
+			pestanas.setEnabledAt(3, false);
+			pestanas.setEnabledAt(4, false);
+			pestanas.setEnabledAt(5, true);
+			pestanas.setEnabledAt(6, true);
+	   }
 
 	}
 	
@@ -148,7 +268,6 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 			columnaSeleccionada = tabla.getSelectedColumn();
 			
 //			obtiene en nombre de la columnas seleccionada
-			
 			switch(tabla.getTableHeader().getColumnModel().getColumn(columnaSeleccionada).getHeaderValue().toString()){
 				case "Exige Evidencia":
 						JFileChooser elegir = new JFileChooser();
@@ -213,7 +332,16 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	
 	ActionListener opActividadesExtras = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-               new Cat_Actividades_De_Una_Planeacion("Cat_Alimentacion_De_Plan_Semanal",txtPeriodo.getText().toString().substring(0,10)).setVisible(true); 	
+			String[][] tb_actividades_con_respuesta = tabla_actividades();
+			int dianum = pLunes.isShowing()==true?0
+					 : (pMarte.isShowing()==true?1
+									 : (pMiercoles.isShowing()==true?2
+											 : (pJueves.isShowing()==true?3
+													 : (pViernes.isShowing()==true?4
+															 : (pSabado.isShowing()==true?5
+																	  : 6)))));
+			new GuardarSQL().Guardar_Actividades_Con_Respuesta(tb_actividades_con_respuesta, dianum);
+            new Cat_Actividades_De_Una_Planeacion("Cat_Alimentacion_De_Plan_Semanal",txtPeriodo.getText().toString().substring(0,10)).setVisible(true); 	
                dispose();
 		}
 	};
