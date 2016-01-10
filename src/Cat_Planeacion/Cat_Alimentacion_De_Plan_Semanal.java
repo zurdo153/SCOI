@@ -118,7 +118,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	}
 	
 	public void inabilitarPestanas(){
-		
+
 		for(int i = 0; i < 7; i++){
 			if((diaActual-1)==i || diaActual==i){
 				pestanas.setEnabledAt(i, true);
@@ -126,7 +126,6 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 				pestanas.setEnabledAt(i, false);
 			}
 		}
-
 	}
 	
 	private void cargarActividades() {

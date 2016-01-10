@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-01-05T11:55:30 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-01-10T10:06:20 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reportes_De_Actividades_Contestadas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c4f90b4f-e338-408f-a4d2-5a6dc00656db">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -14,7 +14,214 @@
 		</conditionalStyle>
 	</style>
 	<queryString>
-		<![CDATA[exec sp_Reporte_De_Actividades_Contestadas_Del_Plan_Semanal 1,'29/12/2015 23:59:59']]>
+		<![CDATA[declare @folio_empleado int=70 ,@fecha datetime='05/01/2016 23:59:59', @titulo_de_reporte varchar(80)='Reporte De Actividades Con Respuesta Por Fecha'
+declare @fecha_inicia_semana datetime=(dbo.Primer_Dia_De_La_Semana(@fecha))
+  --set @fecha=@fecha_inicia_semana
+
+  if(@titulo_de_reporte)='Reporte De Actividades Con Respuesta Por Fecha'
+  begin
+		select DATENAME(DW,@fecha) as dia
+				, a.*
+				,convert(varchar(15),@fecha,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+		from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha) a 
+		inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+		inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+		inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+		inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+  end
+
+    if(@titulo_de_reporte)='Reporte De Actividades Con Respuesta'
+  begin
+		select DATENAME(DW,@fecha_inicia_semana) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana  ) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+1) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+1,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+1) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+2) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+2,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+2) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+3) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+3,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+3) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+4) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+4,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+4) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+5) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+5,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+5) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+6) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+6,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+6) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+	end
+
+ if(@titulo_de_reporte)='Reporte De Actividades Caceladas Y Terminadas Por Fecha'
+  begin
+		select	DATENAME(DW,tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion + 0) as dia
+				, tb_asignacion_de_empleados_a_una_actividad.folio_actividad
+				, tb_actividades_plan.descripcion_de_la_actividad as actividad
+				, '' as prioridad_actividad
+				, case when (tb_asignacion_de_empleados_a_una_actividad.Estatus)='T' then 'TERMINADA'
+						else 'CANCELADA'
+					end as respuesta
+				, '' as observacion
+				, convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento
+				, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+		from tb_asignacion_de_empleados_a_una_actividad 
+		inner join tb_actividades_plan on tb_actividades_plan.folio_actividad = tb_asignacion_de_empleados_a_una_actividad .folio_actividad
+		inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+		inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+		inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+		inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		where tb_asignacion_de_empleados_a_una_actividad.folio_empleado = @folio_empleado 
+		and convert(datetime,convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103)) = convert(datetime,convert(varchar(20),@fecha,103))
+		and tb_asignacion_de_empleados_a_una_actividad.Estatus in ('C','T')
+		order by tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion desc
+  end
+
+ if(@titulo_de_reporte)='Reporte De Actividades Caceladas Y Terminadas Por Periodo'
+  begin
+		 select	DATENAME(DW,tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion + 0) as dia
+				, tb_asignacion_de_empleados_a_una_actividad.folio_actividad
+				, tb_actividades_plan.descripcion_de_la_actividad as actividad
+				, '' as prioridad_actividad
+				, case when (tb_asignacion_de_empleados_a_una_actividad.Estatus)='T' then 'TERMINADA'
+						else 'CANCELADA'
+					end as respuesta
+				, '' as observacion
+				, convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento
+				, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+		from tb_asignacion_de_empleados_a_una_actividad 
+		inner join tb_actividades_plan on tb_actividades_plan.folio_actividad = tb_asignacion_de_empleados_a_una_actividad .folio_actividad
+		inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+		inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+		inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+		inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		where tb_asignacion_de_empleados_a_una_actividad.folio_empleado = @folio_empleado 
+		and tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion between @fecha_inicia_semana and (@fecha_inicia_semana+6+' 23:59:59' )
+		and tb_asignacion_de_empleados_a_una_actividad.Estatus in ('C','T')
+		order by tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion desc
+  end
+
+ if(@titulo_de_reporte)='Reporte De Actividades Caceladas Y Terminadas'
+  begin
+		select	DATENAME(DW,tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion + 0) as dia
+				, tb_asignacion_de_empleados_a_una_actividad.folio_actividad
+				, tb_actividades_plan.descripcion_de_la_actividad as actividad
+				, '' as prioridad_actividad
+				, case when (tb_asignacion_de_empleados_a_una_actividad.Estatus)='T' then 'TERMINADA'
+						else 'CANCELADA'
+					end as respuesta
+				, '' as observacion
+				, convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento
+				, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+		from tb_asignacion_de_empleados_a_una_actividad 
+		inner join tb_actividades_plan on tb_actividades_plan.folio_actividad = tb_asignacion_de_empleados_a_una_actividad .folio_actividad
+		inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+		inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+		inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+		inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		where tb_asignacion_de_empleados_a_una_actividad.folio_empleado = @folio_empleado 
+		and convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103) <> '05/08/2078'
+		and tb_asignacion_de_empleados_a_una_actividad.Estatus in ('C','T')
+		order by tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion desc
+  end]]>
 	</queryString>
 	<field name="dia" class="java.lang.String"/>
 	<field name="folio_actividad" class="java.lang.Integer"/>
@@ -28,10 +235,11 @@
 	<field name="establecimiento" class="java.lang.String"/>
 	<field name="departamento" class="java.lang.String"/>
 	<field name="puesto" class="java.lang.String"/>
+	<field name="reporte" class="java.lang.String"/>
 	<group name="Group1" keepTogether="true">
 		<groupExpression><![CDATA[$F{dia}]]></groupExpression>
 		<groupHeader>
-			<band height="38">
+			<band height="43">
 				<frame>
 					<reportElement mode="Opaque" x="0" y="2" width="555" height="20" forecolor="#B89F7D" backcolor="#004CFF" uuid="b3ea9d73-90ea-45cc-a291-8e02ed492088">
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -49,7 +257,7 @@
 					</textField>
 				</frame>
 				<staticText>
-					<reportElement x="6" y="23" width="34" height="15" uuid="bca36b99-33cc-4a62-8c99-f880cfb4cf9d">
+					<reportElement x="2" y="23" width="34" height="15" uuid="bca36b99-33cc-4a62-8c99-f880cfb4cf9d">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -59,7 +267,7 @@
 					<text><![CDATA[Folio]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="41" y="23" width="274" height="15" uuid="3b47f9f0-b8a1-4db9-b54b-f9f49e66506f">
+					<reportElement x="37" y="23" width="274" height="15" uuid="3b47f9f0-b8a1-4db9-b54b-f9f49e66506f">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -69,19 +277,10 @@
 					<text><![CDATA[Actividad]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="314" y="23" width="70" height="15" uuid="2aaad334-5960-4d90-b4c4-b450d095c82b">
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Center">
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[Respúesta]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="387" y="23" width="168" height="15" uuid="685d71c4-9b2d-4431-b748-2386404ecbeb">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Con Respuesta") || $F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Fecha")]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center">
 						<font isBold="true"/>
@@ -91,6 +290,28 @@
 				<line>
 					<reportElement x="1" y="36" width="553" height="1" uuid="d610fbb1-20f0-44c9-89ec-651a2cb26ba5"/>
 				</line>
+				<staticText>
+					<reportElement x="314" y="23" width="72" height="15" uuid="afe80221-417b-40d0-8f64-628dec026578">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Con Respuesta") || $F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Fecha")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Respuesta]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="314" y="23" width="72" height="15" uuid="f5cb61c3-c030-4ae9-9908-fb4ce68d9664">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Caceladas Y Terminadas Por Fecha") || $F{reporte}.toString().equals("Reporte De Actividades Caceladas Y Terminadas Por Periodo")|| $F{reporte}.toString().equals("Reporte De Actividades Caceladas Y Terminadas")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Estatus]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -134,16 +355,9 @@
 		<band height="163" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="480" height="66" backcolor="#0018B8" uuid="674ade09-5bd2-4fd5-9109-d0d69b9cfcd3"/>
-				<staticText>
-					<reportElement style="Title" x="0" y="0" width="480" height="66" uuid="95845a4c-8683-419b-93eb-be1e6abedbd8"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="28" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Reporte De Actividades Con Respuesta]]></text>
-				</staticText>
 			</frame>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="70" width="554" height="10" forecolor="#000000" backcolor="#FF8000" uuid="bb6d4393-9d28-4d40-8ed8-957c822c59d7"/>
+				<reportElement mode="Opaque" x="0" y="70" width="480" height="10" forecolor="#000000" backcolor="#FF8000" uuid="bb6d4393-9d28-4d40-8ed8-957c822c59d7"/>
 			</frame>
 			<textField>
 				<reportElement x="107" y="82" width="363" height="20" uuid="1815f057-662a-491c-a055-a0f318ce98f3">
@@ -203,9 +417,42 @@
 				</box>
 				<imageExpression><![CDATA[$F{foto}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="1" y="0" width="479" height="66" forecolor="#FFFFFF" uuid="47d867bb-3ac0-45df-ba42-c7fcc4c24fa0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reporte}]]></textFieldExpression>
+			</textField>
 			<image>
-				<reportElement x="480" y="2" width="75" height="80" uuid="b7b103de-a79e-4cba-826f-84458027af5e"/>
-				<imageExpression><![CDATA["C:/SCOI/imagen/checklist.png"]]></imageExpression>
+				<reportElement x="483" y="0" width="73" height="81" uuid="ad615f75-deee-41dc-a11e-4449f31e3ec4">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Con Respuesta Por Fecha")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/revision_fecha.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="483" y="0" width="73" height="82" uuid="4865ba07-4a80-4632-b7a3-70b8ffbe1b3b">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Con Respuesta")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/revision_periodo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="483" y="0" width="73" height="81" uuid="fb8fcf0e-2510-4aa8-80dc-30523b41fec4">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Caceladas Y Terminadas Por Fecha")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/cancelacion_fecha.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="483" y="0" width="73" height="82" uuid="c1f46f7f-b61f-455b-8a35-84a8338037e7">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Caceladas Y Terminadas Por Periodo")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/cancelacion_periodo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="483" y="0" width="73" height="82" uuid="92ee2db5-4511-431a-a134-b9809d880194">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Caceladas Y Terminadas")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/cancelacion_todo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
