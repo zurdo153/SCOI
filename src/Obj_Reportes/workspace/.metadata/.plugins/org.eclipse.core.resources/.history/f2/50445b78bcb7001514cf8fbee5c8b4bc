@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-01-09T12:16:56 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reportes_De_Actividades_Contestadas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c4f90b4f-e338-408f-a4d2-5a6dc00656db">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[declare @folio_empleado int=70 ,@fecha datetime='05/01/2016 23:59:59', @titulo_de_reporte varchar(80)='Reporte De Actividades Con Respuesta Por Fecha'
+declare @fecha_inicia_semana datetime=(dbo.Primer_Dia_De_La_Semana(@fecha))
+  --set @fecha=@fecha_inicia_semana
+
+  if(@titulo_de_reporte)='Reporte De Actividades Con Respuesta Por Fecha'
+  begin
+		select DATENAME(DW,@fecha) as dia
+				, a.*
+				,convert(varchar(15),@fecha,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+		from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha) a 
+		inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+		inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+		inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+		inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+  end
+
+    if(@titulo_de_reporte)='Reporte De Actividades Con Respuesta'
+  begin
+		select DATENAME(DW,@fecha_inicia_semana) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana  ) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+1) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+1,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+1) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+2) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+2,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+2) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+3) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+3,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+3) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+4) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+4,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+4) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+5) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+5,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+5) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		union all
+		select DATENAME(DW,@fecha_inicia_semana+6) as dia
+				, a.*
+				, convert(varchar(15),@fecha_inicia_semana+6,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+			from dbo.tabla_reporte_plan_semanal_por_dia_cuadros(@folio_empleado,@fecha_inicia_semana+6) a 
+			inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+			inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+			inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+			inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+	end
+
+ if(@titulo_de_reporte)='Reporte De Actividades Caceladas Y Terminadas Por Fecha'
+  begin
+		select	DATENAME(DW,tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion + 0) as dia
+				, tb_asignacion_de_empleados_a_una_actividad.folio_actividad
+				, tb_actividades_plan.descripcion_de_la_actividad as actividad
+				, '' as prioridad_actividad
+				, case when (tb_asignacion_de_empleados_a_una_actividad.Estatus)='T' then 'TERMINADA'
+						else 'CANCELADA'
+					end as respuesta
+				, '' as observacion
+				, convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento
+				, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+		from tb_asignacion_de_empleados_a_una_actividad 
+		inner join tb_actividades_plan on tb_actividades_plan.folio_actividad = tb_asignacion_de_empleados_a_una_actividad .folio_actividad
+		inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+		inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+		inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+		inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		where tb_asignacion_de_empleados_a_una_actividad.folio_empleado = @folio_empleado 
+		and convert(datetime,convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103)) = convert(datetime,convert(varchar(20),@fecha,103))
+		and tb_asignacion_de_empleados_a_una_actividad.Estatus in ('C','T')
+		order by tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion desc
+  end
+
+ if(@titulo_de_reporte)='Reporte De Actividades Caceladas Y Terminadas Por Periodo'
+  begin
+		 select	DATENAME(DW,tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion + 0) as dia
+				, tb_asignacion_de_empleados_a_una_actividad.folio_actividad
+				, tb_actividades_plan.descripcion_de_la_actividad as actividad
+				, '' as prioridad_actividad
+				, case when (tb_asignacion_de_empleados_a_una_actividad.Estatus)='T' then 'TERMINADA'
+						else 'CANCELADA'
+					end as respuesta
+				, '' as observacion
+				, convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento
+				, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+		from tb_asignacion_de_empleados_a_una_actividad 
+		inner join tb_actividades_plan on tb_actividades_plan.folio_actividad = tb_asignacion_de_empleados_a_una_actividad .folio_actividad
+		inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+		inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+		inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+		inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		where tb_asignacion_de_empleados_a_una_actividad.folio_empleado = @folio_empleado 
+		and tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion between @fecha_inicia_semana and (@fecha_inicia_semana+6+' 23:59:59' )
+		and tb_asignacion_de_empleados_a_una_actividad.Estatus in ('C','T')
+		order by tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion desc
+  end
+
+ if(@titulo_de_reporte)='Reporte De Actividades Caceladas Y Terminadas'
+  begin
+		select	DATENAME(DW,tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion + 0) as dia
+				, tb_asignacion_de_empleados_a_una_actividad.folio_actividad
+				, tb_actividades_plan.descripcion_de_la_actividad as actividad
+				, '' as prioridad_actividad
+				, case when (tb_asignacion_de_empleados_a_una_actividad.Estatus)='T' then 'TERMINADA'
+						else 'CANCELADA'
+					end as respuesta
+				, '' as observacion
+				, convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103) as fecha
+				, tb_empleado.foto
+				, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado
+				, tb_establecimiento.nombre as establecimiento
+				, tb_departamento.departamento
+				, tb_puesto.nombre as puesto 
+				, @titulo_de_reporte as reporte
+		from tb_asignacion_de_empleados_a_una_actividad 
+		inner join tb_actividades_plan on tb_actividades_plan.folio_actividad = tb_asignacion_de_empleados_a_una_actividad .folio_actividad
+		inner join tb_empleado on tb_empleado.folio = @folio_empleado 
+		inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id 
+		inner join tb_departamento on tb_departamento.folio = tb_empleado.departamento 
+		inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+		where tb_asignacion_de_empleados_a_una_actividad.folio_empleado = @folio_empleado 
+		and convert(varchar(20),tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion,103) <> '05/08/2078'
+		and tb_asignacion_de_empleados_a_una_actividad.Estatus in ('C','T')
+		order by tb_asignacion_de_empleados_a_una_actividad.fecha_de_cancelacion desc
+  end]]>
+	</queryString>
+	<field name="dia" class="java.lang.String"/>
+	<field name="folio_actividad" class="java.lang.Integer"/>
+	<field name="actividad" class="java.lang.String"/>
+	<field name="prioridad_actividad" class="java.lang.String"/>
+	<field name="respuesta" class="java.lang.String"/>
+	<field name="observacion" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="foto" class="java.io.InputStream"/>
+	<field name="empleado" class="java.lang.String"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="departamento" class="java.lang.String"/>
+	<field name="puesto" class="java.lang.String"/>
+	<field name="reporte" class="java.lang.String"/>
+	<group name="Group1" keepTogether="true">
+		<groupExpression><![CDATA[$F{dia}]]></groupExpression>
+		<groupHeader>
+			<band height="43">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="2" width="555" height="20" forecolor="#B89F7D" backcolor="#004CFF" uuid="b3ea9d73-90ea-45cc-a291-8e02ed492088">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="318" height="20" forecolor="#FFFFFF" uuid="9398e829-5182-4278-b7ff-a9a8909b22e6">
+							<property name="local_mesure_unitheight" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font size="15" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{dia}+" ( "+$F{fecha}+" ) "]]></textFieldExpression>
+					</textField>
+				</frame>
+				<staticText>
+					<reportElement x="2" y="23" width="34" height="15" uuid="bca36b99-33cc-4a62-8c99-f880cfb4cf9d">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Folio]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="37" y="23" width="274" height="15" uuid="3b47f9f0-b8a1-4db9-b54b-f9f49e66506f">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Actividad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="387" y="23" width="168" height="15" uuid="685d71c4-9b2d-4431-b748-2386404ecbeb">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Con Respuesta") || $F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Dia")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Observación]]></text>
+				</staticText>
+				<line>
+					<reportElement x="1" y="36" width="553" height="1" uuid="d610fbb1-20f0-44c9-89ec-651a2cb26ba5"/>
+				</line>
+				<staticText>
+					<reportElement x="314" y="23" width="72" height="15" uuid="afe80221-417b-40d0-8f64-628dec026578">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Con Respuesta") || $F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Dia")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Respuesta]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="314" y="23" width="72" height="15" uuid="f5cb61c3-c030-4ae9-9908-fb4ce68d9664">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Caceladas Y Terminadas Por Fecha") || $F{reporte}.toString().equals("Reporte De Actividades Caceladas Y Terminadas Por Periodo")|| $F{reporte}.toString().equals("Reporte De Actividades Caceladas Y Terminadas")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Estatus]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{folio_actividad}]]></groupExpression>
+	</group>
+	<group name="actividad">
+		<groupExpression><![CDATA[$F{actividad}]]></groupExpression>
+	</group>
+	<group name="fecha">
+		<groupExpression><![CDATA[$F{fecha}]]></groupExpression>
+	</group>
+	<group name="prioridad_actividad">
+		<groupExpression><![CDATA[$F{prioridad_actividad}]]></groupExpression>
+	</group>
+	<group name="respuesta">
+		<groupExpression><![CDATA[$F{respuesta}]]></groupExpression>
+	</group>
+	<group name="observacion">
+		<groupExpression><![CDATA[$F{observacion}]]></groupExpression>
+	</group>
+	<group name="establecimiento">
+		<groupExpression><![CDATA[$F{establecimiento}]]></groupExpression>
+	</group>
+	<group name="departamento">
+		<groupExpression><![CDATA[$F{departamento}]]></groupExpression>
+	</group>
+	<group name="puesto">
+		<groupExpression><![CDATA[$F{puesto}]]></groupExpression>
+	</group>
+	<group name="empleado">
+		<groupExpression><![CDATA[$F{empleado}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="163" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="480" height="66" backcolor="#0018B8" uuid="674ade09-5bd2-4fd5-9109-d0d69b9cfcd3"/>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="70" width="480" height="10" forecolor="#000000" backcolor="#FF8000" uuid="bb6d4393-9d28-4d40-8ed8-957c822c59d7"/>
+			</frame>
+			<textField>
+				<reportElement x="107" y="82" width="363" height="20" uuid="1815f057-662a-491c-a055-a0f318ce98f3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Empleado:  "+$F{empleado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="102" width="363" height="20" uuid="b54faa62-257c-47b1-b13a-f7fc675272c2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Establecimiento:  "+$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="122" width="363" height="20" uuid="ded7b4dd-7d74-496b-a831-df97b353ae98">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Departamento:  "+$F{departamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="142" width="363" height="20" uuid="310f5419-83bf-43b4-9b8c-66ba2f0a5c3f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Puesto:  "+$F{puesto}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="2" y="85" width="100" height="75" uuid="0f04145e-6cf8-4396-b226-de75c7d03b05">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<leftPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					<rightPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<imageExpression><![CDATA[$F{foto}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="1" y="0" width="479" height="66" forecolor="#FFFFFF" uuid="47d867bb-3ac0-45df-ba42-c7fcc4c24fa0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reporte}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="483" y="0" width="73" height="81" uuid="ad615f75-deee-41dc-a11e-4449f31e3ec4">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Con Respuesta Por Fecha")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/revision_fecha.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="483" y="0" width="73" height="82" uuid="4865ba07-4a80-4632-b7a3-70b8ffbe1b3b">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Con Respuesta")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/revision_periodo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="483" y="0" width="73" height="81" uuid="fb8fcf0e-2510-4aa8-80dc-30523b41fec4">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Caceladas Y Terminadas Por Fecha")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/cancelacion_fecha.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="483" y="0" width="73" height="82" uuid="c1f46f7f-b61f-455b-8a35-84a8338037e7">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Caceladas Y Terminadas Por Periodo")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/cancelacion_periodo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="483" y="0" width="73" height="82" uuid="92ee2db5-4511-431a-a134-b9809d880194">
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Caceladas Y Terminadas")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/cancelacion_todo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="18" uuid="f2bbb17a-a3aa-48bb-b248-67a658ccf620"/>
+				<rectangle radius="4">
+					<reportElement x="313" y="1" width="68" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="respuesta" backcolor="#FFFFFF" uuid="4915d57e-d036-48e8-a667-e61da1607148">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<printWhenExpression><![CDATA[$F{respuesta}.toString().trim().equals("EN TIEMPO")]]></printWhenExpression>
+					</reportElement>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="313" y="1" width="68" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="respuesta" backcolor="#00D2FC" uuid="068097b9-dec0-47bc-b4e0-6c0d588acc79">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<printWhenExpression><![CDATA[$F{respuesta}.toString().trim().equals("EXTRA")]]></printWhenExpression>
+					</reportElement>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="313" y="1" width="68" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="respuesta" backcolor="#FBFF00" uuid="ab3896b3-5f47-4e03-bb63-02ec0224f4f5">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+						<printWhenExpression><![CDATA[$F{respuesta}.toString().trim().equals("EN PROCESO")]]></printWhenExpression>
+					</reportElement>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="313" y="1" width="68" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="respuesta" backcolor="#FF0000" uuid="a04b3b5e-8610-466e-8507-81fd1f77490a">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<printWhenExpression><![CDATA[$F{respuesta}.toString().trim().equals("INCUMPLIDA")]]></printWhenExpression>
+					</reportElement>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="313" y="1" width="68" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="respuesta" backcolor="#26FF00" uuid="8bf8ce22-d1b7-4b74-9850-50b01e5c7305">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<printWhenExpression><![CDATA[$F{respuesta}.toString().trim().equals("RESUELTA")]]></printWhenExpression>
+					</reportElement>
+				</rectangle>
+				<textField>
+					<reportElement positionType="Float" x="2" y="1" width="28" height="16" forecolor="#000000" uuid="5863db60-5083-45ed-ac47-7082059856cf"/>
+					<textElement textAlignment="Left">
+						<font fontName="Times New Roman" size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{folio_actividad}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="30" y="1" width="284" height="16" uuid="d918777f-1317-4aca-a8ea-b9ae79fb02b5">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="315" y="1" width="69" height="16" uuid="723e105d-2a2d-43d1-b749-2ed04ca74d73">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{respuesta}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="387" y="1" width="165" height="16" uuid="6703de8f-4ac3-4999-8aed-decc403536a5">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="de7772f3-8bad-4b8a-ae21-9e44cbc9a01a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#0018B8" uuid="b981aa3f-2228-4492-89d1-14e4a289a554"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="131abc81-ce67-47ef-b849-617c11effb2d"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="433" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="48f4afe4-6604-4007-a849-39c69b19c853"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="1" width="197" height="20" forecolor="#FFFFFF" uuid="fd636f1d-ac31-4a59-a253-3defea988992"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

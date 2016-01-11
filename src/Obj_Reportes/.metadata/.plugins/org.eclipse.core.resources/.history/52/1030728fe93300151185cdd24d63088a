@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-07-25T14:36:51 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte de Apartados" pageWidth="595" pageHeight="842" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d02be077-f7f1-423a-b73f-283738e4eb9c">
+	<property name="ireport.zoom" value="1.464100000000005"/>
+	<property name="ireport.x" value="142"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_EXTERNO"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["M:\\Proyecto Lista\\Proyecto Grupo Izagar\\Grupo Izagar\\src\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[declare @fechaIn smalldatetime, @fechaFin smalldatetime
+
+SET @fechaIn=convert(smalldatetime,'13/07/2015');--@fechaaIn
+SET @fechaFin=convert(smalldatetime,convert(varchar(20),getdate(),103)+' 23:59:00');--@fechaaFin
+
+
+				SELECT    'APARTADOS' as Tipo
+                          ,facremtick.folio AS Ticket
+						  ,datos_apartados_mercancia.entregar_a as Cliente_Apartado
+						  ,datos_apartados_mercancia.domicilio as Domicilio
+						  ,datos_apartados_mercancia.telefono as ApartadoN
+						  ,CONVERT (VARCHAR(20),facremtick.fecha,103) AS Fecha_del_Apartado
+						  ,facremtick.total as Total_Apartado
+						  ,CONVERT (VARCHAR(20),abonos_clientes.fecha,103) AS Fecha_Abono
+						  ,abonos_clientes.importe as Primer_Abono
+						  ,facremtick.total-abonos_clientes.importe as Primer_Saldo
+						  ,facremtick.abonos as Total_Abonos_Actual
+						  ,facremtick.saldo as Saldo_Actual
+						  ,abonos_clientes.dias_pago as Dias_Pago
+						  ,CONVERT (VARCHAR(20),datos_apartados_mercancia.fecha_estimada_entrega ,103)  as Fecha_Limite_del_Apartado
+						  ,case when datos_apartados_mercancia.fecha_entregado>'16/11/2064 00:00:00'
+								then  'No Entregado Aún'
+								else  CONVERT (VARCHAR(20),datos_apartados_mercancia.fecha_entregado ,103)
+								end AS Fecha_de_Entrega
+						  ,datos_apartados_mercancia.entregado_a AS Persona_Que_Recibio_Apartado
+						  ,datos_apartados_mercancia.notas as Notas
+						  ,cajeros.nombre as Cajero
+						  ,cajeros.cod_estab as Num_Estab
+						  ,facremtick.folio_cajero as Asignacion
+						  ,convert(varchar(20),asignaciones_cajeros.fecha_liquidacion,103) as Fecha_Liquidacion
+						  ,facremtick.factura as Factura
+                          ,abonos_clientes.importe  as Abono 
+
+				FROM         abonos_clientes with(nolock)
+
+				LEFT OUTER JOIN  facremtick with(nolock) ON  facremtick.folio=abonos_clientes.folio_aplicado
+				INNER JOIN   datos_apartados_mercancia ON datos_apartados_mercancia.folio = facremtick.folio AND datos_apartados_mercancia.transaccion = facremtick.transaccion
+				INNER JOIN   clientes ON facremtick.cod_cte = clientes.cod_cte
+				INNER JOIN   transacciones ON facremtick.transaccion = transacciones.transaccion
+				INNER JOIN   cajeros ON cajeros.cajero=facremtick.cajero
+				LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=facremtick.folio_cajero
+				where  facremtick.status <> 'C' and facremtick.cond_pago = '4' and convert(varchar(13),abonos_clientes.fecha,103)>=convert(varchar(13),@fechaIn,103) and convert(varchar(13),abonos_clientes.fecha,103)<=convert(varchar(13),@fechaFin,103) and abonos_clientes.status='V' 
+
+	UNION ALL
+
+				(SELECT   'APARTADOS' as Tipo
+                          ,facremtick.folio AS Ticket
+						  ,datos_apartados_mercancia.entregar_a as Cliente_Apartado
+						  ,datos_apartados_mercancia.domicilio as Domicilio
+						  ,datos_apartados_mercancia.telefono as ApartadoN
+						  ,CONVERT (VARCHAR(20),facremtick.fecha,103) AS Fecha_del_Apartado
+						  ,facremtick.total as Total_Apartado
+						  ,''AS Fecha_Abono
+						  ,''AS Primer_Abono
+						  ,''AS Primer_Saldo
+						  ,facremtick.abonos as Total_Abonos_Actual
+						  ,facremtick.saldo as Saldo_Actual
+						  ,''AS Dias_Pago
+						  ,CONVERT (VARCHAR(20),datos_apartados_mercancia.fecha_estimada_entrega ,103)  as Fecha_Limite_del_Apartado
+						  ,case when datos_apartados_mercancia.fecha_entregado>'16/11/2064 00:00:00'
+								then  'No Entregado Aún'
+								else  CONVERT (VARCHAR(20),datos_apartados_mercancia.fecha_entregado ,103)
+								end AS Fecha_de_Entrega
+						  ,datos_apartados_mercancia.entregado_a AS Persona_Que_Recibio_Apartado
+						  ,datos_apartados_mercancia.notas as Notas
+						  ,cajeros.nombre as Cajero
+						  ,cajeros.cod_estab as Num_Estab
+						  ,facremtick.folio_cajero as Asignacion
+						  ,convert(varchar(20),asignaciones_cajeros.fecha_liquidacion,103) as Fecha_Liquidacion
+						  ,facremtick.factura as Factura
+                          ,'' as Abono 
+
+				FROM         facremtick with(nolock)
+				INNER JOIN   datos_apartados_mercancia ON datos_apartados_mercancia.folio = facremtick.folio AND datos_apartados_mercancia.transaccion = facremtick.transaccion
+				INNER JOIN   clientes ON facremtick.cod_cte = clientes.cod_cte
+				LEFT OUTER JOIN   transacciones ON facremtick.transaccion = transacciones.transaccion
+				INNER JOIN   cajeros ON cajeros.cajero=facremtick.cajero
+				LEFT OUTER JOIN  asignaciones_cajeros ON asignaciones_cajeros.folio=facremtick.folio_cajero
+				where  facremtick.status <> 'C' and facremtick.cond_pago = '4' and convert(varchar(13),facremtick.fecha,103)>=convert(varchar(13),@fechaIn,103)  and convert(varchar(13),facremtick.fecha,103)<=convert(varchar(13),@fechaFin,103) and facremtick.abonos=0)
+    UNION ALL
+
+         (select * from(	SELECT 'ABONOS' as Tipo
+						  ,folio.ticket as Ticket
+						  ,datos_apartados_mercancia.entregar_a as Cliente_Apartado
+  						  ,datos_apartados_mercancia.domicilio as Domicilio
+						  ,datos_apartados_mercancia.telefono as ApartadoN
+					      ,CONVERT (VARCHAR(20),facremtick.fecha,103) AS Fecha_del_Apartado
+						  ,facremtick.total as Total_Apartado
+						  ,CONVERT(varchar(20),@fechaIn,103) AS Fecha_Abono--para que aparezaca en el reporte
+						  ,'' as Primer_Abono
+						  ,'' as Primer_Saldo
+						  ,facremtick.abonos as Total_Abonos_Actual
+						  ,facremtick.saldo as Saldo_Actual
+						  ,'' as Dias_Pago
+						  ,CONVERT (VARCHAR(20),datos_apartados_mercancia.fecha_estimada_entrega ,103)  as Fecha_Limite_del_Apartado
+						  ,case when datos_apartados_mercancia.fecha_entregado>'16/11/2064 00:00:00'
+								then  'No Entregado Aún'
+								else  CONVERT (VARCHAR(20),datos_apartados_mercancia.fecha_entregado ,103)
+								end AS Fecha_de_Entrega
+						  ,datos_apartados_mercancia.entregado_a AS Persona_Que_Recibio_Apartado
+						  ,datos_apartados_mercancia.notas as Notas
+						  ,cajeros.nombre as Cajero
+						  ,cajeros.cod_estab as Num_Estab
+						  ,facremtick.folio_cajero as Asignacion
+						  ,convert(varchar(20),asignaciones_cajeros.fecha_liquidacion,103) as Fecha_Liquidacion
+						  ,facremtick.factura as Factura
+ 				          ,sum(case when liquidaciones_tickets.afectacion = '+' then liquidaciones_tickets.importe else liquidaciones_tickets.importe * -1 end) as Abono
+					FROM ((select ticket  from liquidaciones_tickets with(nolock) where folio_asignacion in( SELECT 	facremtick.folio_cajero as Asignacion
+  																													 FROM         abonos_clientes with(nolock)
+																														LEFT OUTER JOIN  facremtick with(nolock) ON  facremtick.folio=abonos_clientes.folio_aplicado
+																														INNER JOIN   datos_apartados_mercancia ON datos_apartados_mercancia.folio = facremtick.folio AND datos_apartados_mercancia.transaccion = facremtick.transaccion
+																													  WHERE facremtick.status <> 'C' and facremtick.cond_pago = '4' and convert(varchar(13),abonos_clientes.fecha,103)>=convert(varchar(13),@fechaIn,103)  and convert(varchar(13),abonos_clientes.fecha,103)<=convert(varchar(13),@fechaFin,103) and abonos_clientes.status='V' 
+																											UNION ALL
+ 																												 SELECT  facremtick.folio_cajero as Asignacion
+																														FROM         facremtick with(nolock)
+																														INNER JOIN   datos_apartados_mercancia ON datos_apartados_mercancia.folio = facremtick.folio AND datos_apartados_mercancia.transaccion = facremtick.transaccion
+																														where  facremtick.status <> 'C' and facremtick.cond_pago = '4' and convert(varchar(13),facremtick.fecha,103)>=convert(varchar(13),@fechaIn,103) and convert(varchar(13),facremtick.fecha,103)<=convert(varchar(13),@fechaFin,103) and facremtick.abonos=0))
+								 except
+							  (select folio  as ticket from facremtick with(nolock) where folio_cajero in(SELECT 	facremtick.folio_cajero as Asignacion
+  																														 FROM         abonos_clientes with(nolock)
+																															LEFT OUTER JOIN  facremtick with(nolock) ON  facremtick.folio=abonos_clientes.folio_aplicado
+																															INNER JOIN   datos_apartados_mercancia ON datos_apartados_mercancia.folio = facremtick.folio AND datos_apartados_mercancia.transaccion = facremtick.transaccion
+																														  WHERE facremtick.status <> 'C' and facremtick.cond_pago = '4' and convert(varchar(13),abonos_clientes.fecha,103)>=convert(varchar(13),@fechaIn,103) and convert(varchar(13),abonos_clientes.fecha,103)<=convert(varchar(13),@fechaFin,103) and abonos_clientes.status='V' 
+																												UNION ALL
+ 																													 SELECT  facremtick.folio_cajero as Asignacion
+																															FROM         facremtick with(nolock)
+																															INNER JOIN   datos_apartados_mercancia ON datos_apartados_mercancia.folio = facremtick.folio AND datos_apartados_mercancia.transaccion = facremtick.transaccion
+																															where  facremtick.status <> 'C' and facremtick.cond_pago = '4' and convert(varchar(13),facremtick.fecha,103)>=convert(varchar(13),@fechaIn,103) and convert(varchar(13),facremtick.fecha,103)<=convert(varchar(13),@fechaFin,103) and facremtick.abonos=0))
+                        ) folio
+			           
+						inner join liquidaciones_tickets on liquidaciones_tickets.folio_asignacion in( SELECT 	facremtick.folio_cajero as Asignacion
+  																												 FROM         abonos_clientes with(nolock)
+																													LEFT OUTER JOIN  facremtick with(nolock) ON  facremtick.folio=abonos_clientes.folio_aplicado
+																													INNER JOIN   datos_apartados_mercancia ON datos_apartados_mercancia.folio = facremtick.folio AND datos_apartados_mercancia.transaccion = facremtick.transaccion
+																												  WHERE facremtick.status <> 'C' and facremtick.cond_pago = '4' and convert(varchar(13),abonos_clientes.fecha,103)>=convert(varchar(13),@fechaIn,103) and convert(varchar(13),abonos_clientes.fecha,103)<=convert(varchar(13),@fechaFin,103) and abonos_clientes.status='V' 
+																										UNION ALL
+ 																											 SELECT  facremtick.folio_cajero as Asignacion
+																													FROM         facremtick with(nolock)
+																													INNER JOIN   datos_apartados_mercancia ON datos_apartados_mercancia.folio = facremtick.folio AND datos_apartados_mercancia.transaccion = facremtick.transaccion
+																													where  facremtick.status <> 'C' and facremtick.cond_pago = '4' and convert(varchar(13),facremtick.fecha,103)>=convert(varchar(13),@fechaIn,103) and convert(varchar(13),facremtick.fecha,103)<=convert(varchar(13),@fechaFin,103) and facremtick.abonos=0) 
+                                    and folio.ticket=liquidaciones_tickets.ticket
+						inner join datos_apartados_mercancia ON datos_apartados_mercancia.folio = folio.ticket
+						inner join facremtick on facremtick.folio = folio.ticket
+						inner join cajeros ON cajeros.cajero=facremtick.cajero
+						left outer join  asignaciones_cajeros ON asignaciones_cajeros.folio=facremtick.folio_cajero
+
+						 group by folio.ticket
+									  ,datos_apartados_mercancia.entregar_a
+  									  ,datos_apartados_mercancia.domicilio
+									  ,datos_apartados_mercancia.telefono
+									  ,CONVERT (VARCHAR(20),facremtick.fecha,103)
+									  ,facremtick.total
+					  				  ,facremtick.abonos 
+									  ,facremtick.saldo
+									  ,datos_apartados_mercancia.fecha_estimada_entrega
+									  ,datos_apartados_mercancia.fecha_entregado
+									  ,datos_apartados_mercancia.entregado_a
+									  ,datos_apartados_mercancia.notas
+									  ,cajeros.nombre
+									  ,cajeros.cod_estab
+									  ,facremtick.folio_cajero
+									  ,asignaciones_cajeros.fecha_liquidacion
+									  ,facremtick.factura
+             ) abono)
+
+		order by  Asignacion asc,Fecha_Abono asc
+
+]]>
+	</queryString>
+	<field name="Tipo" class="java.lang.String"/>
+	<field name="Ticket" class="java.lang.String"/>
+	<field name="Cliente_Apartado" class="java.lang.String"/>
+	<field name="Domicilio" class="java.lang.String"/>
+	<field name="ApartadoN" class="java.lang.String"/>
+	<field name="Fecha_del_Apartado" class="java.lang.String"/>
+	<field name="Total_Apartado" class="java.math.BigDecimal"/>
+	<field name="Fecha_Abono" class="java.lang.String"/>
+	<field name="Primer_Abono" class="java.math.BigDecimal"/>
+	<field name="Primer_Saldo" class="java.math.BigDecimal"/>
+	<field name="Total_Abonos_Actual" class="java.math.BigDecimal"/>
+	<field name="Saldo_Actual" class="java.math.BigDecimal"/>
+	<field name="Dias_Pago" class="java.lang.Short"/>
+	<field name="Fecha_Limite_del_Apartado" class="java.lang.String"/>
+	<field name="Fecha_de_Entrega" class="java.lang.String"/>
+	<field name="Persona_Que_Recibio_Apartado" class="java.lang.String"/>
+	<field name="Notas" class="java.lang.String"/>
+	<field name="Cajero" class="java.lang.String"/>
+	<field name="Num_Estab" class="java.lang.String"/>
+	<field name="Asignacion" class="java.lang.String"/>
+	<field name="Fecha_Liquidacion" class="java.lang.String"/>
+	<field name="Factura" class="java.lang.String"/>
+	<field name="Abono" class="java.math.BigDecimal"/>
+	<variable name="Total.Primer Saldo" class="java.lang.Float" resetType="Group" resetGroup="Asignacion" calculation="Sum">
+		<variableExpression><![CDATA[$F{Primer_Saldo}]]></variableExpression>
+	</variable>
+	<variable name="Total_1er_abono" class="java.lang.Float" resetType="Group" resetGroup="Asignacion" calculation="Sum">
+		<variableExpression><![CDATA[$F{Primer_Abono}]]></variableExpression>
+	</variable>
+	<variable name="Total Apartadados" class="java.lang.Float" resetType="Group" resetGroup="Asignacion" calculation="Sum">
+		<variableExpression><![CDATA[$F{Total_Apartado}]]></variableExpression>
+	</variable>
+	<variable name="Total_Abonos" class="java.math.BigDecimal" resetType="Group" resetGroup="Asignacion" calculation="Sum">
+		<variableExpression><![CDATA[$F{Abono}]]></variableExpression>
+	</variable>
+	<group name="Tipo">
+		<groupExpression><![CDATA[$F{Tipo}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<frame>
+					<reportElement mode="Opaque" x="1" y="0" width="199" height="25" forecolor="#FF6600" backcolor="#000066" uuid="26dfe155-ce5b-4cdc-9326-06473b39d431"/>
+				</frame>
+				<textField>
+					<reportElement x="4" y="0" width="198" height="25" forecolor="#FFFFFF" uuid="2cd341cf-742f-4e11-8e04-936350a2baf3"/>
+					<textElement>
+						<font size="18" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Tipo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="1"/>
+		</groupFooter>
+	</group>
+	<group name="Asignacion" keepTogether="true">
+		<groupExpression><![CDATA[$F{Asignacion}]]></groupExpression>
+		<groupHeader>
+			<band height="38">
+				<frame>
+					<reportElement mode="Opaque" x="-1" y="24" width="554" height="12" forecolor="#B89F7D" backcolor="#000099" uuid="75b8378c-be34-4457-bdd4-a23f202ebb03"/>
+					<staticText>
+						<reportElement style="Column header" x="6" y="0" width="50" height="12" forecolor="#FFFFFF" uuid="b2d6e122-bf5e-4684-9903-fd1ab4f02648">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[Tot. Apart]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="Column header" x="57" y="0" width="45" height="12" forecolor="#FFFFFF" uuid="57ffe2cc-eeea-4fa7-abba-0db793a9e8f9">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[Fecha Ab]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="Column header" x="104" y="0" width="47" height="12" forecolor="#FFFFFF" uuid="976311c5-c139-4a9c-9df8-11bc350a7e4f">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[1er Abono]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="Column header" x="151" y="0" width="42" height="12" forecolor="#FFFFFF" uuid="2e43c86c-7388-40bb-b58f-211cf938223d">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[1er Saldo]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="Column header" x="193" y="0" width="52" height="12" forecolor="#FFFFFF" uuid="0597063a-6c90-48e7-a0eb-f57386890c3e">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[Tot. Abonos]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="Column header" x="245" y="0" width="45" height="12" forecolor="#FFFFFF" uuid="52c94d8a-7346-4e1a-b0f8-03d217926eb6">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[Saldo Act]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="Column header" x="290" y="0" width="45" height="12" forecolor="#FFFFFF" uuid="78cc32dc-f906-460f-9ad2-d0de3413c5a2">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[Fecha Lim]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="Column header" x="335" y="0" width="45" height="12" forecolor="#FFFFFF" uuid="3bb73f4f-fed1-47c6-b6dd-4ab5b18c7eac">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[Abono]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="Column header" x="380" y="0" width="60" height="12" forecolor="#FFFFFF" uuid="4b0a18bc-ce62-46d0-9afa-16bdb0ca3f30">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[Asignacion]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="Column header" x="443" y="0" width="65" height="12" forecolor="#FFFFFF" uuid="8cbffdc1-f674-492a-aa33-ba8eb153a717">
+							<property name="local_mesure_unitheight" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left">
+							<font size="10" isBold="false"/>
+						</textElement>
+						<text><![CDATA[Cajero]]></text>
+					</staticText>
+				</frame>
+				<staticText>
+					<reportElement x="2" y="12" width="28" height="10" uuid="96607ddd-13e9-4ca7-bb89-b4993b2b39d0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Times New Roman" size="8"/>
+					</textElement>
+					<text><![CDATA[Ticket:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="30" y="12" width="56" height="10" uuid="81be6307-d095-49cc-b759-5073dff25bd2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Ticket}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="221" y="1" width="33" height="10" forecolor="#000000" uuid="0a436748-e3fc-4494-9779-ad0501a5c03f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Cliente:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="254" y="1" width="280" height="10" uuid="d58a95fc-cdcc-4adc-95d9-40c474b166ff">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Cliente_Apartado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="125" y="12" width="409" height="10" uuid="c8d58141-1a7d-4c17-aa22-813441efd363">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Domicilio}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="86" y="12" width="44" height="10" forecolor="#000000" uuid="69be4a25-376e-4353-8d47-0ff3883c8b14">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Domicilio:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="2" y="1" width="48" height="10" forecolor="#000000" uuid="009ca848-9583-4d4e-a10f-d0ecfb8cd1e0">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[No.Apartado:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="50" y="1" width="36" height="10" uuid="850020d6-a905-49a5-8291-81a866fd5bdc">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ApartadoN}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="86" y="1" width="58" height="10" forecolor="#000000" uuid="5afe284f-47b9-486f-839b-51cf8f1c1722">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Fecha Apartado:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="141" y="1" width="80" height="10" uuid="0d2a5489-739d-46c7-ab09-f0dfc2862151">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Fecha_del_Apartado}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<line>
+					<reportElement x="3" y="0" width="549" height="1" uuid="95dc4c2e-1b1c-4ea1-a794-d60dcaaa8519"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="483" height="50" forecolor="#FF6600" backcolor="#000066" uuid="1c1a4c06-49a6-480d-954d-b0bf1476b142"/>
+				<staticText>
+					<reportElement x="2" y="1" width="289" height="29" forecolor="#FFFFFF" uuid="50330533-c5f1-43f1-b915-769a4810e0ae"/>
+					<textElement>
+						<font size="20" isBold="true"/>
+					</textElement>
+					<text><![CDATA[APARTADOS DE LA FECHA:]]></text>
+				</staticText>
+			</frame>
+			<image>
+				<reportElement x="484" y="1" width="50" height="49" uuid="77bc0416-632f-4e66-86b9-336f872c33e0"/>
+				<imageExpression><![CDATA["C:\\SCOI\\imagen\\documentos-de-gabinete-icono-4840-96.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="yyyy.MMMMM.dd GGG hh:mm aaa">
+				<reportElement x="280" y="26" width="202" height="20" uuid="b4a588c6-cfc5-40b5-8b5b-f7de529bc819"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="6" width="202" height="20" forecolor="#000000" uuid="0811a964-4c3e-4c19-94b0-88186a1608eb"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA IMPRESION:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="553" height="10" uuid="5926d0c2-7d15-4a25-8bd4-eada9d8b7e27"/>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="1" y="0" width="50" height="10" uuid="beef620e-5d95-48e5-8bb4-8b479222d9a7"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Total_Apartado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="56" y="0" width="45" height="10" uuid="0805f1e6-f7c2-4213-b085-3554b79b1c2d"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Fecha_Abono}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="99" y="0" width="47" height="10" uuid="9fa7aa4f-05ce-4351-83bf-75ceef782110"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Primer_Abono}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="146" y="0" width="42" height="10" uuid="9d47cb2b-f23d-45ad-823e-f6da2a70fc0a"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Primer_Saldo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="188" y="0" width="52" height="10" uuid="108a4b7e-22f8-40a5-82ab-86925ded4b5d"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Total_Abonos_Actual}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="240" y="0" width="45" height="10" uuid="d46c6f73-0dee-43f0-a46e-762ada899bee"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Saldo_Actual}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="285" y="0" width="49" height="10" uuid="d448d9d1-de4b-4c75-a0e5-919cb9b0d1e8"/>
+					<textElement textAlignment="Center">
+						<font fontName="Times New Roman" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Fecha_Limite_del_Apartado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="334" y="0" width="37" height="10" uuid="f83fddab-37b3-4eed-8914-471588538879"/>
+					<textElement textAlignment="Right">
+						<font fontName="Times New Roman" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Abono}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="390" y="0" width="49" height="10" uuid="6349a486-c30b-48d6-a4f3-deddc5348871">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Times New Roman" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Asignacion}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="441" y="0" width="111" height="10" uuid="3bfa056b-3739-4b1b-843c-75da4d9db41d">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Times New Roman" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Cajero}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="553" height="12" forecolor="#D0B48E" backcolor="#000099" uuid="41a8bb22-d5a0-4713-b61a-3fa3b595bf31"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="12" forecolor="#FFFFFF" uuid="ed5025f4-3a1d-4a87-9baf-e2cb5d957340">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="433" y="0" width="80" height="12" forecolor="#FFFFFF" uuid="290f2ed4-d736-40f9-8838-dae58f11c5df">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="5" y="0" width="197" height="12" forecolor="#FFFFFF" uuid="5abd1a80-6de4-4fad-94c4-a3fcf6692ca8">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="4" splitType="Stretch"/>
+	</summary>
+</jasperReport>

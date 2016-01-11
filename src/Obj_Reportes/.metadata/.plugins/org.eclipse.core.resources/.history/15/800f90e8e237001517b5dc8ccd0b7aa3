@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-07-31T18:11:23 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Abonos_De_Cortes" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d8b02dde-bfb1-43f7-ae05-7b13db5e53da">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[declare @fechaIn datetime, @fechaFin datetime
+
+set @fechaIn  = '01/06/2015 00:00:00';
+set @fechaFin = '26/07/2015 23:59:00';
+
+	select 'abono' as folio_corte
+			,convert(varchar(10),t_abn.folio_empleado)+'  '+t_emp.nombre+' '+t_emp.ap_paterno+' '+t_emp.ap_materno as empleado
+			,t_abn.abono as cantidad
+			,t_abn.lista_de_raya_del_abono as numero_de_liste_de_raya
+			,t_abn.a_favor
+			,convert(varchar(20),t_abn.fecha_de_modificacion,103)+' '+convert(varchar(20),t_abn.fecha_de_modificacion,108) as fecha_de_modificacion
+			--,tb_abonos.status
+			--,tb_abonos.status_cobro
+	from tb_abonos t_abn
+	inner join tb_empleado t_emp on t_emp.folio = t_abn.folio_empleado
+	where t_abn.fecha_de_modificacion>=@fechaIn 
+	and t_abn.fecha_de_modificacion<=@fechaFin 
+	and t_abn.transaccion=6
+	and t_abn.status = 2 --cobrados (status 1 seria por cobrar)
+	--and folio_empleado = 1428
+
+	union all(
+				select al_cort.folio_corte as folio_corte
+						,convert(varchar(10),al_cort.folio_empleado)+'  '+t_emp.nombre+' '+t_emp.ap_paterno+' '+t_emp.ap_materno as empleado
+						,case  when (al_cort.status_de_cobro_seguridad = 2 and al_cort.diferencia_seguridad_sugerido <> 0) then al_cort.diferencia_seguridad_sugerido
+								when (al_cort.status_de_cobro_seguridad = 2 and al_cort.diferencia_seguridad_sugerido = 0 and al_cort.diferencia_auditoria <> 0) then al_cort.diferencia_auditoria
+								when (al_cort.status_de_cobro_auditoria = 2 and al_cort.diferencia_auditoria <> 0) then al_cort.diferencia_auditoria
+								else al_cort.diferiencia_de_corte
+							end as cantidad
+						,al_cort.folio_lista_de_raya_cobro as numero_de_liste_de_raya
+						,0 as a_favor
+						,convert(varchar(20),al_cort.fecha_autorizacion_de_revision_de_corte,103)+' '+convert(varchar(20),al_cort.fecha_autorizacion_de_revision_de_corte,108) as fecha_de_modificacion
+						--,'' as status
+						--,'' as status_cobro
+				from tb_alimentacion_de_cortes al_cort
+				inner join tb_empleado t_emp on t_emp.folio = al_cort.folio_empleado
+				where al_cort.status_autorizacion_corte = 1
+				and al_cort.fecha_autorizacion_de_revision_de_corte>=@fechaIn 
+				and al_cort.fecha_autorizacion_de_revision_de_corte<=@fechaFin 
+				--and folio_empleado = 1428
+				)				
+	order by empleado, folio_corte, lista_de_raya_del_abono, fecha_de_modificacion]]>
+	</queryString>
+	<field name="folio_corte" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Float"/>
+	<field name="numero_de_liste_de_raya" class="java.lang.Integer"/>
+	<field name="a_favor" class="java.math.BigDecimal"/>
+	<field name="fecha_de_modificacion" class="java.lang.String"/>
+	<field name="empleado" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{folio_corte}]]></groupExpression>
+		<groupHeader>
+			<band height="37">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="7" width="555" height="24" forecolor="#B89F7D" backcolor="#000000" uuid="7a650b94-ca12-4678-853b-8e22da15429a"/>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{folio_empleado}]]></groupExpression>
+		<groupHeader>
+			<band height="33"/>
+		</groupHeader>
+	</group>
+	<group name="cantidad">
+		<groupExpression><![CDATA[$F{cantidad}]]></groupExpression>
+	</group>
+	<group name="numero_de_liste_de_raya">
+		<groupExpression><![CDATA[$F{numero_de_liste_de_raya}]]></groupExpression>
+	</group>
+	<group name="a_favor">
+		<groupExpression><![CDATA[$F{a_favor}]]></groupExpression>
+	</group>
+	<group name="fecha_de_modificacion">
+		<groupExpression><![CDATA[$F{fecha_de_modificacion}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="132" splitType="Stretch">
+			<image>
+				<reportElement x="456" y="0" width="99" height="132" uuid="20309deb-6721-4a96-8328-07dc1eb01c48"/>
+				<imageExpression><![CDATA["cherry.jpg"]]></imageExpression>
+			</image>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="451" height="95" backcolor="#000000" uuid="ba2bf0f1-d846-4385-86fb-2007208d110a"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="370" height="66" uuid="5da7f406-de92-4354-8d10-c90cba10c997"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Cherry Title]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="SubTitle" x="157" y="66" width="249" height="29" uuid="28d91a63-b96f-4c0a-8644-25196bd96694"/>
+					<textElement>
+						<font size="22" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Cherry SubTitle]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="100" width="451" height="32" forecolor="#000000" backcolor="#CC0000" uuid="ed45682c-6ff0-4042-b751-0ccab750ca47"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="307" y="12" width="144" height="20" forecolor="#FFFFFF" uuid="6191030f-43a6-40d4-83d4-015f59c7e629"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="18" uuid="ec305fc2-58d8-4df1-b1c0-4e6ef9e8a5d2"/>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="38f8918c-f4ae-45ce-8b8e-f11f433fd190"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000000" uuid="10da5ecf-5d57-42e6-a09e-1d9788a3d240"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="34256cf6-2aaf-4fb2-93ee-d46e189ca0ab"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="433" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="d5aafc68-fb56-4254-a110-1548f4c98f66"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="1" width="197" height="20" forecolor="#FFFFFF" uuid="ec6d99ef-c6b9-4ae8-956b-e5ec9baa38d0"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

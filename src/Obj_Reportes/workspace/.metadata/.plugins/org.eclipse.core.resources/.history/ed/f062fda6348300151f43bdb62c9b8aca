@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-11-04T13:42:33 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Ticket_C_Ahorro_Cte" language="groovy" pageWidth="210" pageHeight="250" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="c5d3ef7e-2023-4702-a5da-9686000435e0">
+	<property name="ireport.zoom" value="3.452271214393105"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="192"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<queryString>
+		<![CDATA[declare @folio_cajero int 
+set @folio_cajero = 1 
+
+select convert(varchar(20),tb_pedido_de_monedas.fecha_pedido_cajera,103)+' '+convert(varchar(20),tb_pedido_de_monedas.fecha_pedido_cajera,108) as fecha_de_pedido
+,tb_pedido_de_monedas.folio_cajera as folio_cajero
+,tb_empleado.nombre+' '+tb_empleado.ap_materno+' '+tb_empleado.ap_materno as cajero
+,tb_establecimiento.nombre as establecimiento
+,tb_pedido_de_monedas.status_pedido
+,tb_denominaciones.valor_denominacion
+,tb_pedido_de_monedas.pedido_bolsas_cajera as cantidad_de_bolsas_pedidas
+,tb_pedido_de_monedas.total_pedido_cajera
+,tb_pedido_de_monedas.observacion_pedido_cajera as observacion
+from tb_pedido_de_monedas 
+inner join tb_empleado on tb_empleado.folio = tb_pedido_de_monedas.folio_cajera
+inner join tb_establecimiento on tb_establecimiento.folio = tb_pedido_de_monedas.folio_establecimiento
+inner join tb_denominaciones ON tb_denominaciones.folio = tb_pedido_de_monedas.folio_deniminacion
+where tb_pedido_de_monedas.folio_cajera = @folio_cajero 
+and tb_pedido_de_monedas.status_pedido = 'PEDIDO'
+ORDER BY tb_denominaciones.valor_denominacion DESC
+]]>
+	</queryString>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="fecha_de_pedido" class="java.lang.String"/>
+	<field name="folio_cajero" class="java.lang.Integer"/>
+	<field name="cajero" class="java.lang.String"/>
+	<field name="status_pedido" class="java.lang.String"/>
+	<field name="valor_denominacion" class="java.math.BigDecimal"/>
+	<field name="cantidad_de_bolsas_pedidas" class="java.lang.Integer"/>
+	<field name="total_pedido_cajera" class="java.math.BigDecimal"/>
+	<field name="observacion" class="java.lang.String"/>
+	<variable name="total_de_acumulado" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_pedido_cajera}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="12" y="5" width="189" height="35" uuid="262033e6-86e8-4771-b797-ca370a253687">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte De Pedido De Monedas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="39" splitType="Stretch">
+			<textField>
+				<reportElement x="16" y="1" width="177" height="9" uuid="3aa3aab4-32dc-4cf2-b74a-fee280d35567"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tienda:  "+$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="98" y="30" width="95" height="9" uuid="da9ad3d4-6629-427d-ade0-18b805aba331"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Status: "+$F{status_pedido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="20" width="178" height="9" uuid="c22c7d43-c92d-43e0-b35f-c40f2d58afd2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cajero(a): "+$F{folio_cajero}+" "+$F{cajero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="89" y="10" width="104" height="9" uuid="7536b5f4-ccef-4b20-87f3-8bda94b15ea4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="7" isBold="true" isItalic="false" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Pedido: "+$F{fecha_de_pedido}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="1" width="74" height="12" uuid="580d3381-a2ad-4e3a-b8eb-46faa68c41f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[# Bolsas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="1" width="43" height="12" uuid="b42ba152-e89f-4aa8-a29d-189a81298efb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="15" y="12" width="178" height="1" uuid="a49b3b3f-b1ae-4ac7-884a-6cdd9c093d57"/>
+			</line>
+			<staticText>
+				<reportElement x="13" y="1" width="70" height="12" uuid="6963c877-1b9b-42ea-ae7a-a6fdd15a69f2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Denominación]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="80" y="0" width="74" height="12" uuid="4bd73d29-c56a-41ad-a88c-1b1cfc3b1ff4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad_de_bolsas_pedidas}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="15" y="11" width="178" height="1" uuid="d766572a-ff36-476c-b524-8fabc11939e0"/>
+			</line>
+			<textField pattern="#,##0.00#">
+				<reportElement x="150" y="0" width="36" height="12" uuid="6b1e9639-cf92-4260-8213-7ec80f858639"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_pedido_cajera}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="13" y="0" width="70" height="12" uuid="0d020aac-13cc-4636-b1f7-232095bf610b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_denominacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="85" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<rectangle>
+				<reportElement x="15" y="2" width="178" height="14" forecolor="#FFFFFF" backcolor="#EBEBEB" uuid="6f047962-52cb-4fea-bb99-fe6717b31ab2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="18" y="3" width="81" height="13" uuid="689f8630-8ed7-4d97-9f9d-fa617f6bcc69"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Acumulado:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#">
+				<reportElement x="113" y="3" width="73" height="13" uuid="5f268781-374c-4222-83b5-f8378d5c5530"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_de_acumulado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="20" width="69" height="10" uuid="f78ad123-7199-4fab-b55f-fdf3eebabeda">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="14" y="30" width="179" height="40" uuid="92748aec-8775-4e1a-a478-02859ab26994"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

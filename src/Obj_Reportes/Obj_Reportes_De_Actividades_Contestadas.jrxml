@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-01-10T10:06:20 -->
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-01-10T13:04:04 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reportes_De_Actividades_Contestadas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c4f90b4f-e338-408f-a4d2-5a6dc00656db">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -280,7 +280,7 @@ declare @fecha_inicia_semana datetime=(dbo.Primer_Dia_De_La_Semana(@fecha))
 					<reportElement x="387" y="23" width="168" height="15" uuid="685d71c4-9b2d-4431-b748-2386404ecbeb">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Con Respuesta") || $F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Fecha")]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Periodo") || $F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Fecha")]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center">
 						<font isBold="true"/>
@@ -294,7 +294,7 @@ declare @fecha_inicia_semana datetime=(dbo.Primer_Dia_De_La_Semana(@fecha))
 					<reportElement x="314" y="23" width="72" height="15" uuid="afe80221-417b-40d0-8f64-628dec026578">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Con Respuesta") || $F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Fecha")]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Periodo") || $F{reporte}.toString().equals("Reporte De Actividades Con Respuesta Por Fecha")]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center">
 						<font isBold="true"/>
@@ -432,7 +432,7 @@ declare @fecha_inicia_semana datetime=(dbo.Primer_Dia_De_La_Semana(@fecha))
 			</image>
 			<image>
 				<reportElement x="483" y="0" width="73" height="82" uuid="4865ba07-4a80-4632-b7a3-70b8ffbe1b3b">
-					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Con Respuesta")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{reporte}.toString().trim().equals("Reporte De Actividades Con Respuesta Por Periodo")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA["C:/SCOI/imagen/revision_periodo.png"]]></imageExpression>
 			</image>
@@ -520,7 +520,7 @@ declare @fecha_inicia_semana datetime=(dbo.Primer_Dia_De_La_Semana(@fecha))
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
 				</textField>
