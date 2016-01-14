@@ -23,10 +23,16 @@ public class ColorCeldas extends DefaultTableCellRenderer{
     	Color cTexto = Color.BLACK;
     	if(tipo_de_tabla.equals("Objetivos_De_La_Semana")){
 	    	cFondo = table.getValueAt(row, columna_patron).toString().trim().equals("PLANEADO") ? Color.white : table.getValueAt(row, columna_patron).toString().trim().equals("RESUELTO") ? Color.green : Color.yellow;
-    	}else{
+    	}
+    	if(tipo_de_tabla.equals("Actividades_De_La_Semana")){
     		cFondo = table.getValueAt(row, columna_patron).toString().trim().equals("AUTOASIGNADAS") ? new Color(221, 230, 221) : table.getValueAt(row, columna_patron).toString().trim().equals("EXTRA") ? new Color(45, 209, 255) : table.getValueAt(row, columna_patron).toString().trim().equals("JERARQUIAASIGNADAS") ? new Color(110, 155, 255) : Color.WHITE; 
     		cTexto = table.getValueAt(row, columna_patron).toString().trim().equals("JERARQUIAASIGNADAS") ? Color.WHITE : Color.BLACK;
     	}
+    	
+    	if(tipo_de_tabla.equals("Revision De Entrada De Mercancia")){
+	    	cFondo = table.getValueAt(row, columna_patron).toString().trim().equals("PENDIENTE") ? Color.RED : Color.GREEN;
+    	}
+    	
 		setBackground(cFondo);
 		setForeground(cTexto);
 

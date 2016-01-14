@@ -339,7 +339,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			}else{
 				
 				int folio_actividad = Integer.valueOf(tabla.getValueAt(filaSeleccionada, 0).toString().trim());
-							String avisoSQL =  new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad);
+							String avisoSQL =  new ActualizarSQL().Cancelar_Actividad_De_Usuario(folio_actividad,pestanas.getSelectedIndex());
 							buscarActividadesPorDia();
 							JOptionPane.showMessageDialog(null,avisoSQL,"Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							return;
