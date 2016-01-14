@@ -4147,10 +4147,10 @@ public boolean Actualizar_Objetivos_De_Plan_Semanal(final JTable tabla){
 //	return true;
 //	}
 
-public String Cancelar_Actividad_De_Usuario(int folio_actividad){
+public String Cancelar_Actividad_De_Usuario(int folio_actividad, int pestaniaDia){
 	
 	String aviso = "";
-	String query = "exec sp_update_actividades_por_empleado "+folio_actividad+","+(new Obj_Usuario().LeerSession().getFolio());
+	String query = "exec sp_update_actividades_por_empleado2 "+folio_actividad+","+(new Obj_Usuario().LeerSession().getFolio()+","+pestaniaDia);
 	
 	Statement s;
 	ResultSet rs;
