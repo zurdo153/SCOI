@@ -136,10 +136,10 @@ public class Cat_Supervision_De_Entrada_De_Mercancia extends JFrame{
 		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setTitle("Consulta de Pedidos De Clientes");
+		this.setTitle("Revision De Entrada De Mercancia");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/lista-icono-7220-32.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
-		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Estatus De Pedidos Clientes"));
+		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Status Revision De Entrada De Mercancia"));
 		this.cont.add(panel);
 		this.addWindowListener(op_cerrar);
 

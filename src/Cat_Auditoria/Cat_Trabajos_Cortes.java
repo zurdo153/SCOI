@@ -604,6 +604,9 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	ActionListener opCajaVerde = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 		
+			txtFiltroPorAsignacion.setText("");
+			new Obj_Filtro_Dinamico(tabla_grupos,"F.Asignacion", txtFiltroPorAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+			
 			Object[] vector = new Object[20];
 			
 			for(int i =0; i<tabla_grupos.getRowCount(); i++){
@@ -630,6 +633,9 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				return;
 			}else{
 				tabla_model_c_verde.removeRow(filaSeleccionada);
+				
+				txtFiltroPorAsignacion.setText("");
+				new Obj_Filtro_Dinamico(tabla_grupos,"F.Asignacion", txtFiltroPorAsignacion.getText().toUpperCase(),"","", "", "", "", "");
 				refresh();
 			}
 		}
@@ -691,7 +697,11 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.print(btn.getActionCommand());
+				
+				txtFiltroPorAsignacion.setText("");
+				new Obj_Filtro_Dinamico(tabla_grupos,"F.Asignacion", txtFiltroPorAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+				
+//				System.out.print(btn.getActionCommand());
 				if(btn.getActionCommand().equals("Quitar Seleccionado")){
 					quitarCortes=quitarCortes.equals("")?cadenaCortesQuitados("true"):quitarCortes+"'',''"+cadenaCortesQuitados("true");
 				}else{
@@ -723,13 +733,19 @@ public class Cat_Trabajos_Cortes extends JFrame{
 //	};
 	ActionListener opRegresarCorte = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
+			
 			quitarCortes="";
+			
+			txtFiltroPorAsignacion.setText("");
+			new Obj_Filtro_Dinamico(tabla_grupos,"F.Asignacion", txtFiltroPorAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+			
 			refresh();
 		}
 	};
 	
 	public void refresh(){
 		
+		txtFiltroPorAsignacion.setText("");
 		tabla_model_grupos.setRowCount(0);
 		
 		System.out.println(cadenaCajaVerde().equals("") ? quitarCortes : (quitarCortes.equals("")?cadenaCajaVerde():cadenaCajaVerde()+"'',''"+quitarCortes));
