@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-11-01T13:59:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IZAGAR_Obj_Reporte_De_Diferiencias_De_Recepciones_De_Transferencia" language="groovy" pageWidth="229" pageHeight="792" columnWidth="209" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="6f2f1bf8-f16a-4412-a41a-4211a7e3b601">
+	<property name="ireport.zoom" value="1.9487171000000019"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IZAGAR"/>
+	<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[select folio as ticket,convert(varchar(15),fecha,108) as hora ,total,'MARCO ANTONIO BODART GUZMAN' as cajero
+          ,'ASIGNACION' as asignacion
+          ,'RICARDO MARCO BODART MEZA' as supervisor
+           ,1  as saldo_inicial
+		   , 2 as total_traspaso
+           ,1  as venta
+		   ,2  as saldo_final_de_movimientos
+           ,2  as saldo_final_tecleado
+	       ,1 as diferiencia 
+          ,'SISTEMAS' as nombre_pc
+          ,'CEDIS' as establecimiento
+          ,getdate() as fecha_mov
+          ,'SALIDA'  as mov_turno
+
+from entysal with (nolock)
+where  cod_prod='52401' and folio in(select folio from facremtick with (nolock) where folio_cajero='S204801') order by fecha]]>
+	</queryString>
+	<field name="ticket" class="java.lang.String"/>
+	<field name="hora" class="java.lang.String"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="cajero" class="java.lang.String"/>
+	<field name="asignacion" class="java.lang.String"/>
+	<field name="supervisor" class="java.lang.String"/>
+	<field name="saldo_inicial" class="java.lang.Integer"/>
+	<field name="total_traspaso" class="java.lang.Integer"/>
+	<field name="venta" class="java.lang.Integer"/>
+	<field name="saldo_final_de_movimientos" class="java.lang.Integer"/>
+	<field name="saldo_final_tecleado" class="java.lang.Integer"/>
+	<field name="diferiencia" class="java.lang.Integer"/>
+	<field name="nombre_pc" class="java.lang.String"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="fecha_mov" class="java.sql.Timestamp"/>
+	<field name="mov_turno" class="java.lang.String"/>
+	<variable name="Suma_Venta_TA" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="181" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement mode="Opaque" x="6" y="0" width="199" height="170" backcolor="#FFFFFF" uuid="3bd28953-0a1c-454c-b776-dd12aa3bfb5f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="0">
+					<topPen lineWidth="0.9" lineStyle="Double" lineColor="#000000"/>
+					<leftPen lineWidth="0.9" lineStyle="Double" lineColor="#000000"/>
+					<bottomPen lineWidth="0.9" lineStyle="Double" lineColor="#000000"/>
+					<rightPen lineWidth="0.9" lineStyle="Double" lineColor="#000000"/>
+				</box>
+				<textField pattern="d/M/yy h:mm a">
+					<reportElement x="73" y="76" width="101" height="13" forecolor="#000000" uuid="8267eddb-b114-46d2-8ba3-0e05f261c013"/>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Transparent" x="9" y="76" width="64" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="d5957e6f-3400-48d8-b1ea-9592e2ecb4c1">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Fecha Impresion:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="9" y="51" width="61" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="1bff921a-7377-4f41-97a1-acd837936963">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Establecimiento:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="9" y="39" width="27" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="6287ccc9-99ed-4896-8740-4966078e7da2">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Cajero:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="30" y="1" width="169" height="25" uuid="3c89b1ed-33d5-4bc0-86dd-ace40bca49ce">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Saldo Tiempo Aire De Cajera De La Asignacion: "+$F{asignacion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Transparent" x="32" y="91" width="93" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="3250f72f-d0af-4ec3-afbd-338c00aeb936">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Saldo Inicial:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="32" y="156" width="93" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="a937f73d-7098-4325-98d1-eb0cc3a26cd2">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Diferiencia:]]></text>
+				</staticText>
+				<textField pattern="">
+					<reportElement x="36" y="39" width="163" height="12" uuid="c4c67d7e-24fd-4971-8d70-45520a76cbfb"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cajero}]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement x="10" y="1" width="26" height="25" uuid="909a3f9d-eeb6-4c48-b9ae-3391324a1342"/>
+					<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
+				</image>
+				<textField>
+					<reportElement x="71" y="51" width="128" height="12" uuid="ba612ad7-6b51-414b-b90d-3110561c7cd5"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="73" y="63" width="101" height="13" uuid="4203570d-0585-4256-aa47-2dd906f7bdd8"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha_mov}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Transparent" x="32" y="130" width="93" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="aab8a7d5-04a9-4389-93a6-b7fa77d11196">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Saldo Final Movimientos:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="32" y="104" width="93" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="88347a35-d94c-4edc-96ac-56a7165f7d19">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Total deTraspasos:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="32" y="117" width="93" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="43435af8-a750-45be-99ac-8c27b4cc55cb">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Total de Ventas:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="32" y="143" width="93" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="1b2eb4b6-1db4-4faa-8197-f682aef92db4">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Saldo Final Tecleado:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="125" y="91" width="45" height="13" uuid="b61df7a1-0a37-400f-bc22-961acc559d62"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{saldo_inicial}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="125" y="104" width="45" height="13" uuid="7a82807e-436a-40cf-8c3d-c702b5c64fa2"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{total_traspaso}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="125" y="117" width="45" height="13" uuid="279dc683-6e27-40da-877c-6b26a99cd8c2"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{venta}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="125" y="130" width="45" height="13" uuid="182ad0df-e3c1-4532-bfb6-b2f32b3cb5f4"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{saldo_final_de_movimientos}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="125" y="143" width="45" height="13" uuid="92eb78f7-ecb7-438a-b4b2-6dbcfb3be505"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{saldo_final_tecleado}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="125" y="156" width="45" height="13" uuid="97578ecb-ce29-4609-b7d8-9eef09c5f644"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{diferiencia}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="27" width="199" height="12" uuid="ae512908-305a-4bd7-9bcd-d0ecd65188b9"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[">>"+$F{mov_turno}+"<<"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<staticText>
+				<reportElement mode="Transparent" x="12" y="170" width="30" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="8b5fb23f-b20f-4e00-b3df-9345bcd2ca1e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Ticket]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="66" y="170" width="67" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="8b101590-b78b-46ec-9a93-418a7ac13913">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Fecha y Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="133" y="170" width="43" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="1d122717-9a3e-4348-a192-89a1392811d0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="15" y="63" width="64" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="7fa8e8ec-f8bd-41ad-a64d-d19c81607a07">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Fecha Guardado:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<frame>
+				<reportElement style="Column header" mode="Opaque" x="6" y="0" width="199" height="14" uuid="ff0b1d08-f60b-4e05-9a39-a567007fa9e5">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textField pattern="#,##0.###">
+					<reportElement x="135" y="0" width="35" height="14" uuid="50857c83-bdbd-424e-adad-0bf68c48ae81">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="56" y="0" width="79" height="14" uuid="c1e0cece-b35e-4017-88e8-fffccaf74d3b"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{hora}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1" y="0" width="55" height="14" uuid="2d6f2118-b517-4dd3-9993-e652ded94baa">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ticket}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="58" splitType="Stretch">
+			<textField>
+				<reportElement x="108" y="38" width="100" height="18" uuid="2e7698e5-267a-4d21-907d-fc6a7ae740b2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FIRMA SUPERVISOR("+$F{supervisor}+")"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-1" y="36" width="100" height="1" uuid="9e865e0f-bdc8-49cf-a188-b6c32cc660b1">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="37" width="99" height="19" uuid="5be2a4f7-53a7-4b99-9748-fe835e01d8b2"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FIRMA CAJERO   ("+$F{cajero}+")"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="108" y="36" width="100" height="1" uuid="3d0fb594-6e4e-4247-8db5-1bf265f50e3c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<frame>
+				<reportElement mode="Opaque" x="5" y="1" width="200" height="1" forecolor="#D0B48E" backcolor="#000000" uuid="7b653811-b4ab-43cf-a28b-e70d02e6efeb">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</frame>
+			<textField pattern="#,##0.###">
+				<reportElement x="133" y="1" width="43" height="14" uuid="15da753b-5876-4b55-a737-3e663732ef87"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Suma_Venta_TA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="106" y="3" width="27" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="d252c5ab-96be-4f0c-8c3e-ae74b53738f1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
