@@ -170,6 +170,7 @@ public class Cat_Supervision_De_Entrada_De_Mercancia extends JFrame{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		 
 		
 		buscarEntradas(FechaIn,FechaFin,"manual");
 		
