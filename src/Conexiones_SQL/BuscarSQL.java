@@ -7630,7 +7630,7 @@ public class BuscarSQL {
 					+ " convert(varchar(20),@fecha_inicial+4+@mover,103) as viernes , "
 					+ " convert(varchar(20),@fecha_inicial+5+@mover,103) as sabado , "
 					+ " convert(varchar(20),@fecha_inicial+6+@mover,103) as domingo , "
-					+ " DATEPART(DW,getdate()-1) as dia_actual ";
+					+ "CONVERT(INT,DATEPART(DW,getdate()))-1 as dia_actual  ";
 					
 		String[] datos = new String[10];
 		

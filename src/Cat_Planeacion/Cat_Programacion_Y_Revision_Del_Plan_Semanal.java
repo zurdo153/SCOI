@@ -296,7 +296,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 			String basedatos="2.26";
 			String vista_previa_reporte="no";
 			int vista_previa_de_ventana=0;
-			String comando="exec sp_Reporte_De_Actividades_Contestadas_Del_Plan_Semanal "+usuario.getFolio()+",'"+txtPeriodo.getText().toString().substring(0,10)+"'"  ;
+			String comando="exec sp_Reporte_De_Actividades_Contestadas_Del_Plan_Semanal "+usuario.getFolio()+",'"+txtPeriodo.getText().toString().substring(0,10)+"','Reporte De Actividades Con Respuesta Por Periodo'"  ;
 			String reporte = "Obj_Reportes_De_Actividades_Contestadas.jrxml";
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}

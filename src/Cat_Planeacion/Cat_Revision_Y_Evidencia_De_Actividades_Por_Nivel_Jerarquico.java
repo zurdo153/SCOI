@@ -119,12 +119,13 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
 	private TableRowSorter trsfiltro;
 	JTextField txtFiltro= new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 	
-	JButton btnReporte_cuadros  = new JButton("Plan Semanal"      ,new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
-	JButton btnReporte_cntestad = new JButton("Plan Contestado "  ,new ImageIcon("imagen/mensual-de-la-agenda-contestado-7455-32.png")      );
-	JButton btnReporte_lista  = new JButton("Lista De Actividades");
+	JButton btnReporte_cuadros  = new JButton("Plan Semanal"        ,new ImageIcon("imagen/mensual-de-la-agenda-icono-7455-32.png")           );
+	JButton btnReporte_cntestad = new JButton("Plan Contestado "    ,new ImageIcon("imagen/mensual-de-la-agenda-contestado-7455-32.png")      );
+	JButton btnReporte_act_vig  = new JButton("Actividades Vigentes" ,new ImageIcon("imagen/reinicio-pelota-cute-icono-7443-32.png")          );
+	JButton btnReporte_lista    = new JButton("Lista De Actividades");
 	
 	JRadioButton rbActividadesRevisadasFecha = new JRadioButton("Reporte De Actividades Con Respuesta Por Fecha");
-	JRadioButton rbActividadesRevisadasPeriodo = new JRadioButton("Reporte De Actividades Con Respuesta");
+	JRadioButton rbActividadesRevisadasPeriodo = new JRadioButton("Reporte De Actividades Con Respuesta Por Periodo");
 	JRadioButton rbActividadesCanceladasFecha = new JRadioButton("Reporte De Actividades Caceladas Y Terminadas Por Fecha");
 	JRadioButton rbActividadesCanceladasPeriodo = new JRadioButton("Reporte De Actividades Caceladas Y Terminadas Por Periodo");
 	JRadioButton rbActividadesCanceladasTodas = new JRadioButton("Reporte De Actividades Caceladas Y Terminadas");
@@ -183,10 +184,11 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
 		this.panel.add(rbActividadesCanceladasPeriodo	).setBounds(20,y+=25,320,20);
 		this.panel.add(rbActividadesCanceladasTodas		).setBounds(20,y+=25,320,20);
 		this.panel.add(btnReporte_lista					).setBounds(20,y+=25,320,38);
-		
-		this.panel.add(btnReporte_cuadros).setBounds(365,y-130,180,38);
-		this.panel.add(btnReporte_cntestad).setBounds(365,y-90,180,38);
-		this.panel.add(btnGenerarArchivo).setBounds(x+760,y-130,180,38);
+		y=450;
+		this.panel.add(btnReporte_cuadros).setBounds (365  ,y    ,180,38);
+		this.panel.add(btnGenerarArchivo).setBounds(x+760  ,y    ,180,38);
+		this.panel.add(btnReporte_cntestad).setBounds(365  ,y+=45,180,38);
+		this.panel.add(btnReporte_act_vig).setBounds (365  ,y+=45,180,38);
 		
 		ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/imagen/checklistbtn.png");
 	    Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
@@ -207,6 +209,7 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
 		this.btnReporte_cntestad.addActionListener(Agregar);
 		this.btnReporte_lista.addActionListener(Agregar);
 		this.btnGenerarArchivo.addActionListener(Agregar);
+		this.btnReporte_act_vig.addActionListener(Agregar);
 		
 	}
 	
@@ -318,6 +321,13 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
 							new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 						}
 						
+						if(arg0.getActionCommand().trim().equals("Actividades Vigentes")){
+							comando="exec sp_Reporte_De_Actividades_Vigentes_De_Un_Colaborador "+tabla.getValueAt(tabla.getSelectedRow(), 0);
+							reporte = "Obj_Reportes_De_Actividades_Vigentes.jrxml";
+							new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+						}
+						
+						
 						if(arg0.getActionCommand().trim().equals("Lista De Actividades")){
 							
 							String nombreReporte = rbActividadesRevisadasFecha.isSelected()?rbActividadesRevisadasFecha.getActionCommand():(
@@ -325,8 +335,6 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
 							rbActividadesCanceladasFecha.isSelected()?rbActividadesCanceladasFecha.getActionCommand():(
 							rbActividadesCanceladasPeriodo.isSelected()?rbActividadesCanceladasPeriodo.getActionCommand():(
 							rbActividadesCanceladasTodas.isSelected()?rbActividadesCanceladasTodas.getActionCommand():"Otro Posible Reporte"))));
-							
-//							System.out.println(nombreReporte);
 							
 							comando="exec sp_Reporte_De_Actividades_Contestadas_Del_Plan_Semanal "+tabla.getValueAt(tabla.getSelectedRow(), 0)+",'"+fecha+"','"+nombreReporte+"'"  ;
 							reporte = "Obj_Reportes_De_Actividades_Contestadas.jrxml";

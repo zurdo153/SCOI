@@ -1835,8 +1835,16 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		public void fechaDuracion(){
 			if(rbFechaDeFinalizacion.isSelected()){
 				fh_final_de_duracion.setEnabled(true);
+				try {
+					fh_final_de_duracion.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(frecuencia.cargar_fechas(-30)));
+				} catch (ParseException e) {// Auto-generated catch block
+					e.printStackTrace();	}
 			}else{
 				fh_final_de_duracion.setEnabled(false);
+				try {
+					fh_final_de_duracion.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("16/11/2094"));
+				} catch (ParseException e) {// Auto-generated catch block
+					e.printStackTrace();	}
 			}
 		}
 		
@@ -2004,6 +2012,11 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 					frecuencia.setFecha_final_duracion(rbFechaDeFinalizacion.isSelected()?(new SimpleDateFormat("dd/MM/yyyy").format(fh_final_de_duracion.getDate())):"16/11/2094");
 					frecuencia.setSeleccion_sin_fecha_final(rbSinFechaDeFinalizacion.isSelected());
 					
+					if(rbHastaQueSeCumpla.isSelected()&&cmbTipoDeProgramacion.getSelectedItem().toString().equals("UNA VEZ")){
+						frecuencia.setFecha_inicio_duracion(new SimpleDateFormat("dd/MM/yyyy").format(fh_unica_repeticion.getDate()));
+					}
+					
+					
 					dispose();
 			}
 		}
@@ -2015,6 +2028,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			rbEnLaFechaIndicada.setSelected(frecuencia.isSeleccion_en_la_fecha_indicada());
 			
 //			unica repeticion
+			
 			try {
 				fechaInicialDefault = new SimpleDateFormat("dd/MM/yyyy").parse(frecuencia.cargar_fechas(0));
 				fh_unica_repeticion.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(frecuencia.getFh_unica_repeticion()));
@@ -2055,19 +2069,33 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 			spHoraFrecuenciaDiaria.setEditor(spDHoraFrecuenciaDiaria);
 			
 //			Duracion
+			
 			try {
 				fh_inicial_de_duracion.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(frecuencia.getFecha_inicio_duracion()));
 			} catch (ParseException e) {// Auto-generated catch block
 				e.printStackTrace();	}
 			rbFechaDeFinalizacion.setSelected(frecuencia.isSeleccion_fecha_finaliza());
+			
 			try {
 				fh_final_de_duracion.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(frecuencia.getFecha_final_duracion()));
 			} catch (ParseException e) {// Auto-generated catch block
 				e.printStackTrace();	}
+			
+			
 			rbSinFechaDeFinalizacion.setSelected(frecuencia.isSeleccion_sin_fecha_final());
 		}
-	}
 		
+	}
+	public String cargar_fechas(int dias){
+		String date = null;
+	    	try {
+				date = new BuscarSQL().fecha(dias);
+				} catch (SQLException e) {
+					// catch block
+					e.printStackTrace();
+					}
+		return date;
+	};
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
