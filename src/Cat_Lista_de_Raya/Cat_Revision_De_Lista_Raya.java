@@ -23,6 +23,7 @@ import java.util.Date;
 
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -39,7 +40,10 @@ import javax.swing.table.TableRowSorter;
 
 
 
+
+
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
@@ -52,6 +56,9 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 @SuppressWarnings("serial")
 /** CTRL EN CAT_ROOT_LISTA_RAYA PARA AGREGAR BOTON **/
 public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
+	
+	JButton btnQuitarObservacionI = new JButton("Limpiar Observacion DH");
+	
 	 boolean acceso = null != null;
 	 int cantidad_sueldos_mod =0;	
 	 
@@ -171,6 +178,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		panel.add(new JLabel("Totales Nomina y Cheques:")).setBounds(870,40,135,20);
 		panel.add(JLBTotales_Nomina).setBounds(1000,40,20,20);
 		
+		panel.add(btnQuitarObservacionI).setBounds(1430,40,150,20);
 		panel.add(JLBcambios_sueldo).setBounds(1050,40,350,20);
 //		if(cantidad_sueldos_mod>0){ 
 //		JLBcambios_sueldo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>Sueldos Pendientes de Auditoria Por Autorizar: "+cantidad_sueldos_mod+"</p></b></CENTER></FONT></html>");
@@ -193,6 +201,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.btn_nomina.addActionListener(op_totales_cheque);
 //		this.btn_refrescar.addActionListener(op_refrescar);
 		this.btn_generar.addActionListener(op_generar);
+		
+		btnQuitarObservacionI.addActionListener(op_Borrar_ObservacionDH);
 
 		this.btn_lista_raya_pasadas.addActionListener(op_consulta_lista);
 		
@@ -636,6 +646,24 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	  }
 	 return registro;
 	}
+	
+	ActionListener op_Borrar_ObservacionDH = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			if(JOptionPane.showConfirmDialog(null, "Si Borran Las Observaciones No Podran Ser Restauradas.\n¿Desea Continual?", "Aviso!", JOptionPane.YES_NO_OPTION) == 0){
+				if(new ActualizarSQL().Borrar_Observacion_DH()){
+					
+					tabla_model.setRowCount(0);
+					Object[][] Tabla = new Obj_Revision_De_Lista_Raya().get_tabla_model();
+					for(Object[] fila : Tabla){
+						tabla_model.addRow(fila); 
+					}
+					
+					JOptionPane.showMessageDialog(null, "Las Observaciones Se Han Eliminado Correctamente!!!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					return;
+				}
+			}
+		}
+	};
 	
 	ActionListener op_guardar = new ActionListener() {
 		@SuppressWarnings("unchecked")

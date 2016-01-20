@@ -4235,4 +4235,37 @@ public boolean Cancelar_pendiente_Del_Usuario(int folio_pendiente){
 	return true;
 	}
 
+public boolean Borrar_Observacion_DH(){
+	String query =  "update tb_pre_listaraya set observasion_i =''";
+	Connection con = new Connexion().conexion();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+			
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Borrar_Observacion_DH \n SQLException:\n"+query+"\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Borrar_Observacion_DH \n SQLException:\n"+query+"\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Borrar_Observacion_DH \n SQLException:\n"+query+"\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
 }

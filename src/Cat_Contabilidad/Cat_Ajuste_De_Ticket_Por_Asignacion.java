@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
@@ -37,9 +38,13 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
+	DecimalFormat df = new DecimalFormat("#0.0000");
+	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+	
+	JTextField txtivaSeleccionado= new JTextField("");
 	
 	JTextField txtAsignacion = new JTextField("");
 	JTextField txtiva= new JTextField("");
@@ -107,8 +112,12 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		panel.add(new JLabel("Asignacion: ")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtAsignacion).setBounds(ancho,y,ancho*2-30,20);
 		panel.add(btnAsignacion).setBounds((ancho*3)-30,y,30,20);
-		panel.add(new JLabel("Total IVA: ")).setBounds(x+(ancho*3)+220,y,ancho,20);
-		panel.add(txtiva).setBounds(x+(ancho*3)+284,y,ancho,20);
+		
+		panel.add(new JLabel("Total IVA Seleccionado: ")).setBounds(x+(ancho*3),y,ancho+40,20);
+		panel.add(txtivaSeleccionado).setBounds(x+(ancho*3)+124,y,ancho,20);
+		
+		panel.add(new JLabel("Total IVA: ")).setBounds(x+(ancho*3)+240,y,ancho,20);
+		panel.add(txtiva).setBounds(x+(ancho*3)+300,y,ancho,20);
 		panel.add(scroll).setBounds(x,y+=25, anchop-35, altop-130);
 		panel.add(btnBuscarCambio).setBounds(x,altop-55,ancho+40,20);
 		
@@ -117,15 +126,17 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		panel.add(btnDevolverCambio).setBounds(x+545,altop-55,140,20);
 		
 		txtAsignacion.setEditable(false);
+		txtivaSeleccionado.setEditable(false);
 		txtiva.setEditable(false);
 		llamar_render(tabla);
+		
+		calcularIVA_Seleccionado(tabla);
 		
 		btnAsignacion.addActionListener(opFiltro);
 		btnQuitar.addActionListener(opEliminar_Tickets_Selecionado);
 		btnBuscarCambio.addActionListener(opCargar_Cambios_De_Tickets_de_la_Asignacion);
 		btnAsignacionDCambio.addActionListener(opFiltro_Asignaciones_Pendientes_corregir);
 		btnDevolverCambio.addActionListener(opDevolver_Cambios_De_Tickets_de_la_Asignacion);
-		
 		
 		btnBuscarCambio.setEnabled(false);
 		btnQuitar.setEnabled(false);
@@ -141,6 +152,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	
 	ActionListener opFiltro = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			txtivaSeleccionado.setText("");
 			txtAsignacion.setText("");
 			txtiva.setText("");
 			txtAsignacionCorregir.setText("");
@@ -163,6 +175,7 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	
 	ActionListener opFiltro_Asignaciones_Pendientes_corregir = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			txtivaSeleccionado.setText("");
 			txtAsignacion.setText("");
 			txtAsignacionCorregir.setText("");
 			txtiva.setText("");
@@ -180,9 +193,10 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 	
 	
 	public void llenado_de_tabla_de_tickets(){
+		txtivaSeleccionado.setText("");
 		iva=0;
 		txtiva.setText("");
-		DecimalFormat df = new DecimalFormat("#0.0000");
+//		DecimalFormat df = new DecimalFormat("#0.0000");
 		
 		String[][] lista=new BuscarTablasModel().tabla_de_ajustes_ticket(txtAsignacion.getText().toString().trim());
 		if(lista.length==0){
@@ -204,10 +218,34 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 			modelo.addRow(fila);
 		}
 		txtiva.setText(df.format(iva));
+		txtivaSeleccionado.setText(df.format(0));
 		 btnBuscarCambio.setEnabled(true);
 		 btnQuitar.setEnabled(true);
 		}
 	};
+	
+	public void calcularIVA_Seleccionado(final JTable tb){
+		tb.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {
+				
+				double ivaSeleccionado = 0;
+				if(tb.getSelectedColumn()==6){
+					for(int i = 0; i < tb.getRowCount(); i++){
+						if(Boolean.valueOf(tb.getValueAt(i, 6).toString().trim())){
+							ivaSeleccionado+=Double.valueOf(tb.getValueAt(i, 4).toString().trim());
+						}
+					}
+					txtivaSeleccionado.setText(df.format(ivaSeleccionado));
+				}
+				
+				
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {}
+		});
+	}
 	
 	
 //	TODO Funcion (llamar_render())
@@ -280,6 +318,10 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 		
 		JTextField txtAsignacionFiltro = new JTextField("");
 		
+		JTextField txtTIVA  = new JTextField("");
+		JTextField txtTIEPS = new JTextField("");
+		JTextField txtTOTAL = new JTextField("");
+		
 		  public DefaultTableModel modeloFiltro = new DefaultTableModel(null, new String[]{"Asignacion","Fecha Liquidacion","IVA", "IEPS", "Total", "Cajero"} ){
 		                  
 				@SuppressWarnings({ "rawtypes" })
@@ -329,8 +371,26 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 			panel.add(new JLabel("Establecimiento: "+establecimiento_seleccionado)).setBounds(x,y,ancho*3,20);
 			panel.add(txtAsignacionFiltro).setBounds(x,y+=25,ancho,20);
 			panel.add(scrollFiltro).setBounds(x,y+=20,825,450);
+			
+			panel.add(new JLabel("Totales: ")).setBounds(x+170,y+=450,100,20);
+			panel.add(txtTIVA).setBounds(x+240,y,100,20);
+			panel.add(txtTIEPS).setBounds(x+340,y,100,20);
+			panel.add(txtTOTAL).setBounds(x+440,y,100,20);
+			
 			cont.add(panel);
 			llamar_render(tablaFiltro);
+			
+			txtTIVA .setEditable(false);
+            txtTIEPS.setEditable(false);
+            txtTOTAL.setEditable(false);
+            
+            txtTIVA .setHorizontalAlignment(4);
+            txtTIEPS.setHorizontalAlignment(4);
+            txtTOTAL.setHorizontalAlignment(4);
+			                            
+			double iva = 0;             
+			double ieps = 0;
+			double total = 0;
 			
 			while(tablaFiltro.getRowCount()>0){
 				modeloFiltro.removeRow(0);
@@ -340,17 +400,27 @@ public class Cat_Ajuste_De_Ticket_Por_Asignacion extends JFrame{
 			for(int i=0; i<lista.length; i++){
 				fila[0] = lista[i][0]+"";
 				fila[1] = lista[i][1]+"";
+				
 				fila[2] = lista[i][2]+"";
 				fila[3] = lista[i][3]+"";
 				fila[4] = lista[i][4]+"";
+				
+				iva   += Double.valueOf(lista[i][2].toString().trim());
+				ieps  += Double.valueOf(lista[i][3].toString().trim());
+				total += Double.valueOf(lista[i][4].toString().trim());
+				
 				fila[5] = lista[i][5]+"";
 				modeloFiltro.addRow(fila);
 			}
 			
+			txtTIVA.setText(df.format(iva));
+			txtTIEPS.setText(df.format(ieps));
+			txtTOTAL.setText(df.format(total));
+			
 			txtAsignacionFiltro.addKeyListener(op_filtro_folio_corte);
 			agregar(tablaFiltro);
 			
-			this.setSize(875,565);
+			this.setSize(875,605);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 		}
