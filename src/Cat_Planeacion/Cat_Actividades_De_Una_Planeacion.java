@@ -1118,18 +1118,7 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 //					SI EL BOTON ES CLICK IZQUIERDO ENTRA
 					if (arg0.getButton() == MouseEvent.BUTTON1) {
 						llenar_arreglo();
-//						System.out.println("BOTON 1");
 					}
-					
-//					SI EL BOTON ES CLICK EN RUEDA ENTRA
-//					if (arg0.getButton() == MouseEvent.BUTTON2) {
-//						System.out.println("BOTON 2");
-//					}
-					
-//					SI EL BOTON ES CLICK DERECHO ENTRA
-//					if (arg0.getButton() == MouseEvent.BUTTON3) {
-//						System.out.println("BOTON 3");
-//					}
 					
 				}
 			});
@@ -1138,8 +1127,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 				public void keyTyped(KeyEvent e) {
 				}
 				public void keyReleased(KeyEvent e) {
-					
-					System.out.println(e.getKeyCode());
 					try {
 			            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			            	llenar_arreglo();
@@ -1220,7 +1207,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 		@SuppressWarnings("unchecked")
 		public void llenar_arreglo(){
 			int fila = tabla.getSelectedRow();
-			System.out.println(fila);
 			
 			if(tabla.getSelectedColumn()==5){
 				

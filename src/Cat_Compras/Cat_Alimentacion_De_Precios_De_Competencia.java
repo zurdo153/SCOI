@@ -521,7 +521,8 @@ public void render_proveedor(){
 								+ "      from tb_captura_de_competencia "
 								+ "          inner join productos on productos.cod_prod=tb_captura_de_competencia.cod_prod"
 								+ "          inner join tb_competencias on tb_competencias.folio_competencia = tb_captura_de_competencia.folio_competencia "
-								+ "          order by fecha desc ");
+								+ "          WHERE tb_captura_de_competencia.fecha >getdate()-30"
+								+ "         order by fecha desc ");
 						while (rs.next())
 						{  String [] fila = new String[10];
 						   fila[0] = rs.getString(1).trim();

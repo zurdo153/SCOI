@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -7923,31 +7924,6 @@ public class BuscarSQL {
 		return Matriz;
 	}
 	
-//	public boolean validar_si_el_usuario_puede_cancelar_la_actividad(int folio_actividad){
-//		String query = "declare @usuario int = "+(new Obj_Usuario().LeerSession().getFolio())+", @folio_actividad int = "+folio_actividad
-//						+ " if(select usuario from tb_actividades_plan where folio_actividad = @folio_actividad)=@usuario "
-//						+ " begin	select 'true'	end "
-//						+ " else "
-//						+ " begin	select 'false'	end";
-//		
-//		System.out.println(query);
-//		
-//		boolean modificar = false;
-//		try {				
-//			Statement s = con.conexion().createStatement();
-//			ResultSet rs = s.executeQuery(query);
-//			
-//			while(rs.next()){
-//				modificar = rs.getBoolean(1);
-//			}
-//			
-//		} catch (SQLException e1) {
-//			e1.printStackTrace();
-//		}
-//			
-//		return modificar;
-//	}
-	
 	public String[][] actividadesConEvidencia(String fecha,int folio_empleado){
 		
 		String[][] Matriz = null;
@@ -8033,6 +8009,116 @@ public class BuscarSQL {
 			}}
 		}
 		return contadorDeArchivosGenerados;
+	}
+	
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String[] Vector_De_Establecimientos_Edo_Resultados() throws SQLException{
+		Statement stmt = null;
+		
+		String query = "select replace(establecimiento,' ','_')as establecimiento from IZAGAR_establecimientos_calculo";
+		Vector miVector = new Vector();
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					miVector.add(rs.getString("establecimiento"));
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		int i=0;
+		String[] lista= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			lista[i]= miVector.get(i).toString();
+			i++;
+		}
+		return lista;
+	}	
+	
+	public int Numero_De_Establecimientos_edo_Resultados(){
+		Statement stmt = null;
+		String query = "select count(establecimiento) from IZAGAR_establecimientos_calculo";
+		int cantidad = 0;
+		
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					cantidad = rs.getInt(1);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return cantidad;
+	}
+	
+	public Object[][] Reporte_De_Estado_de_Resultados(int cantidad_de_columnas, String fecha_inicial, String fecha_final) throws SQLException{
+		Statement stmt = null;
+		String query = "exec sp_reporte_de_estado_resultados '"+fecha_inicial+"','"+fecha_final+"'" ;
+//		String query = " SELECT     TOP(20)   'xyz concepto', 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 FROM  tb_empleado" ;
+		Object[][] rp_competencia = new Object[getFilas(query)][cantidad_de_columnas];
+		DecimalFormat df= new DecimalFormat("#0.00");
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int i=0 ;double total=0;
+			while(rs.next()){
+				total=0;
+				for(int j=0; j<(cantidad_de_columnas-1); j++){
+					
+					if(j==0){
+						rp_competencia[i][j] = rs.getObject(j+1);
+					}else{
+					    rp_competencia[i][j] = df.format(rs.getDouble(j+1));
+						total+= rs.getDouble(j+1);
+						
+					}
+				}
+				rp_competencia[i][cantidad_de_columnas-1] = df.format(total);
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en el procedimiento sp_reporte_de_estado_resultados \nSQLServerException:"+e+" \n Parametros:"+query,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return rp_competencia;
+	}	
+	
+	public String  Factor(String Fecha){
+		Statement stmt = null;
+		String query = "declare  @existe varchar(100)"
+				+ " set @existe=(SELECT 'Calculo ISR Sobre Venta Factor:'+ convert(varchar(10),factor)+' Tasa:'+convert(varchar(10),tasa) from  IZAGAR_factor_y_tasa_ISR  where CONVERT(VARCHAR(2),datepart(MONTH,'"+Fecha+"'))+CONVERT(VARCHAR(4),datepart(YEAR,'"+Fecha+"'))=mes_año)"
+				+ " if @existe is null set @existe='Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y Tasa'"
+				+ " select @existe";
+		String factor = "";
+		
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					factor = rs.getString(1);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar factor para ISR \nSQLServerException:"+e+" \n Parametros:"+query,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return null;
+		}
+		return factor;
 	}
 	
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-01-16T16:44:43 -->
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-01-26T11:04:55 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Compra_De_Cascos_Por_Fechas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d6634934-4641-4a10-8da4-dc221a2bb579">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -107,13 +107,17 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					<textFieldExpression><![CDATA["Del:  "+$F{fecha_in}+"  Al:  "+$F{fecha_fin}]]></textFieldExpression>
 				</textField>
 			</frame>
+			<image>
+				<reportElement x="482" y="0" width="71" height="68" uuid="88b448b3-a471-4ba5-9728-0aa7aff234cd"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/Battery_full.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="23" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="-6" width="42" height="26" uuid="7480ab62-1bf5-4828-8bf0-30c7121bc593">
 					<property name="local_mesure_unity" value="pixel"/>
@@ -125,7 +129,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 				<text><![CDATA[Folio Compra]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="48" y="-6" width="42" height="26" uuid="479f545b-28be-4815-8613-76312e3b9ec7">
+				<reportElement x="40" y="-6" width="42" height="26" uuid="479f545b-28be-4815-8613-76312e3b9ec7">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -135,7 +139,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 				<text><![CDATA[Folio Producto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="90" y="-6" width="100" height="26" uuid="b61cb77e-8da3-4139-b31d-957739b5a711">
+				<reportElement x="83" y="-6" width="90" height="26" uuid="b61cb77e-8da3-4139-b31d-957739b5a711">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -145,17 +149,17 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 				<text><![CDATA[Descripcion Producto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="193" y="-6" width="42" height="26" uuid="f05f4e0b-1ca4-4dd0-83f6-ce99dd0b875f">
+				<reportElement x="174" y="-6" width="42" height="26" uuid="f05f4e0b-1ca4-4dd0-83f6-ce99dd0b875f">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Precio Venta]]></text>
+				<text><![CDATA[Precio Compra]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="238" y="-6" width="42" height="26" uuid="7a085e09-b8d2-44f7-b47c-1fab4269406e">
+				<reportElement x="219" y="-6" width="30" height="26" uuid="7a085e09-b8d2-44f7-b47c-1fab4269406e">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -165,7 +169,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 				<text><![CDATA[Piezas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="282" y="-6" width="42" height="26" uuid="619285e4-7f65-46a6-9b23-c9971d672dde">
+				<reportElement x="253" y="-6" width="42" height="26" uuid="619285e4-7f65-46a6-9b23-c9971d672dde">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -175,17 +179,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="326" y="-6" width="42" height="26" uuid="d5e04c7d-4fbe-4782-abcc-8f29d0ffb821">
-					<property name="local_mesure_unity" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="368" y="-6" width="86" height="26" uuid="037e4d6d-bbe9-49a6-b86b-13551f036575">
+				<reportElement x="298" y="-6" width="71" height="26" uuid="037e4d6d-bbe9-49a6-b86b-13551f036575">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -195,7 +189,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="456" y="-6" width="62" height="26" uuid="31c6ff13-e08c-44de-9657-8e47fef96e32">
+				<reportElement x="471" y="-6" width="47" height="26" uuid="31c6ff13-e08c-44de-9657-8e47fef96e32">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -207,6 +201,16 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 			<line>
 				<reportElement x="0" y="21" width="555" height="1" uuid="eb918b47-d21a-4e95-9a5e-e382ca46c752"/>
 			</line>
+			<staticText>
+				<reportElement x="380" y="-6" width="74" height="26" uuid="ff55bc01-3ebf-4849-a443-593591477219">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Beneficiario]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -219,7 +223,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement positionType="Float" x="56" y="0" width="34" height="11" forecolor="#000000" uuid="116c42b1-41d7-418b-9bf0-04dcd934905a">
+					<reportElement positionType="Float" x="46" y="0" width="34" height="11" forecolor="#000000" uuid="116c42b1-41d7-418b-9bf0-04dcd934905a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -228,7 +232,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					<textFieldExpression><![CDATA[$F{folio_producto}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="SubTitle" isPrintRepeatedValues="false" x="10" y="0" width="30" height="20" forecolor="#000000" uuid="ec410d82-0871-469e-8966-9cf14b8b78a3">
+					<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="38" height="11" forecolor="#000000" uuid="ec410d82-0871-469e-8966-9cf14b8b78a3">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
 					</reportElement>
@@ -238,7 +242,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					<textFieldExpression><![CDATA[$F{folio_compra_cascos}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="100" y="0" width="90" height="11" uuid="e4055e23-7195-4a73-8ab1-7a20d2d27fec">
+					<reportElement x="83" y="0" width="90" height="11" uuid="e4055e23-7195-4a73-8ab1-7a20d2d27fec">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -247,7 +251,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					<textFieldExpression><![CDATA[$F{descripcion_producto}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement x="193" y="0" width="42" height="11" uuid="a95dc69b-d494-4c3d-9eb6-36e0b5069975">
+					<reportElement x="174" y="0" width="42" height="11" uuid="a95dc69b-d494-4c3d-9eb6-36e0b5069975">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -257,7 +261,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					<textFieldExpression><![CDATA[$F{precio_venta}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement x="238" y="0" width="42" height="11" uuid="425ce720-bc40-4a1b-b5b9-1c5393e6c350">
+					<reportElement x="219" y="0" width="30" height="11" uuid="425ce720-bc40-4a1b-b5b9-1c5393e6c350">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Center">
@@ -266,7 +270,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					<textFieldExpression><![CDATA[$F{piezas}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement x="279" y="0" width="46" height="11" uuid="2f8cbfc1-4fa4-445f-a97f-862c7f10a983">
+					<reportElement x="250" y="0" width="46" height="11" uuid="2f8cbfc1-4fa4-445f-a97f-862c7f10a983">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Center">
@@ -274,27 +278,15 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					</textElement>
 					<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement x="55" y="10" width="182" height="10" forecolor="#999999" uuid="2ad57378-e32c-4ba0-bc8f-1308aa543c35">
+				<textField pattern="">
+					<reportElement x="371" y="0" width="85" height="11" uuid="2ad57378-e32c-4ba0-bc8f-1308aa543c35">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
-					</reportElement>
-					<textElement>
-						<font size="7" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Beneficiario: "+$F{beneficiario}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00#">
-					<reportElement x="325" y="0" width="42" height="11" uuid="b05afc50-a6d7-48e9-8c99-22176acc030c">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="local_mesure_unitwidth" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Center">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{beneficiario}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="380" y="10" width="160" height="10" forecolor="#999999" uuid="a4f3614c-810b-4eea-8fe0-e71001eda81b">
@@ -306,7 +298,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					<textFieldExpression><![CDATA["Capturo: "+$F{capturo}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="368" y="0" width="86" height="11" uuid="3d64f0d9-b392-4f3c-9fc6-0e8fa183549e">
+					<reportElement x="298" y="0" width="71" height="11" uuid="3d64f0d9-b392-4f3c-9fc6-0e8fa183549e">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right">
@@ -315,7 +307,7 @@ inner join tb_entysal on tb_entysal.folio_origen=tb_alimentacion_compra_cascos.f
 					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="471" y="0" width="62" height="11" uuid="a63f0373-698c-4643-bef3-dbd31ef4edb3">
+					<reportElement x="471" y="0" width="47" height="11" uuid="a63f0373-698c-4643-bef3-dbd31ef4edb3">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>

@@ -79,7 +79,6 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
         	 } 				
  			return false;
  		}
-		
 	};
 	
 	JTable tabla = new JTable(model);
