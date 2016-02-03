@@ -56,7 +56,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Renders.ColorCeldas;
 
 @SuppressWarnings("serial")
-public class Cat_Supervision_De_Entrada_De_Mercancia extends JFrame{
+public class Cat_Reporte_De_Entradas_De_Mercancia extends JFrame{
 	
 	Object[][] Matriz_pedidos_ctes ;
 	Container cont = getContentPane();
@@ -129,14 +129,14 @@ public class Cat_Supervision_De_Entrada_De_Mercancia extends JFrame{
 	
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Supervision_De_Entrada_De_Mercancia(){
+	public Cat_Reporte_De_Entradas_De_Mercancia(){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		
 		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setTitle("Revision De Entrada De Mercancia");
+		this.setTitle("Supervision De Entrada De Mercancia");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/lista-icono-7220-32.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Status Revision De Entrada De Mercancia"));
@@ -622,7 +622,7 @@ WindowListener op_cerrar = new WindowListener() {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Supervision_De_Entrada_De_Mercancia().setVisible(true);
+			new Cat_Reporte_De_Entradas_De_Mercancia().setVisible(true);
 		}catch(Exception e){	}
 	}
 }
