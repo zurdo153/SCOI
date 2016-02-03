@@ -4017,8 +4017,8 @@ public boolean Proveedor(Obj_Alta_Proveedores_Polizas prv){
 	return true;
 }	
 
-public boolean Modificacion_De_Corte_Para_Trabajos(String fCorte, double efectivo, double fSodas, double pines){
-	String query = "exec sp_update_alimentacion_de_cortes_desde_trabajos ?,?,?,?,?";
+public boolean Modificacion_De_Corte_Para_Trabajos(String fCorte, double efectivo, double fSodas, double pines, double retirosProgramados, double cheques, double vales, double dolares){
+	String query = "exec sp_update_alimentacion_de_cortes_desde_trabajos ?,?,?,?,?,?,?,?,?";
 
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
@@ -4032,7 +4032,13 @@ public boolean Modificacion_De_Corte_Para_Trabajos(String fCorte, double efectiv
 		pstmt.setDouble(i+=1,efectivo);
 		pstmt.setDouble(i+=1,fSodas);
 		pstmt.setDouble(i+=1,pines);
+		
 		pstmt.setInt(i+=1,	 usuario.getFolio());
+		
+		pstmt.setDouble(i+=1,retirosProgramados);
+		pstmt.setDouble(i+=1,cheques);
+		pstmt.setDouble(i+=1,vales);
+		pstmt.setDouble(i+=1,dolares);
 		
 		pstmt.executeUpdate();
 		con.commit();

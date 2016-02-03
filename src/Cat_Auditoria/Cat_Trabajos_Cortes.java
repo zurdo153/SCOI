@@ -8,6 +8,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +25,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -33,9 +37,11 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 import Conexiones_SQL.ActualizarSQL;
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.GuardarTablasModel;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
@@ -58,19 +64,21 @@ public class Cat_Trabajos_Cortes extends JFrame{
 
 	JButton btnRestaurar = new JButton("Restaurar", new ImageIcon("imagen/flecha-naranja-alerta-de-descarga-de-la-actualizacion-icono-8872-16.png"));
 	JButton btnCV = new JButton("A Caja Verde",new ImageIcon("imagen/flecha-verde-icono-8451-16.png"));
-	JButton btnGenerar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnReposicionEfec = new JButton("Reposicion De Efectivo");
 	
-	JTextField txtFiltroPorAsignacion = new Componentes().text(new JCTextField(), "      Asignación", 15, "String");
+	JButton btnGenerarUltimoTrabajo = new JButton("Reporte De Ultimo Trabajo",new ImageIcon("imagen/Report.png"));
 	
-	JTextField txtDepositos = new JTextField();
-	JTextField txtIzacel = new JTextField();
-	JTextField txtPlanes = new Componentes().text(new JTextField(), "Igresar Total De Planes", 10, "Double");
-	JTextField txtPines = new JTextField();
-	JTextField txtCajaVerde = new JTextField();
+	static JTextField txtFiltroPorAsignacion = new Componentes().text(new JCTextField(), "      Asignación", 15, "String");
 	
-	JTextField txtTotalDelCorte= new JTextField();
-	JTextField txtTotalRetiroCliente = new JTextField();
-	JTextField txtTotalRecibosDeLuz = new JTextField();
+	static JTextField txtDepositos = new JTextField();
+	static JTextField txtIzacel = new JTextField();
+	static JTextField txtEfectivoPlanes = new Componentes().text(new JTextField(), "Igresar Efectivo De Planes", 10, "Double");
+	static JTextField txtPines = new JTextField();
+	static JTextField txtCajaVerde = new JTextField();
+	
+	static JTextField txtTotalDelCorte= new JTextField();
+	static JTextField txtTotalRetiroCliente = new JTextField();
+	static JTextField txtTotalRecibosDeLuz = new JTextField();
 	
 	public static String cadenaCajaVerde(){
 		String cadena = "";
@@ -272,8 +280,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
-	int folio_trabajo_realizado=0;
-	String grupo_corte="";
+	static int folio_trabajo_realizado=0;
+	static String grupo_corte="";
 	
 	public Cat_Trabajos_Cortes(String grupo_de_concentrado){
 		
@@ -282,6 +290,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		tabla_model_concentrado.setRowCount(0);
 		
 		grupo_corte = grupo_de_concentrado;
+		txtEfectivoPlanes.setBackground(Color.lightGray);
+		txtEfectivoPlanes.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 //		if(new ActualizarSQL().actualizar_tabla_cortes_con_asignaciones()){ 
 			refresh();
@@ -330,12 +340,12 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		int x=20, y= 565,ancho=90;
 		
 		panel.add(new JLabel("DEPOSITOS: ")	 ).setBounds(x, y, ancho, 20);           panel.add(new JLabel("TOTAL DEL CORTE: ")		).setBounds(x+250, y, ancho+50, 20);       
-		panel.add(txtDepositos 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalDelCorte						).setBounds(x+ancho+320, y, ancho, 20);    
+		panel.add(txtDepositos 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalDelCorte						).setBounds(x+ancho+320, y, ancho, 20);    			panel.add(btnGenerarUltimoTrabajo).setBounds(x+ancho+700, y, ancho+90, 40);
 		panel.add(new JLabel("IZACEL: ")	 ).setBounds(x, y+=22, ancho, 20);       panel.add(new JLabel("TOTAL RETIRO CLIENTES: ")).setBounds(x+250, y, ancho+50, 20);    
 		panel.add(txtIzacel 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalRetiroCliente				).setBounds(x+ancho+320, y, ancho, 20);  
 		panel.add(new JLabel("PLAN TELCEL: ")).setBounds(x, y+=22, ancho, 20);       panel.add(new JLabel("TOTAL RECIBOS DE LUZ: ")	).setBounds(x+250, y, ancho+50, 20);    
-		panel.add(txtPlanes 				 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalRecibosDeLuz 				).setBounds(x+ancho+320, y, ancho, 20);  
-		panel.add(new JLabel("PINES: ")		 ).setBounds(x, y+=22, ancho, 20);       panel.add(btnGenerar							).setBounds(x+ancho+310, y, ancho+10, 20);        
+		panel.add(txtEfectivoPlanes			 ).setBounds(x+ancho+10, y, ancho, 20);  panel.add(txtTotalRecibosDeLuz 				).setBounds(x+ancho+320, y, ancho, 20);  
+		panel.add(new JLabel("PINES: ")		 ).setBounds(x, y+=22, ancho, 20);       panel.add(btnReposicionEfec					).setBounds(x+ancho+250, y, ancho+70, 30);        
 		panel.add(txtPines 					 ).setBounds(x+ancho+10, y, ancho, 20);             
 		panel.add(new JLabel("CAJA VERDE: ") ).setBounds(x, y+=22, ancho, 20);
 		panel.add(txtCajaVerde				 ).setBounds(x+ancho+10, y, ancho, 20);
@@ -347,13 +357,14 @@ public class Cat_Trabajos_Cortes extends JFrame{
 //		cmbEstablecimiento.addActionListener(opFiltro);
 		btnCV.addActionListener(opCajaVerde);
 		btnRestaurar.addActionListener(opRestaurar);
-		btnGenerar.addActionListener(opGenerar);
+		btnReposicionEfec.addActionListener(opGenerar);
 		
 		opQuitar(btnQuitarDesmarcados);
 		opQuitar(btnQuitarSeleccionado);
 		btnRegresarCortes.addActionListener(opRegresarCorte);
+		btnGenerarUltimoTrabajo.addActionListener(opReimprimirUltimoTrabajo);
 		
-		txtPlanes.addKeyListener(opTeclearPlanes);
+		txtEfectivoPlanes.addKeyListener(opTeclearPlanes);
 		txtFiltroPorAsignacion.addKeyListener(opFiltroDinamico);
 		
 		agregar(tabla_grupos);
@@ -367,6 +378,13 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		txtTotalDelCorte.setEditable(false);
 		txtTotalRetiroCliente.setEditable(false);
 		txtTotalRecibosDeLuz.setEditable(false);
+		
+//      asigna el foco al JTextField deseado al arrancar la ventana
+        this.addWindowListener(new WindowAdapter() {
+                public void windowOpened( WindowEvent e ){
+                	txtFiltroPorAsignacion.requestFocus();
+             }
+        });
 
 		this.setSize(1024,710);
 		this.setResizable(false);
@@ -380,7 +398,16 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				int fila = tb.getSelectedRow();
 				
 				if(e.getClickCount()==2){
-					new Cat_Modificacion_De_Corte(tb.getValueAt(fila, 2).toString().trim(),tb.getValueAt(fila, 3).toString().trim(),tb.getValueAt(fila, 4).toString().trim(),tb.getValueAt(fila, 5).toString().trim(),tb.getValueAt(fila, 10).toString().trim(),tb.getValueAt(fila, 11).toString().trim()).setVisible(true);
+					new Cat_Modificacion_De_Corte(tb.getValueAt(fila, 2).toString().trim()//folio corte
+													,tb.getValueAt(fila, 3).toString().trim()//folio asignacion
+													,tb.getValueAt(fila, 4).toString().trim()//nombre cajero
+													,tb.getValueAt(fila, 5).toString().trim() //total efectivo
+													,tb.getValueAt(fila, 6).toString().trim() //retiros programados
+													,tb.getValueAt(fila, 7).toString().trim() //cheques
+													,tb.getValueAt(fila, 8).toString().trim() //vales
+													,tb.getValueAt(fila, 9).toString().trim() //dolares
+													,tb.getValueAt(fila, 10).toString().trim()//fuente de sodas
+													,tb.getValueAt(fila, 11).toString().trim()).setVisible(true);//pin pad
 				}
 			}
 		});
@@ -588,19 +615,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
     	this.tabla_concentrado.getColumnModel().getColumn(13).setMinWidth(x);
     }
 	
-//	ActionListener opFiltro = new ActionListener(){
-//		@SuppressWarnings("unchecked")
-//		public void actionPerformed(ActionEvent arg0){
-//			if(cmbEstablecimiento.getSelectedIndex() != 0){
-//				trsfiltro.setRowFilter(RowFilter.regexFilter(cmbEstablecimiento.getSelectedItem()+"", 1));
-//			}else{
-//				trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-//			}
-//			calcular();
-//			calcular_caja_verde();
-//		}
-//	};
-	
 	ActionListener opCajaVerde = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 		
@@ -641,56 +655,58 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		}
 	};
 	
+	DecimalFormat df2 = new DecimalFormat("#0.00");
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 //			cmbEstablecimiento.setSelectedIndex(0);
 			
-			if(txtPlanes.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "El Campo Planes Se encuentra Vacio.\nIngrese Una Cantidad Para Seguir","Aviso",JOptionPane.WARNING_MESSAGE);
-				return;
-			}else{
+		if(txtEfectivoPlanes.getText().equals("")){
+			JOptionPane.showMessageDialog(null, "El Campo Planes Se encuentra Vacio.\nIngrese Una Cantidad Para Seguir","Aviso",JOptionPane.WARNING_MESSAGE);
+			return;
+		}else{
+			
+			double tFS=0;
+			double tVales=0;
+			double tDolares=0;
+			double tDiferencia=0;
+			double tCorteCV=0;
+			
+//			Vector vector_cv = new Vector();
+//			for(int i = 0; i<tabla_c_verde.getRowCount(); i++){
+//				vector_cv.add(tabla_c_verde.getValueAt(i, 8).toString().trim());
+//			}
+			
+			
+			
+			for(int i=0; i<tabla_concentrado.getRowCount(); i++){
+				
+				tVales		+=	Double.valueOf(tabla_concentrado.getValueAt(i, 4).toString().trim());
+				tDolares	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 5).toString().trim());
+				tFS			+=	Double.valueOf(tabla_concentrado.getValueAt(i, 6).toString().trim());
+				tDiferencia	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 9).toString().trim());
+				
+				
+				if(tabla_concentrado.getValueAt(i, 0).toString().trim().equals("TOTAL CAJA VERDE")){
+						tCorteCV	+=	Double.valueOf(tabla_concentrado.getValueAt(i,8).toString().trim());
+				}
+//				else{
+//						tDolares	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 5).toString().trim());
+//						tFS			+=	Double.valueOf(tabla_concentrado.getValueAt(i, 6).toString().trim());
+//						tDiferencia	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 9).toString().trim());
+//				}
 				
 			}
+//				System.out.println(tCorteCV);
+//				System.out.println(tDolares);
+//				System.out.println(tFS);
+//				System.out.println(tDiferencia);
 			
-			if(guardarTrabajo( tabla_cv(), tabla_gr())>0){
-				Cat_Reporte_De_Trabajo_De_Crotes(folio_trabajo_realizado);
-			}else{
-				JOptionPane.showMessageDialog(null, "El trabajo no pudo ser guardado","Aviso",JOptionPane.WARNING_MESSAGE);
-				return;
+//				String tFS, String tDolares, String tDiferencia, String tCorteCV/*, String[] caja_verde_totales_de_corte*/
+				new Cat_Reposicion_De_Efectivo(df2.format(tFS),df2.format(tDolares),df2.format(tDiferencia),df2.format(tCorteCV),df2.format(tVales),txtEfectivoPlanes.getText()/*, vector_cv*/).setVisible(true);
 			}
-			
-		}
-	};
+	}
+};
 
-	public Object[][] tabla_cv(){
-		Object[][] matrizCV = new Object[tabla_c_verde.getRowCount()][tabla_c_verde.getColumnCount()];
-		
-		for(int i =0; i<tabla_c_verde.getRowCount(); i++){
-			for(int j =0; j<tabla_c_verde.getColumnCount(); j++){
-				matrizCV[i][j] = tabla_c_verde.getValueAt(i, j).toString();
-			}
-		}
-		
-		return matrizCV;
-	}
-	
-	public Object[][] tabla_gr(){
-		
-		Object[][] matrizGr = new Object[tabla_grupos.getRowCount()][tabla_grupos.getColumnCount()];
-		
-		for(int i =0; i<tabla_grupos.getRowCount(); i++){
-			for(int j =0; j<tabla_grupos.getColumnCount()-1; j++){
-				matrizGr[i][j] = tabla_model_grupos.getValueAt(i, j+1).toString().trim();
-			}
-		}
-		return matrizGr;
-	}
-	
-	public int guardarTrabajo( Object[][] tb_CV, Object[][] tb_Gr){
-		folio_trabajo_realizado=new GuardarTablasModel().Guarda_tabla_trabajos(tb_CV, tb_Gr, Double.valueOf(txtTotalDelCorte.getText()), Double.valueOf(txtTotalRetiroCliente.getText()), Double.valueOf(txtTotalRecibosDeLuz.getText()), Double.valueOf(txtIzacel.getText()), Double.valueOf(txtPlanes.getText()), Double.valueOf(txtPines.getText()), Double.valueOf(txtDepositos.getText()), Double.valueOf(txtCajaVerde.getText()),grupo_corte); 
-		return folio_trabajo_realizado;
-	}
-	
 	String quitarCortes="";
 	
 	public void opQuitar(final JButton btn){
@@ -711,35 +727,31 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			}
 		});
 		
-//		tb.addMouseListener(new MouseAdapter(){
-//			public void mouseClicked(MouseEvent e){
-//				
-//				int fila = tb.getSelectedRow();
-//				
-//				if(e.getClickCount()==2){
-//					new Cat_Modificacion_De_Corte(tb.getValueAt(fila, 2).toString().trim(),tb.getValueAt(fila, 3).toString().trim(),tb.getValueAt(fila, 4).toString().trim(),tb.getValueAt(fila, 5).toString().trim(),tb.getValueAt(fila, 10).toString().trim(),tb.getValueAt(fila, 11).toString().trim()).setVisible(true);
-//				}
-//			}
-//		});
-		
 	}
-//	ActionListener opQuitarCorte = new ActionListener() {
-//		public void actionPerformed(ActionEvent arg0) {
-//				
-//			quitarCortes=quitarCortes.equals("")?cadenaCortesQuitados():quitarCortes+"'',''"+cadenaCortesQuitados();
-//			refresh();
-//			
-//		}
-//	};
+	
+	ActionListener opReimprimirUltimoTrabajo = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			
+			try {
+				Cat_Reporte_De_Trabajo_De_Crotes(new BuscarSQL().folio_de_ultimo_trabajo_de_corte(grupo_corte));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	};
+
 	ActionListener opRegresarCorte = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			
-			quitarCortes="";
 			
-			txtFiltroPorAsignacion.setText("");
-			new Obj_Filtro_Dinamico(tabla_grupos,"F.Asignacion", txtFiltroPorAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+			new Cat_Cortes_Quitados().setVisible(true);
 			
-			refresh();
+//			quitarCortes="";
+//			
+//			txtFiltroPorAsignacion.setText("");
+//			new Obj_Filtro_Dinamico(tabla_grupos,"F.Asignacion", txtFiltroPorAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+//			
+//			refresh();
 		}
 	};
 	
@@ -1021,18 +1033,25 @@ public class Cat_Trabajos_Cortes extends JFrame{
 //				total_apart_cv 	= Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 13).toString().trim());
 				
 				
-				txtCajaVerde.setText(df.format(	total_corte_cv
-												- total_f_sodas
-//												- total_dolar
-												+ (total_dif) ));
+//				txtCajaVerde.setText(df.format(	total_corte_cv
+//												- total_f_sodas
+////												- total_dolar
+//												+ (total_dif) ));
 				
-			}else{
-//				txtTotalDelCorte.setText(		df.format(t_corte));
-//				txtTotalRetiroCliente.setText(	df.format(r_clt));
-				txtCajaVerde.setText("0.00");
 			}
+			txtCajaVerde.setText(df.format(	total_corte_cv
+					- total_f_sodas
+					+ (total_dif) ));
+			
+			
+			
+//			else{
+////				txtTotalDelCorte.setText(		df.format(t_corte));
+////				txtTotalRetiroCliente.setText(	df.format(r_clt));
+//				txtCajaVerde.setText("0.00");
+//			}
 					
-			txtTotalDelCorte.setText( 	df.format(		t_corte_totales + (	Double.valueOf(	txtPlanes.getText().equals("")?"0":txtPlanes.getText()	)	)	) 	);
+			txtTotalDelCorte.setText( 	df.format(		t_corte_totales + (	Double.valueOf(	txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText()	)	)	) 	);
 			total_de_corte_real = (	Double.valueOf(	txtTotalDelCorte.getText().equals("")?"0":txtTotalDelCorte.getText()	)	);
 			
 			txtTotalRetiroCliente.setText(	df.format(r_clt));
@@ -1051,7 +1070,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 													 Double.valueOf(txtTotalRetiroCliente.getText())+
 													 Double.valueOf(txtTotalRecibosDeLuz.getText())-
 													 Double.valueOf(txtIzacel.getText())-
-													 Double.valueOf(txtPlanes.getText().equals("")?"0":txtPlanes.getText())-
+													 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
 													 Double.valueOf(txtPines.getText())
 													)
 											);
@@ -1062,12 +1081,12 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		public void keyTyped(KeyEvent e) {	}
 		public void keyReleased(KeyEvent e) {
 			
-					txtTotalDelCorte.setText(	 	df.format(	total_de_corte_real + (	Double.valueOf(	txtPlanes.getText().equals("")?"0":txtPlanes.getText()	)	)	) );
+					txtTotalDelCorte.setText(	 	df.format(	total_de_corte_real + (	Double.valueOf(	txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText()	)	)	) );
 					txtDepositos.setText(	df.format (	Double.valueOf(txtTotalDelCorte.getText().equals("")?"0":txtTotalDelCorte.getText())+
 														 Double.valueOf(txtTotalRetiroCliente.getText().equals("")?"0":txtTotalRetiroCliente.getText())+
 														 Double.valueOf(txtTotalRecibosDeLuz.getText().equals("")?"0":txtTotalRecibosDeLuz.getText())-
 														 Double.valueOf(txtIzacel.getText().equals("")?"0":txtIzacel.getText())-
-														 Double.valueOf(txtPlanes.getText().equals("")?"0":txtPlanes.getText())-
+														 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
 														 Double.valueOf(txtPines.getText().equals("")?"0":txtPines.getText())
 												   	  )	
 										);
@@ -1077,7 +1096,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	
 
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public void Cat_Reporte_De_Trabajo_De_Crotes(int folio_trabajo_de_corte) {
+		public static void Cat_Reporte_De_Trabajo_De_Crotes(int folio_trabajo_de_corte) {
 			
 			try {
 				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_Para_Trabajo_De_Cortes.jrxml");
@@ -1096,7 +1115,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Trabajos_Cortes("CONCENTRADO 3").setVisible(true);
+			new Cat_Trabajos_Cortes("CONCENTRADO 4").setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}
@@ -1107,17 +1126,35 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		Container contModif = getContentPane();
 		JLayeredPane panelModif = new JLayeredPane();
 		
-		JTextField txtCajero = new Componentes().text(new JTextField(), "Nombre Del Cajero(a)", 160, "String");
-		JTextField txtFolioCorte = new Componentes().text(new JTextField(), "Folio Del Corte", 60, "String");
-		JTextField txtAsignacion = new Componentes().text(new JTextField(), "Folio De Asignacion", 60, "String");
 		
-		JTextField txtTotalDeEfectivo = new Componentes().text(new JTextField(), "Total De Efectivo", 160, "Double");
-		JTextField txtTotalPines = new Componentes().text(new JTextField(), "Total De Pines", 160, "Double");
-		JTextField txtTotalFuenteDeSodas = new Componentes().text(new JTextField(), "Total De Fuente De Sodas", 160, "Double");
+		JTextField txtFolioCorte 				= new Componentes().text(new JTextField(), "Folio Del Corte", 60, "String");
+		JTextField txtAsignacion 				= new Componentes().text(new JTextField(), "Folio De Asignacion", 60, "String");
+		JTextField txtCajero 					= new Componentes().text(new JTextField(), "Nombre Del Cajero(a)", 160, "String");
+		
+		JTextField txtTotalDeEfectivo 			= new Componentes().text(new JTextField(), "Total De Efectivo", 160, "Double");
+		JTextField txtTotalRetirosProgramados 	= new Componentes().text(new JTextField(), "Total De Retiros Programados", 160, "Double");
+		JTextField txtTotalCheques 				= new Componentes().text(new JTextField(), "Total De Cheques", 160, "Double");
+		JTextField txtTotalVales 				= new Componentes().text(new JTextField(), "Total De Vales", 160, "Double");
+		JTextField txtTotalDolares 				= new Componentes().text(new JTextField(), "Total De Dolares", 160, "Double");
+		JTextField txtTotalFuenteDeSodas 		= new Componentes().text(new JTextField(), "Total De Fuente De Sodas", 160, "Double");
+		JTextField txtTotalPines 				= new Componentes().text(new JTextField(), "Total De Pines", 160, "Double");
 		
 		JButton btnGuardarModificacion = new JButton("Guardar");
 		
-		public Cat_Modificacion_De_Corte(String fCorte, String fAsignacion, String cajero, String efectivo, String fSodas, String pines){
+//		tb.getValueAt(fila, 2).toString().trim()//folio corte
+//		,tb.getValueAt(fila, 3).toString().trim()//folio asignacion
+//		,tb.getValueAt(fila, 4).toString().trim()//nombre cajero
+		
+//		,tb.getValueAt(fila, 5).toString().trim() //total efectivo
+		
+//		,tb.getValueAt(fila, 5).toString().trim() //retiros programados
+//		,tb.getValueAt(fila, 5).toString().trim() //cheques
+//		,tb.getValueAt(fila, 5).toString().trim() //vales
+//		,tb.getValueAt(fila, 5).toString().trim() //dolares
+//		,tb.getValueAt(fila, 10).toString().trim()//fuente de sodas
+//		,tb.getValueAt(fila, 11).toString().trim()
+		
+		public Cat_Modificacion_De_Corte(String fCorte, String fAsignacion, String cajero, String efectivo, String retiros_programados, String cheques, String vales, String dolares, String fSodas, String pines){
 			this.setTitle("Modificacion De Trabajo De Corte");
 			
 			int x=15,y=20,ancho=90;
@@ -1132,13 +1169,25 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			panelModif.add(txtAsignacion).setBounds(x+ancho+190,y,ancho,20);
 			
 			panelModif.add(new JLabel("Total De Efectivo:")).setBounds(x,y+=25,ancho,20);
-			panelModif.add(txtTotalDeEfectivo).setBounds(x+ancho+30,y,ancho,20);
+			panelModif.add(txtTotalDeEfectivo).setBounds(x+ancho+45,y,ancho,20);
 			
-			panelModif.add(new JLabel("Total De Pines:")).setBounds(x,y+=25,ancho,20);
-			panelModif.add(txtTotalPines).setBounds(x+ancho+30,y,ancho,20);
+			panelModif.add(new JLabel("Total De Retiros Programados:")).setBounds(x,y+=25,ancho+65,20);
+			panelModif.add(txtTotalRetirosProgramados).setBounds(x+ancho+65,y,ancho-20,20);
+			
+			panelModif.add(new JLabel("Total De Cheques:")).setBounds(x,y+=25,ancho,20);
+			panelModif.add(txtTotalCheques).setBounds(x+ancho+45,y,ancho,20);
+			
+			panelModif.add(new JLabel("Total De Vales:")).setBounds(x,y+=25,ancho,20);
+			panelModif.add(txtTotalVales).setBounds(x+ancho+45,y,ancho,20);
+			
+			panelModif.add(new JLabel("Total De Dolares:")).setBounds(x,y+=25,ancho,20);
+			panelModif.add(txtTotalDolares).setBounds(x+ancho+45,y,ancho,20);
 			
 			panelModif.add(new JLabel("Total De Fuente De Sodas:")).setBounds(x,y+=25,ancho+50,20);
-			panelModif.add(txtTotalFuenteDeSodas).setBounds(x+ancho+50,y,ancho-20,20);
+			panelModif.add(txtTotalFuenteDeSodas).setBounds(x+ancho+65,y,ancho-20,20);
+			
+			panelModif.add(new JLabel("Total De Pines:")).setBounds(x,y+=25,ancho,20);
+			panelModif.add(txtTotalPines).setBounds(x+ancho+45,y,ancho,20);
 			
 			panelModif.add(btnGuardarModificacion).setBounds(x+ancho+180,y,ancho+10,20);
 			
@@ -1148,17 +1197,31 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			txtFolioCorte.setEditable(false);
 			txtAsignacion.setEditable(false);
 			
-			txtCajero.setText(cajero);
+//			txtTotalDeEfectivo.setEditable(false);
+//			txtTotalRetirosProgramados.setEditable(false);	
+//			txtTotalCheques.setEditable(false);		
+//			txtTotalVales.setEditable(false);
+//			txtTotalDolares.setEditable(false);
+//			txtTotalFuenteDeSodas.setEditable(false);
+//			txtTotalPines.setEditable(false);
+			
+			
 			txtFolioCorte.setText(fCorte);
 			txtAsignacion.setText(fAsignacion);
-			                        
+			txtCajero.setText(cajero);
+			
 			txtTotalDeEfectivo.setText(efectivo);
-			txtTotalPines.setText(pines);
-			txtTotalFuenteDeSodas.setText(fSodas);
+			txtTotalRetirosProgramados.setText(retiros_programados); 	
+			txtTotalCheques.setText(cheques); 				
+			txtTotalVales.setText(vales); 				
+			txtTotalDolares.setText(dolares);	
+			txtTotalFuenteDeSodas.setText(fSodas);	
+			txtTotalPines.setText(pines); 				
+			
 			
 			btnGuardarModificacion.addActionListener(opGuardarModif);
 			
-			this.setSize(420, 200);
+			this.setSize(420, 300);
 			this.setResizable(true);
 			this.setLocationRelativeTo(null);
 		}
@@ -1167,7 +1230,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				
 				if(validaCampos().equals("")){
-						if(new ActualizarSQL().Modificacion_De_Corte_Para_Trabajos(txtFolioCorte.getText().trim(), Double.valueOf(txtTotalDeEfectivo.getText()), Double.valueOf(txtTotalFuenteDeSodas.getText()), Double.valueOf(txtTotalPines.getText())) ){
+						if(new ActualizarSQL().Modificacion_De_Corte_Para_Trabajos(txtFolioCorte.getText().trim(), Double.valueOf(txtTotalDeEfectivo.getText()), Double.valueOf(txtTotalFuenteDeSodas.getText()), Double.valueOf(txtTotalPines.getText()), Double.valueOf(txtTotalRetirosProgramados.getText()), Double.valueOf(txtTotalCheques.getText()), Double.valueOf(txtTotalVales.getText()), Double.valueOf(txtTotalDolares.getText()) ) ){
 							refresh();
 							dispose();
 							JOptionPane.showMessageDialog(null, "El Corte Se Modifico Correctamente"+validaCampos(),"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
@@ -1188,11 +1251,573 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			String error = "";
 			
 			if(txtTotalDeEfectivo.getText().equals("")) error+="Total De Efectivo\n";
-			if(txtTotalPines.getText().equals("")) error+="Total De Pines\n";
+			if(txtTotalRetirosProgramados.getText().equals("")) error+="Total De Retiros Programados\n";
+			if(txtTotalCheques.getText().equals("")) error+="Total De Cheques\n";
+			if(txtTotalVales.getText().equals("")) error+="Total De Vales\n";
+			if(txtTotalDolares.getText().equals("")) error+="Total De Dolares\n";
 			if(txtTotalFuenteDeSodas.getText().equals("")) error+="Total De Fuentes De Sodas\n";
+			if(txtTotalPines.getText().equals("")) error+="Total De Pines\n";
 			
 			return error;
 		}
 		
+	}
+	
+	public static class Cat_Reposicion_De_Efectivo extends JDialog{
+		
+		Container contRep = getContentPane();
+		JLayeredPane panelRep = new JLayeredPane();
+		
+		   public static DefaultTableModel modelo_caja_verde = new DefaultTableModel(null, new String[]{"", "Caja Verde"} ){
+               
+				@SuppressWarnings({ "rawtypes" })
+				Class[] types = new Class[]{
+		                   java.lang.Object.class,
+		                   java.lang.Object.class
+		                    
+		    };
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				public Class getColumnClass(int columnIndex) {
+		                return types[columnIndex];
+		        }
+		    public boolean isCellEditable(int fila, int columna){
+		                switch(columna){
+//		                        case 0  : if(tabla_model_grupos.getValueAt(fila, 1).toString().trim().equals("IZACEL") || Double.valueOf(tabla_model_grupos.getValueAt(fila, 11).toString()) > 0){
+//		                        				return false; 
+//					                        }else{
+//					                        	return true; 
+//					                        }      
+		                		case 0	: return false;
+		                        case 1 : return false; 
+		                }
+		                 return false;
+		         }
+		    };
+			
+		    static JTable tabla_caja_verde = new JTable(modelo_caja_verde);
+			JScrollPane scroll_caja_verde = new JScrollPane(tabla_caja_verde,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		JTextField txtConcentrado = new Componentes().text(new JTextField(), "No. De Concentrado.", 80, "String");
+		JTextField txtElaboro = new Componentes().text(new JTextField(), "Elaboro Trabajo.", 200, "String");
+		JTextField txtReviso = new Componentes().text(new JTextField(), "Reviso Trabajo.", 200, "String");
+		
+		JTextArea txaComentario = new Componentes().textArea(new JTextArea(), "Comnetarios", 420);
+		
+		JTextField txtGastos = new Componentes().text(new JTextField(), "Gastos", 20, "Double");
+		JTextField txtDolares = new Componentes().text(new JTextField(), "Dolares", 20, "Double");
+		JTextField txtVales = new Componentes().text(new JTextField(), "Vales", 20, "Double");
+		JTextField txtDiferenciaDeCortes = new Componentes().text(new JTextField(), "Diferencia De Cortes", 20, "Double");
+		
+		JTextField txtOtrosFaltantes = new Componentes().text(new JTextField(), "Otros Faltantes", 20, "Double");
+		JTextField txtOtrosSobrentes = new Componentes().text(new JTextField(), "Otros Sobrantes", 20, "Double");
+		JTextField txtCajaVerdeRepEfect = new Componentes().text(new JTextField(), "Caja Verde", 160, "Double");
+		
+		JTextField txtTotal = new Componentes().text(new JTextField(), "Total", 20, "Double");
+		JTextField txtSobrantesFinanazas = new Componentes().text(new JTextField(), "Sobrantes Finanazas", 20, "Double");
+		JTextField txtTotalFinal = new Componentes().text(new JTextField(), "Total Final", 20, "Double");
+		
+		JTextField txtDeposito2 = new Componentes().text(new JTextField(), "Deposito", 20, "Double");
+		JTextField txtBancoInterno = new Componentes().text(new JTextField(), "Banco Interno", 20, "Double");
+		
+		static JTextField txtTotalPlanesRep = new Componentes().text(new JTextField(), "Ingrese El Total De Planes Que Debe tener", 10, "Double");
+		static JTextField txtEfectivoPlanesRep = new Componentes().text(new JTextField(), "Efectivo De Planes Con Lo Que Se Cuenta", 10, "Double");
+		static JTextField txtDiferenciaPlanesRep = new Componentes().text(new JTextField(), "Diferencia De Planes", 10, "Double");
+		
+		JButton btnGuardarReposicionEfectivo = new JButton("Guardar");
+		
+		public Cat_Reposicion_De_Efectivo(String tFS, String tDolares, String tDiferencia, String tCorteCV, String tVales, String efectivoPlanTelcel/*, Vector vector_cVerde, String[] caja_verde_totales_de_corte*/){
+			this.setTitle("Reposicion De Efectivo");
+			
+			txtOtrosFaltantes.setBackground(Color.lightGray);
+			txtOtrosSobrentes.setBackground(Color.lightGray);
+			txtSobrantesFinanazas.setBackground(Color.lightGray);
+			txtDeposito2.setBackground(Color.lightGray);
+			txtTotalPlanesRep.setBackground(Color.lightGray);
+			
+			txtOtrosFaltantes.setBorder(BorderFactory.createLineBorder(Color.black));
+			txtOtrosSobrentes.setBorder(BorderFactory.createLineBorder(Color.black));
+			txtSobrantesFinanazas.setBorder(BorderFactory.createLineBorder(Color.black));
+			txtDeposito2.setBorder(BorderFactory.createLineBorder(Color.black));
+			txtTotalPlanesRep.setBorder(BorderFactory.createLineBorder(Color.black));
+			txaComentario.setBorder(BorderFactory.createLineBorder(Color.black));
+			
+			
+			int x=15,y=20,ancho=110;
+			
+			panelRep.add(new JLabel("Concentrado:")).setBounds(x,y,ancho,20);
+			panelRep.add(txtConcentrado).setBounds(x+ancho-20,y,ancho*3+40,20);
+			
+			panelRep.add(new JLabel("Elaboro:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(txtElaboro).setBounds(x+ancho-20,y,ancho*3+40,20);
+			
+			panelRep.add(new JLabel("Gastos:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(txtGastos).setBounds(x+ancho+10,y,ancho,20);								panelRep.add(scroll_caja_verde).setBounds(x+ancho+140,y,ancho+90,97);
+			
+			panelRep.add(new JLabel("Dolares:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(txtDolares).setBounds(x+ancho+10,y,ancho,20);
+			panelRep.add(new JLabel("Vales:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(txtVales).setBounds(x+ancho+10,y,ancho,20);
+			
+			panelRep.add(new JLabel("Diferencia De Cortes:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(txtDiferenciaDeCortes).setBounds(x+ancho+10,y,ancho,20);
+			
+			panelRep.add(new JLabel("Otros Faltantes:")).setBounds(x,y+=25,ancho+50,20);			panelRep.add(new JLabel("Planes Telcel (Fisico):")).setBounds(x+ancho+140,y,ancho+90,20);
+			panelRep.add(txtOtrosFaltantes).setBounds(x+ancho+10,y,ancho,20);						panelRep.add(txtEfectivoPlanesRep).setBounds(x+ancho+265,y,70,20);
+			
+//			---------------------------------------------------------------------------------------------------------------
+			panelRep.add(new JLabel("Otros Sobrantes:")).setBounds(x,y+=25,ancho,20);               panelRep.add(new JLabel("Planes Telcel (Sistema):")).setBounds(x+ancho+140,y,ancho+90,20); 
+			panelRep.add(txtOtrosSobrentes).setBounds(x+ancho+10,y,ancho,20);                       panelRep.add(txtTotalPlanesRep).setBounds(x+ancho+265,y,70,20);                              
+			
+			panelRep.add(new JLabel("Caja Verde:")).setBounds(x,y+=25,ancho,20);					panelRep.add(new JLabel("Planes Telcel (Diferencia):")).setBounds(x+ancho+140,y,ancho+90,20);
+			panelRep.add(txtCajaVerdeRepEfect).setBounds(x+ancho+10,y,ancho,20);					panelRep.add(txtDiferenciaPlanesRep).setBounds(x+ancho+265,y,70,20);                         
+			
+			panelRep.add(new JLabel("Total:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(txtTotal).setBounds(x+ancho+10,y,ancho,20);								panelRep.add(new JLabel("Comentarios:")).setBounds(x+ancho+140,y,ancho+90,20);
+			
+			panelRep.add(new JLabel("Sobrantes Finanazas:")).setBounds(x,y+=25,ancho+50,20);				
+			panelRep.add(txtSobrantesFinanazas).setBounds(x+ancho+10,y,ancho,20);					panelRep.add(txaComentario).setBounds(x+ancho+140,y,ancho+90,95);
+			
+			
+			panelRep.add(new JLabel("Total Final:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(txtTotalFinal).setBounds(x+ancho+10,y,ancho,20);
+			
+			panelRep.add(new JLabel("Deposito:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(txtDeposito2).setBounds(x+ancho+10,y,ancho,20);
+			
+			panelRep.add(new JLabel("Banco Interno:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(txtBancoInterno).setBounds(x+ancho+10,y,ancho,20);					
+			
+																									panelRep.add(btnGuardarReposicionEfectivo).setBounds(x+ancho*3+30,y+=25,90,20);
+			
+//			panelRep.add(new JLabel(":")).setBounds(x,y+=25,ancho+50,20);
+//			panelRep.add(txtSobrantesJuan).setBounds(x+ancho+50,y,ancho-20,20);
+			
+			
+			contRep.add(panelRep);
+			
+			txtConcentrado.setEditable(false);
+			txtElaboro.setEditable(false);
+			txtGastos.setEditable(false);
+			txtDolares.setEditable(false);
+			txtVales.setEditable(false);
+			txtDiferenciaDeCortes.setEditable(false);
+			txtCajaVerdeRepEfect.setEditable(false);
+			txtTotal.setEditable(false);
+			txtTotalFinal.setEditable(false);
+			txtBancoInterno.setEditable(false);
+			
+			txtEfectivoPlanesRep.setEditable(false);
+			txtDiferenciaPlanesRep.setEditable(false);
+			
+//			txtOtrosFaltantes.setEditable(true);
+//			txtOtrosSobrentes.setEditable(true);
+//			txtSobrantesJuan.setEditable(true);
+//			txtDeposito2.setEditable(true);
+			
+			txtConcentrado.setText(grupo_corte);
+			txtElaboro.setText(new Obj_Usuario().LeerSession().getNombre_completo());
+			
+			txtGastos.setText(tFS);
+			txtVales.setText(tVales);
+			txtDolares.setText(tDolares);
+			txtDiferenciaDeCortes.setText(tDiferencia);
+			txtCajaVerdeRepEfect.setText(tCorteCV);
+			
+			txtEfectivoPlanesRep.setText(efectivoPlanTelcel);
+			
+			calcularReposicionDeEfectivo();
+			
+			txtDiferenciaPlanesRep.setText(Double.valueOf(txtEfectivoPlanes.getText().toString().trim().equals("")?"0":txtEfectivoPlanes.getText().toString().trim())
+					-(Double.valueOf(txtTotalPlanesRep.getText().toString().trim().equals("")?"0":txtTotalPlanesRep.getText().toString().trim()))+"");
+//			txtOtrosFaltantes.addKeyListener(opReposicionEfectivo);
+//			txtOtrosSobrentes.addKeyListener(opReposicionEfectivo);
+//			txtSobrantesJuan.addKeyListener(opReposicionEfectivo);
+//			txtDeposito2.addKeyListener(opReposicionEfectivo);
+			
+			reposicionEfectivo(txtOtrosFaltantes,"otroFaltante");
+			reposicionEfectivo(txtOtrosSobrentes,"otroSobrante");
+			reposicionEfectivo(txtSobrantesFinanazas,"sobranteFinanzas");
+			reposicionEfectivo(txtDeposito2,"deposito");
+			
+			txtTotalPlanesRep.addKeyListener(opDiferenciaPlanesTelcel);
+			
+			
+			btnGuardarReposicionEfectivo.addActionListener(opGuardarRep);
+			
+//          asigna el foco al JTextField deseado al arrancar la ventana
+            this.addWindowListener(new WindowAdapter() {
+                    public void windowOpened( WindowEvent e ){
+                    	txtOtrosFaltantes.requestFocus();
+                 }
+            });
+			
+			this.setSize(500, 470);
+			this.setResizable(true);
+			this.setLocationRelativeTo(null);
+		}
+		
+		KeyListener opDiferenciaPlanesTelcel = new KeyListener() {
+			public void keyTyped(KeyEvent e) {	}
+			@SuppressWarnings("static-access")
+			public void keyReleased(KeyEvent e) {
+				
+				if(e.getKeyCode() == e.VK_ENTER){
+					
+					txtOtrosFaltantes.requestFocus();
+					
+				}else{
+					txtDiferenciaPlanesRep.setText(Double.valueOf(txtEfectivoPlanes.getText().toString().trim().equals("")?"0":txtEfectivoPlanes.getText().toString().trim())
+													-(Double.valueOf(txtTotalPlanesRep.getText().toString().trim().equals("")?"0":txtTotalPlanesRep.getText().toString().trim()))+""
+							);
+				}
+				
+			}
+			public void keyPressed(KeyEvent e){}
+		};
+		
+		
+		public void reposicionEfectivo(final JTextField txt, final String referencia){
+			txt.addKeyListener(new KeyListener() {
+				public void keyTyped(KeyEvent e) {	}
+				@SuppressWarnings("static-access")
+				public void keyReleased(KeyEvent e) {
+					
+					if(e.getKeyCode() == e.VK_ENTER){
+						
+						
+						switch(referencia){
+							case "otroFaltante"		: txtOtrosSobrentes.requestFocus(); break;
+							case "otroSobrante"		: txtSobrantesFinanazas.requestFocus(); break;
+							case "sobranteFinanzas"	: txtDeposito2.requestFocus(); break;
+							case "deposito"			: txtTotalPlanesRep.requestFocus(); break;
+						}
+						
+					}else{
+						calcularReposicionDeEfectivo();
+					}
+				}
+				public void keyPressed(KeyEvent e){}
+			});
+		}
+//		KeyListener opReposicionEfectivo = new KeyListener() {
+//			public void keyTyped(KeyEvent e) {	}
+//			@SuppressWarnings("static-access")
+//			public void keyReleased(KeyEvent e) {
+//				
+//				if(e.getKeyCode() == e.VK_ENTER){
+//					System.out.println(txt);
+//				}
+//				
+//				
+//				
+//				calcularReposicionDeEfectivo();
+//			}
+//			public void keyPressed(KeyEvent e){}
+//		};
+		
+		public void calcularReposicionDeEfectivo(){
+			
+			txtTotal.setText((Double.valueOf(txtCajaVerdeRepEfect.getText().toString().trim())
+							-Double.valueOf(txtGastos.getText().toString().trim())
+							-Double.valueOf(txtVales.getText().toString().trim())
+							-Double.valueOf(txtDolares.getText().toString().trim())
+							+Double.valueOf(txtDiferenciaDeCortes.getText().toString().trim())
+							-Double.valueOf(txtOtrosFaltantes.getText().toString().trim().equals("")?"0":txtOtrosFaltantes.getText().toString().trim())
+							+Double.valueOf(txtOtrosSobrentes.getText().toString().trim().equals("")?"0":txtOtrosSobrentes.getText().toString().trim()))+"");
+			
+			
+			txtTotalFinal.setText((Double.valueOf(txtTotal.getText().toString().trim())
+									+Double.valueOf(txtSobrantesFinanazas.getText().toString().trim().equals("")?"0":txtSobrantesFinanazas.getText().toString().trim()))+"");
+			
+			
+			txtBancoInterno.setText((Double.valueOf(txtTotalFinal.getText().toString().trim())
+											-Double.valueOf(txtDeposito2.getText().toString().trim().equals("")?"0":txtDeposito2.getText().toString().trim()))+"");
+		}
+		
+		
+		ActionListener opGuardarRep = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				double gastos 				=	Double.valueOf(txtGastos.getText().toString().trim().equals("")?"0":txtGastos.getText().toString().trim());
+				double dolares 				=	Double.valueOf(txtDolares.getText().toString().trim().equals("")?"0":txtDolares.getText().toString().trim());
+				double valers 				=	Double.valueOf(txtVales.getText().toString().trim().equals("")?"0":txtVales.getText().toString().trim());
+				double diferencia_de_cortes =	Double.valueOf(txtDiferenciaDeCortes.getText().toString().trim().equals("")?"0":txtDiferenciaDeCortes.getText().toString().trim());
+				double otros_faltantes 		=	Double.valueOf(txtOtrosFaltantes.getText().toString().trim().equals("")?"0":txtOtrosFaltantes.getText().toString().trim());
+				double otros_sobrantes 		=	Double.valueOf(txtOtrosSobrentes.getText().toString().trim().equals("")?"0":txtOtrosSobrentes.getText().toString().trim());
+				double caja_verde 			=	Double.valueOf(txtCajaVerdeRepEfect.getText().toString().trim().equals("")?"0":txtCajaVerdeRepEfect.getText().toString().trim());
+				double total 				=	Double.valueOf(txtTotal.getText().toString().trim().equals("")?"0":txtTotal.getText().toString().trim());
+				double sobrante_juan 		=	Double.valueOf(txtSobrantesFinanazas.getText().toString().trim().equals("")?"0":txtSobrantesFinanazas.getText().toString().trim());
+				double total_final 			=	Double.valueOf(txtTotalFinal.getText().toString().trim().equals("")?"0":txtTotalFinal.getText().toString().trim());
+				double deposito2 			=	Double.valueOf(txtDeposito2.getText().toString().trim().equals("")?"0":txtDeposito2.getText().toString().trim());
+				double banco_interno 		=	Double.valueOf(txtBancoInterno.getText().toString().trim().equals("")?"0":txtBancoInterno.getText().toString().trim());
+				
+				if(validaCampos().equals("")){
+					
+						if(guardarTrabajo( tabla_cv(), tabla_gr() ,gastos ,dolares ,valers ,diferencia_de_cortes ,otros_faltantes ,otros_sobrantes ,caja_verde ,total ,sobrante_juan ,total_final ,deposito2 ,banco_interno ,Double.valueOf(txtTotalPlanesRep.getText()) ,Double.valueOf(txtEfectivoPlanesRep.getText()), Double.valueOf(txtDiferenciaPlanesRep.getText())) > 0 ){
+							Cat_Reporte_De_Trabajo_De_Crotes(folio_trabajo_realizado);
+						}else{
+							JOptionPane.showMessageDialog(null, "El trabajo no pudo ser guardado","Aviso",JOptionPane.WARNING_MESSAGE);
+							return;
+						}
+						
+				}else{
+					JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+validaCampos()+"Si No Cuenta Con Faltantes O Sobrantes Ingreselos En Cero (0)","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+    				return;
+				}
+				
+			}
+		};
+		
+		public Object[][] tabla_cv(){
+			Object[][] matrizCV = new Object[tabla_c_verde.getRowCount()][tabla_c_verde.getColumnCount()];
+			
+			for(int i =0; i<tabla_c_verde.getRowCount(); i++){
+				for(int j =0; j<tabla_c_verde.getColumnCount(); j++){
+					matrizCV[i][j] = tabla_c_verde.getValueAt(i, j).toString();
+				}
+			}
+			
+			return matrizCV;
+		}
+		
+		public Object[][] tabla_gr(){
+			
+			Object[][] matrizGr = new Object[tabla_grupos.getRowCount()][tabla_grupos.getColumnCount()];
+			
+			for(int i =0; i<tabla_grupos.getRowCount(); i++){
+				for(int j =0; j<tabla_grupos.getColumnCount()-1; j++){
+					matrizGr[i][j] = tabla_model_grupos.getValueAt(i, j+1).toString().trim();
+				}
+			}
+			return matrizGr;
+		}
+		
+		public int guardarTrabajo( Object[][] tb_CV, Object[][] tb_Gr ,double gastos ,double dolares ,double valers ,double diferencia_de_cortes ,double otros_faltantes ,double otros_sobrantes ,double caja_verde ,double total ,double sobrante_juan ,double total_final ,double deposito2 ,double banco_interno ,double totalPlanesRep,double efectivoPlanesRep, double diferencia_planesRep){
+			folio_trabajo_realizado=new GuardarTablasModel().Guarda_tabla_trabajos(tb_CV, tb_Gr, Double.valueOf(txtTotalDelCorte.getText()), Double.valueOf(txtTotalRetiroCliente.getText()), Double.valueOf(txtTotalRecibosDeLuz.getText()), Double.valueOf(txtIzacel.getText()), Double.valueOf(txtEfectivoPlanes.getText()), Double.valueOf(txtPines.getText()), Double.valueOf(txtDepositos.getText()), Double.valueOf(txtCajaVerde.getText()),grupo_corte,     gastos ,dolares ,valers ,diferencia_de_cortes ,otros_faltantes ,otros_sobrantes ,caja_verde ,total ,sobrante_juan ,total_final ,deposito2 ,banco_interno ,totalPlanesRep, efectivoPlanesRep, diferencia_planesRep, txaComentario.getText().toString().trim().toUpperCase()); 
+			return folio_trabajo_realizado;
+		}
+		
+		public String validaCampos(){
+			String error = "";
+			if(txtOtrosFaltantes.getText().equals("")) error+=" -Otros Faltantes\n";
+			if(txtOtrosSobrentes.getText().equals("")) error+=" -Otro Sobrantes\n";
+			if(txtSobrantesFinanazas.getText().equals("")) error+=" -Sobrantes Finanzas\n";
+			if(txtDeposito2.getText().equals("")) error+=" -Deposito\n";
+			if(txtTotalPlanesRep.getText().equals("")) error+=" -Planes Telcel (Sistema)\n";
+			
+			return error;
+		}
+		
+	}
+	
+	public class Cat_Cortes_Quitados extends JDialog{
+
+		Container cont_quitados = getContentPane();
+		JLayeredPane panel_quitados = new JLayeredPane();
+		
+		JButton btnRestaurarFiltro = new JButton("Restaurar Seleccionados", new ImageIcon("imagen/flecha-naranja-alerta-de-descarga-de-la-actualizacion-icono-8872-16.png"));
+		
+		JTextField txtFiltroAsignacion = new Componentes().text(new JCTextField(), "      Asignación", 15, "String");
+		
+	    public DefaultTableModel tabla_model_quitados = new DefaultTableModel(null, new String[]{"*","Establecimiento","F.Corte", "F.Asignacion", "Cajero", "Total Efec.", "Retiros prog.", "Cheques", "Vales", "Dolares", "F.Sodas", "PIN-PAD", "Total Corte", "Diferencia", "Retiros Clt.", "TA", "R.Luz","Apartados", "Fecha Corte", "Observacion"} ){
+	                    
+			@SuppressWarnings({ "rawtypes" })
+			Class[] types = new Class[]{
+	                   java.lang.Boolean.class,
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
+	                   java.lang.Object.class,
+	                   java.lang.Object.class
+	                    
+	    };
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+	                return types[columnIndex];
+	        }
+	    public boolean isCellEditable(int fila, int columna){
+	                switch(columna){
+	                		case 0	: return true;
+	                        case 1  : return false; 
+	                        case 2  : return false; 
+	                        case 3  : return false; 
+	                        case 4  : return false; 
+	                        case 5  : return false; 
+	                        case 6  : return false; 
+	                        case 7  : return false; 
+	                        case 8  : return false; 
+	                        case 9  : return false; 
+	                        case 10 : return false; 
+	                        case 11 : return false; 
+	                        case 12 : return false; 
+	                        case 13 : return false; 
+	                        case 14 : return false; 
+	                        case 15 : return false; 
+	                        case 16 : return false; 
+	                        case 17 : return false; 
+	                        case 18 : return false; 
+	                        case 19 : return false; 
+	                }
+	                 return false;
+	         }
+	    };
+		
+	    JTable tabla_quitados = new JTable(tabla_model_quitados);
+		JScrollPane scroll_quitados = new JScrollPane(tabla_quitados,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+//		cadenaCortesQuitados
+		public Cat_Cortes_Quitados(){
+			this.setModal(true);
+			this.setTitle("Cortes Quitados");
+			this.panel_quitados.setBorder(BorderFactory.createTitledBorder( "Filtro De Cortes Quitados"));
+			
+			panel_quitados.add(btnRestaurarFiltro).setBounds(20, 30, 180, 20);
+			panel_quitados.add(txtFiltroAsignacion).setBounds(275, 30, 110, 20);
+			panel_quitados.add(scroll_quitados).setBounds(20, 50, 970, 280);
+			
+			cont_quitados.add(panel_quitados);
+			
+			llenar_tabla_filtro();
+			render_filtro();
+			
+			opQuitar(btnRestaurarFiltro);
+			txtFiltroAsignacion.addKeyListener(opFiltroDinamico);
+			
+			this.setSize(1024,380);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+		}
+		
+		public void render_filtro(){
+//			tabla_quitados.getColumnModel().getColumn(0).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_grupos,textoEncabezado,"centro","Arial","negrita",10));
+			tabla_quitados.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("CHB","izquierda","Arial","negrita",10));
+			for(int i = 1; i<tabla_quitados.getColumnCount(); i++){
+//				tabla_quitados.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_grupos,textoEncabezado,"centro","Arial","negrita",10));
+				
+				switch(i){
+						case 0: tabla_quitados.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
+						case 1: tabla_quitados.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
+						case 2: tabla_quitados.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
+						case 3: tabla_quitados.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
+						case 4: tabla_quitados.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
+						case 17:tabla_quitados.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
+						case 19:tabla_quitados.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
+						default: tabla_quitados.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha"	,"Arial","negrita",11)); break;
+					}
+			}
+			
+			this.tabla_quitados.getTableHeader().setReorderingAllowed(false) ;
+	    	this.tabla_quitados.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	    	
+	    	int x=70;
+	    	
+	    	this.tabla_quitados.getColumnModel().getColumn(0 ).setMaxWidth(25);   
+	    	this.tabla_quitados.getColumnModel().getColumn(0 ).setMinWidth(25);	
+	    	this.tabla_quitados.getColumnModel().getColumn(1 ).setMaxWidth(x*3-50);   
+	    	this.tabla_quitados.getColumnModel().getColumn(1 ).setMinWidth(x*3-50);   
+	    	this.tabla_quitados.getColumnModel().getColumn(2 ).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(2 ).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(3 ).setMaxWidth(x+40); 
+	    	this.tabla_quitados.getColumnModel().getColumn(3 ).setMinWidth(x+40); 
+	    	                                               
+	    	this.tabla_quitados.getColumnModel().getColumn(4 ).setMaxWidth(x*4);
+	    	this.tabla_quitados.getColumnModel().getColumn(4 ).setMinWidth(x*3);		
+	    	this.tabla_quitados.getColumnModel().getColumn(5 ).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(5 ).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(6 ).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(6 ).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(7 ).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(7 ).setMinWidth(x);
+	    	                                               
+	    	this.tabla_quitados.getColumnModel().getColumn(8 ).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(8 ).setMinWidth(x);		
+	    	this.tabla_quitados.getColumnModel().getColumn(9 ).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(9 ).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(10).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(10).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(11).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(11).setMinWidth(x);
+	    	
+	    	this.tabla_quitados.getColumnModel().getColumn(12).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(12).setMinWidth(x);		
+	    	this.tabla_quitados.getColumnModel().getColumn(13).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(13).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(14).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(14).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(15).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(15).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(16).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(16).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(17).setMaxWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(17).setMinWidth(x);
+	    	this.tabla_quitados.getColumnModel().getColumn(18).setMaxWidth(x*2);
+	    	this.tabla_quitados.getColumnModel().getColumn(18).setMinWidth(x*2);
+	    	this.tabla_quitados.getColumnModel().getColumn(19).setMaxWidth(x*5);
+	    	this.tabla_quitados.getColumnModel().getColumn(19).setMinWidth(x*5);
+		}
+		
+		KeyListener opFiltroDinamico = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				
+				new Obj_Filtro_Dinamico(tabla_quitados,"F.Asignacion", txtFiltroAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+		
+		public void opQuitar(final JButton btn){
+			
+			btn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+					txtFiltroAsignacion.setText("");
+					new Obj_Filtro_Dinamico(tabla_quitados,"F.Asignacion", txtFiltroAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+					
+						quitarCortes=cadenaCortesQuitadosFiltro();
+						dispose();
+						
+					refresh();
+				}
+			});
+			
+		}
+		
+		public String cadenaCortesQuitadosFiltro(){
+			String cadena = "";
+				if(tabla_quitados.getRowCount()>0){
+						for(int i=0; i<tabla_model_quitados.getRowCount(); i++){
+							if(tabla_quitados.getValueAt(i, 0).toString().trim().equals("false")){
+								cadena+=tabla_model_quitados.getValueAt(i, 2).toString().trim()+"'',''";
+							}
+						}
+					cadena= cadena.equals("")?cadena:cadena.substring(0,cadena.length()-5);
+					System.out.println("filtro:   "+cadena);
+				}
+			return cadena;
+		}
+		
+		public void llenar_tabla_filtro(){
+			
+			tabla_model_quitados.setRowCount(0);
+			
+			String[][] matriz = new BuscarTablasModel().tabla_model_cortes_quitados(quitarCortes, grupo_corte);
+			for(String[] fila: matriz){
+				tabla_model_quitados.addRow(fila);
+			}
+		}
 	}
 }

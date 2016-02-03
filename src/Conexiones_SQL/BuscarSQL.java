@@ -8121,4 +8121,24 @@ public class BuscarSQL {
 		return factor;
 	}
 	
+	public int  folio_de_ultimo_trabajo_de_corte(String concentrado) throws SQLException{
+		int folio=0;
+		String query = "declare @folio_grupo int "
+				+ " set @folio_grupo = (select folio_grupo_para_cortes from tb_grupos_para_cortes where grupo_para_cortes = '"+concentrado+"' and status = 1) "
+				+ " select top 1 folio_trabajo_de_cortes from tb_alimentacion_de_cortes where folio_grupo_para_cortes = @folio_grupo order by fecha_de_trabajo desc";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				folio=(rs.getInt("folio_trabajo_de_cortes"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return folio;
+	}
 }

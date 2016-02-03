@@ -1485,16 +1485,18 @@ public boolean Borra_departamento_y_puestos_dependientes(int folio_establecimine
 	return true;
 	}
 
-public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double TotalDelCorte,double TotalRetiroCliente, double TotalRecibosDeLuz, double Izacel, double Planes, double Pines, double Depositos, double CajaVerde, String grupo_corte){
+public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double TotalDelCorte,double TotalRetiroCliente, double TotalRecibosDeLuz, double Izacel, double Planes, double Pines, double Depositos, double CajaVerde, String grupo_corte,        double gastos ,double dolares ,double vales ,double diferencia_de_cortes ,double otros_faltantes ,double otros_sobrantes ,double caja_verde_rep ,double total ,double sobrante_juan ,double total_final ,double deposito2 ,double banco_interno ,double totalPlanesRep,double efectivoPlanesRep, double diferencia_planesRep, String comentarioRep){
 	
 	int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
+	
 	
 	String queryUpdate = "update tb_folios set folio = (select folio+1 from tb_folios where transaccion = 'Trabajo De Cortes') where transaccion = 'Trabajo De Cortes'";
 	String querySelect = "select folio as folio_trabajo_cortes from  tb_folios as folio_trabajo_cortes where transaccion = 'Trabajo De Cortes'";
 //	String query = "exec sp_insert_trabajo_de_cortes ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 	String query = "exec sp_update_trabajo_de_cortes ?,?,?,?,?";
 	
-	String queryInsertTotales = "exec sp_insert_totales_trabajo_de_cortes ?,?,?,?,?,?,?,?,?";
+	String queryInsertTotales = "exec sp_insert_totales_trabajo_de_cortes ?,?,?,?,?,?,?,?,?,?,?";
+	String queryInsertReposicionEfectivo = "exec sp_insert_reposicion_de_efectivo ?,?,?,?,?,?,?,?,?,?,?,?,?,?";//"exec sp_insert_totales_trabajo_de_cortes ?,?,?,?,?,?,?,?,?,?";
 
 	Connection con = new Connexion().conexion();
 	int folio_trabajo = 0;
@@ -1511,9 +1513,9 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(querySelect);
 
-			while(rs.next()){
-				folio_trabajo = rs.getInt("folio_trabajo_cortes");
-			}
+		while(rs.next()){
+			folio_trabajo = rs.getInt("folio_trabajo_cortes");
+		}
 		
 //		actualizar corte
 		PreparedStatement pstmt = con.prepareStatement(query);
@@ -1546,13 +1548,51 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 		pstmtInsertTotales.setDouble(2, TotalRetiroCliente);
 		pstmtInsertTotales.setDouble(3, TotalRecibosDeLuz);
 		pstmtInsertTotales.setDouble(4 ,Izacel);
-		pstmtInsertTotales.setDouble(5, Planes);
+		pstmtInsertTotales.setDouble(5, efectivoPlanesRep);
 		pstmtInsertTotales.setDouble(6, Pines);
 		pstmtInsertTotales.setDouble(7 ,Depositos);
 		pstmtInsertTotales.setDouble(8, CajaVerde);
 		pstmtInsertTotales.setDouble(9, folio_trabajo);
-			
+		pstmtInsertTotales.setDouble(10, totalPlanesRep);
+		pstmtInsertTotales.setDouble(11, diferencia_planesRep);
+		
 		pstmtInsertTotales.executeUpdate();
+		
+//		folio_trabajo
+//		,double gastos 
+//		,double dolares 
+//		,double vales 
+//		,double diferencia_de_cortes 
+//		,double otros_faltantes 
+//		,double otros_sobrantes 
+//		,double caja_verde_rep 
+//		,double total 
+//		,double sobrante_juan 
+//		,double total_final 
+//		
+//		,double deposito2 
+//		,double banco_interno
+//		guardar reposicion de efectivo
+		PreparedStatement pstmtInsertReposicionEfectivo = con.prepareStatement(queryInsertReposicionEfectivo);
+		con.setAutoCommit(false);
+			
+		pstmtInsertReposicionEfectivo.setInt(1 		,folio_trabajo);
+		pstmtInsertReposicionEfectivo.setDouble(2 	,gastos);
+		pstmtInsertReposicionEfectivo.setDouble(3	,dolares);
+		pstmtInsertReposicionEfectivo.setDouble(4	,vales);
+		pstmtInsertReposicionEfectivo.setDouble(5 	,diferencia_de_cortes);
+		pstmtInsertReposicionEfectivo.setDouble(6	,otros_faltantes);
+		pstmtInsertReposicionEfectivo.setDouble(7	,otros_sobrantes);
+		pstmtInsertReposicionEfectivo.setDouble(8 	,caja_verde_rep);
+		pstmtInsertReposicionEfectivo.setDouble(9	,total);
+		pstmtInsertReposicionEfectivo.setDouble(10	,sobrante_juan);
+		pstmtInsertReposicionEfectivo.setDouble(11	,total_final);
+		pstmtInsertReposicionEfectivo.setDouble(12	,deposito2);
+		pstmtInsertReposicionEfectivo.setDouble(13	,banco_interno);
+		pstmtInsertReposicionEfectivo.setString(14	,comentarioRep);
+		
+		pstmtInsertReposicionEfectivo.executeUpdate();
+		
 		con.commit();
 	} catch (Exception e) {
 		System.out.println("SQLException: "+e.getMessage());
