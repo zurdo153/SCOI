@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-11-26T18:24:43 -->
+<!-- 2016-02-03T10:01:42 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_Para_Trabajo_De_Cortes" language="groovy" printOrder="Horizontal" pageWidth="791" pageHeight="612" orientation="Landscape" columnWidth="751" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="527b8c71-0150-4c5e-ab8d-96445c8baa40">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -34,59 +34,207 @@
 		</box>
 	</style>
 	<subDataset name="totales_de_concentrado_de_cortes" uuid="16f3e582-be0f-4538-a9f4-58d390b05d2d">
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
 		<parameter name="FOLIO_TRABAJO_PARAMETRO" class="java.lang.Integer"/>
+		<parameter name="slFactory" class="java.lang.Object"/>
+		<parameter name="slSchema" class="java.lang.Object"/>
+		<parameter name="LoggedInUser" class="java.lang.Object"/>
+		<parameter name="LoggedInUsername" class="java.lang.Object"/>
 		<queryString>
-			<![CDATA[select TotalDelCorte,TotalRetiroCliente,TotalRecibosDeLuz,Izacel,Planes,Pines,CajaVerde,Depositos from tb_totales_de_trabajo_de_cortes  where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
+			<![CDATA[select TotalDelCorte
+			,TotalRetiroCliente
+			,TotalRecibosDeLuz
+			,Izacel
+			,Planes AS plan_efectivo
+			,Pines
+			,CajaVerde
+			,Depositos
+			,total_Planes AS plan_sistema
+			,diferencia_Planes AS plan_diferencia
+from tb_totales_de_trabajo_de_cortes  
+where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
 		</queryString>
 		<field name="TotalDelCorte" class="java.math.BigDecimal"/>
 		<field name="TotalRetiroCliente" class="java.math.BigDecimal"/>
 		<field name="TotalRecibosDeLuz" class="java.math.BigDecimal"/>
 		<field name="Izacel" class="java.math.BigDecimal"/>
-		<field name="Planes" class="java.math.BigDecimal"/>
-		<field name="Pines" class="java.math.BigDecimal"/>
 		<field name="CajaVerde" class="java.math.BigDecimal"/>
 		<field name="Depositos" class="java.math.BigDecimal"/>
+		<field name="plan_efectivo" class="java.math.BigDecimal"/>
+		<field name="plan_sistema" class="java.math.BigDecimal"/>
+		<field name="Pines" class="java.math.BigDecimal"/>
+		<field name="plan_diferencia" class="java.math.BigDecimal"/>
+	</subDataset>
+	<subDataset name="reposicion_de_efectivo" uuid="6f9b1718-0929-4fab-97d9-74916b360901">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
+		<parameter name="FOLIO_TRABAJO_PARAMETRO" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[select top 1 rep_efec.folio_trabajo
+,rep_efec.gastos
+,rep_efec.dolares
+,rep_efec.vales
+,rep_efec.diferencia_de_cortes
+,rep_efec.otros_faltantes
+,rep_efec.otros_sobrantes
+,rep_efec.caja_verde_rep
+,rep_efec.total
+,rep_efec.sobrante_finanzas
+,rep_efec.total_final
+,rep_efec.deposito2
+,rep_efec.banco_interno
+,rep_efec.comentario
+,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as realizo_trabajo
+,convert(varchar(20),alim_cort.fecha_de_trabajo,103)+' '+convert(varchar(20),alim_cort.fecha_de_trabajo,108) as fecha_trabajo
+,grupo.grupo_para_cortes
+from tb_reposicion_de_efectivo_trabajo_de_corte as rep_efec
+inner join tb_alimentacion_de_cortes as alim_cort on alim_cort.folio_trabajo_de_cortes = rep_efec.folio_trabajo
+inner join tb_empleado on tb_empleado.folio = alim_cort.folio_usuario_trabajo_de_corte
+inner join tb_grupos_para_cortes as grupo on grupo.folio_grupo_para_cortes = alim_cort.folio_grupo_para_cortes
+where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
+		</queryString>
+		<field name="folio_trabajo" class="java.lang.Integer"/>
+		<field name="gastos" class="java.math.BigDecimal"/>
+		<field name="dolares" class="java.math.BigDecimal"/>
+		<field name="vales" class="java.math.BigDecimal"/>
+		<field name="diferencia_de_cortes" class="java.math.BigDecimal"/>
+		<field name="otros_faltantes" class="java.math.BigDecimal"/>
+		<field name="otros_sobrantes" class="java.math.BigDecimal"/>
+		<field name="caja_verde_rep" class="java.math.BigDecimal"/>
+		<field name="total" class="java.math.BigDecimal"/>
+		<field name="total_final" class="java.math.BigDecimal"/>
+		<field name="deposito2" class="java.math.BigDecimal"/>
+		<field name="banco_interno" class="java.math.BigDecimal"/>
+		<field name="comentario" class="java.lang.String"/>
+		<field name="realizo_trabajo" class="java.lang.String"/>
+		<field name="fecha_trabajo" class="java.lang.String"/>
+		<field name="grupo_para_cortes" class="java.lang.String"/>
+		<field name="sobrante_finanzas" class="java.math.BigDecimal"/>
 	</subDataset>
 	<parameter name="folio_trabajo" class="java.lang.Integer" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[31]]></defaultValueExpression>
 	</parameter>
+	<parameter name="slFactory" class="java.lang.Object"/>
+	<parameter name="slSchema" class="java.lang.Object"/>
+	<parameter name="LoggedInUser" class="java.lang.Object"/>
+	<parameter name="LoggedInUsername" class="java.lang.Object"/>
 	<queryString>
 		<![CDATA[--declare @folio_trabajo datetime
 --set @folio_trabajo = 10'
-
 
 select tb_establecimiento.nombre as ESTABLECIMIENTO
 		,tb_alimentacion_de_cortes.folio_corte as FOLIO_CORTE
 		,tb_alimentacion_de_cortes.asignaciones_en_corte as ASIGNACION
 ,cajero.nombre+' '+cajero.ap_paterno+' '+cajero.ap_materno as CAJERA
-,isnull(tb_alimentacion_de_cortes.efectivo,0) as TOTAL_EFECTIVO
-,(select isnull(sum(tb_retiros_a_cajeros.importe_retiro),0) from tb_retiros_a_cajeros where tb_retiros_a_cajeros.folio_corte = tb_alimentacion_de_cortes.folio_corte) as RETIROS_PROGRAMADOS
-,isnull(tb_alimentacion_de_cortes.cheques,0) as CHEQUES
 
-,(select isnull((tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion),0) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 13 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte) as VALES
-,(select isnull((tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion),0) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 12 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte) as DOLARES
+,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
+		then tb_alimentacion_de_cortes.efectivo_para_trabajo
+	  else
+		tb_alimentacion_de_cortes.efectivo -(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) 
+													from tb_alimentacion_efectivo_cortes 
+													where tb_alimentacion_efectivo_cortes.folio_denominacion = 13 
+													and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte) 
 
-,(select isnull(sum(tb_captura_fuente_sodas.importe),0) from tb_captura_fuente_sodas where tb_captura_fuente_sodas.folio_corte = tb_alimentacion_de_cortes.folio_corte) AS FUENTE_DE_SODAS
-,SUM(isnull(tb_vauchers.importe,0)-isnull(tb_vauchers.retiro,0)) as PIN_PAD
-,isnull(tb_alimentacion_de_cortes.corte_del_sistema,0) as TOTAL_CORTE
---,isnull(tb_alimentacion_de_cortes.diferiencia_de_corte,0) as DIFERENCIA
-,(select round(((a.efectivo+a.Retiro_Cajero)+(a.voucher_sin_retiro)+a.cheques+isnull(sum(ft.importe),0))-(a.corte_del_sistema+a.apartados-a.abonos),2) as diferencia_de_corte	
-		 from(SELECT ma.folio_corte,ma.efectivo,isnull(sum(tb_retiros_a_cajeros.importe_retiro),0)as Retiro_Cajero
-					   ,(select isnull(sum(tb_vauchers.importe),0)- isnull(sum(tb_vauchers.retiro),0) from tb_vauchers where tb_vauchers.folio_corte=ma.folio_corte) as voucher_sin_retiro
-					   ,ma.cheques,ma.corte_del_sistema,ma.apartados,ma.abonos
- 				  FROM  tb_alimentacion_de_cortes ma
-		    		 left outer join tb_retiros_a_cajeros on  tb_retiros_a_cajeros.folio_corte=ma.folio_corte 
-					where ma.folio_corte=tb_alimentacion_de_cortes.folio_corte
-					group by ma.folio_corte,ma.efectivo,tb_retiros_a_cajeros.importe_retiro,ma.cheques,ma.corte_del_sistema,ma.apartados,ma.abonos )a
+ end as TOTAL_EFECTIVO
+
+---------------------,((select sum(tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion not in (12,13) and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte)) as TOTAL_EFECTIVO
+,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
+		then tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo
+	  else
+		(select isnull(sum(tb_retiros_a_cajeros.importe_retiro),0) from tb_retiros_a_cajeros where tb_retiros_a_cajeros.folio_corte = tb_alimentacion_de_cortes.folio_corte) 
+ end as RETIROS_PROGRAMADOS
+,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
+		then tb_alimentacion_de_cortes.total_cheques_para_trabajo
+	  else
+		tb_alimentacion_de_cortes.cheques 
+ end as CHEQUES
+
+,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
+		then tb_alimentacion_de_cortes.total_vales_para_trabajo
+	  else
+		(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 13 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte) 
+ end as VALES
+,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
+		then tb_alimentacion_de_cortes.total_dolares_para_trabajo
+	  else
+		(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 12 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte)
+ end as DOLARES
+
+,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
+		then tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo
+	  --else
+		--(case when tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo > 0 
+		--		then tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo 
+			  else (select isnull(sum(tb_captura_fuente_sodas.importe),0) from tb_captura_fuente_sodas where tb_captura_fuente_sodas.folio_corte = tb_alimentacion_de_cortes.folio_corte) 
+		  --end)
+ end AS FUENTE_DE_SODAS
+--,(select isnull(sum(tb_captura_fuente_sodas.importe),0) from tb_captura_fuente_sodas where tb_captura_fuente_sodas.folio_corte = tb_alimentacion_de_cortes.folio_corte) AS FUENTE_DE_SODAS
+,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
+		then tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo
+	 -- else
+		--(case when tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo > 0 
+		--		then tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo 
+			  else (SUM(isnull(tb_vauchers.importe,0))-isnull(sum(tb_vauchers.retiro),0)) 
+		  --end)
+ end as PIN_PAD
+--,(SUM(isnull(tb_vauchers.importe,0))-isnull(sum(tb_vauchers.retiro),0)) as PIN_PAD
+,(tb_alimentacion_de_cortes.corte_del_sistema+tb_alimentacion_de_cortes.apartados) as TOTAL_CORTE
+
+,(select round( ((a.efectivo+a.Retiro_Cajero) + (a.voucher_sin_retiro) + a.cheques + a.dolares + a.vales
+				 + case when a.total_fuente_de_sodas_para_trabajo > 0 then a.total_fuente_de_sodas_para_trabajo else isnull(sum(ft.importe),0) end 
+			  ) - (a.corte_del_sistema+a.apartados-a.abonos)
+			,2) as diferencia_de_corte	
+		from(SELECT ma.folio_corte
+					,case when ma.efectivo_para_trabajo <> 0 
+							then ma.efectivo_para_trabajo 
+						  else ma.efectivo 
+					  end as efectivo
+					,case when ma.total_retiros_programados_para_trabajo <> 0 
+							then ma.total_retiros_programados_para_trabajo 
+						else
+							(isnull(sum(tb_retiros_a_cajeros.importe_retiro),0))
+					 end as Retiro_Cajero
+					,case when ma.total_de_vauchers_para_trabajo <> 0 
+								then ma.total_de_vauchers_para_trabajo
+							else 
+								(select isnull(sum(tb_vauchers.importe),0)
+										- isnull(sum(tb_vauchers.retiro),0) 
+									from tb_vauchers 
+									where tb_vauchers.folio_corte=ma.folio_corte) 
+					  end as voucher_sin_retiro
+					,case when ma.total_cheques_para_trabajo <> 0 
+							then ma.total_cheques_para_trabajo 
+						  else
+							ma.cheques
+					 end as cheques
+					,case when (ma.total_dolares_para_trabajo) <> 0
+							then ma.total_dolares_para_trabajo
+						  else
+							(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 12 and tb_alimentacion_efectivo_cortes.folio_corte = ma.folio_corte)
+					 end as dolares
+					,ma.corte_del_sistema
+					,ma.apartados
+					,ma.abonos
+					,ma.total_fuente_de_sodas_para_trabajo
+					,case when (ma.total_vales_para_trabajo) <> 0
+							then ma.total_vales_para_trabajo
+						  else
+							0 ------(  dejamos 0 para que no afecte el calculo ya que ya lo incluye en total efectivo   )
+							--(tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion)
+ 					 end as vales
+				FROM  tb_alimentacion_de_cortes ma
+		    		left outer join tb_retiros_a_cajeros on  tb_retiros_a_cajeros.folio_corte=ma.folio_corte 
+					inner join tb_alimentacion_efectivo_cortes on tb_alimentacion_efectivo_cortes.folio_corte = ma.folio_corte and tb_alimentacion_efectivo_cortes.folio_denominacion = 13
+				where ma.folio_corte=tb_alimentacion_de_cortes.folio_corte 
+				group by ma.folio_corte,ma.efectivo_para_trabajo,ma.efectivo,ma.total_retiros_programados_para_trabajo,tb_retiros_a_cajeros.importe_retiro,total_de_vauchers_para_trabajo,ma.total_cheques_para_trabajo,ma.total_dolares_para_trabajo,ma.cheques,ma.corte_del_sistema,ma.apartados,ma.abonos,ma.total_fuente_de_sodas_para_trabajo, ma.total_vales_para_trabajo --,tb_alimentacion_efectivo_cortes.cantidad,tb_alimentacion_efectivo_cortes.valor,tb_alimentacion_efectivo_cortes.valor_denominacion 
+		)a
 left outer join tb_captura_fuente_sodas ft on ft.folio_corte=a.folio_corte
-group by a.folio_corte,a.efectivo,a.Retiro_Cajero,a.voucher_sin_retiro,a.cheques,a.corte_del_sistema,a.apartados,a.abonos) as DIFERENCIA
+group by a.folio_corte,a.efectivo,a.Retiro_Cajero,a.voucher_sin_retiro,a.cheques,a.dolares,a.corte_del_sistema,a.apartados,a.abonos,a.total_fuente_de_sodas_para_trabajo,a.vales) as DIFERENCIA
 
 ,isnull(sum(tb_vauchers.retiro),0) as RETIROS_CLIENTE
-,isnull(tb_alimentacion_de_cortes.tiempo_aire,0) as TIEMPO_AIRE
-,isnull(tb_alimentacion_de_cortes.recibo_de_luz,0) as RECIBOS_LUZ
-,isnull(tb_alimentacion_de_cortes.apartados,0) as APARTADOS
+,tb_alimentacion_de_cortes.tiempo_aire as TIEMPO_AIRE
+,tb_alimentacion_de_cortes.recibo_de_luz as RECIBOS_LUZ
+,tb_alimentacion_de_cortes.apartados as APARTADOS
 ,convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,103)+' '+convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,108) as FECHA_DE_CORTE
 ,tb_alimentacion_de_cortes.observacion as OBSERVACION
 ,tb_alimentacion_de_cortes.folio_trabajo_de_cortes AS FOLIO_TRABAJO_DE_CORTE
@@ -95,8 +243,50 @@ ELSE 'NORMAL' END AS CLASIFICADOR_TRABAJO_DE_CORTE
 ,convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_trabajo,103) as FECHA_TRABAJO_DE_CORTE
 ,usuario.nombre+' '+usuario.ap_paterno+' '+usuario.ap_materno as REALIZO_TRABAJO
 ,isnull(tb_grupos_para_cortes.grupo_para_cortes,'SIN GRUPO') as GRUPO_PARA_CORTES
-from tb_alimentacion_de_cortes
 
+,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo) = (tb_alimentacion_de_cortes.efectivo -(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) 
+																	from tb_alimentacion_efectivo_cortes 
+																	where tb_alimentacion_efectivo_cortes.folio_denominacion = 13 
+																	and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte))
+							then 'NO'
+						  else
+								'SI'
+					 end as efectivo_modif
+,case when (tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo) = (select isnull(sum(tb_retiros_a_cajeros.importe_retiro),0) from tb_retiros_a_cajeros where tb_retiros_a_cajeros.folio_corte = tb_alimentacion_de_cortes.folio_corte)
+							then 'NO'
+						  else
+								'SI'
+					 end as retiros_programados_modif
+,case when (tb_alimentacion_de_cortes.total_cheques_para_trabajo) = tb_alimentacion_de_cortes.cheques 
+							then 'NO'
+						  else
+								'SI'
+					 end as cheques_modif
+,case when (tb_alimentacion_de_cortes.total_vales_para_trabajo) = (select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 13 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte)
+							then 'NO'
+						  else
+								'SI'
+					 end as vales_modif
+,case when (tb_alimentacion_de_cortes.total_dolares_para_trabajo) = (select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 12 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte)
+							then 'NO'
+						  else
+								'SI'
+					 end as dolares_modif
+,case when (tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo) = (select isnull(sum(tb_captura_fuente_sodas.importe),0) from tb_captura_fuente_sodas where tb_captura_fuente_sodas.folio_corte = tb_alimentacion_de_cortes.folio_corte)
+							then 'NO'
+						  else
+								'SI'
+					 end as fuente_sodas_modif
+,case when (tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo) = (SUM(isnull(tb_vauchers.importe,0))-isnull(sum(tb_vauchers.retiro),0))
+							then 'NO'
+						  else
+								'SI'
+					 end as pines_modif
+
+
+
+
+from tb_alimentacion_de_cortes
 inner join tb_establecimiento on tb_establecimiento.folio = tb_alimentacion_de_cortes.folio_establecimiento_de_corte
 --inner join tb_tabla_de_asignaciones_para_cortes on tb_tabla_de_asignaciones_para_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte
 inner join tb_empleado as cajero on cajero.folio = tb_alimentacion_de_cortes.folio_empleado
@@ -104,10 +294,12 @@ inner join tb_empleado as usuario on usuario.folio = tb_alimentacion_de_cortes.f
 left outer join tb_vauchers on tb_vauchers.folio_corte = tb_alimentacion_de_cortes.folio_corte
 inner join tb_grupos_para_cortes on tb_grupos_para_cortes.folio_grupo_para_cortes = tb_alimentacion_de_cortes.folio_grupo_para_cortes
 
-where tb_alimentacion_de_cortes.folio_trabajo_de_cortes = $P{folio_trabajo} --@folio_trabajo_de_cortes 
+--where convert(smalldatetime,convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,103)) = convert(smalldatetime,convert(varchar(20),getdate()-1,103))
+where tb_alimentacion_de_cortes.folio_trabajo_de_cortes = $P{folio_trabajo} --@folio_trabajo_de_cortes  
 group by tb_establecimiento.nombre
 		,tb_alimentacion_de_cortes.folio_corte
-		,tb_alimentacion_de_cortes.asignaciones_en_corte
+		,tb_alimentacion_de_cortes.asignaciones_en_corte 
+		,tb_alimentacion_de_cortes.efectivo_para_trabajo
 		,tb_alimentacion_de_cortes.efectivo
 		,cajero.nombre+' '+cajero.ap_paterno+' '+cajero.ap_materno
 		,tb_alimentacion_de_cortes.cheques
@@ -115,21 +307,32 @@ group by tb_establecimiento.nombre
 		,tb_alimentacion_de_cortes.recibo_de_luz
 		,tb_alimentacion_de_cortes.corte_del_sistema
 		,tb_alimentacion_de_cortes.apartados
+		,tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo
+		,tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo
 		,tb_alimentacion_de_cortes.diferiencia_de_corte
 		,tb_alimentacion_de_cortes.fecha_de_corte
-		,tb_alimentacion_de_cortes.observacion
+		,tb_alimentacion_de_cortes.observacion 
 		,tb_alimentacion_de_cortes.folio_trabajo_de_cortes
 		,tb_alimentacion_de_cortes.clasificador
 		,tb_alimentacion_de_cortes.fecha_de_trabajo
 		,usuario.nombre+' '+usuario.ap_paterno+' '+usuario.ap_materno
 		,tb_grupos_para_cortes.grupo_para_cortes
+
+
+		,tb_alimentacion_de_cortes.efectivo_para_trabajo 
+		,tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo 
+		,tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo 
+		,tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo 
+		,tb_alimentacion_de_cortes.total_cheques_para_trabajo 
+		,tb_alimentacion_de_cortes.total_vales_para_trabajo 
+		,tb_alimentacion_de_cortes.total_dolares_para_trabajo
 order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero.nombre+' '+cajero.ap_paterno+' '+cajero.ap_materno]]>
 	</queryString>
 	<field name="ESTABLECIMIENTO" class="java.lang.String"/>
 	<field name="FOLIO_CORTE" class="java.lang.String"/>
 	<field name="ASIGNACION" class="java.lang.String"/>
 	<field name="CAJERA" class="java.lang.String"/>
-	<field name="TOTAL_EFECTIVO" class="java.math.BigDecimal"/>
+	<field name="TOTAL_EFECTIVO" class="java.lang.Double"/>
 	<field name="RETIROS_PROGRAMADOS" class="java.math.BigDecimal"/>
 	<field name="CHEQUES" class="java.math.BigDecimal"/>
 	<field name="VALES" class="java.lang.Double"/>
@@ -137,7 +340,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 	<field name="FUENTE_DE_SODAS" class="java.math.BigDecimal"/>
 	<field name="PIN_PAD" class="java.math.BigDecimal"/>
 	<field name="TOTAL_CORTE" class="java.math.BigDecimal"/>
-	<field name="DIFERENCIA" class="java.math.BigDecimal"/>
+	<field name="DIFERENCIA" class="java.lang.Double"/>
 	<field name="RETIROS_CLIENTE" class="java.math.BigDecimal"/>
 	<field name="TIEMPO_AIRE" class="java.math.BigDecimal"/>
 	<field name="RECIBOS_LUZ" class="java.math.BigDecimal"/>
@@ -145,6 +348,13 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 	<field name="FECHA_DE_CORTE" class="java.lang.String"/>
 	<field name="OBSERVACION" class="java.lang.String"/>
 	<field name="FOLIO_TRABAJO_DE_CORTE" class="java.lang.Integer"/>
+	<field name="efectivo_modif" class="java.lang.String"/>
+	<field name="retiros_programados_modif" class="java.lang.String"/>
+	<field name="cheques_modif" class="java.lang.String"/>
+	<field name="vales_modif" class="java.lang.String"/>
+	<field name="dolares_modif" class="java.lang.String"/>
+	<field name="fuente_sodas_modif" class="java.lang.String"/>
+	<field name="pines_modif" class="java.lang.String"/>
 	<field name="CLASIFICADOR_TRABAJO_DE_CORTE" class="java.lang.String"/>
 	<field name="FECHA_TRABAJO_DE_CORTE" class="java.lang.String"/>
 	<field name="REALIZO_TRABAJO" class="java.lang.String"/>
@@ -188,43 +398,43 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 	<variable name="apartados" class="java.math.BigDecimal" resetType="Group" resetGroup="ESTABLECIMIENTO" calculation="Sum">
 		<variableExpression><![CDATA[$F{APARTADOS}]]></variableExpression>
 	</variable>
-	<variable name="efectivoGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="efectivoGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTAL_EFECTIVO}]]></variableExpression>
 	</variable>
-	<variable name="retirosProgramadosGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="retirosProgramadosGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{RETIROS_PROGRAMADOS}]]></variableExpression>
 	</variable>
-	<variable name="chequesGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="chequesGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{CHEQUES}]]></variableExpression>
 	</variable>
-	<variable name="valesGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="valesGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VALES}]]></variableExpression>
 	</variable>
-	<variable name="dolaresGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="dolaresGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{DOLARES}]]></variableExpression>
 	</variable>
-	<variable name="fuenteSodasGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="fuenteSodasGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{FUENTE_DE_SODAS}]]></variableExpression>
 	</variable>
-	<variable name="pin_padGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="pin_padGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{PIN_PAD}]]></variableExpression>
 	</variable>
-	<variable name="totalCorteGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="totalCorteGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTAL_CORTE}]]></variableExpression>
 	</variable>
-	<variable name="diferenciaGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="diferenciaGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{DIFERENCIA}]]></variableExpression>
 	</variable>
-	<variable name="retiroClienteGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="retiroClienteGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{RETIROS_CLIENTE}]]></variableExpression>
 	</variable>
-	<variable name="taGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="taGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{TIEMPO_AIRE}]]></variableExpression>
 	</variable>
-	<variable name="rLuzGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="rLuzGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{RECIBOS_LUZ}]]></variableExpression>
 	</variable>
-	<variable name="apartadosGral" class="java.math.BigDecimal" resetType="Group" resetGroup="CLASIFICADOR_TRABAJO_DE_CORTE" calculation="Sum">
+	<variable name="apartadosGral" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{APARTADOS}]]></variableExpression>
 	</variable>
 	<variable name="totalesDeCorte" class="java.math.BigDecimal"/>
@@ -682,7 +892,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="39" y="0" width="60" height="15" uuid="9398c5ea-9ef9-498e-9311-782090fddf9e"/>
 					<textElement textAlignment="Center">
-						<font size="6"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{ASIGNACION}]]></textFieldExpression>
 				</textField>
@@ -792,7 +1002,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 					<text><![CDATA[OBS: ]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="121" y="8" width="140" height="7" uuid="862beb5f-dc14-47bf-854d-6b902f01fdd4"/>
+					<reportElement x="121" y="7" width="624" height="8" uuid="862beb5f-dc14-47bf-854d-6b902f01fdd4"/>
 					<textElement>
 						<font size="6"/>
 					</textElement>
@@ -800,7 +1010,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 				</textField>
 				<textField>
 					<reportElement x="4" y="7" width="74" height="8" uuid="e1ecb0c6-102a-4651-aec8-830cae7bc33f"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
 						<font size="6"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{FECHA_DE_CORTE}]]></textFieldExpression>
@@ -890,8 +1100,440 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 			</frame>
 		</band>
 	</pageFooter>
+	<lastPageFooter>
+		<band height="299">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<rectangle radius="4">
+				<reportElement x="9" y="7" width="577" height="283" uuid="87b65857-ff52-4ecf-ae68-32fb5d4977c7"/>
+			</rectangle>
+			<componentElement>
+				<reportElement x="17" y="14" width="560" height="270" uuid="ad74d94d-87e1-4593-a9bb-83a15420135a"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="reposicion_de_efectivo" uuid="1643e1db-2920-4117-92a4-a9219d1faa0e">
+						<datasetParameter name="FOLIO_TRABAJO_PARAMETRO">
+							<datasetParameterExpression><![CDATA[$F{FOLIO_TRABAJO_DE_CORTE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="270" width="560">
+						<rectangle radius="4">
+							<reportElement x="9" y="221" width="249" height="20" backcolor="#E8E8E8" uuid="c63624bf-fdc6-4365-8d97-22ddaeb4ddb8">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="local_mesure_unitheight" value="pixel"/>
+							</reportElement>
+							<graphicElement>
+								<pen lineWidth="0.0"/>
+							</graphicElement>
+						</rectangle>
+						<rectangle radius="4">
+							<reportElement x="9" y="181" width="249" height="20" backcolor="#E8E8E8" uuid="6fe982d8-95a1-424b-bd08-9ec9358fa089">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<graphicElement>
+								<pen lineWidth="0.0"/>
+							</graphicElement>
+						</rectangle>
+						<rectangle radius="4">
+							<reportElement x="9" y="141" width="249" height="20" backcolor="#E8E8E8" uuid="028a200b-a402-4222-af49-6598775f6118">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<graphicElement>
+								<pen lineWidth="0.0"/>
+							</graphicElement>
+						</rectangle>
+						<rectangle radius="4">
+							<reportElement x="9" y="101" width="249" height="20" backcolor="#E8E8E8" uuid="97ec9bcb-4b5e-48be-adf7-bfe1c62ce7a8">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<graphicElement>
+								<pen lineWidth="0.0"/>
+							</graphicElement>
+						</rectangle>
+						<rectangle radius="4">
+							<reportElement x="9" y="61" width="249" height="20" backcolor="#E8E8E8" uuid="f72c969c-40dc-446b-9337-b89b07831567">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<graphicElement>
+								<pen lineWidth="0.0"/>
+							</graphicElement>
+						</rectangle>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="766b84be-6e3d-4057-851b-f8e1278ae7b1"/>
+							<textFieldExpression><![CDATA[$F{folio_trabajo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="41a2988c-20e5-4852-9f8a-5cd3b4cc4874"/>
+							<textFieldExpression><![CDATA[$F{gastos}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="0687f742-8f07-4f30-9d8f-ab5f1b11741f"/>
+							<textFieldExpression><![CDATA[$F{dolares}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="54cd52c1-4656-4bba-ba06-10c367a1d158"/>
+							<textFieldExpression><![CDATA[$F{vales}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="3196ea5d-345b-4f16-bf40-ca6a1976eddd"/>
+							<textFieldExpression><![CDATA[$F{diferencia_de_cortes}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="7b3f52eb-db9a-4679-8e3b-c5578a032c84"/>
+							<textFieldExpression><![CDATA[$F{otros_faltantes}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="cc8306f6-c6b4-444b-bc92-6e9455166d4a"/>
+							<textFieldExpression><![CDATA[$F{otros_sobrantes}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="33b93c2a-37ed-4e67-9a54-abb1dcb33d26"/>
+							<textFieldExpression><![CDATA[$F{caja_verde_rep}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="3b818c26-f074-4ed0-990d-55b838a06fd4"/>
+							<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="df2d7f48-dd59-4f04-a7fa-0ef1a6396825"/>
+							<textFieldExpression><![CDATA[$F{sobrante_finanzas}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="cbffe03d-f6fa-42bf-9725-ec8c13f75e2a"/>
+							<textFieldExpression><![CDATA[$F{total_final}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="7b83049b-6302-4d87-bbb9-f1f2546777da"/>
+							<textFieldExpression><![CDATA[$F{deposito2}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="aa831cd4-ce63-4202-b8d7-3fb657f66460"/>
+							<textFieldExpression><![CDATA[$F{banco_interno}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="0" height="0" uuid="4cdfa4e9-0265-4867-8bd0-511cad60575a"/>
+							<textFieldExpression><![CDATA[$F{comentario}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="141" width="88" height="20" uuid="55ceaea3-0e6b-4d1d-ab63-1f52e1b28785">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{caja_verde_rep}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="10" y="141" width="160" height="20" uuid="8af730f7-192c-4199-8659-a32ab044b8f7">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[CAJA VERDE:]]></text>
+						</staticText>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="81" width="88" height="20" uuid="ca3501b3-8b1a-4856-9475-0faa65693fa5">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{diferencia_de_cortes}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="201" width="88" height="20" uuid="ed57c848-4e11-4a7b-a4de-703cc0a063c1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{total_final}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="161" width="88" height="20" uuid="ff1f15f0-d97e-4957-9f57-0895070f8a8d">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="10" y="121" width="160" height="20" uuid="c3b8247b-4f54-4b90-9c97-95e2b0d13610">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[OTROS SOBRANTES:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="10" y="81" width="160" height="20" uuid="c2149186-6d7c-464c-a029-ec9d13d88158">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[DIFERENCIA DE CORTES:]]></text>
+						</staticText>
+						<textField pattern="#,##0.00#">
+							<reportElement mode="Opaque" x="170" y="241" width="88" height="20" backcolor="#FCFB9A" uuid="a3899eea-a764-4c21-8512-21091752d89d">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{banco_interno}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="10" y="40" width="160" height="20" uuid="3f99af6b-341e-4a0e-9dd0-97374645fcb4">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[DOLARES:]]></text>
+						</staticText>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="61" width="88" height="20" uuid="71aaeffd-4831-42ec-aef0-daabf7e92426">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{vales}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="10" y="241" width="160" height="20" uuid="ebca2c9e-b43a-4ba6-b699-10180b45fdee">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[PENDIENTE DE DEPOSITAR:]]></text>
+						</staticText>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="40" width="88" height="20" uuid="9f520485-dedb-497a-a5cf-fbc67fcbb6c7">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{dolares}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="121" width="88" height="20" uuid="68a7229b-647e-411b-95cb-d3e7168d4e58">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{otros_sobrantes}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="10" y="101" width="160" height="20" uuid="cf87b790-c702-4894-8977-b73687f114a1">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[OTROS FALTANTES:]]></text>
+						</staticText>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="101" width="88" height="20" uuid="8a658b71-9ae7-419c-ac8b-f23d7271d2c3">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{otros_faltantes}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="10" y="201" width="160" height="20" uuid="0013d27b-8c41-41fa-8fee-730c81126b9f">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[TOTAL FINAL:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="270" y="162" width="219" height="15" uuid="cf3af173-e2b2-462e-85cc-20b48a598bc1">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Bottom">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[COMENTARIO:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="10" y="221" width="160" height="20" uuid="760a3d38-26b7-4985-8a67-2b8a3276ab11">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[DEPOSITO:]]></text>
+						</staticText>
+						<textField pattern="#,##0.00#">
+							<reportElement mode="Opaque" x="170" y="181" width="88" height="20" forecolor="#000000" backcolor="#CCE8CA" uuid="1b0aa200-4bb0-4e93-8cb4-01a93c82389d">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCE8CA"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCE8CA"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCE8CA"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCE8CA"/>
+							</box>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{sobrante_finanzas}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="221" width="88" height="20" uuid="34ef4f23-dbc6-45a5-a0f5-9a0b4275bd28">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{deposito2}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="10" y="61" width="160" height="20" uuid="b2fbce4b-a01f-442d-ad46-86d84ad02f38">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[VALES:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="10" y="161" width="160" height="20" uuid="329798c2-ce99-4bf3-b247-f902e623a5c1">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[TOTAL:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="10" y="181" width="160" height="20" uuid="8718d0be-0fb1-4066-8920-be9a98e6f4ed">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[SOBRANTES FINANZAS:]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="270" y="177" width="269" height="84" uuid="2fdd2303-4545-42bb-bbe4-c7412b96439a"/>
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{comentario}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="10" y="5" width="532" height="30" uuid="a39bc4eb-0fbe-45a1-be6e-1b4938462d16">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="18" isBold="true"/>
+							</textElement>
+							<text><![CDATA[REPORTE DE REPOSICION DE EFECTIVO]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="270" y="80" width="272" height="15" uuid="e8866c5d-1067-4401-be3c-6da82db70bc2">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Bottom">
+								<font size="11" isBold="true" isUnderline="false"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{realizo_trabajo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="390" y="50" width="152" height="15" uuid="51a4aad7-d63f-4536-b194-3ab4fde095ef">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left">
+								<font size="11" isBold="true" isUnderline="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["FECHA: "+$F{fecha_trabajo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="390" y="65" width="152" height="15" uuid="419c7a2d-75e9-4666-aa25-72bcc0a7cb80">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true" isUnderline="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{grupo_para_cortes}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="270" y="95" width="272" height="15" uuid="c0c9a05c-cfc7-4429-ab0e-60dbc29ca91f">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[ELABORO:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="270" y="125" width="272" height="15" uuid="05c4c2ad-ef5a-4ab5-be6d-8bf994fb685c">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[REVISO:]]></text>
+						</staticText>
+						<line>
+							<reportElement x="270" y="95" width="272" height="1" uuid="672aeea8-4826-4cd6-9c5e-0a0f924a144f"/>
+						</line>
+						<line>
+							<reportElement x="270" y="124" width="272" height="1" uuid="8e77e26b-6a35-413e-bb68-008f5f777d5b"/>
+						</line>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</lastPageFooter>
 	<summary>
-		<band height="94" splitType="Stretch">
+		<band height="95" splitType="Stretch">
+			<rectangle radius="4">
+				<reportElement x="360" y="3" width="180" height="61" uuid="865ae2e9-023d-403b-bf72-a922776d075f"/>
+			</rectangle>
 			<rectangle radius="4">
 				<reportElement x="570" y="4" width="180" height="90" uuid="e8c58714-8245-47f8-95b8-50deb1df38e5"/>
 				<graphicElement>
@@ -899,18 +1541,18 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="4">
-				<reportElement x="9" y="3" width="355" height="61" uuid="69f7fa80-efd0-4e6b-a541-5af589340369"/>
+				<reportElement x="9" y="3" width="346" height="61" uuid="69f7fa80-efd0-4e6b-a541-5af589340369"/>
 			</rectangle>
 			<componentElement>
-				<reportElement x="17" y="4" width="342" height="60" forecolor="#000000" backcolor="#FFCC99" uuid="f438c736-3422-4f2f-9b1e-679853bbd4ab"/>
+				<reportElement x="17" y="4" width="513" height="57" forecolor="#000000" backcolor="#FFCC99" uuid="f438c736-3422-4f2f-9b1e-679853bbd4ab"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical" ignoreWidth="true">
-					<datasetRun subDataset="totales_de_concentrado_de_cortes" uuid="044decf3-9459-476a-9a72-b9ff390deee2">
+					<datasetRun subDataset="totales_de_concentrado_de_cortes" uuid="553cd536-0c34-43be-8a05-e53075cb6ecd">
 						<datasetParameter name="FOLIO_TRABAJO_PARAMETRO">
 							<datasetParameterExpression><![CDATA[$F{FOLIO_TRABAJO_DE_CORTE}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:listContents height="60" width="342">
+					<jr:listContents height="57" width="513">
 						<textField pattern="###0.00;-###0.00">
 							<reportElement x="62" y="2" width="60" height="10" uuid="05755ca9-85c4-4b10-a0fe-1c4ddc9e0e64"/>
 							<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -986,7 +1628,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textElement textAlignment="Right" verticalAlignment="Middle">
 								<font size="7" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{Planes}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{plan_efectivo}]]></textFieldExpression>
 						</textField>
 						<textField pattern="###0.00;-###0.00">
 							<reportElement x="62" y="35" width="60" height="10" uuid="c1500ecc-8bdd-4c35-96f3-c14556b9931c"/>
@@ -1047,6 +1689,58 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 						<line>
 							<reportElement x="162" y="33" width="170" height="1" uuid="8f628848-0ebb-4f1c-b598-0b19e1d186e9"/>
 						</line>
+						<textField pattern="###0.00;-###0.00">
+							<reportElement x="440" y="30" width="60" height="10" uuid="391d069f-30b7-4889-91a2-3ff0ad6e03ea"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="7" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{plan_sistema}]]></textFieldExpression>
+						</textField>
+						<textField pattern="###0.00;-###0.00">
+							<reportElement x="440" y="20" width="60" height="10" uuid="9e62d1a6-bde6-4e14-94f4-68db6bfe989d"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="7" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{plan_efectivo}]]></textFieldExpression>
+						</textField>
+						<textField pattern="###0.00;-###0.00">
+							<reportElement x="440" y="40" width="60" height="10" uuid="c4bb5c27-7849-4fc5-9c5e-b93259245d0e"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="7" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{plan_diferencia}]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement x="440" y="39" width="60" height="1" uuid="ad127fa3-6c62-4f05-96fe-4d408b030f6f"/>
+						</line>
+						<staticText>
+							<reportElement style="Column header" x="360" y="30" width="80" height="10" forecolor="#000000" uuid="fa350770-65a8-4e21-a5f1-8b915d22a4a7"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[PLAN (SISTEMA):]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Column header" x="360" y="20" width="80" height="10" forecolor="#000000" uuid="3393a78d-ff64-4be9-92ff-28f209f057f1"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[PLAN (EFECTIVO): ]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Column header" x="360" y="40" width="80" height="10" forecolor="#000000" uuid="445f94c1-3240-49b9-bed8-f5d85d0f04ca"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[DIFERENCIA:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Column header" x="360" y="7" width="140" height="10" forecolor="#000000" uuid="240aeb47-b84e-43fc-a059-00fcf3cdcced"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8" isBold="true" isUnderline="true"/>
+							</textElement>
+							<text><![CDATA[DIFERENCIA EN PLANES TELCEL]]></text>
+						</staticText>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
