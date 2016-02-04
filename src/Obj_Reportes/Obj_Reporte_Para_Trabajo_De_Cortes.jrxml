@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-02-03T10:01:42 -->
+<!-- 2016-02-03T13:23:37 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_Para_Trabajo_De_Cortes" language="groovy" printOrder="Horizontal" pageWidth="791" pageHeight="612" orientation="Landscape" columnWidth="751" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="527b8c71-0150-4c5e-ab8d-96445c8baa40">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -112,7 +112,7 @@ where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
 	</subDataset>
 	<parameter name="folio_trabajo" class="java.lang.Integer" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA[31]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[83]]></defaultValueExpression>
 	</parameter>
 	<parameter name="slFactory" class="java.lang.Object"/>
 	<parameter name="slSchema" class="java.lang.Object"/>
