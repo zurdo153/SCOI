@@ -80,7 +80,7 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbTipoDePrecio = new JComboBox(tipoDePrecio);
 	
-	String presentado[] = {"Ticket","Producto"};
+	String presentado[] = {"Ticket","Producto","Establecimiento"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbPresentado = new JComboBox(presentado);
 	
@@ -1147,13 +1147,10 @@ public void filtroProductos(String cadena){
 			   		String condicion = "";
 			   		
 			   		if(!Lista.equals("")){
-			   			
 			   			condicion = " where jerarquia "+Lista.replace("''","'");
 			   		}
 			   		
 					String todos = "select "+folio_columna+" as folio,upper(nombre) from "+nombre_de_tabla+condicion+" order by nombre";
-					
-					System.out.println(todos);
 					Statement s;
 					ResultSet rs;
 					try {

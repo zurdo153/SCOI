@@ -12,7 +12,6 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -22,14 +21,11 @@ import javax.swing.UIManager;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
-import Obj_Lista_de_Raya.Obj_Departamento;
-import Obj_Lista_de_Raya.Obj_Establecimiento;
-
 import com.toedter.calendar.JDateChooser;
 
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Compra_De_Cascos_Por_Fecha extends JFrame {
+public class Cat_Reporte_De_Compra_De_Cascos extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -42,7 +38,7 @@ public class Cat_Reporte_De_Compra_De_Cascos_Por_Fecha extends JFrame {
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	
-	public Cat_Reporte_De_Compra_De_Cascos_Por_Fecha(){
+	public Cat_Reporte_De_Compra_De_Cascos(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia-comunitaria-icono-9465-32.png"));
 		this.setTitle("Reportes De Compra De Cascos");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Reportes De Compra De Cascos"));
@@ -125,7 +121,7 @@ public class Cat_Reporte_De_Compra_De_Cascos_Por_Fecha extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Compra_De_Cascos_Por_Fecha().setVisible(true);
+			new Cat_Reporte_De_Compra_De_Cascos().setVisible(true);
 		}catch(Exception e){	}
 	}
 
