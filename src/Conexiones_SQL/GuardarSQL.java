@@ -5040,4 +5040,62 @@ public boolean Guardar_Actividades_Con_Respuesta(String[][] actividades, int dia
 	}		
 	return true;
 	}
+
+public boolean Guardar_Alimentacion_De_Inventario_Fisico(Object[][] inv_fis){
+	
+	String query =  "exec sp_insert_inventario_fisico ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	
+	PreparedStatement pstmt = null;
+	
+	try {
+		pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		
+		int folio_inventario_fisico = busca_y_actualiza_proximo_folio(22);//FOLIO CONSECUTIVO CORRESPONDIENTE A ALIMENTACION DE INVENTARIOS FISICOS
+		for(int i=0; i<inv_fis.length; i++){
+			
+				pstmt.setInt   (1, folio_inventario_fisico);
+				pstmt.setString(2, inv_fis[i][0].toString().trim());
+				pstmt.setString(3, inv_fis[i][1].toString().trim().toUpperCase());           
+				pstmt.setDouble(4, Double.valueOf(inv_fis[i][2].toString().trim()));
+				pstmt.setDouble(5, Double.valueOf(inv_fis[i][3].toString().trim()));
+				pstmt.setDouble(6, Double.valueOf(inv_fis[i][4].toString().trim()));
+				pstmt.setDouble(7, Double.valueOf(inv_fis[i][5].toString().trim()));
+				pstmt.setDouble(8, Double.valueOf(inv_fis[i][6].toString().trim()));
+				pstmt.setDouble(9, Double.valueOf(inv_fis[i][7].toString().trim()));
+				pstmt.setDouble(10,Double.valueOf(inv_fis[i][8].toString().trim()));
+				pstmt.setDouble(11,Double.valueOf(inv_fis[i][9].toString().trim()));
+				pstmt.setDouble(12,Double.valueOf(inv_fis[i][10].toString().trim()));
+				pstmt.setString(13,inv_fis[i][11].toString().trim().toUpperCase());
+				pstmt.setString(14,inv_fis[i][12].toString().trim().toUpperCase());
+				pstmt.setInt(15, usuario.getFolio());
+				
+				pstmt.executeUpdate();
+		}
+		
+		con.commit();
+	} catch (Exception e){
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Alimentacion_De_Inventario_Fisico  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Alimentacion_De_Inventario_Fisico \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Alimentacion_De_Inventario_Fisico  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
 } 

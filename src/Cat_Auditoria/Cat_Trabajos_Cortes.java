@@ -1302,6 +1302,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		JTextField txtReviso = new Componentes().text(new JTextField(), "Reviso Trabajo.", 200, "String");
 		
 		JTextArea txaComentario = new Componentes().textArea(new JTextArea(), "Comnetarios", 420);
+		JScrollPane observacion = new JScrollPane(txaComentario);
 		
 		JTextField txtGastos = new Componentes().text(new JTextField(), "Gastos", 20, "Double");
 		JTextField txtDolares = new Componentes().text(new JTextField(), "Dolares", 20, "Double");
@@ -1341,6 +1342,10 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			txtTotalPlanesRep.setBorder(BorderFactory.createLineBorder(Color.black));
 			txaComentario.setBorder(BorderFactory.createLineBorder(Color.black));
 			
+			txaComentario.setLineWrap(true); 
+			txaComentario.setWrapStyleWord(true);
+			
+			
 			
 			int x=15,y=20,ancho=110;
 			
@@ -1375,8 +1380,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			panelRep.add(txtTotal).setBounds(x+ancho+10,y,ancho,20);								panelRep.add(new JLabel("Comentarios:")).setBounds(x+ancho+140,y,ancho+90,20);
 			
 			panelRep.add(new JLabel("Sobrantes Finanazas:")).setBounds(x,y+=25,ancho+50,20);				
-			panelRep.add(txtSobrantesFinanazas).setBounds(x+ancho+10,y,ancho,20);					panelRep.add(txaComentario).setBounds(x+ancho+140,y,ancho+90,95);
-			
+			panelRep.add(txtSobrantesFinanazas).setBounds(x+ancho+10,y,ancho,20);					panelRep.add(observacion).setBounds(x+ancho+140,y,ancho+90,95);
 			
 			panelRep.add(new JLabel("Total Final:")).setBounds(x,y+=25,ancho,20);
 			panelRep.add(txtTotalFinal).setBounds(x+ancho+10,y,ancho,20);
