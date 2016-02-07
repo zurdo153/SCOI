@@ -1,6 +1,7 @@
 package Cat_Auditoria;
 
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -25,16 +27,20 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Cat_Planeacion.Cat_Alimentacion_De_Plan_Semanal.Cat_Observacion_De_Actividad;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.GuardarSQL;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -47,19 +53,39 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
 		
-		JTextArea txa_Resultado_Seleccion = new Componentes().textArea(new JTextArea(), "Concepto", 135);
-		JScrollPane Resultado = new JScrollPane(txa_Resultado_Seleccion);
+		JTextArea txa_Observacion = new Componentes().textArea(new JTextArea(), "Obsevacion De Inventario Físico", 1000);
+		JScrollPane observacion = new JScrollPane(txa_Observacion);
 		
-		DefaultTableModel model = new DefaultTableModel(null, new String[]{"Folio", "Nombre Completo","Establecimiento","Departamento","Puesto", " *"}
-				){
+		String[] columnas = {"Codigo Producto"
+							,"Producto"
+							,"Contenido"
+							,"Existencia Teorica"
+							,"Existencia Fisica"
+							,"Diferencia"
+							,"Costo Por Carton"
+							,"Costo Por Pieza"
+							,"Costo Total Teorico"
+							,"Costo Total Fisico"
+							,"Diferiencia Real Ultimo Costo"
+							,"Establecimiento"
+							,"Fecha Aplicación Inventario"};
+
+		DefaultTableModel model = new DefaultTableModel(null, columnas){
 		     @SuppressWarnings("rawtypes")
 			Class[] types = new Class[]{
-		    	java.lang.Integer.class,
 		    	java.lang.String.class,
 		    	java.lang.String.class,
 		    	java.lang.String.class,
 		    	java.lang.String.class,
-		    	java.lang.Boolean.class	    	
+		    	java.lang.String.class,
+		    	java.lang.String.class,
+		    	java.lang.String.class,
+		    	java.lang.String.class,
+		    	java.lang.String.class,
+		    	java.lang.String.class,
+		    	java.lang.String.class,
+		    	java.lang.String.class,
+		    	java.lang.String.class	
 	         };
 		     @SuppressWarnings({ "rawtypes", "unchecked" })
 			public Class getColumnClass(int columnIndex) {
@@ -72,11 +98,17 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 	        	 	case 2 : return false; 
 	        	 	case 3 : return false; 
 	        	 	case 4 : return false; 
-	        	 	case 5 : return true; 
+	        	 	case 5 : return false; 
+	        	 	case 6 : return false; 
+	        	 	case 7 : return false; 
+	        	 	case 8 : return false; 
+	        	 	case 9 : return false; 
+	        	 	case 10 : return false; 
+	        	 	case 11 : return false; 
+	        	 	case 12 : return false; 
 	        	 } 				
 	 			return false;
 	 		}
-			
 		};
 		
 		JTable tabla = new JTable(model);
@@ -86,215 +118,190 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 		private TableRowSorter trsfiltro;
 		JTextField txtFiltro= new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 		
+		JButton btnExaminar = new JButton("Examinar",new ImageIcon("Iconos/zoom_icon&16.png"));
+		
 		JButton btnAgregar = new JButton("Aplicar",new ImageIcon("imagen/Aplicar.png"));
 		JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 		
 		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 		Obj_Seleccion_De_Usuarios usuarios= new Obj_Seleccion_De_Usuarios();
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public Cat_Alimentacion_De_Inventarios_Fisicos()	{
-			this.setSize(1024,740);
-			this.setLocationRelativeTo(null);
+		public Cat_Alimentacion_De_Inventarios_Fisicos(){
+			
+			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+			int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+			
 			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/ayudar-a-ver-el-boton-icono-4900-64.png"));
-			this.setTitle("Filtro De Seleccion De Colaboradores");
-		    this.panel.setBorder(BorderFactory.createTitledBorder("Selecciona A El (Los) Colaborador(es) A El (Los) Que Aplicara La Actividad"));
-			this.trsfiltro = new TableRowSorter(model); 
+			this.setTitle("Alimentacion De Inventario Físico");
+		    this.panel.setBorder(BorderFactory.createTitledBorder("Inventario Físico"));
+			
+		    this.trsfiltro = new TableRowSorter(model); 
 			this.tabla.setRowSorter(trsfiltro);  
-			this.txa_Resultado_Seleccion.setEditable(false);
-			this.txa_Resultado_Seleccion.setLineWrap(true); 
-			this.txa_Resultado_Seleccion.setWrapStyleWord(true);
+			this.txa_Observacion.setEditable(true);
+			this.txa_Observacion.setLineWrap(true); 
+			this.txa_Observacion.setWrapStyleWord(true);
 			
 			int x=15,y=20,width=100,height=20;
 
-			this.panel.add(txtFiltro).setBounds                                                   (x     ,y     ,width*9+40 ,height);
-			this.panel.add(scroll).setBounds                                                      (x     ,y+=20 ,width*10-10,width*3);
+			this.panel.add(txtFiltro).setBounds                                      (x        ,y    						,ancho-140   ,height);
+			this.panel.add(btnExaminar).setBounds                                    (ancho-120,y     						,width       ,height);
+			
+			this.panel.add(scroll).setBounds                                         (x        ,y+=20 						,ancho-35	 ,(((alto-40)/5)*3) );
 			
 			x=15;
-			this.panel.add(new JLabel("     Detalle De La Configuracion Seleccionada:")).setBounds(x     ,y+=320,width*3    ,height);
-			this.panel.add(Resultado  ).setBounds                                                 (x     ,y+=20 ,width*10-10,width*3);
-			this.panel.add(btnDeshacer).setBounds                                                 (x     ,y+=305,width      ,height);
-			this.panel.add(btnAgregar).setBounds                                                  (x+892 ,y     ,width      ,height);
-			
-			importar_excel();
+			this.panel.add(new JLabel("Observacion De Inventario Físico:")).setBounds(x        ,y+=(((alto-40)/5)*3) +30 	,width*3     ,height);
+			this.panel.add(observacion  ).setBounds                                    (x        ,y+=25 						,ancho-35	 ,(((alto-300)/5)*1) );
+			this.panel.add(btnDeshacer).setBounds                                    (x        ,y+=(((alto-300)/5)*1) + 15 ,width       ,height);
+			this.panel.add(btnAgregar).setBounds                                     (ancho-120,y 							,width       ,height);
 			
 			this.cont.add(panel);
 			this.init_tabla();
-			this.tabla.addMouseListener(opcomentario);
 			
-//			this.tabla.addKeyListener(opseleccioncontecladocomentario);
+			this.btnExaminar.addActionListener(opExaminar);
+			this.btnDeshacer.addActionListener(opDeshacer);
+			this.btnAgregar.addActionListener(opGuardar);
+			
 			this.txtFiltro.addKeyListener(opFiltroFolio);
-			
-			this.btnAgregar.addActionListener(Agregar);
-			this.btnDeshacer.addActionListener(deshacer);
-
 		}
-		String nombre_archivo_excel_a_leer="excel";
-		public void importar_excel() {
+		
+		ActionListener opExaminar = new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+					
+				JFileChooser elegir = new JFileChooser();
+            	//Creamos el filtro
+            	FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.xls", "xls");
+            	 
+            	//Le indicamos el filtro
+            	elegir.setFileFilter(filtro);
+            	
+            	int opcion = elegir.showOpenDialog(btnExaminar);
+		                	
+                 //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
+                 if(opcion == JFileChooser.APPROVE_OPTION){
+                    
+                	 String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
+                    
+	                    if(!pathArchivo.equals("")){
+	                      importar_excel(pathArchivo);                    	
+	                    }
+                 }
+			}
+		};
+		
+		public void importar_excel(String rutaCompleta) {
 			Workbook libroexcel = null;
 			try {
-				libroexcel = Workbook.getWorkbook(new File(System.getProperty("user.dir")+"/Excel/Inventarios/"+nombre_archivo_excel_a_leer+".xls"));
+//				libroexcel = Workbook.getWorkbook(new File(System.getProperty("user.dir")+"/Excel/Inventarios/"+nombre_archivo_excel_a_leer+".xls"));
+				libroexcel = Workbook.getWorkbook(new File(rutaCompleta));
+				
+				 Sheet hoja = libroexcel.getSheet(0); //Seleccionamos la hoja que vamos a leer
+				 String[] vector = new String[hoja.getRows()];
+				 
+				 
+				 for (int columna = 0; columna < hoja.getColumns(); columna++) {
+					 if(!hoja.getCell(columna, 0).getContents().equals(columnas[columna].toString())){
+						 JOptionPane.showMessageDialog(null, "La Columna  ["+columnas[columna].toString()+"]  No Coinside Con La Del Archivo Que Selecciono,\nVerifique Que El Archivo Seleccionado Sea El Correcto O Que Las Columnas\nDel Archivo Tengan Los Nombres Correctamente.","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+		    				return;
+					 }
+				 }
+				 
+				 
+				 
+				 
+				 for (int fila = 1; fila < hoja.getRows(); fila++) {                   
+					 for (int columna = 0; columna < hoja.getColumns(); columna++) {
+						 vector[columna]=hoja.getCell(columna, fila).getContents();
+					 }
+					 model.addRow(vector);
+			  }
+				 
+				 
+				 
 			} catch (BiffException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error Al Intentar Leer El Archivo \nMensaje:"+e.getMessage(), "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			} 
-			 Sheet hoja = libroexcel.getSheet(0); //Seleccionamos la hoja que vamos a leer
-			 String columnaA ="",columnaB="",columnaC="";
-			 
-			 for (int fila = 1; fila < hoja.getRows(); fila++) {                     //recorremos las filas
-				 for (int columna = 0; columna < hoja.getColumns(); ) {     //recorremos las columnas
-					 if(columna==0){
-					 columnaA = hoja.getCell(columna, fila).getContents();        //setear la celda leida a nombre
-					 }
-					 if(columna==1){
-					 columnaB = hoja.getCell(columna, fila).getContents();        //setear la celda leida a nombre
-					 }
-					 columnaC= hoja.getCell(columna, fila).getContents();        //setear la celda leida a nombre
-				    System.out.print("columna A:"+columnaA+"\n" ); // imprimir nombre
-				    System.out.print("Columna B:"+columnaB+"\n" ); // imprimir nombre
-				columna++;
-				 }
-				System.out.println("\n");
-		  }
+
 		};
 		
-		
-		ActionListener Agregar = new ActionListener() {
+		ActionListener opDeshacer = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int[] columnas = {0,1,2};
-				new Obj_Filtro_Dinamico_Plus(tabla,"", columnas);
-				if(tabla.isEditing()){
-					tabla.getCellEditor().stopCellEditing();
-				}
-				txtFiltro.setText("");
+				model.setRowCount(0);
+				txa_Observacion.setText("");
+			}
+		};
+		
+		ActionListener opGuardar = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				
-//				usuarios.setUsuarios(tabla_seleccion_de_folios_colaboradores());
-									dispose();
+				txtFiltro.setText("");
+				filtro();
+				Object[][] matriz = new Object[tabla.getRowCount()][tabla.getColumnCount()];
+				
+				for(int i = 0; i < tabla.getRowCount(); i++){
+					for(int j = 0; j < tabla.getColumnCount(); j++){
+						matriz[i][j] = tabla.getValueAt(i, j).toString().trim();
+					}
+				}
+				
+				if(new GuardarSQL().Guardar_Alimentacion_De_Inventario_Fisico(matriz)){
+					JOptionPane.showMessageDialog(null, "La Alimentacion De Inventario Fisico Se Guardo Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					return;
+				}else{
+					JOptionPane.showMessageDialog(null, "No Se A Podido Gaurdar El Inventario Fisico", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
+				
+				
 			}
 		};
-		
-		ActionListener deshacer = new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				txa_Resultado_Seleccion.setText("");
-				refrestabla();
-			 }
-			};
-		
-			
-		MouseListener opcomentario = new MouseListener() {
-			public void mouseReleased(MouseEvent arg0) {}
-			public void mousePressed(MouseEvent arg0) {}
-			public void mouseExited(MouseEvent arg0) {}
-			public void mouseEntered(MouseEvent arg0) {}
-			public void mouseClicked(MouseEvent arg0) {
-			}
-		};
-		
 		
 		KeyListener opFiltroFolio = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				int[] columnas = {0,1,2,3,4};
-				new Obj_Filtro_Dinamico_Plus(tabla, txtFiltro.getText().toUpperCase(), columnas);
+				filtro();
 			}
 			public void keyTyped(KeyEvent arg0)   {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		
-		public void tabla_seleccion_default_usuario(){
-			for(int i=0; i<tabla.getRowCount(); i++){
-				 if(Integer.valueOf(tabla.getValueAt(i,0).toString().trim())==(usuario.getFolio())){
-					  model.setValueAt("true", i, 5);
-			     }
-			}
+		public void filtro(){
+			int[] columnas = {0,1,2,3,4};
+			new Obj_Filtro_Dinamico_Plus(tabla, txtFiltro.getText().toUpperCase(), columnas);
 		}
 		
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public String[] tabla_seleccion_para_comentario(){
-			Vector vector = new Vector();
-			for(int i=0; i<tabla.getRowCount(); i++){
-				 if(Boolean.valueOf(tabla.getValueAt(i,5).toString().trim())){
-					  vector.add(model.getValueAt(i,1).toString().trim());
-			     }
-			}
-			String[] matriz = new String[vector.size()];
-			int j =0;
-			while(j<vector.size()){
-				matriz[j] = vector.get(j).toString();
-				j++;
-			}
-			return matriz;
-		}
-		
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public String[] tabla_seleccion_de_folios_colaboradores(){
-			Vector vector = new Vector();
-			for(int i=0; i<tabla.getRowCount(); i++){
-				 if(Boolean.valueOf(tabla.getValueAt(i,5).toString().trim())){
-					  vector.add(model.getValueAt(i,0).toString().trim());
-			     }
-			}
-			String[] matriz = new String[vector.size()];
-			int j =0;
-			while(j<vector.size()){
-				matriz[j] = vector.get(j).toString();
-				j++;
-			}
-			return matriz;
-		}
-		
-		@SuppressWarnings("unchecked")
 		public void init_tabla(){
+			
 			this.tabla.getTableHeader().setReorderingAllowed(false) ;
 			this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-			this.tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-			this.tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-			this.tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-			this.tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-			this.tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-			this.tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
-			
-			this.tabla.getColumnModel().getColumn(0).setMaxWidth(40);
-			this.tabla.getColumnModel().getColumn(0).setMinWidth(40);
-			this.tabla.getColumnModel().getColumn(1).setMinWidth(335);
-			this.tabla.getColumnModel().getColumn(1).setMaxWidth(335);
-			this.tabla.getColumnModel().getColumn(2).setMinWidth(140);
-			this.tabla.getColumnModel().getColumn(2).setMaxWidth(140);
-			this.tabla.getColumnModel().getColumn(3).setMinWidth(185);
-			this.tabla.getColumnModel().getColumn(3).setMaxWidth(500);
-			this.tabla.getColumnModel().getColumn(4).setMinWidth(240);
-			this.tabla.getColumnModel().getColumn(4).setMaxWidth(500);
-			this.tabla.getColumnModel().getColumn(5).setMinWidth(20);
-			this.tabla.getColumnModel().getColumn(5).setMaxWidth(30);
-			this.tabla.setRowSorter(trsfiltro);  
-			refrestabla();
-		}
-		
-		private void refrestabla(){
-			model.setRowCount(0);
-			Statement s;
-			ResultSet rs;
-			try {
-				Connexion con = new Connexion();
-				s = con.conexion().createStatement();
-				rs = s.executeQuery("exec sp_filtro_empleado_actividades_status_vigente "+usuario.getFolio());
-				while (rs.next())
-				{  String [] fila = new String[6];
-				   fila[0] = rs.getString(1).trim();
-				   fila[1] = rs.getString(2).trim();
-				   fila[2] = rs.getString(3).trim(); 
-				   fila[3] = rs.getString(4).trim(); 
-				   fila[4] = rs.getString(5).trim(); 
-				   fila[5] = "false";
-				   model.addRow(fila); 
-				}	
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en Cat_Etapas en la funcion refrestabla  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			int a = 120,b=500;
+			for(int i = 0; i < 13; i++){
+				if(i<=0){
+					tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+				}else{
+					tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+				}
+				
+				if(i==1){
+					tabla.getColumnModel().getColumn(i).setMinWidth(b);
+					tabla.getColumnModel().getColumn(i).setMaxWidth(a+b);
+				}else{
+					
+					if(i==10 || i==12){
+						tabla.getColumnModel().getColumn(i).setMinWidth(a+40);
+						tabla.getColumnModel().getColumn(i).setMaxWidth(a*3);
+					}else{
+						tabla.getColumnModel().getColumn(i).setMinWidth(a);
+						tabla.getColumnModel().getColumn(i).setMaxWidth(a*3);
+					}
+				}
 			}
 		}
 	
