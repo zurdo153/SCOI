@@ -8064,26 +8064,73 @@ public class BuscarSQL {
 	public Object[][] Reporte_De_Estado_de_Resultados(int cantidad_de_columnas, String fecha_inicial, String fecha_final) throws SQLException{
 		Statement stmt = null;
 		String query = "exec sp_reporte_de_estado_resultados '"+fecha_inicial+"','"+fecha_final+"'" ;
-//		String query = " SELECT     TOP(20)   'xyz concepto', 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 FROM  tb_empleado" ;
+//		String query = " SELECT     TOP(20)   0,'xyz concepto', 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 FROM  tb_empleado" ;
 		Object[][] rp_competencia = new Object[getFilas(query)][cantidad_de_columnas];
 		DecimalFormat df= new DecimalFormat("#0.00");
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			int i=0 ;double total=0;
+			int i=0,valida=0 ;double total=0,VENTAS=0,UTILIDAD_BRUTA_$=0,UTILIDAD_BRUTA2_$=0,UTILIDAD_OPERATIVA=0,UTILIDAD_NETA=0;
+			String CONCEPTO="";
+			
 			while(rs.next()){
 				total=0;
 				for(int j=0; j<(cantidad_de_columnas-1); j++){
-					
-					if(j==0){
+					if(j<2){
 						rp_competencia[i][j] = rs.getObject(j+1);
+						if(rs.getInt(1)==0){
+							valida=0;
+						}else{
+							valida=1;
+						}
+						CONCEPTO=rs.getString(2);
 					}else{
 					    rp_competencia[i][j] = df.format(rs.getDouble(j+1));
-						total+= rs.getDouble(j+1);
-						
+					    
+					    if(valida==1){
+					    	total+= rs.getDouble(j+1);
+					    }
+					    
+                        if(CONCEPTO.equals("VENTAS")){
+                        	VENTAS=total;
+						}
+                        
+                        if(CONCEPTO.equals("UTILIDAD BRUTA $")){
+                        	UTILIDAD_BRUTA_$=total;
+						}
+                        
+                        if(CONCEPTO.equals("UTILIDAD BRUTA 2 $")){
+                        	UTILIDAD_BRUTA2_$=total;
+						}
+                        
+                        if(CONCEPTO.equals("UTILIDAD OPERATIVA")){
+                        	UTILIDAD_OPERATIVA=total;
+						}
+                        
+                        if(CONCEPTO.equals("UTILIDAD NETA")){
+                        	UTILIDAD_NETA=total;
+						}
 					}
 				}
+				
 				rp_competencia[i][cantidad_de_columnas-1] = df.format(total);
+				
+				if(CONCEPTO.equals("UTILIDAD BRUTA %")){
+					rp_competencia[i][cantidad_de_columnas-1] = df.format((UTILIDAD_BRUTA_$/VENTAS)*100);
+				}
+				
+				if(CONCEPTO.equals("UTILIDAD BRUTA 2 %")){
+					rp_competencia[i][cantidad_de_columnas-1] = df.format((UTILIDAD_BRUTA2_$/VENTAS)*100);
+				}
+				
+				if(CONCEPTO.equals("UTILIDAD OPERATIVA %")){
+					rp_competencia[i][cantidad_de_columnas-1] = df.format((UTILIDAD_OPERATIVA/VENTAS)*100);
+				}
+				
+				if(CONCEPTO.equals("UTILIDAD NETA %")){
+					rp_competencia[i][cantidad_de_columnas-1] = df.format((UTILIDAD_NETA/VENTAS)*100);
+				}
+				
 				i++;
 			}
 		} catch (Exception e) {
