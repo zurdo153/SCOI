@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-02-03T13:23:37 -->
+<!-- 2016-02-08T12:00:14 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_Para_Trabajo_De_Cortes" language="groovy" printOrder="Horizontal" pageWidth="791" pageHeight="612" orientation="Landscape" columnWidth="751" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="527b8c71-0150-4c5e-ab8d-96445c8baa40">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -112,7 +112,7 @@ where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
 	</subDataset>
 	<parameter name="folio_trabajo" class="java.lang.Integer" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA[83]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[89]]></defaultValueExpression>
 	</parameter>
 	<parameter name="slFactory" class="java.lang.Object"/>
 	<parameter name="slSchema" class="java.lang.Object"/>
@@ -243,54 +243,14 @@ ELSE 'NORMAL' END AS CLASIFICADOR_TRABAJO_DE_CORTE
 ,convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_trabajo,103) as FECHA_TRABAJO_DE_CORTE
 ,usuario.nombre+' '+usuario.ap_paterno+' '+usuario.ap_materno as REALIZO_TRABAJO
 ,isnull(tb_grupos_para_cortes.grupo_para_cortes,'SIN GRUPO') as GRUPO_PARA_CORTES
-
-,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo) = (tb_alimentacion_de_cortes.efectivo -(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) 
-																	from tb_alimentacion_efectivo_cortes 
-																	where tb_alimentacion_efectivo_cortes.folio_denominacion = 13 
-																	and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte))
-							then 'NO'
-						  else
-								'SI'
-					 end as efectivo_modif
-,case when (tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo) = (select isnull(sum(tb_retiros_a_cajeros.importe_retiro),0) from tb_retiros_a_cajeros where tb_retiros_a_cajeros.folio_corte = tb_alimentacion_de_cortes.folio_corte)
-							then 'NO'
-						  else
-								'SI'
-					 end as retiros_programados_modif
-,case when (tb_alimentacion_de_cortes.total_cheques_para_trabajo) = tb_alimentacion_de_cortes.cheques 
-							then 'NO'
-						  else
-								'SI'
-					 end as cheques_modif
-,case when (tb_alimentacion_de_cortes.total_vales_para_trabajo) = (select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 13 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte)
-							then 'NO'
-						  else
-								'SI'
-					 end as vales_modif
-,case when (tb_alimentacion_de_cortes.total_dolares_para_trabajo) = (select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 12 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte)
-							then 'NO'
-						  else
-								'SI'
-					 end as dolares_modif
-,case when (tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo) = (select isnull(sum(tb_captura_fuente_sodas.importe),0) from tb_captura_fuente_sodas where tb_captura_fuente_sodas.folio_corte = tb_alimentacion_de_cortes.folio_corte)
-							then 'NO'
-						  else
-								'SI'
-					 end as fuente_sodas_modif
-,case when (tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo) = (SUM(isnull(tb_vauchers.importe,0))-isnull(sum(tb_vauchers.retiro),0))
-							then 'NO'
-						  else
-								'SI'
-					 end as pines_modif
-
-
-
+,isnull(modifico_corte.nombre+' '+modifico_corte.ap_paterno+' '+modifico_corte.ap_materno,'') as USUARIO_MODIFICO_TRABAJO
 
 from tb_alimentacion_de_cortes
 inner join tb_establecimiento on tb_establecimiento.folio = tb_alimentacion_de_cortes.folio_establecimiento_de_corte
 --inner join tb_tabla_de_asignaciones_para_cortes on tb_tabla_de_asignaciones_para_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte
 inner join tb_empleado as cajero on cajero.folio = tb_alimentacion_de_cortes.folio_empleado
 inner join tb_empleado as usuario on usuario.folio = tb_alimentacion_de_cortes.folio_usuario_trabajo_de_corte
+left outer join tb_empleado as modifico_corte on modifico_corte.folio = tb_alimentacion_de_cortes.folio_usuario_modifico_para_trabajo
 left outer join tb_vauchers on tb_vauchers.folio_corte = tb_alimentacion_de_cortes.folio_corte
 inner join tb_grupos_para_cortes on tb_grupos_para_cortes.folio_grupo_para_cortes = tb_alimentacion_de_cortes.folio_grupo_para_cortes
 
@@ -317,11 +277,11 @@ group by tb_establecimiento.nombre
 		,tb_alimentacion_de_cortes.fecha_de_trabajo
 		,usuario.nombre+' '+usuario.ap_paterno+' '+usuario.ap_materno
 		,tb_grupos_para_cortes.grupo_para_cortes
+		,modifico_corte.nombre+' '+modifico_corte.ap_paterno+' '+modifico_corte.ap_materno
 
-
-		,tb_alimentacion_de_cortes.efectivo_para_trabajo 
-		,tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo 
-		,tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo 
+		--,tb_alimentacion_de_cortes.efectivo_para_trabajo 
+		--,tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo 
+		--,tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo 
 		,tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo 
 		,tb_alimentacion_de_cortes.total_cheques_para_trabajo 
 		,tb_alimentacion_de_cortes.total_vales_para_trabajo 
@@ -348,17 +308,11 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 	<field name="FECHA_DE_CORTE" class="java.lang.String"/>
 	<field name="OBSERVACION" class="java.lang.String"/>
 	<field name="FOLIO_TRABAJO_DE_CORTE" class="java.lang.Integer"/>
-	<field name="efectivo_modif" class="java.lang.String"/>
-	<field name="retiros_programados_modif" class="java.lang.String"/>
-	<field name="cheques_modif" class="java.lang.String"/>
-	<field name="vales_modif" class="java.lang.String"/>
-	<field name="dolares_modif" class="java.lang.String"/>
-	<field name="fuente_sodas_modif" class="java.lang.String"/>
-	<field name="pines_modif" class="java.lang.String"/>
 	<field name="CLASIFICADOR_TRABAJO_DE_CORTE" class="java.lang.String"/>
 	<field name="FECHA_TRABAJO_DE_CORTE" class="java.lang.String"/>
 	<field name="REALIZO_TRABAJO" class="java.lang.String"/>
 	<field name="GRUPO_PARA_CORTES" class="java.lang.String"/>
+	<field name="USUARIO_MODIFICO_TRABAJO" class="java.lang.String"/>
 	<variable name="efectivo" class="java.math.BigDecimal" resetType="Group" resetGroup="ESTABLECIMIENTO" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTAL_EFECTIVO}]]></variableExpression>
 	</variable>
@@ -879,9 +833,17 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 		<band height="2" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<frame>
-				<reportElement style="Row" mode="Opaque" x="0" y="0" width="750" height="15" uuid="40a0a3bd-2cfb-412e-b73f-376ec5122b48"/>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="751" height="15" uuid="40a0a3bd-2cfb-412e-b73f-376ec5122b48"/>
+				<rectangle radius="4">
+					<reportElement x="0" y="0" width="750" height="15" backcolor="#FFF891" uuid="017f441f-0ba9-4e05-8518-95e1b0c55531">
+						<printWhenExpression><![CDATA[!$F{USUARIO_MODIFICO_TRABAJO}.toString().trim().equals("")]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineColor="#000000"/>
+					</graphicElement>
+				</rectangle>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="0" y="0" width="39" height="15" uuid="dce8b7b3-e4cc-4447-be56-8b4919eeb9ca"/>
 					<textElement>
@@ -1002,7 +964,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 					<text><![CDATA[OBS: ]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="121" y="7" width="624" height="8" uuid="862beb5f-dc14-47bf-854d-6b902f01fdd4"/>
+					<reportElement x="121" y="7" width="470" height="8" uuid="862beb5f-dc14-47bf-854d-6b902f01fdd4"/>
 					<textElement>
 						<font size="6"/>
 					</textElement>
@@ -1054,7 +1016,28 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 				<line>
 					<reportElement x="706" y="0" width="1" height="14" forecolor="#E2DFDF" uuid="4ed453ca-72b7-4f99-811d-fc5ff54b6cc9"/>
 				</line>
+				<ellipse>
+					<reportElement x="742" y="4" width="6" height="7" backcolor="#FF810A" uuid="a50c220c-6a2a-42cb-89b2-46ecddf0c56f">
+						<printWhenExpression><![CDATA[!$F{USUARIO_MODIFICO_TRABAJO}.toString().trim().equals("")]]></printWhenExpression>
+					</reportElement>
+				</ellipse>
 			</frame>
+			<textField>
+				<reportElement x="593" y="7" width="2" height="8" uuid="fd8de8a2-0e16-4dba-a0bd-b740cf8221a9"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USUARIO_MODIFICO_TRABAJO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="593" y="7" width="154" height="8" uuid="2d7ef556-df3b-4fb2-8e5d-42626980bca9">
+					<printWhenExpression><![CDATA[!$F{USUARIO_MODIFICO_TRABAJO}.toString().trim().equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Modifico: "+$F{USUARIO_MODIFICO_TRABAJO}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

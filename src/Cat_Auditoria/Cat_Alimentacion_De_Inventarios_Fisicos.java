@@ -7,12 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -31,8 +25,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Planeacion.Cat_Alimentacion_De_Plan_Semanal.Cat_Observacion_De_Actividad;
-import Conexiones_SQL.Connexion;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
@@ -43,6 +35,7 @@ import Obj_Renders.tablaRenderer;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import jxl.*;
 import jxl.read.biff.BiffException;
@@ -122,6 +115,7 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 		
 		JButton btnAgregar = new JButton("Aplicar",new ImageIcon("imagen/Aplicar.png"));
 		JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
+		JTextField txtTotalDiferencia = new JTextField();
 		
 		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 		Obj_Seleccion_De_Usuarios usuarios= new Obj_Seleccion_De_Usuarios();
@@ -136,7 +130,7 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/ayudar-a-ver-el-boton-icono-4900-64.png"));
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/lista-icono-7220-16.png"));
 			this.setTitle("Alimentacion De Inventario Físico");
 		    this.panel.setBorder(BorderFactory.createTitledBorder("Inventario Físico"));
 			
@@ -146,6 +140,8 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			this.txa_Observacion.setLineWrap(true); 
 			this.txa_Observacion.setWrapStyleWord(true);
 			
+			this.txtTotalDiferencia.setEditable(false);
+			
 			int x=15,y=20,width=100,height=20;
 
 			this.panel.add(txtFiltro).setBounds                                      (x        ,y    						,ancho-140   ,height);
@@ -153,8 +149,10 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			
 			this.panel.add(scroll).setBounds                                         (x        ,y+=20 						,ancho-35	 ,(((alto-40)/5)*3) );
 			
-			x=15;
-			this.panel.add(new JLabel("Observacion De Inventario Físico:")).setBounds(x        ,y+=(((alto-40)/5)*3) +30 	,width*3     ,height);
+			this.panel.add(new JLabel("Total De Diferencia Real Ultimo Costo:")).setBounds(ancho-320	,y+=(((alto-40)/5)*3)+5 	,200     ,height);
+			this.panel.add(txtTotalDiferencia).setBounds(ancho-120	,y 	,100     ,height);
+			
+			this.panel.add(new JLabel("Observacion De Inventario Físico:")).setBounds(x        ,y+=25 	,width*3     ,height);
 			this.panel.add(observacion  ).setBounds                                    (x        ,y+=25 						,ancho-35	 ,(((alto-300)/5)*1) );
 			this.panel.add(btnDeshacer).setBounds                                    (x        ,y+=(((alto-300)/5)*1) + 15 ,width       ,height);
 			this.panel.add(btnAgregar).setBounds                                     (ancho-120,y 							,width       ,height);
@@ -187,13 +185,24 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
                 	 String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
                     
 	                    if(!pathArchivo.equals("")){
-	                      importar_excel(pathArchivo);                    	
+	                    	System.out.println(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).toUpperCase());
+	                    	if(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).toUpperCase().equals(".XLS")){
+	                    		 importar_excel(pathArchivo);      
+	                    	}else{
+	                    		JOptionPane.showMessageDialog(null, "Solo Se Permiten Archivos Con Extencion .xls, favor De Guardar Su Archivo Con La version 97-2003","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+	     		    			return;
+	                    	}
+	                                   	
 	                    }
                  }
 			}
 		};
 		
 		public void importar_excel(String rutaCompleta) {
+			
+			double total_diferencia = 0;
+			model.setRowCount(0); 
+			 
 			Workbook libroexcel = null;
 			try {
 //				libroexcel = Workbook.getWorkbook(new File(System.getProperty("user.dir")+"/Excel/Inventarios/"+nombre_archivo_excel_a_leer+".xls"));
@@ -206,19 +215,18 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				 for (int columna = 0; columna < hoja.getColumns(); columna++) {
 					 if(!hoja.getCell(columna, 0).getContents().equals(columnas[columna].toString())){
 						 JOptionPane.showMessageDialog(null, "La Columna  ["+columnas[columna].toString()+"]  No Coinside Con La Del Archivo Que Selecciono,\nVerifique Que El Archivo Seleccionado Sea El Correcto O Que Las Columnas\nDel Archivo Tengan Los Nombres Correctamente.","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-		    				return;
+		    			return;
 					 }
 				 }
 				 
-				 
-				 
-				 
-				 for (int fila = 1; fila < hoja.getRows(); fila++) {                   
-					 for (int columna = 0; columna < hoja.getColumns(); columna++) {
+				 for (int fila = 1; fila < hoja.getRows(); fila++){         
+					 total_diferencia += Double.valueOf(hoja.getCell( 10 , fila ).getContents().toString().trim());
+					 for (int columna = 0; columna < hoja.getColumns(); columna++){
 						 vector[columna]=hoja.getCell(columna, fila).getContents();
 					 }
 					 model.addRow(vector);
-			  }
+				 }
+				 txtTotalDiferencia.setText(new DecimalFormat().format(total_diferencia)+"");
 				 
 				 
 				 
@@ -238,8 +246,8 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			}
 		};
 		
-		ActionListener opGuardar = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		ActionListener opGuardar = new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
 				
 				txtFiltro.setText("");
 				filtro();
@@ -258,8 +266,6 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 					JOptionPane.showMessageDialog(null, "No Se A Podido Gaurdar El Inventario Fisico", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
-				
-				
 			}
 		};
 		
