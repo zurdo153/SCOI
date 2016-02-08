@@ -152,10 +152,10 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			this.panel.add(new JLabel("Total De Diferencia Real Ultimo Costo:")).setBounds(ancho-320	,y+=(((alto-40)/5)*3)+5 	,200     ,height);
 			this.panel.add(txtTotalDiferencia).setBounds(ancho-120	,y 	,100     ,height);
 			
-			this.panel.add(new JLabel("Observacion De Inventario Físico:")).setBounds(x        ,y+=25 	,width*3     ,height);
+			this.panel.add(new JLabel("Observacion De Inventario Físico:")).setBounds  (x        ,y+=25 	,width*3     ,height);
 			this.panel.add(observacion  ).setBounds                                    (x        ,y+=25 						,ancho-35	 ,(((alto-300)/5)*1) );
-			this.panel.add(btnDeshacer).setBounds                                    (x        ,y+=(((alto-300)/5)*1) + 15 ,width       ,height);
-			this.panel.add(btnAgregar).setBounds                                     (ancho-120,y 							,width       ,height);
+			this.panel.add(btnDeshacer).setBounds                                      (x        ,y+=(((alto-300)/5)*1) + 15 ,width       ,height);
+			this.panel.add(btnAgregar).setBounds                                       (ancho-180,y 							,width+60       ,height);
 			
 			this.cont.add(panel);
 			this.init_tabla();
@@ -205,7 +205,6 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			 
 			String Fecha="";
 			String Establecimiento="";
-			
 			Workbook libroexcel = null;
 			try {
 //				libroexcel = Workbook.getWorkbook(new File(System.getProperty("user.dir")+"/Excel/Inventarios/"+nombre_archivo_excel_a_leer+".xls"));
@@ -214,8 +213,6 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				 Sheet hoja = libroexcel.getSheet(0); //Seleccionamos la hoja que vamos a leer
 				 String[] vector = new String[hoja.getRows()];
 				 
-				 
-				 
 				 for (int columna = 0; columna < hoja.getColumns(); columna++) {
 					 if(!hoja.getCell(columna, 0).getContents().equals(columnas[columna].toString())){
 						 JOptionPane.showMessageDialog(null, "La Columna  ["+columnas[columna].toString()+"]  No Coinside Con La Del Archivo Que Selecciono,\nVerifique Que El Archivo Seleccionado Sea El Correcto O Que Las Columnas\nDel Archivo Tengan Los Nombres Correctamente.","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -223,31 +220,24 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 					 }
 				 }
 				 
-				 for (int fila = 1; fila < hoja.getRows(); fila++){         
-					 total_diferencia += Double.valueOf(hoja.getCell( 10 , fila ).getContents().toString().trim());
-					 for (int columna = 0; columna < hoja.getColumns(); columna++){
-						 vector[columna]=hoja.getCell(columna, fila).getContents();
-					 }
-					 model.addRow(vector);
-				 }
-				 txtTotalDiferencia.setText(new DecimalFormat().format(total_diferencia)+"");
-				 
 				 Fecha=hoja.getCell(12, 1).getContents();
 				 Establecimiento=hoja.getCell(11, 1).getContents();
 				 String existe = new BuscarSQL().Existe_Inventario_Guardado_Del_Establecimiento_En_La_Fecha(Fecha, Establecimiento);
 				 
 				 if(existe.equals("N")){
-					 for (int fila = 1; fila < hoja.getRows(); fila++) {                   
-						 for (int columna = 0; columna < hoja.getColumns(); columna++) {
+					 for (int fila = 1; fila < hoja.getRows(); fila++){         
+						 total_diferencia += Double.valueOf(hoja.getCell( 10 , fila ).getContents().toString().trim());
+						 for (int columna = 0; columna < hoja.getColumns(); columna++){
 							 vector[columna]=hoja.getCell(columna, fila).getContents();
-							 
 						 }
 						 model.addRow(vector);
-				     }
+					 }
+					 
 			     }else{
 			    	 JOptionPane.showMessageDialog(null, " "+existe,"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 			    	 return;
 			     }
+				 txtTotalDiferencia.setText(new DecimalFormat().format(total_diferencia)+"");
 				 
 			} catch (BiffException e) {
 				e.printStackTrace();
