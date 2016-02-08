@@ -8188,4 +8188,26 @@ public class BuscarSQL {
 		}
 		return folio;
 	}
+	
+	public String  Existe_Inventario_Guardado_Del_Establecimiento_En_La_Fecha(String Fecha, String Establecimiento){
+		Statement stmt = null;
+		String query = "sp_existe_inventario_guardado_del_establecimiento_en_la_fecha '"+Fecha+"','"+Establecimiento+"'";
+		String factor = "";
+		
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					factor = rs.getString(1);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar Existe_Inventario_Guardado_Del_Establecimiento_En_La_Fecha \nSQLServerException:"+e+" \n Parametros:\n"+query,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return null;
+		}
+		return factor;
+	}
+	
 }
