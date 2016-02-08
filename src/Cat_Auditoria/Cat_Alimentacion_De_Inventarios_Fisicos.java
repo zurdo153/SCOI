@@ -25,6 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
@@ -113,7 +114,7 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 		
 		JButton btnExaminar = new JButton("Examinar",new ImageIcon("Iconos/zoom_icon&16.png"));
 		
-		JButton btnAgregar = new JButton("Aplicar",new ImageIcon("imagen/Aplicar.png"));
+		JButton btnAgregar = new JButton("Guardar Inventario",new ImageIcon("imagen/Guardar.png"));
 		JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
 		JTextField txtTotalDiferencia = new JTextField();
 		
@@ -130,7 +131,7 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/lista-icono-7220-16.png"));
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/informe-icono-7785-32.png"));
 			this.setTitle("Alimentacion De Inventario Físico");
 		    this.panel.setBorder(BorderFactory.createTitledBorder("Inventario Físico"));
 			
@@ -146,7 +147,6 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 
 			this.panel.add(txtFiltro).setBounds                                      (x        ,y    						,ancho-140   ,height);
 			this.panel.add(btnExaminar).setBounds                                    (ancho-120,y     						,width       ,height);
-			
 			this.panel.add(scroll).setBounds                                         (x        ,y+=20 						,ancho-35	 ,(((alto-40)/5)*3) );
 			
 			this.panel.add(new JLabel("Total De Diferencia Real Ultimo Costo:")).setBounds(ancho-320	,y+=(((alto-40)/5)*3)+5 	,200     ,height);
@@ -203,6 +203,9 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			double total_diferencia = 0;
 			model.setRowCount(0); 
 			 
+			String Fecha="";
+			String Establecimiento="";
+			
 			Workbook libroexcel = null;
 			try {
 //				libroexcel = Workbook.getWorkbook(new File(System.getProperty("user.dir")+"/Excel/Inventarios/"+nombre_archivo_excel_a_leer+".xls"));
@@ -210,6 +213,7 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				
 				 Sheet hoja = libroexcel.getSheet(0); //Seleccionamos la hoja que vamos a leer
 				 String[] vector = new String[hoja.getRows()];
+				 
 				 
 				 
 				 for (int columna = 0; columna < hoja.getColumns(); columna++) {
@@ -228,7 +232,22 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				 }
 				 txtTotalDiferencia.setText(new DecimalFormat().format(total_diferencia)+"");
 				 
+				 Fecha=hoja.getCell(12, 1).getContents();
+				 Establecimiento=hoja.getCell(11, 1).getContents();
+				 String existe = new BuscarSQL().Existe_Inventario_Guardado_Del_Establecimiento_En_La_Fecha(Fecha, Establecimiento);
 				 
+				 if(existe.equals("N")){
+					 for (int fila = 1; fila < hoja.getRows(); fila++) {                   
+						 for (int columna = 0; columna < hoja.getColumns(); columna++) {
+							 vector[columna]=hoja.getCell(columna, fila).getContents();
+							 
+						 }
+						 model.addRow(vector);
+				     }
+			     }else{
+			    	 JOptionPane.showMessageDialog(null, " "+existe,"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+			    	 return;
+			     }
 				 
 			} catch (BiffException e) {
 				e.printStackTrace();
@@ -236,6 +255,9 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error Al Intentar Leer El Archivo \nMensaje:"+e.getMessage(), "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			} 
+			
+			
+			
 
 		};
 		
@@ -260,6 +282,7 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				}
 				
 				if(new GuardarSQL().Guardar_Alimentacion_De_Inventario_Fisico(matriz)){
+					btnDeshacer.doClick();
 					JOptionPane.showMessageDialog(null, "La Alimentacion De Inventario Fisico Se Guardo Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 					return;
 				}else{

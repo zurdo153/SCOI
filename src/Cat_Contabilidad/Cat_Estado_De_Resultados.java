@@ -49,7 +49,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	JLabel JLBFactor= new JLabel();
 	
-	int cantidad_de_columnas =  (new BuscarSQL().Numero_De_Establecimientos_edo_Resultados()+2);
+	int cantidad_de_columnas =  (new BuscarSQL().Numero_De_Establecimientos_edo_Resultados()+3);
 	DefaultTableModel model = new DefaultTableModel(0,cantidad_de_columnas){
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
@@ -73,14 +73,17 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	
 	JTable tabla = new JTable(model);
 	private JScrollPane getPanelTabla()	{		
-		int a=120,b=300;
-		tabla.getColumnModel().getColumn(0).setHeaderValue("CONCEPTO");
-		tabla.getColumnModel().getColumn(0).setMaxWidth(b*2);
-		tabla.getColumnModel().getColumn(0).setMinWidth(b+a);
+		int a=100,b=300;
+		tabla.getColumnModel().getColumn(0).setHeaderValue(".");
+		tabla.getColumnModel().getColumn(0).setMaxWidth(2);
+		tabla.getColumnModel().getColumn(0).setMinWidth(2);
+		tabla.getColumnModel().getColumn(1).setHeaderValue("CONCEPTO");
+		tabla.getColumnModel().getColumn(1).setMaxWidth(b*2);
+		tabla.getColumnModel().getColumn(1).setMinWidth(b);
 		try {
 			String[] competidor = new BuscarSQL().Vector_De_Establecimientos_Edo_Resultados();
-			for(int i=1; i<cantidad_de_columnas-1; i++){
-				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-1)].toString());
+			for(int i=2; i<cantidad_de_columnas-1; i++){
+				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-2)].toString());
 				tabla.getColumnModel().getColumn(i).setMinWidth(a);
 				tabla.getColumnModel().getColumn(i).setMaxWidth(a+b);
 			}
@@ -88,8 +91,8 @@ public class Cat_Estado_De_Resultados extends JFrame {
 			e.printStackTrace();
 		}
 		tabla.getColumnModel().getColumn(cantidad_de_columnas-1).setHeaderValue("TOTAL");
-		tabla.getColumnModel().getColumn(cantidad_de_columnas-1).setMaxWidth(b);
-		tabla.getColumnModel().getColumn(cantidad_de_columnas-1).setMinWidth(b);
+		tabla.getColumnModel().getColumn(cantidad_de_columnas-1).setMaxWidth(a);
+		tabla.getColumnModel().getColumn(cantidad_de_columnas-1).setMinWidth(a+b);
 		
     	tabla.getTableHeader().setReorderingAllowed(false) ;
     	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -103,7 +106,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	String factor="";
 	public Cat_Estado_De_Resultados(){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
-		this.setSize(ancho,525);
+		this.setSize(ancho,560);
 		cont.add(panel);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -128,11 +131,11 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		this.panel.add(JLBfin).setBounds                      (x+60,y    ,a  ,a);
 		this.panel.add(c_final).setBounds                     (x+80,y    ,l  ,a);
 
-		panel.add(getPanelTabla()).setBounds(10,y+=30,ancho-30,400);
+		panel.add(getPanelTabla()).setBounds(10,y+=30,ancho-30,435);
         
         c_inicio.setDate(cargar_fechas(1));
         c_final.setDate(cargar_fechas(0));
-		cargar_factor();
+        cargar_factor();
         render_tabla();
 
 		btn_buscar.addActionListener(op_generar);
@@ -145,7 +148,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	
 	public void render_tabla(){
 		for(int i = 0; i < cantidad_de_columnas; i++){
-			if(i<=0){
+			if(i<=1){
 				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 			}else{
 				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
@@ -176,15 +179,6 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		}
 		return matriz;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -232,28 +226,27 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";		
 		return error;
 	}
-	
 	PropertyChangeListener opfactorytasa = new PropertyChangeListener() {
-	  	     public void propertyChange(PropertyChangeEvent e) {
-	  	    	 if ("date".equals(e.getPropertyName())) {
-	  	    		if(c_inicio.getDate() != null){
-	  	    			cargar_factor();	
-	  	    		}
-	  	    	 }
-	  	      }
-	  	  };
+ 	     public void propertyChange(PropertyChangeEvent e) {
+ 	    	 if ("date".equals(e.getPropertyName())) {
+ 	    		if(c_inicio.getDate() != null){
+ 	    			cargar_factor();	
+ 	    		}
+ 	    	 }
+ 	      }
+ 	  };
+ 	  
+	public void cargar_factor(){
+    	factor= new BuscarSQL().Factor(new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00"); 
+    	JLBFactor.setText(	"<html><FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk>" +
+				"		<CENTER><p>"+factor+"</p></CENTER></FONT></html>");
+    if(factor.equals("Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y Tasa")){
+    	btn_buscar.setEnabled(false);
+     }else{
+    	btn_buscar.setEnabled(true);
+   }
+}
 	  	  
-    public void cargar_factor(){
-	    	factor= new BuscarSQL().Factor(new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00"); 
-	    	JLBFactor.setText(	"<html><FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk>" +
-					"		<CENTER><p>"+factor+"</p></CENTER></FONT></html>");
-	    if(factor.equals("Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y Tasa")){
-	    	btn_buscar.setEnabled(false);
-	     }else{
-	    	btn_buscar.setEnabled(true);
-       }
-    }
-	
 	public Date cargar_fechas(int dias){
 		Date date = null;
 				  try {
@@ -268,11 +261,12 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		cargar_factor();
-		if(factor.equals("Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y Tasa")){	
-			JOptionPane.showMessageDialog(null, "No Se Puede Generar La Consulta Porque Falta Alimentar El Factor y Tasa Del Mes Para El Calculo Del ISR","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-			return;
-		}
+			cargar_factor();
+			if(factor.equals("Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y Tasa")){	
+				JOptionPane.showMessageDialog(null, "No Se Puede Generar La Consulta Porque Falta Alimentar El Factor y Tasa Del Mes Para El Calculo Del ISR","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+			
 		  if(validar_fechas().equals("")){
 				  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 				  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
