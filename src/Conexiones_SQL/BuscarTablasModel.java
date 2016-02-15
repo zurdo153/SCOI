@@ -2345,6 +2345,61 @@ public String[] observacionesPedidoDeMonedas(int folio_empleado){
     return matriz; 
 }
 
+@SuppressWarnings("resource")
+public String[][] filtro_empleado_finiquito(String coneccion){
+	
+	String query_lista = "";
+	
+	if(coneccion.equals("SCOI")){
+		query_lista = "select empleado.folio"
+				+ " ,empleado.nombre+' '+empleado.ap_paterno+' '+empleado.ap_materno as empleado"
+				+ " ,estab.nombre as establecimiento"
+				+ " ,puesto.nombre as puesto"
+				+ " ,case when empleado.status = 1 then 'VIGENTE'"
+				+ "			when empleado.status = 2 then 'VACACIONES'"
+				+ " 		when empleado.status = 3 then 'INCAPACIDAD'"
+				+ " 		else 'PROVICIONAL CHECADOR'"
+				+ "  end as STATUS"
+				+ " from tb_empleado empleado"
+				+ " inner join tb_establecimiento estab on estab.folio = empleado.establecimiento_id"
+				+ " inner join tb_puesto puesto on puesto.folio = empleado.puesto_id"
+				+ " where empleado.status not in (4,5)"; 
+	}else{
+		query_lista = "select ltrim(rtrim(empleados.empleado)) as folio"
+				+ " ,ltrim(rtrim(empleados.nombre))+' '+ltrim(rtrim(empleados.ap_paterno))+' '+ltrim(rtrim(empleados.ap_materno)) as empleado"
+				+ " ,ltrim(rtrim(establecimientos.nombre)) as establecimiento"
+				+ " ,ltrim(rtrim(puestos.nombre)) as puesto"
+				+ " ,case when empleados.status_empleado = '1' then 'VIGENTE' end as status"
+				+ " from empleados"
+				+ " inner join establecimientos on establecimientos.cod_estab = empleados.cod_estab"
+				+ " inner join puestos on puestos.puesto = empleados.puesto"
+				+ " where empleados.status_empleado ='1'"; 
+	}
+	
+	
+	String[][] matriz = new String[coneccion.equals("SCOI")?get_filas(query_lista):get_filas_izagar(query_lista)][5];
+	try {
+		Statement stmt =coneccion.equals("SCOI")?new Connexion().conexion().createStatement():new Connexion().conexion_IZAGAR().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i=0;
+		while(rs.next()){
+			
+			matriz[i][0] = rs.getString(1);
+			matriz[i][1] = rs.getString(2); 
+			matriz[i][2] = rs.getString(3);
+			matriz[i][3] = rs.getString(4);
+			matriz[i][4] = rs.getString(5); 
+			
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion filtro_empleado_finiquito SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
 }
 
 

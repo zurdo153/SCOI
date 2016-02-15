@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-02-08T12:00:14 -->
+<!-- 2016-02-11T15:30:41 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_Para_Trabajo_De_Cortes" language="groovy" printOrder="Horizontal" pageWidth="791" pageHeight="612" orientation="Landscape" columnWidth="751" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="527b8c71-0150-4c5e-ab8d-96445c8baa40">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -1091,7 +1091,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 				<reportElement x="9" y="7" width="577" height="283" uuid="87b65857-ff52-4ecf-ae68-32fb5d4977c7"/>
 			</rectangle>
 			<componentElement>
-				<reportElement x="17" y="14" width="560" height="270" uuid="ad74d94d-87e1-4593-a9bb-83a15420135a"/>
+				<reportElement x="17" y="19" width="560" height="270" uuid="ad74d94d-87e1-4593-a9bb-83a15420135a"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="reposicion_de_efectivo" uuid="1643e1db-2920-4117-92a4-a9219d1faa0e">
 						<datasetParameter name="FOLIO_TRABAJO_PARAMETRO">
@@ -1101,7 +1101,15 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 					</datasetRun>
 					<jr:listContents height="270" width="560">
 						<rectangle radius="4">
-							<reportElement x="9" y="221" width="249" height="20" backcolor="#E8E8E8" uuid="c63624bf-fdc6-4365-8d97-22ddaeb4ddb8">
+							<reportElement x="10" y="28" width="249" height="20" backcolor="#E8E8E8" uuid="1897dba7-2432-4c0e-8f90-5e5125efde83">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<graphicElement>
+								<pen lineWidth="0.0"/>
+							</graphicElement>
+						</rectangle>
+						<rectangle radius="4">
+							<reportElement x="9" y="228" width="249" height="20" backcolor="#E8E8E8" uuid="c63624bf-fdc6-4365-8d97-22ddaeb4ddb8">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								<property name="local_mesure_unitheight" value="pixel"/>
 							</reportElement>
@@ -1110,7 +1118,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							</graphicElement>
 						</rectangle>
 						<rectangle radius="4">
-							<reportElement x="9" y="181" width="249" height="20" backcolor="#E8E8E8" uuid="6fe982d8-95a1-424b-bd08-9ec9358fa089">
+							<reportElement x="9" y="188" width="249" height="20" backcolor="#E8E8E8" uuid="6fe982d8-95a1-424b-bd08-9ec9358fa089">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<graphicElement>
@@ -1118,7 +1126,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							</graphicElement>
 						</rectangle>
 						<rectangle radius="4">
-							<reportElement x="9" y="141" width="249" height="20" backcolor="#E8E8E8" uuid="028a200b-a402-4222-af49-6598775f6118">
+							<reportElement x="9" y="148" width="249" height="20" backcolor="#E8E8E8" uuid="028a200b-a402-4222-af49-6598775f6118">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1127,7 +1135,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							</graphicElement>
 						</rectangle>
 						<rectangle radius="4">
-							<reportElement x="9" y="101" width="249" height="20" backcolor="#E8E8E8" uuid="97ec9bcb-4b5e-48be-adf7-bfe1c62ce7a8">
+							<reportElement x="9" y="108" width="249" height="20" backcolor="#E8E8E8" uuid="97ec9bcb-4b5e-48be-adf7-bfe1c62ce7a8">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<graphicElement>
@@ -1135,7 +1143,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							</graphicElement>
 						</rectangle>
 						<rectangle radius="4">
-							<reportElement x="9" y="61" width="249" height="20" backcolor="#E8E8E8" uuid="f72c969c-40dc-446b-9337-b89b07831567">
+							<reportElement x="9" y="68" width="249" height="20" backcolor="#E8E8E8" uuid="f72c969c-40dc-446b-9337-b89b07831567">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<graphicElement>
@@ -1199,7 +1207,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{comentario}]]></textFieldExpression>
 						</textField>
 						<textField pattern="#,##0.00#">
-							<reportElement x="170" y="141" width="88" height="20" uuid="55ceaea3-0e6b-4d1d-ab63-1f52e1b28785">
+							<reportElement x="170" y="148" width="88" height="20" uuid="55ceaea3-0e6b-4d1d-ab63-1f52e1b28785">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1209,7 +1217,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{caja_verde_rep}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="10" y="141" width="160" height="20" uuid="8af730f7-192c-4199-8659-a32ab044b8f7">
+							<reportElement x="10" y="148" width="160" height="20" uuid="8af730f7-192c-4199-8659-a32ab044b8f7">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1219,7 +1227,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[CAJA VERDE:]]></text>
 						</staticText>
 						<textField pattern="#,##0.00#">
-							<reportElement x="170" y="81" width="88" height="20" uuid="ca3501b3-8b1a-4856-9475-0faa65693fa5">
+							<reportElement x="170" y="88" width="88" height="20" uuid="ca3501b3-8b1a-4856-9475-0faa65693fa5">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement textAlignment="Right">
@@ -1228,7 +1236,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{diferencia_de_cortes}]]></textFieldExpression>
 						</textField>
 						<textField pattern="#,##0.00#">
-							<reportElement x="170" y="201" width="88" height="20" uuid="ed57c848-4e11-4a7b-a4de-703cc0a063c1">
+							<reportElement x="170" y="208" width="88" height="20" uuid="ed57c848-4e11-4a7b-a4de-703cc0a063c1">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement textAlignment="Right">
@@ -1237,7 +1245,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{total_final}]]></textFieldExpression>
 						</textField>
 						<textField pattern="#,##0.00#">
-							<reportElement x="170" y="161" width="88" height="20" uuid="ff1f15f0-d97e-4957-9f57-0895070f8a8d">
+							<reportElement x="170" y="168" width="88" height="20" uuid="ff1f15f0-d97e-4957-9f57-0895070f8a8d">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement textAlignment="Right">
@@ -1246,7 +1254,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="10" y="121" width="160" height="20" uuid="c3b8247b-4f54-4b90-9c97-95e2b0d13610">
+							<reportElement x="10" y="128" width="160" height="20" uuid="c3b8247b-4f54-4b90-9c97-95e2b0d13610">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1256,7 +1264,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[OTROS SOBRANTES:]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="10" y="81" width="160" height="20" uuid="c2149186-6d7c-464c-a029-ec9d13d88158">
+							<reportElement x="10" y="88" width="160" height="20" uuid="c2149186-6d7c-464c-a029-ec9d13d88158">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1266,7 +1274,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[DIFERENCIA DE CORTES:]]></text>
 						</staticText>
 						<textField pattern="#,##0.00#">
-							<reportElement mode="Opaque" x="170" y="241" width="88" height="20" backcolor="#FCFB9A" uuid="a3899eea-a764-4c21-8512-21091752d89d">
+							<reportElement mode="Opaque" x="170" y="248" width="88" height="20" backcolor="#FCFB9A" uuid="a3899eea-a764-4c21-8512-21091752d89d">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<box>
@@ -1281,7 +1289,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{banco_interno}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="10" y="40" width="160" height="20" uuid="3f99af6b-341e-4a0e-9dd0-97374645fcb4">
+							<reportElement x="10" y="47" width="160" height="20" uuid="3f99af6b-341e-4a0e-9dd0-97374645fcb4">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1291,7 +1299,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[DOLARES:]]></text>
 						</staticText>
 						<textField pattern="#,##0.00#">
-							<reportElement x="170" y="61" width="88" height="20" uuid="71aaeffd-4831-42ec-aef0-daabf7e92426">
+							<reportElement x="170" y="68" width="88" height="20" uuid="71aaeffd-4831-42ec-aef0-daabf7e92426">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement textAlignment="Right">
@@ -1300,7 +1308,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{vales}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="10" y="241" width="160" height="20" uuid="ebca2c9e-b43a-4ba6-b699-10180b45fdee">
+							<reportElement x="10" y="248" width="160" height="20" uuid="ebca2c9e-b43a-4ba6-b699-10180b45fdee">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1310,7 +1318,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[PENDIENTE DE DEPOSITAR:]]></text>
 						</staticText>
 						<textField pattern="#,##0.00#">
-							<reportElement x="170" y="40" width="88" height="20" uuid="9f520485-dedb-497a-a5cf-fbc67fcbb6c7">
+							<reportElement x="170" y="47" width="88" height="20" uuid="9f520485-dedb-497a-a5cf-fbc67fcbb6c7">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement textAlignment="Right">
@@ -1319,7 +1327,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{dolares}]]></textFieldExpression>
 						</textField>
 						<textField pattern="#,##0.00#">
-							<reportElement x="170" y="121" width="88" height="20" uuid="68a7229b-647e-411b-95cb-d3e7168d4e58">
+							<reportElement x="170" y="128" width="88" height="20" uuid="68a7229b-647e-411b-95cb-d3e7168d4e58">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement textAlignment="Right">
@@ -1328,7 +1336,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{otros_sobrantes}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="10" y="101" width="160" height="20" uuid="cf87b790-c702-4894-8977-b73687f114a1">
+							<reportElement x="10" y="108" width="160" height="20" uuid="cf87b790-c702-4894-8977-b73687f114a1">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1338,7 +1346,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[OTROS FALTANTES:]]></text>
 						</staticText>
 						<textField pattern="#,##0.00#">
-							<reportElement x="170" y="101" width="88" height="20" uuid="8a658b71-9ae7-419c-ac8b-f23d7271d2c3">
+							<reportElement x="170" y="108" width="88" height="20" uuid="8a658b71-9ae7-419c-ac8b-f23d7271d2c3">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement textAlignment="Right">
@@ -1347,7 +1355,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{otros_faltantes}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="10" y="201" width="160" height="20" uuid="0013d27b-8c41-41fa-8fee-730c81126b9f">
+							<reportElement x="10" y="208" width="160" height="20" uuid="0013d27b-8c41-41fa-8fee-730c81126b9f">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1357,7 +1365,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[TOTAL FINAL:]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="270" y="162" width="219" height="15" uuid="cf3af173-e2b2-462e-85cc-20b48a598bc1">
+							<reportElement x="270" y="169" width="219" height="15" uuid="cf3af173-e2b2-462e-85cc-20b48a598bc1">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1367,7 +1375,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[COMENTARIO:]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="10" y="221" width="160" height="20" uuid="760a3d38-26b7-4985-8a67-2b8a3276ab11">
+							<reportElement x="10" y="228" width="160" height="20" uuid="760a3d38-26b7-4985-8a67-2b8a3276ab11">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1377,7 +1385,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[DEPOSITO:]]></text>
 						</staticText>
 						<textField pattern="#,##0.00#">
-							<reportElement mode="Opaque" x="170" y="181" width="88" height="20" forecolor="#000000" backcolor="#CCE8CA" uuid="1b0aa200-4bb0-4e93-8cb4-01a93c82389d">
+							<reportElement mode="Opaque" x="170" y="188" width="88" height="20" forecolor="#000000" backcolor="#CCE8CA" uuid="1b0aa200-4bb0-4e93-8cb4-01a93c82389d">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<box>
@@ -1392,7 +1400,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{sobrante_finanzas}]]></textFieldExpression>
 						</textField>
 						<textField pattern="#,##0.00#">
-							<reportElement x="170" y="221" width="88" height="20" uuid="34ef4f23-dbc6-45a5-a0f5-9a0b4275bd28">
+							<reportElement x="170" y="228" width="88" height="20" uuid="34ef4f23-dbc6-45a5-a0f5-9a0b4275bd28">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement textAlignment="Right">
@@ -1401,7 +1409,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{deposito2}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="10" y="61" width="160" height="20" uuid="b2fbce4b-a01f-442d-ad46-86d84ad02f38">
+							<reportElement x="10" y="68" width="160" height="20" uuid="b2fbce4b-a01f-442d-ad46-86d84ad02f38">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1411,7 +1419,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[VALES:]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="10" y="161" width="160" height="20" uuid="329798c2-ce99-4bf3-b247-f902e623a5c1">
+							<reportElement x="10" y="168" width="160" height="20" uuid="329798c2-ce99-4bf3-b247-f902e623a5c1">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1421,7 +1429,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[TOTAL:]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="10" y="181" width="160" height="20" uuid="8718d0be-0fb1-4066-8920-be9a98e6f4ed">
+							<reportElement x="10" y="188" width="160" height="20" uuid="8718d0be-0fb1-4066-8920-be9a98e6f4ed">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1431,7 +1439,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[SOBRANTES FINANZAS:]]></text>
 						</staticText>
 						<textField>
-							<reportElement x="270" y="177" width="269" height="84" uuid="2fdd2303-4545-42bb-bbe4-c7412b96439a"/>
+							<reportElement x="270" y="184" width="269" height="84" uuid="2fdd2303-4545-42bb-bbe4-c7412b96439a"/>
 							<box>
 								<topPen lineWidth="1.0"/>
 								<leftPen lineWidth="1.0"/>
@@ -1444,17 +1452,17 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{comentario}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="10" y="5" width="532" height="30" uuid="a39bc4eb-0fbe-45a1-be6e-1b4938462d16">
+							<reportElement x="10" y="0" width="532" height="25" uuid="a39bc4eb-0fbe-45a1-be6e-1b4938462d16">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
-							<textElement textAlignment="Center" verticalAlignment="Middle">
+							<textElement textAlignment="Center" verticalAlignment="Top">
 								<font size="18" isBold="true"/>
 							</textElement>
 							<text><![CDATA[REPORTE DE REPOSICION DE EFECTIVO]]></text>
 						</staticText>
 						<textField>
-							<reportElement x="270" y="80" width="272" height="15" uuid="e8866c5d-1067-4401-be3c-6da82db70bc2">
+							<reportElement x="270" y="85" width="272" height="15" uuid="e8866c5d-1067-4401-be3c-6da82db70bc2">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1464,7 +1472,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{realizo_trabajo}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement x="390" y="50" width="152" height="15" uuid="51a4aad7-d63f-4536-b194-3ab4fde095ef">
+							<reportElement x="390" y="31" width="152" height="15" uuid="51a4aad7-d63f-4536-b194-3ab4fde095ef">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement textAlignment="Left">
@@ -1473,7 +1481,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA["FECHA: "+$F{fecha_trabajo}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement x="390" y="65" width="152" height="15" uuid="419c7a2d-75e9-4666-aa25-72bcc0a7cb80">
+							<reportElement x="390" y="51" width="152" height="15" uuid="419c7a2d-75e9-4666-aa25-72bcc0a7cb80">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<textElement>
@@ -1482,7 +1490,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<textFieldExpression><![CDATA[$F{grupo_para_cortes}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="270" y="95" width="272" height="15" uuid="c0c9a05c-cfc7-4429-ab0e-60dbc29ca91f">
+							<reportElement x="270" y="100" width="272" height="15" uuid="c0c9a05c-cfc7-4429-ab0e-60dbc29ca91f">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1492,7 +1500,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[ELABORO:]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="270" y="125" width="272" height="15" uuid="05c4c2ad-ef5a-4ab5-be6d-8bf994fb685c">
+							<reportElement x="270" y="135" width="272" height="15" uuid="05c4c2ad-ef5a-4ab5-be6d-8bf994fb685c">
 								<property name="local_mesure_unitheight" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
@@ -1502,11 +1510,30 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 							<text><![CDATA[REVISO:]]></text>
 						</staticText>
 						<line>
-							<reportElement x="270" y="95" width="272" height="1" uuid="672aeea8-4826-4cd6-9c5e-0a0f924a144f"/>
+							<reportElement x="270" y="100" width="272" height="1" uuid="672aeea8-4826-4cd6-9c5e-0a0f924a144f"/>
 						</line>
 						<line>
-							<reportElement x="270" y="124" width="272" height="1" uuid="8e77e26b-6a35-413e-bb68-008f5f777d5b"/>
+							<reportElement x="270" y="134" width="272" height="1" uuid="8e77e26b-6a35-413e-bb68-008f5f777d5b"/>
 						</line>
+						<textField pattern="#,##0.00#">
+							<reportElement x="170" y="28" width="88" height="20" uuid="0af21861-d51b-415e-bc85-138aabb4cafa">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{gastos}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="10" y="28" width="160" height="20" uuid="ed2b5b1f-aed4-4384-82ec-77e2cf6b36ff">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[GASTOS:]]></text>
+						</staticText>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>

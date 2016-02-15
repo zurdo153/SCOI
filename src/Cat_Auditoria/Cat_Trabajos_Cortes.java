@@ -657,54 +657,60 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-//			cmbEstablecimiento.setSelectedIndex(0);
 			
-		if(txtEfectivoPlanes.getText().equals("")){
-			JOptionPane.showMessageDialog(null, "El Campo Planes Se encuentra Vacio.\nIngrese Una Cantidad Para Seguir","Aviso",JOptionPane.WARNING_MESSAGE);
+		if(!txtFiltroPorAsignacion.getText().equals("")){
+			txtFiltroPorAsignacion.setText("");
+			new Obj_Filtro_Dinamico(tabla_grupos,"F.Asignacion", txtFiltroPorAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+			JOptionPane.showMessageDialog(null, "El Filtro De Asignacion Se Encontrava Con Texto y Fue Limpiado, Favor De Intentar De Nuevo","Aviso",JOptionPane.WARNING_MESSAGE);
 			return;
 		}else{
 			
-			double tFS=0;
-			double tVales=0;
-			double tDolares=0;
-			double tDiferencia=0;
-			double tCorteCV=0;
-			
-			Object[][] lista_cv = new Object[tabla_c_verde.getRowCount()][2];
-			for(int i = 0; i<tabla_c_verde.getRowCount(); i++){
-				
-				lista_cv[i][0] = tabla_c_verde.getValueAt(i, 2).toString().trim();
-				lista_cv[i][1] = tabla_c_verde.getValueAt(i, 11).toString().trim();
-			}
-			
-			
-			
-			for(int i=0; i<tabla_concentrado.getRowCount(); i++){
-				
-				tVales		+=	Double.valueOf(tabla_concentrado.getValueAt(i, 4).toString().trim());
-				tDolares	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 5).toString().trim());
-				tFS			+=	Double.valueOf(tabla_concentrado.getValueAt(i, 6).toString().trim());
-				tDiferencia	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 9).toString().trim());
-				
-				
-				if(tabla_concentrado.getValueAt(i, 0).toString().trim().equals("TOTAL CAJA VERDE")){
-						tCorteCV	+=	Double.valueOf(tabla_concentrado.getValueAt(i,8).toString().trim());
+			int bandera = 0;
+			for(int i=0; i<tabla_grupos.getRowCount(); i++){
+				if(tabla_grupos.getValueAt(i, 0).toString().trim().equals("true")){
+					bandera++;
 				}
-//				else{
-//						tDolares	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 5).toString().trim());
-//						tFS			+=	Double.valueOf(tabla_concentrado.getValueAt(i, 6).toString().trim());
-//						tDiferencia	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 9).toString().trim());
-//				}
-				
 			}
-//				System.out.println(tCorteCV);
-//				System.out.println(tDolares);
-//				System.out.println(tFS);
-//				System.out.println(tDiferencia);
 			
-//				String tFS, String tDolares, String tDiferencia, String tCorteCV/*, String[] caja_verde_totales_de_corte*/
-				new Cat_Reposicion_De_Efectivo(df.format(tFS),df.format(tDolares),df.format(tDiferencia),df.format(tCorteCV),df.format(tVales),txtEfectivoPlanes.getText(), lista_cv).setVisible(true);
+			if(bandera>0){
+				JOptionPane.showMessageDialog(null, "Existen Cortes Seleccionados En La Tabla, Para Continuar\nCon El Trabajo No Deben Haber Cortes Seleccionados","Aviso",JOptionPane.WARNING_MESSAGE);
+				return;
+			}else{
+					if(txtEfectivoPlanes.getText().equals("")){
+						JOptionPane.showMessageDialog(null, "El Campo Planes Se encuentra Vacio.\nIngrese Una Cantidad Para Seguir","Aviso",JOptionPane.WARNING_MESSAGE);
+						return;
+					}else{
+						
+							double tFS=0;
+							double tVales=0;
+							double tDolares=0;
+							double tDiferencia=0;
+							double tCorteCV=0;
+							
+							Object[][] lista_cv = new Object[tabla_c_verde.getRowCount()][2];
+							for(int i = 0; i<tabla_c_verde.getRowCount(); i++){
+								
+								lista_cv[i][0] = tabla_c_verde.getValueAt(i, 2).toString().trim();
+								lista_cv[i][1] = tabla_c_verde.getValueAt(i, 11).toString().trim();
+							}
+							
+							for(int i=0; i<tabla_concentrado.getRowCount(); i++){
+								
+								tVales		+=	Double.valueOf(tabla_concentrado.getValueAt(i, 4).toString().trim());
+								tDolares	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 5).toString().trim());
+								tFS			+=	Double.valueOf(tabla_concentrado.getValueAt(i, 6).toString().trim());
+								tDiferencia	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 9).toString().trim());
+								
+								
+								if(tabla_concentrado.getValueAt(i, 0).toString().trim().equals("TOTAL CAJA VERDE")){
+										tCorteCV	+=	Double.valueOf(tabla_concentrado.getValueAt(i,8).toString().trim());
+								}
+								
+							}
+							new Cat_Reposicion_De_Efectivo(df.format(tFS),df.format(tDolares),df.format(tDiferencia),df.format(tCorteCV),df.format(tVales),txtEfectivoPlanes.getText(), lista_cv).setVisible(true);
+					}
 			}
+		}
 	}
 };
 
@@ -1068,10 +1074,10 @@ public class Cat_Trabajos_Cortes extends JFrame{
 					txtPines.setText(df.format(pin_pad + pin_pad_cv + r_clt + r_clt_cv));
 					
 					txtDepositos.setText(df.format( Double.valueOf(txtTotalDelCorte.getText())+
-													 Double.valueOf(txtTotalRetiroCliente.getText())+
-													 Double.valueOf(txtTotalRecibosDeLuz.getText())-
+													 Double.valueOf(txtTotalRetiroCliente.getText())-
+//													 Double.valueOf(txtTotalRecibosDeLuz.getText())-
 													 Double.valueOf(txtIzacel.getText())-
-													 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
+//													 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
 													 Double.valueOf(txtPines.getText())
 													)
 											);
@@ -1084,10 +1090,10 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 					txtTotalDelCorte.setText(	 	df.format(	total_de_corte_real + (	Double.valueOf(	txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText()	)	)	) );
 					txtDepositos.setText(	df.format (	Double.valueOf(txtTotalDelCorte.getText().equals("")?"0":txtTotalDelCorte.getText())+
-														 Double.valueOf(txtTotalRetiroCliente.getText().equals("")?"0":txtTotalRetiroCliente.getText())+
-														 Double.valueOf(txtTotalRecibosDeLuz.getText().equals("")?"0":txtTotalRecibosDeLuz.getText())-
+														 Double.valueOf(txtTotalRetiroCliente.getText().equals("")?"0":txtTotalRetiroCliente.getText())-
+//														 Double.valueOf(txtTotalRecibosDeLuz.getText().equals("")?"0":txtTotalRecibosDeLuz.getText())-
 														 Double.valueOf(txtIzacel.getText().equals("")?"0":txtIzacel.getText())-
-														 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
+//														 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
 														 Double.valueOf(txtPines.getText().equals("")?"0":txtPines.getText())
 												   	  )	
 										);

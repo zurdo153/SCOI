@@ -185,7 +185,7 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
                 	 String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
                     
 	                    if(!pathArchivo.equals("")){
-	                    	System.out.println(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).toUpperCase());
+//	                    	System.out.println(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).toUpperCase());
 	                    	if(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).toUpperCase().equals(".XLS")){
 	                    		 importar_excel(pathArchivo);      
 	                    	}else{
@@ -245,9 +245,6 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error Al Intentar Leer El Archivo \nMensaje:"+e.getMessage(), "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			} 
-			
-			
-			
 
 		};
 		
