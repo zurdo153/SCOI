@@ -8210,4 +8210,27 @@ public class BuscarSQL {
 		return factor;
 	}
 	
+	public String  Existe_establecimiento_inventario_fisico(String Establecimiento){
+		Statement stmt = null;
+		String query = "declare  @existe char(1) "
+		               +"set @existe=(select 'S' from establecimientos where nombre = ltrim(rtrim('"+Establecimiento+"')) )"
+		               +" if @existe is null set @existe='N'  select @existe ";		
+		String existe = "";		
+		try {
+			stmt = con.conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					existe = rs.getString(1);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar Existe_establecimiento_inventario_fisico \nSQLServerException:"+e+" \n Parametros:\n"+query,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return null;
+		}
+		return existe;
+	}
+	
+	
 }

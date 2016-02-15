@@ -185,7 +185,7 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
                 	 String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
                     
 	                    if(!pathArchivo.equals("")){
-	                    	System.out.println(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).toUpperCase());
+//	                    	System.out.println(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).toUpperCase());
 	                    	if(pathArchivo.substring(pathArchivo.length()-4, pathArchivo.length()).toUpperCase().equals(".XLS")){
 	                    		 importar_excel(pathArchivo);      
 	                    	}else{
@@ -199,7 +199,6 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 		};
 		
 		public void importar_excel(String rutaCompleta) {
-			
 			double total_diferencia = 0;
 			model.setRowCount(0); 
 			 
@@ -207,7 +206,6 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			String Establecimiento="";
 			Workbook libroexcel = null;
 			try {
-//				libroexcel = Workbook.getWorkbook(new File(System.getProperty("user.dir")+"/Excel/Inventarios/"+nombre_archivo_excel_a_leer+".xls"));
 				libroexcel = Workbook.getWorkbook(new File(rutaCompleta));
 				
 				 Sheet hoja = libroexcel.getSheet(0); //Seleccionamos la hoja que vamos a leer
@@ -223,6 +221,12 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				 Fecha=hoja.getCell(12, 1).getContents();
 				 Establecimiento=hoja.getCell(11, 1).getContents();
 				 String existe = new BuscarSQL().Existe_Inventario_Guardado_Del_Establecimiento_En_La_Fecha(Fecha, Establecimiento);
+				 String existeestablecimiento = new BuscarSQL().Existe_establecimiento_inventario_fisico( Establecimiento);
+				 
+				 if(existeestablecimiento.equals("N")){
+					 JOptionPane.showMessageDialog(null, "El Establecimiento "+Establecimiento+" No Existe Verifique El Nombre","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+		    		return;						 
+				 }
 				 
 				 if(existe.equals("N")){
 					 for (int fila = 1; fila < hoja.getRows(); fila++){         
@@ -245,10 +249,6 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error Al Intentar Leer El Archivo \nMensaje:"+e.getMessage(), "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			} 
-			
-			
-			
-
 		};
 		
 		ActionListener opDeshacer = new ActionListener() {

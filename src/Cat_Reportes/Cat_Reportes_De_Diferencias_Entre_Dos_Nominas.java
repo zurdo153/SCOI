@@ -27,8 +27,9 @@ public class Cat_Reportes_De_Diferencias_Entre_Dos_Nominas extends JFrame {
 	
 	 JTextField txtnomina1 = new Componentes().text(new JCTextField(), "Nomina 1", 10, "Int");
 	 JTextField txtnomina2 = new Componentes().text(new JCTextField(), "Nomina 2", 10, "Int");
-	 JButton btnReporte = new JButton("",new ImageIcon("imagen/buscar.png"));
-	 JButton btnReporte_prenomina = new JButton("",new ImageIcon("imagen/buscar.png"));
+	 JButton btnReporte              = new JButton("",new ImageIcon("imagen/buscar.png"));
+	 JButton btnReporte_prenomina    = new JButton("",new ImageIcon("imagen/buscar.png"));
+	 JButton btnReporte_diferiencias = new JButton("",new ImageIcon("imagen/buscar.png"));
 	 
 	 Container cont = getContentPane();
  	 JLayeredPane panel = new JLayeredPane();
@@ -47,29 +48,32 @@ public class Cat_Reportes_De_Diferencias_Entre_Dos_Nominas extends JFrame {
 					"		<CENTER><p>Reporte De Diferencias Entre Prenomina y Nomina</p></CENTER></FONT>" +
 					"</html>");
 		 
+		 btnReporte_diferiencias.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+					"		<CENTER><p>Reporte De Diferencias Entre Nomina y Lista De Raya Actual"
+					+ "</p></CENTER></FONT>" +
+					"</html>");
+		 
 		 int x=20,y=25,width=100,height=20;
 		 
 		panel.add(txtnomina1).setBounds(x, y, width, height);
 		panel.add(txtnomina2).setBounds(x+200, y, width, height);
 		panel.add(btnReporte).setBounds(x,y+=40,width*3,height*2);
 		panel.add(btnReporte_prenomina).setBounds(x,y+=60,width*3,height*2);
-		
+		panel.add(btnReporte_diferiencias).setBounds(x,y+=60,width*3,height*2);
 		
 		btnReporte.addActionListener(opGenerar);
 		btnReporte_prenomina.addActionListener(opGenerarconPrenomina);
+		btnReporte_diferiencias.addActionListener(opGenerarConProblemas_En_Nomina);
+		
 		txtnomina1.addKeyListener(op_a_bnomina2);
 		txtnomina2.addKeyListener(op_buscar_desde_nomina2);
 		
-		
-		
 		cont.add(panel);
-		this.setSize(350,220);
+		this.setSize(350,280);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
 	}
-	
 	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -115,6 +119,30 @@ public class Cat_Reportes_De_Diferencias_Entre_Dos_Nominas extends JFrame {
 			}
 		}
 	};
+	
+	ActionListener opGenerarConProblemas_En_Nomina = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(txtnomina1.getText().toString().equals("")){
+			  JOptionPane.showMessageDialog(null,"Tiene Que Alimentar El folio de La Nomina 1 Que Desea Comparar Con La Prenomina", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
+               return;
+			}else{
+				if(txtnomina2.getText().toString().equals("")){	
+					String basedatos="2.26";
+					String vista_previa_reporte="no";
+					int vista_previa_de_ventana=0;
+					String comando="exec sp_Reporte_De_Empleados_Que_No_Se_Les_Aplicara_Deposito_En_Nomina "+txtnomina1.getText().toString() ;
+					String reporte = "Obj_Reporte_De_Empleados_Con_Problemas_En_Nomina.jrxml";
+				   new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				   
+				}else{
+					  JOptionPane.showMessageDialog(null,"El folio De La Nomina 2 Debe estar vacio Para Poder Buscar", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
+					  txtnomina2.setText("");
+					  return;
+				}
+			}
+		}
+	};
+	
 	
 	
     KeyListener op_a_bnomina2 = new KeyListener(){
