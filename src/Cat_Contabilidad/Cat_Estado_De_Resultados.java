@@ -18,6 +18,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -30,6 +31,9 @@ import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Renders.tablaRenderer;
 
 import com.toedter.calendar.JDateChooser;
@@ -44,7 +48,16 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
+	String operador[] = {"Selecciona Un Concepto","Mermas","Uso Interno","Uso Interno Administración"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbConcepto = new JComboBox(operador);
+	
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+	
 	JButton btn_buscar = new JButton  ("",new ImageIcon("imagen/buscar-buscar-ampliar-icono-6234-32.png"));
+	JButton btn_Origen = new JButton  ("",new ImageIcon("imagen/encontrar-busqueda-lupa-de-la-ventana-de-zoom-icono-4008-16.png"));
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	JLabel JLBFactor= new JLabel();
@@ -104,9 +117,10 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	String parametroGeneral = "";
 	String Lista="";
 	String factor="";
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	public Cat_Estado_De_Resultados(){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
-		this.setSize(ancho,560);
+		this.setSize(ancho,590);
 		cont.add(panel);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -116,6 +130,9 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		
 		btn_buscar.setText(	"<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk>" +
 				"		<CENTER><p>Buscar Información</p></CENTER></FONT>" +
+				"</html>");
+		btn_Origen.setText(	"<html> <FONT FACE="+"arial"+" SIZE=2 COLOR=BLACk>" +
+				"		<CENTER><p>Generar Reporte Del Concepto</p></CENTER></FONT>" +
 				"</html>");
 		
 		int x=15,y=25,l=100,a=20;
@@ -127,11 +144,15 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		this.panel.add(JLBFactor).setBounds                   (x+200,y-15 ,l*5  ,a);
 		this.panel.add(btn_buscar).setBounds                  (x+200,y+10,200,a*2);
 		
+		this.panel.add(cmbConcepto).setBounds                 (x+550,y-15 ,200,a);
+		this.panel.add(cmbEstablecimiento).setBounds          (x+550,y+10 ,200,a);
+		this.panel.add(btn_Origen  ).setBounds                (x+550,y+35 ,200,a);
+		
 		this.panel.add(new JLabel("Fecha Final:")).setBounds  (x   ,y+=30,l  ,a);
 		this.panel.add(JLBfin).setBounds                      (x+60,y    ,a  ,a);
 		this.panel.add(c_final).setBounds                     (x+80,y    ,l  ,a);
 
-		panel.add(getPanelTabla()).setBounds(10,y+=30,ancho-30,435);
+		panel.add(getPanelTabla()).setBounds(10,y+=30,ancho-30,460);
         
         c_inicio.setDate(cargar_fechas(1));
         c_final.setDate(cargar_fechas(0));
@@ -139,6 +160,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
         render_tabla();
 
 		btn_buscar.addActionListener(op_generar);
+		btn_Origen.addActionListener(opGenerarReporte_de_concepto);
 		c_inicio.getDateEditor().addPropertyChangeListener(opfactorytasa);
 		   
         this.addWindowListener(new WindowAdapter() { public void windowOpened( WindowEvent e ){
@@ -157,7 +179,6 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	}
 	
 	
-	///TODO
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String[][] calculo_fila_final(){
 		int cantidad_de_columnas_matriz=(cantidad_de_columnas-1);
@@ -179,46 +200,6 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		}
 		return matriz;
 	}
-	
-	
-	
-	///TODO
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	public String[][] calculo_fila_final(){
-//		int cantidad_de_columnas_matriz=cantidad_de_columnas;
-//		Vector vector = new Vector();
-//		for(int i=0; i<tabla.getRowCount(); i++){
-//			 if(Boolean.valueOf(tabla.getValueAt(i,5).toString().trim())){
-//				  vector.add(model.getValueAt(i,0).toString().trim());
-//				  vector.add(model.getValueAt(i,1).toString().trim());
-//		     }
-//		}
-//			String[][] matriz = new String[vector.size()/cantidad_de_columnas_matriz][cantidad_de_columnas_matriz];
-//			 int i=0,j =0,columnafor=0;
-//			while(i<vector.size()){
-//				columnafor=0;
-//			      for(int f =0;  f<cantidad_de_columnas_matriz;  f++,columnafor++,i++  ){	
-//			  matriz[j][columnafor] = vector.get(i).toString();
-//			  }
-//			  j++;
-//		}
-//		return matriz;
-//	}
-	
-//	private Object[][] tabla_guardar_movimientos_bancarios_iniciales(){
-//		Object[][] matriz_bancarios = new Object[tabla_mov_bancarios.getRowCount()][7];
-//		for(int i=0; i<tabla_mov_bancarios.getRowCount(); i++){
-//			matriz_bancarios[i][0] = modelobancarios.getValueAt(i,0).toString().trim();
-//			matriz_bancarios[i][1] = modelobancarios.getValueAt(i,1).toString().trim();
-//			matriz_bancarios[i][2] = modelobancarios.getValueAt(i,2).toString().trim();
-//			matriz_bancarios[i][3] = modelobancarios.getValueAt(i,3).toString().trim();
-//			matriz_bancarios[i][4] = modelobancarios.getValueAt(i,4).toString().trim();
-//			matriz_bancarios[i][5] = modelobancarios.getValueAt(i,5).toString().trim();
-//			matriz_bancarios[i][6] = cmbCuentasBancarias.getSelectedItem().toString();
-//		}
-//		return matriz_bancarios;
-//	}
-	
 
 	public String validar_fechas(){
 		String error = "";
@@ -304,6 +285,45 @@ public class Cat_Estado_De_Resultados extends JFrame {
 			}
 		}
 	};
+	
+	
+	ActionListener opGenerarReporte_de_concepto = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			 if(validar_fechas().equals("")){
+				  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+				  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
+				 
+				  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+				  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+				  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+	 	if(fecha1.before(fecha2)){		  
+			if(cmbConcepto.getSelectedItem().toString().trim().equals("Selecciona Un Concepto")){
+			  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Concepto Para Poder Generar El Reporte Del Concepto", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
+               return;
+			}else{
+				if(cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")){	
+					  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Establecimiento Para Poder Generar El Reporte Del Concepto ", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
+					  return;
+				}else{
+					String basedatos="2.26";
+					String vista_previa_reporte="no";
+					int vista_previa_de_ventana=0;
+					
+					String comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+					String reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
+				  
+					new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				}
+			}		
+	 	 }else{
+			JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
+			return;
+			}
+		}
+			 
+		}
+	};
+	
 	
 	public static void main(String args[]){
 		try{

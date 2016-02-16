@@ -143,6 +143,14 @@ public class Obj_Establecimiento {
 		}
 	return null; }
 	
+	public String[] Combo_Establecimiento_Estado_resultados(){
+		try {
+			return new Cargar_Combo().Establecimientos_Edo_Resultados();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return null; }
+	
 	public String[] Combo_Establecimiento_Cajeras(){
 		try {
 			return new Cargar_Combo().Establecimiento_Caja();
