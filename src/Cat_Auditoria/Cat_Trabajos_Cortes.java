@@ -1077,7 +1077,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 													 Double.valueOf(txtTotalRetiroCliente.getText())-
 //													 Double.valueOf(txtTotalRecibosDeLuz.getText())-
 													 Double.valueOf(txtIzacel.getText())-
-//													 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
+													 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
 													 Double.valueOf(txtPines.getText())
 													)
 											);
@@ -1093,7 +1093,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 														 Double.valueOf(txtTotalRetiroCliente.getText().equals("")?"0":txtTotalRetiroCliente.getText())-
 //														 Double.valueOf(txtTotalRecibosDeLuz.getText().equals("")?"0":txtTotalRecibosDeLuz.getText())-
 														 Double.valueOf(txtIzacel.getText().equals("")?"0":txtIzacel.getText())-
-//														 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
+														 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
 														 Double.valueOf(txtPines.getText().equals("")?"0":txtPines.getText())
 												   	  )	
 										);
