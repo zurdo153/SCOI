@@ -48,7 +48,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String operador[] = {"Selecciona Un Concepto","Mermas","Uso Interno","Uso Interno Administración"};
+	String operador[] = {"Selecciona Un Concepto","Mermas","Uso Interno","Uso Interno Administración","Diferiencias De Inventario"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
 	
@@ -308,10 +308,16 @@ public class Cat_Estado_De_Resultados extends JFrame {
 					String basedatos="2.26";
 					String vista_previa_reporte="no";
 					int vista_previa_de_ventana=0;
+					String comando="";
+					String reporte ="";
+					if(cmbConcepto.getSelectedItem().toString().trim().equals("Diferiencias De Inventario")){
+						comando="exec sp_Reporte_De_Diferiencias_De_Inventario '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"'" ;
+						reporte = "Obj_Reporte_De_Inventarios_Fisicos_Estado_Resultados.jrxml";
+					}else{
 					
-					String comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
-					String reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
-				  
+					comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+					 reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
+					}
 					new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 				}
 			}		
