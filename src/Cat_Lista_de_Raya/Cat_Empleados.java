@@ -139,8 +139,8 @@ public class Cat_Empleados extends JFrame{
 	
 	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
 	
-	JTextField txtFolioEmpleado = new Componentes().text( new JCTextField(), "Folio de Colaborador", 9, "Int");
-	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Colaborador", 70, "String");
+	JTextField txtFolioEmpleado = new Componentes().text( new JCTextField(), "Folio de Empleado", 9, "Int");
+	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 70, "String");
 	JTextField txtApPaterno = new Componentes().text( new JTextField(), "Apellido Paterno", 20, "String");
 	JTextField txtApMaterno = new Componentes().text( new JTextField(), "Apellido Materno", 20, "String");
 	JTextField txtFechaActualizacion = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
@@ -333,8 +333,8 @@ public class Cat_Empleados extends JFrame{
 //		loweredbevel = BorderFactory.createLoweredBevelBorder();
 //		empty = BorderFactory.createEmptyBorder();
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/usuario-grupo-icono-5183-64.png"));
-		this.setTitle("Datos De Los Colaboradores");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/de-configuracion-de-usuario-icono-7374-32.png"));
+		this.setTitle("Alta de Empleados");
 		
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Datos del Colaborador"));
 		
@@ -969,7 +969,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opFoto = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().length() == 0){
-				JOptionPane.showMessageDialog(null, "Cree un nuevo Colaborador, que contenga un folio.","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null, "Cree un nuevo empleado, que contenga un folio.","Aviso", JOptionPane.WARNING_MESSAGE);
 				return;
 			}else{
 				try{
@@ -987,7 +987,7 @@ public class Cat_Empleados extends JFrame{
 				if(!txtApPaterno.getText().equals("")){
 					new Cat_Documentacion_De_Empleado(txtFolioEmpleado.getText(),txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText(),cmbEstablecimiento.getSelectedItem()+"",cmbPuesto.getSelectedItem()+"").setVisible(true);
 				}else{
-					JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 					txtFolioEmpleado.requestFocus();
 					return;
 				}
@@ -1003,7 +1003,7 @@ public class Cat_Empleados extends JFrame{
 	public void buscarEmpleado(String funcion){
 			
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				
@@ -1257,44 +1257,272 @@ public class Cat_Empleados extends JFrame{
       return importe_fuente_sodas;
 	}
 	
-	
-	ActionListener guardar = new ActionListener(){
-		@SuppressWarnings("deprecation")
+   ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-		
-			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
-			Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
 			
-			boolean auditoriaBoolean = auditoria.isAutorizar();
-			boolean finanzasBoolean = finanzas.isAutorizar();
-			
-			if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
-				JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Colaborador .."
-				       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<Al dar Click en Aceptar SCOI se Cerrará>>","Aviso",JOptionPane.WARNING_MESSAGE);
-				try {	R.exec("taskkill /f /im javaw.exe"); } catch (IOException e1) {	e1.printStackTrace(); }		
+			if(cmbStatus.getSelectedItem().toString().trim().equals("Baja") || cmbStatus.getSelectedItem().toString().trim().equals("No Contratable")){
+				if(new BuscarSQL().baja_en_catalogo_empleado()){
+					guardar_modificar_Empleado();
+				}else{
+					JOptionPane.showMessageDialog(null, "No Se Puede Guardar Un Empleado Con Status De Baja o No Contratable", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
 			}else{
-			
-			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "El folio es requerido \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				guardar_modificar_Empleado();
 			}
-			if(validaIMSS()>0 && validaIMSS()<3){
+			
+			
+			
+			
+		}	
+	};
+	
+   @SuppressWarnings("deprecation")
+public void guardar_modificar_Empleado(){
+
+				Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
+				Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
 				
-				JOptionPane.showMessageDialog(null, "Para poder guardar o actualizar en necesario que los siguientes campos esten llenos o totalemente vacios:\n- No Seguro Social\n- Activo(IMSS) ó Inactivo (IMSS)\n- Ingreso IMSS (Fecha)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-				return;
+				boolean auditoriaBoolean = auditoria.isAutorizar();
+				boolean finanzasBoolean = finanzas.isAutorizar();
 				
-			}else{			
-				Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioEmpleado.getText()));
+				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
+					JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Empleado .."
+					       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<Al dar Click en Aceptar SCOI se Cerrará>>","Aviso",JOptionPane.WARNING_MESSAGE);
+					try {	R.exec("taskkill /f /im javaw.exe"); } catch (IOException e1) {	e1.printStackTrace(); }		
+				}else{
 				
-				if(empleado.getFolio() == Integer.parseInt(txtFolioEmpleado.getText())){
-					if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
+				if(txtFolioEmpleado.getText().equals("")){
+					JOptionPane.showMessageDialog(null, "El folio es requerido \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				}
+				if(validaIMSS()>0 && validaIMSS()<3){
+					
+					JOptionPane.showMessageDialog(null, "Para poder guardar o actualizar es necesario que los siguientes campos esten llenos o totalemente vacios:\n- No Seguro Social\n- Activo(IMSS) ó Inactivo (IMSS)\n- Ingreso IMSS (Fecha)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+					
+				}else{			
+					Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioEmpleado.getText()));
+					
+					if(empleado.getFolio() == Integer.parseInt(txtFolioEmpleado.getText())){
+						if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
+							if(validaCampos()!="") {
+								JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}else{
+								
+		//				datos personales	
+								txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
+								empleado.setNo_checador(txtChecador.getText());
+								empleado.setNombre(procesa_texto(txtNombre.getText()));
+								empleado.setAp_paterno(procesa_texto(txtApPaterno.getText()));
+								
+								if(txtApMaterno.getText().length() != 0){
+									empleado.setAp_materno(procesa_texto(txtApMaterno.getText()));
+								}else{
+									empleado.setAp_materno("");
+								}
+								
+								empleado.setFecha_nacimiento(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaNacimiento.getDate()));
+								empleado.setCalle(txtCalle.getText());
+								empleado.setColonia(txtColonia.getText());
+								empleado.setPoblacion(txtPoblacion.getText());
+								empleado.setTelefono_familiar(txtTelefono_Familiar.getText()+"");
+								empleado.setTelefono_propio(txtTelefono_Propio.getText()+"");
+								empleado.setRfc(txtRFC.getText());
+								empleado.setCurp(txtCurp.getText());
+								
+								if(cmbSexo.getSelectedItem().equals("MASCULINO")){
+									empleado.setSexo(0);
+								}else{
+									empleado.setSexo(1);
+								}
+								
+								empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
+								empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
+								empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
+								
+								if(btnTrueFoto.isSelected()){
+									empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp_update/tmp.jpg"));
+								}else{
+									empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp.jpg"));
+								}
+		
+		//				laboral
+								if(lblFolioHorario1.getText().equals("")){
+									empleado.setHorario(0);
+								}else{
+									empleado.setHorario(Integer.valueOf(lblFolioHorario1.getText()));
+								}
+								
+								if(lblFolioHorario2.getText().equals("")){
+									empleado.setHorario2(0);
+								}else{
+									empleado.setHorario2(Integer.valueOf(lblFolioHorario2.getText()));
+								}
+								
+								if(lblFolioHorario3.getText().equals("")){
+									empleado.setHorario3(0);
+								}else{
+									empleado.setHorario3(Integer.valueOf(lblFolioHorario3.getText()));
+								}
+								
+								if(rbHorario.isSelected()==true){
+									empleado.setStatus_h1(1);
+									empleado.setStatus_h2(0);
+									empleado.setStatus_h3(0);
+								}
+								if(rbHorario2.isSelected()==true){
+									empleado.setStatus_h1(0);
+									empleado.setStatus_h2(1);
+									empleado.setStatus_h3(0);
+								}
+								if(rbHorario3.isSelected()==true){
+									empleado.setStatus_h1(0);
+									empleado.setStatus_h2(0);
+									empleado.setStatus_h3(1);
+								}
+								
+								switch(cmbHorarioRotativo.getSelectedIndex()){
+									case 0: empleado.setStatus_rotativo(0); break;
+									case 1: empleado.setStatus_rotativo(1); break;
+									case 2: empleado.setStatus_rotativo(2); break;
+								}
+		
+								if(cmbContratacion.getSelectedItem().toString().contains(" ")){
+									empleado.setContrato(Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))));
+								}else{
+									empleado.setContrato(0);
+								}
+								
+								empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
+								empleado.setStatus(cmbStatus.getSelectedIndex()+1);
+								empleado.setCuadrante_parcial(chb_cuadrante_parcial.isSelected());
+								
+								Obj_Departamento depart = new Obj_Departamento().buscar_departamento(cmbDepartamento.getSelectedItem()+"");
+								empleado.setDepartameto(depart.getFolio());
+								
+								empleado.setImss(txtImss.getText());
+								empleado.setStatus_imss(cmbActivo_Inactivo.getSelectedIndex());
+								empleado.setNumero_infonavit(txtNumeroInfonavit.getText()+"");
+								
+								
+								Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
+								empleado.setEstablecimiento(comboFolioEsta.getFolio());
+		
+								
+								Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
+								empleado.setPuesto(comboFolioPues.getFolio());
+								
+								if(txtIngresoImss.getDate()==null){
+									empleado.setFecha_ingreso_imss("1/01/1900");
+								}else{
+									empleado.setFecha_ingreso_imss(new SimpleDateFormat("dd/MM/yyyy").format(txtIngresoImss.getDate()));
+								}
+								
+								if(txtVencimientoLicencia.getDate()==null){
+									empleado.setFecha_vencimiento_licencia("1/01/1900");
+								}else{
+									empleado.setFecha_vencimiento_licencia(new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
+								}
+								
+		//				percepciones y deducciones
+						
+								if(!txtSalarioDiario.getText().equals("")){
+									empleado.setSalario_diario(Float.parseFloat(txtSalarioDiario.getText())) ;
+								}else{
+									empleado.setSalario_diario(Float.parseFloat(0.0+"")); }
+							
+								if(!txtSalarioDiarioIntegrado.getText().equals("")){
+									empleado.setSalario_diario_integrado(Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
+								}else{
+									empleado.setSalario_diario_integrado(Float.parseFloat(0.0+""));
+								}
+								
+								empleado.setForma_pago(txtFormaDePago.getText()+"");
+		
+								empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
+								
+								
+								Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
+								empleado.setBono(bono.getFolio());
+								
+								empleado.setPrestamo(cmbPrestamos.getSelectedIndex());
+								
+								if(txtPensionAli.getText().length() != 0){
+									empleado.setPension_alimenticia(Float.parseFloat(txtPensionAli.getText()));
+								}else{
+									empleado.setPension_alimenticia(Float.parseFloat(0.0+""));
+								}
+								if(txtInfonavit.getText().length() != 0){
+									empleado.setInfonavit(Float.parseFloat(txtInfonavit.getText()));
+								}else{
+									empleado.setInfonavit(Float.parseFloat(0.0+""));
+								}
+								
+								empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
+								
+								empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
+								
+		//						 (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
+								empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:0);
+								
+								empleado.setGafete(chbGafete.isSelected());
+								empleado.setFuente_sodas(chbFuente_Sodas.isSelected());
+								empleado.setObservasiones(txaObservaciones.getText()+"");
+								
+								empleado.setFecha_actualizacion(txtFechaActualizacion.getText());
+								
+								//TODO 
+							  if(!cmbStatus.getSelectedItem().toString().equals("Vigente")){
+								double importe_fuente_sodas =tiene_deuda_fuente_sodas();
+								  if(importe_fuente_sodas>0){
+									if(JOptionPane.showConfirmDialog(null,"El Empleado Tiene Una Deuda De Fuente De Sodas "
+											                              +"\nDe:$"+importe_fuente_sodas
+											                              +"\nQue Hiba Ser Cobrada En La Lista De Raya Actual "
+											                              +"\nDesea Que Se Active De Nuevo La Fuente Sodas?","Aviso", JOptionPane.INFORMATION_MESSAGE,seleccion_de_asignacion_de_Horario1Horario2Horario3, new ImageIcon("imagen/fast-food-icon32.png")) == 0){
+									
+										if(new ActualizarSQL().devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(txtFolioEmpleado.getText().toString())){
+											JOptionPane.showMessageDialog(null, "Se Ha Devuelto A Pendiente De Cobro La Fuente De Sodas Del Empleado Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+										}
+									 }else{
+										 return;
+									 }
+									}
+								}
+								
+								
+								if(empleado.actualizar(Integer.parseInt(txtFolioEmpleado.getText()))){
+									panelLimpiar();
+									panelEnabledFalse();
+									rbHorario2.setEnabled(false);
+									rbHorario3.setEnabled(false);
+									txtFolioEmpleado.setEnabled(true);
+									txtFolioEmpleado.setEditable(true);
+									txtFolioEmpleado.requestFocus();
+									btnTrueFoto.setSelected(false);
+									btnExaminar.setEnabled(false);
+									btnCamara.setEnabled(false);
+									txtHorario.setEnabled(false);
+									btnBuscar.setEnabled(true);
+									btnFiltro.setEnabled(true);
+									btnNuevo.setEnabled(true);
+									JOptionPane.showMessageDialog(null, "El Empleado Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+								}else{
+									JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
+								}
+							}
+						}else{
+							return;
+						}
+					}else{
 						if(validaCampos()!="") {
-							JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+							JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 							return;
 						}else{
 							
-//					datos personales	
+		//			datos personales	
 							txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
-							empleado.setNo_checador(txtChecador.getText());
+							empleado.setNo_checador(txtFolioEmpleado.getText());
 							empleado.setNombre(procesa_texto(txtNombre.getText()));
 							empleado.setAp_paterno(procesa_texto(txtApPaterno.getText()));
 							
@@ -1326,10 +1554,11 @@ public class Cat_Empleados extends JFrame{
 							if(btnTrueFoto.isSelected()){
 								empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp_update/tmp.jpg"));
 							}else{
-								empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp.jpg"));
+								empleado.setFoto(new File(System.getProperty("user.dir")+"/Iconos/Un.jpg"));
 							}
-
-//					laboral
+		
+		//			laboral
+							
 							if(lblFolioHorario1.getText().equals("")){
 								empleado.setHorario(0);
 							}else{
@@ -1369,7 +1598,7 @@ public class Cat_Empleados extends JFrame{
 								case 1: empleado.setStatus_rotativo(1); break;
 								case 2: empleado.setStatus_rotativo(2); break;
 							}
-
+							
 							if(cmbContratacion.getSelectedItem().toString().contains(" ")){
 								empleado.setContrato(Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))));
 							}else{
@@ -1379,7 +1608,7 @@ public class Cat_Empleados extends JFrame{
 							empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
 							empleado.setStatus(cmbStatus.getSelectedIndex()+1);
 							empleado.setCuadrante_parcial(chb_cuadrante_parcial.isSelected());
-							
+		
 							Obj_Departamento depart = new Obj_Departamento().buscar_departamento(cmbDepartamento.getSelectedItem()+"");
 							empleado.setDepartameto(depart.getFolio());
 							
@@ -1387,10 +1616,8 @@ public class Cat_Empleados extends JFrame{
 							empleado.setStatus_imss(cmbActivo_Inactivo.getSelectedIndex());
 							empleado.setNumero_infonavit(txtNumeroInfonavit.getText()+"");
 							
-							
 							Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
 							empleado.setEstablecimiento(comboFolioEsta.getFolio());
-
 							
 							Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
 							empleado.setPuesto(comboFolioPues.getFolio());
@@ -1406,9 +1633,8 @@ public class Cat_Empleados extends JFrame{
 							}else{
 								empleado.setFecha_vencimiento_licencia(new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
 							}
-							
-//					percepciones y deducciones
-					
+		
+		//			percepciones y deducciones
 							if(!txtSalarioDiario.getText().equals("")){
 								empleado.setSalario_diario(Float.parseFloat(txtSalarioDiario.getText())) ;
 							}else{
@@ -1421,9 +1647,7 @@ public class Cat_Empleados extends JFrame{
 							}
 							
 							empleado.setForma_pago(txtFormaDePago.getText()+"");
-
 							empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
-							
 							
 							Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
 							empleado.setBono(bono.getFolio());
@@ -1442,10 +1666,9 @@ public class Cat_Empleados extends JFrame{
 							}
 							
 							empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
-							
 							empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
 							
-//							 (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
+		//					 (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
 							empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:0);
 							
 							empleado.setGafete(chbGafete.isSelected());
@@ -1454,26 +1677,7 @@ public class Cat_Empleados extends JFrame{
 							
 							empleado.setFecha_actualizacion(txtFechaActualizacion.getText());
 							
-							//TODO 
-						  if(!cmbStatus.getSelectedItem().toString().equals("Vigente")){
-							double importe_fuente_sodas =tiene_deuda_fuente_sodas();
-							  if(importe_fuente_sodas>0){
- 								if(JOptionPane.showConfirmDialog(null,"El Colaborador Tiene Una Deuda De Fuente De Sodas "
- 										                              +"\nDe:$"+importe_fuente_sodas
- 										                              +"\nQue Hiba Ser Cobrada En La Lista De Raya Actual "
- 										                              +"\nDesea Que Se Active De Nuevo La Fuente Sodas?","Aviso", JOptionPane.INFORMATION_MESSAGE,seleccion_de_asignacion_de_Horario1Horario2Horario3, new ImageIcon("imagen/fast-food-icon32.png")) == 0){
- 								
- 									if(new ActualizarSQL().devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(txtFolioEmpleado.getText().toString())){
- 										JOptionPane.showMessageDialog(null, "Se Ha Devuelto A Pendiente De Cobro La Fuente De Sodas Del Colaborador Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
- 									}
- 								 }else{
- 									 return;
- 								 }
-								}
-							}
-							
-							
-							if(empleado.actualizar(Integer.parseInt(txtFolioEmpleado.getText()))){
+							if(empleado.guardar()){
 								panelLimpiar();
 								panelEnabledFalse();
 								rbHorario2.setEnabled(false);
@@ -1488,202 +1692,15 @@ public class Cat_Empleados extends JFrame{
 								btnBuscar.setEnabled(true);
 								btnFiltro.setEnabled(true);
 								btnNuevo.setEnabled(true);
-								JOptionPane.showMessageDialog(null, "El Colaborador Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+								JOptionPane.showMessageDialog(null, "El Empleado Se Guardo Correcmente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							}else{
-								JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Ocurrió un problema al almacenar el empleado", "Error", JOptionPane.ERROR_MESSAGE);
 							}
 						}
-					}else{
-						return;
 					}
-				}else{
-					if(validaCampos()!="") {
-						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-						return;
-					}else{
-						
-//				datos personales	
-						txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
-						empleado.setNo_checador(txtFolioEmpleado.getText());
-						empleado.setNombre(procesa_texto(txtNombre.getText()));
-						empleado.setAp_paterno(procesa_texto(txtApPaterno.getText()));
-						
-						if(txtApMaterno.getText().length() != 0){
-							empleado.setAp_materno(procesa_texto(txtApMaterno.getText()));
-						}else{
-							empleado.setAp_materno("");
-						}
-						
-						empleado.setFecha_nacimiento(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaNacimiento.getDate()));
-						empleado.setCalle(txtCalle.getText());
-						empleado.setColonia(txtColonia.getText());
-						empleado.setPoblacion(txtPoblacion.getText());
-						empleado.setTelefono_familiar(txtTelefono_Familiar.getText()+"");
-						empleado.setTelefono_propio(txtTelefono_Propio.getText()+"");
-						empleado.setRfc(txtRFC.getText());
-						empleado.setCurp(txtCurp.getText());
-						
-						if(cmbSexo.getSelectedItem().equals("MASCULINO")){
-							empleado.setSexo(0);
-						}else{
-							empleado.setSexo(1);
-						}
-						
-						empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
-						empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
-						empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
-						
-						if(btnTrueFoto.isSelected()){
-							empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp_update/tmp.jpg"));
-						}else{
-							empleado.setFoto(new File(System.getProperty("user.dir")+"/Iconos/Un.jpg"));
-						}
-
-//				laboral
-						
-						if(lblFolioHorario1.getText().equals("")){
-							empleado.setHorario(0);
-						}else{
-							empleado.setHorario(Integer.valueOf(lblFolioHorario1.getText()));
-						}
-						
-						if(lblFolioHorario2.getText().equals("")){
-							empleado.setHorario2(0);
-						}else{
-							empleado.setHorario2(Integer.valueOf(lblFolioHorario2.getText()));
-						}
-						
-						if(lblFolioHorario3.getText().equals("")){
-							empleado.setHorario3(0);
-						}else{
-							empleado.setHorario3(Integer.valueOf(lblFolioHorario3.getText()));
-						}
-						
-						if(rbHorario.isSelected()==true){
-							empleado.setStatus_h1(1);
-							empleado.setStatus_h2(0);
-							empleado.setStatus_h3(0);
-						}
-						if(rbHorario2.isSelected()==true){
-							empleado.setStatus_h1(0);
-							empleado.setStatus_h2(1);
-							empleado.setStatus_h3(0);
-						}
-						if(rbHorario3.isSelected()==true){
-							empleado.setStatus_h1(0);
-							empleado.setStatus_h2(0);
-							empleado.setStatus_h3(1);
-						}
-						
-						switch(cmbHorarioRotativo.getSelectedIndex()){
-							case 0: empleado.setStatus_rotativo(0); break;
-							case 1: empleado.setStatus_rotativo(1); break;
-							case 2: empleado.setStatus_rotativo(2); break;
-						}
-						
-						if(cmbContratacion.getSelectedItem().toString().contains(" ")){
-							empleado.setContrato(Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))));
-						}else{
-							empleado.setContrato(0);
-						}
-						
-						empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
-						empleado.setStatus(cmbStatus.getSelectedIndex()+1);
-						empleado.setCuadrante_parcial(chb_cuadrante_parcial.isSelected());
-
-						Obj_Departamento depart = new Obj_Departamento().buscar_departamento(cmbDepartamento.getSelectedItem()+"");
-						empleado.setDepartameto(depart.getFolio());
-						
-						empleado.setImss(txtImss.getText());
-						empleado.setStatus_imss(cmbActivo_Inactivo.getSelectedIndex());
-						empleado.setNumero_infonavit(txtNumeroInfonavit.getText()+"");
-						
-						Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
-						empleado.setEstablecimiento(comboFolioEsta.getFolio());
-						
-						Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
-						empleado.setPuesto(comboFolioPues.getFolio());
-						
-						if(txtIngresoImss.getDate()==null){
-							empleado.setFecha_ingreso_imss("1/01/1900");
-						}else{
-							empleado.setFecha_ingreso_imss(new SimpleDateFormat("dd/MM/yyyy").format(txtIngresoImss.getDate()));
-						}
-						
-						if(txtVencimientoLicencia.getDate()==null){
-							empleado.setFecha_vencimiento_licencia("1/01/1900");
-						}else{
-							empleado.setFecha_vencimiento_licencia(new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
-						}
-
-//				percepciones y deducciones
-						if(!txtSalarioDiario.getText().equals("")){
-							empleado.setSalario_diario(Float.parseFloat(txtSalarioDiario.getText())) ;
-						}else{
-							empleado.setSalario_diario(Float.parseFloat(0.0+"")); }
-					
-						if(!txtSalarioDiarioIntegrado.getText().equals("")){
-							empleado.setSalario_diario_integrado(Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
-						}else{
-							empleado.setSalario_diario_integrado(Float.parseFloat(0.0+""));
-						}
-						
-						empleado.setForma_pago(txtFormaDePago.getText()+"");
-						empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
-						
-						Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
-						empleado.setBono(bono.getFolio());
-						
-						empleado.setPrestamo(cmbPrestamos.getSelectedIndex());
-						
-						if(txtPensionAli.getText().length() != 0){
-							empleado.setPension_alimenticia(Float.parseFloat(txtPensionAli.getText()));
-						}else{
-							empleado.setPension_alimenticia(Float.parseFloat(0.0+""));
-						}
-						if(txtInfonavit.getText().length() != 0){
-							empleado.setInfonavit(Float.parseFloat(txtInfonavit.getText()));
-						}else{
-							empleado.setInfonavit(Float.parseFloat(0.0+""));
-						}
-						
-						empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
-						empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
-						
-//						 (presencia ficica      0 -> default(DB)     1 -> APLICA     0 -> NO APLICA)
-						empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("APLICA")?1:0);
-						
-						empleado.setGafete(chbGafete.isSelected());
-						empleado.setFuente_sodas(chbFuente_Sodas.isSelected());
-						empleado.setObservasiones(txaObservaciones.getText()+"");
-						
-						empleado.setFecha_actualizacion(txtFechaActualizacion.getText());
-						
-						if(empleado.guardar()){
-							panelLimpiar();
-							panelEnabledFalse();
-							rbHorario2.setEnabled(false);
-							rbHorario3.setEnabled(false);
-							txtFolioEmpleado.setEnabled(true);
-							txtFolioEmpleado.setEditable(true);
-							txtFolioEmpleado.requestFocus();
-							btnTrueFoto.setSelected(false);
-							btnExaminar.setEnabled(false);
-							btnCamara.setEnabled(false);
-							txtHorario.setEnabled(false);
-							btnBuscar.setEnabled(true);
-							btnFiltro.setEnabled(true);
-							btnNuevo.setEnabled(true);
-							JOptionPane.showMessageDialog(null, "El Colaborador Se Guardo Correcmente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-						}else{
-							JOptionPane.showMessageDialog(null, "Ocurrió un problema al guardar el colaborador", "Avise al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-						}
-					}
-				}
-			}			
-		}
-		}	
-	};
+				}			
+			}
+   }
 	
 	ActionListener filtro = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -1989,7 +2006,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opContratacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 			String Sexo ="",Estado_Civil="", NombreUsuario="";
@@ -2018,7 +2035,7 @@ public class Cat_Empleados extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				String comando="exec sp_select_datos_completos_empleado "+txtFolioEmpleado.getText()+"";
@@ -2033,7 +2050,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opAsistenciaEmpleado = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 			
@@ -2045,7 +2062,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener Reporte_Cortes_Por_empleado = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				

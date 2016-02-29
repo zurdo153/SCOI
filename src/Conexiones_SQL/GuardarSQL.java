@@ -72,6 +72,7 @@ import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Lista_de_Raya.Obj_Finiquitos;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Lista_de_Raya.Obj_Prestamos;
@@ -5098,4 +5099,118 @@ public boolean Guardar_Alimentacion_De_Inventario_Fisico(Object[][] inv_fis){
 	}		
 	return true;
 	}
+
+public boolean Guardar_Finiquito(Obj_Finiquitos finiquito, String status_emplead, String observacion){
+	String query = "exec sp_insert_finiquito ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	try {
+		con.setAutoCommit(false);
+		
+		int folio_finiquito = busca_y_actualiza_proximo_folio(23);//FOLIO CONSECUTIVO CORRESPONDIENTE A LOS FINIQUITOS
+		int i=1;
+		pstmt = con.prepareStatement(query);
+		
+		pstmt.setInt(i,			finiquito.getFolio_empleado_scoi());
+		pstmt.setString(i+=1, 	finiquito.getFolio_empleado_bms());
+		pstmt.setString(i+=1,	finiquito.getEstablecimiento());
+		
+//		componentes De bms
+		pstmt.setString(i+=1,	finiquito.getFecha_ingreso_BMS());
+		pstmt.setString(i+=1,	finiquito.getFecha_baja_BMS());
+
+		pstmt.setInt(i+=1,		finiquito.getDias_trabajados_BMS());
+		pstmt.setDouble(i+=1,	finiquito.getAnios_trabajados_BMS());
+		
+		pstmt.setInt(i+=1,		finiquito.getDias_pendientes_de_pago_de_aguinaldo_BMS());
+		pstmt.setInt(i+=1,		finiquito.getDias_pendientes_de_pago_de_semana_BMS());
+		pstmt.setDouble(i+=1,	finiquito.getCuota_diario_BMS());
+		
+		pstmt.setDouble(i+=1,	finiquito.getSDI_BMS());
+		
+		pstmt.setDouble(i+=1,	finiquito.getSueldo_BMS());
+		pstmt.setDouble(i+=1,	finiquito.getAguinaldo_BMS());
+		
+		pstmt.setDouble(i+=1,	finiquito.getVacaciones_pendientes_BMS());
+		pstmt.setDouble(i+=1,	finiquito.getVacaciones_BMS());
+		pstmt.setDouble(i+=1,	finiquito.getPrima_vacacional_BMS());
+		
+		pstmt.setDouble(i+=1,	finiquito.getGratificacion_BMS());
+		pstmt.setDouble(i+=1,	finiquito.getTiempo_extra_BMS());
+		pstmt.setDouble(i+=1,	finiquito.getPercepciones_BMS());
+		
+		pstmt.setDouble(i+=1,	finiquito.getTotal_a_pagar());
+				
+//		componentes De scoi
+		pstmt.setString(i+=1,	finiquito.getFecha_ingreso_SCOI());
+		pstmt.setString(i+=1,	finiquito.getFecha_baja_SCOI());
+
+		pstmt.setInt(i+=1,		finiquito.getDias_trabajados_SCOI());
+		pstmt.setDouble(i+=1,	finiquito.getAnios_trabajados_SCOI());
+		
+		pstmt.setInt(i+=1,		finiquito.getDias_pendientes_de_pago_de_aguinaldo_SCOI());
+		pstmt.setInt(i+=1,		finiquito.getDias_pendientes_de_pago_de_semana_SCOI());
+		pstmt.setDouble(i+=1,	finiquito.getCuota_diario_SCOI());
+		
+		pstmt.setDouble(i+=1,	finiquito.getSueldo_SCOI());
+		pstmt.setDouble(i+=1,	finiquito.getAguinaldo_SCOI());
+		
+		pstmt.setDouble(i+=1,	finiquito.getVacaciones_pendientes_SCOI());
+		pstmt.setDouble(i+=1,	finiquito.getVacaciones_SCOI());
+		pstmt.setDouble(i+=1,	finiquito.getPrima_vacacional_SCOI());
+		
+		pstmt.setDouble(i+=1,	finiquito.getPercepciones_SCOI());
+		
+//		diferencias (GRATIFICACION)
+		pstmt.setDouble(i+=1,	finiquito.getSueldo_gratif());
+		pstmt.setDouble(i+=1,	finiquito.getAguinaldo_gratif());
+		
+		pstmt.setDouble(i+=1,	finiquito.getVacaciones_pendientes_gratif());
+		pstmt.setDouble(i+=1,	finiquito.getVacaciones_gratif());
+		pstmt.setDouble(i+=1,	finiquito.getPrima_vacacional_gratif());
+		
+		pstmt.setDouble(i+=1,	finiquito.getPercepciones_gratif());
+		
+//		Deducciones
+		pstmt.setDouble(i+=1,	finiquito.getPretamo());
+		pstmt.setDouble(i+=1,	finiquito.getCortes());
+		pstmt.setDouble(i+=1,	finiquito.getInfonavit());
+		pstmt.setDouble(i+=1,	finiquito.getFuente_sodas());
+		pstmt.setDouble(i+=1,	finiquito.getOtras_deducciones());
+		
+		pstmt.setInt(i+=1,		usuario.getFolio());
+		
+//		modificacion de status de empleado
+		pstmt.setString(i+=1,	status_emplead);
+		pstmt.setString(i+=1,	observacion);
+		
+		pstmt.setInt(i+=1,	folio_finiquito);
+		
+		pstmt.executeUpdate();
+		con.commit();
+		
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Finiquito ] Insert  SQLException: sp_insert_finiquito "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Finiquito ] Insert  SQLException: sp_insert_finiquito "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			pstmt.close();
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+}
 } 
