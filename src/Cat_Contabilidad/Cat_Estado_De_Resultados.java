@@ -48,7 +48,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String operador[] = {"Selecciona Un Concepto","Mermas","Uso Interno","Uso Interno Administración","Diferiencias De Inventario"};
+	String operador[] = {"Selecciona Un Concepto","Mermas","Mermas Por Producto","Uso Interno","Uso Interno Por Producto","Uso Interno Administración","Uso Interno Administración Por Producto","Diferiencias De Inventario","Nomina","Gastos De Ventas","Gastos De Ventas NC","Gastos De Administración","Gastos De Administración NC","Gastos Financieros","Gastos Financieros NC"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
 	
@@ -251,7 +251,6 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		  if(validar_fechas().equals("")){
 				  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 				  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
-				 
 				  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
 				
 				  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
@@ -274,6 +273,24 @@ public class Cat_Estado_De_Resultados extends JFrame {
 											}
 											model.addRow(fila);
 										}
+										
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("SUPER_I"),               2);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("SUPER_II"),              3);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("SUPER_III"),             4);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("SUPER_IV"),              5);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("SUPER_V"),               6);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("REFACCIONARIA"),         7);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("FERRETERIA"),            8);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("FIESTILANDIA"),          9);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("PAPER_CITY"),           10);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("PAPER_CITY_II"),        11);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("ESPACIO_35"),           12);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("IZAGAR_FOOD_SUPER_II"), 13);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("IZAGAR_FOOD_SUPER_IV"), 14);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("NAPOLITANA"),           15);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("DEPOSITO_II"),          16);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("IZACEL"),               17);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("CEDIS"),                18);
 								}	
 							} catch (SQLException e1) {
 								e1.printStackTrace();
@@ -286,13 +303,11 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		}
 	};
 	
-	
 	ActionListener opGenerarReporte_de_concepto = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			 if(validar_fechas().equals("")){
 				  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 				  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
-				 
 				  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
 				  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
 				  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
@@ -305,20 +320,51 @@ public class Cat_Estado_De_Resultados extends JFrame {
 					  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Establecimiento Para Poder Generar El Reporte Del Concepto ", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
 					  return;
 				}else{
+					int testigo=0;
 					String basedatos="2.26";
 					String vista_previa_reporte="no";
 					int vista_previa_de_ventana=0;
 					String comando="";
 					String reporte ="";
+					
 					if(cmbConcepto.getSelectedItem().toString().trim().equals("Diferiencias De Inventario")){
 						comando="exec sp_Reporte_De_Diferiencias_De_Inventario '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"'" ;
 						reporte = "Obj_Reporte_De_Inventarios_Fisicos_Estado_Resultados.jrxml";
-					}else{
-					
-					comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
-					 reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
+						testigo=1;
 					}
-					new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+					
+					
+					if(cmbConcepto.getSelectedItem().toString().trim().equals("Mermas")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Administración")){
+			            comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+			            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
+			            testigo=1;
+					}
+					
+					if(cmbConcepto.getSelectedItem().toString().trim().equals("Mermas Por Producto")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Por Producto")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Administración Por Producto")){
+			            comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+			            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
+			            testigo=1;
+					}
+										
+				    if(cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Administración")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos Financieros")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas NC") ||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Administración NC")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos Financieros NC")  ){
+								comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+								reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+								testigo=1;
+					}
+				    
+				    if(cmbConcepto.getSelectedItem().toString().trim().equals("Nomina") ){
+								comando="exec sp_reporte_de_lista_de_raya_en_un_periodo_edo_resultados '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+								reporte = "Obj_Reporte_De_Listas_De_Raya_En_Un_Periodo.jrxml";
+								testigo=1;
+					}
+				    
+				    if(testigo==1){
+						new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+						
+				    }else{
+								JOptionPane.showMessageDialog(null,"Error Concepto No Identificado","Avisa Al Adimistrador Del Sistema!", JOptionPane.ERROR_MESSAGE);
+								return;
+						 }
 				}
 			}		
 	 	 }else{

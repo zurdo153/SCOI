@@ -7564,18 +7564,7 @@ public class BuscarSQL {
 	
 	public String[][] buscarCascosPendientes(String fecha_in, String fecha_fin){
 		Statement stmt = null;
-		
-//		String query = "SELECT [folio_origen] "
-//				+ "	  ,[folio_transaccion] "
-//				+ "	  ,[nombre_transaccion] "
-//				+ "	  ,convert(varchar(20),[fecha],103)+' '+convert(varchar(20),[fecha],108) as fecha "
-//				+ "	  ,[folio_producto] "
-//				+ "	  ,[Descripcion] "
-//				+ "	  ,[cantidad] "
-//				+ "   	  ,[status] "
-//				+ "   FROM tb_entysal_mov_cascos  where status_traspaso=1" ;
 		String query = "exec sp_traspaso_de_movimientos_de_cascos '"+fecha_in+"','"+fecha_fin+"'";
-		
 		
 		String[][] cascosPendientes = new String[getFilas(query)][8];
 		

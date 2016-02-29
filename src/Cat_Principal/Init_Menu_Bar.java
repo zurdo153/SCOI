@@ -31,7 +31,7 @@ public class Init_Menu_Bar extends Init_Login{
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.104"
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.109"
 				+ "");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
@@ -205,7 +205,7 @@ public class Init_Menu_Bar extends Init_Login{
 				 Obj_MD5 algoritmo = new Obj_MD5();
 			 	 Obj_Usuario user = new Obj_Usuario().buscar(Integer.parseInt(txtFolio.getText()));
 				if(!algoritmo.cryptMD5(txtContrasena.getText(), "izagar").trim().equals(user.getContrasena().trim())){
-					JOptionPane.showMessageDialog(null, "La Contraseña No Es Válida...","Aviso",JOptionPane.WARNING_MESSAGE , new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+					JOptionPane.showMessageDialog(null, "La Contraseña No Es Válida...","Aviso",JOptionPane.WARNING_MESSAGE , new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					txtContrasena.setText("");
 					txtContrasena.requestFocus(true);
 					return;
@@ -221,12 +221,14 @@ public class Init_Menu_Bar extends Init_Login{
 					subMenusbotones();
 					user.Session();
 					txtContrasena.setEnabled(false);
+					
 					///cargar foto del empleado///
-					btnFoto.setVisible(true);
+					fotolb.setVisible(true);
 					int folio_empleado =Integer.valueOf(txtFolio.getText());
 	        		new Obj_Usuario().BuscarUsuario(folio_empleado);
 	    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
-	    	 		btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(110, 90, Image.SCALE_DEFAULT)));
+	    	 		fotolb.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(140, 110, Image.SCALE_DEFAULT)));
+	    	 		
 	    	 		
 					if(Integer.valueOf(buscarRegistro_Contrato()[0])>0){
 						if(Integer.valueOf(buscarRegistro_Contrato()[1])>0){
@@ -236,7 +238,7 @@ public class Init_Menu_Bar extends Init_Login{
 					}
 				}
 			}else{
-				JOptionPane.showMessageDialog(null, "La Contraseña Está Vacía...","Aviso",JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+				JOptionPane.showMessageDialog(null, "La Contraseña Está Vacía...","Aviso",JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				txtContrasena.requestFocus(true);
 				return;
 			}
@@ -335,16 +337,16 @@ public class Init_Menu_Bar extends Init_Login{
 			btnInasistencia.setEnabled(false);
 			btnCaja.setEnabled(false);
 			btnFsRH.setEnabled(false);
-			btnFsAux.setEnabled(false);
+			btnCortes_Cajeros.setEnabled(false);
 			btnRetirosCajeras.setEnabled(false);
 			btnPrestamo.setEnabled(false);
-			btnAltaEmp.setEnabled(false);
+			btnPlaneacionyRevision.setEnabled(false);
 			btnListaRaya.setEnabled(false);
 			btnListaFirma.setEnabled(false);
-			btnListaComparacion.setEnabled(false);
+			btnColaborador.setEnabled(false);
 			btnChecador.setEnabled(false);
 			btnCambiarContrasena.setVisible(false);
-			btnFoto.setVisible(false);
+			fotolb.setVisible(false);
 			deshabilitarCambiarContrasena ();
 			cargar_usuariotrue();
 			dispose();

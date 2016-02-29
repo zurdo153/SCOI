@@ -63,6 +63,7 @@ public class Cat_Programacion_Y_Revision_Del_Plan_Semanal extends Cat_Plan_Seman
 	public Cat_Programacion_Y_Revision_Del_Plan_Semanal (){
 		this.setTitle("Programación y Revisión del Plan Semanal");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Detalle Del Plan Semanal"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Planeacion_Y_Revision.png"));
 		init();
 	}
 	

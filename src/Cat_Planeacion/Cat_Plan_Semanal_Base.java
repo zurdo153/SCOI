@@ -230,7 +230,7 @@ public class Cat_Plan_Semanal_Base extends JFrame{
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/calendario almacen.png"));
+
 
 		lblFoto.setBorder(LineBorder.createGrayLineBorder());
 		

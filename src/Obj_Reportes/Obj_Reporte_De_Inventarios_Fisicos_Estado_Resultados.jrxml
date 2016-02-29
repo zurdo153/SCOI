@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-02-15T12:51:43 -->
+<!-- 2016-02-18T19:08:26 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="ireport.zoom" value="2.593742460100005"/>
@@ -92,7 +92,7 @@
 		<groupHeader>
 			<band height="14">
 				<textField>
-					<reportElement x="9" y="0" width="100" height="13" uuid="845c32d2-1682-44e9-9779-7b2e8eb4c547"/>
+					<reportElement x="9" y="0" width="272" height="13" uuid="845c32d2-1682-44e9-9779-7b2e8eb4c547"/>
 					<textElement>
 						<font isBold="true" isUnderline="true"/>
 					</textElement>
@@ -127,7 +127,7 @@
 		<groupHeader>
 			<band height="13">
 				<textField>
-					<reportElement x="18" y="0" width="100" height="13" uuid="8d1b25bf-f401-4f1c-a5fa-971d23abf084">
+					<reportElement x="18" y="0" width="262" height="13" uuid="8d1b25bf-f401-4f1c-a5fa-971d23abf084">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textElement>
@@ -164,7 +164,7 @@
 		<groupHeader>
 			<band height="16">
 				<textField>
-					<reportElement x="25" y="1" width="100" height="13" uuid="9c8310be-2505-4945-8931-1a7ea80e54fd">
+					<reportElement x="25" y="1" width="256" height="13" uuid="9c8310be-2505-4945-8931-1a7ea80e54fd">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textElement>
@@ -249,13 +249,16 @@
 					<reportElement x="33" y="3" width="8" height="8" uuid="d96e8827-517e-4b90-b3ba-580d52457e88"/>
 				</ellipse>
 				<textField>
-					<reportElement x="43" y="0" width="70" height="13" uuid="0c45c50c-33cf-4e8f-8bfe-e2920a3cc730"/>
+					<reportElement x="43" y="0" width="46" height="13" uuid="0c45c50c-33cf-4e8f-8bfe-e2920a3cc730"/>
 					<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement x="113" y="0" width="277" height="13" uuid="85dc7571-11c3-4fe9-9c21-5d145d997fd8">
+				<textField pattern="">
+					<reportElement x="89" y="0" width="301" height="13" uuid="85dc7571-11c3-4fe9-9c21-5d145d997fd8">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
+					<textElement>
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.###">

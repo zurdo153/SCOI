@@ -208,11 +208,11 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] Establecimientos_Edo_Resultados() throws SQLException{
-		String query = "select ltrim(rtrim(nombre)) as nombre from establecimientos where status = 'V' and cod_estab   not in(6,8,13,17) order by nombre desc";
+		String query = "exec sp_select_establecimientos 'R'";
 		
 		Statement stmt = null;
 		try {
-			stmt = con.conexion_IZAGAR().createStatement();
+			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
 			int j=0;

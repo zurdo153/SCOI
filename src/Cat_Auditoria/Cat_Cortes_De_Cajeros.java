@@ -81,7 +81,7 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 	@SuppressWarnings("rawtypes")
 	public void Constructor(){
 		this.setTitle("Filtro Cortes ");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bolsa-de-dinero-en-efectivo-icono-6673-32.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bolsa-de-dinero-en-efectivo-icono-6673-64.png"));
 		
 		txtBuscar.addKeyListener(new KeyAdapter() { 
 			public void keyReleased(final KeyEvent e) { 
@@ -135,7 +135,7 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 	        	if(e.getClickCount() == 2){
 	        		
 	        		if(cmbEstablecimiento.getSelectedIndex()==0){
-	        			JOptionPane.showMessageDialog(null, "Seleccione un Establecimineto", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+	        			JOptionPane.showMessageDialog(null, "Seleccione un Establecimineto", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 	    				return;
 	        		}else{
 		        			int fila = tabla.getSelectedRow();
@@ -148,7 +148,7 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 						        			dispose();
 						        			new Cat_Alimentacion_Cortes(Integer.parseInt(folio+""),estab,folio_corte).setVisible(true);
 				        			}else{
-				        				JOptionPane.showMessageDialog(null, "No se genero el folio de corte correctamente", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				        				JOptionPane.showMessageDialog(null, "No se genero el folio de corte correctamente", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					    				return;
 				        			}
 	        		}

@@ -139,8 +139,8 @@ public class Cat_Empleados extends JFrame{
 	
 	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
 	
-	JTextField txtFolioEmpleado = new Componentes().text( new JCTextField(), "Folio de Empleado", 9, "Int");
-	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 70, "String");
+	JTextField txtFolioEmpleado = new Componentes().text( new JCTextField(), "Folio de Colaborador", 9, "Int");
+	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Colaborador", 70, "String");
 	JTextField txtApPaterno = new Componentes().text( new JTextField(), "Apellido Paterno", 20, "String");
 	JTextField txtApMaterno = new Componentes().text( new JTextField(), "Apellido Materno", 20, "String");
 	JTextField txtFechaActualizacion = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
@@ -333,8 +333,8 @@ public class Cat_Empleados extends JFrame{
 //		loweredbevel = BorderFactory.createLoweredBevelBorder();
 //		empty = BorderFactory.createEmptyBorder();
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/de-configuracion-de-usuario-icono-7374-32.png"));
-		this.setTitle("Alta de Empleados");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/usuario-grupo-icono-5183-64.png"));
+		this.setTitle("Datos De Los Colaboradores");
 		
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Datos del Colaborador"));
 		
@@ -969,7 +969,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opFoto = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().length() == 0){
-				JOptionPane.showMessageDialog(null, "Cree un nuevo empleado, que contenga un folio.","Aviso", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Cree un nuevo Colaborador, que contenga un folio.","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				try{
@@ -987,7 +987,7 @@ public class Cat_Empleados extends JFrame{
 				if(!txtApPaterno.getText().equals("")){
 					new Cat_Documentacion_De_Empleado(txtFolioEmpleado.getText(),txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText(),cmbEstablecimiento.getSelectedItem()+"",cmbPuesto.getSelectedItem()+"").setVisible(true);
 				}else{
-					JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 					txtFolioEmpleado.requestFocus();
 					return;
 				}
@@ -1003,7 +1003,7 @@ public class Cat_Empleados extends JFrame{
 	public void buscarEmpleado(String funcion){
 			
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				
@@ -1269,7 +1269,7 @@ public class Cat_Empleados extends JFrame{
 			boolean finanzasBoolean = finanzas.isAutorizar();
 			
 			if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
-				JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Empleado .."
+				JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Colaborador .."
 				       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<Al dar Click en Aceptar SCOI se Cerrará>>","Aviso",JOptionPane.WARNING_MESSAGE);
 				try {	R.exec("taskkill /f /im javaw.exe"); } catch (IOException e1) {	e1.printStackTrace(); }		
 			}else{
@@ -1458,13 +1458,13 @@ public class Cat_Empleados extends JFrame{
 						  if(!cmbStatus.getSelectedItem().toString().equals("Vigente")){
 							double importe_fuente_sodas =tiene_deuda_fuente_sodas();
 							  if(importe_fuente_sodas>0){
- 								if(JOptionPane.showConfirmDialog(null,"El Empleado Tiene Una Deuda De Fuente De Sodas "
+ 								if(JOptionPane.showConfirmDialog(null,"El Colaborador Tiene Una Deuda De Fuente De Sodas "
  										                              +"\nDe:$"+importe_fuente_sodas
  										                              +"\nQue Hiba Ser Cobrada En La Lista De Raya Actual "
  										                              +"\nDesea Que Se Active De Nuevo La Fuente Sodas?","Aviso", JOptionPane.INFORMATION_MESSAGE,seleccion_de_asignacion_de_Horario1Horario2Horario3, new ImageIcon("imagen/fast-food-icon32.png")) == 0){
  								
  									if(new ActualizarSQL().devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(txtFolioEmpleado.getText().toString())){
- 										JOptionPane.showMessageDialog(null, "Se Ha Devuelto A Pendiente De Cobro La Fuente De Sodas Del Empleado Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+ 										JOptionPane.showMessageDialog(null, "Se Ha Devuelto A Pendiente De Cobro La Fuente De Sodas Del Colaborador Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
  									}
  								 }else{
  									 return;
@@ -1488,7 +1488,7 @@ public class Cat_Empleados extends JFrame{
 								btnBuscar.setEnabled(true);
 								btnFiltro.setEnabled(true);
 								btnNuevo.setEnabled(true);
-								JOptionPane.showMessageDialog(null, "El Empleado Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+								JOptionPane.showMessageDialog(null, "El Colaborador Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							}else{
 								JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
 							}
@@ -1674,9 +1674,9 @@ public class Cat_Empleados extends JFrame{
 							btnBuscar.setEnabled(true);
 							btnFiltro.setEnabled(true);
 							btnNuevo.setEnabled(true);
-							JOptionPane.showMessageDialog(null, "El Empleado Se Guardo Correcmente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							JOptionPane.showMessageDialog(null, "El Colaborador Se Guardo Correcmente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						}else{
-							JOptionPane.showMessageDialog(null, "Ocurrió un problema al almacenar el empleado", "Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Ocurrió un problema al guardar el colaborador", "Avise al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 						}
 					}
 				}
@@ -1989,7 +1989,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opContratacion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 			String Sexo ="",Estado_Civil="", NombreUsuario="";
@@ -2018,7 +2018,7 @@ public class Cat_Empleados extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				String comando="exec sp_select_datos_completos_empleado "+txtFolioEmpleado.getText()+"";
@@ -2033,7 +2033,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opAsistenciaEmpleado = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 			
@@ -2045,7 +2045,7 @@ public class Cat_Empleados extends JFrame{
 	ActionListener Reporte_Cortes_Por_empleado = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				

@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import Conexiones_SQL.Generacion_Reportes;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
@@ -24,6 +25,7 @@ public class Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia extends JFr
 	JButton btnReporte_actual = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
 	JButton btnReporte_actual_ticket = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
 	int tipo_Reporte = 0;
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia(){
 		setSize(425,220);
@@ -54,7 +56,7 @@ public class Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia extends JFr
 			String basedatos="2.200";
 			String vista_previa_reporte="no";
 			int vista_previa_de_ventana=0;
-			String comando="exec sp_Reporte_De_Diferiencias_De_Recepciones_De_Transferencia '"+String.valueOf(txtFolio.getText().toUpperCase().trim())+"'"  ;
+			String comando="exec sp_Reporte_De_Diferiencias_De_Recepciones_De_Transferencia_2 '"+String.valueOf(txtFolio.getText().toUpperCase().trim())+"','"+usuario.getNombre_completo()+"'"  ;
 			String reporte = "";
 			if(e.getActionCommand().equals("<html> <FONT FACE=arial SIZE=3 COLOR=BLACk>		<CENTER><p>Reporte De Diferiencia De Recepcion De Transferencia (Carta)</p></CENTER></FONT></html>")){
 				reporte = "Obj_Reporte_IZAGAR_de_Diferiencias_De_Recepciones_De_Transferencia.jrxml";

@@ -85,28 +85,27 @@ public class Cat_Puestos extends JFrame{
 		txtFolioFiltro.setToolTipText("Filtro Por Folio");
 		txtPuestoFiltro.setToolTipText("Filtro Por Nombre");
 		
-		int x = 15, y=30, ancho=100;
+		int x = 15, y=30, w=100,l=20;
 		
-		panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);
-		panel.add(txtFolio).setBounds(ancho-20,y,ancho,20);
-		panel.add(btnBuscar).setBounds(x+ancho+ancho+10,y,32,20);
+		panel.add(new JLabel("Folio:")).setBounds      (x     ,y    ,w  ,l);
+		panel.add(txtFolio).setBounds                  (x+=45 ,y    ,w  ,l);
+		panel.add(btnBuscar).setBounds                 (x+=100,y    ,32 ,l);
+		panel.add(chStatus).setBounds                  (x+=40 ,y    ,60 ,l);
+		panel.add(btnNuevo).setBounds                  (x+=60 ,y    ,w  ,l);
+		panel.add(btnEditar).setBounds                 (x+=120,y    ,w  ,l);
+		panel.add(btnDeshacer).setBounds               (x+=120,y    ,w  ,l);
+		panel.add(btnSalir).setBounds                  (x+=120,y    ,w  ,l);
+		x = 15;
+		panel.add(new JLabel("Puesto:")).setBounds     (x     ,y+=30,w  ,l);
+		panel.add(txtPuesto).setBounds                 (x+=45 ,y    ,w*3,l);
+		panel.add(new JLabel("Abreviatura:")).setBounds(x+=320,y    ,w  ,l);
+		panel.add(txtAbreviatura).setBounds            (x+=70 ,y    ,w  ,l);
+		panel.add(btnGuardar).setBounds                (x+=170,y    ,w  ,l);
+		x = 15;
+		panel.add(txtFolioFiltro).setBounds            (x     ,y+=35,60 ,l);
+		panel.add(txtPuestoFiltro).setBounds           (x+60  ,y    ,350,l);
 		
-		panel.add(chStatus).setBounds(x+43+(ancho*2),y,70,20);
-		
-		panel.add(new JLabel("Puesto:")).setBounds(x,y+=30,ancho,20);
-		panel.add(txtPuesto).setBounds(ancho-20,y,ancho+ancho,20);
-		panel.add(btnNuevo).setBounds(x+270,y,ancho,20);
-		
-		panel.add(new JLabel("Abreviatura:")).setBounds(x,y+=30,ancho,20);
-		panel.add(txtAbreviatura).setBounds(ancho-20,y,ancho+ancho,20);
-		panel.add(btnEditar).setBounds(x+270,y,ancho,20);
-		panel.add(btnDeshacer).setBounds(x+ancho+60,y+=30,ancho,20);
-		panel.add(btnSalir).setBounds(x-10+60,y,ancho,20);
-		panel.add(btnGuardar).setBounds(x+270,y,ancho,20);
-		
-		panel.add(txtFolioFiltro).setBounds(x+ancho+x+40+ancho+ancho+30,20,50,20);
-		panel.add(txtPuestoFiltro).setBounds(x+435,20,240,20);
-		panel.add(getPanelTabla()).setBounds(x+ancho+x+40+ancho+ancho+30,40,ancho+280,120);
+		panel.add(getPanelTabla()).setBounds           (x     ,y+20 ,w*7,w*4);
 		
 		chStatus.setEnabled(false);
 		txtPuesto.setEditable(false);
@@ -127,7 +126,7 @@ public class Cat_Puestos extends JFrame{
 		txtPuestoFiltro.addKeyListener(opFiltroNombre);
 		cont.add(panel);
 		agregar(tabla);
-		this.setSize(800,210);
+		this.setSize(740,570);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -145,14 +144,14 @@ public class Cat_Puestos extends JFrame{
 		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
-		tabla.getColumnModel().getColumn(0).setMinWidth(50);
-		tabla.getColumnModel().getColumn(0).setMaxWidth(50);
+		tabla.getColumnModel().getColumn(0).setMinWidth(60);
+		tabla.getColumnModel().getColumn(0).setMaxWidth(60);
 		tabla.getColumnModel().getColumn(1).setHeaderValue("Puesto");
-		tabla.getColumnModel().getColumn(1).setMinWidth(240);
-		tabla.getColumnModel().getColumn(1).setMaxWidth(350);
+		tabla.getColumnModel().getColumn(1).setMinWidth(450);
+		tabla.getColumnModel().getColumn(1).setMaxWidth(550);
 		tabla.getColumnModel().getColumn(2).setHeaderValue("Abreviatura");
-		tabla.getColumnModel().getColumn(2).setMinWidth(80);
-		tabla.getColumnModel().getColumn(2).setMaxWidth(80);
+		tabla.getColumnModel().getColumn(2).setMinWidth(170);
+		tabla.getColumnModel().getColumn(2).setMaxWidth(250);
 		
 						llenar_tabla ();
 						render_tabla();

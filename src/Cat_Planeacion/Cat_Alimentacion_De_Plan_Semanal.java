@@ -65,7 +65,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 	public Cat_Alimentacion_De_Plan_Semanal(){
 		this.setTitle("Alimentacion De Plan Semanal");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione El Dia Que Desea Contestar Del Plan Semanal"));
-		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Planeacion_alimentacion.png"));
 		ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/imagen/checklistbtn.png");
 	    Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
 	    btnReporte_lista.setIcon(iconoDefault);
