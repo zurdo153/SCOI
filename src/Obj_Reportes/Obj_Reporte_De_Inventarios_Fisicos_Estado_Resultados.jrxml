@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-02-15T11:57:52 -->
+<!-- 2016-02-15T12:51:43 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="ireport.zoom" value="2.593742460100005"/>
@@ -26,7 +26,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[EXEC sp_Reporte_De_Diferiencias_De_Inventario   'SUPER I','01/02/2016 00:00','13/02/2016 23:59', 'Marco Antonio Bodart Guzman ']]>
+		<![CDATA[EXEC sp_Reporte_De_Diferiencias_De_Inventario   'SUPER III','01/01/2016 00:00','13/02/2016 23:59', 'Marco Antonio Bodart Guzman ']]>
 	</queryString>
 	<field name="establecimiento" class="java.lang.String"/>
 	<field name="cod_prod" class="java.lang.String"/>
@@ -43,18 +43,27 @@
 	<variable name="Total" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{diferiencia_real_ultimo_costo}]]></variableExpression>
 	</variable>
+	<variable name="Total_Clase" class="java.lang.Double" resetType="Group" resetGroup="Group2" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferiencia_real_ultimo_costo}]]></variableExpression>
+	</variable>
+	<variable name="Total_Categoria" class="java.lang.Double" resetType="Group" resetGroup="Group3" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferiencia_real_ultimo_costo}]]></variableExpression>
+	</variable>
+	<variable name="Total_Familia" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferiencia_real_ultimo_costo}]]></variableExpression>
+	</variable>
 	<group name="Group1">
-		<groupExpression><![CDATA[$F{folio}]]></groupExpression>
+		<groupExpression><![CDATA[$F{fecha_aplicacion_Inventario}]]></groupExpression>
 		<groupHeader>
 			<band height="15">
 				<frame>
 					<reportElement mode="Opaque" x="1" y="-1" width="554" height="16" forecolor="#B89F7D" backcolor="#FF6600" uuid="9da96497-8519-4d25-858d-de3d9f2646ec"/>
 					<staticText>
-						<reportElement style="Title" x="344" y="2" width="72" height="13" uuid="c77d2210-f87a-4da7-ac39-8d34f995756a">
+						<reportElement style="Title" x="392" y="2" width="72" height="13" uuid="c77d2210-f87a-4da7-ac39-8d34f995756a">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
+						<textElement textAlignment="Right">
+							<font size="10" isBold="true"/>
 						</textElement>
 						<text><![CDATA[Diferiencias]]></text>
 					</staticText>
@@ -66,17 +75,126 @@
 						<textFieldExpression><![CDATA["Fecha Aplicacion Inventario:"+$F{fecha_aplicacion_Inventario}]]></textFieldExpression>
 					</textField>
 					<staticText>
-						<reportElement style="Title" x="421" y="2" width="62" height="13" uuid="10f11a5f-5593-443c-ae1f-872224436bfa">
+						<reportElement style="Title" x="469" y="2" width="68" height="13" uuid="10f11a5f-5593-443c-ae1f-872224436bfa">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
+						<textElement textAlignment="Right">
+							<font size="10" isBold="true"/>
 						</textElement>
 						<text><![CDATA[Costo]]></text>
 					</staticText>
 				</frame>
 			</band>
 		</groupHeader>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{clase_producto}]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<textField>
+					<reportElement x="9" y="0" width="100" height="13" uuid="845c32d2-1682-44e9-9779-7b2e8eb4c547"/>
+					<textElement>
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{familia}]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement x="0" y="1" width="9" height="12" uuid="0eb1390a-8b67-4ab1-bfec-5da1a1a1196e"/>
+					<imageExpression><![CDATA["C:/SCOI/imagen/estrella-icono-8714-16.png"]]></imageExpression>
+				</image>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<textField pattern="#,##0.###">
+					<reportElement x="465" y="0" width="73" height="13" uuid="995459b8-224b-451d-8107-5c635211a043">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{Total_Clase}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="410" y="0" width="55" height="13" uuid="3001dc64-ed4b-4e5f-81ef-e5f20c6a15ae">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<text><![CDATA[Total Clase:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Group3">
+		<groupExpression><![CDATA[$F{categoria}]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField>
+					<reportElement x="18" y="0" width="100" height="13" uuid="8d1b25bf-f401-4f1c-a5fa-971d23abf084">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement x="9" y="2" width="9" height="10" uuid="693e00b0-ea4a-4da7-abc4-fb58c6f15c16">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/asterisco-naranja-icono-8036-16.png"]]></imageExpression>
+				</image>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<textField pattern="#,##0.###">
+					<reportElement x="465" y="0" width="73" height="13" uuid="8389cfe4-faf1-404f-90b7-16c7f9525caa">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{Total_Categoria}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="393" y="0" width="72" height="13" uuid="49abf73a-74a2-46ea-a9e5-30cf0a3f6cb9"/>
+					<text><![CDATA[Total Categoria:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Group4">
+		<groupExpression><![CDATA[$F{familia}]]></groupExpression>
+		<groupHeader>
+			<band height="16">
+				<textField>
+					<reportElement x="25" y="1" width="100" height="13" uuid="9c8310be-2505-4945-8931-1a7ea80e54fd">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{familia}]]></textFieldExpression>
+				</textField>
+				<ellipse>
+					<reportElement x="18" y="4" width="6" height="6" backcolor="#000000" uuid="e248d553-e435-49cd-9be7-a180e02a59b1">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+				</ellipse>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<textField pattern="#,##0.###">
+					<reportElement x="465" y="0" width="73" height="13" uuid="e2bb75c2-dc94-4ce2-8640-1471890ce3ac">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{Total_Familia}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="403" y="0" width="62" height="13" uuid="fd7d595e-14a5-4abb-804b-0d642dc25ba0"/>
+					<text><![CDATA[Total Familia:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
 	</group>
 	<background>
 		<band height="9" splitType="Stretch"/>
@@ -90,7 +208,7 @@
 				</reportElement>
 				<textField>
 					<reportElement x="0" y="0" width="420" height="40" forecolor="#FFFFFF" uuid="8bda850c-ac09-4488-aa57-414c6b3b7189"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font fontName="Arial" size="15"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Reporte De Inventario Fisico Del Establecimiento:"+$F{establecimiento}]]></textFieldExpression>
@@ -128,25 +246,25 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<ellipse>
-					<reportElement x="2" y="3" width="8" height="8" uuid="d96e8827-517e-4b90-b3ba-580d52457e88"/>
+					<reportElement x="33" y="3" width="8" height="8" uuid="d96e8827-517e-4b90-b3ba-580d52457e88"/>
 				</ellipse>
 				<textField>
-					<reportElement x="10" y="0" width="70" height="13" uuid="0c45c50c-33cf-4e8f-8bfe-e2920a3cc730"/>
+					<reportElement x="43" y="0" width="70" height="13" uuid="0c45c50c-33cf-4e8f-8bfe-e2920a3cc730"/>
 					<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="80" y="0" width="260" height="13" uuid="85dc7571-11c3-4fe9-9c21-5d145d997fd8">
+					<reportElement x="113" y="0" width="277" height="13" uuid="85dc7571-11c3-4fe9-9c21-5d145d997fd8">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.###">
-					<reportElement x="344" y="0" width="72" height="13" uuid="e5e9c692-dcca-454e-885c-917d338449c2"/>
+					<reportElement x="392" y="0" width="72" height="13" uuid="e5e9c692-dcca-454e-885c-917d338449c2"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.###">
-					<reportElement x="421" y="0" width="67" height="13" uuid="e824af91-32e8-4786-9d35-d320ae5ebb7a"/>
+					<reportElement x="464" y="0" width="72" height="13" uuid="e824af91-32e8-4786-9d35-d320ae5ebb7a"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{diferiencia_real_ultimo_costo}]]></textFieldExpression>
 				</textField>
@@ -195,18 +313,18 @@
 	<summary>
 		<band height="17">
 			<textField pattern="#,##0.###">
-				<reportElement x="422" y="0" width="67" height="14" uuid="81a4573c-0d56-44b4-8d2a-e0585b9c8d76"/>
+				<reportElement x="470" y="0" width="67" height="14" uuid="81a4573c-0d56-44b4-8d2a-e0585b9c8d76"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{Total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="Title" x="381" y="0" width="41" height="14" forecolor="#000000" uuid="15358bc9-56c2-4872-8197-bea4dc9d866d">
+				<reportElement style="Title" x="408" y="0" width="62" height="14" forecolor="#000000" uuid="15358bc9-56c2-4872-8197-bea4dc9d866d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="10" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Total:]]></text>
+				<text><![CDATA[Total Final:]]></text>
 			</staticText>
 		</band>
 	</summary>
