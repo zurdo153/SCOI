@@ -81,6 +81,7 @@ import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes_Calculado;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Lista_de_Raya.Obj_Finiquitos;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
@@ -8232,5 +8233,116 @@ public class BuscarSQL {
 		return existe;
 	}
 	
+	public Obj_Finiquitos finiquito_base(String folio_empleado_bms,int folio_empleado_scoi, String fecha_baja_scoi, String fecha_baja_bms){
+		Obj_Finiquitos finiquito = new Obj_Finiquitos();
+		
+		String query = "exec sp_select_calculo_de_finiquito '"+folio_empleado_bms+"',"+folio_empleado_scoi+",'"+fecha_baja_scoi+"','SCOI'";
+		
+		Statement stmt= null;
+						try {
+							stmt= con.conexion().createStatement();
+							ResultSet rs= stmt.executeQuery(query);
+							
+							
+								   while(rs.next()){
+									   
+//									SCOI--------------------------------------------------------------------------------------------------------------------
+									   finiquito.setFecha_ingreso_SCOI(rs.getString("fecha_ingreso"));
+									   finiquito.setFecha_baja_SCOI(rs.getString("fecha_baja"));
+									   
+									   finiquito.setDias_trabajados_SCOI(rs.getInt("diferencia_dias"));
+									   finiquito.setAnios_trabajados_SCOI(rs.getFloat("diferencia_anios"));
+									   finiquito.setDias_pendientes_de_pago_de_aguinaldo_SCOI(rs.getInt("dias_pendientes_de_pago_de_aguinaldo"));
+									   finiquito.setDias_pendientes_de_pago_de_semana_SCOI(rs.getInt("dias_pendiente_de_pago_en_la_semana"));
+									   finiquito.setCuota_diario_SCOI(rs.getDouble("cuota_diaria"));
+//									   SDI
+									   finiquito.setSueldo_SCOI(rs.getDouble("sueldo"));
+									   finiquito.setAguinaldo_SCOI(rs.getDouble("aguinaldo"));
+//									   dias_correspondiente_vacaciones_actuales
+//									   dias_trabajados_anio_actual
+									   finiquito.setVacaciones_SCOI(rs.getDouble("vacaciones"));
+									   finiquito.setPrima_vacacional_SCOI(rs.getDouble("prima_vacacional"));
+									   finiquito.setPercepciones_SCOI(rs.getDouble("total_de_percepciones"));
+								   }
+						
+					   if(!folio_empleado_bms.equals("")){
+							query = "exec sp_select_calculo_de_finiquito '"+folio_empleado_bms+"',"+folio_empleado_scoi+",'"+fecha_baja_bms+"','BMS'";
+							rs= stmt.executeQuery(query);
+							
+							   while(rs.next()){
+								   
+									   finiquito.setFecha_ingreso_BMS(rs.getString("fecha_ingreso"));
+									   finiquito.setFecha_baja_BMS(rs.getString("fecha_baja"));
+									   
+									   finiquito.setDias_trabajados_BMS(rs.getInt("diferencia_dias"));
+									   finiquito.setAnios_trabajados_BMS(rs.getFloat("diferencia_anios"));
+									   finiquito.setDias_pendientes_de_pago_de_aguinaldo_BMS(rs.getInt("dias_pendientes_de_pago_de_aguinaldo"));
+									   finiquito.setDias_pendientes_de_pago_de_semana_BMS(rs.getInt("dias_pendiente_de_pago_en_la_semana"));
+									   finiquito.setCuota_diario_BMS(rs.getDouble("cuota_diaria"));
+									   
+									   finiquito.setSDI_BMS(rs.getDouble("SDI"));
+
+									   finiquito.setSueldo_BMS(rs.getDouble("sueldo"));
+									   finiquito.setAguinaldo_BMS(rs.getDouble("aguinaldo"));
+//									   dias_correspondiente_vacaciones_actuales
+//									   dias_trabajados_anio_actual
+									   finiquito.setVacaciones_BMS(rs.getDouble("vacaciones"));
+									   finiquito.setPrima_vacacional_BMS(rs.getDouble("prima_vacacional"));
+									   finiquito.setPercepciones_BMS(rs.getDouble("total_de_percepciones"));
+									   
+							   }
+						}
+						
+						query = "exec sp_select_deducciones_para_finiquitos "+folio_empleado_scoi;
+						rs= stmt.executeQuery(query);
+						
+						   while(rs.next()){
+							   finiquito.setPretamo(rs.getInt("prestamo"));
+							   finiquito.setCortes(rs.getInt("cortes"));
+							   finiquito.setInfonavit(rs.getInt("infonavit"));
+							   finiquito.setFuente_sodas(rs.getInt("fuente_de_sodas"));
+								   
+						   }
+					
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [finiquito_base] \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+							e.printStackTrace();
+							return null;
+						}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+		}
+		return finiquito;
+	}
 	
+	public boolean  baja_en_catalogo_empleado(){
+		
+		boolean baja = false;
+		
+		String query = "select baja_en_catalogo_empleados as baja  from tb_configuracion_sistema";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				baja=(Boolean.valueOf(rs.getString("baja")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return baja;
+	}
 }

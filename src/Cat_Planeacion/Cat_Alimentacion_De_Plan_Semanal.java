@@ -115,6 +115,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		this.btnReporte_lista.addActionListener(opReporteLista);
 		this.btnReporte_cntestad.addActionListener(opReporteCuadroscontestado);
 		
+		tablaJueves.moveColumn(2, 0);
 	}
 	
 	public void inabilitarPestanas(){
