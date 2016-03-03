@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-03-02T16:44:02 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Finiquito" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0da01221-44cd-40ac-a362-fac4dfb62e72">
+	<property name="template.type" value="columnar"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
+	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[select top 1 finiquitos.folio_empleado_scoi
+			,empleado.nombre+' '+empleado.ap_paterno+' '+empleado.ap_materno as empleado
+			,finiquitos.folio_empleado_bms
+			,usuario.nombre+' '+usuario.ap_paterno+' '+usuario.ap_materno as nombre_usuario
+			,estab.nombre as nombre_establecimiento
+			,convert(varchar(20),finiquitos.fecha_ingreso_bms,103) as fecha_ingreso_bms
+			,convert(varchar(20),finiquitos.fecha_baja_bms,103) as fecha_baja_bms
+			,finiquitos.dias_trabajados_bms
+			,finiquitos.anios_trabajados_bms
+			,finiquitos.dias_pendientes_de_pago_de_aguinaldo_bms
+			,finiquitos.dias_pendiente_de_pago_de_semana_bms
+			,finiquitos.cuota_diario_bms
+			,finiquitos.SDI_bms
+			,finiquitos.sueldo_bms
+			,finiquitos.aguinaldo_bms
+			,finiquitos.vacaciones_pendientes_bms
+			,finiquitos.vacaciones_bms
+			,finiquitos.prima_vacacional_bms
+			,finiquitos.gratificacion
+			,finiquitos.tiempo_extra
+			,finiquitos.percepciones_bms
+			,convert (numeric(10,2),finiquitos.total_a_pagar) as total_a_pagar
+			,convert(varchar(20),finiquitos.fecha_ingreso_scoi,103) as fecha_ingreso_scoi
+			,convert(varchar(20),finiquitos.fecha_baja_scoi,103) as fecha_baja_scoi
+			,finiquitos.dias_trabajados_scoi
+			,finiquitos.anios_trabajados_scoi
+			,finiquitos.dias_pendientes_de_pago_de_aguinaldo_scoi
+			,finiquitos.dias_pendiente_de_pago_de_semana_scoi
+			,finiquitos.cuota_diario_scoi
+			,finiquitos.sueldo_scoi
+			,finiquitos.aguinaldo_scoi
+			,finiquitos.vacaciones_pendientes_scoi
+			,finiquitos.vacaciones_scoi
+			,finiquitos.prima_vacacional_scoi
+			,finiquitos.percepciones_scoi
+			,finiquitos.sueldo_diferencia
+			,finiquitos.aguinaldo_diferencia
+			,finiquitos.vacaciones_pendientes_diferencia
+			,finiquitos.vacaciones_diferencia
+			,finiquitos.prima_vacacional_diferencia
+			,finiquitos.percepciones_diferencia
+			,finiquitos.prestamo
+			,finiquitos.cortes
+			,finiquitos.infonavit
+			,finiquitos.fuente_de_sodas
+			,finiquitos.otras_deducciones
+			,finiquitos.usuario
+			,convert(varchar(20),finiquitos.fecha_mov,103) as fecha_mov
+			,finiquitos.status
+			,finiquitos.folio_finiquito
+			,CASE WHEN finiquitos.total_a_pagar <0 THEN 'MENOS '+DBO.CantidadConLetra((finiquitos.total_a_pagar*-1))
+				ELSE DBO.CantidadConLetra(finiquitos.total_a_pagar) END AS cantidad_con_letra
+from tb_finiquitos finiquitos
+inner join tb_empleado empleado on empleado.folio = finiquitos.folio_empleado_scoi
+inner join tb_establecimiento estab on estab.folio = finiquitos.establecimiento
+inner join tb_empleado usuario on usuario.folio = finiquitos.usuario
+order by finiquitos.fecha_mov desc]]>
+	</queryString>
+	<field name="folio_empleado_scoi" class="java.lang.Integer"/>
+	<field name="folio_empleado_bms" class="java.lang.String"/>
+	<field name="fecha_ingreso_bms" class="java.lang.String"/>
+	<field name="fecha_baja_bms" class="java.lang.String"/>
+	<field name="dias_trabajados_bms" class="java.lang.Integer"/>
+	<field name="anios_trabajados_bms" class="java.lang.Double"/>
+	<field name="dias_pendientes_de_pago_de_aguinaldo_bms" class="java.lang.Integer"/>
+	<field name="dias_pendiente_de_pago_de_semana_bms" class="java.lang.Integer"/>
+	<field name="cuota_diario_bms" class="java.math.BigDecimal"/>
+	<field name="SDI_bms" class="java.math.BigDecimal"/>
+	<field name="sueldo_bms" class="java.math.BigDecimal"/>
+	<field name="aguinaldo_bms" class="java.math.BigDecimal"/>
+	<field name="vacaciones_pendientes_bms" class="java.math.BigDecimal"/>
+	<field name="vacaciones_bms" class="java.math.BigDecimal"/>
+	<field name="prima_vacacional_bms" class="java.math.BigDecimal"/>
+	<field name="gratificacion" class="java.math.BigDecimal"/>
+	<field name="tiempo_extra" class="java.math.BigDecimal"/>
+	<field name="percepciones_bms" class="java.math.BigDecimal"/>
+	<field name="total_a_pagar" class="java.math.BigDecimal"/>
+	<field name="fecha_ingreso_scoi" class="java.lang.String"/>
+	<field name="fecha_baja_scoi" class="java.lang.String"/>
+	<field name="dias_trabajados_scoi" class="java.lang.Integer"/>
+	<field name="anios_trabajados_scoi" class="java.lang.Double"/>
+	<field name="dias_pendientes_de_pago_de_aguinaldo_scoi" class="java.lang.Integer"/>
+	<field name="dias_pendiente_de_pago_de_semana_scoi" class="java.lang.Integer"/>
+	<field name="cuota_diario_scoi" class="java.math.BigDecimal"/>
+	<field name="sueldo_scoi" class="java.math.BigDecimal"/>
+	<field name="aguinaldo_scoi" class="java.math.BigDecimal"/>
+	<field name="vacaciones_pendientes_scoi" class="java.math.BigDecimal"/>
+	<field name="vacaciones_scoi" class="java.math.BigDecimal"/>
+	<field name="prima_vacacional_scoi" class="java.math.BigDecimal"/>
+	<field name="percepciones_scoi" class="java.math.BigDecimal"/>
+	<field name="sueldo_diferencia" class="java.math.BigDecimal"/>
+	<field name="aguinaldo_diferencia" class="java.math.BigDecimal"/>
+	<field name="vacaciones_pendientes_diferencia" class="java.math.BigDecimal"/>
+	<field name="vacaciones_diferencia" class="java.math.BigDecimal"/>
+	<field name="prima_vacacional_diferencia" class="java.math.BigDecimal"/>
+	<field name="percepciones_diferencia" class="java.math.BigDecimal"/>
+	<field name="prestamo" class="java.math.BigDecimal"/>
+	<field name="cortes" class="java.math.BigDecimal"/>
+	<field name="infonavit" class="java.math.BigDecimal"/>
+	<field name="fuente_de_sodas" class="java.math.BigDecimal"/>
+	<field name="otras_deducciones" class="java.math.BigDecimal"/>
+	<field name="usuario" class="java.lang.Integer"/>
+	<field name="fecha_mov" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="folio_finiquito" class="java.lang.Integer"/>
+	<field name="empleado" class="java.lang.String"/>
+	<field name="nombre_establecimiento" class="java.lang.String"/>
+	<field name="nombre_usuario" class="java.lang.String"/>
+	<field name="cantidad_con_letra" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{folio_empleado_scoi}]]></groupExpression>
+		<groupHeader>
+			<band height="685">
+				<rectangle radius="6">
+					<reportElement x="98" y="480" width="352" height="20" backcolor="#E0E0E0" uuid="914933e1-9cbb-482a-9e27-8046dc70367f"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement x="2" y="345" width="553" height="130" backcolor="#FFFFFF" uuid="35f188df-1290-4321-8c41-a828c720e265"/>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="29" y="428" width="525" height="20" backcolor="#E0E0E0" uuid="e13ba57a-c365-4822-b268-32b1d7a82fda"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="30" y="373" width="525" height="20" backcolor="#E0E0E0" uuid="0ae4bd6c-fceb-478b-a286-ccfe7f5671e8"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="0" y="269" width="554" height="20" backcolor="#E0E0E0" uuid="fbb8f60d-9743-404b-8797-44b46f0e18ac"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="0" y="319" width="554" height="20" backcolor="#E0E0E0" uuid="7cdf269a-0eb8-45ee-bd92-d26b5227d9a4"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="0" y="220" width="554" height="20" backcolor="#E0E0E0" uuid="32009b6f-2362-483f-9273-b4e890bef3e0"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="269" width="80" height="20" uuid="6a918243-2619-403b-9625-aa0036cd9873">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vacaciones_scoi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="220" width="80" height="20" uuid="a37c7466-f91c-4ead-92f5-725f0cb20b77">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sueldo_scoi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="352" width="80" height="20" uuid="76d6fcbf-cead-4acf-aa75-3efb12f64ca9">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{prestamo}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="294" width="80" height="20" uuid="8ea2c7ed-9373-4f09-84a4-8f8f2f57f174">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{prima_vacacional_scoi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="408" width="80" height="20" uuid="12d7358e-7e1c-46cd-877c-c0aa39cf1390">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{infonavit}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="244" width="80" height="20" uuid="9b9a6759-3e16-4267-b1b2-71eb09c7c642">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tiempo_extra}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="435" width="80" height="20" uuid="e38fd1ac-c46b-47c6-8a3a-a313c427f8f1">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fuente_de_sodas}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="319" width="80" height="20" uuid="5c8c3ea1-f399-41c6-a5cf-5e60831a5451">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{aguinaldo_scoi}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="50" y="80" width="80" height="20" uuid="b9cdea97-2284-463c-83ed-19e11464be3f">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha_baja_scoi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="462" width="80" height="20" uuid="53898dbb-01f0-47ac-add4-d8b8d46854e1">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{otras_deducciones}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="343" y="380" width="80" height="20" uuid="90e2732d-fa89-4dd5-9999-428051574eef">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cortes}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="342" y="481" width="80" height="20" uuid="c53a8d16-47a0-413b-9e6a-a4df5d4cc5b7">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{total_a_pagar}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="128" y="558" width="305" height="1" uuid="fac1892a-42a7-41ea-b90c-2059b9034bdc">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+				</line>
+				<staticText>
+					<reportElement x="2" y="38" width="553" height="38" uuid="09784e37-5836-49d5-b03c-c3a026f8d2bb"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[FCO. JAVIER MINA Y DESIDERIO OCHOA S/N COL. CENTRO. ELDORADO, SINALOA, MEXICO TEL/FAX (667) 726 0104 - 726 1848]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="80" width="49" height="20" uuid="9adf49fa-4052-48b5-b3d5-9eff068a7a30">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[FECHA:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="330" y="90" width="83" height="19" uuid="607d863a-52a7-4e70-b08a-3a78a29824f0"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[BUENO POR:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="220" width="167" height="19" uuid="477717b3-251b-4555-9b29-11441b52e52d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[SUELDO DIARIO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="95" y="320" width="180" height="19" uuid="de137c75-d789-4057-bada-7f14d9869f52"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PROPORCIONAL AGUINALDO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="270" width="167" height="19" uuid="84c578e7-0cb9-4f36-b72d-a0899c061dcd"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[VACACIONES:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="295" width="167" height="19" uuid="671ecf4e-2328-41e8-be7f-6a08c058bc82"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[25% PRIMA VACACIONAL:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="245" width="167" height="19" uuid="be8eac77-d7cf-4338-9d54-db1ccba7258a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TIEMPO EXTRA:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="345" width="167" height="19" uuid="ea7a3e9f-499f-4465-bd56-88ad18e9e1e4"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PRESTAMO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="373" width="167" height="19" uuid="85094f2d-6ee8-4abc-9ff0-c81df0b54461"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CORTES:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="402" width="167" height="19" uuid="48791ea2-0c2e-424c-ada0-f202738bd3ff"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[INFONAVIT:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="429" width="167" height="19" uuid="6b3569c1-6d66-4e03-a0f3-9fa8b0c5021b"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[FUENTE DE SODAS:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="455" width="167" height="19" uuid="3ec46dbe-1031-4014-a16d-dda89c10d849"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[OTRAS DEDUCCIONES:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="108" y="481" width="167" height="19" uuid="e7fa572a-8044-477f-8e64-4104c6981a77"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL A PAGAR:]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="2" y="346" width="27" height="128" backcolor="#FF0E0A" uuid="fdd439ac-57cd-457e-9666-92dab62099ca"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="346" width="30" height="130" backcolor="#FF0400" uuid="00599d74-e261-40bd-8954-d7b5a8deb00b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font size="16" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DEDUCCIONES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1" y="12" width="555" height="28" uuid="1a1b17af-925a-493d-a076-e826fba9a3b7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="16" isBold="true"/>
+					</textElement>
+					<text><![CDATA[SUPERMERCADO LA COMPETIDORA S.A. DE C.V.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="-7" width="555" height="30" uuid="f0692ae5-f542-4409-9614-e5fa655b4c14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="20" isBold="true"/>
+					</textElement>
+					<text><![CDATA[IZAGAR]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="128" y="560" width="304" height="19" forecolor="#000000" uuid="e175e4eb-1e70-4f27-934d-e953e20ce0d3"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{empleado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="413" y="90" width="86" height="20" uuid="271c192f-97aa-431d-b455-b21bce37ecc2">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{total_a_pagar}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="280" y="109" width="273" height="1" uuid="6285db76-18c8-413f-b908-ec4935467c57"/>
+				</line>
+				<textField pattern="#,##0.00#">
+					<reportElement x="0" y="120" width="556" height="90" uuid="5bb34563-71d7-489b-a6d2-4b90e3a8f296">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Justified">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["RECIBI DE SUPERMERCADO LA COMPETIDORA S.A. DE C.V. LA CANTIDAD DE "+$F{total_a_pagar}+" ("+$F{cantidad_con_letra}+") POR CONCEPTO DE PAGO PROPORCIONAL DE LIQUIDACION, PRIMA VACACIONAL, AGUINALDO PROPORCIONAL, HABIENDO QUEDADO LIQUIDADOS MIS SERVICIOS TOTALMENTE HASTA LA FECHA SEÑALADA, ESTANDO DE ACUERDO QUE NO SE ME ADEUDA NADA POR PARTE DE LA EMPLESA."]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="255" y="510" width="49" height="19" uuid="7f0b1a75-847e-49d9-ac30-212ed76f3216"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[RECIBI:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="20" y="601" width="254" height="19" uuid="bf96c23b-2435-48ba-bf80-bd8342135383"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TESTIGO]]></text>
+				</staticText>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="20" y="651" width="255" height="1" uuid="c74746e1-5c05-4201-8de2-ec15834ce6fa">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+				</line>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="285" y="651" width="255" height="1" uuid="16d969d1-90b4-45ac-ab55-cef37059f53b">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+				</line>
+				<staticText>
+					<reportElement x="285" y="601" width="254" height="19" uuid="61a1f7c5-df3b-4851-ae0d-1d4e87bc33a1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TESTIGO]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{folio_empleado_bms}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+	</group>
+	<group name="fecha_ingreso_bms">
+		<groupExpression><![CDATA[$F{fecha_ingreso_bms}]]></groupExpression>
+	</group>
+	<group name="fecha_baja_bms">
+		<groupExpression><![CDATA[$F{fecha_baja_bms}]]></groupExpression>
+	</group>
+	<group name="dias_trabajados_bms">
+		<groupExpression><![CDATA[$F{dias_trabajados_bms}]]></groupExpression>
+	</group>
+	<group name="anios_trabajados_bms">
+		<groupExpression><![CDATA[$F{anios_trabajados_bms}]]></groupExpression>
+	</group>
+	<group name="dias_pendientes_de_pago_de_aguinaldo_bms">
+		<groupExpression><![CDATA[$F{dias_pendientes_de_pago_de_aguinaldo_bms}]]></groupExpression>
+	</group>
+	<group name="dias_pendiente_de_pago_de_semana_bms">
+		<groupExpression><![CDATA[$F{dias_pendiente_de_pago_de_semana_bms}]]></groupExpression>
+	</group>
+	<group name="cuota_diario_bms">
+		<groupExpression><![CDATA[$F{cuota_diario_bms}]]></groupExpression>
+	</group>
+	<group name="SDI_bms">
+		<groupExpression><![CDATA[$F{SDI_bms}]]></groupExpression>
+	</group>
+	<group name="sueldo_bms">
+		<groupExpression><![CDATA[$F{sueldo_bms}]]></groupExpression>
+	</group>
+	<group name="aguinaldo_bms">
+		<groupExpression><![CDATA[$F{aguinaldo_bms}]]></groupExpression>
+	</group>
+	<group name="vacaciones_pendientes_bms">
+		<groupExpression><![CDATA[$F{vacaciones_pendientes_bms}]]></groupExpression>
+	</group>
+	<group name="vacaciones_bms">
+		<groupExpression><![CDATA[$F{vacaciones_bms}]]></groupExpression>
+	</group>
+	<group name="prima_vacacional_bms">
+		<groupExpression><![CDATA[$F{prima_vacacional_bms}]]></groupExpression>
+	</group>
+	<group name="gratificacion">
+		<groupExpression><![CDATA[$F{gratificacion}]]></groupExpression>
+	</group>
+	<group name="tiempo_extra">
+		<groupExpression><![CDATA[$F{tiempo_extra}]]></groupExpression>
+	</group>
+	<group name="percepciones_bms">
+		<groupExpression><![CDATA[$F{percepciones_bms}]]></groupExpression>
+	</group>
+	<group name="total_a_pagar">
+		<groupExpression><![CDATA[$F{total_a_pagar}]]></groupExpression>
+	</group>
+	<group name="fecha_ingreso_scoi">
+		<groupExpression><![CDATA[$F{fecha_ingreso_scoi}]]></groupExpression>
+	</group>
+	<group name="fecha_baja_scoi">
+		<groupExpression><![CDATA[$F{fecha_baja_scoi}]]></groupExpression>
+	</group>
+	<group name="dias_trabajados_scoi">
+		<groupExpression><![CDATA[$F{dias_trabajados_scoi}]]></groupExpression>
+	</group>
+	<group name="anios_trabajados_scoi">
+		<groupExpression><![CDATA[$F{anios_trabajados_scoi}]]></groupExpression>
+	</group>
+	<group name="dias_pendientes_de_pago_de_aguinaldo_scoi">
+		<groupExpression><![CDATA[$F{dias_pendientes_de_pago_de_aguinaldo_scoi}]]></groupExpression>
+	</group>
+	<group name="dias_pendiente_de_pago_de_semana_scoi">
+		<groupExpression><![CDATA[$F{dias_pendiente_de_pago_de_semana_scoi}]]></groupExpression>
+	</group>
+	<group name="cuota_diario_scoi">
+		<groupExpression><![CDATA[$F{cuota_diario_scoi}]]></groupExpression>
+	</group>
+	<group name="sueldo_scoi">
+		<groupExpression><![CDATA[$F{sueldo_scoi}]]></groupExpression>
+	</group>
+	<group name="aguinaldo_scoi">
+		<groupExpression><![CDATA[$F{aguinaldo_scoi}]]></groupExpression>
+	</group>
+	<group name="vacaciones_pendientes_scoi">
+		<groupExpression><![CDATA[$F{vacaciones_pendientes_scoi}]]></groupExpression>
+	</group>
+	<group name="vacaciones_scoi">
+		<groupExpression><![CDATA[$F{vacaciones_scoi}]]></groupExpression>
+	</group>
+	<group name="prima_vacacional_scoi">
+		<groupExpression><![CDATA[$F{prima_vacacional_scoi}]]></groupExpression>
+	</group>
+	<group name="percepciones_scoi">
+		<groupExpression><![CDATA[$F{percepciones_scoi}]]></groupExpression>
+	</group>
+	<group name="sueldo_diferencia">
+		<groupExpression><![CDATA[$F{sueldo_diferencia}]]></groupExpression>
+	</group>
+	<group name="aguinaldo_diferencia">
+		<groupExpression><![CDATA[$F{aguinaldo_diferencia}]]></groupExpression>
+	</group>
+	<group name="vacaciones_pendientes_diferencia">
+		<groupExpression><![CDATA[$F{vacaciones_pendientes_diferencia}]]></groupExpression>
+	</group>
+	<group name="vacaciones_diferencia">
+		<groupExpression><![CDATA[$F{vacaciones_diferencia}]]></groupExpression>
+	</group>
+	<group name="prima_vacacional_diferencia">
+		<groupExpression><![CDATA[$F{prima_vacacional_diferencia}]]></groupExpression>
+	</group>
+	<group name="percepciones_diferencia">
+		<groupExpression><![CDATA[$F{percepciones_diferencia}]]></groupExpression>
+	</group>
+	<group name="prestamo">
+		<groupExpression><![CDATA[$F{prestamo}]]></groupExpression>
+	</group>
+	<group name="cortes">
+		<groupExpression><![CDATA[$F{cortes}]]></groupExpression>
+	</group>
+	<group name="infonavit">
+		<groupExpression><![CDATA[$F{infonavit}]]></groupExpression>
+	</group>
+	<group name="fuente_de_sodas">
+		<groupExpression><![CDATA[$F{fuente_de_sodas}]]></groupExpression>
+	</group>
+	<group name="otras_deducciones">
+		<groupExpression><![CDATA[$F{otras_deducciones}]]></groupExpression>
+	</group>
+	<group name="usuario">
+		<groupExpression><![CDATA[$F{usuario}]]></groupExpression>
+	</group>
+	<group name="fecha_mov">
+		<groupExpression><![CDATA[$F{fecha_mov}]]></groupExpression>
+	</group>
+	<group name="status">
+		<groupExpression><![CDATA[$F{status}]]></groupExpression>
+	</group>
+	<group name="folio_finiquito">
+		<groupExpression><![CDATA[$F{folio_finiquito}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="16" width="555" height="48" forecolor="#FF6912" uuid="187821e6-e402-4c26-8598-133aaa0f3acd"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="40" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Registro De Finiquitos]]></text>
+			</staticText>
+			<image>
+				<reportElement x="4" y="0" width="80" height="80" uuid="9ebc4b09-8c1d-43d2-bda9-91244f8caaf5"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="4d80e18a-ed7a-494f-acfb-8abebbc74af7"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="2" y="0" width="555" height="13" forecolor="#D0B48E" backcolor="#000CF2" uuid="a165ab20-b4c2-4328-bbf7-b5fb91685d81"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="13" forecolor="#FFFFFF" uuid="6b52befd-e46b-4a47-b242-500c37576ff9"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="433" y="0" width="80" height="13" forecolor="#FFFFFF" uuid="beb4afb9-8811-4df6-9ba2-f75b06a062cf"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="0" width="197" height="13" forecolor="#FFFFFF" uuid="1545923c-fd89-45e3-8661-bf213aad29d5"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

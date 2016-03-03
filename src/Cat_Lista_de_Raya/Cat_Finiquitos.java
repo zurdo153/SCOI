@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -42,12 +43,12 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Finiquitos extends JDialog{
+public class Cat_Finiquitos extends JFrame{
 
 	Container cont_quitados = getContentPane();
 	JLayeredPane panel_quitados = new JLayeredPane();
 	
-	JButton btnGenerar = new JButton("Generar", new ImageIcon("imagen/flecha-naranja-alerta-de-descarga-de-la-actualizacion-icono-8872-16.png"));
+	JButton btnGenerar = new JButton("Generar", new ImageIcon("imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-16.png"));
 	
 	JTextField txtFolioScoi 	= new Componentes().text(new JTextField(), "Folio De Empleado En Scoi", 120, "String");
 	JTextField txtEmpleadoScoi 	= new Componentes().text(new JTextField(), "Nombre De Empleado Scoi", 120, "String");
@@ -120,9 +121,9 @@ public class Cat_Finiquitos extends JDialog{
 		
 		DecimalFormat df = new DecimalFormat("#0.00");
 		
-//	cadenaCortesQuitados
+		String establecimiento = "";
+
 	public Cat_Finiquitos(){
-		this.setModal(true);
 		this.setTitle("Filtro De Empleados Para Finiquitos");
 		this.panel_quitados.setBorder(BorderFactory.createTitledBorder( "Filtro De Empleados Para Finiquitos"));
 		
@@ -170,13 +171,29 @@ public class Cat_Finiquitos extends JDialog{
 	}
 	
 	
-	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			
 			if(!txtFolioScoi.getText().equals("")){
-				new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), tabla_filtro_scoi.getValueAt(tabla_filtro_scoi.getSelectedRow(), 2).toString().trim(), txtFolioBms.getText()).setVisible(true);
+				
+				if(!txtFolioBms.getText().equals("")){
+					if(txtEmpleadoScoi.getText().equals(txtEmpleadoBms.getText())){
+						new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), establecimiento , txtFolioBms.getText()).setVisible(true);
+					}else{
+						JOptionPane.showMessageDialog(null, "Los Nombres De Los Empleados Seleccionados No Coinsiden,\n"
+															+ "Revise Haber Seleccionado Los Empleados Correctamente\nO "
+															+ "Verifique Que Esten Dados De Alta Con El Mismo Nombre", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					}
+				}else{
+					if(JOptionPane.showConfirmDialog(null, "Solo Se Ha Seleccionado El Empleado De La Tabla SCOI,\n¿desea Continuar Con El calculo Del Finiquitos?") == 0){
+						new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), establecimiento , txtFolioBms.getText()).setVisible(true);
+					}
+				}
+				
 			}else{
-				System.out.println("Eviso # seleccione un empleado cuando cuando menos de la tabla de scoi #");
+				JOptionPane.showMessageDialog(null, "Seleccione Un Empleado Cuando Menos De La Tabla De SCOI", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
 			}
 		}
 	};
@@ -195,15 +212,16 @@ public class Cat_Finiquitos extends JDialog{
 				if(nomTabla.equals("SCOI")){
 					txtFolioScoi.setText(tb.getValueAt(tb.getSelectedRow(), 0).toString());
 					txtEmpleadoScoi.setText(tb.getValueAt(tb.getSelectedRow(), 1).toString());
+					establecimiento = tabla_filtro_scoi.getValueAt(tabla_filtro_scoi.getSelectedRow(), 2).toString().trim();
 				}else{
 					txtFolioBms.setText(tb.getValueAt(tb.getSelectedRow(), 0).toString());
 					txtEmpleadoBms.setText(tb.getValueAt(tb.getSelectedRow(), 1).toString());
 				}
 			}
-			public void mousePressed(MouseEvent e) {			}
-			public void mouseExited(MouseEvent e) {			}
-			public void mouseEntered(MouseEvent e) {			}
-			public void mouseClicked(MouseEvent e) {			}
+			public void mousePressed(MouseEvent e) {		}
+			public void mouseExited(MouseEvent e)  {		}
+			public void mouseEntered(MouseEvent e) {		}
+			public void mouseClicked(MouseEvent e) {		}
 		});
 	}
 
@@ -334,17 +352,22 @@ public class Cat_Finiquitos extends JDialog{
 		 JTextField   txtVacacionesDiferencia			= new Componentes().text(new JTextField(), "Vacaciones",  15, "Double");      
 		 JTextField   txtPrimaVacacionalDiferencia		= new Componentes().text(new JTextField(), "Prima Vacacional",  15, "Double");
 		 JTextField   txtTotalPercepcionesDiferencia	= new Componentes().text(new JTextField(), "Total Percepciones",  15, "Double");
+		 
+		JButton btnReporte = new JButton("Ultimo Reporte", new ImageIcon("imagen/Report.png"));
+		JButton btnGuardar = new JButton("Guardar", new ImageIcon("imagen/guardar-documento-icono-7840-32.png"));
 
+		String status[] = {"Seleccione Un Status","Baja","No Contratable"};
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		JComboBox cmbStatus = new JComboBox(status);
 		
-		JButton btnLimpiarEmpleadoBms = new JButton("Limpiar");
-		JButton btnGuardar = new JButton("Guardar", new ImageIcon("imagen/flecha-naranja-alerta-de-descarga-de-la-actualizacion-icono-8872-16.png"));
-		
+		JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 200);
+		JScrollPane Observasiones = new JScrollPane(txaObservaciones);
 		
 		public Cat_Alimentacion_De_Finiquitos(String folio_emp_scoi, String nombre_scoi, String establecimiento, String folio_emp_bms){
 			this.setModal(true);
 			this.setTitle("Calculo De Finiquitos");
 			this.panel_quitados.setBorder(BorderFactory.createTitledBorder( "Calculo De Finiquitos"));
-			this.setSize(610,620);
+			this.setSize(610,660);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			
@@ -383,16 +406,17 @@ public class Cat_Finiquitos extends JDialog{
 			panel_quitados.add(new JLabel("Percepciones:")		   				).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtTotalPercepcionesBnns			   	).setBounds(x2, y, ancho2, 20);   panel_quitados.add(txtTotalPercepcionesSCOI			).setBounds(x3, y, ancho2, 20);	 panel_quitados.add(txtTotalPercepcionesDiferencia	).setBounds(x4, y, ancho2, 20);
                                                                                                                                                                                                     
 			panel_quitados.add(new JLabel("DEDUCCIONES")   						).setBounds(x, y+=20, ancho, 20);                                                                                   
-			panel_quitados.add(new JLabel("Prestamo:")			   				).setBounds(x, y+=25, ancho, 20);   panel_quitados.add(txtPrestamoBnns					   	).setBounds(x2, y, ancho2, 20);   
-			panel_quitados.add(new JLabel("Cortes:")							).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtCortesBnns						).setBounds(x2, y, ancho2, 20);   
-			panel_quitados.add(new JLabel("Infonavit:")			   				).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtInfonavitBnns					   	).setBounds(x2, y, ancho2, 20);   
-			panel_quitados.add(new JLabel("Fuente De Sodas:")					).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtFuenteSodasBnns					).setBounds(x2, y, ancho2, 20);   
-			panel_quitados.add(new JLabel("Otras Deducciones:")	   				).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtOtrasDeduccionesBnns			   	).setBounds(x2, y, ancho2, 20);   panel_quitados.add(btnGuardar							).setBounds(x3, y, ancho2*2, 45);   
+			panel_quitados.add(new JLabel("Prestamo:")			   				).setBounds(x, y+=25, ancho, 20);   panel_quitados.add(txtPrestamoBnns					   	).setBounds(x2, y, ancho2, 20);   panel_quitados.add(new JLabel("Status:")				).setBounds(x3, y, 50, 20);		 panel_quitados.add(cmbStatus				).setBounds(x3+50, y, 200, 20);
+			panel_quitados.add(new JLabel("Cortes:")							).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtCortesBnns						).setBounds(x2, y, ancho2, 20);   panel_quitados.add(new JLabel("Observacion:")			).setBounds(x3, y, 80, 20);
+			panel_quitados.add(new JLabel("Infonavit:")			   				).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtInfonavitBnns					   	).setBounds(x2, y, ancho2, 20);   panel_quitados.add(Observasiones						).setBounds(x3, y, 250,85);
+			panel_quitados.add(new JLabel("Fuente De Sodas:")					).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtFuenteSodasBnns					).setBounds(x2, y, ancho2, 20);    
+			panel_quitados.add(new JLabel("Otras Deducciones:")	   				).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtOtrasDeduccionesBnns			   	).setBounds(x2, y, ancho2, 20);      
                                                                                                                                                                                                             
 			panel_quitados.add(new JLabel("Total A Pagar:")						).setBounds(x, y+=25, ancho, 20);   panel_quitados.add(txtTotalAPagarBnns					).setBounds(x2, y, ancho2, 20);   
+			panel_quitados.add(btnReporte										).setBounds(x, y+=25, ancho2*2+10, 45);panel_quitados.add(btnGuardar							).setBounds(x3, y, ancho2*2+10, 45);
+			
 			
 			cont_quitados.add(panel_quitados);
-			
 			
 			txtFolioEmpleado	.setEditable(false);                                                                                    
 			txtEmpleado			.setEditable(false);                                                                           
@@ -465,16 +489,140 @@ public class Cat_Finiquitos extends JDialog{
 			fchBajaSCOI.addPropertyChangeListener(opCalcularAutomaticoConFecha);
 			
 			btnGuardar.addActionListener(opGenerar);
-			
+			btnReporte.addActionListener(opReImprimir);
 		}
 		
 		ActionListener opGenerar = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				new Cat_Seleccion_De_Status().setVisible(true);
-				
+				if(cmbStatus.getSelectedIndex()!=0){
+						
+						if(cmbStatus.getSelectedItem().toString().equals("No Contratable")){
+							if(txaObservaciones.getText().trim().equals("")){
+								JOptionPane.showMessageDialog(null, "El Status De No Comtratable Requiere Observación", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}else{
+								guardar_finiquito();
+							}
+						}else{
+							guardar_finiquito();
+						}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "Es Necesario Que Seleccione Un Status Para El Empleado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
 			}
 		};
+		
+		public void guardar_finiquito(){
+			Obj_Finiquitos finiquito = new Obj_Finiquitos();
+			
+			finiquito.setFolio_empleado_scoi(Integer.valueOf(txtFolioEmpleado.getText().trim()));
+			finiquito.setFolio_empleado_bms(folio_empleado_bms);
+			finiquito.setEstablecimiento(txtEstablecimiento.getText().trim());
+			
+//		componentes De bms
+			
+			finiquito.setFecha_ingreso_BMS((fchIngresoBnns.getDate()+"").equals("null")?"01/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(fchIngresoBnns.getDate()));
+			finiquito.setFecha_baja_BMS((fchIngresoBnns.getDate()+"").equals("null")?"01/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(fchBajaBnns.getDate()));
+			
+			finiquito.setDias_trabajados_BMS(Integer.valueOf(txtDiasTrabajadosBnns.getText().trim()));
+			finiquito.setAnios_trabajados_BMS(Double.valueOf(txtaniosTrabajadosBnns.getText().trim()));
+			finiquito.setDias_pendientes_de_pago_de_aguinaldo_BMS(Integer.valueOf(txtDiasPendienteDePagoAguinaldoBnns.getText().trim()));
+			finiquito.setDias_pendientes_de_pago_de_semana_BMS(Integer.valueOf(txtDiasPendienteDePagoSemanaBnns.getText().trim()));
+			finiquito.setCuota_diario_BMS(Double.valueOf(txtDiasCuotaDiarioBnns.getText().trim()));
+			
+			finiquito.setSDI_BMS(Double.valueOf(txtSDIBnns.getText().trim()));
+			
+			finiquito.setSueldo_BMS(Double.valueOf(txtSueldoBnns.getText().trim()));
+			finiquito.setAguinaldo_BMS(Double.valueOf(txtAguinaldoBnns.getText().trim()));
+			
+			finiquito.setVacaciones_pendientes_BMS(Double.valueOf(txtVacacionesPendienteBnns.getText().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().trim()));
+			finiquito.setVacaciones_BMS(Double.valueOf(txtVacacionesBnns.getText().trim()));
+			finiquito.setPrima_vacacional_BMS(Double.valueOf(txtPrimaVacacionalBnns.getText().trim()));
+			
+			finiquito.setGratificacion_BMS(Double.valueOf(txtGratificacionBnns.getText().trim()));
+			finiquito.setTiempo_extra_BMS(Double.valueOf(txtTiempoExtraBnns.getText().trim().equals("")?"0":txtTiempoExtraBnns.getText().trim()));
+			finiquito.setPercepciones_BMS(Double.valueOf(txtTotalPercepcionesBnns.getText().trim()));
+			
+//		componentes De scoi
+			finiquito.setFecha_ingreso_SCOI(new SimpleDateFormat("dd/MM/yyyy").format(fchIngresoSCOI.getDate()));
+			finiquito.setFecha_baja_SCOI(new SimpleDateFormat("dd/MM/yyyy").format(fchBajaSCOI.getDate()));
+			
+			finiquito.setDias_trabajados_SCOI(Integer.valueOf(txtDiasTrabajadosSCOI.getText().trim()));
+			finiquito.setAnios_trabajados_SCOI(Double.valueOf(txtaniosTrabajadosSCOI.getText().trim()));
+			finiquito.setDias_pendientes_de_pago_de_aguinaldo_SCOI(Integer.valueOf(txtDiasPendienteDePagoAguinaldoSCOI.getText().trim()));
+			finiquito.setDias_pendientes_de_pago_de_semana_SCOI(Integer.valueOf(txtDiasPendienteDePagoSemanaSCOI.getText().trim()));
+			finiquito.setCuota_diario_SCOI(Double.valueOf(txtDiasCuotaDiarioSCOI.getText().trim()));
+			
+			
+			finiquito.setSueldo_SCOI(Double.valueOf(txtSueldoSCOI.getText().trim()));
+			finiquito.setAguinaldo_SCOI(Double.valueOf(txtAguinaldoSCOI.getText().trim()));
+			
+			finiquito.setVacaciones_pendientes_SCOI(Double.valueOf(txtVacacionesPendientesSCOI.getText().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().trim()));
+			finiquito.setVacaciones_SCOI(Double.valueOf(txtVacacionesSCOI.getText().trim()));
+			finiquito.setPrima_vacacional_SCOI(Double.valueOf(txtPrimaVacacionalSCOI.getText().trim()));
+			
+			finiquito.setPercepciones_SCOI(Double.valueOf(txtTotalPercepcionesSCOI.getText().trim()));
+			
+//		diferencias (GRATIFICACION)
+			finiquito.setSueldo_gratif(Double.valueOf(txtSueldoDiferencia.getText().trim()));
+			finiquito.setAguinaldo_gratif(Double.valueOf(txtAguinaldoDiferencia.getText().trim()));
+			finiquito.setVacaciones_pendientes_gratif(Double.valueOf(txtVacacionesPendientesDiferencia.getText().trim().equals("")?"0":txtVacacionesPendientesDiferencia.getText().trim()));
+			finiquito.setVacaciones_gratif(Double.valueOf(txtVacacionesDiferencia.getText().trim()));
+			finiquito.setPrima_vacacional_gratif(Double.valueOf(txtPrimaVacacionalDiferencia.getText().trim()));
+			finiquito.setPercepciones_gratif(Double.valueOf(txtTotalPercepcionesDiferencia.getText().trim()));
+			
+//		Deducciones
+			finiquito.setPretamo(Double.valueOf(txtPrestamoBnns.getText().trim()));
+			finiquito.setCortes(Double.valueOf(txtCortesBnns.getText().trim()));
+			finiquito.setInfonavit(Double.valueOf(txtInfonavitBnns.getText().trim()));
+			finiquito.setFuente_sodas(Double.valueOf(txtFuenteSodasBnns.getText().trim()));
+			finiquito.setOtras_deducciones(Double.valueOf(txtOtrasDeduccionesBnns.getText().trim().equals("")?"0":txtOtrasDeduccionesBnns.getText().trim()));
+			
+			finiquito.setTotal_a_pagar(Double.valueOf(txtTotalAPagarBnns.getText().trim()));
+
+			if(finiquito.guardar(cmbStatus.getSelectedItem().toString(),txaObservaciones.getText().toUpperCase().trim())){
+				
+				reporte();
+				dispose();
+				
+				llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
+				llenar_tabla_filtro(tabla_model_filtro_bnns,"BNNS");
+				
+			}else{
+				JOptionPane.showMessageDialog(null, "No Se Han Podido Procesar El Finiquito", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+			
+	}
+		
+	ActionListener opReImprimir = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			reporte();
+			dispose();
+			
+			llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
+			llenar_tabla_filtro(tabla_model_filtro_bnns,"BNNS");
+		}
+	};
+	
+	public void reporte(){
+		String basedatos="2.26";
+		String vista_previa_reporte="no";
+		int vista_previa_de_ventana=0;
+		String comando="";
+		String reporte = "";
+		
+		 comando = "exec sp_select_reporte_de_finiquito";
+		 reporte="Obj_Finiquito.jrxml";
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		 reporte="Obj_Registro_De_Finiquito.jrxml";
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		 
+	}
 		
 		public Date cargar_fechas_de_baja(int dias){
 			Date date1 = null;
@@ -690,162 +838,6 @@ public class Cat_Finiquitos extends JDialog{
 											 -Double.valueOf(txtFuenteSodasBnns.getText().toString().trim()) 
 											 -Double.valueOf(txtOtrasDeduccionesBnns.getText().toString().trim().equals("")?"0":txtOtrasDeduccionesBnns.getText().toString().trim()) 
 										 ) +"" );
-		}
-	
-	
-	public class Cat_Seleccion_De_Status extends JDialog{
-		
-		Container cont_confirm = getContentPane();
-		JLayeredPane panel_confirm = new JLayeredPane();
-		
-		String status[] = {"Seleccione Un Status","Baja","No Contratable"};
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		JComboBox cmbStatus = new JComboBox(status);
-		
-		JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 200);
-		JScrollPane Observasiones = new JScrollPane(txaObservaciones);
-		
-		JButton btnAceptar = new JButton("Aceptar", new ImageIcon("imagen/flecha-naranja-alerta-de-descarga-de-la-actualizacion-icono-8872-16.png"));
-		JButton btnCancelar = new JButton("Cancelar");
-	
-		public Cat_Seleccion_De_Status(){
-			this.setModal(true);
-			this.setTitle("Confirmar Finiquito");
-			this.panel_confirm.setBorder(BorderFactory.createTitledBorder("Seleccione Un Status Para El Empleado"));
-			this.setSize(330,200);
-			this.setResizable(false);
-			this.setLocationRelativeTo(null);
-			
-			txaObservaciones.setLineWrap(true); 
-			txaObservaciones.setWrapStyleWord(true);
-			
-			int x=15, y=20;
-			
-			panel_confirm.add(new JLabel("Statua De Empleado:")		 ).setBounds(x, y, 130, 20);
-			panel_confirm.add(cmbStatus   			 ).setBounds(x+130, y, 160, 20);
-			
-			panel_confirm.add(Observasiones   		 ).setBounds(x, y+=25, 290, 90);
-			
-			panel_confirm.add(btnCancelar  			 ).setBounds(x, y+=100, 100, 20);
-			panel_confirm.add(btnAceptar  			 ).setBounds(x+190, y, 100, 20);
-			
-			cont_confirm.add(panel_confirm);
-			
-			btnAceptar.addActionListener(opAceptar);
-		}
-		
-		ActionListener opAceptar = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				if(cmbStatus.getSelectedIndex()!=0){
-					
-						if(cmbStatus.getSelectedItem().toString().equals("No Contratable")){
-							if(txaObservaciones.getText().trim().equals("")){
-								JOptionPane.showMessageDialog(null, "El Status De No Comtratable Requiere Observación", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-								return;
-							}else{
-								guardar_finiquito();
-							}
-						}else{
-							guardar_finiquito();
-						}
-					
-				}else{
-					JOptionPane.showMessageDialog(null, "Es Necesario Que Seleccione Un Status Para El Empleado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-					return;
-				}
-			}
-		};
-
-		public void guardar_finiquito(){
-					Obj_Finiquitos finiquito = new Obj_Finiquitos();
-					
-					finiquito.setFolio_empleado_scoi(Integer.valueOf(txtFolioEmpleado.getText().trim()));
-					finiquito.setFolio_empleado_bms(folio_empleado_bms);
-					finiquito.setEstablecimiento(txtEstablecimiento.getText().trim());
-					
-		//		componentes De bms
-					
-					finiquito.setFecha_ingreso_BMS((fchIngresoBnns.getDate()+"").equals("null")?"01/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(fchIngresoBnns.getDate()));
-					finiquito.setFecha_baja_BMS((fchIngresoBnns.getDate()+"").equals("null")?"01/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(fchBajaBnns.getDate()));
-					
-					finiquito.setDias_trabajados_BMS(Integer.valueOf(txtDiasTrabajadosBnns.getText().trim()));
-					finiquito.setAnios_trabajados_BMS(Double.valueOf(txtaniosTrabajadosBnns.getText().trim()));
-					finiquito.setDias_pendientes_de_pago_de_aguinaldo_BMS(Integer.valueOf(txtDiasPendienteDePagoAguinaldoBnns.getText().trim()));
-					finiquito.setDias_pendientes_de_pago_de_semana_BMS(Integer.valueOf(txtDiasPendienteDePagoSemanaBnns.getText().trim()));
-					finiquito.setCuota_diario_BMS(Double.valueOf(txtDiasCuotaDiarioBnns.getText().trim()));
-					
-					finiquito.setSDI_BMS(Double.valueOf(txtSDIBnns.getText().trim()));
-					
-					finiquito.setSueldo_BMS(Double.valueOf(txtSueldoBnns.getText().trim()));
-					finiquito.setAguinaldo_BMS(Double.valueOf(txtAguinaldoBnns.getText().trim()));
-					
-					finiquito.setVacaciones_pendientes_BMS(Double.valueOf(txtVacacionesPendienteBnns.getText().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().trim()));
-					finiquito.setVacaciones_BMS(Double.valueOf(txtVacacionesBnns.getText().trim()));
-					finiquito.setPrima_vacacional_BMS(Double.valueOf(txtPrimaVacacionalBnns.getText().trim()));
-					
-					finiquito.setGratificacion_BMS(Double.valueOf(txtGratificacionBnns.getText().trim()));
-					finiquito.setTiempo_extra_BMS(Double.valueOf(txtTiempoExtraBnns.getText().trim().equals("")?"0":txtTiempoExtraBnns.getText().trim()));
-					finiquito.setPercepciones_BMS(Double.valueOf(txtTotalPercepcionesBnns.getText().trim()));
-					
-		//		componentes De scoi
-					finiquito.setFecha_ingreso_SCOI(new SimpleDateFormat("dd/MM/yyyy").format(fchIngresoSCOI.getDate()));
-					finiquito.setFecha_baja_SCOI(new SimpleDateFormat("dd/MM/yyyy").format(fchBajaSCOI.getDate()));
-					
-					finiquito.setDias_trabajados_SCOI(Integer.valueOf(txtDiasTrabajadosSCOI.getText().trim()));
-					finiquito.setAnios_trabajados_SCOI(Double.valueOf(txtaniosTrabajadosSCOI.getText().trim()));
-					finiquito.setDias_pendientes_de_pago_de_aguinaldo_SCOI(Integer.valueOf(txtDiasPendienteDePagoAguinaldoSCOI.getText().trim()));
-					finiquito.setDias_pendientes_de_pago_de_semana_SCOI(Integer.valueOf(txtDiasPendienteDePagoSemanaSCOI.getText().trim()));
-					finiquito.setCuota_diario_SCOI(Double.valueOf(txtDiasCuotaDiarioSCOI.getText().trim()));
-					
-					
-					finiquito.setSueldo_SCOI(Double.valueOf(txtSueldoSCOI.getText().trim()));
-					finiquito.setAguinaldo_SCOI(Double.valueOf(txtAguinaldoSCOI.getText().trim()));
-					
-					finiquito.setVacaciones_pendientes_SCOI(Double.valueOf(txtVacacionesPendientesSCOI.getText().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().trim()));
-					finiquito.setVacaciones_SCOI(Double.valueOf(txtVacacionesSCOI.getText().trim()));
-					finiquito.setPrima_vacacional_SCOI(Double.valueOf(txtPrimaVacacionalSCOI.getText().trim()));
-					
-					finiquito.setPercepciones_SCOI(Double.valueOf(txtTotalPercepcionesSCOI.getText().trim()));
-					
-		//		diferencias (GRATIFICACION)
-					finiquito.setSueldo_gratif(Double.valueOf(txtSueldoDiferencia.getText().trim()));
-					finiquito.setAguinaldo_gratif(Double.valueOf(txtAguinaldoDiferencia.getText().trim()));
-					finiquito.setVacaciones_pendientes_gratif(Double.valueOf(txtVacacionesPendientesDiferencia.getText().trim().equals("")?"0":txtVacacionesPendientesDiferencia.getText().trim()));
-					finiquito.setVacaciones_gratif(Double.valueOf(txtVacacionesDiferencia.getText().trim()));
-					finiquito.setPrima_vacacional_gratif(Double.valueOf(txtPrimaVacacionalDiferencia.getText().trim()));
-					finiquito.setPercepciones_gratif(Double.valueOf(txtTotalPercepcionesDiferencia.getText().trim()));
-					
-		//		Deducciones
-					finiquito.setPretamo(Double.valueOf(txtPrestamoBnns.getText().trim()));
-					finiquito.setCortes(Double.valueOf(txtCortesBnns.getText().trim()));
-					finiquito.setInfonavit(Double.valueOf(txtInfonavitBnns.getText().trim()));
-					finiquito.setFuente_sodas(Double.valueOf(txtFuenteSodasBnns.getText().trim()));
-					finiquito.setOtras_deducciones(Double.valueOf(txtOtrasDeduccionesBnns.getText().trim().equals("")?"0":txtOtrasDeduccionesBnns.getText().trim()));
-					
-					finiquito.setTotal_a_pagar(Double.valueOf(txtTotalAPagarBnns.getText().trim()));
-		
-					if(finiquito.guardar(cmbStatus.getSelectedItem().toString(),txaObservaciones.getText().toUpperCase().trim())){
-						
-						String basedatos="2.26";
-						String vista_previa_reporte="no";
-						int vista_previa_de_ventana=0;
-						String comando="";
-						String reporte = "";
-						
-						 comando = "exec sp_select_reporte_de_finiquito";
-						 reporte="Obj_Finiquito.jrxml";
-						 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-						 
-						 
-//						JOptionPane.showMessageDialog(null, "El Finiquito Se Guardo Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
-//						return;
-					}else{
-						JOptionPane.showMessageDialog(null, "No Se Han Podido Procesar El Finiquito", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-						return;
-					}
-					
-			}
 		}
 	}
 }
