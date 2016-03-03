@@ -21,6 +21,9 @@ import java.util.Vector;
 
 
 
+
+
+
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -68,7 +71,9 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_Menus;
+import Obj_Principal.Obj_Refrescar;
 
 
 
@@ -913,27 +918,45 @@ public class Submenusbtns{
 			Container cont = getContentPane();
 			JLayeredPane campo = new JLayeredPane();
 			
-			DefaultTableModel model = new DefaultTableModel(0,3){
-				public boolean isCellEditable(int fila, int columna){
-					if(columna < 0)
-						return true;
+			@SuppressWarnings("rawtypes")
+			public Class[] tipos(final JTable tb){
+				Class[] tip = new Class[columnas];
+				
+				for(int i =0; i<columnas; i++){
+					if(i==checkbox){
+						tip[i]=java.lang.Boolean.class;
+					}else{
+						tip[i]=java.lang.Object.class;
+					}
+					
+				}
+				return tip;
+			}
+			
+		 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre De Colaborador", "Establecimiento"}){
+			 @SuppressWarnings("rawtypes")
+				Class[] types = tipos(tabla);
+				
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				public Class getColumnClass(int columnIndex) {
+		         return types[columnIndex];
+		     }
+				
+		     public boolean isCellEditable(int fila, int columna){
+		    	 switch(columna){
+		    	 	case 0 : return true; 
+		    	 	case 1 : return false; 
+		    	 	case 2 : return false; 
+		    	 }
 					return false;
 				}
-			};
+		    };
+		    
+		    JTable tabla = new JTable(modelo);
+			public JScrollPane scroll_tabla = new JScrollPane(tabla);
 			
-			JTable tabla = new JTable(model);
-			
-			@SuppressWarnings("rawtypes")
-		private TableRowSorter trsfiltro;
+		JTextField txtNombre_Completo2 = new Componentes().text(new JTextField(), "Buscar", 250, "String");
 		
-		JTextField txtFolioFiltroEmpleado = new JTextField();
-		JTextField txtNombre_Completo = new JTextField();
-		
-		String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
-		
-		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Cat_Seleccion_De_Usuario(){
 			
 			this.setModal(true);
@@ -941,22 +964,18 @@ public class Submenusbtns{
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/usuario-busquedaicono-4661-64.png"));
 			this.setTitle("Filtro de Empleados");
 			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Empleado"));
-			trsfiltro = new TableRowSorter(model); 
-			tabla.setRowSorter(trsfiltro);  
 			
-			campo.add(getPanelTabla()).setBounds(15,42,450,565);
+			campo.add(scroll_tabla).setBounds(15,42,450,565);
 			
-			campo.add(txtFolioFiltroEmpleado).setBounds(15,20,48,20);
-			campo.add(txtNombre_Completo).setBounds(64,20,229,20);
-			campo.add(cmbEstablecimientos).setBounds(295,20, 148, 20);
+			campo.add(txtNombre_Completo2).setBounds(15,20,300,20);
 			
 			agregar(tabla);
 			
 			cont.add(campo);
 			
-			txtFolioFiltroEmpleado.addKeyListener(opFiltroFolio);
-			txtNombre_Completo.addKeyListener(opFiltroNombre);
-			cmbEstablecimientos.addActionListener(opFiltro);
+			init_tabla();
+			
+			txtNombre_Completo2.addKeyListener(op_filtro);
 			
 			this.setSize(490,650);
 			this.setResizable(false);
@@ -968,7 +987,7 @@ public class Submenusbtns{
 		//      asigna el foco al JTextField del nombre deseado al arrancar la ventana
 		    this.addWindowListener(new WindowAdapter() {
 		            public void windowOpened( WindowEvent e ){
-		            	txtNombre_Completo.requestFocus();
+		            	txtNombre_Completo2.requestFocus();
 		         }
 		    });
 		      
@@ -980,8 +999,8 @@ public class Submenusbtns{
 		          @Override
 		          public void actionPerformed(ActionEvent e)
 		          {
-		        	  txtNombre_Completo.setText("");
-		              txtNombre_Completo.requestFocus();
+		        	  txtNombre_Completo2.setText("");
+		              txtNombre_Completo2.requestFocus();
 		          }
 		      });
 		      
@@ -1013,163 +1032,26 @@ public class Submenusbtns{
 		    });
 		}
 		
-		KeyListener opFiltroFolio = new KeyListener(){
-			@SuppressWarnings("unchecked")
+		KeyListener op_filtro = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioFiltroEmpleado.getText(), 0));
+				int[] columnas ={0,1,2};
+				new Obj_Filtro_Dinamico_Plus(tabla, txtNombre_Completo2.getText().toString().trim().toUpperCase(), columnas);
 			}
-			public void keyTyped(KeyEvent arg0) {
-				char caracter = arg0.getKeyChar();
-				if(((caracter < '0') ||
-					(caracter > '9')) &&
-				    (caracter != KeyEvent.VK_BACK_SPACE)){
-					arg0.consume(); 
-				}	
-			}
+			public void keyTyped(KeyEvent arg0)   {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		KeyListener opFiltroNombre = new KeyListener(){
-			public void keyReleased(KeyEvent arg0) {
-				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
-			}
-			public void keyTyped(KeyEvent arg0) {}
-			public void keyPressed(KeyEvent arg0) {}		
-		};
-		
-		ActionListener opFiltro = new ActionListener(){
-			public void actionPerformed(ActionEvent arg0){
-				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
-			}
-		};
-		
-		private JScrollPane getPanelTabla()	{		
-			
-			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-			tcr.setHorizontalAlignment(SwingConstants.CENTER);
-			
-			int a=2;
-			tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
-			tabla.getColumnModel().getColumn(a).setCellRenderer(tcr);
-			
-			// Creamos las columnas.
-			tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
-			tabla.getColumnModel().getColumn(0).setMaxWidth(50);
-			tabla.getColumnModel().getColumn(0).setMinWidth(50);
-			tabla.getColumnModel().getColumn(1).setHeaderValue("Nombre Completo");
-			tabla.getColumnModel().getColumn(1).setMaxWidth(230);
-			tabla.getColumnModel().getColumn(1).setMinWidth(230);
-			tabla.getColumnModel().getColumn(2).setHeaderValue("Establecimiento");
-			tabla.getColumnModel().getColumn(2).setMaxWidth(150);
-			tabla.getColumnModel().getColumn(2).setMinWidth(150);
-			
-			TableCellRenderer render = new TableCellRenderer() { 
-				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-				boolean hasFocus, int row, int column) { 
-					
-					Component componente = null;
-					
-					switch(column){
-						case 0: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row %2 == 0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}				
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-							break;
-						case 1: 
-							componente = new JLabel(value == null? "": value.toString());
-							if(row %2 == 0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-							break;
-						case 2:
-							componente = new JLabel(value == null? "": value.toString());
-							if(row %2 == 0){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(177,177,177));	
-							}
-							if(table.getSelectedRow() == row){
-								((JComponent) componente).setOpaque(true); 
-								componente.setBackground(new java.awt.Color(186,143,73));
-							}
-							((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-							break;
-					}
-					return componente;
-				} 
-			}; 
-			tabla.getColumnModel().getColumn(a=0).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(a+=1).setCellRenderer(render);
-			Statement s;
-			ResultSet rs;
-			try {
-				s = new Connexion().conexion().createStatement();
-				rs = s.executeQuery("exec sp_select_usuarios_scoi");
-				
-				while (rs.next())
-				{ 
-				   String [] fila = new String[3];
-				   fila[0] = rs.getString(1)+"  ";
-				   fila[1] = "   "+rs.getString(2);
-				   fila[2] = "   "+rs.getString(3).trim();
-				   model.addRow(fila); 
-				}	
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			 JScrollPane scrol = new JScrollPane(tabla);
-			   
-		    return scrol; 
-		}
-		
-		KeyListener validaCantidad = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();				
-				if(((caracter < '0') ||	
-				    	(caracter > '9')) && 
-				    	(caracter != '.' )){
-				    	e.consume();
-				    	}
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {	
-			}
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-			}	
-		};
-		
-		KeyListener validaNumericoConPunto = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char caracter = e.getKeyChar();
-				
-			    if(((caracter < '0') ||	
-			    	(caracter > '9')) && 
-			    	(caracter != '.')){
-			    	e.consume();
-			    	}
-			}
-			@Override
-			public void keyPressed(KeyEvent e){}
-			@Override
-			public void keyReleased(KeyEvent e){}
-									
-		};
+		int columnas = 0,checkbox=-1;
+		public void init_tabla(){
+	    	this.tabla.getColumnModel().getColumn(0).setMinWidth(30);		
+	    	this.tabla.getColumnModel().getColumn(1).setMinWidth(300);
+	    	this.tabla.getColumnModel().getColumn(2).setMinWidth(410);
+	    	
+	    	columnas = 3;
+			String comando="exec sp_select_usuarios_scoi";
+			String basedatos="26",pintar="si";
+			new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+	    }
 		
 		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
 			@SuppressWarnings("static-access")

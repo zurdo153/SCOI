@@ -35,13 +35,24 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 	JLayeredPane panel = new JLayeredPane();
 	public JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla <<<", 300, "String");
 
+	@SuppressWarnings("rawtypes")
+	public Class[] tipos(final JTable tb){
+		Class[] tip = new Class[columnas];
+		
+		for(int i =0; i<columnas; i++){
+			if(i==checkbox){
+				tip[i]=java.lang.Boolean.class;
+			}else{
+				tip[i]=java.lang.Object.class;
+			}
+			
+		}
+		return tip;
+	}
+	
  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre de Proveedor", "Descripción"}){
 	 @SuppressWarnings("rawtypes")
-		Class[] types = new Class[]{
-				java.lang.Object.class,
-				java.lang.Object.class,
-				java.lang.Object.class
-		};
+		Class[] types = tipos(tabla);
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
@@ -115,14 +126,18 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 	};
 	
 
-	
+	int columnas = 0,checkbox=-1;
 	public void init_tabla(){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(30);		
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(300);
     	this.tabla.getColumnModel().getColumn(2).setMinWidth(410);
     	
-		int columnas = 3,checkbox=-1;
-		String comando="select cod_prv as folio,razon_social as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio from proveedores where status_proveedor =1 order by proveedor asc";
+    	columnas = 3;
+    	checkbox=1;
+    	
+//    	this.tabla.getColumnModel().getColumn(checkbox).setMinWidth(20);
+    	
+		String comando="select cod_prv as folio,'' as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio from proveedores where status_proveedor =1 order by proveedor asc";
 		String basedatos="200",pintar="si";
 		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
