@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import Conexiones_SQL.Connexion;
 import Obj_Renders.tablaRenderer;
 
+
 public class Obj_Refrescar {
 	
 	public Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,String comando,String BasdeDatos, String pintar, Integer checkbox){

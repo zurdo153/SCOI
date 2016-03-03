@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
-import Cat_Contabilidad.Cat_Control_De_Facturas_Y_XML_De_Proveedores;
+import Cat_Contabilidad.Cat_Pago_De_Cascos_Al_Proveedor;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
@@ -50,6 +50,18 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 		return tip;
 	}
 	
+	int columnas = 3,checkbox=-1;
+	public void init_tabla(){
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(30);		
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(300);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(410);
+    	
+		String comando="select cod_prv as folio,razon_social as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio from proveedores where status_proveedor =1 order by proveedor asc";
+		String basedatos="200",pintar="si";
+		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+    }
+	
+	
  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre de Proveedor", "Descripción"}){
 	 @SuppressWarnings("rawtypes")
 		Class[] types = tipos(tabla);
@@ -58,21 +70,17 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 		public Class getColumnClass(int columnIndex) {
          return types[columnIndex];
      }
-		
-     public boolean isCellEditable(int fila, int columna){
-    	 switch(columna){
-    	 	case 0 : return true; 
-    	 	case 1 : return false; 
-    	 	case 2 : return false; 
-    	 }
-			return false;
+		public boolean isCellEditable(int fila, int columna){
+			if(columna ==checkbox)
+				return true; return false;
 		}
     };
     
     JTable tabla = new JTable(modelo);
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
-	Border blackline, etched, raisedbevel, loweredbevel, empty;
+////////////////////////////////////////////////////////////////	
 	
+	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	public Cat_Pago_De_Cascos_A_Proveedores(){
 		
 		this.setModal(true);
@@ -120,27 +128,10 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
     			Object folio =  tabla.getValueAt(fila, 0);
     			Object Proveedor =  tabla.getValueAt(fila, 1);
     			dispose();
-    			new Cat_Control_De_Facturas_Y_XML_De_Proveedores(folio.toString().trim(),Proveedor.toString().trim()).setVisible(true);
+    			new Cat_Pago_De_Cascos_Al_Proveedor(folio.toString().trim(),Proveedor.toString().trim()).setVisible(true);
         	}
 		}
 	};
-	
-
-	int columnas = 0,checkbox=-1;
-	public void init_tabla(){
-    	this.tabla.getColumnModel().getColumn(0).setMinWidth(30);		
-    	this.tabla.getColumnModel().getColumn(1).setMinWidth(300);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(410);
-    	
-    	columnas = 3;
-    	checkbox=1;
-    	
-//    	this.tabla.getColumnModel().getColumn(checkbox).setMinWidth(20);
-    	
-		String comando="select cod_prv as folio,'' as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio from proveedores where status_proveedor =1 order by proveedor asc";
-		String basedatos="200",pintar="si";
-		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
-    }
 	
 	KeyListener op_filtro = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
@@ -161,7 +152,7 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 				String folio = tabla.getValueAt(fila,0).toString().trim();
 				String proveedor = tabla.getValueAt(fila,1).toString().trim();
 				
-//				new Cat_Control_De_Facturas_Y_XML_De_Proveedores(folio,proveedor).setVisible(true);
+				new Cat_Pago_De_Cascos_Al_Proveedor(folio,proveedor).setVisible(true);
 				
 				dispose();
 				}
