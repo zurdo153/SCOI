@@ -24,8 +24,8 @@ public class Generacion_Reportes {
 	String vista_previa_reporte="";
 	String vista_previa_de_ventana="";
 	String basedatos="";
-		
-		public void  Reporte(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
+
+	public void  Reporte(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
 			    Obj_Usuario usuario = new Obj_Usuario();
                 String query =comando ;
 				Statement stmt = null;
