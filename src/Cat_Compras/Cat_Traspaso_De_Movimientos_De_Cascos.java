@@ -116,7 +116,7 @@ public class Cat_Traspaso_De_Movimientos_De_Cascos extends JFrame{
 		panel.add(txtFiltro).setBounds(x, y+=35, ancho*3, alto);  
 		panel.add(scroll_grupos).setBounds(8, y+=20, anchop-25, altop-130);
 		
-		llamar_render();
+		tabla();
 		fh_in.setEnabled(false);
 		spHoraIn.setEnabled(false);
 		tiempodefault();
@@ -125,14 +125,11 @@ public class Cat_Traspaso_De_Movimientos_De_Cascos extends JFrame{
 		cont.add(panel);
 	}
 	
-	Date horaFinal = null;
-	String fechaFinal_principal = "";
 	@SuppressWarnings("deprecation")
 	public void tiempodefault(){
 		String[] fechas = new BuscarSQL().fechas_de_movimiento_de_cascos();
 		try {
 			fh_in.setDate((Date) new SimpleDateFormat("dd/MM/yyyy").parse(fechas[0].toString()));
-			fechaFinal_principal=fechas[2].toString();
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -140,9 +137,6 @@ public class Cat_Traspaso_De_Movimientos_De_Cascos extends JFrame{
 		String[] inicioDefault = fechas[1].toString().split(":");
 		spHoraIn.setValue(new Time(Integer.parseInt(inicioDefault[0]),Integer.parseInt(inicioDefault[1]),Integer.parseInt(inicioDefault[2])));
 		spHoraIn.setEditor(spDHoraIn);
-		
-		String[] FinDefault = fechas[3].toString().split(":");
-		horaFinal = new Time(Integer.parseInt(FinDefault[0]),Integer.parseInt(FinDefault[1]),Integer.parseInt(inicioDefault[2]));
 	}
 
 	
@@ -154,16 +148,14 @@ public class Cat_Traspaso_De_Movimientos_De_Cascos extends JFrame{
 				JOptionPane.showMessageDialog(null,"Se Realizo el Traspaso De Movimientos Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 				return;
 			}else{
-				
 					JOptionPane.showMessageDialog(null,"Error Al Realizar el Traspaso ","Avise Al Administrador Del Sistema!", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 					return;
-					
 			}		
 		}
 	};
 	
 	
-	public void llamar_render(){
+	public void tabla(){
 		int x=110;
     	this.tabla.getColumnModel().getColumn(0 ).setMinWidth(x);	
     	this.tabla.getColumnModel().getColumn(1 ).setMinWidth(x*3); 
