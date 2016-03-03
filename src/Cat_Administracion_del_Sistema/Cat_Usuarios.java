@@ -220,6 +220,7 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[43], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[44], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[45], false),
+		new Obj_CheckBoxNode(Sub_Lista_de_Raya[46], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Lista_de_RayaVector = new Obj_NombreVector("Lista De Raya", Lista_de_Raya);
@@ -253,6 +254,7 @@ public class Cat_Usuarios extends JFrame{
 				new Obj_CheckBoxNode(Sub_Compras[15], false),
 				new Obj_CheckBoxNode(Sub_Compras[16], false),
 				new Obj_CheckBoxNode(Sub_Compras[17], false),
+				new Obj_CheckBoxNode(Sub_Compras[18], false),
 			};
 			@SuppressWarnings("rawtypes")
 			Vector ComprasVector = new Obj_NombreVector("Compras", Compras);
