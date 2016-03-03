@@ -65,6 +65,7 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.CLabel;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Menus;
@@ -176,10 +177,11 @@ public class Init_Login extends JFrame{
 	JPasswordField txtContrasenaNueva = new Componentes().textPassword(new JPasswordField(), "Contraseña Nueva", 50);
 	JPasswordField txtContrasenaConfirmar = new Componentes().textPassword(new JPasswordField(), "Confirmar Contraseña", 50);
 	
-	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/logout-icone-6625-16.png"));
+	JCButton btnSalir = new JCButton("Salir","logout-icone-6625-16.png");
+	JCButton btnCambiarContrasena = new JCButton("Cambiar Contraseña","signo-kgpg-icono-4248-16.png");
+	JCButton btnBuscar = new JCButton("","buscar.png"); 
+	
 	JButton btnAceptar = new JButton("Entrar");
-	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
-	JButton btnCambiarContrasena =new JButton ("Cambiar Contraseña", new ImageIcon("imagen/signo-kgpg-icono-4248-16.png"));
 	
 	JButton btnGuardarContrasena =new JButton ("Guardar Contraseña");
 	JButton btnValidarContrasena =new JButton ("Validar Contraseña",new ImageIcon ("imagen/Key.png"));
@@ -203,10 +205,10 @@ public class Init_Login extends JFrame{
         });
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-//        cont.setForeground(new java.awt.Color(255, 255, 255));
         cont.setBackground(new java.awt.Color(255, 255, 255));
 
 
+    	
         Resolucion(ancho, alto);
 		
 		// buscar usuario con F2
@@ -283,7 +285,7 @@ public class Init_Login extends JFrame{
 		
 //		Cat_Reloj_Sincronizado_Servidor reloj =new Cat_Reloj_Sincronizado_Servidor();
 		
-		if(ancho >= 1280){
+		if(ancho > 1024){
 			
 //			reloj.lblHora.setFont(new java.awt.Font("Algerian",0,70));
 //			panel.add(reloj.lblHora).setBounds(1030,230,400,100);
@@ -291,7 +293,7 @@ public class Init_Login extends JFrame{
 			panel.add(lblLogo).setBounds(920,0,400,218);
 			
 //			panel.add(btnFoto).setBounds(1010,380,100,95);
-			panel.add(fotolb).setBounds(1010,380,100,95);
+			panel.add(fotolb).setBounds(1080,380,100,95);
 			
 			int   x = 30  ,y = 40, z = 65;
 			int  zl = 120 ,w = 20;
@@ -372,19 +374,19 @@ public class Init_Login extends JFrame{
 			
 			
 			y=490;
-			panel.add(txtFolio).setBounds                (x+=60  ,y    ,220,w);
-			panel.add(txtContrasenaActual).setBounds     (x     ,y     ,220,w);
-			panel.add(txtUsuario).setBounds              (x     ,y+=30 ,220,w);
-			panel.add(txtContrasenaNueva).setBounds      (x     ,y     ,220,w);
-			panel.add(txtContrasena).setBounds           (x     ,y+=30 ,220,w);
-			panel.add(txtContrasenaConfirmar).setBounds  (x     ,y     ,220,w);
-			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,150,w);
-			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,150,w);
-			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,150,w);
-			panel.add(btnSalir).setBounds                (x+=150,y     ,75 ,w);
+			panel.add(txtFolio).setBounds                (x+=60  ,y    ,240,w);
+			panel.add(txtContrasenaActual).setBounds     (x     ,y     ,240,w);
+			panel.add(txtUsuario).setBounds              (x     ,y+=30 ,275,w);
+			panel.add(txtContrasenaNueva).setBounds      (x     ,y     ,275,w);
+			panel.add(txtContrasena).setBounds           (x     ,y+=30 ,275,w);
+			panel.add(txtContrasenaConfirmar).setBounds  (x     ,y     ,275,w);
+			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,175,w);
+			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,175,w);
+			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,175,w);
+			panel.add(btnSalir).setBounds                (x+=195,y     ,78 ,w);
 			
 			y=490;
-			panel.add(btnBuscar).setBounds               (x+70  ,y     ,30,w);
+			panel.add(btnBuscar).setBounds               (x+50  ,y     ,30,w);
 					
 			cont.add(panel);
 			this.setSize(ancho,alto);
@@ -398,7 +400,7 @@ public class Init_Login extends JFrame{
 //			reloj.lblHora.setFont(new java.awt.Font("Algerian",0,60));
 //			panel.add(reloj.lblHora).setBounds(813,200,400,100);
 //			panel.add(btnFoto).setBounds(710,300,100,95);
-			panel.add(fotolb).setBounds(710,300,100,95);
+			panel.add(fotolb).setBounds(780,300,100,95);
 			
 			int   x = 10  ,y = 10, z = 65;
 			int  zl = 120 ,w = 20;
@@ -479,19 +481,20 @@ public class Init_Login extends JFrame{
 			panel.add(lblcontrasena_Confirmar).setBounds (x     ,y     ,100,w);
 			
 			y=400;
-			panel.add(txtFolio).setBounds                (x+=60  ,y    ,220,w);
-			panel.add(txtContrasenaActual).setBounds     (x     ,y     ,220,w);
-			panel.add(txtUsuario).setBounds              (x     ,y+=30 ,220,w);
-			panel.add(txtContrasenaNueva).setBounds      (x     ,y     ,220,w);
-			panel.add(txtContrasena).setBounds           (x     ,y+=30 ,220,w);
-			panel.add(txtContrasenaConfirmar).setBounds  (x     ,y     ,220,w);
-			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,150,w);
-			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,150,w);
-			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,150,w);
-			panel.add(btnSalir).setBounds                (x+=150,y     ,75 ,w);
+			
+			panel.add(txtFolio).setBounds                (x+=60  ,y    ,240,w);
+			panel.add(txtContrasenaActual).setBounds     (x     ,y     ,240,w);
+			panel.add(txtUsuario).setBounds              (x     ,y+=30 ,275,w);
+			panel.add(txtContrasenaNueva).setBounds      (x     ,y     ,275,w);
+			panel.add(txtContrasena).setBounds           (x     ,y+=30 ,275,w);
+			panel.add(txtContrasenaConfirmar).setBounds  (x     ,y     ,275,w);
+			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,175,w);
+			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,175,w);
+			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,175,w);
+			panel.add(btnSalir).setBounds                (x+=195,y     ,78 ,w);
 			
 			y=400;
-			panel.add(btnBuscar).setBounds               (x+70  ,y     ,30 ,w);
+			panel.add(btnBuscar).setBounds               (x+50  ,y     ,30 ,w);
 			
 			cont.add(panel);
 			this.setSize(ancho,alto);

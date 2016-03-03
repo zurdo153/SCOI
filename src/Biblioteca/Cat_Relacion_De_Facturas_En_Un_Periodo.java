@@ -1,4 +1,4 @@
-package Cat_Contabilidad;
+package Biblioteca;
 
 import java.awt.Component;
 import java.awt.Container;
