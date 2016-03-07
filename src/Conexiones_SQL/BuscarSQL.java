@@ -8334,4 +8334,34 @@ public class BuscarSQL {
 		}
 		return baja;
 	}
+	
+	public boolean  existe_finiquito_vigente(int folio_finiquito){
+		
+		boolean existe = false;
+		
+		String query = "select top 1 case when status='V' then 'true' "
+				+ "			else 'false' end as finiquito_vigente "
+				+ "		from tb_finiquitos "
+				+ "		where folio_empleado_scoi = "+folio_finiquito
+				+ "		order by fecha_mov desc";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				existe=(Boolean.valueOf(rs.getString("finiquito_vigente")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return existe;
+	}
 }

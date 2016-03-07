@@ -36,7 +36,7 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 	public JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla <<<", 300, "String");
 
 	@SuppressWarnings("rawtypes")
-	public Class[] tipos(final JTable tb){
+	public Class[] tipos(){
 		Class[] tip = new Class[columnas];
 		
 		for(int i =0; i<columnas; i++){
@@ -64,7 +64,7 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 	
  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre de Proveedor", "Descripción"}){
 	 @SuppressWarnings("rawtypes")
-		Class[] types = tipos(tabla);
+		Class[] types = tipos();
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {

@@ -170,41 +170,6 @@ public class Cat_Finiquitos extends JFrame{
 		this.setLocationRelativeTo(null);
 	}
 	
-	
-	ActionListener opGenerar = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			
-			if(!txtFolioScoi.getText().equals("")){
-				
-				if(!txtFolioBms.getText().equals("")){
-					if(txtEmpleadoScoi.getText().equals(txtEmpleadoBms.getText())){
-						new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), establecimiento , txtFolioBms.getText()).setVisible(true);
-					}else{
-						JOptionPane.showMessageDialog(null, "Los Nombres De Los Empleados Seleccionados No Coinsiden,\n"
-															+ "Revise Haber Seleccionado Los Empleados Correctamente\nO "
-															+ "Verifique Que Esten Dados De Alta Con El Mismo Nombre", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-						return;
-					}
-				}else{
-					if(JOptionPane.showConfirmDialog(null, "Solo Se Ha Seleccionado El Empleado De La Tabla SCOI,\n¿desea Continuar Con El calculo Del Finiquitos?") == 0){
-						new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), establecimiento , txtFolioBms.getText()).setVisible(true);
-					}
-				}
-				
-			}else{
-				JOptionPane.showMessageDialog(null, "Seleccione Un Empleado Cuando Menos De La Tabla De SCOI", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-				return;
-			}
-		}
-	};
-	
-	ActionListener opLimpiar = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			txtFolioBms.setText("");
-			txtEmpleadoBms.setText("");
-		}
-	};
-	
 	public void seleccionEmpleado(final JTable tb, final String nomTabla){
 		tb.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent e) {
@@ -224,7 +189,71 @@ public class Cat_Finiquitos extends JFrame{
 			public void mouseClicked(MouseEvent e) {		}
 		});
 	}
+	
+	ActionListener opGenerar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			if(!txtFolioScoi.getText().equals("")){
+				
+				if(!txtFolioBms.getText().equals("")){
+					if(txtEmpleadoScoi.getText().equals(txtEmpleadoBms.getText())){
+						
+						finiquito_o_reporte();
 
+					}else{
+						JOptionPane.showMessageDialog(null, "Los Nombres De Los Empleados Seleccionados No Coinsiden,\n"
+															+ "Revise Haber Seleccionado Los Empleados Correctamente\nO "
+															+ "Verifique Que Esten Dados De Alta Con El Mismo Nombre", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					}
+				}else{
+					if(JOptionPane.showConfirmDialog(null, "Solo Se Ha Seleccionado El Empleado De La Tabla SCOI,\n¿desea Continuar Con El calculo Del Finiquitos?") == 0){
+						
+						finiquito_o_reporte();
+						
+					}
+				}
+				
+			}else{
+				JOptionPane.showMessageDialog(null, "Seleccione Un Empleado Cuando Menos De La Tabla De SCOI", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+		}
+	};
+	
+	public void finiquito_o_reporte(){
+		
+		if(!new BuscarSQL().existe_finiquito_vigente(Integer.valueOf(txtFolioScoi.getText().trim()))){
+			new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), establecimiento , txtFolioBms.getText()).setVisible(true);
+		}else{
+				reporte(Integer.valueOf(Integer.valueOf(txtFolioScoi.getText().trim())));
+				JOptionPane.showMessageDialog(null, "El Finiquito Del Empleado "+txtEmpleadoScoi.getText().toString().trim()+" Ya Fue Calculado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+		}
+	}
+	
+	
+	ActionListener opLimpiar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			txtFolioBms.setText("");
+			txtEmpleadoBms.setText("");
+		}
+	};
+	
+	public void reporte(int folio_empleado_scoi){
+		String basedatos="2.26";
+		String vista_previa_reporte="no";
+		int vista_previa_de_ventana=0;
+		String comando="";
+		String reporte = "";
+		
+		 comando = "exec sp_select_reporte_de_finiquito "+folio_empleado_scoi;
+		 reporte="Obj_Finiquito.jrxml";
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		 reporte="Obj_Registro_De_Finiquito.jrxml";
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		 
+	}
 	
 	public void render_filtro(final JTable tb){
 		tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10));
@@ -585,7 +614,7 @@ public class Cat_Finiquitos extends JFrame{
 
 			if(finiquito.guardar(cmbStatus.getSelectedItem().toString(),txaObservaciones.getText().toUpperCase().trim())){
 				
-				reporte();
+				reporte(Integer.valueOf(txtFolioEmpleado.getText().trim()));
 				dispose();
 				
 				llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
@@ -601,7 +630,7 @@ public class Cat_Finiquitos extends JFrame{
 	ActionListener opReImprimir = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			reporte();
+			reporte(Integer.valueOf(txtFolioEmpleado.getText().trim()));
 			dispose();
 			
 			llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
@@ -609,21 +638,6 @@ public class Cat_Finiquitos extends JFrame{
 		}
 	};
 	
-	public void reporte(){
-		String basedatos="2.26";
-		String vista_previa_reporte="no";
-		int vista_previa_de_ventana=0;
-		String comando="";
-		String reporte = "";
-		
-		 comando = "exec sp_select_reporte_de_finiquito";
-		 reporte="Obj_Finiquito.jrxml";
-		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-		 reporte="Obj_Registro_De_Finiquito.jrxml";
-		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-		 
-	}
-		
 		public Date cargar_fechas_de_baja(int dias){
 			Date date1 = null;
 					  try {
@@ -678,6 +692,7 @@ public class Cat_Finiquitos extends JFrame{
 			txtTotalPercepcionesSCOI.setText(df.format(
 												 Double.valueOf(txtSueldoSCOI.getText().toString().trim())
 												 +Double.valueOf(txtAguinaldoSCOI.getText().toString().trim()) 
+												  +Double.valueOf(txtVacacionesPendientesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().toString().trim())
 												 +Double.valueOf(txtVacacionesSCOI.getText().toString().trim()) 
 												 +Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim()) 
 											 ) +"" );
@@ -702,6 +717,7 @@ public class Cat_Finiquitos extends JFrame{
 			txtTotalPercepcionesBnns.setText(df.format(
 												 Double.valueOf(txtSueldoBnns.getText().toString().trim())
 												 +Double.valueOf(txtAguinaldoBnns.getText().toString().trim()) 
+												 +Double.valueOf(txtVacacionesPendienteBnns.getText().toString().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().toString().trim())
 												 +Double.valueOf(txtVacacionesBnns.getText().toString().trim()) 
 												 +Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim()) 
 											 ) +"" );
@@ -800,6 +816,21 @@ public class Cat_Finiquitos extends JFrame{
 							)
 					);
 			
+			txtPrimaVacacionalBnns.setText(df.format(
+					 (Double.valueOf(txtVacacionesPendienteBnns.getText().toString().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().toString().trim())
+					 + Double.valueOf(txtVacacionesBnns.getText().toString().trim().equals("")?"0":txtVacacionesBnns.getText().toString().trim()))*0.25
+				 ) +"" );
+			
+			txtPrimaVacacionalSCOI.setText(df.format(
+					 (Double.valueOf(txtVacacionesPendientesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().toString().trim())
+							 + Double.valueOf(txtVacacionesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesSCOI.getText().toString().trim()))*0.25
+				 ) +"" );
+			
+			txtPrimaVacacionalDiferencia.setText(df.format(
+					 Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim().equals("")?"0":txtPrimaVacacionalSCOI.getText().toString().trim())
+							 - Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim().equals("")?"0":txtPrimaVacacionalBnns.getText().toString().trim())
+				 ) +"" );
+			
 			
 			txtGratificacionBnns.setText(
 					 df.format(
@@ -810,24 +841,32 @@ public class Cat_Finiquitos extends JFrame{
 								 +Double.valueOf(txtPrimaVacacionalDiferencia.getText().toString().trim()) 
 							 ) +"" );
 			
-			
-			txtTotalPercepcionesDiferencia.setText(df.format(
-													 Double.valueOf(txtSueldoDiferencia.getText().toString().trim())
-													 +Double.valueOf(txtAguinaldoDiferencia.getText().toString().trim()) 
-													 +Double.valueOf(txtVacacionesPendientesDiferencia.getText().toString().trim()) 
-													 +Double.valueOf(txtVacacionesDiferencia.getText().toString().trim()) 
-													 +Double.valueOf(txtPrimaVacacionalDiferencia.getText().toString().trim()) 
-												 ) +"" );
-			
+			txtTotalPercepcionesSCOI.setText(df.format(
+					 Double.valueOf(txtSueldoSCOI.getText().toString().trim())
+					 +Double.valueOf(txtAguinaldoSCOI.getText().toString().trim()) 
+					  +Double.valueOf(txtVacacionesPendientesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().toString().trim())
+					 +Double.valueOf(txtVacacionesSCOI.getText().toString().trim()) 
+					 +Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim()) 
+				 ) +"" );
+
+
 			txtTotalPercepcionesBnns.setText(df.format(
 											 Double.valueOf(txtSueldoBnns.getText().toString().trim())
 											 +Double.valueOf(txtAguinaldoBnns.getText().toString().trim()) 
-											 +Double.valueOf(txtVacacionesPendientesDiferencia.getText().toString().trim().equals("")?"0":txtVacacionesPendientesDiferencia.getText().toString().trim()) 
+											 +Double.valueOf(txtVacacionesPendienteBnns.getText().toString().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().toString().trim()) 
 											 +Double.valueOf(txtVacacionesBnns.getText().toString().trim()) 
 											 +Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim()) 
 											 +Double.valueOf(txtGratificacionBnns.getText().toString().trim()) 
 											 +Double.valueOf(txtTiempoExtraBnns.getText().toString().trim().equals("")?"0":txtTiempoExtraBnns.getText().toString().trim()) 
 										 ) +"" );
+			
+			txtTotalPercepcionesDiferencia.setText(df.format(
+					 Double.valueOf(txtSueldoDiferencia.getText().toString().trim())
+					 +Double.valueOf(txtAguinaldoDiferencia.getText().toString().trim()) 
+					 +Double.valueOf(txtVacacionesPendientesDiferencia.getText().toString().trim()) 
+					 +Double.valueOf(txtVacacionesDiferencia.getText().toString().trim()) 
+					 +Double.valueOf(txtPrimaVacacionalDiferencia.getText().toString().trim()) 
+				 ) +"" );
 			
 			
 			txtTotalAPagarBnns.setText(df.format(

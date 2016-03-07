@@ -918,8 +918,9 @@ public class Submenusbtns{
 			Container cont = getContentPane();
 			JLayeredPane campo = new JLayeredPane();
 			
+			int checkbox=-1;
 			@SuppressWarnings("rawtypes")
-			public Class[] tipos(final JTable tb){
+			public Class[] tipos(int columnas){
 				Class[] tip = new Class[columnas];
 				
 				for(int i =0; i<columnas; i++){
@@ -933,9 +934,21 @@ public class Submenusbtns{
 				return tip;
 			}
 			
+			public void init_tabla(){
+		    	this.tabla.getColumnModel().getColumn(0).setMinWidth(30);		
+		    	this.tabla.getColumnModel().getColumn(1).setMinWidth(300);
+		    	this.tabla.getColumnModel().getColumn(2).setMinWidth(410);
+		    	
+		    	int columnas = modelo.getColumnCount();
+		    	
+				String comando="exec sp_select_usuarios_scoi";
+				String basedatos="26",pintar="si";
+				new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+		    }
+			
 		 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre De Colaborador", "Establecimiento"}){
 			 @SuppressWarnings("rawtypes")
-				Class[] types = tipos(tabla);
+				Class[] types = tipos(this.getColumnCount());
 				
 				@SuppressWarnings({ "unchecked", "rawtypes" })
 				public Class getColumnClass(int columnIndex) {
@@ -943,12 +956,8 @@ public class Submenusbtns{
 		     }
 				
 		     public boolean isCellEditable(int fila, int columna){
-		    	 switch(columna){
-		    	 	case 0 : return true; 
-		    	 	case 1 : return false; 
-		    	 	case 2 : return false; 
-		    	 }
-					return false;
+		    	 if(columna ==checkbox)
+						return true; return false;
 				}
 		    };
 		    
@@ -965,15 +974,13 @@ public class Submenusbtns{
 			this.setTitle("Filtro de Empleados");
 			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Empleado"));
 			
-			campo.add(scroll_tabla).setBounds(15,42,450,565);
-			
 			campo.add(txtNombre_Completo2).setBounds(15,20,300,20);
-			
-			agregar(tabla);
+			campo.add(scroll_tabla).setBounds(15,42,450,565);
 			
 			cont.add(campo);
 			
 			init_tabla();
+			agregar(tabla);
 			
 			txtNombre_Completo2.addKeyListener(op_filtro);
 			
@@ -1018,6 +1025,7 @@ public class Submenusbtns{
 			 
 			
 		}
+		
 		private void agregar(final JTable tbl) {
 		    tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {
@@ -1040,18 +1048,6 @@ public class Submenusbtns{
 			public void keyTyped(KeyEvent arg0)   {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
-		
-		int columnas = 0,checkbox=-1;
-		public void init_tabla(){
-	    	this.tabla.getColumnModel().getColumn(0).setMinWidth(30);		
-	    	this.tabla.getColumnModel().getColumn(1).setMinWidth(300);
-	    	this.tabla.getColumnModel().getColumn(2).setMinWidth(410);
-	    	
-	    	columnas = 3;
-			String comando="exec sp_select_usuarios_scoi";
-			String basedatos="26",pintar="si";
-			new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
-	    }
 		
 		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
 			@SuppressWarnings("static-access")
