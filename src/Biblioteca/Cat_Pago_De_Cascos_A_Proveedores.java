@@ -35,7 +35,21 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 	JLayeredPane panel = new JLayeredPane();
 	public JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla <<<", 300, "String");
 
-///////////////////////////////////////////////////////////	
+	@SuppressWarnings("rawtypes")
+	public Class[] tipos(){
+		Class[] tip = new Class[columnas];
+		
+		for(int i =0; i<columnas; i++){
+			if(i==checkbox){
+				tip[i]=java.lang.Boolean.class;
+			}else{
+				tip[i]=java.lang.Object.class;
+			}
+			
+		}
+		return tip;
+	}
+	
 	int columnas = 3,checkbox=-1;
 	public void init_tabla(){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(30);		
@@ -47,13 +61,10 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
-  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre de Proveedor", "Descripción"}){
+	
+ public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre de Proveedor", "Descripción"}){
 	 @SuppressWarnings("rawtypes")
-		Class[] types = new Class[]{
-				java.lang.Object.class,
-				java.lang.Object.class,
-				java.lang.Object.class
-		};
+		Class[] types = tipos();
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
