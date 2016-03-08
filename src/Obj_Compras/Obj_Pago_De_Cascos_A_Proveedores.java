@@ -3,6 +3,7 @@ package Obj_Compras;
 import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Pago_De_Cascos_A_Proveedores {
 	public String  cod_prv="";
@@ -10,8 +11,27 @@ public class Obj_Pago_De_Cascos_A_Proveedores {
 	public String  nombre_proveedor="";
 	public String  nombre_proveedor_recibe="";
 	public String  folio_factura="";
+	public String  folio_recepcion="";
 	public boolean existe=false;
 	public int cantidad_cascos=0;
+	public int cantidad_cascos_a_pagar=0;
+    Object[][] tabla_obj =null;
+
+	public int getCantidad_cascos_a_pagar() {
+		return cantidad_cascos_a_pagar;
+	}
+
+	public void setCantidad_cascos_a_pagar(int cantidad_cascos_a_pagar) {
+		this.cantidad_cascos_a_pagar = cantidad_cascos_a_pagar;
+	}
+
+	public String getFolio_recepcion() {
+		return folio_recepcion;
+	}
+
+	public void setFolio_recepcion(String folio_recepcion) {
+		this.folio_recepcion = folio_recepcion;
+	}
 
 	public String getCod_prv() {
 		return cod_prv;
@@ -69,6 +89,14 @@ public class Obj_Pago_De_Cascos_A_Proveedores {
 		this.cantidad_cascos = cantidad_cascos;
 	}
 
+	public Object[][] getTabla_obj() {
+		return tabla_obj;
+	}
+
+	public void setTabla_obj(Object[][] tabla_obj) {
+		this.tabla_obj = tabla_obj;
+	}
+
 	public Obj_Pago_De_Cascos_A_Proveedores(){
 	}
 
@@ -80,12 +108,12 @@ public class Obj_Pago_De_Cascos_A_Proveedores {
 		}
 		return null; 
 	}
-//	
-//	public boolean guardar(){
-//		return new GuardarSQL().Guardar_Productos(this); 
-//	}
-//	
-//	public String[] ComboUnidadDeMedida(){
+	
+	public boolean guardar(){
+		return new GuardarSQL().Guardar_Pago_cascos(this); 
+	}
+
+	//	public String[] ComboUnidadDeMedida(){
 //		try {
 //			return new Cargar_Combo().unidadDeMedida();
 //		} catch (SQLException e) {

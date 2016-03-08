@@ -9,9 +9,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -32,7 +29,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Principal.Componentes;
 import Obj_Principal.Obj_Filtro_Dinamico;
-import Obj_Renders.tablaRenderer;
+import Obj_Principal.Obj_Refrescar;
 
 @SuppressWarnings("serial")
 public class Cat_Puestos extends JFrame{
@@ -41,16 +38,37 @@ public class Cat_Puestos extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	Connexion con = new Connexion();
+	int columnas = 3,checkbox=-1;
+	public void init_tabla(){
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(60);	
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(450);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(153);
+    	
+		String comando="select folio,nombre,abreviatura from tb_puesto order by nombre";
+		String basedatos="26",pintar="si";
+		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+    }
 	
-	DefaultTableModel modelo       = new DefaultTableModel(0,3)	{
-		public boolean isCellEditable(int fila, int columna){
-			if(columna < 0)
-				return true;
-			return false;
-		}
-	};
-	JTable tabla = new JTable(modelo);
-	JScrollPane panelScroll = new JScrollPane(tabla);
+	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Puesto","Abreviatura"}){
+		 @SuppressWarnings("rawtypes")
+			Class[] types = new Class[]{
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+	         return types[columnIndex];
+	     }
+			public boolean isCellEditable(int fila, int columna){
+					return false;
+			}
+	    };
+	
+	    JTable tabla = new JTable(modelo);
+		public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
 	JTextField txtFolioFiltro = new JTextField();
 	JTextField txtPuestoFiltro = new JTextField();
@@ -105,8 +123,9 @@ public class Cat_Puestos extends JFrame{
 		panel.add(txtFolioFiltro).setBounds            (x     ,y+=35,60 ,l);
 		panel.add(txtPuestoFiltro).setBounds           (x+60  ,y    ,350,l);
 		
-		panel.add(getPanelTabla()).setBounds           (x     ,y+20 ,w*7,w*4);
-		
+		panel.add(scroll_tabla).setBounds           (x     ,y+20 ,w*7,w*4);
+		init_tabla();
+		agregar(tabla);
 		chStatus.setEnabled(false);
 		txtPuesto.setEditable(false);
 		txtAbreviatura.setEditable(false);
@@ -125,7 +144,6 @@ public class Cat_Puestos extends JFrame{
 		txtFolioFiltro.addKeyListener(opFiltroFolio);
 		txtPuestoFiltro.addKeyListener(opFiltroNombre);
 		cont.add(panel);
-		agregar(tabla);
 		this.setSize(740,570);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -138,25 +156,6 @@ public class Cat_Puestos extends JFrame{
         
 	
 	}
-	
-	private JScrollPane getPanelTabla()	{	
-		this.tabla.getTableHeader().setReorderingAllowed(false) ;
-		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		
-		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
-		tabla.getColumnModel().getColumn(0).setMinWidth(60);
-		tabla.getColumnModel().getColumn(0).setMaxWidth(60);
-		tabla.getColumnModel().getColumn(1).setHeaderValue("Puesto");
-		tabla.getColumnModel().getColumn(1).setMinWidth(450);
-		tabla.getColumnModel().getColumn(1).setMaxWidth(550);
-		tabla.getColumnModel().getColumn(2).setHeaderValue("Abreviatura");
-		tabla.getColumnModel().getColumn(2).setMinWidth(170);
-		tabla.getColumnModel().getColumn(2).setMaxWidth(250);
-		
-						llenar_tabla ();
-						render_tabla();
-		 JScrollPane scrol = new JScrollPane(tabla);
-	    return scrol; }
 	
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -173,36 +172,6 @@ public class Cat_Puestos extends JFrame{
 	        }
         });
     }
-	
-	public void render_tabla(){
-		//		tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
-			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-	}
-	
-	
- public void llenar_tabla (){
- while(tabla.getRowCount()>0){
-	   modelo.removeRow(0);
-    }
- 
-  	 Statement s;
-	 ResultSet rs;
-	try { s = con.conexion().createStatement();
-		rs = s.executeQuery("select tb_puesto.folio as [Folio],"+
-				 "  tb_puesto.nombre as [Nombre], tb_puesto.abreviatura as [Abreviatura] "+
-				 "  from tb_puesto where status=1  order by folio");
-		while (rs.next())
-		{  String [] fila = new String[3];
-		             fila[0] = rs.getString(1).trim();
-		             fila[1] = rs.getString(2).trim();
-		             fila[2] = rs.getString(3).trim(); 
-		   modelo.addRow(fila);	}	
-	 } catch (SQLException e1) {	e1.printStackTrace(); }
-  }
- 
- 
 	
 ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -221,7 +190,7 @@ ActionListener guardar = new ActionListener(){
 							puesto.setAbreviatura(txtAbreviatura.getText());
 							puesto.setStatus(chStatus.isSelected());
 							puesto.actualizar(Integer.parseInt(txtFolio.getText()));
-							llenar_tabla ();
+							init_tabla();
 							panelLimpiar();
 							panelEnabledFalse();
 							txtFolio.setEditable(true);
@@ -241,7 +210,7 @@ ActionListener guardar = new ActionListener(){
 						puesto.setStatus(chStatus.isSelected());
 						if(puesto.guardar()){
 						
-						llenar_tabla ();
+						init_tabla();
 						panelLimpiar();
 						panelEnabledFalse();
 						txtFolio.setEditable(true);

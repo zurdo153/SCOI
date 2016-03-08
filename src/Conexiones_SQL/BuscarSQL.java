@@ -8303,7 +8303,6 @@ public class BuscarSQL {
 			if(stmt!=null){try {
 				stmt.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}}
 		}
@@ -8339,7 +8338,6 @@ public class BuscarSQL {
 	public Obj_Pago_De_Cascos_A_Proveedores Pagos_cascos(String Recepcion) throws SQLException{
 		Obj_Pago_De_Cascos_A_Proveedores proveedores = new Obj_Pago_De_Cascos_A_Proveedores();
 		String query = "exec sp_IZAGAR_select_proveedor_existe_recepcion '"+Recepcion+"'";
-		
 		Statement stmt = null;
 		try {
 			stmt = con.conexion_IZAGAR().createStatement();
