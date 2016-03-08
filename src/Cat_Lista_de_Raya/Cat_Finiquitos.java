@@ -674,10 +674,10 @@ public class Cat_Finiquitos extends JFrame{
 		public void recalcular_finiquito(){
 			
 //			scoi--------------------------------------------------------------------------------------------
-			txtSueldoSCOI.setText(df.format(
+			txtSueldoSCOI.setText(
 					 Double.valueOf(txtDiasCuotaDiarioSCOI.getText().toString().trim())
 					 * Double.valueOf(txtDiasPendienteDePagoSemanaSCOI.getText().toString().trim().equals("")?"0":txtDiasPendienteDePagoSemanaSCOI.getText().toString().trim()) 
-				 ) +"" );
+				  +"" );
 			
 //			txtSueldoSCOI.setText(Math.rint(Double.valueOf(df.format(Double.valueOf(txtDiasCuotaDiarioSCOI.getText().toString().trim())
 //																	* Double.valueOf(txtDiasPendienteDePagoSemanaSCOI.getText().toString().trim().equals("")?"0":txtDiasPendienteDePagoSemanaSCOI.getText().toString().trim()) 
@@ -689,13 +689,13 @@ public class Cat_Finiquitos extends JFrame{
 //			txtVacacionesSCOI.setText("");
 //			txtPrimaVacacionalSCOI.setText("");
 			
-			txtTotalPercepcionesSCOI.setText(df.format(
+			txtTotalPercepcionesSCOI.setText(
 												 Double.valueOf(txtSueldoSCOI.getText().toString().trim())
 												 +Double.valueOf(txtAguinaldoSCOI.getText().toString().trim()) 
 												  +Double.valueOf(txtVacacionesPendientesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().toString().trim())
 												 +Double.valueOf(txtVacacionesSCOI.getText().toString().trim()) 
 												 +Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim()) 
-											 ) +"" );
+											  +"" );
 			
 			
 //			bms--------------------------------------------------------------------------------------------
@@ -705,22 +705,22 @@ public class Cat_Finiquitos extends JFrame{
 //																		  )
 //																*100)/100 +"");
 			
-			txtSueldoBnns.setText(df.format(
+			txtSueldoBnns.setText(
 					 Double.valueOf(txtDiasCuotaDiarioBnns.getText().toString().trim())
 					 * Double.valueOf(txtDiasPendienteDePagoSemanaBnns.getText().toString().trim().equals("")?"0":txtDiasPendienteDePagoSemanaBnns.getText().toString().trim()) 
-				 ) +"" );
+				  +"" );
 			
 //			txtAguinaldoBnns.setText("");
 //			txtVacacionesBnns.setText("");
 //			txtPrimaVacacionalBnns.setText("");
 			
-			txtTotalPercepcionesBnns.setText(df.format(
+			txtTotalPercepcionesBnns.setText(
 												 Double.valueOf(txtSueldoBnns.getText().toString().trim())
 												 +Double.valueOf(txtAguinaldoBnns.getText().toString().trim()) 
 												 +Double.valueOf(txtVacacionesPendienteBnns.getText().toString().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().toString().trim())
 												 +Double.valueOf(txtVacacionesBnns.getText().toString().trim()) 
 												 +Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim()) 
-											 ) +"" );
+											  +"" );
 			
 //			txtTotalPercepcionesSCOI.setText("");
 			
@@ -758,15 +758,15 @@ public class Cat_Finiquitos extends JFrame{
 
 //			scoi
 			txtDiasTrabajadosSCOI.setText(finiquito.getDias_trabajados_SCOI()+"");
-			txtaniosTrabajadosSCOI.setText(df.format(finiquito.getAnios_trabajados_SCOI()));
+			txtaniosTrabajadosSCOI.setText(df.format(finiquito.getAnios_trabajados_SCOI())+"");
 			txtDiasPendienteDePagoAguinaldoSCOI.setText(finiquito.getDias_pendientes_de_pago_de_aguinaldo_SCOI()+"");
 			txtDiasPendienteDePagoSemanaSCOI.setText(finiquito.getDias_pendientes_de_pago_de_semana_SCOI()+"");
 			txtDiasCuotaDiarioSCOI.setText(finiquito.getCuota_diario_SCOI()+"");
 			
 			txtSueldoSCOI.setText(finiquito.getSueldo_SCOI()+"");
-			txtAguinaldoSCOI.setText(df.format(Math.round(finiquito.getAguinaldo_SCOI())));
-			txtVacacionesSCOI.setText(df.format(Math.round(finiquito.getVacaciones_SCOI())));
-			txtPrimaVacacionalSCOI.setText(df.format(finiquito.getPrima_vacacional_SCOI()));
+			txtAguinaldoSCOI.setText(finiquito.getAguinaldo_SCOI()+"");
+			txtVacacionesSCOI.setText(finiquito.getVacaciones_SCOI()+"");
+			txtPrimaVacacionalSCOI.setText(finiquito.getPrima_vacacional_SCOI()+"");
 			txtTotalPercepcionesSCOI.setText(finiquito.getPercepciones_SCOI()+"");
 			
 			if(!folio_empleado_bms.equals("")){
@@ -782,7 +782,7 @@ public class Cat_Finiquitos extends JFrame{
 	
 //				bms
 				txtDiasTrabajadosBnns.setText(finiquito.getDias_trabajados_BMS()+"");
-				txtaniosTrabajadosBnns.setText(df.format(finiquito.getAnios_trabajados_BMS()));
+				txtaniosTrabajadosBnns.setText(df.format(finiquito.getAnios_trabajados_BMS())+"");
 				txtDiasPendienteDePagoAguinaldoBnns.setText(finiquito.getDias_pendientes_de_pago_de_aguinaldo_BMS()+"");
 				txtDiasPendienteDePagoSemanaBnns.setText(finiquito.getDias_pendientes_de_pago_de_semana_BMS()+"");
 				txtDiasCuotaDiarioBnns.setText(finiquito.getCuota_diario_BMS()+"");
@@ -790,9 +790,9 @@ public class Cat_Finiquitos extends JFrame{
 				txtSDIBnns.setText(finiquito.getSDI_BMS()+"");
 				
 				txtSueldoBnns.setText(finiquito.getSueldo_BMS()+"");
-				txtAguinaldoBnns.setText(df.format(Math.round(finiquito.getAguinaldo_BMS())));
-				txtVacacionesBnns.setText(df.format(Math.round(finiquito.getVacaciones_BMS())));
-				txtPrimaVacacionalBnns.setText(df.format(finiquito.getPrima_vacacional_BMS()));
+				txtAguinaldoBnns.setText(finiquito.getAguinaldo_BMS()+"");
+				txtVacacionesBnns.setText(finiquito.getVacaciones_BMS()+"");
+				txtPrimaVacacionalBnns.setText(finiquito.getPrima_vacacional_BMS()+"");
 //				txtTotalPercepcionesBnns.setText(finiquito.getPercepciones_BMS()+"");
 			
 			   txtPrestamoBnns.setText(finiquito.getPretamo()+"");
@@ -804,79 +804,96 @@ public class Cat_Finiquitos extends JFrame{
 		}
 		
 		public void diferencias(){
-			txtSueldoDiferencia.setText( df.format(Double.valueOf(txtSueldoSCOI.getText().toString().trim())-Double.valueOf(txtSueldoBnns.getText().toString().trim()) ) +"");			
-			txtAguinaldoDiferencia.setText( df.format(Double.valueOf(txtAguinaldoSCOI.getText().toString().trim())-Double.valueOf(txtAguinaldoBnns.getText().toString().trim()) ) +"");		
-			txtVacacionesDiferencia.setText( df.format(Double.valueOf(txtVacacionesSCOI.getText().toString().trim())-Double.valueOf(txtVacacionesBnns.getText().toString().trim()) ) +"");
-			txtPrimaVacacionalDiferencia.setText( df.format(Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim())-Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim()) ) +"");
+			txtSueldoDiferencia.setText(df.format( Double.valueOf(txtSueldoSCOI.getText().toString().trim())-Double.valueOf(txtSueldoBnns.getText().toString().trim()) ) +"");			
+			txtAguinaldoDiferencia.setText(df.format( Double.valueOf(txtAguinaldoSCOI.getText().toString().trim())-Double.valueOf(txtAguinaldoBnns.getText().toString().trim()) ) +"");		
+			txtVacacionesDiferencia.setText(df.format( Double.valueOf(txtVacacionesSCOI.getText().toString().trim())-Double.valueOf(txtVacacionesBnns.getText().toString().trim()) ) +"");
+			txtPrimaVacacionalDiferencia.setText(df.format( Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim())-Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim()) ) +"");
 			
 			txtVacacionesPendientesDiferencia.setText(
+														df.format(
+																	Double.valueOf(txtVacacionesPendientesSCOI.getText().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().trim())
+																	- Double.valueOf(txtVacacionesPendienteBnns.getText().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().trim())
+																)
+													+"");
+			
+			txtPrimaVacacionalBnns.setText(
+											df.format(
+														 (Double.valueOf(txtVacacionesPendienteBnns.getText().toString().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().toString().trim())
+														 + Double.valueOf(txtVacacionesBnns.getText().toString().trim().equals("")?"0":txtVacacionesBnns.getText().toString().trim()))*0.25
+													) 
+									+"" );
+			
+			txtPrimaVacacionalSCOI.setText(
 					df.format(
-								Double.valueOf(txtVacacionesPendientesSCOI.getText().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().trim())
-								- Double.valueOf(txtVacacionesPendienteBnns.getText().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().trim())
-							)
-					);
+								(Double.valueOf(txtVacacionesPendientesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().toString().trim())
+								+ Double.valueOf(txtVacacionesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesSCOI.getText().toString().trim()))*0.25
+							) 
+				 
+				 
+				 +"" );
 			
-			txtPrimaVacacionalBnns.setText(df.format(
-					 (Double.valueOf(txtVacacionesPendienteBnns.getText().toString().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().toString().trim())
-					 + Double.valueOf(txtVacacionesBnns.getText().toString().trim().equals("")?"0":txtVacacionesBnns.getText().toString().trim()))*0.25
-				 ) +"" );
-			
-			txtPrimaVacacionalSCOI.setText(df.format(
-					 (Double.valueOf(txtVacacionesPendientesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().toString().trim())
-							 + Double.valueOf(txtVacacionesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesSCOI.getText().toString().trim()))*0.25
-				 ) +"" );
-			
-			txtPrimaVacacionalDiferencia.setText(df.format(
-					 Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim().equals("")?"0":txtPrimaVacacionalSCOI.getText().toString().trim())
-							 - Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim().equals("")?"0":txtPrimaVacacionalBnns.getText().toString().trim())
-				 ) +"" );
+			txtPrimaVacacionalDiferencia.setText(
+													df.format(
+																Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim().equals("")?"0":txtPrimaVacacionalSCOI.getText().toString().trim())
+																- Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim().equals("")?"0":txtPrimaVacacionalBnns.getText().toString().trim())
+															) 
+												+"" );
 			
 			
 			txtGratificacionBnns.setText(
-					 df.format(
-								 Double.valueOf(txtSueldoDiferencia.getText().toString().trim())
-								 +Double.valueOf(txtAguinaldoDiferencia.getText().toString().trim()) 
-								 +Double.valueOf(txtVacacionesPendientesDiferencia.getText().toString().trim()) 
-								 +Double.valueOf(txtVacacionesDiferencia.getText().toString().trim()) 
-								 +Double.valueOf(txtPrimaVacacionalDiferencia.getText().toString().trim()) 
-							 ) +"" );
+										 df.format(
+													 Double.valueOf(txtSueldoDiferencia.getText().toString().trim())
+													 +Double.valueOf(txtAguinaldoDiferencia.getText().toString().trim()) 
+													 +Double.valueOf(txtVacacionesPendientesDiferencia.getText().toString().trim()) 
+													 +Double.valueOf(txtVacacionesDiferencia.getText().toString().trim()) 
+													 +Double.valueOf(txtPrimaVacacionalDiferencia.getText().toString().trim()) 
+												 )
+										+"" );
 			
-			txtTotalPercepcionesSCOI.setText(df.format(
-					 Double.valueOf(txtSueldoSCOI.getText().toString().trim())
-					 +Double.valueOf(txtAguinaldoSCOI.getText().toString().trim()) 
-					  +Double.valueOf(txtVacacionesPendientesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().toString().trim())
-					 +Double.valueOf(txtVacacionesSCOI.getText().toString().trim()) 
-					 +Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim()) 
-				 ) +"" );
+			txtTotalPercepcionesSCOI.setText(
+											df.format(
+														 Double.valueOf(txtSueldoSCOI.getText().toString().trim())
+														 +Double.valueOf(txtAguinaldoSCOI.getText().toString().trim()) 
+														 +Double.valueOf(txtVacacionesPendientesSCOI.getText().toString().trim().equals("")?"0":txtVacacionesPendientesSCOI.getText().toString().trim())
+														 +Double.valueOf(txtVacacionesSCOI.getText().toString().trim()) 
+														 +Double.valueOf(txtPrimaVacacionalSCOI.getText().toString().trim()) 
+													) 
+				 						+"" );
 
 
-			txtTotalPercepcionesBnns.setText(df.format(
-											 Double.valueOf(txtSueldoBnns.getText().toString().trim())
-											 +Double.valueOf(txtAguinaldoBnns.getText().toString().trim()) 
-											 +Double.valueOf(txtVacacionesPendienteBnns.getText().toString().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().toString().trim()) 
-											 +Double.valueOf(txtVacacionesBnns.getText().toString().trim()) 
-											 +Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim()) 
-											 +Double.valueOf(txtGratificacionBnns.getText().toString().trim()) 
-											 +Double.valueOf(txtTiempoExtraBnns.getText().toString().trim().equals("")?"0":txtTiempoExtraBnns.getText().toString().trim()) 
-										 ) +"" );
+			txtTotalPercepcionesBnns.setText(
+											df.format(
+														 Double.valueOf(txtSueldoBnns.getText().toString().trim())
+														 +Double.valueOf(txtAguinaldoBnns.getText().toString().trim()) 
+														 +Double.valueOf(txtVacacionesPendienteBnns.getText().toString().trim().equals("")?"0":txtVacacionesPendienteBnns.getText().toString().trim()) 
+														 +Double.valueOf(txtVacacionesBnns.getText().toString().trim()) 
+														 +Double.valueOf(txtPrimaVacacionalBnns.getText().toString().trim()) 
+														 +Double.valueOf(txtGratificacionBnns.getText().toString().trim()) 
+														 +Double.valueOf(txtTiempoExtraBnns.getText().toString().trim().equals("")?"0":txtTiempoExtraBnns.getText().toString().trim()) 
+													 ) 
+											 +"" );
 			
-			txtTotalPercepcionesDiferencia.setText(df.format(
-					 Double.valueOf(txtSueldoDiferencia.getText().toString().trim())
-					 +Double.valueOf(txtAguinaldoDiferencia.getText().toString().trim()) 
-					 +Double.valueOf(txtVacacionesPendientesDiferencia.getText().toString().trim()) 
-					 +Double.valueOf(txtVacacionesDiferencia.getText().toString().trim()) 
-					 +Double.valueOf(txtPrimaVacacionalDiferencia.getText().toString().trim()) 
-				 ) +"" );
+			txtTotalPercepcionesDiferencia.setText(
+													df.format(
+																 Double.valueOf(txtSueldoDiferencia.getText().toString().trim())
+																 +Double.valueOf(txtAguinaldoDiferencia.getText().toString().trim()) 
+																 +Double.valueOf(txtVacacionesPendientesDiferencia.getText().toString().trim()) 
+																 +Double.valueOf(txtVacacionesDiferencia.getText().toString().trim()) 
+																 +Double.valueOf(txtPrimaVacacionalDiferencia.getText().toString().trim()) 
+															) 
+												+"" );
 			
 			
-			txtTotalAPagarBnns.setText(df.format(
-											 Double.valueOf(txtTotalPercepcionesBnns.getText().toString().trim())
-											 -Double.valueOf(txtPrestamoBnns.getText().toString().trim()) 
-											 -Double.valueOf(txtCortesBnns.getText().toString().trim()) 
-											 -Double.valueOf(txtInfonavitBnns.getText().toString().trim()) 
-											 -Double.valueOf(txtFuenteSodasBnns.getText().toString().trim()) 
-											 -Double.valueOf(txtOtrasDeduccionesBnns.getText().toString().trim().equals("")?"0":txtOtrasDeduccionesBnns.getText().toString().trim()) 
-										 ) +"" );
+			txtTotalAPagarBnns.setText(
+										df.format(
+													 Double.valueOf(txtTotalPercepcionesBnns.getText().toString().trim())
+													 -Double.valueOf(txtPrestamoBnns.getText().toString().trim()) 
+													 -Double.valueOf(txtCortesBnns.getText().toString().trim()) 
+													 -Double.valueOf(txtInfonavitBnns.getText().toString().trim()) 
+													 -Double.valueOf(txtFuenteSodasBnns.getText().toString().trim()) 
+													 -Double.valueOf(txtOtrasDeduccionesBnns.getText().toString().trim().equals("")?"0":txtOtrasDeduccionesBnns.getText().toString().trim()) 
+												) 
+									 +"" );
 		}
 	}
 }
