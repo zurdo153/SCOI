@@ -8287,10 +8287,10 @@ public class BuscarSQL {
 						rs= stmt.executeQuery(query);
 						
 						   while(rs.next()){
-							   finiquito.setPretamo(rs.getInt("prestamo"));
-							   finiquito.setCortes(rs.getInt("cortes"));
-							   finiquito.setInfonavit(rs.getInt("infonavit"));
-							   finiquito.setFuente_sodas(rs.getInt("fuente_de_sodas"));
+							   finiquito.setPretamo(rs.getDouble("prestamo"));
+							   finiquito.setCortes(rs.getDouble("cortes"));
+							   finiquito.setInfonavit(rs.getDouble("infonavit"));
+							   finiquito.setFuente_sodas(rs.getDouble("fuente_de_sodas"));
 								   
 						   }
 					

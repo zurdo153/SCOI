@@ -7,12 +7,13 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
+
+import javax.swing.UIManager;
 
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 
@@ -91,5 +92,14 @@ public class Cat_Autorizacion_Finanzas extends JFrame{
 		}
 	};
 	
+	
+	public static void main(String [] arg){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Autorizacion_Finanzas().setVisible(true);
+		}catch(Exception e){
+			System.err.println("Error :"+ e.getMessage());
+		}
+	}
 
 }

@@ -4274,4 +4274,49 @@ public boolean Borrar_Observacion_DH(){
 	return true;
 	}
 
+	public boolean Modificar_Status_Revision(int folio_finiquito, String status, String observacion_de_revision){
+		int  folio_usuario= usuario.getFolio();
+		String query = "exec sp_update_revision_de_finiquito ?,?,?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+
+				pstmt.setInt(1, folio_finiquito);
+				pstmt.setString(2, status);
+				pstmt.setString(3, observacion_de_revision);
+				pstmt.setInt(4, folio_usuario);
+				
+				System.out.println(folio_finiquito);
+				System.out.println(status);
+				System.out.println(observacion_de_revision);
+				System.out.println(folio_usuario);
+				
+				pstmt.executeUpdate();	
+			
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Modificar_Status_Revision ] update  SQLException:\n Procedimiento Almacenado: "+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Modificar_Status_Revision ] update  SQLException:\n Procedimiento Almacenado: "+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 }
