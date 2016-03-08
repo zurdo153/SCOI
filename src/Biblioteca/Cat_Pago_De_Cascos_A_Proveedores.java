@@ -1,4 +1,4 @@
-package Cat_Compras;
+package Biblioteca;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
-import Cat_Contabilidad.Cat_Pago_De_Cascos_Al_Proveedor;
+import Cat_Compras.Cat_Pago_De_Cascos_Al_Proveedor;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
@@ -128,7 +128,6 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
     			Object folio =  tabla.getValueAt(fila, 0);
     			Object Proveedor =  tabla.getValueAt(fila, 1);
     			dispose();
-    			new Cat_Pago_De_Cascos_Al_Proveedor(folio.toString().trim(),Proveedor.toString().trim()).setVisible(true);
         	}
 		}
 	};
@@ -151,9 +150,6 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 				int fila=tabla.getSelectedRow()-1;
 				String folio = tabla.getValueAt(fila,0).toString().trim();
 				String proveedor = tabla.getValueAt(fila,1).toString().trim();
-				
-				new Cat_Pago_De_Cascos_Al_Proveedor(folio,proveedor).setVisible(true);
-				
 				dispose();
 				}
 			}
