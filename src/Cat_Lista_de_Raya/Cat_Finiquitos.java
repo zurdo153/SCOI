@@ -35,9 +35,9 @@ import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
-import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Finiquitos;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
@@ -48,14 +48,15 @@ public class Cat_Finiquitos extends JFrame{
 	Container cont_quitados = getContentPane();
 	JLayeredPane panel_quitados = new JLayeredPane();
 	
-	JButton btnGenerar = new JButton("Generar", new ImageIcon("imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-16.png"));
+	JButton btnNegados = new JCButton("Finiquitos Rechazados", "");
+	JButton btnGenerar = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png");
 	
 	JTextField txtFolioScoi 	= new Componentes().text(new JTextField(), "Folio De Empleado En Scoi", 120, "String");
 	JTextField txtEmpleadoScoi 	= new Componentes().text(new JTextField(), "Nombre De Empleado Scoi", 120, "String");
 	JTextField txtFolioBms 		= new Componentes().text(new JTextField(), "Folio De Empleado En Bms", 120, "String");
 	JTextField txtEmpleadoBms 	= new Componentes().text(new JTextField(), "Nombre De Empleado Bms", 120, "String");
 	
-	JButton btnLimpiarEmpleadoBms = new JButton("Limpiar");
+	JButton btnLimpiarEmpleadoBms = new JCButton("Limpiar","");
 	
 	JTextField txtFiltroAsignacion = new Componentes().text(new JCTextField(), ">> Teclee El Nombre Del Empleado <<", 120, "String");
 	
@@ -141,7 +142,8 @@ public class Cat_Finiquitos extends JFrame{
 		panel_quitados.add(txtEmpleadoBms      ).setBounds(170, 515, 300, 20);
 		panel_quitados.add(btnLimpiarEmpleadoBms).setBounds(470, 515, 30, 20);
 		
-		panel_quitados.add(btnGenerar).setBounds(650, 515, 115, 20);
+		panel_quitados.add(btnNegados).setBounds(580, 10, 185, 40);
+		panel_quitados.add(btnGenerar).setBounds(580, 495, 185, 40);
 		
 		cont_quitados.add(panel_quitados);
 		
@@ -226,7 +228,7 @@ public class Cat_Finiquitos extends JFrame{
 		if(!new BuscarSQL().existe_finiquito_vigente(Integer.valueOf(txtFolioScoi.getText().trim()))){
 			new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), establecimiento , txtFolioBms.getText()).setVisible(true);
 		}else{
-				reporte(Integer.valueOf(Integer.valueOf(txtFolioScoi.getText().trim())));
+//				reporte(Integer.valueOf(Integer.valueOf(txtFolioScoi.getText().trim())));
 				JOptionPane.showMessageDialog(null, "El Finiquito Del Empleado "+txtEmpleadoScoi.getText().toString().trim()+" Ya Fue Calculado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 		}
@@ -240,20 +242,20 @@ public class Cat_Finiquitos extends JFrame{
 		}
 	};
 	
-	public void reporte(int folio_empleado_scoi){
-		String basedatos="2.26";
-		String vista_previa_reporte="no";
-		int vista_previa_de_ventana=0;
-		String comando="";
-		String reporte = "";
-		
-		 comando = "exec sp_select_reporte_de_finiquito "+folio_empleado_scoi;
-		 reporte="Obj_Finiquito.jrxml";
-		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-		 reporte="Obj_Registro_De_Finiquito.jrxml";
-		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-		 
-	}
+//	public void reporte(int folio_empleado_scoi){
+//		String basedatos="2.26";
+//		String vista_previa_reporte="no";
+//		int vista_previa_de_ventana=0;
+//		String comando="";
+//		String reporte = "";
+//		
+//		 comando = "exec sp_select_reporte_de_finiquito "+folio_empleado_scoi;
+//		 reporte="Obj_Finiquito.jrxml";
+//		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+//		 reporte="Obj_Registro_De_Finiquito.jrxml";
+//		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+//		 
+//	}
 	
 	public void render_filtro(final JTable tb){
 		tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10));
@@ -382,8 +384,8 @@ public class Cat_Finiquitos extends JFrame{
 		 JTextField   txtPrimaVacacionalDiferencia		= new Componentes().text(new JTextField(), "Prima Vacacional",  15, "Double");
 		 JTextField   txtTotalPercepcionesDiferencia	= new Componentes().text(new JTextField(), "Total Percepciones",  15, "Double");
 		 
-		JButton btnReporte = new JButton("Ultimo Reporte", new ImageIcon("imagen/Report.png"));
-		JButton btnGuardar = new JButton("Guardar", new ImageIcon("imagen/guardar-documento-icono-7840-32.png"));
+//		JButton btnReporte = new JButton("Ultimo Reporte", new ImageIcon("imagen/Report.png"));
+		JButton btnGuardar = new JCButton("Guardar", "guardar-documento-icono-7840-32.png");
 
 		String status[] = {"Seleccione Un Status","Baja","No Contratable"};
 		@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -442,7 +444,7 @@ public class Cat_Finiquitos extends JFrame{
 			panel_quitados.add(new JLabel("Otras Deducciones:")	   				).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtOtrasDeduccionesBnns			   	).setBounds(x2, y, ancho2, 20);      
                                                                                                                                                                                                             
 			panel_quitados.add(new JLabel("Total A Pagar:")						).setBounds(x, y+=25, ancho, 20);   panel_quitados.add(txtTotalAPagarBnns					).setBounds(x2, y, ancho2, 20);   
-			panel_quitados.add(btnReporte										).setBounds(x, y+=25, ancho2*2+10, 45);panel_quitados.add(btnGuardar							).setBounds(x3, y, ancho2*2+10, 45);
+			/*panel_quitados.add(btnReporte								   ).setBounds(x, y+=25, ancho2*2+10, 45);*/panel_quitados.add(btnGuardar							).setBounds(x3, y+=25, ancho2*2+10, 45);
 			
 			
 			cont_quitados.add(panel_quitados);
@@ -518,7 +520,7 @@ public class Cat_Finiquitos extends JFrame{
 			fchBajaSCOI.addPropertyChangeListener(opCalcularAutomaticoConFecha);
 			
 			btnGuardar.addActionListener(opGenerar);
-			btnReporte.addActionListener(opReImprimir);
+//			btnReporte.addActionListener(opReImprimir);
 		}
 		
 		ActionListener opGenerar = new ActionListener() {
@@ -614,12 +616,14 @@ public class Cat_Finiquitos extends JFrame{
 
 			if(finiquito.guardar(cmbStatus.getSelectedItem().toString(),txaObservaciones.getText().toUpperCase().trim())){
 				
-				reporte(Integer.valueOf(txtFolioEmpleado.getText().trim()));
+//				reporte(Integer.valueOf(txtFolioEmpleado.getText().trim()));
 				dispose();
 				
 				llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
 				llenar_tabla_filtro(tabla_model_filtro_bnns,"BNNS");
 				
+				JOptionPane.showMessageDialog(null, "El Finiquito Se Guardo Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+				return;
 			}else{
 				JOptionPane.showMessageDialog(null, "No Se Han Podido Procesar El Finiquito", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -627,16 +631,16 @@ public class Cat_Finiquitos extends JFrame{
 			
 	}
 		
-	ActionListener opReImprimir = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			
-			reporte(Integer.valueOf(txtFolioEmpleado.getText().trim()));
-			dispose();
-			
-			llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
-			llenar_tabla_filtro(tabla_model_filtro_bnns,"BNNS");
-		}
-	};
+//	ActionListener opReImprimir = new ActionListener() {
+//		public void actionPerformed(ActionEvent e) {
+//			
+//			reporte(Integer.valueOf(txtFolioEmpleado.getText().trim()));
+//			dispose();
+//			
+//			llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
+//			llenar_tabla_filtro(tabla_model_filtro_bnns,"BNNS");
+//		}
+//	};
 	
 		public Date cargar_fechas_de_baja(int dias){
 			Date date1 = null;

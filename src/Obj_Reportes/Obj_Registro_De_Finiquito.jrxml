@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-03-06T09:50:04 -->
+<!-- 2016-03-08T17:55:30 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Finiquito" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0da01221-44cd-40ac-a362-fac4dfb62e72">
 	<property name="template.type" value="columnar"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
@@ -67,6 +67,7 @@
 			,finiquitos.folio_finiquito
 			,CASE WHEN finiquitos.total_a_pagar <0 THEN 'MENOS '+DBO.CantidadConLetra((finiquitos.total_a_pagar*-1))
 				ELSE DBO.CantidadConLetra(finiquitos.total_a_pagar) END AS cantidad_con_letra
+			,'PREFINIQUITO' as tipo_de_reporte
 from tb_finiquitos finiquitos
 inner join tb_empleado empleado on empleado.folio = finiquitos.folio_empleado_scoi
 inner join tb_establecimiento estab on estab.folio = finiquitos.establecimiento
@@ -124,6 +125,7 @@ order by finiquitos.fecha_mov desc]]>
 	<field name="nombre_establecimiento" class="java.lang.String"/>
 	<field name="nombre_usuario" class="java.lang.String"/>
 	<field name="cantidad_con_letra" class="java.lang.String"/>
+	<field name="tipo_de_reporte" class="java.lang.String"/>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{folio_empleado_scoi}]]></groupExpression>
 		<groupHeader>
@@ -252,7 +254,7 @@ order by finiquitos.fecha_mov desc]]>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{fecha_baja_scoi}]]></textFieldExpression>
@@ -454,7 +456,7 @@ order by finiquitos.fecha_mov desc]]>
 					<textElement textAlignment="Justified">
 						<font size="12" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["RECIBI DE SUPERMERCADO LA COMPETIDORA S.A. DE C.V. LA CANTIDAD DE "+$F{total_a_pagar}+" ("+$F{cantidad_con_letra}+") POR CONCEPTO DE PAGO PROPORCIONAL DE LIQUIDACION, PRIMA VACACIONAL, AGUINALDO PROPORCIONAL, HABIENDO QUEDADO LIQUIDADOS MIS SERVICIOS TOTALMENTE HASTA LA FECHA SEÑALADA, ESTANDO DE ACUERDO QUE NO SE ME ADEUDA NADA POR PARTE DE LA EMPRESA."]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{tipo_de_reporte}.equals("FINIQUITO")?"RECIBI DE SUPERMERCADO LA COMPETIDORA S.A. DE C.V. LA CANTIDAD DE "+$F{total_a_pagar}+" ("+$F{cantidad_con_letra}+") POR CONCEPTO DE PAGO PROPORCIONAL DE LIQUIDACION, PRIMA VACACIONAL, AGUINALDO PROPORCIONAL, HABIENDO QUEDADO LIQUIDADOS MIS SERVICIOS TOTALMENTE HASTA LA FECHA SEÑALADA, ESTANDO DE ACUERDO QUE NO SE ME ADEUDA NADA POR PARTE DE LA EMPRESA.":""]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="255" y="524" width="49" height="19" uuid="7f0b1a75-847e-49d9-ac30-212ed76f3216"/>
@@ -491,6 +493,22 @@ order by finiquitos.fecha_mov desc]]>
 					</textElement>
 					<text><![CDATA[TESTIGO]]></text>
 				</staticText>
+				<rectangle>
+					<reportElement x="0" y="38" width="554" height="82" uuid="4a3bbbb7-85ea-4929-b7b4-5744518dee66">
+						<printWhenExpression><![CDATA[!$F{tipo_de_reporte}.equals("FINIQUITO")]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement x="1" y="524" width="554" height="161" uuid="e660ed4c-d986-4433-9e9d-3234cff564dc">
+						<printWhenExpression><![CDATA[!$F{tipo_de_reporte}.equals("FINIQUITO")]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -642,24 +660,21 @@ order by finiquitos.fecha_mov desc]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="80" splitType="Stretch">
-			<staticText>
-				<reportElement style="Title" x="0" y="16" width="555" height="48" forecolor="#FF6912" uuid="187821e6-e402-4c26-8598-133aaa0f3acd"/>
-				<box>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="40" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Registro De Finiquitos]]></text>
-			</staticText>
+		<band height="82" splitType="Stretch">
 			<image>
 				<reportElement x="4" y="0" width="80" height="80" uuid="9ebc4b09-8c1d-43d2-bda9-91244f8caaf5"/>
 				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="4" y="10" width="549" height="53" forecolor="#FF6912" uuid="cc238552-a989-4ae4-8383-2700e61141c0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="32" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo_de_reporte}.equals("FINIQUITO")?"Registro De Finiquito":"Registro De Prefiniquito"]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

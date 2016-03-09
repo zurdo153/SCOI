@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-03-01T16:30:31 -->
+<!-- 2016-03-08T17:17:35 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Finiquito" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0da01221-44cd-40ac-a362-fac4dfb62e72">
 	<property name="template.type" value="columnar"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
@@ -65,6 +65,7 @@
 			,convert(varchar(20),finiquitos.fecha_mov,103) as fecha_mov
 			,finiquitos.status
 			,finiquitos.folio_finiquito
+			,'FINIQUITO' as tipo_de_reporte
 from tb_finiquitos finiquitos
 inner join tb_empleado empleado on empleado.folio = finiquitos.folio_empleado_scoi
 inner join tb_establecimiento estab on estab.folio = finiquitos.establecimiento
@@ -121,6 +122,7 @@ order by finiquitos.fecha_mov desc]]>
 	<field name="empleado" class="java.lang.String"/>
 	<field name="nombre_establecimiento" class="java.lang.String"/>
 	<field name="nombre_usuario" class="java.lang.String"/>
+	<field name="tipo_de_reporte" class="java.lang.String"/>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{folio_empleado_scoi}]]></groupExpression>
 		<groupHeader>
@@ -984,19 +986,6 @@ order by finiquitos.fecha_mov desc]]>
 	</background>
 	<title>
 		<band height="89" splitType="Stretch">
-			<staticText>
-				<reportElement style="Title" x="60" y="16" width="495" height="48" forecolor="#FF6912" uuid="187821e6-e402-4c26-8598-133aaa0f3acd"/>
-				<box>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="40" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Reporte De Finiquitos]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="84" y="68" width="470" height="21" forecolor="#000000" uuid="748eb635-9b3f-430e-91d4-9ec102d3445d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -1008,6 +997,13 @@ order by finiquitos.fecha_mov desc]]>
 				<reportElement x="4" y="4" width="80" height="80" uuid="9ebc4b09-8c1d-43d2-bda9-91244f8caaf5"/>
 				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="84" y="1" width="469" height="67" forecolor="#FF6912" uuid="7fc776a0-9540-4fb2-ae45-447c645c322a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="32" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo_de_reporte}.equals("FINIQUITO")?"Reporte De Calculo De Finiquito":"Calculo De Prefiniquito"]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
