@@ -1,4 +1,4 @@
-package Biblioteca;
+package Cat_Compras;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -23,7 +23,6 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
-import Cat_Compras.Cat_Pago_De_Cascos_Al_Proveedor;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
@@ -124,9 +123,9 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 		public void mouseEntered(MouseEvent arg0) {}
 		public void mouseClicked(MouseEvent arg0) {
 			if(arg0.getClickCount() == 2){
-//    			int fila = tabla.getSelectedRow();
-//    			Object folio =  tabla.getValueAt(fila, 0);
-//    			Object Proveedor =  tabla.getValueAt(fila, 1);
+    			int fila = tabla.getSelectedRow();
+    			Object folio =  tabla.getValueAt(fila, 0);
+    			Object Proveedor =  tabla.getValueAt(fila, 1);
     			dispose();
         	}
 		}
@@ -147,9 +146,9 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 			public void keyTyped(KeyEvent e) {
 				char caracter = e.getKeyChar();
 					if(caracter==e.VK_ENTER){
-//				int fila=tabla.getSelectedRow()-1;
-//				String folio = tabla.getValueAt(fila,0).toString().trim();
-//				String proveedor = tabla.getValueAt(fila,1).toString().trim();
+				int fila=tabla.getSelectedRow()-1;
+				String folio = tabla.getValueAt(fila,0).toString().trim();
+				String proveedor = tabla.getValueAt(fila,1).toString().trim();
 				dispose();
 				}
 			}

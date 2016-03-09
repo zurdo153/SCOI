@@ -3587,7 +3587,8 @@ public class BuscarSQL {
 
 	public Obj_Nivel_Jerarquico buscarDescripcion(String descripcion) throws SQLException{
 		Obj_Nivel_Jerarquico nivel_gerarquico = new Obj_Nivel_Jerarquico();
-		String query = "select tb_nivel_jerarquico.folio as folio " +
+		String query = "select tb_nivel_jerarquico.folio as folio, descripcion " +
+		                                            
 					   "from tb_nivel_jerarquico " +
 					   "where tb_nivel_jerarquico.descripcion = "+"'"+descripcion+"'";
 				
@@ -3599,6 +3600,7 @@ public class BuscarSQL {
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				nivel_gerarquico.setFolio(rs.getInt("folio"));
+				nivel_gerarquico.setDescripcion(rs.getString("descripcion"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

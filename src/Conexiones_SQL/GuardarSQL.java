@@ -2201,34 +2201,38 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Tabla_Nivel2(Obj_Nivel_Jerarquico pond,String[][] tabla){
+		String queryDelete="delete from tb_tabla_nivel_jerarquico where tb_tabla_nivel_jerarquico.folio_tb_nivel_jerarquico = "+pond.getFolio();
 		String query = "exec sp_insert_nivel_jerarquico ?,?";
 		String querytabla="exec sp_insert_tabla_nivel_jerarquico ?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmtdelete = null;
 		PreparedStatement pstmtabla =null;
 		try {
 			
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
+			pstmtdelete = con.prepareStatement(queryDelete);
 			pstmtabla=con.prepareStatement(querytabla);
 			
+			
+			pstmtdelete.executeUpdate();
+			
 			pstmt.setString (1, pond.getDescripcion());
-			pstmt.setString (2, pond.getPuesto_principal());
+			pstmt.setInt (2, pond.getFolio_puesto_principal());
 			
 			for (int i = 0; i < tabla.length; i++) {
-
 				pstmtabla.setInt (1, pond.getFolio());
 				pstmtabla.setInt (2, Integer.valueOf(tabla[i][0].trim()));
 				pstmtabla.setString (3, tabla[i][2]);
-				
 				pstmtabla.executeUpdate();
-				
 			}
+			
 			pstmt.executeUpdate();
-		
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Tabla_Nivel2 ]   SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");

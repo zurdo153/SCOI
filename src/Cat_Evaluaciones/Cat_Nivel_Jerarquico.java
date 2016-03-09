@@ -88,14 +88,13 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	JScrollPane panelScroll = new JScrollPane(tablaP);
 	
 	public void getContenedor(){
-		this.setSize(560,480);
+		this.setSize(625,480);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/plan-de-organizacion-de-la-red-de-sitio-icono-5788-32.png"));
 		this.panel.setBorder(BorderFactory.createTitledBorder("Nivel Jerarquico"));	
 		this.setTitle("Nivel Jerarquico");
-		
 		render();
 		
 		int y=30,width=100,height=20;
@@ -110,31 +109,31 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		this.panel.add(cmb_status).setBounds(130,y,width,height);
 		
 		this.panel.add(new JLabel("Descripcion:")).setBounds(20,y+=30,width,height);
-		this.panel.add(txtDescripcion).setBounds(130,y,410,height);
+		this.panel.add(txtDescripcion).setBounds(130,y,472,height);
 		
 	
 		this.panel.add(new JLabel("Puesto Principal:")).setBounds(20,y+=30,120,height);
 		this.panel.add(txtFolioPuestoPrincipal).setBounds(130,y,40,height);
-		this.panel.add(txtPuestoPrincipal).setBounds(170,y,230,height);
-		this.panel.add(btnFiltroPuestosPrincipal).setBounds(410,y,130,height);
+		this.panel.add(txtPuestoPrincipal).setBounds(170,y,300,height);
+		this.panel.add(btnFiltroPuestosPrincipal).setBounds(475,y,130,height);
 		
 		this.panel.add(new JLabel("Puesto Dependiente:")).setBounds(20,y+=30,120,height);
 		this.panel.add(txtFolioP_Dependiente).setBounds(130,y,40,height);
-		this.panel.add(txtP_Dependiente).setBounds(170,y,230,height);
-		this.panel.add(btnFiltroPuestosDependiente).setBounds(410,y,130,height);
+		this.panel.add(txtP_Dependiente).setBounds(170,y,300,height);
+		this.panel.add(btnFiltroPuestosDependiente).setBounds(475,y,130,height);
 		
 		this.panel.add(new JLabel("Establecimiento:")).setBounds(20,y+=30,120,height);
 		this.panel.add(cmb_Establecimiento).setBounds(130,y,190,height);
 		
-		this.panel.add(btnAgregar).setBounds(340,y,width,height);
-		this.panel.add(btnEliminar).setBounds(440,y,width,height);
+		this.panel.add(btnAgregar).setBounds(340,y,130,height);
+		this.panel.add(btnEliminar).setBounds(475,y,130,height);
 		
-		this.panel.add(panelScroll).setBounds(20,y+=30,520,195);
+		this.panel.add(panelScroll).setBounds(20,y+=30,582,195);
 		
 		this.panel.add(btnSalir).setBounds(20,410,width,height);
-		this.panel.add(btnDeshacer).setBounds(150,410,width,height);
-		this.panel.add(btnEditar).setBounds(290,410,width,height);
-		this.panel.add(btnGuardar).setBounds(430,410,width,height);
+		this.panel.add(btnDeshacer).setBounds(200,410,width,height);
+		this.panel.add(btnEditar).setBounds(340,410,width,height);
+		this.panel.add(btnGuardar).setBounds(503,410,width,height);
 		
 		this.btnSalir.addActionListener(salir);
 		this.txtFolio.addKeyListener(guardaAction);
@@ -241,56 +240,37 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 							Obj_Nivel_Jerarquico nivelgerarquico = new Obj_Nivel_Jerarquico().buscar(Integer.parseInt(txtFolio.getText()));
 							
 							if(nivelgerarquico.getFolio() == Integer.parseInt(txtFolio.getText())){
-								if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0)
-								{
-									Obj_Nivel_Jerarquico gerarquico = new Obj_Nivel_Jerarquico();
-										
-									gerarquico.setFolio(Integer.parseInt(txtFolio.getText()));
-									gerarquico.setDescripcion(txtDescripcion.getText().toUpperCase());
-									
-									gerarquico.setFolio_puesto_principal(Integer.valueOf(txtFolioPuestoPrincipal.getText()));
-									gerarquico.setPuesto_principal(txtPuestoPrincipal.getText());
-									gerarquico.setEstablecimiento(cmb_Establecimiento.getSelectedItem().toString());
-									
-										if(gerarquico.actualizar2(listadatos())){
-												limpiaGuardar();
-												/**/	   		 getTabla(Integer.parseInt(txtFolio.getText()));			/**/
-												JOptionPane.showMessageDialog(null,"El registro se actualizo exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
-												return;
-										}else{
-												JOptionPane.showMessageDialog(null,"Ocurrió un problema al intentar guardar el registro!","Error",JOptionPane.ERROR_MESSAGE);
-												return;
-											}
-		//								}
-								}
-							}else{	
+							   if(JOptionPane.showConfirmDialog(null, "El Registro Ya Existe, ¿Desea Cambiarlo?") == 0)
+								 {
 								Obj_Nivel_Jerarquico nivelgerarquicoDescripcion = new Obj_Nivel_Jerarquico().buscar(txtDescripcion.getText());
-								
-								if(nivelgerarquicoDescripcion.getFolio()>0){
-									JOptionPane.showMessageDialog(null, "La Descripcion Ya Existe, Intente Con Otra", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+
+								if(nivelgerarquicoDescripcion.getFolio()!=Integer.valueOf(txtFolio.getText().trim()) && nivelgerarquicoDescripcion.getDescripcion().equals(txtDescripcion.getText().toString().toUpperCase().trim())){
+									JOptionPane.showMessageDialog(null, "La Descripcion Ya Existe con el folio:"+nivelgerarquicoDescripcion.getFolio()+", Intente Con Otra", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 									return;
 								}else{
-									Obj_Nivel_Jerarquico gerarquico = new Obj_Nivel_Jerarquico().buscar(Integer.parseInt(txtFolio.getText()));
+									Obj_Nivel_Jerarquico jerarquico = new Obj_Nivel_Jerarquico();
 								
-								gerarquico.setFolio(Integer.parseInt(txtFolio.getText()));
-								gerarquico.setDescripcion(txtDescripcion.getText().toUpperCase());
+									jerarquico.setFolio(Integer.parseInt(txtFolio.getText()));
+									jerarquico.setDescripcion(txtDescripcion.getText().toUpperCase());
+									jerarquico.setFolio_puesto_principal(Integer.valueOf(txtFolioPuestoPrincipal.getText()));
+									jerarquico.setPuesto_principal(txtPuestoPrincipal.getText());
+									jerarquico.setEstablecimiento(cmb_Establecimiento.getSelectedItem().toString());
 								
-								gerarquico.setFolio_puesto_principal(Integer.valueOf(txtFolioPuestoPrincipal.getText()));
-								gerarquico.setPuesto_principal(txtPuestoPrincipal.getText());
-								gerarquico.setEstablecimiento(cmb_Establecimiento.getSelectedItem().toString());
-								
-									if(gerarquico.guardar_multiple2(listadatos())){
+									if(jerarquico.guardar_multiple2(listadatos())){
 										btnFiltroPuestosPrincipal.setEnabled(false);
 											limpiaGuardar();
-											/**/	   		 getTabla(Integer.parseInt(txtFolio.getText()));			/**/
-											JOptionPane.showMessageDialog(null,"El registro se guardó exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+											getTabla(Integer.parseInt(txtFolio.getText()));
+											JOptionPane.showMessageDialog(null,"El registro se guardó exitosamente2!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 											return;
 									}else{
-											JOptionPane.showMessageDialog(null,"Ocurrió un problema al intentar guardar el registro!","Error",JOptionPane.ERROR_MESSAGE);
+											JOptionPane.showMessageDialog(null,"Ocurrió un problema al intentar guardar el registro!","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 											return;
 										}
 							}
 					}
+							}else{
+								return;
+							}
 				}else{
 					JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos: \n"+validacampos(),"Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 					return;
@@ -492,9 +472,10 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		{
 			paneltrue();
 			txtPuestoPrincipal.setEditable(false);
-			txtDescripcion.setEnabled(false);
+			txtDescripcion.setEnabled(true);
 			status_botones(true);
 			btnFiltroPuestosPrincipal.setEnabled(false);
+			cmb_status.setEnabled(true);
 		}
 	};
 	
@@ -696,8 +677,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 					}
 					consulta += quitarPuestos.length()==0 ? "0)" : quitarPuestos.substring(0, quitarPuestos.length()-1)+")";
 				}
-//				System.out.println(consulta);
-				
 				rs = s.executeQuery(consulta);
 				
 				while (rs.next()) { 
