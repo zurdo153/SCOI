@@ -2,7 +2,6 @@ package Obj_Evaluaciones;
 
 import java.sql.SQLException;
 
-import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
@@ -109,6 +108,7 @@ public class Obj_Nivel_Jerarquico {
 	
 	/*guarda la segunda parte del catalogo*/
 	public boolean guardar_multiple2(String[][] tabla){ return new GuardarSQL().Guardar_Tabla_Nivel2(this,tabla); }
+//	public boolean actualizar2(String[][] tabla){ return new ActualizarSQL().nivelGerarquico2(this,tabla); }
 	
 	/*buscamos la primer parte del catalogo*/
 	public Obj_Nivel_Jerarquico buscar(int folio){
@@ -141,7 +141,7 @@ public class Obj_Nivel_Jerarquico {
 		return null; 
 	}
 	
-	public boolean actualizar2(String[][] tabla){ return new ActualizarSQL().nivelGerarquico2(this,tabla); }
+
 	
 	public String[] combo_nivel_jerarquico() {
 		try {
