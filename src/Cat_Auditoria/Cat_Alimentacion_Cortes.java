@@ -1178,16 +1178,17 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	}
 	
 	public void corte_sitema(){
-		double suma_recalculada = 0;
+//		double suma_recalculada = 0;
 		
 		if(tabla_asignaciones.getRowCount()==0){
 			txtCorteSistema.setText( "0.0000" );
 			txtAbonos.setText("0.0000");
 		}else{
-			for(int i = 0; i<tabla_asignaciones.getRowCount(); i++){
-				suma_recalculada = suma_recalculada += Double.valueOf(tabla_asignaciones.getValueAt(i, 3).toString().trim());
-			}
-			txtCorteSistema.setText( formato.format(suma_recalculada + Double.valueOf(txtAbonos.getText().trim()))+"" );
+//			for(int i = 0; i<tabla_asignaciones.getRowCount(); i++){
+//				suma_recalculada = suma_recalculada += Double.valueOf(tabla_asignaciones.getValueAt(i, 3).toString().trim());
+//			}
+//			txtCorteSistema.setText( formato.format(suma_recalculada + Double.valueOf(txtAbonos.getText().trim()))+"" );
+			txtCorteSistema.setText( formato.format(Double.valueOf(tabla_asignaciones.getValueAt(0, 3).toString().trim()))+"" );
 		}
 	}
 	
@@ -3219,7 +3220,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			retiroCliente = txtTotalRetiros.getText().equals("")?0:Double.parseDouble(txtTotalRetiros.getText());
 			
 			
-			diferienciaCorte = ((corteSistema+apartado-abono)-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
+			diferienciaCorte = ((corteSistema+apartado/*-abono*/)-((efectivo+retiroCajero)/*+deposito+tiempoAire+resiboLuz*/+(totalVauchers-retiroCliente)+cheque+totalFS));
 			
 			if(diferienciaCorte < 0){
 					lblEtiquetaCorte.setText("Sobrante");
