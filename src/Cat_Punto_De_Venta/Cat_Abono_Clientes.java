@@ -80,7 +80,7 @@ public class Cat_Abono_Clientes extends JFrame{
 	String establecimiento_de_ticket = "";
 	
 	JLabel lblF2 = new JLabel("F2  => Abrir Filtro De Clientes");
-	JLabel lblF5 = new JLabel("F11 => Imprimir Ticket A Detalle");
+	JLabel lblF5 = new JLabel("F11 => Imprimir Ticket");
 	JLabel lblF9 = new JLabel("F9  => Generer Abono");
 	JLabel lblLimpiar = new JLabel("Esc => Limpiar");
 	

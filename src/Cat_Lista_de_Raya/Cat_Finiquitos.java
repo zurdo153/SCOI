@@ -159,7 +159,7 @@ public class Cat_Finiquitos extends JFrame{
 		seleccionEmpleado(tabla_filtro_scoi, "SCOI");
 		seleccionEmpleado(tabla_filtro_bnns, "Bnns");
 		
-		btnLimpiarEmpleadoBms.addActionListener(opLimpiar);
+		btnNegados.addActionListener(opFiniquitosNegados);
 		btnGenerar.addActionListener(opGenerar);
 		
 		txtFolioScoi.setEditable(false);
@@ -234,6 +234,11 @@ public class Cat_Finiquitos extends JFrame{
 		}
 	}
 	
+	ActionListener opFiniquitosNegados = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			new Cat_Finiquitos_Negados().setVisible(true);
+		}
+	};
 	
 	ActionListener opLimpiar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -900,4 +905,171 @@ public class Cat_Finiquitos extends JFrame{
 									 +"" );
 		}
 	}
+	
+	public class Cat_Finiquitos_Negados extends JFrame{
+
+		Container cont = getContentPane();
+		JLayeredPane panel = new JLayeredPane();
+		
+		JButton btnGenerar = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png");
+		
+		JTextField txtFolio 	= new Componentes().text(new JTextField(), "Folio De Empleado En Scoi", 120, "String");
+		JTextField txtEmpleado 	= new Componentes().text(new JTextField(), "Nombre De Empleado Scoi", 120, "String");
+		
+		JTextField txtFiltro = new Componentes().text(new JCTextField(), ">> Teclee El Nombre Del Empleado <<", 120, "String");
+		
+		 public DefaultTableModel tabla_model_filtro = new DefaultTableModel(null, new String[]{"Finiquito","Folio","Empleado", "Establecimiento", "Puesto", "Status","Observacion"} ){
+	         
+				@SuppressWarnings({ "rawtypes" })
+				Class[] types = new Class[]{
+		                   java.lang.Object.class, 
+		                   java.lang.Object.class, 
+		                   java.lang.Object.class, 
+		                   java.lang.Object.class,
+		                   java.lang.Object.class,
+		                   java.lang.Object.class,
+		                   java.lang.Object.class
+		                    
+		    };
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				public Class getColumnClass(int columnIndex) {
+		                return types[columnIndex];
+		        }
+		    public boolean isCellEditable(int fila, int columna){
+		                switch(columna){
+		                		case 0	: return false;
+		                        case 1  : return false; 
+		                        case 2  : return false; 
+		                        case 3  : return false; 
+		                        case 4  : return false; 
+		                        case 5  : return false; 
+		                        case 6  : return false; 
+		                }
+		                 return false;
+		         }
+		    };
+			
+		    JTable tabla_filtro = new JTable(tabla_model_filtro);
+			JScrollPane scroll_filtro = new JScrollPane(tabla_filtro,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			
+			DecimalFormat df = new DecimalFormat("#0.00");
+			
+		public Cat_Finiquitos_Negados(){
+			this.setTitle("Filtro De Finiquitos No Autorizados");
+			this.panel.setBorder(BorderFactory.createTitledBorder( "Filtro De Finiquitos No Autorizados"));
+			
+			panel.add(txtFiltro).setBounds(70, 30, 300, 20);
+			panel.add(scroll_filtro).setBounds(20, 50, 745, 200);
+			
+			
+			panel.add(new JLabel("Empleado:")).setBounds(20, 490, 120, 20);
+			panel.add(txtFolio 	    ).setBounds(120, 490, 50, 20);
+			panel.add(txtEmpleado   ).setBounds(170, 490, 300, 20);
+			
+			panel.add(btnGenerar).setBounds(580, 495, 185, 40);
+			
+			cont.add(panel);
+			
+			llenar_tabla_filtro(tabla_model_filtro);
+			
+			render_filtro(tabla_filtro);
+			
+			filtro(tabla_filtro);
+			
+			seleccionEmpleado(tabla_filtro);
+			
+			btnGenerar.addActionListener(opGenerar);
+			
+			txtFolio.setEditable(false);
+			txtEmpleado.setEditable(false);
+			
+			this.setSize(790,580);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+		}
+		
+		public void seleccionEmpleado(final JTable tb){
+			tb.addMouseListener(new MouseListener() {
+				public void mouseReleased(MouseEvent e) {
+					
+//						txtFolioScoi.setText(tb.getValueAt(tb.getSelectedRow(), 0).toString());
+//						txtEmpleadoScoi.setText(tb.getValueAt(tb.getSelectedRow(), 1).toString());
+//						establecimiento = tabla_filtro_scoi.getValueAt(tabla_filtro_scoi.getSelectedRow(), 2).toString().trim();
+				}
+				public void mousePressed(MouseEvent e) {		}
+				public void mouseExited(MouseEvent e)  {		}
+				public void mouseEntered(MouseEvent e) {		}
+				public void mouseClicked(MouseEvent e) {		}
+			});
+		}
+		
+		ActionListener opGenerar = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(!txtFolio.getText().equals("")){
+							finiquito_o_reporte();
+				}else{
+					JOptionPane.showMessageDialog(null, "Seleccione Un Colaborador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
+			}
+		};
+		
+		public void render_filtro(final JTable tb){
+			tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10));
+			for(int i = 1; i<tb.getColumnCount(); i++){
+				switch(i){
+						case 0: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
+						case 1: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
+						case 2: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
+						case 3: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
+						case 4: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
+						default:tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha"	,"Arial","negrita",11)); break;
+					}
+			}
+			
+			tb.getTableHeader().setReorderingAllowed(false) ;
+	    	tb.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	    	
+	    	int x=50;
+	    	
+	    	tb.getColumnModel().getColumn(0 ).setMaxWidth(x);   
+	    	tb.getColumnModel().getColumn(0 ).setMinWidth(x); 
+	    	tb.getColumnModel().getColumn(1 ).setMaxWidth(x);   
+	    	tb.getColumnModel().getColumn(1 ).setMinWidth(x);   
+	    	tb.getColumnModel().getColumn(2 ).setMaxWidth(x*6);
+	    	tb.getColumnModel().getColumn(2 ).setMinWidth(x*6);
+	    	tb.getColumnModel().getColumn(3 ).setMaxWidth(x*3); 
+	    	tb.getColumnModel().getColumn(3 ).setMinWidth(x*3); 
+	    	                                          
+	    	tb.getColumnModel().getColumn(4 ).setMaxWidth(x*3);
+	    	tb.getColumnModel().getColumn(4 ).setMinWidth(x*3);		
+	    	tb.getColumnModel().getColumn(5 ).setMaxWidth(x*2);
+	    	tb.getColumnModel().getColumn(5 ).setMinWidth(x+25);
+	    	tb.getColumnModel().getColumn(6 ).setMaxWidth(x*8);
+	    	tb.getColumnModel().getColumn(6 ).setMinWidth(x*5);
+	    	
+		}
+		
+		public void filtro(final JTable tb){
+			txtFiltroAsignacion.addKeyListener(new KeyListener() {
+				public void keyTyped(KeyEvent arg0) {}
+				public void keyReleased(KeyEvent arg0){
+					new Obj_Filtro_Dinamico(tb,"Empleado", txtFiltroAsignacion.getText().toUpperCase(),"","", "", "", "", "");
+				}
+				public void keyPressed(KeyEvent arg0) {}
+			});
+		}
+		
+		public void llenar_tabla_filtro(final DefaultTableModel modelo){
+			
+			modelo.setRowCount(0);
+			
+			String[][] matriz = new BuscarTablasModel().filtro_de_finiquito_no_autorizados();
+			for(String[] fila: matriz){
+				modelo.addRow(fila);
+			}
+		}
+	}
+	
 }

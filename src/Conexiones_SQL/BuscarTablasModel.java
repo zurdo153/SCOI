@@ -2400,6 +2400,34 @@ public String[][] filtro_empleado_finiquito(String coneccion){
     return matriz; 
 }
 
+public String[][] filtro_de_finiquito_no_autorizados(){
+	
+	String query_lista = "exec sp_select_finiquitos_no_autorizados"; 
+	
+	String[][] matriz = new String[get_filas(query_lista)][7];
+	try {
+		Statement stmt =new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i=0;
+		while(rs.next()){
+			
+			matriz[i][0] = rs.getString(1);
+			matriz[i][1] = rs.getString(2); 
+			matriz[i][2] = rs.getString(3);
+			matriz[i][3] = rs.getString(4);
+			matriz[i][4] = rs.getString(5); 
+			matriz[i][5] = rs.getString(6); 
+			matriz[i][6] = rs.getString(7); 
+			
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion filtro_de_finiquito_no_autorizados SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
 }
 
 
