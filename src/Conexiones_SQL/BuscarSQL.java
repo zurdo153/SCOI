@@ -50,7 +50,7 @@ import Obj_Checador.Obj_Mensajes;
 import Obj_Compras.Obj_Alimentacion_De_Codigos_Adicionales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
-import Obj_Compras.Obj_Pago_De_Cascos_A_Proveedores;
+import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
@@ -8337,19 +8337,19 @@ public class BuscarSQL {
 		return baja;
 	}
 	
-	public Obj_Pago_De_Cascos_A_Proveedores Pagos_cascos(String Recepcion) throws SQLException{
-		Obj_Pago_De_Cascos_A_Proveedores proveedores = new Obj_Pago_De_Cascos_A_Proveedores();
-		String query = "exec sp_IZAGAR_select_proveedor_existe_recepcion '"+Recepcion+"'";
+	public Obj_Venta_De_Cascos_A_Proveedores venta_de_casco(String folio) throws SQLException{
+		Obj_Venta_De_Cascos_A_Proveedores proveedores = new Obj_Venta_De_Cascos_A_Proveedores();
+		String query = "exec sp_select_ultima_venta_de_cascos '"+folio+"'";
 		Statement stmt = null;
 		try {
-			stmt = con.conexion_IZAGAR().createStatement();
+			stmt = con.conexion().createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				proveedores.setCod_prv(rs.getString("cod_prv"));
-				proveedores.setNombre_proveedor(rs.getString("nombre_proveedor").trim());
-				proveedores.setFolio_factura(rs.getString("folio_factura").trim());
+				proveedores.setNombre_proveedor(rs.getString("proveedor").trim());
+				proveedores.setNombre_proveedor_recibe(rs.getString("beneficiario_proveedor").trim());
+				proveedores.setTotal(rs.getString("total")); 
 				proveedores.setExiste(rs.getBoolean("existe"));
-				proveedores.setCantidad_cascos(rs.getInt("cantidad_cascos"));    
 			}
 			
 		} catch (Exception e) {
