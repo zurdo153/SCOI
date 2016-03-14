@@ -1333,6 +1333,8 @@ public class BuscarSQL {
 				empleado.setForma_pago(rs.getString("forma_pago"));
 				empleado.setSueldo(rs.getFloat("sueldo_id"));				
 				empleado.setBono(rs.getInt("bono_id"));
+				empleado.setBono_asistencia(rs.getFloat("bono_asistencia"));
+				empleado.setBono_puntualidad(rs.getFloat("bono_puntualidad"));
 				empleado.setPrestamo(rs.getInt("rango_prestamo_id"));
 				empleado.setPension_alimenticia(rs.getFloat("pension_alimenticia"));
 				empleado.setInfonavit(rs.getFloat("infonavit"));

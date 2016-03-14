@@ -86,12 +86,12 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
 	JTextField txtNombre_Reecibe_Proveedor = new Componentes().text(new JCTextField(), "Nombre Del Proveedor Recibe", 300, "String");
 	JTextField txtTotalAPagar= new Componentes().text(new JCTextField(), "Total A Cobrar",100,"String");
 	
-	JCButton btnProveedor = new JCButton("Proveedor"  ,"Filter-List-icon16.png");
-	JCButton btnBuscar    = new JCButton("Buscar"     ,"buscar.png"); 
-	JCButton btnDeshacer  = new JCButton("Deshacer"   ,"deshacer16.png");
-	JCButton btnGuardar   = new JCButton("Guardar"    ,"Guardar.png");
-	JCButton btnNuevo     = new JCButton("Nuevo"      ,"Nuevo.png");
-	JCButton btnReporte   = new JCButton("Reporte"    ,"Lista.png" );
+	JCButton btnProveedor = new JCButton("Proveedor"  ,"Filter-List-icon16.png","Azul");
+	JCButton btnBuscar    = new JCButton("Buscar"     ,"buscar.png","Azul"); 
+	JCButton btnDeshacer  = new JCButton("Deshacer"   ,"deshacer16.png","Azul");
+	JCButton btnGuardar   = new JCButton("Guardar"    ,"Guardar.png","Azul");
+	JCButton btnNuevo     = new JCButton("Nuevo"      ,"Nuevo.png","Azul");
+	JCButton btnReporte   = new JCButton("Reporte"    ,"Lista.png","Azul");
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	int fila=0;
@@ -131,7 +131,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Venta De Cascos S Proveedores"));
        cont.setBackground(new java.awt.Color(255, 255, 255));
-   	tabla.getTableHeader().setReorderingAllowed(false) ;
+   	  tabla.getTableHeader().setReorderingAllowed(false) ;
    	
 		int x=20, y=20,width=100,height=20;
 		panel.add(new JLabel("Cod. Proveedor:")).setBounds (x      ,y    ,width     ,height);

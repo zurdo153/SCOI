@@ -46,7 +46,7 @@ public class Cat_Traspaso_De_Movimientos_De_Cascos extends JFrame{
 	JDateChooser fh_in = new JDateChooser();
     JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla <<<", 300, "String");
     
-    JCButton btnGenerar = new JCButton("Traspaso","Aplicar.png");
+    JCButton btnGenerar = new JCButton("Traspaso","Aplicar.png","Azul");
 	SpinnerDateModel sdtIn =  new SpinnerDateModel();
 	  JSpinner spHoraIn = new JSpinner(sdtIn);                                         
 	  JSpinner.DateEditor spDHoraIn = new JSpinner.DateEditor(spHoraIn,"H:mm:ss");  

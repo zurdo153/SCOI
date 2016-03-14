@@ -62,6 +62,33 @@ public class Obj_Empleados {
 	private String forma_pago;
 	private float sueldo;
 	private int bono;
+	private float bono_asistencia;
+	private float bono_puntualidad;
+	private float infonacot;
+	public float getBono_asistencia() {
+		return bono_asistencia;
+	}
+
+	public void setBono_asistencia(float bono_asistencia) {
+		this.bono_asistencia = bono_asistencia;
+	}
+
+	public float getBono_puntualidad() {
+		return bono_puntualidad;
+	}
+
+	public void setBono_puntualidad(float bono_puntualidad) {
+		this.bono_puntualidad = bono_puntualidad;
+	}
+
+	public float getInfonacot() {
+		return infonacot;
+	}
+
+	public void setInfonacot(float infonacot) {
+		this.infonacot = infonacot;
+	}
+
 	private int prestamo;
 	private float pension_alimenticia;
 	private float infonavit;
@@ -72,6 +99,7 @@ public class Obj_Empleados {
 	private boolean fuente_sodas;
 	private String observasiones;
 	private String fecha_actualizacion;
+	
 	
 	public Obj_Empleados(){
 		

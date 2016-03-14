@@ -48,15 +48,15 @@ public class Cat_Finiquitos extends JFrame{
 	Container cont_quitados = getContentPane();
 	JLayeredPane panel_quitados = new JLayeredPane();
 	
-	JButton btnNegados = new JCButton("Finiquitos Rechazados", "");
-	JButton btnGenerar = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png");
+	JButton btnNegados = new JCButton("Finiquitos Rechazados", "","Azul");
+	JButton btnGenerar = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png","Azul");
 	
 	JTextField txtFolioScoi 	= new Componentes().text(new JTextField(), "Folio De Empleado En Scoi", 120, "String");
 	JTextField txtEmpleadoScoi 	= new Componentes().text(new JTextField(), "Nombre De Empleado Scoi", 120, "String");
 	JTextField txtFolioBms 		= new Componentes().text(new JTextField(), "Folio De Empleado En Bms", 120, "String");
 	JTextField txtEmpleadoBms 	= new Componentes().text(new JTextField(), "Nombre De Empleado Bms", 120, "String");
 	
-	JButton btnLimpiarEmpleadoBms = new JCButton("Limpiar","");
+	JButton btnLimpiarEmpleadoBms = new JCButton("Limpiar","","Azul");
 	
 	JTextField txtFiltroAsignacion = new Componentes().text(new JCTextField(), ">> Teclee El Nombre Del Empleado <<", 120, "String");
 	
@@ -390,7 +390,7 @@ public class Cat_Finiquitos extends JFrame{
 		 JTextField   txtTotalPercepcionesDiferencia	= new Componentes().text(new JTextField(), "Total Percepciones",  15, "Double");
 		 
 //		JButton btnReporte = new JButton("Ultimo Reporte", new ImageIcon("imagen/Report.png"));
-		JButton btnGuardar = new JCButton("Guardar", "guardar-documento-icono-7840-32.png");
+		JButton btnGuardar = new JCButton("Guardar", "guardar-documento-icono-7840-32.png","Azul");
 
 		String status[] = {"Seleccione Un Status","Baja","No Contratable"};
 		@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -911,7 +911,7 @@ public class Cat_Finiquitos extends JFrame{
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
 		
-		JButton btnGenerar = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png");
+		JButton btnGenerar = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png","Azul");
 		
 		JTextField txtFolio 	= new Componentes().text(new JTextField(), "Folio De Empleado En Scoi", 120, "String");
 		JTextField txtEmpleado 	= new Componentes().text(new JTextField(), "Nombre De Empleado Scoi", 120, "String");

@@ -169,9 +169,9 @@ public class Init_Login extends JFrame{
 	JPasswordField txtContrasenaNueva = new Componentes().textPassword(new JPasswordField(), "Contraseña Nueva", 50);
 	JPasswordField txtContrasenaConfirmar = new Componentes().textPassword(new JPasswordField(), "Confirmar Contraseña", 50);
 	
-	JCButton btnSalir = new JCButton("Salir","logout-icone-6625-16.png");
-	JCButton btnCambiarContrasena = new JCButton("Cambiar Contraseña","signo-kgpg-icono-4248-16.png");
-	JCButton btnBuscar = new JCButton("","buscar.png"); 
+	JCButton btnSalir = new JCButton("Salir","logout-icone-6625-16.png","Azul");
+	JCButton btnCambiarContrasena = new JCButton("Cambiar Contraseña","signo-kgpg-icono-4248-16.png","Azul");
+	JCButton btnBuscar = new JCButton("","buscar.png","Azul"); 
 	
 	JButton btnAceptar = new JButton("Entrar");
 	

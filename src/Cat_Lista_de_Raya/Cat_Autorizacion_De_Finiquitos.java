@@ -67,10 +67,10 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 		
 		JTextField txtFolio = new Componentes().text(new JTextField(),"Teclee Folio del Empleado", 150, "Integer");
 		JTextField txtEmpleado = new Componentes().text(new JTextField(),"Teclee Nombre del Empleado", 150, "String");
-	    JButton btnAceptar = new JCButton("Aceptar","Aplicar.png");
-	    JButton btnNegar = new JCButton("Negar","Delete.png");
+	    JButton btnAceptar = new JCButton("Aceptar","Aplicar.png","Azul");
+	    JButton btnNegar = new JCButton("Negar","Delete.png","Azul");
 	    
-	    JButton btnReporte = new JCButton("Prefiniquito", "Report.png");
+	    JButton btnReporte = new JCButton("Prefiniquito", "Report.png","Azul");
 	    
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Cat_Autorizacion_De_Finiquitos()	{

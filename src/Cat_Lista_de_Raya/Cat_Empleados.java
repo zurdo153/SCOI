@@ -116,6 +116,7 @@ import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
 import Obj_Lista_de_Raya.Obj_Sueldos;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
@@ -139,18 +140,16 @@ public class Cat_Empleados extends JFrame{
 	
 	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
 	
-	JTextField txtFolioEmpleado = new Componentes().text( new JCTextField(), "Folio de Empleado", 9, "Int");
+	JTextField txtFolioEmpleado = new Componentes().text( new JCTextField(), "Folio Colaborador", 9, "Int");
 	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 70, "String");
 	JTextField txtApPaterno = new Componentes().text( new JTextField(), "Apellido Paterno", 20, "String");
 	JTextField txtApMaterno = new Componentes().text( new JTextField(), "Apellido Materno", 20, "String");
 	JTextField txtFechaActualizacion = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
-	JTextField txtPensionAli = new Componentes().text(new JTextField(), "Pension Alimenticia", 15, "Double");
 	
-	JTextField txtHorario = new JTextField();
-	JTextField txtHorario2 = new JTextField();
-	JTextField txtHorario3 = new JTextField();
 	
-	JTextField txtImss = new Componentes().text( new JTextField(), "Número de Seguro Social", 11, "Int");
+
+	
+	
 	JTextField txtTelefono_Familiar = new Componentes().text( new JTextField(), "Teléfono Familiar", 10, "Int");
 	JTextField txtTelefono_Propio = new Componentes().text( new JTextField(), "Teléfono Propio", 10, "Int");
 	JTextField txtTelefono_Cuadrante = new JTextField();  
@@ -160,19 +159,35 @@ public class Cat_Empleados extends JFrame{
 	JTextField txtBaja = new JTextField();
 	JTextField txtColonia = new Componentes().text( new JTextField(), "Colonia", 30, "String");
 	JTextField txtCalle = new Componentes().text( new JTextField(), "Calle", 30, "String");
-	JTextField txtDescanso = new JTextField();
-	JTextField txtDobla = new JTextField();
-	JTextField txtFechaUltimasVacaciones = new JTextField();
+	
+	JTextField txtDescanso               = new Componentes().text(new JCTextField(),"Dia De Descanso", 100, "String");
+	JTextField txtDobla                  = new Componentes().text(new JCTextField(),"Dia Dobla", 100, "String");
+	JTextField txtFechaUltimasVacaciones  = new Componentes().text(new JCTextField(),"Ultimas Vaciones", 100, "String");
 	JTextField txtFechaIncapacidad = new JTextField();
-	JTextField txtNumeroInfonavit = new Componentes().text(new JTextField(), "Número de Infonavit", 15, "Int");
+	
+	JTextField txtImss                   = new Componentes().text(new JCTextField(),"Número de Seguro Social", 11, "Int");
+	JTextField txtNumeroInfonavit        = new Componentes().text(new JCTextField(), "Número de Infonavit", 15, "Int");
 	
 	String Departamentos[] = new Obj_Departamento().Combo_Departamento();
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbDepartamento = new JComboBox(Departamentos);  
 	
-	JTextField txtSalarioDiario = new Componentes().text(new JTextField(), "Salario Diario", 15, "Double");
-	JTextField txtSalarioDiarioIntegrado = new Componentes().text(new JTextField(), "Salario Diario Integrado", 15, "Double");
-	JTextField txtFormaDePago = new Componentes().text(new JTextField(), "Forma de Pago",  15, "String");
+	JTextField txtHorario                = new Componentes().text(new JCTextField(), "Horario Principal Asignado",300, "String");
+	JTextField txtHorario2               = new Componentes().text(new JCTextField(), "Horario Secundario Asignado",300, "String");
+	JTextField txtHorario3               = new Componentes().text(new JCTextField(), "Horario Terciario Asignado",300, "String");
+	
+	
+	JTextField txtSalarioDiario          = new Componentes().text(new JCTextField(), "Salario Diario"          , 15, "Double");
+	JTextField txtSalarioDiarioIntegrado = new Componentes().text(new JCTextField(), "Salario Diario Integrado", 15, "Double");
+	JTextField txtPAsistencia            = new Componentes().text(new JCTextField(), "Asistencia"              , 15, "Double");
+	JTextField txtPPuntualidad           = new Componentes().text(new JCTextField(), "Puntualidad"             , 15, "Double");
+	
+	JTextField txtInfonavit              = new Componentes().text(new JCTextField(), "Descuento a Infonavit"   , 15, "Double");
+	JTextField txtDInfonacot             = new Componentes().text(new JCTextField(), "Infonacot"               , 15, "Double");
+	JTextField txtPensionAli             = new Componentes().text(new JCTextField(), "Pension Alimenticia"     , 15, "Double");
+	JTextField txtTarjetaNomina          = new Componentes().text(new JCTextField(), "Tarjeta de Nómina"       , 19, "Int"   );
+	JTextField txtultimousuariomod       = new Componentes().text(new JCTextField(), "Último Usuario Actualizó",300, "String");
+	JTextField txtFormaDePago            = new Componentes().text(new JCTextField(), "Forma de Pago"           , 15, "String");
 	
 	JToggleButton btnTrueFoto = new JToggleButton("Para actualizar la foto Presiona aquí !!!");
 	
@@ -180,16 +195,9 @@ public class Cat_Empleados extends JFrame{
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
-	
 	String puesto[] = new Obj_Puestos().Combo_Puesto();
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbPuesto = new JComboBox(puesto);
-	
-//	 String[] tooltips = { "Javanese ", "Japanese ", "Latin " };
-//	 String[] tooltips = new Obj_Turno().Combo_Turno();
-//	String turno[] = new Obj_Turno().Combo_Turno();
-//	@SuppressWarnings("rawtypes")
-//	JComboBox cmbTurno = new JComboBox(turno);
 	
 	String sueldo[] = new Obj_Sueldos().Combo_Sueldo();
 	@SuppressWarnings("rawtypes")
@@ -202,10 +210,7 @@ public class Cat_Empleados extends JFrame{
 	String rango_prestamo[] = new Obj_Rango_De_Prestamos().Combo_Prestamos();
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbPrestamos = new JComboBox(rango_prestamo);
-	
-	JTextField txtInfonavit = new Componentes().text(new JTextField(), "Descuento a Infonavit", 15, "Double");
-	JTextField txtTarjetaNomina = new Componentes().text(new JTextField(), "Tarjeta de Nómina", 19, "Int");
-	
+
 	String TipoBanco[] = new Obj_Tipo_De_Bancos().Combo_Tipo_Banco_Empleado();
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbTipoBancos = new JComboBox(TipoBanco);
@@ -223,41 +228,39 @@ public class Cat_Empleados extends JFrame{
 	
 	JCheckBox chb_cuadrante_parcial = new JCheckBox("Permite Cuadrante Parcial",false);
 	
-	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
-	JButton btnFiltro = new JButton(new ImageIcon("Iconos/users_icon&16.png"));
-	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
-	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
-	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
-	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
-	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
-	JButton btnVerificar = new JButton("Verificar Nombre");
-	JButton btnHorario = new JButton(".");
+	JCButton btnBuscar   = new JCButton("Buscar","buscar.png","Azul");
+	JCButton btnFiltro   = new JCButton("Filtro","Filter-List-icon16.png","Azul");
+	JCButton btnNuevo    = new JCButton("Nuevo","Nuevo.png","Azul");
+	JCButton btnEditar   = new JCButton("Editar","editara.png","Azul");
+	JCButton btnSalir    = new JCButton("Salir","salir16.png","Azul");
+	JCButton btnGuardar  = new JCButton("Guardar","Guardar.png","Azul");
+	JCButton btnDeshacer = new JCButton("Deshacer","deshacer16.png","Azul");
+	JCButton btnVerificar= new JCButton("Verificar Nombre Del Nuevo Colaborador","","Azul");
+	JButton btnHorario   = new JButton(".");
 	JButton btnHorario2 = new JButton(".");
 	JButton btnHorario3 = new JButton(".");
 	JButton btnHorarioNew = new JButton("new");
 	JButton btnFechaUltimasVacaciones = new JButton();
 	JButton btnFechaIncapacidad = new JButton();
-
+	JButton btnFiniquito  = new JButton();
+	
 	JButton btnFoto = new JButton();
 	JButton btnStatus = new JButton();
 	JButton btnExaminar = new JButton("Examinar");
 	JButton btnCamara = new JButton(new ImageIcon("Iconos/camara_icon&16.png"));
 	
-	JButton btnImp_Datos_Completos = new JButton("Informacion",new ImageIcon("Imagen/informacion-del-usuario-icono-8370-16.png"));
-	JButton btnContratacion = new JButton("Contratacion",new ImageIcon("Imagen/contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png"));
-	JButton btnDocumentacion = new JButton("Documentación",new ImageIcon("imagen/carpeta-de-correo-icono-4002-16.png"));
-	JButton btnAsistencia_Empleado =new JButton("Asistencia",new ImageIcon("Imagen/archivo-icono-8809-16.png")); 
-	JButton btnCortes =new JButton("Cortes",new ImageIcon("Imagen/dinero-icono-8797-16.png")); 
-	JButton btn_plantilla = new JButton("R.Plantilla",new ImageIcon ("Imagen/plan-icono-5073-16.png"));
-	JButton btn_R_horarios = new JButton("R.Horarios",new ImageIcon("Imagen/horas-de-reloj-de-alarma-icono-5601-16.png"));
-	JButton btnIncontratables = new JButton("No Contratables",new ImageIcon("Imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
+	JCButton btnImp_Datos_Completos = new JCButton("Informacion","informacion-del-usuario-icono-8370-16.png","Azul");
+	JCButton btnContratacion        = new JCButton("Contratacion","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png","Azul");
+	JCButton btnDocumentacion       = new JCButton("Documentación","carpeta-de-correo-icono-4002-16.png","Azul");
+	JCButton btnAsistencia_Empleado = new JCButton("Asistencia","archivo-icono-8809-16.png","Azul"); 
+	JCButton btnCortes              = new JCButton("Cortes","dinero-icono-8797-16.png","Azul"); 
+	JCButton btnIncontratables      = new JCButton("No Contratables","tarjeta-de-informacion-del-usuario-icono-7370-16.png","Azul");
 
-	JButton btnLicencias = new JButton("R.Licencias",new ImageIcon("Imagen/truck-icon.png"));
-	JButton btnCumpleaños_del_Mes = new JButton("R.Cumpleaños",new ImageIcon("Imagen/cookies-tarta-de-cumpleanos-icono-9840-16.png"));
-	JButton btnAltasBajas = new JButton("R.Altas/Bajas",new ImageIcon("imagen/bajas_altas_16p.png"));
-	
-	JButton btnBaja = new JButton("No contratables");
-
+	JCButton btnLicencias           = new JCButton("R.Licencias","truck-icon.png","Azul");
+	JCButton btnCumpleaños_del_Mes  = new JCButton("R.Cumpleaños","cookies-tarta-de-cumpleanos-icono-9840-16.png","Azul");
+	JCButton btnAltasBajas          = new JCButton("R.Altas/Bajas","bajas_altas_16p.png","Azul");
+	JCButton btn_plantilla          = new JCButton("R.Plantilla","plan-icono-5073-16.png","Azul");
+	JCButton btn_R_horarios         = new JCButton("R.Horarios","horas-de-reloj-de-alarma-icono-5601-16.png","Azul");
 	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
@@ -286,7 +289,7 @@ public class Cat_Empleados extends JFrame{
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbEscolaridad = new JComboBox(escolaridad);
 	
-	String presencia_fisica[] = {"","APLICA","NO APLICA"};
+	String presencia_fisica[] = {"Aplica","No Alica"};
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbPresenciaFisica = new JComboBox(presencia_fisica);
 	
@@ -314,7 +317,7 @@ public class Cat_Empleados extends JFrame{
 	}
 	
 	public void getContenedor(){
-		this.setSize(975,730);
+		this.setSize(1024,768);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -324,7 +327,7 @@ public class Cat_Empleados extends JFrame{
 		btnFechaUltimasVacaciones.setEnabled(false);
 		txtFechaIncapacidad.setEnabled(false);
 		btnFechaIncapacidad.setEnabled(false);
-		btnBaja.setEnabled(false);
+		btnFiniquito.setEnabled(false);
 //		------------------------------------------------------------------------------
 //		efectos de bordes
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
@@ -357,51 +360,43 @@ public class Cat_Empleados extends JFrame{
 		this.btnFechaUltimasVacaciones.setToolTipText("Alimentacion de vacaciones");
 		this.btnFechaIncapacidad.setToolTipText("Alimentacion de incapacidad");
 			
-		this.txtHorario.setToolTipText("Horario");
-		this.txtHorario2.setToolTipText("Segundo Horario");
-		this.txtHorario3.setToolTipText("Tercer Horario");
-		
 		this.txaObservaciones.setBorder(BorderFactory.createTitledBorder(blackline));
 		
 		this.bgHorarios.add(rbHorario);
 		this.bgHorarios.add(rbHorario2);
 		this.bgHorarios.add(rbHorario3);
-
-		int x = 20, y=20, ancho=140;
 		
 		this.txtFechaNacimiento.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		this.txtIngreso.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		this.txtIngresoImss.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		this.txtVencimientoLicencia.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		
-		txtHorario.setFont(new Font("ARIAL", Font.ITALIC, 9));
-		txtHorario2.setFont(new Font("ARIAL", Font.ITALIC, 9));
-		txtHorario3.setFont(new Font("ARIAL", Font.ITALIC, 9));
+
 		
-		panel.add(btnImp_Datos_Completos).setBounds(x-5,y,128,x);
-		panel.add(btnContratacion).setBounds(x+130,y,128,x);
-		panel.add(btnDocumentacion).setBounds(x+265,y,128,x);
-		panel.add(btnAsistencia_Empleado).setBounds(x+400,y,128,x);
-		panel.add(btnCortes).setBounds(x+535,y,128,x);
+		int x = 11, y=20, ancho=140,width=155,height=20,sep=167;
+		panel.add(btnImp_Datos_Completos).setBounds  (x     ,y    ,width,height);
+		panel.add(btnContratacion).setBounds         (x+=sep,y    ,width,height);
+		panel.add(btnDocumentacion).setBounds        (x+=sep,y    ,width,height);
+		panel.add(btnAsistencia_Empleado).setBounds  (x+=sep,y    ,width,height);
+		panel.add(btnCortes).setBounds               (x+=sep,y    ,width,height);
+		panel.add(btnIncontratables).setBounds       (x+=sep,y    ,width,height);
 		
-		panel.add(btn_plantilla).setBounds(x+670,y,128,x);
-		panel.add(btnIncontratables).setBounds(x*2+ancho*3+ancho+225,y,130,x);
-		panel.add(btnLicencias).setBounds(x-5,y+=25,128,x);
-		panel.add(btnCumpleaños_del_Mes).setBounds(x+130,y,128,x);
-		panel.add(btnAltasBajas).setBounds(x+265,y,128,x);
-		panel.add(btn_R_horarios).setBounds(x+400,y,128,x);
+        x=10;
+		panel.add(btnLicencias).setBounds            (x     ,y+=27,width,height);
+		panel.add(btnCumpleaños_del_Mes).setBounds   (x+=sep,y    ,width,height);
+		panel.add(btnAltasBajas).setBounds           (x+=sep,y    ,width,height);
+		panel.add(btn_R_horarios).setBounds          (x+=sep,y    ,width,height);
+		panel.add(btn_plantilla).setBounds           (x+=sep,y    ,width,height);
 		
-		
-		y=y+=40;
+		x=20; y=y+=38;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
-		panel.add(lblDatosPersonales).setBounds(10,y-15,ancho*7-30,215);
+		panel.add(lblDatosPersonales).setBounds(10,y-15,997,215);
 		panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);
 		panel.add(txtFolioEmpleado).setBounds(x+ancho-40,y,ancho-15,20);
 		
-		panel.add(btnBuscar).setBounds(x+ancho+ancho-12,y,32,20);
-		panel.add(btnFiltro).setBounds(x+ancho+ancho+20,y,32,20);
+		panel.add(btnBuscar).setBounds(x+ancho+ancho-47,y,100,20);
+		panel.add(btnFiltro).setBounds(x+ancho+ancho+55,y,100,20);
 
-		panel.add(btnNuevo).setBounds(x+ancho+ancho+51,y,ancho-49,20);
 	
 		panel.add(btnFoto).setBounds(x*2+ancho*5,y-5,ancho+55,160);
 		
@@ -421,10 +416,9 @@ public class Cat_Empleados extends JFrame{
 				panel.add(new JLabel("Ap. Materno:")).setBounds(x+450,y,ancho,20);
 				panel.add(txtApMaterno).setBounds(x+(ancho*3)+110,y,ancho-15,20);
 		
-		panel.add(btnVerificar).setBounds(x+(ancho*4)+100, y,25,20);
-		
-		panel.add(new JLabel("F. de Nacimiento:")).setBounds(x,y+=25, ancho, 20);
-		panel.add(txtFechaNacimiento).setBounds(x+ancho-40,y,125,20);
+		panel.add(btnVerificar).setBounds(x+ancho-40,y+=25, 335, 20);
+		panel.add(new JLabel("F. Nacimiento:")).setBounds(x+450,y,ancho,20);
+		panel.add(txtFechaNacimiento).setBounds(x+(ancho*3)+110,y,ancho-15,20);
 
 		panel.add(new JLabel("Calle y N°:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtCalle).setBounds(x+ancho-40,y,ancho-15,20);
@@ -462,138 +456,123 @@ public class Cat_Empleados extends JFrame{
 		
 		
 		
-//Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
-		panel.add(lblLaboral).setBounds(10,y+=50,ancho*7-30,220);
+//TODO Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
+		x=17 ;y=285;width=340;height=20;sep=120;
+		panel.add(lblLaboral).setBounds                      (x-7         ,y     ,997     ,220    );
+		panel.add(new JLabel("Horario:")).setBounds          (x           ,y+=15 ,width   ,height );
+		panel.add(btnHorarioNew).setBounds                   (x+50        ,y     ,height  ,height );
+		panel.add(btnHorario).setBounds                      (x+70        ,y     ,height  ,height );
+		panel.add(lblFolioHorario1).setBounds                (x+sep-30    ,y     ,height  ,height );
+		panel.add(txtHorario).setBounds                      (x+sep       ,y     ,width   ,height );
+		panel.add(rbHorario).setBounds                       (x+460       ,y     ,height  ,height );
+	    panel.add(new JLabel("Horario 2:")).setBounds        (x           ,y+=25 ,width   ,height );
+		panel.add(btnHorario2).setBounds                     (x+sep-50    ,y     ,height  ,height );
+		panel.add(lblFolioHorario2).setBounds                (x+sep-30    ,y     ,height  ,height );
+		panel.add(txtHorario2).setBounds                     (x+sep       ,y     ,width   ,height );
+		panel.add(rbHorario2).setBounds                      (x+460       ,y     ,height  ,height );
+	    panel.add(new JLabel("Horario 3:")).setBounds        (x           ,y+=25 ,width   ,height );
+		panel.add(btnHorario3).setBounds                     (x+70        ,y     ,height  ,height );
+		panel.add(lblFolioHorario3).setBounds                (x+sep-30    ,y     ,height  ,height );
+		panel.add(txtHorario3).setBounds                     (x+sep       ,y     ,width   ,height );
+		panel.add(rbHorario3).setBounds                      (x+460       ,y     ,height  ,height );
+		panel.add(new JLabel("Puesto:")).setBounds           (x           ,y+=25 ,width   ,height );
+		panel.add(cmbPuesto).setBounds                       (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Departamento:")).setBounds     (x           ,y+=25 ,width   ,height );
+		panel.add(cmbDepartamento).setBounds                 (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Establecimiento:")).setBounds  (x           ,y+=25 ,width   ,height );
+		panel.add(cmbEstablecimiento).setBounds              (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("N° Seguro Social:")).setBounds (x           ,y+=25 ,width/2 ,height );
+		panel.add(txtImss).setBounds                         (x+sep       ,y     ,width/2 ,height );
+		panel.add(cmbActivo_Inactivo).setBounds              (x+290       ,y     ,width/2 ,height );
+		panel.add(new JLabel("N° Infonavit:")).setBounds     (x           ,y+=25 ,width   ,height );
+		panel.add(txtNumeroInfonavit).setBounds              (x+sep       ,y     ,width/2 ,height );
+		panel.add(new JLabel("Últ.Vacaciones:")).setBounds   (x+290       ,y     ,width/2 ,height );
+		panel.add(txtFechaUltimasVacaciones).setBounds       (x+365       ,y     ,95      ,height );
+		panel.add(btnFechaUltimasVacaciones).setBounds       (x+462       ,y     ,height  ,height );
 		
-		panel.add(new JLabel("Horario:")).setBounds(x,y+=15,ancho,20);
-		panel.add(btnHorarioNew).setBounds(x+ancho-83,y+3,17,17);
-		panel.add(btnHorario).setBounds(x+ancho-63,y+3,17,17);
-		panel.add(lblFolioHorario1).setBounds(x+ancho-40,y+3,20,15);
-		panel.add(txtHorario).setBounds(x+ancho-20,y,ancho*2+60,20);
-		panel.add(rbHorario).setBounds(x+460,y,20,20);
+		x=515 ;y=300;width=150;sep=100;
+		panel.add(new JLabel("Tipo de horario:")).setBounds  (x           ,y     ,width   ,height );
+		panel.add(cmbHorarioRotativo).setBounds              (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Descanso:")).setBounds         (x           ,y+=25 ,width   ,height );
+		panel.add(txtDescanso).setBounds                     (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Día Dobla:")).setBounds        (x           ,y+=25 ,width   ,height );
+		panel.add(txtDobla).setBounds                        (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Vence La Licencia:")).setBounds(x           ,y+=25 ,width   ,height );
+		panel.add(txtVencimientoLicencia).setBounds          (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Fecha Ingreso:")).setBounds    (x           ,y+=25 ,width   ,height );
+		panel.add(txtIngreso).setBounds                      (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Fecha Baja:")).setBounds       (x           ,y+=25 ,width   ,height );
+		panel.add(txtBaja).setBounds                         (x+sep       ,y     ,width-20,height );
+		panel.add(btnFiniquito).setBounds                    (x+sep+130   ,y     ,height  ,height );
+		panel.add(new JLabel("Ingreso IMSS:")).setBounds     (x           ,y+=25 ,width   ,height );
+		panel.add(txtIngresoImss).setBounds                  (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Última incapacidad:")).setBounds(x          ,y+=25 ,width   ,height );
+		panel.add(txtFechaIncapacidad).setBounds             (x+sep       ,y     ,width-20,height );
+		panel.add(btnFechaIncapacidad).setBounds             (x+sep+130   ,y     ,height  ,height );
 		
-//		panel.add(btnStatus).setBounds(x+ancho*5+20,y-5,ancho+60,180);
-		panel.add(new JLabel("Contrato:")).setBounds(x+ancho*5+20,y,ancho-50,20);
-		panel.add(cmbContratacion).setBounds(x+ancho*5+80,y,ancho,20);
+		x=800;y=300;sep=45;
+		panel.add(btnStatus).setBounds                       (x+45        ,y     ,150     ,145    );
+		panel.add(new JLabel("Estatus:")).setBounds          (x           ,y+=150,ancho   ,height );
+		panel.add(cmbStatus).setBounds                       (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Contrato:")).setBounds         (x           ,y+=25 ,ancho   ,height );
+		panel.add(cmbContratacion).setBounds                 (x+sep       ,y     ,width   ,height );
 		
-		panel.add(new JLabel("Tipo de horario:")).setBounds(x+480, y, ancho+10, 20);
-		panel.add(cmbHorarioRotativo).setBounds(x+ancho+420,y, ancho+10, 20);
+//TODO Percepciones y Deducciones ------------------------------------------------------------------------------------------------------------------------------------------		
+		x=17 ;y=505;sep=87;
+		panel.add(lblPercepciones).setBounds                   (x-7  ,y     ,700  ,195    );
+		panel.add(new JLabel("Salario Diario:")).setBounds     (x    ,y+=15 ,width,height );
+		panel.add(txtSalarioDiario).setBounds                  (x+sep,y     ,width,height );
+		panel.add(new JLabel("Salario D.I:")).setBounds        (x    ,y+=25 ,width,height );
+		panel.add(txtSalarioDiarioIntegrado).setBounds         (x+sep,y     ,width,height );
+		panel.add(new JLabel("Sueldo:")).setBounds             (x    ,y+=25 ,width,height );
+		panel.add(cmbSueldo).setBounds                         (x+sep,y     ,width,height );
+		panel.add(new JLabel("Bono:")).setBounds               (x    ,y+=25 ,width,height );
+		panel.add(cmbBono).setBounds                           (x+sep,y     ,width,height );
+		panel.add(new JLabel("Asistencia:")).setBounds         (x    ,y+=25 ,width,height );
+		panel.add(txtPAsistencia).setBounds                    (x+sep,y     ,width,height );
+		panel.add(new JLabel("Puntualidad:")).setBounds        (x    ,y+=25 ,width,height );
+		panel.add(txtPPuntualidad).setBounds                   (x+sep,y     ,width,height );
+		panel.add(new JLabel("Presencia Fisica:")).setBounds   (x    ,y+=25 ,width,height );
+		panel.add(cmbPresenciaFisica).setBounds                (x+sep,y     ,width,height );
 		
-		panel.add(new JLabel("Horario 2:")).setBounds(x,y+=25,ancho,20);
-		panel.add(btnHorario2).setBounds(x+ancho-63,y,17,17);
-		panel.add(lblFolioHorario2).setBounds(x+ancho-40,y,20,15);
-		panel.add(txtHorario2).setBounds(x+ancho-20,y,ancho*2+60,20);
-		panel.add(rbHorario2).setBounds(x+460,y,20,20);
+		x=270; y=520; sep=97;
+		panel.add(new JLabel("Infonavit:")).setBounds          (x    ,y     ,width,height );
+		panel.add(txtInfonavit).setBounds                      (x+sep,y     ,width,height );
+		panel.add(new JLabel("Infonacot:")).setBounds          (x    ,y+=25 ,width,height );
+		panel.add(txtDInfonacot).setBounds                     (x+sep,y     ,width,height );
+		panel.add(new JLabel("Pensión Alimenticia:")).setBounds(x    ,y+=25 ,width,height );
+		panel.add(txtPensionAli).setBounds                     (x+sep,y     ,width,height );
+		panel.add(new JLabel("Rango de Prestamo:")).setBounds  (x    ,y+=25 ,width,height );
+		panel.add(cmbPrestamos).setBounds                      (x+sep,y     ,width,height );
+		panel.add(new JLabel("Tipo de Bancos:")).setBounds     (x    ,y+=25 ,width,height );
+		panel.add(cmbTipoBancos).setBounds                     (x+sep,y     ,width,height );
+		panel.add(new JLabel("Tarjeta de Nómina:")).setBounds  (x    ,y+=25 ,width,height );
+		panel.add(txtTarjetaNomina).setBounds                  (x+sep,y     ,width,height );
+		panel.add(new JLabel("Forma de Pago:")).setBounds      (x    ,y+=25 ,width,height );
+		panel.add(txtFormaDePago).setBounds                    (x+sep,y     ,width,height );		
 		
-		panel.add(new JLabel("Descanso:")).setBounds(x+500,y,ancho,20);
-		panel.add(txtDescanso).setBounds(x+ancho+420,y,ancho+10,20);
+		x=535; y=y-=150;sep=95;
+		panel.add(chbGafete).setBounds                         (x    ,y     ,width,height );
+		panel.add(chbFuente_Sodas).setBounds                   (x    ,y+=25 ,width,height );
+		panel.add(new JLabel("Última Actualización:")).setBounds(x   ,y+=25 ,width,height );
+		panel.add(txtFechaActualizacion).setBounds              (x   ,y+=25 ,width,height );
+		panel.add(new JLabel("Último Usuario Actualizó:")).setBounds(x,y+=25,width,height );
+		panel.add(txtultimousuariomod).setBounds               (x    ,y+=25 ,width,height );
+		panel.add(chb_cuadrante_parcial).setBounds             (x    ,y+=25 ,width,height );
+		panel.add(Observasiones).setBounds                     (x+180,y-158 ,290  ,187    );
 		
-		panel.add(btnStatus).setBounds(x+ancho*5+20,y-5,ancho+60,180);
+		x=17 ;y=708;width=110;sep=218;
+		panel.add(btnNuevo).setBounds                          (x     ,y    ,width,height );
+		panel.add(btnEditar).setBounds                         (x+=sep,y    ,width,height );
+		panel.add(btnGuardar).setBounds                        (x+=sep,y    ,width,height );
+		panel.add(btnDeshacer).setBounds                       (x+=sep,y    ,width,height );
+		panel.add(btnSalir).setBounds                          (x+=sep,y    ,width,height );
 		
-		panel.add(new JLabel("Horario 3:")).setBounds(x,y+=25,ancho,20);
-		panel.add(btnHorario3).setBounds(x+ancho-63,y,17,17);
-		panel.add(lblFolioHorario3).setBounds(x+ancho-40,y,20,15);
-		panel.add(txtHorario3).setBounds(x+ancho-20,y,ancho*2+60,20);
-		panel.add(rbHorario3).setBounds(x+460,y,20,20);
-		
-		panel.add(new JLabel("Día Dobla:")).setBounds(x+500,y,ancho,20);
-		panel.add(txtDobla).setBounds(x+ancho+420,y,ancho+10,20);
-		
-		panel.add(new JLabel("Fecha Ingreso:")).setBounds(x,y+=25, ancho, 20);
-		panel.add(txtIngreso).setBounds(x+(ancho)-40,y,130,20);
-		
-		panel.add(chb_cuadrante_parcial).setBounds(x+ancho+175,y,150,20);
-		
-		panel.add(new JLabel("Establecimiento:")).setBounds(x+470,y,ancho,20);
-		panel.add(cmbEstablecimiento).setBounds(x+ancho+410,y,ancho+20,20);
-		
-		panel.add(new JLabel("Status:")).setBounds(x,y+=25,ancho,20);
-		panel.add(cmbStatus).setBounds(x+ancho-40,y,ancho-15,20);
-		
-		panel.add(new JLabel("Fecha Baja:")).setBounds(x+250,y, ancho, 20);
-		panel.add(txtBaja).setBounds(x+ancho+180,y,115,20);
-		panel.add(btnBaja).setBounds(x+ancho+295,y,25,20);
-
-		panel.add(new JLabel("Departamento:")).setBounds(x+470,y,ancho,20);
-		panel.add(cmbDepartamento).setBounds(x+(ancho*3)+130,y,ancho+20,20);
-		
-		panel.add(new JLabel("N° Infonavit:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtNumeroInfonavit).setBounds(x+ancho-40,y,ancho+20,20);
-		
-		panel.add(new JLabel("Puesto:")).setBounds(x+290,y,ancho,20);
-		panel.add(cmbPuesto).setBounds(x+330,y,ancho*2+100,20);
-		
-		panel.add(new JLabel("N° Seguro Social:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtImss).setBounds(x+ancho-40,y,ancho+35,20);
-		panel.add(cmbActivo_Inactivo).setBounds(x+ancho+135,y,180,20);
-		
-		panel.add(new JLabel("Ingreso IMSS:")).setBounds(x+470,y,ancho,20);
-		panel.add(txtIngresoImss).setBounds(x+(ancho*3)+130,y,ancho+20,20);
-		
-		panel.add(new JLabel("Vencimiento de licencia:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtVencimientoLicencia).setBounds(x+ancho-20,y,ancho-20,20);
-		
-		panel.add(new JLabel("Ultimas vacaciones:")).setBounds(x+ancho+105,y,ancho,20);
-		panel.add(txtFechaUltimasVacaciones).setBounds(x+(ancho*2)+65,y,ancho-40,20);
-		panel.add(btnFechaUltimasVacaciones).setBounds(x+(ancho*3)+25,y,25,20);
-		
-		panel.add(new JLabel("Ultima incapacidad:")).setBounds(x+(ancho*3)+55,y,ancho,20);
-		panel.add(txtFechaIncapacidad).setBounds(x+(ancho*3)+145,y,ancho-40,20);
-		panel.add(btnFechaIncapacidad).setBounds(x+(ancho*4)+105,y,25,20);
-//Percepciones y Deducciones ------------------------------------------------------------------------------------------------------------------------------------------		
-		panel.add(lblPercepciones).setBounds(10,y+=30,ancho*4+60,170);
-		panel.add(new JLabel("Salario Diario:")).setBounds(x,y+=15,ancho,20);
-		panel.add(txtSalarioDiario).setBounds(x+ancho-40,y,ancho,20);
-		
-		panel.add(chbGafete).setBounds(x+ancho*4-50,y,ancho-50,20);
-		
-		panel.add(new JLabel("S. Diario Integrado:")).setBounds(x+260,y,ancho,20);
-		panel.add(txtSalarioDiarioIntegrado).setBounds(x+ancho+220,y,ancho,20);
-		
-		panel.add(new JLabel("Forma de Pago:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtFormaDePago).setBounds(x+ancho-40,y,ancho,20);
-		
-		panel.add(new JLabel("Sueldo:")).setBounds(x+260,y,ancho,20);
-		panel.add(cmbSueldo).setBounds(x+ancho+220,y,ancho,20);
-		
-		panel.add(chbFuente_Sodas).setBounds(x+ancho*4-50,y,ancho-50,20);
-		
-		panel.add(new JLabel("Bono:")).setBounds(x,y+=25,ancho,20);
-		panel.add(cmbBono).setBounds(x+ancho-40,y,ancho,20);
-		
-		panel.add(new JLabel("Rango de Prestamo:")).setBounds(x+260,y,ancho,20);
-		panel.add(cmbPrestamos).setBounds(x+ancho+220,y,ancho,20);
-		
-		panel.add(new JLabel("Pensión Alimenticia:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtPensionAli).setBounds(x+ancho-40,y,ancho,20);
-		
-		panel.add(new JLabel("Infonavit:")).setBounds(x+260,y,ancho,20);
-		panel.add(txtInfonavit).setBounds(x+ancho+220,y,ancho,20);
-		
-		panel.add(new JLabel("Tarjeta de Nomina:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtTarjetaNomina).setBounds(x+ancho-40,y,ancho,20);
-		
-		panel.add(new JLabel("Tipo de Bancos:")).setBounds(x+260,y,ancho,20);
-		panel.add(cmbTipoBancos).setBounds(x+ancho+220,y,ancho,20);
-		
-		panel.add(new JLabel("Presencia Fisica:")).setBounds(x,y+=25,ancho,20);
-		panel.add(cmbPresenciaFisica).setBounds(x+ancho-40,y,ancho,20);
-		
-		panel.add(new JLabel("Ultima actualización:")).setBounds(x+250,y,ancho,20);
-		panel.add(txtFechaActualizacion).setBounds(x+ancho+220,y,ancho,20);
-
-		
-		panel.add(btnEditar).setBounds(x-10,y+=30,ancho-43,20);
 		btnEditar.setEnabled(false);
-		panel.add(btnGuardar).setBounds(x+ancho-30,y,ancho-43,20);
-		panel.add(btnDeshacer).setBounds(x+ancho+ancho+14,y,ancho-43,20);
-		panel.add(btnSalir).setBounds(x+ancho+ancho+ancho-7,y,ancho-43,20);
-		
-		panel.add(Observasiones).setBounds(x+ancho*3+198,y-163,ancho+180,180);
-		
 		txaObservaciones.setLineWrap(true); 
 		txaObservaciones.setWrapStyleWord(true);
-		
+	    cont.setBackground(new java.awt.Color(255, 255, 255));
+	       
 		btnEditar.addActionListener(editar);
 		btnBuscar.addActionListener(buscar);
 		btnGuardar.addActionListener(guardar);
@@ -661,6 +640,7 @@ public class Cat_Empleados extends JFrame{
 		txtFolioEmpleado.setEditable(true);
 		txtFolioEmpleado.setEnabled(true);
 		txtTelefono_Cuadrante.setEnabled(false);
+		txtultimousuariomod.setEditable(false);
 		
 		 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
          Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
@@ -996,6 +976,9 @@ public class Cat_Empleados extends JFrame{
 	
 	ActionListener buscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e){
+			txtHorario.setFont(new Font("ARIAL", Font.ITALIC, 9));
+			txtHorario2.setFont(new Font("ARIAL", Font.ITALIC, 9));
+			txtHorario3.setFont(new Font("ARIAL", Font.ITALIC, 9));
 			buscarEmpleado("");
 		}
 	};
@@ -1142,6 +1125,9 @@ public class Cat_Empleados extends JFrame{
 					txtSalarioDiarioIntegrado.setText(re.getSalario_diario_integrado()+"");
 					txtFormaDePago.setText(re.getForma_pago()+"");
 					cmbSueldo.setSelectedItem(re.getSueldo()+"");
+					txtPAsistencia.setText(re.getBono_asistencia()+"");
+					txtPPuntualidad.setText(re.getBono_puntualidad()+"");
+					txtDInfonacot.setText(re.getInfonavit()+"");
 					
 					Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscar(re.getBono());
 					cmbBono.setSelectedItem(bono.getBono()+"");
@@ -1756,6 +1742,7 @@ public void guardar_modificar_Empleado(){
 		cmbBono.setEnabled(true);
 		cmbPrestamos.setEnabled(true);
 		txtInfonavit.setEnabled(true);
+		txtDInfonacot.setEnabled(true);
 		txtTarjetaNomina.setEnabled(true);
 		cmbTipoBancos.setEnabled(true);
 		txtImss.setEnabled(true);
@@ -1788,6 +1775,8 @@ public void guardar_modificar_Empleado(){
 		
 		txtSalarioDiario.setEnabled(true);
 		txtSalarioDiarioIntegrado.setEnabled(true);
+		txtPAsistencia.setEnabled(true);
+		txtPPuntualidad.setEnabled(true);
 		txtFormaDePago.setEnabled(true);
 		
 		cmbEstadoCivil.setEnabled(true);
@@ -1808,7 +1797,8 @@ public void guardar_modificar_Empleado(){
 		cmbSueldo.setEnabled(false);                                                                       
 		cmbBono.setEnabled(false);                                                                         
 		cmbPrestamos.setEnabled(false);                                                                    
-		txtInfonavit.setEnabled(false);                                                                    
+		txtInfonavit.setEnabled(false);    
+		txtDInfonacot.setEnabled(false);
 		txtTarjetaNomina.setEnabled(false);                                                                
 		cmbTipoBancos.setEnabled(false);                                                                   
 		txtImss.setEnabled(false);                                                                         
@@ -1844,6 +1834,8 @@ public void guardar_modificar_Empleado(){
 		                                                                                                   
 		txtSalarioDiario.setEnabled(false);
 		txtSalarioDiarioIntegrado.setEnabled(false);
+		txtPAsistencia.setEnabled(false);
+		txtPPuntualidad.setEnabled(false);
 		txtFormaDePago.setEnabled(false);
 		
 		btnTrueFoto.setSelected(false);
@@ -1874,6 +1866,7 @@ public void guardar_modificar_Empleado(){
 		cmbBono.setSelectedIndex(0);
 		cmbPrestamos.setSelectedIndex(0);
 		txtInfonavit.setText("");
+		txtDInfonacot.setText("");
 		txtTarjetaNomina.setText("");
 		cmbTipoBancos.setSelectedIndex(0);
 		txtImss.setText("");
@@ -1909,6 +1902,9 @@ public void guardar_modificar_Empleado(){
 		
 		txtSalarioDiario.setText("");
 		txtSalarioDiarioIntegrado.setText("");
+		txtPAsistencia.setText("");
+		txtPPuntualidad.setText("");
+
 		txtFormaDePago.setText("");
 		txtFechaActualizacion.setText("");
 		
@@ -1918,6 +1914,7 @@ public void guardar_modificar_Empleado(){
 		
 		cmbHorarioRotativo.setSelectedIndex(0);
 		
+		txtultimousuariomod.setText("");
 		cmbSexo.setSelectedIndex(0);
 		cmbEstadoCivil.setSelectedIndex(0);
 		cmbTipoDeSangre.setSelectedIndex(0);
@@ -2009,7 +2006,7 @@ public void guardar_modificar_Empleado(){
 				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-			String Sexo ="",Estado_Civil="", NombreUsuario="";
+			String Sexo ="", NombreUsuario="";
 			String Edad = "";
 			
 				Sexo=cmbSexo.getSelectedItem()+"";
@@ -2023,8 +2020,8 @@ public void guardar_modificar_Empleado(){
 				  } catch (SQLException e1) {e1.printStackTrace();}
 			
 			new Cat_Reportes_De_Contratacion_Por_Empleado(txtFolioEmpleado.getText(), txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText(), cmbEstablecimiento.getSelectedItem().toString()
-					                                      ,cmbDepartamento.getSelectedItem().toString(),cmbPuesto.getSelectedItem().toString(), Sexo, Estado_Civil, Edad, txtCalle.getText()+", COL. "+txtColonia.getText()+", "+txtPoblacion.getText()
-					                                      ,cmbSueldo.getSelectedItem().toString(), NombreUsuario, txtHorario.getText()).setVisible(true);
+					                                      ,cmbDepartamento.getSelectedItem().toString(),cmbPuesto.getSelectedItem().toString(), Sexo,cmbEstadoCivil.getSelectedItem().toString().trim(), Edad, txtCalle.getText()+", COL. "+txtColonia.getText()+", "+txtPoblacion.getText()
+					                                      ,cmbSueldo.getSelectedItem().toString(), NombreUsuario, txtHorario.getText(),new SimpleDateFormat("dd/MM/yyyy").format(txtFechaNacimiento.getDate()),cmbContratacion.getSelectedItem().toString().trim() ).setVisible(true);
 
 			}
 			}

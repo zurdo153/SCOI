@@ -13,19 +13,47 @@ import javax.swing.JButton;
 @SuppressWarnings("serial")
 public class JCButton extends JButton{
     
-    private Color gBLue         =   new Color(77,135,237);
-    private Color gBlueLight    =   new Color(110,160,239);
-    private Color gBlueDark     =   new Color(25,92,198);
+    private Color CA    =   new Color(77,135,237);
+    private Color CB    =   new Color(110,160,239);
+    private Color CD    =   new Color(25,92,198);
     
-    /** Constructor de clase */
-    public JCButton(String Texto, String Imagen){
+    public JCButton(String Texto, String Imagen, String color){
         super();
-        setBackground(gBLue);        
+        if(color.equals("Azul")){
+            CA    =   new Color(77,135,237);
+            CB    =   new Color(110,160,239);
+            CD    =   new Color(25,92,198);
+            setBackground(CA);  
+        }
+        
+        if(color.equals("AzulC")){
+            CA    =   new Color(4,187,254);
+            CB    =   new Color(167,213,255);
+            CD    =   new Color(25,92,198);
+            setBackground(CA);  
+        }
+        
+        if(color.equals("Rojo")){
+            CA    =   new Color(254,4,13);
+            CB    =   new Color(247,66,72);
+            CD    =   new Color(137,2,7);
+            setBackground(CA);  
+        }
+        
+        if(color.equals("Cafe")){
+            CA    =   new Color(135 , 65 , 5);
+            CB    =   new Color(207 ,113 ,36);
+            CD    =   new Color(72  , 34 , 3);
+            setBackground(CA);  
+        }
+        
+              
         setContentAreaFilled(false);
         setOpaque(false);
         setBorderPainted(false);
         setFont(new Font("Tahoma", 1, 12));
         setForeground(new Color(255, 255, 255));
+        
         setText(Texto);
         setIcon(new ImageIcon("Imagen/"+Imagen));
     }
@@ -35,10 +63,10 @@ public class JCButton extends JButton{
        Graphics2D g2 = (Graphics2D) g;
        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
        
-       GradientPaint gGradientPaint = new GradientPaint(0, 0, gBLue, 0, getHeight()/2, gBlueLight, true);
+       GradientPaint gGradientPaint = new GradientPaint(0, 0, CA, 0, getHeight()/2, CB, true);
 
         if (getModel().isPressed()) {
-            gGradientPaint = new GradientPaint(0, 0, gBlueDark, 0, getHeight()/2, gBLue, true);
+            gGradientPaint = new GradientPaint(0, 0, CD, 0, getHeight()/2, CA, true);
         } 
         g2.setPaint(gGradientPaint);
         g2.fill(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 10, 10));

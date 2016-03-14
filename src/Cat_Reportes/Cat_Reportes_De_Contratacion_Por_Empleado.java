@@ -15,7 +15,6 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -30,6 +29,8 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
+import Obj_Principal.JCTextField;
 
 @SuppressWarnings("serial")
 public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
@@ -52,9 +53,10 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	JTextField txtHorario = new Componentes().text(new JTextField(), "Horario",100, "String");
 	JTextField txtSueldo_Base = new Componentes().text(new JTextField(), "Sueldo Base",100, "Double");
 	JTextField txtSueldo_Letra = new Componentes().text(new JTextField(), "Sueldo En Letra",100, "String");
-	JTextField txtTemporada = new Componentes().text(new JTextField(), "Temporada Para La Se Contrato",100, "String");
-	JTextField txtTestigo1 = new Componentes().text(new JTextField(), "Nombre Completo del Testigo 1",100, "String");
-	JTextField txtTestigo2 = new Componentes().text(new JTextField(), "Nombre Completo del Testigo 2",100, "String");
+	JTextField txtTemporada = new Componentes().text(new JCTextField(), "Escriba La Temporada Para La Se Contrato",100, "String");
+	JTextField txtTestigo1 = new Componentes().text(new JCTextField(), "Escriba El Nombre Completo del Testigo 1",100, "String");
+	JTextField txtTestigo2 = new Componentes().text(new JCTextField(), "Nombre Completo del Testigo 2",100, "String");
+	JTextField txtTipoContrato = new Componentes().text(new JTextField(), "Tipo Contrato",100, "String");
 	
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
@@ -75,15 +77,13 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	JLabel JLBTestigo2 = new JLabel(new ImageIcon("Imagen/icono_testigo_16.png") );
 	
 	
-	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
+	JCButton btngenerar = new JCButton("Generar","buscar.png","Azul");
 	
 	String Cantidad_Letra="";
 	double numero=0;
 	public Cat_Reportes_De_Contratacion_Por_Empleado(String Folio,String Nombre,String Establecimiento,String Departamento,String Puesto, String Sexo, String Estado_Civil
-			                                        ,String Edad ,String Domicilio ,String Sueldo,String NombreUsuario, String Horario){
-
+			                                        ,String Edad ,String Domicilio ,String Sueldo,String NombreUsuario, String Horario, String fecha_de_ingreso, String TipoContrato){
          numero= Double.valueOf(Sueldo);
-
 	     
 		this.setSize(440, 500);
 		this.setResizable(false);
@@ -139,7 +139,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		panel.add(new JLabel("Estado Civil:")).setBounds(x+=125,y,80,a);
 		panel.add(JLBEstado_civil).setBounds(x+=60,y,a,a);
 		panel.add(txtEstadoCivil).setBounds(x+20,y,l+20,a);
-//		txtEstadoCivil.setEditable(false);
+		txtEstadoCivil.setEditable(false);
         txtEstadoCivil.setText(Estado_Civil);     
         
 		panel.add(new JLabel("Edad:")).setBounds(x+=100,y,l,a);
@@ -193,19 +193,28 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		panel.add(txtTestigo2).setBounds(x+=20,y,340,a);
 		txtTestigo2.setEditable(false);
 		txtTestigo2.setText(NombreUsuario); 
+		
+		x=15;
+        
+		panel.add(new JLabel(" Contrato:")).setBounds(x,y+=30,80,a);
+//		panel.add(JLBTestigo2).setBounds(x+=45,y,a,a);
+		panel.add(txtTipoContrato).setBounds(x+=65,y,340,a);
+		txtTipoContrato.setEditable(false);
+		txtTipoContrato.setText(TipoContrato); 
+		
        x=15;
                
 		panel.add(new JLabel("Fecha Inicio:")).setBounds(x,y+=30,l*2,a);
 		panel.add(JLBlinicio).setBounds(x+=60,y,a,a);
-		panel.add(c_inicio).setBounds(x+=20,y,80,a);
+		panel.add(c_inicio).setBounds(x+=20,y,90,a);
 		c_inicio.setEnabled(false);
 		
-		panel.add(new JLabel("Fecha Final:")).setBounds(x+=165,y,l*2,a);
+		panel.add(new JLabel("Fecha Final:")).setBounds(x+=155,y,l*2,a);
 		panel.add(JLBfin).setBounds(x+=60,y,a,a);
-		panel.add(c_final).setBounds(x+=20,y,80,a);
+		panel.add(c_final).setBounds(x+=20,y,90,a);
 		c_final.setEnabled(true);
 				
-		panel.add(btngenerar).setBounds(150, y+=80, l*2, a);
+		panel.add(btngenerar).setBounds(150, y+=50, l*2, a);
 		
 		cont.add(panel);
 		cargar_fechas();
@@ -340,7 +349,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reportes_De_Contratacion_Por_Empleado("1","MARCO ANTONIO BODART GUZMAN","SISTEMAS","SISTEMAS","LIDER SISTEMAS","MASCULINO","CASADO","35"," COL LA CUCHILLA ELDORADO,SINALOA","2025","NOMBRE COMPLETO USUARIO SCOI","8-7").setVisible(true);
+			new Cat_Reportes_De_Contratacion_Por_Empleado("1","MARCO ANTONIO BODART GUZMAN","SISTEMAS","SISTEMAS","LIDER SISTEMAS","MASCULINO","CASADO","35"," COL LA CUCHILLA ELDORADO,SINALOA","2025","NOMBRE COMPLETO USUARIO SCOI","8-7","01/06/2006","INDETERMINADO").setVisible(true);
 		}catch(Exception e){	}
 	}
 }
