@@ -8366,15 +8366,28 @@ public class BuscarSQL {
 		return proveedores;
 	}
 	
-	public boolean  existe_finiquito_vigente(int folio_finiquito){
+	public boolean  existe_finiquito_vigente(int folio_finiquito, String catalogoDependiente){
 		
 		boolean existe = false;
 		
-		String query = "select top 1 case when status='V' then 'true' "
-				+ "			else 'false' end as finiquito_vigente "
+		String query = "";
+		
+		if(catalogoDependiente.equals("FINIQUITO_NORMAL")){
+			query = "select top 1 case when status='V' then 'true' "
+				+ "					 		when status='N' then 'true' "
+				+ "						else 'false' end as finiquito_vigente "
 				+ "		from tb_finiquitos "
 				+ "		where folio_empleado_scoi = "+folio_finiquito
 				+ "		order by fecha_mov desc";
+		}else{
+			query = "select top 1 case when status='V' then 'true' "
+					+ "						else 'false' end as finiquito_vigente "
+					+ "		from tb_finiquitos "
+					+ "		where folio_empleado_scoi = "+folio_finiquito
+					+ "		order by fecha_mov desc";
+		}
+		
+		 
 		
 		Statement stmt = null;
 		try {

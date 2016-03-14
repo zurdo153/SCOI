@@ -15,10 +15,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -56,7 +59,7 @@ public class Cat_Finiquitos extends JFrame{
 	JTextField txtFolioBms 		= new Componentes().text(new JTextField(), "Folio De Empleado En Bms", 120, "String");
 	JTextField txtEmpleadoBms 	= new Componentes().text(new JTextField(), "Nombre De Empleado Bms", 120, "String");
 	
-	JButton btnLimpiarEmpleadoBms = new JCButton("Limpiar","","Azul");
+	JButton btnLimpiarEmpleadoBms = new JCButton("","deshacer16.png","Azul");
 	
 	JTextField txtFiltroAsignacion = new Componentes().text(new JCTextField(), ">> Teclee El Nombre Del Empleado <<", 120, "String");
 	
@@ -161,6 +164,7 @@ public class Cat_Finiquitos extends JFrame{
 		
 		btnNegados.addActionListener(opFiniquitosNegados);
 		btnGenerar.addActionListener(opGenerar);
+		btnLimpiarEmpleadoBms.addActionListener(opLimpiar);
 		
 		txtFolioScoi.setEditable(false);
 		txtEmpleadoScoi.setEditable(false);
@@ -170,6 +174,14 @@ public class Cat_Finiquitos extends JFrame{
 		this.setSize(790,580);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
+		
+		  ///deshacer con escape
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+        getRootPane().getActionMap().put("escape", new AbstractAction(){
+            public void actionPerformed(ActionEvent e)
+            {                 	    btnLimpiarEmpleadoBms.doClick();
+          	    }
+        });
 	}
 	
 	public void seleccionEmpleado(final JTable tb, final String nomTabla){
@@ -200,7 +212,7 @@ public class Cat_Finiquitos extends JFrame{
 				if(!txtFolioBms.getText().equals("")){
 					if(txtEmpleadoScoi.getText().equals(txtEmpleadoBms.getText())){
 						
-						finiquito_o_reporte();
+						finiquito_o_reporte("FINIQUITO_NORMAL");
 
 					}else{
 						JOptionPane.showMessageDialog(null, "Los Nombres De Los Empleados Seleccionados No Coinsiden,\n"
@@ -211,7 +223,7 @@ public class Cat_Finiquitos extends JFrame{
 				}else{
 					if(JOptionPane.showConfirmDialog(null, "Solo Se Ha Seleccionado El Empleado De La Tabla SCOI,\n¿desea Continuar Con El calculo Del Finiquitos?") == 0){
 						
-						finiquito_o_reporte();
+						finiquito_o_reporte("FINIQUITO_NORMAL");
 						
 					}
 				}
@@ -223,13 +235,13 @@ public class Cat_Finiquitos extends JFrame{
 		}
 	};
 	
-	public void finiquito_o_reporte(){
+	public void finiquito_o_reporte(String CatalogoDependiente){
 		
-		if(!new BuscarSQL().existe_finiquito_vigente(Integer.valueOf(txtFolioScoi.getText().trim()))){
+		if(!new BuscarSQL().existe_finiquito_vigente(Integer.valueOf(txtFolioScoi.getText().trim()),CatalogoDependiente)){
 			new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), establecimiento , txtFolioBms.getText()).setVisible(true);
 		}else{
 //				reporte(Integer.valueOf(Integer.valueOf(txtFolioScoi.getText().trim())));
-				JOptionPane.showMessageDialog(null, "El Finiquito Del Empleado "+txtEmpleadoScoi.getText().toString().trim()+" Ya Fue Calculado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null, "El Finiquito Del Empleado "+txtEmpleadoScoi.getText().toString().trim()+" Ya Fue Calculado\nVerifique Si Se Encuntra Entre Los Finiquitos Negados.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 		}
 	}
@@ -912,6 +924,7 @@ public class Cat_Finiquitos extends JFrame{
 		JLayeredPane panel = new JLayeredPane();
 		
 		JButton btnGenerar = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png","Azul");
+		JButton btnGenerarNegado = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png","Azul");
 		
 		JTextField txtFolio 	= new Componentes().text(new JTextField(), "Folio De Empleado En Scoi", 120, "String");
 		JTextField txtEmpleado 	= new Componentes().text(new JTextField(), "Nombre De Empleado Scoi", 120, "String");
@@ -959,14 +972,14 @@ public class Cat_Finiquitos extends JFrame{
 			this.panel.setBorder(BorderFactory.createTitledBorder( "Filtro De Finiquitos No Autorizados"));
 			
 			panel.add(txtFiltro).setBounds(70, 30, 300, 20);
-			panel.add(scroll_filtro).setBounds(20, 50, 745, 200);
+			panel.add(scroll_filtro).setBounds(20, 50, 745, 260);
 			
 			
-			panel.add(new JLabel("Empleado:")).setBounds(20, 490, 120, 20);
-			panel.add(txtFolio 	    ).setBounds(120, 490, 50, 20);
-			panel.add(txtEmpleado   ).setBounds(170, 490, 300, 20);
+			panel.add(new JLabel("Empleado:")).setBounds(20, 320, 120, 20);
+			panel.add(txtFolio 	    ).setBounds(120, 320, 50, 20);
+			panel.add(txtEmpleado   ).setBounds(170, 320, 300, 20);
 			
-			panel.add(btnGenerar).setBounds(580, 495, 185, 40);
+			panel.add(btnGenerarNegado).setBounds(580, 325, 185, 40);
 			
 			cont.add(panel);
 			
@@ -978,12 +991,12 @@ public class Cat_Finiquitos extends JFrame{
 			
 			seleccionEmpleado(tabla_filtro);
 			
-			btnGenerar.addActionListener(opGenerar);
+			btnGenerarNegado.addActionListener(opGenerarNegado);
 			
 			txtFolio.setEditable(false);
 			txtEmpleado.setEditable(false);
 			
-			this.setSize(790,580);
+			this.setSize(790,400);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 		}
@@ -992,6 +1005,8 @@ public class Cat_Finiquitos extends JFrame{
 			tb.addMouseListener(new MouseListener() {
 				public void mouseReleased(MouseEvent e) {
 					
+					txtFolio.setText(tb.getValueAt(tb.getSelectedRow(), 1).toString());
+					txtEmpleado.setText(tb.getValueAt(tb.getSelectedRow(), 2).toString());
 //						txtFolioScoi.setText(tb.getValueAt(tb.getSelectedRow(), 0).toString());
 //						txtEmpleadoScoi.setText(tb.getValueAt(tb.getSelectedRow(), 1).toString());
 //						establecimiento = tabla_filtro_scoi.getValueAt(tabla_filtro_scoi.getSelectedRow(), 2).toString().trim();
@@ -1003,11 +1018,11 @@ public class Cat_Finiquitos extends JFrame{
 			});
 		}
 		
-		ActionListener opGenerar = new ActionListener() {
+		ActionListener opGenerarNegado = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(!txtFolio.getText().equals("")){
-							finiquito_o_reporte();
+							finiquito_o_reporte("FINIQUITO_NEGADO");
 				}else{
 					JOptionPane.showMessageDialog(null, "Seleccione Un Colaborador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;

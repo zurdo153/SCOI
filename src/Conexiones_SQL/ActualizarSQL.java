@@ -3993,6 +3993,20 @@ public boolean Modificacion_De_Corte_Para_Trabajos(String fCorte, double efectiv
 		pstmt.setDouble(i+=1,vales);
 		pstmt.setDouble(i+=1,dolares);
 		
+		System.out.println(fCorte);
+		System.out.println(efectivo);
+		System.out.println(fSodas);
+		System.out.println(pines);
+		
+		System.out.println(usuario.getFolio());
+		
+		System.out.println(retirosProgramados);
+		System.out.println(cheques);
+		System.out.println(vales);
+		System.out.println(dolares);
+		
+		
+		
 		pstmt.executeUpdate();
 		con.commit();
 		

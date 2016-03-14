@@ -1254,7 +1254,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				
 				if(validaCampos().equals("")){
-						if(new ActualizarSQL().Modificacion_De_Corte_Para_Trabajos(txtFolioCorte.getText().trim(), Double.valueOf(txtTotalDeEfectivo.getText()), Double.valueOf(txtTotalFuenteDeSodas.getText()), Double.valueOf(txtTotalPines.getText()), Double.valueOf(txtTotalRetirosProgramados.getText()), Double.valueOf(txtTotalCheques.getText()), Double.valueOf(txtTotalVales.getText()), Double.valueOf(txtTotalDolares.getText()) ) ){
+						if(new ActualizarSQL().Modificacion_De_Corte_Para_Trabajos(txtFolioCorte.getText().trim(), Double.valueOf(txtTotalDeEfectivo.getText().trim()), Double.valueOf(txtTotalFuenteDeSodas.getText().trim()), Double.valueOf(txtTotalPines.getText().trim()), Double.valueOf(txtTotalRetirosProgramados.getText().trim()), Double.valueOf(txtTotalCheques.getText().trim()), Double.valueOf(txtTotalVales.getText().trim()), Double.valueOf(txtTotalDolares.getText().trim()) ) ){
 							refresh();
 							dispose();
 							JOptionPane.showMessageDialog(null, "El Corte Se Modifico Correctamente"+validaCampos(),"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));
