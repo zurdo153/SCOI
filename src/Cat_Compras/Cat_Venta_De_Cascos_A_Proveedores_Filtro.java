@@ -29,7 +29,7 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_Refrescar;
 
 @SuppressWarnings("serial")
-public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
+public class Cat_Venta_De_Cascos_A_Proveedores_Filtro extends JDialog {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	public JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla <<<", 300, "String");
@@ -80,7 +80,7 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 ////////////////////////////////////////////////////////////////	
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
-	public Cat_Pago_De_Cascos_A_Proveedores(){
+	public Cat_Venta_De_Cascos_A_Proveedores_Filtro(){
 		
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon16.png"));
@@ -124,8 +124,9 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 		public void mouseClicked(MouseEvent arg0) {
 			if(arg0.getClickCount() == 2){
     			int fila = tabla.getSelectedRow();
-    			Object folio =  tabla.getValueAt(fila, 0);
-    			Object Proveedor =  tabla.getValueAt(fila, 1);
+    			String folio =  tabla.getValueAt(fila,0).toString().trim();
+    			String Proveedor = tabla.getValueAt(fila,1).toString().trim();
+    			new Cat_Venta_De_Cascos_A_Proveedores(folio, Proveedor).setVisible(true);
     			dispose();
         	}
 		}
@@ -149,6 +150,8 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 				int fila=tabla.getSelectedRow()-1;
 				String folio = tabla.getValueAt(fila,0).toString().trim();
 				String proveedor = tabla.getValueAt(fila,1).toString().trim();
+				
+				new Cat_Venta_De_Cascos_A_Proveedores(folio, proveedor).setVisible(true);
 				dispose();
 				}
 			}
@@ -163,7 +166,7 @@ public class Cat_Pago_De_Cascos_A_Proveedores extends JDialog {
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Pago_De_Cascos_A_Proveedores().setVisible(true);
+				new Cat_Venta_De_Cascos_A_Proveedores_Filtro().setVisible(true);
 			}catch(Exception e){	}
 		}
 	

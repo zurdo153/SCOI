@@ -43,7 +43,7 @@ import Obj_Compras.Obj_Alimentacion_De_Codigos_Adicionales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
-import Obj_Compras.Obj_Pago_De_Cascos_A_Proveedores;
+import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
@@ -5250,9 +5250,11 @@ public boolean traspaso_de_movimientos_de_cascos(){
 	return true;
 }
 
-public boolean Guardar_Pago_cascos(Obj_Pago_De_Cascos_A_Proveedores pago_cascos){
+public boolean Guardar_Pago_cascos(Obj_Venta_De_Cascos_A_Proveedores pago_cascos){
 	int folio_transaccion=busca_y_actualiza_proximo_folio(24);
-	String query = "exec sp_insert_pago_cascos_proveedores_movimiento ?,?,?,?,?,?,?,?,"+usuario.getFolio();
+	pago_cascos.setFolio_pago_casco(folio_transaccion+"");
+	
+	String query = "exec sp_insert_pago_cascos_proveedores_movimiento ?,?,?,?,?,"+usuario.getFolio();
 	String query2 = "exec sp_insert_pago_cascos_proveedores ?,?,?,"+usuario.getFolio();
 	Connection con = new Connexion().conexion();
 	
@@ -5266,21 +5268,18 @@ public boolean Guardar_Pago_cascos(Obj_Pago_De_Cascos_A_Proveedores pago_cascos)
 		pstmt.setString(2, pago_cascos.getCod_prv().trim());
 		pstmt.setString(3, pago_cascos.getNombre_proveedor().trim());
 		pstmt.setString(4, pago_cascos.getNombre_proveedor_recibe().trim());
-		pstmt.setString(5, pago_cascos.getFolio_factura().trim());
-		pstmt.setString(6, pago_cascos.getFolio_recepcion().trim());
-		pstmt.setInt   (7, pago_cascos.getCantidad_cascos());
-		pstmt.setInt   (8, pago_cascos.getCantidad_cascos_a_pagar());
+		pstmt.setString(5, pago_cascos.getTotal());
 		
-		System.out.println(pago_cascos.getTabla_obj().length);
 		for(int i=0; i<pago_cascos.getTabla_obj().length; i++){
 			pstmtabla.setInt(1, folio_transaccion);
 			pstmtabla.setString(2, pago_cascos.getTabla_obj()[i][0].toString().trim());
 			pstmtabla.setInt(3, Integer.valueOf(pago_cascos.getTabla_obj()[i][2].toString().trim()));
 			pstmtabla.executeUpdate();
 		}
-		
+
 		pstmt.executeUpdate();
 		con.commit();
+
 	} catch (Exception e) {
 		System.out.println("SQLException: "+e.getMessage());
 		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pago_cascos ]\n"+query+"\n"+query2+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));

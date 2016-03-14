@@ -5,33 +5,14 @@ import java.sql.SQLException;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
-public class Obj_Pago_De_Cascos_A_Proveedores {
+public class Obj_Venta_De_Cascos_A_Proveedores {
 	public String  cod_prv="";
 	public String  folio_pago_casco="";
 	public String  nombre_proveedor="";
 	public String  nombre_proveedor_recibe="";
-	public String  folio_factura="";
-	public String  folio_recepcion="";
+	public String     Total="";
 	public boolean existe=false;
-	public int cantidad_cascos=0;
-	public int cantidad_cascos_a_pagar=0;
     Object[][] tabla_obj =null;
-
-	public int getCantidad_cascos_a_pagar() {
-		return cantidad_cascos_a_pagar;
-	}
-
-	public void setCantidad_cascos_a_pagar(int cantidad_cascos_a_pagar) {
-		this.cantidad_cascos_a_pagar = cantidad_cascos_a_pagar;
-	}
-
-	public String getFolio_recepcion() {
-		return folio_recepcion;
-	}
-
-	public void setFolio_recepcion(String folio_recepcion) {
-		this.folio_recepcion = folio_recepcion;
-	}
 
 	public String getCod_prv() {
 		return cod_prv;
@@ -65,12 +46,12 @@ public class Obj_Pago_De_Cascos_A_Proveedores {
 		this.nombre_proveedor_recibe = nombre_proveedor_recibe;
 	}
 
-	public String getFolio_factura() {
-		return folio_factura;
+	public String getTotal() {
+		return Total;
 	}
 
-	public void setFolio_factura(String folio_factura) {
-		this.folio_factura = folio_factura;
+	public void setTotal(String total) {
+		Total = total;
 	}
 
 	public boolean isExiste() {
@@ -81,14 +62,6 @@ public class Obj_Pago_De_Cascos_A_Proveedores {
 		this.existe = existe;
 	}
 
-	public int getCantidad_cascos() {
-		return cantidad_cascos;
-	}
-
-	public void setCantidad_cascos(int cantidad_cascos) {
-		this.cantidad_cascos = cantidad_cascos;
-	}
-
 	public Object[][] getTabla_obj() {
 		return tabla_obj;
 	}
@@ -97,12 +70,12 @@ public class Obj_Pago_De_Cascos_A_Proveedores {
 		this.tabla_obj = tabla_obj;
 	}
 
-	public Obj_Pago_De_Cascos_A_Proveedores(){
+	public Obj_Venta_De_Cascos_A_Proveedores(){
 	}
 
-	public Obj_Pago_De_Cascos_A_Proveedores buscar(String folio) { 
+	public Obj_Venta_De_Cascos_A_Proveedores buscar(String folio) { 
 		try {
-			return new BuscarSQL().Pagos_cascos(folio);
+			return new BuscarSQL().venta_de_casco(folio);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -112,23 +85,5 @@ public class Obj_Pago_De_Cascos_A_Proveedores {
 	public boolean guardar(){
 		return new GuardarSQL().Guardar_Pago_cascos(this); 
 	}
-
-	//	public String[] ComboUnidadDeMedida(){
-//		try {
-//			return new Cargar_Combo().unidadDeMedida();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}	
-//	
-//	public String[] ComboUso(){
-//		try {
-//			return new Cargar_Combo().uso();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}	
 	
 }
