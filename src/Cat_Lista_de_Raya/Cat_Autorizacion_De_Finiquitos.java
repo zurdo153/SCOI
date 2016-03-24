@@ -104,8 +104,8 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			cont.add(campo);
 			txtFolio.addKeyListener(opFiltroFolioEmp);
 			txtEmpleado.addKeyListener(opFiltroEmpleado);
-			btnAceptar.addActionListener(opaceptar);
-			btnNegar.addActionListener(opnegar);
+			btnAceptar.addActionListener(opAceptar);
+			btnNegar.addActionListener(opNegar);
 			btnReporte.addActionListener(opReporte);
 		}
 		
@@ -144,7 +144,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 		}
 		
 		
-		ActionListener opaceptar = new ActionListener() {
+		ActionListener opAceptar = new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
 	    		
 	    		if(tabla.getSelectedRow() >= 0){
@@ -157,7 +157,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			}
 		};
 		
-		ActionListener opnegar = new ActionListener() {
+		ActionListener opNegar = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if(tabla.getSelectedRow() >= 0){

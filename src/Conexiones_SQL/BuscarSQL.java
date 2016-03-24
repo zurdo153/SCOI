@@ -16,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -8257,6 +8259,8 @@ public class BuscarSQL {
 									   finiquito.setVacaciones_SCOI(rs.getDouble("vacaciones"));
 									   finiquito.setPrima_vacacional_SCOI(rs.getDouble("prima_vacacional"));
 									   finiquito.setPercepciones_SCOI(rs.getDouble("total_de_percepciones"));
+									   
+									   finiquito.setDias_correspondiente_vacaciones(rs.getInt("dias_correspondiente_vacaciones_actuales"));
 								   }
 						
 					   if(!folio_empleado_bms.equals("")){
@@ -8408,4 +8412,40 @@ public class BuscarSQL {
 		}
 		return existe;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Date[] fecha_actual_y_fecha_aguinado() throws SQLException{
+		Statement stmt = null;
+		
+		String query = "select convert(varchar(20),GETDATE(),103) as fecha_actual "
+				+ "		, convert(varchar(20),fecha_ultimo_aguinaldo,103) as fecha_aguinaldo "
+				+ "		, ('01/01/'+convert(varchar(5),datepart(year,GETDATE())) ) as fecha_inicio_anio_actual "
+				+ "		, ('01/01/'+convert(varchar(5),datepart(year,dateadd(year,1,GETDATE()))) ) as fecha_inicio_anio_siguiente "
+				+ " 	from tb_configuracion_sistema";
+		Vector miVector = new Vector();
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					miVector.add(new SimpleDateFormat("dd/MM/yyyy").parse(rs.getString("fecha_actual")));
+					miVector.add(new SimpleDateFormat("dd/MM/yyyy").parse(rs.getString("fecha_aguinaldo")));
+					miVector.add(new SimpleDateFormat("dd/MM/yyyy").parse(rs.getString("fecha_inicio_anio_actual")));
+					miVector.add(new SimpleDateFormat("dd/MM/yyyy").parse(rs.getString("fecha_inicio_anio_siguiente")));
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		int i=0;
+		Date[] lista= new Date[miVector.size()];
+		
+		while(i < miVector.size()){
+			lista[i]= (Date) miVector.get(i);
+			i++;
+		}
+		return lista;
+	}	
 }
