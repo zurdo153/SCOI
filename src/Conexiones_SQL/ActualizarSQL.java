@@ -51,7 +51,6 @@ import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
 import Obj_Evaluaciones.Obj_Temporada;
-import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
@@ -2479,59 +2478,59 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Actualizar_Vacaciones(Obj_Alimentacion_De_Vacaciones alimentacion,int folio_vacaciones){
-		String query = "exec sp_update_vacaciones "+folio_vacaciones+",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?;";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			
-			int i=1;
-			
-			pstmt.setString			(i, alimentacion.getFecha_inicio());
-			pstmt.setString			(i+=1, alimentacion.getFecha_final());
-			
-			pstmt.setFloat			(i+=1, alimentacion.getVacaciones());
-			pstmt.setFloat			(i+=1, alimentacion.getPrima_vacacional());
-			pstmt.setFloat			(i+=1, alimentacion.getInfonavit());
-			pstmt.setFloat			(i+=1, alimentacion.getSueldo_semana());
-			pstmt.setFloat			(i+=1, alimentacion.getCorte_de_caja());
-			pstmt.setFloat			(i+=1, alimentacion.getFuente_de_sodas());
-			pstmt.setFloat			(i+=1, alimentacion.getPrestamo());
-			pstmt.setFloat			(i+=1, alimentacion.getPension_alimenticia());
-			pstmt.setFloat			(i+=1, alimentacion.getTotal());
-			pstmt.setInt			(i+=1, alimentacion.isStatus()?1:0);
-			pstmt.setFloat          (i+=1, alimentacion.getVacaciones_c());
-			pstmt.setFloat          (i+=1, alimentacion.getPrima_vacacional_c());
-			pstmt.setFloat          (i+=1, alimentacion.getSueldo_semana_c());
-			pstmt.setFloat          (i+=1, alimentacion.getGratificacion()); 
-			
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Vacaciones ] update  SQLException: sp_update_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Vacaciones ] update  SQLException: sp_update_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Vacaciones ] update  SQLException: sp_update_vacaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
+//	public boolean Actualizar_Vacaciones(Obj_Alimentacion_De_Vacaciones alimentacion,int folio_vacaciones){
+//		String query = "exec sp_update_vacaciones "+folio_vacaciones+",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?;";
+//		Connection con = new Connexion().conexion();
+//		PreparedStatement pstmt = null;
+//		try {
+//			con.setAutoCommit(false);
+//			pstmt = con.prepareStatement(query);
+//			
+//			int i=1;
+//			
+//			pstmt.setString			(i, alimentacion.getFecha_inicio());
+//			pstmt.setString			(i+=1, alimentacion.getFecha_final());
+//			
+//			pstmt.setFloat			(i+=1, alimentacion.getVacaciones());
+//			pstmt.setFloat			(i+=1, alimentacion.getPrima_vacacional());
+//			pstmt.setFloat			(i+=1, alimentacion.getInfonavit());
+//			pstmt.setFloat			(i+=1, alimentacion.getSueldo_semana());
+//			pstmt.setFloat			(i+=1, alimentacion.getCorte_de_caja());
+//			pstmt.setFloat			(i+=1, alimentacion.getFuente_de_sodas());
+//			pstmt.setFloat			(i+=1, alimentacion.getPrestamo());
+//			pstmt.setFloat			(i+=1, alimentacion.getPension_alimenticia());
+//			pstmt.setFloat			(i+=1, alimentacion.getTotal());
+//			pstmt.setInt			(i+=1, alimentacion.isStatus()?1:0);
+//			pstmt.setFloat          (i+=1, alimentacion.getVacaciones_c());
+//			pstmt.setFloat          (i+=1, alimentacion.getPrima_vacacional_c());
+//			pstmt.setFloat          (i+=1, alimentacion.getSueldo_semana_c());
+//			pstmt.setFloat          (i+=1, alimentacion.getGratificacion()); 
+//			
+//			pstmt.executeUpdate();
+//			con.commit();
+//		} catch (Exception e) {
+//			System.out.println("SQLException: "+e.getMessage());
+//			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Vacaciones ] update  SQLException: sp_update_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//			if(con != null){
+//				try{
+//					System.out.println("La transacción ha sido abortada");
+//					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Vacaciones ] update  SQLException: sp_update_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//					con.rollback();
+//				}catch(SQLException ex){
+//					System.out.println(ex.getMessage());
+//					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Vacaciones ] update  SQLException: sp_update_vacaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//				}
+//			}
+//			return false;
+//		}finally{
+//			try {
+//				con.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}		
+//		return true;
+//	}
 	public boolean Factura_Provedores_xml(Obj_Proveedores Proveedores, String folio_factura){
 		String query = "update tb_control_de_facturas_y_xml set folio_factura=?, fecha_factura=?, status=? , fecha_modificacion=getdate() where folio_factura='" + folio_factura+"' and cod_prv='"+Proveedores.getCod_prv()+"'";
 		Connection con = new Connexion().conexion();

@@ -29,6 +29,8 @@ public class Obj_Finiquitos {
 	double tiempo_extra_BMS						= 0;
 	double percepciones_BMS						= 0;
 	
+	int dias_correspondiente_vacaciones		= 0;
+	
 //	SCOI--------------------------------------------------------------------------------------------------------------------
 	String fecha_ingreso_SCOI = "";
 	String fecha_baja_SCOI = "";
@@ -428,6 +430,15 @@ public class Obj_Finiquitos {
 
 	public void setTotal_a_pagar(double total_a_pagar) {
 		this.total_a_pagar = total_a_pagar;
+	}
+
+	public int getDias_correspondiente_vacaciones() {
+		return dias_correspondiente_vacaciones;
+	}
+
+	public void setDias_correspondiente_vacaciones(
+			int dias_correspondiente_vacaciones) {
+		this.dias_correspondiente_vacaciones = dias_correspondiente_vacaciones;
 	}
 
 	//	buscar 
