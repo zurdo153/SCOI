@@ -760,10 +760,8 @@ public class Cat_Finiquitos extends JFrame{
 			  	            		
 										try {
 											calcular_fechas_de_aguinaldo(fchIngresoSCOI, fchBajaSCOI, txtDiasPendienteDePagoAguinaldoSCOI, txtAguinaldoSCOI, txtDiasCuotaDiarioSCOI);
-//											validar cuando no tiene seguro------>
 											calcular_fechas_de_aguinaldo(fchIngresoBnns, fchBajaBnns, txtDiasPendienteDePagoAguinaldoBnns, txtAguinaldoBnns, txtDiasCuotaDiarioBnns);
 										} catch (SQLException e1) {
-											// TODO Auto-generated catch block
 											e1.printStackTrace();
 										}
 			  	            	}else{
@@ -827,10 +825,10 @@ public class Cat_Finiquitos extends JFrame{
 				
 //				--en caso cuando la fecha de ingreso del empleado sea < al 01/01/(año actual)
 					if(fhIngreso.getDate().before(fecha_inicial_anio_actual)){
-						System.out.print("fecha ingreso el mayor");
+//						System.out.print("fecha ingreso el mayor");
 						textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_inicial_anio_actual,fhBaja.getDate())+"");
 					}else{
-						System.out.print("fecha de ingreso menor");
+//						System.out.print("fecha de ingreso menor");
 						textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fhIngreso.getDate(),fhBaja.getDate())+"");
 					}
 				}

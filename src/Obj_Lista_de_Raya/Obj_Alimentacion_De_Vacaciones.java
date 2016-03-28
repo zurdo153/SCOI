@@ -5,14 +5,13 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Alimentacion_De_Vacaciones {
 //	datos del empleado
 	int folio_vacaciones;
-	int folio_empleado;
+	int folio_empleado;//
 	String empleado;
 	String establecimiento;
 	String puesto;
@@ -24,53 +23,80 @@ public class Obj_Alimentacion_De_Vacaciones {
 	File imagen;
 	
 //	alimentacion de vacaciones
-	int anios_a_disfrutar;
-	String fecha_inicio;
-	String fecha_final;
-	float vacaciones;
-	float prima_vacacional;
-	float infonavit;
-	float sueldo_semana;
-	float corte_de_caja;
-	float fuente_de_sodas;
-	float prestamo;
-	float pension_alimenticia;
-	float dias_descanso_vacaciones;
-	float total;
+	String fecha_inicio;//
+	String fecha_final;//
+	int anios_a_disfrutar;//
 	
-	boolean status;	
+	int dias_de_vacaciones;//
+	int dias_de_descanso_pagados;//
+	int dias_trabajados_de_la_ultima_semana;//
 	
+//	vacaciones nc
+	float cuota_diaria_nc;//
+	float sueldo_semanal_nc;
+	float vacaciones_nc;
+	float descansos_pagados_nc;
+	float prima_vacacional_nc;
+	float total_percepciones_nc;
+	
+//	deducciones nc
+	float prestamo_nc;
+	float infonavit_nc;
+	float infonacot_nc;
+	float pension_alimenticia_nc;
+	float fuente_de_sodas_nc;
+	float corte_de_caja_nc;
+	float cortes_nc;
+	float otros_nc;
+	float cheque_nc;
+	
+	float total_a_pagar_nc;
+	
+//	vacaciones c
+	float cuota_diaria_c;//
+	float SDI_c;//
+	float sueldo_semanal_c;
 	float vacaciones_c;
+	float descansos_pagados_c;
 	float prima_vacacional_c;
-	float sueldo_semana_c;
-	float gratificacion;
+	float total_percepciones_c;
+	
+//	deducciones c
+	float prestamo_c;
+	float infonavit_c;
+	float infonacot_c;
+	float pension_alimenticia_c;
+	float imss_c;
+	float ispt_c;
+	
+	float total_a_pagar_c;
 	
 	public Obj_Alimentacion_De_Vacaciones() {
 
 //		datos del empleado
-		this.folio_vacaciones=0;		this.folio_empleado=0;				this.empleado="";
-		this.establecimiento="";		this.puesto="";						this.fecha_ingreso="";
-		this.fecha_ingreso_imss="";		this.salario_diario_integrado=0;	this.grupo_vacacional="";
-		this.proximas_vacaciones=0;		this.imagen=null;					this.status=false;
+		folio_vacaciones=0;		folio_empleado=0;			empleado="";		establecimiento="";		puesto="";					
+		fecha_ingreso="";		fecha_ingreso_imss="";	salario_diario_integrado=0;	grupo_vacacional="";
+		proximas_vacaciones=0;	imagen=null;					
 		
-//		alimentacion de vacaciones
-		this.fecha_inicio="";		this.fecha_final="";		      this.vacaciones=0;
-		this.prima_vacacional=0;	this.infonavit=0;			      this.sueldo_semana=0;
-		this.corte_de_caja=0;		this.fuente_de_sodas=0;		      this.prestamo=0;
-		this.pension_alimenticia=0;	this.dias_descanso_vacaciones=0;  this.total=0;
+//		vacaciones
+		fecha_inicio="";		fecha_final="";		anios_a_disfrutar=0;
+		dias_de_vacaciones=0;	dias_de_descanso_pagados=0;		dias_trabajados_de_la_ultima_semana=0;
+		
+//		alimentacion de vacaciones nc.
+		cuota_diaria_nc=0;		sueldo_semanal_nc=0;		vacaciones_nc=0;		descansos_pagados_nc=0;
+		prima_vacacional_nc=0;		total_percepciones_nc=0;
+//		deducciones nc
+		prestamo_nc=0;		infonavit_nc=0;		infonacot_nc=0;		pension_alimenticia_nc=0;		fuente_de_sodas_nc=0;
+		corte_de_caja_nc=0;		cortes_nc=0;		otros_nc=0;		cheque_nc=0;		total_a_pagar_nc=0;	     
 		
 //		alimentacion de vacaciones c.
-		this.vacaciones_c=0;	this.prima_vacacional_c=0;	this.sueldo_semana_c=0;	this.gratificacion=0;
+		cuota_diaria_c=0;		SDI_c=0;		sueldo_semanal_c=0;		vacaciones_c=0;		descansos_pagados_c=0;
+		prima_vacacional_c=0;		total_percepciones_c=0;
+//		deducciones c
+		prestamo_c=0;		infonavit_c=0;		infonacot_c=0;		pension_alimenticia_c=0;		imss_c=0;
+		ispt_c=0;		total_a_pagar_c=0;
 	}
-
-	public float getDias_descanso_vacaciones() {
-		return dias_descanso_vacaciones;
-	}
-
-	public void setDias_descanso_vacaciones(float dias_descanso_vacaciones) {
-		this.dias_descanso_vacaciones = dias_descanso_vacaciones;
-	}
-
+	
 	public int getFolio_vacaciones() {
 		return folio_vacaciones;
 	}
@@ -151,6 +177,14 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.proximas_vacaciones = proximas_vacaciones;
 	}
 
+	public File getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(File imagen) {
+		this.imagen = imagen;
+	}
+
 	public String getFecha_inicio() {
 		return fecha_inicio;
 	}
@@ -167,108 +201,205 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.fecha_final = fecha_final;
 	}
 
-	public float getVacaciones() {
-		return vacaciones;
-	}
-
-	public void setVacaciones(float vacaciones) {
-		this.vacaciones = vacaciones;
-	}
-
-	public float getPrima_vacacional() {
-		return prima_vacacional;
-	}
-
-	public void setPrima_vacacional(float prima_vacacional) {
-		this.prima_vacacional = prima_vacacional;
-	}
-
-	public float getInfonavit() {
-		return infonavit;
-	}
-
-	public void setInfonavit(float infonavit) {
-		this.infonavit = infonavit;
-	}
-
-	public float getSueldo_semana() {
-		return sueldo_semana;
-	}
-
-	public void setSueldo_semana(float sueldo_semana) {
-		this.sueldo_semana = sueldo_semana;
-	}
-
-	public float getCorte_de_caja() {
-		return corte_de_caja;
-	}
-
-	public void setCorte_de_caja(float corte_de_caja) {
-		this.corte_de_caja = corte_de_caja;
-	}
-
-	public float getFuente_de_sodas() {
-		return fuente_de_sodas;
-	}
-
-	public void setFuente_de_sodas(float fuente_de_sodas) {
-		this.fuente_de_sodas = fuente_de_sodas;
-	}
-
-	public float getPrestamo() {
-		return prestamo;
-	}
-
-	public void setPrestamo(float prestamo) {
-		this.prestamo = prestamo;
-	}
-
-	public float getPension_alimenticia() {
-		return pension_alimenticia;
-	}
-
-	public void setPension_alimenticia(float pension_alimenticia) {
-		this.pension_alimenticia = pension_alimenticia;
-	}
-
-	public float getTotal() {
-		return total;
-	}
-
-	public void setTotal(float total) {
-		this.total = total;
-	}
-	
-	public File getImagen() {
-		return imagen;
-	}
-
-	public void setImagen(File imagen) {
-		this.imagen = imagen;
-	}
-	
 	public int getAnios_a_disfrutar() {
 		return anios_a_disfrutar;
-	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
 	}
 
 	public void setAnios_a_disfrutar(int anios_a_disfrutar) {
 		this.anios_a_disfrutar = anios_a_disfrutar;
 	}
-	
+
+	public int getDias_de_vacaciones() {
+		return dias_de_vacaciones;
+	}
+
+	public void setDias_de_vacaciones(int dias_de_vacaciones) {
+		this.dias_de_vacaciones = dias_de_vacaciones;
+	}
+
+	public int getDias_de_descanso_pagados() {
+		return dias_de_descanso_pagados;
+	}
+
+	public void setDias_de_descanso_pagados(int dias_de_descanso_pagados) {
+		this.dias_de_descanso_pagados = dias_de_descanso_pagados;
+	}
+
+	public int getDias_trabajados_de_la_ultima_semana() {
+		return dias_trabajados_de_la_ultima_semana;
+	}
+
+	public void setDias_trabajados_de_la_ultima_semana(
+			int dias_trabajados_de_la_ultima_semana) {
+		this.dias_trabajados_de_la_ultima_semana = dias_trabajados_de_la_ultima_semana;
+	}
+
+	public float getCuota_diaria_nc() {
+		return cuota_diaria_nc;
+	}
+
+	public void setCuota_diaria_nc(float cuota_diaria_nc) {
+		this.cuota_diaria_nc = cuota_diaria_nc;
+	}
+
+	public float getSueldo_semanal_nc() {
+		return sueldo_semanal_nc;
+	}
+
+	public void setSueldo_semanal_nc(float sueldo_semanal_nc) {
+		this.sueldo_semanal_nc = sueldo_semanal_nc;
+	}
+
+	public float getVacaciones_nc() {
+		return vacaciones_nc;
+	}
+
+	public void setVacaciones_nc(float vacaciones_nc) {
+		this.vacaciones_nc = vacaciones_nc;
+	}
+
+	public float getDescansos_pagados_nc() {
+		return descansos_pagados_nc;
+	}
+
+	public void setDescansos_pagados_nc(float descansos_pagados_nc) {
+		this.descansos_pagados_nc = descansos_pagados_nc;
+	}
+
+	public float getPrima_vacacional_nc() {
+		return prima_vacacional_nc;
+	}
+
+	public void setPrima_vacacional_nc(float prima_vacacional_nc) {
+		this.prima_vacacional_nc = prima_vacacional_nc;
+	}
+
+	public float getTotal_percepciones_nc() {
+		return total_percepciones_nc;
+	}
+
+	public void setTotal_percepciones_nc(float total_percepciones_nc) {
+		this.total_percepciones_nc = total_percepciones_nc;
+	}
+
+	public float getPrestamo_nc() {
+		return prestamo_nc;
+	}
+
+	public void setPrestamo_nc(float prestamo_nc) {
+		this.prestamo_nc = prestamo_nc;
+	}
+
+	public float getInfonavit_nc() {
+		return infonavit_nc;
+	}
+
+	public void setInfonavit_nc(float infonavit_nc) {
+		this.infonavit_nc = infonavit_nc;
+	}
+
+	public float getInfonacot_nc() {
+		return infonacot_nc;
+	}
+
+	public void setInfonacot_nc(float infonacot_nc) {
+		this.infonacot_nc = infonacot_nc;
+	}
+
+	public float getPension_alimenticia_nc() {
+		return pension_alimenticia_nc;
+	}
+
+	public void setPension_alimenticia_nc(float pension_alimenticia_nc) {
+		this.pension_alimenticia_nc = pension_alimenticia_nc;
+	}
+
+	public float getFuente_de_sodas_nc() {
+		return fuente_de_sodas_nc;
+	}
+
+	public void setFuente_de_sodas_nc(float fuente_de_sodas_nc) {
+		this.fuente_de_sodas_nc = fuente_de_sodas_nc;
+	}
+
+	public float getCorte_de_caja_nc() {
+		return corte_de_caja_nc;
+	}
+
+	public void setCorte_de_caja_nc(float corte_de_caja_nc) {
+		this.corte_de_caja_nc = corte_de_caja_nc;
+	}
+
+	public float getCortes_nc() {
+		return cortes_nc;
+	}
+
+	public void setCortes_nc(float cortes_nc) {
+		this.cortes_nc = cortes_nc;
+	}
+
+	public float getOtros_nc() {
+		return otros_nc;
+	}
+
+	public void setOtros_nc(float otros_nc) {
+		this.otros_nc = otros_nc;
+	}
+
+	public float getCheque_nc() {
+		return cheque_nc;
+	}
+
+	public void setCheque_nc(float cheque_nc) {
+		this.cheque_nc = cheque_nc;
+	}
+
+	public float getTotal_a_pagar_nc() {
+		return total_a_pagar_nc;
+	}
+
+	public void setTotal_a_pagar_nc(float total_a_pagar_nc) {
+		this.total_a_pagar_nc = total_a_pagar_nc;
+	}
+
+	public float getCuota_diaria_c() {
+		return cuota_diaria_c;
+	}
+
+	public void setCuota_diaria_c(float cuota_diaria_c) {
+		this.cuota_diaria_c = cuota_diaria_c;
+	}
+
+	public float getSDI_c() {
+		return SDI_c;
+	}
+
+	public void setSDI_c(float sDI_c) {
+		SDI_c = sDI_c;
+	}
+
+	public float getSueldo_semanal_c() {
+		return sueldo_semanal_c;
+	}
+
+	public void setSueldo_semanal_c(float sueldo_semanal_c) {
+		this.sueldo_semanal_c = sueldo_semanal_c;
+	}
+
 	public float getVacaciones_c() {
 		return vacaciones_c;
 	}
 
 	public void setVacaciones_c(float vacaciones_c) {
 		this.vacaciones_c = vacaciones_c;
+	}
+
+	public float getDescansos_pagados_c() {
+		return descansos_pagados_c;
+	}
+
+	public void setDescansos_pagados_c(float descansos_pagados_c) {
+		this.descansos_pagados_c = descansos_pagados_c;
 	}
 
 	public float getPrima_vacacional_c() {
@@ -279,20 +410,68 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.prima_vacacional_c = prima_vacacional_c;
 	}
 
-	public float getSueldo_semana_c() {
-		return sueldo_semana_c;
+	public float getTotal_percepciones_c() {
+		return total_percepciones_c;
 	}
 
-	public void setSueldo_semana_c(float sueldo_semana_c) {
-		this.sueldo_semana_c = sueldo_semana_c;
+	public void setTotal_percepciones_c(float total_percepciones_c) {
+		this.total_percepciones_c = total_percepciones_c;
 	}
 
-	public float getGratificacion() {
-		return gratificacion;
+	public float getPrestamo_c() {
+		return prestamo_c;
 	}
 
-	public void setGratificacion(float gratificacion) {
-		this.gratificacion = gratificacion;
+	public void setPrestamo_c(float prestamo_c) {
+		this.prestamo_c = prestamo_c;
+	}
+
+	public float getInfonavit_c() {
+		return infonavit_c;
+	}
+
+	public void setInfonavit_c(float infonavit_c) {
+		this.infonavit_c = infonavit_c;
+	}
+
+	public float getInfonacot_c() {
+		return infonacot_c;
+	}
+
+	public void setInfonacot_c(float infonacot_c) {
+		this.infonacot_c = infonacot_c;
+	}
+
+	public float getPension_alimenticia_c() {
+		return pension_alimenticia_c;
+	}
+
+	public void setPension_alimenticia_c(float pension_alimenticia_c) {
+		this.pension_alimenticia_c = pension_alimenticia_c;
+	}
+
+	public float getImss_c() {
+		return imss_c;
+	}
+
+	public void setImss_c(float imss_c) {
+		this.imss_c = imss_c;
+	}
+
+	public float getIspt_c() {
+		return ispt_c;
+	}
+
+	public void setIspt_c(float ispt_c) {
+		this.ispt_c = ispt_c;
+	}
+
+	public float getTotal_a_pagar_c() {
+		return total_a_pagar_c;
+	}
+
+	public void setTotal_a_pagar_c(float total_a_pagar_c) {
+		this.total_a_pagar_c = total_a_pagar_c;
 	}
 
 	//	resive parametro del filtro para un nuevo regitro y lo busca aqui solo alimenta la informacion del empleado
@@ -306,9 +485,9 @@ public class Obj_Alimentacion_De_Vacaciones {
 	}
 	
 //	busca al empleado y calcula sus vacaciones automaticas desde el calendario
-	public Obj_Alimentacion_De_Vacaciones buscar_vacaciones(int folio_empleado, Date fecha_inicio_vacaciones){ 
+	public Obj_Alimentacion_De_Vacaciones buscar_vacaciones(int folio_empleado, Date fecha_inicio_vacaciones,int anios_de_proximas_vacaciones){ 
 		try {
-			return new BuscarSQL().calcular_vacaciones(folio_empleado,  new SimpleDateFormat("dd/MM/yyyy").format(fecha_inicio_vacaciones));
+			return new BuscarSQL().calcular_vacaciones(folio_empleado,  new SimpleDateFormat("dd/MM/yyyy").format(fecha_inicio_vacaciones),anios_de_proximas_vacaciones);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -325,17 +504,17 @@ public class Obj_Alimentacion_De_Vacaciones {
 	return null; 
 	}
 	
-//	guardar vacaciones calculadas
-	public boolean guardar_vacaciones_calculadas(){
-		return new GuardarSQL().Guardar_Vacaciones_Calculadas(this); 
-	}
+////	guardar vacaciones calculadas
+//	public boolean guardar_vacaciones_calculadas(){
+//		return new GuardarSQL().Guardar_Vacaciones_Calculadas(this); 
+//	}
 	
 	
 	public boolean buscar_vacaciones_para_update(int folio_vacaciones){
 		return new BuscarSQL().validacion_de_vacaciones_para_btnGuardar(folio_vacaciones);
 	}
 	
-	public boolean actualizar(int folio_vacaciones){ return new ActualizarSQL().Actualizar_Vacaciones(this,folio_vacaciones); }
+//	public boolean actualizar(int folio_vacaciones){ return new ActualizarSQL().Actualizar_Vacaciones(this,folio_vacaciones); }
 
 
 	

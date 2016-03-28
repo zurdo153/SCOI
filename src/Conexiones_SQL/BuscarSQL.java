@@ -5139,9 +5139,9 @@ public class BuscarSQL {
 	}
 	
 //	calcular las vacaciones correspondientes a los años
-	public Obj_Alimentacion_De_Vacaciones calcular_vacaciones(int folio_empleado, String fecha_inicio) throws SQLException{
+	public Obj_Alimentacion_De_Vacaciones calcular_vacaciones(int folio_empleado, String fecha_inicio, int anios_de_proximas_vacaciones) throws SQLException{
 		Obj_Alimentacion_De_Vacaciones alimentacion_vacaciones = new Obj_Alimentacion_De_Vacaciones();
-		String query = "exec sp_calculo_de_vacaciones "+ folio_empleado + ",'" + fecha_inicio+"';";
+		String query = "exec sp_calculo_de_vacaciones "+ folio_empleado + ",'" + fecha_inicio+"',"+anios_de_proximas_vacaciones;
 		Statement stmt = null;
 
 		try {
@@ -5151,21 +5151,21 @@ public class BuscarSQL {
 			while(rs.next()){
 				
 //				alimentacion de vacaciones
-				alimentacion_vacaciones.setFecha_final(rs.getString("dias_correspondientes"));//se optienen los dias que le corresponden al empleado con respecto al tiempo trabajado
-				alimentacion_vacaciones.setVacaciones(rs.getFloat("importe_vacaciones_nc"));
-				alimentacion_vacaciones.setPrima_vacacional(rs.getFloat("importe_prima_vacacional_nc"));
-				alimentacion_vacaciones.setSueldo_semana(rs.getFloat("importe_sueldo_semana_nc"));
-				alimentacion_vacaciones.setPrestamo(rs.getFloat("descuento_prestamo"));
-				alimentacion_vacaciones.setPension_alimenticia(rs.getFloat("pension_alimenticia"));
-				alimentacion_vacaciones.setInfonavit(rs.getFloat("descuento_infonavit"));
-				alimentacion_vacaciones.setFuente_de_sodas(rs.getFloat("descuento_fuente_de_sodas"));
-				alimentacion_vacaciones.setCorte_de_caja(rs.getFloat("descuento_corte_de_cajas"));
-				alimentacion_vacaciones.setDias_descanso_vacaciones(rs.getFloat("dias_descanso_vacaciones"));
-				alimentacion_vacaciones.setVacaciones_c(rs.getFloat("vacaciones_c"));
-				System.out.println(rs.getFloat("descuento_prestamo"));
-				alimentacion_vacaciones.setPrima_vacacional_c(rs.getFloat("prima_vacacional_c"));
-				alimentacion_vacaciones.setSueldo_semana_c(rs.getFloat("sueldo_semana_c"));
-				alimentacion_vacaciones.setGratificacion(rs.getFloat("gratificacion"));
+				alimentacion_vacaciones.setFecha_final(rs.getString("fecha_final"));//se optienen los dias que le corresponden al empleado con respecto al tiempo trabajado
+				alimentacion_vacaciones.setDias_de_vacaciones(rs.getInt("dias_correspondientes_a_los_anios_vacaciones"));
+				alimentacion_vacaciones.setDias_de_descanso_pagados(rs.getInt("dias_de_descanso_pagados"));
+				alimentacion_vacaciones.setDias_trabajados_de_la_ultima_semana(rs.getInt("dias_pendientes_de_pago_en_la_ultima_semana"));
+				alimentacion_vacaciones.setCuota_diaria_nc(rs.getFloat("cuota_diaria_nc"));
+				alimentacion_vacaciones.setCuota_diaria_c(rs.getFloat("cuota_diaria"));
+				alimentacion_vacaciones.setSDI_c(rs.getFloat("cuota_diaria_integrada"));
+				
+				alimentacion_vacaciones.setPrestamo_nc(rs.getFloat("desc_prestamo"));
+				alimentacion_vacaciones.setPension_alimenticia_nc(rs.getFloat("pension_alimenticia"));
+				alimentacion_vacaciones.setInfonacot_nc(rs.getFloat("infonavit"));
+				alimentacion_vacaciones.setInfonacot_nc(rs.getFloat("infonacot"));
+//				System.out.println(rs.getFloat(""));
+				alimentacion_vacaciones.setFuente_de_sodas_nc(rs.getFloat("descuento_de_fuente_de_sodas"));
+				alimentacion_vacaciones.setCorte_de_caja_nc(rs.getFloat("corte_de_caja"));
 			}
 			
 		} catch (Exception e) {
@@ -5282,21 +5282,21 @@ public class BuscarSQL {
 				vacaciones.setProximas_vacaciones(rs.getInt("proximas_vacaciones"));
 				vacaciones.setFecha_inicio(rs.getString("fecha_inicio"));
 				vacaciones.setFecha_final(rs.getString("fecha_final"));
-				vacaciones.setVacaciones(rs.getFloat("importe_vacaciones_nc"));
-				vacaciones.setPrima_vacacional(rs.getFloat("importe_prima_vacacional_nc"));
-				vacaciones.setDias_descanso_vacaciones(rs.getFloat("importe_dias_descanso_vacaciones_nc"));
-				vacaciones.setInfonavit(rs.getFloat("importe_infonavit"));
-				vacaciones.setSueldo_semana(rs.getFloat("importe_sueldo_semana_nc"));
-				vacaciones.setCorte_de_caja(rs.getFloat("importe_corte_de_caja"));
-				vacaciones.setFuente_de_sodas(rs.getFloat("importe_fuente_de_sodas"));
-				vacaciones.setPrestamo(rs.getFloat("importe_prestamo"));
-				vacaciones.setPension_alimenticia(rs.getFloat("importe_pension_alimenticia"));
-				vacaciones.setTotal(rs.getFloat("total"));
-				vacaciones.setStatus(rs.getBoolean("status"));
-				vacaciones.setVacaciones_c(rs.getFloat("importe_vacacionesc"));
-				vacaciones.setPrima_vacacional_c(rs.getFloat("importe_prima_vacacionalc")) ;
-				vacaciones.setSueldo_semana_c(rs.getFloat("importe_sueldo_semanac"));
-				vacaciones.setGratificacion(rs.getFloat("gratificacion"));
+//				vacaciones.setVacaciones(rs.getFloat("importe_vacaciones_nc"));
+//				vacaciones.setPrima_vacacional(rs.getFloat("importe_prima_vacacional_nc"));
+//				vacaciones.setDias_descanso_vacaciones(rs.getFloat("importe_dias_descanso_vacaciones_nc"));
+//				vacaciones.setInfonavit(rs.getFloat("importe_infonavit"));
+//				vacaciones.setSueldo_semana(rs.getFloat("importe_sueldo_semana_nc"));
+//				vacaciones.setCorte_de_caja(rs.getFloat("importe_corte_de_caja"));
+//				vacaciones.setFuente_de_sodas(rs.getFloat("importe_fuente_de_sodas"));
+//				vacaciones.setPrestamo(rs.getFloat("importe_prestamo"));
+//				vacaciones.setPension_alimenticia(rs.getFloat("importe_pension_alimenticia"));
+//				vacaciones.setTotal(rs.getFloat("total"));
+//				vacaciones.setStatus(rs.getBoolean("status"));
+//				vacaciones.setVacaciones_c(rs.getFloat("importe_vacacionesc"));
+//				vacaciones.setPrima_vacacional_c(rs.getFloat("importe_prima_vacacionalc")) ;
+//				vacaciones.setSueldo_semana_c(rs.getFloat("importe_sueldo_semanac"));
+//				vacaciones.setGratificacion(rs.getFloat("gratificacion"));
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);
 				
