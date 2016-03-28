@@ -185,7 +185,7 @@ public class GuardarTablasModel {
 	}
 	
 	public boolean tabla_model_traspaso_de_deduccion_sugerido(Object[][] tabla){
-		String query = "exec sp_insert_traspaso_de_deducciones_sugerido ?,?,?,?,?,?";
+		String query = "exec sp_insert_traspaso_de_deducciones_sugerido ?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
@@ -204,7 +204,10 @@ public class GuardarTablasModel {
 				pstmt.setInt(3, Integer.valueOf(tabla[i][5].toString().trim()));
 				pstmt.setInt(4, Integer.valueOf(tabla[i][6].toString().trim()));
 				pstmt.setInt(5, Integer.valueOf(tabla[i][7].toString().trim()));
-				pstmt.setInt(6, usuario.getFolio());
+				pstmt.setInt(6, Integer.valueOf(tabla[i][8].toString().trim()));
+				pstmt.setInt(7, Integer.valueOf(tabla[i][9].toString().trim()));
+				pstmt.setInt(8, Integer.valueOf(tabla[i][10].toString().trim()));
+				pstmt.setInt(9, usuario.getFolio());
 				
 				pstmt.executeUpdate();
 			}

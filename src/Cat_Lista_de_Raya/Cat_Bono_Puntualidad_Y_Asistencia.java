@@ -10,7 +10,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -28,7 +30,8 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
-import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
+import Conexiones_SQL.Connexion;
+import Obj_Lista_de_Raya.Obj_Bono_Puntualidad_Y_Asistencia;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
@@ -36,7 +39,7 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_Refrescar;
 
 @SuppressWarnings("serial")
-public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
+public class Cat_Bono_Puntualidad_Y_Asistencia extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
@@ -45,14 +48,12 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 	@SuppressWarnings("rawtypes")
 	public Class[] tipos(){
 		Class[] tip = new Class[columnas];
-		
 		for(int i =0; i<columnas; i++){
 			if(i==checkbox){
 				tip[i]=java.lang.Boolean.class;
 			}else{
 				tip[i]=java.lang.Object.class;
 			}
-			
 		}
 		return tip;
 	}
@@ -61,10 +62,10 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 	public void init_tabla(){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(30);		
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(100);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(50);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(60);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(80);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(80);
     	
-		String comando="select folio,bono,abreviatura,case when status=1 then 'VIGENTE' else 'CANCELADO' end as Estatus from tb_bono order by bono ";
+		String comando="select folio,bono,abreviatura,case when status=1 then 'VIGENTE' else 'CANCELADO' end as estatus from [tb_bono_puntualidad_y_asistencia] order by bono ";
 		String basedatos="26",pintar="si";
 		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
@@ -103,15 +104,15 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 	JCButton btnEditar = new JCButton("Editar","editara.png","Azul"); 
 	JCButton btnNuevo = new JCButton("Nuevo","Nuevo.png","Azul"); 
 	
-	public Cat_Bono_Complemento_De_Sueldo(){
+	public Cat_Bono_Puntualidad_Y_Asistencia(){
 		this.setSize(760,220);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		cont.setBackground(new java.awt.Color(255, 255, 255));
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Dollar.png"));
-		panel.setBorder(BorderFactory.createTitledBorder("Bono complemento de Sueldo"));
-		this.setTitle("Bono complemento de Sueldo");
+		panel.setBorder(BorderFactory.createTitledBorder("Bono Puntualidad y Asistencia"));
+		this.setTitle("Modificaciones, Altas y Consultas de Bonos De Puntualidad y Asistencia");
 		
 		int x = 10, y=15,width=150,height=20,sep=80;
 		panel.add(new JLabel("Folio:")).setBounds      (x      ,y     ,width,height);
@@ -226,16 +227,13 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 	        		int fila = tabla.getSelectedRow();
 	        		int id = Integer.parseInt(modelo.getValueAt(fila,0)+"");
 	        
-						Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscar(id);
-						
+	        		Obj_Bono_Puntualidad_Y_Asistencia bono = new Obj_Bono_Puntualidad_Y_Asistencia().buscar(id);
 						txtFolio.setText(id+"");
 						txtBono.setText(bono.getBono()+"");
 						txtAbreviatura.setText(bono.getAbreviatura()+"");
 						if(bono.getStatus() == true){cmb_status.setSelectedItem("VIGENTE");}
 						else{cmb_status.setSelectedItem("CANCELADO");}
-						
 						btnEditar.setEnabled(true);
-					
 	        	}
 	        }
         });
@@ -245,10 +243,10 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolio.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "El folio es requerido \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "El Folio Es Requerido \n","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 			}else{			
 				try {
-					Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscar(Integer.parseInt(txtFolio.getText()));
+					Obj_Bono_Puntualidad_Y_Asistencia bono = new Obj_Bono_Puntualidad_Y_Asistencia().buscar(Integer.parseInt(txtFolio.getText()));
 					
 					
 					if(bono.getFolio() == Integer.parseInt(txtFolio.getText())){
@@ -260,18 +258,21 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 								bono.setBono(Float.parseFloat(txtBono.getText()));
 								bono.setAbreviatura(txtAbreviatura.getText());
 								bono.setStatus(cmb_status.getSelectedItem().toString().equals("VIGENTE")?true:false);
-								bono.actualizar(Integer.parseInt(txtFolio.getText()));	
 								
-								init_tabla();
-								
-								panelLimpiar();
-								panelEnabledFalse();
-								txtFolio.setEditable(true);
-								txtFolio.requestFocus();
-								btnEditar.setEnabled(false);
+								if(bono.actualizar(Integer.parseInt(txtFolio.getText()))){
+									init_tabla();
+									panelLimpiar();
+									panelEnabledFalse();
+									txtFolio.setEditable(true);
+									txtFolio.requestFocus();
+									btnEditar.setEnabled(false);
+									JOptionPane.showMessageDialog(null,"El Registró Se Actualizó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+									return;
+								}else{
+									JOptionPane.showMessageDialog(null, "El Registro No Se Actualizó", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+									return;
+								}	
 							}
-							
-							JOptionPane.showMessageDialog(null,"El Registró Se Actualizó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						}else{
 							return;
 						}
@@ -283,15 +284,19 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 							bono.setBono(Float.parseFloat(txtBono.getText()));
 							bono.setAbreviatura(txtAbreviatura.getText());
 							bono.setStatus(cmb_status.getSelectedItem().toString().equals("VIGENTE")?true:false);
-							bono.guardar();
-							
-							panelLimpiar();
-							panelEnabledFalse();
-							txtFolio.setEditable(true);
-							txtFolio.requestFocus();
-							btnEditar.setEnabled(false);
-							init_tabla();
-							JOptionPane.showMessageDialog(null,"El Registró Se Guardó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							if(bono.guardar()){
+								panelLimpiar();
+								panelEnabledFalse();
+								txtFolio.setEditable(true);
+								txtFolio.requestFocus();
+								btnEditar.setEnabled(false);
+								init_tabla();
+								JOptionPane.showMessageDialog(null,"El Registró Se Guardó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+								return;
+							}else{
+								JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+								return;
+							}
 						}
 					}
 				} catch (NumberFormatException e1) {
@@ -380,11 +385,13 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 	ActionListener buscar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolio.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Error",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Ingrese El Folio A Buscar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+				txtFolio.requestFocus();
 				return;
 			}else{
 				try {
-					Obj_Bono_Complemento_Sueldo re = new Obj_Bono_Complemento_Sueldo().buscar(Integer.parseInt(txtFolio.getText()));
+					Obj_Bono_Puntualidad_Y_Asistencia re = new Obj_Bono_Puntualidad_Y_Asistencia().buscar(Integer.parseInt(txtFolio.getText()));
+					
 					if(re.getFolio() != 0){
 						
 						txtFolio.setText(re.getFolio()+"");
@@ -393,9 +400,9 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 						if(re.getStatus() == true){cmb_status.setSelectedItem("VIGENTE");}
 						else{cmb_status.setSelectedItem("CANCELADO");}
 						
-						btnNuevo.setEnabled(false);
-						btnEditar.setEnabled(false);
 						panelEnabledFalse();
+						btnNuevo.setEnabled(true);
+						btnEditar.setEnabled(true);
 						txtFolio.setEditable(true);
 						txtFolio.requestFocus();
 						
@@ -428,28 +435,54 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-			try {
-				Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscar_nuevo();
-				
-				if(bono.getFolio() != 0){
-					panelLimpiar();
-					panelEnabledTrue();
-					txtFolio.setText(bono.getFolio()+1+"");
-					txtFolio.setEditable(false);
-					txtBono.requestFocus();
-				}else{
-					panelLimpiar();
-					panelEnabledTrue();
-					txtFolio.setText(1+"");
-					txtFolio.setEditable(false);
-					txtBono.requestFocus();
-				}
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			busqueda_proximo_folio();
+			
+			if(foliosiguiente != 0){
+				panelLimpiar();
+				panelEnabledTrue();
+				txtFolio.setText(foliosiguiente+"");
+				txtFolio.setEditable(false);
+				txtBono.requestFocus();
+			}else{
+				panelLimpiar();
+				panelEnabledTrue();
+				txtFolio.setText(1+"");
+				txtFolio.setEditable(false);
+				txtBono.requestFocus();
 			}
 			
 		}
 	};
+	
+	int foliosiguiente=0;
+	public int  busqueda_proximo_folio() {
+		Connexion con = new Connexion();
+		String query = "select isnull(max(folio)+1,0) as 'Maximo' from tb_bono_puntualidad_y_asistencia ";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				 foliosiguiente =(rs.getInt(1));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return foliosiguiente ;
+		}
+		finally{
+			 if (stmt != null) { try {
+				stmt.close();
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Error en la funcion busqueda_proximo_folio()"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			} }
+		}
+		return foliosiguiente;
+			}
+	
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -480,7 +513,7 @@ public class Cat_Bono_Complemento_De_Sueldo extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Bono_Complemento_De_Sueldo().setVisible(true);
+			new Cat_Bono_Puntualidad_Y_Asistencia().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

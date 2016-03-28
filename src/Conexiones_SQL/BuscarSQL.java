@@ -75,6 +75,7 @@ import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
+import Obj_Lista_de_Raya.Obj_Bono_Puntualidad_Y_Asistencia;
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
 import Obj_Lista_de_Raya.Obj_Conceptos_De_Extras_Para_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Departamento;
@@ -93,7 +94,6 @@ import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
-import Obj_Lista_de_Raya.Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
@@ -551,6 +551,33 @@ public class BuscarSQL {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return bono;
+	}
+	
+	
+	public Obj_Bono_Puntualidad_Y_Asistencia Bono_Puntualidad_Y_Asistencia(int folio) throws SQLException{
+		Obj_Bono_Puntualidad_Y_Asistencia bono = new Obj_Bono_Puntualidad_Y_Asistencia();
+		String query = "select folio,bono,abreviatura,status from [tb_bono_puntualidad_y_asistencia] where folio ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				bono.setFolio(rs.getInt("folio"));
+				bono.setBono(rs.getFloat("bono"));
+				bono.setAbreviatura(rs.getString("abreviatura").trim());
+				bono.setStatus((rs.getString("status").equals("1"))?true:false);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar \nSQLServerException:"+e+" \n Parametros:"+query,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			return null;
 		}
 		finally{
@@ -584,6 +611,8 @@ public class BuscarSQL {
 		}
 		return bono;
 	}
+	
+
 	
 	public Obj_Bono_Complemento_Sueldo Bono_Nuevo() throws SQLException{
 		Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo();
@@ -1338,12 +1367,15 @@ public class BuscarSQL {
 				empleado.setPrestamo(rs.getInt("rango_prestamo_id"));
 				empleado.setPension_alimenticia(rs.getFloat("pension_alimenticia"));
 				empleado.setInfonavit(rs.getFloat("infonavit"));
+				empleado.setInfonacot(rs.getFloat("infonacot"));
+				
 				empleado.setTargeta_nomina(rs.getString("targeta_nomina"));
 				empleado.setTipo_banco(rs.getInt("tipo_banco_id"));
 				empleado.setGafete(rs.getBoolean("gafete") ? true : false);
 				empleado.setFuente_sodas(rs.getBoolean("fuente_sodas") ? true : false);
 				empleado.setObservasiones(rs.getString("observaciones"));
 				empleado.setFecha_actualizacion(rs.getString("fecha_actualizacion"));
+				empleado.setUltimo_usuario_modifico(rs.getString("ultimo_usuario_modifico"));
 				
 				empleado.setHorario3(rs.getInt("horario3"));
 				empleado.setStatus_h3(rs.getInt("status_h3"));
@@ -6472,36 +6504,36 @@ public class BuscarSQL {
 		return cadena;
 	}
 	
-	public String[][] llenar_tabla_deduccion_inasistencia_sugerido_sistema(Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia)throws SQLException{
-		String query = "exec sp_buscar_sugerido_sistemas_inasistencia";
-		String[][] matriz = new String[getFilas(query)][10];
-		
-		try {
-			Statement stmt = new Connexion().conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-//			System.out.println(rs.getString(2));
-			
-			int i = 0;
-			while(rs.next()){
-				matriz[i][0] = rs.getInt(1)+" ";
-				matriz[i][1] = rs.getString(2).trim();
-				matriz[i][2] = rs.getString(3).trim();
-				matriz[i][3] = rs.getString(4).trim();
-				matriz[i][4] = rs.getString(5).trim().equals("0")?"":rs.getString(5).trim();
-				matriz[i][5] = rs.getString(6).trim().equals("0")?"":rs.getString(6).trim();
-				matriz[i][6] = rs.getString(7).trim().equals("0")?"":rs.getString(7).trim();
-				matriz[i][7] = rs.getString(8).trim().equals("0")?"":rs.getString(8).trim();;
-				matriz[i][8] = "";
-				matriz[i][9] = "true";
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion llenar_tabla_deduccion_inasistencia_sugerido_sistema \nprocedimiento almacenado sp_buscar_sugerido_sistemas_inasistencia \n SQL Server Exception: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-	    return matriz; 
-	}
-	
+//	public String[][] llenar_tabla_deduccion_inasistencia_sugerido_sistema(Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia)throws SQLException{
+//		String query = "exec sp_buscar_sugerido_sistemas_inasistencia";
+//		String[][] matriz = new String[getFilas(query)][10];
+//		
+//		try {
+//			Statement stmt = new Connexion().conexion().createStatement();
+//			ResultSet rs = stmt.executeQuery(query);
+////			System.out.println(rs.getString(2));
+//			
+//			int i = 0;
+//			while(rs.next()){
+//				matriz[i][0] = rs.getInt(1)+" ";
+//				matriz[i][1] = rs.getString(2).trim();
+//				matriz[i][2] = rs.getString(3).trim();
+//				matriz[i][3] = rs.getString(4).trim();
+//				matriz[i][4] = rs.getString(5).trim().equals("0")?"":rs.getString(5).trim();
+//				matriz[i][5] = rs.getString(6).trim().equals("0")?"":rs.getString(6).trim();
+//				matriz[i][6] = rs.getString(7).trim().equals("0")?"":rs.getString(7).trim();
+//				matriz[i][7] = rs.getString(8).trim().equals("0")?"":rs.getString(8).trim();;
+//				matriz[i][8] = "";
+//				matriz[i][9] = "true";
+//				i++;
+//			}
+//		} catch (SQLException e1) {
+//			e1.printStackTrace();
+//			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion llenar_tabla_deduccion_inasistencia_sugerido_sistema \nprocedimiento almacenado sp_buscar_sugerido_sistemas_inasistencia \n SQL Server Exception: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//		}
+//	    return matriz; 
+//	}
+//	
 	
 	
 	public String[][] Reporte_De_Ventas(Obj_Reportes_De_Ventas ventas) throws SQLException{
@@ -8367,7 +8399,6 @@ public class BuscarSQL {
 	}
 	
 	public boolean  existe_finiquito_vigente(int folio_finiquito, String catalogoDependiente){
-		
 		boolean existe = false;
 		
 		String query = "";

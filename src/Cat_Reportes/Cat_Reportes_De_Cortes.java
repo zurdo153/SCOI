@@ -32,6 +32,7 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 	JButton btnlistadocortesdia = new JButton("",new ImageIcon("imagen/Calendar.png"));
 	JButton btnlistadocortesExportar = new JButton("",new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
 	JButton btncortes_LiquidadosSCorteSCOI = new JButton("",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
+	JButton btncortes_Ventas_Por_Redondeo = new JButton("",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
 	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
 	
 	JDateChooser cfecha = new JDateChooser();
@@ -65,19 +66,22 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 				"		<CENTER><p>Sin Corte En SCOI</p></CENTER></FONT>" +
 				"</html>");	
 		
+		btncortes_Ventas_Por_Redondeo.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Venta De La</p></CENTER>" +
+				"		<CENTER><p>Asignacion Por Redondeo</p></CENTER></FONT>" +
+				"</html>");	
 		
-		panel.add(btncortedelfolio).setBounds(20,25,260,30);
-		panel.add(btnlistadocortesdia).setBounds(20,75,260,30);
-		panel.add(btnlistadocortesExportar).setBounds(20,125,260,40);
-		panel.add(btncortes_LiquidadosSCorteSCOI).setBounds(20,180,260,40);
-		
-		panel.add(new JLabel("Folio:")).setBounds(20,240,200,20);		
-		panel.add(txtFolio).setBounds(80,240,195,20);
-		panel.add(new JLabel("Fecha:")).setBounds(20,270,200,20);
-		panel.add(cfecha).setBounds(80,270,195,20);
-		
-		
-		panel.add(btngenerar).setBounds(100,300,120,30);
+		int x=20, y=25, width=260,height=40;
+		panel.add(btncortedelfolio).setBounds              (x  ,y    ,width,height);
+		panel.add(btnlistadocortesdia).setBounds           (x  ,y+=50,width,height);
+		panel.add(btnlistadocortesExportar).setBounds      (x  ,y+=50,width,height);
+		panel.add(btncortes_LiquidadosSCorteSCOI).setBounds(x  ,y+=50,width,height);
+		panel.add(btncortes_Ventas_Por_Redondeo).setBounds (x  ,y+=50,width,height);
+		panel.add(new JLabel("Folio:")).setBounds          (x  ,y+=50,width,20    );		
+		panel.add(txtFolio).setBounds                      (60 ,y    ,195  ,20    );
+		panel.add(new JLabel("Fecha:")).setBounds          (x  ,y+=25,width,20    );
+		panel.add(cfecha).setBounds                        (60 ,y    ,195  ,20);
+		panel.add(btngenerar).setBounds                    (100,y+=25,120  ,30);
 	    
 	    txtFolio.setEditable(false);
 	    cfecha.setEnabled(false);
@@ -133,6 +137,15 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 		}
 	};
 	
+	ActionListener opReporte_Por_Redondeo = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			txtFolio.setEditable(true);
+			cfecha.setEnabled(false);
+			btngenerar.setEnabled(true);
+			tipo_Reporte=5;
+			cfecha.setDate(null);
+		}
+	};
 	
 	public String validar_fechas(){
 		String error = "";
@@ -172,6 +185,22 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 				 		+ "       ,[status_corte]"
 				 		+ "   FROM [IZAGAR_Relacion_de_Asignaciones_Liquidadas]"
 				 		+ "  where status_corte=0 order by establecimiento,cajero, fecha_liquidacion" ;
+				     new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				     return;
+		     }
+			if(tipo_Reporte==5){
+				 basedatos="2.200";
+				 reporte = "Obj_Reporte_De_Cortes_Liqudados_Sin_Corte_En_SCOI.jrxml";
+				 comando = "select facremtick.folio as ticket "
+				 		+ "        ,descripcion"
+				 		+ "        ,entysal.importe+entysal.iva as importe"
+				 		+ "        ,cajeros.nombre as cajero"
+				 		+ "        ,facremtick.fecha"
+				 		+ "      from facremtick"
+				 		+ "  inner join entysal on entysal.folio=facremtick.folio"
+				 		+ "  inner join productos on productos.cod_prod=entysal.cod_prod"
+				 		+ "  inner join cajeros on cajeros.cajero=facremtick.cajero"
+				 		+ " where facremtick.folio_cajero = '"+txtFolio.getText().toString().toUpperCase().trim()+"' and entysal.cod_prod='60276' and entysal.status='V'" ;
 				     new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 				     return;
 		     }

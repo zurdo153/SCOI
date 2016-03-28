@@ -1,6 +1,5 @@
 package Cat_Matrices;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Toolkit;
@@ -30,16 +29,15 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
+import Obj_Principal.Obj_Refrescar;
 
 @SuppressWarnings("serial")
 public class Cat_Etapas extends JFrame{
@@ -50,8 +48,6 @@ public class Cat_Etapas extends JFrame{
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 9, "Int");
 	JTextArea txtAreaEtapa= new Componentes().textArea(new JTextArea(), "Etapa",250);
 	JTextField txtAbreviatura = new Componentes().text(new JTextField(), "Abreviatura", 5, "String");
-	JTextField txtFolioFiltro = new JTextField();
-	JTextField txtEtapaFiltro = new Componentes().text(new JTextField(), "Filtro Por Nombre de Etapa", 30, "String");
 	
 	JScrollPane JScrolAreaEtapa = new JScrollPane(txtAreaEtapa);
 	
@@ -66,51 +62,62 @@ public class Cat_Etapas extends JFrame{
 	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
 	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
 	
-	 public static DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio", "Etapa", "Abreviatura","Estatus"}){
-	            @SuppressWarnings("rawtypes")
-	            Class[] types = new Class[]{
-	                       java.lang.Object.class,
-	                       java.lang.Object.class, 
-	                       java.lang.Object.class,    
-	                       java.lang.Object.class   
-	        };
-	            @SuppressWarnings({ "rawtypes", "unchecked" })
-	            public Class getColumnClass(int columnIndex) {
-	                    return types[columnIndex];
-	            }
-	        public boolean isCellEditable(int fila, int columna){
-	                    switch(columna){
-	                            case 0  : return false; 
-	                            case 1  : return false; 
-	                            case 2  : return false; 
-	                            case 3  : return false; 
-	                    }
-	                     return false;
-	             }
-	    };
-		JTable tabla = new JTable(modelo);
-		JScrollPane scrollAsignado = new JScrollPane(tabla);
-		@SuppressWarnings("rawtypes")
-		private TableRowSorter trsfiltro;
+	public JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla <<<", 300, "String");
+
+	@SuppressWarnings("rawtypes")
+	public Class[] tipos(){
+		Class[] tip = new Class[columnas];
 		
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+		for(int i =0; i<columnas; i++){
+			if(i==checkbox){
+				tip[i]=java.lang.Boolean.class;
+			}else{
+				tip[i]=java.lang.Object.class;
+			}
+			
+		}
+		return tip;
+	}
+	
+	int columnas = 4,checkbox=-1;
+	public void init_tabla(){
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(30);		
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(400);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(50);
+    	this.tabla.getColumnModel().getColumn(3).setMinWidth(60);
+    	
+		String comando="select folio_etapa,etapa,abreviatura,case when status='1' then (select 'VIGENTE') when status=0 then (select 'CANCELADO') end as estatus" +
+				" from tb_etapas order by etapa asc";
+		
+		String basedatos="26",pintar="si";
+		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+    }
+	
+	
+ public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Etapa", "Abreviatura","Estatus"}){
+	 @SuppressWarnings("rawtypes")
+		Class[] types = tipos();
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Class getColumnClass(int columnIndex) {
+         return types[columnIndex];
+     }
+		public boolean isCellEditable(int fila, int columna){
+			if(columna ==checkbox)
+				return true; return false;
+		}
+    };
+    
+    JTable tabla = new JTable(modelo);
+	public JScrollPane scroll_tabla = new JScrollPane(tabla);
+		
 	public Cat_Etapas(){
-		
-		
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/catalogo-de-libros-en-blanco-nota-icono-7791-32.png"));
 			panel.setBorder(BorderFactory.createTitledBorder("Etapas de Matrices"));
 			
 			this.setTitle("Etapas");
 			
-			trsfiltro = new TableRowSorter(modelo); 
-			tabla.setRowSorter(trsfiltro);
-			
-			txtFolioFiltro.setToolTipText("Filtro Por Folio");
-			txtEtapaFiltro.setToolTipText("Filtro Por Etapa");
-			
 			int x = 45, y=30, ancho=100;
-			
-			
 			panel.add(new JLabel("Folio:")).setBounds(x-25,y-15,ancho,20);
 			panel.add(txtFolio).setBounds(60,y-15,ancho+60,20);
 			panel.add(btnBuscar).setBounds(230,y-15,32,20);
@@ -127,17 +134,15 @@ public class Cat_Etapas extends JFrame{
 			panel.add(btnEditar).setBounds(x+(ancho*2)+30,y+=30,100,20);
 			panel.add(btnGuardar).setBounds(x+ancho*2+30,y+=30,100,20);
 			
-			
 			panel.add(btnDeshacer).setBounds(x+(ancho*2)+30,y+=90,100,20);
 			panel.add(btnSalir).setBounds(x+(ancho*2)+30,y+=30,100,20);
 			
 			panel.add(new JLabel("Abreviatura:")).setBounds(x-25,y+=30,ancho,20);
 			panel.add(txtAbreviatura).setBounds(90,y,ancho+70,20);
 			
-			panel.add(txtFolioFiltro).setBounds((x*2)+(ancho*3)-10,15,40,20);
-			panel.add(txtEtapaFiltro).setBounds((x*2)+(ancho*3)+30,15,430,20);
+			panel.add(txtFiltro).setBounds((x*2)+(ancho*3)-10,15,470,20);
 			
-			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-10,35,623,240);
+			panel.add(scroll_tabla).setBounds((x*2)+(ancho*3)-10,35,623,240);
 			
 			txtAreaEtapa.setEditable(false);
 			txtAbreviatura.setEditable(false);
@@ -153,13 +158,13 @@ public class Cat_Etapas extends JFrame{
 			btnNuevo.addActionListener(nuevo);
 			btnEditar.addActionListener(editar);
 			
-			txtFolioFiltro.addKeyListener(opFiltroFolio);
-			txtEtapaFiltro.addKeyListener(opFiltroEtapa);
+			txtFiltro.addKeyListener(op_filtro);
 			
 			txtAreaEtapa.addKeyListener(enterpasaraAbreviatura);
 			txtAbreviatura.addKeyListener(enterpasaraEtapa);
 			
 			agregar(tabla);
+			init_tabla();
 			
 			cont.add(panel);
 			
@@ -171,7 +176,7 @@ public class Cat_Etapas extends JFrame{
               ///asigna el foco al filtro
 						 this.addWindowListener(new WindowAdapter() {
 				                public void windowOpened( WindowEvent e ){
-				                	txtEtapaFiltro.requestFocus();
+				                	txtFiltro.requestFocus();
 				             }
 				        });
 		
@@ -230,95 +235,13 @@ public class Cat_Etapas extends JFrame{
 				                    	    }
 			                 });
 	}
-	
-	private JScrollPane getPanelTabla()	{	
-		
-			tabla.getTableHeader().setReorderingAllowed(false) ;
-			tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			
-		    this.tabla.getColumnModel().getColumn(0).setMinWidth(40);
-		    this.tabla.getColumnModel().getColumn(0).setMaxWidth(40);
-		    this.tabla.getColumnModel().getColumn(1).setMinWidth(430);
-		    this.tabla.getColumnModel().getColumn(1).setMaxWidth(1500);
-		    this.tabla.getColumnModel().getColumn(2).setMinWidth(50);
-		    this.tabla.getColumnModel().getColumn(2).setMaxWidth(100);
-		    this.tabla.getColumnModel().getColumn(3).setMinWidth(60);
-		    this.tabla.getColumnModel().getColumn(3).setMaxWidth(100);
-						    
-						    TableCellRenderer render = new TableCellRenderer() { 
-								public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-								boolean hasFocus, int row, int column) { 
-						          		Component componente = null;
-											componente = new JLabel(value == null? "": value.toString());
-											if(row %2 == 0){
-												((JComponent) componente).setOpaque(true); 
-												componente.setBackground(new java.awt.Color(177,177,177));	
-											}
-											
-											if(table.getSelectedRow() == row){
-												((JComponent) componente).setOpaque(true); 
-												componente.setBackground(new java.awt.Color(186,143,73));
-											 }
-											((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-									return componente;
-								} 
-							}; 
 
-							for(int i=0; i<tabla.getColumnCount(); i++){
-							    this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
-							}
-							refrestabla();
-					 JScrollPane scrol = new JScrollPane(tabla);
-				    return scrol; 
-	    
-	    }
-	private void refrestabla(){
-		Statement s;
-		ResultSet rs;
-		try {
-			Connexion con = new Connexion();
-			s = con.conexion().createStatement();
-			rs = s.executeQuery("select folio_etapa,etapa,abreviatura,case when status='1' then (select 'VIGENTE') when status=0 then (select 'CANCELADO') end as estatus" +
-					" from tb_etapas order by etapa asc");
-			while (rs.next())
-			{ 
-			   String [] fila = new String[4];
-			   fila[0] = rs.getString(1).trim();
-			   fila[1] = rs.getString(2).trim();
-			   fila[2] = rs.getString(3).trim(); 
-			   fila[3] = rs.getString(4).trim(); 
-			   modelo.addRow(fila); 
-			}	
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en Cat_Etapas en la funcion refrestabla  SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-	
-	
-    
-	KeyListener opFiltroFolio = new KeyListener(){
-		@SuppressWarnings("unchecked")
+	KeyListener op_filtro = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioFiltro.getText(), 0));
+			int[] columnas ={0,1,2};
+			new Obj_Filtro_Dinamico_Plus(tabla, txtFiltro.getText().toUpperCase(), columnas);
 		}
-		public void keyTyped(KeyEvent arg0) {
-			char caracter = arg0.getKeyChar();
-			if(((caracter < '0') ||
-				(caracter > '9')) &&
-			    (caracter != KeyEvent.VK_BACK_SPACE)){
-				arg0.consume(); 
-			}	
-		}
-		public void keyPressed(KeyEvent arg0) {}		
-	};
-	
-	KeyListener opFiltroEtapa = new KeyListener(){
-		@SuppressWarnings("unchecked")
-		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtEtapaFiltro.getText().toUpperCase().trim(), 1));
-		}
-		public void keyTyped(KeyEvent arg0) {}
+		public void keyTyped(KeyEvent arg0)   {}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 	
@@ -382,7 +305,7 @@ public class Cat_Etapas extends JFrame{
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolio.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "No hay registro que Editar","Error",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "No hay registro que Editar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 				return;
 			}else{
 				panelEnabledTrue();
@@ -401,7 +324,7 @@ public class Cat_Etapas extends JFrame{
 	ActionListener buscar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolio.getText().equals("")){
-				JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Error",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 				return;
 			}else{
 				try {
@@ -418,7 +341,7 @@ public class Cat_Etapas extends JFrame{
 						txtAreaEtapa.setEditable(false);
 						txtAbreviatura.setEditable(false);
 					} else{
-						JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "El Registro no existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						return;
 					}
 				} catch (NumberFormatException e1) {
@@ -462,14 +385,14 @@ public class Cat_Etapas extends JFrame{
 			
 				try {
 					if(validaCampos()!="") {
-						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+						JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n "+validaCampos(), "Aviso" ,JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					} else{
 					Obj_Etapas Etapas = new Obj_Etapas().buscar(Integer.parseInt(txtFolio.getText()));
 					if(Etapas.getFolio() == Integer.parseInt(txtFolio.getText())){
 						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
 							if(validaCampos()!="") {
-								JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+								JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n "+validaCampos(), "Aviso" ,JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 							}else{
 									Etapas.setEtapa(txtAreaEtapa.getText().toString().toUpperCase().trim());
@@ -479,15 +402,14 @@ public class Cat_Etapas extends JFrame{
 															case 1: Etapas.setStatus(0); break;	}
 									
 														if(Etapas.actualizar(Integer.parseInt(txtFolio.getText()))){
-															while(tabla.getRowCount()>0){ modelo.removeRow(0);}
-															refrestabla();
-									JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+															init_tabla();
+														JOptionPane.showMessageDialog(null,"El Registró Se Actualizó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 									btnDeshacer.doClick();
 									txtFolio.setEditable(true);
 									txtFolio.requestFocus();
 									return;
 								}else{
-									JOptionPane.showMessageDialog(null, "El registro no se actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+									JOptionPane.showMessageDialog(null, "El Registro No Se Actualizó", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 									return;
 								}
 							}
@@ -504,18 +426,15 @@ public class Cat_Etapas extends JFrame{
 							case 1: Etapas.setStatus(0); break;	}
 							
 								if(Etapas.guardar()){
-									
-									while(tabla.getRowCount()>0){ modelo.removeRow(0);}
-									refrestabla();
-									
-									JOptionPane.showMessageDialog(null,"El registró se guardó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+                                         init_tabla();									
+                                         JOptionPane.showMessageDialog(null,"El Registró Se Guardó Correctamente","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 									btnDeshacer.doClick();
 									txtFolio.setEditable(true);
 									txtFolio.requestFocus();
 									return;
 									
 								}else{
-									JOptionPane.showMessageDialog(null, "El registro no se guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+									JOptionPane.showMessageDialog(null, "El Registro No Se Guardó", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 									return;
 								}
 							}

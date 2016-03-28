@@ -55,8 +55,11 @@ public class Obj_Empleados {
 	private int puesto;
 	private String fecha_ingreso_imss;
 	private String fecha_vencimiento_licencia;
+	private String ultimo_usuario_modifico;
 	
-//	percepciones y deducciones
+
+
+	//	percepciones y deducciones
 	private float salario_diario;
 	private float salario_diario_integrado;
 	private String forma_pago;
@@ -65,29 +68,6 @@ public class Obj_Empleados {
 	private float bono_asistencia;
 	private float bono_puntualidad;
 	private float infonacot;
-	public float getBono_asistencia() {
-		return bono_asistencia;
-	}
-
-	public void setBono_asistencia(float bono_asistencia) {
-		this.bono_asistencia = bono_asistencia;
-	}
-
-	public float getBono_puntualidad() {
-		return bono_puntualidad;
-	}
-
-	public void setBono_puntualidad(float bono_puntualidad) {
-		this.bono_puntualidad = bono_puntualidad;
-	}
-
-	public float getInfonacot() {
-		return infonacot;
-	}
-
-	public void setInfonacot(float infonacot) {
-		this.infonacot = infonacot;
-	}
 
 	private int prestamo;
 	private float pension_alimenticia;
@@ -112,6 +92,38 @@ public class Obj_Empleados {
 		salario_diario=0; salario_diario_integrado=0; forma_pago=""; sueldo=0; bono=0; prestamo=0; pension_alimenticia=0; infonavit=0; targeta_nomina="";
 		tipo_banco=0; presencia_fisica=0; gafete=false; fuente_sodas=false; observasiones="";
 		
+	}
+	
+	public float getBono_asistencia() {
+		return bono_asistencia;
+	}
+
+	public void setBono_asistencia(float bono_asistencia) {
+		this.bono_asistencia = bono_asistencia;
+	}
+
+	public float getBono_puntualidad() {
+		return bono_puntualidad;
+	}
+
+	public void setBono_puntualidad(float bono_puntualidad) {
+		this.bono_puntualidad = bono_puntualidad;
+	}
+
+	public float getInfonacot() {
+		return infonacot;
+	}
+
+	public void setInfonacot(float infonacot) {
+		this.infonacot = infonacot;
+	}
+
+	public String getUltimo_usuario_modifico() {
+		return ultimo_usuario_modifico;
+	}
+
+	public void setUltimo_usuario_modifico(String ultimo_usuario_modifico) {
+		this.ultimo_usuario_modifico = ultimo_usuario_modifico;
 	}
 	
 	public int getFolio() {

@@ -48,6 +48,8 @@ public class Cargar_Combo {
 			
 	}
 	
+	
+	
 	@SuppressWarnings("unchecked")
 	public String[] Establecimiento(String tabla) throws SQLException{
 		String query = "";
@@ -726,6 +728,40 @@ public class Cargar_Combo {
 		}
 		return pila;	
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] Bono_Puntualidad_y_Asistencia(String tabla) throws SQLException {
+		String query = "select round(bono,2) as bono from " + tabla +" order by bono asc";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona un Bono");
+				}
+				miVector.add(rs.getString("bono"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;	
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public String[] Permiso(String tabla) throws SQLException{

@@ -219,7 +219,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
  	  
 	public void cargar_factor(){
     	factor= new BuscarSQL().Factor(new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00"); 
-    	JLBFactor.setText(	"<html><FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk>" +
+    	JLBFactor.setText(	"<html><FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
 				"		<CENTER><p>"+factor+"</p></CENTER></FONT></html>");
     if(factor.equals("Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y Tasa")){
     	btn_buscar.setEnabled(false);

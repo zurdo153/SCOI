@@ -40,6 +40,13 @@ public class JCButton extends JButton{
             setBackground(CA);  
         }
         
+        if(color.equals("Naranja")){
+            CA    =   new Color(253,136,11);
+            CB    =   new Color(253,197,134);
+            CD    =   new Color(137,2,7);
+            setBackground(CA);  
+        }
+        
         if(color.equals("Cafe")){
             CA    =   new Color(135 , 65 , 5);
             CB    =   new Color(207 ,113 ,36);

@@ -298,8 +298,10 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
             	txtFolioVenta.requestFocus();
             	btnReporte.doClick();
             	
-	    	}
+	    	}else{
+			JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 	    	return;
+	    	}
 	    }
 	  }			
     };

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-03-20T14:36:50 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Depositos_A_Bancos_Para_Exportar" pageWidth="612" pageHeight="27200" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8029f220-9e71-4f79-977f-3ca107ccf0ce">
+	<property name="ireport.zoom" value="1.6105100000000019"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IZAGAR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[exec sp_reporte_de_productos_con_existencia 'CEDIS']]>
+	</queryString>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="exist_piezas" class="java.math.BigDecimal"/>
+	<field name="transferidos_desde_cedis" class="java.math.BigDecimal"/>
+	<field name="sugerido" class="java.math.BigDecimal"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="fecha_ultimavez_se_agoto" class="java.sql.Timestamp"/>
+	<columnHeader>
+		<band height="35">
+			<staticText>
+				<reportElement mode="Opaque" x="310" y="20" width="80" height="15" forecolor="#FFFFFF" backcolor="#000099" uuid="e9c0cd1a-3996-46a9-b57c-dbf638c487b2">
+					<printWhenExpression><![CDATA[!$F{establecimiento}.equals("CEDIS")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Recepcionados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="310" y="20" width="80" height="15" forecolor="#FFFFFF" backcolor="#000099" uuid="fe1ade9f-bd9d-4b86-bd1e-95d467c1e63b">
+					<printWhenExpression><![CDATA[$F{establecimiento}.equals("CEDIS")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Transferidos ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="20" width="40" height="15" forecolor="#FFFFFF" backcolor="#000099" uuid="37ec000c-2640-4e35-9f7a-3af3c49900d3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Codigo Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="250" y="20" width="60" height="15" forecolor="#FFFFFF" backcolor="#000099" uuid="10216b2b-a12c-4f6f-9433-a710a0535746"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Exist.pzs.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="390" y="20" width="70" height="15" forecolor="#FFFFFF" backcolor="#000099" uuid="992006ee-6c1d-471b-a41c-a18ee2475b96">
+					<printWhenExpression><![CDATA[$F{establecimiento}.equals("CEDIS")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Sugerido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="40" y="20" width="210" height="15" forecolor="#FFFFFF" backcolor="#000099" uuid="2f6686e9-84b9-41b9-a01d-1c2af5941ceb"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="570" height="20" forecolor="#FFFFFF" backcolor="#FF9900" uuid="2431c3f4-d307-4ea1-a74f-3c8570f57db0"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["INVENTARIO DE PRODUCTOS QUE HAN TENIDO RECEPCIONES EN LOS ULTIMOS 90 DIAS"+$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="460" y="20" width="110" height="15" forecolor="#FFFFFF" backcolor="#000099" uuid="5dd7267d-d44a-4fce-a27d-6dc9a561be25"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Fecha Ultima Vez Agoto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="15" uuid="330ce12f-da6b-44a8-9b8d-082d2cfb25d3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="0" width="210" height="15" uuid="8b848b76-3a98-422b-ab57-d2767c85e5b9">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#0.00#;(-#0.00#)">
+				<reportElement x="250" y="0" width="60" height="15" uuid="0d0d9a20-bc89-441a-8bb3-1a10f4966ffe"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{exist_piezas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#0.00#;(-#0.00#)">
+				<reportElement x="310" y="0" width="80" height="15" uuid="1034f245-cb13-4f77-b8f1-fa5925d7c982"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{transferidos_desde_cedis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#0.00#;(-#0.00#)">
+				<reportElement x="390" y="0" width="70" height="15" uuid="5dff0a78-e91b-497b-b7e3-c69fd438064b">
+					<printWhenExpression><![CDATA[$F{establecimiento}.equals("CEDIS")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{sugerido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMM d, yyyy h:mm:ss a">
+				<reportElement x="460" y="0" width="110" height="15" uuid="04292f6d-30ec-4e62-ac41-15bc815ddc0e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fecha_ultimavez_se_agoto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

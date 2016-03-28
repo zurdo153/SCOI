@@ -56,6 +56,7 @@ import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
+import Obj_Lista_de_Raya.Obj_Bono_Puntualidad_Y_Asistencia;
 import Obj_Lista_de_Raya.Obj_Conceptos_De_Extras_Para_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
@@ -82,7 +83,7 @@ public class ActualizarSQL {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public boolean Empleado(Obj_Empleados empleado, int folio){
-		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -142,8 +143,11 @@ public class ActualizarSQL {
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario_integrado());
 			pstmt.setString(i+=1,	empleado.getForma_pago().toUpperCase());
 			pstmt.setFloat(i+=1,	empleado.getStatus()==4||empleado.getStatus()==5?0:empleado.getSueldo());
-			
 			pstmt.setInt(i+=1, 		empleado.getStatus()==4||empleado.getStatus()==5?1:empleado.getBono());
+			pstmt.setFloat(i+=1,   empleado.getBono_asistencia());
+			pstmt.setFloat(i+=1, 	empleado.getBono_puntualidad());
+			pstmt.setFloat(i+=1, 	empleado.getInfonacot());
+			
 			pstmt.setInt(i+=1, 		empleado.getPrestamo());
 			pstmt.setFloat(i+=1, 	empleado.getPension_alimenticia());
 			pstmt.setFloat(i+=1,	empleado.getInfonavit());
@@ -167,6 +171,8 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1, 	empleado.getEscolaridad().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getContrato());
 			pstmt.setInt(i+=1, 		empleado.getPresencia_fisica());
+			pstmt.setString(i+=1, 		ip);
+			pstmt.setString(i+=1, 		pc);
 			
 			pstmt.executeUpdate();
 			con.commit();
@@ -3181,7 +3187,7 @@ public class ActualizarSQL {
 	
 	public boolean Aceptar_Negar_Sueldo_o_Bono(Object[][] guardarAN_sueldo_bono){
 		int  folio_usuario= usuario.getFolio();
-		String query = " exec sp_actualizar_negacion_o_aceptacion_del_sueldo_y_bono ?,?,?,?,?,?,?";
+		String query = " exec sp_actualizar_negacion_o_aceptacion_del_sueldo_y_bono ?,?,?,?,?,?,?,?,?";
 		int i=0;
 		
 		Connection con = new Connexion().conexion();
@@ -3190,14 +3196,18 @@ public class ActualizarSQL {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
  		 for(i=0;i<guardarAN_sueldo_bono.length;i++){
-				if(guardarAN_sueldo_bono[i][6].toString().equals("true")){ 
+ 			System.out.println(guardarAN_sueldo_bono[i][7].toString());
+				if(guardarAN_sueldo_bono[i][7].toString().equals("true")){ 
+					
 					pstmt.setInt(1, Integer.valueOf(guardarAN_sueldo_bono[i][0].toString()));
 					pstmt.setFloat(2, Float.valueOf(guardarAN_sueldo_bono[i][1].toString()));
 					pstmt.setFloat(3, Float.valueOf(guardarAN_sueldo_bono[i][2].toString()));
-					pstmt.setString(4, String.valueOf(guardarAN_sueldo_bono[i][3].toString().trim()));
-					pstmt.setString(5, String.valueOf(guardarAN_sueldo_bono[i][4].toString().trim()));
-					pstmt.setInt(6, Integer.valueOf(guardarAN_sueldo_bono[i][5].toString().trim()));
-					pstmt.setInt(7, folio_usuario);
+					pstmt.setFloat(4, Float.valueOf(guardarAN_sueldo_bono[i][3].toString().trim()));
+					pstmt.setFloat(5, Float.valueOf(guardarAN_sueldo_bono[i][4].toString().trim()));
+					pstmt.setString(6, String.valueOf(guardarAN_sueldo_bono[i][5].toString().trim()));
+					pstmt.setString(7, String.valueOf(guardarAN_sueldo_bono[i][6].toString().trim()));
+					pstmt.setInt(8, Integer.valueOf(guardarAN_sueldo_bono[i][8].toString().trim()));
+					pstmt.setInt(9, folio_usuario);
 					pstmt.executeUpdate();	
 				}
 			}
@@ -4255,12 +4265,6 @@ public boolean Borrar_Observacion_DH(){
 				pstmt.setString(2, status);
 				pstmt.setString(3, observacion_de_revision);
 				pstmt.setInt(4, folio_usuario);
-				
-				System.out.println(folio_finiquito);
-				System.out.println(status);
-				System.out.println(observacion_de_revision);
-				System.out.println(folio_usuario);
-				
 				pstmt.executeUpdate();	
 			
 			con.commit();
@@ -4286,4 +4290,40 @@ public boolean Borrar_Observacion_DH(){
 		}		
 		return true;
 	}
+			
+	public boolean bono_puntualidad_y_asistencia(Obj_Bono_Puntualidad_Y_Asistencia bono, int folio){
+				String query = "exec sp_insert_bono_puntualidad_y_asistencia "+folio+", ?,?,?";
+				Connection con = new Connexion().conexion();
+				PreparedStatement pstmt = null;
+				try {
+					con.setAutoCommit(false);
+					pstmt = con.prepareStatement(query);
+					pstmt.setFloat(1, bono.getBono());
+					pstmt.setString(2, bono.getAbreviatura().toUpperCase());
+					pstmt.setString(3, (bono.getStatus())?"1":"0");
+					pstmt.executeUpdate();
+					con.commit();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ bono_puntualidad_y_asistencia ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ bono_puntualidad_y_asistencia ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+						}
+					}
+					return false;
+				}finally{
+					try {
+						con.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}		
+				return true;
+			}
+	
 }

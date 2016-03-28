@@ -77,15 +77,19 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	JLabel JLBTestigo2 = new JLabel(new ImageIcon("Imagen/icono_testigo_16.png") );
 	
 	
-	JCButton btngenerar = new JCButton("Generar","buscar.png","Azul");
+	JCButton btngenerarTemporal = new JCButton("Contrato Temporal","buscar.png","Cafe");
+	JCButton btngenerarIndefinido = new JCButton("Contrato Indefinido","buscar.png","Azul");
 	
-	String Cantidad_Letra="";
+	
+	
+	String Cantidad_Letra="",fecha_ingreso="";
 	double numero=0;
 	public Cat_Reportes_De_Contratacion_Por_Empleado(String Folio,String Nombre,String Establecimiento,String Departamento,String Puesto, String Sexo, String Estado_Civil
 			                                        ,String Edad ,String Domicilio ,String Sueldo,String NombreUsuario, String Horario, String fecha_de_ingreso, String TipoContrato){
          numero= Double.valueOf(Sueldo);
+         fecha_ingreso= fecha_de_ingreso;
 	     
-		this.setSize(440, 500);
+		this.setSize(440, 550);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -214,16 +218,26 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		panel.add(c_final).setBounds(x+=20,y,90,a);
 		c_final.setEnabled(true);
 				
-		panel.add(btngenerar).setBounds(150, y+=50, l*2, a);
+		panel.add(btngenerarTemporal).setBounds(20, 470, 180, a);
 		
 		cont.add(panel);
 		cargar_fechas();
-		btngenerar.addActionListener(opGenerar);
+		btngenerarTemporal.addActionListener(opGenerarTemporal);
 	 
 		 Cargar_Cantidad_Letra();
  	     txtSueldo_Base.addKeyListener(oprecalcular_cantidad_letra);
  	     txtEstadoCivil.addKeyListener(oppasar_a_sueldo);
 	     
+ 	     
+ 	    panel.add(btngenerarIndefinido).setBounds(235, 470, 180, a);
+ 	    
+ 	   cont.add(panel);
+		cargar_fechas();
+		btngenerarIndefinido.addActionListener(opGenerarIndefinido);
+	 
+		 Cargar_Cantidad_Letra();
+	     txtSueldo_Base.addKeyListener(oprecalcular_cantidad_letra);
+	     txtEstadoCivil.addKeyListener(oppasar_a_sueldo);
 		
 //      asigna el foco al JTextField folio_factura al arrancar la ventana y agrega al proveedor como nuevo
         this.addWindowListener(new WindowAdapter() {
@@ -300,7 +314,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	}
 	
 	
-	ActionListener opGenerar = new ActionListener() {
+	ActionListener opGenerarTemporal = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
      if(validar_fechas().equals("")){
     	    String Nombre_CompletoV =txtNombreEmpleado.getText()+"";
@@ -335,6 +349,45 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		}
 		}
 	};
+	
+
+	ActionListener opGenerarIndefinido = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+     if(validar_fechas().equals("")){
+    	    String Nombre_CompletoV =txtNombreEmpleado.getText()+"";
+			String EstablecimientoV=txtEstablecimiento.getText()+"";
+			String DepartamentoV=txtDepartamento.getText()+"";
+			String PuestoV=txtPuesto.getText()+"";
+			String SexoV=txtSexo.getText()+"";
+			String Estado_CivilV=txtEstadoCivil.getText().toUpperCase().toString().trim();
+			String EdadV=txtEdad.getText()+"";
+			String DomicilioV=txtDomicilio.getText();
+			String HorarioV=txtDomicilio.getText();
+			String SueldoV=txtSueldo_Base.getText();
+			String Sueldo_LetraV=txtSueldo_Letra.getText();
+			String TemporadaV=txtTemporada.getText().toUpperCase().trim();
+			String Testigo1=txtTestigo1.getText();
+			String testigo2=txtTestigo2.getText();
+			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
+			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
+			String folio_empleado=txtFolio.getText()+"";
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="";
+			String reporte = "Obj_Reporte_De_Contrato_Indeterminado.jrxml";
+				comando = "exec sp_Reporte_De_Contrato_Indeterminado '" +Nombre_CompletoV+"','"+EstablecimientoV+"','"+DepartamentoV+"','"+PuestoV+"','"+SexoV+"','"+Estado_CivilV+"','"+EdadV+"','"+DomicilioV+"','"+HorarioV
+						+"','"+SueldoV+"','"+Sueldo_LetraV+"','"+TemporadaV+"','"+Testigo1+"','"+testigo2+"','"+fecha_inicio+"','"+fecha_final+"','"+fecha_ingreso+"',"+folio_empleado;
+      		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+      		 
+	 	}else{
+			JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		}
+	};
+	
+	
 	
 	
 	public String validar_fechas(){

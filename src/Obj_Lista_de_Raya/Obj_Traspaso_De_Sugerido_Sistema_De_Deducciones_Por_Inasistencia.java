@@ -1,8 +1,6 @@
 package Obj_Lista_de_Raya;
 
-import java.sql.SQLException;
 
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarTablasModel;
 
 public class Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia {
@@ -19,9 +17,9 @@ public class Obj_Traspaso_De_Sugerido_Sistema_De_Deducciones_Por_Inasistencia {
 		return new GuardarTablasModel().tabla_model_inasistencia(tabla);
 	}
 	
-	public String[][] buscar_datos_sugerido_inasistencia()throws SQLException{
-		return new BuscarSQL().llenar_tabla_deduccion_inasistencia_sugerido_sistema(this);
-	}
+//	public String[][] buscar_datos_sugerido_inasistencia()throws SQLException{
+//		return new BuscarSQL().llenar_tabla_deduccion_inasistencia_sugerido_sistema(this);
+//	}
 	
 
 }

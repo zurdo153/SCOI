@@ -67,6 +67,7 @@ import Obj_Evaluaciones.Obj_Temporada;
 import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
+import Obj_Lista_de_Raya.Obj_Bono_Puntualidad_Y_Asistencia;
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
 import Obj_Lista_de_Raya.Obj_Conceptos_De_Extras_Para_Lista_De_Raya;
 import Obj_Lista_de_Raya.Obj_Departamento;
@@ -3241,13 +3242,6 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			pstmt = con.prepareStatement(query);
 			
 			int i=1;
-			
-			System.out.println( movimiento.getFolio_empleado());
-			System.out.println(movimiento.getAsignacion());
-			System.out.println(movimiento.getEstablecimiento());
-			System.out.println(movimiento.getFechaIn());
-			System.out.println(movimiento.getFechaFin());
-			
 			pstmt.setInt(i, 	  movimiento.getFolio_empleado());
 			pstmt.setString(i+=1, movimiento.getAsignacion());
 			pstmt.setString(i+=1, movimiento.getEstablecimiento());
@@ -3336,6 +3330,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 	}
 	
 	public boolean Guardar_Etapa(Obj_Etapas etapa){
+		int folio_transaccion=busca_y_actualiza_proximo_folio(26);
 		String query = "exec sp_insert_etapa ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -3343,7 +3338,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			
-			pstmt.setInt(1, etapa.getFolio());
+			pstmt.setInt(1, folio_transaccion);
 			pstmt.setString(2, etapa.getEtapa().toUpperCase().trim());
 			pstmt.setString(3, etapa.getAbreviatura().toUpperCase().trim());
 			pstmt.setInt(4, etapa.getStatus());
@@ -3375,6 +3370,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 	}
 	
 	public boolean Guardar_Aspecto_de_la_Etapa(Obj_Aspectos_De_La_Etapa aspecto){
+		int folio_transaccion=busca_y_actualiza_proximo_folio(25);
 		String query = "exec sp_insert_aspectos_de_la_etapa ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -3382,7 +3378,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			
-			pstmt.setInt(1, aspecto.getFolio());
+			pstmt.setInt(1, folio_transaccion);
 			pstmt.setString(2, aspecto.getAspecto().toUpperCase().trim());
 			pstmt.setString(3, aspecto.getAbreviatura().toUpperCase().trim());
 			pstmt.setInt(4, aspecto.getStatus());
@@ -5220,6 +5216,43 @@ public boolean Guardar_Finiquito(Obj_Finiquitos finiquito, String status_emplead
 	return true;
 }
 
+public boolean Guardar_Bono_puntualidad_y_asistencia(Obj_Bono_Puntualidad_Y_Asistencia bono){
+	int folio_transaccion=busca_y_actualiza_proximo_folio(38);
+	String query = "exec sp_insert_bono_puntualidad_y_asistencia ?,?,?,?";
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	try {
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query);
+		pstmt.setFloat(1, folio_transaccion);
+		pstmt.setFloat(2, bono.getBono());
+		pstmt.setString(3, bono.getAbreviatura().toUpperCase());
+		pstmt.setString(4, (bono.getStatus()==true)?"1":"0");
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Bono_puntualidad_y_asistencia ] Insert  SQLException: sp_insert_bono "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+}
+
 public boolean traspaso_de_movimientos_de_cascos(){
 	String query = "exec sp_traspaso_de_movimientos_de_cascos_validacion "+usuario.getFolio();
 	Connection con = new Connexion().conexion();
@@ -5230,6 +5263,8 @@ public boolean traspaso_de_movimientos_de_cascos(){
 		pstmt.executeUpdate();
 		con.commit();
 	} catch (Exception e) {
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ traspaso_de_movimientos_de_cascos ] Insert  SQLException: sp_traspaso_de_movimientos_de_cascos_validacion "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		
 		System.out.println("SQLException: "+e.getMessage());
 		if(con != null){
 			try{
