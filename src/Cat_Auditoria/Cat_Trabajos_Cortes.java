@@ -12,6 +12,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +33,9 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -1292,6 +1298,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		Container contRep = getContentPane();
 		JLayeredPane panelRep = new JLayeredPane();
 		
+		JDateChooser fchTrabajoCorte = new JDateChooser();
+		
 		   public DefaultTableModel modelo_caja_verde = new DefaultTableModel(null, new String[]{"", "Caja Verde"} ){
                
 				@SuppressWarnings({ "rawtypes" })
@@ -1366,9 +1374,12 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			txtTotalPlanesRep.setBorder(BorderFactory.createLineBorder(Color.black));
 			txaComentario.setBorder(BorderFactory.createLineBorder(Color.black));
 			
+//			fchTrabajoCorte.setEnabled(false);
+			((JTextFieldDateEditor)fchTrabajoCorte.getDateEditor()).setDisabledTextColor(Color.lightGray);
+			fchTrabajoCorte.setBorder(BorderFactory.createLineBorder(Color.black));
+			
 			txaComentario.setLineWrap(true); 
 			txaComentario.setWrapStyleWord(true);
-			
 			
 			
 			int x=15,y=20,ancho=110;
@@ -1378,6 +1389,9 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			panelRep.add(new JLabel("Elaboro:")).setBounds(x,y+=25,ancho,20);
 			panelRep.add(txtElaboro).setBounds(x+ancho-20,y,ancho*3+40,20);
+			
+			panelRep.add(new JLabel("Fecha Del Trabajo:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(fchTrabajoCorte).setBounds(x+ancho+10,y,ancho,20);
 			
 			panelRep.add(new JLabel("Gastos:")).setBounds(x,y+=25,ancho,20);
 			panelRep.add(txtGastos).setBounds(x+ancho+10,y,ancho,20);								panelRep.add(scroll_caja_verde).setBounds(x+ancho+140,y,ancho+90,97);
@@ -1443,6 +1457,9 @@ public class Cat_Trabajos_Cortes extends JFrame{
 //			txtDeposito2.setEditable(true);
 			
 			txtConcentrado.setText(grupo_corte);
+			
+			fchTrabajoCorte.setDate(cargar_fechas_de_baja(1));
+			
 			txtElaboro.setText(new Obj_Usuario().LeerSession().getNombre_completo());
 			
 			txtGastos.setText(tFS);
@@ -1484,6 +1501,18 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			this.setResizable(true);
 			this.setLocationRelativeTo(null);
 		}
+		
+		public Date cargar_fechas_de_baja(int dias){
+			Date date1 = null;
+					  try {
+						date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
+					} catch (ParseException e) {
+						e.printStackTrace();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					  return (date1);
+		};
 		
 		public void llenarCVReposicion(Object[][] lista_cv3){
 			
@@ -1598,7 +1627,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				
 				if(validaCampos().equals("")){
 					
-						if(guardarTrabajo( tabla_cv(), tabla_gr() ,gastos ,dolares ,valers ,diferencia_de_cortes ,otros_faltantes ,otros_sobrantes ,caja_verde ,total ,sobrante_juan ,total_final ,deposito2 ,banco_interno ,Double.valueOf(txtTotalPlanesRep.getText()) ,Double.valueOf(txtEfectivoPlanesRep.getText()), Double.valueOf(txtDiferenciaPlanesRep.getText())) > 0 ){
+						if(guardarTrabajo( tabla_cv(), tabla_gr() ,gastos ,dolares ,valers ,diferencia_de_cortes ,otros_faltantes ,otros_sobrantes ,caja_verde ,total ,sobrante_juan ,total_final ,deposito2 ,banco_interno ,Double.valueOf(txtTotalPlanesRep.getText()) ,Double.valueOf(txtEfectivoPlanesRep.getText()), Double.valueOf(txtDiferenciaPlanesRep.getText()), new SimpleDateFormat("dd/MM/yyyy").format(fchTrabajoCorte.getDate())) > 0 ){
 							Cat_Reporte_De_Trabajo_De_Crotes(folio_trabajo_realizado);
 						}else{
 							JOptionPane.showMessageDialog(null, "El trabajo no pudo ser guardado","Aviso",JOptionPane.WARNING_MESSAGE);
@@ -1637,8 +1666,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			return matrizGr;
 		}
 		
-		public int guardarTrabajo( Object[][] tb_CV, Object[][] tb_Gr ,double gastos ,double dolares ,double valers ,double diferencia_de_cortes ,double otros_faltantes ,double otros_sobrantes ,double caja_verde ,double total ,double sobrante_juan ,double total_final ,double deposito2 ,double banco_interno ,double totalPlanesRep,double efectivoPlanesRep, double diferencia_planesRep){
-			folio_trabajo_realizado=new GuardarTablasModel().Guarda_tabla_trabajos(tb_CV, tb_Gr, Double.valueOf(txtTotalDelCorte.getText()), Double.valueOf(txtTotalRetiroCliente.getText()), Double.valueOf(txtTotalRecibosDeLuz.getText()), Double.valueOf(txtIzacel.getText()), Double.valueOf(txtEfectivoPlanes.getText()), Double.valueOf(txtPines.getText()), Double.valueOf(txtDepositos.getText()), Double.valueOf(txtCajaVerde.getText()),grupo_corte,     gastos ,dolares ,valers ,diferencia_de_cortes ,otros_faltantes ,otros_sobrantes ,caja_verde ,total ,sobrante_juan ,total_final ,deposito2 ,banco_interno ,totalPlanesRep, efectivoPlanesRep, diferencia_planesRep, txaComentario.getText().toString().trim().toUpperCase()); 
+		public int guardarTrabajo( Object[][] tb_CV, Object[][] tb_Gr ,double gastos ,double dolares ,double valers ,double diferencia_de_cortes ,double otros_faltantes ,double otros_sobrantes ,double caja_verde ,double total ,double sobrante_juan ,double total_final ,double deposito2 ,double banco_interno ,double totalPlanesRep,double efectivoPlanesRep, double diferencia_planesRep, String fecha_trabajo_corte){
+			folio_trabajo_realizado=new GuardarTablasModel().Guarda_tabla_trabajos(tb_CV, tb_Gr, Double.valueOf(txtTotalDelCorte.getText()), Double.valueOf(txtTotalRetiroCliente.getText()), Double.valueOf(txtTotalRecibosDeLuz.getText()), Double.valueOf(txtIzacel.getText()), Double.valueOf(txtEfectivoPlanes.getText()), Double.valueOf(txtPines.getText()), Double.valueOf(txtDepositos.getText()), Double.valueOf(txtCajaVerde.getText()),grupo_corte,     gastos ,dolares ,valers ,diferencia_de_cortes ,otros_faltantes ,otros_sobrantes ,caja_verde ,total ,sobrante_juan ,total_final ,deposito2 ,banco_interno ,totalPlanesRep, efectivoPlanesRep, diferencia_planesRep, txaComentario.getText().toString().trim().toUpperCase(),fecha_trabajo_corte); 
 			return folio_trabajo_realizado;
 		}
 		

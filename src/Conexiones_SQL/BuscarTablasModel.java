@@ -1350,6 +1350,7 @@ public class BuscarTablasModel {
 				matriz[i][5] = " "+df.format(rs.getDouble(6));
 				matriz[i][6] = " "+df.format(rs.getDouble(7));
 				matriz[i][7] = " "+df.format(rs.getDouble(8));
+				System.out.println("qqq: "+df.format(rs.getDouble(9)));
 				matriz[i][8] = " "+df.format(rs.getDouble(9));
 				matriz[i][9] = " "+df.format(rs.getDouble(10));
 				matriz[i][10] = " "+df.format(rs.getDouble(11));
