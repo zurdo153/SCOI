@@ -915,10 +915,18 @@ public class Cat_Finiquitos extends JFrame{
 		
 		public void diferencias(){
 			
-			System.out.print("aaaaaaaaaaaaaaaaaa "+(Float.valueOf(dias_de_vacaciones_actuales)/Float.valueOf(365)));
+//			System.out.print("aaaaaaaaaaaaaaaaaa "+(Float.valueOf(dias_de_vacaciones_actuales)/Float.valueOf(365)));
+			
+			//redondeo acia el entero anterior( truncar decimales )
+			float anios_SCOI = (float) Math.floor(Float.valueOf(txtaniosTrabajadosSCOI.getText()) );
+			float dias_de_vacaciones_SCOI = ( Float.valueOf(txtDiasTrabajadosSCOI.getText()) - (anios_SCOI * 365) );
+			
+			//redondeo acia el entero anterior( truncar decimales )
+			float anios_BMS = (float) Math.floor(Float.valueOf(txtaniosTrabajadosBnns.getText()) );
+			float dias_de_vacaciones_BMS = ( Float.valueOf(txtDiasTrabajadosBnns.getText()) - (anios_BMS * 365) );
 //			
-			txtVacacionesBnns.setText(df.format((Float.valueOf(dias_de_vacaciones_actuales)/Float.valueOf(365))*(Float.valueOf(txtDiasTrabajadosBnns.getText())*(Float.valueOf(txtDiasCuotaDiarioBnns.getText())))));
-			txtVacacionesSCOI.setText(df.format((Float.valueOf(dias_de_vacaciones_actuales)/Float.valueOf(365))*(Float.valueOf(txtDiasTrabajadosSCOI.getText())*(Float.valueOf(txtDiasCuotaDiarioSCOI.getText())))));
+			txtVacacionesBnns.setText(df.format((Float.valueOf(dias_de_vacaciones_actuales)/Float.valueOf(365))*(dias_de_vacaciones_BMS)*(Float.valueOf(txtDiasCuotaDiarioBnns.getText()))));
+			txtVacacionesSCOI.setText(df.format((Float.valueOf(dias_de_vacaciones_actuales)/Float.valueOf(365))*(dias_de_vacaciones_SCOI)*(Float.valueOf(txtDiasCuotaDiarioSCOI.getText()))));
 			
 			txtSueldoDiferencia.setText(df.format( Double.valueOf(txtSueldoSCOI.getText().toString().trim())-Double.valueOf(txtSueldoBnns.getText().toString().trim()) ) +"");			
 			txtAguinaldoDiferencia.setText(df.format( Double.valueOf(txtAguinaldoSCOI.getText().toString().trim())-Double.valueOf(txtAguinaldoBnns.getText().toString().trim()) ) +"");		

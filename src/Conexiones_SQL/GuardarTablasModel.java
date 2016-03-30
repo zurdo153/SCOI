@@ -1488,7 +1488,7 @@ public boolean Borra_departamento_y_puestos_dependientes(int folio_establecimine
 	return true;
 	}
 
-public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double TotalDelCorte,double TotalRetiroCliente, double TotalRecibosDeLuz, double Izacel, double Planes, double Pines, double Depositos, double CajaVerde, String grupo_corte,        double gastos ,double dolares ,double vales ,double diferencia_de_cortes ,double otros_faltantes ,double otros_sobrantes ,double caja_verde_rep ,double total ,double sobrante_juan ,double total_final ,double deposito2 ,double banco_interno ,double totalPlanesRep,double efectivoPlanesRep, double diferencia_planesRep, String comentarioRep){
+public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double TotalDelCorte,double TotalRetiroCliente, double TotalRecibosDeLuz, double Izacel, double Planes, double Pines, double Depositos, double CajaVerde, String grupo_corte,        double gastos ,double dolares ,double vales ,double diferencia_de_cortes ,double otros_faltantes ,double otros_sobrantes ,double caja_verde_rep ,double total ,double sobrante_juan ,double total_final ,double deposito2 ,double banco_interno ,double totalPlanesRep,double efectivoPlanesRep, double diferencia_planesRep, String comentarioRep, String fecha_trabajo_corte){
 	
 	int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
 	
@@ -1496,7 +1496,7 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 	String queryUpdate = "update tb_folios set folio = (select folio+1 from tb_folios where transaccion = 'Trabajo De Cortes') where transaccion = 'Trabajo De Cortes'";
 	String querySelect = "select folio as folio_trabajo_cortes from  tb_folios as folio_trabajo_cortes where transaccion = 'Trabajo De Cortes'";
 //	String query = "exec sp_insert_trabajo_de_cortes ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
-	String query = "exec sp_update_trabajo_de_cortes ?,?,?,?,?";
+	String query = "exec sp_update_trabajo_de_cortes ?,?,?,?,?,?";
 	
 	String queryInsertTotales = "exec sp_insert_totales_trabajo_de_cortes ?,?,?,?,?,?,?,?,?,?,?";
 	String queryInsertReposicionEfectivo = "exec sp_insert_reposicion_de_efectivo ?,?,?,?,?,?,?,?,?,?,?,?,?,?";//"exec sp_insert_totales_trabajo_de_cortes ?,?,?,?,?,?,?,?,?,?";
@@ -1520,7 +1520,7 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 			folio_trabajo = rs.getInt("folio_trabajo_cortes");
 		}
 		
-//		actualizar corte
+//		actualizar corte											fecha_trabajo_corte
 		PreparedStatement pstmt = con.prepareStatement(query);
 		con.setAutoCommit(false);
 		for(int i=0; i<tb_cv.length; i++){
@@ -1530,6 +1530,7 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 			pstmt.setInt(3, folio_trabajo);
 			pstmt.setInt(4, folio_usuario);
 			pstmt.setString(5, grupo_corte);
+			pstmt.setString(6, fecha_trabajo_corte);
 			pstmt.executeUpdate();
 		}
 		
@@ -1540,6 +1541,7 @@ public int Guarda_tabla_trabajos( Object[][] tb_cv, Object[][] tb_gr,double Tota
 			pstmt.setInt(3, folio_trabajo);
 			pstmt.setInt(4, folio_usuario);
 			pstmt.setString(5, grupo_corte);
+			pstmt.setString(6, fecha_trabajo_corte);
 			pstmt.executeUpdate();
 		}
 		
