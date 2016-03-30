@@ -106,6 +106,11 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	public TableRowSorter trsfiltro = new TableRowSorter(tabla_model); 
 		
     public Cat_Depositos_A_Bancos(){
+		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+		this.setLocationRelativeTo(null);
+		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
+		alto=alto-150;
+		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/money_icon&16.png"));
 		this.setTitle("Bancos");
 			
@@ -117,7 +122,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		panel.remove(txtNombre_Completo);
 		this.panel.add(txtNombre_Completo).setBounds(101,35,280,20);
 		
-		this.panel.add(scroll_tabla).setBounds(30,60,1035,615);
+		this.panel.add(scroll_tabla).setBounds(30,60,1035,alto);
 		this.panel.add(btn_lay_out).setBounds(1085,200,40,40);
 		this.panel.add(new JLabel("Generar Lay Out")).setBounds(1150,210,130,20);
 		this.panel.add(btn_cargar_nomina).setBounds(1085,250,40,40);
@@ -186,8 +191,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 		calcularSugerido();
 		totales();
 		
-		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
-		this.setLocationRelativeTo(null);
+
 		this.addWindowListener(op_cerrar);
 	}
     

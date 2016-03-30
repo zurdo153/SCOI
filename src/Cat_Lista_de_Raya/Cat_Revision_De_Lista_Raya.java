@@ -63,11 +63,13 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	 int cantidad_sueldos_mod =0;	
 	 
 	private DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Revision_De_Lista_Raya().get_tabla_model(),
-		new String[]{"","Folio", "Nombre Completo", "Establecimiento", "Sueldo",
-			"Bono", "P.Saldo ini", "Desc.Prest", "P.Saldo Fin", "F.Sodas",
-			"Imp.","Omi.", "Faltas", "Ina.", "Gafete", "Cortes", 
-			"Infvt", "Pension", "Banco", "Deposito", "Hrs Ext", "Extra", 
-			"Día Ext", "A Pagar", "Observaciones D.H.", "Observaciones II" }){
+		new String[]{"","Folio", "Nombre Completo", "Establecimiento", "Sueldo","Bono", "P.Saldo ini", "Desc.Prest", "P.Saldo Fin", "F.Sodas","Impuntualidad",
+			  "B.Puntualidad"
+			,"Omision", "Faltas", "Inasistencia",
+			  "B.Asistencia"
+			,"Gafete", "Dif.Cortes", "Infonavit",
+			  "Infonacot"
+			,"Pension", "Banco", "Deposito", "Hrs Extras", "Extra","Día Ext", "A Pagar", "Observaciones D.H.", "Observaciones II" }){
 			
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -98,6 +100,10 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		   	
 		   	java.lang.Object.class,
 		   	java.lang.Object.class,  
+		   	java.lang.Object.class,  
+		   	java.lang.Object.class,
+		   	java.lang.Object.class,  
+		   	
 		   	java.lang.Object.class,  
 		   	java.lang.Object.class,
 		   	java.lang.Object.class
@@ -136,8 +142,11 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	       	 	case 21 : return false; 
 	       	 	case 22 : return false; 
 	       	    case 23 : return false; 
-	       	 	case 24 : return true; 
-	       	 	case 25 : return acceso;
+	       	    case 24 : return false; 
+	       	    case 25 : return false; 
+	       	    case 26 : return false; 
+	       	 	case 27 : return true; 
+	       	 	case 28 : return acceso;
 	       	 	
 	       	 }
 	 		return false;
@@ -180,10 +189,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 		panel.add(btnQuitarObservacionI).setBounds(1430,40,150,20);
 		panel.add(JLBcambios_sueldo).setBounds(1050,40,350,20);
-//		if(cantidad_sueldos_mod>0){ 
-//		JLBcambios_sueldo.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLUE><CENTER><b><p>Sueldos Pendientes de Auditoria Por Autorizar: "+cantidad_sueldos_mod+"</p></b></CENTER></FONT></html>");
-//        btn_guardar.setEnabled(false);
-//		}
 		
 		this.menu_toolbar.remove(btn_refrescar);
 		
@@ -579,56 +584,18 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		return matriz;
 	}
 	
-//	ActionListener op_refrescar = new ActionListener() {
-//		public void actionPerformed(ActionEvent arg0) {
-//			actualizar();
-//			JOptionPane.showMessageDialog(null, "Se guardó y se refrescaron los datos correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
-//		}
-//	};
-	
-//	public void actualizar(){
-//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-//		trsfiltro.setRowFilter(RowFilter.regexFilter("", 3));
-//		
-//		txtFolio.setText("");
-//		txtNombre_Completo.setText("");
-//		cmbEstablecimientos.setSelectedIndex(0);
-//		
-//		if(tabla.isEditing()){
-//			tabla.getCellEditor().stopCellEditing();
-//		}
-//		
-//		Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
-//		
-//		if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
-//			while(tabla.getRowCount() > 0){
-//				tabla_model.removeRow(0);
-//			}
-//			
-//			Object[][] Tabla = new Obj_Revision_De_Lista_Raya().get_tabla_model();
-//			Object[] fila = new Object[tabla.getColumnCount()];
-//			for(int i=0; i<Tabla.length; i++){
-//				tabla_model.addRow(fila); 
-//				for(int j=0; j<tabla.getColumnCount(); j++){
-//					tabla_model.setValueAt(Tabla[i][j], i,j);
-//				}
-//			}
-//		}		
-//	}
 	
 	public String EmpleadoConNegativo(){
 	 String registro="";
 	  for(int i=0; i<tabla.getRowCount(); i++){
 		float descPrest = tabla.getValueAt(i, 7).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 7).toString());
-		float corte = tabla.getValueAt(i, 15).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 15).toString());
-		float aPagar = tabla.getValueAt(i, 23).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 23).toString());
+		float corte = tabla.getValueAt(i, 17).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 17).toString());
+		float aPagar = tabla.getValueAt(i, 26).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 26).toString());
 		
 		if(descPrest<0 || corte<0 || aPagar<0){
 			registro += ("* "+tabla.getValueAt(i, 2).toString().trim()+".....................................................................").substring(0,64)+"    "+(descPrest+"                             ").substring(0,25)+(corte+"                             ").substring(0,25)+aPagar+"\n";
 		}
 	  }
-	  
 	 return registro;
 	}
 	
@@ -782,9 +749,9 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			matriz[i][0] = Boolean.parseBoolean(tabla_model.getValueAt(i,0).toString().trim());
 			matriz[i][1] = Integer.parseInt(tabla_model.getValueAt(i,1).toString().trim());
 			matriz[i][2] = tabla_model.getValueAt(i,3).toString().trim();
-			matriz[i][3] = tabla_model.getValueAt(i,23).toString().trim().equals("") ? 0 : Float.parseFloat(tabla_model.getValueAt(i,23).toString().trim());
-			matriz[i][4] = tabla_model.getValueAt(i,24).toString().trim();
-			matriz[i][5] = tabla_model.getValueAt(i,25).toString().trim();
+			matriz[i][3] = tabla_model.getValueAt(i,26).toString().trim().equals("") ? 0 : Float.parseFloat(tabla_model.getValueAt(i,26).toString().trim());
+			matriz[i][4] = tabla_model.getValueAt(i,27).toString().trim();
+			matriz[i][5] = tabla_model.getValueAt(i,28).toString().trim();
 		}
 		return matriz;
 	}
@@ -815,62 +782,12 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
-		this.tabla.getColumnModel().getColumn(0).setMaxWidth(16);
 		this.tabla.getColumnModel().getColumn(0).setMinWidth(16);
-		this.tabla.getColumnModel().getColumn(1).setMaxWidth(40);
 		this.tabla.getColumnModel().getColumn(1).setMinWidth(40);
-		this.tabla.getColumnModel().getColumn(2).setMaxWidth(260);
 		this.tabla.getColumnModel().getColumn(2).setMinWidth(260);
-		this.tabla.getColumnModel().getColumn(3).setMaxWidth(110);
 		this.tabla.getColumnModel().getColumn(3).setMinWidth(110);
-		this.tabla.getColumnModel().getColumn(4).setMaxWidth(45);
-		this.tabla.getColumnModel().getColumn(4).setMinWidth(45);
-		
-		this.tabla.getColumnModel().getColumn(5).setMaxWidth(40);
-		this.tabla.getColumnModel().getColumn(5).setMinWidth(40);
-		this.tabla.getColumnModel().getColumn(6).setMaxWidth(60);
-		this.tabla.getColumnModel().getColumn(6).setMinWidth(60);
-		this.tabla.getColumnModel().getColumn(7).setMaxWidth(62);
-		this.tabla.getColumnModel().getColumn(7).setMinWidth(62);
-		this.tabla.getColumnModel().getColumn(8).setMaxWidth(65);
-		this.tabla.getColumnModel().getColumn(8).setMinWidth(65);
-		this.tabla.getColumnModel().getColumn(9).setMaxWidth(50);
-		this.tabla.getColumnModel().getColumn(9).setMinWidth(50);
-		
-		this.tabla.getColumnModel().getColumn(10).setMaxWidth(35);
-		this.tabla.getColumnModel().getColumn(10).setMinWidth(35);
-		this.tabla.getColumnModel().getColumn(11).setMaxWidth(35);
-		this.tabla.getColumnModel().getColumn(11).setMinWidth(35);
-		this.tabla.getColumnModel().getColumn(12).setMaxWidth(45);
-		this.tabla.getColumnModel().getColumn(12).setMinWidth(45);
-		this.tabla.getColumnModel().getColumn(13).setMaxWidth(35);
-		this.tabla.getColumnModel().getColumn(13).setMinWidth(35);
-		this.tabla.getColumnModel().getColumn(14).setMaxWidth(45);
-		this.tabla.getColumnModel().getColumn(14).setMinWidth(45);
-		
-		this.tabla.getColumnModel().getColumn(15).setMaxWidth(45);
-		this.tabla.getColumnModel().getColumn(15).setMinWidth(45);
-		this.tabla.getColumnModel().getColumn(16).setMaxWidth(45);
-		this.tabla.getColumnModel().getColumn(16).setMinWidth(45);
-		this.tabla.getColumnModel().getColumn(17).setMaxWidth(50);
-		this.tabla.getColumnModel().getColumn(17).setMinWidth(50);
-		this.tabla.getColumnModel().getColumn(18).setMaxWidth(55);
-		this.tabla.getColumnModel().getColumn(18).setMinWidth(55);
-		this.tabla.getColumnModel().getColumn(19).setMaxWidth(55);
-		this.tabla.getColumnModel().getColumn(19).setMinWidth(55);
-		
-		this.tabla.getColumnModel().getColumn(20).setMaxWidth(45);
-		this.tabla.getColumnModel().getColumn(20).setMinWidth(45);
-		this.tabla.getColumnModel().getColumn(21).setMaxWidth(50);
-		this.tabla.getColumnModel().getColumn(21).setMinWidth(50);
-		this.tabla.getColumnModel().getColumn(22).setMaxWidth(55);
-		this.tabla.getColumnModel().getColumn(22).setMinWidth(55);
-		this.tabla.getColumnModel().getColumn(23).setMaxWidth(55);
-		this.tabla.getColumnModel().getColumn(23).setMinWidth(55);
-		this.tabla.getColumnModel().getColumn(24).setMaxWidth(350);
-		this.tabla.getColumnModel().getColumn(24).setMinWidth(350);
-		this.tabla.getColumnModel().getColumn(25).setMaxWidth(230);
-		this.tabla.getColumnModel().getColumn(25).setMinWidth(230);
+		this.tabla.getColumnModel().getColumn(27).setMinWidth(350);
+		this.tabla.getColumnModel().getColumn(28).setMinWidth(230);
     	
 		TableCellRenderer render = new TableCellRenderer() { 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
@@ -1192,6 +1109,42 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 						}
 						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
 						break;
+					case 26: 
+						componente = new JLabel(value == null? "": value.toString());
+						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(177,177,177));	
+						}
+						if(table.getSelectedRow() == row){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(186,143,73));
+						}
+						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+						break;
+					case 27: 
+						componente = new JLabel(value == null? "": value.toString());
+						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(177,177,177));	
+						}
+						if(table.getSelectedRow() == row){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(186,143,73));
+						}
+						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+						break;
+					case 28: 
+						componente = new JLabel(value == null? "": value.toString());
+						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(177,177,177));	
+						}
+						if(table.getSelectedRow() == row){
+							((JComponent) componente).setOpaque(true); 
+							componente.setBackground(new java.awt.Color(186,143,73));
+						}
+						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
+						break;
 						
 				}
 				return componente;
@@ -1220,6 +1173,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		public void keyReleased(KeyEvent arg0) {
 			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 1));
 		}
+		
 		public void keyTyped(KeyEvent arg0) {
 			char caracter = arg0.getKeyChar();
 			if(((caracter < '0') ||
@@ -1228,6 +1182,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				arg0.consume(); 
 			}	
 		}
+		
 		public void keyPressed(KeyEvent arg0) {}
 	};
 	

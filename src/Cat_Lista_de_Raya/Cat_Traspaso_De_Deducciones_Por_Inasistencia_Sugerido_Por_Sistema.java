@@ -79,7 +79,6 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
     };
     JTable tabla = new JTable(modelo);
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
-
 	
 	public Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema(){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;

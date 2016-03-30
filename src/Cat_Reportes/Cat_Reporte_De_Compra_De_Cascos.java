@@ -34,6 +34,7 @@ public class Cat_Reporte_De_Compra_De_Cascos extends JFrame {
 	JDateChooser c_final = new JDateChooser();
 	
 	JButton btn_generar_completo = new JButton  ("Generar Reportes De Compra De Cascos",new ImageIcon("imagen/proceso-para-los-usuarios-icono-5903-16.png"));
+	JButton btn_generar_completo_limpio = new JButton  ("Generar Reportes De Compra De Cascos Limpio",new ImageIcon("imagen/proceso-para-los-usuarios-icono-5903-16.png"));
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -49,10 +50,11 @@ public class Cat_Reporte_De_Compra_De_Cascos extends JFrame {
 		this.panel.add(JLBfin).setBounds(115,55,20,20);
 		this.panel.add(c_final).setBounds(135,55,100,20);
 	
-		this.panel.add(btn_generar_completo).setBounds(25,95,250,35);
+		this.panel.add(btn_generar_completo).setBounds(13,95,280,35);
+		this.panel.add(btn_generar_completo_limpio).setBounds(13,150,280,35);
 				
 		this.cont.add(panel);
-		this.setSize(310,170);
+		this.setSize(310,230);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 
@@ -60,6 +62,7 @@ public class Cat_Reporte_De_Compra_De_Cascos extends JFrame {
 		c_final.setDate( cargar_fechas(0));
 				 
 		this.btn_generar_completo.addActionListener(op_generar);
+		this.btn_generar_completo_limpio.addActionListener(op_generar_limpio);
 		
 	}
 	
@@ -101,12 +104,43 @@ public class Cat_Reporte_De_Compra_De_Cascos extends JFrame {
 		}
 	};
 	
+	ActionListener op_generar_limpio = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(validar_fechas().equals("")){
+				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:58";
+
+				if(c_inicio.getDate().before(c_final.getDate())){
+					Reporte_de_Asistencia_consideraciones2(fecha_inicio,fecha_final);
+				}else{
+					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                      return;
+				}
+			}else{
+				  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                  return;
+			}
+		}
+	};
+	
+	
 	public void Reporte_de_Asistencia_consideraciones(String fecha_inicio, String fecha_final){
 		 reporte = "Obj_Reporte_De_Compra_De_Cascos_Por_Fechas.jrxml";
 		 comando = "exec sp_Reporte_De_Compra_De_Cascos_Por_Fecha '"+fecha_inicio+"','"+fecha_final+"'";
 	
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
+	
+	public void Reporte_de_Asistencia_consideraciones2 (String fecha_inicio, String fecha_final){
+		 reporte = "Obj_Reporte_De_Compra_De_Cascos_Por_Fechas_Limpio.jrxml";
+		 comando = "exec sp_Reporte_De_Compra_De_Cascos_Por_Fecha '"+fecha_inicio+"','"+fecha_final+"'";
+	
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+	}
+	
+	
+	
+	
 	
 	public String validar_fechas(){
 		String error = "";
@@ -116,6 +150,9 @@ public class Cat_Reporte_De_Compra_De_Cascos extends JFrame {
 		if(fechafinalNull.equals("null"))error+= "Fecha Final\n";
 		return error;
 	}
+	
+
+	
 	
 	
 	public static void main(String args[]){

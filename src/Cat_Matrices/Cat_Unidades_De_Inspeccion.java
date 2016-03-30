@@ -49,7 +49,7 @@ public class Cat_Unidades_De_Inspeccion extends JFrame{
 	
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 9, "Int");
 	JTextArea txtAreaUnidad_de_Inspeccion= new Componentes().textArea(new JTextArea(), "Etapa",250);
-	JTextField txtAbreviatura = new Componentes().text(new JTextField(), "Abreviatura", 5, "String");
+	JTextField txtAbreviatura = new Componentes().text(new JTextField(), "Abreviatura", 15, "String");
 	JTextField txtFolioFiltro = new JTextField();
 	JTextField txtUnidadFiltro = new Componentes().text(new JTextField(), "Filtro Por Nombre de Unidad de Inspeccion", 30, "String");
 	

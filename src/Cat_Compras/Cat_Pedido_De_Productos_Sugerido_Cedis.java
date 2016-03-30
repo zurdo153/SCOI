@@ -206,7 +206,7 @@ public class Cat_Pedido_De_Productos_Sugerido_Cedis extends JFrame{
 		txtCodProdRestaurar.addKeyListener(opFiltroCodProdRestaurar);
 		txtDescRestaurar.addKeyListener(opFiltroDescRestaurar);
 		
-		tabla.addKeyListener(op_key);
+//		tabla.addKeyListener(op_key);
 		
 		this.setSize(1024,768);
 		this.setResizable(false);

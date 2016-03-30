@@ -119,12 +119,10 @@ public class GuardarTablasModel {
 	}
 	
 	public boolean tabla_model_deduccion_y_percepcionesde_lista_de_raya(Object[][] tabla){
-		String query = "exec sp_insert_deducciones_y_precepciones_de_lista_de_raya ?,?,?,?,?,?,?,?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		
+		 String query = "exec sp_insert_deducciones_y_precepciones_de_lista_de_raya ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		 Connection con = new Connexion().conexion();
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
-
 			con.setAutoCommit(false);
 			
 			for(int i=0; i<tabla.length; i++){
@@ -140,24 +138,20 @@ public class GuardarTablasModel {
 //				System.out.print("  "+Float.valueOf(tabla[i][10].toString().trim()));
 //				System.out.println("  "+tabla[i][11].toString().trim());
 				
-				pstmt.setInt(	1, Integer.valueOf(tabla[i][0].toString().trim()));
-				pstmt.setString(2, tabla[i][2].toString().trim());
-				
-				pstmt.setInt(3, Integer.valueOf(tabla[i][3].toString().trim()));
-				pstmt.setInt(4, Integer.valueOf(tabla[i][4].toString().trim()));
-				
-				pstmt.setInt(	5, Integer.valueOf(tabla[i][5].toString().trim()));
-				
-				pstmt.setInt(6, tabla[i][6].toString().trim().equals("true")?1:0);
-				
-				pstmt.setInt(	7, Integer.valueOf(tabla[i][7].toString().trim()));
-				pstmt.setInt(	8, Integer.valueOf(tabla[i][8].toString().trim()));
-				pstmt.setFloat(	9, Float.valueOf(tabla[i][9].toString().trim()));
-				pstmt.setFloat(	10,Float.valueOf(tabla[i][10].toString().trim()));
-				
-				pstmt.setInt(11, tabla[i][11].toString().trim().equals("true")?1:0);
-				
-				pstmt.setString(12,tabla[i][12].toString().trim());
+				pstmt.setInt   (1,  Integer.valueOf(tabla[i][0].toString().trim())   ); //folio empleado
+				pstmt.setString(2,  tabla[i][2].toString().trim()                    );
+				pstmt.setInt   (3,  Integer.valueOf(tabla[i][3].toString().trim())   ); //impuntualidad
+				pstmt.setInt   (4,  tabla[i][4].toString().trim().equals("true")?1:0 ); //bono puntualidad
+				pstmt.setInt   (5,  Integer.valueOf(tabla[i][5].toString().trim())   ); //omision
+				pstmt.setInt   (6,  Integer.valueOf(tabla[i][6].toString().trim())   ); //dias falta
+				pstmt.setInt   (7,  tabla[i][7].toString().trim().equals("true")?1:0 ); //inasistencia
+				pstmt.setInt   (8,  tabla[i][8].toString().trim().equals("true")?1:0 ); //bono asistencia
+				pstmt.setInt   (9,  Integer.valueOf(tabla[i][9].toString().trim())   ); //dias gafete
+				pstmt.setInt   (10, Integer.valueOf(tabla[i][10].toString().trim())  ); //dias extra
+				pstmt.setFloat (11, Float.valueOf(tabla[i][11].toString().trim())    ); //horas extra
+				pstmt.setFloat (12, Float.valueOf(tabla[i][12].toString().trim())    ); //extra
+				pstmt.setInt   (13, tabla[i][13].toString().trim().equals("true")?1:0); //precencia fisica
+				pstmt.setString(14, tabla[i][14].toString().trim()                   ); //comentario
 				
 				pstmt.executeUpdate();
 			}
@@ -165,6 +159,8 @@ public class GuardarTablasModel {
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarTablasModel  en la funcion [ tabla_model_deduccion_y_percepcionesde_lista_de_raya ] \nSQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
