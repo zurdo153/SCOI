@@ -5338,4 +5338,51 @@ public boolean Guardar_Pago_cascos(Obj_Venta_De_Cascos_A_Proveedores pago_cascos
 	return true;
 }
 
+public boolean Guardar_Cambio_De_Status_De_Producto(String folio_producto,String status){
+	
+	String STS = status.equals("VIGENTE")?"V":"C";
+	String query = "insert into tb_cambio_de_status_en_prod_estab(cod_prod,usuario,fecha,status) "
+													+ "values('"+folio_producto+"',"+usuario.getFolio()+",getdate(),'"+STS+"')";
+	
+	String queryExterno = "DECLARE @status VARCHAR(15) "
+						+ " 	set @status = '"+status+"' "
+						+ " UPDATE prodestab SET prodestab.status_producto=(case when(@status)='CANCELADO' then 2 else 1 end ) "
+						+ " where prodestab.cod_estab = 15 and ltrim(rtrim(prodestab.cod_prod)) = '"+folio_producto+"' ";
+	Connection con = new Connexion().conexion();
+	Connection conExterna = new Connexion().conexion_IZAGAR();
+	
+	try {
+		con.setAutoCommit(false);
+		
+		PreparedStatement pstmt = con.prepareStatement(query);
+		PreparedStatement pstmExterno = conExterna.prepareStatement(queryExterno);
+		
+		pstmExterno.executeUpdate();
+		pstmt.executeUpdate();
+		
+		con.commit();
+
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pago_cascos ]\n"+query+"\n"+queryExterno+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pago_cascos ]\n"+query+"\n"+queryExterno+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+}
+
 } 

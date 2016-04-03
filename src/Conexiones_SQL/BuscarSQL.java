@@ -8479,4 +8479,69 @@ public class BuscarSQL {
 		}
 		return lista;
 	}	
+	
+	public String[][] getProductosEnEstablecimiento(String cod_prod){
+		String[][] Matriz = null;
+		
+		String query = "select prodestab.cod_prod "
+				+ "				,productos.descripcion "
+				+ "				,case when (prodestab.status_producto)=1 "
+				+ "						then 'VIGENTE' "
+				+ "						else 'CANCELADO' end status "
+				+ "			from prodestab WITH (NOLOCK) "
+				+ " 		inner join productos on productos.cod_prod = prodestab.cod_prod "
+				+ " 		where prodestab.cod_estab = 15 ";
+		
+		query = cod_prod.equals("")? query : query+" and ltrim(rtrim(prodestab.cod_prod)) = '"+cod_prod.trim()+"'";
+		
+		Matriz = new String[getFilasExterno(query)][3];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion_IZAGAR().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		return Matriz;
+	}
+	
+	public boolean existeProductosEnEstablecimiento(String cod_prod){
+		boolean existe = false;
+		String query = "if exists (select prodestab.cod_prod "
+				+ "				,productos.descripcion "
+				+ "				,case when (prodestab.status_producto)=1 "
+				+ "						then 'VIGENTE' "
+				+ "						else 'CANCELADO' end status "
+				+ "			from prodestab WITH (NOLOCK) "
+				+ " 		inner join productos on productos.cod_prod = prodestab.cod_prod "
+				+ " 		where prodestab.cod_estab = 15 "
+				+ " 		and ltrim(rtrim(prodestab.cod_prod)) = '"+cod_prod.trim()+"') "
+				+ " 		begin select 'true' as existe end else begin select 'false' as existe end ";
+		
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion_IZAGAR().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				existe = rs.getBoolean(1);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		return existe;
+	}
+	
 }

@@ -226,7 +226,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
         	int dias_Falt 	= Integer.valueOf(!tabla.getValueAt(i, 6).toString().equals("")?1:0); 
         	int inasist 	= Integer.valueOf(tabla.getValueAt(i, 7).toString().equals("true")?1:0); 
         	int gafete 		= Integer.valueOf(!tabla.getValueAt(i, 9).toString().equals("")?1:0); 
-        	tabla.setValueAt(((impunt+omi+dias_Falt+inasist+gafete)==0)?true:false, i, 11);
+        	tabla.setValueAt(((impunt+omi+dias_Falt+inasist+gafete)==0)?true:false, i, 13);
 		}
 	}
 	
