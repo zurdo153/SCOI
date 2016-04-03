@@ -482,98 +482,116 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Omi.*/					case 11 :
+/*B.Puntualidad*/case 11 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Faltas*/					case 12 :
+/*Omision*/		case 12 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Ina.*/					case 13 :
+/*Faltas*/   	 case 13 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Gafete*/					case 14 :
+/*Inasistencia*/  case 14 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Cortes*/					case 15 :
+/*B. Asistencia*/ case 15 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Infvt*/					case 16 :
+/*Gafete*/	 	  case 16 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Pension*/					case 17 :
+/*Dif Cortes*/    case 17 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*banco*/					case 18 :
+/*Infonavit*/  	   case 18 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = (tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*deposito*/					case 19 :
+/*Infonacot*/ 	   case 19 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Horas Ext*/					case 20 :
+/*Pension*/	  	   case 20 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Extra*/					case 21 :
+/*Banco*/	  	    case 21 :
+	                      matriz[i][j] =tabla_model.getValueAt(i,j).toString().trim();	
+						break;
+/*Deposito*/	    case 22 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*Dia Ext*/					case 22 :
+/*Hrs Extras*/	 	case 23 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
 						break;
-/*A Pagar*/					case 23 :
+/*Extra */			case 24 :
 						if(tabla_model.getValueAt(i,j).toString().length() == 0){
 							matriz[i][j] = Float.parseFloat("0");
 						}else{
 							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
 						}
+/*Dia Ext*/			case 25 :
+						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+							matriz[i][j] = Float.parseFloat("0");
+						}else{
+							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+						}
+/*A Pagar*/			case 26 :
+						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+							matriz[i][j] = Float.parseFloat("0");
+						}else{
+							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+						}
+											
+						
+						
 						break;
-/*Obs D.H.*/			case 24 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();			break;
+/*Obs D.H.*/			case 27 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();			break;
 /*Obs II*/
 					
 				}

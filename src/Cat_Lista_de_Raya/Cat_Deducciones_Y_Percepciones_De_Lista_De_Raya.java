@@ -33,7 +33,7 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root implements TableModelListener{
+public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root implements TableModelListener {
 	Runtime R = Runtime.getRuntime();
 
 	private JCheckBox chb_habilitar = new JCheckBox("Habilitar");
@@ -75,21 +75,21 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 			){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
-	    	java.lang.Object.class,
-	    	java.lang.Object.class, 
-	    	java.lang.Object.class, 
-	    	java.lang.Object.class,
-	    	java.lang.Boolean.class,//04
-	    	java.lang.Object.class,
-	    	java.lang.Object.class,
-	    	java.lang.Boolean.class,//07
-	    	java.lang.Boolean.class,//08
-	    	java.lang.Object.class,
-	    	java.lang.Object.class,
-	    	java.lang.Object.class,
-	    	java.lang.Object.class,
-	    	java.lang.Boolean.class,//013
-	    	java.lang.Object.class
+	    	java.lang.Object.class, //folio
+	    	java.lang.Object.class, //nombre completo
+	    	java.lang.Object.class, //Establecimiento
+	    	java.lang.Object.class, //Inpuntualidad
+	    	java.lang.Boolean.class,//bono inpuntualidad
+	    	java.lang.Object.class, //omision
+	    	java.lang.Object.class, //Dias Falta
+	    	java.lang.Boolean.class,//Inasistencia
+	    	java.lang.Boolean.class,//Bono Asistencia
+	    	java.lang.Object.class, //Dias Gafete
+	    	java.lang.Object.class, //Dias Extra
+	    	java.lang.Object.class, //Horas Extra
+	    	java.lang.Object.class, //Extra
+	    	java.lang.Boolean.class,//Precencia Fisica
+	    	java.lang.Object.class  //Conceptos
 
          };
 		@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -226,7 +226,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
         	int dias_Falt 	= Integer.valueOf(!tabla.getValueAt(i, 6).toString().equals("")?1:0); 
         	int inasist 	= Integer.valueOf(tabla.getValueAt(i, 7).toString().equals("true")?1:0); 
         	int gafete 		= Integer.valueOf(!tabla.getValueAt(i, 9).toString().equals("")?1:0); 
-        	tabla.setValueAt(((impunt+omi+dias_Falt+inasist+gafete)==0)?true:false, i, 11);
+        	tabla.setValueAt(((impunt+omi+dias_Falt+inasist+gafete)==0)?true:false, i, 13);
 		}
 	}
 	

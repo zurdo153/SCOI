@@ -1,6 +1,5 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -13,22 +12,19 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import Cat_Reportes.Cat_Reportes_De_Totales_De_Cheques_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Totales_De_Cheque extends Cat_Root {
@@ -113,28 +109,13 @@ public class Cat_Totales_De_Cheque extends Cat_Root {
 	    this.tabla.getColumnModel().getColumn(5).setMinWidth(100);
 	    this.tabla.getColumnModel().getColumn(5).setMaxWidth(300);
 					    
-					    TableCellRenderer render = new TableCellRenderer() { 
-							public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-							boolean hasFocus, int row, int column) { 
-					          		Component componente = null;
-										componente = new JLabel(value == null? "": value.toString());
-										if(row %2 == 0){
-											((JComponent) componente).setOpaque(true); 
-											componente.setBackground(new java.awt.Color(177,177,177));	
-										}
-										
-										if(table.getSelectedRow() == row){
-											((JComponent) componente).setOpaque(true); 
-											componente.setBackground(new java.awt.Color(186,143,73));
-										 }
-										((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-								return componente;
-							} 
-						}; 
-
-						for(int i=0; i<tabla.getColumnCount(); i++){
-						    this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
-						}
+	    for(int i = 0; i<tabla.getColumnCount(); i++){
+	    	if(i==0){
+	    		tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11));
+	    	}else{
+			    tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11));
+	    	}
+		};
 						refrestabla();
 				 JScrollPane scrol = new JScrollPane(tabla);
 			    return scrol; 

@@ -91,7 +91,6 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
 	
-//	static Object[][] cortes_guardados = new BuscarTablasModel().filtro_impuntualidad_a_considerar();
 	DefaultTableModel modelo = new DefaultTableModel(null,
             new String[]{ "Folio", "Nombre", "Fecha Mov", "Hora Mov", "Dia",
 							"Entrada-Salida", "Tipo Mov", "15m/Comida", "Impuntualidad", "Favor", "Tipo Permiso",
@@ -647,11 +646,6 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 //			consideraciones ( mandar parametros para el update)
 			int consid_imp = (imp - Integer.valueOf(txtImp.getText()))*-1;
 			int consid_fav = (fav - Integer.valueOf(txtFav.getText()))*-1;
-			
-			System.out.println(imp);
-			System.out.println(Integer.valueOf(txtImp.getText()));
-			
-			
 			
 			String clave_master = "";
 			if(tipo_checada.equals("-")){

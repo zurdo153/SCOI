@@ -123,7 +123,7 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
-				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:58";
+				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:10";
 				String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
 				String Departamento = cmbDepartamento.getSelectedItem().toString();
 				String folios_empleados = "Selecciona un Empleado";
@@ -202,7 +202,6 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	public void Reporte_de_Asistencia_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados,String solo_consideraciones){
 		 reporte = "Obj_Reporte_De_Asistencia_General.jrxml";
 		 comando = "exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"','"+solo_consideraciones+"'";
-	
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-12-27T14:33:23 -->
+<!-- 2016-04-01T10:25:15 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_General_de_Asistencia_Por_Establecimiento" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="24cc16d5-c483-4414-a6b0-717ab373dbf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="ireport.zoom" value="4.59497298635725"/>
@@ -18,7 +18,7 @@
 	</style>
 	<queryString language="SQL">
 		<![CDATA[exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones
-'15/05/2015 00:00:00','20/05/2015 23:59:59','Selecciona un Establecimiento','Selecciona un Departamento','Selecciona un Empleado',1]]>
+'23/03/2016 00:00:00','31/03/2016 23:59:10','SISTEMAS','Selecciona un Departamento','Selecciona un Empleado',1]]>
 	</queryString>
 	<field name="establecimiento" class="java.lang.String"/>
 	<field name="folio_empleado" class="java.lang.Integer"/>
@@ -409,7 +409,7 @@
 			</frame>
 			<frame>
 				<reportElement style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="28" width="570" height="14" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="22f08280-7f56-4768-b85f-0dd547882c3d">
-					<printWhenExpression><![CDATA[($F{dia}.equals('Miércoles')) || ($F{dia}.equals('Domingo'))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[($F{dia}.equals('Miércoles')) || ($F{dia}.equals('Domingo'))|| ($F{dia}.equals('Viernes'))]]></printWhenExpression>
 				</reportElement>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="42" y="0" width="35" height="10" uuid="2308eb17-c623-4283-9892-99f0cf432f90"/>
@@ -471,7 +471,7 @@
 			</frame>
 			<frame>
 				<reportElement style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="42" width="570" height="14" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#CCFF33" uuid="627bea63-d78b-4d61-9729-fa0919dfca65">
-					<printWhenExpression><![CDATA[($F{dia}.equals('Viernes'))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{dia}.equals("tu puta madre wey")]]></printWhenExpression>
 				</reportElement>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="42" y="0" width="35" height="10" forecolor="#000000" uuid="e1ca7ef4-69ff-4988-beac-f9d37c2f50a3"/>

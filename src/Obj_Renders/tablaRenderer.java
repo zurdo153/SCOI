@@ -125,7 +125,6 @@ public class tablaRenderer extends DefaultTableCellRenderer {
              this.setText( value.toString() );
              this.setForeground( (selected)?new Color(RFuenteS,GFuenteS,BFuenteS):new Color(RFuente,GFuente,BFuente) ); 
              this.setFont(fuente);            
-//             return this;
              
          }
          

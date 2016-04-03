@@ -19,12 +19,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import Obj_Lista_de_Raya.Obj_Totales_De_Nomina;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Totales_De_Nomina extends Cat_Root {
@@ -224,28 +223,8 @@ public class Cat_Totales_De_Nomina extends Cat_Root {
     	this.tabla.getColumnModel().getColumn(1).setMaxWidth(90);
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(90);
     	
-		TableCellRenderer render = new TableCellRenderer() { 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-				if(row%2==0){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-				if(table.getSelectedRow() == row){
-					lbl.setOpaque(true); 
-					lbl.setBackground(new java.awt.Color(186,143,73));
-				}
-				switch(column){
-					case 0 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-					case 1 : lbl.setHorizontalAlignment(SwingConstants.RIGHT); break;
-				}
-			return lbl; 
-			} 
-		}; 
-
-		this.tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-		this.tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
+    	tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11));
+	    tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11));
 		
 		float suma = 0;
 		for(int i=0; i<tabla.getRowCount(); i++){
