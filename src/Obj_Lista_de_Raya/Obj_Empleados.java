@@ -65,6 +65,15 @@ public class Obj_Empleados {
 	private String forma_pago;
 	private float sueldo;
 	private int bono;
+	public float getBonocomplemento() {
+		return bonocomplemento;
+	}
+
+	public void setBonocomplemento(float bonocomplemento) {
+		this.bonocomplemento = bonocomplemento;
+	}
+
+	private float bonocomplemento;
 	private float bono_asistencia;
 	private float bono_puntualidad;
 	private float infonacot;

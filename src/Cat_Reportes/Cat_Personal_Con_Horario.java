@@ -40,8 +40,8 @@ public class Cat_Personal_Con_Horario extends JFrame{
 	JLabel lblStatusColaboradores = new JLabel();
 	
 	
-	JButton btngenerar = new JButton("Personal con Horario",new ImageIcon("imagen/buscar.png"));
-	JButton btngenerarplantilla = new JButton("Plantilla de Puestos",new ImageIcon("imagen/buscar.png"));
+	JButton btngenerar = new JButton("Plantilla De Horario",new ImageIcon("imagen/buscar.png"));
+	JButton btngenerarplantilla = new JButton("Plantilla Base de Puestos",new ImageIcon("imagen/buscar.png"));
 	JButton btnReporteColaboradores = new JButton("Personal Por Estatus",new ImageIcon("imagen/buscar.png"));
 	public Cat_Personal_Con_Horario(){
 	
@@ -55,7 +55,7 @@ public class Cat_Personal_Con_Horario extends JFrame{
 		
 		;
 		this.lblPlantillaHorarioColaboradores.setBorder(BorderFactory.createTitledBorder(blackline,"Colaboradores por Horario"));
-		this.lblPuestosColaboradores.setBorder(BorderFactory.createTitledBorder(blackline,"Colaboradores por Puesto"));
+		this.lblPuestosColaboradores.setBorder(BorderFactory.createTitledBorder(blackline,"Colaboradores Base De Puestos Por Establecimiento"));
 		this.lblStatusColaboradores.setBorder(BorderFactory.createTitledBorder(blackline,"Colaboradores por Estatus"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione su Tipo de Reporte :"));
 		

@@ -58,44 +58,5 @@ public class Obj_Cuentas_Contables {
 		}
 	return null; }
 	
-//	public Obj_Cuentas_Contables buscar(int folio){
-//		try {
-//			return new BuscarSQL().Puesto(folio);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null; 
-//	}
-//	
-//	public boolean guardar(){ return new GuardarSQL().Guardar_Puesto(this); }
-//	
-//	public Obj_Cuentas_Contables buscar_nuevo(){
-//		try {
-//			return new BuscarSQL().Puesto_Nuevo();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null; 
-//	}
-//	
-//	public boolean actualizar(int folio){ return new ActualizarSQL().Puesto(this,folio); }
-//	
-//	
-//	public Obj_Cuentas_Contables buscar_pues(String nombre){
-//		try{
-//			return new BuscarSQL().Pues_buscar(nombre); 
-//		} catch(SQLException e){
-//			
-//		}
-//		return null;
-//	}	
-//	
-//	public Obj_Cuentas_Contables buscar_pues(int folio){
-//		try{
-//			return new BuscarSQL().Pues_buscar(folio); 
-//		} catch(SQLException e){
-//			
-//		}
-//		return null;
-//	}	
+
 }

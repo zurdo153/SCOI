@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-04-02T10:25:24 -->
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-04-05T15:32:22 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -14,30 +14,26 @@
 		</conditionalStyle>
 	</style>
 	<queryString>
-		<![CDATA[exec sp_select_reporte_de_indicadores_de_choferes '15/03/2016','02/04/2016']]>
+		<![CDATA[exec sp_IZAGAR_indicador_de_Costo_de_Lista_De_Raya  '15/03/2016','05/04/2016','Marco A.','SUPER I']]>
 	</queryString>
 	<field name="numero_lista" class="java.lang.Integer"/>
+	<field name="fecha" class="java.lang.String"/>
 	<field name="folio_empleado" class="java.lang.Integer"/>
 	<field name="nombre_completo" class="java.lang.String"/>
 	<field name="establecimiento" class="java.lang.String"/>
 	<field name="puesto" class="java.lang.String"/>
-	<field name="total" class="java.math.BigDecimal"/>
-	<field name="fecha" class="java.lang.String"/>
-	<variable name="total_por_puesto" class="java.lang.Double" resetType="Group" resetGroup="Group2" calculation="Sum">
-		<variableExpression><![CDATA[$F{total}]]></variableExpression>
-	</variable>
-	<variable name="total_por_establecimiento" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{total}]]></variableExpression>
-	</variable>
-	<variable name="total_general" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{total}]]></variableExpression>
-	</variable>
+	<field name="deposito" class="java.math.BigDecimal"/>
+	<field name="efectivo" class="java.math.BigDecimal"/>
+	<field name="prestamo_mas_fte_sodas" class="java.math.BigDecimal"/>
+	<field name="fecha_inicial" class="java.lang.String"/>
+	<field name="fecha_final" class="java.lang.String"/>
+	<field name="usuario_realizo_movimiento" class="java.lang.String"/>
 	<group name="Group1" keepTogether="true">
 		<groupExpression><![CDATA[$F{establecimiento}]]></groupExpression>
 		<groupHeader>
 			<band height="24">
 				<frame>
-					<reportElement mode="Opaque" x="0" y="0" width="555" height="24" forecolor="#B89F7D" backcolor="#0066FF" uuid="d87834ad-a977-421f-8f3c-84e71c4a3d37"/>
+					<reportElement mode="Opaque" x="0" y="0" width="555" height="24" forecolor="#B89F7D" backcolor="#FF6600" uuid="d87834ad-a977-421f-8f3c-84e71c4a3d37"/>
 					<textField isStretchWithOverflow="true">
 						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="479" height="23" forecolor="#FFFFFF" uuid="b4b5b125-3995-4e54-81d3-21595706ae96"/>
 						<textElement>
@@ -50,15 +46,6 @@
 		</groupHeader>
 		<groupFooter>
 			<band height="18">
-				<rectangle radius="4">
-					<reportElement x="313" y="0" width="235" height="18" uuid="4f062f9c-884e-4a4a-9af4-94a92bb05bf2">
-						<property name="local_mesure_unitx" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					</reportElement>
-					<graphicElement>
-						<pen lineWidth="1.0"/>
-					</graphicElement>
-				</rectangle>
 				<staticText>
 					<reportElement style="Column header" x="311" y="1" width="170" height="17" forecolor="#000000" uuid="bbffd21f-d06d-4e97-8b1b-a8c3606407c7">
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -69,16 +56,6 @@
 					</textElement>
 					<text><![CDATA[Total Por Establecimiento:   ]]></text>
 				</staticText>
-				<textField>
-					<reportElement x="481" y="1" width="64" height="17" uuid="1fe6c953-e39d-497c-8b03-eaf2233c2c19">
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{total_por_establecimiento}]]></textFieldExpression>
-				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -97,16 +74,6 @@
 		</groupHeader>
 		<groupFooter>
 			<band height="19">
-				<textField>
-					<reportElement x="480" y="0" width="64" height="17" uuid="a8e21978-4078-4a2b-9d40-2ae346f08080">
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{total_por_puesto}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement style="Column header" x="360" y="0" width="119" height="17" forecolor="#000000" uuid="d5173d73-42d6-4686-af19-91ccef663bf6">
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -205,20 +172,36 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="73" splitType="Stretch">
+		<band height="78" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="480" height="66" backcolor="#0033CC" uuid="54dd91fe-fb26-4d88-957c-caee982743c4"/>
+				<reportElement mode="Opaque" x="0" y="0" width="480" height="66" forecolor="#000080" backcolor="#000080" uuid="54dd91fe-fb26-4d88-957c-caee982743c4"/>
 				<staticText>
-					<reportElement style="Title" x="0" y="0" width="479" height="66" uuid="62aacec2-ea12-4fb5-a81c-809fb511823d"/>
+					<reportElement style="Title" x="0" y="0" width="470" height="50" uuid="62aacec2-ea12-4fb5-a81c-809fb511823d"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="20" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Reporte De Indicador De Costo Logistico De Choferes]]></text>
+					<text><![CDATA[Reporte De Costo De Lista De Raya]]></text>
 				</staticText>
+				<textField>
+					<reportElement x="0" y="46" width="479" height="20" forecolor="#FFFFFF" uuid="7ac5d933-af4d-4e46-9951-7ece9a539182">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["De la Fecha: "+$F{fecha_inicial}+" Al "+$F{fecha_final}]]></textFieldExpression>
+				</textField>
 			</frame>
 			<frame>
 				<reportElement mode="Opaque" x="0" y="70" width="555" height="3" forecolor="#000000" backcolor="#FF9900" uuid="2fefe41a-1a7c-438a-803d-2574ea6b839b"/>
 			</frame>
+			<image>
+				<reportElement x="499" y="1" width="50" height="50" uuid="afe1289e-c795-42cc-a4df-7e63a5bf3109">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -252,23 +235,13 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="480" y="0" width="64" height="15" uuid="7d94e502-3862-42f5-90aa-8f3364d9db8b">
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="13"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
-				</textField>
 			</frame>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="21" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="1" width="555" height="20" forecolor="#D0B48E" backcolor="#0033CC" uuid="1e782f58-34fe-4951-8176-2a139f52ec57"/>
+				<reportElement mode="Opaque" x="0" y="1" width="555" height="22" forecolor="#000080" backcolor="#000080" uuid="1e782f58-34fe-4951-8176-2a139f52ec57"/>
 				<textField evaluationTime="Report">
 					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="4892a7d4-f58d-44df-91ea-b87530822efb"/>
 					<textElement verticalAlignment="Middle">
@@ -283,22 +256,33 @@
 					</textElement>
 					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 				</textField>
-				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement style="Column header" x="2" y="0" width="197" height="20" forecolor="#FFFFFF" uuid="f8cfb9b0-9569-4397-bbfd-78ee5b687d06"/>
-					<textElement verticalAlignment="Middle">
-						<font size="10" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-				</textField>
 			</frame>
+			<textField>
+				<reportElement x="2" y="1" width="220" height="22" forecolor="#FFFFFF" uuid="56374dab-ab6f-4620-b386-5cca2afcc653"/>
+				<textFieldExpression><![CDATA["Genero:"+$F{usuario_realizo_movimiento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy           h:mm:ss a">
+				<reportElement style="Column header" x="231" y="11" width="210" height="12" forecolor="#FFFFFF" uuid="19598188-5370-4d6f-ad79-1bcbfc319748"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="318" y="-1" width="73" height="12" forecolor="#FFFFFF" uuid="96d29a63-fa4c-4cc3-9054-6705ab8cb5bd"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha Impresion.:]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="18" splitType="Stretch">
+		<band height="30" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement style="Column header" x="311" y="1" width="170" height="17" forecolor="#000000" uuid="6d399b4d-912e-4186-9a1b-ff6cb0377b45">
+				<reportElement style="Column header" x="304" y="10" width="170" height="17" forecolor="#000000" uuid="6d399b4d-912e-4186-9a1b-ff6cb0377b45">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -307,16 +291,15 @@
 				</textElement>
 				<text><![CDATA[Total General:   ]]></text>
 			</staticText>
-			<textField pattern="#,##0.00#">
-				<reportElement x="481" y="0" width="62" height="17" uuid="2d3a0cb5-c729-4132-ab0b-fefac6c7f858">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<line>
+				<reportElement x="483" y="27" width="60" height="1" uuid="2e3b6419-45f2-4570-ad4c-6db46798bdbe">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{total_general}]]></textFieldExpression>
-			</textField>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
 		</band>
 	</summary>
 </jasperReport>

@@ -57,6 +57,7 @@ import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
+import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
@@ -1385,12 +1386,12 @@ public class BuscarSQL {
 				empleado.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss"));
 				empleado.setFecha_vencimiento_licencia(rs.getString("fecha_vencimiento_licencia"));
 				
-//				TODO ( nuevos camps agregados 'falta agregar las columnas a la tabla' )
 				empleado.setEstado_civil(rs.getString("estado_civil"));
 				empleado.setTipo_sangre(rs.getString("tipo_de_sangre"));
 				empleado.setEscolaridad(rs.getString("escolaridad"));
 				empleado.setContrato(rs.getInt("contrato"));
 				empleado.setPresencia_fisica(rs.getInt("presencia_fisica"));
+				empleado.setBonocomplemento(rs.getInt("bono_complemento"));
 				
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);
@@ -8375,6 +8376,34 @@ public class BuscarSQL {
 		return baja;
 	}
 	
+	public boolean validar_cambio_de_sueldo_o_bono(String folio_empleado){
+		
+		boolean existe = false;
+		
+		String query = " declare @return varchar(80)  set @return =(select top 1 'true' from tb_historico_sueldos_empleados where folio_empleado="+folio_empleado+" and status='N')"
+				+ "  if @return is null set @return='false'  select @return";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				existe=(Boolean.valueOf(rs.getString(1)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return existe;
+	}
+	
+	
 	public Obj_Venta_De_Cascos_A_Proveedores venta_de_casco(String folio) throws SQLException{
 		Obj_Venta_De_Cascos_A_Proveedores proveedores = new Obj_Venta_De_Cascos_A_Proveedores();
 		String query = "exec sp_select_ultima_venta_de_cascos '"+folio+"'";
@@ -8543,5 +8572,30 @@ public class BuscarSQL {
 		
 		return existe;
 	}
+	
+	public Obj_Indicadores indicador(String nombre_indicador) throws SQLException{
+		Obj_Indicadores indicador = new Obj_Indicadores();
+		String query = "select reporte, procedimiento_almacenado from tb_indicadores where indicador='"+nombre_indicador+"'";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				indicador.setReporte(rs.getString("reporte"));
+				indicador.setProcedimiento_almacenado(rs.getString("procedimiento_almacenado"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ indicador ] SQLException: "+e.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			 if (stmt != null) { stmt.close(); }
+		}
+		return indicador;
+	}
+	
 	
 }

@@ -36,7 +36,7 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Cambio_De_Estatus_De_Produnto_En_Establecimiento extends JFrame{
+public class Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -51,7 +51,7 @@ public class Cat_Cambio_De_Estatus_De_Produnto_En_Establecimiento extends JFrame
 	JButton btnBuscar = new JCButton("", "busca.png","Azul");
 	JButton btnGuardar = new JCButton("Guardar", "Guardar.png","Azul");
 	
-	public Cat_Cambio_De_Estatus_De_Produnto_En_Establecimiento() {
+	public Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos() {
 
 		this.setTitle("Modificacion De Status De Producto En Establecimiento");
 		this.panel.setBorder(BorderFactory.createTitledBorder( "Modificacion De Status De Producto En Establecimiento"));
@@ -148,7 +148,7 @@ public class Cat_Cambio_De_Estatus_De_Produnto_En_Establecimiento extends JFrame
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Cambio_De_Estatus_De_Produnto_En_Establecimiento().setVisible(true);
+			new Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos().setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}

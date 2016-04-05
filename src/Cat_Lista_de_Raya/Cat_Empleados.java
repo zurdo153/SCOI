@@ -522,11 +522,11 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtSalarioDiarioIntegrado).setBounds         (x+sep,y     ,width,height );
 		panel.add(new JLabel("Sueldo:")).setBounds             (x    ,y+=25 ,width,height );
 		panel.add(cmbSueldo).setBounds                         (x+sep,y     ,width,height );
-		panel.add(new JLabel("Bono:")).setBounds               (x    ,y+=25 ,width,height );
+		panel.add(new JLabel("B.Complemento:")).setBounds               (x    ,y+=25 ,width,height );
 		panel.add(cmbBono).setBounds                           (x+sep,y     ,width,height );
-		panel.add(new JLabel("Asistencia:")).setBounds         (x    ,y+=25 ,width,height );
+		panel.add(new JLabel("B.Asistencia:")).setBounds         (x    ,y+=25 ,width,height );
 		panel.add(cmbBonopuntualidad).setBounds                    (x+sep,y     ,width,height );
-		panel.add(new JLabel("Puntualidad:")).setBounds        (x    ,y+=25 ,width,height );
+		panel.add(new JLabel("B.Puntualidad:")).setBounds        (x    ,y+=25 ,width,height );
 		panel.add(cmbBonoAsistencia).setBounds                   (x+sep,y     ,width,height );
 		panel.add(new JLabel("Presencia Fisica:")).setBounds   (x    ,y+=25 ,width,height );
 		panel.add(cmbPresenciaFisica).setBounds                (x+sep,y     ,width,height );
@@ -1246,7 +1246,7 @@ public class Cat_Empleados extends JFrame{
 					return;
 				}
 			}else{
-				guardar_modificar_Empleado();
+				    guardar_modificar_Empleado();
 			}
 			
 			
@@ -1280,6 +1280,14 @@ public void guardar_modificar_Empleado(){
 					
 				}else{			
 					Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioEmpleado.getText()));
+					
+					if( !(empleado.getBonocomplemento()==Double.valueOf(cmbBono.getSelectedItem().toString().trim())) || !(empleado.getBono_asistencia()==Double.valueOf(cmbBonoAsistencia.getSelectedItem().toString().trim()))
+					    || !(empleado.getBono_puntualidad()==Double.valueOf(cmbBonopuntualidad.getSelectedItem().toString().trim())) || !(empleado.getSueldo()==Double.valueOf(cmbSueldo.getSelectedItem().toString().trim()))){
+						if(new BuscarSQL().validar_cambio_de_sueldo_o_bono(txtFolioEmpleado.getText().toString().trim())){
+							JOptionPane.showMessageDialog(null, "El Usuario Ya Cuenta Con Un Cambio De Sueldo o Bono Pendiente de Autorizar \nEs Necesario Que Lo Niegen o Acepten Antes De Solicitar Otro Cambio  :\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+							return;						
+						}
+					}
 					
 					if(empleado.getFolio() == Integer.parseInt(txtFolioEmpleado.getText())){
 						if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
