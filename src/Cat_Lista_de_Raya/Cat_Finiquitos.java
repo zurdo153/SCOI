@@ -857,6 +857,7 @@ public class Cat_Finiquitos extends JFrame{
 			Obj_Finiquitos finiquito = new Obj_Finiquitos().buscar_finiquito(folio_empleado_bms, Integer.valueOf(txtFolioScoi.getText().trim()), fechaSCOI, fechaBms);
 			
 			dias_de_vacaciones_actuales=finiquito.getDias_correspondiente_vacaciones();
+			System.out.println(dias_de_vacaciones_actuales);
 			
 			try {
 				fchIngresoSCOI.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(finiquito.getFecha_ingreso_SCOI()));

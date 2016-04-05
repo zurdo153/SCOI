@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-03-08T17:55:30 -->
+<!-- 2016-04-05T12:36:39 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Finiquito" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0da01221-44cd-40ac-a362-fac4dfb62e72">
 	<property name="template.type" value="columnar"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -68,6 +68,7 @@
 			,CASE WHEN finiquitos.total_a_pagar <0 THEN 'MENOS '+DBO.CantidadConLetra((finiquitos.total_a_pagar*-1))
 				ELSE DBO.CantidadConLetra(finiquitos.total_a_pagar) END AS cantidad_con_letra
 			,'PREFINIQUITO' as tipo_de_reporte
+			,'EDGAR EDUARDO JIMENEZ MOLINA' AS imprimio
 from tb_finiquitos finiquitos
 inner join tb_empleado empleado on empleado.folio = finiquitos.folio_empleado_scoi
 inner join tb_establecimiento estab on estab.folio = finiquitos.establecimiento
@@ -126,6 +127,7 @@ order by finiquitos.fecha_mov desc]]>
 	<field name="nombre_usuario" class="java.lang.String"/>
 	<field name="cantidad_con_letra" class="java.lang.String"/>
 	<field name="tipo_de_reporte" class="java.lang.String"/>
+	<field name="imprimio" class="java.lang.String"/>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{folio_empleado_scoi}]]></groupExpression>
 		<groupHeader>
@@ -720,6 +722,13 @@ order by finiquitos.fecha_mov desc]]>
 						<font size="10" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="126" y="0" width="303" height="12" forecolor="#FFFFFF" uuid="d39f748b-7d14-4d45-89f8-cac5a69cc584"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Imprimio:  "+$F{imprimio}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
