@@ -49,6 +49,7 @@ public class Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos extends JFra
 	JComboBox cmbStatus = new JComboBox(status);
 	
 	JButton btnBuscar = new JCButton("", "busca.png","Azul");
+	JButton btnDeshacer = new JCButton("", "deshacer-icono-4321-32.png","Azul");
 	JButton btnGuardar = new JCButton("Guardar", "Guardar.png","Azul");
 	
 	public Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos() {
@@ -63,6 +64,7 @@ public class Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos extends JFra
 		panel.add(new JLabel("Folio:")).setBounds(15,y,60,20);
 		panel.add(txtFolio).setBounds(80,y,80,20);
 		panel.add(btnBuscar).setBounds(160,y,30,20);
+		panel.add(btnDeshacer).setBounds(192,y,30,20);
 		
 		panel.add(new JLabel("Descripcion:")).setBounds(15,y+=25,60,20);
 		panel.add(txtDescripcion).setBounds(80,y,360,20);
@@ -78,6 +80,7 @@ public class Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos extends JFra
 		
 		btnBuscar.addActionListener(opBuscar);
 		txtFolio.addActionListener(opBuscar);
+		btnDeshacer.addActionListener(opDeshacer);
 		
 		btnGuardar.addActionListener(opGuardar);
 		
@@ -93,8 +96,34 @@ public class Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos extends JFra
 	        }
 	    });
 	    
+		//  limpiar pantalla
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+	       KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "limpiar");
+	    
+	    getRootPane().getActionMap().put("limpiar", new AbstractAction(){
+	        @Override
+	        public void actionPerformed(ActionEvent e)
+	        {	    
+	        	txtFolio.setEditable(true);
+				txtFolio.requestFocus();
+				txtFolio.setText("");
+				txtDescripcion.setText("");
+				cmbStatus.setSelectedItem("VIGENTE");
+	        }
+	    });
 		
 	}
+	
+	ActionListener opDeshacer = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		
+			txtFolio.setEditable(true);
+			txtFolio.requestFocus();
+			txtFolio.setText("");
+			txtDescripcion.setText("");
+			cmbStatus.setSelectedItem("VIGENTE");
+		}
+	};
 	
 	ActionListener opBuscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -107,10 +136,14 @@ public class Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos extends JFra
 					String[][] consulta = new BuscarSQL().getProductosEnEstablecimiento(txtFolio.getText().trim());
 					txtDescripcion.setText(consulta[0][1]);
 					cmbStatus.setSelectedItem(consulta[0][2]);
+					txtFolio.setEditable(false);
+					cmbStatus.requestFocus();
 				}else{
 					txtFolio.setText("");
 					txtDescripcion.setText("");
 					cmbStatus.setSelectedItem("VIGENTE");
+					txtFolio.setEditable(true);
+					txtFolio.requestFocus();
 					JOptionPane.showMessageDialog(null, "No Se A Encontrado Producto Con El Codigo Especificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
@@ -125,22 +158,28 @@ public class Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos extends JFra
 				JOptionPane.showMessageDialog(null, "Favor De Buscar Un Producto", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-					String[][] consulta = new BuscarSQL().getProductosEnEstablecimiento(txtFolio.getText().trim());
+				
+				if(new BuscarSQL().existeProductosEnEstablecimiento(txtFolio.getText().trim())){
 					
-					if(!txtDescripcion.getText().trim().equals(consulta[0][1].toString().trim())){
-						JOptionPane.showMessageDialog(null, "El Codigo De Producto No Corresponde, Favor De Buscarlo Nuevamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-						return;
-					}else{
-						if(new GuardarSQL().Guardar_Cambio_De_Status_De_Producto(txtFolio.getText().trim(),cmbStatus.getSelectedItem().toString())){
-							JOptionPane.showMessageDialog(null, "El Status Se Modifico Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						String[][] consulta = new BuscarSQL().getProductosEnEstablecimiento(txtFolio.getText().trim());
+											
+						if(!txtDescripcion.getText().trim().equals(consulta[0][1].toString().trim())){
+							JOptionPane.showMessageDialog(null, "El Codigo De Producto Se  Modifico Y No Corresponde, Favor De Buscarlo Nuevamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;
 						}else{
-							JOptionPane.showMessageDialog(null, "No Se A Podido Realizar El Cambio De Status", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-							return;
+							if(new GuardarSQL().Guardar_Cambio_De_Status_De_Producto(txtFolio.getText().trim(),cmbStatus.getSelectedItem().toString())){
+								JOptionPane.showMessageDialog(null, "El Status Se Modifico Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+								return;
+							}else{
+								JOptionPane.showMessageDialog(null, "No Se A Podido Realizar El Cambio De Status", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}
 						}
-					}
-					
-					
+						
+				}else{
+					JOptionPane.showMessageDialog(null, "El Codigo De Producto Se  Modifico Y No Se Encontro, Varifique El Folio Y Busquelo Nuevamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
 			}
 		}
 	};
@@ -220,6 +259,8 @@ public class Cat_Cambio_De_Estatus_De_Productos_En_Establecimientos extends JFra
 						txtFolio.setText(tb.getValueAt(tabla.getSelectedRow(), 0).toString());
 						txtDescripcion.setText(tb.getValueAt(tabla.getSelectedRow(), 1).toString());
 						cmbStatus.setSelectedItem(tb.getValueAt(tabla.getSelectedRow(), 2).toString());
+						txtFolio.setEditable(false);
+						cmbStatus.requestFocus();
 						dispose();
 					}
 				}
