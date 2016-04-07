@@ -2158,22 +2158,23 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_Permiso_Checador(Obj_Alimentacion_De_Permisos_A_Empleados Permiso, int tiene_dia_dobla){
-		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?,?,?,?,?,"+tiene_dia_dobla;
+		String query = "exec sp_insert_permiso_checador ?,?,?,?,?,?,?,?,?,?,?,"+tiene_dia_dobla;
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setInt (1, Permiso.getFolio_empleado());
-			pstmt.setInt(2, Permiso.getFolio_usuario());
-			pstmt.setString(3,Permiso.getFecha());
-			pstmt.setInt(4, Permiso.getTipo_de_permiso());
-			pstmt.setString(5, Permiso.getMotivo().toUpperCase().trim());
-			pstmt.setInt(6, (Permiso.isStatus())? 1: 0);
-			pstmt.setInt(7,Permiso.getDescanso());
-			pstmt.setString(8,Permiso.getTiempo_comida());
-			pstmt.setInt(9, Permiso.getFolio_empleado_optener_turno());
-			pstmt.setInt(10, Permiso.getSolicito());
+			pstmt.setInt    ( 1, Permiso.getFolio_empleado());
+			pstmt.setInt    ( 2, Permiso.getFolio_usuario());
+			pstmt.setString ( 3, Permiso.getFecha());
+			pstmt.setInt    ( 4, Permiso.getTipo_de_permiso());
+			pstmt.setString ( 5, Permiso.getMotivo().toUpperCase().trim());
+			pstmt.setInt    ( 6, (Permiso.isStatus())? 1: 0);
+			pstmt.setInt    ( 7, Permiso.getDescanso());
+			pstmt.setString ( 8, Permiso.getTiempo_comida());
+			pstmt.setInt    ( 9, Permiso.getFolio_empleado_optener_turno());
+			pstmt.setInt    (10, Permiso.getSolicito());
+			pstmt.setString (11, Permiso.getEstablecimiento());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {

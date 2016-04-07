@@ -19,6 +19,7 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 	boolean status;
 	int descanso;
 	String tiempo_comida;
+	String Establecimiento;
 	int folio_empleado_optener_turno;
 	int solicito;
 	public Obj_Alimentacion_De_Permisos_A_Empleados(){
@@ -35,7 +36,16 @@ public class Obj_Alimentacion_De_Permisos_A_Empleados {
 		this.tiempo_comida = "";
 		this.folio_empleado_optener_turno=0;
 		this.solicito = 0;
+		this.Establecimiento="";
 
+	}
+
+	public String getEstablecimiento() {
+		return Establecimiento;
+	}
+
+	public void setEstablecimiento(String establecimiento) {
+		Establecimiento = establecimiento;
 	}
 
 	public int getFolio() {
