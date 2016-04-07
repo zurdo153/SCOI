@@ -754,16 +754,7 @@ public class Cat_Finiquitos extends JFrame{
 		  	            	
 			  	            	if(fchBajaBnns.getDate() != null && fchBajaSCOI.getDate() != null){
 			  	            		buscar_finiquito();
-//			  	            		txtDiasPendienteDePagoAguinaldoBnns.setText(dias_pendientes_de_aguinaldo(fchIngresoBnns,fchBajaBnns)+"");
-//			  	            		txtDiasPendienteDePagoAguinaldoSCOI.setText(dias_pendientes_de_aguinaldo(fchIngresoSCOI,fchBajaSCOI)+"");
-//			  	            		diferencias();
-			  	            		
-										try {
-											calcular_fechas_de_aguinaldo(fchIngresoSCOI, fchBajaSCOI, txtDiasPendienteDePagoAguinaldoSCOI, txtAguinaldoSCOI, txtDiasCuotaDiarioSCOI);
-											calcular_fechas_de_aguinaldo(fchIngresoBnns, fchBajaBnns, txtDiasPendienteDePagoAguinaldoBnns, txtAguinaldoBnns, txtDiasCuotaDiarioBnns);
-										} catch (SQLException e1) {
-											e1.printStackTrace();
-										}
+			  	            		diferencias();
 			  	            	}else{
 			  	            		
 			  	            	}
@@ -771,82 +762,82 @@ public class Cat_Finiquitos extends JFrame{
 		  	   }
 		};
 		
-		@SuppressWarnings("deprecation")
-		public void calcular_fechas_de_aguinaldo(final JDateChooser fhIngreso, final JDateChooser fhBaja, final JTextField textPagoAguinaldo, final JTextField textAguinaldo, final JTextField textDiasCuotaDiaria) throws SQLException{
-			
-//			buscar fecha actual y fecha de aguinaldo para comparar el año
-			Date[] fechas = new BuscarSQL().fecha_actual_y_fecha_aguinado();
-			Date fecha_actual = fechas[0];
-			Date fecha_aguinaldo = fechas[1];
-			Date fecha_inicial_anio_actual = fechas[2];
-			Date fecha_inicial_anio_siguiente = fechas[3];
-			
-			if(fhIngreso.getDate()==null){
-				
-//				textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fhIngreso.getDate(),fhBaja.getDate())+"");
-//				System.out.print("fecha nula");
-				try {
-					Date fecha_ingreso = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1900");
-					textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_ingreso,fecha_ingreso)+"");
-//					fhIngreso.setDate(fecha_ingreso);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				
-			}else{
-				
-//				--en caso cuando el año actual sea igual al año de la fecha de aguinaldo
-				if(fecha_actual.getYear()==fecha_aguinaldo.getYear()){
-				
-//					--en caso cuando la fecha de ingreso del empleado sea > al 01/01/(año actual)
-						if(fecha_inicial_anio_actual.before(fhIngreso.getDate())){
-							
-//							--'preguntar   fecha_baja < fecha_aguinaldo '
-								if(fhBaja.getDate().before(fecha_aguinaldo)){
-//										diferencia fecha_ingreso, fecha_baja
-									textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fhIngreso.getDate(),fhBaja.getDate())+"");
-								}else{
-//										diferencia del 01/01/(años siguiente),fecha_baja
-									textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_inicial_anio_siguiente,fhBaja.getDate())+"");
-								}
-
-						}else{
-							
-//								--'preguntar   fecha_baja < fecha_aguinaldo '
-								if(fhBaja.getDate().before(fecha_aguinaldo)){
-//										diferencia fecha_ingreso, fecha_baja
-									textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_inicial_anio_actual,fhBaja.getDate())+"");
-								}else{
-//										diferencia del 01/01/(años siguiente),fecha_baja
-									textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_inicial_anio_siguiente,fhBaja.getDate())+"");
-								}
-						}
-				}else{
-				
-//				--en caso cuando la fecha de ingreso del empleado sea < al 01/01/(año actual)
-					if(fhIngreso.getDate().before(fecha_inicial_anio_actual)){
-//						System.out.print("fecha ingreso el mayor");
-						textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_inicial_anio_actual,fhBaja.getDate())+"");
-					}else{
-//						System.out.print("fecha de ingreso menor");
-						textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fhIngreso.getDate(),fhBaja.getDate())+"");
-					}
-				}
-      		
-				textAguinaldo.setText(df.format((15/Float.valueOf(365))*(Float.valueOf(textPagoAguinaldo.getText()))*(Float.valueOf(textDiasCuotaDiaria.getText()))));
-			
-      			diferencias();
-			}
-		}
-		
-		public int dias_pendientes_de_aguinaldo(Date fchIn, Date fchFin){
-// calcular la diferencia en milisengundos
-        	long diff = fchFin.getTime() - fchIn.getTime();
-
-        	int diffDays = (int)(diff / (24 * 60 * 60 * 1000))+1;// calcular la diferencia en dias
-        	
-			return diffDays;
-		}
+//		@SuppressWarnings("deprecation")
+//		public void calcular_fechas_de_aguinaldo(final JDateChooser fhIngreso, final JDateChooser fhBaja, final JTextField textPagoAguinaldo, final JTextField textAguinaldo, final JTextField textDiasCuotaDiaria) throws SQLException{
+//			
+////			buscar fecha actual y fecha de aguinaldo para comparar el año
+//			Date[] fechas = new BuscarSQL().fecha_actual_y_fecha_aguinado();
+//			Date fecha_actual = fechas[0];
+//			Date fecha_aguinaldo = fechas[1];
+//			Date fecha_inicial_anio_actual = fechas[2];
+//			Date fecha_inicial_anio_siguiente = fechas[3];
+//			
+//			if(fhIngreso.getDate()==null){
+//				
+////				textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fhIngreso.getDate(),fhBaja.getDate())+"");
+////				System.out.print("fecha nula");
+//				try {
+//					Date fecha_ingreso = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1900");
+//					textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_ingreso,fecha_ingreso)+"");
+////					fhIngreso.setDate(fecha_ingreso);
+//				} catch (ParseException e) {
+//					e.printStackTrace();
+//				}
+//				
+//			}else{
+//				
+////				--en caso cuando el año actual sea igual al año de la fecha de aguinaldo
+//				if(fecha_actual.getYear()==fecha_aguinaldo.getYear()){
+//				
+////					--en caso cuando la fecha de ingreso del empleado sea > al 01/01/(año actual)
+//						if(fecha_inicial_anio_actual.before(fhIngreso.getDate())){
+//							
+////							--'preguntar   fecha_baja < fecha_aguinaldo '
+//								if(fhBaja.getDate().before(fecha_aguinaldo)){
+////										diferencia fecha_ingreso, fecha_baja
+//									textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fhIngreso.getDate(),fhBaja.getDate())+"");
+//								}else{
+////										diferencia del 01/01/(años siguiente),fecha_baja
+//									textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_inicial_anio_siguiente,fhBaja.getDate())+"");
+//								}
+//
+//						}else{
+//							
+////								--'preguntar   fecha_baja < fecha_aguinaldo '
+//								if(fhBaja.getDate().before(fecha_aguinaldo)){
+////										diferencia fecha_ingreso, fecha_baja
+//									textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_inicial_anio_actual,fhBaja.getDate())+"");
+//								}else{
+////										diferencia del 01/01/(años siguiente),fecha_baja
+//									textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_inicial_anio_siguiente,fhBaja.getDate())+"");
+//								}
+//						}
+//				}else{
+//				
+////				--en caso cuando la fecha de ingreso del empleado sea < al 01/01/(año actual)
+//					if(fhIngreso.getDate().before(fecha_inicial_anio_actual)){
+////						System.out.print("fecha ingreso el mayor");
+//						textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fecha_inicial_anio_actual,fhBaja.getDate())+"");
+//					}else{
+////						System.out.print("fecha de ingreso menor");
+//						textPagoAguinaldo.setText(dias_pendientes_de_aguinaldo(fhIngreso.getDate(),fhBaja.getDate())+"");
+//					}
+//				}
+//      		
+//				textAguinaldo.setText(df.format((15/Float.valueOf(365))*(Float.valueOf(textPagoAguinaldo.getText()))*(Float.valueOf(textDiasCuotaDiaria.getText()))));
+//			
+//      			diferencias();
+//			}
+//		}
+//		
+//		public int dias_pendientes_de_aguinaldo(Date fchIn, Date fchFin){
+//// calcular la diferencia en milisengundos
+//        	long diff = fchFin.getTime() - fchIn.getTime();
+//
+//        	int diffDays = (int)(diff / (24 * 60 * 60 * 1000))+1;// calcular la diferencia en dias
+//        	
+//			return diffDays;
+//		}
 		
 		int dias_de_vacaciones_actuales=0;
 		public void buscar_finiquito(){
