@@ -1281,13 +1281,20 @@ public void guardar_modificar_Empleado(){
 				}else{			
 					Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioEmpleado.getText()));
 					
-					if( !(empleado.getBonocomplemento()==Double.valueOf(cmbBono.getSelectedItem().toString().trim())) || !(empleado.getBono_asistencia()==Double.valueOf(cmbBonoAsistencia.getSelectedItem().toString().trim()))
-					    || !(empleado.getBono_puntualidad()==Double.valueOf(cmbBonopuntualidad.getSelectedItem().toString().trim())) || !(empleado.getSueldo()==Double.valueOf(cmbSueldo.getSelectedItem().toString().trim()))){
-						if(new BuscarSQL().validar_cambio_de_sueldo_o_bono(txtFolioEmpleado.getText().toString().trim())){
-							JOptionPane.showMessageDialog(null, "El Usuario Ya Cuenta Con Un Cambio De Sueldo o Bono Pendiente de Autorizar \nEs Necesario Que Lo Niegen o Acepten Antes De Solicitar Otro Cambio  :\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-							return;						
-						}
+					if(!(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
+						if(!(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
+							if(!(cmbBono.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){							
+								if( !(empleado.getBonocomplemento()==Double.valueOf(cmbBono.getSelectedItem().toString().trim())) || !(empleado.getBono_asistencia()==Double.valueOf(cmbBonoAsistencia.getSelectedItem().toString().trim()))
+								    || !(empleado.getBono_puntualidad()==Double.valueOf(cmbBonopuntualidad.getSelectedItem().toString().trim())) || !(empleado.getSueldo()==Double.valueOf(cmbSueldo.getSelectedItem().toString().trim()))){
+									if(new BuscarSQL().validar_cambio_de_sueldo_o_bono(txtFolioEmpleado.getText().toString().trim())){
+										JOptionPane.showMessageDialog(null, "El Usuario Ya Cuenta Con Un Cambio De Sueldo o Bono Pendiente de Autorizar \nEs Necesario Que Lo Niegen o Acepten Antes De Solicitar Otro Cambio  :\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+										return;						
+									}
+								}
+							}
+					    }
 					}
+					
 					
 					if(empleado.getFolio() == Integer.parseInt(txtFolioEmpleado.getText())){
 						if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
@@ -1295,6 +1302,7 @@ public void guardar_modificar_Empleado(){
 								JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 							}else{
+								
 								
 		//				datos personales	
 								txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
@@ -1444,8 +1452,18 @@ public void guardar_modificar_Empleado(){
 									empleado.setInfonavit(Float.parseFloat(0.0+""));
 								}
 								
-								empleado.setBono_asistencia(Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
-								empleado.setBono_puntualidad(Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
+								if(!(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
+									if(!(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
+										if(!(cmbBono.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){	
+											empleado.setBono_asistencia(Float.parseFloat(0.0+""));
+											empleado.setBono_puntualidad(Float.parseFloat(0.0+""));
+									    }else{
+									    	empleado.setBono_asistencia(Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
+											empleado.setBono_puntualidad(Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
+									    }
+									}
+								}
+								
 								empleado.setInfonacot(Float.valueOf(txtDInfonacot.getText()));
 								empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
 								empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
@@ -2061,7 +2079,6 @@ public void guardar_modificar_Empleado(){
 				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-			
 			new Cat_Reporte_De_Asistencia_Por_Empleado(txtFolioEmpleado.getText(),txtNombre.getText()+" "+txtApPaterno.getText(),cmbEstablecimiento.getSelectedItem().toString(),cmbDepartamento.getSelectedItem().toString()).setVisible(true);
 			}
 			}
@@ -2073,7 +2090,6 @@ public void guardar_modificar_Empleado(){
 				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-				
 				new Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual(txtFolioEmpleado.getText()).setVisible(true);
 			}
 		}
@@ -2277,8 +2293,6 @@ public void guardar_modificar_Empleado(){
 		if(fechaNull.equals("null"))error+= "Fecha de Nacimiento\n";	
 		if(fechaIngresoNull.equals("null"))error += "Fecha de ingreso\n";
 		if(cmbPresenciaFisica.getSelectedIndex()==0)	error+= "Presencia Fisica\n";
-		if(cmbBonoAsistencia.getSelectedIndex()==0) error+= "Bono Asistencia\n";
-		if(cmbBonopuntualidad.getSelectedIndex()==0) error+= "Bono Puntualidad\n";
 		return error;
 	}
 	

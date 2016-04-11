@@ -136,9 +136,9 @@ public class Cat_Indicadores extends JFrame {
 		this.panel.add(JLBFactor).setBounds                   (x+200,y-15 ,l*5  ,a);
 		this.panel.add(btn_buscar).setBounds                  (x+200,y+10,200,a*2);
 		
-		this.panel.add(cmbConcepto).setBounds                 (x+550,y-15 ,200,a);
-		this.panel.add(cmbEstablecimiento).setBounds          (x+550,y+10 ,200,a);
-		this.panel.add(btn_Origen  ).setBounds                (x+550,y+35 ,200,a);
+		this.panel.add(cmbConcepto).setBounds                 (x+500,y-15 ,350,a);
+		this.panel.add(cmbEstablecimiento).setBounds          (x+500,y+10 ,350,a);
+		this.panel.add(btn_Origen  ).setBounds                (x+500,y+35 ,350,a);
 		
 		this.panel.add(new JLabel("Fecha Final:")).setBounds  (x   ,y+=30,l  ,a);
 		this.panel.add(JLBfin).setBounds                      (x+60,y    ,a  ,a);
@@ -314,6 +314,14 @@ public class Cat_Indicadores extends JFrame {
 						reporte =indicador.getReporte();
 						testigo=1;
 					}
+					
+					if(cmbConcepto.getSelectedItem().toString().trim().equals("Indice De Rotacion De Personal Colaboradores Por Lista De Raya")||cmbConcepto.getSelectedItem().toString().trim().equals("Indice De Rotacion De Personal Colaboradores Por Lista De Raya Totales")){
+						Obj_Indicadores indicador = new Obj_Indicadores().buscar(cmbConcepto.getSelectedItem().toString().trim());
+						comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+cmbConcepto.getSelectedItem().toString().trim()+"'";
+						reporte =indicador.getReporte();
+						testigo=1;
+					}
+					
 				    if(testigo==1){
 						new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 				    }else{

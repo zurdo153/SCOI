@@ -51,6 +51,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
@@ -64,15 +65,14 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	JLayeredPane panel = new JLayeredPane();
 	
 	JLabel lblFolio = new JLabel("Folio:");
-	JLabel lblFolioEmpleado = new JLabel("Folio de Empleado:");
 	JLabel lblFecha = new JLabel("Fecha de Permiso");
 	JLabel lblMotivo = new JLabel("Motivo:");
 	
 	JLabel lblUsuario = new JLabel("Usuario: ");
-	JLabel lblEmpleado = new JLabel("Empleado: ");
+	JLabel lblEmpleado = new JLabel("Colaborador: ");
 	
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio Permiso", 8, "String");
-	JTextField txtFolioEmpleado = new JTextField();
+	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio Permiso", 8, "String");
+	JTextField txtFolioEmpleado = new Componentes().text(new JCTextField(), "Colaborador", 8, "Int");
 	
 	JDateChooser txtFechaPermiso = new JDateChooser();
 	
@@ -89,21 +89,21 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	JCheckBox chbP_entrarTarde = new JCheckBox("3.- Permiso Para Entrar Tarde");
 	JCheckBox chbP_noAsistir = new JCheckBox("4.- Permiso Para No Asistir (con goce de sueldo)");
 	JCheckBox chbP_noAsistir2 = new JCheckBox("5.- Permiso Para No Asistir (sin goce de sueldo)");
-	
-	JCheckBox chbP_cambiodescanso = new JCheckBox("6.- Permiso para trabajar");
-	JLabel lblP_cambiodescanso = new JLabel("como el dia: ");
-	
+	JCheckBox chbP_cambiodescanso = new JCheckBox("6.- Permiso para trabajar como el dia:");
 	JCheckBox chbP_doblarExtra = new JCheckBox("7.- Permiso para doblar extra");
-	
-	 String[] dias = { "Seleccione un dia", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" };
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
-	 private JComboBox cmbDias = new JComboBox(dias);
-	 
-	JCheckBox chbP_tiempoComida = new JCheckBox("8.- Permiso para cambiar tiempo de");
-	JLabel lblP_tiempoComida = new JLabel("comida a: ");
-	 
+	JCheckBox chbP_tiempoComida = new JCheckBox("8.- Permiso para cambiar tiempo de comida a:");
+	JCheckBox chbP_permisochecarOtroEstab = new JCheckBox("9.- Permiso para checar en el establecimiento:");
+
 	ButtonGroup grupo = new ButtonGroup();
 	
+    String[] dias = { "Seleccione un dia", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" };
+	 @SuppressWarnings({ "rawtypes", "unchecked" })
+	private JComboBox cmbDias = new JComboBox(dias);
+	 
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Todos();
+	 @SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+	 
 	//declarar variable en hora 00:00:00
 	//crear spinner y asignarlo con la fecha y hora actual
 	//en el constructor cambiamos la fecha con hora = 00:00:00
@@ -113,8 +113,6 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	  JSpinner spComida = new JSpinner(scom);                                         
 	  	JSpinner.DateEditor  com = new JSpinner.DateEditor(spComida,"H:mm"); 
 	  	
-		JCheckBox chbCambio_turno = new JCheckBox("9.- Permiso para cambiar turno");
-		JLabel lblCambio_turno = new JLabel("con el empleado: ");
 		JButton btnFiltroEmpleadoCambio = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
 		JTextField txtFolioEmpleadoCambio = new JTextField();
 		JTextField txtEmpleadoCambio = new JTextField();
@@ -124,16 +122,15 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	JTextArea txaMotivo = new Componentes().textArea(new JTextArea(), "Motivo", 400);
 	JScrollPane Observasiones = new JScrollPane(txaMotivo);
 	
-	JButton btnFiltro = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
-	JButton btnFiltroEmpleado = new JButton(new ImageIcon("Imagen/asistencia-comunitaria-icono-9465-16.png"));
-	
-	
-	JButton btnBuscar = new JButton("",new ImageIcon("imagen/buscar.png"));
-	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
-	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
-	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
-	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
-	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
+
+	JCButton btnFiltroEmpleado = new JCButton("Colaborador"        ,"asistencia-comunitaria-icono-9465-16.png","");
+	JCButton btnBuscar         = new JCButton(""        ,"buscar.png"            ,"");
+	JCButton btnFiltro         = new JCButton("Permiso" ,"Filter-List-icon16.png","");
+	JCButton btnSalir          = new JCButton("Salir"   ,"salir16.png"      ,"");
+	JCButton btnDeshacer       = new JCButton("Deshacer","deshacer16.png","");
+	JCButton btnGuardar        = new JCButton("Guardar","Guardar.png"    ,"");
+	JCButton btnEditar         = new JCButton("Editar","editara.png"     ,"");
+	JCButton btnNuevo          = new JCButton("Nuevo","Nuevo.png"        ,"");
 	
 	
 	Border border = LineBorder.createGrayLineBorder();
@@ -155,40 +152,33 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	
 	@SuppressWarnings("deprecation")
 	public void getConstructor(){
-
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/cuadrante_user_icon&16.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/checklistbtn.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Permisos Checador"));
 		this.setTitle("Permisos Checador");
 		
 		lblSolicito.setBorder(BorderFactory.createTitledBorder("Solicitó: "));
 		
 		txaMotivo.setBorder(border);
-		
-		btnBuscar.setToolTipText("Buscar Empleado");
-		btnFiltro.setToolTipText("Filtro de Empleado");
-		btnNuevo.setToolTipText("Crear Permiso");
-		
-		int y=20, width=100,height=20 ;
+		int x=20,sep=150, y=20, width=100,height=20 ;
 		
 		panel.add(lblUsuario).setBounds(20,y,400,height);
 		
-		panel.add(lblFolio).setBounds(10,y+=35,30,height);
-		panel.add(txtFolio).setBounds(40,y,60,height);
-		panel.add(btnBuscar).setBounds(100,y,20,height);
-		panel.add(btnFiltro).setBounds(120,y,20,height);
-		
-		panel.add(lblFolioEmpleado).setBounds(150,y,110,height);
-		panel.add(txtFolioEmpleado).setBounds(240,y,60,height);
-		panel.add(btnFiltroEmpleado).setBounds(300,y,20,height);
+		panel.add(lblFolio).setBounds               (x     ,y+=35,30,height);
+		panel.add(txtFolio).setBounds               (x+=30 ,y,width,height);
+		panel.add(btnBuscar).setBounds              (x+=103 ,y,20,height);
+		panel.add(btnFiltro).setBounds              (x+=23 ,y,106,height);
 		
 		panel.add(txtFechaPermiso).setBounds(340,y,100,height);
 		panel.add(chb_status).setBounds(450,y,80,20);
-		
 		panel.add(lblSolicito).setBounds(530,y-13,190,40);
 		panel.add(rbEmpleado).setBounds(550,y,80,height);
 		panel.add(rbEmpresa).setBounds(630,y,80,height);
 		
-		panel.add(lblEmpleado).setBounds(20,y+=35,400,height);
+		x=50;y=90;
+		
+		panel.add(txtFolioEmpleado).setBounds          (x        ,y,width,height);
+		panel.add(btnFiltroEmpleado).setBounds         (x+=103 ,y,129,height);
+		panel.add(lblEmpleado).setBounds               (x+=160 ,y,400,height);
 		
 		panel.add(chbP_trabajarCorrido).setBounds(20,y+=35,200,height);
 		panel.add(chbP_salirTemprano).setBounds(20,y+=35,200,height);
@@ -196,33 +186,27 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		panel.add(chbP_noAsistir).setBounds(20,y+=35,260,height);
 		panel.add(chbP_noAsistir2).setBounds(20,y+=35,260,height);
 		
-		panel.add(btnNuevo).setBounds(30,y+=100,width,height);
-		panel.add(btnGuardar).setBounds(150,y,width,height);
-		panel.add(btnEditar).setBounds(270,y,width,height);
-		panel.add(btnDeshacer).setBounds(390,y,width,height);
-		panel.add(btnSalir).setBounds(510,y,width,height);
+		x=310;y=125;width=247;sep=35;
+		panel.add(chbP_cambiodescanso).setBounds        (x      ,y      ,width,height);
+		panel.add(chbP_doblarExtra).setBounds           (x      ,y+=sep ,width,height);
+		panel.add(chbP_tiempoComida).setBounds          (x      ,y+=sep ,width,height);
+		panel.add(chbP_permisochecarOtroEstab).setBounds(x      ,y+=sep ,width,height);
 		
-		y=125;
-		panel.add(chbP_cambiodescanso).setBounds(285,y,210,height);
-		panel.add(lblP_cambiodescanso).setBounds(305,y+=35,70,height);
-		panel.add(cmbDias).setBounds(370,y,110,height);
+		x=x+=250;y=125;width=155;
+		panel.add(cmbDias).setBounds                    (x      ,y      ,width,height);
+		panel.add(spComida).setBounds                   (x     ,y+=sep*2,width/2,height);
+		panel.add(cmbEstablecimiento).setBounds         (x      ,y+=sep ,width,height);
 		
-		panel.add(chbP_doblarExtra).setBounds(285,y+=35,210,height);
+		panel.add(lblMotivo).setBounds                  (30     ,300    ,80,height);
+		panel.add(Observasiones).setBounds              (20     ,320    ,700,80);
 		
-		panel.add(chbP_tiempoComida).setBounds(285,y+=35,210,20);
-		panel.add(lblP_tiempoComida).setBounds(305,y+=35,70,20);
-		panel.add(spComida).setBounds(360,y,60,20);
+		x=20;y=265;width=120;sep=145;height=23;
+		panel.add(btnNuevo).setBounds                   (x      ,y+=150 ,width,height);
+		panel.add(btnGuardar).setBounds                 (x+=sep ,y      ,width,height);
+		panel.add(btnEditar).setBounds                  (x+=sep ,y      ,width,height);
+		panel.add(btnDeshacer).setBounds                (x+=sep ,y      ,width,height);
+		panel.add(btnSalir).setBounds                   (x+=sep ,y      ,width,height);
 		
-		y=125;
-//		panel.add(chbCambio_turno).setBounds(500,y,250,20);
-//		panel.add(lblCambio_turno).setBounds(520,y+=20,90,20);
-//		panel.add(txtFolioEmpleadoCambio).setBounds(610,y,70,20);
-//		panel.add(btnFiltroEmpleadoCambio).setBounds(680,y,20,20);
-//		panel.add(txtEmpleadoCambio).setBounds(500,y+=22,260,20);
-//		panel.add(txtEmpleadoHorario).setBounds(500,y+=22,260,20);
-		
-		panel.add(lblMotivo).setBounds(500,y+=40,80,20);
-		panel.add(Observasiones).setBounds(500,y+=20,260,140);
 //		se asigna hora cero al spinner y se le indica ke muestre solo la hora 
 		spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
 		spComida.setEditor(com);
@@ -237,13 +221,10 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		grupo.add(chbP_entrarTarde);
 		grupo.add(chbP_noAsistir);
 		grupo.add(chbP_noAsistir2);
-		
 		grupo.add(chbP_cambiodescanso);
-		
+		grupo.add(chbP_permisochecarOtroEstab);
 		grupo.add(chbP_doblarExtra);
 		grupo.add(chbP_tiempoComida);
-		
-		grupo.add(chbCambio_turno);
 
 		txtFolio.addKeyListener(validaNumerico);
 		
@@ -264,11 +245,9 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
         chbP_noAsistir2.addActionListener(funcion_chbs);
 		chbP_salirTemprano.addActionListener(funcion_chbs);
 		chbP_trabajarCorrido.addActionListener(funcion_chbs);
-		
 		chbP_doblarExtra.addActionListener(funcion_chbs);
 		chbP_tiempoComida.addActionListener(funcion_chbs);
-		
-		chbCambio_turno.addActionListener(funcion_chbs);
+		chbP_permisochecarOtroEstab.addActionListener(funcion_chbs);
 		
 		txtFolio.addKeyListener(buscaAction);
 		
@@ -280,34 +259,35 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		CargarCajero();
 		
 		cont.add(panel);
-		this.setSize(800,440);
+		this.setSize(755,500);
 		
 		this.setLocationRelativeTo(null);
 		
-//      abre el filtro del permiso guardado
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-           KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "filtro");
-        
-        getRootPane().getActionMap().put("filtro", new AbstractAction(){
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                            btnFiltro.doClick();
-            }
-        });
-        
-//      abre el filtro de busqueda de el empleado
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-           KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "filtroempleado");
-        
-        getRootPane().getActionMap().put("filtroempleado", new AbstractAction(){
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-            	btnFiltroEmpleado.doClick();
-            }
-        });
-	}
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+	       KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "foco");	    
+	    getRootPane().getActionMap().put("foco", new AbstractAction(){
+	        @Override
+	        public void actionPerformed(ActionEvent e)
+	        {	        	btnFiltroEmpleado.doClick();    	     }
+	    });
+	    
+	    
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+	       KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "horario");
+	    getRootPane().getActionMap().put("horario", new AbstractAction(){
+	        @Override
+	        public void actionPerformed(ActionEvent e)
+	        {    	        	btnFiltro.doClick();          }
+	    });
+	  ///deshacer con escape
+	       getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+	        getRootPane().getActionMap().put("escape", new AbstractAction(){
+	          public void actionPerformed(ActionEvent e) {  btnDeshacer.doClick();
+						                                    txtFolio.requestFocus();   }
+						        });
+						        
+	}					        
+						        
 	
 	public Cat_Alimentacion_De_Permisos_A_Empleados(){
 		 getConstructor();
@@ -364,7 +344,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 				&& chbP_entrarTarde.isSelected()==false && chbP_noAsistir.isSelected()==false 
 				&& chbP_noAsistir2.isSelected()==false && chbP_cambiodescanso.isSelected()==false
 				&& chbP_doblarExtra.isSelected()==false && chbP_tiempoComida.isSelected()==false
-				&& chbCambio_turno.isSelected()==false) //pb despues del ultimo par &&
+				&& chbP_permisochecarOtroEstab.isSelected()==false ) //pb despues del ultimo par &&
 			error+="Seleccione un Permiso\n";
 		
 		if(txaMotivo.getText().equals("")) 
@@ -382,7 +362,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		if(chbP_cambiodescanso.isSelected()){permiso=6;}
 		if(chbP_doblarExtra.isSelected()){permiso=7;}
 		if(chbP_tiempoComida.isSelected()){permiso=8;}
-		if(chbCambio_turno.isSelected()){permiso=9;}
+		if(chbP_permisochecarOtroEstab.isSelected()){permiso=9;}
 	}
 	public void dia_selecionado_p_descanso(){
 		
@@ -402,23 +382,25 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	 
 	 public void resetPermisos(){
 		 
-			grupo.remove(chbP_trabajarCorrido);
-			grupo.remove(chbP_salirTemprano  );
-			grupo.remove(chbP_entrarTarde 	 );
-			grupo.remove(chbP_noAsistir 	 );
-			grupo.remove(chbP_noAsistir2 	 );
-			grupo.remove(chbP_cambiodescanso );
-			grupo.remove(chbP_doblarExtra 	 );
-			grupo.remove(chbP_tiempoComida 	 );
+			grupo.remove(chbP_trabajarCorrido         );
+			grupo.remove(chbP_salirTemprano           );
+			grupo.remove(chbP_entrarTarde 	          );
+			grupo.remove(chbP_noAsistir 	          );
+			grupo.remove(chbP_noAsistir2 	          );
+			grupo.remove(chbP_cambiodescanso          );
+			grupo.remove(chbP_doblarExtra 	          );
+			grupo.remove(chbP_tiempoComida 	          );
+			grupo.remove(chbP_permisochecarOtroEstab  );
 			
-			chbP_trabajarCorrido.setSelected(false);
-			chbP_salirTemprano  .setSelected(false);
-			chbP_entrarTarde 	.setSelected(false);
-			chbP_noAsistir 	    .setSelected(false);
-			chbP_noAsistir2 	.setSelected(false);
-			chbP_cambiodescanso .setSelected(false);
-            chbP_doblarExtra 	.setSelected(false);
-			chbP_tiempoComida 	.setSelected(false);
+			chbP_trabajarCorrido        .setSelected(false);
+			chbP_salirTemprano          .setSelected(false);
+			chbP_entrarTarde 	        .setSelected(false);
+			chbP_noAsistir 	            .setSelected(false);
+			chbP_noAsistir2 	        .setSelected(false);
+			chbP_cambiodescanso         .setSelected(false);
+            chbP_doblarExtra 	        .setSelected(false);
+			chbP_tiempoComida     	    .setSelected(false);
+			chbP_permisochecarOtroEstab .setSelected(false);
 			
 			grupo.add(chbP_trabajarCorrido);
 			grupo.add(chbP_salirTemprano  );
@@ -428,6 +410,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 			grupo.add(chbP_cambiodescanso );
 			grupo.add(chbP_doblarExtra 	  );
 			grupo.add(chbP_tiempoComida   );
+			grupo.add(chbP_permisochecarOtroEstab   );
 			
 	 }
 	 
@@ -467,10 +450,6 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 									 JOptionPane.showMessageDialog(null,"Seleccione dia como el que trabajara","Aviso",JOptionPane.WARNING_MESSAGE);
 									 return;
 								 }
-								 if(chbCambio_turno.isSelected() && txtFolioEmpleadoCambio.getText().equals("")){
-									 JOptionPane.showMessageDialog(null,"Seleccione el empleado del cual optendra el turno","Aviso",JOptionPane.WARNING_MESSAGE);
-									 return;
-								 }else{
 									 
 									 if(Permiso.getFolio() == Integer.parseInt(txtFolio.getText())){
 											if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
@@ -483,9 +462,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 												Permiso.setDescanso(descanso);
 												SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
 												Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
-												if (permiso==9){
-													Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
-													}
+												Permiso.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
 												Permiso.setStatus(chb_status.isSelected());
 												Permiso.setMotivo(txaMotivo.getText().toUpperCase());
 												
@@ -504,6 +481,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 													txtFolio.setText("");
 													txtFolioEmpleado.setText("");
 													txtFechaPermiso.setDate(null);
+													cmbEstablecimiento.setSelectedIndex(0);
 													txaMotivo.setText("");
 													
 													Campos_False();
@@ -536,8 +514,6 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 																							}else{	
 																								  new Cat_SeleccionDeDobla().setVisible(true); 
 																							     }
-//																                     }
-																              }
 										              }
 										
 									   }
@@ -570,16 +546,14 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 			Permiso.setMotivo(txaMotivo.getText().toUpperCase());
 			SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
 			Permiso.setTiempo_comida(sdf.format ((Date) spComida.getValue()));
-			if (permiso==9){
-			Permiso.setFolio_empleado_optener_turno(Integer.valueOf(txtFolioEmpleadoCambio.getText()));
-			}
+			Permiso.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
 			Permiso.setSolicito(rbEmpresa.isSelected()?1:0);
 			
 			if(Permiso.guardar_permiso(tiene_dia_dobla)){
 				
 				resetSolicitantes();
 				resetPermisos();
-				
+				btnDeshacer.doClick();
 				cmbDias.setSelectedIndex(0);
 				spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
 				lblEmpleado.setText("Empleado:");
@@ -589,13 +563,14 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 				txtFolio.setText("");
 				txtFolioEmpleado.setText("");
 				txtFechaPermiso.setDate(null);
+				cmbEstablecimiento.setSelectedIndex(0);
 				txaMotivo.setText("");
 				tiene_dia_dobla=0;
 				txtFolio.setEditable(true);
 				txtFolio.requestFocus();
 				btnFiltro.setEnabled(true);
 				btnBuscar.setEnabled(true);
-						JOptionPane.showMessageDialog(null,"El Permiso se guardo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null,"El Permiso se guardo Exitosamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						return;
 					}else{
 				JOptionPane.showMessageDialog(null,"El Registro no se a guardado avise al Administrador del Sistema!","Error",JOptionPane.ERROR_MESSAGE);
@@ -634,15 +609,12 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 						case 2:chbP_salirTemprano.setSelected(true);break;
 						case 3:chbP_entrarTarde.setSelected(true);break;
 						case 4:chbP_noAsistir.setSelected(true);break;
-						
 						case 5:chbP_noAsistir2.setSelected(true);break;
 						case 6:chbP_cambiodescanso.setSelected(true);break;
 						case 7:chbP_doblarExtra.setSelected(true);break;
 						case 8:chbP_tiempoComida.setSelected(true);break;
-						
-						case 9:	chbCambio_turno.setSelected(true);	
-								txtFolioEmpleadoCambio.setText(permisoEmp.getFolio_empleado_optener_turno()+"");
-								buscar_empleado_a_copiarle_turno(permisoEmp.getFolio_empleado_optener_turno());
+						case 9:	chbP_permisochecarOtroEstab.setSelected(true);	
+						         cmbEstablecimiento.setSelectedItem(permisoEmp.getEstablecimiento());
 								break;
 					}
 					
@@ -740,35 +712,28 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			
 			if(chbP_cambiodescanso.isSelected()){
-				lblP_cambiodescanso.setEnabled(true);
 				 cmbDias.setEnabled(true);
 			 }else{
 				 cmbDias.setSelectedIndex(0);
-				 lblP_cambiodescanso.setEnabled(false);
 				 cmbDias.setEnabled(false);
 			 }	
 			
 			if(chbP_tiempoComida.isSelected()){
-				lblP_tiempoComida.setEnabled(true);
 				 spComida.setEnabled(true);
 			 }else{
 				 spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
 				 spComida.setEditor(com);
-				 lblP_tiempoComida.setEnabled(false);
 				 spComida.setEnabled(false);
 			 }
 			
-			if(chbCambio_turno.isSelected()){
-				lblCambio_turno.setEnabled(true);
-				btnFiltroEmpleadoCambio.setEnabled(true);
-			 }else{
-				 lblCambio_turno.setEnabled(false);
-				 txtFolioEmpleadoCambio.setText("");
-				 txtEmpleadoCambio.setText("");
-				 txtEmpleadoHorario.setText("");
-				 
-				 btnFiltroEmpleadoCambio.setEnabled(false);
-			 }
+			
+			if(chbP_permisochecarOtroEstab.isSelected()){
+				cmbEstablecimiento.setEnabled(true);
+			}else{
+				cmbEstablecimiento.setSelectedIndex(0);
+				cmbEstablecimiento.setEnabled(false);
+			}
+				
 		}
 	};
 	
@@ -792,13 +757,12 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 			txtEmpleadoCambio.setText("");
 			txtEmpleadoHorario.setText("");
 			
+			resetPermisos();
 			Campos_False();
-			
 			btnBuscar.setEnabled(true);
 			btnFiltro.setEnabled(true);
 			txtFolio.setEditable(true);
 			txtFolio.requestFocus();
-			
 			cmbDias.setSelectedIndex(0);
 			spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
 		}
@@ -815,25 +779,21 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		rbEmpresa.setEnabled(false);
 		
 		txaMotivo.setEditable(false);
+		
 		chbP_trabajarCorrido.setEnabled(false);
 		chbP_salirTemprano.setEnabled(false);
 		chbP_entrarTarde.setEnabled(false);
 		chbP_noAsistir.setEnabled(false);
 		chbP_noAsistir2.setEnabled(false);
-
+		chbP_permisochecarOtroEstab.setEnabled(false);
+		chbP_doblarExtra.setEnabled(false);
+		chbP_tiempoComida.setEnabled(false);
 		chbP_cambiodescanso.setEnabled(false);
 		
-		lblP_cambiodescanso.setEnabled(false);
 		cmbDias.setEnabled(false);
+		cmbEstablecimiento.setEnabled(false);
 		
-		chbP_doblarExtra.setEnabled(false);
-		
-		chbP_tiempoComida.setEnabled(false);
-		lblP_tiempoComida.setEnabled(false);
 		spComida.setEnabled(false);
-		
-		chbCambio_turno.setEnabled(false);
-		lblCambio_turno.setEnabled(false);
 		txtFolioEmpleadoCambio.setEnabled(false);
 		txtEmpleadoCambio.setEnabled(false);
 		txtEmpleadoHorario.setEnabled(false);
@@ -853,18 +813,16 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		rbEmpresa.setEnabled(true);
 		
 		txaMotivo.setEditable(true);
+		
 		chbP_trabajarCorrido.setEnabled(true);
 		chbP_salirTemprano.setEnabled(true);
 		chbP_entrarTarde.setEnabled(true);
 		chbP_noAsistir.setEnabled(true);
 		chbP_noAsistir2.setEnabled(true);
-
 		chbP_cambiodescanso.setEnabled(true);
-		
 		chbP_doblarExtra.setEnabled(true);
 		chbP_tiempoComida.setEnabled(true);
-		
-		chbCambio_turno.setEnabled(true);
+		chbP_permisochecarOtroEstab.setEnabled(true);
 		
 		btnGuardar.setEnabled(true);
 		txaMotivo.setEditable(true);
