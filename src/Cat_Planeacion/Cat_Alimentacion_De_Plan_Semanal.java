@@ -114,6 +114,7 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 		
 		this.btnReporte_lista.addActionListener(opReporteLista);
 		this.btnReporte_cntestad.addActionListener(opReporteCuadroscontestado);
+		
 	}
 	
 	public void inabilitarPestanas(){
@@ -266,35 +267,43 @@ public class Cat_Alimentacion_De_Plan_Semanal extends Cat_Plan_Semanal_Base{
 			filaSeleccionada = tabla.getSelectedRow();
 			columnaSeleccionada = tabla.getSelectedColumn();
 			
-//			obtiene en nombre de la columnas seleccionada
-			switch(tabla.getTableHeader().getColumnModel().getColumn(columnaSeleccionada).getHeaderValue().toString()){
-				case "Exige Evidencia":
-						JFileChooser elegir = new JFileChooser();
-		            	int opcion = elegir.showOpenDialog(button);
-				                	
-		                 //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
-		                 if(opcion == JFileChooser.APPROVE_OPTION){
-		                    String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
-		                    
-		                    File mi_fichero = new File ( pathArchivo );
-		                    double tamano_bytes = mi_fichero.length ( );
-		                    double tamano_megas = tamano_bytes/(1024*1024);
-		                    
-		                    if(tamano_megas>3){
-		                    	tabla.setValueAt("", filaSeleccionada, columnaSeleccionada+2);
-		                    	JOptionPane.showMessageDialog(null, "El Archivo Que Intenta Agregar Es Muy Grande,\nEl Archivo Debe Medir Maximo 3 MB", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-		        				return;
-		                    }else{
-		                    	tabla.setValueAt(pathArchivo, filaSeleccionada, columnaSeleccionada+2);
-		                    }
-		                 }
-				break;
+			if(!tabla.getValueAt(filaSeleccionada, 2).equals("RESPUESTA")){
 				
-				case "Exige Observacion":
-						new Cat_Observacion_De_Actividad(tabla.getValueAt(filaSeleccionada, columnaSeleccionada+2).toString()).setVisible(true);
-				break;
-				
+//					obtiene en nombre de la columnas seleccionada
+						switch(tabla.getTableHeader().getColumnModel().getColumn(columnaSeleccionada).getHeaderValue().toString()){
+							case "Exige Evidencia":
+									JFileChooser elegir = new JFileChooser();
+					            	int opcion = elegir.showOpenDialog(button);
+							                	
+					                 //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
+					                 if(opcion == JFileChooser.APPROVE_OPTION){
+					                    String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
+					                    
+					                    File mi_fichero = new File ( pathArchivo );
+					                    double tamano_bytes = mi_fichero.length ( );
+					                    double tamano_megas = tamano_bytes/(1024*1024);
+					                    
+					                    if(tamano_megas>3){
+					                    	tabla.setValueAt("", filaSeleccionada, columnaSeleccionada+2);
+					                    	JOptionPane.showMessageDialog(null, "El Archivo Que Intenta Agregar Es Muy Grande,\nEl Archivo Debe Medir Maximo 3 MB", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					        				return;
+					                    }else{
+					                    	tabla.setValueAt(pathArchivo, filaSeleccionada, columnaSeleccionada+2);
+					                    }
+					                 }
+							break;
+							
+							case "Exige Observacion":
+									new Cat_Observacion_De_Actividad(tabla.getValueAt(filaSeleccionada, columnaSeleccionada+2).toString()).setVisible(true);
+							break;
+							
+						}
+						
+			}else{
+				JOptionPane.showMessageDialog(null, "Es Necesario Que Primero Conteste La Actividad", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
 			}
+
 		}
 	};
 	
