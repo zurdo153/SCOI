@@ -1,10 +1,13 @@
 package Cat_Lista_de_Raya;
 
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -25,6 +28,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
@@ -103,11 +107,11 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
         	 	case 1  : return false; 
         	 	case 2  : return false; 
         	 	case 3  : return true; 
-        	 	case 4  : if(chb_habilitar.isSelected()){return true;} else{return false;}
+        	 	case 4  : return false;
         	 	case 5  : return true;
         	 	case 6  : return true;
         	 	case 7  : if(chb_habilitar.isSelected()){return true;} else{return false;}
-        	 	case 8  : if(chb_habilitar.isSelected()){return true;} else{return false;}
+        	 	case 8  : return false;
         	 	case 9  : return true;
         	 	case 10 : return true; 
         	 	case 11 : return true; 
@@ -141,7 +145,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 	        String columnName = model.getColumnName(column);
 	        String data = model.getValueAt(row, column).toString();
 
-	        if(column!=4 && column!=7 && column!=8 && column!=13 && column!=14){
+	        if(column!=3 && column!=4 && column!=7 && column!=8 && column!=13 && column!=14){
 	        	 try{
 	 	        	if(!data.equals("")){
 	 	        		Float.valueOf(data);
@@ -152,6 +156,9 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 	 	        }
 	        }
 	    }
+
+	int fila = 0;
+	int columna = 0;
 	
 	public Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya(){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -203,8 +210,107 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
 		this.addWindowListener(op_cerrar);
+		
+		evento(tabla);
+		tabla.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyReleased(KeyEvent arg0) {
+				
+				if(tabla.getSelectedColumn()==3){
+					if(arg0.getKeyCode()==KeyEvent.VK_ENTER){
+//						tabla.editingStopped(null);
+						
+						validarCelda();
+						fila++;
+							tabla.getSelectionModel().setSelectionInterval(fila, fila);
+							tabla.editCellAt(fila, 3);
+							Component aComp=tabla.getEditorComponent();
+							aComp.requestFocus();
+							
+						tabla.setValueAt( ((new BuscarSQL().validar_si_tiene_bono_de_asistencia_y_puntualidad(Integer.valueOf(tabla.getValueAt(fila-1, 0).toString().trim()),"bono_puntualidad")) && (tabla.getValueAt(fila-1, 3).toString().equals("")) )?"true":"false", fila-1, 4);
+						
+						if(fila==tabla.getRowCount()-1){
+							tabla.getCellEditor().stopCellEditing();
+							tabla.setValueAt( ((new BuscarSQL().validar_si_tiene_bono_de_asistencia_y_puntualidad(Integer.valueOf(tabla.getValueAt(tabla.getRowCount()-1, 0).toString().trim()),"bono_puntualidad")) && (tabla.getValueAt(tabla.getRowCount()-1, 3).toString().equals("")) )?"true":"false", tabla.getRowCount()-1, 4);
+						}
+						
+					}
+				}
+			}
+			public void keyPressed(KeyEvent arg0) {}
+		});
 	}
-
+	
+	public void validarCelda(){
+		try{
+	        	if(!tabla.getValueAt(fila, 3).toString().trim().equals("")){
+	        		Float.valueOf(tabla.getValueAt(fila, 3).toString().trim());
+	        		
+	        	}
+	        } catch (NumberFormatException nfe){
+	        	tabla.setValueAt("", fila, 3);
+	        	System.out.println("no es entero");
+	        }
+	}
+	
+	public void evento(final JTable tb){
+		tb.addMouseListener(new MouseListener() {
+			
+			int contadorDeClick = 0;
+			public void mouseReleased(MouseEvent e) {	
+					if(tb.getSelectedColumn()==3){
+					
+						contadorDeClick ++;
+						if(contadorDeClick > 1){
+							tabla.setValueAt( ((new BuscarSQL().validar_si_tiene_bono_de_asistencia_y_puntualidad(Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim()),"bono_puntualidad")) && (tabla.getValueAt(fila, 3).toString().equals("")) )?"true":"false", fila, 4);
+						}
+					
+					fila = tabla.getSelectedRow();
+					columna = tb.getSelectedColumn();
+					
+					tabla.getSelectionModel().setSelectionInterval(fila, fila);
+					tb.editCellAt(fila, 3);
+					Component aComp=tb.getEditorComponent();
+					aComp.requestFocus();
+				}
+			}
+			public void mousePressed(MouseEvent e) {			}
+			public void mouseExited(MouseEvent e) {			}
+			public void mouseEntered(MouseEvent e) {
+				
+				switch(tb.getSelectedColumn()){
+		        	case 6: tb.setValueAt( ((new BuscarSQL().validar_si_tiene_bono_de_asistencia_y_puntualidad(Integer.valueOf(tb.getValueAt(tb.getSelectedRow(), 0).toString().trim()),"bono_asistencia")) && (tb.getValueAt(tb.getSelectedRow(), 7).toString().equals("false") && (tb.getValueAt(tb.getSelectedRow(), 6).toString().equals("")) ) )?"true":"false", tb.getSelectedRow(), 8); break;
+		        	case 7: tb.setValueAt( ((new BuscarSQL().validar_si_tiene_bono_de_asistencia_y_puntualidad(Integer.valueOf(tb.getValueAt(tb.getSelectedRow(), 0).toString().trim()),"bono_asistencia")) && (tb.getValueAt(tb.getSelectedRow(), 7).toString().equals("false") && (tb.getValueAt(tb.getSelectedRow(), 6).toString().equals("")) ) )?"true":"false", tb.getSelectedRow(), 8); break;
+				}
+			}
+			
+			
+			public void mouseClicked(MouseEvent e) {
+//				if(tb.getSelectedColumn()==3){
+//					
+//					contadorDeClick ++;
+//					if(contadorDeClick > 1){
+//						filaAux= fila;
+//						tabla.setValueAt( ((new BuscarSQL().validar_si_tiene_bono_de_asistencia_y_puntualidad(Integer.valueOf(tabla.getValueAt(filaAux, 0).toString().trim()),"bono_puntualidad")) && (tabla.getValueAt(filaAux, 3).toString().equals("")) )?"true":"false", filaAux, 4);
+//					}
+//					
+//					if(filaAux >= 0){
+//					}
+//					
+//					
+//					fila = tabla.getSelectedRow();
+//					columna = tb.getSelectedColumn();
+//					
+//					tabla.getSelectionModel().setSelectionInterval(fila, fila);
+//					tb.editCellAt(fila, 3);
+//					Component aComp=tb.getEditorComponent();
+//					aComp.requestFocus();
+//				}
+				
+			}
+		});
+	}
+		
 	WindowListener op_cerrar = new WindowListener() {
 		public void windowOpened(WindowEvent e) {}
 		public void windowIconified(WindowEvent e) {}

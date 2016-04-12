@@ -8598,5 +8598,26 @@ public class BuscarSQL {
 		return indicador;
 	}
 	
+	public boolean validar_si_tiene_bono_de_asistencia_y_puntualidad(int folio_empleado,String tipo_de_bono){
+		boolean existe = false;
+		
+		String query = "select case when ("+tipo_de_bono+")>0 then 'true' else 'false' end as bono"
+						+" from tb_empleado where folio = "+folio_empleado;
+
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				existe = rs.getBoolean(1);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		return existe;
+	}
 	
 }
