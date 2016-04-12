@@ -11,15 +11,12 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-
-
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
@@ -39,12 +36,12 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
-	JCButton btn_generar_Bajas = new JCButton  ("Reporte de Redondeo","buscar.png","Azul");
+	JCButton btn_generar_Bajas = new JCButton  ("Reporte de Redondeo","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-32.png","Azul");
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
@@ -52,10 +49,10 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas(){
-		this.setSize(510,165);
+		this.setSize(510,155);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bajas_altas.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-48.png"));
 		this.setTitle("Reportes de Redondeo En Un Rango de Fechas");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione Un Periodo De Fecha y De Click Al Reporte "));
 		
@@ -74,7 +71,6 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 		cargar_fechas();
 		 
 		btn_generar_Bajas.addActionListener(op_generar);
-
 		
 	}
 	
@@ -99,7 +95,7 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 		c_final.setDate(date2);
 	};
 	
-	String basedatos="2.26";
+	String basedatos="2.200";
 	String vista_previa_reporte="no";
 	int vista_previa_de_ventana=0;
 	String comando="";
@@ -114,7 +110,7 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
                 String Usuario =  usuario.getNombre_completo();
 				
 				if(c_inicio.getDate().before(c_final.getDate())){
-					Reporte_de_mov(fecha_inicio,fecha_final,Establecimiento,Usuario,e.getActionCommand().equals("Reporte de Altas")?"altas":"bajas");
+					Reporte_de_mov(fecha_inicio,fecha_final,Establecimiento,Usuario,cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")?"Reporte de Redondeo Por Establecimiento":"Reporte de Redondeo Del Establecimiento");
 				}else{
 					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
                       return;
@@ -127,8 +123,7 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 	};
 	
 	public void Reporte_de_mov(String fecha_inicio, String fecha_final,String Establecimiento,String Usuario,String mov){
-		 reporte = "Obj_Reporte_De_Empleado_Mov_Altas_Bajas.jrxml";
-		 
+		 reporte = "Obj_Reporte_De_Redondeo_Por_Establecimiento .jrxml";
 		 comando = "exec sp_reporte_de_redondeo_en_un_periodo '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Usuario+"','"+mov+"'";
 		 
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
@@ -138,7 +133,7 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 		String error = "";
 		String fechainicioNull = c_inicio.getDate()+"";
 		String fechafinalNull = c_final.getDate()+"";
-	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";
+	    if(fechainicioNull.equals("null"))error+= "Fecha inicio\n";
 		if(fechafinalNull.equals("null"))error+= "Fecha Final\n";
 		return error;
 	}
