@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
 import Cat_Compras.Cat_Alimentacion_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Analisis_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
+import Cat_Compras.Cat_Recepcion;
 import Cat_Compras.Cat_Reporte_De_Ventas;
 import Cat_Reportes.Cat_Reporte_De_Inventario_Parcial;
 import Conexiones_SQL.Connexion;
@@ -50,6 +51,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	JLayeredPane panel = new JLayeredPane();
 	String operador_ventas = "";
 	String establecimiento_inv_parcial = "";
+	String[][] productos = null;
 
 	Object[][] Matriz_Productos ;
 	DefaultTableModel Tabla_Productos= new DefaultTableModel(null,new String[]{"Codigo", "Descripcion","Clase Producto","Categoria","*"}
@@ -115,7 +117,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	JTextField txtClase_Producto;
 	JTextField txtCategoria;
 	
-	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador, String establecimiento){
+	public Cat_Filtro_De_Busqueda_De_Productos(String bandera_origen_consulta_filro, String operador, String establecimiento, String[][] productosEnListaDeTranferencia){
 		this.cont.add(panel);
 		this.setSize(1024,620);
 		this.setResizable(false);
@@ -163,7 +165,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		  txtCategoria = new Componentes().text(new JTextField(),"Busqueda Por Categoria Del Producto",300, "String");
 		
 		  valor_catalogo=bandera_origen_consulta_filro;
-		
+		  productos=productosEnListaDeTranferencia;
 
 		  
 		  
@@ -182,11 +184,11 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		this.panel.add(btnCargar).setBounds(915,560,90,25);
 		this.panel.add(scroll_tabla).setBounds(10,47,997,511);
 		
-		this.render();
-		this.init_tabla();
-		
 		operador_ventas = operador;
 		establecimiento_inv_parcial = establecimiento;
+		
+		this.render();
+		this.init_tabla();
 		
 		if(bandera_origen_consulta_filro.equals("Reporte_De_Ventas") || bandera_origen_consulta_filro.equals("Reporte_De_Analisis_De_Precios_De_Competencia") || bandera_origen_consulta_filro.equals("Reporte_De_Inventarios_Parciales")){
 			btnCargar.setVisible(true);
@@ -312,6 +314,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 		 					new Cat_Reporte_De_Ventas(Lista,operador_ventas).setVisible(true);
 		 				}
 	 				}
+	 				
 	 				dispose();
 	 			}
 		}
@@ -374,6 +377,28 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 			           	dispose();
 				break;
 				
+				case "Cat_Recepcion":		
+					try {
+						UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InstantiationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (UnsupportedLookAndFeelException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					
+					new Cat_Recepcion(establecimiento_inv_parcial,folio+"",productos).setVisible(true);
+		           	dispose();
+				break;
+				
 				case "125":		System.out.println("prueba");
 	           	dispose();
 		           break;
@@ -425,13 +450,30 @@ public void init_tabla(){
 	
 	
    	public Object[][] llenarTablaProductos(){
-		String todos = "select productos.cod_prod,productos.descripcion+' '+productos.codigo_barras_pieza as descripcion,"
-				+ "            case when clases_productos.nombre is null then '' else upper(clases_productos.nombre) end as clase_producto,"
-				+ "               case when categorias.nombre is null then '' else upper(categorias.nombre) end as categoria"
-				+ " 				  from productos with (nolock)"
-				+ "  left outer join clases_productos on clases_productos.clase_producto= productos.clase_producto"
-				+ "  left outer join categorias on categorias.categoria=productos.categoria"
-				+ "				     order by descripcion,clases_productos.nombre,categorias.nombre  ";
+//   		establecimiento_inv_parcial
+		String todos = !valor_catalogo.equals("Cat_Recepcion")?
+							" select productos.cod_prod,productos.descripcion+' '+productos.codigo_barras_pieza as descripcion,"
+							+ "            case when clases_productos.nombre is null then '' else upper(clases_productos.nombre) end as clase_producto,"
+							+ "               case when categorias.nombre is null then '' else upper(categorias.nombre) end as categoria"
+							+ " 				  from productos with (nolock)"
+							+ "  left outer join clases_productos on clases_productos.clase_producto= productos.clase_producto"
+							+ "  left outer join categorias on categorias.categoria=productos.categoria"
+							+ "				     order by descripcion,clases_productos.nombre,categorias.nombre  "
+						:		
+							" declare @folio_transferencia varchar(20) "
+							+ " set @folio_transferencia = '"+establecimiento_inv_parcial+"' "
+							+ " 	select prodestab.cod_prod,productos.descripcion+' '+productos.codigo_barras_pieza as descripcion, "
+							+ " 				            case when clases_productos.nombre is null then '' else upper(clases_productos.nombre) end as clase_producto, "
+							+ " 				               case when categorias.nombre is null then '' else upper(categorias.nombre) end as categoria "
+							+ " 				 				  from prodestab with (nolock) "
+							+ " 				  left outer join productos on productos.cod_prod= prodestab.cod_prod "
+							+ " 				  left outer join clases_productos on clases_productos.clase_producto= productos.clase_producto "
+							+ " 				  left outer join categorias on categorias.categoria=productos.categoria "
+							+ " 				  where ltrim(rtrim(prodestab.cod_estab)) =(SELECT ltrim(rtrim(cod_estab_alterno)) FROM movimientos_internos where folio = @folio_transferencia and transaccion = '35') "
+							+ "				  and productos.descripcion <> '' "
+							+ "				  order by descripcion,clases_productos.nombre,categorias.nombre";
+		System.out.println(todos);
+		
 		Statement s;
 		ResultSet rs2;
 		try {
@@ -514,6 +556,29 @@ public void init_tabla(){
 			           	dispose();
 				break;
 				
+				case "Cat_Recepcion":		
+					try {
+						UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InstantiationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (UnsupportedLookAndFeelException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					
+					new Cat_Recepcion(valor_catalogo,folio+"",null).setVisible(true);
+		           	dispose();
+		           	
+		        break;
+				
 				case "125":		System.out.println("prueba");
 	           	dispose();
 		           break;
@@ -574,7 +639,7 @@ public void init_tabla(){
 		
 		public static void main(String args[]){
 			try{
-				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas","Igual","").setVisible(true);
+				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas","Igual","",null).setVisible(true);
 			}catch(Exception e){	}
 		}
 	

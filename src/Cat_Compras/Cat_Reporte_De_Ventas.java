@@ -497,7 +497,7 @@ public void filtroProductos(String cadena){
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Productos.getSelectedItem().toString().equals("Todos")){
 				dispose();
-				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas",cmbOperador_Productos.getSelectedItem().toString(),"").setVisible(true);
+				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Ventas",cmbOperador_Productos.getSelectedItem().toString(),"",null).setVisible(true);
 			}else{
 				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;

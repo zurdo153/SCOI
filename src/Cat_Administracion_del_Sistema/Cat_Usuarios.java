@@ -36,6 +36,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 
 
+
+
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNode;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNodeEditor;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNodeRenderer;
@@ -74,6 +76,7 @@ public class Cat_Usuarios extends JFrame{
 	
 	// MENU PRICIPAL ADMINISTRACION DEL SISTEMA  (1)
 	String[] Sub_Administracion_del_Sistema = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(1);
+	
 	Obj_CheckBoxNode Administracion_del_sistema[] = {
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[0], false),
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[1], false),

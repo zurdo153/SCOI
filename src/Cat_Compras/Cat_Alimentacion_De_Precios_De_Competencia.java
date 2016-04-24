@@ -307,7 +307,7 @@ public class Cat_Alimentacion_De_Precios_De_Competencia extends JFrame implement
 	ActionListener opBuscar_Producto = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			dispose();
-			new Cat_Filtro_De_Busqueda_De_Productos(Nombre_Catalogo_Para_Filtro,"","").setVisible(true);
+			new Cat_Filtro_De_Busqueda_De_Productos(Nombre_Catalogo_Para_Filtro,"","",null).setVisible(true);
 		}
 	};
 	

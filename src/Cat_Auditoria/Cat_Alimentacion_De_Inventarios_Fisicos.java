@@ -198,17 +198,23 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 			}
 		};
 		
+//		Workbook libroexcel = null;
+//		Sheet hoja = null;
 		public void importar_excel(String rutaCompleta) {
 			double total_diferencia = 0;
 			model.setRowCount(0); 
 			 
 			String Fecha="";
 			String Establecimiento="";
-			Workbook libroexcel = null;
+			
 			try {
-				libroexcel = Workbook.getWorkbook(new File(rutaCompleta));
+				Workbook libroexcel = Workbook.getWorkbook(new File(rutaCompleta));
 				
-				 Sheet hoja = libroexcel.getSheet(0); //Seleccionamos la hoja que vamos a leer
+				 System.out.println("cantidad de hojas: "+libroexcel.getNumberOfSheets());
+				
+				
+				Sheet hoja = libroexcel.getSheet(0); //Seleccionamos la hoja que vamos a leer
+				
 				 String[] vector = new String[hoja.getRows()];
 				 
 				 for (int columna = 0; columna < hoja.getColumns(); columna++) {
@@ -229,8 +235,14 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				 }
 				 
 				 if(existe.equals("N")){
+//					 System.out.println(hoja.getRows());
 					 for (int fila = 1; fila < hoja.getRows(); fila++){         
 						 total_diferencia += Double.valueOf(hoja.getCell( 10 , fila ).getContents().toString().trim());
+						
+//						 if(!validarCelda(fila)){
+//							 System.out.println(fila+"   "+hoja.getCell(0 , fila ).getContents().toString().trim());
+//						 }
+						 
 						 for (int columna = 0; columna < hoja.getColumns(); columna++){
 							 vector[columna]=hoja.getCell(columna, fila).getContents();
 						 }
@@ -250,6 +262,20 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				JOptionPane.showMessageDialog(null, "Error Al Intentar Leer El Archivo \nMensaje:"+e.getMessage(), "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			} 
 		};
+		
+//	 	public boolean validarCelda(int fila){
+//	 		
+//			try{
+//		        	if(!hoja.getCell( 10 , fila ).getContents().toString().trim().equals("")){
+//		        		Float.valueOf(hoja.getCell( 10 , fila ).getContents().toString().trim());
+//		        		return true;
+//		        	}
+//		        } catch (NumberFormatException nfe){
+////		        	tabla.setValueAt("", fila, 3);
+//		        	System.out.println("no es entero");
+//		        }
+//			return false;
+//		}
 		
 		ActionListener opDeshacer = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
