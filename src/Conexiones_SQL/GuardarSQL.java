@@ -85,6 +85,7 @@ import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
+import Obj_Marketing.Obj_Alimentacion_De_Meta_Mensual_De_Venta;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
@@ -5381,6 +5382,110 @@ public boolean Guardar_Cambio_De_Status_De_Producto(String folio_producto,String
 			con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
+		}
+	}		
+	return true;
+}
+
+public boolean Guardar_Recepcion(Object[][] productos, String folio_transferencia, String folio_estab_origen, String folio_estab_destino, String chofer, String cincho){
+//	int folio_transaccion=busca_y_actualiza_proximo_folio(24);
+	String query = "exec sp_insert_tranferencia ?,?,?,?,?,?,?,?,?,"+usuario.getFolio()+",'"+folio_transferencia+"','"+folio_estab_origen+"','"+folio_estab_destino+"','"+chofer+"','"+cincho+"'";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		con.setAutoCommit(false);
+		
+		PreparedStatement pstmt = con.prepareStatement(query);
+		
+		for(int i=0; i<productos.length; i++){
+			for(int j=0; j<10; j++){
+
+				if(j!=2){
+					if(j>2){
+						pstmt.setDouble(i+1, Double.valueOf(productos[i][j].toString()));
+					}else{
+						pstmt.setString(i+1, productos[i][j].toString());
+					}
+				}
+				
+//				if(j==9){
+//					System.out.println(productos[i][j].toString()+"   ");
+//				}else{
+//					System.out.print(productos[i][j].toString()+"   ");
+//				}
+				
+				
+			}
+			
+			
+			pstmt.executeUpdate();
+		}
+
+//		pstmt.executeUpdate();
+		con.commit();
+
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pago_cascos ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pago_cascos ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+}
+
+public boolean Guardar_Meta_Mensual_De_Venta(Obj_Alimentacion_De_Meta_Mensual_De_Venta meta_mensual, String movimiento){
+	
+	int folio_transaccion=movimiento.equals("CANCELAR")?Integer.valueOf(meta_mensual.getFolio()):busca_y_actualiza_proximo_folio(29);
+	
+	String query = "exec sp_insert_meta_mensual_de_venta ?,?,?,?,?,?,? ";
+	Connection con = new Connexion().conexion();
+	try {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		
+		pstmt.setInt(1, folio_transaccion);
+		pstmt.setInt(2, meta_mensual.getAnios());
+		pstmt.setString(3, meta_mensual.getMes());
+		pstmt.setString(4, meta_mensual.getEstablecimiento().toUpperCase().trim());
+		pstmt.setInt(5, new Obj_Usuario().LeerSession().getFolio());
+		pstmt.setDouble(6, meta_mensual.getMeta_mensual());
+		pstmt.setString(7, movimiento);
+		
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	}		
 	return true;

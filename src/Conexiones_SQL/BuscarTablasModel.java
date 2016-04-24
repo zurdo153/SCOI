@@ -2449,6 +2449,121 @@ public String[][] filtro_de_finiquito_no_autorizados(){
 	}
     return matriz; 
 }
+
+public Object[][] productoEnTranferencia(String cod_prod, String establecimiento){
+	
+	String query_lista = "declare @producto varchar(10), @establecimiento_destino varchar(5) "
+			+ " set @producto = '"+cod_prod+"' "
+			+ " set @establecimiento_destino = '"+establecimiento+"' "
+			+ " if (select 'S' from prodestab "
+			+ "		inner join productos on productos.cod_prod = prodestab.cod_prod "
+			+ "		where prodestab.cod_prod = @producto and prodestab.cod_estab = @establecimiento_destino)='S' "
+			+ "	begin "
+			+ "			select '' "
+			+ "				,isnull(prodestab.cod_prod ,'') "
+			+ "				,isnull(productos.descripcion ,'No Existe En El Establecimiento') "
+			+ "				,1.00 as cantidad "
+			+ "				,'PZ' as unidad "
+			+ "				,convert(decimal(10,2),isnull(prodestab.costo_promedio,0)) as costo_unitario "
+			+ "				,convert(decimal(10,2),isnull(prodestab.costo_promedio,0)*1) as importe "
+			+ "				,convert(decimal(10,2),(isnull(prodestab.costo_promedio,0)*1)*(isnull(iva_interior,0)/100)) as iva "
+			+ "				,convert(decimal(10,2),isnull(prodestab.costo_promedio,0)*1) as costo_total "
+			+ "				,convert(decimal(10,2),(isnull(prodestab.costo_promedio,0)*1))+convert(decimal(10,2),(isnull(prodestab.costo_promedio,0)*1)*(isnull(iva_interior,0)/100)) as importe_total "
+			+ "			from prodestab "
+			+ "			inner join productos on productos.cod_prod = prodestab.cod_prod "
+			+ "			where prodestab.cod_prod = @producto and prodestab.cod_estab = @establecimiento_destino"
+			+ "	end "
+			+ "else "
+			+ "	begin "
+			+ "			select '',0,'No Existe En El Establecimiento',0,'PZ',0,0,0,0,0 "
+			+ "	end";  
+	
+	System.out.println(query_lista);
+	String[][] matriz = new String[1][10];
+	
+	try {
+		Statement stmt = new Connexion().conexion_IZAGAR().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		while(rs.next()){
+			
+			matriz[0][0] = rs.getString(1);
+			matriz[0][1] = rs.getString(2); 
+			matriz[0][2] = rs.getString(3);
+			matriz[0][3] = rs.getString(4);
+			matriz[0][4] = rs.getString(5); 
+			matriz[0][5] = rs.getString(6);
+			matriz[0][6] = rs.getString(7);
+			matriz[0][7] = rs.getString(8); 
+			matriz[0][8] = rs.getString(9);
+			matriz[0][9] = rs.getString(10);
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion recepcion_de_mercancia_en_resguardo SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
+public String[][] listaDeMetas_Mensuales_Registradas(){
+	
+	String query_lista = "  select meta.folio  "
+			+ "		,meta.anio "
+			+ "		,case when (meta.mes)= 1 then 'ENERO' "
+			+ "					when (meta.mes)= 2 then 'FEBRERO' "
+			+ "					when (meta.mes)= 3 then 'MARZO' "
+			+ "					when (meta.mes)= 4 then 'ABRIL' "
+			+ "					when (meta.mes)= 5 then 'MAYO' "
+			+ "					when (meta.mes)= 6 then 'JUNIO' "
+			+ "					when (meta.mes)= 7 then 'JULIO' "
+			+ "					when (meta.mes)= 8 then 'AGOSTO' "
+			+ "					when (meta.mes)= 9 then 'SEPTIEMBRE' "
+			+ "					when (meta.mes)= 10 then 'OCTUBRE' "
+			+ "					when (meta.mes)= 11 then 'NOVIEMBRE' "
+			+ "					when (meta.mes)= 12 then 'DICIEMBRE' "
+			+ "				else 'Selecciona Un Establecimiento' end as mes  "
+			+ "		,isnull(estab.nombre,'Sin Establecimiento') as establecimiento "
+			+ "		,usuario.nombre+' '+usuario.ap_paterno+' '+usuario.ap_materno as usuario "
+			+ "		,meta.meta_del_mes  "
+			+ "		,convert(varchar(20),meta.fecha_guardado  ,103) as fecha_guardado "
+			+ "		,meta.status "
+			+ "		,case when (meta.fecha_cancelado)='01/01/1900'then '' "
+			+ "		else convert(varchar(20),meta.fecha_cancelado,103) end fecha_cancelacion "
+			+ "		,isnull(usuario_modif.nombre+' '+usuario_modif.ap_paterno+' '+usuario_modif.ap_materno,'') as usuario_modifico "
+			+ "from tb_alimentacion_de_meta_mensual_de_venta as meta "
+			+ "left outer join tb_establecimiento estab on estab.folio = meta.cod_estab "
+			+ "inner join tb_empleado usuario on usuario.folio = meta.usuario "
+			+ "left outer join tb_empleado usuario_modif on usuario_modif.folio = meta.usuario_cancelo "; 
+	
+	System.out.println(query_lista);
+	
+	String[][] matriz = new String[get_filas(query_lista)][10];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			matriz[i][0] =  rs.getString(1);
+			matriz[i][1] =  rs.getString(2); 
+			matriz[i][2] =  rs.getString(3); 
+			matriz[i][3] =  rs.getString(4); 
+			matriz[i][4] =  rs.getString(5); 
+			matriz[i][5] =  rs.getString(6); 
+			matriz[i][6] =  rs.getString(7); 
+			matriz[i][7] =  rs.getString(8); 
+			matriz[i][8] =  rs.getString(9); 
+			matriz[i][9] =  rs.getString(10); 
+			
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion listaDeMetas_Mensuales_Registradas() SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+	}
+    return matriz; 
+}
+
 }
 
 

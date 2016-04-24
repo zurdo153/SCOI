@@ -369,7 +369,7 @@ public class Cat_Cotizaciones_De_Un_Producto_fail extends JFrame{
 	ActionListener opBuscar_Producto = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			dispose();
-			new Cat_Filtro_De_Busqueda_De_Productos("Cotizaciones_De_Un_Producto","","").setVisible(true);
+			new Cat_Filtro_De_Busqueda_De_Productos("Cotizaciones_De_Un_Producto","","",null).setVisible(true);
 		}
 	};
 	

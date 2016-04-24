@@ -8620,4 +8620,88 @@ public class BuscarSQL {
 		return existe;
 	}
 	
+	public Object[][] Consultar_Transferencia(String folioTranferencia){
+		
+	String query = " exec sp_IZAGAR_checar_si_llego_completa_la_tranferencia '"+folioTranferencia+"'";
+	
+	Object[][] rp_ventas = new Object[1][6];
+	
+		try {
+			Statement stmt = con.conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int i=0;
+				while(rs.next()){
+						rp_ventas[i][0 ]= rs.getInt(1 );
+						rp_ventas[i][1 ]= rs.getString(2 );
+						rp_ventas[i][2 ]= rs.getInt(3 );
+						rp_ventas[i][3 ]= rs.getString(4 );
+						rp_ventas[i][4 ]= rs.getInt(5 );
+						rp_ventas[i][5 ]= rs.getInt(6 );
+					i++;
+				}
+			
+		} catch (Exception e){
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Consultar_Transferencia \n "+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			e.printStackTrace();
+			return null;
+		}
+		return rp_ventas;
+	}
+	
+	public String[]  parametros_de_anios(){
+		
+		int cantidad_de_anios = 10;
+		
+		String[] anios = new String[cantidad_de_anios];
+		int anio=0;
+		String query = "select datepart(year,getdate())";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				anio=(rs.getInt(1));
+			}
+			
+			for(int i=anio; i<(anio+cantidad_de_anios); i++){
+				anios[i-anio] = i+"";
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return anios;
+	}
+	
+	public String  buscar_folio_consecutivo_por_folio_de_transaccion(int folio_transaccion){
+		String folio = "";
+		String query = "select (folio+1) as folio_consecutivo from tb_folios where folio_transaccion = "+folio_transaccion;
+		System.out.println(query);
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				folio=(rs.getString("folio_consecutivo"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return folio;
+	}
+	
 }

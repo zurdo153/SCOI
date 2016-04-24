@@ -358,7 +358,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Productos.getSelectedItem().toString().equals("Todos")){
 				dispose();
-				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Analisis_De_Precios_De_Competencia",cmbOperador_Productos.getSelectedItem().toString(),"").setVisible(true);
+				new Cat_Filtro_De_Busqueda_De_Productos("Reporte_De_Analisis_De_Precios_De_Competencia",cmbOperador_Productos.getSelectedItem().toString(),"",null).setVisible(true);
 			}else{
 				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 				return;
