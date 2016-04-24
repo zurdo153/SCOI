@@ -25,6 +25,7 @@ import Cat_Reportes.Cat_Reportes_De_Diferencias_Entre_Dos_Listas_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Prestamos_De_Lista_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Fuente_De_Sodas;
+import Cat_Reportes.Cat_Reportes_De_Infonacot_De_Lista_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Infonavit_De_Lista_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
@@ -113,6 +114,9 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
 		    				case 7:		new  Cat_Reportes_De_Diferencias_Entre_Dos_Listas_De_Raya().obtiene_lista_de_raya_selecionadac2(folio);
     			           	dispose();
     				           break;
+		    				case 8:		new  Cat_Reportes_De_Infonacot_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada(folio);
+    			           	dispose();
+    				           break;   
     				           
 		    				}
 		    			}

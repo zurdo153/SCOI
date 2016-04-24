@@ -26,7 +26,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 
 @SuppressWarnings("serial")
-public class Cat_Reportes_De_Infonavit_De_Lista_De_Raya extends JFrame{
+public class Cat_Reportes_De_Infonacot_De_Lista_De_Raya extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
@@ -40,21 +40,21 @@ public class Cat_Reportes_De_Infonavit_De_Lista_De_Raya extends JFrame{
 	
 	int tipo_Reporte = 0;
 	
-	public Cat_Reportes_De_Infonavit_De_Lista_De_Raya(){
+	public Cat_Reportes_De_Infonacot_De_Lista_De_Raya(){
 		setSize(335,280);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("Reportes De Infonavit De Lista De Raya");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/infonavit.png"));
+		setTitle("Reportes De Infonacot De Lista De Raya");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/infonacotsinfondo-1.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione el Tipo de Reporte"));
 	
 		btnReporte_porfecha.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<CENTER><p>Reporte De Infonavit De     Listas De Raya Pasadas</p></CENTER></FONT>" +
+				"		<CENTER><p>Reporte De Infonacot De     Listas De Raya Pasadas</p></CENTER></FONT>" +
 				"</html>");	
 		
 		btnReporte_actual.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<CENTER><p>Reporte De Infonavit De      Lista De Raya Actual</p></CENTER></FONT>" +
+				"		<CENTER><p>Reporte De Infonacot De      Lista De Raya Actual</p></CENTER></FONT>" +
 				"</html>");	
 		
 		panel.add(btnReporte_porfecha).setBounds(35,25,260,40);
@@ -109,7 +109,7 @@ public class Cat_Reportes_De_Infonavit_De_Lista_De_Raya extends JFrame{
 	
 	ActionListener opfiltroLR = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			 new Cat_Filtro_De_Listas_De_Raya_Pasadas(4).setVisible(true);
+			 new Cat_Filtro_De_Listas_De_Raya_Pasadas(8).setVisible(true);
 		}
 	};
 	
@@ -135,8 +135,8 @@ public class Cat_Reportes_De_Infonavit_De_Lista_De_Raya extends JFrame{
 			
 			if(tipo_Reporte==2){
 						if(!txtFolio.getText().equals("")){
-							 reporte = "Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml";
-							 comando = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Empleados Con Infonavit De Lista De Raya Pasada',"+Integer.valueOf(txtFolio.getText())  ;
+							 reporte = "Obj_Reporte_De_Infonacot_De_Lista_De_Raya.jrxml";
+							 comando = "exec sp_Reporte_De_Infonacot_De_Lista_De_Raya 'Colaboradores Con Infonacot De Listas De Raya Pasadas',"+Integer.valueOf(txtFolio.getText())  ;
 							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 						}else{
 						  JOptionPane.showMessageDialog(null, "El Campo Folio No Debe De Estar Vacio","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -149,16 +149,16 @@ public class Cat_Reportes_De_Infonavit_De_Lista_De_Raya extends JFrame{
 	   
 	   public  void obtiene_lista_de_raya_selecionada(final Integer folio){
 		 String	Foliorecibido = folio+"";
-		 reporte = "Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml";
-		 comando = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Empleados Con Infonavit De Lista De Raya Pasada',"+Foliorecibido  ;
+		 reporte = "Obj_Reporte_De_Infonacot_De_Lista_De_Raya.jrxml";
+		 comando = "exec sp_Reporte_De_Infonacot_De_Lista_De_Raya 'Colaboradores Con Infonacot De Listas De Raya Pasadas',"+Foliorecibido  ;
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	 	 txtFolio.setText(Foliorecibido);
 		 return;	
        }
 	
 		public void Reporte_De_Lista_De_Raya_Actual() {
-			 reporte = "Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml";
-			 comando = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Empleados Con Infonavit De Lista De Raya Actual',0" ;
+			 reporte = "Obj_Reporte_De_Infonacot_De_Lista_De_Raya.jrxml";
+			 comando = "exec sp_Reporte_De_Infonacot_De_Lista_De_Raya 'Colaboradores Con Infonacot En Lista De Raya Actual',0" ;
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 
@@ -166,7 +166,7 @@ public class Cat_Reportes_De_Infonavit_De_Lista_De_Raya extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reportes_De_Infonavit_De_Lista_De_Raya().setVisible(true);
+			new Cat_Reportes_De_Infonacot_De_Lista_De_Raya().setVisible(true);
 		}catch(Exception e){	}
 	}
 }
