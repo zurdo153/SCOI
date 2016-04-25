@@ -143,6 +143,7 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1,	empleado.getForma_pago().toUpperCase());
 			pstmt.setFloat(i+=1,	empleado.getStatus()==4||empleado.getStatus()==5?0:empleado.getSueldo());
 			pstmt.setInt(i+=1, 		empleado.getStatus()==4||empleado.getStatus()==5?1:empleado.getBono());
+			
 			pstmt.setFloat(i+=1,   empleado.getBono_asistencia());
 			pstmt.setFloat(i+=1, 	empleado.getBono_puntualidad());
 			pstmt.setFloat(i+=1, 	empleado.getInfonacot());

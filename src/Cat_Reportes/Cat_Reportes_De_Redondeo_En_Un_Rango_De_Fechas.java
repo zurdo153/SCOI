@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,6 +43,8 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	JCButton btn_generar_Bajas = new JCButton  ("Reporte de Redondeo","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-32.png","Azul");
+	JCButton btn_generar_Totales = new JCButton  ("Reporte de Redondeo Totales","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-32.png","Azul");
+	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
@@ -67,17 +70,20 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 		this.panel.add(cmbEstablecimiento).setBounds(320,25,170,20);
 		this.panel.add(btn_generar_Bajas).setBounds(220,55,270,25);
 		
+		this.panel.add(btn_generar_Totales).setBounds(220,90,270,25);
+		
 		this.cont.add(panel);
 		cargar_fechas();
 		 
 		btn_generar_Bajas.addActionListener(op_generar);
+		btn_generar_Totales.addActionListener(op_generar);
 		
 	}
 	
 	public void cargar_fechas(){
 		Date date1 = null;
 				  try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(7));
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(1));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				} catch (SQLException e) {
@@ -86,7 +92,7 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 		c_inicio.setDate(date1);
 	    Date date2 = null;
 					  try {
-						date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
+						date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(1));
 					} catch (ParseException e) {
 						e.printStackTrace();
 					} catch (SQLException e) {
@@ -106,12 +112,25 @@ public class Cat_Reportes_De_Redondeo_En_Un_Rango_De_Fechas extends JFrame {
 			if(validar_fechas().equals("")){
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:58";
+			    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+  			    Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+				Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+				
 				String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
                 String Usuario =  usuario.getNombre_completo();
 				
-				if(c_inicio.getDate().before(c_final.getDate())){
+                
+                if(fecha1.before(fecha2)){
+                	
+                	if( e.getActionCommand().equals("Reporte de Redondeo Totales")){
+    					Reporte_de_mov(fecha_inicio,fecha_final,Establecimiento,Usuario,cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")?"Reporte de Redondeo Por Establecimiento Totales":"Reporte de Redondeo Del Establecimiento Totales");
+                	}else{
+                		
 					Reporte_de_mov(fecha_inicio,fecha_final,Establecimiento,Usuario,cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")?"Reporte de Redondeo Por Establecimiento":"Reporte de Redondeo Del Establecimiento");
-				}else{
+                	}
+                
+                
+                }else{
 					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
                       return;
 				}

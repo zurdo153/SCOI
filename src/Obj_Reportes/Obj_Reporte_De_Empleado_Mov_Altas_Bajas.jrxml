@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-05-29T17:26:22 -->
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-04-12T12:50:14 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="ireport.zoom" value="2.593742460100005"/>
@@ -155,7 +155,7 @@ A:]]></text>
 			</image>
 			<image>
 				<reportElement x="450" y="0" width="30" height="30" uuid="d5a7ebc7-9c1b-4b03-8144-d9093b7b4ce8"/>
-				<imageExpression><![CDATA["C:/SCOI/Iconos/vigente.png"]]></imageExpression>
+				<imageExpression><![CDATA["C:/SCOI/Imagen/vigente.png"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="478" y="18" width="30" height="30" uuid="9fe167c6-06bf-4e8f-aa79-bbc07e7a1b5d"/>

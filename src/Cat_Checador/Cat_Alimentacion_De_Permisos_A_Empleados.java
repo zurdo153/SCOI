@@ -162,11 +162,14 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 		int x=20,sep=150, y=20, width=100,height=20 ;
 		
 		panel.add(lblUsuario).setBounds(20,y,400,height);
+		panel.add(new JLabel("Seleccione La Fecha En Que Aplica El Permiso:")).setBounds(x+280,y+15,250,20);
 		
 		panel.add(lblFolio).setBounds               (x     ,y+=35,30,height);
 		panel.add(txtFolio).setBounds               (x+=30 ,y,width,height);
 		panel.add(btnBuscar).setBounds              (x+=103 ,y,20,height);
 		panel.add(btnFiltro).setBounds              (x+=23 ,y,106,height);
+		
+
 		
 		panel.add(txtFechaPermiso).setBounds(340,y,100,height);
 		panel.add(chb_status).setBounds(450,y,80,20);

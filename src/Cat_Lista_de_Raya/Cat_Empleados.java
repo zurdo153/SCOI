@@ -91,7 +91,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Horarios;
-import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
+import Cat_Reportes.Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual;
 //import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
@@ -99,6 +99,7 @@ import Cat_Reportes.Cat_Personal_Con_Horario;
 import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
 import Cat_Reportes.Cat_Reportes_De_Contratacion_Por_Empleado;
 import Cat_Reportes.Cat_Reportes_De_Horarios;
+import Cat_Reportes.Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
@@ -250,7 +251,7 @@ public class Cat_Empleados extends JFrame{
 	JButton btnExaminar = new JButton("Examinar");
 	JButton btnCamara = new JButton(new ImageIcon("Iconos/camara_icon&16.png"));
 	
-	JCButton btnImp_Datos_Completos = new JCButton("Informacion","informacion-del-usuario-icono-8370-16.png","Azul");
+	JCButton btnImp_Datos_Completos = new JCButton("Colaborador","informacion-del-usuario-icono-8370-16.png","Azul");
 	JCButton btnContratacion        = new JCButton("Contratacion","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png","Azul");
 	JCButton btnDocumentacion       = new JCButton("Documentación","carpeta-de-correo-icono-4002-16.png","Azul");
 	JCButton btnAsistencia_Empleado = new JCButton("Asistencia","archivo-icono-8809-16.png","Azul"); 
@@ -259,9 +260,10 @@ public class Cat_Empleados extends JFrame{
 
 	JCButton btnLicencias           = new JCButton("R.Licencias","truck-icon.png","Azul");
 	JCButton btnCumpleaños_del_Mes  = new JCButton("R.Cumpleaños","cookies-tarta-de-cumpleanos-icono-9840-16.png","Azul");
-	JCButton btnAltasBajas          = new JCButton("R.Altas/Bajas","bajas_altas_16p.png","Azul");
+	JCButton btnAltasBajas          = new JCButton("R.Rotacion","bajas_altas_16p.png","Azul");
 	JCButton btn_plantilla          = new JCButton("R.Plantilla","plan-icono-5073-16.png","Azul");
 	JCButton btn_R_horarios         = new JCButton("R.Horarios","horas-de-reloj-de-alarma-icono-5601-16.png","Azul");
+	JCButton btn_movimientos        = new JCButton("Inf.Movimientos","detective-icono-5257-16.png","Azul");
 	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
@@ -270,10 +272,7 @@ public class Cat_Empleados extends JFrame{
 	JDateChooser txtIngreso = new JDateChooser();
 	JDateChooser txtIngresoImss = new JDateChooser();
 	JDateChooser txtVencimientoLicencia = new JDateChooser();
-	
-//	 private ButtonGroup bgSexo = new ButtonGroup();
-//	 private JRadioButton rbMasculino = new JRadioButton("Masculino",true);
-//	 private JRadioButton rbFemenino = new JRadioButton("Femenino",false);
+
 	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO"};
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbSexo = new JComboBox(sexo);
@@ -386,6 +385,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(btnAltasBajas).setBounds           (x+=sep,y    ,width,height);
 		panel.add(btn_R_horarios).setBounds          (x+=sep,y    ,width,height);
 		panel.add(btn_plantilla).setBounds           (x+=sep,y    ,width,height);
+		panel.add(btn_movimientos).setBounds         (x+=sep,y    ,width,height);
 		
 		x=20; y=y+=38;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
@@ -587,13 +587,13 @@ public class Cat_Empleados extends JFrame{
 		btnIncontratables.addActionListener(Reporte_de_Empleados_No_Contratables);
 		btn_R_horarios.addActionListener(opHorarioProvisional);
 		btn_plantilla.addActionListener(opPlantilla);
+		btn_movimientos.addActionListener(opGenerarInformacionDeColaboradores);
 		
 		btnLicencias.addActionListener(Reporte_de_Vigencia_Licencias);
 		btnCumpleaños_del_Mes.addActionListener(Reporte_De_Cumpleanios_Del_Mes);
 		btnAltasBajas.addActionListener(Reporte_De_Altas_y_Bajas);
-		
 		btnDocumentacion.addActionListener(opDocumentacion);
-		
+
 		btnExaminar.addActionListener(opExaminar);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
 		btnHorario.addActionListener(opFiltroHorairo);
@@ -1452,17 +1452,17 @@ public void guardar_modificar_Empleado(){
 									empleado.setInfonavit(Float.parseFloat(0.0+""));
 								}
 								
-								if(!(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
-									if(!(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
-										if(!(cmbBono.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){	
-											empleado.setBono_asistencia(Float.parseFloat(0.0+""));
-											empleado.setBono_puntualidad(Float.parseFloat(0.0+""));
-									    }else{
-									    	empleado.setBono_asistencia(Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
-											empleado.setBono_puntualidad(Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
-									    }
-									}
-								}
+								if((cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
+									empleado.setBono_asistencia(Float.parseFloat(0.0+""));
+								 }else{
+								   	empleado.setBono_asistencia(Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 	
+								 }
+								
+								if((cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
+									empleado.setBono_puntualidad(Float.parseFloat(0.0+""));
+								 }else{
+									empleado.setBono_puntualidad(Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
+								 }
 								
 								empleado.setInfonacot(Float.valueOf(txtDInfonacot.getText()));
 								empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
@@ -2134,7 +2134,7 @@ public void guardar_modificar_Empleado(){
 	   
 	ActionListener Reporte_De_Altas_y_Bajas = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-					new Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas().setVisible(true);
+					new Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas().setVisible(true);
 			}
 		};
 	   
@@ -2172,6 +2172,12 @@ public void guardar_modificar_Empleado(){
 			}else{
 			new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString())).setVisible(true);
 			}
+		}
+	};
+	
+	ActionListener opGenerarInformacionDeColaboradores = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			new Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores().setVisible(true);
 		}
 	};
 	

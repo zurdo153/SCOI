@@ -56,6 +56,24 @@ public class Cat_Usuarios extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
 	
+//	public int cantidad_submenus(int menu){
+//		int cantidad_submenusp=0;
+//	try {
+//		 cantidad_submenusp= new SubMenusSQL().cantidad_submenus(4);
+//	} catch (SQLException e1) {
+//		e1.printStackTrace();
+//	}
+//	return cantidad_submenusp;
+//	}
+//	
+//	public Obj_CheckBoxNode[] tipos(int menu,String[] nombre){
+//		Obj_CheckBoxNode[] tip = new Obj_CheckBoxNode[cantidad_submenus(menu)];
+//		for(int i =0; i<tip.length-1; i++){
+//			new Obj_CheckBoxNode(nombre[i], false);
+//		}
+//		return tip;
+//	}
+	
 	// MENU PRICIPAL ADMINISTRACION DEL SISTEMA  (1)
 	String[] Sub_Administracion_del_Sistema = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(1);
 	
@@ -86,6 +104,7 @@ public class Cat_Usuarios extends JFrame{
 	    new Obj_CheckBoxNode(Sub_Auditoria[11], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[12], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[13], false),
+	    new Obj_CheckBoxNode(Sub_Auditoria[14], false),
 	    
 	};
 	@SuppressWarnings("rawtypes")
@@ -229,6 +248,7 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[46], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[47], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[48], false),
+		new Obj_CheckBoxNode(Sub_Lista_de_Raya[49], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Lista_de_RayaVector = new Obj_NombreVector("Lista De Raya", Lista_de_Raya);
@@ -447,8 +467,9 @@ public class Cat_Usuarios extends JFrame{
         		txtNombre_Completo.setText(Nombre_Completo.toString());
         		
                ///cargar foto del empleado///
-        		new Obj_Usuario().BuscarUsuario(folio_empleado);
-    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
+        		
+        		Obj_SubMenus usuario = new Obj_SubMenus().BuscarUsuariosua(folio_empleado);
+    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmpcat.jpg");
     	 		btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(110, 90, Image.SCALE_DEFAULT)));
         		
 				if(new Obj_Usuario().ExisteUsuario(folio_empleado) == true){
@@ -456,8 +477,6 @@ public class Cat_Usuarios extends JFrame{
 					txtFolio.setText(folio_empleado+"");
 	        		txtNombre_Completo.setText(Nombre_Completo.toString());
 	        		
-	        		Obj_Usuario usuario = new Obj_Usuario().BuscarUsuario(folio_empleado);
-	    	 		
 	        		txtContrasena.setText(usuario.getContrasena());
 	        		btnUsuariovigente.setVisible(true);
 	        		

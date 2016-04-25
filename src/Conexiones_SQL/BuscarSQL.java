@@ -1605,6 +1605,7 @@ public class BuscarSQL {
 		return usuario;
 	}
 	
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Vector returnPermiso(int folio_empleado, int menu) throws SQLException{
 		Vector prueba = new Vector();

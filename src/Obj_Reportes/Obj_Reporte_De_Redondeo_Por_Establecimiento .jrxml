@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-04-10T13:58:38 -->
+<!-- 2016-04-21T11:39:09 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IZAGAR"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -37,6 +37,9 @@
 		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
 	</variable>
 	<variable name="Total Establecimiento" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<variable name="Total" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
 	</variable>
 	<group name="Group1" keepTogether="true">
@@ -213,6 +216,7 @@
 	</columnHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{reporte}.equals("Reporte de Redondeo Por Establecimiento")||$F{reporte}.equals("Reporte de Redondeo Del Establecimiento")]]></printWhenExpression>
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="43" y="0" width="511" height="16" uuid="34800663-a779-4c30-b4ef-ec995d1f7113">
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -272,9 +276,21 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="16" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField pattern="#,##0.00#">
+				<reportElement x="180" y="0" width="83" height="15" uuid="d099be24-2342-45e2-84d2-a825ded863e9">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{Total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="0" width="60" height="15" uuid="51622cf9-6128-406a-851f-eb782eeee284"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Total Final.:]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
