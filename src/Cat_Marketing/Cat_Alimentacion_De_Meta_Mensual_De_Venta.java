@@ -46,7 +46,7 @@ public class Cat_Alimentacion_De_Meta_Mensual_De_Venta extends JFrame{
 	JComboBox cmbEstablecimientos = new JComboBox(establecimientosExterno);
 	
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio Meta Mensual", 10, "Int");
-	JTextField txtMetaMensual = new Componentes().text(new JTextField(), "Cantodad Meta Mensual", 13, "Double");
+	JTextField txtMetaMensual = new Componentes().text(new JTextField(), "Cantidad Meta Mensual", 13, "Double");
 	
 	JButton btnGuardar = new JCButton("Guardar", "", "Azul");
 	JButton btnCancelar = new JCButton("Cancelar", "", "Azul");
