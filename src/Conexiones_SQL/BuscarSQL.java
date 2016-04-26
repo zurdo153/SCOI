@@ -8705,4 +8705,54 @@ public class BuscarSQL {
 		return folio;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Vector buscarTipoDeReporteDeMetaMensualDeVentas(){
+		Statement stmt = null;
+		
+		String query = " select nombre from tb_tipo_de_reporte_de_meta__mensual_de_venta where status = 'V' ";
+	
+		Vector datos = new Vector();
+		
+		try {
+			
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i =0;
+			while(rs.next()){
+				datos.add(rs.getString(i+1).toString());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al Buscar en [buscarTipoDeReporteDeMetaMensualDeVentas] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			return null;
+		}
+		finally{
+			if(stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return datos;
+	}
+	
+	public int get_filas(String sentencia){
+		int filas = 0;
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(sentencia);
+			while(rs.next())
+				filas++;
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return filas;
+	}	
+	
 }
