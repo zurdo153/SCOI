@@ -6562,6 +6562,9 @@ public class BuscarSQL {
 				          +"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())
 				          +"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"',"+ventas.getPresentado()+",'"+(ventas.getTallas().equals("")?0:ventas.getTallas())+"','"+(ventas.getAsignaciones().equals("")?0:ventas.getTallas())+"'";
 
+	System.out.println(query);
+	
+	
 	String[][] rp_ventas = new String[getFilasExterno(query)][20];
 		try {
 			stmt = con.conexion_IZAGAR().createStatement();
@@ -8755,4 +8758,30 @@ public class BuscarSQL {
 		return filas;
 	}	
 	
+	public boolean  existe_nombre_de_configuracion_de_meta_mensual_de_venta(String nombre){
+		boolean existe = false;
+		String query = " if not exists(select folio from tb_configuracion_de_meta_mensual_de_ventas where ltrim(rtrim(nombre)) = '"+nombre+"') "
+						+ " begin select 'true' as existe end "
+						+ " else "
+						+ " begin select 'false' as existe end ";
+		System.out.println(query);
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				existe=(rs.getBoolean("existe"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return existe;
+	}
 }

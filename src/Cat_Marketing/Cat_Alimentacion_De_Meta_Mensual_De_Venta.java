@@ -121,7 +121,7 @@ public class Cat_Alimentacion_De_Meta_Mensual_De_Venta extends JFrame{
 		bucar_metas();
 		
 		btnGuardar.addActionListener(opGuardar);
-		btnCancelar.addActionListener(oCancelar);
+		btnCancelar.addActionListener(opCancelar);
 		
 		cont.add(panel);
 		
@@ -204,7 +204,7 @@ public class Cat_Alimentacion_De_Meta_Mensual_De_Venta extends JFrame{
 		}
 	};
 	
-	ActionListener oCancelar = new ActionListener(){
+	ActionListener opCancelar = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
 			
 			Obj_Alimentacion_De_Meta_Mensual_De_Venta mark = new Obj_Alimentacion_De_Meta_Mensual_De_Venta();

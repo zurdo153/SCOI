@@ -2564,25 +2564,26 @@ public String[][] listaDeMetas_Mensuales_Registradas(){
 
 public String[][] lista_de_configuraciones_de_meta_mensual_de_ventas(){
 	
-	String query_lista = "  select conf_meta_mens.folio "
-						+ "			,conf_meta_mens.nombre "
-						+ "			,conf_meta_mens.folio_estableciminetos "
-						+ "			,tipo_reporte.nombre as tipo_de_reporte "
-						+ "			,conf_meta_mens.filtro_productos "
-						+ "			,conf_meta_mens.filtro_clase "
-						+ "			,conf_meta_mens.filtro_categoria "
-						+ "			,conf_meta_mens.filtro_familia "
-						+ "			,conf_meta_mens.filtro_linea "
-						+ "			,conf_meta_mens.filtro_talla "
-						+ "			,conf_meta_mens.status "
-						+ "			,emp_us.nombre+' '+emp_us.ap_paterno+' '+emp_us.ap_materno as usuario "
-						+ "			,conf_meta_mens.fecha_guardado "
-						+ "			,isnull(emp_us_canc.nombre+' '+emp_us_canc.ap_paterno+' '+emp_us_canc.ap_materno,'') as usuario_cancelo "
-						+ "			,case when (conf_meta_mens.fecha_cancelo)='01/01/1900' then '' else conf_meta_mens.fecha_cancelo end as fecha_cancelo "
-						+ "	from tb_configuracion_de_meta_mensual_de_ventas conf_meta_mens "
-						+ "	left outer join tb_tipo_de_reporte_de_meta_mensual_de_venta tipo_reporte on tipo_reporte.folio = conf_meta_mens.tipo_de_reporte "
-						+ "	inner join tb_empleado emp_us on emp_us.folio = conf_meta_mens.usuario "
-						+ "left outer join tb_empleado emp_us_canc on emp_us_canc.folio = conf_meta_mens.usuario_cancelo "; 
+	String query_lista = " select conf_meta_mens.folio "
+						+ " 		,conf_meta_mens.nombre "
+						+ " 		,conf_meta_mens.folio_estableciminetos "
+						+ " 		,tipo_reporte.nombre as tipo_de_reporte "
+						+ " 		,conf_meta_mens.filtro_productos "
+						+ " 		,conf_meta_mens.filtro_clase "
+						+ " 		,conf_meta_mens.filtro_categoria "
+						+ " 		,conf_meta_mens.filtro_familia "
+						+ " 		,conf_meta_mens.filtro_linea "
+						+ " 		,conf_meta_mens.filtro_talla "
+						+ " 		,conf_meta_mens.status "
+						+ " 		,emp_us.nombre+' '+emp_us.ap_paterno+' '+emp_us.ap_materno as usuario "
+						+ " 		,convert(varchar(20),conf_meta_mens.fecha_guardado,103)+' '+convert(varchar(20),conf_meta_mens.fecha_guardado,108) AS fecha_guardado "
+						+ " 		,isnull(emp_us_canc.nombre+' '+emp_us_canc.ap_paterno+' '+emp_us_canc.ap_materno,'') as usuario_cancelo "
+						+ " 		,case when (convert(varchar(20),conf_meta_mens.fecha_cancelo,103)='01/01/1900') then '' "
+						+ "				else convert(varchar(20),conf_meta_mens.fecha_cancelo,103)+' '+convert(varchar(20),conf_meta_mens.fecha_cancelo,108) end AS fecha_cancelo "
+						+ " from tb_configuracion_de_meta_mensual_de_ventas conf_meta_mens "
+						+ " inner join tb_tipo_de_reporte_de_meta__mensual_de_venta tipo_reporte on tipo_reporte.folio = conf_meta_mens.tipo_de_reporte "
+						+ " inner join tb_empleado emp_us on emp_us.folio = conf_meta_mens.usuario "
+						+ " left outer join tb_empleado emp_us_canc on emp_us_canc.folio = conf_meta_mens.usuario_cancelo "; 
 	
 	System.out.println(query_lista);
 	
