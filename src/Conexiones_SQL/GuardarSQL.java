@@ -86,6 +86,7 @@ import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Marketing.Obj_Alimentacion_De_Meta_Mensual_De_Venta;
+import Obj_Marketing.Obj_Configuracion_Meta_Mensual_De_Ventas;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
@@ -5464,6 +5465,57 @@ public boolean Guardar_Meta_Mensual_De_Venta(Obj_Alimentacion_De_Meta_Mensual_De
 		pstmt.setInt(5, new Obj_Usuario().LeerSession().getFolio());
 		pstmt.setDouble(6, meta_mensual.getMeta_mensual());
 		pstmt.setString(7, movimiento);
+		
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
+
+public boolean Guardar_Configuracion_De_Meta_Mensual_De_Venta(Obj_Configuracion_Meta_Mensual_De_Ventas conf, String movimiento, int folio_a_cancelar){
+	
+	int folio_transaccion=movimiento.equals("CANCELAR")?folio_a_cancelar:busca_y_actualiza_proximo_folio(30);
+	
+	String query = "exec sp_insert_configuracion_de_meta_mensual_de_venta ?,?,?,?,?,?,?,?,?,?,?,? ";
+	Connection con = new Connexion().conexion();
+	try {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		
+		System.out.println(conf.getTipo_de_reporte()+"<--------------------");
+		
+		pstmt.setInt(1, folio_transaccion);
+		pstmt.setString(2, conf.getNombre().toUpperCase().trim());
+		pstmt.setString(3, conf.getEstablecimiento().trim());
+		pstmt.setString(4, conf.getTipo_de_reporte());
+		pstmt.setString(5, conf.getProductos().trim());
+		pstmt.setString(6, conf.getClases().trim());
+		pstmt.setString(7, conf.getCategorias().trim());
+		pstmt.setString(8, conf.getFamilias().trim());
+		pstmt.setString(9, conf.getLineas().trim());
+		pstmt.setString(10, conf.getTallas().trim());
+		pstmt.setInt(11, new Obj_Usuario().LeerSession().getFolio());
+		pstmt.setString(12, movimiento);
 		
 		pstmt.executeUpdate();
 		con.commit();

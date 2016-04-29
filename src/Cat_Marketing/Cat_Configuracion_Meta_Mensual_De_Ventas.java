@@ -2,7 +2,6 @@ package Cat_Marketing;
 
 import java.awt.Container;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,15 +12,9 @@ import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -31,11 +24,9 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.SpinnerDateModel;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
@@ -43,18 +34,12 @@ import javax.swing.table.TableRowSorter;
 
 import Cat_Filtros_IZAGAR.Cat_Filtro_De_Busqueda_De_Productos;
 import Conexiones_SQL.BuscarSQL;
-import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
-import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
-import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Marketing.Obj_Configuracion_Meta_Mensual_De_Ventas;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
-import Obj_Reportes.Obj_Reportes_De_Ventas;
-
-import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
 public class Cat_Configuracion_Meta_Mensual_De_Ventas extends JFrame {
@@ -108,7 +93,7 @@ public class Cat_Configuracion_Meta_Mensual_De_Ventas extends JFrame {
 	JButton btnLimpiarFiltroTalla = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
 	JButton btnGuardar = new JCButton  ("Guardar","guardar.png","Azul");
-	JButton btnCancelar = new JCButton  ("Cancelar","guardar.png","Azul");
+	JButton btnCancelar = new JCButton  ("Cancelar","eliminar.png","Azul");
 	
 	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	JLabel JLBTipoPrecio= new JLabel(new ImageIcon("Imagen/precio-marcado-icono-6652-16.png") );
@@ -209,10 +194,7 @@ public class Cat_Configuracion_Meta_Mensual_De_Ventas extends JFrame {
 		int l=100;
 		int a=20;
 
-		panel.add(new JLabel("Guardar Como:"	   )).setBounds(x-85,y,l+50,a);
-		panel.add(txtNombre							).setBounds(x+80,y,l*5+10,a);
-		
-		panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y+=25,l+50,a);
+		panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y,l+50,a);
 		panel.add(cmbOperador_Productos				).setBounds(x+80,y,l-12,a);
         panel.add(txtFiltroProducto					).setBounds(x+170,y,l*4+20,a);
         panel.add(btnFiltroProducto					).setBounds(x+590,y,a,a);
@@ -234,13 +216,16 @@ public class Cat_Configuracion_Meta_Mensual_De_Ventas extends JFrame {
         
         panel.add(new JLabel("Tipo De Reporte:")).setBounds(x+650,y,l+50,a);
 	    panel.add(JLBPresentado).setBounds(x+740,y,a,a);
-		panel.add(cmbTipoDeReporte).setBounds(x+760,y,l*4,a);
+		panel.add(cmbTipoDeReporte).setBounds(x+760,y,l*5+10,a);
         
 		panel.add(new JLabel("Filtro De Categoria De Productos:")).setBounds(x-85,y+=30,l+70,a); 
 		panel.add(cmbOperador_Categoria							 ).setBounds(x+80,y,l-12,a);  
         panel.add(txtFiltroCategoria							 ).setBounds(x+170,y,l*4+20,a);  
         panel.add(btnFiltroCategoria							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);   
+        panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);  
+        
+		panel.add(new JLabel("Guardar Como:"	   )).setBounds(x+650,y,l+50,a);
+		panel.add(txtNombre							).setBounds(x+760,y,l*5+10,a);
 
       	panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Familia						).setBounds(x+80,y,l-12,a);  
@@ -264,7 +249,7 @@ public class Cat_Configuracion_Meta_Mensual_De_Ventas extends JFrame {
         
         panel.add(btnCancelar).setBounds(x+650,y,l,a);
         
-        panel.add(Tabla()).setBounds(10,y+=50,ancho-30,alto-y-75);
+        panel.add(Tabla()).setBounds(10,y+=30,ancho-30,alto-y-75);
         
         Nombre_Catalogo_Para_Filtro=this.getClass().getSimpleName();
         
@@ -318,6 +303,7 @@ public class Cat_Configuracion_Meta_Mensual_De_Ventas extends JFrame {
         btnLimpiarFiltroTalla.addActionListener(limpiar_filtro_talla);
         
         btnGuardar.addActionListener(opGuardar);
+        btnCancelar.addActionListener(opCancelar);
 		
 	}
 	
@@ -374,7 +360,7 @@ private JScrollPane Tabla()	{
 public void bucar_configuraciones(){
 	
 	modelo.setRowCount(0);
-	String[][] config_metas = new BuscarTablasModel().lista_de_configuraciones_de_meta_mensual_de_ventas();
+	String[][] config_metas = new Obj_Configuracion_Meta_Mensual_De_Ventas().configuraciones_de_meta_mensual_de_ventas();
 	
 	for(String[] conf: config_metas){
 		modelo.addRow(conf);
@@ -577,12 +563,13 @@ public void filtroProductos(String cadena){
 //	----------------------------------------------------------------------------------------------------------------------------------------
 	
 	ActionListener opGuardar = new ActionListener() {
-		@SuppressWarnings("unused")
 		public void actionPerformed(ActionEvent e) {
 			
-				String guardarComo = "''"+txtNombre.getText().toUpperCase().trim()+"''";
-				String establecimiento = "''"+cmbEstablecimiento.getSelectedItem().toString()+"''";
-				String tipoReporte = "''"+cmbTipoDeReporte.getSelectedItem().toString()+"''";
+				String guardarComo = txtNombre.getText().toUpperCase().trim();
+				String establecimiento = cmbEstablecimiento.getSelectedItem().toString().toUpperCase().equals("TODOS")?"TODOS":txtFiltroEstablecimiento.getText();
+				String tipoReporte = cmbTipoDeReporte.getSelectedItem().toString();
+				
+				System.out.println("!"+tipoReporte+"!");
 				
 				String productos 	= txtFiltroProducto.getText().trim();
 				String clases 		= txtFiltroClase.getText().trim();
@@ -591,60 +578,77 @@ public void filtroProductos(String cadena){
 				String lineas 		= txtFiltroLinea.getText().trim();
 				String tallas 		= txtFiltroTalla.getText().trim();
 				
-				if((productos+clases+categorias+familias+lineas+tallas).length()>0){
+				Obj_Configuracion_Meta_Mensual_De_Ventas conf = new Obj_Configuracion_Meta_Mensual_De_Ventas();
+				
+//				sin nombre
+				if(!txtNombre.getText().trim().equals("")){
+//					nombre repetido
+					if(conf.existe_nombre(txtNombre.getText().trim().toUpperCase())){
+							if((productos+clases+categorias+familias+lineas+tallas).length()>0){
+								conf.setNombre(guardarComo);
+								conf.setEstablecimiento(establecimiento);
+								conf.setTipo_de_reporte(tipoReporte);
+								
+								conf.setProductos(productos);
+								conf.setClases(clases);
+								conf.setCategorias(categorias);
+								conf.setFamilias(familias);
+								conf.setLineas(lineas);
+								conf.setTallas(tallas);
+								
+								if(conf.guardar_configuracion_de_meta_mensual_de_ventas("GUARDAR",0)){
+									bucar_configuraciones();
+								}else{
+									JOptionPane.showMessageDialog(null, "No Se Puede Gaurdar La Configuracion De La Meta Mensual De Ventas", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+									return;
+								}
+								
+							}else{
+								JOptionPane.showMessageDialog(null, "Es Necesario Capturar Cuandomenos Un Clasificador Para Poder Guardar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}
 					
-					Obj_Configuracion_Meta_Mensual_De_Ventas conf = new Obj_Configuracion_Meta_Mensual_De_Ventas();
-					
-					conf.setNombre(guardarComo);
-					conf.setEstablecimiento(establecimiento);
-					conf.setTipo_de_reporte(tipoReporte);
-					
-					conf.setProductos(productos);
-					conf.setClases(clases);
-					conf.setCategorias(categorias);
-					conf.setFamilias(familias);
-					conf.setLineas(lineas);
-					conf.setTallas(tallas);
-					
-					if(true){
-						bucar_configuraciones();
 					}else{
-						JOptionPane.showMessageDialog(null, "No Se Puede Gaurdar La Configuracion De La Meta Mensual De Ventas", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						JOptionPane.showMessageDialog(null, "Ya Existe Una Configuracion Guardada Con Este Nombre", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}
-					
-					
 				}else{
-					JOptionPane.showMessageDialog(null, "No Se Puede Gaurdar La Configuracion De La Meta Mensual De Ventas Sin Clasificadores", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null, "Favor De Poner Un Nombre En: [Guardar Como]", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
+
+		}
+	};
+	
+	ActionListener opCancelar = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0){
+			
+			Obj_Configuracion_Meta_Mensual_De_Ventas conf = new Obj_Configuracion_Meta_Mensual_De_Ventas();
+			
+			if(tabla.getSelectedRow()>=0){
+				
+//				mark.setFolio(Integer.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim()));
+				
+				if(JOptionPane.showConfirmDialog(null, "Estas Seguro De Cancelar La Configuracion De La Meta Mensual De Venta Seleccionada?") == 0){
+					if(conf.guardar_configuracion_de_meta_mensual_de_ventas("CANCELAR", Integer.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim()))){
+						
+						bucar_configuraciones();
+						
+						JOptionPane.showMessageDialog(null, "La Configuracion De La Meta Mensual Se Cancelo Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						return;
+					}else{
+						JOptionPane.showMessageDialog(null, "No Se A Podido Cancelar La Configuracion De La Meta Mensual", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					} 
+				}else{
 					return;
 				}
 				
-				
-					
-					
-//					try {
-//						while(tabla.getRowCount()>0){modelo_ventas.removeRow(0);}
-//						
-//						String[][] matriz_reporte_de_ventas = ventas.reporte_de_ventas();
-//						
-//						if(matriz_reporte_de_ventas.length==0){
-//							JOptionPane.showMessageDialog(null, "No se encontraron registros con las condiciones de busqueda proporcionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-//							return;
-//						}else{
-//							
-//							 String[] fila = new String[20];
-//							 
-//								for(int i=0; i<matriz_reporte_de_ventas.length; i++){
-//									for(int j=0; j<20; j++){
-//										fila[j] = matriz_reporte_de_ventas[i][j ]+"";
-//									}
-//									modelo_ventas.addRow(fila);
-//								}
-//						}
-//						
-//					} catch (SQLException e2) {
-//						e2.printStackTrace();
-//					}
+			}else{
+				JOptionPane.showMessageDialog(null, "Para Cancelar Una Configuracion Es Necesario Seleccionarla De La Tabla", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+			
 		}
 	};
 	
@@ -838,27 +842,26 @@ public void filtroProductos(String cadena){
 	 							return;
 				 			}else{
 				 		        String operador_simbolo = "";
+				 		        
+				 		       if(!folio_columna.equals("cod_estab")){
+				 		        	 panelEnableFalse();
+				 		        }
 				 		        	
 				 		            switch(Operador){
 				 			    		case "Igual"		:operador_simbolo=" = "; 
-				 			    		panelEnableFalse();
 				 			    		parametroGeneral=Lista;
 				 			    		
 				 			    		break;
 				 			    		case "Esta en lista":operador_simbolo=" in "; 
-				 			    		panelEnableFalse();
 				 			    		
 				 			    		break;
 				 			    		case "Menor que"	:operador_simbolo=" < "; 
-				 			    		panelEnableFalse();
 				 			    		
 				 			    		break;
 				 			    		case "Mayor que"	:operador_simbolo=" > "; 
-				 			    		panelEnableFalse();
 				 			    		
 				 			    		break;
 				 			    		case "Diferente"	:operador_simbolo=" <> "; 
-				 			    		panelEnableFalse();
 				 			    		
 				 			    		break;
 				 		    		}

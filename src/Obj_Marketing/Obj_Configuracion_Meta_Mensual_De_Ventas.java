@@ -1,5 +1,9 @@
 package Obj_Marketing;
 
+import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.BuscarTablasModel;
+import Conexiones_SQL.GuardarSQL;
+
 public class Obj_Configuracion_Meta_Mensual_De_Ventas {
 	String nombre 	 ;
 	String establecimiento 	 ;
@@ -98,8 +102,16 @@ public class Obj_Configuracion_Meta_Mensual_De_Ventas {
 		this.tallas = tallas;
 	}
 
-//	public String[][] reporte_de_ventas() throws SQLException{
-//		return new BuscarSQL().Reporte_De_Ventas(this);
-//	}
+	public String[][] configuraciones_de_meta_mensual_de_ventas(){
+		return new BuscarTablasModel().lista_de_configuraciones_de_meta_mensual_de_ventas();
+	}
+	
+	public boolean guardar_configuracion_de_meta_mensual_de_ventas(String Movimiento,int folio_a_cancelar){
+		return new GuardarSQL().Guardar_Configuracion_De_Meta_Mensual_De_Venta(this,Movimiento,folio_a_cancelar);
+	}
+	
+	public boolean existe_nombre(String nombre){
+		return new BuscarSQL().existe_nombre_de_configuracion_de_meta_mensual_de_venta(nombre);
+	}
 	
 }
