@@ -88,8 +88,6 @@ public class BuscarTablasModel {
 				matriz[i][6] =  rs.getInt(7)	== 0 ? "":rs.getInt(7);
 				matriz[i][7] =  rs.getInt(8)	== 1 ? "true" : "false" ;
 				matriz[i][8] =  (rs.getInt(9) == 1 ) ? "true" : "false" ;//bono asistencia
-//				matriz[i][8] =  ((rs.getInt(9) == 1 && rs.getInt(7)==0 && rs.getInt(8)==0) ) ? "true" : "false" ;//bono asistencia
-				System.out.println(rs.getInt(9));
 				
 				matriz[i][9] =  rs.getInt(10) 	== 0 ? "": rs.getInt(10);
 				matriz[i][10] =  rs.getInt(11) 	== 0 ? "": rs.getInt(11);

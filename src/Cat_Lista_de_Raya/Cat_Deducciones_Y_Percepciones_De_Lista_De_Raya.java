@@ -152,7 +152,6 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 	 	        	}
 	 	        } catch (NumberFormatException nfe){
 	 	        	tabla.setValueAt("", row, column);
-	 	        	System.out.println("no es entero");
 	 	        }
 	        }
 	    }
@@ -202,7 +201,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
              }
         });
 
-//		this.btn_guardar.addActionListener(op_guardar);
+		this.btn_guardar.addActionListener(op_guardar);
 			this.btn_guardar.setToolTipText("Guardar");
 		this.btn_refrescar.setVisible(false);
 
@@ -248,7 +247,6 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 	        	}
 	        } catch (NumberFormatException nfe){
 	        	tabla.setValueAt("", fila, 3);
-	        	System.out.println("no es entero");
 	        }
 	}
 	
@@ -313,54 +311,54 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 		}
 	}
 	
-//	ActionListener op_guardar = new ActionListener() {
-//		@SuppressWarnings("unchecked")
-//		public void actionPerformed(ActionEvent arg0) {
-//			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
-//			Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
-//			
-//			boolean auditoriaBoolean = auditoria.isAutorizar();
-//			boolean finanzasBoolean = finanzas.isAutorizar();
-//			
-//				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
-//						
-//						JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificada Ninguna Deduccion o Percepcion de Lista de Raya....."
-//						       +" \n Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<>>","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//				}else{
-//						trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-//						trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-//						trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-//			
-//						txtFolio.setText("");
-//						txtNombre_Completo.setText("");
-//						cmbEstablecimientos.setSelectedIndex(0);
-//			
-//						if(tabla.isEditing()){
-//							tabla.getCellEditor().stopCellEditing();
-//						}
-//			
-//						if(valida_tabla() != ""){
-//								JOptionPane.showMessageDialog(null, "Las siguientes celdas están mal en su formato:\n"+valida_tabla(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//								return;
-//						}else{
-//							if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de deducción por inasistencia?") == 0){
-//								 refresh_pres_fisica();
-//								Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya inasistencia = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya();
-//								
-//									if(inasistencia.guardar(tabla_guardar())){
-//										JOptionPane.showMessageDialog(null, "La tabla Deducción por Inasistencia se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-//										return;
-//									}else{
-//										JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
-//										return;
-//									}
-//							}else{
-//								return;
-//							}
-//					}
-//				}
-//		}
-//	};
+	ActionListener op_guardar = new ActionListener() {
+		@SuppressWarnings("unchecked")
+		public void actionPerformed(ActionEvent arg0) {
+			Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
+			Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
+			
+			boolean auditoriaBoolean = auditoria.isAutorizar();
+			boolean finanzasBoolean = finanzas.isAutorizar();
+			
+				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
+						
+						JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificada Ninguna Deduccion o Percepcion de Lista de Raya....."
+						       +" \n Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<>>","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				}else{
+						trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
+						trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+						trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+			
+						txtFolio.setText("");
+						txtNombre_Completo.setText("");
+						cmbEstablecimientos.setSelectedIndex(0);
+			
+						if(tabla.isEditing()){
+							tabla.getCellEditor().stopCellEditing();
+						}
+			
+						if(valida_tabla() != ""){
+								JOptionPane.showMessageDialog(null, "Las siguientes celdas están mal en su formato:\n"+valida_tabla(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+						}else{
+							if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de deducción por inasistencia?") == 0){
+								 refresh_pres_fisica();
+								Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya inasistencia = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya();
+								
+									if(inasistencia.guardar(tabla_guardar())){
+										JOptionPane.showMessageDialog(null, "La tabla Deducción por Inasistencia se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+										return;
+									}else{
+										JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
+										return;
+									}
+							}else{
+								return;
+							}
+					}
+				}
+		}
+	};
 
 	private Object[][] tabla_guardar(){
 		Object[][] matriz = new Object[tabla.getRowCount()][tabla.getColumnCount()];
@@ -372,7 +370,6 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 		return matriz;
 	}
 
-	@SuppressWarnings("unused")
 	private String valida_tabla(){
 		String error = "";
 		for(int i=0; i<tabla.getRowCount(); i++){
