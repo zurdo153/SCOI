@@ -1,7 +1,6 @@
 package Cat_Compras;
 
 import java.awt.Container;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -183,7 +182,7 @@ public class Cat_Reporte_De_Ventas_Administrativo extends JFrame {
         panel.add(btnFiltroFamilia							).setBounds(x+590,y,a,a);    
         panel.add(btnLimpiarFiltroFamilia					).setBounds(x+613,y,a,a);
         
-        panel.add(new JLabel("Indicador: ")).setBounds(x-85,y+=30,l+50,a);
+        panel.add(new JLabel("Tipo De Reporte: ")).setBounds(x-85,y+=30,l+50,a);
 //	    panel.add(JLBPresentado).setBounds(x+740,y,a,a);
 		panel.add(cmbIndicadores).setBounds(x+80,y,l+120,a);
 		
