@@ -125,7 +125,7 @@ public class Cat_Finiquitos extends JFrame{
 		
 		DecimalFormat df = new DecimalFormat("#0.00");
 		
-		String establecimiento = "";
+		String establecimiento_global = "";
 
 	public Cat_Finiquitos(){
 		this.setTitle("Filtro De Empleados Para Finiquitos");
@@ -191,7 +191,7 @@ public class Cat_Finiquitos extends JFrame{
 				if(nomTabla.equals("SCOI")){
 					txtFolioScoi.setText(tb.getValueAt(tb.getSelectedRow(), 0).toString());
 					txtEmpleadoScoi.setText(tb.getValueAt(tb.getSelectedRow(), 1).toString());
-					establecimiento = tabla_filtro_scoi.getValueAt(tabla_filtro_scoi.getSelectedRow(), 2).toString().trim();
+					establecimiento_global = tabla_filtro_scoi.getValueAt(tabla_filtro_scoi.getSelectedRow(), 2).toString().trim();
 				}else{
 					txtFolioBms.setText(tb.getValueAt(tb.getSelectedRow(), 0).toString());
 					txtEmpleadoBms.setText(tb.getValueAt(tb.getSelectedRow(), 1).toString());
@@ -236,9 +236,8 @@ public class Cat_Finiquitos extends JFrame{
 	};
 	
 	public void finiquito_o_reporte(String CatalogoDependiente){
-		
 		if(!new BuscarSQL().existe_finiquito_vigente(Integer.valueOf(txtFolioScoi.getText().trim()),CatalogoDependiente)){
-			new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), establecimiento , txtFolioBms.getText()).setVisible(true);
+			new Cat_Alimentacion_De_Finiquitos(txtFolioScoi.getText(), txtEmpleadoScoi.getText(), establecimiento_global , txtFolioBms.getText()).setVisible(true);
 		}else{
 //				reporte(Integer.valueOf(Integer.valueOf(txtFolioScoi.getText().trim())));
 				JOptionPane.showMessageDialog(null, "El Finiquito Del Empleado "+txtEmpleadoScoi.getText().toString().trim()+" Ya Fue Calculado\nVerifique Si Se Encuntra Entre Los Finiquitos Negados.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -339,6 +338,7 @@ public class Cat_Finiquitos extends JFrame{
 		Container cont_quitados = getContentPane();
 		JLayeredPane panel_quitados = new JLayeredPane();
 		
+		String folio_empleado_scoi = "";
 		String folio_empleado_bms = "";
 		JTextField   txtFolioEmpleado	= new Componentes().text(new JTextField(), "Folio Empleado", 10, "Int");
 		JTextField   txtEmpleado		= new Componentes().text(new JTextField(), "Empleado", 155, "String");
@@ -411,7 +411,32 @@ public class Cat_Finiquitos extends JFrame{
 		JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 200);
 		JScrollPane Observasiones = new JScrollPane(txaObservaciones);
 		
+		public Cat_Alimentacion_De_Finiquitos(String folio_finiquito){
+			
+			String[] datos = new BuscarSQL().empleado_con_finiquito_negado(folio_finiquito);
+			String folio_emp_scoi = datos[0].toString().trim();
+			String nombre_scoi = datos[1].toString().trim();
+			establecimiento_global = datos[2].toString().trim();
+			String folio_emp_bms = datos[3].toString().trim();
+			
+			
+			Constructor(folio_emp_scoi, nombre_scoi, establecimiento_global, folio_emp_bms);
+			
+//			folio_empleado_bms = folio_emp_bms;
+//			txtFolioEmpleado.setText(folio_emp_scoi);
+//			txtEmpleado.setText(nombre_scoi);
+//			txtEstablecimiento.setText(establecimiento);
+			
+			
+		}
 		public Cat_Alimentacion_De_Finiquitos(String folio_emp_scoi, String nombre_scoi, String establecimiento, String folio_emp_bms){
+			
+			Constructor(folio_emp_scoi, nombre_scoi, establecimiento, folio_emp_bms);
+			
+			
+		}
+		
+		public void Constructor(String folio_emp_scoi, String nombre_scoi, String establecimiento, String folio_emp_bms){
 			this.setModal(true);
 			this.setTitle("Calculo De Finiquitos");
 			this.panel_quitados.setBorder(BorderFactory.createTitledBorder( "Calculo De Finiquitos"));
@@ -420,6 +445,7 @@ public class Cat_Finiquitos extends JFrame{
 			this.setLocationRelativeTo(null);
 			
 			folio_empleado_bms = folio_emp_bms;
+			folio_empleado_scoi = folio_emp_scoi;
 			txtFolioEmpleado.setText(folio_emp_scoi);
 			txtEmpleado.setText(nombre_scoi);
 			txtEstablecimiento.setText(establecimiento);
@@ -845,7 +871,7 @@ public class Cat_Finiquitos extends JFrame{
 			String fechaBms = new SimpleDateFormat("dd/MM/yyyy").format(fchBajaBnns.getDate());
 			String fechaSCOI = new SimpleDateFormat("dd/MM/yyyy").format(fchBajaSCOI.getDate());
 			
-			Obj_Finiquitos finiquito = new Obj_Finiquitos().buscar_finiquito(folio_empleado_bms, Integer.valueOf(txtFolioScoi.getText().trim()), fechaSCOI, fechaBms);
+			Obj_Finiquitos finiquito = new Obj_Finiquitos().buscar_finiquito(folio_empleado_bms, Integer.valueOf(folio_empleado_scoi), fechaSCOI, fechaBms);
 			
 			dias_de_vacaciones_actuales=finiquito.getDias_correspondiente_vacaciones();
 			System.out.println(dias_de_vacaciones_actuales);
@@ -1117,13 +1143,23 @@ public class Cat_Finiquitos extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				
 				if(!txtFolio.getText().equals("")){
-							finiquito_o_reporte("FINIQUITO_NEGADO");
+					finiquito_negado("FINIQUITO_NEGADO");
 				}else{
 					JOptionPane.showMessageDialog(null, "Seleccione Un Colaborador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			}
 		};
+		
+		public void finiquito_negado(String CatalogoDependiente){
+//			if(!new BuscarSQL().existe_finiquito_vigente(Integer.valueOf(txtFolioScoi.getText().trim()),CatalogoDependiente)){
+				new Cat_Alimentacion_De_Finiquitos(tabla_filtro.getValueAt(tabla_filtro.getSelectedRow(), 0).toString().trim()).setVisible(true);
+//			}else{
+////					reporte(Integer.valueOf(Integer.valueOf(txtFolioScoi.getText().trim())));
+//					JOptionPane.showMessageDialog(null, "El Finiquito Del Empleado "+txtEmpleadoScoi.getText().toString().trim()+" Ya Fue Calculado\nVerifique Si Se Encuntra Entre Los Finiquitos Negados.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//					return;
+//			}
+		}
 		
 		public void render_filtro(final JTable tb){
 			tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10));

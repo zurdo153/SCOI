@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-04-05T12:36:39 -->
+<!-- 2016-05-02T17:18:41 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Finiquito" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0da01221-44cd-40ac-a362-fac4dfb62e72">
 	<property name="template.type" value="columnar"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
@@ -131,7 +131,14 @@ order by finiquitos.fecha_mov desc]]>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{folio_empleado_scoi}]]></groupExpression>
 		<groupHeader>
-			<band height="685">
+			<band height="699">
+				<textField>
+					<reportElement x="130" y="582" width="303" height="20" uuid="d50f8b5a-e637-4c02-a0ec-72bffea7597e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["( "+$F{nombre_establecimiento}+" )"]]></textFieldExpression>
+				</textField>
 				<rectangle radius="6">
 					<reportElement x="98" y="494" width="352" height="20" backcolor="#E0E0E0" uuid="914933e1-9cbb-482a-9e27-8046dc70367f"/>
 					<graphicElement>
@@ -504,7 +511,7 @@ order by finiquitos.fecha_mov desc]]>
 					</graphicElement>
 				</rectangle>
 				<rectangle>
-					<reportElement x="1" y="524" width="554" height="161" uuid="e660ed4c-d986-4433-9e9d-3234cff564dc">
+					<reportElement x="0" y="527" width="554" height="139" uuid="e660ed4c-d986-4433-9e9d-3234cff564dc">
 						<printWhenExpression><![CDATA[!$F{tipo_de_reporte}.equals("FINIQUITO")]]></printWhenExpression>
 					</reportElement>
 					<graphicElement>

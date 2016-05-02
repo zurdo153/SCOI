@@ -8302,7 +8302,7 @@ public class BuscarSQL {
 								   }
 						
 					   if(!folio_empleado_bms.equals("")){
-							query = "exec sp_select_calculo_de_finiquito '"+folio_empleado_bms+"',"+folio_empleado_scoi+",'"+fecha_baja_bms+"','BMS'";
+							query = "exec sp_select_calculo_de_finiquito '"+folio_empleado_bms.trim()+"',"+folio_empleado_scoi+",'"+fecha_baja_bms+"','BMS'";
 							rs= stmt.executeQuery(query);
 							
 							   while(rs.next()){
@@ -8783,5 +8783,39 @@ public class BuscarSQL {
 			}}
 		}
 		return existe;
+	}
+	
+	public String[]  empleado_con_finiquito_negado(String folio_finiquito){
+		String[] emp = new String[4];
+		String query = " select tb_finiquitos.folio_empleado_scoi "
+				+ "		,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as empleado "
+				+ "		,tb_establecimiento.nombre as establecimiento "
+				+ "		,tb_finiquitos.folio_empleado_bms "
+				+ " from tb_finiquitos "
+				+ " inner join tb_empleado on tb_empleado.folio = tb_finiquitos.folio_empleado_scoi "
+				+ " inner join tb_establecimiento on tb_establecimiento.folio = tb_finiquitos.establecimiento "
+				+ " where folio_finiquito = "+folio_finiquito; 
+		System.out.println(query);
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				emp[0]=rs.getString(1);//folio empleado scoi
+				emp[1]=rs.getString(2);//nombre
+				emp[2]=rs.getString(3);//establecimiento
+				emp[3]=rs.getString(4);//folio empleado bms
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return emp;
 	}
 }
