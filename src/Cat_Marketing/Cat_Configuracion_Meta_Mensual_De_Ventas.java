@@ -397,6 +397,7 @@ public void filtroProductos(String cadena){
 	ActionListener op_filtro_clases = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(!cmbOperador_Clase.getSelectedItem().toString().equals("Todos")){
+				Lista="";
 				new Cat_Filtro_Dinamico(cmbOperador_Clase.getSelectedItem().toString(),"clases_productos","clase_producto").setVisible(true);
 			}else{
 				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
