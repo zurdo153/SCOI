@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
 import Cat_Compras.Cat_Alimentacion_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Analisis_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
+import Cat_Compras.Cat_Recepcion;
 import Cat_Compras.Cat_Reporte_De_Ventas;
 import Cat_Reportes.Cat_Reporte_De_Inventario_Parcial;
 import Conexiones_SQL.Connexion;
@@ -394,8 +395,8 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 					}
 
 					
-//					new Cat_Recepcion(establecimiento_inv_parcial,folio+"",productos).setVisible(true);
-//		           	dispose();
+					new Cat_Recepcion(establecimiento_inv_parcial,folio+"",productos).setVisible(true);
+		           	dispose();
 				break;
 				
 				case "125":		System.out.println("prueba");
@@ -573,8 +574,8 @@ public void init_tabla(){
 					}
 
 					
-//					new Cat_Recepcion(valor_catalogo,folio+"",null).setVisible(true);
-//		           	dispose();
+					new Cat_Recepcion(valor_catalogo,folio+"",null).setVisible(true);
+		           	dispose();
 		           	
 		        break;
 				
