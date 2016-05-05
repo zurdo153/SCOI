@@ -548,6 +548,7 @@ public class Cat_Recepcion extends JFrame implements TableModelListener{
 				tabla.getCellEditor().stopCellEditing();
 			}
 			
+//			validar chofer y cincho   ?????
 			if(new GuardarSQL().Guardar_Recepcion(tabla_productos(), txtfolio_transferencia.getText().trim(), txtfolio_estab_origen.getText().trim(), txtfolio_estab_destino.getText(), txtChofer.getText().toUpperCase().trim(), txtCincho.getText().toUpperCase().trim())){
 	         	   limpiar();
 	         	   JOptionPane.showMessageDialog(null, "Se Guardo Correctamente:","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen//aplicara-el-dialogo-icono-6256-32.png"));

@@ -899,6 +899,25 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						ta 			+= Double.valueOf(tabla_grupos.getValueAt(i, 15).toString().trim());
 						luz 		+= Double.valueOf(tabla_grupos.getValueAt(i, 16).toString().trim());
 						apartados 	+= Double.valueOf(tabla_grupos.getValueAt(i, 17).toString().trim());
+						
+						if(i==tabla_grupos.getRowCount()-1){
+							fila_cacl[0]  = estab ;
+							fila_cacl[1] = df.format(t_efect    )    ; 
+							fila_cacl[2] = df.format(r_prog     )    ; 
+							fila_cacl[3] = df.format(cheques    )    ; 
+							fila_cacl[4] = df.format(vales      )    ; 
+							fila_cacl[5] = df.format(dolares    )    ; 
+							fila_cacl[6] = df.format(f_sodas    )    ; 
+							fila_cacl[7] = df.format(pin_pad    )    ; 
+							fila_cacl[8] = df.format(t_corte    )    ; 
+							fila_cacl[9] = df.format(dif        )    ; 
+							fila_cacl[10] =df.format(r_clt      )    ; 
+							fila_cacl[11] =df.format(ta         )    ; 
+							fila_cacl[12] =df.format(luz        )    ; 
+							fila_cacl[13] =df.format(apartados  )    ; 
+							tabla_model_concentrado.addRow(fila_cacl);
+						}
+						
 					}
 				}
 		}
