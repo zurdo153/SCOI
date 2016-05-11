@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-05-10T19:24:56 -->
+<!-- 2016-05-06T16:03:17 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="900" pageHeight="700" orientation="Landscape" columnWidth="860" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IZAGAR_Ventas"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -570,7 +570,7 @@
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
-				<textField pattern="#,##0.00#">
+				<textField pattern="¤#,##0.00;¤-#,##0.00">
 					<reportElement x="460" y="0" width="59" height="13" uuid="9d2c5fc3-b052-4808-b2d8-84739a9f550b">
 						<printWhenExpression><![CDATA[$F{s4importe}<$F{s4meta}]]></printWhenExpression>
 					</reportElement>
@@ -590,7 +590,7 @@
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{s1meta}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.00#">
+				<textField pattern="¤#,##0.00;¤-#,##0.00">
 					<reportElement x="335" y="0" width="59" height="13" uuid="29dac169-a927-449c-9548-be46e6ef62cd">
 						<printWhenExpression><![CDATA[$F{s3importe}<$F{s3meta}]]></printWhenExpression>
 					</reportElement>
@@ -612,7 +612,7 @@
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{s5meta}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.00#">
+				<textField pattern="¤#,##0.00;¤-#,##0.00">
 					<reportElement x="585" y="0" width="59" height="13" uuid="db53bca5-dbc8-494a-b212-a004f1e69868">
 						<printWhenExpression><![CDATA[$F{s5importe}<$F{s5meta}]]></printWhenExpression>
 					</reportElement>
@@ -667,8 +667,8 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$V{Suma_Fila_Meta}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.00#">
-					<reportElement mode="Transparent" x="84" y="0" width="60" height="13" backcolor="#00CC66" uuid="2b2882f7-ee55-4213-a66c-bee1b5f5845a">
+				<textField pattern="¤#,##0.00;¤-#,##0.00">
+					<reportElement mode="Transparent" x="83" y="1" width="60" height="13" backcolor="#00CC66" uuid="2b2882f7-ee55-4213-a66c-bee1b5f5845a">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<printWhenExpression><![CDATA[$F{s1importe}<$F{s1meta}]]></printWhenExpression>
 					</reportElement>
@@ -683,29 +683,7 @@
 					</reportElement>
 				</line>
 			</frame>
-			<textField pattern="#,##0.00#">
-				<reportElement mode="Opaque" x="210" y="0" width="59" height="13" uuid="bc98789c-8614-416d-90fc-b54d0289adcf">
-					<printWhenExpression><![CDATA[$F{s2importe}<$F{s2meta}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{s2importe}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00#">
-				<reportElement mode="Opaque" x="210" y="0" width="59" height="13" backcolor="#00CC66" uuid="bc8fd2f5-fa1c-4297-af93-4f03fc18f02d">
-					<printWhenExpression><![CDATA[$F{s2importe}>=$F{s2meta}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{s2importe}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00#">
-				<reportElement mode="Opaque" x="708" y="0" width="59" height="13" backcolor="#FFFFFF" uuid="efe1a82e-71a9-46e0-a502-061167a450a2">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<printWhenExpression><![CDATA[$V{Suma_Fila_Importe}<$V{Suma_Fila_Meta}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{Suma_Fila_Importe}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00#">
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
 				<reportElement key="" mode="Opaque" x="708" y="0" width="59" height="13" backcolor="#00CC66" uuid="ff9490dc-98bc-44d0-8882-5c0e4e4f0ce9">
 					<printWhenExpression><![CDATA[$V{Suma_Fila_Importe}>=$V{Suma_Fila_Meta}]]></printWhenExpression>
 				</reportElement>
@@ -714,26 +692,40 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Suma_Fila_Importe}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#">
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
 				<reportElement key="" mode="Opaque" x="585" y="0" width="59" height="13" backcolor="#00CC66" uuid="4a0c8d6c-5dc1-4cf2-a113-f4ddebe201bd">
 					<printWhenExpression><![CDATA[$F{s5importe}>=$F{s5meta}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{s5importe}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#">
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
 				<reportElement key="" mode="Opaque" x="460" y="0" width="59" height="13" backcolor="#00CC66" uuid="047b0ccb-8d7d-4cad-b286-3243d197102b">
 					<printWhenExpression><![CDATA[$F{s4importe}>=$F{s4meta}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{s4importe}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#">
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
 				<reportElement mode="Opaque" x="335" y="0" width="59" height="13" backcolor="#00CC66" uuid="e39a9488-d544-4ce3-8af0-876c7b746819">
 					<printWhenExpression><![CDATA[$F{s3importe}>=$F{s3meta}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{s3importe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="210" y="0" width="59" height="13" uuid="bc98789c-8614-416d-90fc-b54d0289adcf">
+					<printWhenExpression><![CDATA[$F{s2importe}<$F{s2meta}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{s2importe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement mode="Opaque" x="210" y="0" width="59" height="13" backcolor="#00CC66" uuid="bc8fd2f5-fa1c-4297-af93-4f03fc18f02d">
+					<printWhenExpression><![CDATA[$F{s2importe}>=$F{s2meta}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{s2importe}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#">
 				<reportElement mode="Opaque" x="84" y="0" width="60" height="13" backcolor="#00CC66" uuid="c596d074-f105-4cf2-96ac-d6887cf361db">
@@ -743,10 +735,20 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{s1importe}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#">
+			<textField pattern="#,##0.###">
 				<reportElement x="269" y="0" width="60" height="13" uuid="05a9a2ff-b18f-4f3e-98ae-6cb650fb062f"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{s2meta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="708" y="0" width="59" height="13" uuid="efe1a82e-71a9-46e0-a502-061167a450a2">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[$V{Suma_Fila_Importe}<$V{Suma_Fila_Meta}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Suma_Fila_Importe}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
