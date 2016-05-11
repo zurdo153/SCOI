@@ -1331,8 +1331,8 @@ public class BuscarTablasModel {
 	
 	public String[][] tabla_model_trabajo_de_cortes(String cadena, String grupo_de_concentrado){
 		
-		String query_lista = "exec sp_select_trabajo_de_cortes'"+cadena+"','"+grupo_de_concentrado+"';";		
-		String[][] matriz = new String[get_filas(query_lista)][20];
+		String query_lista = "exec sp_select_trabajo_de_cortes_2'"+cadena+"','"+grupo_de_concentrado+"';";		
+		String[][] matriz = new String[get_filas(query_lista)][21];
 		
 		Connection con = new Connexion().conexion();
 		try {
@@ -1350,7 +1350,6 @@ public class BuscarTablasModel {
 				matriz[i][5] = " "+df.format(rs.getDouble(6));
 				matriz[i][6] = " "+df.format(rs.getDouble(7));
 				matriz[i][7] = " "+df.format(rs.getDouble(8));
-				System.out.println("qqq: "+df.format(rs.getDouble(9)));
 				matriz[i][8] = " "+df.format(rs.getDouble(9));
 				matriz[i][9] = " "+df.format(rs.getDouble(10));
 				matriz[i][10] = " "+df.format(rs.getDouble(11));
@@ -1361,8 +1360,9 @@ public class BuscarTablasModel {
 				matriz[i][15] = " "+df.format(rs.getDouble(16));
 				matriz[i][16] = " "+df.format(rs.getDouble(17));
 				matriz[i][17] = " "+df.format(rs.getDouble(18));
-				matriz[i][18] = " "+rs.getString(19);
+				matriz[i][18] = " "+df.format(rs.getDouble(19));
 				matriz[i][19] = " "+rs.getString(20);
+				matriz[i][20] = " "+rs.getString(21);
 				i++;
 			}
 

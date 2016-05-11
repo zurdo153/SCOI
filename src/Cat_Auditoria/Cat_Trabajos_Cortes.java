@@ -112,7 +112,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		return cadena;
 	}
 	
-    public static DefaultTableModel tabla_model_grupos = new DefaultTableModel(null, new String[]{"*","Establecimiento","F.Corte", "F.Asignacion", "Cajero", "Total Efec.", "Retiros prog.", "Cheques", "Vales", "Dolares", "F.Sodas", "PIN-PAD", "Total Corte", "Diferencia", "Retiros Clt.", "TA", "R.Luz","Apartados", "Fecha Corte", "Observacion"} ){
+    public static DefaultTableModel tabla_model_grupos = new DefaultTableModel(null, new String[]{"*","Establecimiento","F.Corte", "F.Asignacion", "Cajero", "Total Efec.", "Retiros prog.", "Cheques", "Vales", "Dolares", "F.Sodas", "PIN-PAD", "Total Corte", "Diferencia", "Retiros Clt.", "TA", "R.Luz","Apartados", "Abono_Ahorro", "Fecha Corte", "Observacion"} ){
                     
 		@SuppressWarnings({ "rawtypes" })
 		Class[] types = new Class[]{
@@ -128,7 +128,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
                    java.lang.Object.class, 
                    java.lang.Object.class,
                    java.lang.Object.class, 
-                   java.lang.Object.class, 
+                   java.lang.Object.class,
+                   java.lang.Object.class,
                    java.lang.Object.class,
                    java.lang.Object.class, 
                    java.lang.Object.class, 
@@ -169,6 +170,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
                         case 17 : return false; 
                         case 18 : return false; 
                         case 19 : return false; 
+                        case 20 : return false;
                 }
                  return false;
          }
@@ -177,7 +179,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
     static JTable tabla_grupos = new JTable(tabla_model_grupos);
 	JScrollPane scroll_grupos = new JScrollPane(tabla_grupos,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-    public static DefaultTableModel tabla_model_c_verde = new DefaultTableModel(null, new String[]{"Establecimiento","F.Corte", "F.Asignacion", "Cajero", "Total Efec.", "Retiros prog.", "Cheques", "Vales", "Dolares", "F.Sodas", "PIN-PAD", "Total Corte", "Diferencia", "Retiros Clt.", "TA", "R.Luz","Apartados", "Fecha Corte", "Observacion"} ){
+    public static DefaultTableModel tabla_model_c_verde = new DefaultTableModel(null, new String[]{"Establecimiento","F.Corte", "F.Asignacion", "Cajero", "Total Efec.", "Retiros prog.", "Cheques", "Vales", "Dolares", "F.Sodas", "PIN-PAD", "Total Corte", "Diferencia", "Retiros Clt.", "TA", "R.Luz","Apartados", "Abono_Ahorro", "Fecha Corte", "Observacion"} ){
         
 		@SuppressWarnings({ "rawtypes" })
 		Class[] types = new Class[]{
@@ -197,6 +199,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
                    java.lang.Object.class, 
                    java.lang.Object.class, 
                    java.lang.Object.class, 
+                   java.lang.Object.class,
                    java.lang.Object.class,
                    java.lang.Object.class,
                    java.lang.Object.class
@@ -226,6 +229,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
                         case 15 : return false; 
                         case 16 : return false; 
                         case 17 : return false; 
+                        case 18 : return false;
                 }
                  return false;
          }
@@ -234,7 +238,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
     static JTable tabla_c_verde = new JTable(tabla_model_c_verde);
 	JScrollPane scroll = new JScrollPane(tabla_c_verde,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-    public static DefaultTableModel tabla_model_concentrado = new DefaultTableModel( null, new String[]{"Establecimiento", "Total Efec.", "Retiros prog.", "Cheques", "Vales", "Dolares", "F.Sodas", "PIN-PAD", "Total Corte", "Diferencia", "Retiros Clt.", "TA", "R.Luz","Apartados"} ){
+    public static DefaultTableModel tabla_model_concentrado = new DefaultTableModel( null, new String[]{"Establecimiento", "Total Efec.", "Retiros prog.", "Cheques", "Vales", "Dolares", "F.Sodas", "PIN-PAD", "Total Corte", "Diferencia", "Retiros Clt.", "TA", "R.Luz","Apartados", "Abono_Ahorro"} ){
         
 		@SuppressWarnings({ "rawtypes" })
 		Class[] types = new Class[]{
@@ -250,6 +254,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
                    java.lang.Object.class,
                    java.lang.Object.class, 
                    java.lang.Object.class, 
+                   java.lang.Object.class,
                    java.lang.Object.class,
                    java.lang.Object.class
                     
@@ -274,6 +279,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
                         case 11 : return false; 
                         case 12 : return false; 
                         case 13 : return false; 
+                        case 14 : return false;
                 }
                  return false;
          }
@@ -284,7 +290,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 
 	Border blackline;
 	
-	Object[] fila_cacl= new Object[14];
+	Object[] fila_cacl= new Object[15];
 	
 	static int folio_trabajo_realizado=0;
 	static String grupo_corte="";
@@ -357,8 +363,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		panel.add(txtCajaVerde				 ).setBounds(x+ancho+10, y, ancho, 20);
 		
 		llamar_render();
-//		calcular();
-//		calcular_totales();
+		calcular();
+		calcular_totales();
 		
 //		cmbEstablecimiento.addActionListener(opFiltro);
 		btnCV.addActionListener(opCajaVerde);
@@ -463,13 +469,13 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			tabla_grupos.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_grupos,textoEncabezado,"centro","Arial","negrita",10));
 			
 			switch(i){
-					case 0: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
+//					case 0: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
 					case 1: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
 					case 2: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
 					case 3: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
 					case 4: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
-					case 17:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
-					case 19:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
+					case 19:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
+					case 20:tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11)); break;
 					default: tabla_grupos.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha"	,"Arial","negrita",11)); break;
 				}
 		}
@@ -580,10 +586,12 @@ public class Cat_Trabajos_Cortes extends JFrame{
     	this.tabla_grupos.getColumnModel().getColumn(16).setMinWidth(x);
     	this.tabla_grupos.getColumnModel().getColumn(17).setMaxWidth(x);
     	this.tabla_grupos.getColumnModel().getColumn(17).setMinWidth(x);
-    	this.tabla_grupos.getColumnModel().getColumn(18).setMaxWidth(x*2);
-    	this.tabla_grupos.getColumnModel().getColumn(18).setMinWidth(x*2);
-    	this.tabla_grupos.getColumnModel().getColumn(19).setMaxWidth(x*5);
-    	this.tabla_grupos.getColumnModel().getColumn(19).setMinWidth(x*5);
+    	this.tabla_grupos.getColumnModel().getColumn(18).setMaxWidth(x+20);
+    	this.tabla_grupos.getColumnModel().getColumn(18).setMinWidth(x+20);
+    	this.tabla_grupos.getColumnModel().getColumn(19).setMaxWidth(x*2);
+    	this.tabla_grupos.getColumnModel().getColumn(19).setMinWidth(x*2);
+    	this.tabla_grupos.getColumnModel().getColumn(20).setMaxWidth(x*5);
+    	this.tabla_grupos.getColumnModel().getColumn(20).setMinWidth(x*5);
     	
     	this.tabla_concentrado.getTableHeader().setReorderingAllowed(false) ;
     	this.tabla_concentrado.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -803,6 +811,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		double ta        = 0;
 		double luz       = 0;
 		double apartados = 0;
+		double abono_ahorro = 0;
 		
 		tabla_model_concentrado.setRowCount(0);
 		
@@ -835,6 +844,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						ta 			+= Double.valueOf(tabla_grupos.getValueAt(i, 15).toString().trim());
 						luz 		+= Double.valueOf(tabla_grupos.getValueAt(i, 16).toString().trim());
 						apartados 	+= Double.valueOf(tabla_grupos.getValueAt(i, 17).toString().trim());
+						abono_ahorro+= Double.valueOf(tabla_grupos.getValueAt(i, 18).toString().trim());
 						
 							if(i==tabla_grupos.getRowCount()-1){
 								
@@ -851,7 +861,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 								fila_cacl[10] =df.format(r_clt      )    ; 
 								fila_cacl[11] =df.format(ta         )    ; 
 								fila_cacl[12] =df.format(luz        )    ; 
-								fila_cacl[13] =df.format(apartados  )    ; 
+								fila_cacl[13] =df.format(apartados  )    ;
+								fila_cacl[14] =df.format(abono_ahorro)   ;
 								tabla_model_concentrado.addRow(fila_cacl);
 							}
 					}else{
@@ -870,6 +881,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						fila_cacl[11] =df.format(ta         )    ; 
 						fila_cacl[12] =df.format(luz        )    ; 
 						fila_cacl[13] =df.format(apartados  )    ; 
+						fila_cacl[14] =df.format(abono_ahorro)   ;
 						tabla_model_concentrado.addRow(fila_cacl);
 						
 						t_efect   = 0;
@@ -885,6 +897,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						ta        = 0;
 						luz       = 0;
 						apartados = 0;
+						abono_ahorro=0;
 						
 						t_efect 	+= Double.valueOf(tabla_grupos.getValueAt(i, 5 ).toString().trim());
 						r_prog 		+= Double.valueOf(tabla_grupos.getValueAt(i, 6 ).toString().trim());
@@ -899,6 +912,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						ta 			+= Double.valueOf(tabla_grupos.getValueAt(i, 15).toString().trim());
 						luz 		+= Double.valueOf(tabla_grupos.getValueAt(i, 16).toString().trim());
 						apartados 	+= Double.valueOf(tabla_grupos.getValueAt(i, 17).toString().trim());
+						abono_ahorro+= Double.valueOf(tabla_grupos.getValueAt(i, 18).toString().trim());
 						
 						if(i==tabla_grupos.getRowCount()-1){
 							fila_cacl[0]  = estab ;
@@ -914,7 +928,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 							fila_cacl[10] =df.format(r_clt      )    ; 
 							fila_cacl[11] =df.format(ta         )    ; 
 							fila_cacl[12] =df.format(luz        )    ; 
-							fila_cacl[13] =df.format(apartados  )    ; 
+							fila_cacl[13] =df.format(apartados  )    ;
+							fila_cacl[14] =df.format(abono_ahorro)   ;
 							tabla_model_concentrado.addRow(fila_cacl);
 						}
 						
@@ -938,6 +953,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		double ta        = 0;
 		double luz       = 0;
 		double apartados = 0;
+		double abono_ahorro=0;
 		
 		if(tabla_c_verde.getRowCount()>0){
 			
@@ -956,6 +972,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						ta 			+= Double.valueOf(tabla_c_verde.getValueAt(i, 14).toString().trim());
 						luz 		+= Double.valueOf(tabla_c_verde.getValueAt(i, 15).toString().trim());
 						apartados 	+= Double.valueOf(tabla_c_verde.getValueAt(i, 16).toString().trim());
+						abono_ahorro+= Double.valueOf(tabla_c_verde.getValueAt(i, 17).toString().trim());
 					}
 				
 				fila_cacl[0] = "TOTAL CAJA VERDE" ;
@@ -972,6 +989,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				fila_cacl[11] =df.format(ta         )    ;
 				fila_cacl[12] =df.format(luz        )    ;
 				fila_cacl[13] =df.format(apartados  )    ;
+				fila_cacl[14] =df.format(abono_ahorro)   ;
 				
 				if(tabla_concentrado.getRowCount() > 0){
 					if(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 0).equals("TOTAL CAJA VERDE")){
