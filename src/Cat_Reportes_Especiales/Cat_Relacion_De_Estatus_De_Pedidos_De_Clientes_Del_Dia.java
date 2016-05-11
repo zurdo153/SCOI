@@ -2,7 +2,6 @@ package Cat_Reportes_Especiales;
 
 import java.applet.AudioClip;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -43,14 +42,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
+import Obj_Renders.ColorCeldas;
 
 
 @SuppressWarnings("serial")
@@ -146,6 +144,7 @@ public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFra
 		txtFolio.addKeyListener(opFiltroFolio);
 		txtFechaPedido.addKeyListener(opFiltroFechaPedido);
 		
+		PintarEstatusTabla(tabla,"Relacion_De_Estatus_De_Pedido_De_Clientes_Del_Dia",3);//tipo_de_tabla , columnas 0 
 		Hilo_1_Minuto();
 		
 		panel.add(chbActivar_Avisos).setBounds(420,20,150,20);
@@ -169,31 +168,12 @@ public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFra
                        }
                   });
 	}
-	//////////////////////////////////////////////////////////
-	
-	TableCellRenderer render = new TableCellRenderer() { 
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-		boolean hasFocus, int row, int column) { 
-          		Component componente = null;
-					componente = new JLabel(value == null? "": value.toString());
-//					if(row %2 == 0){
-//						((JComponent) componente).setOpaque(true); 
-//						componente.setBackground(new java.awt.Color(177,177,177));	
-//					}
-					
-					if(table.getSelectedRow() == row){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(186,143,73));
-					}
-					
-					if(modelo.getValueAt(row, 3).toString().trim().equals("NO SURTIDO")){
-						((JComponent) componente).setOpaque(true); 
-						componente.setBackground(new java.awt.Color(252,1,39));
-					}
-					((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-			return componente;
-		} 
-	}; 
+//  	pintado De tabla
+	public void PintarEstatusTabla(final JTable tb, String tipo_de_tabla, int columnas){
+		//se crea instancia a clase FormatoTable y se indica columna patron
+        ColorCeldas ft = new ColorCeldas(tipo_de_tabla,columnas);
+        tb.setDefaultRenderer (Object.class, ft );
+	}
 	
 	private JScrollPane getPanelTabla()	{	
 		
@@ -212,14 +192,6 @@ public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFra
 	tabla.getColumnModel().getColumn(5).setMaxWidth(1400);
 	tabla.getColumnModel().getColumn(6).setMinWidth(300);
 	tabla.getColumnModel().getColumn(6).setMaxWidth(800);
-
-	tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-	tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-	tabla.getColumnModel().getColumn(2).setCellRenderer(render);
-	tabla.getColumnModel().getColumn(3).setCellRenderer(render);
-	tabla.getColumnModel().getColumn(4).setCellRenderer(render);
-	tabla.getColumnModel().getColumn(5).setCellRenderer(render);
-	tabla.getColumnModel().getColumn(6).setCellRenderer(render);
 
 		Statement s;
 		ResultSet rs;
@@ -351,14 +323,6 @@ WindowListener op_cerrar = new WindowListener() {
 			                 fila[6] = getTabla[i][6]+"";
 			                 modelo.addRow(fila); }
 			         
-			     	tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-			    	tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-			    	tabla.getColumnModel().getColumn(2).setCellRenderer(render);
-			    	tabla.getColumnModel().getColumn(3).setCellRenderer(render);
-			    	tabla.getColumnModel().getColumn(4).setCellRenderer(render);
-			    	tabla.getColumnModel().getColumn(5).setCellRenderer(render);
-			    	tabla.getColumnModel().getColumn(6).setCellRenderer(render);
-			    	
 			           txtFolio.requestFocus();
 			         
 						if(chbActivar_Avisos.isSelected()){
