@@ -942,7 +942,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				JOptionPane.showMessageDialog(null, "Ya se a seleccionado una asignacion, para cambiarla es necesario quitar la asignacion seleccionada","Aviso",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
-				new Cat_Filtrar_Asignaciones(cadenaAsignacionParametro(),lblNombre_Completo.getText()).setVisible(true);
+				new Cat_Filtrar_Asignaciones(cadenaAsignacionParametro()/*,lblNombre_Completo.getText()*/).setVisible(true);
 			}
 			
 		}
@@ -2703,7 +2703,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 //	TODO (LLAMAR AL FILTRO DE ASIGNACIONES)-----------------------------------------------------------------------------------------------------------------
 	public class Cat_Filtrar_Asignaciones extends Cat_Filtro_De_Asignacion{
 		
-		public Cat_Filtrar_Asignaciones(String cadena,String nombre){
+		public Cat_Filtrar_Asignaciones(String cadena/*,String nombre*/){
 
             this.addWindowListener(new WindowAdapter() {
                 public void windowOpened( WindowEvent e ){
@@ -2726,12 +2726,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
                     modeloFiltro.addRow(fila);
             }
             btnCargar.addActionListener(opCargar);
-            for (int n = 0; n <nombre.length (); n++){ 
-            	if(nombre.charAt(n)==' '){
-            		 txtNombreCajero.setText(nombre.substring(0,n));
-            		 break;
-            	}
-            } 
+//            for (int n = 0; n <nombre.length (); n++){ 
+//            	if(nombre.charAt(n)==' '){
+//            		 txtNombreCajero.setText(nombre.substring(0,n));
+//            		 break;
+//            	}
+//            } 
 		}
 		
 
