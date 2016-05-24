@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-05-23T12:41:09 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="1500" pageHeight="1500" orientation="Landscape" columnWidth="1460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IZAGAR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[exec  sp_IZAGAR_Reporte_De_Productos_y_Su_Clasificador]]>
+	</queryString>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="descripcion_completa" class="java.lang.String"/>
+	<field name="clase_producto" class="java.lang.String"/>
+	<field name="categoria" class="java.lang.String"/>
+	<field name="familia" class="java.lang.String"/>
+	<field name="Super_1" class="java.lang.Integer"/>
+	<field name="Super_2" class="java.lang.Integer"/>
+	<field name="Super_3" class="java.lang.Integer"/>
+	<field name="Super_4" class="java.lang.Integer"/>
+	<field name="Super_5" class="java.lang.Integer"/>
+	<field name="espacio35" class="java.lang.Integer"/>
+	<field name="food_4" class="java.lang.Integer"/>
+	<field name="food_2" class="java.lang.Integer"/>
+	<field name="almacen_General" class="java.lang.Integer"/>
+	<field name="cedis" class="java.lang.Integer"/>
+	<field name="ferreteria" class="java.lang.Integer"/>
+	<field name="refaccionaria" class="java.lang.Integer"/>
+	<field name="fiestilandia" class="java.lang.Integer"/>
+	<field name="paper_city_1" class="java.lang.Integer"/>
+	<field name="paper_city_2" class="java.lang.Integer"/>
+	<field name="izacel" class="java.lang.Integer"/>
+	<field name="deposito" class="java.lang.Integer"/>
+	<variable name="Familia" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Count">
+		<variableExpression><![CDATA[$F{cod_prod}]]></variableExpression>
+	</variable>
+	<variable name="Familia_super_1" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_1}]]></variableExpression>
+	</variable>
+	<variable name="Familia_super_2" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_2}]]></variableExpression>
+	</variable>
+	<variable name="Familia_super_3" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_3}]]></variableExpression>
+	</variable>
+	<variable name="Familia_super_4" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_4}]]></variableExpression>
+	</variable>
+	<variable name="Familia_super_5" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_5}]]></variableExpression>
+	</variable>
+	<variable name="Familia_espacio35" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{espacio35}]]></variableExpression>
+	</variable>
+	<variable name="Familia_food_s2" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{food_2}]]></variableExpression>
+	</variable>
+	<variable name="Familia_foods4" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{food_4}]]></variableExpression>
+	</variable>
+	<variable name="Familia_almacen" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{almacen_General}]]></variableExpression>
+	</variable>
+	<variable name="Familia_cedis" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{cedis}]]></variableExpression>
+	</variable>
+	<variable name="Familia_Ferreteria" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{ferreteria}]]></variableExpression>
+	</variable>
+	<variable name="Familia_Refaccionaria" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{refaccionaria}]]></variableExpression>
+	</variable>
+	<variable name="Familia_Paper_city1" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{paper_city_1}]]></variableExpression>
+	</variable>
+	<variable name="Familia_paper_city_2" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{paper_city_2}]]></variableExpression>
+	</variable>
+	<variable name="Familia_fiestilandia" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{fiestilandia}]]></variableExpression>
+	</variable>
+	<variable name="Familia_izacel" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{izacel}]]></variableExpression>
+	</variable>
+	<variable name="Familia_deposito" class="java.lang.Double" resetType="Group" resetGroup="Group4" calculation="Sum">
+		<variableExpression><![CDATA[$F{deposito}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_super_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_1}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_super_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_2}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_super_3" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_3}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_super_4" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_4}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_super_5" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Super_5}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_espacio35" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{espacio35}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_food_s2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{food_2}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_foods4" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{food_4}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_almacen" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{almacen_General}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_cedis" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cedis}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_Ferreteria" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{ferreteria}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_Refaccionaria_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{refaccionaria}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_Paper_city1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{paper_city_1}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_paper_city_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{paper_city_2}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_fiestilandia" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{fiestilandia}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_izacel" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{izacel}]]></variableExpression>
+	</variable>
+	<variable name="Total_Productos_deposito" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{deposito}]]></variableExpression>
+	</variable>
+	<group name="Group2" keepTogether="true">
+		<groupExpression><![CDATA[$F{clase_producto}]]></groupExpression>
+		<groupHeader>
+			<band height="16">
+				<frame>
+					<reportElement mode="Opaque" x="1" y="0" width="1459" height="16" forecolor="#B89F7D" backcolor="#0099CC" uuid="67e38fde-27e1-4107-acdf-bc2d6c74cb0c">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textField>
+						<reportElement x="2" y="0" width="296" height="16" forecolor="#FFFFFF" uuid="5fcb1101-3847-4b1e-b8d7-8faace54ba3f"/>
+						<textElement textAlignment="Left">
+							<font fontName="Arial" size="13" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{clase_producto}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="17">
+				<line>
+					<reportElement x="0" y="16" width="1459" height="1" uuid="85bd6df5-fed6-40e9-aa58-6a3e2a43183a">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="2.0" lineStyle="Double"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="1" width="1459" height="1" uuid="d60b92a7-03b9-4e42-a09a-259b21c81a96">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="2.0" lineStyle="Double"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="1" width="1" height="15" uuid="de1d3d7d-5565-4de0-95d8-d1e80d3b1fd4">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+				</line>
+				<staticText>
+					<reportElement x="90" y="1" width="218" height="14" uuid="db035001-82f8-4671-93b1-dd9c1d138799"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total De Productos Del Establecimiento:]]></text>
+				</staticText>
+				<textField pattern="#,##0.###">
+					<reportElement x="308" y="1" width="55" height="14" uuid="469752c9-61f7-4296-943d-477aef928f4d"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_super_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="363" y="2" width="55" height="13" uuid="2c600f5b-99ba-4714-91c0-ba8686a34d03">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_super_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="418" y="2" width="56" height="13" uuid="cf134f40-b017-4be9-ac1f-05df7e7b544d"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_super_3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="474" y="2" width="57" height="13" uuid="b75f6c8b-1187-4b6e-92dc-ebc8b34d6ca7"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_super_4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="531" y="2" width="56" height="13" uuid="4301926e-108e-403a-9ca1-4ca44addd57b"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_super_5}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="587" y="2" width="70" height="13" uuid="3b165904-74dc-4c02-bf95-06682a71c43e"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_espacio35}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="657" y="2" width="55" height="13" uuid="f47d3ad4-599b-4a19-b596-17b4ecd14b39"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_food_s2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="712" y="2" width="60" height="13" uuid="5e501dd1-62b6-413b-bee7-b0657b96099e"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_foods4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="772" y="2" width="64" height="13" uuid="be44e935-5eae-4853-bb92-380e1904ed52"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_almacen}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="836" y="2" width="55" height="13" uuid="1a964335-ff15-4535-912a-bf9f3826dd43"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_cedis}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="891" y="2" width="76" height="13" uuid="d5a2d6c1-a7e7-413c-bec6-99eca776d051"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_Ferreteria}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="967" y="2" width="91" height="13" uuid="6f4cabb3-3eab-41d3-b439-caadc1fe17f6"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_Refaccionaria_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1058" y="2" width="80" height="13" uuid="af6ab8be-9996-4467-a3bc-29d362ef95b4"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_Paper_city1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1138" y="2" width="80" height="13" uuid="c20f57a7-375f-48de-9e20-ee7642a5f000"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_paper_city_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1218" y="2" width="80" height="13" uuid="84a8c6df-b38b-4e05-a0f9-52a506b66838"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_fiestilandia}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1298" y="2" width="60" height="13" uuid="ea2b2743-bf41-49f5-8dcb-e2c47943021e"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_izacel}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1358" y="2" width="60" height="13" uuid="b8a3f0fe-9816-4c31-a684-c0bd799f8f09"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Total_Productos_deposito}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Group3">
+		<groupExpression><![CDATA[$F{categoria}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<textField>
+					<reportElement x="6" y="1" width="1454" height="13" uuid="278adfe6-7c11-4bb9-951c-a2c9d36987db">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.2"/>
+						<leftPen lineWidth="0.2"/>
+						<bottomPen lineWidth="0.2"/>
+						<rightPen lineWidth="0.2"/>
+					</box>
+					<textElement>
+						<font fontName="Arial" size="10" isBold="true" isItalic="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Group4">
+		<groupExpression><![CDATA[$F{familia}]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField>
+					<reportElement x="10" y="0" width="275" height="13" uuid="1fbdb21c-33ba-4bac-a382-ddb7cbe6826c">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{familia}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="13">
+				<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				<textField pattern="#,##0.###">
+					<reportElement x="308" y="0" width="55" height="13" uuid="d289ac4a-bc63-4ceb-8e30-0c5ad27eea67">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_super_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="363" y="0" width="54" height="13" uuid="6f9514b2-c8b8-46c8-aabf-cbf55672cc2c">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_super_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="417" y="0" width="57" height="13" uuid="18306dc9-40e6-4560-a208-b8b3cfeec74c">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_super_3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="474" y="0" width="57" height="13" uuid="14753822-82bc-484c-9828-2f9c606e5e85"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_super_4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="531" y="0" width="56" height="13" uuid="3415fa87-8538-4d3b-811f-db93a8b186da"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_super_5}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="587" y="0" width="70" height="13" uuid="167d9036-bc1a-46cb-987c-51b221b8b984"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_espacio35}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="657" y="0" width="55" height="13" uuid="e689218e-2502-45e4-9d00-5d13bc8431a6"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_food_s2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="712" y="0" width="60" height="13" uuid="367c1536-1887-4cfc-9525-890725805d1c"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_foods4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="772" y="0" width="64" height="13" uuid="fa19a6eb-c508-48e8-aca0-cb8b42e782b3"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_almacen}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="836" y="0" width="55" height="13" uuid="d2851cd0-343e-4ca0-be5a-f792f61387b1"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_cedis}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="891" y="0" width="76" height="13" uuid="31ff3a10-cf91-4bfb-ada9-b4fd38fa1c23">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_Ferreteria}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="967" y="0" width="91" height="13" uuid="74a72bfb-0a90-48ae-9095-e3824b2b4eed"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_Refaccionaria}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1058" y="0" width="80" height="13" uuid="ff1614c4-4190-4be6-845a-0234afe0c8b7"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_Paper_city1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1138" y="0" width="80" height="13" uuid="1b7b27b3-f0a5-4ee3-901a-8f55c0f7db28"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_paper_city_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1218" y="0" width="80" height="13" uuid="27be118a-9803-4b63-8647-4635292d1924"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_fiestilandia}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1298" y="0" width="60" height="13" uuid="1772321d-d874-4cb4-a2c0-16ffae51ad02">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_izacel}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="1358" y="0" width="60" height="13" uuid="01e3bf4d-e784-4c36-9395-2e3dc7834d16"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Familia_deposito}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="10" y="0" width="51" height="13" uuid="1c273466-4189-4719-83d2-fb8e317a29e3">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["T:"+$V{Familia}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement x="61" y="0" width="248" height="13" uuid="68f11359-fb74-483e-9a2b-d5de993bfae6">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total Prod. de Familia "+$F{familia}+":"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="571" height="50" forecolor="#000080" backcolor="#000080" uuid="54dd91fe-fb26-4d88-957c-caee982743c4"/>
+				<textField>
+					<reportElement x="10" y="2" width="558" height="42" forecolor="#FFFFFF" uuid="9a7ca75c-cd46-4069-87d6-60505e02a0a9"/>
+					<textElement>
+						<font size="15" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["REPORTE DE PRODUCTOS POR CLASIFICADOR Y ESTABLECIMIENTO"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="443" y="30" width="128" height="17" forecolor="#FFFFFF" uuid="19598188-5370-4d6f-ad79-1bcbfc319748">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="343" y="30" width="106" height="17" forecolor="#FFFFFF" uuid="c7566229-ca1d-4474-816a-c0a5fe7d34f0"/>
+					<textElement textAlignment="Left">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha Impresion:]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="21" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="1" y="0" width="1459" height="21" forecolor="#B89F7D" backcolor="#FF6600" uuid="d87834ad-a977-421f-8f3c-84e71c4a3d37">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textField>
+					<reportElement x="307" y="0" width="55" height="21" forecolor="#FFFFFF" uuid="ba53c02c-0ab6-49ae-bcd2-4f67f281b114">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["SUPER I"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="362" y="0" width="55" height="21" forecolor="#FFFFFF" uuid="e46892fb-7e85-45ac-a211-610eb621e9c4">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["SUPER II"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="417" y="0" width="56" height="21" forecolor="#FFFFFF" uuid="2627c6cb-bbd0-4a85-b310-38df2113ea22">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["SUPER III"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="473" y="0" width="57" height="21" forecolor="#FFFFFF" uuid="7c9447cb-26c0-4a08-8200-a2579f629f7d">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["SUPER IV"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="530" y="0" width="57" height="21" forecolor="#FFFFFF" uuid="599aa26b-f711-4514-b544-ab55100dd82f">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["SUPER V"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="771" y="0" width="64" height="21" forecolor="#FFFFFF" uuid="7be0f2a2-7c48-4bce-8586-921f6c5d61bc">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ALMACEN"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="835" y="0" width="55" height="21" forecolor="#FFFFFF" uuid="2d62a6bd-6bb2-4349-a41f-2efa266d2a9f">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["CEDIS"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="890" y="0" width="76" height="21" forecolor="#FFFFFF" uuid="a366e9ff-f70d-403d-9b2d-1e1d41e7016a">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["FERRETERIA"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="966" y="0" width="91" height="21" forecolor="#FFFFFF" uuid="1c54e6ea-be25-4523-84b0-6a293aac78cb">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["REFACCIONARIA"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="587" y="0" width="69" height="21" forecolor="#FFFFFF" uuid="2039ba80-2f22-4ad3-bb24-1a1e21498312">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ESPACIO 35"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="656" y="0" width="55" height="21" forecolor="#FFFFFF" uuid="a861be8f-250f-4d40-9b86-6abea1c0d91f">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["FOOD SII"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="711" y="0" width="60" height="21" forecolor="#FFFFFF" uuid="ef377497-d8bf-48ea-8cea-a4a31a5fea3f">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["FOOD SIV"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1057" y="0" width="80" height="21" forecolor="#FFFFFF" uuid="51636ea1-726f-4493-abbd-2f220324e06b">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PAPER CITY I"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1137" y="0" width="80" height="21" forecolor="#FFFFFF" uuid="500013af-a528-4e11-9f15-c92d31368987">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PAPER CITY II"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1217" y="0" width="80" height="21" forecolor="#FFFFFF" uuid="45b75ba9-94fe-4eba-8297-70188d4165f5">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["FIESTILANDIA"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1297" y="0" width="60" height="21" forecolor="#FFFFFF" uuid="40605eef-baa4-4f4c-b3ff-713037944303">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["IZACEL"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1357" y="0" width="60" height="21" forecolor="#FFFFFF" uuid="2fb6dc26-632d-4043-ac9f-a720d4099979">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["DEPOSITO"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="10" y="0" width="1450" height="14" uuid="34800663-a779-4c30-b4ef-ec995d1f7113">
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+				<textField>
+					<reportElement x="2" y="0" width="38" height="14" uuid="9a7c6976-0ca5-4033-8150-708bec44fabb"/>
+					<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="40" y="0" width="280" height="14" uuid="0dbfecd5-093c-49bf-981f-ca2688477a8f"/>
+					<textFieldExpression><![CDATA[$F{descripcion_completa}]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement x="321" y="0" width="13" height="14" uuid="46066eb7-2de9-4ea1-9cbb-55dd77d1173b">
+						<printWhenExpression><![CDATA[$F{Super_1}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="374" y="0" width="13" height="14" uuid="6f685000-d037-4aa8-8d11-5163efa66d97">
+						<printWhenExpression><![CDATA[$F{Super_2}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="433" y="0" width="13" height="14" uuid="9c7e09f5-50a5-4cb4-a90c-36e0b16fcbaa">
+						<printWhenExpression><![CDATA[$F{Super_3}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="488" y="0" width="13" height="14" uuid="6759d508-d92d-4deb-a686-1ea9666da1e5">
+						<printWhenExpression><![CDATA[$F{Super_4}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="544" y="0" width="13" height="14" uuid="e16b6724-8d5d-45b8-a5c1-2006819322c5">
+						<printWhenExpression><![CDATA[$F{Super_5}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="786" y="0" width="13" height="14" uuid="0e279f0f-9048-4704-94eb-b7cb38a60c88">
+						<printWhenExpression><![CDATA[$F{almacen_General}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="845" y="0" width="13" height="14" uuid="23c65571-7852-4b3c-a4df-d98f139e54a7">
+						<printWhenExpression><![CDATA[$F{cedis}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="911" y="0" width="13" height="14" uuid="77d4e6c5-730d-4c89-b99b-8c85c23687be">
+						<printWhenExpression><![CDATA[$F{ferreteria}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="994" y="0" width="13" height="14" uuid="7c51fe54-3a75-42ae-9252-39032fa2fb93">
+						<printWhenExpression><![CDATA[$F{refaccionaria}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="607" y="0" width="13" height="14" uuid="1570cd42-2694-4050-9951-123cab5acf8f">
+						<printWhenExpression><![CDATA[$F{espacio35}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="668" y="0" width="13" height="14" uuid="29875786-f225-4331-ba48-2c49b25685c4">
+						<printWhenExpression><![CDATA[$F{food_2}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="726" y="0" width="13" height="14" uuid="63a63358-952b-4f4c-9802-a14421a17fab">
+						<printWhenExpression><![CDATA[$F{food_4}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="1082" y="0" width="13" height="14" uuid="22fdfeb0-666b-4fd9-b06d-b7363cc883fa">
+						<printWhenExpression><![CDATA[$F{paper_city_1}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="1163" y="0" width="13" height="14" uuid="f0fbc457-990a-4a0a-b161-9e905730c4c4">
+						<printWhenExpression><![CDATA[$F{paper_city_1}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="1242" y="0" width="13" height="14" uuid="201fd3f1-c363-4a24-82d6-8028422a2956">
+						<printWhenExpression><![CDATA[$F{fiestilandia}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="1311" y="0" width="13" height="14" uuid="0ebbd6d4-be3d-4242-959c-f8fadd7cb611">
+						<printWhenExpression><![CDATA[$F{izacel}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="1372" y="0" width="13" height="14" uuid="16c82700-e1a5-4e85-8a0b-77fc34757ede">
+						<printWhenExpression><![CDATA[$F{deposito}==1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/Aplicar.png"]]></imageExpression>
+				</image>
+			</frame>
+			<line>
+				<reportElement x="11" y="0" width="1" height="14" uuid="3e11f38a-ee5c-44d8-8cc0-f988595cd259">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="1459" height="16" forecolor="#000080" backcolor="#000080" uuid="1e782f58-34fe-4951-8176-2a139f52ec57">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textField evaluationTime="Report" pattern="">
+					<reportElement key="" style="Column header" x="1418" y="0" width="40" height="15" forecolor="#FFFFFF" uuid="4892a7d4-f58d-44df-91ea-b87530822efb"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement key="" style="Column header" x="1338" y="0" width="80" height="15" forecolor="#FFFFFF" uuid="7b8a491d-028f-4492-936b-69ccdc5afeab">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField>
+				<reportElement x="6" y="1" width="237" height="15" forecolor="#FFFFFF" uuid="56374dab-ab6f-4620-b386-5cca2afcc653">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["Genero: Servidor Automatico"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>

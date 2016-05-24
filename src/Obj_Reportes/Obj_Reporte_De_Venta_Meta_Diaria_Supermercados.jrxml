@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-05-10T19:24:56 -->
+<!-- 2016-05-23T15:44:23 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="900" pageHeight="700" orientation="Landscape" columnWidth="860" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IZAGAR_Ventas"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -23,7 +23,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString>
-		<![CDATA[exec sp_reporte_de_venta_meta_diaria_consulta_final]]>
+		<![CDATA[exec reporte_de_venta_meta_diaria_supermercados_consulta_final]]>
 	</queryString>
 	<field name="fecha_de_venta" class="java.lang.String"/>
 	<field name="dia_del_mes_venta" class="java.lang.Integer"/>
@@ -317,7 +317,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="16">
+			<band height="20">
 				<line>
 					<reportElement x="0" y="0" width="830" height="1" uuid="d60b92a7-03b9-4e42-a09a-259b21c81a96">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -394,7 +394,7 @@
 					<textFieldExpression><![CDATA[$V{ImporteS3}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.###">
-					<reportElement x="394" y="2" width="60" height="13" uuid="d92c20bb-cc71-42b5-9afa-00e268814da0">
+					<reportElement x="394" y="1" width="60" height="13" uuid="d92c20bb-cc71-42b5-9afa-00e268814da0">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textElement textAlignment="Right">
@@ -504,6 +504,68 @@
 						<font fontName="Arial" size="10" isBold="true" isItalic="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{Suma_Fila_Meta_Totales}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement mode="Opaque" x="84" y="1" width="60" height="13" backcolor="#00CC66" uuid="eebe6357-7e1c-4a92-bc9f-f5e329c7b924">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<printWhenExpression><![CDATA[$V{ImporteS1}>=$V{MetaS1}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ImporteS1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement mode="Opaque" x="210" y="1" width="59" height="13" backcolor="#00CC66" uuid="69d397e5-4ad3-4b8c-b99f-d6179c95d831">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<printWhenExpression><![CDATA[$V{ImporteS2}>=$V{MetaS2}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ImporteS2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement mode="Opaque" x="335" y="1" width="59" height="13" backcolor="#00CC66" uuid="47397be0-4d02-4027-8506-729b3c6bce22">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<printWhenExpression><![CDATA[$V{ImporteS3}>=$V{MetaS3}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ImporteS3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement mode="Opaque" x="460" y="1" width="59" height="13" backcolor="#00CC66" uuid="eb01eb4c-9609-4167-a3ed-3436d50c59a0">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<printWhenExpression><![CDATA[$V{ImporteS4}>=$V{MetaS4}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ImporteS4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement mode="Opaque" x="585" y="1" width="59" height="13" backcolor="#00CC66" uuid="c4e143ac-a601-428d-b57f-bf780d3e286b">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<printWhenExpression><![CDATA[$V{ImporteS5}>=$V{MetaS5}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ImporteS5}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###">
+					<reportElement mode="Opaque" x="708" y="1" width="59" height="13" backcolor="#00CC66" uuid="62194309-5937-4a62-a27c-81487ccc1c5e">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<printWhenExpression><![CDATA[$V{Suma_Fila_Importe_Totales}>=$V{Suma_Fila_Meta_Totales}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Suma_Fila_Importe_Totales}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -743,7 +805,7 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{s1importe}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#">
+			<textField pattern="#,##0.###">
 				<reportElement x="269" y="0" width="60" height="13" uuid="05a9a2ff-b18f-4f3e-98ae-6cb650fb062f"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{s2meta}]]></textFieldExpression>
