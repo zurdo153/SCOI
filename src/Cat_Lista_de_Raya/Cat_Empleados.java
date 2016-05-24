@@ -75,6 +75,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -131,7 +132,11 @@ public class Cat_Empleados extends JFrame{
 	Runtime R = Runtime.getRuntime();
 	
 	Container cont = getContentPane();
+	
+	JTabbedPane pestanas = new JTabbedPane();
+	
 	JLayeredPane panel = new JLayeredPane();
+	JLayeredPane panelReporte = new JLayeredPane();
 	
 	JLabel lblDatosPersonales = new JLabel();
 	JLabel lblLaboral = new JLabel();
@@ -317,10 +322,13 @@ public class Cat_Empleados extends JFrame{
 	}
 	
 	public void getContenedor(){
-		this.setSize(1024,768);
+		this.setSize(1024,748);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		pestanas.addTab("Empleados", panel);
+		pestanas.addTab("Reportes", panelReporte);
 		
 //		pendientes en funcionalidad----------------------------------------------------
 		txtFechaUltimasVacaciones.setEnabled(false);
@@ -340,6 +348,7 @@ public class Cat_Empleados extends JFrame{
 		this.setTitle("Alta de Empleados");
 		
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Datos del Colaborador"));
+		this.panelReporte.setBorder(BorderFactory.createTitledBorder(blackline, "Reportes de Colaboradores"));
 		
 //		asignacion de bordes
 		this.lblDatosPersonales.setBorder(BorderFactory.createTitledBorder(blackline,"Datos Personales"));
@@ -372,20 +381,23 @@ public class Cat_Empleados extends JFrame{
 		this.txtVencimientoLicencia.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		
 		int x = 11, y=20, ancho=140,width=155,height=20,sep=167;
+		
+		panelReporte.add(btnAsistencia_Empleado).setBounds  (x	   ,y    ,width,height);
+		panelReporte.add(btnCortes).setBounds               (x+=sep,y    ,width,height);
+		panelReporte.add(btnIncontratables).setBounds       (x+=sep,y    ,width,height); 
+        panelReporte.add(btn_R_horarios).setBounds          (x+=sep,y    ,width,height);
+		panelReporte.add(btn_plantilla).setBounds           (x+=sep,y    ,width,height);
+		panelReporte.add(btn_movimientos).setBounds         (x+=sep,y    ,width,height);
+		x=10;
+		panelReporte.add(btnLicencias).setBounds            (x     ,y+=27,width,height);
+		panelReporte.add(btnCumpleaños_del_Mes).setBounds   (x+=sep,y    ,width,height);
+		panelReporte.add(btnAltasBajas).setBounds           (x+=sep,y    ,width,height);
+		
+		x = 10;
+		y = 20;
 		panel.add(btnImp_Datos_Completos).setBounds  (x     ,y    ,width,height);
 		panel.add(btnContratacion).setBounds         (x+=sep,y    ,width,height);
 		panel.add(btnDocumentacion).setBounds        (x+=sep,y    ,width,height);
-		panel.add(btnAsistencia_Empleado).setBounds  (x+=sep,y    ,width,height);
-		panel.add(btnCortes).setBounds               (x+=sep,y    ,width,height);
-		panel.add(btnIncontratables).setBounds       (x+=sep,y    ,width,height);
-		
-        x=10;
-		panel.add(btnLicencias).setBounds            (x     ,y+=27,width,height);
-		panel.add(btnCumpleaños_del_Mes).setBounds   (x+=sep,y    ,width,height);
-		panel.add(btnAltasBajas).setBounds           (x+=sep,y    ,width,height);
-		panel.add(btn_R_horarios).setBounds          (x+=sep,y    ,width,height);
-		panel.add(btn_plantilla).setBounds           (x+=sep,y    ,width,height);
-		panel.add(btn_movimientos).setBounds         (x+=sep,y    ,width,height);
 		
 		x=20; y=y+=38;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
@@ -453,7 +465,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(cmbEscolaridad).setBounds(x+(ancho*3)+110,y,ancho-15,20);
 		
 //TODO Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
-		x=17 ;y=285;width=340;height=20;sep=120;
+		x=17 ;y=255;width=340;height=20;sep=120;
 		panel.add(lblLaboral).setBounds                      (x-7         ,y     ,997     ,220    );
 		panel.add(new JLabel("Horario:")).setBounds          (x           ,y+=15 ,width   ,height );
 		panel.add(btnHorarioNew).setBounds                   (x+50        ,y     ,height  ,height );
@@ -486,7 +498,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtFechaUltimasVacaciones).setBounds       (x+365       ,y     ,95      ,height );
 		panel.add(btnFechaUltimasVacaciones).setBounds       (x+462       ,y     ,height  ,height );
 		
-		x=515 ;y=300;width=150;sep=100;
+		x=515 ;y=270;width=150;sep=100;
 		panel.add(new JLabel("Tipo de horario:")).setBounds  (x           ,y     ,width   ,height );
 		panel.add(cmbHorarioRotativo).setBounds              (x+sep       ,y     ,width   ,height );
 		panel.add(new JLabel("Descanso:")).setBounds         (x           ,y+=25 ,width   ,height );
@@ -506,7 +518,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtFechaIncapacidad).setBounds             (x+sep       ,y     ,width-20,height );
 		panel.add(btnFechaIncapacidad).setBounds             (x+sep+130   ,y     ,height  ,height );
 		
-		x=800;y=300;sep=45;
+		x=800;y=270;sep=45;
 		panel.add(btnStatus).setBounds                       (x+45        ,y     ,150     ,145    );
 		panel.add(new JLabel("Estatus:")).setBounds          (x           ,y+=150,ancho   ,height );
 		panel.add(cmbStatus).setBounds                       (x+sep       ,y     ,width   ,height );
@@ -514,8 +526,8 @@ public class Cat_Empleados extends JFrame{
 		panel.add(cmbContratacion).setBounds                 (x+sep       ,y     ,width   ,height );
 		
 //TODO Percepciones y Deducciones ------------------------------------------------------------------------------------------------------------------------------------------		
-		x=17 ;y=505;sep=87;
-		panel.add(lblPercepciones).setBounds                   (x-7  ,y     ,700  ,195    );
+		x=17 ;y=475;sep=87;
+		panel.add(lblPercepciones).setBounds                   (x-7  ,y     ,700  ,190    );
 		panel.add(new JLabel("Salario Diario:")).setBounds     (x    ,y+=15 ,width,height );
 		panel.add(txtSalarioDiario).setBounds                  (x+sep,y     ,width,height );
 		panel.add(new JLabel("Salario D.I:")).setBounds        (x    ,y+=25 ,width,height );
@@ -531,7 +543,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(new JLabel("Presencia Fisica:")).setBounds   (x    ,y+=25 ,width,height );
 		panel.add(cmbPresenciaFisica).setBounds                (x+sep,y     ,width,height );
 		
-		x=270; y=520; sep=97;
+		x=270; y=490; sep=97;
 		panel.add(new JLabel("Infonavit:")).setBounds          (x    ,y     ,width,height );
 		panel.add(txtInfonavit).setBounds                      (x+sep,y     ,width,height );
 		panel.add(new JLabel("Infonacot:")).setBounds          (x    ,y+=25 ,width,height );
@@ -555,9 +567,9 @@ public class Cat_Empleados extends JFrame{
 		panel.add(new JLabel("Último Usuario Actualizó:")).setBounds(x,y+=25,width,height );
 		panel.add(txtultimousuariomod).setBounds               (x    ,y+=25 ,width,height );
 		panel.add(chb_cuadrante_parcial).setBounds             (x    ,y+=25 ,width,height );
-		panel.add(Observasiones).setBounds                     (x+180,y-158 ,290  ,187    );
+		panel.add(Observasiones).setBounds                     (x+180,y-158 ,290  ,183    );
 		
-		x=17 ;y=708;width=110;sep=218;
+		x=17 ;y=668;width=110;sep=218;
 		panel.add(btnNuevo).setBounds                          (x     ,y    ,width,height );
 		panel.add(btnEditar).setBounds                         (x+=sep,y    ,width,height );
 		panel.add(btnGuardar).setBounds                        (x+=sep,y    ,width,height );
@@ -613,7 +625,7 @@ public class Cat_Empleados extends JFrame{
 		txtSalarioDiario.addKeyListener(validaNumericoSD);
 		txtSalarioDiarioIntegrado.addKeyListener(validaNumericoSDI);
 		
-		cont.add(panel);
+		cont.add(pestanas);
 		
 		btnExaminar.setEnabled(false);
 		btnCamara.setEnabled(false);

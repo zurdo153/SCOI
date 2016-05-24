@@ -255,12 +255,12 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 	}
 	
 	public void cargar_fechas(){
-			int dias=0;
-					try {
-						dias= new BuscarSQL().dias_para_fecha_revision_consideracion();
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
+			int dias=7;
+//					try {
+//						dias= new BuscarSQL().dias_para_fecha_revision_consideracion();
+//					} catch (SQLException e1) {
+//						e1.printStackTrace();
+//					}
 				
 			Date date1 = null;
 					  try {
