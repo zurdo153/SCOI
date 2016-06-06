@@ -4,8 +4,6 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -26,10 +23,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 import Conexiones_SQL.Connexion;
-import Conexiones_SQL.Generacion_Reportes;
-import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Compras.Obj_Consulta_De_Orden_De_Compra;
-import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
@@ -85,9 +78,9 @@ public class Cat_Reporte_De_Ausentismo_En_Lista_De_Raya extends JFrame{
 	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			String basedatos="2.26";
-			String vista_previa_reporte="no";
-			int vista_previa_de_ventana=0;
+//			String basedatos="2.26";
+//			String vista_previa_reporte="no";
+//			int vista_previa_de_ventana=0;
 			
 			int anio = Integer.valueOf(cmbAnios.getSelectedItem().toString().trim());
 			String mes = cmbMeses.getSelectedItem().toString().trim();

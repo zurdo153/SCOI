@@ -1,6 +1,7 @@
 package Obj_Planeacion;
 import Conexiones_SQL.GuardarSQL;
 
+
 public class Obj_Actividades_De_Una_Planeacion {
 	String descripcion_de_la_actividad = "";
 	String Estatus_Actividad="";

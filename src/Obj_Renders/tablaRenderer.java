@@ -50,6 +50,8 @@ public class tablaRenderer extends DefaultTableCellRenderer {
      private ImageIcon salida = new ImageIcon("imagen/Delete.png");
      private ImageIcon entrada = new ImageIcon("imagen/Aplicar.png");
      
+     String color_especial_de_columna ="";
+     
      public tablaRenderer( String tipo ,String alineacionTexto,	String tipoDeLetra, String estilo, int tamanio)
      {
          this.tipo = tipo;
@@ -59,15 +61,29 @@ public class tablaRenderer extends DefaultTableCellRenderer {
            }else
              {fuente(tipoDeLetra,estilo,tamanio_fuente);
          }
+       ////para mandar llamar colores en alguna columna en  especial
+         if(estilo.equals("Verde") ){
+         color_especial_de_columna=estilo;
+         }
      }
      
-     public Component getTableCellRendererComponent ( JTable table, Object value, boolean selected, boolean focused, int row, int column ){   
-    	 if(row %2 == 0){
-				this.setBackground(new java.awt.Color(Rfila,Gfila,Bfila));	
-		  }else{
-		      this.setBackground(Color.white);
-		  }
-        
+     public Component getTableCellRendererComponent ( JTable table, Object value, boolean selected, boolean focused, int row, int column ){  
+    	 if(color_especial_de_columna.equals("Verde")){
+    		 if(row %2 == 0){
+					this.setBackground(new java.awt.Color(80,245,234));	
+			  }else{
+			      this.setBackground(Color.white);
+			  }
+    		 
+    	 }else{
+	    	  if(row %2 == 0){
+					this.setBackground(new java.awt.Color(Rfila,Gfila,Bfila));	
+			  }else{
+			      this.setBackground(Color.white);
+			  }
+    	 }
+    	 
+    	 
     	 if (selected) {  
         	 this.setBackground(new java.awt.Color(RfilaS,GfilaS,BfilaS));
          }
@@ -81,6 +97,9 @@ public class tablaRenderer extends DefaultTableCellRenderer {
              }
              return label;
          }
+         
+         
+         
          
          if( tipo.toUpperCase().trim().equals("VENTA")){
          	

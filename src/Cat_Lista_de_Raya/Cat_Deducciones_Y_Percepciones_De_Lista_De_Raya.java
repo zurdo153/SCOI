@@ -28,6 +28,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
@@ -74,7 +75,9 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	private JComboBox cmb_tabla_conseptos = new JComboBox(Combo_Conseptos());
     
-    private DefaultTableModel tabla_model = new DefaultTableModel(new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya().get_tabla_model(),
+     Object [][] matriz =  new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya().get_tabla_model();
+     
+    private DefaultTableModel tabla_model = new DefaultTableModel(matriz,
             new String[]{"Folio", "Nombre Completo", "Establecimiento", "Inpuntualidad","Bono Puntualidad", "Omision", "Días Falta", "Inasitencia","Bono Asistencia","Días Gafete", "Dias Extra", "Hrs Extra","Extra", "P.Fisic", "Conceptos" }
 			){
 	     @SuppressWarnings("rawtypes")
@@ -192,7 +195,6 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 		this.cont.add(panel);
 
 		this.llamar_render();
-		this.init_tabla();
 		
 //      asigna el foco al JTextField deseado al arrancar la ventana
         this.addWindowListener(new WindowAdapter() {
@@ -320,8 +322,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 			boolean auditoriaBoolean = auditoria.isAutorizar();
 			boolean finanzasBoolean = finanzas.isAutorizar();
 			
-				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
-						
+				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){						
 						JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificada Ninguna Deduccion o Percepcion de Lista de Raya....."
 						       +" \n Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<>>","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				}else{
@@ -342,13 +343,18 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 								return;
 						}else{
 							if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de deducción por inasistencia?") == 0){
-								 refresh_pres_fisica();
-								Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya inasistencia = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya();
-								
+															
+								if(new ActualizarSQL().Borrar_Observacion_DH()){								
+									refresh_pres_fisica();
+								  Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya inasistencia = new Obj_Deducciones_Y_Percepciones_De_Lista_De_Raya();
 									if(inasistencia.guardar(tabla_guardar())){
+										
 										JOptionPane.showMessageDialog(null, "La tabla Deducción por Inasistencia se guardó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+										dispose();
+										new Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya().setVisible(true);
 										return;
-									}else{
+									}
+								}	else{
 										JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar guardar la tabla","Error",JOptionPane.ERROR_MESSAGE);
 										return;
 									}
@@ -384,6 +390,7 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 		return error;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void llamar_render(){
 		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
@@ -396,13 +403,11 @@ public class Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya extends Cat_Root im
 		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(10).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-		tabla.getColumnModel().getColumn(11).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(11).setCellRenderer(new tablaRenderer("texto","centro","Arial","Verde",12));
 		tabla.getColumnModel().getColumn(12).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(13).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(14).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
-	}
-	@SuppressWarnings("unchecked")
-	public void init_tabla(){
+
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
 		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 

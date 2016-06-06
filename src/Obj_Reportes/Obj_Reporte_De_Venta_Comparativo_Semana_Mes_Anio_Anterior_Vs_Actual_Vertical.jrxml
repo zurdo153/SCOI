@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-05-23T17:07:50 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-06-06T11:47:46 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IZAGAR_Ventas"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -245,24 +245,26 @@
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 				</line>
-				<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<textField pattern="#,##0.###">
 					<reportElement mode="Transparent" x="93" y="1" width="65" height="14" backcolor="#00CC66" uuid="5b1165e7-94f3-43a9-abbc-6d9f8e9ed77f"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$V{Suma_columna_importe_año_pasado}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤#,##0.00;¤-#,##0.00">
-					<reportElement mode="Transparent" x="166" y="1" width="65" height="14" backcolor="#00CC66" uuid="ddc32a6c-b358-4d61-bc50-c4373d87c0c7"/>
-					<textElement textAlignment="Right"/>
+				<textField pattern="#,##0.###" isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="166" y="1" width="65" height="14" forecolor="#000000" backcolor="#00CC66" uuid="ddc32a6c-b358-4d61-bc50-c4373d87c0c7"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$V{Suma_columna_importe_año_actual}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<textField pattern="#,##0.###">
 					<reportElement mode="Opaque" x="166" y="1" width="65" height="14" backcolor="#00CC66" uuid="5d91fab8-ed53-4c55-8b34-b6b3a3edd767">
 						<printWhenExpression><![CDATA[$V{Suma_columna_importe_año_actual}>=$V{Suma_columna_meta}]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$V{Suma_columna_importe_año_actual}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤#,##0.##;¤-#,##0.##">
+				<textField pattern="#,##0.###">
 					<reportElement mode="Transparent" x="460" y="1" width="65" height="14" backcolor="#00CC66" uuid="428f8d71-51f7-4b87-aab7-e811b398215e">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
@@ -274,16 +276,18 @@
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$V{Suma_columna_Porciento_ventas}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<textField pattern="#,##0.###">
 					<reportElement mode="Transparent" x="278" y="1" width="65" height="14" backcolor="#00CC66" uuid="4476ec89-617c-4c03-bb9d-a4a3ca6fc87f"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$V{Suma_columna_utilidad_año_pasado}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤#,##0.00;¤-#,##0.00">
-					<reportElement mode="Transparent" x="345" y="1" width="65" height="14" backcolor="#00CC66" uuid="d804e57d-0b6c-4eed-8f5a-1a44d5305476">
+				<textField pattern="#,##0.###" isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="345" y="1" width="65" height="14" forecolor="#000000" backcolor="#00CC66" uuid="d804e57d-0b6c-4eed-8f5a-1a44d5305476">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
-					<textElement textAlignment="Right"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$V{Suma_columna_utilidad_año_actual}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00%">
@@ -300,7 +304,7 @@
 					<reportElement x="2" y="1" width="88" height="14" uuid="db035001-82f8-4671-93b1-dd9c1d138799"/>
 					<text><![CDATA[Totales:]]></text>
 				</staticText>
-				<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<textField pattern="#,##0.###">
 					<reportElement mode="Opaque" x="345" y="1" width="65" height="14" backcolor="#00CC66" uuid="120c8e11-bfc3-4223-9121-6b60b8b2cc82">
 						<printWhenExpression><![CDATA[$V{Suma_columna_utilidad_año_actual}>=$V{Suma_columna_utilidad_año_pasado}]]></printWhenExpression>
 					</reportElement>
@@ -378,7 +382,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nombre_clasificacion}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤#,##0.##;¤-#,##0.##">
+				<textField pattern="#,##0.###">
 					<reportElement mode="Transparent" x="460" y="0" width="65" height="13" backcolor="#00CC66" uuid="c8c3a033-0b4d-4689-89ae-92041b0db2cf"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{meta}]]></textFieldExpression>
@@ -393,18 +397,20 @@
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 				</line>
-				<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<textField pattern="#,##0.###">
 					<reportElement mode="Transparent" x="93" y="0" width="65" height="13" backcolor="#00CC66" uuid="2b2882f7-ee55-4213-a66c-bee1b5f5845a">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{importe_año_pasado}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤#,##0.00;¤-#,##0.00">
-					<reportElement mode="Transparent" x="166" y="0" width="65" height="13" backcolor="#00CC66" uuid="023b472a-d385-430b-a2a8-956d63b70150">
+				<textField pattern="#,##0.###" isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="166" y="0" width="65" height="13" forecolor="#000000" backcolor="#00CC66" uuid="023b472a-d385-430b-a2a8-956d63b70150">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
-					<textElement textAlignment="Right"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{importe_año_actual}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00%">
@@ -414,7 +420,7 @@
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$V{Porciento_Ventas}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<textField pattern="#,##0.###">
 					<reportElement mode="Transparent" x="278" y="0" width="65" height="13" backcolor="#00CC66" uuid="7e5b7aa4-f46e-4469-a90b-846536dace44">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
@@ -429,12 +435,14 @@
 					<textFieldExpression><![CDATA[$V{Porc_Importe_Año_vs_Meta}]]></textFieldExpression>
 				</textField>
 			</frame>
-			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement mode="Transparent" x="345" y="0" width="65" height="13" backcolor="#00CC66" uuid="c2d5d537-461a-4715-ace0-7427aaa90597">
+			<textField pattern="#,##0.###" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="345" y="0" width="65" height="13" forecolor="#000000" backcolor="#00CC66" uuid="c2d5d537-461a-4715-ace0-7427aaa90597">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{Utilidad_actual}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00%">
@@ -445,7 +453,7 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{Porciento_Utilidad}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤#,##0.00;¤-#,##0.00">
+			<textField pattern="#,##0.###">
 				<reportElement mode="Opaque" x="166" y="0" width="65" height="13" backcolor="#00CC66" uuid="baa5eaae-02c0-4747-8f3a-6bb58aa5218b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<printWhenExpression><![CDATA[$F{importe_año_actual}>=$F{meta}]]></printWhenExpression>
@@ -453,7 +461,7 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{importe_año_actual}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤#,##0.00;¤-#,##0.00">
+			<textField pattern="#,##0.###">
 				<reportElement mode="Opaque" x="345" y="0" width="65" height="13" backcolor="#00CC66" uuid="931e1503-fcde-43bb-9ac1-9763800fc680">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -467,6 +475,23 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
+			<textField pattern="#,##0.00%">
+				<reportElement key="" mode="Opaque" x="231" y="0" width="45" height="13" backcolor="#00CC66" uuid="016617e6-792e-4a56-bdbc-cf4e1ec02de0">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[$V{Porciento_Ventas}>=0.2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{Porciento_Ventas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00%">
+				<reportElement mode="Opaque" x="411" y="0" width="45" height="13" backcolor="#00CC66" uuid="2d417e7d-62b2-495c-84d5-efbbab5ec5ea">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[$V{Porciento_Utilidad}>=.2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{Porciento_Utilidad}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
@@ -493,7 +518,7 @@
 				</textField>
 			</frame>
 			<textField>
-				<reportElement x="5" y="1" width="237" height="15" forecolor="#FFFFFF" uuid="56374dab-ab6f-4620-b386-5cca2afcc653">
+				<reportElement x="10" y="1" width="237" height="15" forecolor="#FFFFFF" uuid="56374dab-ab6f-4620-b386-5cca2afcc653">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA["Genero: Servidor Automatico"]]></textFieldExpression>

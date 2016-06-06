@@ -23,7 +23,6 @@ import java.util.Date;
 
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -45,7 +44,6 @@ import javax.swing.table.TableRowSorter;
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.Connexion;
-import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
@@ -57,8 +55,6 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 /** CTRL EN CAT_ROOT_LISTA_RAYA PARA AGREGAR BOTON **/
 public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
-	JButton btnQuitarObservacionI = new JButton("Limpiar Observacion DH");
-	
 	 boolean acceso = null != null;
 	 int cantidad_sueldos_mod =0;	
 	 
@@ -69,7 +65,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			  "B.Asistencia"
 			,"Gafete", "Dif.Cortes", "Infonavit",
 			  "Infonacot"
-			,"Pension", "Banco", "Deposito", "Hrs Extras", "Extra","Día Ext", "A Pagar", "Observaciones D.H.", "Observaciones II" }){
+			,"Pension", "Banco", "Deposito", "Hrs Extras", "Extra","Día Ext", "A Pagar", "Observaciones Automaticas", "Observaciones D.H." }){
 			
 		@SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
@@ -145,8 +141,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	       	    case 24 : return false; 
 	       	    case 25 : return false; 
 	       	    case 26 : return false; 
-	       	 	case 27 : return true; 
-	       	 	case 28 : return acceso;
+	       	 	case 27 : return false; 
+	       	 	case 28 : return true;
 	       	 	
 	       	 }
 	 		return false;
@@ -187,7 +183,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		panel.add(new JLabel("Totales Nomina y Cheques:")).setBounds(870,40,135,20);
 		panel.add(JLBTotales_Nomina).setBounds(1000,40,20,20);
 		
-		panel.add(btnQuitarObservacionI).setBounds(1430,40,150,20);
 		panel.add(JLBcambios_sueldo).setBounds(1050,40,350,20);
 		
 		this.menu_toolbar.remove(btn_refrescar);
@@ -204,19 +199,13 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.btn_guardar.addActionListener(op_guardar);
 		this.btn_imprimir.addActionListener(op_imprimir);
 		this.btn_nomina.addActionListener(op_totales_cheque);
-//		this.btn_refrescar.addActionListener(op_refrescar);
 		this.btn_generar.addActionListener(op_generar);
-		
-		btnQuitarObservacionI.addActionListener(op_Borrar_ObservacionDH);
 
 		this.btn_lista_raya_pasadas.addActionListener(op_consulta_lista);
 		
 		this.txtFolio.addKeyListener(op_filtro_folio);
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
-		
-		busqueda_Observaciones_auditoria();
-		
 //      asigna el foco al JTextField 
         this.addWindowListener(new WindowAdapter() {
                 public void windowOpened( WindowEvent e ){
@@ -267,38 +256,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		public void windowActivated(WindowEvent e) {}
 	};
 	
-	
-	public boolean  busqueda_Observaciones_auditoria() {
-		Connexion con = new Connexion();
-		Obj_Usuario user = new Obj_Usuario().LeerSession();
-		 int folio= user.getFolio();
-		String query = "if(select departamento from tb_empleado where folio="+folio  + ")=(Select departamento_mod_observacion_II_lista_raya from tb_configuracion_sistema)"+
-                            " select 'true' as acceso   else   select 'false' as acceso ";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				 acceso =(rs.getBoolean(1));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error");
-			JOptionPane.showMessageDialog(null, "Error en Cat_Revision_lista_de_Raya  en la funcion busqueda_Observaciones_auditoria"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		finally{
-			 if (stmt != null) { try {
-				stmt.close();
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Error en Cat_Revision_lista_de_Raya  en la funcion busqueda_Observaciones_auditoria"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			} }
-		}
-		return acceso;
-		
-	}
 	
 	public int  Checar_Cambios_De_Sueldo_Pendientes_De_Autorizar() {
 		Connexion con = new Connexion();

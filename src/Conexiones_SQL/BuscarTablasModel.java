@@ -94,7 +94,7 @@ public class BuscarTablasModel {
 				matriz[i][11] =  rs.getFloat(12) == 0 ? "" : rs.getFloat(12);
 				matriz[i][12] = rs.getFloat(13) == 0 ? "" : rs.getFloat(13);
 				matriz[i][13] = rs.getBoolean(14)+"";
-				matriz[i][14] = "";
+				matriz[i][14] = rs.getString(15); 
 				
 				i++;
 			}
@@ -104,6 +104,7 @@ public class BuscarTablasModel {
 		}
 	    return matriz; 
 	}
+	
 	
 	public Object[][] tabla_model_persecciones(){
 		String query_lista = "exec sp_lista_persecciones";

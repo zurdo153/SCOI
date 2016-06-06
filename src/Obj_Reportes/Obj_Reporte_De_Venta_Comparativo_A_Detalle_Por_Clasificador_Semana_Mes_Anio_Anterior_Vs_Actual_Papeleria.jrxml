@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-06-05T13:39:36 -->
+<!-- 2016-06-05T14:22:39 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
@@ -15,7 +15,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec  reporte_de_venta_acumulada_a_detalle_por_clasificador_supermercados_comparativo_semana_y_anual]]>
+		<![CDATA[exec  reporte_de_venta_acumulada_a_detalle_por_clasificador_papelerias_y_fiestilandia_comparativo_semana_y_anual]]>
 	</queryString>
 	<field name="fecha" class="java.lang.String"/>
 	<field name="dia_del_mes_venta" class="java.lang.Integer"/>

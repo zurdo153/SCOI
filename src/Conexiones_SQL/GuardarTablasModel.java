@@ -126,8 +126,8 @@ public class GuardarTablasModel {
 			con.setAutoCommit(false);
 			
 			for(int i=0; i<tabla.length; i++){
-				System.out.print(Integer.valueOf(tabla[i][0].toString().trim()));
-				System.out.println("hrs extra  "+Float.valueOf(tabla[i][11].toString().trim()));
+//				System.out.print(Integer.valueOf(tabla[i][0].toString().trim()));
+//				System.out.println("hrs extra  "+Float.valueOf(tabla[i][11].toString().trim()));
 //				System.out.println("extra  "+Float.valueOf(tabla[i][12].toString().trim()));
 //				System.out.print("  "+tabla[i][2].toString().trim());
 //				System.out.print(tabla[i][3].toString().trim());

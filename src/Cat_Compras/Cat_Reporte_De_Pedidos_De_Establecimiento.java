@@ -51,7 +51,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Renders.ColorCeldas;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Pedido_De_Establecimiento extends JFrame{
+public class Cat_Reporte_De_Pedidos_De_Establecimiento extends JFrame{
 	
 	Object[][] Matriz_pedidos_ctes ;
 	Container cont = getContentPane();
@@ -120,7 +120,7 @@ public class Cat_Reporte_De_Pedido_De_Establecimiento extends JFrame{
 	
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Reporte_De_Pedido_De_Establecimiento(){
+	public Cat_Reporte_De_Pedidos_De_Establecimiento(){
 		int ancho = 800;//Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 		
@@ -550,7 +550,7 @@ WindowListener op_cerrar = new WindowListener() {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Pedido_De_Establecimiento().setVisible(true);
+			new Cat_Reporte_De_Pedidos_De_Establecimiento().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

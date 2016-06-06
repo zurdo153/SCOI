@@ -34,6 +34,7 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 	JButton btnReporte_porfecha = new JButton("",new ImageIcon("imagen/orange-folder-saved-search-icone-8197-16.png"));
 	JButton btnReporte_actual = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
 	JButton btnReporte_Firmas = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
+	JButton btnReporte_Limpio = new JButton("",new ImageIcon("imagen/plan-icono-5073-16.png"));
 	
     JButton btnSeleccionLR =new JButton("",new ImageIcon ("imagen/Filter-List-icon16.png"));
 	
@@ -52,7 +53,7 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 	}
 	
 	public void Constructor(){
-		setSize(305,330);
+		setSize(305,380);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -75,6 +76,9 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 		btnReporte_Firmas.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
 				"		<CENTER><p>Reporte De Firmas De Lista De Raya Actual</p></CENTER></FONT>" +
 				"</html>");	
+		btnReporte_Limpio.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+				"		<CENTER><p>Reporte De Lista De Raya Limpio</p></CENTER></FONT>" +
+				"</html>");	
 		
 		int x=20,y=25;
 		
@@ -82,6 +86,7 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 		panel.add(btnReporte_porfecha).setBounds(x,y+=50,260,40);
 		panel.add(btnReporte_actual).setBounds(x,y+=50,260,40);
 		panel.add(btnReporte_Firmas).setBounds(x,y+=50,260,40);
+		panel.add(btnReporte_Limpio).setBounds(x,y+=50,260,40);
 		
 		panel.add(new JLabel("Folio:")).setBounds(x+10,y+=50,200,20);		
 		panel.add(txtFolio).setBounds(x+50,y,185,20);
@@ -100,6 +105,7 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 		btnReporte_actual.addActionListener(opReporte_Actual);
 		btnSeleccionLR.addActionListener(opfiltroLR);
 		btnReporte_Firmas.addActionListener(opReporte_Lista_De_firmas);
+		btnReporte_Limpio.addActionListener(opReporte_Limpio);
 		
      	///filtro de Listas de Raya
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscarLR");
@@ -165,6 +171,19 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 	};
 	
 	
+	ActionListener opReporte_Limpio = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			txtFolio.setEditable(true);
+			btngenerar.setEnabled(true);
+			btngenerar.setEnabled(true);
+			btnSeleccionLR.setEnabled(true);
+			tipo_Reporte=3;
+			txtFolio.setText("");
+			txtFolio.requestFocus();
+			
+		}
+	};
+	
 	
 	ActionListener opfiltroLR = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
@@ -180,15 +199,26 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 						if(!txtFolio.getText().equals("")){
 							 reporte = "Obj_Reporte_De_Lista_de_Raya_Pasadas.jrxml";
 							 comando = "exec sp_Reporte_De_Lista_De_Raya_Pasada "+Integer.valueOf(txtFolio.getText())  ;
-							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+//							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 					    }else{
 							  JOptionPane.showMessageDialog(null, "El Campo Folio No Debe De Estar Vacio","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 		                      return;
 							}
 		}
+			if(tipo_Reporte==3){
+				if(!txtFolio.getText().equals("")){
+					 reporte = "Obj_Reporte_De_Lista_de_Raya_Limpia.jrxml";
+					 comando = "exec sp_Reporte_De_Lista_De_Raya_Pasada "+Integer.valueOf(txtFolio.getText())  ;
+//					 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			    }else{
+					  JOptionPane.showMessageDialog(null, "El Campo Folio No Debe De Estar Vacio","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                      return;
+					}
+}
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
+	
 	
 		public  void obtiene_lista_de_raya_selecionada(final Integer folio){
 			 String	Foliorecibido = folio+"";
