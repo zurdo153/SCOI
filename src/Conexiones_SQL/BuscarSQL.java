@@ -1358,6 +1358,7 @@ public class BuscarSQL {
 				empleado.setPuesto(rs.getInt("puesto_id"));
 				empleado.setDescanso(rs.getString("descanso"));
 				empleado.setDobla(rs.getString("dobla"));
+				empleado.setStatus_checador(rs.getString("status_checador"));
 				
 //				percepciones y deducciones
 				empleado.setSalario_diario(rs.getFloat("salario_diario"));
@@ -1840,7 +1841,7 @@ public class BuscarSQL {
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				numero.setValorAsistencia(rs.getFloat("asistencia"));
-				numero.setValorPuntualidad(rs.getFloat("puntualidad"));
+				numero.setValorPuntualidad(rs.getFloat("impuntualidad"));
 				numero.setValorGafete(rs.getFloat("gafete"));
 			}
 			

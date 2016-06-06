@@ -56,6 +56,7 @@ public class Obj_Empleados {
 	private String fecha_ingreso_imss;
 	private String fecha_vencimiento_licencia;
 	private String ultimo_usuario_modifico;
+	private String status_checador;
 	
 
 
@@ -134,7 +135,15 @@ public class Obj_Empleados {
 	public void setUltimo_usuario_modifico(String ultimo_usuario_modifico) {
 		this.ultimo_usuario_modifico = ultimo_usuario_modifico;
 	}
-	
+		
+	public String getStatus_checador() {
+		return status_checador;
+	}
+
+	public void setStatus_checador(String status_checador) {
+		this.status_checador = status_checador;
+	}
+
 	public int getFolio() {
 		return folio;
 	}

@@ -237,7 +237,7 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 				 if(existe.equals("N")){
 //					 System.out.println(hoja.getRows());
 					 for (int fila = 1; fila < hoja.getRows(); fila++){         
-						 total_diferencia += Double.valueOf(hoja.getCell( 10 , fila ).getContents().toString().trim());
+						 total_diferencia += Double.valueOf(hoja.getCell( 10 , fila ).getContents().toString().trim().equals("")?"0":hoja.getCell( 10 , fila ).getContents().toString().trim());
 						
 //						 if(!validarCelda(fila)){
 //							 System.out.println(fila+"   "+hoja.getCell(0 , fila ).getContents().toString().trim());

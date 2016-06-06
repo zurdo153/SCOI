@@ -107,7 +107,7 @@ public class GuardarSQL {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public boolean Guardar_Empleado(Obj_Empleados empleado){
-		String query = "exec sp_insert_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -160,6 +160,7 @@ public class GuardarSQL {
 			pstmt.setString(i+=1, 	empleado.getNumero_infonavit().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getEstablecimiento());
 			pstmt.setInt(i+=1, 		empleado.getPuesto());
+			pstmt.setString(i+=1, 		empleado.getStatus_checador());
 			
 //			percepciones y deducciones
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
@@ -5538,6 +5539,66 @@ public boolean Guardar_Configuracion_De_Meta_Mensual_De_Venta(Obj_Configuracion_
 		} catch(SQLException e){
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
+
+public boolean guardar_motivos_de_renuncia(int folioEmp,String estab,String depto, String puesto,int jefeInmediato, String fecha_baja
+											,boolean sueldo,boolean horario,boolean relacionJefe,boolean ambienteLaboral,boolean capacitacion,boolean descuentoNomina
+											,boolean problemaPersonal,boolean otros
+											,String descripcionMotivo,String respuesta1,String respuesta2,String respuesta3,String respuesta4,String respuesta5){
+	String query = "exec sp_insert_encuesta_y_motivo_de_renuncia ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	try {
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query);
+		
+		pstmt.setInt(1, folioEmp);
+		pstmt.setString(2, estab);
+		pstmt.setString(3, depto);
+		pstmt.setString(4, puesto);
+		pstmt.setInt(5, jefeInmediato);
+		pstmt.setString(6, fecha_baja);
+		pstmt.setString(7, sueldo==true?"S":"N");
+		pstmt.setString(8, horario==true?"S":"N");
+		pstmt.setString(9, relacionJefe==true?"S":"N");
+		pstmt.setString(10, ambienteLaboral==true?"S":"N");
+		pstmt.setString(11, capacitacion==true?"S":"N");
+		pstmt.setString(12, descuentoNomina==true?"S":"N");
+		pstmt.setString(13, problemaPersonal==true?"S":"N");
+		pstmt.setString(14, otros==true?"S":"N");
+		
+		pstmt.setString(15, descripcionMotivo);
+		pstmt.setString(16, respuesta1);
+		pstmt.setString(17, respuesta2);
+		pstmt.setString(18, respuesta3);
+		pstmt.setString(19, respuesta4);
+		pstmt.setString(20, respuesta5);
+		pstmt.setInt(21, new Obj_Usuario().LeerSession().getFolio());
+		
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardar_motivos_de_renuncia ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardar_motivos_de_renuncia ] "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardar_motivos_de_renuncia ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 		}
 	}		
 	return true;

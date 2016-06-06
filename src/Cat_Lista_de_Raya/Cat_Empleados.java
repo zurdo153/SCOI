@@ -92,6 +92,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Horarios;
+import Cat_Reportes.Cat_Reporte_De_Ausentismo_En_Lista_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual;
 //import Cat_Reportes.Cat_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
@@ -266,6 +267,10 @@ public class Cat_Empleados extends JFrame{
 	JCButton btnLicencias           = new JCButton("R.Licencias","truck-icon.png","Azul");
 	JCButton btnCumpleaños_del_Mes  = new JCButton("R.Cumpleaños","cookies-tarta-de-cumpleanos-icono-9840-16.png","Azul");
 	JCButton btnAltasBajas          = new JCButton("R.Rotacion","bajas_altas_16p.png","Azul");
+	
+	JCButton btnAusentismo		    = new JCButton("R.Ausentismo","reloj.png","AzulC");
+	JCButton btnEncuentaDeSalida    = new JCButton("Enc. Salida","Lista.png","AzulC");
+	
 	JCButton btn_plantilla          = new JCButton("R.Plantilla","plan-icono-5073-16.png","Azul");
 	JCButton btn_R_horarios         = new JCButton("R.Horarios","horas-de-reloj-de-alarma-icono-5601-16.png","Azul");
 	JCButton btn_movimientos        = new JCButton("Inf.Movimientos","detective-icono-5257-16.png","Azul");
@@ -310,6 +315,10 @@ public class Cat_Empleados extends JFrame{
 	 String[] horarioRotativo = { "Sin Horario rotativo ", "2 Horarios", "3 Horarios" };
 	 @SuppressWarnings("rawtypes")
 	private JComboBox cmbHorarioRotativo = new JComboBox(horarioRotativo);
+	 
+	String statusChecador[] = {"NORMAL","LIBRE"};
+	@SuppressWarnings("rawtypes")
+	JComboBox cmbStatusChecador = new JComboBox(statusChecador);
 	
 	//declaracion de Bordes
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
@@ -392,12 +401,14 @@ public class Cat_Empleados extends JFrame{
 		panelReporte.add(btnLicencias).setBounds            (x     ,y+=27,width,height);
 		panelReporte.add(btnCumpleaños_del_Mes).setBounds   (x+=sep,y    ,width,height);
 		panelReporte.add(btnAltasBajas).setBounds           (x+=sep,y    ,width,height);
+		panelReporte.add(btnAusentismo).setBounds           (x+=sep,y    ,width,height);
 		
 		x = 10;
 		y = 20;
 		panel.add(btnImp_Datos_Completos).setBounds  (x     ,y    ,width,height);
 		panel.add(btnContratacion).setBounds         (x+=sep,y    ,width,height);
 		panel.add(btnDocumentacion).setBounds        (x+=sep,y    ,width,height);
+		panel.add(btnEncuentaDeSalida).setBounds     (x+=(sep*3),y    ,width,height);
 		
 		x=20; y=y+=38;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
@@ -483,12 +494,12 @@ public class Cat_Empleados extends JFrame{
 		panel.add(lblFolioHorario3).setBounds                (x+sep-30    ,y     ,height  ,height );
 		panel.add(txtHorario3).setBounds                     (x+sep       ,y     ,width   ,height );
 		panel.add(rbHorario3).setBounds                      (x+460       ,y     ,height  ,height );
-		panel.add(new JLabel("Puesto:")).setBounds           (x           ,y+=25 ,width   ,height );
-		panel.add(cmbPuesto).setBounds                       (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Establecimiento:")).setBounds           (x           ,y+=25 ,width   ,height );
+		panel.add(cmbEstablecimiento).setBounds                       (x+sep       ,y     ,width   ,height );
 		panel.add(new JLabel("Departamento:")).setBounds     (x           ,y+=25 ,width   ,height );
 		panel.add(cmbDepartamento).setBounds                 (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Establecimiento:")).setBounds  (x           ,y+=25 ,width   ,height );
-		panel.add(cmbEstablecimiento).setBounds              (x+sep       ,y     ,width   ,height );
+		panel.add(new JLabel("Puesto:")).setBounds  (x           ,y+=25 ,width   ,height );
+		panel.add(cmbPuesto).setBounds              (x+sep       ,y     ,width   ,height );
 		panel.add(new JLabel("N° Seguro Social:")).setBounds (x           ,y+=25 ,width/2 ,height );
 		panel.add(txtImss).setBounds                         (x+sep       ,y     ,width/2 ,height );
 		panel.add(cmbActivo_Inactivo).setBounds              (x+290       ,y     ,width/2 ,height );
@@ -519,11 +530,15 @@ public class Cat_Empleados extends JFrame{
 		panel.add(btnFechaIncapacidad).setBounds             (x+sep+130   ,y     ,height  ,height );
 		
 		x=800;y=270;sep=45;
-		panel.add(btnStatus).setBounds                       (x+45        ,y     ,150     ,145    );
-		panel.add(new JLabel("Estatus:")).setBounds          (x           ,y+=150,ancho   ,height );
-		panel.add(cmbStatus).setBounds                       (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Contrato:")).setBounds         (x           ,y+=25 ,ancho   ,height );
-		panel.add(cmbContratacion).setBounds                 (x+sep       ,y     ,width   ,height );
+		
+		panel.add(new JLabel("Checador:")).setBounds         (x        	  ,y     ,130   ,20     );
+		panel.add(cmbStatusChecador).setBounds               (x+sep+15    ,y     ,130   ,20     );
+		
+		panel.add(btnStatus).setBounds                       (x+60        ,y+=22 ,130   ,125    );
+		panel.add(new JLabel("Estatus:")).setBounds          (x           ,y+=128,130   ,height );
+		panel.add(cmbStatus).setBounds                       (x+sep+15    ,y     ,130   ,height );
+		panel.add(new JLabel("Contrato:")).setBounds         (x           ,y+=25 ,130   ,height );
+		panel.add(cmbContratacion).setBounds                 (x+sep+15    ,y     ,130   ,height );
 		
 //TODO Percepciones y Deducciones ------------------------------------------------------------------------------------------------------------------------------------------		
 		x=17 ;y=475;sep=87;
@@ -605,6 +620,9 @@ public class Cat_Empleados extends JFrame{
 		btnCumpleaños_del_Mes.addActionListener(Reporte_De_Cumpleanios_Del_Mes);
 		btnAltasBajas.addActionListener(Reporte_De_Altas_y_Bajas);
 		btnDocumentacion.addActionListener(opDocumentacion);
+		
+		btnAusentismo.addActionListener(opRAusentismo);
+		btnEncuentaDeSalida.addActionListener(opEncuentaSalida);
 
 		btnExaminar.addActionListener(opExaminar);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
@@ -771,6 +789,23 @@ public class Cat_Empleados extends JFrame{
 	 	  }
 	};
 	
+	ActionListener opRAusentismo = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			new Cat_Reporte_De_Ausentismo_En_Lista_De_Raya().setVisible(true);
+		}
+	};
+	
+	ActionListener opEncuentaSalida = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			if(!txtNombre.getText().trim().equals("")){
+				new Cat_Motivos_De_Renuncia(txtFolioEmpleado.getText(), txtNombre.getText().trim()+" "+txtApPaterno.getText().trim()+" "+txtApMaterno.getText().trim(), cmbEstablecimiento.getSelectedItem().toString(), cmbDepartamento.getSelectedItem().toString(), cmbPuesto.getSelectedItem().toString()).setVisible(true);
+			}else{
+				JOptionPane.showMessageDialog(null, "Es Necesario Que Primero Seleccione Un Empleado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+		}
+	};
+
 
 	ActionListener opCmbHorarioRotarivo = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
@@ -1123,6 +1158,8 @@ public class Cat_Empleados extends JFrame{
 					Obj_Puestos comboNombrePues = new Obj_Puestos().buscar_pues(re.getPuesto());
 					cmbPuesto.setSelectedItem(comboNombrePues.getPuesto());
 					
+					cmbStatusChecador.setSelectedItem(re.getStatus_checador());
+					
 					txtSalarioDiario.setText(re.getSalario_diario()+"");
 					txtSalarioDiarioIntegrado.setText(re.getSalario_diario_integrado()+"");
 					txtFormaDePago.setText(re.getForma_pago()+"");
@@ -1431,6 +1468,8 @@ public void guardar_modificar_Empleado(){
 									empleado.setFecha_vencimiento_licencia(new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
 								}
 								
+								empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString().equals("NORMAL")?"N":"L");
+								
 		//				percepciones y deducciones
 						
 								if(!txtSalarioDiario.getText().equals("")){
@@ -1645,6 +1684,8 @@ public void guardar_modificar_Empleado(){
 							}else{
 								empleado.setFecha_vencimiento_licencia(new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
 							}
+							
+							empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString().equals("NORMAL")?"N":"L");
 		
 		//			percepciones y deducciones
 							if(!txtSalarioDiario.getText().equals("")){
@@ -1795,6 +1836,7 @@ public void guardar_modificar_Empleado(){
 		txtIngreso.setEnabled(true);
 		txtTelefono_Familiar.setEnabled(true);
 		chb_cuadrante_parcial.setEnabled(true);
+		cmbStatusChecador.setEnabled(true);
 		
 		txtIngresoImss.setEnabled(true);
 		txtVencimientoLicencia.setEnabled(true);
@@ -1850,7 +1892,8 @@ public void guardar_modificar_Empleado(){
 		cmbActivo_Inactivo.setEnabled(false);                                                              
 		txtIngreso.setEnabled(false);                                                                      
 		txtTelefono_Familiar.setEnabled(false);                                                            
-		chb_cuadrante_parcial.setEnabled(false);                                                           
+		chb_cuadrante_parcial.setEnabled(false);
+		cmbStatusChecador.setEnabled(false);
 		                                                                                                   
 		txtIngresoImss.setEnabled(false);                                                                  
 		txtVencimientoLicencia.setEnabled(false);                                                          
@@ -1922,6 +1965,7 @@ public void guardar_modificar_Empleado(){
 	    txtTelefono_Cuadrante.setText("");
 	    chb_cuadrante_parcial.setSelected(false);
 	    txtFechaNacimiento.setDate(null);
+	    cmbStatusChecador.setSelectedIndex(0);
 	    
 		txtCalle.setText("");
 		txtColonia.setText("");

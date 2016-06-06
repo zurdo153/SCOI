@@ -5,14 +5,11 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-
-import Obj_Lista_de_Raya.Obj_Establecimiento;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -24,12 +21,7 @@ public class Cat_Root_Lista_Raya extends JFrame {
 	
 	public JToolBar menu_toolbar = new JToolBar();
 	
-	public JTextField txtFolio = new JTextField();
 	public JTextField txtNombre_Completo = new JTextField();
-	
-	public String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
 	
 	public JDateChooser txtCalendario = new JDateChooser();
 	
@@ -50,10 +42,7 @@ public class Cat_Root_Lista_Raya extends JFrame {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/list_bullets_icon&16.png"));
 		
 		this.panel.add(menu_toolbar).setBounds(30,0,700,25);
-		
-		this.panel.add(txtFolio).setBounds(30,35,55,20);
-		this.panel.add(txtNombre_Completo).setBounds(85,35,260,20);
-		this.panel.add(cmbEstablecimientos).setBounds(345,35,180,20);
+		this.panel.add(txtNombre_Completo).setBounds(105,35,475,20);
 		this.panel.add(txtCalendario).setBounds(588,35,90,20);
 		this.txtCalendario.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		
@@ -70,7 +59,6 @@ public class Cat_Root_Lista_Raya extends JFrame {
 //	se le agrega la etiqueta al boton		
 			this.menu_toolbar.add(btn_lista_raya_pasadas);
 			this.btn_lista_raya_pasadas.setToolTipText("Consulta de Lista de Raya Pasadas");
-		
 		
 		this.menu_toolbar.setEnabled(false);
 		
