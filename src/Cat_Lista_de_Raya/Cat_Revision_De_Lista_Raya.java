@@ -1,6 +1,5 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -11,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,25 +19,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableRowSorter;
-
-
-
-
-
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.ActualizarSQL;
@@ -49,7 +37,8 @@ import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Lista_de_Raya.Obj_Revision_De_Lista_Raya;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
-import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 /** CTRL EN CAT_ROOT_LISTA_RAYA PARA AGREGAR BOTON **/
@@ -151,10 +140,72 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	};
 		
 	private JTable tabla = new JTable(tabla_model);
-	private JScrollPane scroll_tabla = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	private JScrollPane scroll_tabla = new JScrollPane(tabla);
 	JLabel JLBcambios_sueldo= new JLabel();	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public TableRowSorter trsfiltro = new TableRowSorter(tabla_model); 
+	
+    private JTable freezeTable = new JTable();	
+    
+	public void fixedColum(int fixedColumns){
+		
+	renderEnFixed();
+	cargar_autorizaciones();
+		
+      freezeTable.setAutoCreateColumnsFromModel(false);
+      freezeTable.setModel(tabla_model);
+      freezeTable.setSelectionModel(tabla.getSelectionModel());
+      freezeTable.setFocusable(false);
+      
+    TableColumnModel colModel = tabla.getColumnModel();
+      for (int i = 0; i < fixedColumns; i++) {
+    	 TableColumn column = colModel.getColumn(0);
+         colModel.removeColumn(column);
+         freezeTable.getColumnModel().addColumn(column);
+      }
+      
+		
+		
+      
+      //  Add the fixed table to the scroll pane
+      freezeTable.setPreferredScrollableViewportSize(freezeTable.getPreferredSize());
+      scroll_tabla.setRowHeaderView(freezeTable);
+      scroll_tabla.setCorner(JScrollPane.UPPER_LEFT_CORNER, freezeTable.getTableHeader());
+      
+      
+      freezeTable.getTableHeader().setReorderingAllowed(false) ;
+      freezeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+      
+	}
+	
+	public void renderEnFixed(){
+		
+		tabla.getTableHeader().setReorderingAllowed(false) ;
+		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+      
+		
+		tabla.getColumnModel().getColumn(0).setMinWidth(16);
+		tabla.getColumnModel().getColumn(1).setMinWidth(40);
+		tabla.getColumnModel().getColumn(2).setMinWidth(260);
+		tabla.getColumnModel().getColumn(3).setMinWidth(140);
+		tabla.getColumnModel().getColumn(27).setMinWidth(350);
+		tabla.getColumnModel().getColumn(28).setMinWidth(230);
+		
+		for(int i=0; i<tabla.getColumnCount(); i++){
+			
+			if(i>0){
+				if(i==2 || i==3 || i==21 || i==27 || i==28){
+					tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+				}else{
+					tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+				}
+			}else{
+				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("CHB","derecha","Arial","normal",12));
+			}
+			
+			if(tabla.getValueAt(i, 0).toString().equals("true")){
+				tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","Verde",12));
+			}
+		}
+	}
 	
 	/* EL CONSTRUCTOR TIENE EL NOMBRE PUBLIC Y SEGUIDO DEL NOMBRE DE LA CLASE */
 	public Cat_Revision_De_Lista_Raya(){
@@ -164,11 +215,13 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
-		this.addWindowListener(op_cerrar);
+//		this.addWindowListener(op_cerrar);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		
 		this.setTitle("Revisión lista raya");
+		
+		//fijar las primeras columnas(las que se mandan de parametro)
+		fixedColum(4);
 		
 		this.panel.add(scroll_tabla).setBounds(30,60,ancho-50,alto-60-75);
 		cont.add(panel);
@@ -187,9 +240,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		
 		this.menu_toolbar.remove(btn_refrescar);
 		
-		this.init_tabla();
 		this.init_component();
-		cargar_autorizaciones();
 		txtCalendario.setEnabled(false);
 		
 		btn_imprimir.setEnabled(false);
@@ -203,16 +254,16 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 
 		this.btn_lista_raya_pasadas.addActionListener(op_consulta_lista);
 		
-		this.txtFolio.addKeyListener(op_filtro_folio);
+//		this.txtFolio.addKeyListener(op_filtro_folio);
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
-		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
+//		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
+		
 //      asigna el foco al JTextField 
         this.addWindowListener(new WindowAdapter() {
                 public void windowOpened( WindowEvent e ){
                     txtNombre_Completo.requestFocus();
              }
         });
-		
 
 	}
 
@@ -229,33 +280,29 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
 	
 	
-	WindowListener op_cerrar = new WindowListener() {
-		public void windowOpened(WindowEvent e) {}
-		public void windowIconified(WindowEvent e) {}
-		public void windowDeiconified(WindowEvent e) {}
-		public void windowDeactivated(WindowEvent e) {}
-		@SuppressWarnings("unchecked")
-		public void windowClosing(WindowEvent e) {
-			if(JOptionPane.showConfirmDialog(null, "¿Desea guardar antes de cerrar?", "Aviso!", JOptionPane.YES_NO_OPTION) == 0){
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-				trsfiltro.setRowFilter(RowFilter.regexFilter("", 3));
-				
-				txtFolio.setText("");
-				txtNombre_Completo.setText("");
-				cmbEstablecimientos.setSelectedIndex(0);
-				
-				if(tabla.isEditing()){
-					tabla.getCellEditor().stopCellEditing();
-				}
-				
-				new Obj_Revision_De_Lista_Raya().guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()));
-			}
-		}
-		public void windowClosed(WindowEvent e) {}
-		public void windowActivated(WindowEvent e) {}
-	};
-	
+//	WindowListener op_cerrar = new WindowListener() {
+//		public void windowOpened(WindowEvent e) {}
+//		public void windowIconified(WindowEvent e) {}
+//		public void windowDeiconified(WindowEvent e) {}
+//		public void windowDeactivated(WindowEvent e) {}
+//		public void windowClosing(WindowEvent e) {
+//			if(JOptionPane.showConfirmDialog(null, "¿Desea guardar antes de cerrar?", "Aviso!", JOptionPane.YES_NO_OPTION) == 0){
+//				
+//				txtNombre_Completo.setText("");
+//				int[] columnas = {1,2,3};
+//				new Obj_Filtro_Dinamico_Plus(tabla,txtNombre_Completo.getText().toUpperCase(), columnas);
+//				new Obj_Filtro_Dinamico_Plus(freezeTable,txtNombre_Completo.getText().toUpperCase(), columnas);
+//				
+//				if(tabla.isEditing()){
+//					tabla.getCellEditor().stopCellEditing();
+//				}
+//				
+//				new Obj_Revision_De_Lista_Raya().guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()));
+//			}
+//		}
+//		public void windowClosed(WindowEvent e) {}
+//		public void windowActivated(WindowEvent e) {}
+//	};
 	
 	public int  Checar_Cambios_De_Sueldo_Pendientes_De_Autorizar() {
 		Connexion con = new Connexion();
@@ -324,21 +371,19 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		    }else{JLBTotales_Nomina.setEnabled(false);}
 	    
 	    Checar_Cambios_De_Sueldo_Pendientes_De_Autorizar();
-		};
+	};
 
 		
 	
 	ActionListener op_generar = new ActionListener() {
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
 			
-			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+//			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 			
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", "","Establecimiento","", "", "", "", "");
-
-			txtFolio.setText("");
 			txtNombre_Completo.setText("");
-			cmbEstablecimientos.setSelectedIndex(0);
+			int[] columnas2 = {1,2,3};
+			new Obj_Filtro_Dinamico_Plus(tabla,txtNombre_Completo.getText().toUpperCase(), columnas2);
+			new Obj_Filtro_Dinamico_Plus(freezeTable,txtNombre_Completo.getText().toUpperCase(), columnas2);
 			
 			if(tabla.isEditing()){
 				tabla.getCellEditor().stopCellEditing();
@@ -383,175 +428,178 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	};
 	
 	private Object[][] tabla_generar(){
-		Object[][] matriz = new Object[tabla.getRowCount()][tabla.getColumnCount()];
-		for(int i=0; i<tabla.getRowCount(); i++){
-			for(int j=0; j<=tabla.getColumnCount(); j++){
-				switch(j){
-/*folio*/				case 1 : matriz[i][j] = Integer.parseInt(tabla_model.getValueAt(i,j).toString().trim());		break;
-/*empleado*/			case 2 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();							break;
-/*establecimiento*/		case 3 : matriz[i][j] =tabla_model.getValueAt(i,j).toString().trim();							break;
-/*sueldo*/				case 4 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*bono*/					case 5 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*P.Saldo ini*/					case 6 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Desc.Prest*/					case 7 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*P.Saldo Fin*/				case 8 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*F.Sodas*/				case 9 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Imp.*/				case 10 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*B.Puntualidad*/case 11 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Omision*/		case 12 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Faltas*/   	 case 13 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Inasistencia*/  case 14 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*B. Asistencia*/ case 15 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Gafete*/	 	  case 16 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Dif Cortes*/    case 17 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Infonavit*/  	   case 18 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = (tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Infonacot*/ 	   case 19 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Pension*/	  	   case 20 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Banco*/	  	    case 21 :
-	                      matriz[i][j] =tabla_model.getValueAt(i,j).toString().trim();	
-						break;
-/*Deposito*/	    case 22 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Hrs Extras*/	 	case 23 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-						break;
-/*Extra */			case 24 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-/*Dia Ext*/			case 25 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-/*A Pagar*/			case 26 :
-						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-							matriz[i][j] = Float.parseFloat("0");
-						}else{
-							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-						}
-											
-						
-						
-						break;
-/*Obs D.H.*/			case 27 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();			break;
-/*Obs II*/
-					
-				}
+		Object[][] matriz = new Object[tabla_model.getRowCount()][tabla_model.getColumnCount()];
+		for(int i=0; i<tabla_model.getRowCount(); i++){
+			for(int j=1; j<=tabla_model.getColumnCount()-1; j++){
+				
+				matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim().equals("")?"0":tabla_model.getValueAt(i,j).toString().trim();
+				
+//				switch(j){
+///*folio*/				case 1 : matriz[i][j] = Integer.parseInt(tabla_model.getValueAt(i,j).toString().trim());		break;
+///*empleado*/			case 2 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();							break;
+///*establecimiento*/		case 3 : matriz[i][j] =tabla_model.getValueAt(i,j).toString().trim();							break;
+///*sueldo*/				case 4 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*bono*/					case 5 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*P.Saldo ini*/					case 6 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Desc.Prest*/					case 7 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*P.Saldo Fin*/				case 8 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*F.Sodas*/				case 9 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Imp.*/				case 10 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*B.Puntualidad*/case 11 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Omision*/		case 12 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Faltas*/   	 case 13 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Inasistencia*/  case 14 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*B. Asistencia*/ case 15 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Gafete*/	 	  case 16 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Dif Cortes*/    case 17 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Infonavit*/  	   case 18 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = (tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Infonacot*/ 	   case 19 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Pension*/	  	   case 20 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Banco*/	  	    case 21 :
+//	                      matriz[i][j] =tabla_model.getValueAt(i,j).toString().trim();	
+//						break;
+///*Deposito*/	    case 22 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Hrs Extras*/	 	case 23 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//						break;
+///*Extra */			case 24 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+///*Dia Ext*/			case 25 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+///*A Pagar*/			case 26 :
+//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
+//							matriz[i][j] = Float.parseFloat("0");
+//						}else{
+//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
+//						}
+//											
+//						
+//						
+//						break;
+///*Obs D.H.*/			case 27 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();			break;
+///*Obs II*/
+//					
+//				}
 
 			}
 
@@ -562,13 +610,13 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
 	public String EmpleadoConNegativo(){
 	 String registro="";
-	  for(int i=0; i<tabla.getRowCount(); i++){
-		float descPrest = tabla.getValueAt(i, 7).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 7).toString());
-		float corte = tabla.getValueAt(i, 17).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 17).toString());
-		float aPagar = tabla.getValueAt(i, 26).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 26).toString());
+	  for(int i=0; i<tabla_model.getRowCount(); i++){
+		float descPrest = tabla_model.getValueAt(i, 7).toString().equals("")?0:Float.valueOf(tabla_model.getValueAt(i, 7).toString());
+		float corte = tabla_model.getValueAt(i, 17).toString().equals("")?0:Float.valueOf(tabla_model.getValueAt(i, 17).toString());
+		float aPagar = tabla_model.getValueAt(i, 26).toString().equals("")?0:Float.valueOf(tabla_model.getValueAt(i, 26).toString());
 		
 		if(descPrest<0 || corte<0 || aPagar<0){
-			registro += ("* "+tabla.getValueAt(i, 2).toString().trim()+".....................................................................").substring(0,64)+"    "+(descPrest+"                             ").substring(0,25)+(corte+"                             ").substring(0,25)+aPagar+"\n";
+			registro += ("* "+tabla_model.getValueAt(i, 2).toString().trim()+".....................................................................").substring(0,64)+"    "+(descPrest+"                             ").substring(0,25)+(corte+"                             ").substring(0,25)+aPagar+"\n";
 		}
 	  }
 	 return registro;
@@ -576,11 +624,11 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
 	public String EmpleadoConSueldoCero(){
 	 String registro="";
-	  for(int i=0; i<tabla.getRowCount(); i++){
-		float sueldoCero = tabla.getValueAt(i, 4).toString().equals("")?0:Float.valueOf(tabla.getValueAt(i, 4).toString());
+	  for(int i=0; i<tabla_model.getRowCount(); i++){
+		float sueldoCero = tabla_model.getValueAt(i, 4).toString().equals("")?0:Float.valueOf(tabla_model.getValueAt(i, 4).toString());
 		if(sueldoCero==0){
 			registro+="\n\nSueldos En Cero:\n";
-			registro += ("* "+tabla.getValueAt(i, 2).toString().trim()+".....................................................................").substring(0,64)+"    "+(sueldoCero+"                             ").substring(0,25)+"\n";
+			registro += ("* "+tabla_model.getValueAt(i, 2).toString().trim()+".....................................................................").substring(0,64)+"    "+(sueldoCero+"                             ").substring(0,25)+"\n";
 		}
 	  }
 	  if(registro.equals("")){
@@ -608,15 +656,13 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	};
 	
 	ActionListener op_guardar = new ActionListener() {
-		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+//			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 			
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", "","Establecimiento", "", "", "", "", "");
-			
-			txtFolio.setText("");
 			txtNombre_Completo.setText("");
-			cmbEstablecimientos.setSelectedIndex(0);
+			int[] columnas2 = {1,2,3};
+			new Obj_Filtro_Dinamico_Plus(tabla,txtNombre_Completo.getText().toUpperCase(), columnas2);
+			new Obj_Filtro_Dinamico_Plus(freezeTable,txtNombre_Completo.getText().toUpperCase(), columnas2);
 			
 			if(tabla.isEditing()){
 				tabla.getCellEditor().stopCellEditing();
@@ -635,15 +681,24 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 					if(JOptionPane.showConfirmDialog(null, "¿Desea Guardar La  Pre Lista De Raya?") == 0){
 						Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
 						
+						
+//						for(int i=0; i<tabla_guardar().length; i++){
+//							System.out.println(tabla_guardar()[i][0]);
+//							System.out.println(tabla_guardar()[i][1]);
+//							System.out.println(tabla_guardar()[i][2]);
+//							System.out.println(tabla_guardar()[i][3]);
+//							System.out.println(tabla_guardar()[i][4]);
+//							System.out.println(tabla_guardar()[i][5]);
+//						}
+						
+						
 						if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
-							while(tabla.getRowCount() > 0){
-								tabla_model.removeRow(0);
-							}
+							tabla_model.setRowCount(0);
 							Object[][] Tabla = new Obj_Revision_De_Lista_Raya().get_tabla_model();
-							Object[] fila = new Object[tabla.getColumnCount()];
+							Object[] fila = new Object[tabla_model.getColumnCount()];
 							for(int i=0; i<Tabla.length; i++){
 								tabla_model.addRow(fila); 
-								for(int j=0; j<tabla.getColumnCount(); j++){
+								for(int j=0; j<tabla_model.getColumnCount(); j++){
 									tabla_model.setValueAt(Tabla[i][j], i,j);
 								}
 							}
@@ -719,8 +774,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 
 	}
 	private Object[][] tabla_guardar(){
-		Object[][] matriz = new Object[tabla.getRowCount()][6];
-		for(int i=0; i<tabla.getRowCount(); i++){
+		Object[][] matriz = new Object[tabla_model.getRowCount()][6];
+		for(int i=0; i<tabla_model.getRowCount(); i++){
 			matriz[i][0] = Boolean.parseBoolean(tabla_model.getValueAt(i,0).toString().trim());
 			matriz[i][1] = Integer.parseInt(tabla_model.getValueAt(i,1).toString().trim());
 			matriz[i][2] = tabla_model.getValueAt(i,3).toString().trim();
@@ -752,386 +807,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void init_tabla(){
-		this.tabla.getTableHeader().setReorderingAllowed(false) ;
-		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		
-		this.tabla.getColumnModel().getColumn(0).setMinWidth(16);
-		this.tabla.getColumnModel().getColumn(1).setMinWidth(40);
-		this.tabla.getColumnModel().getColumn(2).setMinWidth(260);
-		this.tabla.getColumnModel().getColumn(3).setMinWidth(110);
-		this.tabla.getColumnModel().getColumn(27).setMinWidth(350);
-		this.tabla.getColumnModel().getColumn(28).setMinWidth(230);
-    	
-		TableCellRenderer render = new TableCellRenderer() { 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				
-				Component componente = null;
-			
-				switch(column){
-					case 0: 
-						componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
-						break;
-					case 1: 
-						
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 2:
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 3: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 4: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 5: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 6: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 7: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 8: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 9: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 10: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 11:
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 12: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 13: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 14: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 15: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 16: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 17: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 18: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-						break;
-					case 19: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 20:
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 21: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 22: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 23: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-						break;
-					case 24: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 25: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 26: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 27: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-					case 28: 
-						componente = new JLabel(value == null? "": value.toString());
-						if(Boolean.parseBoolean(tabla.getValueAt(row,0)+"")== true){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(177,177,177));	
-						}
-						if(table.getSelectedRow() == row){
-							((JComponent) componente).setOpaque(true); 
-							componente.setBackground(new java.awt.Color(186,143,73));
-						}
-						((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-						break;
-						
-				}
-				return componente;
-			} 
-		}; 
-		for(int i=0; i<tabla.getColumnCount(); i++){
-			this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
-		}
-		this.tabla.setRowSorter(trsfiltro);  
-    }
-	
-	
 	MouseListener opTablaFiltroSeleccion = new MouseListener() {
 		public void mousePressed(MouseEvent e) {
 				btn_imprimir.setEnabled(false);
@@ -1143,36 +818,34 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			public void mouseReleased(MouseEvent e) {}
 	};
 	
-	KeyListener op_filtro_folio = new KeyListener(){
-		@SuppressWarnings("unchecked")
-		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 1));
-		}
-		
-		public void keyTyped(KeyEvent arg0) {
-			char caracter = arg0.getKeyChar();
-			if(((caracter < '0') ||
-				(caracter > '9')) &&
-			    (caracter != KeyEvent.VK_BACK_SPACE)){
-				arg0.consume(); 
-			}	
-		}
-		
-		public void keyPressed(KeyEvent arg0) {}
-	};
+//	KeyListener op_filtro_folio = new KeyListener(){
+//		@SuppressWarnings("unchecked")
+//		public void keyReleased(KeyEvent arg0) {
+//			new Obj_Filtro_Dinamico(freezeTable,"Nombre Completo", "","Establecimiento","", "", "", "", "");
+//			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", "","Establecimiento","", "", "", "", "");
+//		}
+//		
+//		public void keyTyped(KeyEvent arg0) {
+//			char caracter = arg0.getKeyChar();
+//			if(((caracter < '0') ||
+//				(caracter > '9')) &&
+//			    (caracter != KeyEvent.VK_BACK_SPACE)){
+//				arg0.consume(); 
+//			}	
+//		}
+//		
+//		public void keyPressed(KeyEvent arg0) {}
+//	};
 	
 	KeyListener op_filtro_nombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
+			
+			int[] columnas2 = {1,2,3};
+			new Obj_Filtro_Dinamico_Plus(tabla,txtNombre_Completo.getText().toUpperCase(), columnas2);
+			new Obj_Filtro_Dinamico_Plus(freezeTable,txtNombre_Completo.getText().toUpperCase(), columnas2);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
-	};
-	
-	ActionListener op_filtro_establecimiento = new ActionListener(){
-		public void actionPerformed(ActionEvent arg0){
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
-		}
 	};
 	
 	public static void main(String [] arg){

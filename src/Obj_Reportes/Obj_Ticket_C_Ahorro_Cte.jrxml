@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-03-10T17:24:55 -->
+<!-- 2016-05-30T16:52:02 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Ticket_C_Ahorro_Cte" language="groovy" pageWidth="210" pageHeight="760" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="c5d3ef7e-2023-4702-a5da-9686000435e0">
 	<property name="ireport.zoom" value="2.5937424601000036"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="530"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<queryString>
-		<![CDATA[exec sp_tickets_abonos_c_ahorro_cte 'IZA0000000017', 'V']]>
+		<![CDATA[exec sp_tickets_abonos_c_ahorro_cte 'IZA0000000036', 'V']]>
 	</queryString>
 	<field name="folio_cliente" class="java.lang.Integer"/>
 	<field name="cliente" class="java.lang.String"/>
