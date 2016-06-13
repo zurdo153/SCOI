@@ -274,6 +274,8 @@ public class Cat_Empleados extends JFrame{
 	JCButton btn_plantilla          = new JCButton("R.Plantilla","plan-icono-5073-16.png","Azul");
 	JCButton btn_R_horarios         = new JCButton("R.Horarios","horas-de-reloj-de-alarma-icono-5601-16.png","Azul");
 	JCButton btn_movimientos        = new JCButton("Inf.Movimientos","detective-icono-5257-16.png","Azul");
+	JCButton btn_Adeudo        		= new JCButton("R.Adeudo","detective-icono-5257-16.png","AzulC");
+	JCButton btnReporteSalida		= new JCButton("R.Salida","imprimir-16.png","AzulC");
 	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
@@ -402,6 +404,8 @@ public class Cat_Empleados extends JFrame{
 		panelReporte.add(btnCumpleaños_del_Mes).setBounds   (x+=sep,y    ,width,height);
 		panelReporte.add(btnAltasBajas).setBounds           (x+=sep,y    ,width,height);
 		panelReporte.add(btnAusentismo).setBounds           (x+=sep,y    ,width,height);
+		panelReporte.add(btn_Adeudo).setBounds           	(x+=sep,y    ,width,height);
+		panelReporte.add(btnReporteSalida).setBounds		(x+=sep,y    ,width,height);
 		
 		x = 10;
 		y = 20;
@@ -621,8 +625,10 @@ public class Cat_Empleados extends JFrame{
 		btnAltasBajas.addActionListener(Reporte_De_Altas_y_Bajas);
 		btnDocumentacion.addActionListener(opDocumentacion);
 		
+		btn_Adeudo.addActionListener(opRAdeudo);
 		btnAusentismo.addActionListener(opRAusentismo);
 		btnEncuentaDeSalida.addActionListener(opEncuentaSalida);
+		btnReporteSalida.addActionListener(opReporteDeEncuesta);
 
 		btnExaminar.addActionListener(opExaminar);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
@@ -789,9 +795,41 @@ public class Cat_Empleados extends JFrame{
 	 	  }
 	};
 	
+	ActionListener opRAdeudo = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			if(txtFolioEmpleado.getText().equals("")){
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}else{
+				String comando="exec sp_select_deducciones_de_empleado_pendientes "+txtFolioEmpleado.getText()+",'"+new Obj_Usuario().LeerSession().getNombre_completo().toString().trim()+"'";
+				String reporte = "Obj_Reporte_De_Deuda_Por_Empleado.jrxml";
+							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+						
+			}
+		}
+	};
+	
 	ActionListener opRAusentismo = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			new Cat_Reporte_De_Ausentismo_En_Lista_De_Raya().setVisible(true);
+		}
+	};
+	
+	ActionListener opReporteDeEncuesta = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			
+			if(!txtNombre.getText().trim().equals("")){
+				String basedatos="2.26";
+				String vista_previa_reporte="no";
+				int vista_previa_de_ventana=0;
+				
+				String comando="exec sp_select_encuensta_de_salida "+txtFolioEmpleado.getText()+"";
+				String reporte = "Obj_Reporte_De_Encuenta_Y_Motivos_De_Salida.jrxml";
+				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			}else{
+				JOptionPane.showMessageDialog(null, "Es Necesario Que Primero Seleccione Un Empleado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
 		}
 	};
 	

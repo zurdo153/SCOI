@@ -47,7 +47,9 @@ import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
@@ -74,6 +76,8 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 	public JToolBar menu_toolbar = new JToolBar();
 	JButton btnGuardar = new JButton("Guardar", new ImageIcon("imagen/guardar-documento-icono-7840-32.png"));
 	JButton btnDeshacer = new JButton("Deshacer", new ImageIcon("imagen/deshacer-icono-4321-32.png"));
+	
+	
 	
 	JButton btnBuscar = new JCButton("Buscar", "buscar.png", "Azul");
 	
@@ -128,7 +132,7 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 		//meter botones al MenuToolbar
 		menu_toolbar.add(btnDeshacer);
 		menu_toolbar.add(btnGuardar);
-		
+
 		//CAMBIAR DIMENCIONES DE LA IMAGEN
 		ImgMotivos=new ImageIcon(ImgMotivos.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
 		ImgEncuestas=new ImageIcon(ImgEncuestas.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
@@ -319,6 +323,15 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 						, txa3.getText().trim()
 						, txa4.getText().trim()
 						, txa5.getText().trim())){
+					
+					String basedatos="2.26";
+					String vista_previa_reporte="no";
+					int vista_previa_de_ventana=0;
+					
+					String comando="exec sp_select_encuensta_de_salida "+txtFolioEmpleado.getText()+"";
+					String reporte = "Obj_Reporte_De_Encuenta_Y_Motivos_De_Salida.jrxml";
+					 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+					 
 					Limpiar();
 					JOptionPane.showMessageDialog(null, "Guardardo ", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-07-30T17:40:53 -->
+<!-- 2016-06-08T16:53:38 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="049781eb-654d-4971-ae7a-a5b8a568cb5c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
-	<queryString language="SQL">
+	<queryString>
 		<![CDATA[exec sp_select_datos_completos_empleado 1]]>
 	</queryString>
 	<field name="nombre_completo" class="java.lang.String"/>
@@ -45,6 +45,7 @@
 	<field name="vencimiento_licencia" class="java.lang.String"/>
 	<field name="COLUMN_38" class="java.lang.String"/>
 	<field name="infonavit_status" class="java.lang.String"/>
+	<field name="foto" class="java.io.InputStream"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -584,22 +585,10 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{infonavit_status}]]></textFieldExpression>
 			</textField>
-			<frame>
-				<reportElement x="420" y="7" width="127" height="93" uuid="d5ca0915-6eab-4f7c-a5df-5078e04d6cd2"/>
-				<frame>
-					<reportElement x="0" y="0" width="127" height="93" uuid="9d6b6a33-b3b3-4221-ba23-cab0ece32fd9"/>
-					<image scaleImage="FillFrame">
-						<reportElement x="0" y="0" width="127" height="93" uuid="5fd164e2-6f2e-4afc-9fd5-400167b829ed"/>
-						<box>
-							<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
-							<leftPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
-							<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
-							<rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
-						</box>
-						<imageExpression><![CDATA["C:/SCOI/tmp/tmp.jpg"]]></imageExpression>
-					</image>
-				</frame>
-			</frame>
+			<image>
+				<reportElement x="440" y="10" width="112" height="80" uuid="6ab9d333-e420-4c65-bad4-98e843bfdb3d"/>
+				<imageExpression><![CDATA[$F{foto}]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>
