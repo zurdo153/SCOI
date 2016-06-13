@@ -7,6 +7,7 @@ import Conexiones_SQL.GuardarSQL;
 
 
 
+
 public class Obj_Aspectos_De_La_Etapa {
 	private int folio;
 	private String aspecto;

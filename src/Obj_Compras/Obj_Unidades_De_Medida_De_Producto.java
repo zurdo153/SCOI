@@ -4,6 +4,7 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
 
+
 public class Obj_Unidades_De_Medida_De_Producto {
 	private int folio;
 	private String Unidad;
