@@ -7,6 +7,7 @@ import Conexiones_SQL.GuardarSQL;
 
 
 
+
 public class Obj_Unidades_de_Inspeccion {
 	private int folio;
 	private String unidades_de_inspeccion;

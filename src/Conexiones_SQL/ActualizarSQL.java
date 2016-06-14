@@ -76,6 +76,7 @@ import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Punto_De_Venta.Obj_Clientes;
 
+
 public class ActualizarSQL {
 	String Qbitacora ="exec sp_insert_empleado_en_bitacora ?,?,?,?,?";
 	PreparedStatement pstmtb = null;
