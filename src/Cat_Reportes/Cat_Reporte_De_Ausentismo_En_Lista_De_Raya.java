@@ -78,50 +78,42 @@ public class Cat_Reporte_De_Ausentismo_En_Lista_De_Raya extends JFrame{
 	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-//			String basedatos="2.26";
-//			String vista_previa_reporte="no";
-//			int vista_previa_de_ventana=0;
 			
 			int anio = Integer.valueOf(cmbAnios.getSelectedItem().toString().trim());
-			String mes = cmbMeses.getSelectedItem().toString().trim();
+			int mes = cmbMeses.getSelectedIndex()+1;
 			
 			if(anio>=2016){
 				
-					if((anio==2016 && mes.equals("Enero")) || (anio>=2016 && mes.equals("Febrero"))){
+					if((anio==2016 && mes<=2)){
 						JOptionPane.showMessageDialog(null, "Solo Se Pueden Consultar El Reporte De Ausentismo A Partir del Mes De Marzo Del 2016","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				          return;
-					}else{
-//						String reporte = "Obj_Reporte_De_Ausentismo_En_Lista_De_Raya.jrxml";
-//						String comando = "exec sp_select_ausentismo_en_lista_de_raya '"+anio+"','"+cmbMeses.getSelectedItem().toString().trim()+"'";
-//				   	    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-						Cat_Reporte_De_Ausentismo(anio+"",mes);
-					}
-					
-				}else{
-		  	  JOptionPane.showMessageDialog(null, "Solo Se Pueden Consultar El Reporte De Ausentismo A Partir del Mes De Marzo Del 2016","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-	          return;
+						}else{
+							Cat_Reporte_De_Ausentismo(anio+"",mes+"");
+						}
+			}else{
+		  	  	JOptionPane.showMessageDialog(null, "Solo Se Pueden Consultar El Reporte De Ausentismo A Partir del Mes De Marzo Del 2016","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+		  	  	return;
 			}
 	 	}
-	   };
+	};
 	   
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public static void Cat_Reporte_De_Ausentismo(String anio,String mes) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void Cat_Reporte_De_Ausentismo(String anio,String mes) {
 			
-			try {
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Ausentismo_En_Lista_De_Raya.jrxml");
-				
-				Map parametro = new HashMap();
-				parametro.put("anio", anio);
-				parametro.put("mes", mes);
-				
-				JasperPrint print = JasperFillManager.fillReport(report, parametro, new Connexion().conexion());
-				JasperViewer.viewReport(print, false);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-			}
+		try {
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Ausentismo_En_Lista_De_Raya.jrxml");
+			
+			Map parametro = new HashMap();
+			parametro.put("anio", anio);
+			parametro.put("mes", mes);
+			
+			JasperPrint print = JasperFillManager.fillReport(report, parametro, new Connexion().conexion());
+			JasperViewer.viewReport(print, false);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 		}
-	
+	}
 	
 	public static void main(String[] args) {
 		try{
