@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_2;
+import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_3;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
@@ -5603,5 +5604,55 @@ public boolean guardar_motivos_de_renuncia(int folioEmp,String estab,String dept
 	}		
 	return true;
 }
+
+public boolean Guardar_ConfigBD_3(Obj_Configuracion_Base_de_Datos_3 config){
+	BufferedWriter bufferedWriter = null;
+	String nomArchivo = System.getProperty("user.dir")+"\\Config\\config3";
+	try{
+		File archivo = new File(nomArchivo);
+		if(archivo.exists()){
+			bufferedWriter = new BufferedWriter (new FileWriter(nomArchivo));
+			
+			bufferedWriter.write(config.getDireccionIPV4()+    		"\n");
+			bufferedWriter.write(config.getNombreBD()+      		"\n");
+			bufferedWriter.write(config.getUsuario()+ 	    		"\n");
+			bufferedWriter.write(config.getContrasena()+       		"\n");
+			
+		}else{
+			File folder = new File(System.getProperty("user.dir")+"\\Config3");
+			folder.mkdirs();
+			archivo.createNewFile();
+			bufferedWriter = new BufferedWriter (new FileWriter(nomArchivo));
+			
+			bufferedWriter.write(config.getDireccionIPV4()+    		"\n");
+			bufferedWriter.write(config.getNombreBD()+      		"\n");
+			bufferedWriter.write(config.getUsuario()+ 	    		"\n");
+			bufferedWriter.write(config.getContrasena()+       		"\n");
+			
+		}
+		
+	}
+	catch(FileNotFoundException ex)
+	{
+		ex.printStackTrace();
+	}catch(IOException ex)
+	{
+		ex.printStackTrace();
+	}finally
+	{
+		try
+		{
+			if(bufferedWriter!=null)
+			{
+				bufferedWriter.flush();
+				bufferedWriter.close();
+			}
+		}catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
+	}return true;
+}
+
 
 } 

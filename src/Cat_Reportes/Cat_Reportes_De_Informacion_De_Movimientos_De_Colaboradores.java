@@ -16,7 +16,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -42,7 +41,7 @@ import Obj_Principal.Obj_Refrescar;
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
-public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends JFrame {
+public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends JDialog {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -84,6 +83,7 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 		this.setSize(930,200);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
+		this.setModal(true);
 		 cargar_fechas();
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/detective-icono-5257-64.png"));
 		this.setTitle("Reportes De Personal");

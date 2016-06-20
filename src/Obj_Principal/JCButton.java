@@ -23,13 +23,15 @@ public class JCButton extends JButton{
             CA    =   new Color(77,135,237);
             CB    =   new Color(110,160,239);
             CD    =   new Color(25,92,198);
+            setForeground(new Color(255, 255, 255));
             setBackground(CA);  
         }
         
         if(color.equals("AzulC")){
-            CA    =   new Color(4,187,254);
-            CB    =   new Color(167,213,255);
-            CD    =   new Color(25,92,198);
+            CA    =   new Color(5,184,255);
+            CB    =   new Color(1,213,255);
+            CD    =   new Color(1,42,113);
+            setForeground(new Color(255, 255, 255));
             setBackground(CA);  
         }
         
@@ -38,12 +40,14 @@ public class JCButton extends JButton{
             CB    =   new Color(247,66,72);
             CD    =   new Color(137,2,7);
             setBackground(CA);  
+            setForeground(new Color(255, 255, 255));
         }
         
         if(color.equals("Naranja")){
             CA    =   new Color(253,136,11);
             CB    =   new Color(253,197,134);
             CD    =   new Color(137,2,7);
+            setForeground(new Color(255, 255, 255));
             setBackground(CA);  
         }
         
@@ -51,6 +55,7 @@ public class JCButton extends JButton{
             CA    =   new Color(135 , 65 , 5);
             CB    =   new Color(207 ,113 ,36);
             CD    =   new Color(72  , 34 , 3);
+            setForeground(new Color(255, 255, 255));
             setBackground(CA);  
         }
         
@@ -59,8 +64,6 @@ public class JCButton extends JButton{
         setOpaque(false);
         setBorderPainted(false);
         setFont(new Font("Tahoma", 1, 12));
-        setForeground(new Color(255, 255, 255));
-        
         setText(Texto);
         setIcon(new ImageIcon("Imagen/"+Imagen));
     }

@@ -28,6 +28,7 @@ import IZAGAR_Obj.Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad;
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_2;
+import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_3;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Arduino.Obj_Arduino;
 import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
@@ -108,6 +109,31 @@ public class BuscarSQL {
 	
 	Connexion con = new Connexion();
 	
+	@SuppressWarnings({ "unchecked", "rawtypes", "resource" })
+	public Obj_Configuracion_Base_de_Datos_3 Conexion_BD_3() throws IOException {
+		Vector myVector = new Vector();
+		Obj_Configuracion_Base_de_Datos_3 config = new Obj_Configuracion_Base_de_Datos_3();
+		
+		try{
+			FileReader archivo = new FileReader(System.getProperty("user.dir")+"\\Config\\config3");
+			BufferedReader bufferedWriter = new BufferedReader(archivo);
+			String cadena = "";
+			while( (cadena = bufferedWriter.readLine()) !=null)
+				myVector.addElement(cadena);
+				
+				config.setDireccionIPV4(myVector.get(0).toString());
+				config.setNombreBD(myVector.get(1).toString());
+				config.setUsuario(myVector.get(2).toString());
+				config.setContrasena(myVector.get(3).toString());
+				
+		}catch(FileNotFoundException e) {
+			System.out.println(e.getMessage());
+			return config=null;
+		}
+		return config;
+			
+	}
+
 	public int  dias_para_fecha_revision_consideracion() throws SQLException{
 		int dias=0;
 		String query = "select dias_atras_para_fecha_consideracion_asistencia as dias from tb_configuracion_sistema";
@@ -8818,5 +8844,79 @@ public class BuscarSQL {
 			}}
 		}
 		return emp;
+	}
+	
+	public String busca_metas_periodo(int anio,int mes,String cod_est) throws SQLException{
+		String Descripcion="";
+		String query = 
+				"declare @thiSql char(2), @establ varchar(20) set @establ=(select  top 1 cod_estab from ventas where establecimiento='"+cod_est+"')"
+				+" set @thiSql =(select top 1 'si' from metas_mensuales_por_establecimiento_pruebas where año="+anio+" and cod_estab=@establ and mes="+mes+")"
+				+" if(@thiSql is null) set @thiSql='no'" 
+				+" select @thiSql  as resultado";
+
+	
+		Statement stmt = null;
+	
+		try {
+			stmt = con.conexion_ventas().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Descripcion=(rs.getString(1));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){
+				
+				try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			}
+		}
+		
+		return Descripcion;
+		
+		
+	
+	}
+	//new
+	public String busca_metas_a_generar(int anio,int mes,String est, int cod_meta) throws SQLException{
+		String Descripcion="";
+		String query = 
+				"declare @thiSql char(2), @establ int set @establ= (select  top 1 cod_estab from ventas where establecimiento='"+est+"') "
+				+"set @thiSql =(select top 1 'si' from tabla_de_venta_por_mes_de_un_año_por_un_clasificador_de_meta_y_establecimiento ("+anio+","+mes+","+cod_meta+",@establ)) "
+			    +"if(@thiSql is null) set @thiSql='no' " 
+			    +"select @thiSql  as resultado";
+		Statement stmt = null;
+	
+		try {
+			stmt = con.conexion_ventas().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Descripcion=(rs.getString(1));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){
+				
+				try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			}
+		}
+		
+		return Descripcion;
+		
+		
+	
 	}
 }

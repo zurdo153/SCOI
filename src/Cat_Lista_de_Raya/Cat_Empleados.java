@@ -257,25 +257,31 @@ public class Cat_Empleados extends JFrame{
 	JButton btnExaminar = new JButton("Examinar");
 	JButton btnCamara = new JButton(new ImageIcon("Iconos/camara_icon&16.png"));
 	
-	JCButton btnImp_Datos_Completos = new JCButton("Colaborador","informacion-del-usuario-icono-8370-16.png","Azul");
-	JCButton btnContratacion        = new JCButton("Contratacion","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png","Azul");
-	JCButton btnDocumentacion       = new JCButton("Documentación","carpeta-de-correo-icono-4002-16.png","Azul");
-	JCButton btnAsistencia_Empleado = new JCButton("Asistencia","archivo-icono-8809-16.png","Azul"); 
-	JCButton btnCortes              = new JCButton("Cortes","dinero-icono-8797-16.png","Azul"); 
+
+	JCButton btnContratacion        = new JCButton("Contratacion","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png","AzulC");
+	JCButton btnDocumentacion       = new JCButton("Documentación","carpeta-de-correo-icono-4002-16.png","AzulC");
+	JCButton btnEncuentaDeSalida    = new JCButton("Encuesta De Salida","Lista.png","AzulC");
+
 	JCButton btnIncontratables      = new JCButton("No Contratables","tarjeta-de-informacion-del-usuario-icono-7370-16.png","Azul");
 
-	JCButton btnLicencias           = new JCButton("R.Licencias","truck-icon.png","Azul");
-	JCButton btnCumpleaños_del_Mes  = new JCButton("R.Cumpleaños","cookies-tarta-de-cumpleanos-icono-9840-16.png","Azul");
-	JCButton btnAltasBajas          = new JCButton("R.Rotacion","bajas_altas_16p.png","Azul");
+	JCButton btnLicencias           = new JCButton("R. Licencias","truck-icon.png","Azul");
+	JCButton btnCumpleaños_del_Mes  = new JCButton("R. Cumpleaños","cookies-tarta-de-cumpleanos-icono-9840-16.png","Azul");
+	JCButton btnAusentismo		    = new JCButton("R. Ausentismo","reloj.png","Azul");
+	JCButton btn_Adeudo        		= new JCButton("R. Adeudos","detective-icono-5257-16.png","Azul");
+	JCButton btnReporteSalida		= new JCButton("R. Encuesta De Salida","baja16.png","Azul");
 	
-	JCButton btnAusentismo		    = new JCButton("R.Ausentismo","reloj.png","AzulC");
-	JCButton btnEncuentaDeSalida    = new JCButton("Enc. Salida","Lista.png","AzulC");
+
+	JCButton btnImp_Datos_Completos = new JCButton("Datos Colaborador","informacion-del-usuario-icono-8370-16.png","Azul");
 	
-	JCButton btn_plantilla          = new JCButton("R.Plantilla","plan-icono-5073-16.png","Azul");
-	JCButton btn_R_horarios         = new JCButton("R.Horarios","horas-de-reloj-de-alarma-icono-5601-16.png","Azul");
-	JCButton btn_movimientos        = new JCButton("Inf.Movimientos","detective-icono-5257-16.png","Azul");
-	JCButton btn_Adeudo        		= new JCButton("R.Adeudo","detective-icono-5257-16.png","AzulC");
-	JCButton btnReporteSalida		= new JCButton("R.Salida","imprimir-16.png","AzulC");
+	JCButton btnAltasBajas          = new JCButton("R. Rotacion","bajas_altas_16p.png","Azul");
+	JCButton btnAsistencia_Empleado = new JCButton("R. Asistencia","archivo-icono-8809-16.png","Azul"); 
+	JCButton btnCortes              = new JCButton("R. Cortes","dinero-icono-8797-16.png","Azul"); 
+	JCButton btn_plantilla          = new JCButton("R. Plantilla","plan-icono-5073-16.png","Azul");
+	JCButton btn_R_horarios         = new JCButton("R. Horarios","horas-de-reloj-de-alarma-icono-5601-16.png","Azul");
+	
+	JCButton btn_movimientos        = new JCButton("R.Percepciones y Deducciones","detective-icono-5257-16.png","Azul");
+
+
 	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
@@ -391,28 +397,31 @@ public class Cat_Empleados extends JFrame{
 		this.txtIngresoImss.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		this.txtVencimientoLicencia.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		
-		int x = 11, y=20, ancho=140,width=155,height=20,sep=167;
+		int x = 11, y=20, ancho=140,width=190,height=30,sep=202;
 		
 		panelReporte.add(btnAsistencia_Empleado).setBounds  (x	   ,y    ,width,height);
+	    panelReporte.add(btn_R_horarios).setBounds          (x+=sep,y    ,width,height);
+		panelReporte.add(btnImp_Datos_Completos).setBounds  (x+=sep,y    ,width,height);
+		panelReporte.add(btn_Adeudo).setBounds           	(x+=sep,y    ,width,height);
 		panelReporte.add(btnCortes).setBounds               (x+=sep,y    ,width,height);
-		panelReporte.add(btnIncontratables).setBounds       (x+=sep,y    ,width,height); 
-        panelReporte.add(btn_R_horarios).setBounds          (x+=sep,y    ,width,height);
-		panelReporte.add(btn_plantilla).setBounds           (x+=sep,y    ,width,height);
-		panelReporte.add(btn_movimientos).setBounds         (x+=sep,y    ,width,height);
+
 		x=10;
-		panelReporte.add(btnLicencias).setBounds            (x     ,y+=27,width,height);
-		panelReporte.add(btnCumpleaños_del_Mes).setBounds   (x+=sep,y    ,width,height);
+		panelReporte.add(btn_plantilla).setBounds           (x     ,y+=40,width,height);
+		panelReporte.add(btn_movimientos).setBounds         (x+=sep,y    ,width,height);
 		panelReporte.add(btnAltasBajas).setBounds           (x+=sep,y    ,width,height);
 		panelReporte.add(btnAusentismo).setBounds           (x+=sep,y    ,width,height);
-		panelReporte.add(btn_Adeudo).setBounds           	(x+=sep,y    ,width,height);
 		panelReporte.add(btnReporteSalida).setBounds		(x+=sep,y    ,width,height);
 		
-		x = 10;
-		y = 20;
-		panel.add(btnImp_Datos_Completos).setBounds  (x     ,y    ,width,height);
-		panel.add(btnContratacion).setBounds         (x+=sep,y    ,width,height);
+		x=10;
+		panelReporte.add(btnLicencias).setBounds            (x     ,y+=40,width,height);
+		panelReporte.add(btnCumpleaños_del_Mes).setBounds   (x+=sep,y    ,width,height);
+		panelReporte.add(btnIncontratables).setBounds       (x+=sep,y    ,width,height); 
+
+		
+		x = 10;y = 20;height=20;width=175;
+		panel.add(btnContratacion).setBounds         (x	     ,y    ,width,height);
 		panel.add(btnDocumentacion).setBounds        (x+=sep,y    ,width,height);
-		panel.add(btnEncuentaDeSalida).setBounds     (x+=(sep*3),y    ,width,height);
+		panel.add(btnEncuentaDeSalida).setBounds     (x+=sep,y    ,width,height);
 		
 		x=20; y=y+=38;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
@@ -2141,10 +2150,33 @@ public void guardar_modificar_Empleado(){
 			     try {
 				Edad = (new BuscarSQL().edad(fecha_nacimiento));
 				  } catch (SQLException e1) {e1.printStackTrace();}
+			int dias_contrato =0; 
+					
+					switch ((cmbContratacion.getSelectedIndex())) {
+					case 1:
+						dias_contrato =30;
+						break;
+					case 2:
+						dias_contrato =60;
+						break;
+					case 3:
+						dias_contrato =90;
+						break;
+					case 4:
+						dias_contrato =120;
+						break;
+					case 5:
+						dias_contrato =150;
+						break;	
+					default:
+						dias_contrato =0;
+						break;
+					}
+			
 			
 			new Cat_Reportes_De_Contratacion_Por_Empleado(txtFolioEmpleado.getText(), txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText(), cmbEstablecimiento.getSelectedItem().toString()
 					                                      ,cmbDepartamento.getSelectedItem().toString(),cmbPuesto.getSelectedItem().toString(), Sexo,cmbEstadoCivil.getSelectedItem().toString().trim(), Edad, txtCalle.getText()+", COL. "+txtColonia.getText()+", "+txtPoblacion.getText()
-					                                      ,cmbSueldo.getSelectedItem().toString(), NombreUsuario, txtHorario.getText(),new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()),cmbContratacion.getSelectedItem().toString().trim() ).setVisible(true);
+					                                      ,cmbSueldo.getSelectedItem().toString(), NombreUsuario, txtHorario.getText(),new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()),dias_contrato).setVisible(true);
 
 			}
 			}

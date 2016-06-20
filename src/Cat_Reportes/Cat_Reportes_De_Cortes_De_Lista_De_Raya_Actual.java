@@ -18,7 +18,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -41,7 +40,7 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
+public class Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual extends JDialog {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -88,6 +87,7 @@ public class Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual extends JFrame {
 		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-icono-8797-48.jpg"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+		this.setModal(true);
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccion Del Reporte de Diferencia de Cortes de Lista de Raya Actual"));
 		this.setTitle("Reportes de Abonos y Saldos A Cortes");
 		

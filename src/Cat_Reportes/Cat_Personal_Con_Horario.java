@@ -9,7 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.UIManager;
@@ -20,7 +20,7 @@ import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 
 @SuppressWarnings("serial")
-public class Cat_Personal_Con_Horario extends JFrame{
+public class Cat_Personal_Con_Horario extends JDialog{
 
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -47,6 +47,7 @@ public class Cat_Personal_Con_Horario extends JFrame{
 	
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/plan-icono-5073-16.png"));
 		this.setTitle("Reportes de Colaboradores.");
+		this.setModal(true);
 		
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();

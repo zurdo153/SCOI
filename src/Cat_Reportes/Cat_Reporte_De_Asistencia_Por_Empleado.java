@@ -59,7 +59,7 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 		panel.setBorder(BorderFactory.createTitledBorder("Reporte De Asistencia Por Empleado"));
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/archivo-icono-8809-32.png"));
 		this.setTitle("Asistencia Por Empleado En Un Periodo");
-		
+		this.setModal(true);
 		panel.add(txtFolio).setBounds(60,25,40,20);
 		txtFolio.setEnabled(false);
 		txtFolio.setText(Folio);

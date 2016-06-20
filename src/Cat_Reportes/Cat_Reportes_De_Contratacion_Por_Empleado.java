@@ -77,7 +77,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	JLabel JLBTestigo2 = new JLabel(new ImageIcon("Imagen/icono_testigo_16.png") );
 	
 	
-	JCButton btngenerarTemporal = new JCButton("Contrato Temporal","buscar.png","Cafe");
+	JCButton btngenerarTemporal = new JCButton("Contrato Temporal","buscar.png","Azul");
 	JCButton btngenerarIndefinido = new JCButton("Contrato Indefinido","buscar.png","Azul");
 	
 	
@@ -85,7 +85,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	String Cantidad_Letra="",fecha_ingreso="";
 	double numero=0;
 	public Cat_Reportes_De_Contratacion_Por_Empleado(String Folio,String Nombre,String Establecimiento,String Departamento,String Puesto, String Sexo, String Estado_Civil
-			                                        ,String Edad ,String Domicilio ,String Sueldo,String NombreUsuario, String Horario, String fecha_de_ingreso, String TipoContrato){
+			                                        ,String Edad ,String Domicilio ,String Sueldo,String NombreUsuario, String Horario, String fecha_de_ingreso, Integer TipoContrato){
          numero= Double.valueOf(Sueldo);
          fecha_ingreso= fecha_de_ingreso;
 	     
@@ -93,7 +93,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-	     
+	    this.setModal(true); 
 		panel.setBorder(BorderFactory.createTitledBorder("Verifique La Informacion Antes De Imprimir"));
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Lista.png"));
 		this.setTitle("Reportes De Contratacion Del Empleado");
@@ -203,42 +203,44 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		panel.add(new JLabel(" Contrato:")).setBounds(x,y+=30,80,a);
 //		panel.add(JLBTestigo2).setBounds(x+=45,y,a,a);
 		panel.add(txtTipoContrato).setBounds(x+=65,y,340,a);
-		txtTipoContrato.setEditable(false);
-		txtTipoContrato.setText(TipoContrato); 
 		
        x=15;
                
-		panel.add(new JLabel("Fecha Inicio:")).setBounds(x,y+=30,l*2,a);
-		panel.add(JLBlinicio).setBounds(x+=60,y,a,a);
-		panel.add(c_inicio).setBounds(x+=20,y,90,a);
-		c_inicio.setEnabled(false);
-		
-		panel.add(new JLabel("Fecha Final:")).setBounds(x+=155,y,l*2,a);
-		panel.add(JLBfin).setBounds(x+=60,y,a,a);
-		panel.add(c_final).setBounds(x+=20,y,90,a);
-		c_final.setEnabled(true);
-				
-		panel.add(btngenerarTemporal).setBounds(20, 470, 180, a);
-		
+		panel.add(btngenerarTemporal).setBounds(130, 470, 180, 40);
+		panel.add(btngenerarIndefinido).setBounds(130, 470, 180, 40);
+		   
 		cont.add(panel);
-		cargar_fechas();
 		btngenerarTemporal.addActionListener(opGenerarTemporal);
 	 
 		 Cargar_Cantidad_Letra();
  	     txtSueldo_Base.addKeyListener(oprecalcular_cantidad_letra);
  	     txtEstadoCivil.addKeyListener(oppasar_a_sueldo);
-	     
- 	     
- 	    panel.add(btngenerarIndefinido).setBounds(235, 470, 180, a);
- 	    
- 	   cont.add(panel);
-		cargar_fechas();
 		btngenerarIndefinido.addActionListener(opGenerarIndefinido);
 	 
 		 Cargar_Cantidad_Letra();
 	     txtSueldo_Base.addKeyListener(oprecalcular_cantidad_letra);
 	     txtEstadoCivil.addKeyListener(oppasar_a_sueldo);
 		
+			txtTipoContrato.setEditable(false);
+			c_inicio.setEnabled(false);
+			c_final.setEnabled(false); 
+			
+			if(TipoContrato==0){
+				btngenerarTemporal.setVisible(false);
+				 txtTipoContrato.setText("INDETERMINADO"); 
+			}else{
+				panel.add(new JLabel("Fecha Inicio:")).setBounds(x,y+=30,l*2,a);
+				panel.add(JLBlinicio).setBounds(x+=60,y,a,a);
+				panel.add(c_inicio).setBounds(x+=20,y,90,a);
+				panel.add(new JLabel("Fecha Final:")).setBounds(x+=155,y,l*2,a);
+				panel.add(JLBfin).setBounds(x+=60,y,a,a);
+				panel.add(c_final).setBounds(x+=20,y,90,a);
+				
+				btngenerarIndefinido.setVisible(false);
+				 txtTipoContrato.setText(TipoContrato+" DIAS"); 
+			}				
+			 cargar_fechas(TipoContrato);
+			 cont.add(panel);
 //      asigna el foco al JTextField folio_factura al arrancar la ventana y agrega al proveedor como nuevo
         this.addWindowListener(new WindowAdapter() {
                 public void windowOpened( WindowEvent e ){
@@ -285,7 +287,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		}	
 	    };
 	    
-	public void cargar_fechas(){
+	public void cargar_fechas(Integer dias){
 		Date date1 = null;
 				  try {
 					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
@@ -297,7 +299,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 		c_inicio.setDate(date1);
 	    Date date2 = null;
 					  try {
-						date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(-30));
+						date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(-dias));
 					} catch (ParseException e) {
 						e.printStackTrace();
 					} catch (SQLException e) {
@@ -402,7 +404,7 @@ public class Cat_Reportes_De_Contratacion_Por_Empleado extends JDialog{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reportes_De_Contratacion_Por_Empleado("1","MARCO ANTONIO BODART GUZMAN","SISTEMAS","SISTEMAS","LIDER SISTEMAS","MASCULINO","CASADO","35"," COL LA CUCHILLA ELDORADO,SINALOA","2025","NOMBRE COMPLETO USUARIO SCOI","8-7","01/06/2006","INDETERMINADO").setVisible(true);
+			new Cat_Reportes_De_Contratacion_Por_Empleado("1","MARCO ANTONIO BODART GUZMAN","SISTEMAS","SISTEMAS","LIDER SISTEMAS","MASCULINO","CASADO","35"," COL LA CUCHILLA ELDORADO,SINALOA","2025","NOMBRE COMPLETO USUARIO SCOI","8-7","01/06/2006",0).setVisible(true);
 		}catch(Exception e){	}
 	}
 }

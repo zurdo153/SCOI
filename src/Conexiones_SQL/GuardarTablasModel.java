@@ -1894,6 +1894,55 @@ public boolean Guardar_captura_inicial_de_resguardo_de_mercancia (String cod_prv
 	return true;
 	}
 
+public boolean Guardar_Metas (Object[][] tabla,String Establecimiento,int mes, int anio){
+	  String query =  "exec sp_insert_metas_periodo ?,?,?,?,?,?,?,?,?,?,?,?";
+	  Connection con = new Connexion().conexion_ventas();
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.length; i++){
+				pstmt.setString(1, tabla[i][0].toString().trim());//ClasificacionMetas
+				pstmt.setString(2, Establecimiento);//Establecimiento
+				pstmt.setString(3, tabla[i][4].toString().trim()); //Meta_Mensual
+				pstmt.setInt   (4, mes                          );//mes
+				pstmt.setInt   (5, anio                         );//año
+				pstmt.setString(6, "V"                          );//status
+				pstmt.setString(7, tabla[i][3].toString().trim());//porcentajeMetaA
+				pstmt.setString(8, tabla[i][5].toString().trim());//B%
+				pstmt.setString(9, tabla[i][7].toString().trim());//c%
+				pstmt.setString(10, tabla[i][6].toString().trim());//meta b$
+				pstmt.setString(11, tabla[i][8].toString().trim());//meta c$
+				pstmt.setString(12, tabla[i][2].toString().trim());//vta Real_año_pasado
+		
+				pstmt.executeUpdate();
+		}
+		con.commit();
+		
+	} catch (SQLException e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en Guardar_Metas  en la  funcion Guardar_matriz  \n procedimiento almacenado sp_insert_metas_periodo SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en Guardar_Metas  en la funcion Guardar_matriz \n procedimiento almacenado sp_insert_metas_periodo SQLException: \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en Guardar_Metas  en la funcion Guardar_matriz \n procedimiento almacenado sp_insert_metas_periodo SQLException: \n "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+
 
 }
 
