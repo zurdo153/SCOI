@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-03-11T16:57:05 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-06-18T18:46:44 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Movimiento_De_Mercancia_En_Resguardo" pageWidth="210" pageHeight="850" columnWidth="190" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" isIgnorePagination="true" uuid="bea63811-6721-427b-94ea-fe7838693ff8">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="mm"/>
@@ -15,8 +15,31 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
-	<queryString>
-		<![CDATA[exec sp_Reporte_De_Venta_De_Casco 4]]>
+	<queryString language="SQL">
+		<![CDATA[declare @folio int = 8
+
+SELECT tb_venta_de_cascos_proveedores.[folio_venta_casco]
+      ,tb_venta_de_cascos_proveedores.[cod_prv]
+      ,tb_venta_de_cascos_proveedores.[proveedor]
+      ,tb_venta_de_cascos_proveedores.[beneficiario_proveedor]
+      ,tb_entysal.[transaccion_origen]
+      ,convert(varchar(20),tb_entysal.fecha,103)+' '+convert(varchar(20),tb_entysal.fecha,108) as fecha_movimiento
+      ,tb_entysal.folio_producto
+	  ,tb_productos.descripcion
+      ,tb_entysal.cantidad
+      ,tb_entysal.costo
+      ,tb_entysal.precio_venta
+      ,(tb_entysal.precio_venta*tb_entysal.cantidad)*-1 as importe
+      ,tb_entysal.status
+	  ,tb_venta_de_cascos_proveedores.total
+	  ,(((tb_entysal.precio_venta*tb_entysal.cantidad)*-1)-((tb_entysal.costo*tb_entysal.cantidad)*-1)) as bonificacion 
+      ,(select nombre+' '+ap_paterno+' '+ap_materno from tb_empleado where folio=[usuario_realizo_mov])as nombre_usuario_realizo_movimiento
+  FROM  tb_venta_de_cascos_proveedores
+  inner join [tb_entysal] on [tb_entysal].folio_origen=tb_venta_de_cascos_proveedores.[folio_venta_casco] and tb_entysal.transaccion_origen=24
+  inner join tb_productos on tb_productos.folio_producto=[tb_entysal].folio_producto
+
+   where tb_venta_de_cascos_proveedores.folio_venta_casco=@folio
+]]>
 	</queryString>
 	<field name="folio_venta_casco" class="java.lang.Integer"/>
 	<field name="cod_prv" class="java.lang.String"/>
@@ -33,6 +56,10 @@
 	<field name="status" class="java.lang.String"/>
 	<field name="total" class="java.math.BigDecimal"/>
 	<field name="nombre_usuario_realizo_movimiento" class="java.lang.String"/>
+	<field name="bonificacion" class="java.math.BigDecimal"/>
+	<variable name="TotalBonificacion" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{bonificacion}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -122,7 +149,7 @@
 	<columnHeader>
 		<band height="12">
 			<staticText>
-				<reportElement x="0" y="0" width="30" height="12" uuid="60170721-28bb-4301-94a5-e6d5db5ed5f6">
+				<reportElement x="0" y="0" width="20" height="12" uuid="60170721-28bb-4301-94a5-e6d5db5ed5f6">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -131,7 +158,7 @@
 				<text><![CDATA[Folio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="0" width="50" height="12" uuid="30c3badb-1bf6-4a5b-92f9-74e5266ebc4e">
+				<reportElement x="21" y="0" width="50" height="12" uuid="30c3badb-1bf6-4a5b-92f9-74e5266ebc4e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -140,7 +167,7 @@
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="150" y="0" width="30" height="12" uuid="a7adc2d8-e10e-4879-8ae7-ae26ff5b1856">
+				<reportElement x="128" y="0" width="30" height="12" uuid="a7adc2d8-e10e-4879-8ae7-ae26ff5b1856">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -149,7 +176,7 @@
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="0" width="20" height="12" uuid="91009990-7f7a-4eac-b8a9-881c7bcc9c12">
+				<reportElement x="109" y="0" width="20" height="12" uuid="91009990-7f7a-4eac-b8a9-881c7bcc9c12">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -158,13 +185,22 @@
 				<text><![CDATA[Pzas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="0" width="20" height="12" uuid="913af79b-c64d-474f-a97e-4462070a5b5a">
+				<reportElement x="87" y="0" width="20" height="12" uuid="913af79b-c64d-474f-a97e-4462070a5b5a">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pcio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="30" height="12" uuid="63edafe0-2a39-4725-94dd-d249108f05c4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bonific.]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -178,39 +214,46 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textField>
-					<reportElement x="30" y="0" width="70" height="14" uuid="e6fef259-7d77-4688-9e31-08272c0a7aad"/>
+					<reportElement x="21" y="0" width="60" height="14" uuid="e6fef259-7d77-4688-9e31-08272c0a7aad"/>
 					<textElement>
 						<font size="5"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement x="100" y="0" width="30" height="11" uuid="338537e2-b9ca-4161-8f7d-d2722cf3c720"/>
+					<reportElement x="75" y="0" width="30" height="11" uuid="338537e2-b9ca-4161-8f7d-d2722cf3c720"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{precio_venta}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="2" width="30" height="7" uuid="4b19f998-ab39-4b7e-ad7d-b10fdfb85542"/>
+					<reportElement x="0" y="1" width="20" height="7" uuid="4b19f998-ab39-4b7e-ad7d-b10fdfb85542"/>
 					<textElement>
 						<font size="5"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{folio_producto}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.###">
-					<reportElement x="129" y="0" width="21" height="11" uuid="8f2993f6-c7b1-4c50-a1e3-f2483b5607fb"/>
+					<reportElement x="105" y="0" width="20" height="11" uuid="8f2993f6-c7b1-4c50-a1e3-f2483b5607fb"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement x="150" y="0" width="30" height="11" uuid="e5e28744-9eee-442c-b38d-602333452228"/>
+					<reportElement x="126" y="0" width="30" height="11" uuid="e5e28744-9eee-442c-b38d-602333452228"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="160" y="0" width="30" height="11" uuid="6bd3fb30-5415-4e28-843d-ed4ff83f2367"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bonificacion}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
@@ -218,7 +261,7 @@
 	<columnFooter>
 		<band height="63">
 			<staticText>
-				<reportElement x="90" y="0" width="51" height="12" uuid="b68a96fd-821e-47b9-8fb7-2265bb3b40b3">
+				<reportElement x="65" y="0" width="51" height="12" uuid="b68a96fd-821e-47b9-8fb7-2265bb3b40b3">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -227,16 +270,16 @@
 				<text><![CDATA[Total a Pagar:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="151" y="0" width="28" height="1" uuid="52aa4101-838e-4ecf-a44b-5469c86accdb">
+				<reportElement x="127" y="0" width="28" height="1" uuid="52aa4101-838e-4ecf-a44b-5469c86accdb">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
 			<textField pattern="#,##0.00#">
-				<reportElement x="141" y="0" width="40" height="12" uuid="b6a4e677-f1a2-450a-a8bd-bc2f456f7cc4">
+				<reportElement x="115" y="0" width="40" height="12" uuid="b6a4e677-f1a2-450a-a8bd-bc2f456f7cc4">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right">
-					<font size="9" isUnderline="true"/>
+					<font size="8" isUnderline="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
@@ -265,6 +308,22 @@
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["    Firma Recibe: "+$F{beneficiario_proveedor}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="161" y="0" width="28" height="1" uuid="1da14c90-ecc2-4f81-87ca-335a2c116e42">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
+			</line>
+			<textField pattern="#,##0.00#">
+				<reportElement x="158" y="0" width="32" height="12" uuid="51bc1ba7-82ff-479f-bb5d-c0846d90d5da">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TotalBonificacion}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>

@@ -292,13 +292,20 @@ public class Cat_Indicadores extends JFrame {
 		}
 	};
 	
+	boolean bandera = false;
 	ActionListener opValidaIndicador = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if(cmbConcepto.getSelectedItem().toString().trim().equals("Ausentismo")){
+			if(cmbConcepto.getSelectedItem().toString().trim().equals("Ausentismo") || cmbConcepto.getSelectedItem().toString().trim().equals("Valor De Nomina")){
+				
+				bandera = true;
+				
 				cmbEstablecimiento.setSelectedIndex(0);
 				cmbEstablecimiento.setEnabled(false);
 				c_final.setEnabled(false);
 			}else{
+				
+				bandera = false;
+				
 				cmbEstablecimiento.setSelectedIndex(0);
 				cmbEstablecimiento.setEnabled(true);
 				c_final.setEnabled(true);
@@ -309,7 +316,7 @@ public class Cat_Indicadores extends JFrame {
 	ActionListener opGenerarReporte_de_concepto = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			if(cmbConcepto.getSelectedItem().toString().trim().equals("Ausentismo")){
+			if(bandera){
 				
 				int anio = Integer.valueOf(new SimpleDateFormat("yyyy").format(c_inicio.getDate()));
 				int mes = Integer.valueOf(new SimpleDateFormat("MM").format(c_inicio.getDate()));
@@ -319,7 +326,13 @@ public class Cat_Indicadores extends JFrame {
 					JOptionPane.showMessageDialog(null, "Solo Se Pueden Consultar El Reporte De Ausentismo A Partir del Mes De Marzo Del 2016","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			          return;
 					}else{
-						Cat_Reporte_De_Ausentismo(anio+"",mes+"");
+						
+						switch(cmbConcepto.getSelectedItem().toString().trim()){
+							case "Ausentismo": Cat_Reporte_De_Ausentismo(anio+"",mes+""); break;
+							case "Valor De Nomina": Cat_Reporte_De_Valor_De_Nomina(anio+"",mes+""); break;
+							default: JOptionPane.showMessageDialog(null, "No Se Encontro El Indicador","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png")); break;
+						}
+						
 					}
 					
 				}else{
@@ -353,6 +366,8 @@ public class Cat_Indicadores extends JFrame {
 										if(!cmbConcepto.getSelectedItem().toString().trim().equals("Selecciona Un Indicador")){
 											Obj_Indicadores indicador = new Obj_Indicadores().buscar(cmbConcepto.getSelectedItem().toString().trim());
 											comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'";
+											System.out.println(comando);
+											
 											reporte =indicador.getReporte();
 											testigo=1;
 										}
@@ -360,6 +375,7 @@ public class Cat_Indicadores extends JFrame {
 										if(cmbConcepto.getSelectedItem().toString().trim().equals("Indice De Rotacion De Personal Colaboradores Por Lista De Raya")||cmbConcepto.getSelectedItem().toString().trim().equals("Indice De Rotacion De Personal Colaboradores Por Lista De Raya Totales")){
 											Obj_Indicadores indicador = new Obj_Indicadores().buscar(cmbConcepto.getSelectedItem().toString().trim());
 											comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+cmbConcepto.getSelectedItem().toString().trim()+"'";
+											
 											reporte =indicador.getReporte();
 											testigo=1;
 										}
@@ -393,6 +409,23 @@ public class Cat_Indicadores extends JFrame {
 			
 			JasperPrint print = JasperFillManager.fillReport(report, parametro, new Connexion().conexion());
 			JasperViewer.viewReport(print, false);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+		}
+	}
+	
+	public static void Cat_Reporte_De_Valor_De_Nomina(String anio,String mes) {
+		
+		try {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			
+			String comando="exec sp_select_valor_de_nomina '"+anio+"','"+mes+"'";
+			String reporte = "Obj_Reporte_De_Valor_De_Nomina.jrxml";
+			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
