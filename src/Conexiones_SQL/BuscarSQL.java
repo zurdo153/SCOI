@@ -8919,4 +8919,56 @@ public class BuscarSQL {
 		
 	
 	}
+	public String Folio_Siguiente() throws SQLException{
+		String folio = "";
+		String query = "select folio+1 from tb_folios where folio_transaccion=31 ";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				folio=(rs.getString(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return folio;
+	
+	}
+	public String Buscar_Descripcion(int folio) throws SQLException{
+		String Descripcion="";
+		String query = "declare @valor varchar(300) set @valor=(select descripcion from tb_matrices where folio_matriz="+folio+")"
+				+ " if @valor is null set @valor='No Se Encontro Registro Con Este folio' select @valor ";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Descripcion=(rs.getString(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			}
+		}
+		
+		return Descripcion;
+		
+		
+	
+	}
 }

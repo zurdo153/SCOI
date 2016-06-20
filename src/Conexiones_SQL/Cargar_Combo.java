@@ -2081,4 +2081,151 @@ public class Cargar_Combo {
 			
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String[] Combo_Matriz_Etapa() throws SQLException{
+		String query = "select etapa from dbo.tb_etapas where status=1";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				miVector.add(rs.getString(1).trim());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+		
+			
+	}
+	//metodo llenaComboMatriz_AspectoDeLaEtapa
+	@SuppressWarnings("unchecked")
+	public String[] Combo_Matriz_AspectosDeLaEtapa() throws SQLException{
+		String query = "select aspecto_de_la_etapa from dbo.tb_aspectos_de_la_etapa where status=1";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				miVector.add(rs.getString(1).trim());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	//metodo llenaCombo del departamento
+	@SuppressWarnings("unchecked")
+	public String[] Combo_Matriz_Departamento() throws SQLException{
+		String query = "select departamento from dbo.tb_departamento where status=1";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				miVector.add(rs.getString(1).trim());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	//llenado de la unidad de inspeccion
+	@SuppressWarnings("unchecked")
+	public String[] Combo_Matriz_Unidad_De_Inspeccion() throws SQLException{
+		String query = "select unidad_de_inspeccion from dbo.tb_unidades_de_inspeccion where status=1";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				miVector.add(rs.getString(1).trim());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
+	//llenado de combobox en estableccimiento
+	@SuppressWarnings("unchecked")
+	public String[] Combo_Matriz_Establecimiento() throws SQLException{
+		String query = "select nombre from dbo.tb_establecimiento";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				miVector.add(rs.getString(1).trim());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
 }
