@@ -5294,7 +5294,7 @@ public boolean Guardar_Pago_cascos(Obj_Venta_De_Cascos_A_Proveedores pago_cascos
 	int folio_transaccion=busca_y_actualiza_proximo_folio(24);
 	pago_cascos.setFolio_pago_casco(folio_transaccion+"");
 	
-	String query = "exec sp_insert_pago_cascos_proveedores_movimiento ?,?,?,?,?,"+usuario.getFolio();
+	String query = "exec sp_insert_pago_cascos_proveedores_movimiento ?,?,?,?,?,?,?";
 	String query2 = "exec sp_insert_pago_cascos_proveedores ?,?,?,"+usuario.getFolio();
 	Connection con = new Connexion().conexion();
 	
@@ -5309,6 +5309,8 @@ public boolean Guardar_Pago_cascos(Obj_Venta_De_Cascos_A_Proveedores pago_cascos
 		pstmt.setString(3, pago_cascos.getNombre_proveedor().trim());
 		pstmt.setString(4, pago_cascos.getNombre_proveedor_recibe().trim());
 		pstmt.setString(5, pago_cascos.getTotal());
+		pstmt.setInt(6, usuario.getFolio());
+		pstmt.setString(7, pago_cascos.getFolio_nota());
 		
 		for(int i=0; i<pago_cascos.getTabla_obj().length; i++){
 			pstmtabla.setInt(1, folio_transaccion);

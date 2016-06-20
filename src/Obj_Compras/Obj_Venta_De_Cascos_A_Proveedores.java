@@ -10,7 +10,8 @@ public class Obj_Venta_De_Cascos_A_Proveedores {
 	public String  folio_pago_casco="";
 	public String  nombre_proveedor="";
 	public String  nombre_proveedor_recibe="";
-	public String     Total="";
+	public String  folio_nota="";
+	public String  Total="";
 	public boolean existe=false;
     Object[][] tabla_obj =null;
 
@@ -44,6 +45,14 @@ public class Obj_Venta_De_Cascos_A_Proveedores {
 
 	public void setNombre_proveedor_recibe(String nombre_proveedor_recibe) {
 		this.nombre_proveedor_recibe = nombre_proveedor_recibe;
+	}
+
+	public String getFolio_nota() {
+		return folio_nota;
+	}
+
+	public void setFolio_nota(String folio_nota) {
+		this.folio_nota = folio_nota;
 	}
 
 	public String getTotal() {
