@@ -84,6 +84,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
 	JTextField txtFolioProveedor =new Componentes().text(new JTextField(), "Folio del Proveedor", 25, "String");
 	JTextField txtProveedor = new Componentes().text(new JTextField(), "Proveedor", 200, "String");
 	JTextField txtNombre_Reecibe_Proveedor = new Componentes().text(new JCTextField(), "Nombre Del Proveedor Recibe", 300, "String");
+	JTextField txtFolio_Nota = new Componentes().text(new JCTextField(), "Folio De Nota", 20, "String");
 	JTextField txtTotalAPagar= new Componentes().text(new JCTextField(), "Total A Cobrar",100,"String");
 	
 	JCButton btnProveedor = new JCButton("Proveedor"  ,"Filter-List-icon16.png","Azul");
@@ -146,7 +147,8 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
 		
 		x=20;y=80;
 		panel.add(new JLabel("Nom. Recibe:")).setBounds    (x      ,y    ,width     ,height);
-		panel.add(txtNombre_Reecibe_Proveedor).setBounds   (x+85   ,y    ,width*5+50,height);
+		panel.add(txtNombre_Reecibe_Proveedor).setBounds   (x+85   ,y    ,width*4+30,height);
+		panel.add(txtFolio_Nota).setBounds   			   (x+525  ,y    ,width+10,height);
 		panel.add(scroll_tabla).setBounds                  (x      ,y+=30,633       ,120);
 		
 		x=20;y=240;
@@ -158,6 +160,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
 		txtFolioProveedor.setEditable(false);
 		txtProveedor.setEditable(false);
 		txtNombre_Reecibe_Proveedor.setEditable(false);
+		txtFolio_Nota.setEditable(false);
 		txtTotalAPagar.setEditable(false);
 		btnNuevo.setEnabled(false);
 		btnGuardar.setEnabled(false);
@@ -217,6 +220,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
 				txtTotalAPagar.setText(pago_cascos.getTotal()+"");
                 txtNombre_Reecibe_Proveedor.setText(pago_cascos.getNombre_proveedor_recibe());   
 				txtNombre_Reecibe_Proveedor.setEditable(false);
+				txtFolio_Nota.setEditable(false);
 				btnGuardar.setEnabled(false);
 				btnNuevo.setEnabled(false);
 				
@@ -237,6 +241,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
 			txtFolioVenta.setEditable(true);
 			txtNombre_Reecibe_Proveedor.setText("");
 			txtNombre_Reecibe_Proveedor.setEditable(false);
+			txtFolio_Nota.setEditable(false);
 			modelo.setRowCount(0);
 			txtFolioVenta.requestFocus();
 			btnGuardar.setEnabled(false);
@@ -251,6 +256,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
             init_tabla();
             txtNombre_Reecibe_Proveedor.setText("");
             txtNombre_Reecibe_Proveedor.setEditable(true);
+            txtFolio_Nota.setEditable(true);
 			btnGuardar.setEnabled(true);
 			txtNombre_Reecibe_Proveedor.requestFocus();
 		
@@ -288,6 +294,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
 	    	 pago_cascos.setCod_prv(txtFolioProveedor.getText().toString().trim().toUpperCase());
 	    	 pago_cascos.setNombre_proveedor(txtProveedor.getText().toString().trim().toUpperCase());
 	    	 pago_cascos.setNombre_proveedor_recibe(txtNombre_Reecibe_Proveedor.getText().toUpperCase().toString().trim());
+	    	 pago_cascos.setFolio_nota(txtFolio_Nota.getText().toUpperCase().trim());
 	    	 pago_cascos.setTotal(txtTotalAPagar.getText().toUpperCase().toString().trim());
 	    	 
 	    	if(pago_cascos.guardar()){
@@ -350,6 +357,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
 	private String validaCampos(){
 		String error="";
 		if(txtNombre_Reecibe_Proveedor.getText().equals("")) error+="  Persona Recibe Del Proveedor\n";
+		if(txtFolio_Nota.getText().equals("")) error+="  Folio De Nota\n";
 		if(txtTotalAPagar.getText().equals("")) error+="  No Se Han Capturado Cascos\n";
 		return error;
 	};
