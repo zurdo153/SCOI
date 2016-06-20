@@ -1943,6 +1943,135 @@ public boolean Guardar_Metas (Object[][] tabla,String Establecimiento,int mes, i
 	}
 
 
+public boolean Guardar_matriz (Object[][] tabla,String descripcion){
+	int folio = new GuardarSQL().busca_y_actualiza_proximo_folio(31);
+	String query =  "EXEC sp_insert_matrices_datos ?,?,?,?,?,?,?,?";
+	String query2 = "EXEC sp_insert_matriz_gral ?,?,?,?";
+	Connection con = new Connexion().conexion();
+	
+	
+	try {
+		PreparedStatement pstmt = con.prepareStatement(query);
+		PreparedStatement pstmt2 = con.prepareStatement(query2);
+		con.setAutoCommit(false);
+		for(int i=0; i<tabla.length; i++){
+			
+				pstmt.setInt   (1, usuario.getFolio());			  //id_emp
+				pstmt.setString(2, tabla[i][0].toString().trim());//orden
+				pstmt.setInt   (3, folio						);//matriz
+				pstmt.setString(4, tabla[i][2].toString().trim());//depa
+				pstmt.setString(5, tabla[i][3].toString().trim());//etapa
+				pstmt.setString(6, tabla[i][4].toString().trim());//aspecto
+				pstmt.setString(7, tabla[i][5].toString().trim());//unid_insp
+				pstmt.setString(8, tabla[i][6].toString().trim());//establecimiento
+
+		
+		pstmt.executeUpdate();
+		}
+
+		pstmt2.setInt   (1, folio);//folio matriz
+		pstmt2.setString(2, tabla[0][6].toString().trim());//establecimiento
+		pstmt2.setString(3, tabla[0][6].toString().trim());//establecimiento as folio		
+		pstmt2.setString(4, descripcion);
+		pstmt2.executeUpdate();
+		
+		con.commit();
+		
+	} catch (SQLException e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en Guardar_matriz  en la  funcion Guardar_matriz  \n procedimiento almacenado sp_insert_matriz_datos SQLException:\n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en Guardar_matriz  en la funcion Guardar_matriz \n procedimiento almacenado sp_insert_matriz_datos SQLException: \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en Guardar_matriz  en la funcion Guardar_matriz \n procedimiento almacenado sp_insert_matriz_datos SQLException: \n "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+public boolean Modificar_matriz (Object[][] tabla, int folio,String desc){
+	
+	String query = "delete from tb_matrices_datos where folio_matriz ="+folio+" "
+			     + "delete from tb_matrices where folio_matriz ="+folio;
+	
+	String query2 = "EXEC sp_insert_matrices_datos ?,?,?,?,?,?,?,?";
+	String query3 = "EXEC sp_insert_matriz_gral ?,?,?,?";
+	
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		
+	try {
+		con.setAutoCommit(false);
+	    pstmt  = con.prepareStatement(query);
+		pstmt.execute();
+		
+		
+		 pstmt2 = con.prepareStatement(query2);
+		for(int i=0; i<tabla.length; i++){
+			
+				pstmt2.setInt   (1, usuario.getFolio());// 
+				pstmt2.setString(2, tabla[i][0].toString().trim());
+				pstmt2.setInt   (3, folio);
+				pstmt2.setString(4, tabla[i][2].toString().trim());
+				pstmt2.setString(5, tabla[i][3].toString().trim());
+				pstmt2.setString(6, tabla[i][4].toString().trim());
+				pstmt2.setString(7, tabla[i][5].toString().trim());
+				pstmt2.setString(8, tabla[i][6].toString().trim());
+				
+				pstmt2.execute();
+
+		}
+		pstmt3 = con.prepareStatement(query3);
+		pstmt3.setInt   (1, folio);//folio matriz
+		pstmt3.setString(2, tabla[0][6].toString().trim());//establecimiento
+		pstmt3.setString(3, tabla[0][6].toString().trim());//establecimiento as folio		
+		pstmt3.setString(4, desc);
+		
+		pstmt3.execute();
+		
+		con.commit();
+		
+	} catch (SQLException e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en Modificar_matriz  en la  funcion Guardar_matriz  \n procedimiento almacenado sp_insert_matriz_datos SQLException:\n"+e.getMessage(), 
+									   "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en Modificar_matriz  en la funcion Guardar_matriz \n procedimiento almacenado  SQLException: \n "
+												+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en Modificar_matriz  en la funcion Guardar_matriz \n procedimiento almacenado  SQLException: \n "
+											   +ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
 
 }
 
