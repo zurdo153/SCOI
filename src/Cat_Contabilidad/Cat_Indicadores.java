@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -34,6 +36,11 @@ import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.JCButton;
 import Obj_Renders.tablaRenderer;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -157,6 +164,7 @@ public class Cat_Indicadores extends JFrame {
 		btn_buscar.addActionListener(op_generar);
 		btn_Origen.addActionListener(opGenerarReporte_de_concepto);
 //		c_inicio.getDateEditor().addPropertyChangeListener(opfactorytasa);
+		cmbConcepto.addActionListener(opValidaIndicador);
 		   
         this.addWindowListener(new WindowAdapter() { public void windowOpened( WindowEvent e ){
             	c_inicio.requestFocus();
@@ -284,60 +292,145 @@ public class Cat_Indicadores extends JFrame {
 		}
 	};
 	
-	ActionListener opGenerarReporte_de_concepto = new ActionListener() {
+	boolean bandera = false;
+	ActionListener opValidaIndicador = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			 if(validar_fechas().equals("")){
-				  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
-				  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
-				  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
-				  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
-				  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
-	 	if(fecha1.before(fecha2)){		  
-			if(cmbConcepto.getSelectedItem().toString().trim().equals("Selecciona Un Concepto")){
-			  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Concepto Para Poder Generar El Reporte Del Concepto", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
-               return;
+			if(cmbConcepto.getSelectedItem().toString().trim().equals("Ausentismo") || cmbConcepto.getSelectedItem().toString().trim().equals("Valor De Nomina")){
+				
+				bandera = true;
+				
+				cmbEstablecimiento.setSelectedIndex(0);
+				cmbEstablecimiento.setEnabled(false);
+				c_final.setEnabled(false);
 			}else{
-//				if(cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")){	
-//					  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Establecimiento Para Poder Generar El Reporte Del Concepto ", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
-//					  return;
-//				}else{
-					int testigo=0;
-					String basedatos="2.26";
-					String vista_previa_reporte="no";
-					int vista_previa_de_ventana=0;
-					String comando="";
-					String reporte ="";
-					
-					if(!cmbConcepto.getSelectedItem().toString().trim().equals("Selecciona Un Indicador")){
-						Obj_Indicadores indicador = new Obj_Indicadores().buscar(cmbConcepto.getSelectedItem().toString().trim());
-						comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'";
-						reporte =indicador.getReporte();
-						testigo=1;
-					}
-					
-					if(cmbConcepto.getSelectedItem().toString().trim().equals("Indice De Rotacion De Personal Colaboradores Por Lista De Raya")||cmbConcepto.getSelectedItem().toString().trim().equals("Indice De Rotacion De Personal Colaboradores Por Lista De Raya Totales")){
-						Obj_Indicadores indicador = new Obj_Indicadores().buscar(cmbConcepto.getSelectedItem().toString().trim());
-						comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+cmbConcepto.getSelectedItem().toString().trim()+"'";
-						reporte =indicador.getReporte();
-						testigo=1;
-					}
-					
-				    if(testigo==1){
-						new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-				    }else{
-								JOptionPane.showMessageDialog(null,"Error Concepto No Identificado","Avisa Al Adimistrador Del Sistema!", JOptionPane.ERROR_MESSAGE);
-								return;
-						 }
-//				}
-			}		
-	 	 }else{
-			JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
-			return;
+				
+				bandera = false;
+				
+				cmbEstablecimiento.setSelectedIndex(0);
+				cmbEstablecimiento.setEnabled(true);
+				c_final.setEnabled(true);
 			}
 		}
-			 
+	};
+	
+	ActionListener opGenerarReporte_de_concepto = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			if(bandera){
+				
+				int anio = Integer.valueOf(new SimpleDateFormat("yyyy").format(c_inicio.getDate()));
+				int mes = Integer.valueOf(new SimpleDateFormat("MM").format(c_inicio.getDate()));
+				if(anio>=2016){
+					
+				if((anio==2016 && mes<=2)){
+					JOptionPane.showMessageDialog(null, "Solo Se Pueden Consultar El Reporte De Ausentismo A Partir del Mes De Marzo Del 2016","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+			          return;
+					}else{
+						
+						switch(cmbConcepto.getSelectedItem().toString().trim()){
+							case "Ausentismo": Cat_Reporte_De_Ausentismo(anio+"",mes+""); break;
+							case "Valor De Nomina": Cat_Reporte_De_Valor_De_Nomina(anio+"",mes+""); break;
+							default: JOptionPane.showMessageDialog(null, "No Se Encontro El Indicador","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png")); break;
+						}
+						
+					}
+					
+				}else{
+		  	  JOptionPane.showMessageDialog(null, "Solo Se Pueden Consultar El Reporte De Ausentismo A Partir del Mes De Marzo Del 2016","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	          return;
+			}
+				
+			}else{
+						 if(validar_fechas().equals("")){
+							  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+							  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
+							  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+							  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+							  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+							  if(fecha1.before(fecha2)){		  
+								  	if(cmbConcepto.getSelectedItem().toString().trim().equals("Selecciona Un Concepto")){
+								  		JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Concepto Para Poder Generar El Reporte Del Concepto", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
+								  		return;
+								  	}else{
+//									if(cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")){	
+//										  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Establecimiento Para Poder Generar El Reporte Del Concepto ", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
+//										  return;
+//									}else{
+										int testigo=0;
+										String basedatos="2.26";
+										String vista_previa_reporte="no";
+										int vista_previa_de_ventana=0;
+										String comando="";
+										String reporte ="";
+										
+										if(!cmbConcepto.getSelectedItem().toString().trim().equals("Selecciona Un Indicador")){
+											Obj_Indicadores indicador = new Obj_Indicadores().buscar(cmbConcepto.getSelectedItem().toString().trim());
+											comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'";
+											System.out.println(comando);
+											
+											reporte =indicador.getReporte();
+											testigo=1;
+										}
+										
+										if(cmbConcepto.getSelectedItem().toString().trim().equals("Indice De Rotacion De Personal Colaboradores Por Lista De Raya")||cmbConcepto.getSelectedItem().toString().trim().equals("Indice De Rotacion De Personal Colaboradores Por Lista De Raya Totales")){
+											Obj_Indicadores indicador = new Obj_Indicadores().buscar(cmbConcepto.getSelectedItem().toString().trim());
+											comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+cmbConcepto.getSelectedItem().toString().trim()+"'";
+											
+											reporte =indicador.getReporte();
+											testigo=1;
+										}
+										
+									    if(testigo==1){
+											new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+									    }else{
+													JOptionPane.showMessageDialog(null,"Error Concepto No Identificado","Avisa Al Adimistrador Del Sistema!", JOptionPane.ERROR_MESSAGE);
+													return;
+											 }
+				//					}
+								}		
+				 	 }else{
+						JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
+						return;
+						}
+					}
+			}
 		}
 	};
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void Cat_Reporte_De_Ausentismo(String anio,String mes) {
+		
+		try {
+			JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Ausentismo_En_Lista_De_Raya.jrxml");
+			
+			Map parametro = new HashMap();
+			parametro.put("anio", anio);
+			parametro.put("mes", mes);
+			
+			JasperPrint print = JasperFillManager.fillReport(report, parametro, new Connexion().conexion());
+			JasperViewer.viewReport(print, false);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+		}
+	}
+	
+	public static void Cat_Reporte_De_Valor_De_Nomina(String anio,String mes) {
+		
+		try {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			
+			String comando="exec sp_select_valor_de_nomina '"+anio+"','"+mes+"'";
+			String reporte = "Obj_Reporte_De_Valor_De_Nomina.jrxml";
+			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+		}
+	}
 	
 	
 	public static void main(String args[]){
