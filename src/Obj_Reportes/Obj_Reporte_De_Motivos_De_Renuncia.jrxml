@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-06-17T13:39:33 -->
+<!-- 2016-06-20T18:38:04 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Motivo_De_Renuncia" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="799747e2-4848-43d5-b220-cb7f7349c283">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -23,30 +23,8 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[declare @fecha_in datetime, @fecha_fin datetime
-
-set @fecha_in =  '01/06/2016 00:00:00'
-set @fecha_fin = '30/06/2016 23:59:59'
-
-select estab.folio
-,estab.nombre as establecimiento
-,convert(varchar(20),@fecha_in,103) as fecha_inicial
-,convert(varchar(20),@fecha_fin,103) as fecha_final
-,sum(case when isnull(motivos.sueldo,'N') = 'N' then 0 else 1 end) as sueldo
-,sum(case when isnull(motivos.horario,'N') = 'N' then 0 else 1 end) as horario
-,sum(case when isnull(motivos.relacion_con_jefe,'N') = 'N' then 0 else 1 end) as relacion_con_jefe
-,sum(case when isnull(motivos.ambiente_laboral,'N') = 'N' then 0 else 1 end) as ambiente_laboral
-,sum(case when isnull(motivos.capacitacion,'N') = 'N' then 0 else 1 end) as capacitacion
-,sum(case when isnull(motivos.descuento_nomina,'N') = 'N' then 0 else 1 end) as descuento_nomina
-,sum(case when isnull(motivos.problema_personal,'N') = 'N' then 0 else 1 end) as problema_personal
-,sum(case when isnull(motivos.otros,'N') = 'N' then 0 else 1 end) as otros
-,'EDGAR EDUARDO JIMENEZ MOLINA'  as consulto
-from tb_establecimiento estab
-left outer join tb_encuesta_y_motivos_de_renuncia motivos  on motivos.folio_establecimiento = estab.folio and motivos.fecha_mov between @fecha_in and @fecha_fin
-where estab.status = 1 
-and estab.nombre <> 'DISPONIBLE'
-group by estab.folio,estab.nombre
-order by estab.nombre]]>
+		<![CDATA[exec sp_select_concentrado_de_motivos_de_renuncia '01/06/2016 00:00:00','30/06/2016 23:59:59','EDGAR EDUARDO JIMÉNEZ MOLINA'
+]]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer"/>
 	<field name="establecimiento" class="java.lang.String"/>
