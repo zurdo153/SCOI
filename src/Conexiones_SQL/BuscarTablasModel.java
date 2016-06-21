@@ -2383,7 +2383,8 @@ public String[][] filtro_empleado_finiquito(String coneccion){
 				+ " from tb_empleado empleado"
 				+ " inner join tb_establecimiento estab on estab.folio = empleado.establecimiento_id"
 				+ " inner join tb_puesto puesto on puesto.folio = empleado.puesto_id"
-				+ " where empleado.status not in (4,5)"; 
+				+ " where empleado.status = 7"; 
+//				+ " where empleado.status not in (4,5)"; 
 	}else{
 		query_lista = "select ltrim(rtrim(empleados.empleado)) as folio"
 				+ " ,ltrim(rtrim(empleados.nombre))+' '+ltrim(rtrim(empleados.ap_paterno))+' '+ltrim(rtrim(empleados.ap_materno)) as empleado"

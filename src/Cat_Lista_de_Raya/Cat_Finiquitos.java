@@ -1,5 +1,6 @@
 package Cat_Lista_de_Raya;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,6 +59,8 @@ public class Cat_Finiquitos extends JFrame{
 	JTextField txtEmpleadoScoi 	= new Componentes().text(new JTextField(), "Nombre De Empleado Scoi", 120, "String");
 	JTextField txtFolioBms 		= new Componentes().text(new JTextField(), "Folio De Empleado En Bms", 120, "String");
 	JTextField txtEmpleadoBms 	= new Componentes().text(new JTextField(), "Nombre De Empleado Bms", 120, "String");
+	
+	JLabel lblAviso = new JLabel("En La Tabla Superior Solo Se Muestran Los Empleados Que Ya Tienen Capturada Su Renuncia.");
 	
 	JButton btnLimpiarEmpleadoBms = new JCButton("","deshacer16.png","Azul");
 	
@@ -131,8 +134,11 @@ public class Cat_Finiquitos extends JFrame{
 		this.setTitle("Filtro De Empleados Para Finiquitos");
 		this.panel_quitados.setBorder(BorderFactory.createTitledBorder( "Filtro De Empleados Para Finiquitos"));
 		
+		lblAviso.setForeground(Color.RED);
+		
 		panel_quitados.add(txtFiltroAsignacion).setBounds(70, 30, 300, 20);
 		panel_quitados.add(scroll_filtro_scoi).setBounds(20, 50, 745, 200);
+		panel_quitados.add(lblAviso).setBounds(20, 250, 745, 20);
 		panel_quitados.add(scroll_filtro_bnns).setBounds(20, 280, 745, 200);
 		
 		
