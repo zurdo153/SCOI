@@ -1,11 +1,15 @@
 package Conexiones_SQL;
 
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -16,7 +20,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.view.JRViewer;
 
 public class Generacion_Reportes {
 	String reporte = "";
@@ -25,6 +29,7 @@ public class Generacion_Reportes {
 	String vista_previa_de_ventana="";
 	String basedatos="";
 
+	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
 	public void  Reporte(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
 			    Obj_Usuario usuario = new Obj_Usuario();
                 String query =comando ;
@@ -51,36 +56,100 @@ public class Generacion_Reportes {
 					}
 				}
 				
-			try {
-			    ResultSet rs = stmt.executeQuery(query);
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+reporte);
-				JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-				@SuppressWarnings({ "rawtypes", "unchecked" })
-				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 				
-				if (vista_previa_reporte.equals("si")){
-                  //Vista Previa
-				   JasperViewer.viewReport(print, false);
-				}else{
-					  if(vista_previa_reporte.equals("no")){
-						//imprimir con seleccion de impresora
-						 JasperPrintManager.printReport(print, true);
-				      }else{ 
-				    	 if(vista_previa_reporte.equals("id")){
-  					   //imprimime directo en impresora determinada en la pc
-					      JasperPrintManager.printReport(print, true);
-		    	       }else{
-					  JOptionPane.showMessageDialog(null, "Error en La Clase Generacion Reportes En El Valor De La Variable Vista Previa \n Valor No Identificado De Los Siguientes: <<<si,no,id>>> \n Valor Recibido:"+vista_previa_reporte,"Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
-                      return;
-		    	       }
-		     	 }
-			 	 }
-				return;
-			} catch (Exception e1) {
-				System.out.println(e1.getMessage());
-				System.out.println(comando);
 				
-				JOptionPane.showMessageDialog(null, "Error Al Intentar Generar El Reporte: \n En La Clase Generacion Reportes Reporte:"+reporte+"\n Comando: "+comando+"\n Mensaje Exception: "+e1.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
-			}
+				
+				
+				try{
+					
+					JDialog viewer = new JDialog(new JFrame(),"Vista previa del reporte", true);
+					viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
+//					viewer.setModal(true);
+//					viewer.setTitle("Vista previa del reporte");
+					
+					viewer.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+					viewer.setLocationRelativeTo(null);
+					
+					// Cargar el archivo .jrxml
+					ResultSet rs = stmt.executeQuery(query);
+					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+reporte);
+					JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+					
+					// En mapa se especifican los parametros del reporte
+					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+					
+					
+					
+					if (vista_previa_reporte.equals("si")){
+						// Mostrar el reporte
+							JRViewer jrv = new JRViewer(print);
+							jrv.setZoomRatio(1);//zoom default del reporte
+							viewer.getContentPane().add(jrv);
+							viewer.show();
+						}else{
+							  if(vista_previa_reporte.equals("no")){
+								//imprimir con seleccion de impresora
+								 JasperPrintManager.printReport(print, true);
+						      }else{ 
+						    	 if(vista_previa_reporte.equals("id")){
+		  					   //imprimime directo en impresora determinada en la pc
+							      JasperPrintManager.printReport(print, true);
+				    	       }else{
+							  JOptionPane.showMessageDialog(null, "Error en La Clase Generacion Reportes En El Valor De La Variable Vista Previa \n Valor No Identificado De Los Siguientes: <<<si,no,id>>> \n Valor Recibido:"+vista_previa_reporte,"Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+		                      return;
+				    	       }
+				     	 }
+					 	 }
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					}
+					catch(Exception ex){
+						System.out.println(ex.getMessage());
+						System.out.println(comando);
+						
+						JOptionPane.showMessageDialog(null, "Error Al Intentar Generar El Reporte: \n En La Clase Generacion Reportes Reporte:"+reporte+"\n Comando: "+comando+"\n Mensaje Exception: "+ex.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+					}
+				
+				
+				
+//			try {
+//			    ResultSet rs = stmt.executeQuery(query);
+//				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+reporte);
+//				JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+//				@SuppressWarnings({ "rawtypes", "unchecked" })
+//				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+//				
+//				if (vista_previa_reporte.equals("si")){
+//                  //Vista Previa
+//				   JasperViewer.viewReport(print, false);
+//				}else{
+//					  if(vista_previa_reporte.equals("no")){
+//						//imprimir con seleccion de impresora
+//						 JasperPrintManager.printReport(print, true);
+//				      }else{ 
+//				    	 if(vista_previa_reporte.equals("id")){
+//  					   //imprimime directo en impresora determinada en la pc
+//					      JasperPrintManager.printReport(print, true);
+//		    	       }else{
+//					  JOptionPane.showMessageDialog(null, "Error en La Clase Generacion Reportes En El Valor De La Variable Vista Previa \n Valor No Identificado De Los Siguientes: <<<si,no,id>>> \n Valor Recibido:"+vista_previa_reporte,"Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+//                      return;
+//		    	       }
+//		     	 }
+//			 	 }
+//				return;
+//			} catch (Exception e1) {
+//				System.out.println(e1.getMessage());
+//				System.out.println(comando);
+//				
+//				JOptionPane.showMessageDialog(null, "Error Al Intentar Generar El Reporte: \n En La Clase Generacion Reportes Reporte:"+reporte+"\n Comando: "+comando+"\n Mensaje Exception: "+e1.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+//			}
 		}
 }
