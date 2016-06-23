@@ -27,7 +27,7 @@ import Obj_Principal.JCTextField;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Matriz extends JFrame{
+public class Cat_Matrices extends JFrame{
 	 //declaracion e inicializacion de var 
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	Obj_Matriz  obm     = new Obj_Matriz();
@@ -37,12 +37,12 @@ public class Cat_Matriz extends JFrame{
 	
 	
 	int bandera_guardado =0;
-	int columnas = 7,checkbox=7;  
+	int columnas = 6,checkbox=6;  
 	String valor_catalogo="";
 	String ValorBuffer;
 	
 	
-	String[]Colum={"Orden","Folio Matriz","Departamento","Etapa","Aspecto","Unidad De Inspeccion","Establecimiento"};
+	String[]Colum={"Orden","Folio Matriz","Departamento","Etapa","Unidad De Inspeccion","Establecimiento"};
 
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -73,10 +73,6 @@ public class Cat_Matriz extends JFrame{
 	String []Etapa= obm.Combo_Respuesta_Etapa();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEtapa= new JComboBox(Etapa);
-    
-	String []Aspecto_Etapa = obm.Combo_Respuesta_AspectoEtapa();
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-	JComboBox cmbAspectoDeEtapa=new JComboBox(Aspecto_Etapa);
 	
 	String []Departamento =obm.Combo_Respuesta_Departamento();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -99,7 +95,7 @@ public class Cat_Matriz extends JFrame{
 					java.lang.Object.class,
 					java.lang.Object.class,
 					java.lang.Object.class,
-					java.lang.Object.class,
+					
 					
 			};
 			
@@ -108,7 +104,7 @@ public class Cat_Matriz extends JFrame{
 	         return types[columnIndex];
 	     }
 			public boolean isCellEditable(int fila, int columna){
-				if(columna ==7)
+				if(columna ==6)
 					return true; return false;
 			}
 	    };
@@ -128,7 +124,6 @@ public class Cat_Matriz extends JFrame{
 		this.tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		this.tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		this.tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-		this.tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		
 		this.tabla.getColumnModel().getColumn(0).setMinWidth(40);
 		this.tabla.getColumnModel().getColumn(1).setMinWidth(40);
@@ -136,11 +131,11 @@ public class Cat_Matriz extends JFrame{
 		this.tabla.getColumnModel().getColumn(3).setMinWidth(150);
 		this.tabla.getColumnModel().getColumn(4).setMinWidth(250);
 		this.tabla.getColumnModel().getColumn(5).setMinWidth(250);
-		this.tabla.getColumnModel().getColumn(6).setMinWidth(100);
+		
      }
 
 	@SuppressWarnings("unused")
-	public Cat_Matriz(String cadena){
+	public Cat_Matrices(String cadena){
 		 valor_catalogo=cadena;
 	     setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 	       addWindowListener(new java.awt.event.WindowAdapter() {
@@ -164,10 +159,8 @@ public class Cat_Matriz extends JFrame{
 			btnGuardar.setEnabled(false);
 			txtFolio.setText(valor_catalogo);
 		
-			int ancho2 = Toolkit.getDefaultToolkit().getScreenSize().width;
-			int alto2 = Toolkit.getDefaultToolkit().getScreenSize().height;
-			this.setSize(1035,750);
-			int x=15, y=45, ancho=100,salto=20;
+			this.setSize(1035,780);
+			int x=15, y=20, ancho=100,salto=20;
 	
 				panel.add(lblFolio).setBounds(x, y, ancho, 20);
 				panel.add(txtFolio).setBounds(lblFolio.getX()+(ancho-20), y, ancho, 20);
@@ -182,27 +175,24 @@ public class Cat_Matriz extends JFrame{
 				int x1=txtFolio.getX()+txtFolio.getWidth()+15;
 		
 				panel.add(lblDescripcion).setBounds(x, lblFolio.getY()+salto+10, ancho, 20);
-				panel.add(txtDescripcion).setBounds(lblDescripcion.getX()+ancho-20, lblDescripcion.getY(), ancho+820, 20);
+				panel.add(txtDescripcion).setBounds(lblDescripcion.getX()+ancho-20, lblDescripcion.getY(), ancho+738, 20);
 		
-				panel.add(lblEstablecimiento).setBounds(x, 	txtDescripcion.getY()+salto, ancho+200, 20);
-				panel.add(cmbEstablecimiento).setBounds(x, lblEstablecimiento.getY()+salto, ancho+300, 20);
+				panel.add(lblEstablecimiento).setBounds(x, 	txtDescripcion.getY()+salto, ancho+350, 20);
+				panel.add(cmbEstablecimiento).setBounds(x, lblEstablecimiento.getY()+salto, ancho+350, 20);
 		
-				panel.add(lblEtapa).setBounds(x, cmbEstablecimiento.getY()+salto, ancho, 20);
-				panel.add(cmbEtapa).setBounds(x, lblEtapa.getY()+salto, ancho+350, 20);
+				panel.add(lblEtapa).setBounds(x+cmbEstablecimiento.getX()+cmbEstablecimiento.getWidth(), lblEstablecimiento.getY(), ancho, 20);
+				panel.add(cmbEtapa).setBounds(lblEtapa.getX(), lblEtapa.getY()+salto, ancho+350, 20);
 		
-				panel.add(lblAspecto_De_Etapa).setBounds(x+cmbEtapa.getWidth()+20, cmbEstablecimiento.getY()+salto, ancho+200, 20);
-				panel.add(cmbAspectoDeEtapa).setBounds(lblAspecto_De_Etapa.getX(), lblAspecto_De_Etapa.getY()+salto, ancho+350, 20);
-		
-				panel.add(lblUnidad_De_Inspeccion).setBounds(x, cmbAspectoDeEtapa.getY()+salto, ancho+200, 20);
+				panel.add(lblUnidad_De_Inspeccion).setBounds(x, cmbEstablecimiento.getY()+salto ,ancho+200, 20);
 				panel.add(cmbUnidadDeInspeccion).setBounds(x, lblUnidad_De_Inspeccion.getY()+salto, ancho+350, 20);
 		
-				panel.add(lblDepartamento).setBounds(cmbAspectoDeEtapa.getX(), cmbAspectoDeEtapa.getY()+salto, ancho+200, 20);
+				panel.add(lblDepartamento).setBounds(x+cmbUnidadDeInspeccion.getX()+cmbUnidadDeInspeccion.getWidth(), cmbEtapa.getY()+salto, ancho+200, 20);
 				panel.add(cmbDepartamento).setBounds(lblDepartamento.getX(), lblDepartamento.getY()+salto, ancho+350, 20);
 	
-				panel.add(btnAgg).setBounds((txtDescripcion.getWidth())-170, cmbDepartamento.getY()+salto+15, ancho+20, 20);
+				panel.add(btnAgg).setBounds((txtDescripcion.getWidth())-90, cmbDepartamento.getY()+salto+20, ancho+20, 20);
 				panel.add(btnQuitar).setBounds(btnAgg.getX()+btnAgg.getWidth()+20, btnAgg.getY(),ancho+20, 20);
 				
-				panel.add(scroll_tabla).setBounds (x ,btnAgg.getY()+salto+10,1000,400);
+				panel.add(scroll_tabla).setBounds (x ,btnAgg.getY()+salto+10,1000,500);
 		
 				int alturaBajoTabla = scroll_tabla.getY()+scroll_tabla.getHeight();
 				int lado1=(btnQuitar.getX()+btnQuitar.getWidth()+20);
@@ -291,15 +281,15 @@ public class Cat_Matriz extends JFrame{
 			this.tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 			this.tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 			this.tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-			this.tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+			
 		
 			this.tabla.getColumnModel().getColumn(0).setMinWidth(40);
 			this.tabla.getColumnModel().getColumn(1).setMinWidth(40);
-			this.tabla.getColumnModel().getColumn(2).setMinWidth(100);
-			this.tabla.getColumnModel().getColumn(3).setMinWidth(150);  
+			this.tabla.getColumnModel().getColumn(2).setMinWidth(150);
+			this.tabla.getColumnModel().getColumn(3).setMinWidth(300);  
 			this.tabla.getColumnModel().getColumn(4).setMinWidth(250);
-			this.tabla.getColumnModel().getColumn(5).setMinWidth(250);
-			this.tabla.getColumnModel().getColumn(6).setMinWidth(100);
+			this.tabla.getColumnModel().getColumn(5).setMinWidth(200);
+			
 			refrestabla();
 								}
 	
@@ -315,17 +305,17 @@ public class Cat_Matriz extends JFrame{
 			
 					while (rs.next())
 					{ 
-					 String [] fila = new String[7];
+					 String [] fila = new String[6];
 					  fila[0] = rs.getString(1).trim();
 					  fila[1] = rs.getString(2).trim();
 					  fila[2] = rs.getString(3).trim(); 
 					  fila[3] = rs.getString(4).trim(); 
 					  fila[4] = rs.getString(5).trim(); 
 					  fila[5] = rs.getString(6).trim(); 
-					  fila[6] = rs.getString(7).trim(); 
+					 
 					  	modelo.addRow(fila); 
 			  
-					}	
+					}	   
 				s.close();
 						} catch (SQLException e1) {
 							e1.printStackTrace();
@@ -340,9 +330,7 @@ public class Cat_Matriz extends JFrame{
 							if(txtFolio.getText().toString().equals("")){
 								JOptionPane.showMessageDialog(null, "Es Necesario Escribir Un Folio Para Poder Reazalizar la Busqueda Matrices", "Aviso", JOptionPane.WARNING_MESSAGE,
 										new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-
 																		}
-	
 							else
 								{
 									int f =Integer.parseInt(txtFolio.getText());	
@@ -352,12 +340,11 @@ public class Cat_Matriz extends JFrame{
 												ValorBuffer=(txtFolio.getText());
 												return;
 										}else{	
-				
 										    }
 												init_tablaconsulta();
 												String desc=obm.Buscar_Descripciones(f);
 												txtDescripcion.setText(desc);
-												String establecimiento=	(String) modelo.getValueAt(1, 6);
+												String establecimiento=	(String) modelo.getValueAt(1, 5);
 												cmbEstablecimiento.setSelectedItem(establecimiento);
 												cmbEstablecimiento.setEnabled(false);
 												btnNuevo.setEnabled(false);
@@ -366,6 +353,7 @@ public class Cat_Matriz extends JFrame{
 								}
 						   }  
 					};
+					
 	
 					ActionListener opFiltro = new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -392,7 +380,6 @@ public class Cat_Matriz extends JFrame{
 						   btnGuardar.setEnabled(true);
 						   btnBuscar.setEnabled(false);
 						   btnNuevo.setEnabled(false);  
-						   cmbAspectoDeEtapa.setEnabled(true);
 						   cmbDepartamento.setEnabled(true);
 						   cmbEtapa.setEnabled(true);
 						   cmbUnidadDeInspeccion.setEnabled(true);
@@ -422,14 +409,13 @@ public class Cat_Matriz extends JFrame{
 							 JOptionPane.showMessageDialog(null, "Es Necesario Poner Una Descripcion De La Matriz", "Aviso", JOptionPane.WARNING_MESSAGE,
 	            		  						new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 						 }else{
-							 String[] row = new String[7];
+							 String[] row = new String[6];
 							 row[0] = "";
 							 row[1] = txtFolio.getText();
 							 row[2] = cmbDepartamento.getSelectedItem().toString();
 							 row[3] = cmbEtapa.getSelectedItem().toString();
-							 row[4] = cmbAspectoDeEtapa.getSelectedItem().toString();
-							 row[5] = cmbUnidadDeInspeccion.getSelectedItem().toString();
-							 row[6] = cmbEstablecimiento.getSelectedItem().toString();
+							 row[4] = cmbUnidadDeInspeccion.getSelectedItem().toString();
+							 row[5] = cmbEstablecimiento.getSelectedItem().toString();
 				
 							 txtDescripcion.setEnabled(false);
 							 cmbEstablecimiento.setEnabled(false);
@@ -458,8 +444,6 @@ public class Cat_Matriz extends JFrame{
 						 btnGuardar.setEnabled(true);
 						 cmbEstablecimiento.setEnabled(true);
 			
-						 
-						 cmbAspectoDeEtapa.setEnabled(true);
 						 cmbDepartamento.setEnabled(true);
 						 cmbEstablecimiento.setEnabled(true);
 						 cmbEtapa.setEnabled(true);
@@ -467,8 +451,6 @@ public class Cat_Matriz extends JFrame{
 						 txtDescripcion.setEnabled(true);
 						 txtDescripcion.requestFocus();
 						 bandera_guardado=0; 
-			
-						 cmbAspectoDeEtapa.setSelectedIndex(0);
 						 cmbDepartamento.setSelectedIndex(0);
 						 cmbEstablecimiento.setSelectedIndex(0);
 						 cmbEtapa.setSelectedIndex(0);
@@ -616,7 +598,7 @@ public class Cat_Matriz extends JFrame{
 				
 															String desc=obm.Buscar_Descripciones(f);
 															txtDescripcion.setText(desc);
-															String establecimiento=	(String) modelo.getValueAt(1, 6);
+															String establecimiento=	(String) modelo.getValueAt(1, 5);
 				
 															cmbEstablecimiento.setSelectedItem(establecimiento);
 															cmbEstablecimiento.setEnabled(false);
@@ -651,14 +633,12 @@ public class Cat_Matriz extends JFrame{
 											}
 							public void InicializarCatalogo(){
 								btnEditar.setEnabled(false);
-								cmbAspectoDeEtapa.setEnabled(false);
 								cmbDepartamento.setEnabled(false);
 								cmbEstablecimiento.setEnabled(false);
 								cmbEtapa.setEnabled(false);
 								cmbUnidadDeInspeccion.setEnabled(false);
 								txtDescripcion.setEnabled(false);
 	
-								cmbAspectoDeEtapa.setSelectedIndex(0);
 								cmbDepartamento.setSelectedIndex(0);
 								cmbEstablecimiento.setSelectedIndex(0);
 								cmbEtapa.setSelectedIndex(0);
@@ -687,7 +667,7 @@ public class Cat_Matriz extends JFrame{
 					{
 					try{
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-						new Cat_Matriz("").setVisible(true);
+						new Cat_Matrices("").setVisible(true);
 						}catch(Exception e){	
 										}
 									  }

@@ -8850,7 +8850,7 @@ public class BuscarSQL {
 		String Descripcion="";
 		String query = 
 				"declare @thiSql char(2), @establ varchar(20) set @establ=(select  top 1 cod_estab from ventas where establecimiento='"+cod_est+"')"
-				+" set @thiSql =(select top 1 'si' from metas_mensuales_por_establecimiento_pruebas where año="+anio+" and cod_estab=@establ and mes="+mes+")"
+				+" set @thiSql =(select top 1 'si' from metas_mensuales_por_establecimiento where año="+anio+" and cod_estab=@establ and mes="+mes+")"
 				+" if(@thiSql is null) set @thiSql='no'" 
 				+" select @thiSql  as resultado";
 
