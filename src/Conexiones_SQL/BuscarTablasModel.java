@@ -2621,6 +2621,31 @@ public String[][] lista_de_configuraciones_de_meta_mensual_de_ventas(){
     return matriz; 
 }
 
+public Object[][] tabla_concentrados_con_movimiento_de_ahorros(){
+	
+	String query_lista = "exec sp_select_trabajos_de_corte_con_ahorro_de_clientes";
+	
+	Object[][] matriz = new Object[get_filas(query_lista)][4];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			matriz[i][0] = rs.getString(1)+"  ";
+			matriz[i][1] = rs.getString(2);
+			matriz[i][2] = rs.getString(3);
+			matriz[i][3] = rs.getString(4);
+			i++;
+		}
+
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_establecimientos_para_concentrado  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+	}
+    return matriz; 
+}
 
 }
 
