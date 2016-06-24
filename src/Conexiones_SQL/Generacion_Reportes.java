@@ -79,7 +79,6 @@ public class Generacion_Reportes {
 					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 					
 					
-					
 					if (vista_previa_reporte.equals("si")){
 						// Mostrar el reporte
 							JRViewer jrv = new JRViewer(print);
@@ -100,15 +99,6 @@ public class Generacion_Reportes {
 				    	       }
 				     	 }
 					 	 }
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					
 					}
 					catch(Exception ex){
