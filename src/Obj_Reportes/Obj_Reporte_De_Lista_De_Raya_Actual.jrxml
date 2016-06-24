@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-05-24T18:39:53 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-06-24T16:14:37 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Lista_De_Raya_Actual" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="977" leftMargin="11" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ce16253a-bb1f-44b9-a6e2-b3ad2f994469">
 	<property name="ireport.zoom" value="1.4641000000000088"/>
 	<property name="ireport.x" value="0"/>
@@ -342,7 +342,10 @@
 					<textFieldExpression><![CDATA[$F{Folio}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" x="23" y="0" width="212" height="12" uuid="2a0a6b38-1120-4ef9-b270-13eb8a0186f7"/>
+					<reportElement style="Detail" x="23" y="0" width="212" height="13" uuid="2a0a6b38-1120-4ef9-b270-13eb8a0186f7">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<textElement>
 						<font size="9"/>
 					</textElement>
