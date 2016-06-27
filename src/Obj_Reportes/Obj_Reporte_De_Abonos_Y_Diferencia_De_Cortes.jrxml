@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-08-18T13:48:52 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-06-23T08:33:24 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Abonos_Y_Diferencia_De_Cortes" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f51f2565-4269-4fbc-97b9-9b0030bf0b11">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
@@ -54,7 +54,7 @@
 					</textField>
 				</frame>
 				<staticText>
-					<reportElement style="Column header" x="3" y="25" width="69" height="15" forecolor="#000000" uuid="34d0e868-980b-47d3-b841-d9b4c0f2c4fd">
+					<reportElement style="Column header" x="2" y="25" width="94" height="15" forecolor="#000000" uuid="34d0e868-980b-47d3-b841-d9b4c0f2c4fd">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -65,7 +65,7 @@
 					<text><![CDATA[Folio Corte]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="Column header" x="81" y="25" width="93" height="15" forecolor="#000000" uuid="66e0da56-bb54-4107-9a66-f3b2f8afab60">
+					<reportElement style="Column header" x="97" y="25" width="93" height="15" forecolor="#000000" uuid="66e0da56-bb54-4107-9a66-f3b2f8afab60">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -75,7 +75,7 @@
 					<text><![CDATA[Fecha Corte]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="Column header" x="181" y="25" width="93" height="15" forecolor="#000000" uuid="4d4473d4-e612-4c23-98aa-ffa8b8222078">
+					<reportElement style="Column header" x="193" y="25" width="93" height="15" forecolor="#000000" uuid="4d4473d4-e612-4c23-98aa-ffa8b8222078">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -85,7 +85,7 @@
 					<text><![CDATA[Fecha Movimiento]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="Column header" x="283" y="25" width="69" height="15" forecolor="#000000" uuid="0c5b6fc3-505f-4f5d-9fbd-f67facca8782">
+					<reportElement style="Column header" x="288" y="25" width="69" height="15" forecolor="#000000" uuid="0c5b6fc3-505f-4f5d-9fbd-f67facca8782">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -95,7 +95,7 @@
 					<text><![CDATA[Dif.Corte]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="Column header" x="347" y="25" width="69" height="15" forecolor="#000000" uuid="ab3d2e97-32fc-4d72-84a9-dd2e5778e00a">
+					<reportElement style="Column header" x="351" y="25" width="60" height="15" forecolor="#000000" uuid="ab3d2e97-32fc-4d72-84a9-dd2e5778e00a">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -173,7 +173,7 @@
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15" uuid="5c587554-9e5b-4122-a4d9-8227e3dbe6aa"/>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="11" y="0" width="61" height="15" uuid="3de07446-37f4-4745-b227-faf8cb0a8a68">
+					<reportElement style="Detail" positionType="Float" x="2" y="0" width="94" height="15" uuid="3de07446-37f4-4745-b227-faf8cb0a8a68">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
@@ -182,7 +182,7 @@
 					<textFieldExpression><![CDATA[$F{folio_corte}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="81" y="0" width="93" height="15" uuid="acb9b4a5-1f60-4a79-b930-057d544b8c39">
+					<reportElement style="Detail" positionType="Float" x="97" y="0" width="93" height="15" uuid="acb9b4a5-1f60-4a79-b930-057d544b8c39">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -192,7 +192,7 @@
 					<textFieldExpression><![CDATA[$F{fecha_corte}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="181" y="0" width="93" height="15" uuid="3aca0bc8-fe57-4997-b465-5625ceb18280">
+					<reportElement style="Detail" positionType="Float" x="193" y="0" width="93" height="15" uuid="3aca0bc8-fe57-4997-b465-5625ceb18280">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
@@ -201,7 +201,7 @@
 					<textFieldExpression><![CDATA[$F{fecha_mov}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="283" y="0" width="53" height="15" uuid="d574010b-cadb-4ca0-810d-316ffdf1c41e">
+					<reportElement style="Detail" positionType="Float" x="288" y="0" width="53" height="15" uuid="d574010b-cadb-4ca0-810d-316ffdf1c41e">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right">
@@ -210,7 +210,7 @@
 					<textFieldExpression><![CDATA[$F{diferencia_corte}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="352" y="0" width="40" height="15" uuid="6cc3dee6-fbee-4744-ab95-786a7de6f872">
+					<reportElement style="Detail" positionType="Float" x="351" y="0" width="40" height="15" uuid="6cc3dee6-fbee-4744-ab95-786a7de6f872">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right">

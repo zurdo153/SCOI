@@ -8971,4 +8971,86 @@ public class BuscarSQL {
 		
 	
 	}
+	
+	public String Folio_Siguiente_alta_Servicios() throws SQLException{
+		String folio = "";
+		String query = "select folio+1 from tb_folios where folio_transaccion=32 ";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				folio=(rs.getString(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return folio;
+	
+	}
+
+public String Buscar_Servicios_establecimientos_NumCtrol(String folio) throws SQLException{
+		String Descripcion="";
+		String query = "declare @thiSql char(2), @folio varchar(50) "
+				       +" set @folio=(select top 1 folio from tb_servicios_de_establecimientos where folio='"+folio+"') "
+				       +"if @folio is null begin set @folio=(select top 1 folio from tb_servicios_de_establecimientos where numeroControl='"+folio+"') end "
+				       +"set @thiSql =(select top 1 'si' from tb_servicios_de_establecimientos where folio=@folio)"
+					   +"if(@thiSql is null) set @thiSql='no' "
+					   +" select @thiSql  as resultado "; 
+
+		 Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Descripcion=(rs.getString(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			}
+		}
+		
+		return Descripcion;
+		
+		
+	
+	}
+
+public boolean  existe_horario_con_otro_empleado(int horario1, int horario2, int horario3, int folio_empleado){
+	boolean existe = false;
+   String query = "exec sp_validacion_de_horarios_en_el_empleado "+horario1+","+horario2+","+horario3+","+folio_empleado;
+	
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			existe=(Boolean.valueOf(rs.getString("bolean")));
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	finally{
+		if(stmt!=null){try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}}
+	}
+	return existe;
+}
 }

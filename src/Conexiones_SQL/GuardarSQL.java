@@ -5657,4 +5657,94 @@ public boolean Guardar_ConfigBD_3(Obj_Configuracion_Base_de_Datos_3 config){
 }
 
 
+public boolean Guardar_servicios_establecimientos(String Descrpcion,String NumCtrol,String Clasificador,String status,String Establecimiento){
+	int folio = new GuardarSQL().busca_y_actualiza_proximo_folio(32);
+	
+	String query =  "EXEC sp_insert_servicios_establecimientos ?,?,?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	try {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		
+		pstmt.setInt   (1, usuario.getFolio());
+		pstmt.setInt   (2, folio);
+		pstmt.setString(3, NumCtrol.toString().trim());
+		pstmt.setString(4, Clasificador.toString().trim());
+		pstmt.setString(5, status.toString().trim());
+		pstmt.setString(6, Establecimiento.toString().trim());
+		pstmt.setString(7, Descrpcion.toString().trim());
+		
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Establecimiento ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
+
+public boolean Modificar_servios_establecimientos(String folio,String Descrpcion,String NumCtrol,String Clasificador,String status,String Establecimiento){
+
+	String querynew = "delete from tb_servicios_de_establecimientos where folio="+folio+"";
+	String query =  "  EXEC sp_insert_servicios_establecimientos ?,?,?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	PreparedStatement pstmt2 = null;
+	try {
+		con.setAutoCommit(false);
+		pstmt2 = con.prepareStatement(querynew);
+		pstmt2.execute();
+	    pstmt = con.prepareStatement(query);
+		
+		pstmt.setInt   (1, usuario.getFolio());
+		pstmt.setInt   (2, Integer.parseInt(folio));
+		pstmt.setString(3, NumCtrol.toString().trim());
+		pstmt.setString(4, Clasificador.toString().trim());
+		pstmt.setString(5, status.toString().trim());
+		pstmt.setString(6, Establecimiento.toString().trim());
+		pstmt.setString(7, Descrpcion.toString().trim());
+		
+		pstmt.execute();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar Serviicos Establecimientos ] Insert  SQLException: sp_insert_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [Guardar Serviicos Establecimientos  ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
+
 } 

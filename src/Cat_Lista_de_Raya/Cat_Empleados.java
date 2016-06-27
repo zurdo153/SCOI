@@ -257,7 +257,6 @@ public class Cat_Empleados extends JFrame{
 	JButton btnStatus = new JButton();
 	JButton btnExaminar = new JButton("Examinar");
 	JButton btnCamara = new JButton(new ImageIcon("Iconos/camara_icon&16.png"));
-	
 
 	JCButton btnContratacion        = new JCButton("Contratacion","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png","AzulC");
 	JCButton btnDocumentacion       = new JCButton("Documentación","carpeta-de-correo-icono-4002-16.png","AzulC");
@@ -271,7 +270,6 @@ public class Cat_Empleados extends JFrame{
 	JCButton btn_Adeudo        		= new JCButton("Adeudos","detective-icono-5257-16.png","Azul");
 	JCButton btnReporteSalida		= new JCButton("Encuesta De Salida","baja16.png","Azul");
 	JCButton btnReporteRenuncia		= new JCButton("Renuncia","baja16.png","Azul");
-	
 
 	JCButton btnImp_Datos_Completos = new JCButton("Datos Colaborador","informacion-del-usuario-icono-8370-16.png","Azul");
 	
@@ -282,8 +280,6 @@ public class Cat_Empleados extends JFrame{
 	JCButton btn_R_horarios         = new JCButton("Horarios","horas-de-reloj-de-alarma-icono-5601-16.png","Azul");
 	
 	JCButton btn_movimientos        = new JCButton("Percepciones y Deducciones","detective-icono-5257-16.png","Azul");
-
-
 	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
@@ -419,7 +415,6 @@ public class Cat_Empleados extends JFrame{
 		panelReporte.add(btnReporteSalida).setBounds   		(x+=sep,y    ,width,height);
 		panelReporte.add(btnReporteRenuncia).setBounds      (x+=sep,y    ,width,height);
 		panelReporte.add(btnAltasBajas).setBounds       	(x+=sep,y    ,width,height);
-
 		
 		x = 10;y = 20;height=20;width=175;
 		panel.add(btnContratacion).setBounds         (x	     ,y    ,width,height);
@@ -1349,12 +1344,24 @@ public class Cat_Empleados extends JFrame{
 	
    ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			int horario=0,horario2=0,horario3=0;
+			 horario=lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText());
+			 horario2=lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText());
+			 horario3=lblFolioHorario3.getText().equals("")?0:Integer.valueOf(lblFolioHorario3.getText());
+			
+			if(new BuscarSQL().existe_horario_con_otro_empleado(horario,horario2,horario3, Integer.valueOf(txtFolioEmpleado.getText().toString()) )){
+				System.out.println(horario+" 2"+horario2+" 3"+horario3);
+				JOptionPane.showMessageDialog(null, "No Se Puede Asignar Un Mismo Horario A Mas De Un Colaborador Con Estatus\nVigente, Incapacitado, De Vacaciones o Provicional Checador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/error-de-reloj-icono-5961-32.png"));
+				return;
+			}else{
+				System.out.println(horario+" 2"+horario2+" 3"+horario3);
+				
 			
 			if(cmbStatus.getSelectedItem().toString().trim().equals("Baja") || cmbStatus.getSelectedItem().toString().trim().equals("No Contratable") || cmbStatus.getSelectedItem().toString().trim().equals("Renuncia")){
 				if(new BuscarSQL().baja_en_catalogo_empleado()){
-					guardar_modificar_Empleado();
+						guardar_modificar_Empleado();
 				}else{
-					JOptionPane.showMessageDialog(null, "No Se Puede Guardar Un Empleado Con Status De Renuncia, Baja o No Contratable Es Necesario Hacer La Encuesta De Renuncia y El Finiquito.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null, "No Se Puede Guardar Un Colaborador Con Status De Renuncia, Baja o No Contratable Es Necesario Hacer La Encuesta De Renuncia y El Finiquito.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			}else{
@@ -1362,7 +1369,7 @@ public class Cat_Empleados extends JFrame{
 			}
 			
 			
-			
+			}	
 			
 		}	
 	};

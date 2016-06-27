@@ -756,14 +756,7 @@ public class Cat_Checador extends JFrame {
 			                        		    new Cat_Avisos_Checador(frame,ruta,mensaje,color_fuente);
 			                        		    frame.setVisible(true);
                                 }
-                                              
-                                
-
-
-                                
 // -------------------------------------------------------------------------------------------
-                                
-                                
                 }else{
                 	lblSemaforoRojo.setEnabled(true);
                     lblSemaforoVerde.setEnabled(false);
