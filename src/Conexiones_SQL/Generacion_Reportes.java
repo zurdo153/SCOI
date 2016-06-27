@@ -72,7 +72,6 @@ public class Generacion_Reportes {
 					
 					// En mapa se especifican los parametros del reporte
 					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-					
 					if (vista_previa_reporte.equals("si")){
 						// Mostrar el reporte
 							JRViewer jrv = new JRViewer(print);

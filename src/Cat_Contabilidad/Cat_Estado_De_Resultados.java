@@ -267,6 +267,16 @@ public class Cat_Estado_De_Resultados extends JFrame {
 			String comando="";
 			String reporte ="";
  		    String fecha_guardado=new SimpleDateFormat("dd-MM-yyyy").format(c_final.getDate());
+ 		    /////XLS GLOBALES
+		 			comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales NC','"+usuario.getNombre_completo()+"'" ;
+				  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"xlsciclo","Gastos De Ventas Globales NC "+fecha_guardado);
+		
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales','"+usuario.getNombre_completo()+"'" ;
+				  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"xlsciclo","Gastos De Ventas Globales "+fecha_guardado);
+				
+			
 			
 					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales','"+usuario.getNombre_completo()+"'" ;
 				  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
@@ -332,29 +342,19 @@ public class Cat_Estado_De_Resultados extends JFrame {
 			        reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
 				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Mermas "+establecimiento[i]+" "+fecha_guardado);
 				    
-				    comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Uso Interno Por Producto','"+usuario.getNombre_completo()+"'" ;
-		            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
-				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Uso Interno Por Producto "+establecimiento[i]+" "+fecha_guardado);
+//				    comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Uso Interno Por Producto','"+usuario.getNombre_completo()+"'" ;
+//		            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
+//				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Uso Interno Por Producto "+establecimiento[i]+" "+fecha_guardado);
 		
-				    comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Mermas Por Producto','"+usuario.getNombre_completo()+"'" ;
-		            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
-				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Mermas Por Producto "+establecimiento[i]+" "+fecha_guardado);
+//				    comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Mermas Por Producto','"+usuario.getNombre_completo()+"'" ;
+//		            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
+//				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Mermas Por Producto "+establecimiento[i]+" "+fecha_guardado);
 				    
 			        comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Uso Interno','"+usuario.getNombre_completo()+"'" ;
 			        reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
 				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Uso Interno "+establecimiento[i]+" "+fecha_guardado);
 		
 				}
-				
-				comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales NC','"+usuario.getNombre_completo()+"'" ;
-			  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
-				new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"xlsciclo","Gastos De Ventas Globales NC "+fecha_guardado);
-
-				comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales','"+usuario.getNombre_completo()+"'" ;
-			  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
-				new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"xlsciclo","Gastos De Ventas Globales "+fecha_guardado);
-	
-				
 				 JOptionPane.showMessageDialog(null, "Se Crearon Correctamente Los Reportes En Formato PDF \nEn La Carpeta C:\\REPORTES SCOI\\PDF\\","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 					
 	 	 }else{
