@@ -265,64 +265,64 @@ public class Cat_Reporte_De_Ventas extends JFrame {
 		
 		panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y+=30,l+50,a);
 		panel.add(cmbOperador_Productos				).setBounds(x+80,y,l-12,a);
-        panel.add(txtFiltroProducto					).setBounds(x+170,y,l*4+20,a);
-        panel.add(btnFiltroProducto					).setBounds(x+590,y,a,a);
-        panel.add(btnLimpiarFiltroProducto			).setBounds(x+613,y,a,a);
+        panel.add(txtFiltroProducto					).setBounds(x+170,y,l*3+20,a);
+        panel.add(btnFiltroProducto					).setBounds(x+490,y,a,a);
+        panel.add(btnLimpiarFiltroProducto			).setBounds(x+513,y,a,a);
         
-		panel.add(new JLabel("Establecimiento:")	).setBounds(x+650,y,l+50,a);
-	    panel.add(JLBestablecimiento				).setBounds(x+740,y,a,a);
-		panel.add(cmbEstablecimiento				).setBounds(x+760,y,l-12,a);
-		panel.add(txtFiltroEstablecimiento			).setBounds(x+850,y,l*4+20,a);
-		panel.add(btnFiltroEstablecimiento			).setBounds(x+l*4+870,y,a,a);    
-        panel.add(btnLimpiarFiltroEstablecimiento	).setBounds(x+l*4+893,y,a,a);
+		panel.add(new JLabel("Establecimiento:")	).setBounds(x+550,y,l+50,a);
+	    panel.add(JLBestablecimiento				).setBounds(x+640,y,a,a);
+		panel.add(cmbEstablecimiento				).setBounds(x+660,y,l-12,a);
+		panel.add(txtFiltroEstablecimiento			).setBounds(x+750,y,l*2,a);
+		panel.add(btnFiltroEstablecimiento			).setBounds(x+l*2+750,y,a,a);    
+        panel.add(btnLimpiarFiltroEstablecimiento	).setBounds(x+l*2+773,y,a,a);
 
         
 		panel.add(new JLabel("Filtro De Clase De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Clase							 ).setBounds(x+80,y,l-12,a);  
-        panel.add(txtFiltroClase							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroClase							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);
+        panel.add(txtFiltroClase							 ).setBounds(x+170,y,l*3+20,a);  
+        panel.add(btnFiltroClase							 ).setBounds(x+490,y,a,a);    
+        panel.add(btnLimpiarFiltroClase						 ).setBounds(x+513,y,a,a);
         
-		panel.add(new JLabel("Tipo De Precio:")).setBounds(x+650,y,l+50,a);
-	    panel.add(JLBTipoPrecio).setBounds(x+740,y,a,a);
-		panel.add(cmbTipoDePrecio).setBounds(x+760,y,l+70,a);
+		panel.add(new JLabel("Tipo De Precio:")).setBounds(x+550,y,l+50,a);
+	    panel.add(JLBTipoPrecio).setBounds(x+640,y,a,a);
+		panel.add(cmbTipoDePrecio).setBounds(x+660,y,l+70,a);
 		
 		panel.add(new JLabel("Filtro De Categoria De Productos:")).setBounds(x-85,y+=30,l+70,a); 
 		panel.add(cmbOperador_Categoria							 ).setBounds(x+80,y,l-12,a);  
-        panel.add(txtFiltroCategoria							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroCategoria							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);   
+        panel.add(txtFiltroCategoria							 ).setBounds(x+170,y,l*3+20,a);  
+        panel.add(btnFiltroCategoria							 ).setBounds(x+490,y,a,a);    
+        panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+513,y,a,a);   
 
-		panel.add(new JLabel("Presentado Por:")).setBounds(x+650,y,l+50,a);
-	    panel.add(JLBPresentado).setBounds(x+740,y,a,a);
-		panel.add(cmbPresentado).setBounds(x+760,y,l+70,a);
+		panel.add(new JLabel("Presentado Por:")).setBounds(x+550,y,l+50,a);
+	    panel.add(JLBPresentado).setBounds(x+640,y,a,a);
+		panel.add(cmbPresentado).setBounds(x+660,y,l+70,a);
         
       	panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Familia						).setBounds(x+80,y,l-12,a);  
-		panel.add(txtFiltroFamilia							).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroFamilia							).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroFamilia					).setBounds(x+613,y,a,a);
+		panel.add(txtFiltroFamilia							).setBounds(x+170,y,l*3+20,a);  
+        panel.add(btnFiltroFamilia							).setBounds(x+490,y,a,a);    
+        panel.add(btnLimpiarFiltroFamilia					).setBounds(x+513,y,a,a);
         
 
         
 		panel.add(new JLabel("Filtro De Linea De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Linea					 ).setBounds(x+80,y,l-12,a);  
-        panel.add(txtFiltroLinea							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroLinea							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroLinea						 ).setBounds(x+613,y,a,a); 
+        panel.add(txtFiltroLinea							 ).setBounds(x+170,y,l*3+20,a);  
+        panel.add(btnFiltroLinea							 ).setBounds(x+490,y,a,a);    
+        panel.add(btnLimpiarFiltroLinea						 ).setBounds(x+513,y,a,a); 
         
-        panel.add(lblmarco									 ).setBounds(x+800,y-5,a+93,a+45); 
-        panel.add(lblSemaforoVerde							 ).setBounds(x+823,y,a+10,a+10); 
-        panel.add(lblSemaforoRojo							 ).setBounds(x+860,y,a+10,a+10); 
+        panel.add(lblmarco									 ).setBounds(x+700,y-5,a+93,a+45); 
+        panel.add(lblSemaforoVerde							 ).setBounds(x+723,y,a+10,a+10); 
+        panel.add(lblSemaforoRojo							 ).setBounds(x+760,y,a+10,a+10); 
         
         
         panel.add(new JLabel("Filtro De Talla De Productos:")).setBounds(x-85,y+=30,l+50,a); 
 		panel.add(cmbOperador_Talla							 ).setBounds(x+80,y,l-12,a);  
-        panel.add(txtFiltroTalla							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroTalla							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroTalla						 ).setBounds(x+613,y,a,a); 
+        panel.add(txtFiltroTalla							 ).setBounds(x+170,y,l*3+20,a);  
+        panel.add(btnFiltroTalla							 ).setBounds(x+490,y,a,a);    
+        panel.add(btnLimpiarFiltroTalla						 ).setBounds(x+513,y,a,a); 
         
-        panel.add(btn_buscar).setBounds(x+807,y,l,a);
+        panel.add(btn_buscar).setBounds(x+707,y,l,a);
         
         panel.add(Tabla()).setBounds(10,y+=50,ancho-30,alto-y-75);
         
