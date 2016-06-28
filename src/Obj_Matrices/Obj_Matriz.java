@@ -150,8 +150,8 @@ public class Obj_Matriz {
 		}
 	}
 
-	public boolean guardar_matriz(Object[][] tabla,String des){
-		return new Conexiones_SQL.GuardarTablasModel().Guardar_matriz(tabla,des);
+	public boolean guardar_matriz(String Estab,Object[][] tabla,String des){
+		return new Conexiones_SQL.GuardarTablasModel().Guardar_matriz(Estab,tabla,des);
 	}
 	public String Buscar_Descripciones(int folio){
 		try {
@@ -162,8 +162,8 @@ public class Obj_Matriz {
 		}
 	}
 
-	public boolean Modidicar_matriz(Object[][] tabla, int folio, String descricion){
-		return new Conexiones_SQL.GuardarTablasModel().Modificar_matriz(tabla,folio,descricion);
+	public boolean Modidicar_matriz(String Estab,Object[][] tabla, int folio, String descricion){
+		return new Conexiones_SQL.GuardarTablasModel().Modificar_matriz(Estab,tabla,folio,descricion);
 		
 	}
 

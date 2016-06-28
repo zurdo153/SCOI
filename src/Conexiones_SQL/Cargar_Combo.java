@@ -2228,4 +2228,32 @@ public class Cargar_Combo {
 			
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String[] Combo_Respuesta_Clasificacion() throws SQLException{
+		String query = "select descripcion from tb_clasificacion_del_servicio";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				miVector.add(rs.getString(1).trim());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
 }

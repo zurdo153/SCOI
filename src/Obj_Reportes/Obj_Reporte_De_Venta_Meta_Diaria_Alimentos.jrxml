@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-05-23T08:30:32 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-06-24T10:36:42 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="700" pageHeight="900" columnWidth="660" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IZAGAR_Ventas"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -364,7 +364,7 @@
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="659" height="66" forecolor="#000080" backcolor="#000080" uuid="54dd91fe-fb26-4d88-957c-caee982743c4"/>
 				<textField>
-					<reportElement x="10" y="2" width="430" height="42" forecolor="#FFFFFF" uuid="9a7ca75c-cd46-4069-87d6-60505e02a0a9"/>
+					<reportElement x="9" y="2" width="430" height="42" forecolor="#FFFFFF" uuid="9a7ca75c-cd46-4069-87d6-60505e02a0a9"/>
 					<textElement>
 						<font size="15" isBold="true"/>
 					</textElement>

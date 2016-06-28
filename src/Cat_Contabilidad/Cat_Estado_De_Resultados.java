@@ -17,7 +17,6 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,6 +33,7 @@ import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.JCButton;
 import Obj_Renders.tablaRenderer;
 
 import com.toedter.calendar.JDateChooser;
@@ -48,7 +48,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String operador[] = {"Selecciona Un Concepto","Mermas","Mermas Por Producto","Uso Interno","Uso Interno Por Producto","Uso Interno Administración","Uso Interno Administración Por Producto","Diferiencias De Inventario","Nomina","Nomina Gastos Venta Impuestos","Nomina Gastos Administracion Impuestos","Gastos De Ventas","Gastos De Ventas NC","Gastos De Administración","Gastos De Administración NC","Gastos Financieros","Gastos Financieros NC"};
+	String operador[] = {"Selecciona Un Concepto","Mermas","Mermas Por Producto","Uso Interno","Uso Interno Por Producto","Uso Interno Administración","Uso Interno Administración Por Producto","Diferiencias De Inventario","Nomina","Nomina Gastos Venta Impuestos","Nomina Gastos Administracion Impuestos","Gastos De Ventas","Gastos De Ventas NC","Gastos De Administración","Gastos De Administración NC","Gastos Financieros","Gastos Financieros NC","Gastos De Ventas Globales","Gastos De Ventas Globales NC"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
 	
@@ -56,8 +56,10 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
-	JButton btn_buscar = new JButton  ("",new ImageIcon("imagen/buscar-buscar-ampliar-icono-6234-32.png"));
-	JButton btn_Origen = new JButton  ("",new ImageIcon("imagen/encontrar-busqueda-lupa-de-la-ventana-de-zoom-icono-4008-16.png"));
+	JCButton btn_buscar = new JCButton  ("","buscar-buscar-ampliar-icono-6234-32.png","Azul");
+	JCButton btn_Origen = new JCButton  ("","list-icon-1440-32px.png","Azul");
+	JCButton btn_generarpdf = new JCButton  ("","pdf-icon-png-2081-32px.png","Azul");
+	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	JLabel JLBFactor= new JLabel();
@@ -128,31 +130,40 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		setTitle("Estado De Resultados");
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione Las Fechas Y De Click a Buscar"));
 		
-		btn_buscar.setText(	"<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk>" +
+		btn_buscar.setText(	"<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=WHITE>" +
 				"		<CENTER><p>Buscar Información</p></CENTER></FONT>" +
 				"</html>");
-		btn_Origen.setText(	"<html> <FONT FACE="+"arial"+" SIZE=2 COLOR=BLACk>" +
+		btn_Origen.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE" +
 				"		<CENTER><p>Generar Reporte Del Concepto</p></CENTER></FONT>" +
 				"</html>");
 		
+		btn_generarpdf.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE" +
+				"		<CENTER><p>Generar Reportes En PDF</p></CENTER></FONT>" +
+				"</html>");
+		
+		
 		int x=15,y=25,l=100,a=20;
 
-		this.panel.add(new JLabel("Fecha Inicial:")).setBounds(x   ,y    ,l  ,a);
-		this.panel.add(JLBlinicio).setBounds                  (x+60,y    ,a  ,a);
-		this.panel.add(c_inicio).setBounds                    (x+80,y    ,l  ,a);
+		this.panel.add(new JLabel("Fecha Inicial:")).setBounds(x   ,y     ,l  ,a);
+		this.panel.add(JLBlinicio).setBounds                  (x+60,y     ,a  ,a);
+		this.panel.add(c_inicio).setBounds                    (x+80,y     ,l  ,a);
+	
+		this.panel.add(new JLabel("Fecha Final:")).setBounds  (x   ,y+30  ,l  ,a);
+		this.panel.add(JLBfin).setBounds                      (x+60,y+30  ,a  ,a);
+		this.panel.add(c_final).setBounds                     (x+80,y+30  ,l  ,a);
 		
-		this.panel.add(JLBFactor).setBounds                   (x+200,y-15 ,l*5  ,a);
-		this.panel.add(btn_buscar).setBounds                  (x+200,y+10,200,a*2);
+		this.panel.add(JLBFactor).setBounds                   (x+200,y-15 ,l*5,a);
+		this.panel.add(btn_buscar).setBounds                  (x+200,y+10,200 ,a*2);
 		
 		this.panel.add(cmbConcepto).setBounds                 (x+550,y-15 ,200,a);
-		this.panel.add(cmbEstablecimiento).setBounds          (x+550,y+10 ,200,a);
-		this.panel.add(btn_Origen  ).setBounds                (x+550,y+35 ,200,a);
+		this.panel.add(cmbEstablecimiento).setBounds          (x+550,y+20 ,200,a);
 		
-		this.panel.add(new JLabel("Fecha Final:")).setBounds  (x   ,y+=30,l  ,a);
-		this.panel.add(JLBfin).setBounds                      (x+60,y    ,a  ,a);
-		this.panel.add(c_final).setBounds                     (x+80,y    ,l  ,a);
+		y=10;a=32;
+		this.panel.add(btn_Origen  ).setBounds                (x+770,y    ,200,a);
+		this.panel.add(btn_generarpdf).setBounds              (x+770,y+40 ,200,a);
+		
 
-		panel.add(getPanelTabla()).setBounds(10,y+=30,ancho-30,460);
+		panel.add(getPanelTabla()).setBounds(10,y+=80,ancho-30,460);
         
         c_inicio.setDate(cargar_fechas(1));
         c_final.setDate(cargar_fechas(0));
@@ -161,6 +172,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
 
 		btn_buscar.addActionListener(op_generar);
 		btn_Origen.addActionListener(opGenerarReporte_de_concepto);
+		btn_generarpdf.addActionListener(opGenerarEnPDF);
 		c_inicio.getDateEditor().addPropertyChangeListener(opfactorytasa);
 		   
         this.addWindowListener(new WindowAdapter() { public void windowOpened( WindowEvent e ){
@@ -240,6 +252,122 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		return date;
 	};
 	
+	ActionListener opGenerarEnPDF = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			 if(validar_fechas().equals("")){
+				  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+				  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
+				  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+				  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+				  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+	 	if(fecha1.before(fecha2)){		
+			String basedatos="2.26";
+			String vista_previa_reporte="si";
+			int vista_previa_de_ventana=1;
+			String comando="";
+			String reporte ="";
+ 		    String fecha_guardado=new SimpleDateFormat("dd-MM-yyyy").format(c_final.getDate());
+ 		    /////XLS GLOBALES
+		 			comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales NC','"+usuario.getNombre_completo()+"'" ;
+				  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"xlsciclo","Gastos De Ventas Globales NC "+fecha_guardado);
+		
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales','"+usuario.getNombre_completo()+"'" ;
+				  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"xlsciclo","Gastos De Ventas Globales "+fecha_guardado);
+				
+			
+			
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales','"+usuario.getNombre_completo()+"'" ;
+				  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Gastos De Ventas Globales "+fecha_guardado);
+					
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales NC','"+usuario.getNombre_completo()+"'" ;
+				  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Gastos De Ventas Globales NC "+fecha_guardado);
+					
+					comando="exec sp_reporte_de_lista_de_raya_en_un_periodo_edo_resultados '','"+fecha_inicio+"','"+fecha_final+"','Nomina','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Listas_De_Raya_En_Un_Periodo.jrxml";				
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Nomina "+fecha_guardado);
+				
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Nomina Gastos Administracion Impuestos','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Nomina Gastos Administracion Impuestos "+fecha_guardado);
+					
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','Nomina Gastos Venta Impuestos','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Nomina Gastos Venta Impuestos "+fecha_guardado);
+					
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Administración','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Gastos De Administración "+fecha_guardado);
+					
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Administración NC','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Gastos De Administración NC "+fecha_guardado);
+					
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos Financieros','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Gastos Financieros "+fecha_guardado);
+
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos Financieros NC','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Gastos Financieros NC "+fecha_guardado);
+
+			        comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Uso Interno Administración','"+usuario.getNombre_completo()+"'" ;
+			        reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
+				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Uso Interno Administración "+fecha_guardado);
+					
+				    comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '','"+fecha_inicio+"','"+fecha_final+"','Uso Interno Administración Por Producto','"+usuario.getNombre_completo()+"'" ;
+		            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
+				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Uso Interno Administración Por Producto "+fecha_guardado);
+				    
+				for(int i=1;i<establecimiento.length;i++){
+					comando="exec sp_Reporte_De_Diferiencias_De_Inventario '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Inventarios_Fisicos_Estado_Resultados.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Diferiencias De Inventario "+establecimiento[i]+" "+fecha_guardado);
+		
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Gastos De Ventas "+establecimiento[i]+" "+fecha_guardado);
+
+					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas NC','"+usuario.getNombre_completo()+"'" ;
+					reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Gastos De Ventas NC "+establecimiento[i]+fecha_guardado);
+		        }
+				
+				////////////////reportes pesados
+				for(int i=1;i<establecimiento.length;i++){
+			        comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Mermas','"+usuario.getNombre_completo()+"'" ;
+			        reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
+				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Mermas "+establecimiento[i]+" "+fecha_guardado);
+				    
+//				    comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Uso Interno Por Producto','"+usuario.getNombre_completo()+"'" ;
+//		            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
+//				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Uso Interno Por Producto "+establecimiento[i]+" "+fecha_guardado);
+		
+//				    comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Mermas Por Producto','"+usuario.getNombre_completo()+"'" ;
+//		            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
+//				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Mermas Por Producto "+establecimiento[i]+" "+fecha_guardado);
+				    
+			        comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+establecimiento[i].trim()+"','"+fecha_inicio+"','"+fecha_final+"','Uso Interno','"+usuario.getNombre_completo()+"'" ;
+			        reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
+				    new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"pdfciclo","Uso Interno "+establecimiento[i]+" "+fecha_guardado);
+		
+				}
+				 JOptionPane.showMessageDialog(null, "Se Crearon Correctamente Los Reportes En Formato PDF \nEn La Carpeta C:\\REPORTES SCOI\\PDF\\","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					
+	 	 }else{
+			JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
+			return;
+			}
+		}
+			 
+		}
+	};
+	
+	
+	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			cargar_factor();
@@ -311,61 +439,71 @@ public class Cat_Estado_De_Resultados extends JFrame {
 				  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
 				  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
 				  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
-	 	if(fecha1.before(fecha2)){		  
+	 	if(fecha1.before(fecha2)){		
+	 		int testigo=0;
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando="";
+			String reporte ="";
+			
 			if(cmbConcepto.getSelectedItem().toString().trim().equals("Selecciona Un Concepto")){
 			  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Concepto Para Poder Generar El Reporte Del Concepto", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
                return;
 			}else{
-				if(cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")){	
-					  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Establecimiento Para Poder Generar El Reporte Del Concepto ", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
-					  return;
+				
+			    if(cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas Globales NC")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas Globales") ){
+							comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+							reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
+							testigo=1;
 				}else{
-					int testigo=0;
-					String basedatos="2.26";
-					String vista_previa_reporte="no";
-					int vista_previa_de_ventana=0;
-					String comando="";
-					String reporte ="";
-					
-					if(cmbConcepto.getSelectedItem().toString().trim().equals("Diferiencias De Inventario")){
-						comando="exec sp_Reporte_De_Diferiencias_De_Inventario '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"'" ;
-						reporte = "Obj_Reporte_De_Inventarios_Fisicos_Estado_Resultados.jrxml";
-						testigo=1;
-					}
-					
-					
-					if(cmbConcepto.getSelectedItem().toString().trim().equals("Mermas")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Administración")){
-			            comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
-			            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
-			            testigo=1;
-					}
-					
-					if(cmbConcepto.getSelectedItem().toString().trim().equals("Mermas Por Producto")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Por Producto")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Administración Por Producto")){
-			            comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
-			            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
-			            testigo=1;
-					}
-
-					if(cmbConcepto.getSelectedItem().toString().trim().equals("Nomina Gastos Administracion Impuestos")||cmbConcepto.getSelectedItem().toString().trim().equals("Nomina Gastos Venta Impuestos")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Administración")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos Financieros")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas NC") ||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Administración NC")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos Financieros NC")  ){
-								comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
-								reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
-								testigo=1;
-					}
-				    
-				    if(cmbConcepto.getSelectedItem().toString().trim().equals("Nomina") ){
-								comando="exec sp_reporte_de_lista_de_raya_en_un_periodo_edo_resultados '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
-								reporte = "Obj_Reporte_De_Listas_De_Raya_En_Un_Periodo.jrxml";
-								testigo=1;
-					}
-				    
-				    if(testigo==1){
-						new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-						
-				    }else{
-								JOptionPane.showMessageDialog(null,"Error Concepto No Identificado","Avisa Al Adimistrador Del Sistema!", JOptionPane.ERROR_MESSAGE);
-								return;
-						 }
+			    
+							if(cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")){	
+								  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Establecimiento Para Poder Generar El Reporte Del Concepto ", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
+								  return;
+							}else{
+								
+								if(cmbConcepto.getSelectedItem().toString().trim().equals("Diferiencias De Inventario")){
+									comando="exec sp_Reporte_De_Diferiencias_De_Inventario '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"'" ;
+									reporte = "Obj_Reporte_De_Inventarios_Fisicos_Estado_Resultados.jrxml";
+									testigo=1;
+								}
+								
+								
+								if(cmbConcepto.getSelectedItem().toString().trim().equals("Mermas")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Administración")){
+						            comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+						            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
+						            testigo=1;
+								}
+								
+								if(cmbConcepto.getSelectedItem().toString().trim().equals("Mermas Por Producto")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Por Producto")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Administración Por Producto")){
+						            comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+						            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
+						            testigo=1;
+								}
+			
+								if(cmbConcepto.getSelectedItem().toString().trim().equals("Nomina Gastos Administracion Impuestos")||cmbConcepto.getSelectedItem().toString().trim().equals("Nomina Gastos Venta Impuestos")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Administración")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos Financieros")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas NC") ||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Administración NC")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos Financieros NC")  ){
+											comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+											reporte = "Obj_Reporte_De_Gastos_Estado_Resultados.jrxml";
+											testigo=1;
+								}
+							    
+							    if(cmbConcepto.getSelectedItem().toString().trim().equals("Nomina") ){
+											comando="exec sp_reporte_de_lista_de_raya_en_un_periodo_edo_resultados '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
+											reporte = "Obj_Reporte_De_Listas_De_Raya_En_Un_Periodo.jrxml";
+											testigo=1;
+								}
+				           }
+							
 				}
+			if(testigo==1){
+				  new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			}else{
+			  	  JOptionPane.showMessageDialog(null,"Error Concepto No Identificado","Avisa Al Adimistrador Del Sistema!", JOptionPane.ERROR_MESSAGE);
+				  return;
+				 }
+			    
+			
 			}		
 	 	 }else{
 			JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
