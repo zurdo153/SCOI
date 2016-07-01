@@ -70,9 +70,9 @@ public class Obj_Metas_Establecimiento_periodo {
 				return null;
 			}
 		}
-		public String buscar_metas_a_generar(int anio,int mes,String estab, int cod_meta){
+		public String buscar_metas_a_generar(int anio,int mes, int cod_meta,String estab){
 			try {
-			return new BuscarSQL().busca_metas_a_generar(anio,mes,estab,cod_meta);
+			return new BuscarSQL().busca_metas_a_generar(anio,mes,cod_meta,estab);
 			
 			} catch (SQLException e) {
 				e.printStackTrace();

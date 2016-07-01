@@ -8884,15 +8884,14 @@ public class BuscarSQL {
 	
 	}
 	//new
-	public String busca_metas_a_generar(int anio,int mes,String est, int cod_meta) throws SQLException{
+	public String busca_metas_a_generar(int anio,int mes, int cod_meta,String est) throws SQLException{
 		String Descripcion="";
 		String query = 
 				"declare @thiSql char(2), @establ int set @establ= (select  top 1 cod_estab from ventas where establecimiento='"+est+"') "
-				+"set @thiSql =(select top 1 'si' from tabla_de_venta_por_mes_de_un_año_por_un_clasificador_de_meta_y_establecimiento ("+anio+","+mes+","+cod_meta+",@establ)) "
+				+"set @thiSql =(select top 1 'si' from tabla_de_venta_por_mes_de_un_año_por_un_clasificador_de_meta_y_establecimiento ("+anio+"-1,"+mes+","+cod_meta+",@establ)) "
 			    +"if(@thiSql is null) set @thiSql='no' " 
 			    +"select @thiSql  as resultado";
 		Statement stmt = null;
-	
 		try {
 			stmt = con.conexion_ventas().createStatement();
 			ResultSet rs = stmt.executeQuery(query);

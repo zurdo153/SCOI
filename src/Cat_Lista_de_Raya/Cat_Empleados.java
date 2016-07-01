@@ -89,7 +89,6 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Horarios;
@@ -2742,15 +2741,15 @@ public void guardar_modificar_Empleado(){
 		public Filtro_Horario_Empleado()
 		{
 			
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/nivG.png"));
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 			panel.setBorder(BorderFactory.createTitledBorder("Filtro Horario"));	
-			
+			this.setModal(true);
 			panel.add(getPanelTabla()).setBounds(20,50,800,400);
 			panel.add(txtFolioHorario).setBounds(20,20,80,20);
 			panel.add(txtNombre).setBounds(100,20,720,20);
 			
 			cont.add(panel);
-			txtNombre.setToolTipText("Filtro");
+			txtNombre.setToolTipText("Filtro De Seleccion De Horario");
 			
 			trsfiltro = new TableRowSorter(modelo); 
 			tabla.setRowSorter(trsfiltro);
@@ -2822,41 +2821,21 @@ public void guardar_modificar_Empleado(){
 		
 	   	private JScrollPane getPanelTabla()	{		
 			new Connexion();
-			
-			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-			tcr.setHorizontalAlignment(SwingConstants.CENTER);
-			
-			tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
-			tabla.getColumnModel().getColumn(1).setCellRenderer(tcr);
-			
-			// Creamos las columnas.
+			tabla.getTableHeader().setReorderingAllowed(false) ;
 			tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
-			tabla.getColumnModel().getColumn(0).setMinWidth(80);
 			tabla.getColumnModel().getColumn(0).setMinWidth(80);
 			tabla.getColumnModel().getColumn(1).setHeaderValue("Nombre");
 			tabla.getColumnModel().getColumn(1).setMinWidth(720);
-			tabla.getColumnModel().getColumn(1).setMaxWidth(720);
 			
-			TableCellRenderer render = new TableCellRenderer() 
-			{ 
-				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-				boolean hasFocus, int row, int column) { 
-					JLabel lbl = new JLabel(value == null? "": value.toString());
-					if(row%2==0){
-							lbl.setOpaque(true); 
-							lbl.setBackground(new java.awt.Color(177,177,177));
-					} 
-				return lbl; 
-				} 
-			}; 
-			tabla.getColumnModel().getColumn(0).setCellRenderer(render); 
-			tabla.getColumnModel().getColumn(1).setCellRenderer(render); 
-
+			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 	
+			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
 			Statement s;
 			ResultSet rs;
 			try {
 				s = new Connexion().conexion().createStatement();
-				rs = s.executeQuery( "  select tb_horarios.folio,tb_horarios.nombre from tb_horarios");
+				rs = s.executeQuery( " select tb_horarios.folio,tb_horarios.nombre from tb_horarios "
+						            +"   where folio not in(select horario from tb_empleado with (nolock) where status in(1,2,3,6) "
+						            +" union all select horario2 from tb_empleado with (nolock) where status in(1,2,3,6) and status_h2=1 )or folio=11 order by nombre asc");
 				int folio;
 				String nombre;
 				

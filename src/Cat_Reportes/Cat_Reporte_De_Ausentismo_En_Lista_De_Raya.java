@@ -23,7 +23,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 import Conexiones_SQL.Connexion;
-import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")

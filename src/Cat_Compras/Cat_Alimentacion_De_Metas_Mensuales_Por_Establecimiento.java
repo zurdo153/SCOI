@@ -257,7 +257,7 @@ public void init_tablaconsulta(){
 				btnGuardar.setEnabled(false);
 				int anio=Integer.valueOf((String) cmbAnio.getSelectedItem());
 				int mes =cmbMes.getSelectedIndex()+1;
-				String estab = (String)cmbEstablecimiento.getSelectedItem();
+				String estab = (String)cmbEstablecimiento.getSelectedItem().toString().trim();
 				int cod_meta=cmbGrupo.getSelectedIndex();
 				
 				if(cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")){
@@ -285,6 +285,10 @@ public void init_tablaconsulta(){
 					cmbGrupo.setEnabled(false);
 					return;
 			   }else{
+			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Supermercados")){
+			            	cod_meta=1;
+			            }	 
+			            
 			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Alimentos")){
 			            	cod_meta=7;
 			            }
@@ -300,8 +304,8 @@ public void init_tablaconsulta(){
 			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Dulcerias")){
 			            	cod_meta=48;
 			            }
-			            
-						if(omep.buscar_metas_a_generar(anio, mes, estab,cod_meta).equals("no") ){
+
+						if(omep.buscar_metas_a_generar(anio, mes,cod_meta,estab).equals("no") ){
 								modelo.setRowCount(0);
 								JOptionPane.showMessageDialog(null, "No Se Pudieron Calcular Metas Con Los Parametros Seleccionados "
 										+ "  \no No Existe Venta del Año Anterior Seleccionado:["+cmbAnio.getSelectedItem().toString().trim()+"]"
