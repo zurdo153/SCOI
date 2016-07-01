@@ -6584,7 +6584,7 @@ public class BuscarSQL {
 			e.printStackTrace();
 			return null;
 		}
-	String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''Selecciona un Establecimiento''")?0:ventas.getEstablecimiento())
+	String query = "exec sp_Reporte_IZAGAR_de_ventas '"+ventas.getFecha_inicio()+"','"+ventas.getFecha_final()+"','"+(ventas.getEstablecimiento().equals("''''")?0:ventas.getEstablecimiento())
 				          +"','"+(ventas.getTipo_de_precio().equals("''Todos''")?0:ventas.getTipo_de_precio())+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos())+"','"+(ventas.getClases().equals("")?0:ventas.getClases())
 				          +"','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+"','"+(ventas.getLineas().equals("")?0:ventas.getLineas())
 				          +"','"+usuario.getAcceso_a_costos_y_precio_de_venta()+"',"+ventas.getPresentado()+",'"+(ventas.getTallas().equals("")?0:ventas.getTallas())+"','"+(ventas.getAsignaciones().equals("")?0:ventas.getTallas())+"'";

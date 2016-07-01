@@ -4,9 +4,15 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -18,15 +24,20 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
@@ -34,7 +45,9 @@ import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -306,9 +319,19 @@ public class Cat_Indicadores extends JFrame {
 				
 				bandera = false;
 				
-				cmbEstablecimiento.setSelectedIndex(0);
-				cmbEstablecimiento.setEnabled(true);
-				c_final.setEnabled(true);
+				if(cmbConcepto.getSelectedItem().toString().trim().equals("Plantilla De Personal")){
+					cmbEstablecimiento.setSelectedIndex(0);
+					cmbEstablecimiento.setEnabled(false);
+					c_inicio.setEnabled(false);
+					c_final.setEnabled(false);
+					new Cat_Filtro_Lista_de_Raya_Pasadas().setVisible(true);
+				}else{
+					cmbEstablecimiento.setSelectedIndex(0);
+					cmbEstablecimiento.setEnabled(true);
+					c_inicio.setEnabled(true);
+					c_final.setEnabled(true);
+				}
+				
 			}
 		}
 	};
@@ -366,6 +389,15 @@ public class Cat_Indicadores extends JFrame {
 										if(!cmbConcepto.getSelectedItem().toString().trim().equals("Selecciona Un Indicador")){
 											Obj_Indicadores indicador = new Obj_Indicadores().buscar(cmbConcepto.getSelectedItem().toString().trim());
 											comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'";
+											System.out.println(comando);
+											
+											reporte =indicador.getReporte();
+											testigo=1;
+										}
+										
+										if(cmbConcepto.getSelectedItem().toString().trim().equals("Plantilla De Personal")){
+											Obj_Indicadores indicador = new Obj_Indicadores().buscar(cmbConcepto.getSelectedItem().toString().trim());
+											comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"'";
 											System.out.println(comando);
 											
 											reporte =indicador.getReporte();
@@ -431,6 +463,128 @@ public class Cat_Indicadores extends JFrame {
 			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 		}
 	}
+	
+	public class Cat_Filtro_Lista_de_Raya_Pasadas extends JDialog {
+		
+		Container cont = getContentPane();
+		JLayeredPane campo = new JLayeredPane();
+		
+		Connexion con = new Connexion();
+		
+		DefaultTableModel model = new DefaultTableModel(0,2){
+			public boolean isCellEditable(int fila, int columna){
+				if(columna < 0)
+					return true;
+				return false;
+			}
+		};
+		
+		JTable tabla = new JTable(model);
+		
+		@SuppressWarnings("rawtypes")
+		private TableRowSorter trsfiltro;
+		
+		JTextField txtFiltro = new Componentes().text(new JTextField(), "Teclee Folio o Fecha De Lista De Raya", 20, "String");
+	    
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Cat_Filtro_Lista_de_Raya_Pasadas()	{
+			this.setModal(true);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setTitle("Consulta de Listas de Raya Pasadas");
+
+			campo.setBorder(BorderFactory.createTitledBorder("Listas de Rayas Pasadas"));
+			trsfiltro = new TableRowSorter(model); 
+			tabla.setRowSorter(trsfiltro);  
+			
+			campo.add(getPanelTabla()).setBounds(15,42,200,367);
+			
+			campo.add(txtFiltro).setBounds(15,20,200,20);
+			
+			agregar(tabla);
+			
+			cont.add(campo);
+			
+			txtFiltro.addKeyListener(opFiltro);
+			
+			this.setSize(240,450);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+		}
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	if(e.getClickCount() == 2){
+		        		int fila = tabla.getSelectedRow();
+		    			try {
+		    					Date fecha = new SimpleDateFormat("dd/MM/yyyy").parse(tabla.getValueAt(fila, 1).toString().trim());
+		    					c_inicio.setDate(fecha);
+		    					
+		    					dispose();
+		    					
+						} catch (ParseException e1) {
+							e1.printStackTrace();
+						}
+		        	}
+		        }
+	        });
+	    }
+		
+		KeyListener opFiltro = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				
+				int[] columnas = {1,2};
+				new Obj_Filtro_Dinamico_Plus(tabla, txtFiltro.getText().toString().toLowerCase(), columnas);
+			}
+			public void keyTyped(KeyEvent arg0) {}	
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+		
+	   	@SuppressWarnings("unused")
+		private JScrollPane getPanelTabla()	{		
+			
+			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+			tcr.setHorizontalAlignment(SwingConstants.CENTER);
+			
+			tabla.getColumnModel().getColumn(0).setHeaderValue("Número Lista");
+			tabla.getColumnModel().getColumn(0).setMaxWidth(60);
+			tabla.getColumnModel().getColumn(0).setMinWidth(60);
+			tabla.getColumnModel().getColumn(1).setHeaderValue("Fecha Creada");
+			tabla.getColumnModel().getColumn(1).setMaxWidth(120);
+			tabla.getColumnModel().getColumn(1).setMinWidth(120);
+			
+			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
+			
+			Statement s;
+			ResultSet rs;
+			try {
+				s = con.conexion().createStatement();
+				rs = s.executeQuery("select numero_lista,fecha "
+						+ " from tb_lista_raya "
+						+ " where numero_lista >= 156 "
+						+ " group by numero_lista,fecha "
+						+ " order by numero_lista desc");
+				String [] fila = new String[2];
+				DecimalFormat format =  new DecimalFormat("#0.00");
+				while (rs.next()) {
+				   fila[0] = rs.getString(1)+"  ";
+				   fila[1] = "   "+rs.getString(2);
+				   
+			  	   model.addRow(fila); 
+				}	
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			 JScrollPane scrol = new JScrollPane(tabla);
+			   
+		    return scrol; 
+		}
+		
+	}
+	
 	
 	
 	public static void main(String args[]){

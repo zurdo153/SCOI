@@ -562,9 +562,9 @@ public class Cat_Empleados extends JFrame{
 		panel.add(new JLabel("B.Complemento:")).setBounds               (x    ,y+=25 ,width,height );
 		panel.add(cmbBono).setBounds                           (x+sep,y     ,width,height );
 		panel.add(new JLabel("B.Asistencia:")).setBounds         (x    ,y+=25 ,width,height );
-		panel.add(cmbBonopuntualidad).setBounds                    (x+sep,y     ,width,height );
+		panel.add(cmbBonoAsistencia).setBounds                    (x+sep,y     ,width,height );
 		panel.add(new JLabel("B.Puntualidad:")).setBounds        (x    ,y+=25 ,width,height );
-		panel.add(cmbBonoAsistencia).setBounds                   (x+sep,y     ,width,height );
+		panel.add(cmbBonopuntualidad).setBounds                   (x+sep,y     ,width,height );
 		panel.add(new JLabel("Presencia Fisica:")).setBounds   (x    ,y+=25 ,width,height );
 		panel.add(cmbPresenciaFisica).setBounds                (x+sep,y     ,width,height );
 		
