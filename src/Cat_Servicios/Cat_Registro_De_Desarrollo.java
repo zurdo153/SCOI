@@ -1,9 +1,7 @@
 package Cat_Servicios;
 
-import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +34,7 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
@@ -49,10 +48,25 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
+	JTextField txtFolioRegistro 	= new Componentes().text(new JCTextField(), "Folio Registro", 10, "Int");
+	JCButton   btnBuscarRegistro 	= new JCButton("","buscar.png","Azul");
+	JCButton   btnDeshacerRegistro 	= new JCButton  ("","deshacer16.png","Azul");
+	JCButton   btnNuevoRegistro 	= new JCButton  ("Nuevo","aa.png","Azul");
+	
 	JTextField txtFolioSolicitante = new Componentes().text(new JCTextField(), "Folio", 10, "Int");
 	JTextField txtSolicitante = new Componentes().text(new JCTextField(), "Persona Solicitante", 180, "String");
 	JCButton btnBuscarSolicitante = new JCButton("","buscar.png","Azul");
-	JCButton btnLimpiarSolicitante = new JCButton  ("","deshacer16.png","Azul");
+	JCButton btnLimpiarSolicitante = new JCButton("","deshacer16.png","Azul");
+	
+	JTextField txtFolioAtendio = new Componentes().text(new JCTextField(), "Folio", 10, "Int");
+	JTextField txtAtendio = new Componentes().text(new JCTextField(), "Persona Que Atendio", 180, "String");
+	JCButton btnBuscarAtendio = new JCButton("","buscar.png","Azul");
+	JCButton btnLimpiarAtendio = new JCButton  ("","deshacer16.png","Azul");
+	
+	JCButton btnBuscarAfectados = new JCButton("","buscar.png","Azul");
+	JCButton btnLimpiarAfectados = new JCButton  ("","deshacer16.png","Azul");
+	
+	JCButton btnGuardar = new JCButton  ("Guardar","guardar.png","Azul");
 	
 	DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"folio","Colaborador","Sueldo","Bonos","Tiempo Antes Del Desarollo (Min)","Tiempo Despues Del Desarollo (Min)","Costo Antes Del Desarollo","Costo Despues Del Desarollo"}){
 		
@@ -92,14 +106,6 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 	JTable tabla = new JTable(modelo);
 	JScrollPane scrollTabla = new JScrollPane(tabla);
 	
-	JCButton btnBuscarAfectados = new JCButton("","buscar.png","Azul");
-	JCButton btnLimpiarAfectados = new JCButton  ("","deshacer16.png","Azul");
-	
-	JTextField txtFolioAtendio = new Componentes().text(new JCTextField(), "Folio", 10, "Int");
-	JTextField txtAtendio = new Componentes().text(new JCTextField(), "Persona Que Atendio", 180, "String");
-	JCButton btnBuscarAtendio = new JCButton("","buscar.png","Azul");
-	JCButton btnLimpiarAtendio = new JCButton  ("","deshacer16.png","Azul");
-	
 	JTextArea txaMejoras_A_Optener = new Componentes().textArea(new JTextArea(), "", 1100);
 	JScrollPane scrollMejoras_A_Optener = new JScrollPane(txaMejoras_A_Optener);
 	
@@ -110,7 +116,7 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 	JScrollPane scrollSujerenciasExtras = new JScrollPane(txaSujerenciasExtras);
 	
 	public Cat_Registro_De_Desarrollo() {
-		this.setSize(1024,630);
+		this.setSize(1024,660);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -131,7 +137,13 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 		
 		int x=15,y=20,ancho=100;
 		
-		panel.add(new JLabel("Solicitante:")).setBounds(x, y, ancho, 20);
+		panel.add(new JLabel("Folio:")).setBounds(x, y, ancho, 20);
+		panel.add(txtFolioRegistro).setBounds(x+ancho, y, 100, 20);
+		panel.add(btnBuscarRegistro).setBounds(x+ancho*2+2, y, 30, 20);	
+		panel.add(btnDeshacerRegistro).setBounds(x+ancho*2+35, y, 30, 20);
+		panel.add(btnNuevoRegistro).setBounds(x+ancho*2+68, y, 90, 20);
+		
+		panel.add(new JLabel("Solicitante:")).setBounds(x, y+=25, ancho, 20);
 		panel.add(txtFolioSolicitante).setBounds(x+ancho, y, 50, 20);
 		panel.add(txtSolicitante).setBounds(x+ancho+50, y, ancho*4, 20);
 		panel.add(btnBuscarSolicitante).setBounds(x+ancho+52+(ancho*4), y, 30, 20);
@@ -158,6 +170,8 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 		panel.add(new JLabel("Sujerencia Y Modificaciones Extras:")).setBounds(x, y+=190, ancho*10-10, 20);
 		panel.add(scrollSujerenciasExtras).setBounds(x, y+=15, ancho*10-10, 100);
 		
+		panel.add(btnGuardar).setBounds(x+ ancho*9-30, y+=105, ancho+20, 30);
+		
 		txtFolioSolicitante.setEditable(false);
 		txtSolicitante.setEditable(false);
 		txtFolioAtendio.setEditable(false);
@@ -166,6 +180,10 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 		render();
 		agregar(tabla);
 		tabla.addKeyListener(seleccionConTeclado);
+		
+		btnBuscarRegistro.addActionListener(opFolio);
+		btnDeshacerRegistro.addActionListener(opFolio);
+		btnNuevoRegistro.addActionListener(opFolio);
 		
 		btnBuscarSolicitante.addActionListener(opFiltro);
 		btnBuscarAtendio.addActionListener(opFiltro);
@@ -178,8 +196,73 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
         txaMejoras_A_Optener.addAncestorListener(tranferir);
         txaFuncionalidadDelPrograma.addAncestorListener(tranferir);
         txaSujerenciasExtras.addAncestorListener(tranferir);
+        
+        btnGuardar.addActionListener(opGuardar);
+        
+        btnBuscarSolicitante.setEnabled(false);
+		btnBuscarAtendio.setEnabled(false);
+		btnBuscarAfectados.setEnabled(false);
+		btnGuardar.setEnabled(false);
 		
 		cont.add(panel);
+	}
+	
+	ActionListener opFolio = new ActionListener(){
+		@SuppressWarnings("unused")
+		public void actionPerformed(ActionEvent e){
+			if(e.getSource().equals(btnBuscarRegistro)){
+				
+				if(!txtFolioRegistro.getText().trim().equals("")){//si es diferente de vacio 
+					if(true){//si se encuentra el registro
+						validarFolioRegistro("si");
+//						aqui va el metodo de busqueda
+					}else{
+						validarFolioRegistro("no");
+//						aviso (el registro que se busco no existe)					
+					}
+				}else{
+					validarFolioRegistro("no");
+//					aviso (El Campo Folio Se Encuentra Vacio)						
+				}
+			}
+			
+			if(e.getSource().equals(btnDeshacerRegistro)){
+				validarFolioRegistro("no");				
+			}
+			
+			if(e.getSource().equals(btnNuevoRegistro)){
+				validarFolioRegistro("si");
+				txtFolioRegistro.setText(new BuscarSQL().buscar_folio_consecutivo_por_folio_de_transaccion(33));
+				btnBuscarSolicitante.requestFocus();
+			}
+		}
+	};
+	
+	public void validarFolioRegistro(String encontrado){
+		
+		if(encontrado.equals("si")){
+			txtFolioRegistro.setEditable(false);
+			btnBuscarRegistro.setEnabled(false);
+			btnDeshacerRegistro.setEnabled(true);
+			btnNuevoRegistro.setEnabled(false);
+			
+			btnBuscarSolicitante.setEnabled(true);
+			btnBuscarAtendio.setEnabled(true);
+			btnBuscarAfectados.setEnabled(true);
+			btnGuardar.setEnabled(true);
+		}else{
+			txtFolioRegistro.setEditable(true);
+			btnBuscarRegistro.setEnabled(true);
+			btnDeshacerRegistro.setEnabled(true);
+			btnNuevoRegistro.setEnabled(true);
+			txtFolioRegistro.setText("");
+			
+			btnBuscarSolicitante.setEnabled(false);
+			btnBuscarAtendio.setEnabled(false);
+			btnBuscarAfectados.setEnabled(false);
+			btnGuardar.setEnabled(false);
+		}
+
 	}
 	
 	AncestorListener tranferir = new AncestorListener() {
@@ -194,7 +277,10 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 	
 	ActionListener opFiltro = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			new Cat_Filtro_Empleado(e.getSource().equals(btnBuscarAtendio)?" and empleado.departamento = 1":"").setVisible(true);
+			String botonFiltro = "";
+			
+			botonFiltro = e.getSource().equals(btnBuscarSolicitante)?"solicitante":(e.getSource().equals(btnBuscarAtendio)?"atendio":"afectados");
+			new Cat_Filtro_Empleado(e.getSource().equals(btnBuscarAtendio)?" and empleado.departamento = 1":"",botonFiltro).setVisible(true);
 		}
 	};
 	
@@ -214,6 +300,32 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 			}
 		}
 	};
+	
+	ActionListener opGuardar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			if(ValidaCampos().equals("")){
+				System.out.print("Gaurdar");
+			}else{
+//				aviso (Los Siguientes Campos Son Requeridos: ValidaCampos())
+				System.out.print("Los Siguientes Campos Son Requeridos: "+ValidaCampos());
+			}
+			
+		}
+	};
+	
+	public String ValidaCampos(){
+		String vacios = "";
+		
+		vacios += txtFolioAtendio.getText().equals("")?"Atendio\n":"";
+		vacios += txtFolioSolicitante.getText().equals("")?"Solicitante\n":"";
+		vacios += tabla.getRowCount()==0?"Afectados\n":"";
+		vacios += txaMejoras_A_Optener.getText().trim().equals("")?"Mejoras A Optener\n":"";
+		vacios += txaFuncionalidadDelPrograma.getText().trim().equals("")?"Funcionalidad Del Programa\n":"";
+		vacios += txaSujerenciasExtras.getText().equals("")?"Sugerencias Extras\n":"";
+		
+		return vacios;
+	}
 	
 	public void render(){
 			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
@@ -291,6 +403,7 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
 		
+		boolean validaSeleccionDeTabla = false;
 		DefaultTableModel modeloFiltro = new DefaultTableModel(null,new String[]{"folio","Colaborador","Sueldo","Bonos","*"}){
 			
 			@SuppressWarnings("rawtypes")
@@ -318,6 +431,25 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 	       	 }
 				return false;
 			}
+	        
+            @Override
+            public void setValueAt(Object value, int row, int col) {
+                super.setValueAt(value, row, col);
+                if(validaSeleccionDeTabla){
+                	if (col == 4 && value.equals(Boolean.TRUE))
+                    deselectValues(row, col);
+                }
+            }
+
+            private void deselectValues(int selectedRow, int col) {
+                for (int row = 0; row < getRowCount(); row++) {
+                    if (getValueAt(row, col).equals(Boolean.TRUE)
+                            && row != selectedRow) {
+                        setValueAt(Boolean.FALSE, row, col);
+                        fireTableCellUpdated(row, col);
+                    }
+                }
+            }
 		};
 		
 		JTable tablaFiltro = new JTable(modeloFiltro);
@@ -326,13 +458,13 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 		JTextField txtNombre_Completo = new Componentes().text(new JCTextField(), "Filtro De Colaboradores", 100, "String");
 		JCButton btnGenerar = new JCButton("Generar", "", "Azul");
 		
-		public Cat_Filtro_Empleado(String condicionAnd){
-			
+		public Cat_Filtro_Empleado(String condicionAnd, String boton){
 			this.setModal(true);
-			
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
 			this.setTitle("Filtro de Empleados");
 			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Empleado"));
+			
+			validaSeleccionDeTabla = (!boton.equals("afectados"))?true:false;
 			
 			campo.add(txtNombre_Completo).setBounds(15,20,400,20);
 			campo.add(btnGenerar).setBounds(415, 20, 100, 20);
