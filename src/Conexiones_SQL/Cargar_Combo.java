@@ -2256,4 +2256,41 @@ public class Cargar_Combo {
 		return pila;
 			
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] Nivel_De_Puesto(String tabla) throws SQLException{
+		String query = "select nivel_de_puesto as nivel_de_puesto from " + tabla+" where status='V' order by nivel_de_puesto asc";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					
+					miVector.add("Selecciona un Nivel De Puesto");
+//					miVector.add("");
+				}
+				miVector.add(rs.getString("nivel_de_puesto").toUpperCase());
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		
+		return pila;
+			
+	}
 }

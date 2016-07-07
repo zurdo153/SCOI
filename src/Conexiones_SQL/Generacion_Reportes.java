@@ -60,7 +60,7 @@ public class Generacion_Reportes {
 				}
 				
 				try{
-					JDialog viewer = new JDialog(new JFrame(),"Vista previa del reporte", true);
+					JDialog viewer = new JDialog(new JFrame(),reporte, true);
 					viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
 					viewer.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 					viewer.setLocationRelativeTo(null);

@@ -69,6 +69,15 @@ public class Obj_Puestos {
 		return null; 
 	}
 	
+	public String[] Combo_Nivel_De_Puesto(){ 
+		try {
+			return new Cargar_Combo().Nivel_De_Puesto("nivel_de_puestos");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
+	
 	public Obj_Puestos buscar(int folio){
 		try {
 			return new BuscarSQL().Puesto(folio);

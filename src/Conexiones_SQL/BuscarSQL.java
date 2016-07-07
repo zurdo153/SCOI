@@ -89,6 +89,7 @@ import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Finiquitos;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
+import Obj_Lista_de_Raya.Obj_Perfil_De_Puestos;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
@@ -9052,4 +9053,117 @@ public boolean  existe_horario_con_otro_empleado(int horario1, int horario2, int
 	}
 	return existe;
 }
+
+public String[] getTablaRangoDeEdadesParaPerfiles(){
+	String[] Matriz = null;
+	
+	String datosif = "select convert(varchar(5),edad_minima)+' - '+convert(varchar(5),edad_maxima) as rango "
+			+ " from tb_edades_requeridas_para_perfiles_de_puesto "
+			+ " where status = 'V'";
+	
+	Matriz = new String[getFilas(datosif)];
+	Statement s;
+	ResultSet rs;
+	try {			
+		s = con.conexion().createStatement();
+		rs = s.executeQuery(datosif);
+		int i=0;
+		while(rs.next()){
+			Matriz[i] = rs.getString(1);
+			i++;
+		}
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+	}
+	
+	return Matriz;
+}
+
+public Obj_Perfil_De_Puestos Perfil_De_Puesto(int folio) throws SQLException{
+	Obj_Perfil_De_Puestos empleado = new Obj_Perfil_De_Puestos();
+	String query = "exec sp_empleados "+ folio;
+	Statement stmt = null;
+
+	try {
+		stmt = con.conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+
+		while(rs.next()){
+			
+//			--------------------------------------------------------------------------------------------------------------------------------
+			empleado.setFolio(rs.getInt("folio"));
+			empleado.setPerfil(rs.getString("nombre").trim());
+			empleado.setEdad(rs.getString("edad"));
+			empleado.setSexo(rs.getInt("sexo"));
+			empleado.setPuesto_al_que_reporta(rs.getString("puesto_reporta"));
+			
+			empleado.setEstablecimiento(rs.getInt("establecimiento_id"));
+			empleado.setDepartameto(rs.getInt("departamento"));
+			empleado.setPuesto(rs.getInt("puesto_id"));
+			
+//			--------------------------------------------------------------------------------------------------------------------------------
+			empleado.setHorario(rs.getInt("horario"));
+			empleado.setHorario2(rs.getInt("horario2"));
+			empleado.setHorario3(rs.getInt("horario3"));
+			empleado.setStatus_h1(rs.getInt("status_h1"));
+			empleado.setStatus_h2(rs.getInt("status_h2"));
+			empleado.setStatus_h3(rs.getInt("status_h3"));
+			empleado.setStatus_rotativo(rs.getInt("status_rotativo"));
+			
+			empleado.setDescanso(rs.getString("descanso"));
+			empleado.setDobla(rs.getString("dobla"));
+			
+//			--------------------------------------------------------------------------------------------------------------------------------
+			empleado.setGafete(rs.getBoolean("gafete") ? true : false);
+			empleado.setPrestamo(rs.getInt("rango_prestamo_id"));
+			empleado.setSalario_diario(rs.getFloat("salario_diario"));
+			empleado.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
+			
+			empleado.setSueldo(rs.getFloat("sueldo_id"));				
+			empleado.setBonocomplemento(rs.getInt("bono_id"));
+			empleado.setBono_asistencia(rs.getFloat("bono_asistencia"));
+			empleado.setBono_puntualidad(rs.getFloat("bono_puntualidad"));
+			
+
+
+//			--------------------------------------------------------------------------------------------------------------------------------
+			empleado.setObjetivo_del_puesto(rs.getString("Objetivo_del_puesto"));				
+			empleado.setActividades_Principales(rs.getString("Actividades_Principales"));
+			empleado.setConocimiento(rs.getString("Conocimiento"));
+			empleado.setExperiencia(rs.getString("Experiencia"));
+			empleado.setHabilidades(rs.getString("Habilidades"));				
+
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		return null;
+	}
+	finally{
+		if(stmt!=null){stmt.close();}
+	}
+	return empleado;
+}
+
+public Obj_Perfil_De_Puestos Perfil_De_Puesto_Nuevo() throws SQLException{
+	Obj_Perfil_De_Puestos empleado = new Obj_Perfil_De_Puestos();
+	String query = "select max(folio) as 'Maximo' from tb_empleado";
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			empleado.setFolio(rs.getInt("Maximo"));
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		return null;
+	}
+	finally{
+		if(stmt!=null){stmt.close();}
+	}
+	return empleado;
+}
+
 }

@@ -62,6 +62,7 @@ import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
+import Obj_Lista_de_Raya.Obj_Perfil_De_Puestos;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
@@ -4327,5 +4328,93 @@ public boolean Borrar_Observacion_DH(){
 				}		
 				return true;
 			}
+	
+	public boolean Perfil_De_Puesto(Obj_Perfil_De_Puestos empleado, int folio){
+		String query = "exec -----------sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			
+			// insert bitacora
+			String pc = InetAddress.getLocalHost().getHostName();
+			String ip = InetAddress.getLocalHost().getHostAddress();
+			pstmtb = con.prepareStatement(Qbitacora);
+			pstmtb.setString(1, pc);
+			pstmtb.setString(2, ip);
+			pstmtb.setInt(3, usuario.getFolio());
+			pstmtb.setInt(4, folio);
+			pstmtb.setString(5, "Empleados sp_update_alta_empleado");
+			pstmtb.executeUpdate();
+			
+			int i=1;
+			pstmt = con.prepareStatement(query);
+//			--------------------------------------------------------------------------------------------------------------------------------
+			pstmt.setInt   (i,		folio);
+			pstmt.setString(i+=1, 	empleado.getPerfil().toUpperCase());
+			pstmt.setString(i+=1, 	empleado.getEdad());
+			pstmt.setInt(i+=1, 		empleado.getSexo());
+			pstmt.setString(i+=1, 	empleado.getPuesto_al_que_reporta());
+			
+			pstmt.setInt(i+=1, 		empleado.getEstablecimiento());
+			pstmt.setInt(i+=1, 		empleado.getDepartameto());	
+			pstmt.setInt(i+=1, 		empleado.getPuesto());
+			
+//			--------------------------------------------------------------------------------------------------------------------------------
+			pstmt.setInt(i+=1, 		empleado.getHorario());
+			pstmt.setInt(i+=1, 		empleado.getHorario2());
+			pstmt.setInt(i+=1,		empleado.getHorario3());
+			pstmt.setInt(i+=1, 		empleado.getStatus_h1());
+			pstmt.setInt(i+=1, 		empleado.getStatus_h2());
+			pstmt.setInt(i+=1, 		empleado.getStatus_h3());
+			pstmt.setInt(i+=1, 		empleado.getStatus_rotativo());
+			
+//			--------------------------------------------------------------------------------------------------------------------------------
+			pstmt.setBoolean(i+=1, (empleado.isGafete())? true: false);
+			pstmt.setInt(i+=1, 		empleado.getPrestamo());
+			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
+			pstmt.setFloat(i+=1, 	empleado.getSalario_diario_integrado());
+			
+			pstmt.setFloat(i+=1,   empleado.getSueldo());
+			pstmt.setFloat(i+=1,   empleado.getBonocomplemento());
+			pstmt.setFloat(i+=1,   empleado.getBono_asistencia());
+			pstmt.setFloat(i+=1, 	empleado.getBono_puntualidad());
+			
+//			--------------------------------------------------------------------------------------------------------------------------------
+			pstmt.setString(i+=1, 	empleado.getObjetivo_del_puesto().toUpperCase());
+			pstmt.setString(i+=1, 	empleado.getActividades_Principales().toUpperCase());
+			pstmt.setString(i+=1, 	empleado.getConocimiento().toUpperCase());
+			pstmt.setString(i+=1, 	empleado.getExperiencia().toUpperCase());
+			pstmt.setString(i+=1, 	empleado.getHabilidades().toUpperCase());
+			
+			pstmt.setInt(i+=1, 		usuario.getFolio());
+//			fecha de modificacion
+
+			
+			pstmt.executeUpdate();
+			con.commit();
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion Perfil_De_Puesto  procedimiento almacenado ------sp_update_alta_empleado------ SQLException: "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 	
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-11-25T09:21:45 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-07-04T14:02:33 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Abonos_Y_Diferencia_De_Cortes" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f51f2565-4269-4fbc-97b9-9b0030bf0b11">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -14,12 +14,12 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
-	<queryString>
-		<![CDATA[exec sp_Reporte_De_Entradas_Y_Salidas_De_Cascos_Hasta_Una_Fecha '24/11/2015 00:00:00']]>
+	<queryString language="SQL">
+		<![CDATA[exec sp_Reporte_De_Entradas_Y_Salidas_De_Cascos_Hasta_Una_Fecha '04/07/2016 00:00:00']]>
 	</queryString>
 	<field name="folio_producto" class="java.lang.String"/>
 	<field name="descripcion_producto" class="java.lang.String"/>
-	<field name="cantidad" class="java.lang.Double">
+	<field name="cantidad" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="venta_pza" class="java.math.BigDecimal"/>
@@ -30,13 +30,15 @@
 	<field name="total" class="java.math.BigDecimal"/>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="transaccion" class="java.lang.String"/>
-	<variable name="Inventario_Total" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	<field name="mov" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<variable name="Inventario_Total" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{status}.equals("V")?$F{cantidad}:0]]></variableExpression>
 	</variable>
 	<group name="Group1" keepTogether="true">
 		<groupExpression><![CDATA[$F{folio_producto}]]></groupExpression>
 		<groupHeader>
-			<band height="32">
+			<band height="36">
 				<frame>
 					<reportElement mode="Opaque" x="0" y="1" width="555" height="16" forecolor="#B89F7D" backcolor="#FF9900" uuid="054b072e-2869-4b2c-a071-6f5ef3e3b439"/>
 					<textField>
@@ -110,6 +112,16 @@
 					</textElement>
 					<text><![CDATA[Fecha]]></text>
 				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="445" y="17" width="78" height="14" forecolor="#000000" uuid="ce19963a-93aa-4cae-a4a2-bb89c8900dcc">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Status]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -164,6 +176,11 @@
 		<band height="16" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15" uuid="5c587554-9e5b-4122-a4d9-8227e3dbe6aa"/>
+				<rectangle radius="4">
+					<reportElement x="0" y="1" width="550" height="12" backcolor="#FF0400" uuid="827ce269-7ffd-447f-9520-847ccb8690fb">
+						<printWhenExpression><![CDATA[$F{status}.equals("C")]]></printWhenExpression>
+					</reportElement>
+				</rectangle>
 				<textField>
 					<reportElement x="30" y="0" width="60" height="15" uuid="a924a306-3601-422c-86cd-4e75994f2833"/>
 					<textElement textAlignment="Right"/>
@@ -183,11 +200,12 @@
 					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="3" y="0" width="27" height="15" uuid="1b9f0c9b-698c-400e-9913-85165ce7e82f"/>
-					<textElement>
-						<font size="11" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[($F{cantidad})>0? "+":"-"]]></textFieldExpression>
+					<reportElement x="1" y="0" width="29" height="15" uuid="929bed2a-ceef-4858-9c8e-231c0ee8a16d"/>
+					<textFieldExpression><![CDATA[$F{mov}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="480" y="1" width="32" height="14" uuid="628c292d-73ef-4855-bdb9-10a6e7db626c"/>
+					<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
