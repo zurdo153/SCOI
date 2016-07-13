@@ -9094,12 +9094,12 @@ public Obj_Perfil_De_Puestos Perfil_De_Puesto(int folio) throws SQLException{
 			empleado.setFolio(rs.getInt("folio"));
 			empleado.setPerfil(rs.getString("nombre").trim());
 			empleado.setEdad(rs.getString("edad"));
-			empleado.setSexo(rs.getInt("sexo"));
+			empleado.setSexo(rs.getString("sexo"));
 			empleado.setPuesto_al_que_reporta(rs.getString("puesto_reporta"));
 			
-			empleado.setEstablecimiento(rs.getInt("establecimiento_id"));
-			empleado.setDepartameto(rs.getInt("departamento"));
-			empleado.setPuesto(rs.getInt("puesto_id"));
+			empleado.setEstablecimiento(rs.getString("establecimiento_id"));
+			empleado.setDepartameto(rs.getString("departamento"));
+			empleado.setPuesto(rs.getString("puesto_id"));
 			
 //			--------------------------------------------------------------------------------------------------------------------------------
 			empleado.setHorario(rs.getInt("horario"));
@@ -9164,6 +9164,30 @@ public Obj_Perfil_De_Puestos Perfil_De_Puesto_Nuevo() throws SQLException{
 		if(stmt!=null){stmt.close();}
 	}
 	return empleado;
+}
+
+public int  anios_de_vacaciones(String fechaInicial, String fecha_final){
+	int anios = 0;
+   String query = "select dias_corresponden from tb_tabla_vacaciones_rangos where tb_tabla_vacaciones_rangos.años_trabajados =	convert (int,convert (numeric(10,2),(convert(float,DATEDIFF(day,convert(datetime,('"+fechaInicial+"')),dateadd(day,1,'"+fecha_final+"') ))/365)+1)) ";
+	
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			anios=rs.getInt("dias_corresponden");
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	finally{
+		if(stmt!=null){try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}}
+	}
+	return anios;
 }
 
 }

@@ -58,7 +58,7 @@ public class Cat_Reportes_De_Bonificacion_De_Proveedores extends JFrame {
 	JDateChooser c_final = new JDateChooser();
 	
 //	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
-	String status[] = {"Selecciona Un Status","VIGENTE"};
+	String status[] = {"Selecciona Un Status","VIGENTE","COBRADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbStatus = new JComboBox(status);
 

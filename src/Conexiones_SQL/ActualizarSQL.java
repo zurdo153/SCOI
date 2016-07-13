@@ -4354,12 +4354,12 @@ public boolean Borrar_Observacion_DH(){
 			pstmt.setInt   (i,		folio);
 			pstmt.setString(i+=1, 	empleado.getPerfil().toUpperCase());
 			pstmt.setString(i+=1, 	empleado.getEdad());
-			pstmt.setInt(i+=1, 		empleado.getSexo());
+			pstmt.setString(i+=1, 		empleado.getSexo());
 			pstmt.setString(i+=1, 	empleado.getPuesto_al_que_reporta());
 			
-			pstmt.setInt(i+=1, 		empleado.getEstablecimiento());
-			pstmt.setInt(i+=1, 		empleado.getDepartameto());	
-			pstmt.setInt(i+=1, 		empleado.getPuesto());
+			pstmt.setString(i+=1, 		empleado.getEstablecimiento());
+			pstmt.setString(i+=1, 		empleado.getDepartameto());	
+			pstmt.setString(i+=1, 		empleado.getPuesto());
 			
 //			--------------------------------------------------------------------------------------------------------------------------------
 			pstmt.setInt(i+=1, 		empleado.getHorario());

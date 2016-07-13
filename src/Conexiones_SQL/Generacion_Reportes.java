@@ -101,7 +101,7 @@ public class Generacion_Reportes {
 					}
 		}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 	public void  Reporte_Guardado(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana,String Guardar_reporte_formato, String nombre_reporte){
 	    Obj_Usuario usuario = new Obj_Usuario();
         String query =comando ;

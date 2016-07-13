@@ -5757,7 +5757,7 @@ public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos empleado){
 		con.setAutoCommit(false);
 		
 		// insert bitacora
-//		String pc = InetAddress.getLocalHost().getHostName();
+//		String pc = InetAddress.getLocalHost().getHostName();  
 //		String ip = InetAddress.getLocalHost().getHostAddress();
 //		pstmtb = con.prepareStatement(Qbitacora);
 //		pstmtb.setString(1, pc);
@@ -5772,12 +5772,12 @@ public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos empleado){
 		pstmt = con.prepareStatement(query);
 		pstmt.setString(i+=1, 	empleado.getPerfil().toUpperCase());
 		pstmt.setString(i+=1, 	empleado.getEdad());
-		pstmt.setInt(i+=1, 		empleado.getSexo());
+		pstmt.setString(i+=1, 		empleado.getSexo());
 		pstmt.setString(i+=1, 	empleado.getPuesto_al_que_reporta());
 		
-		pstmt.setInt(i+=1, 		empleado.getEstablecimiento());
-		pstmt.setInt(i+=1, 		empleado.getDepartameto());	
-		pstmt.setInt(i+=1, 		empleado.getPuesto());
+		pstmt.setString(i+=1, 		empleado.getEstablecimiento());
+		pstmt.setString(i+=1, 		empleado.getDepartameto());	
+		pstmt.setString(i+=1, 		empleado.getPuesto());
 		
 //		--------------------------------------------------------------------------------------------------------------------------------
 		pstmt.setInt(i+=1, 		empleado.getHorario());
