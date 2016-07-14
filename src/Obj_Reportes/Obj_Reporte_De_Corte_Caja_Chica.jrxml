@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-03-18T18:12:40 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-06-01T10:24:11 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte de Apartados" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d02be077-f7f1-423a-b73f-283738e4eb9c">
 	<property name="ireport.zoom" value="1.331000000000004"/>
 	<property name="ireport.x" value="0"/>
@@ -55,69 +55,69 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["M:\\Proyecto Lista\\Proyecto Grupo Izagar\\Grupo Izagar\\src\\Reportes\\"]]></defaultValueExpression>
 	</parameter>
-	<queryString language="SQL">
-		<![CDATA[exec sp_Reporte_De_Corte_De_Ordenes_de_Pago 3]]>
+	<queryString>
+		<![CDATA[exec sp_Reporte_De_Corte_De_Ordenes_de_Pago 195]]>
 	</queryString>
 	<field name="FOLIO_CONCEPTO" class="java.lang.String"/>
 	<field name="CONCEPTO" class="java.lang.String"/>
 	<field name="USUARIO_REALIZO_CORTE" class="java.lang.String"/>
 	<field name="FECHA_DE_CORTE" class="java.lang.String"/>
 	<field name="OFICINA" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[OFICINA]]></fieldDescription>
 	</field>
 	<field name="SUPER_I" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[SUPER_I]]></fieldDescription>
 	</field>
 	<field name="SUPER_II" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[SUPER_II]]></fieldDescription>
 	</field>
 	<field name="SUPER_III" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[SUPER_III]]></fieldDescription>
 	</field>
 	<field name="SUPER_IV" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[SUPER_VI]]></fieldDescription>
 	</field>
 	<field name="SUPER_V" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[SUPER_V]]></fieldDescription>
 	</field>
 	<field name="CEDIS" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[CEDIS]]></fieldDescription>
 	</field>
 	<field name="IZAGAR_FOOD_SUPER_II" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[IZAGAR_FOOD_SUPER_II]]></fieldDescription>
 	</field>
 	<field name="DEPOSITO_II" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[DAPOSITO_II]]></fieldDescription>
 	</field>
 	<field name="REFACCIONARIA" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[REFACCIONARIA]]></fieldDescription>
 	</field>
 	<field name="FERRETERIA" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[FERRETERIA]]></fieldDescription>
 	</field>
 	<field name="PAPER_CITY" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[PAPER_CITY]]></fieldDescription>
 	</field>
 	<field name="PAPER_CITY_II" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[PAPER_CITY_II]]></fieldDescription>
 	</field>
 	<field name="IZAGAR_FOOD_SUPER_IV" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[IZAGAR_FOOD_SUPER_IV]]></fieldDescription>
 	</field>
 	<field name="FIESTILANDIA" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[FIESTILANDIA]]></fieldDescription>
 	</field>
-	<field name="COMPRAS" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="COMERCIALIZACION" class="java.lang.Double">
+		<fieldDescription><![CDATA[COMERCIALIZACION]]></fieldDescription>
 	</field>
 	<field name="IZACEL" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[IZACEL]]></fieldDescription>
 	</field>
 	<field name="ESPACIO_35" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[ESPACIO_35]]></fieldDescription>
 	</field>
 	<field name="NAPOLITANA" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[NAPOLITANA]]></fieldDescription>
 	</field>
 	<field name="folio_corte" class="java.lang.Integer"/>
 	<variable name="TotalOficina" class="java.lang.Double" calculation="Sum">
@@ -127,7 +127,7 @@
 		<variableExpression><![CDATA[$F{CEDIS}]]></variableExpression>
 	</variable>
 	<variable name="TotalCompras" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{COMPRAS}]]></variableExpression>
+		<variableExpression><![CDATA[$F{COMERCIALIZACION}]]></variableExpression>
 	</variable>
 	<variable name="TotalSuper1" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{SUPER_I}]]></variableExpression>
@@ -172,7 +172,7 @@
 		<variableExpression><![CDATA[$F{REFACCIONARIA}]]></variableExpression>
 	</variable>
 	<variable name="Total_Corte" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{OFICINA}+$F{SUPER_I}+$F{SUPER_II}+$F{SUPER_III}+$F{SUPER_IV}+$F{SUPER_V}+$F{CEDIS}+$F{IZAGAR_FOOD_SUPER_II}+$F{DEPOSITO_II}+$F{REFACCIONARIA}+$F{FERRETERIA}+$F{PAPER_CITY}+$F{PAPER_CITY_II}+$F{IZAGAR_FOOD_SUPER_IV}+$F{FIESTILANDIA}+$F{COMPRAS}+$F{IZACEL}+$F{ESPACIO_35}+$F{NAPOLITANA}]]></variableExpression>
+		<variableExpression><![CDATA[$F{OFICINA}+$F{SUPER_I}+$F{SUPER_II}+$F{SUPER_III}+$F{SUPER_IV}+$F{SUPER_V}+$F{CEDIS}+$F{IZAGAR_FOOD_SUPER_II}+$F{DEPOSITO_II}+$F{REFACCIONARIA}+$F{FERRETERIA}+$F{PAPER_CITY}+$F{PAPER_CITY_II}+$F{IZAGAR_FOOD_SUPER_IV}+$F{FIESTILANDIA}+$F{COMERCIALIZACION}+$F{IZACEL}+$F{ESPACIO_35}+$F{NAPOLITANA}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -344,7 +344,7 @@
 					<textElement textAlignment="Center">
 						<font size="7" isBold="true" isUnderline="false"/>
 					</textElement>
-					<text><![CDATA[COMPRAS]]></text>
+					<text><![CDATA[COMERCIALIZACION]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="574" y="0" width="40" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="f17a3bf6-3800-4b79-8fa3-8fb17955eb1a"/>
@@ -516,7 +516,7 @@
 					<textElement textAlignment="Center">
 						<font size="5" isBold="true" isUnderline="false"/>
 					</textElement>
-					<text><![CDATA[REFACCIO NARIA]]></text>
+					<text><![CDATA[REFACCIONARIA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="416" y="0" width="40" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="1b50786b-be61-46a2-ab7a-88f9ad5ec42f"/>
@@ -605,7 +605,7 @@
 				</textField>
 				<textField pattern="#,##0.00#">
 					<reportElement key="" x="140" y="0" width="40" height="14" uuid="22afbc84-789e-4399-901b-4a432c1b6736">
-						<printWhenExpression><![CDATA[$F{COMPRAS}>0.0]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$F{COMERCIALIZACION}>0.0]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -616,7 +616,7 @@
 					<textElement textAlignment="Right">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{COMPRAS}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{COMERCIALIZACION}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
 					<reportElement key="" x="180" y="0" width="40" height="14" uuid="13ffad02-70dd-4adc-845b-0de4261f8af2">
@@ -931,7 +931,7 @@
 					<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 				</textField>
 				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement style="Column header" x="109" y="-1" width="197" height="19" forecolor="#FFFFFF" uuid="5abd1a80-6de4-4fad-94c4-a3fcf6692ca8"/>
+					<reportElement style="Column header" x="109" y="0" width="197" height="19" forecolor="#FFFFFF" uuid="5abd1a80-6de4-4fad-94c4-a3fcf6692ca8"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10" isBold="true"/>
 					</textElement>

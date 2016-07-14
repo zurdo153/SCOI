@@ -77,6 +77,7 @@ import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Finiquitos;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
+import Obj_Lista_de_Raya.Obj_Perfil_De_Puestos;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
@@ -5742,6 +5743,94 @@ public boolean Modificar_servios_establecimientos(String folio,String Descrpcion
 		} catch(SQLException e){
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [Guardar Serviicos Establecimientos  ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
+
+public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos empleado){
+	String query = "exec --------------sp_insert_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	try {
+		con.setAutoCommit(false);
+		
+		// insert bitacora
+//		String pc = InetAddress.getLocalHost().getHostName();  
+//		String ip = InetAddress.getLocalHost().getHostAddress();
+//		pstmtb = con.prepareStatement(Qbitacora);
+//		pstmtb.setString(1, pc);
+//		pstmtb.setString(2, ip);
+//		pstmtb.setInt(3, usuario.getFolio());
+//		pstmtb.setString(4, "sp_insert_empleado alta "+empleado.getNombre().toUpperCase()+empleado.getAp_paterno().toUpperCase()+empleado.getAp_materno().toUpperCase());
+//		pstmtb.setString(5, "Empleados Nuevo");
+//		pstmtb.executeUpdate();
+		
+		int i=1;
+//		--------------------------------------------------------------------------------------------------------------------------------
+		pstmt = con.prepareStatement(query);
+		pstmt.setString(i+=1, 	empleado.getPerfil().toUpperCase());
+		pstmt.setString(i+=1, 	empleado.getEdad());
+		pstmt.setString(i+=1, 		empleado.getSexo());
+		pstmt.setString(i+=1, 	empleado.getPuesto_al_que_reporta());
+		
+		pstmt.setString(i+=1, 		empleado.getEstablecimiento());
+		pstmt.setString(i+=1, 		empleado.getDepartameto());	
+		pstmt.setString(i+=1, 		empleado.getPuesto());
+		
+//		--------------------------------------------------------------------------------------------------------------------------------
+		pstmt.setInt(i+=1, 		empleado.getHorario());
+		pstmt.setInt(i+=1, 		empleado.getHorario2());
+		pstmt.setInt(i+=1,		empleado.getHorario3());
+		pstmt.setInt(i+=1, 		empleado.getStatus_h1());
+		pstmt.setInt(i+=1, 		empleado.getStatus_h2());
+		pstmt.setInt(i+=1, 		empleado.getStatus_h3());
+		pstmt.setInt(i+=1, 		empleado.getStatus_rotativo());
+		
+//		--------------------------------------------------------------------------------------------------------------------------------
+		pstmt.setBoolean(i+=1, (empleado.isGafete())? true: false);
+		pstmt.setInt(i+=1, 		empleado.getPrestamo());
+		pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
+		pstmt.setFloat(i+=1, 	empleado.getSalario_diario_integrado());
+		
+		pstmt.setFloat(i+=1,   empleado.getSueldo());
+		pstmt.setFloat(i+=1,   empleado.getBonocomplemento());
+		pstmt.setFloat(i+=1,   empleado.getBono_asistencia());
+		pstmt.setFloat(i+=1, 	empleado.getBono_puntualidad());
+		
+//		--------------------------------------------------------------------------------------------------------------------------------
+		pstmt.setString(i+=1, 	empleado.getObjetivo_del_puesto().toUpperCase());
+		pstmt.setString(i+=1, 	empleado.getActividades_Principales().toUpperCase());
+		pstmt.setString(i+=1, 	empleado.getConocimiento().toUpperCase());
+		pstmt.setString(i+=1, 	empleado.getExperiencia().toUpperCase());
+		pstmt.setString(i+=1, 	empleado.getHabilidades().toUpperCase());
+		
+		pstmt.setInt(i+=1, 	usuario.getFolio());
+//		fecha de modificacion
+		
+		pstmt.executeUpdate();
+		con.commit();
+		
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Perfil_De_Puesto ] Insert  SQLException: ---------sp_insert_empleado--------- "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Perfil_De_Puesto ] Insert  SQLException: ---------sp_insert_empleado--------- "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			pstmt.close();
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
 		}
 	}		
 	return true;
