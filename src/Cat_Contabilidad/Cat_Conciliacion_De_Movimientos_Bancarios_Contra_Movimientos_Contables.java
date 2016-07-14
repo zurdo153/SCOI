@@ -749,7 +749,10 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 				int vista_previa_de_ventana=0;
 				String reporte = "Obj_Reporte_De_Movimientos_Bancarios_Pendientes_De_Conciliar.jrxml";
 			    String comando = "exec sp_Reporte_De_Movimientos_Bancarios_Pendientes_De_Conciliar '"+txtBanco.getText().toString()+"','"+cmbCuentasBancarias.getSelectedItem().toString()+"','"+fecha+"'";
-			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			
+			    System.out.println(comando);
+			    
+			    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		   }
 	};
 	

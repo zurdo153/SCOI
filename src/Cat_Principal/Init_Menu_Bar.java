@@ -24,15 +24,13 @@ import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.*;
-
-
 @SuppressWarnings("serial")
 public class Init_Menu_Bar extends Init_Login{
 	public ArrayList<WP_Relation> relacion = new ArrayList<WP_Relation>();
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.149");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.150");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
