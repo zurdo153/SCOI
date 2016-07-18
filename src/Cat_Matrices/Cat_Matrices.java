@@ -15,8 +15,7 @@ import java.sql.Statement;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-
-
+import Cat_Reportes.Cat_Reporte_Evaluacione_Operativas;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Matrices.Obj_Matriz;
@@ -69,6 +68,8 @@ public class Cat_Matrices extends JFrame{
 	JCButton btnFiltro    = new JCButton(""    ,"Filter-List-icon16.png","Azul");
 	JButton btnBajar = new JButton(new ImageIcon("Iconos/down_icon&16.png"));
 	JButton btnSubir = new JButton(new ImageIcon("Iconos/up_icon&16.png"));
+	
+	JCButton btnReporte    = new JCButton("Reporte"    ,"Lista.png","Azul"); 
 	
 	String []Etapa= obm.Combo_Respuesta_Etapa();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -150,6 +151,8 @@ public class Cat_Matrices extends JFrame{
 			
 		
 			this.setSize(955,780);
+			this.setLocationRelativeTo(null);
+			this.setResizable(false);
 			int x=15, y=20, ancho=100,salto=20;
 	
 				panel.add(lblFolio).setBounds(x, y, ancho, 20);
@@ -160,6 +163,8 @@ public class Cat_Matrices extends JFrame{
 				panel.add(btnNuevo).setBounds(btnBuscar.getX()+btnBuscar.getWidth()+10, y, ancho, 20);
 				panel.add(btnDeshacer).setBounds(btnNuevo.getX()+btnNuevo.getWidth()+10, y, ancho+10, 20);
 				panel.add(btnEditar).setBounds(btnDeshacer.getX()+btnDeshacer.getWidth()+10, y, ancho, 20);
+				
+				panel.add(btnReporte).setBounds(btnEditar.getX()+btnEditar.getWidth()+110, y, ancho+20, 20);
 		
 				int y1=btnBuscar.getY();
 				int x1=txtFolio.getX()+txtFolio.getWidth()+15;
@@ -258,6 +263,8 @@ public class Cat_Matrices extends JFrame{
 	             btnEditar.addActionListener(opEditar);
 	             btnFiltro.addActionListener(opFiltro);
 	             txtFolio.addKeyListener(opBuscarEnter);
+	             
+	             btnReporte.addActionListener(opReporte);
 		
 						}     public void inial()
 						{
@@ -403,6 +410,12 @@ public class Cat_Matrices extends JFrame{
 					   			}
 				   			};
 	
+		   			ActionListener opReporte = new ActionListener() {
+						   public void actionPerformed(ActionEvent e) {
+							   new Cat_Reporte_Evaluacione_Operativas().setVisible(true);
+						   }
+			   		};
+		   		
 				   ActionListener opDeshacer = new ActionListener() {
 					   public void actionPerformed(ActionEvent e) {
 						Deshacer();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-12T11:33:08 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-07-14T09:54:25 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_Evaluaciones_Operativas" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="868819c0-2e1e-457b-84c5-82067f527855">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
@@ -189,9 +189,9 @@
 	<summary>
 		<band height="720">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<stackedBar3DChart>
+			<lineChart>
 				<chart evaluationTime="Report">
-					<reportElement x="0" y="45" width="550" height="675" uuid="9bce3459-9709-491d-b45f-987f598ae17a"/>
+					<reportElement x="0" y="45" width="550" height="675" uuid="c17fcde5-b935-4751-ac5c-710c708a3b9f"/>
 					<chartTitle/>
 					<chartSubtitle>
 						<subtitleExpression><![CDATA["Establecimiento : "+$F{tienda}+"                                   Promedio General : "+$F{promegral}+" %"]]></subtitleExpression>
@@ -200,23 +200,22 @@
 				</chart>
 				<categoryDataset>
 					<categorySeries>
-						<seriesExpression><![CDATA["Departamento"]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{departamento}]]></categoryExpression>
+						<seriesExpression><![CDATA["DEPARTAMENTOS"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{departamento}+""]]></categoryExpression>
 						<valueExpression><![CDATA[$F{porcentaje}]]></valueExpression>
-						<labelExpression><![CDATA[$F{porcentaje}+" %"]]></labelExpression>
+						<labelExpression><![CDATA[$F{porcentaje}+""]]></labelExpression>
 					</categorySeries>
 				</categoryDataset>
-				<bar3DPlot>
+				<linePlot>
 					<plot labelRotation="-90.0"/>
-					<itemLabel/>
 					<categoryAxisFormat labelRotation="-90.0">
 						<axisFormat/>
 					</categoryAxisFormat>
 					<valueAxisFormat>
 						<axisFormat/>
 					</valueAxisFormat>
-				</bar3DPlot>
-			</stackedBar3DChart>
+				</linePlot>
+			</lineChart>
 		</band>
 	</summary>
 </jasperReport>

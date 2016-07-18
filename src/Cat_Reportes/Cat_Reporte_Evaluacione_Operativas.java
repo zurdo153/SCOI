@@ -11,7 +11,7 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JTextField;
@@ -27,7 +27,7 @@ import Obj_Principal.JCTextField;
 
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_Evaluacione_Operativas extends JFrame {
+public class Cat_Reporte_Evaluacione_Operativas extends JDialog {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -48,6 +48,7 @@ public class Cat_Reporte_Evaluacione_Operativas extends JFrame {
 	  
 	
 	public Cat_Reporte_Evaluacione_Operativas(){  
+		this.setModal(true);
 		this.setTitle("Reportes de Evaluaciones Operativas");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Reporte_Evaluaciones"));
 		this.panel.add(new JLabel("Fecha :")).setBounds(15,25,100,20);
