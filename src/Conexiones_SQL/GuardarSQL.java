@@ -5748,8 +5748,8 @@ public boolean Modificar_servios_establecimientos(String folio,String Descrpcion
 	return true;
 }
 
-public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos empleado){
-	String query = "exec --------------sp_insert_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos perfil,String movimiento){
+	String query = "exec sp_insert_perfil_de_puestos ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'"+movimiento+"'";
 	
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
@@ -5770,44 +5770,81 @@ public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos empleado){
 		int i=1;
 //		--------------------------------------------------------------------------------------------------------------------------------
 		pstmt = con.prepareStatement(query);
-		pstmt.setString(i+=1, 	empleado.getPerfil().toUpperCase());
-		pstmt.setString(i+=1, 	empleado.getEdad());
-		pstmt.setString(i+=1, 		empleado.getSexo());
-		pstmt.setString(i+=1, 	empleado.getPuesto_al_que_reporta());
 		
-		pstmt.setString(i+=1, 		empleado.getEstablecimiento());
-		pstmt.setString(i+=1, 		empleado.getDepartameto());	
-		pstmt.setString(i+=1, 		empleado.getPuesto());
-		
+		pstmt.setInt(i, 	perfil.getFolio());
+		pstmt.setString(i+=1, 	perfil.getPerfil().toUpperCase());
+		pstmt.setString(i+=1, 		perfil.getSexo());
+		pstmt.setString(i+=1, 	perfil.getEdad());	
+		pstmt.setString(i+=1, 	perfil.getPuesto_al_que_reporta());
 //		--------------------------------------------------------------------------------------------------------------------------------
-		pstmt.setInt(i+=1, 		empleado.getHorario());
-		pstmt.setInt(i+=1, 		empleado.getHorario2());
-		pstmt.setInt(i+=1,		empleado.getHorario3());
-		pstmt.setInt(i+=1, 		empleado.getStatus_h1());
-		pstmt.setInt(i+=1, 		empleado.getStatus_h2());
-		pstmt.setInt(i+=1, 		empleado.getStatus_h3());
-		pstmt.setInt(i+=1, 		empleado.getStatus_rotativo());
-		
+	
+		pstmt.setString(i+=1, 		perfil.getEstablecimiento());
+		pstmt.setString(i+=1, 		perfil.getDepartameto());	
+		pstmt.setString(i+=1, 		perfil.getPuesto());
+		pstmt.setString(i+=1, 		perfil.getNivel_de_puesto());		
 //		--------------------------------------------------------------------------------------------------------------------------------
-		pstmt.setBoolean(i+=1, (empleado.isGafete())? true: false);
-		pstmt.setInt(i+=1, 		empleado.getPrestamo());
-		pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
-		pstmt.setFloat(i+=1, 	empleado.getSalario_diario_integrado());
-		
-		pstmt.setFloat(i+=1,   empleado.getSueldo());
-		pstmt.setFloat(i+=1,   empleado.getBonocomplemento());
-		pstmt.setFloat(i+=1,   empleado.getBono_asistencia());
-		pstmt.setFloat(i+=1, 	empleado.getBono_puntualidad());
-		
+
+		pstmt.setInt(i+=1, 		perfil.getHorario());
+		pstmt.setInt(i+=1, 		perfil.getHorario2());
+		pstmt.setInt(i+=1,		perfil.getHorario3());
+		pstmt.setInt(i+=1, 		perfil.getStatus_h1());
+		pstmt.setInt(i+=1, 		perfil.getStatus_h2());
+		pstmt.setInt(i+=1, 		perfil.getStatus_h3());
+		pstmt.setInt(i+=1, 		perfil.getStatus_rotativo());
 //		--------------------------------------------------------------------------------------------------------------------------------
-		pstmt.setString(i+=1, 	empleado.getObjetivo_del_puesto().toUpperCase());
-		pstmt.setString(i+=1, 	empleado.getActividades_Principales().toUpperCase());
-		pstmt.setString(i+=1, 	empleado.getConocimiento().toUpperCase());
-		pstmt.setString(i+=1, 	empleado.getExperiencia().toUpperCase());
-		pstmt.setString(i+=1, 	empleado.getHabilidades().toUpperCase());
+		
+		pstmt.setFloat(i+=1, 	perfil.getSalario_diario());
+		pstmt.setFloat(i+=1, 	perfil.getSalario_diario_integrado());
+		pstmt.setFloat(i+=1,   perfil.getSueldo());
+		pstmt.setFloat(i+=1,   perfil.getBonocomplemento());
+		pstmt.setFloat(i+=1,   perfil.getBono_asistencia());
+		pstmt.setFloat(i+=1, 	perfil.getBono_puntualidad());
+		pstmt.setInt(i+=1, 		perfil.getPrestamo());
+		pstmt.setInt(i+=1, (perfil.isGafete())? 1: 0);
+				
+//		--------------------------------------------------------------------------------------------------------------------------------
+		pstmt.setString(i+=1, 	perfil.getObjetivo_del_puesto().toUpperCase());
+		pstmt.setString(i+=1, 	perfil.getExperiencia().toUpperCase());
+		pstmt.setString(i+=1, 	perfil.getActividades_Principales().toUpperCase());
+		pstmt.setString(i+=1, 	perfil.getHabilidades().toUpperCase());
+		pstmt.setString(i+=1, 	perfil.getConocimiento().toUpperCase());
 		
 		pstmt.setInt(i+=1, 	usuario.getFolio());
 //		fecha de modificacion
+		
+		System.out.println(perfil.getFolio());
+		System.out.println(perfil.getPerfil());
+		System.out.println(perfil.getSexo());
+		System.out.println(perfil.getEdad());
+		System.out.println(perfil.getPuesto_al_que_reporta());
+		
+		System.out.println(perfil.getEstablecimiento());
+		System.out.println(perfil.getDepartameto());
+		System.out.println(perfil.getPuesto());
+		System.out.println(perfil.getNivel_de_puesto());
+		
+		System.out.println(perfil.getHorario());
+		System.out.println(perfil.getHorario2());
+		System.out.println(perfil.getHorario3());
+		System.out.println(perfil.getStatus_h1());
+		System.out.println(perfil.getStatus_h2());
+		System.out.println(perfil.getStatus_h3());
+		System.out.println(perfil.getStatus_rotativo());
+		
+		System.out.println(perfil.getSalario_diario());
+		System.out.println(perfil.getSalario_diario_integrado());
+		System.out.println(perfil.getSueldo());
+		System.out.println(perfil.getBonocomplemento());
+		System.out.println(perfil.getBono_asistencia());
+		System.out.println(perfil.getBono_puntualidad());
+		System.out.println(perfil.getPrestamo());
+		System.out.println((perfil.isGafete())? 1: 0);
+		
+		System.out.println(perfil.getObjetivo_del_puesto().toUpperCase());
+		System.out.println(perfil.getExperiencia().toUpperCase());
+		System.out.println(perfil.getActividades_Principales().toUpperCase());
+		System.out.println(perfil.getHabilidades().toUpperCase());
+		System.out.println(perfil.getConocimiento().toUpperCase());
 		
 		pstmt.executeUpdate();
 		con.commit();

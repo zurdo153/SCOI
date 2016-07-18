@@ -2647,6 +2647,33 @@ public Object[][] tabla_concentrados_con_movimiento_de_ahorros(){
     return matriz; 
 }
 
+public Object[][] filtro_de_perfiles_de_puestos(){
+	
+	String query_lista = "exec sp_select_filtro_de_perfiles_de_puestos";
+	
+	Object[][] matriz = new Object[get_filas(query_lista)][5];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			matriz[i][0] = rs.getString(1)+"  ";
+			matriz[i][1] = rs.getString(2);
+			matriz[i][2] = rs.getString(3);
+			matriz[i][3] = rs.getString(4);
+			matriz[i][4] = rs.getString(5);
+			i++;
+		}
+
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion filtro_de_perfiles_de_puestos: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+	}
+    return matriz; 
+}
+
 }
 
 

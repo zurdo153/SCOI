@@ -2,7 +2,6 @@ package Obj_Lista_de_Raya;
 
 import java.sql.SQLException;
 
-import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
@@ -25,6 +24,11 @@ public class Obj_Perfil_De_Puestos {
 	private int horario;
 	private int horario2;
 	private int horario3;
+	
+	private String horarioNombre;
+	private String horario2Nombre;
+	private String horario3Nombre;
+	
 	private int status_h1;
 	private int status_h2;
 	private int status_h3;
@@ -66,6 +70,8 @@ public class Obj_Perfil_De_Puestos {
 		nivel_de_puesto="";
 		
 		horario=0; horario2=0; horario3=0; 
+		horarioNombre=""; horario2Nombre=""; horario3Nombre=""; 
+		
 		status_h1=0; status_h2=0; status_h3=0; status_rotativo=0;
 		descanso=""; dobla=""; 
 		
@@ -182,6 +188,30 @@ public class Obj_Perfil_De_Puestos {
 
 	public void setHorario3(int horario3) {
 		this.horario3 = horario3;
+	}
+
+	public String getHorarioNombre() {
+		return horarioNombre;
+	}
+
+	public void setHorarioNombre(String horarioNombre) {
+		this.horarioNombre = horarioNombre;
+	}
+
+	public String getHorario2Nombre() {
+		return horario2Nombre;
+	}
+
+	public void setHorario2Nombre(String horario2Nombre) {
+		this.horario2Nombre = horario2Nombre;
+	}
+
+	public String getHorario3Nombre() {
+		return horario3Nombre;
+	}
+
+	public void setHorario3Nombre(String horario3Nombre) {
+		this.horario3Nombre = horario3Nombre;
 	}
 
 	public int getStatus_h1() {
@@ -344,7 +374,7 @@ public class Obj_Perfil_De_Puestos {
 		this.fecha_actualizacion = fecha_actualizacion;
 	}
 
-	public boolean guardar(){ return new GuardarSQL().Guardar_Perfil_De_Puesto(this); }
+	public boolean guardar(String movimiento){ return new GuardarSQL().Guardar_Perfil_De_Puesto(this,movimiento); }
 	
 	public Obj_Perfil_De_Puestos buscar(int folio){ 
 		try {
@@ -355,9 +385,9 @@ public class Obj_Perfil_De_Puestos {
 	return null; 
 	}
 	
-	public boolean actualizar(int folio){ return new ActualizarSQL().Perfil_De_Puesto(this,folio); }
+//	public boolean actualizar(int folio){ return new ActualizarSQL().Perfil_De_Puesto(this,folio); }
 	
-	public Obj_Perfil_De_Puestos buscar_nuevo() throws SQLException{ return new BuscarSQL().Perfil_De_Puesto_Nuevo(); }
+	public String buscar_nuevo() throws SQLException{ return new BuscarSQL().folio_Periodo_nuevo(); }
 	
 	public boolean existe_foto(int folio){
 		try {
@@ -368,7 +398,7 @@ public class Obj_Perfil_De_Puestos {
 		}
 	}
 	
-	public boolean nombre_disponible(String nombre){ return new BuscarSQL().nombre_disponible(nombre); }
+	public boolean nombre_perfil_disponible(String nombre){ return new BuscarSQL().nombre_de_perfil_disponible(nombre); }
 	
 	
 	public String[] Combo_Empleado(){ 
