@@ -47,21 +47,21 @@ import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Horarios;
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
-import Conexiones_SQL.Generacion_Reportes;
 import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
 import Obj_Lista_de_Raya.Obj_Bono_Puntualidad_Y_Asistencia;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Lista_de_Raya.Obj_Perfil_De_Puestos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
 import Obj_Lista_de_Raya.Obj_Sueldos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
-import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
@@ -75,7 +75,7 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 	JTabbedPane pestanas = new JTabbedPane();
 	
 	JLayeredPane panel = new JLayeredPane();
-	JLayeredPane panelReporte = new JLayeredPane();
+//	JLayeredPane panelReporte = new JLayeredPane();
 	
 	JLabel lblHorarios = new JLabel();
 	JLabel lblFolioHorario1 = new JLabel("");
@@ -117,6 +117,10 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbPuesto = new JComboBox(puesto);
 	
+	String nivel_de_puesto[] = new Obj_Puestos().Combo_Nivel_De_Puesto();
+	@SuppressWarnings("rawtypes")
+	JComboBox cmbNivelDePuesto = new JComboBox(nivel_de_puesto);
+	
 	String sueldo[] = new Obj_Sueldos().Combo_Sueldo();
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbSueldo = new JComboBox(sueldo);
@@ -136,10 +140,6 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbPrestamos = new JComboBox(rango_prestamo);
 	
-	String nivel_de_puesto[] = new Obj_Puestos().Combo_Nivel_De_Puesto();
-	@SuppressWarnings("rawtypes")
-	JComboBox cmbNivelDePuesto = new JComboBox(nivel_de_puesto);
-
 	JCheckBox chbGafete = new JCheckBox("Gafete");
 	
 	JCButton btnBuscar   = new JCButton("","buscar.png","Azul");
@@ -156,8 +156,20 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 	JButton btnHorario3 = new JButton(".");
 	JButton btnHorarioNew = new JButton("new");
 	
-	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
-	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
+	JTextArea txaObjetivo_del_puesto = new Componentes().textArea(new JTextArea(), "Objetivo Del Puesto", 980);
+	JScrollPane Objetivo_del_puesto = new JScrollPane(txaObjetivo_del_puesto);
+	
+	JTextArea txaExperiencia = new Componentes().textArea(new JTextArea(), "Experiencia", 980);
+	JScrollPane Experiencia = new JScrollPane(txaExperiencia);
+	
+	JTextArea txaActividades_Principales = new Componentes().textArea(new JTextArea(), "Actividades Principales", 980);
+	JScrollPane Actividades_Principales = new JScrollPane(txaActividades_Principales);
+	
+	JTextArea txaHabilidades = new Componentes().textArea(new JTextArea(), "Habilidades", 980);
+	JScrollPane Habilidades = new JScrollPane(txaHabilidades);
+	
+	JTextArea txaConocimiento = new Componentes().textArea(new JTextArea(), "Conocimiento", 980);
+	JScrollPane Conocimiento = new JScrollPane(txaConocimiento);
 	
 	 private ButtonGroup bgHorarios = new ButtonGroup();
 	 private JRadioButton rbHorario = new JRadioButton("",true);
@@ -179,27 +191,23 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 	}
 	
 	public void getContenedor(){
-		this.setSize(1024,748);
+		this.setSize(1024,715);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		pestanas.addTab("Empleados", panel);
-		pestanas.addTab("Reportes", panelReporte);
+		pestanas.addTab("Perfiles", panel);
+//		pestanas.addTab("Reportes", panelReporte);
 		
 //		------------------------------------------------------------------------------
 //		efectos de bordes
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
-//		etched = BorderFactory.createEtchedBorder();
-//		raisedbevel = BorderFactory.createRaisedBevelBorder();
-//		loweredbevel = BorderFactory.createLoweredBevelBorder();
-//		empty = BorderFactory.createEmptyBorder();
 		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/de-configuracion-de-usuario-icono-7374-32.png"));
-		this.setTitle("Alta de Empleados");
+		this.setTitle("Perfiles De Puestos");
 		
-		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Datos del Colaborador"));
-		this.panelReporte.setBorder(BorderFactory.createTitledBorder(blackline, "Reportes de Colaboradores"));
+		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Datos De Perfil"));
+//		this.panelReporte.setBorder(BorderFactory.createTitledBorder(blackline, "Reportes de Colaboradores"));
 		
 //		asignacion de bordes
 		this.lblHorarios.setBorder(BorderFactory.createTitledBorder(blackline,"Configuracion De Horario"));
@@ -209,7 +217,11 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 		this.btnHorario2.setToolTipText("Asignar Segundo Horario");
 		this.btnHorario3.setToolTipText("Asignar Tercer Horario");
 		
-		this.txaObservaciones.setBorder(BorderFactory.createTitledBorder(blackline));
+		this.txaObjetivo_del_puesto.setBorder(BorderFactory.createTitledBorder(blackline));
+		this.txaExperiencia.setBorder(BorderFactory.createTitledBorder(blackline));
+		this.txaActividades_Principales.setBorder(BorderFactory.createTitledBorder(blackline));
+		this.txaHabilidades.setBorder(BorderFactory.createTitledBorder(blackline));
+		this.txaConocimiento.setBorder(BorderFactory.createTitledBorder(blackline));
 		
 		this.bgHorarios.add(rbHorario);
 		this.bgHorarios.add(rbHorario2);
@@ -217,14 +229,12 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 		
 		btnBuscar.setToolTipText("Buscar");
 		btnFiltro.setToolTipText("Filtro De Perfiles");
-		btnEditar.setToolTipText("Editar PErfil");
+		btnEditar.setToolTipText("Editar Perfil");
 		btnDeshacer.setToolTipText("Deshacer");
 		btnNuevo.setToolTipText("Nuevo Perfil");
-		int x = 20, y=30, ancho=140,width=190,height=30,sep=202;
-
-//		x=20; y=y+=58;height=20;width=175;
 		
-//Datos personales ----------------------------------------------------------------------------------------------------------------------------		
+	int x = 20, y=30, ancho=140,width=190,height=30,sep=202;
+
 		panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);
 		panel.add(txtFolioPerfil).setBounds(x+ancho-40,y,ancho-15,20);
 		
@@ -250,8 +260,7 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 		panel.add(btnFiltroPuestoReporta).setBounds(x+ancho*3-15,y,30,20);
 		
 		
-//TODO Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
-		x=17 ;y=150;width=340;height=20;sep=120;
+	x=17 ;y=150;width=340;height=20;sep=120;
 		panel.add(lblHorarios).setBounds(10,y-15,997,100);
 		panel.add(new JLabel("Horario:")).setBounds          (x           ,y+=5 ,width   ,height );
 		panel.add(btnHorarioNew).setBounds                   (x+50        ,y     ,height  ,height );
@@ -270,7 +279,7 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 		panel.add(txtHorario3).setBounds                     (x+sep       ,y     ,width   ,height );
 		panel.add(rbHorario3).setBounds                      (x+460       ,y     ,height  ,height );
 		
-		x=520 ;y=155;width=150;sep=120;
+	x=520 ;y=155;width=150;sep=120;
 		panel.add(new JLabel("Tipo de horario:")).setBounds  (x           ,y     ,width   ,height );
 		panel.add(cmbHorarioRotativo).setBounds              (x+sep       ,y     ,width   ,height );
 		panel.add(new JLabel("Descanso:")).setBounds         (x           ,y+=25 ,width   ,height );
@@ -278,37 +287,38 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 		panel.add(new JLabel("Día Dobla:")).setBounds        (x           ,y+=25 ,width   ,height );
 		panel.add(txtDobla).setBounds                        (x+sep       ,y     ,width   ,height );
 		
-//TODO Percepciones y Deducciones ------------------------------------------------------------------------------------------------------------------------------------------		
-		x=17 ;y=250;sep=80;
+	x=17 ;y=250;sep=80;
 		panel.add(new JLabel("Salario Diario:")).setBounds     (x    ,y     ,width,height );
 		panel.add(txtSalarioDiario).setBounds                  (x+sep,y     ,width,height );
 		panel.add(new JLabel("Salario D.I:")).setBounds        (x    ,y+=25 ,width,height );
 		panel.add(txtSalarioDiarioIntegrado).setBounds         (x+sep,y     ,width,height );
 		
-		x=17 ;y=250;
+	x=17 ;y=250;
 		panel.add(new JLabel("Sueldo:")).setBounds             (x+=(sep*3),y,width,height );
 		panel.add(cmbSueldo).setBounds                         (x+sep,y     ,width,height );
 		panel.add(new JLabel("B.Complemento:")).setBounds      (x    ,y+=25 ,width,height );
 		panel.add(cmbBono).setBounds                           (x+sep,y     ,width,height );
 		
-		y=250;
+	y=250;
 		panel.add(new JLabel("B.Asistencia:")).setBounds       (x+=(sep*3),y,width,height );
 		panel.add(cmbBonoAsistencia).setBounds                 (x+sep,y     ,width,height );
 		panel.add(new JLabel("B.Puntualidad:")).setBounds      (x    ,y+=25 ,width,height );
 		panel.add(cmbBonopuntualidad).setBounds                (x+sep,y     ,width,height );
 		
-		y=250;
+	y=250;
 		panel.add(new JLabel("Rango de Prestamo:")).setBounds  (x+=(sep*3)  ,y		,width,height );
 		panel.add(cmbPrestamos).setBounds                      (x+sep+35    ,y		,width,height );
 		panel.add(chbGafete).setBounds                         (x+sep+35	,y+=25  ,width,height );
 		
-		x=17; sep=80; width=465; height=95;
+	x=17; sep=80; width=485; height=95;
+		panel.add(new JLabel("Objectivo Del Puesto:")).setBounds  (x, y+=35 ,width ,20 	);
+		panel.add(Objetivo_del_puesto).setBounds                     (x, y+=15 ,width ,height );
+		panel.add(new JLabel("Experiencia:")).setBounds  (x, y+=height ,width ,20 	);
+		panel.add(Experiencia).setBounds                     (x, y+=15 ,width ,height );
+		panel.add(new JLabel("Actividades Principales:")).setBounds  (x, y+=height ,width ,20 	);
+		panel.add(Actividades_Principales).setBounds                     (x, y+=15 ,width ,height );
 		
-		panel.add(new JLabel("Rango de Prestamo:")).setBounds  (x, y+=35 ,width ,20 	);
-		panel.add(Observasiones).setBounds                     (x, y+=15 ,width ,height );
-		
-		
-		x=520 ;y=30;width=340;height=20;sep=120;
+	x=520 ;y=30;width=340;height=20;sep=120;
 		panel.add(new JLabel("Establecimiento:")).setBounds    (x           ,y	   ,width   ,height );
 		panel.add(cmbEstablecimiento).setBounds                (x+sep       ,y     ,width   ,height );
 		panel.add(new JLabel("Departamento:")).setBounds       (x           ,y+=25 ,width   ,height );
@@ -318,15 +328,29 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 		panel.add(new JLabel("Nivel De Puesto:")).setBounds    (x           ,y+=25 ,width   ,height );
 		panel.add(cmbNivelDePuesto).setBounds          		   (x+sep       ,y     ,width   ,height );
 		
+	x=510; y=310; width=485; height=95;
+		panel.add(new JLabel("Habilidades:")).setBounds  (x, y ,width ,20 	);
+		panel.add(Habilidades).setBounds                     (x, y+=15 ,width ,height );
+		panel.add(new JLabel("Conocimientos:")).setBounds  (x, y+=height ,width ,20 	);
+		panel.add(Conocimiento).setBounds                     (x, y+=15 ,width ,height );
 		
 		
-		x=17 ;y=668;width=110;sep=218;
-		panel.add(btnGuardar).setBounds                        (x+=sep,y    ,width,height );		
-		panel.add(btnSalir).setBounds                          (x+=sep,y    ,width,height );
+		y=620;width=110;sep=218;
+		panel.add(btnGuardar).setBounds                        (x			,y    ,width,20 );		
+		panel.add(btnSalir).setBounds                          (x+width+10	,y    ,width,20 );
 		
 		btnEditar.setEnabled(false);
-		txaObservaciones.setLineWrap(true); 
-		txaObservaciones.setWrapStyleWord(true);
+		
+		txaObjetivo_del_puesto.setLineWrap(true); 
+		txaObjetivo_del_puesto.setWrapStyleWord(true);
+		txaExperiencia.setLineWrap(true); 
+		txaExperiencia.setWrapStyleWord(true);
+		txaActividades_Principales.setLineWrap(true); 
+		txaActividades_Principales.setWrapStyleWord(true);
+		txaHabilidades.setLineWrap(true); 
+		txaHabilidades.setWrapStyleWord(true);
+		txaConocimiento.setLineWrap(true); 
+		txaConocimiento.setWrapStyleWord(true);
 	    cont.setBackground(new java.awt.Color(255, 255, 255));
 	       
 		btnEditar.addActionListener(editar);
@@ -335,7 +359,8 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 		btnSalir.addActionListener(salir);
 		btnNuevo.addActionListener(nuevo);
 		btnDeshacer.addActionListener(deshacer);
-		btnFiltro.addActionListener(filtro);
+		btnFiltro.addActionListener(opFiltroPerfiles);
+		btnFiltroPuestoReporta.addActionListener(opFiltroPuestos);
 		
 		btnHorarioNew.addActionListener(opGenerarHorairo);
 		btnHorario.addActionListener(opFiltroHorairo);
@@ -357,6 +382,8 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 		btnHorario2.setEnabled(false);
 		btnHorario3.setEnabled(false);
 		
+		txtPuestoReporta.setEditable(false);
+		
 		txtDescanso.setEnabled(false);
 		txtDobla.setEnabled(false);
 		txtHorario.setEnabled(false);
@@ -374,7 +401,7 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
               }
          });
 		
-	//  abre el filtro de busqueda de empleado al presionar la tecla f2
+	//  abre el filtro de busqueda de perfiles al presionar la tecla f2
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 	       KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "foco");
 	    
@@ -453,37 +480,40 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 	
 	ActionListener opCmbHorarioRotarivo = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			
-			switch(cmbHorarioRotativo.getSelectedIndex()){
-				case 0: btnHorario.setEnabled(true);
-						btnHorario2.setEnabled(false);
-						btnHorario3.setEnabled(false);
-						
-						rbHorario.setEnabled(true);
-						rbHorario2.setEnabled(false);
-						rbHorario3.setEnabled(false);
-						break;
-						
-				case 1: btnHorario.setEnabled(true);
-						btnHorario2.setEnabled(true);
-						btnHorario3.setEnabled(false);
-						
-						rbHorario.setEnabled(true);
-						rbHorario2.setEnabled(true);
-						rbHorario3.setEnabled(false);
-						break;
-						
-				case 2: btnHorario.setEnabled(true);
-						btnHorario2.setEnabled(true);
-						btnHorario3.setEnabled(true);
-						
-						rbHorario.setEnabled(true);
-						rbHorario2.setEnabled(true);
-						rbHorario3.setEnabled(true);
-						break;
-			}
+			accion_chb_horario_rotativo();
 		}
 	};
+	
+	public void accion_chb_horario_rotativo(){
+		switch(cmbHorarioRotativo.getSelectedIndex()){
+		case 0: btnHorario.setEnabled(true);
+				btnHorario2.setEnabled(false);
+				btnHorario3.setEnabled(false);
+				
+				rbHorario.setEnabled(true);
+				rbHorario2.setEnabled(false);
+				rbHorario3.setEnabled(false);
+				break;
+				
+		case 1: btnHorario.setEnabled(true);
+				btnHorario2.setEnabled(true);
+				btnHorario3.setEnabled(false);
+				
+				rbHorario.setEnabled(true);
+				rbHorario2.setEnabled(true);
+				rbHorario3.setEnabled(false);
+				break;
+				
+		case 2: btnHorario.setEnabled(true);
+				btnHorario2.setEnabled(true);
+				btnHorario3.setEnabled(true);
+				
+				rbHorario.setEnabled(true);
+				rbHorario2.setEnabled(true);
+				rbHorario3.setEnabled(true);
+				break;
+	}
+	}
 	
 	ActionListener opRButton = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
@@ -509,106 +539,74 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 		}
 	};
 	
+	ActionListener opFiltroPerfiles = new ActionListener() {
+		public void actionPerformed(ActionEvent e){
+			new Cat_Filtro_Perfiles().setVisible(true);
+		}
+	};
+	
 	ActionListener buscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e){
 			txtHorario.setFont(new Font("ARIAL", Font.ITALIC, 9));
 			txtHorario2.setFont(new Font("ARIAL", Font.ITALIC, 9));
 			txtHorario3.setFont(new Font("ARIAL", Font.ITALIC, 9));
-			buscarEmpleado("");
+			buscarPerfil();
 		}
 	};
 			
-	public void buscarEmpleado(String funcion){
+	public void buscarPerfil(){
 			
 			if(txtFolioPerfil.getText().equals("")){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Empleado", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				txtFolioPerfil.requestFocus();
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Perfil", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
 				
-				Obj_Empleados re = new Obj_Empleados().buscar(Integer.parseInt(txtFolioPerfil.getText()));
-				if(re.getFolio() != 0){			
+				Obj_Perfil_De_Puestos re = new Obj_Perfil_De_Puestos().buscar(Integer.parseInt(txtFolioPerfil.getText()));
+				if(re.getFolio() != 0){		
+					
 					txtFolioPerfil.setText(re.getFolio()+"");
-					txtPerfil.setText(re.getNombre()+"");
+					txtPerfil.setText(re.getPerfil()+"");
+					cmbEdad.setSelectedItem(re.getEdad());
+					cmbSexo.setSelectedItem(re.getSexo());
+					txtPuestoReporta.setText(re.getPuesto_al_que_reporta());
 					
-					if(re.getSexo()==0){
-						cmbSexo.setSelectedItem("MASCULINO");
-					}else{
-						cmbSexo.setSelectedItem("FEMENINO");
-					}
+					cmbEstablecimiento.setSelectedItem(re.getEstablecimiento());
+					cmbDepartamento.setSelectedItem(re.getDepartameto());
+					cmbPuesto.setSelectedItem(re.getPuesto());
+					cmbNivelDePuesto.setSelectedItem(re.getNivel_de_puesto());
 					
-					Obj_Horario_Empleado comboFolioHorario = new Obj_Horario_Empleado().buscar_tur(re.getHorario());
-					if(re.getHorario()>0){
-						lblFolioHorario1.setText(re.getHorario()+"");
-					}else{
-						lblFolioHorario1.setText("");
-					}
-					txtHorario.setText(comboFolioHorario.getNombre());
+					lblFolioHorario1.setText(re.getHorario()+"");
+					lblFolioHorario2.setText(re.getHorario2()+"");
+					lblFolioHorario3.setText(re.getHorario3()+"");
 					
-					Obj_Horario_Empleado comboFolioHorario2 = new Obj_Horario_Empleado().buscar_tur2(re.getHorario2());
-					if(re.getHorario2()>0){
-						lblFolioHorario2.setText(re.getHorario2()+"");
-					}else{
-						lblFolioHorario2.setText("");
-					}
-					txtHorario2.setText(comboFolioHorario2.getNombre());
+					txtHorario.setText(re.getHorarioNombre());
+					txtHorario2.setText(re.getHorario2Nombre());
+					txtHorario3.setText(re.getHorario3Nombre());
 					
-					
-					Obj_Horario_Empleado comboFolioHorario3 = new Obj_Horario_Empleado().buscar_tur3(re.getHorario3());
-					if(re.getHorario3()>0){
-						lblFolioHorario3.setText(re.getHorario3()+"");
-					}else{
-						lblFolioHorario3.setText("");
-					}
-					txtHorario3.setText(comboFolioHorario3.getNombre());
-
-					
-					if(re.getStatus_h1()==1){
-						rbHorario.setSelected(true);
-					}
-					if(re.getStatus_h2()==1){
-						rbHorario2.setSelected(true);
-					}
-					if(re.getStatus_h3()==1){
-						rbHorario3.setSelected(true);
-					}
-										
-					txtHorario.setToolTipText(comboFolioHorario.getNombre());
-					txtHorario2.setToolTipText(comboFolioHorario2.getNombre());
+					rbHorario.setSelected(re.getStatus_h1()==1?true:false);
+					rbHorario2.setSelected(re.getStatus_h1()==1?true:false);
+					rbHorario3.setSelected(re.getStatus_h1()==1?true:false);
 					
 					txtDescanso.setText(re.getDescanso()+"");
 					txtDobla.setText(re.getDobla()+"");
 					
-					switch(re.getStatus_rotativo()){
-						case 0: cmbHorarioRotativo.setSelectedIndex(0); break;
-						case 1: cmbHorarioRotativo.setSelectedIndex(1); break;
-						case 2: cmbHorarioRotativo.setSelectedIndex(2); break;
-					}
-					
-					
-					Obj_Departamento depart = new Obj_Departamento().buscar(re.getDepartameto());
-					cmbDepartamento.setSelectedItem(depart.getDepartamento());
-					
-					Obj_Establecimiento comboNombreEsta = new Obj_Establecimiento().buscar_estab(re.getEstablecimiento());
-					cmbEstablecimiento.setSelectedItem(comboNombreEsta.getEstablecimiento());
-					
-					Obj_Puestos comboNombrePues = new Obj_Puestos().buscar_pues(re.getPuesto());
-					cmbPuesto.setSelectedItem(comboNombrePues.getPuesto());
+					cmbHorarioRotativo.setSelectedIndex(re.getStatus_rotativo());
 					
 					txtSalarioDiario.setText(re.getSalario_diario()+"");
 					txtSalarioDiarioIntegrado.setText(re.getSalario_diario_integrado()+"");
 					cmbSueldo.setSelectedItem(re.getSueldo()+"");
+					cmbBono.setSelectedItem(re.getBonocomplemento()+"");
 					cmbBonopuntualidad.setSelectedItem(re.getBono_asistencia()+"");
 					cmbBonoAsistencia.setSelectedItem(re.getBono_puntualidad()+"");
-					
-					Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscar(re.getBono());
-					cmbBono.setSelectedItem(bono.getBono()+"");
-
 					cmbPrestamos.setSelectedIndex(re.getPrestamo());
+					chbGafete.setSelected(re.isGafete());
 					
-					if(re.isGafete() == true){chbGafete.setSelected(true);}
-					else{chbGafete.setSelected(false);}
-					
-					txaObservaciones.setText(re.getObservasiones());
+					txaObjetivo_del_puesto.setText(re.getObjetivo_del_puesto());
+					txaExperiencia.setText(re.getExperiencia());
+					txaActividades_Principales.setText(re.getActividades_Principales());
+					txaHabilidades.setText(re.getHabilidades());
+					txaConocimiento.setText(re.getConocimiento());
 					
 				    btnNuevo.setEnabled(false);
 				    panelEnabled(false);
@@ -621,31 +619,7 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 					btnHorario.setEnabled(false);
 					cmbHorarioRotativo.setEnabled(false);
 				}else{
-					
-					
-					if(funcion.equals("rueda+")){
-						valor++;
-						txtFolioPerfil.setText(valor+"");
-						buscarEmpleado("rueda+");
-						
-					}
-					
-					if(funcion.equals("rueda-")){
-						valor--;
-						txtFolioPerfil.setText(valor+"");
-						buscarEmpleado("rueda-");
-					}
-					
-					if(funcion.equals("")){
-						JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
-						panelEnabled(true);
-						txtFolioPerfil.setEditable(true);
-						txtFolioPerfil.requestFocus();
-						panelLimpiar();
-					}
-					
-					
-					
+					JOptionPane.showMessageDialog(null, "El Perfil Que Intenta Buscar No Se A Encontrado O No Existe", "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 					return;
 				}
 		}
@@ -669,149 +643,96 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 	
    ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			int horario=0,horario2=0,horario3=0;
-			 horario=lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText());
-			 horario2=lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText());
-			 horario3=lblFolioHorario3.getText().equals("")?0:Integer.valueOf(lblFolioHorario3.getText());
 			
-			if(new BuscarSQL().existe_horario_con_otro_empleado(horario,horario2,horario3, Integer.valueOf(txtFolioPerfil.getText().toString()) )){
-				System.out.println(horario+" 2"+horario2+" 3"+horario3);
-				JOptionPane.showMessageDialog(null, "No Se Puede Asignar Un Mismo Horario A Mas De Un Colaborador Con Estatus\nVigente, Incapacitado, De Vacaciones o Provicional Checador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/error-de-reloj-icono-5961-32.png"));
-				return;
-			}else{
-				    guardar_modificar_Empleado();
-			}	
+//			int horario=0,horario2=0,horario3=0;
+//			
+//			 horario=lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText());
+//			 horario2=lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText());
+//			 horario3=lblFolioHorario3.getText().equals("")?0:Integer.valueOf(lblFolioHorario3.getText());
+			
+//			if(new BuscarSQL().existe_horario_con_otro_empleado(horario,horario2,horario3, Integer.valueOf(txtFolioPerfil.getText().toString()) )){
+//				System.out.println(horario+" 2"+horario2+" 3"+horario3);
+//				JOptionPane.showMessageDialog(null, "No Se Puede Asignar Un Mismo Horario A Mas De Un Perfil Con Estatus\nVigente, Incapacitado, De Vacaciones o Provicional Checador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/error-de-reloj-icono-5961-32.png"));
+//				return;
+//			}else{
+				guardar_modificar_Perfil();
+//			}	
 			
 		}	
 	};
 	
-public void guardar_modificar_Empleado(){
+	
+		
+public void guardar_modificar_Perfil(){
 
 				if(txtFolioPerfil.getText().equals("")){
 					JOptionPane.showMessageDialog(null, "El Folio Es Requerido \n","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				}
 				
-					Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioPerfil.getText()));
+				Obj_Perfil_De_Puestos perfil = new Obj_Perfil_De_Puestos().buscar(Integer.parseInt(txtFolioPerfil.getText()));
 					
-					if(!(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
-						if(!(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
-							if(!(cmbBono.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){							
-								if( !(empleado.getBonocomplemento()==Double.valueOf(cmbBono.getSelectedItem().toString().trim())) || !(empleado.getBono_asistencia()==Double.valueOf(cmbBonoAsistencia.getSelectedItem().toString().trim()))
-								    || !(empleado.getBono_puntualidad()==Double.valueOf(cmbBonopuntualidad.getSelectedItem().toString().trim())) || !(empleado.getSueldo()==Double.valueOf(cmbSueldo.getSelectedItem().toString().trim()))){
-									if(new BuscarSQL().validar_cambio_de_sueldo_o_bono(txtFolioPerfil.getText().toString().trim())){
-										JOptionPane.showMessageDialog(null, "El Usuario Ya Cuenta Con Un Cambio De Sueldo o Bono Pendiente de Autorizar \nEs Necesario Que Lo Niegen o Acepten Antes De Solicitar Otro Cambio  :\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-										return;						
-									}
-								}
-							}
-					    }
-					}
+				if(!perfil.nombre_perfil_disponible(txtPerfil.getText().toUpperCase().trim())){
 					
-					
-					if(empleado.getFolio() == Integer.parseInt(txtFolioPerfil.getText())){
+					if(perfil.getFolio() == Integer.parseInt(txtFolioPerfil.getText())){
 						if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
 							if(validaCampos()!="") {
 								JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 							}else{
 								
+
 								
-		//				datos personales	
-								empleado.setNombre(txtPerfil.getText());
+
+								perfil.setFolio(Integer.valueOf(txtFolioPerfil.getText()));
+								perfil.setPerfil(txtPerfil.getText().toUpperCase().trim());
+								perfil.setEdad(cmbEdad.getSelectedItem()+"");
+								perfil.setSexo(cmbSexo.getSelectedItem()+"");
+								perfil.setPuesto_al_que_reporta(txtPuestoReporta.getText());
 								
-								if(cmbSexo.getSelectedItem().equals("MASCULINO")){
-									empleado.setSexo(0);
-								}else{
-									empleado.setSexo(1);
+								perfil.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
+								perfil.setDepartameto(cmbDepartamento.getSelectedItem().toString().trim());
+								perfil.setPuesto(cmbPuesto.getSelectedItem().toString().trim());
+								perfil.setNivel_de_puesto(cmbNivelDePuesto.getSelectedItem()+"");
+										
+								perfil.setHorario(lblFolioHorario1.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario1.getText()));
+								perfil.setHorario2(lblFolioHorario2.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario2.getText()));
+								perfil.setHorario3(lblFolioHorario3.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario3.getText()));
+								
+								if(rbHorario.isSelected()){
+									perfil.setStatus_h1(1);
+									perfil.setStatus_h2(0);
+									perfil.setStatus_h3(0);
+								}
+								if(rbHorario2.isSelected()){
+									perfil.setStatus_h1(0);
+									perfil.setStatus_h2(1);
+									perfil.setStatus_h3(0);
+								}
+								if(rbHorario3.isSelected()){
+									perfil.setStatus_h1(0);
+									perfil.setStatus_h2(0);
+									perfil.setStatus_h3(1);
 								}
 								
-		//				laboral
-								if(lblFolioHorario1.getText().equals("")){
-									empleado.setHorario(0);
-								}else{
-									empleado.setHorario(Integer.valueOf(lblFolioHorario1.getText()));
-								}
+								perfil.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
 								
-								if(lblFolioHorario2.getText().equals("")){
-									empleado.setHorario2(0);
-								}else{
-									empleado.setHorario2(Integer.valueOf(lblFolioHorario2.getText()));
-								}
+								perfil.setSalario_diario(txtSalarioDiario.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiario.getText())) ;
+								perfil.setSalario_diario_integrado(txtSalarioDiarioIntegrado.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
+								perfil.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
+								perfil.setBonocomplemento(cmbBono.getSelectedIndex()== 0 ? 0 : Float.parseFloat(cmbBono.getSelectedItem().toString()));
+								perfil.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
+								perfil.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
+								perfil.setPrestamo(cmbPrestamos.getSelectedIndex());
+								perfil.setGafete(chbGafete.isSelected());
 								
-								if(lblFolioHorario3.getText().equals("")){
-									empleado.setHorario3(0);
-								}else{
-									empleado.setHorario3(Integer.valueOf(lblFolioHorario3.getText()));
-								}
-								
-								if(rbHorario.isSelected()==true){
-									empleado.setStatus_h1(1);
-									empleado.setStatus_h2(0);
-									empleado.setStatus_h3(0);
-								}
-								if(rbHorario2.isSelected()==true){
-									empleado.setStatus_h1(0);
-									empleado.setStatus_h2(1);
-									empleado.setStatus_h3(0);
-								}
-								if(rbHorario3.isSelected()==true){
-									empleado.setStatus_h1(0);
-									empleado.setStatus_h2(0);
-									empleado.setStatus_h3(1);
-								}
-								
-								switch(cmbHorarioRotativo.getSelectedIndex()){
-									case 0: empleado.setStatus_rotativo(0); break;
-									case 1: empleado.setStatus_rotativo(1); break;
-									case 2: empleado.setStatus_rotativo(2); break;
-								}
-		
-								Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
-								empleado.setEstablecimiento(comboFolioEsta.getFolio());
-								
-								Obj_Departamento depart = new Obj_Departamento().buscar_departamento(cmbDepartamento.getSelectedItem()+"");
-								empleado.setDepartameto(depart.getFolio());
-								
-								Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
-								empleado.setPuesto(comboFolioPues.getFolio());
-								
-		//				percepciones y deducciones
-						
-								if(!txtSalarioDiario.getText().equals("")){
-									empleado.setSalario_diario(Float.parseFloat(txtSalarioDiario.getText())) ;
-								}else{
-									empleado.setSalario_diario(Float.parseFloat(0.0+"")); }
+								perfil.setObjetivo_del_puesto(txaObjetivo_del_puesto.getText().toUpperCase()+"");
+								perfil.setExperiencia(txaExperiencia.getText().toUpperCase()+"");
+								perfil.setActividades_Principales(txaActividades_Principales.getText().toUpperCase()+"");
+								perfil.setHabilidades(txaHabilidades.getText().toUpperCase()+"");
+								perfil.setConocimiento(txaConocimiento.getText().toUpperCase()+"");
 							
-								if(!txtSalarioDiarioIntegrado.getText().equals("")){
-									empleado.setSalario_diario_integrado(Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
-								}else{
-									empleado.setSalario_diario_integrado(Float.parseFloat(0.0+""));
-								}
-								
-								empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
-								
-								Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
-								empleado.setBono(bono.getFolio());
-								
-								empleado.setPrestamo(cmbPrestamos.getSelectedIndex());
-								
-								
-								if((cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
-									empleado.setBono_asistencia(Float.parseFloat(0.0+""));
-								 }else{
-								   	empleado.setBono_asistencia(Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 	
-								 }
-								
-								if((cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
-									empleado.setBono_puntualidad(Float.parseFloat(0.0+""));
-								 }else{
-									empleado.setBono_puntualidad(Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
-								 }
-								
-								empleado.setGafete(chbGafete.isSelected());
-								empleado.setObservasiones(txaObservaciones.getText()+"");
-								
-								if(empleado.actualizar(Integer.parseInt(txtFolioPerfil.getText()))){
+
+								if(perfil.guardar("ACTUALIZAR")){
 									panelLimpiar();
 									panelEnabled(false);
 									rbHorario2.setEnabled(false);
@@ -823,7 +744,7 @@ public void guardar_modificar_Empleado(){
 									btnBuscar.setEnabled(true);
 									btnFiltro.setEnabled(true);
 									btnNuevo.setEnabled(true);
-									JOptionPane.showMessageDialog(null, "El Empleado Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+									JOptionPane.showMessageDialog(null, "El Perfil Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 								}else{
 									JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
 								}
@@ -837,93 +758,59 @@ public void guardar_modificar_Empleado(){
 							return;
 						}else{
 							
-		//			datos personales	
-							empleado.setNo_checador(txtFolioPerfil.getText());
-							empleado.setNombre(txtPerfil.getText());
+
 							
-							if(cmbSexo.getSelectedItem().equals("MASCULINO")){
-								empleado.setSexo(0);
-							}else{
-								empleado.setSexo(1);
+
+							perfil.setFolio(Integer.valueOf(txtFolioPerfil.getText()));
+							perfil.setPerfil(txtPerfil.getText().toUpperCase());
+							perfil.setEdad(cmbEdad.getSelectedItem()+"");
+							perfil.setSexo(cmbSexo.getSelectedItem()+"");
+							perfil.setPuesto_al_que_reporta(txtPuestoReporta.getText());
+							
+							perfil.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
+							perfil.setDepartameto(cmbDepartamento.getSelectedItem().toString().trim());
+							perfil.setPuesto(cmbPuesto.getSelectedItem().toString().trim());
+							perfil.setNivel_de_puesto(cmbNivelDePuesto.getSelectedItem()+"");
+									
+							perfil.setHorario(lblFolioHorario1.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario1.getText()));
+							perfil.setHorario2(lblFolioHorario2.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario2.getText()));
+							perfil.setHorario3(lblFolioHorario3.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario3.getText()));
+							
+							if(rbHorario.isSelected()){
+								perfil.setStatus_h1(1);
+								perfil.setStatus_h2(0);
+								perfil.setStatus_h3(0);
+							}
+							if(rbHorario2.isSelected()){
+								perfil.setStatus_h1(0);
+								perfil.setStatus_h2(1);
+								perfil.setStatus_h3(0);
+							}
+							if(rbHorario3.isSelected()){
+								perfil.setStatus_h1(0);
+								perfil.setStatus_h2(0);
+								perfil.setStatus_h3(1);
 							}
 							
-		//			laboral
+							perfil.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
 							
-							if(lblFolioHorario1.getText().equals("")){
-								empleado.setHorario(0);
-							}else{
-								empleado.setHorario(Integer.valueOf(lblFolioHorario1.getText()));
-							}
+							perfil.setSalario_diario(txtSalarioDiario.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiario.getText())) ;
+							perfil.setSalario_diario_integrado(txtSalarioDiarioIntegrado.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
+							perfil.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
+							perfil.setBonocomplemento(cmbBono.getSelectedIndex()== 0 ? 0 : Float.parseFloat(cmbBono.getSelectedItem().toString()));
+							perfil.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
+							perfil.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
+							perfil.setPrestamo(cmbPrestamos.getSelectedIndex());
+							perfil.setGafete(chbGafete.isSelected());
 							
-							if(lblFolioHorario2.getText().equals("")){
-								empleado.setHorario2(0);
-							}else{
-								empleado.setHorario2(Integer.valueOf(lblFolioHorario2.getText()));
-							}
-							
-							if(lblFolioHorario3.getText().equals("")){
-								empleado.setHorario3(0);
-							}else{
-								empleado.setHorario3(Integer.valueOf(lblFolioHorario3.getText()));
-							}
-							
-							if(rbHorario.isSelected()==true){
-								empleado.setStatus_h1(1);
-								empleado.setStatus_h2(0);
-								empleado.setStatus_h3(0);
-							}
-							if(rbHorario2.isSelected()==true){
-								empleado.setStatus_h1(0);
-								empleado.setStatus_h2(1);
-								empleado.setStatus_h3(0);
-							}
-							if(rbHorario3.isSelected()==true){
-								empleado.setStatus_h1(0);
-								empleado.setStatus_h2(0);
-								empleado.setStatus_h3(1);
-							}
-							
-							switch(cmbHorarioRotativo.getSelectedIndex()){
-								case 0: empleado.setStatus_rotativo(0); break;
-								case 1: empleado.setStatus_rotativo(1); break;
-								case 2: empleado.setStatus_rotativo(2); break;
-							}
-							
-							Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
-							empleado.setEstablecimiento(comboFolioEsta.getFolio());
-							
-							Obj_Departamento depart = new Obj_Departamento().buscar_departamento(cmbDepartamento.getSelectedItem()+"");
-							empleado.setDepartameto(depart.getFolio());
-							
-							Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
-							empleado.setPuesto(comboFolioPues.getFolio());
-							
-		//			percepciones y deducciones
-							if(!txtSalarioDiario.getText().equals("")){
-								empleado.setSalario_diario(Float.parseFloat(txtSalarioDiario.getText())) ;
-							}else{
-								empleado.setSalario_diario(Float.parseFloat(0.0+"")); }
+							perfil.setObjetivo_del_puesto(txaObjetivo_del_puesto.getText().toUpperCase()+"");
+							perfil.setExperiencia(txaExperiencia.getText().toUpperCase()+"");
+							perfil.setActividades_Principales(txaActividades_Principales.getText().toUpperCase()+"");
+							perfil.setHabilidades(txaHabilidades.getText().toUpperCase()+"");
+							perfil.setConocimiento(txaConocimiento.getText().toUpperCase()+"");
 						
-							if(!txtSalarioDiarioIntegrado.getText().equals("")){
-								empleado.setSalario_diario_integrado(Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
-							}else{
-								empleado.setSalario_diario_integrado(Float.parseFloat(0.0+""));
-							}
 							
-							empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
-							
-							Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
-							empleado.setBono(bono.getFolio());
-							
-							empleado.setPrestamo(cmbPrestamos.getSelectedIndex());
-							
-//							empleado.setBono_asistencia(Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
-//							empleado.setBono_puntualidad(Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
-							
-							empleado.setGafete(chbGafete.isSelected());
-							empleado.setObservasiones(txaObservaciones.getText()+"");
-							
-							if(empleado.guardar()){
+							if(perfil.guardar("GUARDAR")){
 								panelLimpiar();
 								panelEnabled(false);
 								rbHorario2.setEnabled(false);
@@ -935,27 +822,31 @@ public void guardar_modificar_Empleado(){
 								btnBuscar.setEnabled(true);
 								btnFiltro.setEnabled(true);
 								btnNuevo.setEnabled(true);
-								JOptionPane.showMessageDialog(null, "El Colaborardor Se Guardo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+								JOptionPane.showMessageDialog(null, "El Perfil Se Guardo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							}else{
 								JOptionPane.showMessageDialog(null, "Ocurrió un problema al almacenar el Colaborador", "Error", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}
+			}else{
+				JOptionPane.showMessageDialog(null, "Ya Existe Un Perfil Con Este Nombre","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
    }
 	
-	ActionListener filtro = new ActionListener(){
+	ActionListener opFiltroPuestos = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			btnBuscar.setEnabled(true);
 			new Cat_Filtro_Puestos().setVisible(true);
-		}
+		}  
 	};
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioPerfil.getText()));
-			if(empleado.getFolio() != 0){
+			Obj_Perfil_De_Puestos perfil = new Obj_Perfil_De_Puestos().buscar(Integer.parseInt(txtFolioPerfil.getText()));
+			if(perfil.getFolio() != 0){
 				
-				switch(empleado.getStatus_rotativo()){
+				switch(perfil.getStatus_rotativo()){
 				
 					case 0: panelEnabled(true);
 							cmbHorarioRotativo.setSelectedIndex(0);
@@ -977,8 +868,9 @@ public void guardar_modificar_Empleado(){
 				}
 				
 				txtFolioPerfil.setEditable(false);
+				btnFiltro.setEnabled(false);
 				btnEditar.setEnabled(false);
-				btnNuevo.setEnabled(true);
+				btnNuevo.setEnabled(false);
 			}else{
 				JOptionPane.showMessageDialog(null,"El Registró Que Desea Editar no Existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -989,24 +881,33 @@ public void guardar_modificar_Empleado(){
 	public void panelEnabled(Boolean value){	
 		txtPerfil.setEnabled(value);
 		cmbEstablecimiento.setEnabled(value);
+		cmbDepartamento.setEnabled(value);
 		cmbPuesto.setEnabled(value);
+		cmbNivelDePuesto.setEnabled(value);
 		cmbSueldo.setEnabled(value);
 		cmbBono.setEnabled(value);
 		cmbPrestamos.setEnabled(value);
 		chbGafete.setEnabled(value);
-		txaObservaciones.setEnabled(value);
+		txaObjetivo_del_puesto.setEnabled(value);
+		txaExperiencia.setEnabled(value);
+		txaActividades_Principales.setEnabled(value);
+		txaHabilidades.setEnabled(value);
+		txaConocimiento.setEnabled(value);
 		
 		cmbEdad.setEnabled(value);
 		cmbSexo.setEnabled(value);
 		
 		rbHorario.setEnabled(value);
 		rbHorario2.setEnabled(value);
-		cmbDepartamento.setEnabled(value);
+		rbHorario3.setEnabled(value);
+		
 		
 		txtSalarioDiario.setEnabled(value);
 		txtSalarioDiarioIntegrado.setEnabled(value);
 		cmbBonopuntualidad.setEnabled(value);
 		cmbBonoAsistencia.setEnabled(value);
+		
+		btnFiltroPuestoReporta.setEnabled(value);
 	}
 	
 	///boton deshacer
@@ -1022,7 +923,11 @@ public void guardar_modificar_Empleado(){
 		cmbBono.setSelectedIndex(0);
 		cmbPrestamos.setSelectedIndex(0);
 		chbGafete.setSelected(false);
-		txaObservaciones.setText("");
+		txaObjetivo_del_puesto.setText("");
+		txaExperiencia.setText("");
+		txaActividades_Principales.setText("");
+		txaHabilidades.setText("");
+		txaConocimiento.setText("");
 	    
 		txtDescanso.setText("");
 		txtDobla.setText("");
@@ -1046,28 +951,19 @@ public void guardar_modificar_Empleado(){
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
+			
 			try {
-				Obj_Empleados empleado = new Obj_Empleados().buscar_nuevo();
-				if(empleado.getFolio() != 0){
-					panelLimpiar();
-					panelEnabled(false);
-					txtPerfil.setEnabled(true);
-					txtFolioPerfil.setText(empleado.getFolio()+1+"");
-					txtPerfil.requestFocus();
-					
-						btnFiltro.setEnabled(false); 
-						btnBuscar.setEnabled(false); 
-						btnNuevo.setEnabled(false);
-				}else{
+					btnFiltro.setEnabled(false); 
+					btnBuscar.setEnabled(false); 
+					btnNuevo.setEnabled(false);
 					panelEnabled(true);
-					txtFolioPerfil.setText(1+"");
+					accion_chb_horario_rotativo();
+					txtFolioPerfil.setText(new Obj_Perfil_De_Puestos().buscar_nuevo());
 					txtFolioPerfil.setEnabled(false);
 					txtPerfil.requestFocus();
-					
+				} catch (SQLException e1) {
+					e1.printStackTrace();
 				}
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 		}
 	};
 	
@@ -1153,17 +1049,22 @@ public void guardar_modificar_Empleado(){
 		if(cmbEstablecimiento.getSelectedItem().equals("Selecciona un Establecimiento")) error += "Establecimiento\n";
 		if(cmbDepartamento.getSelectedItem().equals("Selecciona un Departamento"))	error+= "Departamento\n";
 		if(cmbPuesto.getSelectedItem().equals("Selecciona un Puesto")) error += "Puesto\n";
+		if(cmbNivelDePuesto.getSelectedItem().equals("Selecciona un Nivel De Puesto")) error += "Nivel De Puesto\n";
 		
 		switch(cmbHorarioRotativo.getSelectedIndex()){
 		case 0:	if(txtHorario.getText().equals("")) 		error+= "Horario\n"; break;
-		case 1: if(txtHorario.getText().equals("")) 		error+= "Horario 2\n";
-				if(txtHorario2.getText().equals("")) 		error+= "Horario 3\n";break;
+		case 1: if(txtHorario.getText().equals("")) 		error+= "Horario\n";
+				if(txtHorario2.getText().equals("")) 		error+= "Horario 2\n";break;
 		case 2: if(txtHorario.getText().equals("")) 		error+= "Horario\n";
 				if(txtHorario2.getText().equals("")) 		error+= "Horario 2\n";
 				if(txtHorario3.getText().equals("")) 		error+= "Horario 3\n";break;
 		}
+		if(txtSalarioDiario.equals("")) error += "Salario Diario\n";
+		if(txtSalarioDiarioIntegrado.equals("")) error += "Salario Diario Integrado\n";
 		if(cmbSueldo.getSelectedItem().equals("Selecciona un Sueldo")) error += "Sueldo\n";
 		if(cmbBono.getSelectedItem().equals("Selecciona un Bono")) error += "Bono\n";
+		if(cmbBonoAsistencia.getSelectedItem().equals("Selecciona un Bono De Asistencia")) error += "Bono De Asistencia\n";
+		if(cmbBonopuntualidad.getSelectedItem().equals("Selecciona un Bono De Puntualidad")) error += "Bono De Puntualidad\n";
 		if(cmbPrestamos.getSelectedItem().equals("Selecciona un Rango de Prestamo")) error += "Rango de Prestamo\n";
 		return error;
 	}
@@ -1313,7 +1214,179 @@ public void guardar_modificar_Empleado(){
 		    return scrol; 
 		}
 	}
+	
+	public class Cat_Filtro_Perfiles extends JDialog {
+		
+		Container cont = getContentPane();
+		JLayeredPane campo = new JLayeredPane();
+		
+	   	Object[][] arreglo = new BuscarTablasModel().filtro_de_perfiles_de_puestos();
+	    public DefaultTableModel model = new DefaultTableModel(arreglo, new String[]{"Folio","Perfil","Establecimiento","Departamento", "Puesto"} ){
+            
+			@SuppressWarnings({ "rawtypes" })
+			Class[] types = new Class[]{
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
+	                   java.lang.Object.class,
+	                   java.lang.Object.class
+	                    
+	    };
+			@SuppressWarnings({ "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+	                return types[columnIndex];
+	        }
+	    public boolean isCellEditable(int fila, int columna){
+	                switch(columna){
+	                		case 0	: return false;
+	                        case 1  : return false; 
+	                        case 2  : return false; 
+	                        case 3  : return false; 
+	                        case 4  : return false; 
+	                }
+	                 return false;
+	         }
+	    };
+		
+	    JTable tabla = new JTable(model);
+		JScrollPane scroll = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+		@SuppressWarnings("rawtypes")
+		private TableRowSorter trsfiltro;
+		
+		JTextField txtFiltroPuestoReporta = new JTextField();
+		
+		@SuppressWarnings("rawtypes")
+		public Cat_Filtro_Perfiles(){
+			
+			this.setModal(true);
+			
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setTitle("Filtro De Perfiles");
+			campo.setBorder(BorderFactory.createTitledBorder("Selecciones Un Perfil"));
+			trsfiltro = new TableRowSorter(model); 
+			tabla.setRowSorter(trsfiltro);  
+			
+			campo.add(txtFiltroPuestoReporta).setBounds(15,20,329,20);
+			campo.add(scroll).setBounds(15,42,760,510);
+			
+			render();
+			
+			agregar(tabla);
+			
+			cont.add(campo);
+			
+			txtFiltroPuestoReporta.addKeyListener(opFiltro);
+			
+			this.setSize(800,600);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+//          asigna el foco al JTextField del nombre deseado al arrancar la ventana
+            this.addWindowListener(new WindowAdapter() {
+                    public void windowOpened( WindowEvent e ){
+                    	txtFiltroPuestoReporta.requestFocus();
+                 }
+            });
+              
+//         pone el foco en el txtFolio al presionar la tecla scape
+              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "foco");
+              
+              getRootPane().getActionMap().put("foco", new AbstractAction(){
+                  @Override
+                  public void actionPerformed(ActionEvent e)
+                  {
+                	  txtFiltroPuestoReporta.setText("");
+                      txtFiltroPuestoReporta.requestFocus();
+                  }
+              });
+              
+//            pone el foco en la tabla al presionar f4
+              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                 KeyStroke.getKeyStroke(KeyEvent.VK_F4 , 0), "dtabla");
+              
+              getRootPane().getActionMap().put("dtabla", new AbstractAction(){
+                  @Override
+                  public void actionPerformed(ActionEvent e)
+                  {
+                	tabla.requestFocus();
+                	iniciarSeleccionConTeclado();
+                  }
+              });
+              
+              
+				KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
+				tabla.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(tab, "TAB");
+				
+				tabla.getActionMap().put("TAB", new AbstractAction(){
+	                 public void actionPerformed(ActionEvent e)
+	                 {
+	                	iniciarSeleccionConTeclado();
+	                	
+	                 }
+	            });
+			 
+			
+		}
+		
+		int fila=0;
+		public void iniciarSeleccionConTeclado(){
+			Robot robot;
+			try {
+	            robot = new Robot();
+	            robot.keyPress(KeyEvent.VK_A);
+	            robot.keyRelease(KeyEvent.VK_A);
+	        } catch (AWTException e) {
+	            e.printStackTrace();
+	        }
+ 	     };
+ 	     
+		KeyListener opFiltro = new KeyListener() {
+			public void keyTyped(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {
+				int[] columnas = {0,1,2,3,4};
+				new Obj_Filtro_Dinamico_Plus(tabla,txtFiltroPuestoReporta.getText().toUpperCase(),columnas);
+			}
+			public void keyPressed(KeyEvent e) {}
+		};
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	if(e.getClickCount() == 2){
+		        		int fila = tabla.getSelectedRow();
+		    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
+		    			dispose();
+		    			txtFolioPerfil.setText(folio+"");
+		    			btnBuscar.doClick();
+		        	}
+		        }
+	        });
+	    }
+		
+	   	private void render(){		
+	   		this.tabla.getTableHeader().setReorderingAllowed(false) ;
+			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+			tcr.setHorizontalAlignment(SwingConstants.CENTER);
+			
+
+			tabla.getColumnModel().getColumn(0).setMinWidth(50);
+			tabla.getColumnModel().getColumn(1).setMinWidth(320);
+			tabla.getColumnModel().getColumn(2).setMinWidth(120);
+			tabla.getColumnModel().getColumn(3).setMinWidth(120);
+			tabla.getColumnModel().getColumn(4).setMinWidth(120);
+
+			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
+			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+			tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+			tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		}
+	   	
+	}
+	
 	public class Cat_Filtro_Puestos extends JDialog {
 		
 		Container cont = getContentPane();
@@ -1361,10 +1434,11 @@ public void guardar_modificar_Empleado(){
 			campo.add(btnAgregar).setBounds(305,20,40,20);
 			campo.add(getPanelTabla()).setBounds(15,42,330,565);
 			
-			agregar(tabla);
+//			agregar(tabla);
 			
 			cont.add(campo);
 			
+			btnAgregar.addActionListener(opAgregarPuestosSeleccionados);
 			txtFiltroPuestoReporta.addKeyListener(opFiltro);
 			
 			this.setSize(365,650);
@@ -1391,8 +1465,6 @@ public void guardar_modificar_Empleado(){
                       txtFiltroPuestoReporta.requestFocus();
                   }
               });
-              
-              tabla.addKeyListener(seleccionEmpleadoconteclado);
               
 //            pone el foco en la tabla al presionar f4
               getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -1421,23 +1493,25 @@ public void guardar_modificar_Empleado(){
 			 
 			
 		}
-		private void agregar(final JTable tbl) {
-	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-		        public void mouseClicked(MouseEvent e) {
-		        	
-		        	if(e.getClickCount() == 1){
-		        		iniciarSeleccionConTeclado();
-		        	}
-		        	if(e.getClickCount() == 2){
-		    			fila = tabla.getSelectedRow();
-		    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
-		    			dispose();
-		    			txtFolioPerfil.setText(folio+"");
-		    			btnBuscar.doClick();
-		        	}
-		        }
-	        });
-	    }
+		
+		ActionListener opAgregarPuestosSeleccionados = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 int[] columnas = {1,2};
+				new Obj_Filtro_Dinamico_Plus(tabla, "", columnas);
+				String cadena ="'";
+				
+				for(int i=0; i<tabla.getRowCount(); i++){
+					if(tabla.getValueAt(i, 2).toString().trim().equals("true")){
+						cadena+="'"+model.getValueAt(i, 0).toString().trim()+"'','";
+					}
+				}
+				
+				cadena= cadena.length()==1?"":cadena.substring(0, cadena.length()-3)+"'";
+				
+				txtPuestoReporta.setText(cadena);
+				dispose();
+			}
+		};
 		
 		int fila=0;
 		public void iniciarSeleccionConTeclado(){
@@ -1451,31 +1525,6 @@ public void guardar_modificar_Empleado(){
 	        }
  	     };
  	     
-		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
-				KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-				tabla.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, "Enter");
-				
-				tabla.getActionMap().put("Enter", new AbstractAction(){
-	                 public void actionPerformed(ActionEvent e)
-	                 {
-	                	iniciarSeleccionConTeclado();
-	                	
-	                	fila=tabla.getSelectedRow();
-	     				String folio = tabla.getValueAt(fila,0).toString().trim();
-	     					
-	     				txtFolioPerfil.setText(folio);
-	     				btnBuscar.doClick();
-	     				dispose();
-	                 }
-	            });
-			}
-			public void keyPressed(KeyEvent e){}
-			public void keyReleased(KeyEvent e){}
-		};
-		
 		KeyListener opFiltro = new KeyListener() {
 			public void keyTyped(KeyEvent e) {}
 			public void keyReleased(KeyEvent e) {
@@ -1521,7 +1570,7 @@ public void guardar_modificar_Empleado(){
 				}	
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null,"Error Al Abrir El Filtro De El Empleado Error en El Procedimiento sp_filtro_empleado"+e1, "Avisa Al Administrador Del Sistema!",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Error Al Abrir El Filtro De Puestos Al Que Reporta :"+e1, "Avisa Al Administrador Del Sistema!",JOptionPane.ERROR_MESSAGE);
 			}
 			 JScrollPane scrol = new JScrollPane(tabla);
 			   
@@ -1542,7 +1591,5 @@ public void guardar_modificar_Empleado(){
 			new Cat_Perfiles_De_Puestos().setVisible(true);
 //			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}catch(Exception e){	}
-		
-
 	}
 }

@@ -9081,7 +9081,7 @@ public String[] getTablaRangoDeEdadesParaPerfiles(){
 
 public Obj_Perfil_De_Puestos Perfil_De_Puesto(int folio) throws SQLException{
 	Obj_Perfil_De_Puestos empleado = new Obj_Perfil_De_Puestos();
-	String query = "exec sp_empleados "+ folio;
+	String query = "exec sp_select_perfil_de_puesto "+ folio;
 	Statement stmt = null;
 
 	try {
@@ -9090,48 +9090,47 @@ public Obj_Perfil_De_Puestos Perfil_De_Puesto(int folio) throws SQLException{
 
 		while(rs.next()){
 			
-//			--------------------------------------------------------------------------------------------------------------------------------
-			empleado.setFolio(rs.getInt("folio"));
-			empleado.setPerfil(rs.getString("nombre").trim());
-			empleado.setEdad(rs.getString("edad"));
-			empleado.setSexo(rs.getString("sexo"));
-			empleado.setPuesto_al_que_reporta(rs.getString("puesto_reporta"));
+			empleado.setFolio(rs.getInt("folio"));                                                 
+			empleado.setPerfil(rs.getString("perfil").trim());                                     
+			empleado.setEdad(rs.getString("edad"));                                                
+			empleado.setSexo(rs.getString("sexo"));                                                
+			empleado.setPuesto_al_que_reporta(rs.getString("reporta_a"));                          
+			                                                                                       
+			empleado.setEstablecimiento(rs.getString("establecimiento"));                          
+			empleado.setDepartameto(rs.getString("departamento"));                                 
+			empleado.setPuesto(rs.getString("puesto"));                                            
+			empleado.setNivel_de_puesto(rs.getString("nivel_de_puesto"));                                         
+			                                                                                             
+			empleado.setHorario(rs.getInt("folio_horario1"));                                                   
+			empleado.setHorario2(rs.getInt("folio_horario2"));                                           
+			empleado.setHorario3(rs.getInt("folio_horario3"));                                           
+			                                                                                             
+			empleado.setHorarioNombre(rs.getString("horario1"));                                         
+			empleado.setHorario2Nombre(rs.getString("horario2"));                                        
+			empleado.setHorario3Nombre(rs.getString("horario3"));			                             
+			                                                                                             
+			empleado.setStatus_h1(rs.getInt("status_h1"));                                               
+			empleado.setStatus_h2(rs.getInt("status_h2"));                                               
+			empleado.setStatus_h3(rs.getInt("status_h3"));                                               
+			empleado.setStatus_rotativo(rs.getInt("horario_rotativo"));                                  
+			                                                                                             
+			empleado.setDescanso(rs.getString("descanso"));                                              
+			empleado.setDobla(rs.getString("dobla"));             
 			
-			empleado.setEstablecimiento(rs.getString("establecimiento_id"));
-			empleado.setDepartameto(rs.getString("departamento"));
-			empleado.setPuesto(rs.getString("puesto_id"));
-			
-//			--------------------------------------------------------------------------------------------------------------------------------
-			empleado.setHorario(rs.getInt("horario"));
-			empleado.setHorario2(rs.getInt("horario2"));
-			empleado.setHorario3(rs.getInt("horario3"));
-			empleado.setStatus_h1(rs.getInt("status_h1"));
-			empleado.setStatus_h2(rs.getInt("status_h2"));
-			empleado.setStatus_h3(rs.getInt("status_h3"));
-			empleado.setStatus_rotativo(rs.getInt("status_rotativo"));
-			
-			empleado.setDescanso(rs.getString("descanso"));
-			empleado.setDobla(rs.getString("dobla"));
-			
-//			--------------------------------------------------------------------------------------------------------------------------------
-			empleado.setGafete(rs.getBoolean("gafete") ? true : false);
-			empleado.setPrestamo(rs.getInt("rango_prestamo_id"));
-			empleado.setSalario_diario(rs.getFloat("salario_diario"));
-			empleado.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
-			
-			empleado.setSueldo(rs.getFloat("sueldo_id"));				
-			empleado.setBonocomplemento(rs.getInt("bono_id"));
-			empleado.setBono_asistencia(rs.getFloat("bono_asistencia"));
+			empleado.setSalario_diario(rs.getFloat("salario_diario"));                     
+			empleado.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado")); 
+			empleado.setSueldo(rs.getFloat("sueldo"));				      
+			empleado.setBonocomplemento(rs.getFloat("bono_complementario"));               
+			empleado.setBono_asistencia(rs.getFloat("bono_asistencia"));  
 			empleado.setBono_puntualidad(rs.getFloat("bono_puntualidad"));
-			
+			empleado.setPrestamo(rs.getInt("rango_prestamo"));
+			empleado.setGafete(rs.getBoolean("gafete") ? true : false); 
 
-
-//			--------------------------------------------------------------------------------------------------------------------------------
-			empleado.setObjetivo_del_puesto(rs.getString("Objetivo_del_puesto"));				
-			empleado.setActividades_Principales(rs.getString("Actividades_Principales"));
-			empleado.setConocimiento(rs.getString("Conocimiento"));
-			empleado.setExperiencia(rs.getString("Experiencia"));
-			empleado.setHabilidades(rs.getString("Habilidades"));				
+			empleado.setObjetivo_del_puesto(rs.getString("objetivo_de_puesto"));				
+			empleado.setActividades_Principales(rs.getString("actividades_principales"));
+			empleado.setConocimiento(rs.getString("conocimientos"));
+			empleado.setExperiencia(rs.getString("experiencia"));
+			empleado.setHabilidades(rs.getString("habilidades"));				
 
 		}
 		
@@ -9145,16 +9144,18 @@ public Obj_Perfil_De_Puestos Perfil_De_Puesto(int folio) throws SQLException{
 	return empleado;
 }
 
-public Obj_Perfil_De_Puestos Perfil_De_Puesto_Nuevo() throws SQLException{
-	Obj_Perfil_De_Puestos empleado = new Obj_Perfil_De_Puestos();
-	String query = "select max(folio) as 'Maximo' from tb_empleado";
+public String folio_Periodo_nuevo() throws SQLException{
+	
+	String folio = "";
+//	String query = buscar_folio_consecutivo_por_folio_de_transaccion(33);
 	Statement stmt = null;
 	try {
-		stmt = con.conexion().createStatement();
-		ResultSet rs = stmt.executeQuery(query);
-		while(rs.next()){
-			empleado.setFolio(rs.getInt("Maximo"));
-		}
+//		stmt = con.conexion().createStatement();
+//		ResultSet rs = stmt.executeQuery(query);
+//		while(rs.next()){
+			System.out.println(buscar_folio_consecutivo_por_folio_de_transaccion(34).trim());
+			folio = buscar_folio_consecutivo_por_folio_de_transaccion(34);
+//		}
 		
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -9163,7 +9164,7 @@ public Obj_Perfil_De_Puestos Perfil_De_Puesto_Nuevo() throws SQLException{
 	finally{
 		if(stmt!=null){stmt.close();}
 	}
-	return empleado;
+	return folio;
 }
 
 public int  anios_de_vacaciones(String fechaInicial, String fecha_final){
@@ -9188,6 +9189,24 @@ public int  anios_de_vacaciones(String fechaInicial, String fecha_final){
 		}}
 	}
 	return anios;
+}
+
+public boolean nombre_de_perfil_disponible(String nombre){
+	String query = "exec sp_existe_perfil '" + nombre + "';";
+	boolean disponible = false;
+	try {				
+		Statement s = con.conexion().createStatement();
+		ResultSet rs = s.executeQuery(query);
+		
+		while(rs.next()){
+			disponible = rs.getBoolean(1);
+		}
+		
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+	}
+		
+	return disponible;
 }
 
 }
