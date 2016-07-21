@@ -1330,7 +1330,6 @@ public void guardar_modificar_Perfil(){
 	                 }
 	            });
 			 
-			
 		}
 		
 		int fila=0;
