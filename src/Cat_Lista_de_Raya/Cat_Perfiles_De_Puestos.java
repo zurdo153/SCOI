@@ -871,6 +871,8 @@ public void guardar_modificar_Perfil(){
 				btnFiltro.setEnabled(false);
 				btnEditar.setEnabled(false);
 				btnNuevo.setEnabled(false);
+				
+				txtPerfil.requestFocus();
 			}else{
 				JOptionPane.showMessageDialog(null,"El Registró Que Desea Editar no Existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
