@@ -437,6 +437,8 @@ public class Cat_Finiquitos extends JFrame{
 		}
 		public Cat_Alimentacion_De_Finiquitos(String folio_emp_scoi, String nombre_scoi, String establecimiento, String folio_emp_bms){
 			
+			fchBajaBnns.setEnabled(folio_emp_bms.equals("")?false:true);
+			
 			Constructor(folio_emp_scoi, nombre_scoi, establecimiento, folio_emp_bms);
 			
 			
