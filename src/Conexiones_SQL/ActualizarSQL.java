@@ -62,7 +62,6 @@ import Obj_Lista_de_Raya.Obj_Diferencia_De_Cortes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
-import Obj_Lista_de_Raya.Obj_Perfil_De_Puestos;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
