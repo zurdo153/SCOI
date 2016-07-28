@@ -104,6 +104,7 @@ import Cat_Reportes.Cat_Reportes_De_Horarios;
 import Cat_Reportes.Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -123,6 +124,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 import com.toedter.calendar.JDateChooser;
@@ -145,6 +147,11 @@ public class Cat_Empleados extends JFrame{
 	JLabel lblFolioHorario1 = new JLabel("");
 	JLabel lblFolioHorario2 = new JLabel("");
 	JLabel lblFolioHorario3 = new JLabel("");
+	
+	JButton btnLimpiarPerfil  = new JButton(".");
+	JButton btnAgregarPerfil   = new JButton(".");
+	JLabel lblFolioPerfil = new JLabel("");
+	JTextField txtPerfil = new Componentes().text(new JTextField(), "Perfil De Puesto", 250, "String");
 	
 	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
 	
@@ -485,8 +492,14 @@ public class Cat_Empleados extends JFrame{
 		panel.add(new JLabel("Escolaridad: ")).setBounds(x+450,y,ancho,20);
 		panel.add(cmbEscolaridad).setBounds(x+(ancho*3)+110,y,ancho-15,20);
 		
+		panel.add(new JLabel("Perfil:")).setBounds         (x           	,y+=25 ,width   ,height );
+		panel.add(btnLimpiarPerfil).setBounds              (x+50        	,y     ,height  ,height );
+		panel.add(btnAgregarPerfil).setBounds              (x+70        	,y     ,height  ,height );
+		panel.add(lblFolioPerfil).setBounds                (x+70+height     ,y     ,height  ,height );
+		panel.add(txtPerfil).setBounds                     (x+75+(height*2) ,y     ,340		,height );
+		
 //TODO Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
-		x=17 ;y=255;width=340;height=20;sep=120;
+		x=17 ;y=255;width=340;sep=120;
 		panel.add(lblLaboral).setBounds                      (x-7         ,y     ,997     ,220    );
 		panel.add(new JLabel("Horario:")).setBounds          (x           ,y+=15 ,width   ,height );
 		panel.add(btnHorarioNew).setBounds                   (x+50        ,y     ,height  ,height );
@@ -638,6 +651,8 @@ public class Cat_Empleados extends JFrame{
 		btnReporteSalida.addActionListener(opReporteDeEncuesta);
 
 		btnExaminar.addActionListener(opExaminar);
+		btnLimpiarPerfil.addActionListener(opLimpiarPerfil);
+		btnAgregarPerfil.addActionListener(opPerfil);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
 		btnHorario.addActionListener(opFiltroHorairo);
 		btnHorario2.addActionListener(opFiltroHorairo2);
@@ -660,6 +675,8 @@ public class Cat_Empleados extends JFrame{
 		
 		btnExaminar.setEnabled(false);
 		btnCamara.setEnabled(false);
+		
+		txtPerfil.setEnabled(false);
 		
 		btnHorario.setEnabled(false);
 		btnHorario2.setEnabled(false);
@@ -825,6 +842,20 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opRRenuncia = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			new Cat_Reporte_De_Motivos_De_renuncia().setVisible(true);
+		}
+	};
+	
+	ActionListener opLimpiarPerfil = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			lblFolioPerfil.setText("");
+			txtPerfil.setText("");
+		}
+	};
+	
+	ActionListener opPerfil = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+//			fitro de Perfiles
+			new Cat_Filtro_Perfiles_Seleccion().setVisible(true);
 		}
 	};
 	
@@ -3286,7 +3317,7 @@ public void guardar_modificar_Empleado(){
 				
 			return date1;
 		};
-		   
+		
 //		@SuppressWarnings({ "rawtypes", "unchecked" })
 //		public static void Cat_Reporte_De_Ausentismo(String anio,String mes) {
 //				
@@ -3323,6 +3354,179 @@ public void guardar_modificar_Empleado(){
 //				JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 //			}
 //		}
+	}
+	
+	public class Cat_Filtro_Perfiles_Seleccion extends JDialog {
+		
+		Container cont = getContentPane();
+		JLayeredPane campo = new JLayeredPane();
+		
+	   	Object[][] arreglo = new BuscarTablasModel().filtro_de_perfiles_de_puestos();
+	    public DefaultTableModel model = new DefaultTableModel(arreglo, new String[]{"Folio","Perfil","Establecimiento","Departamento", "Puesto"} ){
+            
+			@SuppressWarnings({ "rawtypes" })
+			Class[] types = new Class[]{
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
+	                   java.lang.Object.class,
+	                   java.lang.Object.class
+	                    
+	    };
+			@SuppressWarnings({ "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+	                return types[columnIndex];
+	        }
+	    public boolean isCellEditable(int fila, int columna){
+	                switch(columna){
+	                		case 0	: return false;
+	                        case 1  : return false; 
+	                        case 2  : return false; 
+	                        case 3  : return false; 
+	                        case 4  : return false; 
+	                }
+	                 return false;
+	         }
+	    };
+		
+	    JTable tabla = new JTable(model);
+		JScrollPane scroll = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		@SuppressWarnings("rawtypes")
+		private TableRowSorter trsfiltro;
+		
+		JTextField txtFiltroPuestoReporta = new JTextField();
+		
+		@SuppressWarnings("rawtypes")
+		public Cat_Filtro_Perfiles_Seleccion(){
+			
+			this.setModal(true);
+			
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+			this.setTitle("Filtro De Perfiles");
+			campo.setBorder(BorderFactory.createTitledBorder("Selecciones Un Perfil"));
+			trsfiltro = new TableRowSorter(model); 
+			tabla.setRowSorter(trsfiltro);  
+			
+			campo.add(txtFiltroPuestoReporta).setBounds(15,20,329,20);
+			campo.add(scroll).setBounds(15,42,760,510);
+			
+			render();
+			
+			agregar(tabla);
+			
+			cont.add(campo);
+			
+			txtFiltroPuestoReporta.addKeyListener(opFiltro);
+			
+			this.setSize(800,600);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+//          asigna el foco al JTextField del nombre deseado al arrancar la ventana
+            this.addWindowListener(new WindowAdapter() {
+                    public void windowOpened( WindowEvent e ){
+                    	txtFiltroPuestoReporta.requestFocus();
+                 }
+            });
+              
+//         pone el foco en el txtFolio al presionar la tecla scape
+              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "foco");
+              
+              getRootPane().getActionMap().put("foco", new AbstractAction(){
+                  @Override
+                  public void actionPerformed(ActionEvent e)
+                  {
+                	  txtFiltroPuestoReporta.setText("");
+                      txtFiltroPuestoReporta.requestFocus();
+                  }
+              });
+              
+//            pone el foco en la tabla al presionar f4
+              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                 KeyStroke.getKeyStroke(KeyEvent.VK_F4 , 0), "dtabla");
+              
+              getRootPane().getActionMap().put("dtabla", new AbstractAction(){
+                  @Override
+                  public void actionPerformed(ActionEvent e)
+                  {
+                	tabla.requestFocus();
+                	iniciarSeleccionConTeclado();
+                  }
+              });
+              
+              
+				KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
+				tabla.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(tab, "TAB");
+				
+				tabla.getActionMap().put("TAB", new AbstractAction(){
+	                 public void actionPerformed(ActionEvent e)
+	                 {
+	                	iniciarSeleccionConTeclado();
+	                	
+	                 }
+	            });
+			 
+		}
+		
+		int fila=0;
+		public void iniciarSeleccionConTeclado(){
+			Robot robot;
+			try {
+	            robot = new Robot();
+	            robot.keyPress(KeyEvent.VK_A);
+	            robot.keyRelease(KeyEvent.VK_A);
+	        } catch (AWTException e) {
+	            e.printStackTrace();
+	        }
+ 	     };
+ 	     
+		KeyListener opFiltro = new KeyListener() {
+			public void keyTyped(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {
+				int[] columnas = {0,1,2,3,4};
+				new Obj_Filtro_Dinamico_Plus(tabla,txtFiltroPuestoReporta.getText().toUpperCase(),columnas);
+			}
+			public void keyPressed(KeyEvent e) {}
+		};
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	if(e.getClickCount() == 2){
+		        		int fila = tabla.getSelectedRow();
+		    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
+		    			Object perfil =  tabla.getValueAt(fila, 1).toString().trim();
+		    			dispose();
+		    			lblFolioPerfil.setText(folio+"");
+		    			txtPerfil.setText(perfil+"");
+		    			btnBuscar.doClick();
+		        	}
+		        }
+	        });
+	    }
+		
+	   	private void render(){		
+	   		this.tabla.getTableHeader().setReorderingAllowed(false) ;
+			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+			tcr.setHorizontalAlignment(SwingConstants.CENTER);
+			
+
+			tabla.getColumnModel().getColumn(0).setMinWidth(50);
+			tabla.getColumnModel().getColumn(1).setMinWidth(320);
+			tabla.getColumnModel().getColumn(2).setMinWidth(120);
+			tabla.getColumnModel().getColumn(3).setMinWidth(120);
+			tabla.getColumnModel().getColumn(4).setMinWidth(120);
+
+			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
+			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+			tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+			tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		}
+	   	
 	}
 
 	

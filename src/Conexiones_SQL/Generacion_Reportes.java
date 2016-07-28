@@ -24,7 +24,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
-import net.sf.jasperreports.view.JRViewer;
+import net.sf.jasperreports.swing.JRViewer;
 
 public class Generacion_Reportes {
 	String reporte = "";
@@ -69,6 +69,8 @@ public class Generacion_Reportes {
 					ResultSet rs = stmt.executeQuery(query);
 					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+reporte);
 					JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+					
+					
 					
 					// En mapa se especifican los parametros del reporte
 					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
