@@ -26,6 +26,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.swing.JRViewer;
 
+@SuppressWarnings("deprecation")
 public class Generacion_Reportes {
 	String reporte = "";
 	String comando="";
@@ -33,7 +34,7 @@ public class Generacion_Reportes {
 	String vista_previa_de_ventana="";
 	String basedatos="";
 
-	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void  Reporte(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
 			    Obj_Usuario usuario = new Obj_Usuario();
                 String query =comando ;
@@ -101,7 +102,7 @@ public class Generacion_Reportes {
 					}
 		}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void  Reporte_Guardado(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana,String Guardar_reporte_formato, String nombre_reporte){
 	    Obj_Usuario usuario = new Obj_Usuario();
         String query =comando ;
