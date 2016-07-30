@@ -71,6 +71,8 @@ public class Generacion_Reportes {
 					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+reporte);
 					JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
 					
+					
+					
 					// En mapa se especifican los parametros del reporte
 					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
 					if (vista_previa_reporte.equals("si")){

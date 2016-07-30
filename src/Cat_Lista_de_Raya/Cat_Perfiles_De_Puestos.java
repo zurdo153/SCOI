@@ -584,8 +584,8 @@ public class Cat_Perfiles_De_Puestos extends JFrame{
 					txtHorario3.setText(re.getHorario3Nombre());
 					
 					rbHorario.setSelected(re.getStatus_h1()==1?true:false);
-					rbHorario2.setSelected(re.getStatus_h1()==1?true:false);
-					rbHorario3.setSelected(re.getStatus_h1()==1?true:false);
+					rbHorario2.setSelected(re.getStatus_h2()==1?true:false);
+					rbHorario3.setSelected(re.getStatus_h3()==1?true:false);
 					
 					txtDescanso.setText(re.getDescanso()+"");
 					txtDobla.setText(re.getDobla()+"");
@@ -1221,7 +1221,7 @@ public void guardar_modificar_Perfil(){
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
 		
-	   	Object[][] arreglo = new BuscarTablasModel().filtro_de_perfiles_de_puestos();
+	   	Object[][] arreglo = new BuscarTablasModel().filtro_de_perfiles_de_puestos(0);//parametro = folio_empleado  (sin empleado = 0)
 	    public DefaultTableModel model = new DefaultTableModel(arreglo, new String[]{"Folio","Perfil","Establecimiento","Departamento", "Puesto"} ){
             
 			@SuppressWarnings({ "rawtypes" })
@@ -1441,6 +1441,10 @@ public void guardar_modificar_Perfil(){
 			btnAgregar.addActionListener(opAgregarPuestosSeleccionados);
 			txtFiltroPuestoReporta.addKeyListener(opFiltro);
 			
+			rbHorario.addActionListener(opRButton);
+			rbHorario2.addActionListener(opRButton);
+			rbHorario3.addActionListener(opRButton);
+			
 			this.setSize(365,650);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
@@ -1493,6 +1497,30 @@ public void guardar_modificar_Perfil(){
 			 
 			
 		}
+		
+		ActionListener opRButton = new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(rbHorario.isSelected()==true){
+//					buscar horario 1 y asignar dia de descanso y dobla
+					Obj_Horario_Empleado descanso = new Obj_Horario_Empleado().buscar_tur(txtHorario.getText());
+					txtDescanso.setText(descanso.getDescanso());
+					txtDobla.setText(descanso.getDobla());
+				}
+				if(rbHorario2.isSelected()==true){
+//					buscar horario 2 y asignar dia de descanso y dobla
+					Obj_Horario_Empleado descanso = new Obj_Horario_Empleado().buscar_tur(txtHorario2.getText());
+					txtDescanso.setText(descanso.getDescanso());
+					txtDobla.setText(descanso.getDobla());
+				}
+				if(rbHorario3.isSelected()==true){
+//					buscar horario 3 y asignar dia de descanso y dobla
+					Obj_Horario_Empleado descanso = new Obj_Horario_Empleado().buscar_tur(txtHorario3.getText());
+					txtDescanso.setText(descanso.getDescanso());
+					txtDobla.setText(descanso.getDobla());
+				}
+			}
+		};
 		
 		ActionListener opAgregarPuestosSeleccionados = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
