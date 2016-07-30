@@ -31,6 +31,7 @@ public class Obj_Empleados {
 	private String escolaridad;	
 	private File foto;
 	
+	private int perfil;
 //	laboral
 	private int horario;
 	private int horario2;
@@ -95,6 +96,8 @@ public class Obj_Empleados {
 		
 		folio=0; no_checador=""; nombre=""; ap_paterno=""; ap_materno=""; fecha_nacimiento=""; calle=""; colonia=""; poblacion=""; telefono_familiar="";
 		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; foto=null;
+		
+		perfil = 0;
 		
 		horario=0; horario2=0; horario2=0; status_h1=0; status_h2=0; status_h3=0; status_rotativo=0; contrato=0; descanso=""; dobla=""; fecha_ingreso=""; status=0; fecha_baja=""; cuadrante_parcial=false;
 		departameto=0; imss=""; status_imss=0; numero_infonavit=""; establecimiento=0; puesto=0;
@@ -270,6 +273,14 @@ public class Obj_Empleados {
 
 	public void setFoto(File foto) {
 		this.foto = foto;
+	}
+
+	public int getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(int perfil) {
+		this.perfil = perfil;
 	}
 
 	public int getHorario() {

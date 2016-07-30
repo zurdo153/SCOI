@@ -1420,6 +1420,7 @@ public class BuscarSQL {
 				empleado.setContrato(rs.getInt("contrato"));
 				empleado.setPresencia_fisica(rs.getInt("presencia_fisica"));
 				empleado.setBonocomplemento(rs.getInt("bono_complemento"));
+				empleado.setPerfil(rs.getInt("folio_perfil"));
 				
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);

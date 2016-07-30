@@ -2608,7 +2608,7 @@ public String[][] lista_de_configuraciones_de_meta_mensual_de_ventas(){
 			matriz[i][9] =  rs.getString(10); 
 			matriz[i][10] =  rs.getString(11); 
 			matriz[i][11] =  rs.getString(12); 
-			matriz[i][12] =  rs.getString(13); 
+			matriz[i][12] =  rs.getString(13);  
 			matriz[i][13] =  rs.getString(14); 
 			matriz[i][14] =  rs.getString(15); 
 			
@@ -2647,9 +2647,9 @@ public Object[][] tabla_concentrados_con_movimiento_de_ahorros(){
     return matriz; 
 }
 
-public Object[][] filtro_de_perfiles_de_puestos(){
+public Object[][] filtro_de_perfiles_de_puestos(int folio_empledo){
 	
-	String query_lista = "exec sp_select_filtro_de_perfiles_de_puestos";
+	String query_lista = "exec sp_select_filtro_de_perfiles_de_puestos "+folio_empledo;
 	
 	Object[][] matriz = new Object[get_filas(query_lista)][5];
 	try {
