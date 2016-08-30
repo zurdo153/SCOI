@@ -180,8 +180,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			String observacion = tabla.getValueAt(tabla.getSelectedRow(), 7).toString().trim().toUpperCase();
 			
 			if(new ActualizarSQL().Modificar_Status_Revision(folio_finiquito,Status_Finiquito,observacion)){
-		        	while(tabla.getRowCount()>0){	
-			              model.removeRow(0);  }
+		        	model.setRowCount(0);
 		        	Actualizar_tabla("V");
 		        	
 		        	if(Status_Finiquito.equals('L')){
@@ -311,7 +310,6 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 				}
 			};
 
-			
 			@SuppressWarnings("rawtypes")
 			public Class[] listacolumnas(int Columnas){
 			Class[] lista = new Class[Columnas];

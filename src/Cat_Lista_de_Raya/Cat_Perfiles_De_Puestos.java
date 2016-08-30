@@ -670,167 +670,270 @@ public void guardar_modificar_Perfil(){
 				
 				Obj_Perfil_De_Puestos perfil = new Obj_Perfil_De_Puestos().buscar(Integer.parseInt(txtFolioPerfil.getText()));
 					
-				if(!perfil.nombre_perfil_disponible(txtPerfil.getText().toUpperCase().trim())){
+//				if(!perfil.nombre_perfil_disponible(txtPerfil.getText().toUpperCase().trim())){
+//					
+//				}else{
+//					JOptionPane.showMessageDialog(null, "Ya Existe Un Perfil Con Este Nombre","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+//					return;
+//				}
 					
 					if(perfil.getFolio() == Integer.parseInt(txtFolioPerfil.getText())){
-						if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
-							if(validaCampos()!="") {
-								JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-								return;
-							}else{
-								
-
-								
-
-								perfil.setFolio(Integer.valueOf(txtFolioPerfil.getText()));
-								perfil.setPerfil(txtPerfil.getText().toUpperCase().trim());
-								perfil.setEdad(cmbEdad.getSelectedItem()+"");
-								perfil.setSexo(cmbSexo.getSelectedItem()+"");
-								perfil.setPuesto_al_que_reporta(txtPuestoReporta.getText());
-								
-								perfil.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
-								perfil.setDepartameto(cmbDepartamento.getSelectedItem().toString().trim());
-								perfil.setPuesto(cmbPuesto.getSelectedItem().toString().trim());
-								perfil.setNivel_de_puesto(cmbNivelDePuesto.getSelectedItem()+"");
-										
-								perfil.setHorario(lblFolioHorario1.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario1.getText()));
-								perfil.setHorario2(lblFolioHorario2.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario2.getText()));
-								perfil.setHorario3(lblFolioHorario3.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario3.getText()));
-								
-								if(rbHorario.isSelected()){
-									perfil.setStatus_h1(1);
-									perfil.setStatus_h2(0);
-									perfil.setStatus_h3(0);
-								}
-								if(rbHorario2.isSelected()){
-									perfil.setStatus_h1(0);
-									perfil.setStatus_h2(1);
-									perfil.setStatus_h3(0);
-								}
-								if(rbHorario3.isSelected()){
-									perfil.setStatus_h1(0);
-									perfil.setStatus_h2(0);
-									perfil.setStatus_h3(1);
-								}
-								
-								perfil.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
-								
-								perfil.setSalario_diario(txtSalarioDiario.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiario.getText())) ;
-								perfil.setSalario_diario_integrado(txtSalarioDiarioIntegrado.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
-								perfil.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
-								perfil.setBonocomplemento(cmbBono.getSelectedIndex()== 0 ? 0 : Float.parseFloat(cmbBono.getSelectedItem().toString()));
-								perfil.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
-								perfil.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
-								perfil.setPrestamo(cmbPrestamos.getSelectedIndex());
-								perfil.setGafete(chbGafete.isSelected());
-								
-								perfil.setObjetivo_del_puesto(txaObjetivo_del_puesto.getText().toUpperCase()+"");
-								perfil.setExperiencia(txaExperiencia.getText().toUpperCase()+"");
-								perfil.setActividades_Principales(txaActividades_Principales.getText().toUpperCase()+"");
-								perfil.setHabilidades(txaHabilidades.getText().toUpperCase()+"");
-								perfil.setConocimiento(txaConocimiento.getText().toUpperCase()+"");
-							
-
-								if(perfil.guardar("ACTUALIZAR")){
-									panelLimpiar();
-									panelEnabled(false);
-									rbHorario2.setEnabled(false);
-									rbHorario3.setEnabled(false);
-									txtFolioPerfil.setEnabled(true);
-									txtFolioPerfil.setEditable(true);
-									txtFolioPerfil.requestFocus();
-									txtHorario.setEnabled(false);
-									btnBuscar.setEnabled(true);
-									btnFiltro.setEnabled(true);
-									btnNuevo.setEnabled(true);
-									JOptionPane.showMessageDialog(null, "El Perfil Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-								}else{
-									JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
-								}
-							}
-						}else{
-							return;
-						}
-					}else{
-						if(validaCampos()!="") {
-							JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-							return;
-						}else{
-							
-
-							
-
-							perfil.setFolio(Integer.valueOf(txtFolioPerfil.getText()));
-							perfil.setPerfil(txtPerfil.getText().toUpperCase());
-							perfil.setEdad(cmbEdad.getSelectedItem()+"");
-							perfil.setSexo(cmbSexo.getSelectedItem()+"");
-							perfil.setPuesto_al_que_reporta(txtPuestoReporta.getText());
-							
-							perfil.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
-							perfil.setDepartameto(cmbDepartamento.getSelectedItem().toString().trim());
-							perfil.setPuesto(cmbPuesto.getSelectedItem().toString().trim());
-							perfil.setNivel_de_puesto(cmbNivelDePuesto.getSelectedItem()+"");
-									
-							perfil.setHorario(lblFolioHorario1.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario1.getText()));
-							perfil.setHorario2(lblFolioHorario2.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario2.getText()));
-							perfil.setHorario3(lblFolioHorario3.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario3.getText()));
-							
-							if(rbHorario.isSelected()){
-								perfil.setStatus_h1(1);
-								perfil.setStatus_h2(0);
-								perfil.setStatus_h3(0);
-							}
-							if(rbHorario2.isSelected()){
-								perfil.setStatus_h1(0);
-								perfil.setStatus_h2(1);
-								perfil.setStatus_h3(0);
-							}
-							if(rbHorario3.isSelected()){
-								perfil.setStatus_h1(0);
-								perfil.setStatus_h2(0);
-								perfil.setStatus_h3(1);
-							}
-							
-							perfil.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
-							
-							perfil.setSalario_diario(txtSalarioDiario.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiario.getText())) ;
-							perfil.setSalario_diario_integrado(txtSalarioDiarioIntegrado.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
-							perfil.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
-							perfil.setBonocomplemento(cmbBono.getSelectedIndex()== 0 ? 0 : Float.parseFloat(cmbBono.getSelectedItem().toString()));
-							perfil.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
-							perfil.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
-							perfil.setPrestamo(cmbPrestamos.getSelectedIndex());
-							perfil.setGafete(chbGafete.isSelected());
-							
-							perfil.setObjetivo_del_puesto(txaObjetivo_del_puesto.getText().toUpperCase()+"");
-							perfil.setExperiencia(txaExperiencia.getText().toUpperCase()+"");
-							perfil.setActividades_Principales(txaActividades_Principales.getText().toUpperCase()+"");
-							perfil.setHabilidades(txaHabilidades.getText().toUpperCase()+"");
-							perfil.setConocimiento(txaConocimiento.getText().toUpperCase()+"");
 						
+									if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
+										
+			//	-----------------------------------------------------------------------------------------------------------------------------------------------		
+										
+										String nombreRepetido = "no";
+										if(perfil.nombre_perfil_disponible(txtPerfil.getText().toUpperCase().trim())){
+											nombreRepetido ="si";
+										}
+										
+										if(nombreRepetido.equals("si")){
+											if(JOptionPane.showConfirmDialog(null, "El nombre ya existe, ¿desea actualizarlo?") == 0){
+												if(validaCampos()!="") {
+														JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+														return;
+												}else{
+															perfil.setFolio(Integer.valueOf(txtFolioPerfil.getText()));
+															perfil.setPerfil(txtPerfil.getText().toUpperCase().trim());
+															perfil.setEdad(cmbEdad.getSelectedItem()+"");
+															perfil.setSexo(cmbSexo.getSelectedItem()+"");
+															perfil.setPuesto_al_que_reporta(txtPuestoReporta.getText());
+															
+															perfil.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
+															perfil.setDepartameto(cmbDepartamento.getSelectedItem().toString().trim());
+															perfil.setPuesto(cmbPuesto.getSelectedItem().toString().trim());
+															perfil.setNivel_de_puesto(cmbNivelDePuesto.getSelectedItem()+"");
+																	
+															perfil.setHorario(lblFolioHorario1.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario1.getText()));
+															perfil.setHorario2(lblFolioHorario2.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario2.getText()));
+															perfil.setHorario3(lblFolioHorario3.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario3.getText()));
+															
+															if(rbHorario.isSelected()){
+																perfil.setStatus_h1(1);
+																perfil.setStatus_h2(0);
+																perfil.setStatus_h3(0);
+															}
+															if(rbHorario2.isSelected()){
+																perfil.setStatus_h1(0);
+																perfil.setStatus_h2(1);
+																perfil.setStatus_h3(0);
+															}
+															if(rbHorario3.isSelected()){
+																perfil.setStatus_h1(0);
+																perfil.setStatus_h2(0);
+																perfil.setStatus_h3(1);
+															}
+															
+															perfil.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
+															
+															perfil.setSalario_diario(txtSalarioDiario.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiario.getText())) ;
+															perfil.setSalario_diario_integrado(txtSalarioDiarioIntegrado.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
+															perfil.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
+															perfil.setBonocomplemento(cmbBono.getSelectedIndex()== 0 ? 0 : Float.parseFloat(cmbBono.getSelectedItem().toString()));
+															perfil.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
+															perfil.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
+															perfil.setPrestamo(cmbPrestamos.getSelectedIndex());
+															perfil.setGafete(chbGafete.isSelected());
+															
+															perfil.setObjetivo_del_puesto(txaObjetivo_del_puesto.getText().toUpperCase()+"");
+															perfil.setExperiencia(txaExperiencia.getText().toUpperCase()+"");
+															perfil.setActividades_Principales(txaActividades_Principales.getText().toUpperCase()+"");
+															perfil.setHabilidades(txaHabilidades.getText().toUpperCase()+"");
+															perfil.setConocimiento(txaConocimiento.getText().toUpperCase()+"");
+														
 							
-							if(perfil.guardar("GUARDAR")){
-								panelLimpiar();
-								panelEnabled(false);
-								rbHorario2.setEnabled(false);
-								rbHorario3.setEnabled(false);
-								txtFolioPerfil.setEnabled(true);
-								txtFolioPerfil.setEditable(true);
-								txtFolioPerfil.requestFocus();
-								txtHorario.setEnabled(false);
-								btnBuscar.setEnabled(true);
-								btnFiltro.setEnabled(true);
-								btnNuevo.setEnabled(true);
-								JOptionPane.showMessageDialog(null, "El Perfil Se Guardo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-							}else{
-								JOptionPane.showMessageDialog(null, "Ocurrió un problema al almacenar el Colaborador", "Error", JOptionPane.ERROR_MESSAGE);
-							}
+															if(perfil.guardar("ACTUALIZAR")){
+																panelLimpiar();
+																panelEnabled(false);
+																rbHorario2.setEnabled(false);
+																rbHorario3.setEnabled(false);
+																txtFolioPerfil.setEnabled(true);
+																txtFolioPerfil.setEditable(true);
+																txtFolioPerfil.requestFocus();
+																txtHorario.setEnabled(false);
+																btnBuscar.setEnabled(true);
+																btnFiltro.setEnabled(true);
+																btnNuevo.setEnabled(true);
+																JOptionPane.showMessageDialog(null, "El Perfil Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+															}else{
+																JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
+															}
+														}
+											}else{
+//												JOptionPane.showMessageDialog(null, "Favor De Intentar Con Otro Nombre Perfil","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+												return;
+//												cambiar nombre
+											}
+										}else{
+											if(validaCampos()!="") {
+												JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+												return;
+										}else{
+													perfil.setFolio(Integer.valueOf(txtFolioPerfil.getText()));
+													perfil.setPerfil(txtPerfil.getText().toUpperCase().trim());
+													perfil.setEdad(cmbEdad.getSelectedItem()+"");
+													perfil.setSexo(cmbSexo.getSelectedItem()+"");
+													perfil.setPuesto_al_que_reporta(txtPuestoReporta.getText());
+													
+													perfil.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
+													perfil.setDepartameto(cmbDepartamento.getSelectedItem().toString().trim());
+													perfil.setPuesto(cmbPuesto.getSelectedItem().toString().trim());
+													perfil.setNivel_de_puesto(cmbNivelDePuesto.getSelectedItem()+"");
+															
+													perfil.setHorario(lblFolioHorario1.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario1.getText()));
+													perfil.setHorario2(lblFolioHorario2.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario2.getText()));
+													perfil.setHorario3(lblFolioHorario3.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario3.getText()));
+													
+													if(rbHorario.isSelected()){
+														perfil.setStatus_h1(1);
+														perfil.setStatus_h2(0);
+														perfil.setStatus_h3(0);
+													}
+													if(rbHorario2.isSelected()){
+														perfil.setStatus_h1(0);
+														perfil.setStatus_h2(1);
+														perfil.setStatus_h3(0);
+													}
+													if(rbHorario3.isSelected()){
+														perfil.setStatus_h1(0);
+														perfil.setStatus_h2(0);
+														perfil.setStatus_h3(1);
+													}
+													
+													perfil.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
+													
+													perfil.setSalario_diario(txtSalarioDiario.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiario.getText())) ;
+													perfil.setSalario_diario_integrado(txtSalarioDiarioIntegrado.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
+													perfil.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
+													perfil.setBonocomplemento(cmbBono.getSelectedIndex()== 0 ? 0 : Float.parseFloat(cmbBono.getSelectedItem().toString()));
+													perfil.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
+													perfil.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
+													perfil.setPrestamo(cmbPrestamos.getSelectedIndex());
+													perfil.setGafete(chbGafete.isSelected());
+													
+													perfil.setObjetivo_del_puesto(txaObjetivo_del_puesto.getText().toUpperCase()+"");
+													perfil.setExperiencia(txaExperiencia.getText().toUpperCase()+"");
+													perfil.setActividades_Principales(txaActividades_Principales.getText().toUpperCase()+"");
+													perfil.setHabilidades(txaHabilidades.getText().toUpperCase()+"");
+													perfil.setConocimiento(txaConocimiento.getText().toUpperCase()+"");
+												
+					
+													if(perfil.guardar("ACTUALIZAR")){
+														panelLimpiar();
+														panelEnabled(false);
+														rbHorario2.setEnabled(false);
+														rbHorario3.setEnabled(false);
+														txtFolioPerfil.setEnabled(true);
+														txtFolioPerfil.setEditable(true);
+														txtFolioPerfil.requestFocus();
+														txtHorario.setEnabled(false);
+														btnBuscar.setEnabled(true);
+														btnFiltro.setEnabled(true);
+														btnNuevo.setEnabled(true);
+														JOptionPane.showMessageDialog(null, "El Perfil Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+													}else{
+														JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
+													}
+												}
+										}
+										
+
+			//	-----------------------------------------------------------------------------------------------------------------------------------------------
+										
+									}else{
+										return;
+									}
+					}else{
+						
+						
+//-----------------------------------------------------------------------------------------------------------------------------------------------		
+
+						if(!perfil.nombre_perfil_disponible(txtPerfil.getText().toUpperCase().trim())){
+								
+								if(validaCampos()!="") {
+									JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+									return;
+								}else{
+									
+		
+									
+		
+									perfil.setFolio(Integer.valueOf(txtFolioPerfil.getText()));
+									perfil.setPerfil(txtPerfil.getText().toUpperCase());
+									perfil.setEdad(cmbEdad.getSelectedItem()+"");
+									perfil.setSexo(cmbSexo.getSelectedItem()+"");
+									perfil.setPuesto_al_que_reporta(txtPuestoReporta.getText());
+									
+									perfil.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
+									perfil.setDepartameto(cmbDepartamento.getSelectedItem().toString().trim());
+									perfil.setPuesto(cmbPuesto.getSelectedItem().toString().trim());
+									perfil.setNivel_de_puesto(cmbNivelDePuesto.getSelectedItem()+"");
+											
+									perfil.setHorario(lblFolioHorario1.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario1.getText()));
+									perfil.setHorario2(lblFolioHorario2.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario2.getText()));
+									perfil.setHorario3(lblFolioHorario3.getText().equals("") ? 0 : Integer.valueOf(lblFolioHorario3.getText()));
+									
+									if(rbHorario.isSelected()){
+										perfil.setStatus_h1(1);
+										perfil.setStatus_h2(0);
+										perfil.setStatus_h3(0);
+									}
+									if(rbHorario2.isSelected()){
+										perfil.setStatus_h1(0);
+										perfil.setStatus_h2(1);
+										perfil.setStatus_h3(0);
+									}
+									if(rbHorario3.isSelected()){
+										perfil.setStatus_h1(0);
+										perfil.setStatus_h2(0);
+										perfil.setStatus_h3(1);
+									}
+									
+									perfil.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
+									
+									perfil.setSalario_diario(txtSalarioDiario.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiario.getText())) ;
+									perfil.setSalario_diario_integrado(txtSalarioDiarioIntegrado.getText().equals("") ? 0 : Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
+									perfil.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
+									perfil.setBonocomplemento(cmbBono.getSelectedIndex()== 0 ? 0 : Float.parseFloat(cmbBono.getSelectedItem().toString()));
+									perfil.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString())); 
+									perfil.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? 0 : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
+									perfil.setPrestamo(cmbPrestamos.getSelectedIndex());
+									perfil.setGafete(chbGafete.isSelected());
+									
+									perfil.setObjetivo_del_puesto(txaObjetivo_del_puesto.getText().toUpperCase()+"");
+									perfil.setExperiencia(txaExperiencia.getText().toUpperCase()+"");
+									perfil.setActividades_Principales(txaActividades_Principales.getText().toUpperCase()+"");
+									perfil.setHabilidades(txaHabilidades.getText().toUpperCase()+"");
+									perfil.setConocimiento(txaConocimiento.getText().toUpperCase()+"");
+								
+									
+									if(perfil.guardar("GUARDAR")){
+										panelLimpiar();
+										panelEnabled(false);
+										rbHorario2.setEnabled(false);
+										rbHorario3.setEnabled(false);
+										txtFolioPerfil.setEnabled(true);
+										txtFolioPerfil.setEditable(true);
+										txtFolioPerfil.requestFocus();
+										txtHorario.setEnabled(false);
+										btnBuscar.setEnabled(true);
+										btnFiltro.setEnabled(true);
+										btnNuevo.setEnabled(true);
+										JOptionPane.showMessageDialog(null, "El Perfil Se Guardo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+									}else{
+										JOptionPane.showMessageDialog(null, "Ocurrió un problema al almacenar el Colaborador", "Error", JOptionPane.ERROR_MESSAGE);
+									}
+								}
+								
+						}else{
+							JOptionPane.showMessageDialog(null, "Ya Existe Un Perfil Con Este Nombre","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+							return;
 						}
+//-----------------------------------------------------------------------------------------------------------------------------------------------		
+
 					}
-			}else{
-				JOptionPane.showMessageDialog(null, "Ya Existe Un Perfil Con Este Nombre","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-				return;
-			}
+
    }
 	
 	ActionListener opFiltroPuestos = new ActionListener(){

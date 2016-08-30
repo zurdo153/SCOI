@@ -53,6 +53,7 @@ import Obj_Checador.Obj_Mensajes;
 import Obj_Compras.Obj_Alimentacion_De_Codigos_Adicionales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
+import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
 import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
@@ -8300,7 +8301,7 @@ public class BuscarSQL {
 		Obj_Finiquitos finiquito = new Obj_Finiquitos();
 		
 		String query = "exec sp_select_calculo_de_finiquito '"+folio_empleado_bms+"',"+folio_empleado_scoi+",'"+fecha_baja_scoi+"','SCOI'";
-		
+		System.out.println(query);
 		Statement stmt= null;
 						try {
 							stmt= con.conexion().createStatement();
@@ -9208,6 +9209,96 @@ public boolean nombre_de_perfil_disponible(String nombre){
 	}
 		
 	return disponible;
+}
+
+public Obj_Gestion_De_Pedidos_A_Establecimientos datosDePedido(String folio_pedido) throws SQLException{
+	Obj_Gestion_De_Pedidos_A_Establecimientos pedido = new Obj_Gestion_De_Pedidos_A_Establecimientos();
+	String query = "exec sp_select_datos_de_gestion_de_pedido '"+folio_pedido+"'";
+	
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+	    ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			pedido.setFolio_pedido(rs.getString("folio_pedido"));
+			pedido.setOrigen(rs.getString("establecimiento"));
+			pedido.setDestino(rs.getString("establecimiento_alterno"));
+			pedido.setUsuario(rs.getString("usuario")); 
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		System.err.println("Error");
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ datosDePedido ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		return null;
+	}
+	finally{
+		 if (stmt != null) { stmt.close(); }
+	}
+	return pedido;
+}
+
+public String existeEnScoi(String folio_pedido){
+	String mov = "";
+	String query = "IF exists(select '1' from tb_gestion_de_pedido WHERE folio_pedido = '"+folio_pedido+"') "
+			+ " 		SELECT 'MODIFICAR' AS movimiento"
+			+ "		ELSE"
+			+ "			SELECT 'GUARDAR' AS movimiento";
+	
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+	    ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			mov = rs.getString("movimiento"); 
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		System.err.println("Error");
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ existeEnScoi ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		return null;
+	}
+	finally{
+		 if (stmt != null) { try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} }
+	}
+	return mov;
+}
+
+public boolean existenPedidosActivos(){
+	
+	boolean mov = false;
+	
+	String query = "IF exists(select '1' from tb_gestion_de_pedido WHERE status in ('V','A')) "
+			+ "	SELECT 'false' as activar_inventario "
+			+ " ELSE "
+			+ "	SELECT 'true' as activar_inventario";
+	
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+	    ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			mov = rs.getBoolean("activar_inventario"); 
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		System.err.println("Error");
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ existeEnScoi ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+	finally{
+		 if (stmt != null) { try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} }
+	}
+	return mov;
 }
 
 }

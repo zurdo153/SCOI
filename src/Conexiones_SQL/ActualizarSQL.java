@@ -4269,6 +4269,13 @@ public boolean Borrar_Observacion_DH(){
 				pstmt.setString(2, status);
 				pstmt.setString(3, observacion_de_revision);
 				pstmt.setInt(4, folio_usuario);
+				
+				System.out.println(folio_finiquito);
+				System.out.println(status);
+				System.out.println(observacion_de_revision);
+				System.out.println(folio_usuario);
+				
+				
 				pstmt.executeUpdate();	
 			
 			con.commit();
@@ -4287,7 +4294,7 @@ public boolean Borrar_Observacion_DH(){
 			return false;
 		}finally{
 			try {
-				con.close();
+				con.close(); 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -4330,92 +4337,43 @@ public boolean Borrar_Observacion_DH(){
 				return true;
 			}
 	
-//	public boolean Perfil_De_Puesto(Obj_Perfil_De_Puestos empleado, int folio){
-//		String query = "exec -----------sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
-//
-//		Connection con = new Connexion().conexion();
-//		PreparedStatement pstmt = null;
-//		try {
-//			con.setAutoCommit(false);
-//			
-//			// insert bitacora
-//			String pc = InetAddress.getLocalHost().getHostName();
-//			String ip = InetAddress.getLocalHost().getHostAddress();
-//			pstmtb = con.prepareStatement(Qbitacora);
-//			pstmtb.setString(1, pc);
-//			pstmtb.setString(2, ip);
-//			pstmtb.setInt(3, usuario.getFolio());
-//			pstmtb.setInt(4, folio);
-//			pstmtb.setString(5, "Empleados sp_update_alta_empleado");
-//			pstmtb.executeUpdate();
-//			
-//			int i=1;
-//			pstmt = con.prepareStatement(query);
-////			--------------------------------------------------------------------------------------------------------------------------------
-//			pstmt.setInt   (i,		folio);
-//			pstmt.setString(i+=1, 	empleado.getPerfil().toUpperCase());
-//			pstmt.setString(i+=1, 	empleado.getEdad());
-//			pstmt.setString(i+=1, 		empleado.getSexo());
-//			pstmt.setString(i+=1, 	empleado.getPuesto_al_que_reporta());
-//			
-//			pstmt.setString(i+=1, 		empleado.getEstablecimiento());
-//			pstmt.setString(i+=1, 		empleado.getDepartameto());	
-//			pstmt.setString(i+=1, 		empleado.getPuesto());
-//			
-////			--------------------------------------------------------------------------------------------------------------------------------
-//			pstmt.setInt(i+=1, 		empleado.getHorario());
-//			pstmt.setInt(i+=1, 		empleado.getHorario2());
-//			pstmt.setInt(i+=1,		empleado.getHorario3());
-//			pstmt.setInt(i+=1, 		empleado.getStatus_h1());
-//			pstmt.setInt(i+=1, 		empleado.getStatus_h2());
-//			pstmt.setInt(i+=1, 		empleado.getStatus_h3());
-//			pstmt.setInt(i+=1, 		empleado.getStatus_rotativo());
-//			
-////			--------------------------------------------------------------------------------------------------------------------------------
-//			pstmt.setBoolean(i+=1, (empleado.isGafete())? true: false);
-//			pstmt.setInt(i+=1, 		empleado.getPrestamo());
-//			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
-//			pstmt.setFloat(i+=1, 	empleado.getSalario_diario_integrado());
-//			
-//			pstmt.setFloat(i+=1,   empleado.getSueldo());
-//			pstmt.setFloat(i+=1,   empleado.getBonocomplemento());
-//			pstmt.setFloat(i+=1,   empleado.getBono_asistencia());
-//			pstmt.setFloat(i+=1, 	empleado.getBono_puntualidad());
-//			
-////			--------------------------------------------------------------------------------------------------------------------------------
-//			pstmt.setString(i+=1, 	empleado.getObjetivo_del_puesto().toUpperCase());
-//			pstmt.setString(i+=1, 	empleado.getActividades_Principales().toUpperCase());
-//			pstmt.setString(i+=1, 	empleado.getConocimiento().toUpperCase());
-//			pstmt.setString(i+=1, 	empleado.getExperiencia().toUpperCase());
-//			pstmt.setString(i+=1, 	empleado.getHabilidades().toUpperCase());
-//			
-//			pstmt.setInt(i+=1, 		usuario.getFolio());
-////			fecha de modificacion
-//
-//			
-//			pstmt.executeUpdate();
-//			con.commit();
-//			
-//		} catch (Exception e) {
-//			System.out.println("SQLException: "+e.getMessage());
-//			if(con != null){
-//				try{
-//					System.out.println("La transacción ha sido abortada");
-//					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion Perfil_De_Puesto  procedimiento almacenado ------sp_update_alta_empleado------ SQLException: "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//					con.rollback();
-//				}catch(SQLException ex){
-//					System.out.println(ex.getMessage());
-//				}
-//			}
-//			return false;
-//		}finally{
-//			try {
-//				con.close();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}		
-//		return true;
-//	}
+	public boolean cambiar_status_de_pedido_a_asignado(String folio_pedido){
+		
+		String query = "exec sp_update_getion_de_pedido ?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, folio_pedido);
+			pstmt.setInt(2, usuario.getFolio());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ cambiar_status_de_pedido_a_asignado ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ cambiar_status_de_pedido_a_asignado ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 	
 }

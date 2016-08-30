@@ -2172,17 +2172,17 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		
 		KeyListener op_key = new KeyListener() {
-		public void keyTyped(KeyEvent e) {}
-		public void keyReleased(KeyEvent e) {
-			if(CalcularImporte()==false){
-					JOptionPane.showMessageDialog(null, "Se introdujo un valor no valido","Aviso",JOptionPane.INFORMATION_MESSAGE);
-					tabla_depositos.setValueAt(0, filaDep, columnaDep);
-					return;
-		}
-			
-		}
-		public void keyPressed(KeyEvent e) {}
-	};
+			public void keyTyped(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {
+				if(CalcularImporte()==false){
+						JOptionPane.showMessageDialog(null, "Se introdujo un valor no valido","Aviso",JOptionPane.INFORMATION_MESSAGE);
+						tabla_depositos.setValueAt(0, filaDep, columnaDep);
+						return;
+			}
+				
+			}
+			public void keyPressed(KeyEvent e) {}
+		};
 		
 		public boolean CalcularImporte(){
 			boolean valor=false;

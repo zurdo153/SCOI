@@ -26,6 +26,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.swing.JRViewer;
 
+@SuppressWarnings("deprecation")
 public class Generacion_Reportes {
 	String reporte = "";
 	String comando="";
@@ -33,7 +34,7 @@ public class Generacion_Reportes {
 	String vista_previa_de_ventana="";
 	String basedatos="";
 
-	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "resource" })
 	public void  Reporte(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
 			    Obj_Usuario usuario = new Obj_Usuario();
                 String query =comando ;
@@ -43,6 +44,14 @@ public class Generacion_Reportes {
 					vista_previa_reporte=usuario.buscar(usuario.LeerSession().getFolio()).getVista_previa_impresion();
 				}
 				
+				if (basedatos=="2.94"){
+					try {
+						stmt =  new Connexion().conexion_ventas().createStatement();
+					} catch (SQLException e) {
+						e.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+				}
 				if (basedatos=="2.200"){
 					try {
 						stmt =  new Connexion().conexion_IZAGAR().createStatement();
@@ -103,7 +112,7 @@ public class Generacion_Reportes {
 					}
 		}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void  Reporte_Guardado(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana,String Guardar_reporte_formato, String nombre_reporte){
 	    Obj_Usuario usuario = new Obj_Usuario();
         String query =comando ;

@@ -41,6 +41,7 @@ import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
+import Obj_Servicios.Obj_Registro_De_Desarrollo;
 
 @SuppressWarnings("serial")
 public class Cat_Registro_De_Desarrollo extends JFrame {
@@ -114,6 +115,8 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 	
 	JTextArea txaSujerenciasExtras = new Componentes().textArea(new JTextArea(), "", 1100);
 	JScrollPane scrollSujerenciasExtras = new JScrollPane(txaSujerenciasExtras);
+	
+	String bandera = "";
 	
 	public Cat_Registro_De_Desarrollo() {
 		this.setSize(1024,660);
@@ -207,6 +210,7 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 		cont.add(panel);
 	}
 	
+	String banderaGuardarModificar="";
 	ActionListener opFolio = new ActionListener(){
 		@SuppressWarnings("unused")
 		public void actionPerformed(ActionEvent e){
@@ -214,23 +218,29 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 				
 				if(!txtFolioRegistro.getText().trim().equals("")){//si es diferente de vacio 
 					if(true){//si se encuentra el registro
+						banderaGuardarModificar="MODIFICAR";
 						validarFolioRegistro("si");
+						
 //						aqui va el metodo de busqueda
 					}else{
+						banderaGuardarModificar="";
 						validarFolioRegistro("no");
 //						aviso (el registro que se busco no existe)					
 					}
 				}else{
+					banderaGuardarModificar="";
 					validarFolioRegistro("no");
 //					aviso (El Campo Folio Se Encuentra Vacio)						
 				}
 			}
 			
 			if(e.getSource().equals(btnDeshacerRegistro)){
+				banderaGuardarModificar="";
 				validarFolioRegistro("no");				
 			}
 			
 			if(e.getSource().equals(btnNuevoRegistro)){
+				banderaGuardarModificar="GUARDAR";
 				validarFolioRegistro("si");
 				txtFolioRegistro.setText(new BuscarSQL().buscar_folio_consecutivo_por_folio_de_transaccion(33));
 				btnBuscarSolicitante.requestFocus();
@@ -304,21 +314,95 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 	ActionListener opGuardar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			if(ValidaCampos().equals("")){
-				System.out.print("Gaurdar");
-			}else{
-//				aviso (Los Siguientes Campos Son Requeridos: ValidaCampos())
-				System.out.print("Los Siguientes Campos Son Requeridos: "+ValidaCampos());
+			if(tabla.isEditing()){
+				tabla.getCellEditor().stopCellEditing();
 			}
 			
+			Obj_Registro_De_Desarrollo reg = new Obj_Registro_De_Desarrollo();
+			
+			reg.buscar_Registro(Integer.valueOf(txtFolioRegistro.getText().trim()));
+			
+			if(banderaGuardarModificar.equals("MODIFICAR")){
+//					modifiar
+					if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
+						
+							if(ValidaCampos().equals("")){
+								
+									reg.setFolio_registro(Integer.valueOf(txtFolioRegistro.getText().trim()));
+									reg.setUsuario_solicitante(Integer.valueOf( txtFolioSolicitante.getText().trim()));
+									reg.setUsuario_atendio(Integer.valueOf(txtFolioAtendio.getText().trim()));
+									reg.setAfectados(afectados());
+									
+									reg.setMejoras(txaMejoras_A_Optener.getText().trim());
+									reg.setFuncionalidad(txaFuncionalidadDelPrograma.getText().trim());
+									reg.setSugerencias(txaSujerenciasExtras.getText().trim());
+									
+									if(reg.guardar_solicitud(banderaGuardarModificar)){
+										System.out.print("MODIFICADO");
+									}else{
+										JOptionPane.showMessageDialog(null,"El Registro No Se Pudo Guardar, Avise Al Administrador","Aviso",JOptionPane.ERROR_MESSAGE);
+										return;
+									}
+								
+							}else{
+								JOptionPane.showMessageDialog(null,"Los Siguientes Campos Son Requeridos: \n"+ValidaCampos(),"Aviso",JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+					}
+				
+			}else{
+//					guardar
+					if(ValidaCampos().equals("")){
+						
+//						System.out.println(Integer.valueOf(txtFolioRegistro.getText().trim()));
+//						System.out.println(Integer.valueOf(txtFolioSolicitante.getText().trim()));
+//						System.out.println(Integer.valueOf(txtFolioAtendio.getText().trim()));
+//						System.out.println(txaMejoras_A_Optener.getText().trim());
+//						System.out.println(txaFuncionalidadDelPrograma.getText().trim());
+//						System.out.println(txaSujerenciasExtras.getText().trim());
+						
+							reg.setFolio_registro(Integer.valueOf(txtFolioRegistro.getText()));
+							reg.setUsuario_solicitante(Integer.valueOf( txtFolioSolicitante.getText().trim()));
+							reg.setUsuario_atendio(Integer.valueOf(txtFolioAtendio.getText().trim()));
+							reg.setAfectados(afectados());
+							
+							reg.setMejoras(txaMejoras_A_Optener.getText().trim());
+							reg.setFuncionalidad(txaFuncionalidadDelPrograma.getText().trim());
+							reg.setSugerencias(txaSujerenciasExtras.getText().trim());
+							
+							if(reg.guardar_solicitud("GUARDAR")){
+								System.out.print("Gaurdar");
+							}else{
+								JOptionPane.showMessageDialog(null,"El Registro No Se Pudo Guardar, Avise Al Administrador","Aviso",JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+						
+					}else{
+						JOptionPane.showMessageDialog(null,"Los Siguientes Campos Son Requeridos: \n"+ValidaCampos(),"Aviso",JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+			}
 		}
 	};
+	
+	public Object[][] afectados(){
+		Object[][] afect = new Object[tabla.getRowCount()][tabla.getColumnCount()];
+		
+			for(int i=0; i<tabla.getRowCount(); i++){
+				for(int j=0; j<tabla.getRowCount(); j++){
+					afect[i][j] = tabla.getValueAt(i, j);
+				}
+			}
+		
+		return afect;
+	}
 	
 	public String ValidaCampos(){
 		String vacios = "";
 		
-		vacios += txtFolioAtendio.getText().equals("")?"Atendio\n":"";
+		
 		vacios += txtFolioSolicitante.getText().equals("")?"Solicitante\n":"";
+		vacios += txtFolioAtendio.getText().equals("")?"Atendio\n":"";
 		vacios += tabla.getRowCount()==0?"Afectados\n":"";
 		vacios += txaMejoras_A_Optener.getText().trim().equals("")?"Mejoras A Optener\n":"";
 		vacios += txaFuncionalidadDelPrograma.getText().trim().equals("")?"Funcionalidad Del Programa\n":"";
@@ -338,6 +422,7 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 			tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 			
 			this.tabla.getTableHeader().setReorderingAllowed(false) ;
+			this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 			this.tabla.getColumnModel().getColumn(0).setMaxWidth(50);
 			this.tabla.getColumnModel().getColumn(0).setMinWidth(50);
@@ -465,6 +550,7 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Empleado"));
 			
 			validaSeleccionDeTabla = (!boton.equals("afectados"))?true:false;
+			bandera = boton;
 			
 			campo.add(txtNombre_Completo).setBounds(15,20,400,20);
 			campo.add(btnGenerar).setBounds(415, 20, 100, 20);
@@ -508,29 +594,41 @@ public class Cat_Registro_De_Desarrollo extends JFrame {
 		int[] columnas = {0,1,2,3};
 		ActionListener opAgregar = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Obj_Filtro_Dinamico_Plus(tabla, "", columnas);
-				modelo.setRowCount(0);
+				
+				if(bandera.equals("afectados")){modelo.setRowCount(0);}
 				
 				Object[] registro = new Object[8];
 				for(int i=0; i<modeloFiltro.getRowCount(); i++){
 					
 					if(modeloFiltro.getValueAt(i, 4).toString().trim().equals("true")){
-						for(int j=0; j<modeloFiltro.getColumnCount()-1; j++){
-							registro[j]= modeloFiltro.getValueAt(i, j);
+						
+						if(bandera.equals("solicitante")){
+							txtFolioSolicitante.setText(modeloFiltro.getValueAt(i, 0).toString());
+							txtSolicitante.setText(modeloFiltro.getValueAt(i, 1).toString());
+							dispose();
 						}
-						registro[4]= "";
-						registro[5]= "";
-						registro[6]= "";
-						registro[7]= "";
-						
-						modelo.addRow(registro);
-						dispose();
-						fila =0;
-						columna = 4;
-						
-						editarCelda();
+						if(bandera.equals("atendio")){
+							txtFolioAtendio.setText(modeloFiltro.getValueAt(i, 0).toString());
+							txtAtendio.setText(modeloFiltro.getValueAt(i, 1).toString());
+							dispose();
+						}
+						if(bandera.equals("afectados")){
+								for(int j=0; j<modeloFiltro.getColumnCount()-1; j++){
+									registro[j]= modeloFiltro.getValueAt(i, j);
+								}
+								registro[4]= "";
+								registro[5]= "";
+								registro[6]= "";
+								registro[7]= "";
+								
+								modelo.addRow(registro);
+								dispose();
+								fila =0;
+								columna = 4;
+								
+								editarCelda();
+						}
 					}
-					
 				}
 			}
 		};

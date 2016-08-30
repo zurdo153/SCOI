@@ -2375,14 +2375,11 @@ public String[][] filtro_empleado_finiquito(String coneccion){
 				+ " ,empleado.nombre+' '+empleado.ap_paterno+' '+empleado.ap_materno as empleado"
 				+ " ,estab.nombre as establecimiento"
 				+ " ,puesto.nombre as puesto"
-				+ " ,case when empleado.status = 1 then 'VIGENTE'"
-				+ "			when empleado.status = 2 then 'VACACIONES'"
-				+ " 		when empleado.status = 3 then 'INCAPACIDAD'"
-				+ " 		else 'PROVICIONAL CHECADOR'"
-				+ "  end as STATUS"
+				+ " ,estado.nombre as status"
 				+ " from tb_empleado empleado"
 				+ " inner join tb_establecimiento estab on estab.folio = empleado.establecimiento_id"
-				+ " inner join tb_puesto puesto on puesto.folio = empleado.puesto_id"
+				+ " inner join tb_puesto puesto on puesto.folio = empleado.puesto_id "
+				+ " inner join tb_status_de_colaboradores estado on estado.folio = empleado.status "
 				+ " where empleado.status = 7"; 
 //				+ " where empleado.status not in (4,5)"; 
 	}else{
@@ -2669,6 +2666,35 @@ public Object[][] filtro_de_perfiles_de_puestos(int folio_empledo){
 	} catch (SQLException e1) {
 		e1.printStackTrace();
 		JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion filtro_de_perfiles_de_puestos: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+	}
+    return matriz; 
+}
+
+public Object[][] Buscar_Pedido(String folio_pedido,String consulta){
+	
+	String query_lista = "exec sp_select_consulta_de_pedido '"+folio_pedido+"','"+consulta+"'";
+	
+	Object[][] matriz = new Object[get_filas(query_lista)][7];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			matriz[i][0] = rs.getString(1)+"  ";
+			matriz[i][1] = rs.getString(2);
+			matriz[i][2] = rs.getString(3);
+			matriz[i][3] = rs.getString(4);
+			matriz[i][4] = rs.getString(5);
+			matriz[i][5] = rs.getString(6);
+			matriz[i][6] = rs.getString(7);
+			i++;
+		}
+
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion Buscar_Pedido: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 
 	}
     return matriz; 

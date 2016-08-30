@@ -1,14 +1,7 @@
 package Cat_Compras;
 
 import java.applet.AudioClip;
-import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,23 +10,16 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
-import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JApplet;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -48,10 +34,10 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
-import Obj_Renders.ColorCeldas;
+import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Pedidos_De_Establecimiento extends JFrame{
+public class Cat_Reporte_De_Pedidos_De_Establecimiento2 extends JFrame{
 	
 	Object[][] Matriz_pedidos_ctes ;
 	Container cont = getContentPane();
@@ -97,8 +83,6 @@ public class Cat_Reporte_De_Pedidos_De_Establecimiento extends JFrame{
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
 	
-	JCheckBox chbActivar_Avisos = new JCheckBox("Ventana De Avisos");
-	
 	JTextField txtFolio= new JTextField();
 	JTextField txtFolioProveedor = new JTextField();
 //	JTextField txtRazon_Social = new JTextField();
@@ -107,21 +91,12 @@ public class Cat_Reporte_De_Pedidos_De_Establecimiento extends JFrame{
 
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	
-    int cantidad_pedido_actual =0;
-    int Existen_pedidos_nuevos=0;
-    int SeActivoSonido=0;
-    
     String FechaIn = "";
 	String FechaFin = "";
     
-	String mostrarAviso = "no";
-	
-    boolean cerrarhilo = false;
-	
-    
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Reporte_De_Pedidos_De_Establecimiento(){
-		int ancho = 800;//Toolkit.getDefaultToolkit().getScreenSize().width;
+	public Cat_Reporte_De_Pedidos_De_Establecimiento2(){
+		int ancho = 890;//Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 		
 		this.setSize(ancho, alto);
@@ -137,8 +112,6 @@ public class Cat_Reporte_De_Pedidos_De_Establecimiento extends JFrame{
 		btnBuscar.setEnabled(true);
 		btnBuscar.setToolTipText("<F5> Tecla Directa");
 		
-		chbActivar_Avisos.setSelected(true);
-		
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
 		txtFolio.setToolTipText("Filtro Por Folio De Entrada");
@@ -149,16 +122,12 @@ public class Cat_Reporte_De_Pedidos_De_Establecimiento extends JFrame{
 		
 		buscarEntradas("manual");
 		
-		cantidad_pedido_actual = tabla.getRowCount();
-		
-		PintarEstatusTabla(tabla,"Revision De Pedido De Establecimiento",6);//tipo_de_tabla , columnas 0 
-		Hilo_1_Minuto();
+		llamarRender();
 		
 		int y = 20;
-		panel.add(btnBuscar).setBounds(605,y-12,180,32);
+		panel.add(btnBuscar).setBounds(695,y-12,180,32);
 		panel.add(txtFolio).setBounds(15,y,60,20);
 		panel.add(txtFolioProveedor).setBounds(75,y,260,20);
-		panel.add(chbActivar_Avisos).setBounds(340,y,150,20);
 		panel.add(getPanelTabla()).setBounds(15,y+=20,ancho-30,alto-70);
              
 		btnBuscar.addActionListener(Buscar_Cambios);
@@ -223,13 +192,12 @@ public class Cat_Reporte_De_Pedidos_De_Establecimiento extends JFrame{
 					+ " inner join establecimientos estab_alt on estab_alt.cod_estab = pedestab.cod_estab_alterno "
 					+ " inner join usuarios on usuarios.usuario = pedestab.usuario_captura "
 					+ " where pedestab.ultima_modificacion > CONVERT(DATETIME, convert(varchar(20),getdate()-1,103) ) "
+					+ " and pedestab.status_surtido = 'N' "
 					+ " order by ultima_modificacion desc";
 			
 			s = con.conexion_IZAGAR().createStatement();
 			rs = s.executeQuery(query);
 			
-		    int Existen_pedidos_nuevos = getFilas(query);
-		    
 			while (rs.next())
 			{ 
 			   String [] fila = new String[7];
@@ -244,14 +212,6 @@ public class Cat_Reporte_De_Pedidos_De_Establecimiento extends JFrame{
 			   modelo.addRow(fila); 
 			}
 			System.out.println(query);
-			if(tipoDeBusqueda.equals("hilo") && Existen_pedidos_nuevos > cantidad_pedido_actual){
-		    	cantidad_pedido_actual=Existen_pedidos_nuevos;
-		    	mostrarAviso = "si";
-		    	
-		    }else{
-		    	cantidad_pedido_actual=Existen_pedidos_nuevos;
-		    	mostrarAviso = "no";
-		    }
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -320,12 +280,8 @@ WindowListener op_cerrar = new WindowListener() {
 						
 						txtFolio.setText("");
 						txtFolioProveedor.setText("");
-//						txtRazon_Social.setText("");
 						
-					 if(SeActivoSonido!=0){
-						 	sonido.stop();}
-							cerrarhilo=true;
-							dispose();
+						dispose();
 				}
 				public void windowClosed(WindowEvent e) {}
 				public void windowActivated(WindowEvent e) {}
@@ -342,153 +298,36 @@ WindowListener op_cerrar = new WindowListener() {
 		}
 	};
 	
-	@SuppressWarnings({ "unchecked", "deprecation" })
-	public void MostrarAvisoEmergente(){
-		try {
-			
-				if(mostrarAviso.equals("si")){
-					  //////Limpiar	Filtros
-							trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-							trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-							trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-							
-							txtFolio.setText("");
-							txtFolioProveedor.setText("");
-					         
-					         txtFolioProveedor.requestFocus();
-					         
-								if(chbActivar_Avisos.isSelected()){
-									   File f=new File("M:\\SISTEMA DE CONTROL OPERATIVO IZAGAR\\SCOI\\voz\\Nuevo_Pedido.wav");//archivo de audio
-						        	    URL u=f.toURL();//lo convertimos a url
-						        	    sonido=JApplet.newAudioClip(u); //Bueno de la AudioClip no se puede instancias por eso esto
-							        	    sonido.play();//para que suene
-							        	    SeActivoSonido=1;
-							        	    
-							        	//   apartado para configurar el uso de la pantalla de avisos--------------------------------
-					                    JDialog frame = new JDialog();
-					                     String ruta= "prueba mensaje";//fila_mensaje.get(3).toString().trim();
-					        		    frame.setUndecorated(true);
-					        		    new Cat_Avisos_De_Pedido(frame,ruta);
-					        		    frame.setVisible(true);
-								}
-					    	 // seresetea la variable para que no muestre aviso de nuevo asta que existan entradas nuevas
-								mostrarAviso="no";
-		    	}
-//			}
-			
+   	private void llamarRender()	{		
+		tabla.getTableHeader().setReorderingAllowed(false) ;
+		tabla.getColumnModel().getColumn(0).setMinWidth(80);
+		tabla.getColumnModel().getColumn(1).setMinWidth(420);
+		tabla.getColumnModel().getColumn(2).setMinWidth(80);
+		tabla.getColumnModel().getColumn(3).setMinWidth(80);
+		tabla.getColumnModel().getColumn(4).setMinWidth(80);
+		tabla.getColumnModel().getColumn(5).setMinWidth(80);
+		tabla.getColumnModel().getColumn(6).setMinWidth(80);
+		
+		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 	
+		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 	
+		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
+		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 	
+		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
+		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 	
+   	}
 	
-	} catch (Exception e1) {
-		System.out.println(e1.getMessage());
-		JOptionPane.showMessageDialog(null, "Error en Cat_Supervision_De_Entrada_De_Mercancia en la funcion MostrarAvisoEmergente   SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-}
-	}
-	
-/////////////////////////////////////////////////////////////////////////////////////
-////////////HILO REVISION AUTOMATICA DE PEDIDOS CADA 60 SEGUNDOS
-	public void Hilo_1_Minuto() {
-			segundero seg = new segundero();
-			seg.start();
-		    	}
-		    	int reconsultar=0;
-		    	public class segundero extends Thread {
-		    		public void run() {
-		    			while(cerrarhilo !=true){
-		    					try {
-		    						Thread.sleep(1000);
-		    						reconsultar+=1;
-		    						if(reconsultar==600)////cambiar a 600 segundos = 10 min
-		    						{
-		    						   reconsultar=0;
-		    						   
-//		    						   FechaIn = new SimpleDateFormat("dd/MM/yyyy").format(fh_inicial.getDate());
-//		    						   FechaFin = new SimpleDateFormat("dd/MM/yyyy").format(fh_final.getDate());
-									
-									   buscarEntradas("hilo");
-									   MostrarAvisoEmergente();
-//				    				   btnBuscar.doClick();	
-		    						   
-		    						   
-
-		    						}
-		    					} catch (InterruptedException e) {
-		    		                 JOptionPane.showMessageDialog(null, "Error en Cat_Hilo_1_Minuto en la funcion segundero  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		    						System.err.println("Error: "+ e.getMessage());
-		    				}
-		    			}
-		    	}
-		    }
-//////////////////////////////////////////////////////////////////////////////////
-///////////CATALOO EMERGENTE DE AVISO		    	
-		    	
-	  	public class Cat_Avisos_De_Pedido extends JComponent {
-		    		
-		    		private Image background;
-		    		
-		    		JLabel lblAviso = new JLabel();
-		    		String fileFoto = System.getProperty("user.dir")+"/imagen/avisos/PedidoNuevo.png";
-		    		ImageIcon tmpIconAuxFoto = new ImageIcon(fileFoto);
-
-		    		public Cat_Avisos_De_Pedido(final JDialog frame,String ruta) {
-		    			
-		    			//fileFoto=ruta;
-		    			frame.setModal(true);
-		    			updateBackground( );
-		    			frame.add(lblAviso).setBounds(0, 0, 500, 400);
-		    			 Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(lblAviso.getWidth(), lblAviso.getHeight(), Image.SCALE_DEFAULT));
-		                 lblAviso.setIcon(iconoFoto);
-		                 
-		    			frame.setLayout(new BorderLayout( ));
-		    			frame.getContentPane( ).add("Center",this);
-		    			frame.pack( );
-		    			frame.setAlwaysOnTop( true );
-		    			frame.setSize(500,400);
-		    			frame.setLocationRelativeTo(null);
-		    		    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-		    				       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "foco");
-		    		    
-		    		    getRootPane().getActionMap().put("foco", new AbstractAction(){
-		    		        @Override
-		    		        public void actionPerformed(ActionEvent e)
-		    		        {
-		    		        	frame.dispose();
-		    		        }
-		    		    });
-		    		}
-		    		
-		    		
-		    		public void updateBackground( ) {
-		    		try {
-		    		Robot rbt = new Robot( );
-		    		Toolkit tk = Toolkit.getDefaultToolkit( );
-		    		Dimension dim = tk.getScreenSize( );
-		    		background = rbt.createScreenCapture(
-		    		new Rectangle(0,0,(int)dim.getWidth( ),
-		    		(int)dim.getHeight( )));
-		    		} catch (Exception ex) {
-		    		ex.printStackTrace( );
-		    		}
-		    		}
-		    		
-		    		public void paintComponent(Graphics g) {
-		    		Point pos = this.getLocationOnScreen( );
-		    		Point offset = new Point(-pos.x,-pos.y);
-		    		g.drawImage(background,offset.x,offset.y,null);
-		    		repaint();
-		    		}
-
-		    	}
-	  	
 //	  	pintado De tabla
-		public void PintarEstatusTabla(final JTable tb, String tipo_de_tabla, int columnas){
-			//se crea instancia a clase FormatoTable y se indica columna patron
-	        ColorCeldas ft = new ColorCeldas(tipo_de_tabla,columnas);
-	        tb.setDefaultRenderer (Object.class, ft );
-		}
+//		public void PintarEstatusTabla(final JTable tb, String tipo_de_tabla, int columnas){
+//			//se crea instancia a clase FormatoTable y se indica columna patron
+//	        ColorCeldas ft = new ColorCeldas(tipo_de_tabla,columnas);
+//	        tb.setDefaultRenderer (Object.class, ft );
+//		}
 		    	
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Pedidos_De_Establecimiento().setVisible(true);
+			new Cat_Reporte_De_Pedidos_De_Establecimiento2().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

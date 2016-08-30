@@ -44,6 +44,7 @@ import Obj_Compras.Obj_Alimentacion_De_Codigos_Adicionales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
+import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
 import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
@@ -100,6 +101,7 @@ import Obj_Planeacion.Obj_Prioridad_Y_Ponderacion;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
+import Obj_Servicios.Obj_Registro_De_Desarrollo;
 
 
 
@@ -5814,39 +5816,39 @@ public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos perfil,String movi
 		pstmt.setInt(i+=1, 	usuario.getFolio());
 //		fecha de modificacion
 		
-		System.out.println(perfil.getFolio());
-		System.out.println(perfil.getPerfil());
-		System.out.println(perfil.getSexo());
-		System.out.println(perfil.getEdad());
-		System.out.println(perfil.getPuesto_al_que_reporta());
-		
-		System.out.println(perfil.getEstablecimiento());
-		System.out.println(perfil.getDepartameto());
-		System.out.println(perfil.getPuesto());
-		System.out.println(perfil.getNivel_de_puesto());
-		
-		System.out.println(perfil.getHorario());
-		System.out.println(perfil.getHorario2());
-		System.out.println(perfil.getHorario3());
-		System.out.println(perfil.getStatus_h1());
-		System.out.println(perfil.getStatus_h2());
-		System.out.println(perfil.getStatus_h3());
-		System.out.println(perfil.getStatus_rotativo());
-		
-		System.out.println(perfil.getSalario_diario());
-		System.out.println(perfil.getSalario_diario_integrado());
-		System.out.println(perfil.getSueldo());
-		System.out.println(perfil.getBonocomplemento());
-		System.out.println(perfil.getBono_asistencia());
-		System.out.println(perfil.getBono_puntualidad());
-		System.out.println(perfil.getPrestamo());
-		System.out.println((perfil.isGafete())? 1: 0);
-		
-		System.out.println(perfil.getObjetivo_del_puesto().toUpperCase());
-		System.out.println(perfil.getExperiencia().toUpperCase());
-		System.out.println(perfil.getActividades_Principales().toUpperCase());
-		System.out.println(perfil.getHabilidades().toUpperCase());
-		System.out.println(perfil.getConocimiento().toUpperCase());
+//		System.out.println(perfil.getFolio());
+//		System.out.println(perfil.getPerfil());
+//		System.out.println(perfil.getSexo());
+//		System.out.println(perfil.getEdad());
+//		System.out.println(perfil.getPuesto_al_que_reporta());
+//		
+//		System.out.println(perfil.getEstablecimiento());
+//		System.out.println(perfil.getDepartameto());
+//		System.out.println(perfil.getPuesto());
+//		System.out.println(perfil.getNivel_de_puesto());
+//		
+//		System.out.println(perfil.getHorario());
+//		System.out.println(perfil.getHorario2());
+//		System.out.println(perfil.getHorario3());
+//		System.out.println(perfil.getStatus_h1());
+//		System.out.println(perfil.getStatus_h2());
+//		System.out.println(perfil.getStatus_h3());
+//		System.out.println(perfil.getStatus_rotativo());
+//		
+//		System.out.println(perfil.getSalario_diario());
+//		System.out.println(perfil.getSalario_diario_integrado());
+//		System.out.println(perfil.getSueldo());
+//		System.out.println(perfil.getBonocomplemento());
+//		System.out.println(perfil.getBono_asistencia());
+//		System.out.println(perfil.getBono_puntualidad());
+//		System.out.println(perfil.getPrestamo());
+//		System.out.println((perfil.isGafete())? 1: 0);
+//		
+//		System.out.println(perfil.getObjetivo_del_puesto().toUpperCase());
+//		System.out.println(perfil.getExperiencia().toUpperCase());
+//		System.out.println(perfil.getActividades_Principales().toUpperCase());
+//		System.out.println(perfil.getHabilidades().toUpperCase());
+//		System.out.println(perfil.getConocimiento().toUpperCase());
 		
 		pstmt.executeUpdate();
 		con.commit();
@@ -5870,6 +5872,225 @@ public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos perfil,String movi
 			con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
+		}
+	}		
+	return true;
+}
+
+public boolean Guardar_Registro_De_Desarollo(Obj_Registro_De_Desarrollo registro, String movimiento){
+	
+	
+	int folio = movimiento.equals("GUARDAR") ? new GuardarSQL().busca_y_actualiza_proximo_folio(33) : registro.getFolio_registro();
+	
+	String query =  "";
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	
+	try {
+		
+		con.setAutoCommit(false);
+		
+		query =  "EXEC sp_insert_registros_de_desarrollo ?,?,?,?,?,?,?,?";
+		pstmt = con.prepareStatement(query);
+		
+		pstmt.setInt   (1, folio);
+		pstmt.setInt   (2, registro.getUsuario_solicitante());
+		pstmt.setInt   (3, registro.getUsuario_atendio());
+		pstmt.setString(4, registro.getMejoras().toUpperCase());
+		pstmt.setString(5, registro.getFuncionalidad().toUpperCase());
+		pstmt.setString(6, registro.getSugerencias().toUpperCase());
+		pstmt.setInt   (7, usuario.getFolio());
+		pstmt.setString   (8, movimiento);
+		pstmt.executeUpdate();
+		
+			query =  "EXEC sp_insert_servicios_establecimientos ?,?,?,?,?,?,?";
+			pstmt = con.prepareStatement(query);
+		
+			for(int i = 0; i<registro.getAfectados().length; i++){
+				
+				pstmt.setInt	(1, folio);
+				pstmt.setInt	(2, Integer.valueOf(registro.getAfectados()[i][0].toString()));
+				pstmt.setDouble (3, Double.valueOf(registro.getAfectados()[i][2].toString()));
+				pstmt.setDouble	(4, Double.valueOf(registro.getAfectados()[i][3].toString()));
+				pstmt.setInt	(5, Integer.valueOf(registro.getAfectados()[i][4].toString().equals("")?"0":registro.getAfectados()[i][4].toString()));
+				pstmt.setInt	(6, Integer.valueOf(registro.getAfectados()[i][5].toString().equals("")?"0":registro.getAfectados()[i][5].toString()));
+				
+				pstmt.executeUpdate();
+			}
+		
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Registro_De_Desarollo ] Insert  SQLException: sp_insert_establecimiento "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Registro_De_Desarollo ] Insert  SQLException: sp_insert_establecimiento "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
+
+public boolean Cargar_Inventario(String establecimiento){
+	
+	String query =  "EXEC sp_insert_inventario_de_gestion_de_pedidos ?,?";
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	
+	try {
+		
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query);
+		
+		pstmt.setString   (1, establecimiento);
+		pstmt.setInt   (2, usuario.getFolio());
+		pstmt.executeUpdate();
+		
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Cargar_Inventario ] Insert  SQLException: sp_insert_inventario_de_gestion_de_pedidos "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Cargar_Inventario ] Insert  SQLException: sp_insert_inventario_de_gestion_de_pedidos "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
+
+public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,String movimiento){
+	
+	String query =  "EXEC sp_guardar_gestion_de_pedido ?,?,?,?,?,?,?,?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	
+	try {
+		
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query);
+		
+		System.out.print(pedido.getMatriz().length);
+		for(int i=0; i<pedido.getMatriz().length; i++){
+				pstmt.setString   (1, pedido.getFolio_pedido());
+				pstmt.setString   (2, pedido.getOrigen());
+				pstmt.setString   (3, pedido.getDestino());
+				pstmt.setString   (4, pedido.getUsuario());
+				
+				pstmt.setString   (5, pedido.getMatriz()[i][0].toString());
+
+				pstmt.setFloat   (6, Float.valueOf(pedido.getMatriz()[i][2].toString()));
+				pstmt.setFloat   (7, Float.valueOf(pedido.getMatriz()[i][3].toString()));
+				pstmt.setFloat   (8, Float.valueOf(pedido.getMatriz()[i][4].toString()));
+				pstmt.setFloat   (9, Float.valueOf(pedido.getMatriz()[i][5].toString()));
+				pstmt.setString   (10, pedido.getMatriz()[i][6].toString());
+				pstmt.setInt   (11, usuario.getFolio());
+				pstmt.setString   (12, pedido.getMatriz()[i][1].toString());
+				
+//				System.out.println(pedido.getFolio_pedido());
+//				System.out.println(pedido.getOrigen());
+//				System.out.println(pedido.getDestino());
+//				System.out.println(pedido.getUsuario());
+//				System.out.println(pedido.getMatriz()[i][0].toString());
+////				System.out.println(pedido.getMatriz()[i][1].toString());
+//				System.out.println(Float.valueOf(pedido.getMatriz()[i][2].toString()));
+//				System.out.println(Float.valueOf(pedido.getMatriz()[i][3].toString()));
+//				System.out.println(Float.valueOf(pedido.getMatriz()[i][4].toString()));
+//				System.out.println(Float.valueOf(pedido.getMatriz()[i][5].toString()));
+//				System.out.println(pedido.getMatriz()[i][6].toString());
+//				System.out.println(usuario.getFolio());
+				
+				pstmt.executeUpdate();
+		}
+		
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ GuardarPedido ] Insert  SQLException: sp_guardar_gestion_de_pedido "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Cargar_Inventario ] Insert  SQLException: sp_insert_inventario_de_gestion_de_pedidos "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
+
+public boolean Guardar_Asignacion_De_Pedido(Object[][] asignacion,String folio_pedido,String movimiento){
+	
+	String query =  "EXEC sp_insert_asignacion_de_pedido_por_paginas ?,?,?,?";
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	
+	try {
+		
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query);
+		
+		System.out.print(asignacion.length);
+		for(int i=0; i<asignacion.length; i++){
+				pstmt.setString(1, folio_pedido);
+				pstmt.setInt   (2, Integer.valueOf(asignacion[i][0].toString()));
+				pstmt.setInt   (3, Integer.valueOf(asignacion[i][2].toString()));
+				pstmt.setInt   (4, usuario.getFolio());
+				
+				pstmt.executeUpdate();
+		}
+		
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ GuardarPedido ] Insert  SQLException: sp_guardar_gestion_de_pedido "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Cargar_Inventario ] Insert  SQLException: sp_insert_inventario_de_gestion_de_pedidos "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 	}		
 	return true;
