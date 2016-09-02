@@ -36,6 +36,7 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
+import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
@@ -58,12 +59,16 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	JTextField txtUsuario				 = new Componentes().text(new JCTextField(), "Nombre Del Usuario", 280, "String");
 	
 	JButton btnBuscar 				= new JCButton("", "Buscar.png", "Azul");
-	JButton btnDeshecer				= new JCButton("", "deshacer16.png", "Azul");
-	JButton btnPendientes 			= new JCButton("Pendientes", "", "Azul");
-	JButton btnCalcularInventario 	= new JCButton("Calcular Inventario", "Lista.png", "Azul");
-	JButton btnGuardar 				= new JCButton("Guardar", "", "Azul");
-	JButton btnReporte 				= new JCButton("Reporte", "", "Azul");
-	JButton btnAsignar 				= new JCButton("Asignar", "", "Azul");
+	JButton btnDeshecer				= new JCButton("Deshacer", "deshacer16.png", "Azul");
+	JButton btnPendientes 			= new JCButton("", "Filter-List-icon16.png", "Azul");
+	JButton btnCalcularInventario 	= new JCButton("Calcular Inventario", "Lista-32.png", "Azul");
+	JButton btnGuardar 				= new JCButton("Guardar", "Guardar.png", "Azul");
+	JButton btnReporte 				= new JCButton("Reporte", "Report.png", "Azul");
+	JButton btnAsignar 				= new JCButton("Asignar", "articulo-icono-9036-32-mas.png", "Azul");
+	
+	String[] clasificacion = new Cargar_Combo().clasificador_de_pedidos_de_establecimientos();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbClasificador = new JComboBox(clasificacion);
 	
 	String[] establecimientos = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -119,12 +124,13 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		panel.add(new JLabel("Folio Pedido:")).setBounds(x, y, ancho, 20);
 		panel.add(txtPedido).setBounds(x+=(ancho), y, ancho, 20);
 		panel.add(btnBuscar).setBounds(x+=(ancho)+2, y, 30, 20);
-		panel.add(btnDeshecer).setBounds(x+34, y, 30, 20);
-		panel.add(btnPendientes).setBounds(x+=(ancho*3-10), y, ancho+30, 20);
+		panel.add(btnPendientes).setBounds(x+34, y, 30, 20);
 		
-		panel.add(btnReporte).setBounds(x+=(ancho*2-42), y, (ancho+30)*2, 20);
+		panel.add(new JLabel("Clasificacion:")).setBounds(x+=(ancho)+20, y, ancho*3-5, 20);
+		panel.add(cmbClasificador).setBounds(x+=(ancho), y, ancho*2, 20);
 		
-		panel.add(cmbEstablecimientos).setBounds(x+=(ancho*3)-10, y, ancho*3, 20);
+		
+		panel.add(cmbEstablecimientos).setBounds(x+=(ancho*5), y, ancho*3-5, 20);
 
 		x=20;
 		panel.add(new JLabel("Origen:")).setBounds(x, y+=25, ancho, 20);
@@ -141,8 +147,11 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		
 		x=20;
 		panel.add(scroll).setBounds(x, y+=25, ancho*12+20, 500);
+		panel.add(btnReporte).setBounds(x, y+=505, ancho*2, 30);
+		
+		panel.add(btnDeshecer).setBounds(x+ancho*3-40, y, ancho*2, 30);
 		x=840;
-		panel.add(btnGuardar).setBounds(x, y+=505, ancho*2, 30);
+		panel.add(btnGuardar).setBounds(x, y, ancho*2, 30);
 		
 		llamarRender();
 		cmbEstablecimientos.setSelectedItem("CEDIS");
@@ -234,12 +243,12 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
    	ActionListener opDeshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
 			limpiar();
 		}
    	};
    	
    	public void limpiar(){
+   		txtPedido.setEditable(true);
    		txtPedido.setText("");
    		txtEstablecimientoOrigen.setText("");
    		txtEstablecimientoDestino.setText("");
@@ -249,6 +258,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
    		modelo.setRowCount(0);
    		
    		banderaGuardarModificar = "";
+   		cmbClasificador.setSelectedIndex(0);
    	}
    	
    	
@@ -285,7 +295,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	ActionListener opBuscarPedido = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
-			
 //			//MODIFICAR ESTA FUNCION  (BUSCAR SI YA SE CAPTURO Y RECONSULTAR DE SCOI O  BUSCAR DURECTO)
 			banderaGuardarModificar = new BuscarSQL().existeEnScoi(txtPedido.getText().trim());
 			
@@ -295,12 +304,21 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				
 				if(!pedido.getUsuario().equals("")){
 
+					txtPedido.setEditable(false);
 					txtEstablecimientoOrigen.setText(pedido.getOrigen());
 					txtEstablecimientoDestino.setText(pedido.getDestino());
+					
+					cmbClasificador.setSelectedItem(pedido.getClasificador());
+					
 					txtUsuario.setText(pedido.getUsuario());					
 					
 					Object[][] productos = new BuscarTablasModel().Buscar_Pedido(txtPedido.getText().toUpperCase(),banderaGuardarModificar);
+					
+//					tabla.lostFocus(null, null);
+					tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+//					tabla.getSelectionModel().clearSelection();
 					modelo.setRowCount(0);
+					
 					for(Object[] prod : productos){
 						modelo.addRow(prod);
 					}
@@ -315,6 +333,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	    			tabla.editCellAt(filaDep, columnaDep);
 	    			Component aComp=tabla.getEditorComponent();
 	    			aComp.requestFocus();
+	    			tabla.putClientProperty("terminateEditOnFocusLost", Boolean.FALSE);
 	    			
 				}else{
 					txtPedido.setText("");
@@ -376,7 +395,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			Obj_Gestion_De_Pedidos_A_Establecimientos pedido = new Obj_Gestion_De_Pedidos_A_Establecimientos();
 			
 			pedido.buscar(txtPedido.getText().trim());
-			
+			 
 			if(banderaGuardarModificar.equals("MODIFICAR")){
 //					modifiar
 					if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
@@ -386,6 +405,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 									pedido.setFolio_pedido(txtPedido.getText().toUpperCase().trim());
 									pedido.setOrigen(txtEstablecimientoOrigen.getText().toUpperCase().trim());
 									pedido.setDestino(txtEstablecimientoDestino.getText().toUpperCase().trim());
+									pedido.setClasificador(cmbClasificador.getSelectedItem().toString());
 									pedido.setUsuario(txtUsuario.getText().toUpperCase().trim());
 									
 									pedido.setMatriz(cargarTabla());
@@ -411,6 +431,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 							pedido.setFolio_pedido(txtPedido.getText().toUpperCase().trim());
 							pedido.setOrigen(txtEstablecimientoOrigen.getText().toUpperCase().trim());
 							pedido.setDestino(txtEstablecimientoDestino.getText().toUpperCase().trim());
+							pedido.setClasificador(cmbClasificador.getSelectedItem().toString());
 							pedido.setUsuario(txtUsuario.getText().toUpperCase().trim());
 							
 							pedido.setMatriz(cargarTabla());
@@ -449,6 +470,10 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		vacios += txtEstablecimientoOrigen.getText().equals("")?"Origen\n":"";
 		vacios += txtEstablecimientoDestino.getText().equals("")?"Destino\n":"";
 		vacios += txtUsuario.getText().trim().equals("")?"Usuario\n":"";
+		
+		vacios += cmbClasificador.getSelectedIndex()==0?"Clasificador\n":"";
+		vacios += cmbEstablecimientos.getSelectedIndex()==0?"Establecimiento\n":"";
+		
 		vacios += tabla.getRowCount()==0?"Pedido Sin Productos\n":"";
 		
 		return vacios;

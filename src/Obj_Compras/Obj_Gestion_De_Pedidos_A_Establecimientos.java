@@ -12,6 +12,7 @@ public class Obj_Gestion_De_Pedidos_A_Establecimientos {
 	String destino ="";
 	String folio_usuario = "";
 	String Usuario = "";
+	String clasificador="";
 	
 	Object[][] matriz = null;
 	
@@ -66,6 +67,14 @@ public class Obj_Gestion_De_Pedidos_A_Establecimientos {
 		this.matriz = matriz;
 	}
 	
+	public String getClasificador() {
+		return clasificador;
+	}
+
+	public void setClasificador(String clasificador) {
+		this.clasificador = clasificador;
+	}
+
 	public Obj_Gestion_De_Pedidos_A_Establecimientos buscar(String folio_pedido){
 		try {
 			return new BuscarSQL().datosDePedido(folio_pedido);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-08-30T10:05:09 -->
+<!-- 2016-09-01T18:31:19 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Pedidos_Asignados" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f9f73e3d-2bea-491a-8e55-863eda232160">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -36,6 +36,7 @@
 ,convert(varchar(20),pedido.fecha_de_asignacion,103)+' '+convert(varchar(20),pedido.fecha_de_asignacion,108) fecha_de_asignacion
 ,pagina.folio_empleado_asignado
 ,emp_asignado_a_pagina.nombre+' '+emp_asignado_a_pagina.ap_paterno+' '+emp_asignado_a_pagina.ap_materno as asignado_a_pagina 
+,isnull(clasif.descripcion,'Sin clasificador') as clasificador
 from tb_gestion_de_pedido pedido
 inner join IZAGAR_establecimientos_calculo estab_ori on estab_ori.cod_estab = pedido.establecimiento_origen
 inner join IZAGAR_establecimientos_calculo estab_des on estab_des.cod_estab = pedido.establecimiento_destino
@@ -44,7 +45,8 @@ inner join tb_empleado asigno on asigno.folio = pedido.folio_usuario_asigno
 inner join tb_asignacion_de_pedido_por_paginas pagina on pagina.folio_pedido = pedido.folio_pedido and pagina.numero_de_pagina = pedido.numero_de_pagina
 inner join tb_empleado emp_asignado_a_pagina on emp_asignado_a_pagina.folio = pagina.folio_empleado_asignado
 inner join [192.168.2.201].BMSIZAGAR.dbo.productos productos with(nolock) on productos.cod_prod = pedido.cod_prod
-where pedido.folio_pedido = 'S207893']]>
+left outer join tb_clasificacion_de_pedidos_de_establecimientos clasif on clasif.folio = pedido.folio_clasificador
+where pedido.folio_pedido = 'S5-10957']]>
 	</queryString>
 	<field name="folio_pedido" class="java.lang.String"/>
 	<field name="origen" class="java.lang.String"/>
@@ -59,6 +61,7 @@ where pedido.folio_pedido = 'S207893']]>
 	<field name="fecha_de_asignacion" class="java.lang.String"/>
 	<field name="asignado_a_pagina" class="java.lang.String"/>
 	<field name="folio_empleado_asignado" class="java.lang.Integer"/>
+	<field name="clasificador" class="java.lang.String"/>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{folio_pedido}]]></groupExpression>
 		<groupHeader>
@@ -84,7 +87,7 @@ where pedido.folio_pedido = 'S207893']]>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="105" splitType="Stretch">
+		<band height="108" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
@@ -230,6 +233,28 @@ where pedido.folio_pedido = 'S207893']]>
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="478" y="78" width="92" height="12" uuid="a7f4856a-d115-4ec4-9458-0ff5eece77e2">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clasificador}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" x="380" y="78" width="98" height="12" forecolor="#000000" uuid="a1eba6f1-c812-4ee7-b56c-03781c044081">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Clasificacion:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="90" width="571" height="1" uuid="1e726d42-7866-4008-b1fd-642094838a81"/>
 			</line>
 		</band>
 	</columnHeader>

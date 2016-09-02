@@ -34,11 +34,7 @@ public class Generacion_Reportes {
 	String vista_previa_de_ventana="";
 	String basedatos="";
 
-<<<<<<< HEAD
-	@SuppressWarnings({ "rawtypes", "unchecked", "resource" })
-=======
-	@SuppressWarnings({ "rawtypes", "unchecked" })
->>>>>>> 88908e278e64003a2c0ea95f7767058cd8fb60e4
+	@SuppressWarnings({ "resource", "unchecked", "rawtypes" })
 	public void  Reporte(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
 			    Obj_Usuario usuario = new Obj_Usuario();
                 String query =comando ;
