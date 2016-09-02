@@ -5985,7 +5985,7 @@ public boolean Cargar_Inventario(String establecimiento){
 
 public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,String movimiento){
 	
-	String query =  "EXEC sp_guardar_gestion_de_pedido ?,?,?,?,?,?,?,?,?,?,?,?";
+	String query =  "EXEC sp_guardar_gestion_de_pedido ?,?,?,?,?,?,?,?,?,?,?,?,?";
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
 	
@@ -6001,15 +6001,16 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 				pstmt.setString   (3, pedido.getDestino());
 				pstmt.setString   (4, pedido.getUsuario());
 				
-				pstmt.setString   (5, pedido.getMatriz()[i][0].toString());
-
-				pstmt.setFloat   (6, Float.valueOf(pedido.getMatriz()[i][2].toString()));
-				pstmt.setFloat   (7, Float.valueOf(pedido.getMatriz()[i][3].toString()));
-				pstmt.setFloat   (8, Float.valueOf(pedido.getMatriz()[i][4].toString()));
-				pstmt.setFloat   (9, Float.valueOf(pedido.getMatriz()[i][5].toString()));
-				pstmt.setString   (10, pedido.getMatriz()[i][6].toString());
-				pstmt.setInt   (11, usuario.getFolio());
-				pstmt.setString   (12, pedido.getMatriz()[i][1].toString());
+				pstmt.setString   (5, pedido.getClasificador());
+				
+				pstmt.setString   (6, pedido.getMatriz()[i][0].toString());
+				pstmt.setFloat   (7, Float.valueOf(pedido.getMatriz()[i][2].toString()));
+				pstmt.setFloat   (8, Float.valueOf(pedido.getMatriz()[i][3].toString()));
+				pstmt.setFloat   (9, Float.valueOf(pedido.getMatriz()[i][4].toString()));
+				pstmt.setFloat   (10, Float.valueOf(pedido.getMatriz()[i][5].toString()));
+				pstmt.setString   (11, pedido.getMatriz()[i][6].toString());
+				pstmt.setInt   (12, usuario.getFolio());
+				pstmt.setString   (13, pedido.getMatriz()[i][1].toString());
 				
 //				System.out.println(pedido.getFolio_pedido());
 //				System.out.println(pedido.getOrigen());

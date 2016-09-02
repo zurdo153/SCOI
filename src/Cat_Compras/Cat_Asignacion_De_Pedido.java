@@ -126,9 +126,9 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 		
 		this.setModal(true);
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/usuario-busquedaicono-4661-64.png"));
-		this.setTitle("Filtro de Pedidos");
-		campo.setBorder(BorderFactory.createTitledBorder("Filtro De Pedidos"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/articulo-icono-9036-32-mas.png"));
+		this.setTitle("Asignacion De Pedidos");
+		campo.setBorder(BorderFactory.createTitledBorder("Asignacion De Pedidos"));
 		
 		campo.add(txtNombre_Completo2).setBounds(10,20,300,20);
 		campo.add(scroll_tabla).setBounds(10,42,775,200);

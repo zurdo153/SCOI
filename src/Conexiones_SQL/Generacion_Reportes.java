@@ -34,7 +34,7 @@ public class Generacion_Reportes {
 	String vista_previa_de_ventana="";
 	String basedatos="";
 
-	@SuppressWarnings({ "rawtypes", "unchecked", "resource" })
+	@SuppressWarnings({ "resource", "unchecked", "rawtypes" })
 	public void  Reporte(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
 			    Obj_Usuario usuario = new Obj_Usuario();
                 String query =comando ;
