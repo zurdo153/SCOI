@@ -1114,22 +1114,18 @@ public void filtroProductos(String cadena){
 													 						txtFiltroClase.setText("");
 													 						txtFiltroFamilia.setText("");
 													 						txtFiltroLinea.setText("");
-													 						
 													 						btnFiltroProducto.setEnabled(false);
 													 						btnFiltroCategoria.setEnabled(false);
 								 											btnFiltroClase.setEnabled(false);
 								 											btnFiltroFamilia.setEnabled(false);
 									 										btnFiltroLinea.setEnabled(false);
 									 										btnFiltroTalla.setEnabled(false);
-									 										
 									 										btnLimpiarFiltroTalla.setEnabled(true);
 								 										}
 												break;
-												
 								 				case "cod_estab":			txtFiltroEstablecimiento.setText(Lista);	
 								 				break;
 					 				}
-					 				
 						 			dispose();
 					 			}
 				 			}
@@ -1164,14 +1160,12 @@ public void filtroProductos(String cadena){
 				
 			   	public Object[][] getTablaFiltro(String operador, String nombre_de_tabla){
 			   		String condicion = "";
-			   		
 			   		if(!Lista.equals("")){
 			   			if(nombre_de_tabla.equals("establecimientos")){
-				   			condicion = " where cod_estab not "+Lista.replace("''","'");
+				   			condicion = " where cod_estab "+Lista.replace("''","'");
 				   		}else{
 				   			condicion = " where jerarquia "+Lista.replace("''","'");
 				   		}
-			   			
 			   		}
 			   		
 					String todos = "select "+folio_columna+" as folio,upper(nombre) from "+nombre_de_tabla+condicion+" order by nombre";

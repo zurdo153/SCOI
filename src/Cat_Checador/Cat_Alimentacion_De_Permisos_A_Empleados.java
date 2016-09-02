@@ -123,14 +123,14 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	JScrollPane Observasiones = new JScrollPane(txaMotivo);
 	
 
-	JCButton btnFiltroEmpleado = new JCButton("Colaborador"        ,"asistencia-comunitaria-icono-9465-16.png","");
-	JCButton btnBuscar         = new JCButton(""        ,"buscar.png"            ,"");
-	JCButton btnFiltro         = new JCButton("Permiso" ,"Filter-List-icon16.png","");
-	JCButton btnSalir          = new JCButton("Salir"   ,"salir16.png"      ,"");
-	JCButton btnDeshacer       = new JCButton("Deshacer","deshacer16.png","");
-	JCButton btnGuardar        = new JCButton("Guardar","Guardar.png"    ,"");
-	JCButton btnEditar         = new JCButton("Editar","editara.png"     ,"");
-	JCButton btnNuevo          = new JCButton("Nuevo","Nuevo.png"        ,"");
+	JCButton btnFiltroEmpleado = new JCButton("Colaborador"        ,"asistencia-comunitaria-icono-9465-16.png","Azul");
+	JCButton btnBuscar         = new JCButton(""        ,"buscar.png"            ,"Azul");
+	JCButton btnFiltro         = new JCButton("Permiso" ,"Filter-List-icon16.png","Azul");
+	JCButton btnSalir          = new JCButton("Salir"   ,"salir16.png"      ,"Azul");
+	JCButton btnDeshacer       = new JCButton("Deshacer","deshacer16.png","Azul");
+	JCButton btnGuardar        = new JCButton("Guardar","Guardar.png"    ,"Azul");
+	JCButton btnEditar         = new JCButton("Editar","editara.png"     ,"Azul");
+	JCButton btnNuevo          = new JCButton("Nuevo","Nuevo.png"        ,"Azul");
 	
 	
 	Border border = LineBorder.createGrayLineBorder();
