@@ -13,6 +13,7 @@ public class Obj_Gestion_De_Pedidos_A_Establecimientos {
 	String folio_usuario = "";
 	String Usuario = "";
 	String clasificador="";
+	String status_pedido="";
 	
 	Object[][] matriz = null;
 	
@@ -73,6 +74,14 @@ public class Obj_Gestion_De_Pedidos_A_Establecimientos {
 
 	public void setClasificador(String clasificador) {
 		this.clasificador = clasificador;
+	}
+
+	public String getStatus_pedido() {
+		return status_pedido;
+	}
+
+	public void setStatus_pedido(String status_pedido) {
+		this.status_pedido = status_pedido;
 	}
 
 	public Obj_Gestion_De_Pedidos_A_Establecimientos buscar(String folio_pedido){

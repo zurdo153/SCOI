@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-09-01T18:31:19 -->
+<!-- 2016-09-02T13:13:08 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Pedidos_Asignados" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f9f73e3d-2bea-491a-8e55-863eda232160">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -46,7 +46,8 @@ inner join tb_asignacion_de_pedido_por_paginas pagina on pagina.folio_pedido = p
 inner join tb_empleado emp_asignado_a_pagina on emp_asignado_a_pagina.folio = pagina.folio_empleado_asignado
 inner join [192.168.2.201].BMSIZAGAR.dbo.productos productos with(nolock) on productos.cod_prod = pedido.cod_prod
 left outer join tb_clasificacion_de_pedidos_de_establecimientos clasif on clasif.folio = pedido.folio_clasificador
-where pedido.folio_pedido = 'S5-10957']]>
+where pedido.folio_pedido = 'S208004'
+and surtido > 0]]>
 	</queryString>
 	<field name="folio_pedido" class="java.lang.String"/>
 	<field name="origen" class="java.lang.String"/>
@@ -87,7 +88,7 @@ where pedido.folio_pedido = 'S5-10957']]>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="108" splitType="Stretch">
+		<band height="105" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
@@ -120,7 +121,7 @@ where pedido.folio_pedido = 'S5-10957']]>
 				<text><![CDATA[CODIGO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="123" y="90" width="266" height="14" forecolor="#000000" uuid="d49d5007-025d-4aab-9571-cd59d5f97b75">
+				<reportElement style="Column header" x="109" y="90" width="300" height="14" forecolor="#000000" uuid="d49d5007-025d-4aab-9571-cd59d5f97b75">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -130,7 +131,7 @@ where pedido.folio_pedido = 'S5-10957']]>
 				<text><![CDATA[DESCRIPCION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="405" y="90" width="55" height="14" forecolor="#000000" uuid="ff143fbb-b12c-4df1-8bb4-79f60b169ce9">
+				<reportElement style="Column header" x="410" y="90" width="55" height="14" forecolor="#000000" uuid="ff143fbb-b12c-4df1-8bb4-79f60b169ce9">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -139,7 +140,7 @@ where pedido.folio_pedido = 'S5-10957']]>
 				<text><![CDATA[SURTIR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="460" y="90" width="55" height="14" forecolor="#000000" uuid="abe8c697-cef7-4057-94a4-7ea9189aa6ba">
+				<reportElement style="Column header" x="464" y="90" width="55" height="14" forecolor="#000000" uuid="abe8c697-cef7-4057-94a4-7ea9189aa6ba">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -157,7 +158,7 @@ where pedido.folio_pedido = 'S5-10957']]>
 				<text><![CDATA[Fecha De Asignacion:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="Detail" positionType="Float" x="46" y="54" width="150" height="12" uuid="295577f2-d3fc-4153-bd82-2d8dcb925785">
+				<reportElement style="Detail" positionType="Float" x="46" y="54" width="203" height="12" uuid="295577f2-d3fc-4153-bd82-2d8dcb925785">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -167,7 +168,7 @@ where pedido.folio_pedido = 'S5-10957']]>
 				<textFieldExpression><![CDATA[$F{origen}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="Detail" positionType="Float" x="46" y="66" width="150" height="12" uuid="53c914b9-a002-4b08-8c64-4ab241375bcb">
+				<reportElement style="Detail" positionType="Float" x="46" y="66" width="203" height="12" uuid="53c914b9-a002-4b08-8c64-4ab241375bcb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -204,7 +205,7 @@ where pedido.folio_pedido = 'S5-10957']]>
 				<text><![CDATA[Pedido:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="515" y="90" width="55" height="14" forecolor="#000000" uuid="6ebb92fe-16eb-44f1-970b-d685c0e2347d">
+				<reportElement style="Column header" x="519" y="90" width="55" height="14" forecolor="#000000" uuid="6ebb92fe-16eb-44f1-970b-d685c0e2347d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -215,7 +216,7 @@ where pedido.folio_pedido = 'S5-10957']]>
 			<frame>
 				<reportElement mode="Opaque" x="1" y="1" width="570" height="48" backcolor="#000066" uuid="45e98f7e-5230-419f-a100-0002c1000000"/>
 				<staticText>
-					<reportElement style="Title" x="0" y="0" width="540" height="47" uuid="5da97b09-3e6c-4bab-97a7-4ce95628aa43">
+					<reportElement style="Title" x="0" y="0" width="570" height="47" uuid="5da97b09-3e6c-4bab-97a7-4ce95628aa43">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -265,36 +266,38 @@ where pedido.folio_pedido = 'S5-10957']]>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textField isStretchWithOverflow="true">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="2" y="0" width="78" height="11" uuid="591dffd8-9742-433e-9b4d-767bf0959e66">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{codigo_alternativo}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="83" y="0" width="39" height="11" uuid="360f3955-02e8-4018-8c21-3247d4c6765f">
+					<reportElement style="Detail" positionType="Float" x="80" y="0" width="29" height="11" uuid="360f3955-02e8-4018-8c21-3247d4c6765f">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
 					</reportElement>
 					<textElement>
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="123" y="0" width="266" height="11" uuid="5c46c2a1-5a20-4088-920d-9786d4cba801">
+				<textField isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" x="109" y="0" width="299" height="11" uuid="5c46c2a1-5a20-4088-920d-9786d4cba801">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="401" y="0" width="47" height="11" uuid="e4521286-9032-44c2-b0fe-442b3a34ce71">
+					<reportElement style="Detail" positionType="Float" x="409" y="0" width="51" height="11" uuid="e4521286-9032-44c2-b0fe-442b3a34ce71">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -303,7 +306,7 @@ where pedido.folio_pedido = 'S5-10957']]>
 					<textFieldExpression><![CDATA[$F{surtido}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="472" y="0" width="30" height="11" uuid="a3dd8bbe-e7bf-445f-b136-fdd53a41b6dc">
+					<reportElement style="Detail" positionType="Float" x="478" y="0" width="23" height="11" uuid="a3dd8bbe-e7bf-445f-b136-fdd53a41b6dc">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
