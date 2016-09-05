@@ -5994,8 +5994,10 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 		con.setAutoCommit(false);
 		pstmt = con.prepareStatement(query);
 		
-		System.out.print(pedido.getMatriz().length);
+		int user = usuario.getFolio();
+		
 		for(int i=0; i<pedido.getMatriz().length; i++){
+				
 				pstmt.setString   (1, pedido.getFolio_pedido());
 				pstmt.setString   (2, pedido.getOrigen());
 				pstmt.setString   (3, pedido.getDestino());
@@ -6010,7 +6012,7 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 				pstmt.setFloat   (10, Float.valueOf(pedido.getMatriz()[i][4].toString()));
 				pstmt.setFloat   (11, Float.valueOf(pedido.getMatriz()[i][5].toString()));
 				pstmt.setString   (12, pedido.getMatriz()[i][6].toString());
-				pstmt.setInt   (13, usuario.getFolio());
+				pstmt.setInt   (13, user);
 				pstmt.setString   (14, pedido.getMatriz()[i][1].toString());
 				
 //				System.out.println(pedido.getFolio_pedido());

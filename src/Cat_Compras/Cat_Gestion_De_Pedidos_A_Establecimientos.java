@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
@@ -111,8 +112,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	    JTable tabla = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
-		int filaDep = 0;
-		int columnaDep = 4;
+		int fila = 0;
+		int columna = 4;
 		String banderaGuardarModificar = "";
 		
 	public Cat_Gestion_De_Pedidos_A_Establecimientos() {
@@ -178,45 +179,72 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		btnDeshecer.addActionListener(opDeshacer);
 		btnGuardar.addActionListener(opGuardar);
 		tabla.addKeyListener(op_key);
+		agregar(tabla);
 		
 		cont.add(panel);
 	}
 	
-	int fila = 0;
 	float surtido = 0;
 	KeyListener op_key = new KeyListener() {
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {
 			
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
-					validarCelda();
-					
-					float surtido = (Float.valueOf(modelo.getValueAt(fila, 4).toString().equals("")?"0":modelo.getValueAt(fila, 4).toString()));
-					tabla.setValueAt(surtido, fila, 4);
-					tabla.setValueAt((Float.valueOf(modelo.getValueAt(fila, 3).toString()))-surtido, fila, 5);
-//					tabla.setValueAt( ((Float.valueOf(modelo.getValueAt(fila, 3).toString()))-surtido)<0?0:((Float.valueOf(modelo.getValueAt(fila, 3).toString()))-surtido), fila, 5);
-					
-					try {
-						fila++;
-						tabla.getSelectionModel().setSelectionInterval(fila, fila);
-						tabla.editCellAt(fila, 4);
-						Component aComp=tabla.getEditorComponent();
-						aComp.requestFocus();
-						
-						
-					} catch (Exception e2) {
-						// TODO: handle exception
-						fila=0;
-						tabla.getSelectionModel().setSelectionInterval(fila, fila);
-						tabla.editCellAt(fila, 4);
-						Component aComp=tabla.getEditorComponent();
-						aComp.requestFocus();
+						editaCelda("enter",0);
 					}
-					
-				}
 		}
 		public void keyPressed(KeyEvent e) {}
 	};
+	
+	private void agregar(final JTable tbl) {
+		tbl.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {
+					if(e.getClickCount() == 1){
+						editaCelda("click",tabla.getSelectedRow());
+					}
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {}
+		});
+		
+	}
+	
+	public void editaCelda(String evento, int nuevaFila){
+		validarCelda();
+		
+		float surtido = (Float.valueOf(modelo.getValueAt(fila, 4).toString().equals("")?"0":modelo.getValueAt(fila, 4).toString()));
+		tabla.setValueAt(surtido, fila, 4);
+		tabla.setValueAt((Float.valueOf(modelo.getValueAt(fila, 3).toString()))-surtido, fila, 5);
+//		tabla.setValueAt( ((Float.valueOf(modelo.getValueAt(fila, 3).toString()))-surtido)<0?0:((Float.valueOf(modelo.getValueAt(fila, 3).toString()))-surtido), fila, 5);
+		
+		if(evento.equals("click")){
+			fila=nuevaFila;
+			tabla.getSelectionModel().setSelectionInterval(fila, fila);
+			tabla.editCellAt(fila, 4);
+			Component aComp=tabla.getEditorComponent();
+			aComp.requestFocus();
+		}else{
+			try {
+				fila++;
+				tabla.getSelectionModel().setSelectionInterval(fila, fila);
+				tabla.editCellAt(fila, 4);
+				Component aComp=tabla.getEditorComponent();
+				aComp.requestFocus();
+				
+				
+			} catch (Exception e2) {
+				// TODO: handle exception
+				fila=0;
+				tabla.getSelectionModel().setSelectionInterval(fila, fila);
+				tabla.editCellAt(fila, 4);
+				Component aComp=tabla.getEditorComponent();
+				aComp.requestFocus();
+			}
+		}
+		
+	}
 	
 	public void validarCelda(){
 		try{
@@ -254,6 +282,9 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
    	};
    	
    	public void limpiar(){
+   		
+   		fila = 0;
+   		
    		txtPedido.setEditable(true);
    		txtPedido.setText("");
    		txtEstablecimientoOrigen.setText("");
@@ -323,12 +354,13 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 							txtUsuario.setText(pedido.getUsuario());		
 							txtStatus.setText(pedido.getStatus_pedido());
 							
+							modelo.setRowCount(0);
 							Object[][] productos = new BuscarTablasModel().Buscar_Pedido(txtPedido.getText().toUpperCase(),banderaGuardarModificar);
 							
 //							tabla.lostFocus(null, null);
-							tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+//							tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 //							tabla.getSelectionModel().clearSelection();
-							modelo.setRowCount(0);
+							
 							
 							System.out.println(productos[0][0].toString());
 							if(!productos[0][0].toString().equals("El Pedido No Cuenta Con Productos")){
@@ -343,13 +375,14 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 								return;
 							}
 							
-							filaDep=0;
-							columnaDep=4;
+							fila=0;
+							columna=4;
 			            	tabla.setEnabled(true);
-			    			tabla.editCellAt(filaDep, columnaDep);
+			            	tabla.setRowSelectionInterval(fila, fila);
+			    			tabla.editCellAt(fila, columna);
 			    			Component aComp=tabla.getEditorComponent();
 			    			aComp.requestFocus();
-			    			tabla.putClientProperty("terminateEditOnFocusLost", Boolean.FALSE);
+//			    			tabla.putClientProperty("terminateEditOnFocusLost", Boolean.FALSE);
 			    			
 						}else{
 							txtPedido.setText("");
@@ -411,7 +444,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 					 seleccionDeStatus();
 				}else{
 					//el parametro vacio no altera el estatus (quedara el valor default)
-					guardar("");
+					guardar("N");
 				}
 
 			}
@@ -427,8 +460,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			System.out.println(seleccion);
 			
 			//el parametro vacio no altera el estatus (quedara a como este)
-			guardar(seleccion==0?"":"S");
-		}
+			guardar(seleccion==0?"N":"S");
+		} 
 		
 	public void guardar(String decideStatus){
 
