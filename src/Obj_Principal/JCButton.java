@@ -13,9 +13,9 @@ import javax.swing.JButton;
 @SuppressWarnings("serial")
 public class JCButton extends JButton{
     
-    private Color CA    =   new Color(77,135,237);
-    private Color CB    =   new Color(110,160,239);
-    private Color CD    =   new Color(25,92,198);
+    private Color CA    =   new Color(7  , 255 , 7);
+    private Color CB    =   new Color(98  ,255  ,103);
+    private Color CD    =   new Color(32 ,198  ,38);
     
     public JCButton(String Texto, String Imagen, String color){
         super();
@@ -58,8 +58,7 @@ public class JCButton extends JButton{
             setForeground(new Color(255, 255, 255));
             setBackground(CA);  
         }
-        
-              
+                    
         setContentAreaFilled(false);
         setOpaque(false);
         setBorderPainted(false);
