@@ -83,10 +83,11 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 	JTextField txtNombre_Completo2 = new Componentes().text(new JTextField(), "Fitrar", 250, "String");
 	
 	JTextField txtPedido = new Componentes().text(new JCTextField(), "Folio De Pedido", 250, "String");
-	JTextField txtEstablecimiento = new Componentes().text(new JCTextField(), "Establecimiento", 250, "String");
-	JCButton btnDeshacer = new JCButton("Deshacer", "deshacer16.png", "Azul");
-	JCButton btnGuardar = new JCButton("Guardar", "Guardar.png", "Azul");
-	
+	JTextField txtEstablecimiento 	= new Componentes().text(new JCTextField(), "Establecimiento", 250, "String");
+	JButton btnActualizar 			= new JCButton("Actualizar", "", "Azul");
+	JCButton btnDeshacer 			= new JCButton("Deshacer", "deshacer16.png", "Azul");
+	JCButton btnGuardar 			= new JCButton("Guardar", "Guardar.png", "Azul");
+	JButton btnReporte 				= new JCButton("Reporte", "Report.png", "Azul");
 	@SuppressWarnings("rawtypes")
 	public Class[] tiposAsignacion(int columnas){
 		Class[] tip = new Class[columnas];
@@ -131,6 +132,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 		campo.setBorder(BorderFactory.createTitledBorder("Asignacion De Pedidos"));
 		
 		campo.add(txtNombre_Completo2).setBounds(10,20,300,20);
+		campo.add(btnActualizar).setBounds(670,20,110,20);
 		campo.add(scroll_tabla).setBounds(10,42,775,200);
 		
 		campo.add(txtPedido).setBounds(10,250,100,20);
@@ -140,7 +142,11 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 		
 		campo.add(scroll_tabla_Asignacion).setBounds(10,275,775,250);
 		
+		campo.add(btnReporte).setBounds(10, 530, 135, 40);
+		
 		cont.add(campo);
+		
+		btnReporte.addActionListener(opFiltroReporteDeAsignaciones);
 		
 		txtPedido.setEditable(false);
 		txtEstablecimiento.setEditable(false);
@@ -155,6 +161,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 		btnDeshacer.addActionListener(opDeshacer);
 		btnGuardar.addActionListener(opGuardar);
 		txtNombre_Completo2.addKeyListener(op_filtro);
+		btnActualizar.addActionListener(opActualizar);
 		
 		this.setSize(800,600);
 		this.setResizable(false);
@@ -195,6 +202,18 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 		 
 		
 	}
+	
+	ActionListener opActualizar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			init_tabla();
+		}
+	};
+	
+	ActionListener opFiltroReporteDeAsignaciones = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			new Cat_Reportes_De_Pedidos_Asignados().setVisible(true);
+		}
+	};
 	
 	public void tamanioColumnas(){
 		
@@ -460,7 +479,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 						+ " FROM tb_empleado "
 						+ " inner join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id and tb_establecimiento.nombre = '"+estab+"' "
 						+ " where tb_empleado.status in (1) "
-						+ " order by folio";//condicionar estab
+						+ " order by tb_empleado.nombre,tb_empleado.ap_paterno,tb_empleado.ap_materno";//condicionar estab
 				String basedatos="26",pintar="si";
 				new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 		    }
