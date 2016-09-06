@@ -9225,6 +9225,7 @@ public Obj_Gestion_De_Pedidos_A_Establecimientos datosDePedido(String folio_pedi
 			pedido.setDestino(rs.getString("establecimiento_alterno"));
 			pedido.setClasificador(rs.getString("clasificador"));
 			pedido.setUsuario(rs.getString("usuario")); 
+			pedido.setStatus_pedido(rs.getString("status_pedido"));
 		}
 		
 	} catch (Exception e) {
