@@ -15,6 +15,7 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -32,6 +33,7 @@ import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_Refrescar;
 
@@ -57,7 +59,7 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 			return tip;
 		}
 		
-	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Pedido", "Destino", "Origen","Nombre Surtidor","Cant. Hojas"}){
+	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Pedido", "Destino", "Origen","Nombre Surtidor","Cant. Hojas","Status"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = tipos(this.getColumnCount());
 			
@@ -81,7 +83,12 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 	JDateChooser fchFinal = new JDateChooser();
 	
 	JButton btnActualizar = new JCButton("Actualizar", "", "Azul");
-	JButton btnReporte = new JCButton("Generar", "", "Azul");
+	JButton btnReporte		 = new JCButton("Reporte De Pedido", "", "Azul");
+	JButton btnReporteNegados= new JCButton("Reporte De Productos Negados", "", "Azul");
+	
+	String[] status = {"TODOS","ASIGNADO","SURTIDO","CANCELADO","NEGADO"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbStatus = new JComboBox(status);
 	
 	@SuppressWarnings("rawtypes")
 	public Class[] tiposAsignacion(int columnas){
@@ -106,16 +113,21 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 		this.setTitle("Filtro de Pedidos Asignados");
 		campo.setBorder(BorderFactory.createTitledBorder("Filtro De Pedidos Asignados"));
 		
-		campo.add(txtNombre_Completo2).setBounds(10,20,415,20);
+		int y=20;
 		
-		campo.add(new JLabel("De:")).setBounds(430, 20, 30, 20);
-		campo.add(fchInicia).setBounds(455,20,100,20);
-		campo.add(new JLabel("A:")).setBounds(565, 20, 30, 20);
-		campo.add(fchFinal).setBounds(585 ,20,100,20);
+		campo.add(new JLabel("De:")).setBounds(10, y, 30, 20);
+		campo.add(fchInicia).setBounds(35,y,100,20);
+		campo.add(new JLabel("A:")).setBounds(145, y, 30, 20);
+		campo.add(fchFinal).setBounds(165 ,y,100,20);
+		campo.add(btnActualizar).setBounds(265,y,100,20);
 		
-		campo.add(btnActualizar).setBounds(685,20,100,20);
-		campo.add(scroll_tabla).setBounds(10,42,775,220);
-		campo.add(btnReporte).setBounds(685,265,100,20);
+		campo.add(txtNombre_Completo2).setBounds(10,y+=25,415,20);
+		campo.add(new JLabel("Filtro Por Status:")).setBounds(605, y, 100, 20);
+		campo.add(cmbStatus).setBounds(700,y,85,20);
+		campo.add(scroll_tabla).setBounds(10,y+=20,775,220);
+		
+		campo.add(btnReporteNegados).setBounds(345,290,240,20);
+		campo.add(btnReporte).setBounds(595,290,190,20);
 		
 		cont.add(campo);
 		
@@ -127,9 +139,12 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 		
 		btnActualizar.addActionListener(opActualizar);
 		btnReporte.addActionListener(opReportePedido);
+		btnReporteNegados.addActionListener(opReportePedido);
 		txtNombre_Completo2.addKeyListener(op_filtro);
 		
-		this.setSize(800,320);
+		cmbStatus.addActionListener(opFiltroStatus);
+		
+		this.setSize(800,345);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -155,34 +170,39 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 	};
 	
 	ActionListener opReportePedido = new ActionListener(){
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent e) {
 			
-			String basedatos="2.26";
-			String vista_previa_reporte="no";
-			int vista_previa_de_ventana=0;
-			
-			if(tabla.getSelectedRow()<0){
-				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Un Pedido", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-				return;
-			}else{
-				
-				String comando="exec sp_reporte_de_gestion_de_pedidos '"+tabla.getValueAt(tabla.getSelectedRow(), 0)+"'";
-				String reporte = "Obj_Reporte_De_Pedidos_Asignados.jrxml";
-				new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-			}
+			reporte(e.getActionCommand().toString().trim().equals("Reporte De Pedido")?"no":"si");
 		}
 	};
+	
+	public void reporte(String status_negado){
+		String basedatos="2.26";
+		String vista_previa_reporte="no";
+		int vista_previa_de_ventana=0;
+		
+		if(tabla.getSelectedRow()<0){
+			JOptionPane.showMessageDialog(null,"Necesita Seleccionar Un Pedido", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+			return;
+		}else{
+			
+			String comando="exec sp_reporte_de_gestion_de_pedidos '"+tabla.getValueAt(tabla.getSelectedRow(), 0)+"','"+status_negado+"'";
+			String reporte = "Obj_Reporte_De_Pedidos_Asignados.jrxml";
+			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		}
+	}
 	
 	public void tamanioColumnas(){
 		
 		tabla.getTableHeader().setReorderingAllowed(false) ;
     	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
     	
-		this.tabla.getColumnModel().getColumn(0).setMinWidth(50);		
-    	this.tabla.getColumnModel().getColumn(1).setMinWidth(170);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(170);
-    	this.tabla.getColumnModel().getColumn(3).setMinWidth(280);
-    	this.tabla.getColumnModel().getColumn(4).setMinWidth(50);
+		this.tabla.getColumnModel().getColumn(0).setMinWidth(35);		
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(160);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(160);
+    	this.tabla.getColumnModel().getColumn(3).setMinWidth(230);
+    	this.tabla.getColumnModel().getColumn(4).setMinWidth(25);
+    	this.tabla.getColumnModel().getColumn(5).setMinWidth(40);
 	}
 	
 	public void init_tabla(){
@@ -218,6 +238,17 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 				}
 		}
     } 
+	
+	ActionListener opFiltroStatus = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			if(cmbStatus.getSelectedIndex()!=0){
+				new Obj_Filtro_Dinamico(tabla, "Status", cmbStatus.getSelectedItem().toString(), "", "", "", "", "", "");
+			}else{
+				cmbStatus.setSelectedIndex(0);
+				new Obj_Filtro_Dinamico(tabla, "Status", "", "", "", "", "", "", "");
+			}
+		}
+	};
 	
 	KeyListener op_filtro = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {

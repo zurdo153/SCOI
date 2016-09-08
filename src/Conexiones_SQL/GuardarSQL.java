@@ -6055,7 +6055,7 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 	return true;
 }
 
-public boolean Guardar_Asignacion_De_Pedido(Object[][] asignacion,String folio_pedido,String movimiento){
+public boolean Guardar_Asignacion_De_Pedido(Object[][] asignacion,String folio_pedido){
 	
 	String query =  "EXEC sp_insert_asignacion_de_pedido_por_paginas ?,?,?,?";
 	Connection con = new Connexion().conexion();
