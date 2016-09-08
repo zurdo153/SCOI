@@ -72,8 +72,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 	     }
 			
 	     public boolean isCellEditable(int fila, int columna){
-	    	 if(columna ==1)
-					return true; return false;
+	    	  return false;
 			}
 	    };
 	    
@@ -113,7 +112,8 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 			
 	     public boolean isCellEditable(int fila, int columna){
 	    	 if(columna ==1)
-					return true; return false;
+					return true;
+					return false;
 			}
 	    };
 	    
@@ -374,7 +374,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 						
 						String folio_pedido = txtPedido.getText().trim(); 
 						
-							if(new GuardarSQL().Guardar_Asignacion_De_Pedido(asignacion_de_paginas(),folio_pedido, "GUARDAR")){
+							if(new GuardarSQL().Guardar_Asignacion_De_Pedido(asignacion_de_paginas(),folio_pedido)){
 								
 //									modificar gestion de pedido con status = 'A' 
 									if(new ActualizarSQL().cambiar_status_de_pedido_a_asignado(folio_pedido)){
@@ -387,7 +387,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 											String vista_previa_reporte="no";
 											int vista_previa_de_ventana=0;
 										
-											String comando="exec sp_reporte_de_gestion_de_pedidos '"+folio_pedido+"'";
+											String comando="exec sp_reporte_de_gestion_de_pedidos '"+folio_pedido+"','no'";
 											String reporte = "Obj_Reporte_De_Pedidos_Asignados.jrxml";
 											new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 													

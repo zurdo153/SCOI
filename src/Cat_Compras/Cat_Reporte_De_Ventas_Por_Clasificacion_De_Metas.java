@@ -20,7 +20,7 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_Re_Ventas_Por_Clasificacion_De_Metas extends JFrame {
+public class Cat_Reporte_De_Ventas_Por_Clasificacion_De_Metas extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -54,7 +54,7 @@ public class Cat_Reporte_Re_Ventas_Por_Clasificacion_De_Metas extends JFrame {
 		   @SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbGrupo= new JComboBox(new String[]{"Seleccione un Grupo","Alimentos","Dulcerias","Papelerias","Refaccionarias","Supermercados"});
 		
-public Cat_Reporte_Re_Ventas_Por_Clasificacion_De_Metas() {
+public Cat_Reporte_De_Ventas_Por_Clasificacion_De_Metas() {
 	            this.setSize(330,160);
 				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bandera-a-cuadros-para-terminar-icono-8019-64.png"));
 				this.setTitle("Alimentacion De Metas Mensuales Por Establecimiento");
@@ -222,7 +222,7 @@ public Cat_Reporte_Re_Ventas_Por_Clasificacion_De_Metas() {
 	public static void main(String [] args){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_Re_Ventas_Por_Clasificacion_De_Metas().setVisible(true);
+			new Cat_Reporte_De_Ventas_Por_Clasificacion_De_Metas().setVisible(true);
 			}catch(Exception e){}
 	}
   }

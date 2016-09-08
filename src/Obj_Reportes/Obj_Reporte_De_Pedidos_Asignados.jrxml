@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-09-02T13:13:08 -->
+<!-- 2016-09-07T17:30:45 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Pedidos_Asignados" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f9f73e3d-2bea-491a-8e55-863eda232160">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -37,6 +37,11 @@
 ,pagina.folio_empleado_asignado
 ,emp_asignado_a_pagina.nombre+' '+emp_asignado_a_pagina.ap_paterno+' '+emp_asignado_a_pagina.ap_materno as asignado_a_pagina 
 ,isnull(clasif.descripcion,'Sin clasificador') as clasificador
+,CASE WHEN pedido.status='A' THEN 'ASIGNADO'
+		WHEN pedido.status='S' THEN 'SURTIDO'
+		WHEN pedido.status='C' THEN 'CANCELADO'
+		WHEN pedido.status='N' THEN 'NEGADO'
+	ELSE 'VIGENTE' END AS status
 from tb_gestion_de_pedido pedido
 inner join IZAGAR_establecimientos_calculo estab_ori on estab_ori.cod_estab = pedido.establecimiento_origen
 inner join IZAGAR_establecimientos_calculo estab_des on estab_des.cod_estab = pedido.establecimiento_destino
@@ -46,8 +51,8 @@ inner join tb_asignacion_de_pedido_por_paginas pagina on pagina.folio_pedido = p
 inner join tb_empleado emp_asignado_a_pagina on emp_asignado_a_pagina.folio = pagina.folio_empleado_asignado
 inner join [192.168.2.201].BMSIZAGAR.dbo.productos productos with(nolock) on productos.cod_prod = pedido.cod_prod
 left outer join tb_clasificacion_de_pedidos_de_establecimientos clasif on clasif.folio = pedido.folio_clasificador
-where pedido.folio_pedido = 'S208004'
-and surtido > 0]]>
+where pedido.folio_pedido = 'S208040'
+and surtido  > 0 ]]>
 	</queryString>
 	<field name="folio_pedido" class="java.lang.String"/>
 	<field name="origen" class="java.lang.String"/>
@@ -63,6 +68,7 @@ and surtido > 0]]>
 	<field name="asignado_a_pagina" class="java.lang.String"/>
 	<field name="folio_empleado_asignado" class="java.lang.Integer"/>
 	<field name="clasificador" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{folio_pedido}]]></groupExpression>
 		<groupHeader>
@@ -177,7 +183,7 @@ and surtido > 0]]>
 				<textFieldExpression><![CDATA[$F{destino}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="SubTitle" isPrintRepeatedValues="false" x="46" y="78" width="149" height="12" forecolor="#000000" uuid="f415c823-31d1-4a48-8e59-ecfae0d5f913">
+				<reportElement style="SubTitle" x="46" y="78" width="203" height="12" forecolor="#000000" uuid="f415c823-31d1-4a48-8e59-ecfae0d5f913">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -215,16 +221,16 @@ and surtido > 0]]>
 			</staticText>
 			<frame>
 				<reportElement mode="Opaque" x="1" y="1" width="570" height="48" backcolor="#000066" uuid="45e98f7e-5230-419f-a100-0002c1000000"/>
-				<staticText>
-					<reportElement style="Title" x="0" y="0" width="570" height="47" uuid="5da97b09-3e6c-4bab-97a7-4ce95628aa43">
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField>
+					<reportElement x="0" y="0" width="570" height="48" forecolor="#FFFFFF" uuid="db2edc5a-68d5-4bd5-afea-0beafbe0d4b1">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="28" isBold="false"/>
+						<font fontName="Times New Roman" size="28" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Surtido De Pedido]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$F{status}.toString().equals("NEGADO")?"REPORTE DE PRODUCTOS NEGADOS":"REPORTE DE PEDIDO "+$F{status}.toString()]]></textFieldExpression>
+				</textField>
 			</frame>
 			<frame>
 				<reportElement mode="Opaque" x="1" y="50" width="570" height="3" forecolor="#000000" backcolor="#FF6633" uuid="3e3dcb8a-6635-44ee-ba7f-0864c5a457d5"/>
