@@ -52,7 +52,7 @@ public class Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento extends JFr
 	JLabel lblMes = new JLabel("Mes: ");
 	JLabel lblGrupo = new JLabel("Grupo: ");
 	
-	JCButton btnGenerar    = new JCButton("Calcular Metas"    ,"bandera-a-cuadros-para-terminar-icono-8019-32.png","AzulC"); 
+	JCButton btnGenerar    = new JCButton("Calcular Metas"    ,"bandera-a-cuadros-para-terminar-icono-8019-32.png","Azul"); 
 	JCButton btnGuardar    = new JCButton("Guardar"    ,"Guardar.png","Azul"); 
 	JCButton btnDeshacer = new JCButton("Deshacer","deshacer16.png","Azul");
 
@@ -68,7 +68,7 @@ public class Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento extends JFr
 		JComboBox cmbMes= new JComboBox(new String[]{"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"});
 
 		   @SuppressWarnings({ "rawtypes", "unchecked" })
-		JComboBox cmbGrupo= new JComboBox(new String[]{"Seleccione un Grupo","Alimentos","Dulcerias","Papelerias","Refaccionarias","Supermercados"});
+		JComboBox cmbGrupo= new JComboBox(new String[]{"Seleccione un Grupo","Alimentos","Dulcerias","Ferreterias","Papelerias","Refaccionarias","Supermercados","Izacel"});
 		
 		public DefaultTableModel modelo = new DefaultTableModel(null, Colum){
 			 @SuppressWarnings("rawtypes")
@@ -301,10 +301,18 @@ public void init_tablaconsulta(){
 			            	cod_meta=23;
 			            }
 			            
+			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Izacel")){
+			            	cod_meta=49;
+			            }
+			            
 			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Dulcerias")){
-			            	cod_meta=48;
+			            	cod_meta=57;
 			            }
 
+			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Ferreterias")){
+			            	cod_meta=79;
+			            }
+			            
 						if(omep.buscar_metas_a_generar(anio, mes,cod_meta,estab).equals("no") ){
 								modelo.setRowCount(0);
 								JOptionPane.showMessageDialog(null, "No Se Pudieron Calcular Metas Con Los Parametros Seleccionados "
@@ -313,6 +321,8 @@ public void init_tablaconsulta(){
 										+ "  \nEjemplo 1: Establecimiento [SUPER I]        Grupo [Supermercados] "
 										+ "  \nEjemplo 2: Establecimiento [ESPACIO 35] Grupo [Alimentos]"
 										+ "  \nEjemplo 3: Establecimiento [PAPER CITY] Grupo [Papelerias]"
+										+ "  \nEjemplo 3: Establecimiento [FIESTILANDIA] Grupo [Dulcerias]"
+										+ "  \nEjemplo 3: Establecimiento [REFACCIONARIA] Grupo [Refaccionarias]"
 										, "Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
 								return;						
 						}else{
