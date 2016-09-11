@@ -9334,4 +9334,33 @@ public boolean existeInventarioElDiaActual(){
 	return existe;
 }
 
+public boolean existenPedidosPendientesPorSurtir(){
+	
+	boolean existe = false;
+	
+	String query = "exec sp_select_existen_pedidos_pendientes_por_surtir";
+	
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+	    ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			existe = rs.getBoolean("existe_pedido_pendiente"); 
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		System.err.println("Error");
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ existenPedidosPendientesPorSurtir ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+	finally{
+		 if (stmt != null) { try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} }
+	}
+	return existe;
+}
+
 }
