@@ -110,8 +110,8 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 		this.setModal(true);
 		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/usuario-busquedaicono-4661-64.png"));
-		this.setTitle("Filtro de Pedidos Asignados");
-		campo.setBorder(BorderFactory.createTitledBorder("Filtro De Pedidos Asignados"));
+		this.setTitle("Filtro De Reportes De Pedidos");
+		campo.setBorder(BorderFactory.createTitledBorder("Seleccion De Pedido Para Generacion De Reporte"));
 		
 		int y=20;
 		

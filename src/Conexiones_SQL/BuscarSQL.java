@@ -9303,4 +9303,64 @@ public boolean existenPedidosActivos(){
 	return mov;
 }
 
+public boolean existeInventarioElDiaActual(){
+	
+	boolean existe = false;
+	
+	String query = "select count(cod_prod) as existe_inventario "
+					+ " from tb_inventario_de_gestion_de_pedidos "
+					+ " where convert(varchar(20),fecha,103) = convert(varchar(20),GETDATE(),103)";
+	
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+	    ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			existe = rs.getInt("existe_inventario")==0?false:true; 
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		System.err.println("Error");
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ existeInventarioElDiaActual ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+	finally{
+		 if (stmt != null) { try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} }
+	}
+	return existe;
+}
+
+public boolean existenPedidosPendientesPorSurtir(){
+	
+	boolean existe = false;
+	
+	String query = "exec sp_select_existen_pedidos_pendientes_por_surtir";
+	
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+	    ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			existe = rs.getBoolean("existe_pedido_pendiente"); 
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		System.err.println("Error");
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ existenPedidosPendientesPorSurtir ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+	finally{
+		 if (stmt != null) { try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} }
+	}
+	return existe;
+}
+
 }
