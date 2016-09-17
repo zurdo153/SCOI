@@ -394,7 +394,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		}
 	};
 	
-	@SuppressWarnings("deprecation")
 	public void BUSCAR(){
 		Obj_Gestion_De_Pedidos_A_Establecimientos pedido = new Obj_Gestion_De_Pedidos_A_Establecimientos().buscar(txtPedido.getText().toUpperCase());
 		
@@ -472,7 +471,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	};
 	
 	ActionListener opFiltroReporteDeAsignaciones = new ActionListener() {
-		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
 			
 			new Cat_Reportes_De_Pedidos_Asignados().setVisible(true);
