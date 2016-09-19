@@ -93,7 +93,7 @@ public Cat_Reporte_De_Ventas_Por_Clasificacion_De_Metas() {
 	private void GenerarReporte(){    
 				reporte = "Obj_Reporte_De_Ventas_Por_Clasificacion_De_Metas.jrxml";
 				 comando = "exec sp_reporte_de_ventas_por_clasificacion_de_metas "+"'"+cmbGrupo.getSelectedItem()+"',"+cmbAnio.getSelectedItem()+","+"'"+cmbMes.getSelectedItem()+"',"+"'"+cmbEstablecimiento.getSelectedItem()+"'";
-
+				
 				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	

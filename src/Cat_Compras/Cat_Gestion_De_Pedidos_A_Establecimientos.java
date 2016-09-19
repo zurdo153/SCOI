@@ -237,8 +237,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	public void recorrerFoco(){
 		
-		System.out.println(fila);
-		
 		tabla.getSelectionModel().setSelectionInterval(fila, fila);
 		tabla.editCellAt(fila, 4);
 		Component aComp=tabla.getEditorComponent();
@@ -393,7 +391,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 								
 								txtUsuario.setText(pedido.getUsuario());		
 								txtStatus.setText(pedido.getStatus_pedido());
-								
+							  
 								modelo.setRowCount(0);
 								Object[][] productos = new BuscarTablasModel().Buscar_Pedido(txtPedido.getText().toUpperCase(),banderaGuardarModificar);
 								
@@ -410,8 +408,11 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 //									return;
 //								}
 								
-								fila=0;
-								recorrerFoco();
+										fila=1;
+								
+								    	recorrerFoco(); 
+								    	
+									
 								
 				}else{
 					limpiar();
