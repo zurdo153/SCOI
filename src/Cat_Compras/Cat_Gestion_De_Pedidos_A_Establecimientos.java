@@ -2,9 +2,12 @@ package Cat_Compras;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Point;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -159,6 +162,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		x=840;
 		panel.add(btnGuardar).setBounds(x, y, ancho*2, 30);
 		
+		
+		
 		llamarRender();
 		cmbEstablecimientos.setSelectedItem("CEDIS");
 		cmbEstablecimientos.setEnabled(false);
@@ -244,6 +249,21 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		  jtc.requestFocus();
 		  jtc.selectAll();
 		aComp.requestFocus();
+	}
+	
+	public void ClickAuto(){
+		Robot robot = null;
+	      try{
+	         robot = new Robot();
+	         
+	         scroll.getViewport().setViewPosition(new Point(0,0));
+	         
+	         robot.mouseMove(((int) cont.getLocationOnScreen().getX())+50, ((int) cont.getLocationOnScreen().getY())+125);
+	         
+	         robot.mousePress(InputEvent.BUTTON1_MASK);
+	         robot.mouseRelease(InputEvent.BUTTON1_MASK);
+	      }
+	      catch(Exception e2){System.out.println( e2.toString() ); }
 	}
 	
 	public void validarCelda(){
@@ -372,6 +392,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		}
 	};
 	
+	@SuppressWarnings("deprecation")
 	public void BUSCAR(){
 		Obj_Gestion_De_Pedidos_A_Establecimientos pedido = new Obj_Gestion_De_Pedidos_A_Establecimientos().buscar(txtPedido.getText().toUpperCase());
 		
@@ -407,12 +428,13 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 //									JOptionPane.showMessageDialog(null, productos[0][0].toString(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 //									return;
 //								}
-								
-										fila=1;
-								
-								    	recorrerFoco(); 
-								    	
-									
+								fila=0;		
+								tabla.lostFocus(null, null);
+								tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+								tabla.getSelectionModel().clearSelection();
+
+//								recorrerFoco();
+//								ClickAuto();
 								
 				}else{
 					limpiar();
@@ -448,6 +470,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	ActionListener opFiltroReporteDeAsignaciones = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			
 			new Cat_Reportes_De_Pedidos_Asignados().setVisible(true);
 		}
 	};

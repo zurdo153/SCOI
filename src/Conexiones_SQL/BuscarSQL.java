@@ -9171,7 +9171,7 @@ public String folio_Periodo_nuevo() throws SQLException{
 
 public int  anios_de_vacaciones(String fechaInicial, String fecha_final){
 	int anios = 0;
-   String query = "select dias_corresponden from tb_tabla_vacaciones_rangos where tb_tabla_vacaciones_rangos.años_trabajados =	convert (int,convert (numeric(10,2),(convert(float,DATEDIFF(day,convert(datetime,('"+fechaInicial+"')),dateadd(day,1,'"+fecha_final+"') ))/365)+1)) ";
+   String query = "select dias_corresponden from tb_tabla_vacaciones_rangos where tb_tabla_vacaciones_rangos.años_trabajados =	convert (int,convert (numeric(10,2),(convert(float,DATEDIFF(day,convert(datetime,('"+fechaInicial+"')),dateadd(day,1,'"+fecha_final+"') ))/365))) ";
 	
 	Statement stmt = null;
 	try {
@@ -9361,6 +9361,25 @@ public boolean existenPedidosPendientesPorSurtir(){
 		} }
 	}
 	return existe;
+}
+
+public int  dias_de_vacaciones_pendientes_del_ultimo_anio(String fecha_in,String fecha_fin) throws SQLException{
+	int dias=0;
+	String query = "exec sp_select_dias_de_vacaciones_pendientes '"+fecha_in+"','"+fecha_fin+"'";
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			dias=(rs.getInt("dias_pendientes"));
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	finally{
+		if(stmt!=null){stmt.close();}
+	}
+	return dias;
 }
 
 }
