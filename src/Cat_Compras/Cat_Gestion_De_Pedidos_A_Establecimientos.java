@@ -45,12 +45,14 @@ import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.GuardarSQL;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Principal.Obj_Refrescar;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -82,7 +84,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	JTextField txtStatus = new Componentes().text(new JCTextField(), "Status Pedido", 50, "String");
 	
-	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Cod_Prod","Descripcion", "Disponible", "Pedido", "Surtida","Pendiente","Unidad"} ){
+	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Cod_Prod","Descripcion", "Disponible", "Pedido", "Surtida","Pendiente","Unidad","Partida"} ){
          
 			@SuppressWarnings({ "rawtypes" })
 			Class[] types = new Class[]{
@@ -90,6 +92,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	                   java.lang.Object.class,
 	                   java.lang.Object.class,
 	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
 	                   java.lang.Object.class,
 	                   java.lang.Object.class,
 	                   java.lang.Object.class
@@ -108,6 +111,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	                        case 4  : return true;
 	                        case 5  : return false;
 	                        case 6  : return false;
+	                        case 7  : return false;
 	                }
 	                 return false;
 	         }
@@ -242,8 +246,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	public void recorrerFoco(){
 		
-		System.out.println(fila);
-		
 		tabla.getSelectionModel().setSelectionInterval(fila, fila);
 		tabla.editCellAt(fila, 4);
 		Component aComp=tabla.getEditorComponent();
@@ -287,6 +289,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		tabla.getColumnModel().getColumn(4).setMinWidth(80);
 		tabla.getColumnModel().getColumn(5).setMinWidth(80);
 		tabla.getColumnModel().getColumn(6).setMinWidth(80);
+		tabla.getColumnModel().getColumn(7).setMinWidth(30);
 		
 		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 	
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
@@ -295,6 +298,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 	
 		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
 		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 	
+		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
    	}
 	
    	ActionListener opDeshacer = new ActionListener(){
@@ -367,13 +371,19 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				Obj_Gestion_De_Pedidos_A_Establecimientos pedido = new Obj_Gestion_De_Pedidos_A_Establecimientos().buscar(txtPedido.getText().toUpperCase());
 				
 				if(new BuscarSQL().existenPedidosPendientesPorSurtir()){
-					if(pedido.getStatus_pedido().equals("VIGENTE") || pedido.getStatus_pedido().equals("ASIGNADO")){
+					if(pedido.getStatus_pedido().trim().equals("VIGENTE") || pedido.getStatus_pedido().equals("ASIGNADO")){
 						BUSCAR();
-					}else{
-						limpiar();
-						JOptionPane.showMessageDialog(null, "Es Necesario Surtir Todos Los Pedidos Pendientes", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-						return;
-					}
+					  }else{
+		  				    if(pedido.getStatus_pedido().equals("SURTIDO")){
+		  				    	limpiar();
+								JOptionPane.showMessageDialog(null, "El Pedido "+pedido.getFolio_pedido()+" Ya Fue Surtido y No Puede Ser Modificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+		  				    }else{
+								limpiar();
+								JOptionPane.showMessageDialog(null, "Es Necesario Surtir Todos Los Pedidos Pendientes", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}
+					  }
 				}else{
 					if(new BuscarSQL().existeInventarioElDiaActual()){
 						BUSCAR();
@@ -390,10 +400,10 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				JOptionPane.showMessageDialog(null, "Ingrese Un Folio Para Consultar Pedido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
-			
 		}
 	};
 	
+	@SuppressWarnings("deprecation")
 	public void BUSCAR(){
 		Obj_Gestion_De_Pedidos_A_Establecimientos pedido = new Obj_Gestion_De_Pedidos_A_Establecimientos().buscar(txtPedido.getText().toUpperCase());
 		
@@ -413,11 +423,10 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 								
 								txtUsuario.setText(pedido.getUsuario());		
 								txtStatus.setText(pedido.getStatus_pedido());
-								
+							  
 								modelo.setRowCount(0);
 								Object[][] productos = new BuscarTablasModel().Buscar_Pedido(txtPedido.getText().toUpperCase(),banderaGuardarModificar);
 								
-//								System.out.println(productos[0][0].toString());
 //								if(!productos[0][0].toString().equals("El Pedido No Cuenta Con Productos")){
 										for(Object[] prod : productos){
 											modelo.addRow(prod);
@@ -429,14 +438,10 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 //									JOptionPane.showMessageDialog(null, productos[0][0].toString(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 //									return;
 //								}
-								
-//								tabla.lostFocus(null, null);
-//								tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+								fila=0;		
+								tabla.lostFocus(null, null);
+								tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 								tabla.getSelectionModel().clearSelection();
-								
-//								fila=0;
-//								recorrerFoco();
-								ClickAuto();
 								
 				}else{
 					limpiar();
@@ -487,25 +492,22 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	ActionListener opGuardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-
 				if(txtStatus.getText().equals("ASIGNADO")){
 					 seleccionDeStatus();
 				}else{
 					//el parametro vacio no altera el estatus (quedara el valor default)
 					guardar("N");
 				}
-
 			}
 		};
 		
 		public void seleccionDeStatus(){
 				
-			Icon icon = new ImageIcon("Iconos/camara_icon&16.png");
+			Icon icon = new ImageIcon("Imagen/equipos-de-tarea-asignada-icono-7668-32.png");
 	        
 			String[] options = {"Asignado", "Surtir", "Cancelar"};
 			String aviso = "El Pedido Ya Se Encuentra Asignado, Si Desea Seguir Realizando Cambios Selecciones [Asignado],\nSi El Pedido Ya Es Correcto Seleccione [Surtir], Si No Desea Realizar Cambios Seleccione [Cancelar]";
 			int seleccion = JOptionPane.showOptionDialog(null, aviso, "Seleccion De Status", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, icon, options, options[0]);
-			System.out.println(seleccion);
 			
 			//entra si selecciona [Asignado] ó [Surtir]
 			if(seleccion<2){
@@ -526,7 +528,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		pedido.buscar(txtPedido.getText().trim());
 		 
 		if(banderaGuardarModificar.equals("MODIFICAR")){
-//				modifiar
+//				modificar
 				if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
 					
 						if(ValidaCampos().equals("")){
@@ -542,7 +544,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 								
 								if(pedido.guardar_actualizar(banderaGuardarModificar)){
 									limpiar();
-									JOptionPane.showMessageDialog(null, "El Registro Se Actualizo Exitisamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+									JOptionPane.showMessageDialog(null, "El Registro Se Actualizo Exitosamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 									return;
 								}else{
 									JOptionPane.showMessageDialog(null, "El Registro No Se Pudo Actualizar", "Error", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
@@ -665,6 +667,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		JTextField txtFolio= new JTextField();
 		JTextField txtFolioProveedor = new JTextField();
 		
+		JButton btnCancelar 			= new JCButton("CANCELAR", "", "Azul");
 		JButton btnActualizarFiltro = new JCButton("ACTUALIZAR","refrescar-volver-a-cargar-las-flechas-icono-4094-32.png","Azul");
 
 		Border blackline, etched, raisedbevel, loweredbevel, empty;
@@ -700,14 +703,17 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			llamarRender();
 			
 			int y = 20;
-			panel.add(btnActualizarFiltro).setBounds(695,y-12,180,32);
+			panel.add(btnCancelar).setBounds(605,y-12,180,32);
+			panel.add(btnActualizarFiltro).setBounds(815,y-12,180,32);
 			panel.add(txtFolio).setBounds(15,y,60,20);
 			panel.add(txtFolioProveedor).setBounds(75,y,260,20);
 			panel.add(scrollAsignado).setBounds(15,y+=20,ancho-30,alto-70);
 	             
-			buscarEntradas(establecimiento);
+//			buscarEntradas(establecimiento,"Refresh");
+			consultarfiltro("","");
 			agregar(tabla);
 			btnActualizarFiltro.addActionListener(Buscar_Cambios);
+			btnCancelar.addActionListener(Buscar_Cambios);
 			
 //	     Buscar Con F5
 	        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -724,14 +730,38 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	                  });
 		}
 		
-		public void buscarEntradas(String establecimiento){
+		public void buscarEntradas(String establecimiento,String Actualizar){
+			
+			System.out.print(Actualizar);
+	    	String folio_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim():"";
+	    	String status_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 6).toString().trim():"";
+	    	System.out.println(folio_pedido);
+	    	System.out.println(status_pedido);
+	    	
+				if(Actualizar.toUpperCase().equals("CANCELAR") && folio_pedido.equals("")){
+						JOptionPane.showMessageDialog(null, "Favor De Seleccionar El Registro Que Se Desea Cancelar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+				}else{
+					
+						if((Actualizar.toUpperCase().equals("ACTUALIZAR")) || (Actualizar.toUpperCase().equals("CANCELAR") && status_pedido.equals("VIGENTE")) ){
+							consultarfiltro(Actualizar,folio_pedido);
+						}else{
+								JOptionPane.showMessageDialog(null, "Solo Se Pueden Cancelar Registros Con Status Vigente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+						}
+				}
+		}
+		
+		public void consultarfiltro(String Modificar,String folio_pedido){
+
+			
 			modelo.setRowCount(0);
 			
 			Statement s;
 			ResultSet rs;
 			try {
 				
-				String query = "exec sp_select_filtro_de_seleccion_de_pedido"; 
+				String query = "exec sp_select_filtro_de_seleccion_de_pedido2 '"+Modificar+"','"+folio_pedido+"','"+(new Obj_Usuario().LeerSession().getFolio())+"'"; 
 				
 				s = con.conexion().createStatement();
 				rs = s.executeQuery(query);
@@ -755,6 +785,9 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en buscarEntradas SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
+			
+			
+	
 		}
 		
 		KeyListener opFiltro = new KeyListener(){
@@ -783,7 +816,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		ActionListener Buscar_Cambios = new ActionListener(){
 			@SuppressWarnings({ })
 			public void actionPerformed(ActionEvent e){
-				buscarEntradas(cmbEstablecimientos.getSelectedItem().toString());
+				buscarEntradas(cmbEstablecimientos.getSelectedItem().toString(),e.getActionCommand());
 			}
 		};
 		

@@ -14,7 +14,16 @@ public class Obj_Gestion_De_Pedidos_A_Establecimientos {
 	String Usuario = "";
 	String clasificador="";
 	String status_pedido="";
+	Integer partida=0;
 	
+	public Integer getPartida() {
+		return partida;
+	}
+
+	public void setPartida(Integer partida) {
+		this.partida = partida;
+	}
+
 	Object[][] matriz = null;
 	
 	public Obj_Gestion_De_Pedidos_A_Establecimientos() {

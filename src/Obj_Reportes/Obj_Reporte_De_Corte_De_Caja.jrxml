@@ -1,493 +1,129 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-02-15T19:11:49 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Corte_De_Caja" language="groovy" pageWidth="210" pageHeight="760" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="310da8fc-7048-4194-90f6-839ee095fa06">
-	<property name="template.type" value="columnar"/>
-	<property name="ireport.zoom" value="2.3579476910000086"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="362"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
-	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
-	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
-	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
-	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
-	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
-			<style mode="Opaque" backcolor="#F0EFEF"/>
-		</conditionalStyle>
-	</style>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["M:\\SISTEMA DE CONTROL OPERATIVO IZAGAR\\SCOI\\src\\Obj_Reportes\\"]]></defaultValueExpression>
-	</parameter>
-	<queryString>
-		<![CDATA[declare  @dolares money,@vales money,@retiro_a_cajero money,@fuente_de_sodas money,@retiros_de_clientes money
-
-,@folio_corte varchar(15)
-set @folio_corte = ('FIE24803');
-
-
-set @dolares=(select tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor
-			 	   from tb_alimentacion_efectivo_cortes
-				        inner join tb_denominaciones on tb_denominaciones.folio=tb_alimentacion_efectivo_cortes.folio_denominacion
-					where folio_corte=@folio_corte and folio_denominacion=12)
-
-set @vales=(select tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor
-			 	   from tb_alimentacion_efectivo_cortes
-				        inner join tb_denominaciones on tb_denominaciones.folio=tb_alimentacion_efectivo_cortes.folio_denominacion
-					where folio_corte=@folio_corte and folio_denominacion=13)
-
-set @retiro_a_cajero=(select isnull(sum(importe_retiro),0) from tb_retiros_a_cajeros where folio_corte=@folio_corte)
-set @fuente_de_sodas=(select isnull(sum(importe),0) from tb_captura_fuente_sodas where folio_corte=@folio_corte)
-set @retiros_de_clientes=(select isnull(sum(tb_vauchers.retiro),0) from tb_vauchers where tb_vauchers.folio_corte = @folio_corte)
-
-
-select convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,103)+' '+convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,108) as fecha
-		,tb_alimentacion_de_cortes.folio_corte as folio_corte
-		,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as cajero
-		,(select tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno
-		           from tb_empleado where tb_empleado.folio	= tb_alimentacion_de_cortes.folio_usuario) 	as realizo_corte
-        ,tb_establecimiento.nombre as establecimiento_de_corte
-		,(tb_alimentacion_de_cortes.corte_del_sistema-tb_alimentacion_de_cortes.abonos ) as corte_del_sistema
-        ,tb_alimentacion_de_cortes.apartados
-        ,tb_alimentacion_de_cortes.abonos
-		,tb_alimentacion_de_cortes.tiempo_aire
-		,tb_alimentacion_de_cortes.recibo_de_luz
-		,tb_alimentacion_de_cortes.deposito
-		,tb_alimentacion_de_cortes.efectivo-@dolares-@vales as efectivo
-        ,@dolares as dolares
-        ,@vales as vales
-		,tb_alimentacion_de_cortes.cheques
-		,tb_alimentacion_de_cortes.total_de_vauchers-@retiros_de_clientes as total_de_vauchers
-        ,(tb_alimentacion_de_cortes.efectivo + tb_alimentacion_de_cortes.cheques + tb_alimentacion_de_cortes.total_de_vauchers-@retiros_de_clientes+@retiro_a_cajero+@fuente_de_sodas-tb_alimentacion_de_cortes.corte_del_sistema-tb_alimentacion_de_cortes.apartados   +   tb_alimentacion_de_cortes.abonos  ) as diferiencia_de_corte
-		,@retiros_de_clientes as total_de_retiros_clientes
-        ,@retiro_a_cajero as importe_retiros_a_cajero
-        ,@fuente_de_sodas as importe_fuente_de_sodas
-        ,tb_alimentacion_de_cortes.observacion
-		,((tb_alimentacion_de_cortes.efectivo + tb_alimentacion_de_cortes.cheques + tb_alimentacion_de_cortes.total_de_vauchers-@retiros_de_clientes+@retiro_a_cajero+@fuente_de_sodas-tb_alimentacion_de_cortes.corte_del_sistema-tb_alimentacion_de_cortes.apartados   +   tb_alimentacion_de_cortes.abonos  )-tb_alimentacion_de_cortes.abonos) as diferencia_total
-from tb_alimentacion_de_cortes
-inner join tb_empleado on tb_empleado.folio = tb_alimentacion_de_cortes.folio_empleado
-inner join tb_establecimiento on tb_establecimiento.folio = tb_alimentacion_de_cortes.folio_establecimiento_de_corte
-where tb_alimentacion_de_cortes.folio_corte = @folio_corte]]>
-	</queryString>
-	<field name="fecha" class="java.lang.String"/>
-	<field name="folio_corte" class="java.lang.String"/>
-	<field name="cajero" class="java.lang.String"/>
-	<field name="realizo_corte" class="java.lang.String"/>
-	<field name="establecimiento_de_corte" class="java.lang.String"/>
-	<field name="corte_del_sistema" class="java.math.BigDecimal"/>
-	<field name="apartados" class="java.math.BigDecimal"/>
-	<field name="abonos" class="java.math.BigDecimal"/>
-	<field name="tiempo_aire" class="java.math.BigDecimal"/>
-	<field name="recibo_de_luz" class="java.math.BigDecimal"/>
-	<field name="deposito" class="java.math.BigDecimal"/>
-	<field name="efectivo" class="java.math.BigDecimal"/>
-	<field name="dolares" class="java.math.BigDecimal"/>
-	<field name="vales" class="java.math.BigDecimal"/>
-	<field name="cheques" class="java.math.BigDecimal"/>
-	<field name="total_de_vauchers" class="java.math.BigDecimal"/>
-	<field name="diferiencia_de_corte" class="java.math.BigDecimal"/>
-	<field name="total_de_retiros_clientes" class="java.math.BigDecimal"/>
-	<field name="importe_retiros_a_cajero" class="java.math.BigDecimal"/>
-	<field name="importe_fuente_de_sodas" class="java.math.BigDecimal"/>
-	<field name="observacion" class="java.lang.String"/>
-	<field name="diferencia_total" class="java.math.BigDecimal"/>
-	<variable name="Total_de_Conceptos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{efectivo}+$F{dolares}+$F{vales}+$F{cheques}+$F{total_de_vauchers}
-+$F{importe_retiros_a_cajero}+$F{importe_fuente_de_sodas}]]></variableExpression>
-	</variable>
-	<variable name="Diferencia_Total" class="java.lang.String">
-		<variableExpression><![CDATA[($F{diferiencia_de_corte}-$F{abonos})]]></variableExpression>
-	</variable>
-	<group name="Group2">
-		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
-		<groupHeader>
-			<band height="3"/>
-		</groupHeader>
-		<groupFooter>
-			<band height="213">
-				<frame>
-					<reportElement mode="Opaque" x="34" y="150" width="143" height="12" forecolor="#D0B48E" backcolor="#CCCCCC" uuid="dfe7325b-cef0-4207-ad77-54bdf3028f10"/>
-					<textField pattern="#,##0.00#">
-						<reportElement x="88" y="0" width="54" height="12" uuid="4584e3b7-1ccd-46f4-9826-0281209f52bb"/>
-						<textElement textAlignment="Right">
-							<font size="8" isBold="true"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{diferencia_total}]]></textFieldExpression>
-					</textField>
-				</frame>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="33" y="90" width="143" height="1" uuid="25cef62d-1a1a-4bcc-a2ac-f6256554cb54"/>
-				</line>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="112" y="104" width="66" height="11" uuid="e9eb1e9b-2fa0-42b9-9d9b-78d40654bc36"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{corte_del_sistema}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="34" y="179" width="74" height="11" uuid="19f037a5-2135-4c51-a21a-647a6fd0710c"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Tiempo Aire:]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="110" y="179" width="67" height="11" uuid="b5d7bf58-61aa-49e2-a277-5298e00a1bcc"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{tiempo_aire}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="34" y="168" width="74" height="11" uuid="c14ba38b-ee35-4085-9841-8856a6a49ec0"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Recibo De Luz:]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="110" y="168" width="67" height="11" uuid="fad0e3c4-cae5-4be5-a9e2-a0f884bea94c"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{recibo_de_luz}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="33" y="24" width="74" height="11" uuid="5e5fcf40-6349-4399-8170-e3388312a9c5"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Efectivo:]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="112" y="24" width="66" height="11" uuid="3f5f10a4-8159-4b53-8623-b36d8bb768e5"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{efectivo}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="33" y="57" width="74" height="11" uuid="5411a261-678e-4fa1-8179-f4f9cacd135c"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Cheques:]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="112" y="57" width="66" height="11" uuid="3dcb1546-b019-4031-8788-57bdfffc6f16"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{cheques}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="33" y="68" width="74" height="11" uuid="ed6d529c-5c89-4eba-b8d1-a654ad6ab001"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Vauchers:]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="112" y="68" width="66" height="11" uuid="8cd12cdb-71b2-4bf7-8f36-6b14de896502"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{total_de_vauchers}]]></textFieldExpression>
-				</textField>
-				<frame>
-					<reportElement mode="Opaque" x="34" y="128" width="143" height="12" forecolor="#D0B48E" backcolor="#CCCCCC" uuid="211a9374-0867-45b0-bb8a-c512dac6541b"/>
-				</frame>
-				<staticText>
-					<reportElement x="37" y="104" width="70" height="11" uuid="d842af27-4cc9-4f1f-ab88-034ff6b2a842"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Corte Del Sistema:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="34" y="190" width="67" height="11" uuid="9ab7a262-3dfb-4dc0-b31f-dcb1ace1b7d7"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Deposito En Caja:]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="123" y="190" width="54" height="11" uuid="b9ede47e-1622-47f1-9b93-b827bd772ff8"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{deposito}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="2" y="0" width="207" height="1" uuid="a9a611a3-c5e8-4c83-b32d-d9ff77493b98"/>
-				</line>
-				<staticText>
-					<reportElement x="34" y="201" width="101" height="11" uuid="e3de750e-4b02-49a4-b80a-f75bfb2f35d8"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Total de Retiros Del Cliente:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement stretchType="RelativeToTallestObject" x="53" y="1" width="108" height="12" backcolor="#FFFFFF" uuid="285d0189-e2c8-4487-8827-fefcac58405f"/>
-					<textElement verticalAlignment="Top">
-						<font size="9" isBold="true" isItalic="false" isUnderline="true"/>
-					</textElement>
-					<text><![CDATA[Concentrado del Corte:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="33" y="35" width="74" height="11" uuid="803af0fe-99cf-4165-b091-c6c0392ad941"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Dolares:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="33" y="46" width="74" height="11" uuid="3c6153ea-2a48-49de-8951-ab8675355ac1"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Vales:]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="112" y="35" width="66" height="11" uuid="d431b1ef-3922-460b-a1ce-2d64fa78ae4e"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{dolares}]]></textFieldExpression>
-				</textField>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="112" y="46" width="66" height="11" uuid="b16783d1-fbfa-4c74-979f-5f8ed9d5662c"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{vales}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="43" y="92" width="64" height="11" uuid="34912bd9-3985-4b33-a6a9-b68cb8bb2c9a"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Total Conceptos:]]></text>
-				</staticText>
-				<textField pattern="#,##0.00#">
-					<reportElement x="112" y="92" width="66" height="11" uuid="619e9450-72d1-4d7e-b352-f24b20df6f7a"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{Total_de_Conceptos}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="34" y="127" width="143" height="1" uuid="03dfe0c9-513d-443c-99fb-f2f0526aea5c"/>
-				</line>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="135" y="201" width="42" height="11" uuid="6366f51f-1e2b-4955-a15d-88bfa612c175"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{total_de_retiros_clientes}]]></textFieldExpression>
-				</textField>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="112" y="14" width="66" height="11" uuid="6df08401-818c-4d02-9baa-926f352b98cb"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{importe_retiros_a_cajero}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="33" y="14" width="74" height="11" uuid="38f0168e-8d7e-4411-9859-52e25ae28944"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Retiros al Cajero:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="33" y="78" width="74" height="11" uuid="6e3c9e43-9a9e-4ea4-a8d1-e2b361aa4d1d"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Fuente de Sodas:]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="112" y="78" width="66" height="11" uuid="039c072b-2369-46f1-a72d-451292550e6a"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{importe_fuente_de_sodas}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="67" y="116" width="40" height="11" uuid="e4fe1952-a1e2-4a9d-8ee0-badd1fbfbc35"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Apartados:]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="112" y="116" width="66" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="4236e59d-2f18-4342-9206-0fe0a8996ca3"/>
-					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
-						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{apartados}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="34" y="128" width="89" height="11" uuid="3ff9ab4b-ec15-4d51-9072-ba19396b887e"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Diferiencia de Corte: ]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="122" y="127" width="54" height="12" uuid="4d072b3b-4a59-4b1d-9eb1-c24beba21c40"/>
-					<textElement textAlignment="Right">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{diferiencia_de_corte}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="37" y="140" width="80" height="11" uuid="5330d8e7-e03d-4ed1-ba00-a03a89eedf69"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Abonos(AHORROS):]]></text>
-				</staticText>
-				<textField pattern="###0.00;-###0.00">
-					<reportElement x="122" y="140" width="54" height="11" uuid="dd451839-f5f7-42ae-ba78-0524c4e84a17"/>
-					<textElement textAlignment="Right">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{abonos}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="49" y="151" width="64" height="11" uuid="6203a412-25c7-4eb4-86b9-17e52bdc4914"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Diferencia Total:]]></text>
-				</staticText>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="34" y="150" width="143" height="1" uuid="24141a70-aec6-4449-b07b-e180462010f6"/>
-				</line>
-			</band>
-		</groupFooter>
-	</group>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="114" splitType="Stretch">
-			<staticText>
-				<reportElement style="Title" x="2" y="6" width="201" height="33" uuid="8c6e7c03-de08-42aa-a8ec-de55dc358a13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="28" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Corte de caja]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="47" y="39" width="139" height="17" uuid="98f3ce5c-ecbe-4e1e-855b-895a8336dcfd"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement style="Title" x="13" y="39" width="34" height="17" uuid="e52e9387-7985-42b7-b8ea-78243db8e8b2"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha: ]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="94" y="85" width="109" height="17" uuid="fa2d9724-c048-4e5d-bc21-ccdbc1b3266b"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="10" isBold="true" isItalic="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{establecimiento_de_corte}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement style="Title" x="12" y="85" width="81" height="17" uuid="1a49efbf-1ca0-43b6-9b57-0e50b5624edb"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Establecimiento: ]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="87" y="68" width="116" height="17" uuid="4a3efc4b-acda-4268-8c87-b31cbee6f33d"/>
-				<textElement>
-					<font fontName="SansSerif" isBold="true" isItalic="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{folio_corte}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement style="Title" x="12" y="68" width="75" height="17" uuid="a90e5f88-f447-4d54-b2b1-d5cad7b289d4"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Folio de Corte: ]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="12" y="102" width="191" height="11" forecolor="#000000" uuid="8e829bc4-3d8f-493d-8430-6a5e24320000"/>
-				<textElement>
-					<font fontName="Times New Roman" size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Cajero(a): "+$F{cajero}]]></textFieldExpression>
-			</textField>
-			<image>
-				<reportElement x="155" y="38" width="39" height="30" uuid="51e5a957-6443-4085-931b-43d3349f5057"/>
-				<imageExpression><![CDATA["C:\\SCOI\\imagen\\bolsa-de-dinero-en-efectivo-icono-6673-128.jpg"]]></imageExpression>
-			</image>
-		</band>
-	</title>
-	<pageHeader>
-		<band splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
-	<columnFooter>
-		<band height="44" splitType="Stretch">
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="31" width="101" height="1" uuid="0480929c-f0a5-4190-836a-0c46f98484dd"/>
-				<graphicElement>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-				</graphicElement>
-			</line>
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="109" y="31" width="101" height="1" uuid="338fe2dd-9261-4827-abd0-fcaecb0906ed"/>
-				<graphicElement>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-				</graphicElement>
-			</line>
-			<textField>
-				<reportElement x="2" y="31" width="97" height="12" uuid="69474b6e-260c-4c5d-aed4-6ca6a5c4f678"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cajero}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="109" y="31" width="100" height="12" uuid="b42153cd-f464-497e-a076-537f240ead49"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{realizo_corte}]]></textFieldExpression>
-			</textField>
-		</band>
-	</columnFooter>
-	<pageFooter>
-		<band height="18" splitType="Stretch">
-			<textField>
-				<reportElement x="12" y="0" width="182" height="18" uuid="d63d3a8e-f452-48cd-89e5-d7d9abd983b8"/>
-				<textElement>
-					<font size="6" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageFooter>
-	<summary>
-		<band height="5" splitType="Stretch"/>
-	</summary>
-</jasperReport>
+  <parameters xmi:id="__ruEe4EPEearMJYwpCVujg" elementId="message" name="Message"/>
+    <parameters xmi:id="__ruEfIEPEearMJYwpCVujg" elementId="imageType" name="Image Type Constant" typeId="org.eclipse.ui.dialogs.Integer"/>
+    <parameters xmi:id="__ruEfYEPEearMJYwpCVujg" elementId="defaultIndex" name="Default Button Index" typeId="org.eclipse.ui.dialogs.Integer"/>
+    <parameters xmi:id="__ruEfoEPEearMJYwpCVujg" elementId="buttonLabel0" name="First Button Label"/>
+    <parameters xmi:id="__ruEf4EPEearMJYwpCVujg" elementId="buttonLabel1" name="Second Button Label"/>
+    <parameters xmi:id="__ruEgIEPEearMJYwpCVujg" elementId="buttonLabel2" name="Third Button Label"/>
+    <parameters xmi:id="__ruEgYEPEearMJYwpCVujg" elementId="buttonLabel3" name="Fourth Button Label"/>
+    <parameters xmi:id="__ruEgoEPEearMJYwpCVujg" elementId="cancelReturns" name="Return Value on Cancel"/>
+  </commands>
+  <commands xmi:id="__ruEg4EPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.goto.lineEnd" commandName="Line End" description="Go to the end of the line of text" category="__ruFzYEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEhIEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.commit.CreateTag" commandName="Create Tag..." category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEhYEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.extract.method" commandName="Extract Function" description="Extract a set of statements or an expression into a new function and use the new function" category="__ruF9IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEhoEPEearMJYwpCVujg" elementId="org.eclipse.jpt.jpa.ui.generateDDL" commandName="Generate Tables from Entities..." category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEh4EPEearMJYwpCVujg" elementId="org.eclipse.wst.xml.ui.referencedFileErrors" commandName="Show Details..." description="Show Details..." category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEiIEPEearMJYwpCVujg" elementId="org.eclipse.datatools.sqltools.sqleditor.runAction" commandName="Run" category="__ruF54EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEiYEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.RunLast" commandName="Run" description="Launch in run mode" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEioEPEearMJYwpCVujg" elementId="org.eclipse.ui.externalTools.commands.OpenExternalToolsConfigurations" commandName="External Tools..." description="Open external tools launch configuration dialog" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEi4EPEearMJYwpCVujg" elementId="org.eclipse.jdt.debug.ui.command.OpenFromClipboard" commandName="Open from Clipboard" description="Opens a Java element or a Java stack trace from clipboard" category="__ruF0YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEjIEPEearMJYwpCVujg" elementId="org.eclipse.pde.ui.internationalize" commandName="Internationalize Plug-ins" description="Sets up internationalization for a plug-in" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEjYEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.deletePrevious" commandName="Delete Previous" description="Delete the previous character" category="__ruFzYEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEjoEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.CompareWithPrevious" commandName="Compare with Previous Revision" category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEj4EPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.select.columnNext" commandName="Select Next Column" description="Select the next column" category="__ruFzYEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEkIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.search.read.access.in.workspace" commandName="Read Access in Workspace" description="Search for read references to the selected element in the workspace" category="__ruF4oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEkYEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.search.implementors.in.workspace" commandName="Implementors in Workspace" description="Search for implementors of the selected interface" category="__ruF4oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEkoEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.TerminateAndRelaunch" commandName="Terminate and Relaunch" description="Terminate and Relaunch" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEk4EPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.JavaHierarchyPerspective" commandName="Java Type Hierarchy" description="Show the Java Type Hierarchy perspective" category="__ruF6IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruElIEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.search.declarations.in.project" commandName="Declaration in Project" description="Search for declarations of the selected element in the enclosing project" category="__ruF4oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruElYEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.surround.with.try.multicatch" commandName="Surround with try/multi-catch Block" description="Surround the selected text with a try/multi-catch block" category="__ruF7YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEloEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.Tag" commandName="Tag" category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEl4EPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.NoAssumeUnchanged" commandName="No Assume Unchanged" category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEmIEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.JavadocView" commandName="Documentation" description="Show the JavaScript Documentation view" category="__ruFxoEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEmYEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.RemoveAllBreakpoints" commandName="Remove All Breakpoints" description="Removes all breakpoints" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEmoEPEearMJYwpCVujg" elementId="org.eclipse.ui.navigator.resources.nested.changeProjectPresentation" commandName="P&amp;rojects Presentation" category="__ruF84EPEearMJYwpCVujg">
+    <parameters xmi:id="__ruEm4EPEearMJYwpCVujg" elementId="org.eclipse.ui.navigator.resources.nested.enabled" name="&amp;Hierarchical"/>
+    <parameters xmi:id="__ruEnIEPEearMJYwpCVujg" elementId="org.eclipse.ui.commands.radioStateParameter" name="Nested Project view - Radio State" optional="false"/>
+  </commands>
+  <commands xmi:id="__ruEnYEPEearMJYwpCVujg" elementId="org.eclipse.ui.window.showKeyAssist" commandName="Show Key Assist" description="Show the key assist dialog" category="__ruF2oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEnoEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.introduce.parameter.object" commandName="Introduce Parameter Object" description="Introduce a parameter object to a selected method" category="__ruF3IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEn4EPEearMJYwpCVujg" elementId="org.eclipse.gef.zoom_out" commandName="Zoom Out" description="Zoom Out" category="__ruF6oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEoIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.commands.openElementInEditor" commandName="Open Java Element" description="Open a Java element in its editor" category="__ruF0YEPEearMJYwpCVujg">
+    <parameters xmi:id="__ruEoYEPEearMJYwpCVujg" elementId="elementRef" name="Java element reference" typeId="org.eclipse.jdt.ui.commands.javaElementReference" optional="false"/>
+  </commands>
+  <commands xmi:id="__ruEooEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.uncomment" commandName="Uncomment" description="Uncomment the selected JavaScript comment lines" category="__ruFz4EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEo4EPEearMJYwpCVujg" elementId="org.eclipse.datatools.sqltools.result.removeInstance" commandName="Remove Result" category="__ruF34EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEpIEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.AddToIndex" commandName="Add to Index" category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEpYEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.discovery.ui.discoveryWizardCommand" commandName="Discovery Wizard" description="shows the connector discovery wizard" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEpoEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.search.read.access.in.working.set" commandName="Read Access in Working Set" description="Search for read references to the selected element in a working set" category="__ruF4oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEp4EPEearMJYwpCVujg" elementId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXmlAndMap" commandName="Add Attribute to XML and Map..." category="__ruF7oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEqIEPEearMJYwpCVujg" elementId="org.eclipse.wst.sse.ui.toggle.comment" commandName="Toggle Comment" description="Toggle Comment" category="__ruFx4EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEqYEPEearMJYwpCVujg" elementId="org.eclipse.ui.help.tipsAndTricksAction" commandName="Tips and Tricks" description="Open the tips and tricks help page" category="__ruF3oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEqoEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.format" commandName="Format" description="Format the selected text" category="__ruF7YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEq4EPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.smartEnter" commandName="Insert Line Below Current Line" description="Adds a new line below the current line" category="__ruFzYEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruErIEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.select.previous" commandName="Select Previous Element" description="Expand selection to include previous sibling" category="__ruFx4EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruErYEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.goto.lineStart" commandName="Line Start" description="Go to the start of the line of text" category="__ruFzYEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEroEPEearMJYwpCVujg" elementId="org.eclipse.oomph.setup.editor.synchronizePreferences" commandName="Synchronize Preferences" category="__ruFzIEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEr4EPEearMJYwpCVujg" elementId="org.eclipse.wst.xml.ui.cmnd.contentmodel.sych" commandName="Synch" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEsIEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.RepositoriesViewConfigureBranch" commandName="Configure Branch" category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEsYEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.Suspend" commandName="Suspend" description="Suspend" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEsoEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.hippieCompletion" commandName="Word Completion" description="Context insensitive completion" category="__ruFx4EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEs4EPEearMJYwpCVujg" elementId="org.eclipse.wst.xsd.ui.refactor.renameTargetNamespace" commandName="Rename Target Namespace" description="Changes the target namespace of the schema" category="__ruFx4EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEtIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.folding.collapseComments" commandName="Collapse Comments" description="Collapse all comments" category="__ruFzYEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEtYEPEearMJYwpCVujg" elementId="org.eclipse.team.ui.synchronizeLast" commandName="Repeat last synchronization" description="Repeat the last synchronization" category="__ruFxYEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEtoEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.generate.javadoc" commandName="Generate Javadoc" description="Generates Javadoc for a selectable set of Java resources" category="__ruF4IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEt4EPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.RepositoriesViewConfigureGerritRemote" commandName="Gerrit Configuration..." category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEuIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.debug.ui.commands.StepIntoSelection" commandName="Step Into Selection" description="Step into the current selected statement" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEuYEPEearMJYwpCVujg" elementId="org.eclipse.ui.ide.configureColumns" commandName="Configure Columns..." description="Configure the columns in the markers view" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEuoEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.ReplaceWithCommit" commandName="Replace with commit" category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEu4EPEearMJYwpCVujg" elementId="org.eclipse.jst.pagedesigner.design" commandName="Graphical Designer" category="__ruFyIEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEvIEPEearMJYwpCVujg" elementId="org.eclipse.tm.terminal.quickaccess" commandName="Quick Access" category="__ruF4YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEvYEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.DebugLast" commandName="Debug" description="Launch in debug mode" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEvoEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.wikitext.ui.convertToHtmlCommand" commandName="Generate HTML" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEv4EPEearMJYwpCVujg" elementId="org.eclipse.pde.ui.openManifest" commandName="Open Manifest" description="Open the plug-in manifest" category="__ruF0YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEwIEPEearMJYwpCVujg" elementId="org.eclipse.ui.window.previousView" commandName="Previous View" description="Switch to the previous view" category="__ruF2oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEwYEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.self.encapsulate.field" commandName="Encapsulate Var" description="Create getting and setting functions for the var and use only those to access the var" category="__ruF9IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEwoEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.generate.tostring" commandName="Generate toString()" description="Generates the toString() method for the type" category="__ruF7YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEw4EPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.organize.imports" commandName="Organize Imports" description="Evaluate all required imports and replace the current imports" category="__ruF7YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruExIEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.DropToFrame" commandName="Drop to Frame" description="Drop to Frame" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruExYEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.promote.local.variable" commandName="Convert Local Variable to Var" description="Convert a local variable to a var" category="__ruF9IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruExoEPEearMJYwpCVujg" elementId="org.eclipse.pde.api.tools.ui.compare.to.baseline" commandName="API Baseline..." description="Allows to compare the selected resource with the current baseline" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEx4EPEearMJYwpCVujg" elementId="org.eclipse.pde.ui.imagebrowser.saveToWorkspace" commandName="Save Image" description="Save the selected image into a project in the workspace" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEyIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.debug.ui.commands.Display" commandName="Display" description="Display result of evaluating selected text" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEyYEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.search.exception.occurrences" commandName="Search Exception Occurrences in File" description="Search for exception occurrences of a selected exception type" category="__ruF4oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEyoEPEearMJYwpCVujg" elementId="org.eclipse.tm.terminal.view.ui.command.disconnect" commandName="Disconnect Terminal" category="__ruF14EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEy4EPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.ShowBlame" commandName="Show Annotations" category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEzIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.correction.assignToField.assist" commandName="Quick Assist - Assign to field" description="Invokes quick assist and selects 'Assign to field'" category="__ruF7YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEzYEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.folding.expand" commandName="Expand" description="Expands the folded region at the current selection" category="__ruFzYEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEzoEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.extract.method" commandName="Extract Method" description="Extract a set of statements or an expression into a new method and use the new method" category="__ruF3IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruEz4EPEearMJYwpCVujg" elementId="org.eclipse.jpt.jpa.eclipselink.ui.newEclipseLinkMappingFile" commandName="EclipseLink ORM Mapping File" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE0IEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.tasks.ui.command.openRemoteTask" commandName="Open Remote Task" category="__ruF0YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE0YEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.nextMemoryBlock" commandName="Next Memory Monitor" description="Show renderings from next memory monitor." category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE0oEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.internal.reflog.OpenInCommitViewerCommand" commandName="Open in Commit Viewer" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE04EPEearMJYwpCVujg" elementId="org.eclipse.mylyn.context.ui.commands.task.retrieveContext" commandName="Retrieve Context" category="__ruFzoEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE1IEPEearMJYwpCVujg" elementId="org.eclipse.jst.jsp.ui.refactor.rename" commandName="Rename" description="Rename a Java Element" category="__ruFx4EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE1YEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.Fetch" commandName="Fetch" category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE1oEPEearMJYwpCVujg" elementId="org.eclipse.pde.ui.junitWorkbenchShortcut.run" commandName="Run JUnit Plug-in Test" description="Run JUnit Plug-in Test" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE14EPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.navigate.gotopackage" commandName="Go to Package" description="Go to Package" category="__ruF0YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE2IEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.task.ui.editor.QuickOutline" commandName="Quick Outline" description="Show the quick outline for the editor input" category="__ruF0IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE2YEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.eof" commandName="EOF" description="Send end of file" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE2oEPEearMJYwpCVujg" elementId="org.eclipse.jst.pagedesigner.horizotal" commandName="Horizontal Layout" category="__ruFyIEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE24EPEearMJYwpCVujg" elementId="org.eclipse.ui.navigate.showInQuickMenu" commandName="Show In..." description="Open the Show In menu" category="__ruF0YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE3IEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.copyLineUp" commandName="Duplicate Lines" description="Duplicates the selected lines and leaves the selection unchanged" category="__ruFzYEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE3YEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.ToggleMethodBreakpoint" commandName="Toggle Method Breakpoint" description="Creates or removes a method breakpoint" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE3oEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.navigate.java.open.structure" commandName="Open Structure" description="Show the structure of the selected element" category="__ruF0YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE34EPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.correction.assignToLocal.assist" commandName="Quick Assist - Assign to local variable" description="Invokes quick assist and selects 'Assign to local variable'" category="__ruFz4EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE4IEPEearMJYwpCVujg" elementId="org.eclipse.ui.navigate.next" commandName="Next" description="Navigate to the next item" category="__ruF0YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE4YEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.tasks.bugs.commands.newTaskFromMarker" commandName="New Task from Marker..." description="Report as Bug from Marker" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE4oEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.refactor.apply.refactoring.script" commandName="Apply Script" description="Perform refactorings from a refactoring script on the local workspace" category="__ruF9IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE44EPEearMJYwpCVujg" elementId="org.eclipse.wst.server.run" commandName="Run" description="Run server" category="__ruF04EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE5IEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.context.ui.commands.focus.view" commandName="Focus View" category="__ruF84EPEearMJYwpCVujg">
+    <parameters xmi:id="__ruE5YEPEearMJYwpCVujg" elementId="viewId" name="View ID to Focus" optional="false"/>
+  </commands>
+  <commands xmi:id="__ruE5oEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.StepReturn" commandName="Step Return" description="Step return" category="__ruF44EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE54EPEearMJYwpCVujg" elementId="org.eclipse.ui.browser.openBundleResource" commandName="Open Resource in Browser" description="Opens a bundle resource in the default web browser." category="__ruF2oEPEearMJYwpCVujg">
+    <parameters xmi:id="__ruE6IEPEearMJYwpCVujg" elementId="plugin" name="Plugin"/>
+    <parameters xmi:id="__ruE6YEPEearMJYwpCVujg" elementId="path" name="Path"/>
+  </commands>
+  <commands xmi:id="__ruE6oEPEearMJYwpCVujg" elementId="org.eclipse.jst.pagedesigner.source" commandName="Source Code" category="__ruFyIEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE64EPEearMJYwpCVujg" elementId="org.eclipse.ui.help.aboutAction" commandName="About" description="Open the about dialog" category="__ruF3oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE7IEPEearMJYwpCVujg" elementId="org.eclipse.wst.common.project.facet.ui.ConvertProjectToFacetedForm" commandName="Convert to Faceted Form..." category="__ruF1oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE7YEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.annotate.classFile" commandName="Annotate Class File" description="Externally add Annotations to a Class File." category="__ruF7YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE7oEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.stash.create" commandName="Stash Changes..." category="__ruF5oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE74EPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.replace.invocations" commandName="Replace Invocations" description="Replace invocations of the selected function" category="__ruF9IEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE8IEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.history.CheckoutCommand" commandName="Checkout" category="__ruF84EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE8YEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.tasks.ui.command.activateSelectedTask" commandName="Activate Selected Task" category="__ruF0YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE8oEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.search.references.in.workspace" commandName="References in Workspace" description="Search for references to the selected element in the workspace" category="__ruF4oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE84EPEearMJYwpCVujg" elementId="org.eclipse.wst.sse.ui.format.document" commandName="Format" description="Format selection" category="__ruFx4EPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE9IEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.correction.addNonNLS" commandName="Quick Fix - Add non-NLS tag" description="Invokes quick assist and selects 'Add non-NLS tag'" category="__ruF7YEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE9YEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.search.write.access.in.workspace" commandName="Write Access in Workspace" description="Search for write references to the selected element in the workspace" category="__ruF4oEPEearMJYwpCVujg"/>
+  <commands xmi:id="__ruE9oEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.RemoveFromIn

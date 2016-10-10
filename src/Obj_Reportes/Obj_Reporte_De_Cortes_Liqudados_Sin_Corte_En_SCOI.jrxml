@@ -1,363 +1,93 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-06-17T08:43:30 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
-	<property name="ireport.zoom" value="2.593742460100005"/>
-	<property name="ireport.x" value="302"/>
-	<property name="ireport.y" value="53"/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMSIZAGAR"/>
-	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
-	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
-	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
-	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
-	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
-			<style mode="Opaque" backcolor="#F0EFEF"/>
-		</conditionalStyle>
-	</style>
-	<queryString language="SQL">
-		<![CDATA[SELECT [Asignacion]
-      ,[Cajero]
-      ,[Nombre_Cajero] as nombre
-      ,[Cod_Estab]
-      ,[Establecimiento] as establecimiento
-      ,convert(varchar(20),[Fecha_Asignacion],103) as fecha_asignacion
-      ,convert(varchar(20),[Fecha_Liquidacion],103)+' '+convert(varchar(20),[Fecha_Liquidacion],108) as fecha_liquidacion
-      ,[Costo_Venta]
-      ,[Iva]
-      ,[IEPS]
-      ,[Apartados]
-      ,[Voucher]
-      ,[Retiros_Clientes]
-      ,[TALUZ]
-      ,[Devoluciones_y_Cancelaciones]
-      ,[Total]
-      ,[status_corte]
-  FROM [IZAGAR_Relacion_de_Asignaciones_Liquidadas]
-
-where status_corte=0 order by establecimiento,cajero, fecha_liquidacion]]>
-	</queryString>
-	<field name="Asignacion" class="java.lang.String"/>
-	<field name="Cajero" class="java.lang.String"/>
-	<field name="Cod_Estab" class="java.lang.Integer"/>
-	<field name="fecha_asignacion" class="java.lang.String"/>
-	<field name="Costo_Venta" class="java.math.BigDecimal"/>
-	<field name="Iva" class="java.math.BigDecimal"/>
-	<field name="IEPS" class="java.math.BigDecimal"/>
-	<field name="Apartados" class="java.math.BigDecimal"/>
-	<field name="Voucher" class="java.math.BigDecimal"/>
-	<field name="Retiros_Clientes" class="java.math.BigDecimal"/>
-	<field name="TALUZ" class="java.math.BigDecimal"/>
-	<field name="Devoluciones_y_Cancelaciones" class="java.math.BigDecimal"/>
-	<field name="Total" class="java.math.BigDecimal"/>
-	<field name="status_corte" class="java.lang.String"/>
-	<field name="fecha_liquidacion" class="java.lang.String"/>
-	<field name="nombre" class="java.lang.String"/>
-	<field name="establecimiento" class="java.lang.String"/>
-	<group name="Group1">
-		<groupExpression><![CDATA[$F{establecimiento}]]></groupExpression>
-		<groupHeader>
-			<band height="15">
-				<frame>
-					<reportElement mode="Opaque" x="2" y="-1" width="749" height="16" forecolor="#B89F7D" backcolor="#FF6600" uuid="9da96497-8519-4d25-858d-de3d9f2646ec"/>
-					<staticText>
-						<reportElement style="Title" x="202" y="2" width="86" height="13" uuid="c77d2210-f87a-4da7-ac39-8d34f995756a">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
-						</textElement>
-						<text><![CDATA[COSTO VENTA]]></text>
-					</staticText>
-					<staticText>
-						<reportElement style="Title" x="339" y="2" width="50" height="13" uuid="0242da4b-6941-4b29-9de5-e6f082fe0c93">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
-						</textElement>
-						<text><![CDATA[IEPS]]></text>
-					</staticText>
-					<staticText>
-						<reportElement style="Title" x="288" y="2" width="50" height="13" uuid="8c220f22-bf0c-474d-a0bb-4d94e38792f8">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
-						</textElement>
-						<text><![CDATA[IVA]]></text>
-					</staticText>
-					<staticText>
-						<reportElement style="Title" x="389" y="2" width="50" height="13" uuid="a97712c4-67dc-451b-a366-f39b56ae1aeb">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
-						</textElement>
-						<text><![CDATA[APARTADOS]]></text>
-					</staticText>
-					<staticText>
-						<reportElement style="Title" x="540" y="2" width="50" height="13" uuid="101aded5-a999-4d90-b36e-4effbaa084bd">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
-						</textElement>
-						<text><![CDATA[TA-LUZ]]></text>
-					</staticText>
-					<staticText>
-						<reportElement style="Title" x="589" y="2" width="50" height="13" uuid="74390330-7fc3-47ee-9199-6ab26254576f">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
-						</textElement>
-						<text><![CDATA[DEV-CAN]]></text>
-					</staticText>
-					<staticText>
-						<reportElement style="Title" x="439" y="2" width="50" height="13" uuid="72877a8e-21cd-47f8-96b8-8c8cf6a08fac">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
-						</textElement>
-						<text><![CDATA[VOUCHER]]></text>
-					</staticText>
-					<staticText>
-						<reportElement style="Title" x="489" y="2" width="50" height="13" uuid="3322b23f-8ca2-487a-80ca-11ccd00989a9">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
-						</textElement>
-						<text><![CDATA[RETIROS]]></text>
-					</staticText>
-					<staticText>
-						<reportElement style="Title" x="638" y="2" width="100" height="13" uuid="1d586143-0b85-49ab-aa3f-d9aa394b9884">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement textAlignment="Center">
-							<font size="10" isBold="false"/>
-						</textElement>
-						<text><![CDATA[TOTAL]]></text>
-					</staticText>
-				</frame>
-				<textField>
-					<reportElement x="4" y="0" width="196" height="14" forecolor="#FFFFFF" uuid="ea3b6da4-c289-4e6b-9ebf-0d60d1c0582d"/>
-					<textElement verticalAlignment="Middle">
-						<font size="10" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-	</group>
-	<group name="Group3" keepTogether="true">
-		<groupExpression><![CDATA[$F{nombre}]]></groupExpression>
-		<groupHeader>
-			<band height="14">
-				<frame>
-					<reportElement style="Title" mode="Opaque" x="0" y="0" width="555" height="14" backcolor="#F2F2F2" uuid="677d8f5a-892c-41a4-a81d-5648e093edbe"/>
-					<ellipse>
-						<reportElement x="2" y="3" width="8" height="8" uuid="d96e8827-517e-4b90-b3ba-580d52457e88"/>
-					</ellipse>
-					<textField>
-						<reportElement x="20" y="0" width="318" height="14" uuid="28fc4381-6d33-4688-a026-b4dffd049e4f"/>
-						<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
-					</textField>
-				</frame>
-			</band>
-		</groupHeader>
-	</group>
-	<background>
-		<band height="12" splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="65" splitType="Stretch">
-			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="450" height="50" forecolor="#000080" backcolor="#000080" uuid="f40033e7-3b11-4284-9dc5-639e231aceba">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<staticText>
-					<reportElement style="Title" x="3" y="0" width="436" height="49" uuid="31bea70f-4e17-4539-aad9-9162208eeb59"/>
-					<textElement textAlignment="Center">
-						<font size="20" isBold="false"/>
-					</textElement>
-					<text><![CDATA[Reporte de Cortes Liquidados Sin Corte En SCOI]]></text>
-				</staticText>
-			</frame>
-			<image>
-				<reportElement x="692" y="0" width="50" height="50" uuid="ae937403-f1d8-4348-b356-94187037f95a"/>
-				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="580" y="1" width="50" height="50" uuid="6c577c89-fef8-4391-aab6-fb40fb39a0ae"/>
-				<imageExpression><![CDATA["C:/SCOI/imagen/diferiencia_de_sueldos_entre_listas_de_raya2_128.jpg"]]></imageExpression>
-			</image>
-		</band>
-	</title>
-	<pageHeader>
-		<band splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
-	<detail>
-		<band height="15" splitType="Stretch">
-			<textField isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="4" y="0" width="50" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="54df8491-ec97-4929-85dd-d0208544630c">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Asignacion}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="204" y="0" width="86" height="13" uuid="9393bf58-da14-4216-8537-771043b6292e"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{Costo_Venta}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="290" y="0" width="50" height="13" uuid="70ec2df1-9fe3-47e0-b83c-c868bc3f1b64">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{Iva}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="340" y="0" width="50" height="13" uuid="91e948af-7127-4964-8e90-3f93564fcd77">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{IEPS}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="390" y="0" width="50" height="13" uuid="47af66cb-af5e-4c82-bbff-fcd99d4aecfa">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{Apartados}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="440" y="0" width="50" height="13" uuid="730dbfba-d008-420e-b35b-45637b860bc7">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{Voucher}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="490" y="0" width="50" height="13" uuid="dff6045c-222d-467c-a036-3d8e9f3c4cdd">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{Retiros_Clientes}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="540" y="0" width="50" height="13" uuid="23b42399-90ef-41ad-9528-82fc00665852">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{TALUZ}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="590" y="0" width="50" height="13" uuid="b034acdc-d78e-468a-ab0a-e2bcad99de66">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{Devoluciones_y_Cancelaciones}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="640" y="0" width="100" height="13" uuid="1fc5f5d0-7a50-4221-ae65-cc46b356c9ef">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{Total}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="54" y="0" width="70" height="13" uuid="b0764212-03f5-42a8-a43b-f3c797562df0">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textFieldExpression><![CDATA["FA:"+$F{fecha_asignacion}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="124" y="0" width="80" height="13" uuid="0ce10148-2edd-48b9-8182-b2371a6839d5">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["FL:"+$F{fecha_liquidacion}]]></textFieldExpression>
-			</textField>
-		</band>
-	</detail>
-	<pageFooter>
-		<band height="25" splitType="Stretch">
-			<frame>
-				<reportElement mode="Opaque" x="0" y="1" width="751" height="13" forecolor="#D0B48E" backcolor="#000080" uuid="33abdeb0-e9f1-4c75-b348-6d21d5509224">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textField evaluationTime="Report">
-					<reportElement style="Column header" x="711" y="0" width="40" height="13" forecolor="#FFFFFF" uuid="8b54e201-57d3-4808-9667-fe95152a5f9b">
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement verticalAlignment="Middle">
-						<font size="10" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement style="Column header" x="631" y="0" width="80" height="13" forecolor="#FFFFFF" uuid="66b3c497-c5f2-4263-95fb-2ced5906c761">
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="10" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Pagina"+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="120" y="0" width="104" height="12" forecolor="#FFFFFF" uuid="754018b0-9c22-4bff-9da8-6377031ae891"/>
-					<textElement textAlignment="Center">
-						<font size="9"/>
-					</textElement>
-					<text><![CDATA[Fecha Impresion.:]]></text>
-				</staticText>
-				<textField pattern="EEEEE dd MMMMM yyyy           h:mm:ss a">
-					<reportElement style="Column header" x="231" y="0" width="210" height="13" forecolor="#FFFFFF" uuid="4eef6750-75cc-423a-83bf-fb0fc1be6790">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="10" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-				</textField>
-			</frame>
-		</band>
-	</pageFooter>
-	<summary>
-		<band height="11"/>
-	</summary>
-</jasperReport>
+ng.collapse" commandName="Collapse" description="Collapses the folded region at the current selection" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsWYEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.smartEnterInverse" commandName="Insert Line Above Current Line" description="Adds a new line above the current line" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsWoEPEearMJYwpCVujg" elementId="org.eclipse.ui.window.spy" commandName="Show Contributing Plug-in" description="Shows contribution information for the currently selected element" category="_S-OtyoEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsW4EPEearMJYwpCVujg" elementId="org.eclipse.ui.help.helpSearch" commandName="Help Search" description="Open the help search" category="_S-OtzoEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsXIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.infer.type.arguments" commandName="Infer Generic Type Arguments" description="Infer type arguments for references to generic classes and remove unnecessary casts" category="_S-OtzIEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsXYEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.goto.lineDown" commandName="Line Down" description="Go down one line of text" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsXoEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.commit.Checkout" commandName="Checkout" category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsX4EPEearMJYwpCVujg" elementId="org.eclipse.m2e.actions.LifeCycleClean.run" commandName="Run Maven Clean" description="Run Maven Clean" category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsYIEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.gotoLastEditPosition" commandName="Last Edit Location" description="Last edit location" category="_S-OtwYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsYYEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.open.hyperlink" commandName="Open Hyperlink" description="Opens the hyperlink at the caret location or opens a chooser if more than one hyperlink is available" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsYoEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.wikitext.ui.convertToEclipseHelpCommand" commandName="Generate Eclipse Help (*.html and *-toc.xml)" category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsY4EPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.search.exception.occurrences" commandName="Search Exception Occurrences in File" description="Search for exception occurrences of a selected exception type" category="_S-Ot0oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsZIEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.command.prevpage" commandName="Previous Page of Memory" description="Load previous page of memory" category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsZYEPEearMJYwpCVujg" elementId="org.eclipse.jdt.debug.ui.commands.ForceReturn" commandName="Force Return" description="Forces return from method with value of selected expression " category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsZoEPEearMJYwpCVujg" elementId="org.eclipse.ui.ide.configureFilters" commandName="Configure Contents..." description="Configure the filters to apply to the markers view" category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsZ4EPEearMJYwpCVujg" elementId="org.eclipse.ui.navigate.previousTab" commandName="Previous Tab" description="Switch to the previous tab" category="_S-OtwYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsaIEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.search.declarations.in.hierarchy" commandName="Declaration in Hierarchy" description="Search for declarations of the selected element in its hierarchy" category="_S-Ot0oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsaYEPEearMJYwpCVujg" elementId="org.eclipse.ui.dialogs.openMessageDialog" commandName="Open Message Dialog" description="Open a Message Dialog" category="_S-Ot1IEPEearMJYwpCVujg">
+    <parameters xmi:id="_S-OsaoEPEearMJYwpCVujg" elementId="title" name="Title"/>
+    <parameters xmi:id="_S-Osa4EPEearMJYwpCVujg" elementId="message" name="Message"/>
+    <parameters xmi:id="_S-OsbIEPEearMJYwpCVujg" elementId="imageType" name="Image Type Constant" typeId="org.eclipse.ui.dialogs.Integer"/>
+    <parameters xmi:id="_S-OsbYEPEearMJYwpCVujg" elementId="defaultIndex" name="Default Button Index" typeId="org.eclipse.ui.dialogs.Integer"/>
+    <parameters xmi:id="_S-OsboEPEearMJYwpCVujg" elementId="buttonLabel0" name="First Button Label"/>
+    <parameters xmi:id="_S-Osb4EPEearMJYwpCVujg" elementId="buttonLabel1" name="Second Button Label"/>
+    <parameters xmi:id="_S-OscIEPEearMJYwpCVujg" elementId="buttonLabel2" name="Third Button Label"/>
+    <parameters xmi:id="_S-OscYEPEearMJYwpCVujg" elementId="buttonLabel3" name="Fourth Button Label"/>
+    <parameters xmi:id="_S-OscoEPEearMJYwpCVujg" elementId="cancelReturns" name="Return Value on Cancel"/>
+  </commands>
+  <commands xmi:id="_S-Osc4EPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.goto.lineEnd" commandName="Line End" description="Go to the end of the line of text" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsdIEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.commit.CreateTag" commandName="Create Tag..." category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsdYEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.extract.method" commandName="Extract Function" description="Extract a set of statements or an expression into a new function and use the new function" category="_S-Ot5IEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsdoEPEearMJYwpCVujg" elementId="org.eclipse.jpt.jpa.ui.generateDDL" commandName="Generate Tables from Entities..." category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osd4EPEearMJYwpCVujg" elementId="org.eclipse.wst.xml.ui.referencedFileErrors" commandName="Show Details..." description="Show Details..." category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OseIEPEearMJYwpCVujg" elementId="org.eclipse.datatools.sqltools.sqleditor.runAction" commandName="Run" category="_S-Ot14EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OseYEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.RunLast" commandName="Run" description="Launch in run mode" category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OseoEPEearMJYwpCVujg" elementId="org.eclipse.ui.externalTools.commands.OpenExternalToolsConfigurations" commandName="External Tools..." description="Open external tools launch configuration dialog" category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Ose4EPEearMJYwpCVujg" elementId="org.eclipse.jdt.debug.ui.command.OpenFromClipboard" commandName="Open from Clipboard" description="Opens a Java element or a Java stack trace from clipboard" category="_S-OtwYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsfIEPEearMJYwpCVujg" elementId="org.eclipse.pde.ui.internationalize" commandName="Internationalize Plug-ins" description="Sets up internationalization for a plug-in" category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsfYEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.deletePrevious" commandName="Delete Previous" description="Delete the previous character" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsfoEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.CompareWithPrevious" commandName="Compare with Previous Revision" category="_S-Ot1oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osf4EPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.select.columnNext" commandName="Select Next Column" description="Select the next column" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsgIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.search.read.access.in.workspace" commandName="Read Access in Workspace" description="Search for read references to the selected element in the workspace" category="_S-Ot0oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsgYEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.search.implementors.in.workspace" commandName="Implementors in Workspace" description="Search for implementors of the selected interface" category="_S-Ot0oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsgoEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.TerminateAndRelaunch" commandName="Terminate and Relaunch" description="Terminate and Relaunch" category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osg4EPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.JavaHierarchyPerspective" commandName="Java Type Hierarchy" description="Show the Java Type Hierarchy perspective" category="_S-Ot2IEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OshIEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.search.declarations.in.project" commandName="Declaration in Project" description="Search for declarations of the selected element in the enclosing project" category="_S-Ot0oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OshYEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.surround.with.try.multicatch" commandName="Surround with try/multi-catch Block" description="Surround the selected text with a try/multi-catch block" category="_S-Ot3YEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OshoEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.Tag" commandName="Tag" category="_S-Ot1oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osh4EPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.NoAssumeUnchanged" commandName="No Assume Unchanged" category="_S-Ot1oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsiIEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.JavadocView" commandName="Documentation" description="Show the JavaScript Documentation view" category="_S-OttoEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsiYEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.RemoveAllBreakpoints" commandName="Remove All Breakpoints" description="Removes all breakpoints" category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsioEPEearMJYwpCVujg" elementId="org.eclipse.ui.navigator.resources.nested.changeProjectPresentation" commandName="P&amp;rojects Presentation" category="_S-Ot44EPEearMJYwpCVujg">
+    <parameters xmi:id="_S-Osi4EPEearMJYwpCVujg" elementId="org.eclipse.ui.navigator.resources.nested.enabled" name="&amp;Hierarchical"/>
+    <parameters xmi:id="_S-OsjIEPEearMJYwpCVujg" elementId="org.eclipse.ui.commands.radioStateParameter" name="Nested Project view - Radio State" optional="false"/>
+  </commands>
+  <commands xmi:id="_S-OsjYEPEearMJYwpCVujg" elementId="org.eclipse.ui.window.showKeyAssist" commandName="Show Key Assist" description="Show the key assist dialog" category="_S-OtyoEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsjoEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.introduce.parameter.object" commandName="Introduce Parameter Object" description="Introduce a parameter object to a selected method" category="_S-OtzIEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osj4EPEearMJYwpCVujg" elementId="org.eclipse.gef.zoom_out" commandName="Zoom Out" description="Zoom Out" category="_S-Ot2oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OskIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.commands.openElementInEditor" commandName="Open Java Element" description="Open a Java element in its editor" category="_S-OtwYEPEearMJYwpCVujg">
+    <parameters xmi:id="_S-OskYEPEearMJYwpCVujg" elementId="elementRef" name="Java element reference" typeId="org.eclipse.jdt.ui.commands.javaElementReference" optional="false"/>
+  </commands>
+  <commands xmi:id="_S-OskoEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.uncomment" commandName="Uncomment" description="Uncomment the selected JavaScript comment lines" category="_S-Otv4EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osk4EPEearMJYwpCVujg" elementId="org.eclipse.datatools.sqltools.result.removeInstance" commandName="Remove Result" category="_S-Otz4EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OslIEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.AddToIndex" commandName="Add to Index" category="_S-Ot1oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OslYEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.discovery.ui.discoveryWizardCommand" commandName="Discovery Wizard" description="shows the connector discovery wizard" category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsloEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.search.read.access.in.working.set" commandName="Read Access in Working Set" description="Search for read references to the selected element in a working set" category="_S-Ot0oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osl4EPEearMJYwpCVujg" elementId="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXmlAndMap" commandName="Add Attribute to XML and Map..." category="_S-Ot3oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsmIEPEearMJYwpCVujg" elementId="org.eclipse.wst.sse.ui.toggle.comment" commandName="Toggle Comment" description="Toggle Comment" category="_S-Ott4EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsmYEPEearMJYwpCVujg" elementId="org.eclipse.ui.help.tipsAndTricksAction" commandName="Tips and Tricks" description="Open the tips and tricks help page" category="_S-OtzoEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsmoEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.format" commandName="Format" description="Format the selected text" category="_S-Ot3YEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osm4EPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.smartEnter" commandName="Insert Line Below Current Line" description="Adds a new line below the current line" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsnIEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.select.previous" commandName="Select Previous Element" description="Expand selection to include previous sibling" category="_S-Ott4EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsnYEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.goto.lineStart" commandName="Line Start" description="Go to the start of the line of text" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsnoEPEearMJYwpCVujg" elementId="org.eclipse.oomph.setup.editor.synchronizePreferences" commandName="Synchronize Preferences" category="_S-OtvIEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osn4EPEearMJYwpCVujg" elementId="org.eclipse.wst.xml.ui.cmnd.contentmodel.sych" commandName="Synch" category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsoIEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.RepositoriesViewConfigureBranch" commandName="Configure Branch" category="_S-Ot1oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsoYEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.Suspend" commandName="Suspend" description="Suspend" category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsooEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.hippieCompletion" commandName="Word Completion" description="Context insensitive completion" category="_S-Ott4EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Oso4EPEearMJYwpCVujg" elementId="org.eclipse.wst.xsd.ui.refactor.renameTargetNamespace" commandName="Rename Target Namespace" description="Changes the target namespace of the schema" category="_S-Ott4EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OspIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.folding.collapseComments" commandName="Collapse Comments" description="Collapse all comments" category="_S-OtvYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OspYEPEearMJYwpCVujg" elementId="org.eclipse.team.ui.synchronizeLast" commandName="Repeat last synchronization" description="Repeat the last synchronization" category="_S-OttYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OspoEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.generate.javadoc" commandName="Generate Javadoc" description="Generates Javadoc for a selectable set of Java resources" category="_S-Ot0IEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osp4EPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.RepositoriesViewConfigureGerritRemote" commandName="Gerrit Configuration..." category="_S-Ot1oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsqIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.debug.ui.commands.StepIntoSelection" commandName="Step Into Selection" description="Step into the current selected statement" category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsqYEPEearMJYwpCVujg" elementId="org.eclipse.ui.ide.configureColumns" commandName="Configure Columns..." description="Configure the columns in the markers view" category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsqoEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.ReplaceWithCommit" commandName="Replace with commit" category="_S-Ot1oEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osq4EPEearMJYwpCVujg" elementId="org.eclipse.jst.pagedesigner.design" commandName="Graphical Designer" category="_S-OtuIEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsrIEPEearMJYwpCVujg" elementId="org.eclipse.tm.terminal.quickaccess" commandName="Quick Access" category="_S-Ot0YEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsrYEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.DebugLast" commandName="Debug" description="Launch in debug mode" category="_S-Ot04EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OsroEPEearMJYwpCVujg" elementId="org.eclipse.mylyn.wikitext.ui.convertToHtmlCommand" commandName="Generate HTML" category="_S-Ot44EPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-Osr4EPEearMJYwpCVujg" elementId="org.eclipse.pde.ui.openManifest" commandName="Open Manifest" description="Open the plug-in manifest" category="_S-OtwYEPEearMJYwpCVujg"/>
+  <commands xmi:id="_S-OssIEPEearMJYwpCVujg" elementId="org.eclipse.ui.window.previousView" commandName="Previous View" description="Switch to the previous view" category="_S-OtyoEPEearMJYwpCVujg"/>
+  <co

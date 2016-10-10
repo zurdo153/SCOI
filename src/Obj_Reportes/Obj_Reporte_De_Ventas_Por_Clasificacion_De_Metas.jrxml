@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-08-16T18:36:15 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Ventas_Por_Clasificacion_De_Metas" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3b1d9083-2d60-4e8d-b67a-380056538c87">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="server94"/>
+<!-- 2016-10-04T16:37:29 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Ventas_Por_Clasificacion_De_Metas" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3b1d9083-2d60-4e8d-b67a-380056538c87">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -22,36 +14,152 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
-	<queryString>
-		<![CDATA[exec sp_reporte_de_ventas_por_clasificacion_de_metas 'Supermercados',2016,'Enero','SUPER I']]>
+	<queryString language="SQL">
+		<![CDATA[exec sp_reporte_de_ventas_por_clasificacion_de_metas 'Supermercados',2016,'Septiembre']]>
 	</queryString>
 	<field name="establecimiento" class="java.lang.String"/>
 	<field name="clasificacion_meta" class="java.lang.Integer"/>
 	<field name="nombre_clasificacion" class="java.lang.String"/>
 	<field name="venta_sin_iva" class="java.math.BigDecimal"/>
-	<field name="venta_total" class="java.math.BigDecimal"/>
 	<field name="costo" class="java.math.BigDecimal"/>
-	<group name="Group1">
+	<field name="muestra_de_venta_base_original" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="porcentaje_meta_A" class="java.lang.Double"/>
+	<field name="meta_mensual_A" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="porcentaje_meta_B" class="java.lang.Double"/>
+	<field name="meta_mensual_B" class="java.math.BigDecimal"/>
+	<field name="porcentaje_meta_C" class="java.lang.Double"/>
+	<field name="meta_mensual_C" class="java.math.BigDecimal"/>
+	<field name="mes_numero" class="java.lang.Integer"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="venta_total_pasada" class="java.math.BigDecimal"/>
+	<field name="venta_actual" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="año_pasado" class="java.lang.Integer"/>
+	<field name="año_actual" class="java.lang.Integer"/>
+	<field name="grupo_establecimientos" class="java.lang.String"/>
+	<variable name="Costo" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
+	</variable>
+	<variable name="Venta Año Pasado" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{venta_total_pasada}]]></variableExpression>
+	</variable>
+	<variable name="muestra_de_venta_base_original" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{muestra_de_venta_base_original}]]></variableExpression>
+	</variable>
+	<variable name="Venta_Actual" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{venta_actual}]]></variableExpression>
+	</variable>
+	<variable name="Meta Mensual A" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{meta_mensual_A}]]></variableExpression>
+	</variable>
+	<variable name="Meta Mensual B" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{meta_mensual_B}]]></variableExpression>
+	</variable>
+	<variable name="Meta Mensual C" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{meta_mensual_C}]]></variableExpression>
+	</variable>
+	<variable name="Venta_actual_Vs_MetaA" class="java.lang.Double" resetType="Group" resetGroup="Group1">
+		<variableExpression><![CDATA[($F{venta_actual}/$F{muestra_de_venta_base_original})-1]]></variableExpression>
+	</variable>
+	<variable name="TOT_Venta_actual_Vs_MetaA" class="java.lang.Double" resetType="Group" resetGroup="Group1">
+		<variableExpression><![CDATA[($V{Venta_Actual}/$V{muestra_de_venta_base_original})-1]]></variableExpression>
+	</variable>
+	<group name="Group1" keepTogether="true">
 		<groupExpression><![CDATA[$F{establecimiento}]]></groupExpression>
 		<groupHeader>
-			<band height="20">
-				<frame>
-					<reportElement mode="Opaque" x="0" y="0" width="570" height="20" forecolor="#B89F7D" backcolor="#0000FF" uuid="c10ec9c6-32d9-4c19-9e05-be3af029e7a6"/>
-					<textField isStretchWithOverflow="true">
-						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="479" height="20" forecolor="#FFFFFF" uuid="2a07efb9-a142-4711-bdbd-519ac0e7c1d0">
-							<property name="local_mesure_unitheight" value="pixel"/>
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</reportElement>
-						<textElement>
-							<font size="16" isBold="true"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
-					</textField>
-				</frame>
+			<band height="18">
+				<textField isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="0" y="0" width="192" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="87b3f7d3-1fee-473d-b47d-6493dcbf259d">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="3"/>
+			<band/>
+			<band height="18">
+				<textField pattern="#,##0.00#" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="192" y="0" width="90" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="c902e23d-6bfc-4f2b-b20d-792f314fa8b6">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Costo}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="282" y="0" width="90" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="f2786daf-7d13-467d-be52-e1b2ef5bf156"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Venta Año Pasado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="372" y="0" width="90" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="3fae55c0-f731-409e-b8ea-9657dc4cf375"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{muestra_de_venta_base_original}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="822" y="0" width="80" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="0bca5762-ed77-44be-9a6f-433669f09e29">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitwidth" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Venta_Actual}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="512" y="0" width="70" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="4438cf9b-461d-42be-8a4a-ef3c62a85649">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitwidth" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Meta Mensual A}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="632" y="0" width="70" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="6cae9813-b045-4864-ba43-4ae1191be430">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Meta Mensual B}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="752" y="0" width="70" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="d91d2a33-38b8-4692-a040-fedc6b8997f5">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Meta Mensual C}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0#%" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="902" y="0" width="62" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="fb970c98-6ef5-4ae5-a7d9-a0c142a88224"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TOT_Venta_actual_Vs_MetaA}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
@@ -60,17 +168,20 @@
 	<title>
 		<band height="80" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="570" height="70" backcolor="#0000CC" uuid="cce4eb46-253a-4d0f-891f-d715b13f5d44"/>
-				<staticText>
-					<reportElement style="Title" x="0" y="0" width="570" height="66" uuid="cbb6460e-8937-4198-b7d4-3629e6495f60"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="28" isBold="true"/>
+				<reportElement mode="Opaque" x="0" y="0" width="881" height="70" backcolor="#330099" uuid="cce4eb46-253a-4d0f-891f-d715b13f5d44"/>
+				<textField>
+					<reportElement style="Title" mode="Transparent" x="2" y="0" width="878" height="70" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="0c09f4ad-1fa7-4f22-a293-0fc4c3737120"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="29" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					</textElement>
-					<text><![CDATA[Reporte De Ventas Por Clasificacion De Metas]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA["Reporte De Ventas Por Clasificacion De Metas Del Mes De "+$F{mes}+" De "+$F{grupo_establecimientos}]]></textFieldExpression>
+				</textField>
 			</frame>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="74" width="570" height="6" forecolor="#000000" backcolor="#FF7B00" uuid="69b7d173-7265-4c7d-9fa6-dc2c55175162"/>
+				<reportElement mode="Opaque" x="0" y="74" width="969" height="6" forecolor="#000000" backcolor="#FF7B00" uuid="69b7d173-7265-4c7d-9fa6-dc2c55175162">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 			</frame>
 		</band>
 	</title>
@@ -85,52 +196,143 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Folio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="41" y="0" width="111" height="20" forecolor="#000000" uuid="e22e6ad3-0fd2-4eed-9e02-c33ce2c5e742">
+				<reportElement style="Column header" x="40" y="0" width="152" height="20" forecolor="#000000" uuid="e22e6ad3-0fd2-4eed-9e02-c33ce2c5e742">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Descripcion]]></text>
+				<text><![CDATA[Clasificacion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="202" y="0" width="111" height="20" forecolor="#000000" uuid="8ff355f1-55b7-4d48-a728-d1378946fdf5">
+				<reportElement style="Column header" x="192" y="0" width="90" height="20" forecolor="#000000" uuid="47c9c797-a870-4fa8-88b0-8d600fb8652e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Venta Sin Iva]]></text>
+				<text><![CDATA[Costo Año Pasado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="327" y="0" width="111" height="20" forecolor="#000000" uuid="58dd1bda-4fb3-4b06-9547-23eae7b6aeda">
+				<reportElement style="Column header" x="372" y="0" width="90" height="20" forecolor="#000000" uuid="0ead32c4-ff21-4980-8839-afed8b0493cf">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Venta Total]]></text>
+				<text><![CDATA[Muestra Venta Base]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="452" y="0" width="111" height="20" forecolor="#000000" uuid="47c9c797-a870-4fa8-88b0-8d600fb8652e">
+				<reportElement style="Column header" x="462" y="0" width="50" height="20" forecolor="#000000" uuid="21e1d438-df3e-4683-a163-463382923533">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Costo]]></text>
+				<text><![CDATA[%A]]></text>
 			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="512" y="0" width="70" height="20" forecolor="#000000" uuid="b404a8be-2027-4789-8911-7a5b4550f3ad">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Meta MensualA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="582" y="0" width="50" height="20" forecolor="#000000" uuid="2f878ca0-bafc-4ce0-ba5b-679f68fab516">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[%B]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="632" y="0" width="70" height="20" forecolor="#000000" uuid="39cb829e-9d8e-4b5c-aaec-2aaa7d9f1f4f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Meta MensualB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="702" y="0" width="50" height="20" forecolor="#000000" uuid="08a2ba95-19b8-4e55-93b6-6d99c0c2e943">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[%C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="752" y="0" width="70" height="20" forecolor="#000000" uuid="8eadbf90-f1c7-401c-a28a-43f4c9506016">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Meta MensualC]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="Column header" mode="Transparent" x="282" y="0" width="90" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cb83a8d3-5be2-4b0b-804b-4d311575752b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Venta "+$F{año_pasado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Column header" mode="Transparent" x="822" y="0" width="80" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9df6fa4f-dbb7-4ed4-b524-dc5c16b2a8d7">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Venta "+$F{año_actual}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Column header" mode="Transparent" x="902" y="0" width="66" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0cd8f49b-f55a-4cce-b5ac-955024b77e37">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Venta "+$F{año_actual}+" Vs Meta A"]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<frame>
-				<reportElement style="Row" mode="Opaque" x="0" y="0" width="570" height="18" uuid="d0b832fe-2f70-4242-b607-afa6d06a49b3"/>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="969" height="18" uuid="d0b832fe-2f70-4242-b607-afa6d06a49b3">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="0" y="0" width="40" height="18" uuid="4af84ffa-eb70-47e5-938e-67d61ca79a23"/>
 					<textElement textAlignment="Center">
@@ -139,66 +341,147 @@
 					<textFieldExpression><![CDATA[$F{clasificacion_meta}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="59" y="0" width="111" height="18" uuid="65d13966-fbd8-48eb-85f2-13475b09e856"/>
+					<reportElement style="Detail" positionType="Float" x="40" y="0" width="152" height="18" uuid="65d13966-fbd8-48eb-85f2-13475b09e856"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nombre_clasificacion}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="182" y="0" width="111" height="18" uuid="66c1a85e-7d54-4459-a255-c24f2b26da93"/>
-					<textElement textAlignment="Right">
-						<font size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{venta_sin_iva}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="307" y="0" width="111" height="18" uuid="86ef45e3-3a92-4f6e-8b54-2e543084cddf"/>
-					<textElement textAlignment="Right">
-						<font size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{venta_total}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="425" y="0" width="111" height="18" uuid="e3d2d945-064c-41cb-89a1-9d238ac8dd83"/>
-					<textElement textAlignment="Right">
-						<font size="14"/>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00#" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="192" y="0" width="90" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="e3d2d945-064c-41cb-89a1-9d238ac8dd83">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00#" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="282" y="0" width="90" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="86ef45e3-3a92-4f6e-8b54-2e543084cddf">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{venta_total_pasada}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="372" y="0" width="90" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="7bc3e560-ff3f-4d24-ade7-2f230f3b4b3f">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{muestra_de_venta_base_original}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="512" y="0" width="70" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="e5d719db-da3a-4425-923c-9488d8cc3d20">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{meta_mensual_A}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0#%" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="462" y="0" width="50" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="87ac31bf-1842-438a-bf74-e5b85a28ba8a">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{porcentaje_meta_A}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0#%" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="582" y="0" width="50" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="0edb6022-a4ba-4f69-8089-bd51aae576db"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{porcentaje_meta_B}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="632" y="0" width="70" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="b46c3e5a-5c44-4cbb-9e9c-dfb092e7b460">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{meta_mensual_B}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0#%" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="702" y="0" width="50" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="7d0b18d6-075c-434d-ba08-f5f1ac09bf93"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{porcentaje_meta_C}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="752" y="0" width="70" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="af7a437b-b298-497f-be96-858d83568e7f">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{meta_mensual_C}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="822" y="0" width="80" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="7b97f782-cfde-40a5-910f-e419aa67f61c">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{venta_actual}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0#%" isBlankWhenNull="false">
+					<reportElement style="Detail" mode="Transparent" x="902" y="0" width="62" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="4a4f9286-b397-4142-8617-0fcc13fc02c3"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Venta_actual_Vs_MetaA}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="4" splitType="Stretch">
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="570" height="1" uuid="cbef2355-62e4-4748-b19f-91a9d5b3ae6e"/>
-				<graphicElement>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-				</graphicElement>
-			</line>
-		</band>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="25" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="1" width="570" height="24" forecolor="#D0B48E" backcolor="#0000CC" uuid="fb19f97b-931c-4336-ad44-43e7564a345d"/>
+				<reportElement mode="Opaque" x="0" y="1" width="969" height="18" forecolor="#D0B48E" backcolor="#000000" uuid="fb19f97b-931c-4336-ad44-43e7564a345d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textField evaluationTime="Report">
-					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="ea86c759-74e3-443d-a10f-74ce45d17245"/>
+					<reportElement style="Column header" x="922" y="0" width="40" height="15" forecolor="#FFFFFF" uuid="ea86c759-74e3-443d-a10f-74ce45d17245">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<textElement verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Column header" x="433" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="cd967f50-e12c-4b50-8677-396b65ff4415"/>
+					<reportElement style="Column header" x="842" y="0" width="80" height="15" forecolor="#FFFFFF" uuid="cd967f50-e12c-4b50-8677-396b65ff4415">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 				</textField>
 				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement style="Column header" x="2" y="1" width="197" height="20" forecolor="#FFFFFF" uuid="a65e8786-9637-4ada-b298-8d2914498427"/>
+					<reportElement style="Column header" x="3" y="0" width="197" height="15" forecolor="#FFFFFF" uuid="a65e8786-9637-4ada-b298-8d2914498427">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<textElement verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
@@ -207,7 +490,4 @@
 			</frame>
 		</band>
 	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
-	</summary>
 </jasperReport>
