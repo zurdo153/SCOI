@@ -33,7 +33,6 @@ import javax.swing.table.TableCellRenderer;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
-import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;

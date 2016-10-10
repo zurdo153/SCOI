@@ -52,7 +52,6 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
-import Obj_Principal.Obj_Refrescar;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -325,9 +324,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
    	
 	ActionListener opCargarInventario = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
-//			btnCalcularInventario.setEnabled(new BuscarSQL().existenPedidosActivos());
-			
 			if(new BuscarSQL().existeInventarioElDiaActual()){
 				
 				if(JOptionPane.showConfirmDialog(null, "Ya Existe Inventario El Dia De Hoy, Desea Recalcularlo?") == 0){
@@ -667,7 +663,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		JTextField txtFolio= new JTextField();
 		JTextField txtFolioProveedor = new JTextField();
 		
-		JButton btnCancelar 			= new JCButton("CANCELAR", "", "Azul");
+		JButton btnCancelar 			= new JCButton("CANCELAR", "Delete.png", "Azul");
 		JButton btnActualizarFiltro = new JCButton("ACTUALIZAR","refrescar-volver-a-cargar-las-flechas-icono-4094-32.png","Azul");
 
 		Border blackline, etched, raisedbevel, loweredbevel, empty;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-10-04T10:43:47 -->
+<!-- 2016-10-10T16:55:06 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_De_Compra_Sugerida_Abarrotes" language="groovy" pageWidth="1350" pageHeight="7000" orientation="Landscape" columnWidth="1310" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="36490807-8e37-4399-b008-7c80bf7670a8">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
@@ -33,6 +33,7 @@
 	<field name="tope_para_desicion_de_compra_tope" class="java.lang.Double"/>
 	<field name="compra_sugerida_csug" class="java.lang.Double"/>
 	<field name="desicion_de_compra" class="java.lang.String"/>
+	<field name="ultimo_costo_neto" class="java.math.BigDecimal"/>
 	<columnHeader>
 		<band height="14">
 			<staticText>
@@ -112,7 +113,7 @@
 				<text><![CDATA[CSUG]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="969" y="0" width="120" height="14" forecolor="#030303" uuid="19b96df8-4786-4154-a4bb-7f011b884060"/>
+				<reportElement style="Column header" x="1019" y="0" width="120" height="14" forecolor="#030303" uuid="19b96df8-4786-4154-a4bb-7f011b884060"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -165,6 +166,13 @@
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[COD_PROD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="969" y="0" width="50" height="14" forecolor="#030303" uuid="86ab2eff-bb5e-4c11-a2c4-f1f99b11a94e"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ULCOSTONETO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -278,9 +286,16 @@
 				<textFieldExpression><![CDATA[$F{compra_sugerida_csug}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="969" y="0" width="120" height="14" uuid="cc811feb-8849-47b1-9466-b17892c43b46"/>
+				<reportElement x="1019" y="0" width="120" height="14" uuid="cc811feb-8849-47b1-9466-b17892c43b46"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{desicion_de_compra}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="969" y="0" width="50" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="6f78f332-a2b6-4bfe-a370-f6df1f9a35a4"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ultimo_costo_neto}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
