@@ -44,14 +44,7 @@ public class Generacion_Reportes {
 					vista_previa_reporte=usuario.buscar(usuario.LeerSession().getFolio()).getVista_previa_impresion();
 				}
 				
-				if (basedatos=="2.94"){
-					try {
-						stmt =  new Connexion().conexion_ventas().createStatement();
-					} catch (SQLException e) {
-						e.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-					}
-				}
+				
 				if (basedatos=="2.200"){
 					try {
 						stmt =  new Connexion().conexion_IZAGAR().createStatement();
@@ -59,15 +52,21 @@ public class Generacion_Reportes {
 						e.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					}
-				}else{
-					try {
-						stmt =  new Connexion().conexion().createStatement();
-					} catch (SQLException e) {
-						e.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
-					}
-				}
-				
+				  }if (basedatos=="2.94"){
+							try {
+								stmt =  new Connexion().conexion_ventas().createStatement();
+							} catch (SQLException e) {
+								e.printStackTrace();
+								JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							}
+						}else{
+							try {
+								stmt =  new Connexion().conexion().createStatement();
+							} catch (SQLException e) {
+								e.printStackTrace();
+								JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+							}
+						}
 				try{
 					JDialog viewer = new JDialog(new JFrame(),reporte, true);
 					viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));

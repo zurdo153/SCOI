@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Principal.JCButton;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -37,18 +38,19 @@ public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	JButton btn_todos 						= new JButton  ("Todos",new ImageIcon("imagen/Lista.png"));
-	JButton btn_revisados_por_auditoria 	= new JButton  ("Revisados Por Auditoria",new ImageIcon("imagen/Text preview.png"));
-	JButton btn_sin_revisar_por_auditoria	= new JButton  ("Sin Revisar Por Auditoria",new ImageIcon("imagen/orange-folder-saved-search-icone-8197-16.png"));
-	JButton btn_auditoria_paso_a_cobro 		= new JButton  ("Auditoria  Paso  A  Cobro",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
-	JButton btn_auditoria_paso_a_seguridad 	= new JButton  ("Auditoria  A  Seguridad",new ImageIcon("imagen/vista-previa-del-ojo-icono-7248-16.png"));
-	JButton btn_cortesaceptado              	= new JButton  ("Cortes Aceptados El Cobro",new ImageIcon("imagen/Aplicar.png"));
-	JButton btn_cortesnegados              	= new JButton  ("Cortes Negados El Cobro",new ImageIcon("imagen/Delete.png"));
 	
-	JLabel JLBlinicio			= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
-	JLabel JLBfin				= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
-	JLabel JLBestablecimiento	= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
-	JLabel JLBdepartamento		= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
+	JButton btn_todos 						= new JCButton  ("Todos"                    ,"Lista.png"                                          ,"Azul");
+	JButton btn_revisados_por_auditoria 	= new JCButton  ("Revisados Por Auditoria"  ,"Text preview.png"                                   ,"Azul");
+	JButton btn_sin_revisar_por_auditoria	= new JCButton  ("Sin Revisar Por Auditoria","orange-folder-saved-search-icone-8197-16.png"       ,"Azul");
+	JButton btn_auditoria_paso_a_cobro 		= new JCButton  ("Auditoria  Paso  A  Cobro","diferiencia_de_sueldos_entre_listas_de_raya2_16.png","Azul");
+	JButton btn_auditoria_paso_a_seguridad 	= new JCButton  ("Auditoria  A  Seguridad"  ,"vista-previa-del-ojo-icono-7248-16.png"             ,"Azul");
+	JButton btn_cortesaceptado             	= new JCButton  ("Cortes Aceptados El Cobro","Aplicar.png"                                        ,"Azul");
+	JButton btn_cortesnegados              	= new JCButton  ("Cortes Negados El Cobro"  ,"Delete.png"                                         ,"Azul");
+	
+	JLabel  JLBlinicio			= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
+	JLabel  JLBfin				= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
+	JLabel  JLBestablecimiento	= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
+	JLabel  JLBdepartamento		= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
 	
 	public Cat_Reportes_De_Revision_De_Cortes(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/diferiencia_de_sueldos_entre_listas_de_raya2_64.png"));
@@ -128,7 +130,7 @@ public class Cat_Reportes_De_Revision_De_Cortes extends JFrame {
 			String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
 			String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 			
-			if(e.getActionCommand().toString().trim().toUpperCase().equals("AUDITORIA PASO A SEGURIDAD")){
+			if(e.getActionCommand().toString().trim().equals("Auditoria  A  Seguridad")){
 				cargar_fechas();
 				String fecha_final1 = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
 				Reporte_de_Revision_de_Cortes("01/01/1900",fecha_final1,e.getActionCommand().toString().trim().toUpperCase());

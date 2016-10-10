@@ -33,6 +33,7 @@ import javax.swing.table.TableCellRenderer;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
@@ -205,6 +206,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 	
 	ActionListener opActualizar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			
 			init_tabla();
 		}
 	};
@@ -247,12 +249,11 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 //		tablaAsignacion.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
 //	}
 	
-	public void init_tabla(){
+	public void init_tabla(){	
     	int columnas = modelo.getColumnCount();
-    	
-		String comando="exec sp_select_pedidos_por_asignar";
-		String basedatos="26",pintar="si";
-		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+			String comando="exec sp_select_pedidos_por_asignar ";
+			String basedatos="26",pintar="si";
+			new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
 	private void agregar(final JTable tbl) {

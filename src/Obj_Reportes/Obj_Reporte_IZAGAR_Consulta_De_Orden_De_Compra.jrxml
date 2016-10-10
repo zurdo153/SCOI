@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2015-06-08T18:15:43 -->
+<!-- 2016-10-09T14:32:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMSIZAGAR"/>
 	<property name="ireport.zoom" value="2.593742460100005"/>
 	<property name="ireport.x" value="302"/>
 	<property name="ireport.y" value="53"/>
@@ -15,6 +14,7 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMS"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -26,7 +26,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec sp_consulta_orden_de_compra  'RI04988','MARCO ANTONIO BODART GUZMAN','ANTONIO DE LA ROSA','ROSA CECILIA ROJO','MARIBEL SALOMON TORRES']]>
+		<![CDATA[exec sp_consulta_orden_de_compra  'AG03453','MARCO ANTONIO BODART GUZMAN','ANTONIO DE LA ROSA','ROSA CECILIA ROJO','MARIBEL SALOMON TORRES']]>
 	</queryString>
 	<field name="folio_orden_de_compra" class="java.lang.String"/>
 	<field name="fecha_elaboracion" class="java.lang.String"/>
@@ -236,7 +236,7 @@
 				</textField>
 			</frame>
 			<image>
-				<reportElement x="693" y="2" width="56" height="59" uuid="ae937403-f1d8-4348-b356-94187037f95a"/>
+				<reportElement x="692" y="2" width="56" height="59" uuid="ae937403-f1d8-4348-b356-94187037f95a"/>
 				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 			</image>
 			<staticText>

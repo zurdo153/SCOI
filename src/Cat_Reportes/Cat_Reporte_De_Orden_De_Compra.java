@@ -22,6 +22,7 @@ import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Compras.Obj_Consulta_De_Orden_De_Compra;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
 public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
@@ -36,7 +37,7 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbCompras = new JComboBox(compras);
 	
-	String[] contabilidad = new Obj_Consulta_De_Orden_De_Compra().Combo_Grupo_De_Personal(17);
+	String[] contabilidad = new Obj_Consulta_De_Orden_De_Compra().Combo_Grupo_De_Personal(36);
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbContabilidad = new JComboBox(contabilidad);
 	
@@ -45,7 +46,7 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 	JComboBox cmbAuditoria = new JComboBox(auditoria);
 	
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio de la Orden de Compra", 11, "String");
-	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
+	JButton btngenerar = new JCButton("Generar","buscar.png","Azul");
 	
 	public Cat_Reporte_De_Orden_De_Compra(){
 		this.setTitle("Consulta De Orden De Compra");
@@ -76,7 +77,7 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 		
 		panel.add(new JLabel("Folio: ")).setBounds(x,y+=25,80,20);
 		panel.add(txtFolio).setBounds(x+80,y,ancho,20);
-		panel.add(btngenerar).setBounds(x+150,y+=35,100,20);
+		panel.add(btngenerar).setBounds(x+100,y+=35,150,25);
 		
 		cont.add(panel);
 		txtUsuario.setEditable(false);
