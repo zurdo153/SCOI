@@ -728,11 +728,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		
 		public void buscarEntradas(String establecimiento,String Actualizar){
 			
-			System.out.print(Actualizar);
 	    	String folio_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim():"";
 	    	String status_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 6).toString().trim():"";
-	    	System.out.println(folio_pedido);
-	    	System.out.println(status_pedido);
 	    	
 				if(Actualizar.toUpperCase().equals("CANCELAR") && folio_pedido.equals("")){
 						JOptionPane.showMessageDialog(null, "Favor De Seleccionar El Registro Que Se Desea Cancelar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -740,7 +737,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				}else{
 					
 						if((Actualizar.toUpperCase().equals("ACTUALIZAR")) || (Actualizar.toUpperCase().equals("CANCELAR") && status_pedido.equals("VIGENTE")) ){
-							consultarfiltro(Actualizar,folio_pedido);
+							dispose();
 						}else{
 								JOptionPane.showMessageDialog(null, "Solo Se Pueden Cancelar Registros Con Status Vigente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;

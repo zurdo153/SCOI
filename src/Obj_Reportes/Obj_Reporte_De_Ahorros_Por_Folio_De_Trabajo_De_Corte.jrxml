@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-06-23T17:55:42 -->
+<!-- 2016-10-17T10:51:42 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Ahorros_Por_Folio_De_Trabajo_De_Corte" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="785e9adb-c52b-4abd-8b37-f1bc566483ba">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -91,7 +91,7 @@
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="570" height="60" backcolor="#000099" uuid="924e3570-fd42-40b0-947c-24f0ffad4f48"/>
 				<staticText>
-					<reportElement style="Title" x="0" y="0" width="570" height="60" uuid="54412292-ff17-4db5-b883-802e3ef16d80"/>
+					<reportElement style="Title" x="1" y="0" width="570" height="60" uuid="54412292-ff17-4db5-b883-802e3ef16d80"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="28" isBold="false"/>
 					</textElement>

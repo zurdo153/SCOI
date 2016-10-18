@@ -34,7 +34,7 @@ public class Generacion_Reportes {
 	String vista_previa_de_ventana="";
 	String basedatos="";
 
-	@SuppressWarnings({ "resource", "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void  Reporte(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
 			    Obj_Usuario usuario = new Obj_Usuario();
                 String query =comando ;
@@ -48,25 +48,27 @@ public class Generacion_Reportes {
 				if (basedatos=="2.200"){
 					try {
 						stmt =  new Connexion().conexion_IZAGAR().createStatement();
-					} catch (SQLException e) {
+					}catch (SQLException e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-					}
-				  }if (basedatos=="2.94"){
-							try {
-								stmt =  new Connexion().conexion_ventas().createStatement();
-							} catch (SQLException e) {
-								e.printStackTrace();
-								JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					 JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				    }
+				 }else{
+					  if (basedatos=="2.94"){
+								try {
+									stmt =  new Connexion().conexion_ventas().createStatement();
+								} catch (SQLException e) {
+									e.printStackTrace();
+									JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+								}
+							}else{
+								try {
+									stmt =  new Connexion().conexion().createStatement();
+								} catch (SQLException e) {
+									e.printStackTrace();
+									JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+								}
 							}
-						}else{
-							try {
-								stmt =  new Connexion().conexion().createStatement();
-							} catch (SQLException e) {
-								e.printStackTrace();
-								JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
-							}
-						}
+				  }
 				try{
 					JDialog viewer = new JDialog(new JFrame(),reporte, true);
 					viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));

@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-07-04T15:44:25 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="350" pageHeight="540" orientation="Landscape" columnWidth="310" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
+<!-- 2016-10-16T11:42:54 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Venta_Meta_Diaria_Fiestilandia" pageWidth="350" pageHeight="480" orientation="Landscape" columnWidth="310" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -23,7 +15,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec reporte_de_venta_meta_diaria_papelerias_consulta_final]]>
+		<![CDATA[exec reporte_de_venta_meta_diaria_por_establecimiento 18,'D']]>
 	</queryString>
 	<field name="fecha_de_venta" class="java.lang.String"/>
 	<field name="dia_del_mes_venta" class="java.lang.Integer"/>
@@ -32,23 +24,14 @@
 	<field name="clasificacion_meta" class="java.lang.Integer"/>
 	<field name="nombre_clasificacion" class="java.lang.String"/>
 	<field name="reporte" class="java.lang.String"/>
-	<field name="p1Establecimiento" class="java.lang.String"/>
-	<field name="p1importe" class="java.lang.Double"/>
-	<field name="p1meta" class="java.lang.Double"/>
-	<field name="p2Establecimiento" class="java.lang.String"/>
-	<field name="p2importe" class="java.lang.Double"/>
-	<field name="p2meta" class="java.lang.Double"/>
-	<variable name="ImporteP1" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{p1importe}]]></variableExpression>
+	<field name="Establecimiento" class="java.lang.String"/>
+	<field name="Rimporte" class="java.lang.Double"/>
+	<field name="Rmeta" class="java.lang.Double"/>
+	<variable name="ImporteR1" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{Rimporte}]]></variableExpression>
 	</variable>
-	<variable name="MetaP1" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{p1meta}]]></variableExpression>
-	</variable>
-	<variable name="ImporteP2" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{p2importe}]]></variableExpression>
-	</variable>
-	<variable name="MetaP2" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{p2meta}]]></variableExpression>
+	<variable name="MetaR1" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{Rmeta}]]></variableExpression>
 	</variable>
 	<group name="Group1" keepTogether="true">
 		<groupExpression><![CDATA[$F{tipo_periodo}]]></groupExpression>
@@ -70,14 +53,14 @@
 						<textFieldExpression><![CDATA[$F{tipo_periodo}]]></textFieldExpression>
 					</textField>
 					<textField>
-						<reportElement x="170" y="0" width="139" height="16" forecolor="#FFFFFF" uuid="5fcb1101-3847-4b1e-b8d7-8faace54ba3f"/>
+						<reportElement x="162" y="0" width="139" height="16" forecolor="#FFFFFF" uuid="5fcb1101-3847-4b1e-b8d7-8faace54ba3f"/>
 						<textElement textAlignment="Center">
 							<font size="12" isBold="true"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$F{p1Establecimiento}]]></textFieldExpression>
+						<textFieldExpression><![CDATA[$F{Establecimiento}]]></textFieldExpression>
 					</textField>
 					<staticText>
-						<reportElement x="170" y="16" width="70" height="16" forecolor="#FFFFFF" uuid="3a428da9-202f-4685-9535-58d4bc300732">
+						<reportElement x="162" y="16" width="70" height="16" forecolor="#FFFFFF" uuid="3a428da9-202f-4685-9535-58d4bc300732">
 							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						</reportElement>
@@ -87,7 +70,7 @@
 						<text><![CDATA[Importe]]></text>
 					</staticText>
 					<staticText>
-						<reportElement x="240" y="16" width="69" height="16" forecolor="#FFFFFF" uuid="8761ce9f-9436-4260-a8ba-d1d285917bdf">
+						<reportElement x="232" y="16" width="69" height="16" forecolor="#FFFFFF" uuid="8761ce9f-9436-4260-a8ba-d1d285917bdf">
 							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						</reportElement>
 						<textElement textAlignment="Center">
@@ -101,7 +84,7 @@
 						</reportElement>
 					</line>
 					<line>
-						<reportElement x="168" y="0" width="1" height="32" uuid="01cf3529-146c-47cc-9c9b-ea81125640f0">
+						<reportElement x="154" y="0" width="1" height="32" uuid="01cf3529-146c-47cc-9c9b-ea81125640f0">
 							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						</reportElement>
@@ -138,7 +121,7 @@
 					</graphicElement>
 				</line>
 				<textField pattern="#,##0.###">
-					<reportElement x="170" y="1" width="70" height="13" uuid="970b3595-a628-43d5-9dd6-703c083c6022">
+					<reportElement x="162" y="1" width="70" height="13" uuid="970b3595-a628-43d5-9dd6-703c083c6022">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -146,10 +129,10 @@
 					<textElement textAlignment="Right">
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{ImporteP1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{ImporteR1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.###">
-					<reportElement x="240" y="0" width="69" height="14" uuid="8f82ced6-b9ce-430a-b149-583bb3c0348a">
+					<reportElement x="232" y="0" width="69" height="14" uuid="8f82ced6-b9ce-430a-b149-583bb3c0348a">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -157,7 +140,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{MetaP1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{MetaR1}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="14" width="310" height="1" uuid="85bd6df5-fed6-40e9-aa58-6a3e2a43183a">
@@ -171,11 +154,11 @@
 					</graphicElement>
 				</line>
 				<staticText>
-					<reportElement x="0" y="0" width="168" height="14" uuid="8811c57b-9569-442f-b57a-842d26ef01bc">
+					<reportElement x="10" y="0" width="144" height="14" uuid="8811c57b-9569-442f-b57a-842d26ef01bc">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
-					<textElement textAlignment="Right">
+					<textElement>
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Total]]></text>
@@ -187,20 +170,20 @@
 					</reportElement>
 				</line>
 				<line>
-					<reportElement x="168" y="0" width="1" height="15" uuid="795d2c60-4e5a-4640-bead-58c46c658b68">
+					<reportElement x="154" y="0" width="1" height="15" uuid="795d2c60-4e5a-4640-bead-58c46c658b68">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 				</line>
 				<textField pattern="#,##0.###">
-					<reportElement mode="Opaque" x="170" y="0" width="70" height="14" backcolor="#00CC66" uuid="eebe6357-7e1c-4a92-bc9f-f5e329c7b924">
+					<reportElement mode="Opaque" x="162" y="0" width="70" height="14" backcolor="#00CC66" uuid="eebe6357-7e1c-4a92-bc9f-f5e329c7b924">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<printWhenExpression><![CDATA[$V{ImporteP1}>=$V{MetaP1}]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$V{ImporteR1}>=$V{MetaR1}]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{ImporteP1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{ImporteR1}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="0" width="1" height="15" uuid="1ef3dd66-1151-46ff-ad9b-222cfd2af9cb">
@@ -282,7 +265,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement x="0" y="0" width="168" height="13" uuid="1fbdb21c-33ba-4bac-a382-ddb7cbe6826c">
+					<reportElement x="10" y="0" width="144" height="13" uuid="1fbdb21c-33ba-4bac-a382-ddb7cbe6826c">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textElement>
@@ -291,11 +274,11 @@
 					<textFieldExpression><![CDATA[$F{nombre_clasificacion}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.###">
-					<reportElement x="240" y="0" width="69" height="13" uuid="c8c3a033-0b4d-4689-89ae-92041b0db2cf">
+					<reportElement x="232" y="0" width="69" height="13" uuid="c8c3a033-0b4d-4689-89ae-92041b0db2cf">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{p1meta}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{Rmeta}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="309" y="0" width="1" height="13" uuid="ba350886-1dad-46f7-bd0d-ff85bd20fd8e">
@@ -305,27 +288,28 @@
 					</reportElement>
 				</line>
 				<line>
-					<reportElement x="168" y="0" width="1" height="13" uuid="b34911fa-ce40-4169-81d9-51d902458dbb">
+					<reportElement x="154" y="0" width="1" height="13" uuid="b34911fa-ce40-4169-81d9-51d902458dbb">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
 					</reportElement>
 				</line>
 				<textField pattern="#,##0.00#">
-					<reportElement mode="Transparent" x="170" y="0" width="70" height="13" backcolor="#00CC66" uuid="2b2882f7-ee55-4213-a66c-bee1b5f5845a">
+					<reportElement mode="Transparent" x="162" y="0" width="70" height="13" backcolor="#00CC66" uuid="2b2882f7-ee55-4213-a66c-bee1b5f5845a">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$F{Rimporte}<$F{Rmeta}]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{p1importe}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{Rimporte}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<textField pattern="#,##0.00#">
-				<reportElement mode="Opaque" x="170" y="0" width="70" height="13" backcolor="#00CC66" uuid="c596d074-f105-4cf2-96ac-d6887cf361db">
+				<reportElement mode="Opaque" x="162" y="0" width="70" height="13" backcolor="#00CC66" uuid="c596d074-f105-4cf2-96ac-d6887cf361db">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<printWhenExpression><![CDATA[$F{p1importe}>=$F{p1meta}]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{Rimporte}>=$F{Rmeta}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{p1importe}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Rimporte}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="0" width="1" height="13" uuid="aca865a9-2edc-4997-a797-91bfea3c6ba7">

@@ -1,4 +1,4 @@
-package Cat_Compras;
+package Cat_Reportes;
 
 import java.awt.Container;
 import java.awt.Image;
