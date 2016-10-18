@@ -310,7 +310,7 @@ public void init_tablaconsulta(){
 			            }
 
 			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Ferreterias")){
-			            	cod_meta=79;
+			            	cod_meta=80;
 			            }
 			            
 						if(omep.buscar_metas_a_generar(anio, mes,cod_meta,estab).equals("no") ){
@@ -386,7 +386,6 @@ public void init_tablaconsulta(){
 							    	 JOptionPane.showMessageDialog(null, "ya existen metas con este periodo  \n Error En el Guardado de la Metas por Periodo","Avise Al Adiministrador",JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
                                      ////falta hacer el update para cambios en las metas
 //							    	 if(obm.Modidicar_matriz(tabla_para_guardado())){
-//			 
 //							    		 init_tablaconsulta();
 //							    		 JOptionPane.showMessageDialog(null, "Se han Actualizado Correctamente Los Datos de la Matriz ", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							    	 btnDeshacer.doClick();
@@ -395,13 +394,10 @@ public void init_tablaconsulta(){
 							     }  
 							   }   
 							}
-			
 						};   
 							
 						public Object[][] tabla_para_guardado(){
-
 							Object[][] tab = new Object[tabla.getRowCount()][tabla.getColumnCount()];
-
 								for(int i=0; i<tabla.getRowCount(); i++){
 									for(int j=0; j<tabla.getColumnCount(); j++){
 										tab[i][j]= modelo.getValueAt(i,j).toString().trim();

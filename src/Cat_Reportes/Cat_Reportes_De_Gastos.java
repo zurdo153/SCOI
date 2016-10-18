@@ -287,19 +287,6 @@ public class Cat_Reportes_De_Gastos extends JFrame {
 									reporte = "Obj_Reporte_De_Inventarios_Fisicos_Estado_Resultados.jrxml";
 									testigo=1;
 								}
-								
-								
-								if(cmbConcepto.getSelectedItem().toString().trim().equals("Mermas")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Administración")){
-						            comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
-						            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados.jrxml";
-						            testigo=1;
-								}
-								
-								if(cmbConcepto.getSelectedItem().toString().trim().equals("Mermas Por Producto")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Por Producto")||cmbConcepto.getSelectedItem().toString().trim().equals("Uso Interno Administración Por Producto")){
-						            comando="exec sp_reporte_de_Mercancia_De_Uso_Interno_en_Un_Periodo_Por_Producto '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;
-						            reporte = "Obj_Reporte_De_Mercancia_De_Uso_Interno_O_Merma_Estado_Resultados_Por_Producto.jrxml";
-						            testigo=1;
-								}
 			
 								if(cmbConcepto.getSelectedItem().toString().trim().equals("Nomina Gastos Administracion Impuestos")||cmbConcepto.getSelectedItem().toString().trim().equals("Nomina Gastos Venta Impuestos")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Administración")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos Financieros")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Ventas NC") ||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos De Administración NC")||cmbConcepto.getSelectedItem().toString().trim().equals("Gastos Financieros NC")  ){
 											comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"','"+cmbConcepto.getSelectedItem().toString().trim()+"','"+usuario.getNombre_completo()+"'" ;

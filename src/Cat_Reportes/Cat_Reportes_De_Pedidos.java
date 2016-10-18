@@ -26,12 +26,13 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Contabilidad.Obj_Indicadores;
+import Obj_Principal.JCButton;
 
 import com.toedter.calendar.JDateChooser;
 
 
 @SuppressWarnings("serial")
-public class Cat_Reportes_De_Nivel_De_Surtido extends JFrame {
+public class Cat_Reportes_De_Pedidos extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -39,15 +40,15 @@ public class Cat_Reportes_De_Nivel_De_Surtido extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	JButton btn_Reporte 		= new JButton  ("Reporte De Nivel De Surtido",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
+	JButton btn_Reporte 		= new JCButton  ("Reporte De Nivel De Surtido","Report.png","Azul");
 	
 	JLabel JLBlinicio			= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin				= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	JLabel JLBestablecimiento	= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	JLabel JLBdepartamento		= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
 	
-	public Cat_Reportes_De_Nivel_De_Surtido(){
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/diferiencia_de_sueldos_entre_listas_de_raya2_64.png"));
+	public Cat_Reportes_De_Pedidos(){
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
 		this.setTitle("Reportes De Nivel De Surtido");
 		
 		this.panel.setBorder(BorderFactory.createTitledBorder("Reportes De Nivel De Surtido"));
@@ -175,7 +176,7 @@ public class Cat_Reportes_De_Nivel_De_Surtido extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reportes_De_Nivel_De_Surtido().setVisible(true);
+			new Cat_Reportes_De_Pedidos().setVisible(true);
 		}catch(Exception e){	}
 	}
 

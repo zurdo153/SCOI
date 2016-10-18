@@ -8890,7 +8890,7 @@ public class BuscarSQL {
 	public String busca_metas_a_generar(int anio,int mes, int cod_meta,String est) throws SQLException{
 		String Descripcion="";
 		String query = 
-				"declare @thiSql char(2), @establ int set @establ= (select  top 1 cod_estab from ventas where establecimiento='"+est+"') "
+				"declare @thiSql char(2), @establ int set @establ= (select  top 1 cod_estab from establecimientos where establecimiento='"+est+"') "
 				+"set @thiSql =(select top 1 'si' from tabla_de_venta_por_mes_de_un_año_por_un_clasificador_de_meta_y_establecimiento ("+anio+"-1,"+mes+","+cod_meta+",@establ)) "
 			    +"if(@thiSql is null) set @thiSql='no' " 
 			    +"select @thiSql  as resultado";

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-10-16T15:59:50 -->
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-10-17T10:51:32 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte de Apartados" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d02be077-f7f1-423a-b73f-283738e4eb9c">
 	<property name="ireport.zoom" value="1.331000000000004"/>
 	<property name="ireport.x" value="0"/>
@@ -293,7 +293,7 @@ group by folio.ticket,datos_apartados_mercancia.entregar_a
 				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="620" y="0" width="50" height="50" uuid="07b65817-43f3-4c9c-a430-4114a4497c3f"/>
+				<reportElement x="621" y="0" width="50" height="50" uuid="07b65817-43f3-4c9c-a430-4114a4497c3f"/>
 				<imageExpression><![CDATA["C:/SCOI/imagen/documentos-de-gabinete-icono-4840-32.png"]]></imageExpression>
 			</image>
 		</band>

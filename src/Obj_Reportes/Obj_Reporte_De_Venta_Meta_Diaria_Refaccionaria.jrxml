@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-06-28T19:06:59 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="350" pageHeight="480" orientation="Landscape" columnWidth="310" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
+<!-- 2016-10-16T11:20:22 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Venta_Meta_Diaria_Refaccionaria" pageWidth="350" pageHeight="480" orientation="Landscape" columnWidth="310" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -15,7 +15,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec reporte_de_venta_meta_diaria_refaccionaria_consulta_final]]>
+		<![CDATA[exec reporte_de_venta_meta_diaria_por_establecimiento 12,'R']]>
 	</queryString>
 	<field name="fecha_de_venta" class="java.lang.String"/>
 	<field name="dia_del_mes_venta" class="java.lang.Integer"/>
