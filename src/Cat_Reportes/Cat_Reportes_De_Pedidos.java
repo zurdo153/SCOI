@@ -40,7 +40,8 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	JButton btn_Reporte 		= new JCButton  ("Reporte De Nivel De Surtido","Report.png","Azul");
+	JButton btn_Reporte 		= new JCButton  ("Nivel De Surtido","Report.png","Azul");
+	JButton btn_Reporte_servicio= new JCButton  ("Nivel De Servicio","Report.png","Azul");
 	
 	JLabel JLBlinicio			= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin				= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -68,7 +69,7 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 		ancho=250;
 	
 		this.panel.add(btn_Reporte 	   ).setBounds(x,y+=33,ancho,30);
-		
+		this.panel.add(btn_Reporte_servicio 	   ).setBounds(x,y+=33,ancho,30);
 		
 		this.cont.add(panel);
 		this.setSize(420,200);
@@ -78,6 +79,7 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 		
 
 		 btn_Reporte.addActionListener(op_generar);
+		 btn_Reporte_servicio.addActionListener(op_generar2);
 	}
 	
 	public void cargar_fechas(){
@@ -101,19 +103,15 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 					}
 		c_final.setDate(date2);
 	};
-	String basedatos="2.26";
-	String vista_previa_reporte="no";
-	int vista_previa_de_ventana=0;
-	String comando="";
-	String reporte = "";
 	
+
+	String comando="";
+	String reporte ="";
 	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			
 					if(validar_fechas().equals("")){
-						
 						String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 						  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
 						  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
@@ -121,46 +119,55 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 						  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
 						  
 						  if(fecha1.before(fecha2)){
-							  Reporte_de_Venta_de_TA(fecha_inicio,fecha_final);
+								Obj_Indicadores indicador = new Obj_Indicadores().buscar("Nivel De Surtido");
+								comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+new Obj_Usuario().getNombre_completo()+"',''";
+								reporte =indicador.getReporte();
+								Reporte(fecha_inicio,fecha_final,comando,reporte);
 						  }else{
-							  JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
+							  JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 						  }
 						
-//						if( c_inicio.getDate().before(c_final.getDate()) ){
-//							
-//							String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
-//							String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate());
-//							
-//							Reporte_de_Venta_de_TA(fecha_inicio,fecha_final);
-//							
-//						}else{
-//							JOptionPane.showMessageDialog(null, "Las Fechas Estan Invertidas","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//			                  return;	
-//						}
- 							
 					}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 		                  return;
 					}
-			
 		}
 	};
 	
-	public void Reporte_de_Venta_de_TA(String fecha_inicio, String fecha_final){
-		
+	ActionListener op_generar2 = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+					if(validar_fechas().equals("")){
+						String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+						  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
+						  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+						  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+						  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+						  
+						  if(fecha1.before(fecha2)){
+								Obj_Indicadores indicador = new Obj_Indicadores().buscar("Nivel De Servicio");
+								comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"'";
+								reporte =indicador.getReporte();
+								Reporte(fecha_inicio,fecha_final,comando,reporte);
+						  }else{
+							  JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+						  }
+						
+					}else{
+						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+		                  return;
+					}
+		}
+	};
+	
+	
+	
+	public void Reporte(String fecha_inicio, String fecha_final, String comando, String reporte){
 		String basedatos="2.26";
 		String vista_previa_reporte="no";
 		int vista_previa_de_ventana=0;
-		String comando="";
-		String reporte ="";
-		
-		Obj_Indicadores indicador = new Obj_Indicadores().buscar("Nivel De Surtido");
-		comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+new Obj_Usuario().getNombre_completo()+"',''";
-//		comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+cmbConcepto.getSelectedItem().toString().trim()+"'";
-		
-		reporte =indicador.getReporte();
-			
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	

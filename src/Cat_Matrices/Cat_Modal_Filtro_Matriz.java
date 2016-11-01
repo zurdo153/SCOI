@@ -39,7 +39,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings({ "serial", "unused" })
@@ -148,7 +148,7 @@ public void init_tabla(){
 	String comando="select folio_matriz,matriz,isnull(descripcion,'') as descripcion from tb_matrices";
 	String basedatos="26",pintar="si";
 	
-	 new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+	 new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 }
 
 KeyListener op_filtro = new KeyListener(){ 

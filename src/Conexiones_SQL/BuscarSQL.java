@@ -51,6 +51,7 @@ import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Compras.Obj_Alimentacion_De_Codigos_Adicionales;
+import Obj_Compras.Obj_Alimentacion_De_Inventarios_Parciales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
@@ -9380,6 +9381,75 @@ public int  dias_de_vacaciones_pendientes_del_ultimo_anio(String fecha_in,String
 		if(stmt!=null){stmt.close();}
 	}
 	return dias;
+}
+
+public String Folio_Siguiente_alimentacion_inventarios_parciales() throws SQLException{
+	String folio = "";
+	String query = "select folio+1 from tb_folios where folio_transaccion=70 ";
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			folio=(rs.getString(1));
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Folio_Siguiente_alta_Servicios ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+	}
+	finally{
+		if(stmt!=null){try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}}
+	}
+	return folio;
+
+}
+
+public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(String cod_prod, String Establecimiento) throws SQLException{
+	Obj_Alimentacion_De_Inventarios_Parciales datosproducto = new Obj_Alimentacion_De_Inventarios_Parciales();
+	
+	String query = " declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35),@cod_estab char(3)  set @Producto='"+cod_prod+"' "
+			+ "               set @cod_estab=(select  cod_estab from establecimientos where RTRIM(LTRIM(nombre))='"+Establecimiento+"') "
+			+ "				  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto)) "
+			+ "				  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end "
+			+ "				  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end "
+			+ "				  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_unidad=@Producto)) end "
+			+ "				  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end "
+			+ "			 SELECT   productos.cod_prod"
+			+ "					 ,productos.descripcion"
+			+ " 		         ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0)) as existencia"
+			+ "				     ,ISNULL(convert(numeric(10,2),prodestab.ultimo_costo),0) as ultimo_costo "
+			+ "				     ,ISNULL(convert(numeric(10,2),prodestab.costo_promedio),0) as costo_promedio "
+			+ "  		  from productos with (nolock)"
+			+ "  	  	    left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod and prodestab.cod_estab=@cod_estab"
+			+ "			  where productos.cod_prod=@cod_prod "
+			+ "						  group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio ";	
+	
+	Statement stmt2= null;
+					try {
+						stmt2= con.conexion_IZAGAR().createStatement();
+						ResultSet rs2= stmt2.executeQuery(query);
+							   while(rs2.next()){
+								   datosproducto.setCod_Prod        (rs2.getString("cod_prod"));
+								   datosproducto.setDescripcion_Prod(rs2.getString("descripcion"));
+								   datosproducto.setExistencia      (rs2.getDouble("existencia"));
+								   datosproducto.setUltimo_Costo    (rs2.getDouble("ultimo_costo"));
+								   datosproducto.setCosto_Promedio  (rs2.getDouble("costo_promedio"));
+							   }
+						
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_producto_existencia \n SQLException: "+e.getMessage(),"Avise Al Adiministrador",JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+						e.printStackTrace();
+						return null;
+					}
+
+	finally{
+		if(stmt2!=null){stmt2.close();}
+	}
+	return datosproducto;
 }
 
 }

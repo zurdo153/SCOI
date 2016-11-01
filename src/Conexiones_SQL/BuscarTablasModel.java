@@ -2675,7 +2675,7 @@ public Object[][] Buscar_Pedido(String folio_pedido,String consulta){
 	
 	String query_lista = "exec sp_select_consulta_de_pedido '"+folio_pedido+"','"+consulta+"'";
 	
-	Object[][] matriz = new Object[get_filas(query_lista)][8];
+	Object[][] matriz = new Object[get_filas(query_lista)][9];
 	try {
 		Statement stmt = new Connexion().conexion().createStatement();
 		ResultSet rs = stmt.executeQuery(query_lista);
@@ -2690,6 +2690,7 @@ public Object[][] Buscar_Pedido(String folio_pedido,String consulta){
 			matriz[i][5] = rs.getString(6);
 			matriz[i][6] = rs.getString(7);
 			matriz[i][7] = rs.getString(8);
+			matriz[i][8] = rs.getString(9);
 			i++;
 		}
 

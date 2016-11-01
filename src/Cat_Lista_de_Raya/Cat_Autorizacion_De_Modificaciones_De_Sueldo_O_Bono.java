@@ -29,7 +29,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame {
@@ -77,7 +77,7 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 	    	this.tabla.getColumnModel().getColumn(15).setMinWidth(60);
 			String comando="exec sp_select_empleados_con_sueldo_pendiente_de_validar";
 			String basedatos="26",pintar="si";
-			new Obj_Refrescar(tabla,modelo, Cantidad_Real_De_Columnas, comando, basedatos,pintar,checkboxindex);
+			new Obj_tabla().Obj_Refrescar(tabla,modelo, Cantidad_Real_De_Columnas, comando, basedatos,pintar,checkboxindex);
 	    }
 		
 	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio Empleado", "Empleado", "Establecimiento","Puesto", "Sueldo","Sueldo Nvo","Bono","Bono Nvo","B.Asistencia","B.Asist.Nvo","B.Puntualidad","B.Punt.Nvo","Empleado Modifico","Fecha","Observaciones","Seleccion"}){

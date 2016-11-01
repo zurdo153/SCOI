@@ -41,7 +41,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -223,7 +223,7 @@ public class Cat_Reportes_De_Bonificacion_De_Proveedores extends JFrame {
 	    	
 			String comando="select cod_prv as folio,razon_social as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio from proveedores where status_proveedor =1 order by proveedor asc";
 			String basedatos="200",pintar="si";
-			new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+			new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 	    }
 		
 		

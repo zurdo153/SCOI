@@ -1,4 +1,4 @@
-package Cat_Auditoria;
+package Biblioteca;
 
 import java.awt.Container;
 import java.awt.Font;

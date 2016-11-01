@@ -37,7 +37,7 @@ import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Aspectos_De_La_Etapa extends JFrame{
@@ -89,7 +89,7 @@ public class Cat_Aspectos_De_La_Etapa extends JFrame{
 		String comando="select folio_aspecto,aspecto_de_la_etapa,abreviatura,case when status='1' then (select 'VIGENTE') when status=0 then (select 'CANCELADO') end as estatus" +
  				         " from tb_aspectos_de_la_etapa order by aspecto_de_la_etapa asc";
 		String basedatos="26",pintar="si";
-		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+		new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
 	
