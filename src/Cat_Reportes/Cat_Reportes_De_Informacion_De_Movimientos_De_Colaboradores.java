@@ -36,7 +36,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -295,7 +295,7 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 	    	this.tabla.getColumnModel().getColumn(1).setMinWidth(100);
 			String comando=("exec sp_filtro_lista_rayas_pasadas");
 			String basedatos="26",pintar="si";
-			new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+			new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 	    }
 		
 	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Num. Lista Raya", "Fecha Cierre"}){

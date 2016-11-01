@@ -36,7 +36,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Bono_Puntualidad_Y_Asistencia extends JFrame{
@@ -67,7 +67,7 @@ public class Cat_Bono_Puntualidad_Y_Asistencia extends JFrame{
     	
 		String comando="select folio,bono,abreviatura,case when status=1 then 'VIGENTE' else 'CANCELADO' end as estatus from [tb_bono_puntualidad_y_asistencia] order by bono ";
 		String basedatos="26",pintar="si";
-		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+		new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
 	

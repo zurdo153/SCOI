@@ -60,7 +60,7 @@ import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_Menus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 
 
@@ -930,7 +930,7 @@ public class Submenusbtns{
 		    	
 				String comando="exec sp_select_usuarios_scoi";
 				String basedatos="26",pintar="si";
-				new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+				new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 		    }
 			
 		 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre De Colaborador", "Establecimiento"}){

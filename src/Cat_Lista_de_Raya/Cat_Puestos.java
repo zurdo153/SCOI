@@ -29,7 +29,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Principal.Componentes;
 import Obj_Principal.Obj_Filtro_Dinamico;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Puestos extends JFrame{
@@ -46,7 +46,7 @@ public class Cat_Puestos extends JFrame{
     	
 		String comando="select folio,nombre,abreviatura from tb_puesto order by nombre";
 		String basedatos="26",pintar="si";
-		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+		new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
 	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Puesto","Abreviatura"}){

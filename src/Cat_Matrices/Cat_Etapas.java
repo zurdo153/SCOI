@@ -37,7 +37,7 @@ import Obj_Matrices.Obj_Etapas;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Etapas extends JFrame{
@@ -90,7 +90,7 @@ public class Cat_Etapas extends JFrame{
 				" from tb_etapas order by etapa asc";
 		
 		String basedatos="26",pintar="si";
-		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+		new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
 	

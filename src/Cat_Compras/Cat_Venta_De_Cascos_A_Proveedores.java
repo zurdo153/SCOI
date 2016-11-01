@@ -36,7 +36,7 @@ import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
@@ -54,7 +54,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores extends JFrame{
     	
 		String comando="select folio_producto, descripcion, precio_de_venta,'' as cantidad  from tb_productos where status='V' and folio_uso=2 ORDER BY costo";
 		String basedatos="26",pintar="si";
-		new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+		new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
   public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio Producto","Descripcion","Costo","Cantidad Pagar"}){

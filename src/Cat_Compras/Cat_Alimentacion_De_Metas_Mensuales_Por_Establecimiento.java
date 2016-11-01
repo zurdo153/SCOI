@@ -68,7 +68,7 @@ public class Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento extends JFr
 		JComboBox cmbMes= new JComboBox(new String[]{"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"});
 
 		   @SuppressWarnings({ "rawtypes", "unchecked" })
-		JComboBox cmbGrupo= new JComboBox(new String[]{"Seleccione un Grupo","Alimentos","Dulcerias","Ferreterias","Papelerias","Refaccionarias","Supermercados","Izacel"});
+		JComboBox cmbGrupo= new JComboBox(new String[]{"Seleccione un Grupo","Alimentos","Dulcerias","Depositos","Ferreterias","Izacel","Papelerias","Refaccionarias","Supermercados"});
 		
 		public DefaultTableModel modelo = new DefaultTableModel(null, Colum){
 			 @SuppressWarnings("rawtypes")
@@ -311,6 +311,10 @@ public void init_tablaconsulta(){
 
 			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Ferreterias")){
 			            	cod_meta=80;
+			            }
+			            
+			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Depositos")){
+			            	cod_meta=84;
 			            }
 			            
 						if(omep.buscar_metas_a_generar(anio, mes,cod_meta,estab).equals("no") ){

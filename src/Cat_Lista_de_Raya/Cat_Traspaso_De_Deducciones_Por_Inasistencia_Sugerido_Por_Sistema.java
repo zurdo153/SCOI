@@ -29,7 +29,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 
@@ -62,7 +62,7 @@ public class Cat_Traspaso_De_Deducciones_Por_Inasistencia_Sugerido_Por_Sistema e
     	this.tabla.getColumnModel().getColumn(2).setMinWidth(150);
     	String comando="exec sp_buscar_sugerido_sistemas_inasistencia";
 		String basedatos="26",pintar="si";
-		new Obj_Refrescar(tabla,modelo, Cantidad_Real_De_Columnas, comando, basedatos,pintar,checkboxindex);
+		new Obj_tabla().Obj_Refrescar(tabla,modelo, Cantidad_Real_De_Columnas, comando, basedatos,pintar,checkboxindex);
     }
 	
  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre Completo", "Establecimiento", "Inpuntualidad", "S.Impuntualidad","S.Bono Puntualidad", "S.Omisiones", "S.Gafete", "Faltas","S.Bono Asistencia","Inasistencia", "P.Fisic."}){

@@ -37,7 +37,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -151,10 +151,13 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 		txtPedido.setEditable(false);
 		txtEstablecimiento.setEditable(false);
 		
-		
+//		TODO (llenar tabla de pedido con cantidad de paginas)
 		init_tabla();
+		
 		tamanioColumnas();
 //		render();
+		
+//		TODO (seleccionar pedido y llenar segunda tabla con la cantidad de paginas indicadas en la primer tabla)
 		agregar(tabla);
 		
 		button.addActionListener(opButton);
@@ -238,21 +241,11 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 		tablaAsignacion.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
 	}
 	
-//	public void render(){
-//		tablaAsignacion.getTableHeader().setReorderingAllowed(false) ;
-//    	tablaAsignacion.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
-//    	
-//		tablaAsignacion.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-////		tablaAsignacion.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-//		tablaAsignacion.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-//		tablaAsignacion.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
-//	}
-	
 	public void init_tabla(){	
     	int columnas = modelo.getColumnCount();
 			String comando="exec sp_select_pedidos_por_asignar ";
 			String basedatos="26",pintar="si";
-			new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+			new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
 	private void agregar(final JTable tbl) {
@@ -280,7 +273,6 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 					    			
 					    			tablaAsignacion.getColumn("Filtro").setCellRenderer(new ButtonRenderer());
 					    			tablaAsignacion.getColumn("Filtro").setCellEditor(new ButtonEditor(new JCheckBox()));
-					    			
 					    			tablaAsignacion.setRowSelectionInterval(0, 0);
 				    			
 			        		}else{
@@ -299,14 +291,9 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 	
 	ActionListener opButton = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-				
 			int filaSeleccionada = tablaAsignacion.getSelectedRow();
 //			columnaSeleccionada = tablaAsignacion.getSelectedColumn();
-			
-			System.out.println(filaSeleccionada);
-			
 			new Cat_Seleccion_De_Colaborador(txtEstablecimiento.getText().trim(),filaSeleccionada).setVisible(true);
-			
 		}
 	};
 	
@@ -357,6 +344,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 		paginas= 0;
 	}
 	
+//	TODO (valida si todas las hojas fueron asignadas antes de guardar)
 	ActionListener opGuardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
@@ -374,9 +362,11 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 						
 						String folio_pedido = txtPedido.getText().trim(); 
 						
+//						TODO (Asignacion De Paginas)
 							if(new GuardarSQL().Guardar_Asignacion_De_Pedido(asignacion_de_paginas(),folio_pedido)){
 								
 //									modificar gestion de pedido con status = 'A' 
+//								TODO (dentro del procedimiento que actualiza se clasifica a que hoja pertenece casa fila)
 									if(new ActualizarSQL().cambiar_status_de_pedido_a_asignado(folio_pedido)){
 			
 										limpiarAsignacion();
@@ -481,7 +471,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 						+ " where tb_empleado.status in (1) "
 						+ " order by tb_empleado.nombre,tb_empleado.ap_paterno,tb_empleado.ap_materno";//condicionar estab
 				String basedatos="26",pintar="si";
-				new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+				new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 		    }
 			
 		 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre De Colaborador", "Establecimiento"}){

@@ -36,7 +36,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Traspaso_De_Movimientos_De_Cascos extends JFrame{
@@ -144,7 +144,7 @@ public class Cat_Traspaso_De_Movimientos_De_Cascos extends JFrame{
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(new GuardarSQL().traspaso_de_movimientos_de_cascos()){
-				new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+				new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 				JOptionPane.showMessageDialog(null,"Se Realizo el Traspaso De Movimientos Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 				return;
 			}else{
@@ -166,7 +166,7 @@ public class Cat_Traspaso_De_Movimientos_De_Cascos extends JFrame{
     	this.tabla.getColumnModel().getColumn(6 ).setMinWidth(x*5);
     	this.tabla.getColumnModel().getColumn(7 ).setMinWidth(x);
 
-    	new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+    	new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
 	KeyListener op_filtro_folio_corte = new KeyListener(){

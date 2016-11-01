@@ -3,11 +3,10 @@ package Cat_Compras;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
-import java.awt.Robot;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -32,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
@@ -66,11 +66,11 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	JTextField txtUsuario				 = new Componentes().text(new JCTextField(), "Nombre Del Usuario", 280, "String");
 	
 	JButton btnBuscar 				= new JCButton("", "Buscar.png", "Azul");
-	JButton btnDeshecer				= new JCButton("Deshacer", "deshacer16.png", "Azul");
+	JButton btnDeshacer				= new JCButton("Deshacer", "deshacer16.png", "Azul");
 	JButton btnPendientes 			= new JCButton("", "Filter-List-icon16.png", "Azul");
 	JButton btnCalcularInventario 	= new JCButton("Calcular Inventario", "Lista-32.png", "Azul");
 	JButton btnGuardar 				= new JCButton("Guardar", "Guardar.png", "Azul");
-	JButton btnReporte 				= new JCButton("Reporte", "Report.png", "Azul");
+	JButton btnReporte 				= new JCButton("Reportes", "Report.png", "Azul");
 	JButton btnAsignar 				= new JCButton("Asignar", "articulo-icono-9036-32-mas.png", "Azul");
 	
 	String[] clasificacion = new Cargar_Combo().clasificador_de_pedidos_de_establecimientos();
@@ -83,14 +83,14 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	JTextField txtStatus = new Componentes().text(new JCTextField(), "Status Pedido", 50, "String");
 	
-	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Cod_Prod","Descripcion", "Disponible", "Pedido", "Surtida","Pendiente","Unidad","Partida"} ){
-         
+	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo Prod","Descripcion", "Disponible", "Pedido", "Surtida","Pendiente","Unidad","Localizacion","Partida"} ){
 			@SuppressWarnings({ "rawtypes" })
 			Class[] types = new Class[]{
 	                   java.lang.Object.class, 
 	                   java.lang.Object.class,
 	                   java.lang.Object.class,
 	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
 	                   java.lang.Object.class,
 	                   java.lang.Object.class,
 	                   java.lang.Object.class,
@@ -101,6 +101,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			public Class getColumnClass(int columnIndex) {
 	                return types[columnIndex];
 	        }
+			
 	    public boolean isCellEditable(int fila, int columna){
 	                switch(columna){
 	                		case 0	: return false;
@@ -111,6 +112,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	                        case 5  : return false;
 	                        case 6  : return false;
 	                        case 7  : return false;
+	                        case 8  : return false;
 	                }
 	                 return false;
 	         }
@@ -161,11 +163,9 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		panel.add(scroll).setBounds(x, y+=25, ancho*12+20, 500);
 		panel.add(btnReporte).setBounds(x, y+=505, ancho*2, 30);
 		
-		panel.add(btnDeshecer).setBounds(x+ancho*3-40, y, ancho*2, 30);
+		panel.add(btnDeshacer).setBounds(x+ancho*3-40, y, ancho*2, 30);
 		x=840;
 		panel.add(btnGuardar).setBounds(x, y, ancho*2, 30);
-		
-		
 		
 		llamarRender();
 		cmbEstablecimientos.setSelectedItem("CEDIS");
@@ -181,15 +181,22 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		btnPendientes.addActionListener(opPendientes);
 		btnAsignar.addActionListener(opFiltroAsignacion);
 		btnReporte.addActionListener(opFiltroReporteDeAsignaciones);
-		
 		btnBuscar.addActionListener(opBuscarPedido);
 		txtPedido.addActionListener(opBuscarPedido);
-		btnDeshecer.addActionListener(opDeshacer);
+		btnDeshacer.addActionListener(opDeshacer);
 		btnGuardar.addActionListener(opGuardar);
 		tabla.addKeyListener(op_key);
 		agregar(tabla);
 		
 		cont.add(panel);
+		
+	   	///deshacer con escape
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+          getRootPane().getActionMap().put("escape", new AbstractAction(){
+         public void actionPerformed(ActionEvent e)
+         {                 	    btnDeshacer.doClick();
+       	    }
+     });
 	}
 	
 	float surtido = 0;
@@ -225,7 +232,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		float surtido = (Float.valueOf(modelo.getValueAt(fila, 4).toString().equals("")?"0":modelo.getValueAt(fila, 4).toString()));
 		tabla.setValueAt(surtido, fila, 4);
 		tabla.setValueAt((Float.valueOf(modelo.getValueAt(fila, 3).toString()))-surtido, fila, 5);
-//		tabla.setValueAt( ((Float.valueOf(modelo.getValueAt(fila, 3).toString()))-surtido)<0?0:((Float.valueOf(modelo.getValueAt(fila, 3).toString()))-surtido), fila, 5);
 		
 		if(evento.equals("click")){
 			fila=tabla.getSelectedRow();
@@ -236,7 +242,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				recorrerFoco();
 				
 			} catch (Exception e2) {
-				// TODO: handle exception
 				fila=0;
 				recorrerFoco();
 			}
@@ -252,22 +257,23 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		  jtc.requestFocus();
 		  jtc.selectAll();
 		aComp.requestFocus();
+		scrollposicion(tabla,fila,4);
 	}
 	
-	public void ClickAuto(){
-		Robot robot = null;
-	      try{
-	         robot = new Robot();
-	         
-	         scroll.getViewport().setViewPosition(new Point(0,0));
-	         
-	         robot.mouseMove(((int) cont.getLocationOnScreen().getX())+50, ((int) cont.getLocationOnScreen().getY())+125);
-	         
-	         robot.mousePress(InputEvent.BUTTON1_MASK);
-	         robot.mouseRelease(InputEvent.BUTTON1_MASK);
-	      }
-	      catch(Exception e2){System.out.println( e2.toString() ); }
-	}
+	public static void scrollposicion(JTable table, int filap, int columnap) {
+        if (!(table.getParent() instanceof JViewport)) {
+            return;
+        }
+        JViewport viewport = (JViewport)table.getParent();
+        Rectangle rect = table.getCellRect(filap, columnap, true);
+        Point pt = viewport.getViewPosition();
+        rect.setLocation(rect.x-pt.x, rect.y-pt.y);
+        table.scrollRectToVisible(rect);
+        // Scroll the area into view
+        viewport.scrollRectToVisible(rect);
+    }
+	
+
 	
 	public void validarCelda(){
 		try{
@@ -280,15 +286,21 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	}
 	
    	private void llamarRender()	{		
-		tabla.getTableHeader().setReorderingAllowed(false) ;
-		tabla.getColumnModel().getColumn(0).setMinWidth(80);
+   		this.tabla.getTableHeader().setReorderingAllowed(false) ;
+   		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+   		
+		tabla.getColumnModel().getColumn(0).setMinWidth(70);
+		tabla.getColumnModel().getColumn(0).setMaxWidth(70);
 		tabla.getColumnModel().getColumn(1).setMinWidth(420);
-		tabla.getColumnModel().getColumn(2).setMinWidth(80);
-		tabla.getColumnModel().getColumn(3).setMinWidth(80);
-		tabla.getColumnModel().getColumn(4).setMinWidth(80);
-		tabla.getColumnModel().getColumn(5).setMinWidth(80);
-		tabla.getColumnModel().getColumn(6).setMinWidth(80);
-		tabla.getColumnModel().getColumn(7).setMinWidth(30);
+		tabla.getColumnModel().getColumn(2).setMinWidth(75);
+		tabla.getColumnModel().getColumn(3).setMinWidth(75);
+		tabla.getColumnModel().getColumn(4).setMinWidth(75);
+		tabla.getColumnModel().getColumn(5).setMinWidth(75);
+		tabla.getColumnModel().getColumn(6).setMinWidth(45);
+		tabla.getColumnModel().getColumn(6).setMaxWidth(45);
+		tabla.getColumnModel().getColumn(7).setMinWidth(75);
+		tabla.getColumnModel().getColumn(8).setMinWidth(45);
+		tabla.getColumnModel().getColumn(8).setMaxWidth(45);
 		
 		tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 	
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
@@ -297,7 +309,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 	
 		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
 		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 	
-		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
+		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
    	}
 	
    	ActionListener opDeshacer = new ActionListener(){
@@ -325,11 +338,9 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	ActionListener opCargarInventario = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(new BuscarSQL().existeInventarioElDiaActual()){
-				
 				if(JOptionPane.showConfirmDialog(null, "Ya Existe Inventario El Dia De Hoy, Desea Recalcularlo?") == 0){
 					cargarInventario();
 				}
-					
 			}else{
 				cargarInventario();
 			}
@@ -358,12 +369,10 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	ActionListener opBuscarPedido = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
 //			//MODIFICAR ESTA FUNCION  (BUSCAR SI YA SE CAPTURO Y RECONSULTAR DE SCOI O  BUSCAR DIRECTO)
 			banderaGuardarModificar = new BuscarSQL().existeEnScoi(txtPedido.getText().trim());
 			
 			if(!txtPedido.getText().equals("")){
-				
 				Obj_Gestion_De_Pedidos_A_Establecimientos pedido = new Obj_Gestion_De_Pedidos_A_Establecimientos().buscar(txtPedido.getText().toUpperCase());
 				
 				if(new BuscarSQL().existenPedidosPendientesPorSurtir()){
@@ -408,37 +417,26 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			JOptionPane.showMessageDialog(null, "El Pedido No Se Puede Mostrar Debido A Que Ya Fue Surtido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			return;
 		}else{
-			
 				if(!pedido.getUsuario().equals("")){
-					
 								txtPedido.setEditable(false);
 								txtEstablecimientoOrigen.setText(pedido.getOrigen());
 								txtEstablecimientoDestino.setText(pedido.getDestino());
-								
 								cmbClasificador.setSelectedItem(pedido.getClasificador());
-								
 								txtUsuario.setText(pedido.getUsuario());		
 								txtStatus.setText(pedido.getStatus_pedido());
-							  
 								modelo.setRowCount(0);
 								Object[][] productos = new BuscarTablasModel().Buscar_Pedido(txtPedido.getText().toUpperCase(),banderaGuardarModificar);
-								
-//								if(!productos[0][0].toString().equals("El Pedido No Cuenta Con Productos")){
-										for(Object[] prod : productos){
+
+								for(Object[] prod : productos){
 											modelo.addRow(prod);
 										}
 										if(!banderaGuardarModificar.equals("MODIFICAR")){
 											calcularSurtido("AUTOMATICO");
 										}
-//								}else{
-//									JOptionPane.showMessageDialog(null, productos[0][0].toString(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//									return;
-//								}
 								fila=0;		
 								tabla.lostFocus(null, null);
 								tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 								tabla.getSelectionModel().clearSelection();
-								
 				}else{
 					limpiar();
 					txtPedido.setText("");
@@ -526,16 +524,13 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		if(banderaGuardarModificar.equals("MODIFICAR")){
 //				modificar
 				if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
-					
 						if(ValidaCampos().equals("")){
-							
 								pedido.setFolio_pedido(txtPedido.getText().toUpperCase().trim());
 								pedido.setOrigen(txtEstablecimientoOrigen.getText().toUpperCase().trim());
 								pedido.setDestino(txtEstablecimientoDestino.getText().toUpperCase().trim());
 								pedido.setClasificador(cmbClasificador.getSelectedItem().toString());
 								pedido.setUsuario(txtUsuario.getText().toUpperCase().trim());
 								pedido.setStatus_pedido(decideStatus);
-								
 								pedido.setMatriz(cargarTabla());
 								
 								if(pedido.guardar_actualizar(banderaGuardarModificar)){
@@ -555,7 +550,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		}else{
 //				guardar
 				if(ValidaCampos().equals("")){
-					
 						pedido.setFolio_pedido(txtPedido.getText().toUpperCase().trim());
 						pedido.setOrigen(txtEstablecimientoOrigen.getText().toUpperCase().trim());
 						pedido.setDestino(txtEstablecimientoDestino.getText().toUpperCase().trim());
@@ -594,17 +588,13 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	public String ValidaCampos(){
 		String vacios = "";
-		
 		vacios += txtPedido.getText().equals("")?"Pedido\n":"";
 		vacios += txtEstablecimientoOrigen.getText().equals("")?"Origen\n":"";
 		vacios += txtEstablecimientoDestino.getText().equals("")?"Destino\n":"";
 		vacios += txtUsuario.getText().trim().equals("")?"Usuario\n":"";
-		
 		vacios += cmbClasificador.getSelectedIndex()==0?"Clasificador\n":"";
 		vacios += cmbEstablecimientos.getSelectedIndex()==0?"Establecimiento\n":"";
-		
 		vacios += tabla.getRowCount()==0?"Pedido Sin Productos\n":"";
-		
 		return vacios;
 	}
 
@@ -617,8 +607,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		}
 	}
 	
+	//TODO Filtro De Pedidos
 	public class Cat_Filtro_De_Pedidos_Nuevos extends JFrame{
-		
 		Object[][] Matriz_pedidos_ctes ;
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
@@ -746,19 +736,14 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		}
 		
 		public void consultarfiltro(String Modificar,String folio_pedido){
-
 			
 			modelo.setRowCount(0);
-			
 			Statement s;
 			ResultSet rs;
 			try {
-				
 				String query = "exec sp_select_filtro_de_seleccion_de_pedido2 '"+Modificar+"','"+folio_pedido+"','"+(new Obj_Usuario().LeerSession().getFolio())+"'"; 
-				
 				s = con.conexion().createStatement();
 				rs = s.executeQuery(query);
-				
 				while (rs.next())
 				{ 
 				   String [] fila = new String[7];

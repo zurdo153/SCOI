@@ -5984,8 +5984,7 @@ public boolean Cargar_Inventario(String establecimiento){
 }
 
 public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,String movimiento){
-	
-	String query =  "EXEC sp_guardar_gestion_de_pedido ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	String query =  "EXEC sp_guardar_gestion_de_pedido ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
 	String query2 =" declare @folio_pedido varchar(15) , @cod_prod varchar(15), @surtido float,@partida int"
@@ -6011,41 +6010,39 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 			+ "	   where LTRIM(RTRIM(folio)) = LTRIM(RTRIM(@folio_pedido)) and LTRIM(RTRIM(cod_prod))=LTRIM(RTRIM(@cod_prod)) AND LTRIM(RTRIM(transaccion))='29'"
 			+ " end ";
 //	String query2 ="exec sp_IZAGAR_gestion_de_pedido ?,?,?,?";
-			 
 	Connection con2 = new Connexion().conexion_IZAGAR();
 	PreparedStatement pstmt2 = null;
-	
 	try {
 		 con.setAutoCommit(false);
 		 pstmt = con.prepareStatement(query);
 		 con2.setAutoCommit(false);
 		 pstmt2 = con2.prepareStatement(query2);
-			
 	   int user = usuario.getFolio();
 		
 		for(int i=0; i<pedido.getMatriz().length; i++){
-				pstmt.setString   (1, pedido.getFolio_pedido());
-				pstmt.setString   (2, pedido.getOrigen());
-				pstmt.setString   (3, pedido.getDestino());
-				pstmt.setString   (4, pedido.getUsuario());
-				pstmt.setString   (5, pedido.getClasificador());
-				pstmt.setString   (6, pedido.getStatus_pedido());
-				pstmt.setString   (7, pedido.getMatriz()[i][0].toString());
+				pstmt.setString  (1, pedido.getFolio_pedido());
+				pstmt.setString  (2, pedido.getOrigen());
+				pstmt.setString  (3, pedido.getDestino());
+				pstmt.setString  (4, pedido.getUsuario());
+				pstmt.setString  (5, pedido.getClasificador());
+				pstmt.setString  (6, pedido.getStatus_pedido());
+				pstmt.setString  (7, pedido.getMatriz()[i][0].toString());
 				pstmt.setFloat   (8, Float.valueOf(pedido.getMatriz()[i][2].toString()));
 				pstmt.setFloat   (9, Float.valueOf(pedido.getMatriz()[i][3].toString()));
 				pstmt.setFloat   (10, Float.valueOf(pedido.getMatriz()[i][4].toString()));
 				pstmt.setFloat   (11, Float.valueOf(pedido.getMatriz()[i][5].toString()));
-				pstmt.setString   (12, pedido.getMatriz()[i][6].toString());
-				pstmt.setInt   (13, user);
-				pstmt.setString   (14, pedido.getMatriz()[i][1].toString());
-				pstmt.setInt   (15, Integer.valueOf(pedido.getMatriz()[i][7].toString()));
+				pstmt.setString  (12, pedido.getMatriz()[i][6].toString());
+				pstmt.setInt     (13, user);
+				pstmt.setString  (14, pedido.getMatriz()[i][1].toString());
+				pstmt.setString  (15, pedido.getMatriz()[i][7].toString());
+				pstmt.setInt     (16, Integer.valueOf(pedido.getMatriz()[i][8].toString()));
 				
 //				System.out.println(pedido.getFolio_pedido());
 //				System.out.println(pedido.getOrigen());
 //				System.out.println(pedido.getDestino());
 //				System.out.println(pedido.getUsuario());
 //				System.out.println(pedido.getMatriz()[i][0].toString());
-////				System.out.println(pedido.getMatriz()[i][1].toString());
+//				System.out.println(pedido.getMatriz()[i][1].toString());
 //				System.out.println(Float.valueOf(pedido.getMatriz()[i][2].toString()));
 //				System.out.println(Float.valueOf(pedido.getMatriz()[i][3].toString()));
 //				System.out.println(Float.valueOf(pedido.getMatriz()[i][4].toString()));
@@ -6060,20 +6057,18 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 			pstmt2.setString (1, pedido.getFolio_pedido());
 			pstmt2.setString (2, pedido.getMatriz()[i2][0].toString());
 			pstmt2.setFloat  (3, Float.valueOf(pedido.getMatriz()[i2][4].toString()));
-			pstmt2.setInt    (4, Integer.valueOf(pedido.getMatriz()[i2][7].toString()));
-//			
-//			System.out.println(pedido.getFolio_pedido());
+			pstmt2.setInt    (4, Integer.valueOf(pedido.getMatriz()[i2][8].toString()));
+
+			//			System.out.println(pedido.getFolio_pedido());
 //			System.out.println(pedido.getMatriz()[i2][0].toString());
 //			System.out.println(Float.valueOf(pedido.getMatriz()[i2][4].toString()));
-//			System.out.println(Integer.valueOf(pedido.getMatriz()[i2][7].toString()));
+//			System.out.println(Integer.valueOf(pedido.getMatriz()[i2][8].toString()));
 //			System.out.println(query2);
          pstmt2.executeUpdate();
 	     }
 		con2.commit();	
 		}
-		
 		con.commit();
-		
 	} catch (Exception e) {
 		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
 		if (con != null){

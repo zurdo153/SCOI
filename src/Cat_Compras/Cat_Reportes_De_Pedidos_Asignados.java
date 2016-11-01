@@ -35,7 +35,7 @@ import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
-import Obj_Principal.Obj_Refrescar;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
@@ -69,7 +69,7 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 	     }
 				
 	    public boolean isCellEditable(int fila, int columna){
-	    	 if(columna ==1)
+	    	 if(columna ==100)
 					return true; return false;
 			}
 	    };
@@ -83,7 +83,7 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 	JDateChooser fchFinal = new JDateChooser();
 	
 	JButton btnActualizar = new JCButton("Actualizar", "", "Azul");
-	JButton btnReporte		 = new JCButton("Reporte De Pedido", "", "Azul");
+	JButton btnReporte		 = new JCButton("Reporte De Productos Surtidos", "", "Azul");
 	JButton btnReporteNegados= new JCButton("Reporte De Productos Negados", "", "Azul");
 	
 	String[] status = {"TODOS","ASIGNADO","SURTIDO","CANCELADO","NEGADO"};
@@ -126,8 +126,8 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 		campo.add(cmbStatus).setBounds(700,y,85,20);
 		campo.add(scroll_tabla).setBounds(10,y+=20,775,220);
 		
-		campo.add(btnReporteNegados).setBounds(345,290,240,20);
-		campo.add(btnReporte).setBounds(595,290,190,20);
+		campo.add(btnReporteNegados).setBounds(10,290,240,20);
+		campo.add(btnReporte).setBounds(535,290,240,20);
 		
 		cont.add(campo);
 		
@@ -172,7 +172,7 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 	ActionListener opReportePedido = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 			
-			reporte(e.getActionCommand().toString().trim().equals("Reporte De Pedido")?"no":"si");
+			reporte(e.getActionCommand().toString().trim().equals("Reporte De Productos Surtidos")?"no":"si");
 		}
 	};
 	
@@ -229,7 +229,7 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 			    	
 					String comando="exec sp_select_pedidos_asignados '"+fecha_in+"','"+fecha_fin+"'";
 					String basedatos="26",pintar="si";
-					new Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+					new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 					
 				}else{
 					
