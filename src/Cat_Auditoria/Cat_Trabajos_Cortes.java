@@ -753,7 +753,12 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	ActionListener opReimprimirUltimoTrabajo = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			
-			Cat_Reporte_De_Trabajo_De_Crotes(971);//(new BuscarSQL().folio_de_ultimo_trabajo_de_corte(grupo_corte));
+			try {
+				Cat_Reporte_De_Trabajo_De_Crotes(new BuscarSQL().folio_de_ultimo_trabajo_de_corte(grupo_corte));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	};
 
