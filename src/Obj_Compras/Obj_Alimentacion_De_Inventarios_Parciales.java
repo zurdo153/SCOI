@@ -4,6 +4,7 @@ package Obj_Compras;
 import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.GuardarSQL;
 
 
 
@@ -19,15 +20,9 @@ public class Obj_Alimentacion_De_Inventarios_Parciales {
 	String folio;
 	String Notas;
 	String Establecimiento;
-	
-	public double getDiferencia() {
-		return Diferencia;
-	}
+    Object[][] tabla_obj =null;
+    String status;
 
-	public void setDiferencia(double diferencia) {
-		Diferencia = diferencia;
-	}
-	
 	public String getCod_Prod() {
 		return Cod_Prod;
 	}
@@ -58,6 +53,14 @@ public class Obj_Alimentacion_De_Inventarios_Parciales {
 
 	public void setExistencia_Fisica(double existencia_Fisica) {
 		Existencia_Fisica = existencia_Fisica;
+	}
+
+	public double getDiferencia() {
+		return Diferencia;
+	}
+
+	public void setDiferencia(double diferencia) {
+		Diferencia = diferencia;
 	}
 
 	public double getUltimo_Costo() {
@@ -100,6 +103,22 @@ public class Obj_Alimentacion_De_Inventarios_Parciales {
 		Establecimiento = establecimiento;
 	}
 
+	public Object[][] getTabla_obj() {
+		return tabla_obj;
+	}
+
+	public void setTabla_obj(Object[][] tabla_obj) {
+		this.tabla_obj = tabla_obj;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Obj_Alimentacion_De_Inventarios_Parciales buscardatos_producto(String cod_prod, String Establecimiento){ 
 		try {
 			return new BuscarSQL().datos_producto_existencia(cod_prod, Establecimiento);
@@ -108,6 +127,7 @@ public class Obj_Alimentacion_De_Inventarios_Parciales {
 		}
 	return null; 
 	}
+	
 //	
 //	public String buscardatos_productos_en_pedidos(String cod_prod){ 
 //			try {
@@ -118,16 +138,8 @@ public class Obj_Alimentacion_De_Inventarios_Parciales {
 //	return null; 
 //	}
 //	
-//	public Obj_Alimentacion_De_Inventarios_Parciales Hoymenos3meses(){ 
-//		try {
-//			return new BuscarSQL().Hoymenos3meses();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	return null; 
-//	}
-//	public boolean Guardar_Cotizacion(){ return new GuardarSQL().Guardar_Cotizacion_Producto(this); }
-//	
-//	public boolean Guardar_Captura_competencia(String[][] comp){ return new GuardarSQL().Guardar_captura_de_competencia(this,comp); }
+
+	public boolean Guardar_inventario_parcial(){ return new GuardarSQL().Guardar_inventarios_parciales(this); }
+
 
 }

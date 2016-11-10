@@ -1,4 +1,4 @@
-package Cat_Reportes;
+package Cat_Inventarios;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -45,7 +45,7 @@ import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Inventario_Parcial extends JFrame {
+public class Cat_Reportes_Para_Inventarios_Parciales extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -239,11 +239,11 @@ public void constructor(){
     
   } ;
   
-  public Cat_Reporte_De_Inventario_Parcial(){
+  public Cat_Reportes_Para_Inventarios_Parciales(){
 	  constructor();
   };
   
-	public Cat_Reporte_De_Inventario_Parcial(String parametro, String operador, String establecimiento){
+	public Cat_Reportes_Para_Inventarios_Parciales(String parametro, String operador, String establecimiento){
 		constructor();
 		String operador_simbolo = "";
         if(!parametro.equals("")){
@@ -920,7 +920,7 @@ public void constructor(){
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Inventario_Parcial("","Todos", "Seleccione un Establecimiento").setVisible(true);
+			new Cat_Reportes_Para_Inventarios_Parciales("","Todos", "Seleccione un Establecimiento").setVisible(true);
 		}catch(Exception e){	}
 	}
 

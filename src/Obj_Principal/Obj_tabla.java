@@ -21,24 +21,26 @@ import Obj_Renders.tablaRenderer;
 
 public class Obj_tabla {
 	
+	public boolean validacampo(String valorcelda){
+			
+		try {
+			if(valorcelda.equals("")){
+	    		return false;
+			}else{
+				 Double.parseDouble(valorcelda);
+	    		return true;
+			}
+		} catch (NumberFormatException nfe){
+			
+			return false;
+		}
+ 	}
+	
 	public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,String comando,String BasdeDatos, String pintar, Integer checkbox){
     	tabla.getTableHeader().setReorderingAllowed(false) ;
     	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		modelo.setRowCount(0);
 		
-    	for(int i = 0; i<tabla.getColumnCount(); i++){
-    		tabla.getColumnModel().getColumn(i).setMaxWidth(2000);
-           }
-    	
-		if (pintar.equals("si")||checkbox>-1){
-		for(int i = 0; i<tabla.getColumnCount(); i++){
-			if(checkbox>-1&&i==checkbox){
-			 tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
-			}else{
-			tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11));}
-           }
-		}
-
 		Connexion con = new Connexion();
 		Statement  s =null;
 		
@@ -46,14 +48,12 @@ public class Obj_tabla {
 			 try {
 				s = con.conexion_IZAGAR().createStatement();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else{
 			 try {
 					s = con.conexion().createStatement();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}
@@ -93,30 +93,69 @@ public class Obj_tabla {
 			}
 			
 	     }	
+		
+		
+		for(int i = 0; i<tabla.getColumnCount(); i++){
+    		tabla.getColumnModel().getColumn(i).setMaxWidth(2000);
+           }
+    	
+		if (pintar.equals("si")||checkbox>-1){
+		for(int i = 0; i<tabla.getColumnCount(); i++){
+			if(checkbox>-1&&i==checkbox){
+			 tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
+			}else{
+
+				if(tabla.getRowCount()>0){
+					if( validacampo(modelo.getValueAt(0,i).toString().trim()) ){
+					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11));
+					}else{
+					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11));	
+					}
+				}else{
+					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",11));
+			  	}
+		      }
+           }
+		}
+		
 	   }
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public  String[][] tabla_guardar(JTable tabla,DefaultTableModel  modelo,int columnas){ 
-			Vector vector = new Vector();
-			for(int i=0; i<tabla.getRowCount(); i++){
-				for(int c=0; c<columnas; c++){
-						  vector.add(modelo.getValueAt(i,c).toString().trim());
-						 System.out.println(modelo.getValueAt(i,c).toString().trim());
-				}		  
+		public  String[][] tabla_guardar(JTable tabla){ 
+			int columnas=tabla.getColumnCount();
+			DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
+			String[][] matriz = null ;
+			if(tabla.isEditing()){
+				tabla.getCellEditor().stopCellEditing();
 			}
-				String[][] matriz = new String[vector.size()/columnas][columnas];
-				 int i=0,j =0,columnafor=0;
-				while(i<vector.size()){
-					columnafor=0;
-				      for(int f =0;  f<columnas;  f++,columnafor++,i++  ){	
-				  matriz[j][columnafor] = vector.get(i).toString();
-				  }
-				  j++;
-			}
+			
+			if(tabla.getRowCount()==0){
+				 JOptionPane.showMessageDialog(null, "No hay Datos que Guardar", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				 matriz = new String[0][0];
+			}else{ 
+			
+				Vector vector = new Vector();
+				for(int i=0; i<tabla.getRowCount(); i++){
+					for(int c=0; c<columnas; c++){
+							  vector.add(modelo.getValueAt(i,c).toString().trim());
+					}		  
+				}
+							matriz = new String[vector.size()/columnas][columnas];
+					 int i=0,j =0,columnafor=0;
+					while(i<vector.size()){
+						columnafor=0;
+					      for(int f =0;  f<columnas;  f++,columnafor++,i++  ){	
+					  matriz[j][columnafor] = vector.get(i).toString();
+					  }
+					  j++;
+				}
+			}	
+				
 			return matriz;
 		}
 		
-		public boolean validacelda(JTable tabla,DefaultTableModel  modelo,String tipo, int fila,int columna){
+		public boolean validacelda(JTable tabla,String tipo, int fila,int columna){
+			    DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
 			   String valorcelda= modelo.getValueAt(fila,columna).toString().trim();
 			   String Aviso="";
 				    if(tipo.equals("decimal")){						

@@ -41,6 +41,7 @@ import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Checador.Obj_Solicitud_De_Empleados;
 import Obj_Compras.Obj_Alimentacion_De_Codigos_Adicionales;
+import Obj_Compras.Obj_Alimentacion_De_Inventarios_Parciales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
@@ -6131,6 +6132,57 @@ public boolean Guardar_Asignacion_De_Pedido(Object[][] asignacion,String folio_p
 		} catch(SQLException e){
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Cargar_Inventario ] Insert  SQLException: sp_insert_inventario_de_gestion_de_pedidos "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	return true;
+}
+
+public boolean Guardar_inventarios_parciales(Obj_Alimentacion_De_Inventarios_Parciales inventarios_parciales){
+	int folio_transaccion=busca_y_actualiza_proximo_folio(70);
+	int folio_usuario=usuario.getFolio();
+	inventarios_parciales.setFolio(folio_transaccion+"");
+	
+	String query = "exec sp_insert_inventario_parcial_fisico ?,?,?,?,?,?,?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		
+//		@folio_inventario_parcial int, @cod_prod varchar(10),@existencia float, @existencia_fisica float, @diferencia float,@ultimo_costo money, @costo_promedio money, @usuario_capturo int, @status char(1), @notas varchar(max)
+		for(int i=0; i<inventarios_parciales.getTabla_obj().length; i++){
+			pstmt.setInt   (1 ,  folio_transaccion);
+			pstmt.setString(2 ,  inventarios_parciales.getTabla_obj()[i][0].toString().trim());
+			pstmt.setFloat (3 ,  Float.valueOf(inventarios_parciales.getTabla_obj()[i][2].toString().trim()));
+			pstmt.setFloat (4 ,  Float.valueOf(inventarios_parciales.getTabla_obj()[i][3].toString().trim()));
+			pstmt.setFloat (5 ,  Float.valueOf(inventarios_parciales.getTabla_obj()[i][4].toString().trim()));
+			pstmt.setFloat (6 ,  Float.valueOf(inventarios_parciales.getTabla_obj()[i][5].toString().trim()));
+			pstmt.setFloat (7 ,  Float.valueOf(inventarios_parciales.getTabla_obj()[i][6].toString().trim()));
+			pstmt.setInt   (8 ,  folio_usuario);
+			pstmt.setString(9 ,  inventarios_parciales.getEstablecimiento());
+			pstmt.setString(10 , inventarios_parciales.getStatus());
+			pstmt.setString(11,  inventarios_parciales.getNotas().trim());
+			pstmt.executeUpdate();
+		}
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_inventarios_parciales ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_inventarios_parciales ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
 		}
 	}		
 	return true;

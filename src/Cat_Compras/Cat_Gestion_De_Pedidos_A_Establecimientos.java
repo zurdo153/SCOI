@@ -95,8 +95,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	                   java.lang.Object.class,
 	                   java.lang.Object.class,
 	                   java.lang.Object.class
-	                    
 	    };
+			
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 	                return types[columnIndex];
@@ -716,17 +716,27 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	                  });
 		}
 		
-		public void buscarEntradas(String establecimiento,String Actualizar){
+		ActionListener Buscar_Cambios = new ActionListener(){
+			@SuppressWarnings({ })
+			public void actionPerformed(ActionEvent e){
+				pedido(cmbEstablecimientos.getSelectedItem().toString(),e.getActionCommand());
+			}
+		};
+		
+		public void pedido(String establecimiento,String boton){
 			
 	    	String folio_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim():"";
 	    	String status_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 6).toString().trim():"";
 	    	
-				if(Actualizar.toUpperCase().equals("CANCELAR") && folio_pedido.equals("")){
+				if(boton.toUpperCase().equals("CANCELAR") && folio_pedido.equals("")){
 						JOptionPane.showMessageDialog(null, "Favor De Seleccionar El Registro Que Se Desea Cancelar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 				}else{
 					
-						if((Actualizar.toUpperCase().equals("ACTUALIZAR")) || (Actualizar.toUpperCase().equals("CANCELAR") && status_pedido.equals("VIGENTE")) ){
+						if((boton.toUpperCase().equals("ACTUALIZAR")) || (boton.toUpperCase().equals("CANCELAR") && status_pedido.equals("VIGENTE")) ){
+							
+							 consultarfiltro(boton,folio_pedido);
+							 
 							dispose();
 						}else{
 								JOptionPane.showMessageDialog(null, "Solo Se Pueden Cancelar Registros Con Status Vigente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -757,16 +767,12 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 
 				   modelo.addRow(fila); 
 				}
-				System.out.println(query);
-				
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en buscarEntradas SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en consultarfiltro SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
-			
-			
-	
 		}
+		
 		
 		KeyListener opFiltro = new KeyListener(){
 			@SuppressWarnings("unchecked")
@@ -791,13 +797,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			return date;
 		};
 			    
-		ActionListener Buscar_Cambios = new ActionListener(){
-			@SuppressWarnings({ })
-			public void actionPerformed(ActionEvent e){
-				buscarEntradas(cmbEstablecimientos.getSelectedItem().toString(),e.getActionCommand());
-			}
-		};
-		
+
 		private void agregar(final JTable tbl) {
 			tbl.addMouseListener(new MouseListener() {
 				public void mouseReleased(MouseEvent e) {
@@ -814,7 +814,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				public void mouseEntered(MouseEvent e) {}
 				public void mouseClicked(MouseEvent e) {}
 			});
-			
 		}
 		
 	   	private void llamarRender()	{		

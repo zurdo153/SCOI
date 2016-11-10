@@ -39,7 +39,7 @@ import Cat_Compras.Cat_Analisis_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
 import Cat_Compras.Cat_Recepcion;
 import Cat_Compras.Cat_Reporte_De_Ventas;
-import Cat_Reportes.Cat_Reporte_De_Inventario_Parcial;
+import Cat_Inventarios.Cat_Reportes_Para_Inventarios_Parciales;
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 import Obj_Principal.Obj_Filtro_Dinamico;
@@ -309,7 +309,7 @@ public class Cat_Filtro_De_Busqueda_De_Productos extends JDialog {
 	 					new Cat_Analisis_De_Precios_De_Competencia(Lista,operador_ventas).setVisible(true);
 	 				}else{
 	 					if(valor_catalogo.equals("Reporte_De_Inventarios_Parciales")){
-		 					new Cat_Reporte_De_Inventario_Parcial(Lista,operador_ventas,establecimiento_inv_parcial).setVisible(true);
+		 					new Cat_Reportes_Para_Inventarios_Parciales(Lista,operador_ventas,establecimiento_inv_parcial).setVisible(true);
 		 				}else{
 		 					new Cat_Reporte_De_Ventas(Lista,operador_ventas).setVisible(true);
 		 				}

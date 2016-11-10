@@ -74,7 +74,7 @@ public class Cat_Usuarios extends JFrame{
 //		return tip;
 //	}
 	
-	// MENU PRICIPAL ADMINISTRACION DEL SISTEMA  (1)
+	// MENU PRICIPAL ADMINISTRACION DEL SISTEMA  (1) select nombre from tb_submenu where menu_principal = 1 order by nombre asc
 	String[] Sub_Administracion_del_Sistema = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(1);
 	
 	Obj_CheckBoxNode Administracion_del_sistema[] = {
@@ -103,8 +103,6 @@ public class Cat_Usuarios extends JFrame{
 	    new Obj_CheckBoxNode(Sub_Auditoria[10], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[11], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[12], false),
-	    new Obj_CheckBoxNode(Sub_Auditoria[13], false),
-	    new Obj_CheckBoxNode(Sub_Auditoria[14], false),
 	    
 	};
 	@SuppressWarnings("rawtypes")
@@ -253,6 +251,7 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[47], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[48], false),
 		new Obj_CheckBoxNode(Sub_Lista_de_Raya[49], false),
+		new Obj_CheckBoxNode(Sub_Lista_de_Raya[50], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Lista_de_RayaVector = new Obj_NombreVector("Lista De Raya", Lista_de_Raya);
@@ -296,7 +295,6 @@ public class Cat_Usuarios extends JFrame{
 				new Obj_CheckBoxNode(Sub_Compras[25], false),
 				new Obj_CheckBoxNode(Sub_Compras[26], false),
 				new Obj_CheckBoxNode(Sub_Compras[27], false),
-				new Obj_CheckBoxNode(Sub_Compras[28], false),
 			};
 			@SuppressWarnings("rawtypes")
 			Vector ComprasVector = new Obj_NombreVector("Compras", Compras);
@@ -309,9 +307,21 @@ public class Cat_Usuarios extends JFrame{
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Vector_Punto_De_Venta = new Obj_NombreVector("Punto De Venta", Punto_de_Venta);
-		
+	
+	
+	// MENU PRINCIPAL INVENTARIOS (10) el numero es el menu principal
+	String[] Sub_inventarios = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(10);
+	Obj_CheckBoxNode Inventarios[] = {
+		new Obj_CheckBoxNode(Sub_inventarios[0], false),
+		new Obj_CheckBoxNode(Sub_inventarios[1], false),
+		new Obj_CheckBoxNode(Sub_inventarios[2], false),
+		new Obj_CheckBoxNode(Sub_inventarios[3], false),
+	};
+	@SuppressWarnings("rawtypes")
+	Vector Vector_inventarios = new Obj_NombreVector("Inventarios", Inventarios);
+	
 		////ESTA PARTE SE ORDENA LA POSICION EN LA QUE SE QUIERE EL MENU PRINCIPAL  EN EL ARBOL
-	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ComprasVector, ContabilidadVector, EvaluacionesVector, 
+	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ComprasVector,Vector_inventarios, ContabilidadVector, EvaluacionesVector, 
 			Lista_de_RayaVector,ReportesEspecialesVector,Vector_Punto_De_Venta};
 	    
 	@SuppressWarnings("rawtypes")
@@ -546,6 +556,12 @@ public class Cat_Usuarios extends JFrame{
 	        		}
 	        		tree.collapseRow(8);
 	        		
+	        		Vector inventarios = new Obj_Usuario().returnPermisos(folio_empleado, 10);
+	        		for(int i = 0; i<Inventarios.length; i ++){
+	        			Inventarios[i].setSelected(Boolean.parseBoolean(inventarios.get(i).toString()));
+	        		}
+	        		tree.collapseRow(9);
+	        		
 	        		
 				}else{
 					
@@ -588,6 +604,11 @@ public class Cat_Usuarios extends JFrame{
 	        			Compras[i].setSelected(false);
 	        		}
 	        		tree.collapseRow(6);
+	        		
+//	        		for(int i = 0; i<Punto_de_Venta.length; i ++){
+//	        			Punto_de_Venta[i].setSelected(false);
+//	        		}
+//	        		tree.collapseRow(7);
 	        		
 				}        		
 			}
