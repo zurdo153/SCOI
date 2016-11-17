@@ -8234,11 +8234,13 @@ public class BuscarSQL {
 		return factor;
 	}
 	
-	public int  folio_de_ultimo_trabajo_de_corte(String concentrado) throws SQLException{
+	public int  folio_de_ultimo_trabajo_de_corte(String concentrado, String fecha){
 		int folio=0;
-		String query = "declare @folio_grupo int "
-				+ " set @folio_grupo = (select folio_grupo_para_cortes from tb_grupos_para_cortes where grupo_para_cortes = '"+concentrado+"' and status = 1) "
-				+ " select top 1 folio_trabajo_de_cortes from tb_alimentacion_de_cortes where folio_grupo_para_cortes = @folio_grupo order by fecha_de_trabajo desc";
+				
+		String query = "exec sp_select_folio_trabajo_de_corte '"+concentrado+"','"+fecha+"'";
+//		String query = "declare @folio_grupo int "
+//				+ " set @folio_grupo = (select folio_grupo_para_cortes from tb_grupos_para_cortes where grupo_para_cortes = '"+concentrado+"' and status = 1) "
+//				+ " select top 1 folio_trabajo_de_cortes from tb_alimentacion_de_cortes where folio_grupo_para_cortes = @folio_grupo order by fecha_de_trabajo desc";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -8250,7 +8252,11 @@ public class BuscarSQL {
 			e.printStackTrace();
 		}
 		finally{
-			if(stmt!=null){stmt.close();}
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
 		}
 		return folio;
 	}

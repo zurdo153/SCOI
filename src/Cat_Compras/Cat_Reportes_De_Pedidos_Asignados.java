@@ -83,6 +83,11 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 	JDateChooser fchFinal = new JDateChooser();
 	
 	JButton btnActualizar = new JCButton("Actualizar", "", "Azul");
+	
+	JButton btnReporteNegadosPorEstablecimiento	 = new JCButton("Reporte De Productos Negados Por Establecimientos", "", "Azul");
+	JButton btnReporteTotalDeNegados			 = new JCButton("Reporte De Total De Productos Negados", "", "Azul");
+	
+	
 	JButton btnReporte		 = new JCButton("Reporte De Productos Surtidos", "", "Azul");
 	JButton btnReporteNegados= new JCButton("Reporte De Productos Negados", "", "Azul");
 	
@@ -121,7 +126,10 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 		campo.add(fchFinal).setBounds(165 ,y,100,20);
 		campo.add(btnActualizar).setBounds(265,y,100,20);
 		
-		campo.add(txtNombre_Completo2).setBounds(10,y+=25,415,20);
+		campo.add(btnReporteNegadosPorEstablecimiento	).setBounds(415,y-12,370,20);
+		campo.add(btnReporteTotalDeNegados				).setBounds(415,y+9,370,20);
+		
+		campo.add(txtNombre_Completo2).setBounds(10,y+=30,415,20);
 		campo.add(new JLabel("Filtro Por Status:")).setBounds(605, y, 100, 20);
 		campo.add(cmbStatus).setBounds(700,y,85,20);
 		campo.add(scroll_tabla).setBounds(10,y+=20,775,220);
@@ -140,6 +148,10 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 		btnActualizar.addActionListener(opActualizar);
 		btnReporte.addActionListener(opReportePedido);
 		btnReporteNegados.addActionListener(opReportePedido);
+		
+		btnReporteNegadosPorEstablecimiento.addActionListener(opReporteProductosNegados);
+		btnReporteTotalDeNegados.addActionListener(opReporteProductosNegados);
+		
 		txtNombre_Completo2.addKeyListener(op_filtro);
 		
 		cmbStatus.addActionListener(opFiltroStatus);
@@ -190,6 +202,64 @@ public class Cat_Reportes_De_Pedidos_Asignados extends JDialog {
 			String reporte = "Obj_Reporte_De_Pedidos_Asignados.jrxml";
 			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
+	}
+	
+	ActionListener opReporteProductosNegados = new ActionListener(){
+		public void actionPerformed(ActionEvent e) {
+			
+				if(validaFechas().equals("")){
+					
+					String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(fchInicia.getDate())+" 00:00:01";
+					String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(fchFinal.getDate())+" 00:03:03";
+					   
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+					Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+					Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+					
+					if(fecha1.before(fecha2)){
+						
+							reporteProductosNegados(e.getActionCommand().toString().trim(),fecha_inicio,fecha_final);
+					
+					}else{
+						JOptionPane.showMessageDialog(null,"Las Fechas Estan Invertidas", "Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					}
+				}else{
+					JOptionPane.showMessageDialog(null,"Los Siguentes Campos Son Requeridos:\n"+(validaFechas()), "Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}	
+			}
+	};
+	
+	public void reporteProductosNegados(String productos_negado,String fecha_inicio,String fecha_final){
+		String basedatos="2.26";
+		String vista_previa_reporte="no";
+		int vista_previa_de_ventana=0;
+				
+				if(productos_negado.equals("Reporte De Productos Negados Por Establecimientos")){
+					
+					String comando="exec sp_select_productos_negados_por_establecimiento '"+fecha_inicio+"','"+fecha_final+"'";
+					String reporte = "Obj_Reporte_Productos_Negados_Por_Establecimiento.jrxml";
+					new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+					
+				}else{
+					
+					String comando="exec sp_select_total_de_productos_negados '"+fecha_inicio+"','"+fecha_final+"'";
+					String reporte = "Obj_Reporte_De_Total_De_Productos_Negados.jrxml";
+					new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+					
+				}	
+	}
+	
+	public String validaFechas(){
+		String error = "";
+		
+		String fechainicioNull = fchInicia.getDate()+"";
+		String fechafinalNull = fchFinal.getDate()+"";
+		if(fechainicioNull.equals("null")) error+= "Fecha  inicio\n";
+		if(fechafinalNull.equals("null"))  error+= "Fecha Final\n";
+		
+		return error;		
 	}
 	
 	public void tamanioColumnas(){
