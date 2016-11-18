@@ -212,11 +212,11 @@ public class Cat_Alimentacion_De_Permisos_A_Colaboradores_Por_Nivel_Jerarquico e
 		panel.add(Observasiones).setBounds              (x        ,y+=20   ,700    ,80      );
 		
 		x=20;width=120;sep=145;height=25;
-		panel.add(btnNuevo).setBounds                   (x        ,y+=90   ,width  ,height);
-		panel.add(btnGuardar).setBounds                 (x+=sep   ,y       ,width  ,height);
-		panel.add(btnEditar).setBounds                  (x+=sep   ,y       ,width  ,height);
-		panel.add(btnDeshacer).setBounds                (x+=sep   ,y       ,width  ,height);
-		panel.add(btnSalir).setBounds                   (x+=sep   ,y       ,width  ,height);
+		panel.add(btnNuevo).setBounds                   (x        ,y+=90   ,width  ,height  );
+		panel.add(btnGuardar).setBounds                 (x+=sep   ,y       ,width  ,height  );
+		panel.add(btnEditar).setBounds                  (x+=sep   ,y       ,width  ,height  );
+		panel.add(btnDeshacer).setBounds                (x+=sep   ,y       ,width  ,height  );
+		panel.add(btnSalir).setBounds                   (x+=sep   ,y       ,width  ,height  );
 		
 //		se asigna hora cero al spinner y se le indica ke muestre solo la hora 
 		spComida.setValue(new Time(Integer.parseInt(comida[0]),Integer.parseInt(comida[1]),Integer.parseInt(comida[2])));
@@ -1092,7 +1092,6 @@ public class Filtro_Permiso_Empleado extends JFrame{
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/user_icon&16.png"));
 			this.setTitle("Seleccion de Tiempo de Dobla por No Tener Dia Que Dobla");
 			panel.setBorder(BorderFactory.createTitledBorder("Seleccion de Opcion de Tiempo"));
-
 
 			btnDobla1.setSelected(true);
 			btnDobla1.setText(	"<html> <FONT FACE="+"arial"+" SIZE=4 COLOR=BLACk>" +
