@@ -45,6 +45,7 @@ import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
 public class Cat_Checador extends JFrame {
@@ -164,6 +165,8 @@ public class Cat_Checador extends JFrame {
                 Icon iconoLogo;
                 Icon iconoCerrar;
                 
+                JCButton btnChecadorDeTransferencias = new JCButton("Transferir Embarque", "", "");
+                
         public Cat_Checador(){
                 
                 this.init_tabla();
@@ -178,6 +181,7 @@ public class Cat_Checador extends JFrame {
                 
                 txtClaveReal.addKeyListener(action_registrar_entrada);
                 btnChecar.addActionListener(opChecar);
+                btnChecadorDeTransferencias.addActionListener(opTranferencia);
                 
                 lblSemaforoRojo.setEnabled(false);
                 lblSemaforoVerde.setEnabled(false);
@@ -247,6 +251,14 @@ public class Cat_Checador extends JFrame {
 			public void keyReleased(KeyEvent e) {}
 			public void keyTyped(KeyEvent e) {}
         }; 
+        
+        
+        ActionListener opTranferencia = new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+	          	  
+	          	  new Cat_Validar_Encargado_Para_Tranferencia().setVisible(true);
+	            }
+	      };
         
         ActionListener opChecar = new ActionListener(){
             @SuppressWarnings("deprecation")
@@ -820,7 +832,11 @@ public class Cat_Checador extends JFrame {
                panel.add(lblPuesto).setBounds(550,58,190,10);
                panel.add(lblHorario).setBounds(550,76,190,10);
                
+               panel.add(btnChecadorDeTransferencias).setBounds(15,103,180,20);
+               
+
                panel.add(panelScroll).setBounds(15,y+63,773,altoMon-250);
+               
                panel.add(fondo).setBounds(0,0,anchoMon,altoMon);
                
                iconoSemaforoR = new ImageIcon(tmpIconSemR.getImage().getScaledInstance(lblSemaforoRojo.getWidth(), lblSemaforoRojo.getHeight(), Image.SCALE_DEFAULT));
@@ -889,6 +905,8 @@ public class Cat_Checador extends JFrame {
                panel.add(lblEstablecimiento).setBounds(705,55,230,20);
                panel.add(lblPuesto).setBounds(705,80,230,20);
                panel.add(lblHorario).setBounds(705,105,230,20);
+               
+               panel.add(btnChecadorDeTransferencias).setBounds(15,136,180,20);
                
                panel.add(barra_mensaje).setBounds(810,y-58,210,580);
                
@@ -965,6 +983,8 @@ public class Cat_Checador extends JFrame {
                    panel.add(lblPuesto).setBounds(790,80,270,20);
                    panel.add(lblHorario).setBounds(790,105,270,20);
                    
+                   panel.add(btnChecadorDeTransferencias).setBounds(15,136,180,20);
+                   
                    panel.add(barra_mensaje).setBounds(915,y-68,220,645);
                    
                    panel.add(panelScroll).setBounds(72,y+73,783,altoMon-360);
@@ -1039,6 +1059,8 @@ public class Cat_Checador extends JFrame {
                    panel.add(lblPuesto).setBounds(900,80,290,20);
                    panel.add(lblHorario).setBounds(900,105,290,20);
                    
+                   panel.add(btnChecadorDeTransferencias).setBounds(15,136,180,20);
+                   
                    panel.add(panelScroll).setBounds(17,y+53,733,altoMon-268);
                    panel.add(fondo).setBounds(0,0,anchoMon,altoMon);
                    
@@ -1100,6 +1122,8 @@ public class Cat_Checador extends JFrame {
                    panel.add(lblEstablecimiento).setBounds(900,63,290,20);
                    panel.add(lblPuesto).setBounds(900,93,290,20);
                    panel.add(lblHorario).setBounds(900,123,290,20);
+                   
+                   panel.add(btnChecadorDeTransferencias).setBounds(15,166,180,20);
                    
                    panel.add(panelScroll).setBounds(19,y+62,733,401);
                    panel.add(fondo).setBounds(0,0,1280,720);
@@ -1165,6 +1189,8 @@ public class Cat_Checador extends JFrame {
                    panel.add(lblEstablecimiento).setBounds(900,68,290,20);
                    panel.add(lblPuesto).setBounds(900,98,290,20);
                    panel.add(lblHorario).setBounds(900,128,290,20);
+                   
+                   panel.add(btnChecadorDeTransferencias).setBounds(15,180,180,20);
                    
                    panel.add(panelScroll).setBounds(19,y+62,733,429);
                    panel.add(fondo).setBounds(0,0,1280,768);

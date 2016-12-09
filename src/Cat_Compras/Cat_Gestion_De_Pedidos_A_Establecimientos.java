@@ -653,6 +653,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		JTextField txtFolio= new JTextField();
 		JTextField txtFolioProveedor = new JTextField();
 		
+		JButton btnFinalizarEmbarque 			= new JCButton("FINALIZAR EMBARQUE", "iconMeta.png", "Azul");
 		JButton btnCancelar 			= new JCButton("CANCELAR", "Delete.png", "Azul");
 		JButton btnActualizarFiltro = new JCButton("ACTUALIZAR","refrescar-volver-a-cargar-las-flechas-icono-4094-32.png","Azul");
 
@@ -689,6 +690,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			llamarRender();
 			
 			int y = 20;
+			panel.add(btnFinalizarEmbarque).setBounds(375,y-12,200,32);
 			panel.add(btnCancelar).setBounds(605,y-12,180,32);
 			panel.add(btnActualizarFiltro).setBounds(815,y-12,180,32);
 			panel.add(txtFolio).setBounds(15,y,60,20);
@@ -700,6 +702,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			agregar(tabla);
 			btnActualizarFiltro.addActionListener(Buscar_Cambios);
 			btnCancelar.addActionListener(Buscar_Cambios);
+			btnFinalizarEmbarque.addActionListener(Finalizar_Pedido);
 			
 //	     Buscar Con F5
 	        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -725,7 +728,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		
 		public void pedido(String establecimiento,String boton){
 			
-	    	String folio_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim():"";
+			String folio_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim():"";
 	    	String status_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 6).toString().trim():"";
 	    	
 				if(boton.toUpperCase().equals("CANCELAR") && folio_pedido.equals("")){
@@ -736,14 +739,47 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 						if((boton.toUpperCase().equals("ACTUALIZAR")) || (boton.toUpperCase().equals("CANCELAR") && status_pedido.equals("VIGENTE")) ){
 							
 							 consultarfiltro(boton,folio_pedido);
+							 dispose();
 							 
-							dispose();
 						}else{
 								JOptionPane.showMessageDialog(null, "Solo Se Pueden Cancelar Registros Con Status Vigente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 						}
 				}
 		}
+		
+		ActionListener Finalizar_Pedido = new ActionListener(){
+			@SuppressWarnings({ })
+			public void actionPerformed(ActionEvent e){
+				
+				String folio_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim():"";
+		    	String status_pedido = tabla.getSelectedRow()>-1?tabla.getValueAt(tabla.getSelectedRow(), 6).toString().trim():"";
+//				int cantidad_pedidos_generados = new BuscarSQL().Folios_generados(folio_pedido);//contar folios generados
+				
+		    	if(tabla.getSelectedRow() >= 0){
+		    		
+					if(status_pedido.equals("ASIGNADO") /*&& cantidad_pedidos_generados > 0*/ ){
+						
+						if(JOptionPane.showConfirmDialog(null, "Al Finalizar El Pedido No Podra Realizar El Embarque Del Mismo,\nSerá Necesario Realizar Un Pedido Nuevo, Desea Continuar?") == 0){
+							System.out.println("Finalizar Pedido Aqui");
+							if(new GuardarSQL().Finalizar_Pedido(folio_pedido))
+							{
+//								System.out.println("Finalizar Pedido Aqui");
+								consultarfiltro(e.getActionCommand(),folio_pedido);
+								JOptionPane.showMessageDialog(null, "EL Pedido Se Finalizo Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								dispose();
+							}
+						}	
+					}else{
+						JOptionPane.showMessageDialog(null, "Solo Se Pueden Finalizar Pedidos Con Status Asignado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					}
+		    	}else{
+		    		JOptionPane.showMessageDialog(null, "Es Necesario Que Seleccione El Pedido Que Desea Finalizar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+		    	}
+			}
+		};
 		
 		public void consultarfiltro(String Modificar,String folio_pedido){
 			

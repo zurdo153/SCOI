@@ -9458,4 +9458,120 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	return datosproducto;
 }
 
+	public boolean validacion_usuario_trasferencia_de_embarque(String clavecajero){
+		String query = "exec sp_validar_opcion_para_transferencia_de_embarque '" + clavecajero+"'";
+		
+		boolean disponible = false;
+		try { Statement s = con.conexion().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	disponible = rs.getBoolean(1);
+			      }
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion validacion_cajero_fuente_sodas \n  en el procedimiento : sp_validar_cajero  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		return disponible;
+	}
+	
+	public String[][] getTransferenciasPendientes(String establecimiento){
+		String query = "declare @establecimiento varchar(60) "
+					+ " set @establecimiento = '"+establecimiento+"' "
+					+ " select mi.folio, "
+					+ "		ltrim(rtrim(estabSurt.nombre)) as surte, "
+					+ "		ltrim(rtrim(estabRecibe.nombre)) as recibe, "
+					+ "		case when mi.status = 'V' "
+					+ "				then 'VIGENTE' "
+					+ "				when mi.status = 'C' "
+					+ "					then 'CANCELADO' "
+					+ "		else 'INDEFINIDO' end as status, "
+					+ "		case when mi.status = 'V' and mi.status_recepcion = '' "
+					+ "					then 'PENDIENTE' "
+					+ "				when mi.status_recepcion = 'T' "
+					+ "					then 'TRANSFERIDO' "
+					+ "				else 'INDEFINIDO' "
+					+ "		end as status_recepcion, "
+					+ "		isnull(convert(varchar(20),mi.fecha_cancelacion,103)+' '+convert(varchar(20),mi.fecha_cancelacion,108),'') as fecha_cancelacion, "
+					+ "		isnull(ltrim(rtrim(usuarios.nombre)),'') as usuario_cancelacion "
+					+ " from movimientos_internos mi with (nolock) "
+					+ " left outer join (select folio,folio_referencia from movimientos_internos with (nolock) where transaccion = '65') r on r.folio_referencia = mi.folio_referencia "
+					+ " inner join establecimientos estabsurt on estabsurt.cod_estab = mi.cod_estab and estabSurt.nombre = @establecimiento "
+					+ " inner join establecimientos estabRecibe on estabRecibe.cod_estab = mi.cod_estab_alterno "
+					+ " left outer join usuarios on usuarios.usuario = mi.usuario_cancelacion "
+					+ " where mi.fecha > convert(varchar(20),getdate(),103) "
+					+ " and mi.transaccion = '35' "
+					+ " GROUP BY mi.folio,estabSurt.nombre,estabRecibe.nombre,mi.status,mi.status_recepcion, "
+					+ " 		mi.surtido,usuarios.nombre,mi.fecha_cancelacion,mi.transaccion_referencia";
+		
+		String[][] Matriz = new String[getFilasExterno(query)][7];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion_IZAGAR().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = rs.getString(4);
+				Matriz[i][4] = rs.getString(5);
+				Matriz[i][5] = rs.getString(6);
+				Matriz[i][6] = rs.getString(7);
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz; 
+	}
+
+	public boolean chofer_ocupado(int folio_chofer){
+		String query = "if exists(select folio_transferencia from tb_historial_de_trasporte_de_embarque where folio_chofer = "+folio_chofer+" and status = 'V' and convert(varchar(20),fecha_salida,103) = convert(varchar(20),getdate(),103) )"
+						+ " begin "
+						+ " 	select 'true' as existe_chofer_activo "
+						+ " end "
+						+ " else "
+						+ " begin "
+						+ " 	select 'false' as existe_chofer_activo "
+						+ " end";
+		boolean existe = false;
+		try {
+			Statement stmt = new Connexion().conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){ existe = rs.getBoolean("existe_chofer_activo"); }
+	
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	    return existe; 
+	}
+	
+//	public int  Folios_generados(String folio_original){
+//		int numero_de_folios=0;
+//		String query = "select count(distinct(folio_pedido))-1 as folios_generados from tb_gestion_de_pedido where folio_pedido like '%"+folio_original+"'";
+//		Statement stmt = null;
+//		try {
+//			stmt = con.conexion().createStatement();
+//			ResultSet rs = stmt.executeQuery(query);
+//			while(rs.next()){
+//				numero_de_folios=(rs.getInt("folios_generados"));
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		finally{
+//			if(stmt!=null){
+//				try {
+//					stmt.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return numero_de_folios;
+//	}
+
 }

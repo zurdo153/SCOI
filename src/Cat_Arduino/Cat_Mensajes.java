@@ -15,7 +15,9 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
+import Cat_Auditoria.Cat_Trabajos_De_Concentrados__De_Cortes;
 import Obj_Checador.Obj_Mensajes;
 import Obj_Principal.Componentes;
 
@@ -353,6 +355,5 @@ public class Cat_Mensajes extends JFrame
 		
 		public void keyPressed(KeyEvent arg0) {
 		}
-	};
-	
+	};	
 }

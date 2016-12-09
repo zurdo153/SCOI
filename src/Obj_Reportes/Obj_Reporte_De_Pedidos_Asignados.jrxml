@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-10-30T09:49:43 -->
+<!-- 2016-11-30T11:42:30 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Pedidos_Asignados" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f9f73e3d-2bea-491a-8e55-863eda232160">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -230,7 +230,7 @@
 				<text><![CDATA[Clasificacion:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="420" y="67" width="54" height="12" forecolor="#000000" uuid="ff143fbb-b12c-4df1-8bb4-79f60b169ce9">
+				<reportElement style="Column header" x="428" y="67" width="54" height="12" forecolor="#000000" uuid="ff143fbb-b12c-4df1-8bb4-79f60b169ce9">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -270,7 +270,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="2" y="0" width="62" height="14" uuid="591dffd8-9742-433e-9b4d-767bf0959e66">
+					<reportElement style="Detail" positionType="Float" x="1" y="0" width="71" height="14" uuid="591dffd8-9742-433e-9b4d-767bf0959e66">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -280,7 +280,7 @@
 					<textFieldExpression><![CDATA[$F{codigo_alternativo}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="65" y="0" width="29" height="14" uuid="360f3955-02e8-4018-8c21-3247d4c6765f">
+					<reportElement style="Detail" positionType="Float" x="73" y="0" width="29" height="14" uuid="360f3955-02e8-4018-8c21-3247d4c6765f">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
 					</reportElement>
@@ -290,7 +290,7 @@
 					<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Column header" positionType="Float" mode="Transparent" x="94" y="0" width="332" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="5c46c2a1-5a20-4088-920d-9786d4cba801">
+					<reportElement style="Column header" positionType="Float" mode="Transparent" x="102" y="0" width="332" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="5c46c2a1-5a20-4088-920d-9786d4cba801">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
 					</reportElement>
@@ -300,7 +300,7 @@
 					<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="477" y="0" width="44" height="14" uuid="e4521286-9032-44c2-b0fe-442b3a34ce71">
+					<reportElement style="Detail" positionType="Float" x="485" y="0" width="43" height="14" uuid="e4521286-9032-44c2-b0fe-442b3a34ce71">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -309,7 +309,7 @@
 					<textFieldExpression><![CDATA[$F{surtido}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="521" y="0" width="15" height="14" uuid="a3dd8bbe-e7bf-445f-b136-fdd53a41b6dc">
+					<reportElement style="Detail" positionType="Float" x="526" y="0" width="15" height="14" uuid="a3dd8bbe-e7bf-445f-b136-fdd53a41b6dc">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -318,7 +318,7 @@
 					<textFieldExpression><![CDATA[$F{unidad}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement x="539" y="10" width="30" height="1" uuid="f050cc42-33f9-4005-a409-010ddff260c5">
+					<reportElement x="542" y="10" width="30" height="1" uuid="f050cc42-33f9-4005-a409-010ddff260c5">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="local_mesure_unitx" value="pixel"/>
@@ -326,7 +326,7 @@
 					</reportElement>
 				</line>
 				<textField>
-					<reportElement x="426" y="0" width="51" height="14" uuid="cb1306ac-b952-4426-93cd-7e1a5d329003">
+					<reportElement x="434" y="0" width="51" height="14" uuid="cb1306ac-b952-4426-93cd-7e1a5d329003">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
