@@ -174,6 +174,7 @@ public class Generacion_Reportes {
 			      }
 			}
 
+			String reportDestination ="";
 			
 			if(Guardar_reporte_formato.equals("xls")||Guardar_reporte_formato.equals("xlsciclo")){
 				String ruta = "c:\\REPORTES SCOI\\XLS\\";
@@ -183,7 +184,7 @@ public class Generacion_Reportes {
 				}
 				
 				if(Guardar_reporte_formato.equals("xls")){
-					 String reportDestination = "C:\\REPORTES SCOI\\XLS\\"+nombre_reporte+".xlsx";  //This is generated Correctly
+					    reportDestination = "C:\\REPORTES SCOI\\XLS\\"+nombre_reporte+".xlsx";  //This is generated Correctly
 			            File xlsFile = new File(reportDestination);
 			            JRXlsxExporter Xlsxexporter = new JRXlsxExporter();
 			            Xlsxexporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
@@ -196,7 +197,7 @@ public class Generacion_Reportes {
 			      }
 				
 				if(Guardar_reporte_formato.equals("xlsciclo")){
-					 String reportDestination = "C:\\REPORTES SCOI\\XLS\\"+nombre_reporte+".xlsx";  //This is generated Correctly
+					    reportDestination = "C:\\REPORTES SCOI\\XLS\\"+nombre_reporte+".xlsx";  //This is generated Correctly
 			            File xlsFile = new File(reportDestination);
 			            JRXlsxExporter Xlsxexporter = new JRXlsxExporter();
 			            Xlsxexporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
@@ -206,6 +207,7 @@ public class Generacion_Reportes {
 			            fis.close();
 					return;
 			      }
+				
 			}
 			
 			}

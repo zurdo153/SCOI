@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-11-13T14:53:27 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Pedido_Sugerido_Maximos_y_Minimos_Limpio" pageWidth="612" pageHeight="90000" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4153f53-7705-4a10-ad46-d7febe6afa57">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMS"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[declare @establecimiento varchar(250) set @establecimiento='SUPER V'
+declare @cod_estab int
+
+set @cod_estab= (select cod_estab  from establecimientos where nombre=@establecimiento)
+select cod_prod
+       ,descripcion_completa
+	   ,inventario_minimo
+	   ,inventario_maximo
+	   ,convert(numeric(10,2),exist_piezas) as  exist_piezas_de_la_tienda
+	   ,convert(numeric(10,2),existencia_cedis) as existencia_cedis
+	   ,convert(numeric(10,2),nresurtido ) as nresurtido
+	   ,convert(numeric(10,2),case when existencia_cedis>nresurtido then nresurtido
+								   when existencia_cedis<nresurtido then existencia_cedis
+								   else existencia_cedis-nresurtido end) as disponible_para_surtido
+       ,@establecimiento as establecimiento
+	   ,convert(varchar(15),getdate(),103)+' '+ convert(varchar(15),getdate(),108) as fecha
+	   , 'Pedido Sugerido Por Maximos y Minimos Del Establecimiento '+@establecimiento+' Del  Dia:'+convert(varchar(15),getdate(),103) as reporte
+ from(select p.cod_prod
+			 ,productos.descripcion_completa
+			 ,p.inventario_minimo
+			 ,p.inventario_maximo	  
+			 ,(p.exist_unidades*contenido)+p.exist_piezas as exist_piezas
+			 ,isnull((select (prodestab.exist_unidades*contenido)+prodestab.exist_piezas from prodestab where prodestab.cod_prod=p.cod_prod and cod_estab=7),0) as existencia_cedis
+			 ,(p.inventario_maximo)-((p.exist_unidades*contenido)+p.exist_piezas) as nresurtido	  
+		  from prodestab p with (nolock)
+		 INNER JOIN productos ON p.cod_prod = productos.cod_prod
+		where p.cod_estab=@cod_estab and p.inventario_minimo>1  and ((p.exist_unidades*contenido)+p.exist_piezas)<p.inventario_minimo)a]]>
+	</queryString>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="descripcion_completa" class="java.lang.String"/>
+	<field name="inventario_minimo" class="java.math.BigDecimal"/>
+	<field name="inventario_maximo" class="java.math.BigDecimal"/>
+	<field name="exist_piezas_de_la_tienda" class="java.math.BigDecimal"/>
+	<field name="existencia_cedis" class="java.math.BigDecimal"/>
+	<field name="disponible_para_surtido" class="java.math.BigDecimal"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="nresurtido" class="java.math.BigDecimal"/>
+	<field name="reporte" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<textField pattern="">
+				<reportElement x="0" y="0" width="575" height="50" backcolor="#FFFFFF" uuid="a2d7c868-20a2-4b69-b417-02067ec44d31">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reporte}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="45" height="13" uuid="3c3738d8-b165-4a04-828c-93dd15b607c7">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cod. Prod."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="0" width="240" height="13" uuid="c0c16711-2698-4432-b53c-1f67325cf5b5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Descripcion"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="435" y="0" width="50" height="13" uuid="da7839b7-065f-4ec2-a896-f5504717e2e5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["N.Resurtido"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="485" y="0" width="45" height="13" uuid="2fa1475d-c847-4cb7-8126-a5ecd74038bd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Exist.CEDIS"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="530" y="0" width="45" height="13" uuid="9e87c498-7a1a-468e-b699-36c6c15fd6f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["A. Surtir"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="285" y="0" width="50" height="13" uuid="6a575635-4c41-4ccf-bc5a-ee7c4f2d28e3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Minimo"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="335" y="0" width="50" height="13" uuid="50cf6af4-ad13-4a26-b333-0afc2538c32f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Maximo"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="385" y="0" width="50" height="13" uuid="0ddb7c1b-e02d-4943-b4d0-e8ef36a86aea">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ext."+$F{establecimiento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="45" height="13" uuid="89f52607-eb48-4cd6-9b37-15754723dd7f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="0" width="240" height="13" uuid="f5d23531-d9f9-4618-8515-02b580592e78">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{descripcion_completa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="285" y="0" width="50" height="13" uuid="0261b84a-5306-42ab-b1e2-b6733bb200e9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{inventario_minimo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="385" y="0" width="50" height="13" uuid="da4ba3d8-66f1-4638-ad72-b6b70e39a020">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{exist_piezas_de_la_tienda}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="335" y="0" width="50" height="13" uuid="ec1c08b7-d515-43b7-b4cf-c465d13cc1b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{inventario_maximo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="485" y="0" width="45" height="13" uuid="4168e037-0b50-4299-b1f1-72e427d0ae0f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{existencia_cedis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="530" y="0" width="45" height="13" uuid="02bb5554-5d12-40b8-a37c-61ea1d2bc483">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{disponible_para_surtido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="435" y="0" width="50" height="13" uuid="cd4dbc61-79d9-4895-af9c-6864217276cf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{nresurtido}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

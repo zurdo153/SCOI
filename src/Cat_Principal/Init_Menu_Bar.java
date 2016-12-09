@@ -30,7 +30,7 @@ public class Init_Menu_Bar extends Init_Login{
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.167");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.168");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -47,6 +47,7 @@ public class Init_Menu_Bar extends Init_Login{
 		ArrayList<WP_Menu> lsMenus = new ArrayList<WP_Menu>();
 		for(int i=0; i<MenuVector.size(); i++){
 			String[] tmpSTR = String.valueOf(MenuVector.get(i)).split(",");
+			
 			lsMenus.add(new WP_Menu(tmpSTR[0], tmpSTR[1], tmpSTR[2], tmpSTR[3], tmpSTR[4]));
 		}
 		
