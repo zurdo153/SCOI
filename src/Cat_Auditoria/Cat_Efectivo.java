@@ -17,9 +17,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+
+import Obj_Renders.tablaRenderer;
 
 //guardar denominaciones
 @SuppressWarnings("serial")
@@ -126,8 +126,6 @@ public class Cat_Efectivo extends JDialog {
 	}
 	
 	public void init_tabla(){
-		this.tabla_efectivo.getTableHeader().setReorderingAllowed(false) ;
-		
     	this.tabla_efectivo.getColumnModel().getColumn(0).setMaxWidth(120);
     	this.tabla_efectivo.getColumnModel().getColumn(0).setMinWidth(120);		
     	this.tabla_efectivo.getColumnModel().getColumn(1).setMaxWidth(290);
@@ -139,34 +137,7 @@ public class Cat_Efectivo extends JDialog {
     	this.tabla_efectivo.getColumnModel().getColumn(4).setMaxWidth(100);
     	this.tabla_efectivo.getColumnModel().getColumn(4).setMinWidth(100);
     	
-		TableCellRenderer render = new TableCellRenderer() { 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-				if(row%2==0){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-				if(table.getSelectedRow() == row){
-					lbl.setOpaque(true); 
-					lbl.setBackground(new java.awt.Color(186,143,73));
-				}
-				switch(column){
-					case 0 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-					case 1 : lbl.setHorizontalAlignment(SwingConstants.LEFT); break;
-					case 2 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-					case 3 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-					case 4 : lbl.setHorizontalAlignment(SwingConstants.CENTER); break;
-				}
-			return lbl; 
-			} 
-		}; 
-
-		this.tabla_efectivo.getColumnModel().getColumn(0).setCellRenderer(render); 
-		this.tabla_efectivo.getColumnModel().getColumn(1).setCellRenderer(render); 
-		this.tabla_efectivo.getColumnModel().getColumn(2).setCellRenderer(render); 
-		this.tabla_efectivo.getColumnModel().getColumn(3).setCellRenderer(render); 
-		this.tabla_efectivo.getColumnModel().getColumn(4).setCellRenderer(render); 
+       tablaRender(tabla_efectivo);
 		
 		float suma = 0;
 		for(int i=0; i<tabla_efectivo.getRowCount(); i++){
@@ -179,6 +150,14 @@ public class Cat_Efectivo extends JDialog {
 		txtTotal.setText(suma+"");
     }
 	
+public void tablaRender(JTable tbl){
+		tbl.getTableHeader().setReorderingAllowed(false) ;
+		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
+		for(int i=0; i<tbl.getColumnCount(); i++){
+			tbl.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
+		}
+	}
+
     private boolean isNumeric(String cadena){
     	try {
     		if(cadena.equals("")){

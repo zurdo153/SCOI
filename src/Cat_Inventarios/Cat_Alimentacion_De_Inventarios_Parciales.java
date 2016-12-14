@@ -1,4 +1,4 @@
-package Cat_Compras;
+package Cat_Inventarios;
 
 import java.awt.Container;
 import java.awt.Event;

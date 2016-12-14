@@ -8103,7 +8103,7 @@ public class BuscarSQL {
 	public String[] Vector_De_Establecimientos_Edo_Resultados() throws SQLException{
 		Statement stmt = null;
 		
-		String query = "select replace(establecimiento,' ','_')as establecimiento from IZAGAR_establecimientos_calculo";
+		String query = "select replace(establecimiento,' ','_')as establecimiento from IZAGAR_establecimientos_calculo order by establecimiento";
 		Vector miVector = new Vector();
 		try {
 			stmt = con.conexion().createStatement();
@@ -9447,7 +9447,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			+ "				  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end "
 			+ "			 SELECT   productos.cod_prod"
 			+ "					 ,productos.descripcion"
-			+ " 		         ,convert(numeric(10,2),isnull(sum(case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas) end),0)) as existencia"
+			+ " 		         ,convert(numeric(10,2),isnull(sum( ((productos.contenido*prodestab.exist_unidades)+exist_piezas) ),0)) as existencia"
 			+ "				     ,ISNULL(convert(numeric(10,2),prodestab.ultimo_costo),0) as ultimo_costo "
 			+ "				     ,ISNULL(convert(numeric(10,2),prodestab.costo_promedio),0) as costo_promedio "
 			+ "  		  from productos with (nolock)"

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-11-27T14:11:53 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Dinero_Electronico_General_I" pageWidth="612" pageHeight="90000" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4153f53-7705-4a10-ad46-d7febe6afa57">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMS"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[declare @tarjeta_pyde varchar(20) , @operacion char(1)
+   set @tarjeta_pyde='f00000000000000711' 
+   set @operacion='U'
+
+
+
+select facremtick.folio as ticket
+       ,IZAGAR_Relacion_de_Asignaciones_Liquidadas.Nombre_Cajero
+	   ,folio_cajero as asignacion
+	   ,IZAGAR_Relacion_de_Asignaciones_Liquidadas.Fecha_Asignacion
+	   ,IZAGAR_Relacion_de_Asignaciones_Liquidadas.Fecha_Liquidacion
+	   ,IZAGAR_Relacion_de_Asignaciones_Liquidadas.Establecimiento
+	   ,establecimientos.nombre as establecimiento
+       ,convert(varchar(15),facremtick.fecha,103)+' '+convert(varchar(15),facremtick.fecha,108) as fecha
+	   ,facremtick.total as total_ticket 
+	   ,(select cantidad from bonificaciones_analiticas with (nolock)  where folio=facremtick.folio and transaccion in ('36','37','38') and operacion=@operacion ) as cantidad_dinero_electronico
+	   ,case when @operacion='B' then 'Dinero Electronico Acumulado De La Tarjeta '+@tarjeta_pyde+' A Nombre De '+tarjetas_pyde.nombre when @operacion='U' then 'Dinero Electronico Usado De La Tarjeta '+@tarjeta_pyde+' A Nombre De '+tarjetas_pyde.nombre  end as reporte
+	   
+from facremtick with (nolock)
+   left outer join IZAGAR_Relacion_de_Asignaciones_Liquidadas with (nolock) on IZAGAR_Relacion_de_Asignaciones_Liquidadas.Asignacion=facremtick.folio_cajero
+   inner join establecimientos with (nolock) on establecimientos.cod_estab=facremtick.cod_estab
+   left outer join tarjetas_pyde with (nolock) on tarjetas_pyde.tarjeta_pyde=@tarjeta_pyde
+ where transaccion in ('36','37','38') and folio in (select folio from bonificaciones_analiticas where tarjeta_pyde=@tarjeta_pyde AND transaccion in ('36','37','38') AND operacion=@operacion )]]>
+	</queryString>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="reporte" class="java.lang.String"/>
+	<field name="ticket" class="java.lang.String"/>
+	<field name="Nombre_Cajero" class="java.lang.String"/>
+	<field name="asignacion" class="java.lang.String"/>
+	<field name="Fecha_Asignacion" class="java.sql.Timestamp"/>
+	<field name="Fecha_Liquidacion" class="java.sql.Timestamp"/>
+	<field name="Establecimiento" class="java.lang.String"/>
+	<field name="total_ticket" class="java.math.BigDecimal"/>
+	<field name="cantidad_dinero_electronico" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<textField pattern="">
+				<reportElement x="0" y="0" width="575" height="50" backcolor="#FFFFFF" uuid="a2d7c868-20a2-4b69-b417-02067ec44d31">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reporte}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="57" height="13" uuid="3c3738d8-b165-4a04-828c-93dd15b607c7">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Asignacion"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="0" width="213" height="13" uuid="c0c16711-2698-4432-b53c-1f67325cf5b5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cajero"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="462" y="0" width="50" height="13" uuid="da7839b7-065f-4ec2-a896-f5504717e2e5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="512" y="0" width="58" height="13" uuid="9e87c498-7a1a-468e-b699-36c6c15fd6f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Din.Electro."]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="412" y="0" width="50" height="13" uuid="6a575635-4c41-4ccf-bc5a-ee7c4f2d28e3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ticket"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="335" y="0" width="77" height="13" uuid="3b34c96c-3421-48e4-b3bf-eaf79a84b202">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="270" y="0" width="65" height="13" uuid="50cf6af4-ad13-4a26-b333-0afc2538c32f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Establecimiento"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="57" height="11" uuid="89f52607-eb48-4cd6-9b37-15754723dd7f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{asignacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="0" width="213" height="11" uuid="f5d23531-d9f9-4618-8515-02b580592e78">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Nombre_Cajero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="335" y="0" width="77" height="11" uuid="da4ba3d8-66f1-4638-ad72-b6b70e39a020">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="462" y="0" width="50" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="ec1c08b7-d515-43b7-b4cf-c465d13cc1b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_ticket}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="270" y="0" width="65" height="11" uuid="2753314f-17a5-44aa-86c2-2f545ceed369">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="412" y="0" width="50" height="11" uuid="0261b84a-5306-42ab-b1e2-b6733bb200e9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ticket}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="512" y="0" width="58" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="bf959073-fd6c-4063-99ac-b0ccae468675"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad_dinero_electronico}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

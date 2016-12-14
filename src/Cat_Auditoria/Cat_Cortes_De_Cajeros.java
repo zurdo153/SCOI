@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -135,18 +136,21 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 	        	if(e.getClickCount() == 2){
 	        		
 	        		if(cmbEstablecimiento.getSelectedIndex()==0){
-	        			JOptionPane.showMessageDialog(null, "Seleccione un Establecimineto", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	        		  JOptionPane.showMessageDialog(null, "Seleccione un Establecimineto", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	        			cmbEstablecimiento.requestFocus();
+	        			cmbEstablecimiento.showPopup();
 	    				return;
 	        		}else{
 		        			int fila = tabla.getSelectedRow();
 		        			String estab = cmbEstablecimiento.getSelectedItem().toString().trim()+"";
 		        					Obj_Alimentacion_Cortes generarFolioCorteNuevo = new Obj_Alimentacion_Cortes();
 		        					if(generarFolioCorteNuevo.generar_folio_corte()){
-		        						System.out.println(estab);
-						        			String folio_corte = generarFolioCorteNuevo.buscar(estab);
+					        			String folio_corte = generarFolioCorteNuevo.buscar(estab);
+//		        					        String folio_corte="PRUEBA";//quitar
 						        			Object folio =  tabla.getValueAt(fila, 0);
 						        			dispose();
 						        			new Cat_Alimentacion_Cortes(Integer.parseInt(folio+""),estab,folio_corte).setVisible(true);
+						        			
 				        			}else{
 				        				JOptionPane.showMessageDialog(null, "No se genero el folio de corte correctamente", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					    				return;
@@ -199,6 +203,11 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 	
 	
 	public static void main(String args[]){
-		new Cat_Cortes_De_Cajeros().setVisible(true);
+		try{
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			new Cat_Cortes_De_Cajeros().setVisible(true);
+		}catch(Exception e){}
+		
+		
 	}
 }

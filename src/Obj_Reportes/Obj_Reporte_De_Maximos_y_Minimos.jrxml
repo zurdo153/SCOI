@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-12-01T12:57:03 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Pedido_Sugerido_Maximos_y_Minimos_Limpio" pageWidth="612" pageHeight="90000" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4153f53-7705-4a10-ad46-d7febe6afa57">
+<!-- 2016-12-01T13:49:06 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Pedido_Sugerido_Maximos_y_Minimos_Limpio" pageWidth="800" pageHeight="9000" columnWidth="760" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4153f53-7705-4a10-ad46-d7febe6afa57">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMS"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString language="SQL">
 		<![CDATA[declare @establecimiento varchar(250) set @establecimiento='SUPER V'
 					  declare @cod_estab int
@@ -64,7 +56,7 @@
 	<title>
 		<band height="50" splitType="Stretch">
 			<textField pattern="">
-				<reportElement x="0" y="0" width="575" height="50" backcolor="#FFFFFF" uuid="a2d7c868-20a2-4b69-b417-02067ec44d31">
+				<reportElement x="0" y="0" width="760" height="50" backcolor="#FFFFFF" uuid="a2d7c868-20a2-4b69-b417-02067ec44d31">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -99,7 +91,7 @@
 				<textFieldExpression><![CDATA["Descripcion"]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="435" y="0" width="50" height="13" uuid="da7839b7-065f-4ec2-a896-f5504717e2e5">
+				<reportElement x="441" y="0" width="50" height="13" uuid="da7839b7-065f-4ec2-a896-f5504717e2e5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -109,7 +101,7 @@
 				<textFieldExpression><![CDATA["N.Resurtido"]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="485" y="0" width="45" height="13" uuid="2fa1475d-c847-4cb7-8126-a5ecd74038bd">
+				<reportElement x="491" y="0" width="54" height="13" uuid="2fa1475d-c847-4cb7-8126-a5ecd74038bd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -117,10 +109,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Exist.CEDIS"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Ex.CEDIS"]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="530" y="0" width="45" height="13" uuid="9e87c498-7a1a-468e-b699-36c6c15fd6f6">
+				<reportElement x="545" y="0" width="45" height="13" uuid="9e87c498-7a1a-468e-b699-36c6c15fd6f6">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -150,7 +142,7 @@
 				<textFieldExpression><![CDATA["Maximo"]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="385" y="0" width="50" height="13" uuid="0ddb7c1b-e02d-4943-b4d0-e8ef36a86aea">
+				<reportElement x="385" y="0" width="56" height="13" uuid="0ddb7c1b-e02d-4943-b4d0-e8ef36a86aea">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -158,6 +150,27 @@
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Ext."+$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="665" y="0" width="95" height="13" uuid="a678c73b-eb42-44ab-9101-9b2c9c826d0b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Area - Tipo Distribucion"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="590" y="0" width="75" height="13" uuid="2b9425fa-c029-46f7-b719-afc655abdd3f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Estatus Prod."]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -190,7 +203,7 @@
 				<textFieldExpression><![CDATA[$F{inventario_minimo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="385" y="0" width="50" height="13" uuid="da4ba3d8-66f1-4638-ad72-b6b70e39a020">
+				<reportElement x="385" y="0" width="56" height="13" uuid="da4ba3d8-66f1-4638-ad72-b6b70e39a020">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -206,7 +219,7 @@
 				<textFieldExpression><![CDATA[$F{inventario_maximo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="485" y="0" width="45" height="13" uuid="4168e037-0b50-4299-b1f1-72e427d0ae0f">
+				<reportElement x="491" y="0" width="54" height="13" uuid="4168e037-0b50-4299-b1f1-72e427d0ae0f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -214,7 +227,7 @@
 				<textFieldExpression><![CDATA[$F{existencia_cedis}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="530" y="0" width="45" height="13" uuid="02bb5554-5d12-40b8-a37c-61ea1d2bc483">
+				<reportElement x="545" y="0" width="45" height="13" uuid="02bb5554-5d12-40b8-a37c-61ea1d2bc483">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -223,12 +236,24 @@
 				<textFieldExpression><![CDATA[$F{disponible_para_surtido}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="435" y="0" width="50" height="13" uuid="cd4dbc61-79d9-4895-af9c-6864217276cf">
+				<reportElement x="441" y="0" width="50" height="13" uuid="cd4dbc61-79d9-4895-af9c-6864217276cf">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{nresurtido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="665" y="0" width="95" height="13" uuid="8e556e33-bad0-4386-93e5-3199e2072f05"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{area}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="590" y="0" width="75" height="13" uuid="67592b7c-9f9f-4dfe-a692-62b21a9996af"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{estatus_producto}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

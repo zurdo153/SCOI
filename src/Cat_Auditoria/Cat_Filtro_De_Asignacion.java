@@ -29,6 +29,8 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
+import Obj_Principal.JCTextField;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -98,14 +100,17 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
     @SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
     
-	JTextField txtFolioAsignacion = new Componentes().text(new JTextField(), "Folio Asignacion", 9, "String");
-	JTextField txtFolioCajero = new Componentes().text(new JTextField(), "Folio Cajero", 9, "String");
-	JTextField txtNombreCajero = new Componentes().text(new JTextField(), "Nombre Cajero", 40, "String");
+	JTextField txtFolioAsignacion = new Componentes().text(new JCTextField(), "Asignacion", 10, "String");   
+	JTextField txtFolioCajero     = new Componentes().text(new JCTextField(), "Folio C.", 10, "String"); 
+	JTextField txtNombreCajero    = new Componentes().text(new JCTextField(), "Nombre Del Cajero", 300, "String"); 
 	
-	JButton btnCargar = new JButton("Cargar");
+	JButton btnCargar = new JCButton("Cargar"                  ,"la-flecha-verde-de-la-derecha-icono-8326-32.png","Azul");
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Cat_Filtro_De_Asignacion() {
+		setSize(1020,450);
+		setResizable(false);
+		setLocationRelativeTo(null);
 		setModal(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/Accounting.png"));
 		setTitle("Filtro De Asignaciones");
@@ -119,10 +124,9 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 		campo.add(txtFolioAsignacion).setBounds(10,38,70,20);
 		campo.add(txtFolioCajero).setBounds(80,38,70,20);
 		campo.add(txtNombreCajero).setBounds(150,38,210,20);
-		campo.add(btnCargar).setBounds(925,18,80,30);
+		campo.add(btnCargar).setBounds(880,18,125,30);
 		
 		campo.add(scroll).setBounds(10,60,995,320);
-		
 		cont.add(campo);
 		
 		txtFolioAsignacion.addKeyListener(opFiltroAsignacion);
@@ -135,10 +139,6 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
           	enterauto();	  
            }
         });
-        
-		setSize(1020,450);
-		setResizable(false);
-		setLocationRelativeTo(null);
 	}
 	
 	public void enterauto(){
@@ -151,21 +151,18 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 	            e.printStackTrace();
 	        }
  	     };
-	
  	     
 	@SuppressWarnings("unchecked")
 	public void limpiar_filtro(){
 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
 		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-		
 		txtFolioAsignacion.setText("");
 		txtFolioCajero.setText("");
 		txtNombreCajero.setText("");
 	}
 	
 	public void tablaRender(){
-		
 		tablaFiltro.getTableHeader().setReorderingAllowed(false) ;
 		tablaFiltro.setAutoResizeMode(JTable.AUTO_RESIZE_OFF );
 			
@@ -173,7 +170,6 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 		tablaFiltro.getColumnModel().getColumn(0).setMinWidth(70);
 		tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(70);
 		tablaFiltro.getColumnModel().getColumn(1).setMinWidth(70);
-		tablaFiltro.getColumnModel().getColumn(2).setMaxWidth(210);
 		tablaFiltro.getColumnModel().getColumn(2).setMinWidth(210);
 		tablaFiltro.getColumnModel().getColumn(3).setMaxWidth(90);
 		tablaFiltro.getColumnModel().getColumn(3).setMinWidth(90);
@@ -200,7 +196,6 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 	 	public Object[][] getTablaFiltro(String cadena_asignaciones_en_uso,String Establecimiento){
 			Statement s;
 			ResultSet rs;
-			
 			
 ////////////RECOPILACION DE ASIGNACIONES////////////////////////////////////////////////////				
 	 	String recopilacion_asignaciones="  exec sp_Recopilacion_IZAGAR_de_Asignaciones_y_cajeros  " ;	
@@ -272,21 +267,22 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 		}
 		return filas;
 	}	
-	public int getFilasSCOI(String qry){
-		int filas=0;
-		Statement stmt = null;
-		try {
-			stmt = new Connexion().conexion_IZAGAR().createStatement();
-			ResultSet rs = stmt.executeQuery(qry);
-			while(rs.next()){
-				filas++;
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return filas;
-	}
+   	
+//	public int getFilasSCOI(String qry){
+//		int filas=0;
+//		Statement stmt = null;
+//		try {
+//			stmt = new Connexion().conexion_IZAGAR().createStatement();
+//			ResultSet rs = stmt.executeQuery(qry);
+//			while(rs.next()){
+//				filas++;
+//			}
+//			
+//		} catch (SQLException e1) {
+//			e1.printStackTrace();
+//		}
+//		return filas;
+//	}
 	
 	KeyListener opFiltroAsignacion = new KeyListener(){
 		@SuppressWarnings("unchecked")
@@ -312,12 +308,6 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 			trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombreCajero.getText().toUpperCase(), 2));
 		}
 		public void keyTyped(KeyEvent arg0) {
-//			char caracter = arg0.getKeyChar();
-//			if(((caracter < '0') ||
-//				(caracter > '9')) &&
-//			    (caracter != KeyEvent.VK_BACK_SPACE)){
-//				arg0.consume(); 
-//			}	
 		}
 		public void keyPressed(KeyEvent arg0) {}		
 	};

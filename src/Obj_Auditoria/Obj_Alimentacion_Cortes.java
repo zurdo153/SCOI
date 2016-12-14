@@ -7,7 +7,8 @@ import Conexiones_SQL.GuardarSQL;
 public class Obj_Alimentacion_Cortes {
 	                                                      
 		private String folio_corte;                  	private float corte_sistema;
-		private int usuario;                      	 	private float tiempo_aire;
+		                                                private float dinero_electonico;
+		private int usuario;                            private float tiempo_aire;
 		private int folio_empleado;                  	private float recibo_luz;
 		private String establecimiento_de_corte; 		private float deposito;
 		private String fecha_de_corte;               	private float efectivo;
@@ -18,8 +19,6 @@ public class Obj_Alimentacion_Cortes {
 													 	private String comentario;     
 													 	private float apartado;
 													 	private float abono;
-
-
 
 	public Obj_Alimentacion_Cortes(){
 		
@@ -38,6 +37,16 @@ public class Obj_Alimentacion_Cortes {
 	} 
 
 	
+	public float getDinero_electonico() {
+		return dinero_electonico;
+	}
+
+
+	public void setDinero_electonico(float dinero_electonico) {
+		this.dinero_electonico = dinero_electonico;
+	}
+
+
 	public String getFolio_corte() {
 		return folio_corte;
 	}
