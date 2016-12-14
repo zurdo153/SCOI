@@ -15,8 +15,8 @@ public class Cat_Menu_Checador extends JDialog  {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JCButton btnSalidaDeTransferencia = new JCButton("Salida De Tranferencia", "", "");
-	JCButton btnLlegadaDeTransferencia = new JCButton("Llegada De Tranferencia", "", "");
+	JCButton btnSalidaDeEmbarque = new JCButton("Salida De Embarque", "", "");
+	JCButton btnLlegadaDeEmbarque = new JCButton("Llegada De Embarque", "", "");
 	
 	public Cat_Menu_Checador(){
 		this.setModal(true);
@@ -25,11 +25,11 @@ public class Cat_Menu_Checador extends JDialog  {
 		this.setResizable(false);
 		this.setTitle("Menu");
 		
-		panel.add(btnSalidaDeTransferencia).setBounds(30,20,210,25) ;
-		panel.add(btnLlegadaDeTransferencia).setBounds(30,50,210,25) ;
+		panel.add(btnSalidaDeEmbarque).setBounds(30,20,210,25) ;
+		panel.add(btnLlegadaDeEmbarque).setBounds(30,50,210,25) ;
 		
-		btnSalidaDeTransferencia.addActionListener(opValidarEncargado);
-		btnLlegadaDeTransferencia.addActionListener(opValidarEncargado);
+		btnSalidaDeEmbarque.addActionListener(opValidarEncargado);
+		btnLlegadaDeEmbarque.addActionListener(opValidarEncargado);
 		
 		cont.add(panel);
 		cont.setBackground(Color.ORANGE);
@@ -38,10 +38,10 @@ public class Cat_Menu_Checador extends JDialog  {
 	ActionListener opValidarEncargado = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
-			if(e.getActionCommand().equals("Salida De Tranferencia")){
+			if(e.getActionCommand().equals("Salida De Embarque")){
 				new Cat_Validar_Encargado_Para_Tranferencia().setVisible(true);
 			}
-			if(e.getActionCommand().equals("Llegada De Tranferencia")){
+			if(e.getActionCommand().equals("Llegada De Embarque")){
 				new Cat_Validar_Llegada_De_Chofer_Con_Tranferencia().setVisible(true);
 			}
 		}
