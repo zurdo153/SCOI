@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 
 import com.sun.glass.events.KeyEvent;
 
-import Conexiones_SQL.BuscarSQL;
 import Obj_Checador.Obj_Chacador_De_Embarque_De_Pedidos;
 import Obj_Checador.Obj_Entosal;
 import Obj_Lista_de_Raya.Obj_Empleados;
@@ -201,12 +200,12 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 	
     public void registrarTransferencia(String checada, int NoCarro, String NoCincho){
 	    
-    	String trasferencia = "";
-    	String estab_surte = "";
-    	String estab_recibe = "";
-    	int folio_encargado = 0;
+//    	String trasferencia = "";
+//    	String estab_surte = "";
+//    	String estab_recibe = "";
+//    	int folio_encargado = 0;
     	
-    	if(!new BuscarSQL().chofer_ocupado(folio_chofer)){
+//    	if(!new BuscarSQL().chofer_ocupado(folio_chofer)){
     		
     		Obj_Chacador_De_Embarque_De_Pedidos pedido = new Obj_Chacador_De_Embarque_De_Pedidos();
     		
@@ -229,12 +228,10 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
     			return;
     		}
     		
-//    		JOptionPane.showMessageDialog(null, "Chofer Disponible","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//    	}else{
+//    		JOptionPane.showMessageDialog(null, "No Puede Asignarle Tranferencia A Este Chofer Debido A Que Ya No A Registrado Entrega Del Ultimo Embarque","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 //			return;
-    	}else{
-    		JOptionPane.showMessageDialog(null, "No Puede Asignarle Tranferencia A Este Chofer Debido A Que Ya No A Registrado Entrega Del Ultimo Embarque","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-			return;
-    	}
+//    	}
 	}
 
 	public static void main(String[] args) {

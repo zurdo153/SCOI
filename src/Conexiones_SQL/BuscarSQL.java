@@ -9496,9 +9496,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return disponible;
 	}
 	
-	public String[][] getTransferenciasPendientes(String establecimiento){
+	public String[][] getTransferenciasPendientes(String estab){
 		String query = "declare @establecimiento varchar(60) "
-					+ " set @establecimiento = '"+establecimiento+"' "
+					+ " set @establecimiento = '"+estab+"' "
 					+ " select mi.folio, "
 					+ "		ltrim(rtrim(estabSurt.nombre)) as surte, "
 					+ "		ltrim(rtrim(estabRecibe.nombre)) as recibe, "
@@ -9568,6 +9568,38 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			e1.printStackTrace();
 		}
 	    return existe; 
+	}
+	
+	public Object[][] getLlegadaTransferencias(int chofer, String establecimiento){
+		String query = "select hist_emb.folio_transferencia, "
+				+ " 		estab_sur.nombre as estab_surte, "
+				+ " 		estab_rec.nombre as estab_recibe"
+				+ " from tb_historial_de_trasporte_de_embarque  hist_emb "
+				+ " inner join [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab_sur on estab_sur.cod_estab = hist_emb.estab_surte "
+				+ " inner join [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab_rec on estab_rec.cod_estab = hist_emb.estab_recibe "
+				+ " where folio_chofer = "+chofer+" "
+				+ " and hist_emb.status = 'V' "
+				+ " and hist_emb.estab_recibe = (select ltrim(rtrim(estab.cod_estab)) from [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab where ltrim(rtrim(estab.nombre)) = ltrim(rtrim('"+establecimiento+"')) ) "
+				+ " and CONVERT(varchar(20),hist_emb.fecha_salida,103) = CONVERT(varchar(20),GETDATE()-4,103)";
+		
+		Object[][] Matriz = new Object[getFilas(query)][4];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = false;
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz; 
 	}
 	
 //	public int  Folios_generados(String folio_original){

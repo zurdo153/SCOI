@@ -1,9 +1,5 @@
 package Obj_Checador;
 
-import java.sql.SQLException;
-
-import Conexiones_SQL.ActualizarSQL;
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Chacador_De_Embarque_De_Pedidos {
