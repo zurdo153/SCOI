@@ -419,6 +419,10 @@ public class Cat_Estado_De_Resultados extends JFrame {
 											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("DEPOSITO_II"),          16);
 											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("IZACEL"),               17);
 											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("CEDIS"),                18);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("RESTAURANT"),           19);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("ALMACEN_GENERAL"),      20);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("RESGUARDO_CITY_CLUB"),  21);
+											tabla.moveColumn(tabla.getColumnModel().getColumnIndex("RESGUARDO_SAMS"),       22);
 								}	
 							} catch (SQLException e1) {
 								e1.printStackTrace();

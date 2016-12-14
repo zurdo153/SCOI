@@ -662,7 +662,6 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		    	        txtClaveSupervisorconfirma.setVisible(true);
 		    	        txtRetiro.setVisible(true);
 		    	        txtRetiro.setEditable(false);
-		    	       
 		    	        
 		    	        btnNoExiste_Supervisor.setVisible(false);
 		    	        btnError_Clave_requerida.setVisible(false);
@@ -692,18 +691,18 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 		  			        		btnError.setText(	"<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=RED>" +
 											"		<CENTER><p> EL MONTO MAYOR A RETIRAR DEBE DE SER DE:"+10000+"</p></CENTER></FONT></html>"); 
 				                    btnError.setVisible(true);
+				                    return;
 		    					  }else{
 		    					  folio_retiro=new Obj_Retiros_Cajeros().guardar(Establecimiento,folio_empleado,Integer.valueOf(txtfolio_Supervisor.getText()),Float.valueOf(txtRetiro.getText()),Asignacion)+"";
 		    					  
 		    					  if(folio_retiro !="Error en GuardarSQL"){
-		    					  btnValidar_Retiro.setEnabled(false);
-		    					  btnEditar_retiro.setEnabled(false);
-		    					  txtClaveSupervisorconfirma.setEnabled(false);
-		    					  btnImprimir.setEnabled(true);
-		    					  btnSalir.setVisible(true);
-		    					  btnSalir.setEnabled(true);
-                                  btnSalir.requestFocus();
-                                  
+			    					  btnValidar_Retiro.setEnabled(false);
+			    					  btnEditar_retiro.setEnabled(false);
+			    					  txtClaveSupervisorconfirma.setEnabled(false);
+			    					  btnImprimir.setEnabled(true);
+			    					  btnSalir.setVisible(true);
+			    					  btnSalir.setEnabled(true);
+	                                  btnSalir.requestFocus();
 		    					 }else{
 					                    txtClaveSupervisorconfirma.setText("");
 					                    txtClaveSupervisorconfirma.requestFocus();

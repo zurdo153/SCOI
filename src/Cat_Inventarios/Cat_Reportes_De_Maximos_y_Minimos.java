@@ -14,6 +14,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import Cat_Principal.Cat_Comandos;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
@@ -39,8 +40,8 @@ public class Cat_Reportes_De_Maximos_y_Minimos extends JFrame{
 	
 	public Cat_Reportes_De_Maximos_y_Minimos(){
 		setSize(450,250);
-		setResizable(false);
-		setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Reportes De Maximos y Minimos ");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
@@ -80,14 +81,21 @@ public class Cat_Reportes_De_Maximos_y_Minimos extends JFrame{
 			    	    cmbConcepto.showPopup();
 				     return;		
 				  }else{ 
-				 	 comando = new Cat_Comandos().Comandos_Maximos_y_Minimos(cmbConcepto.getSelectedItem().toString().trim(), cmbEstablecimiento.getSelectedItem().toString().trim());
-   				     reporte="Obj_Reporte_De_Pedido_Sugerido_Maximos_y_Minimos.jrxml";
+				 	 comando = new Cat_Comandos().maximos_y_minimos(cmbConcepto.getSelectedItem().toString().trim(), cmbEstablecimiento.getSelectedItem().toString().trim());
+				 	 String concepto=cmbConcepto.getSelectedItem().toString().trim();
+			 	 comando = new Cat_Comandos().maximos_y_minimos(concepto, cmbEstablecimiento.getSelectedItem().toString().trim());
+				 if(concepto.equals("Reporte De Maximos y Minimos Del Establecimiento")){
+					 reporte="Obj_Reporte_De_Maximos_y_Minimos.jrxml";
+				 }else{ 
+				     reporte="Obj_Reporte_De_Pedido_Sugerido_Maximos_y_Minimos.jrxml";
+				 }       				     
 		    }
 			    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			   return;
 			}	 
 		}
 	};
+	
 	
 	ActionListener opGenerar_XLS = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -111,8 +119,14 @@ public class Cat_Reportes_De_Maximos_y_Minimos extends JFrame{
 			    	    cmbConcepto.showPopup();
 				     return;		
 				  }else{ 
-				 	 comando = new Cat_Comandos().Comandos_Maximos_y_Minimos(cmbConcepto.getSelectedItem().toString().trim(), cmbEstablecimiento.getSelectedItem().toString().trim());
+						 String concepto=cmbConcepto.getSelectedItem().toString().trim();
+				 	 comando = new Cat_Comandos().maximos_y_minimos(concepto, cmbEstablecimiento.getSelectedItem().toString().trim());
+					 if(concepto.equals("Reporte De Maximos y Minimos Del Establecimiento")){
+						 reporte="Obj_Reporte_De_Maximos_y_Minimos.jrxml";
+					 }else{ 
    				     reporte="Obj_Reporte_De_Pedido_Sugerido_Maximos_y_Minimos.jrxml";
+					 }       				     
+   				     
 		    }
 				  new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"xls",cmbConcepto.getSelectedItem().toString().trim()+" "+cmbEstablecimiento.getSelectedItem().toString().trim()+"_"+fecha_guardado);
 			   return;

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-12-04T13:35:50 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Corte_De_Caja_Sub_Por_Dia" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1d56e961-6881-4988-869c-b31a2d60d22b">
+	<property name="ireport.zoom" value="2.8531167061100033"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMS"/>
+	<queryString language="SQL">
+		<![CDATA[exec sp_reporte_de_dinero_electronico_por_asignacion 'S5-22582 ']]>
+	</queryString>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="ticket" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="tarjeta_pyde" class="java.lang.String"/>
+	<field name="cajero" class="java.lang.String"/>
+	<field name="Nombre_Cajero" class="java.lang.String"/>
+	<field name="Asignacion" class="java.lang.String"/>
+	<field name="Establecimiento" class="java.lang.String"/>
+	<field name="dinero_electronico" class="java.math.BigDecimal"/>
+	<field name="Fecha_Asignacion" class="java.lang.String"/>
+	<field name="Fecha_Liquidacion" class="java.lang.String"/>
+	<variable name="Total_Corte" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="140" splitType="Stretch">
+			<textField>
+				<reportElement x="12" y="18" width="153" height="29" uuid="b5190d8b-8f64-4018-96eb-7ad16adf4c21"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DINERO ELECTRONICO USADO EN LA ASIGNACION "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="105" y="78" width="62" height="12" uuid="c692d337-1b70-4d64-8d15-6eb236c7007d"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Fecha_Asignacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="48" width="113" height="18" uuid="62d0932c-ab36-4087-81b1-373e6f2f406f"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Nombre_Cajero}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="64" y="132" width="55" height="8" uuid="b7450216-1ca7-43f5-8464-83f4f759c849"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[TARJETA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="105" y="90" width="62" height="12" uuid="5c6d779a-6906-4c20-a416-e2dbfa612d01"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Fecha_Liquidacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="48" width="42" height="12" uuid="494ac777-e3d4-4166-874b-fb71a9e490e8">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CAJERO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="90" width="93" height="12" uuid="adf46346-b22d-40a6-8ca0-6277afe83b77"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA LIQUIDACION:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="105" y="66" width="62" height="12" uuid="53288425-d075-4526-ba56-2cb52c3813d1"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Asignacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="12" y="66" width="93" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="9f3f644e-746b-4130-88d0-2153ac0e49ce"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ASIGNACION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="132" width="38" height="8" uuid="128064cb-536d-4699-b7af-86d1b4fb6a13"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[TICKET]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="78" width="93" height="12" uuid="e968070d-e0af-4b51-8a78-fe614e75cb1b"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA ASIGNACION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="126" y="132" width="40" height="8" uuid="fded55f7-fa38-491e-b8cc-ccb5e3c3656c"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="12" y="102" width="98" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="6ff6a6c7-66b5-460d-bf71-e2c3a8eb1138">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL DINERO ELECT.:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="110" y="102" width="57" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="ab81b311-ad0a-4a47-98e3-4d257dbaceba"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dinero_electronico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="20" y="119" width="147" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="d06fe4f2-7f1e-481c-9c56-8875da960d5c">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[DESGLOSE:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="10">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<textField>
+				<reportElement x="20" y="0" width="44" height="8" uuid="e460a3ec-eaa3-4d80-a534-a7bc23c6ba82"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ticket}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="126" y="0" width="40" height="8" isRemoveLineWhenBlank="true" uuid="936e3715-a584-45b1-8618-67b18b4dc0db">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="64" y="0" width="55" height="8" isRemoveLineWhenBlank="true" uuid="f19f7359-6bd3-43f2-aa3a-d22ce73ad82a"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tarjeta_pyde}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="802" splitType="Stretch"/>
+	</summary>
+</jasperReport>

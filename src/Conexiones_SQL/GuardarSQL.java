@@ -939,7 +939,7 @@ public class GuardarSQL {
 		
 		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
 		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
-		String query_corte =      		 "exec sp_insert_corte_caja_2 ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-16
+		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-16
 		String query_status_corte_para_filtro="update IZAGAR_Relacion_de_Asignaciones_Liquidadas set status_corte=1 where Asignacion = ?";
 
 		
@@ -1011,12 +1011,8 @@ public class GuardarSQL {
 				i=1;
 			}
 			
-			System.out.println("");
-			
 			i=1;
 			for(int x= 0; x<tb_totales_por_fecha.length; x++){
-
-
 				
 				pstmt_total_por_fecha.setString(i, 	corte.getFolio_corte().toUpperCase().trim());
 				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][0].toString().trim());
@@ -1047,8 +1043,9 @@ public class GuardarSQL {
 			pstmt_corte.setFloat(i+=1, corte.getDiferencia_corte());
 			pstmt_corte.setString(i+=1, corte.getComentario().toUpperCase());
 			pstmt_corte.setString(i+=1, tb_asignaciones[0][0].toString().trim());
-			pstmt_corte.executeUpdate();
+			pstmt_corte.setFloat(i+=1, corte.getDinero_electonico());
 			
+			pstmt_corte.executeUpdate();
 			
 			con.commit();
 			
@@ -3544,11 +3541,8 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 	}
 	
 	public String Guardar_Retiro_Cajero(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro,String Asignacion){
-		
 		Connection con = new Connexion().conexion();
-		
 	       String folio_retiro =""	;	
-             
 		   String folio = " select serie +(select convert(varchar(20),folio+1) from tb_folios where transaccion='Retiros A Cajeros') as folio "+
 		                  " from tb_establecimiento where nombre='"+Establecimiento.trim()+"'";
 		              Statement stmtfolio = null;
@@ -3558,7 +3552,6 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 									while(rs.next()){
 										folio_retiro=rs.getString("folio");
 									}
-
 							   	} catch (Exception e) {
 									JOptionPane.showMessageDialog(null, "Error en Buscar  en la funcion Guardar_Retiro_Cajero \n  en  select serie +(select convert(varchar(20),folio+1) from tb_folios where transaccion='Retiros A Cajeros') \n as folio  from tb_establecimiento where nombre='"+Establecimiento.trim()+"'  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 									e.printStackTrace();
@@ -3566,7 +3559,6 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 							     	}
 								
 			Obj_Retiros_Cajeros Folio_Retiro_Devolver= new Obj_Retiros_Cajeros();
-			        
 			Folio_Retiro_Devolver.setFolio_retiro(folio_retiro);
 								
 		String query = "exec sp_insert_retiros_a_cajeros_2 ?,?,?,?,?,'"+Establecimiento.trim()+"','"+Asignacion+"'";

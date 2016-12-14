@@ -48,7 +48,7 @@ public class Cat_Reportes_De_Ventas_Por_Clasificacion_De_Metas_Por_Grupos_De_Est
 		JComboBox cmbMes= new JComboBox(new String[]{"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"});
 
 		   @SuppressWarnings({ "rawtypes", "unchecked" })
-		JComboBox cmbGrupo= new JComboBox(new String[]{"Seleccione un Grupo","Alimentos","Dulcerias","Papelerias","Refaccionarias","Supermercados"});
+		JComboBox cmbGrupo= new JComboBox(new String[]{"Seleccione un Grupo","Alimentos","Dulcerias","Papelerias","Refaccionarias","Ferreterias","Izacel","Supermercados"});
 		
 public Cat_Reportes_De_Ventas_Por_Clasificacion_De_Metas_Por_Grupos_De_Establecimientos() {
 	            this.setSize(330,160);
