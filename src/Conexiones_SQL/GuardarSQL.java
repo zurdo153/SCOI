@@ -35,6 +35,7 @@ import Obj_Auditoria.Obj_Pedido_De_Monedas;
 import Obj_Auditoria.Obj_Retiros_Cajeros;
 import Obj_Checador.Obj_Alimentacion_De_Permisos_A_Empleados;
 import Obj_Checador.Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento;
+import Obj_Checador.Obj_Chacador_De_Embarque_De_Pedidos;
 import Obj_Checador.Obj_Dias_Inhabiles;
 import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Mensaje_Personal;
@@ -6085,6 +6086,53 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 	return true;
 }
 
+public boolean Finalizar_Pedido(String folio_pedido){
+	
+//	String query =  "delete from mpedestab where LTRIM(RTRIM(folio)) = LTRIM(RTRIM(@folio_pedido)) AND LTRIM(RTRIM(transaccion))='29'";	
+	String query = " update tb_gestion_de_pedido "
+			         + "		set	surtido=0, "
+			         + "		pendiente=pedido, "
+			         + "		fecha_de_modificacion = GETDATE(), "
+			         + "		status='S' , "
+			         + "		ajuste= (pedido*-1) "
+			         + " where LTRIM(RTRIM(folio_pedido)) = LTRIM(RTRIM('"+folio_pedido+"'))";
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	try {
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query);
+		
+		pstmt.executeUpdate();
+		con.commit();
+		
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Finalizar_Pedido ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Finalizar_Pedido ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Finalizar_Pedido ] "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			pstmt.close();
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Finalizar_Pedido ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+	
+	return true;
+}
+
+
 public boolean Guardar_Asignacion_De_Pedido(Object[][] asignacion,String folio_pedido){
 	
 	String query =  "EXEC sp_insert_asignacion_de_pedido_por_paginas ?,?,?,?";
@@ -6172,6 +6220,56 @@ public boolean Guardar_inventarios_parciales(Obj_Alimentacion_De_Inventarios_Par
 		return false;
 	}finally{
 		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+}
+
+public boolean Guardar_Salida_De_Embarque_De_Pedido(Obj_Chacador_De_Embarque_De_Pedidos ped){
+	String query = "exec sp_insert_historial_embarque_de_pedido ?,?,?,?,?,?,?,?,?";
+	
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	try {
+		con.setAutoCommit(false);
+		
+		String pc = InetAddress.getLocalHost().getHostName();
+		String ip = InetAddress.getLocalHost().getHostAddress();
+		
+		int i=1;
+		pstmt = con.prepareStatement(query);
+		pstmt.setString(i,	 	ped.getFolio_transferencia());
+		pstmt.setString(i+=1,	ped.getEstab_surte().trim());
+		pstmt.setString(i+=1,	ped.getEstab_recibe().trim());
+		pstmt.setInt(i+=1,	ped.getFolio_encagado_asigno_embarque());
+		pstmt.setInt(i+=1, 	ped.getFolio_chofer());
+		pstmt.setInt(i+=1, 	ped.getNo_carro());
+		pstmt.setString(i+=1, 	ped.getNo_cincho());
+		
+		pstmt.setString(i+=1, 	ip);
+		pstmt.setString(i+=1, 	pc);
+		
+		pstmt.executeUpdate();
+		con.commit();
+	} catch (Exception e) {
+		System.out.println("SQLException: " + e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Salida_De_Embarque_De_Pedido ] Insert  SQLException: sp_insert_historial_embarque_de_pedido "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if (con != null){
+			try {
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			} catch(SQLException ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Salida_De_Embarque_De_Pedido ] Insert  SQLException: sp_insert_historial_embarque_de_pedido "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		} 
+		return false;
+	}finally{
+		try {
+			pstmt.close();
 			con.close();
 		} catch(SQLException e){
 			e.printStackTrace();

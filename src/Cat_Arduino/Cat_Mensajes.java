@@ -353,6 +353,5 @@ public class Cat_Mensajes extends JFrame
 		
 		public void keyPressed(KeyEvent arg0) {
 		}
-	};
-	
+	};	
 }

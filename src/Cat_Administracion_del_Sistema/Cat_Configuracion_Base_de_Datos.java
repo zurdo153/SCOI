@@ -61,9 +61,6 @@ public class Cat_Configuracion_Base_de_Datos extends JFrame{
 	JButton btnTest2 = new JButton("Probar");
 	JButton btnGuardar2 = new JButton("Guardar");
 	
-	
-	
-	
 	public Cat_Configuracion_Base_de_Datos(){
 		this.setTitle("Configuracion de Base de Datos");
 		tmpIconAuxFondo = new ImageIcon(fileFondo2);

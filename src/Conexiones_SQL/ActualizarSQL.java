@@ -4376,4 +4376,51 @@ public boolean Borrar_Observacion_DH(){
 		return true;
 	}
 	
+	@SuppressWarnings("rawtypes")
+	public boolean Registrar_Llegada_De_Transferencia(Vector transf){
+		
+		String query = "exec sp_update_llegada_de_transferencia_a_establecimiento ?,?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			String ip = InetAddress.getLocalHost().getHostAddress();
+			String pc = InetAddress.getLocalHost().getHostName();
+			
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			for(int i=0; i<transf.size(); i++){
+				pstmt.setString(1, transf.get(i).toString().trim());
+				pstmt.setString(2, ip);
+				pstmt.setString(3, pc);
+				pstmt.executeUpdate();
+			}
+			
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Registrar_Llegada_De_Transferencia ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Registrar_Llegada_De_Transferencia ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 }
