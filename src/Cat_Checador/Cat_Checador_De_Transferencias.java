@@ -105,6 +105,7 @@ public class Cat_Checador_De_Transferencias extends JDialog  {
 	    			int fila = tabla.getSelectedRow();
 	    			String status = tabla.getValueAt(fila, 3).toString().trim();
 	    			String status_recepcion = tabla.getValueAt(fila, 4).toString().trim();
+	    			
 	    			if(status.equals("VIGENTE") && status_recepcion.equals("PENDIENTE")){
 	    				
 		    			String trasferencia = tabla.getValueAt(fila, 0).toString().trim();
@@ -116,7 +117,7 @@ public class Cat_Checador_De_Transferencias extends JDialog  {
 //		    			System.out.println("Folio De Transferencia Seleccionado: "+folio+"  ->   Abrir Catalogo De Choferes Para Asignacion De Transferencia");
 
 	    			}else{
-	    				JOptionPane.showMessageDialog(null, "Solo Se Pueden Mandar Las Transferencias Con Status Vigente Y Transferencia Pendiente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+	    				JOptionPane.showMessageDialog(null, "Solo Se Pueden Mandar Las Transferencias Con Status [Vigente] Y Status De Recepcion [Pendiente]","Aviso",JOptionPane.INFORMATION_MESSAGE);
 	    				return;
 	    			}
 	    			

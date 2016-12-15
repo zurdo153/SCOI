@@ -9497,39 +9497,43 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	}
 	
 	public String[][] getTransferenciasPendientes(String estab){
-		String query = "declare @establecimiento varchar(60) "
-					+ " set @establecimiento = '"+estab+"' "
-					+ " select mi.folio, "
-					+ "		ltrim(rtrim(estabSurt.nombre)) as surte, "
-					+ "		ltrim(rtrim(estabRecibe.nombre)) as recibe, "
-					+ "		case when mi.status = 'V' "
-					+ "				then 'VIGENTE' "
-					+ "				when mi.status = 'C' "
-					+ "					then 'CANCELADO' "
-					+ "		else 'INDEFINIDO' end as status, "
-					+ "		case when mi.status = 'V' and mi.status_recepcion = '' "
-					+ "					then 'PENDIENTE' "
-					+ "				when mi.status_recepcion = 'T' "
-					+ "					then 'TRANSFERIDO' "
-					+ "				else 'INDEFINIDO' "
-					+ "		end as status_recepcion, "
-					+ "		isnull(convert(varchar(20),mi.fecha_cancelacion,103)+' '+convert(varchar(20),mi.fecha_cancelacion,108),'') as fecha_cancelacion, "
-					+ "		isnull(ltrim(rtrim(usuarios.nombre)),'') as usuario_cancelacion "
-					+ " from movimientos_internos mi with (nolock) "
-					+ " left outer join (select folio,folio_referencia from movimientos_internos with (nolock) where transaccion = '65') r on r.folio_referencia = mi.folio_referencia "
-					+ " inner join establecimientos estabsurt on estabsurt.cod_estab = mi.cod_estab and estabSurt.nombre = @establecimiento "
-					+ " inner join establecimientos estabRecibe on estabRecibe.cod_estab = mi.cod_estab_alterno "
-					+ " left outer join usuarios on usuarios.usuario = mi.usuario_cancelacion "
-					+ " where mi.fecha > convert(varchar(20),getdate(),103) "
-					+ " and mi.transaccion = '35' "
-					+ " GROUP BY mi.folio,estabSurt.nombre,estabRecibe.nombre,mi.status,mi.status_recepcion, "
-					+ " 		mi.surtido,usuarios.nombre,mi.fecha_cancelacion,mi.transaccion_referencia";
 		
-		String[][] Matriz = new String[getFilasExterno(query)][7];
+		String query = "exec sp_select_transferencias_pendientes '"+estab+"'";
+//		String query = "declare @establecimiento varchar(60) "
+//					+ " set @establecimiento = '"+estab+"' "
+//					+ " select mi.folio, "
+//					+ "		ltrim(rtrim(estabSurt.nombre)) as surte, "
+//					+ "		ltrim(rtrim(estabRecibe.nombre)) as recibe, "
+//					+ "		case when mi.status = 'V' "
+//					+ "				then 'VIGENTE' "
+//					+ "				when mi.status = 'C' "
+//					+ "					then 'CANCELADO' "
+//					+ "		else 'INDEFINIDO' end as status, "
+//					+ "		case when mi.status = 'V' and mi.status_recepcion = '' "
+//					+ "					then 'PENDIENTE' "
+//					+ "			 when mi.status = 'C' and mi.status_recepcion = '' "
+//					+ "					then 'CANCELADO' "
+//					+ "				when mi.status_recepcion = 'T' "
+//					+ "					then 'TRANSFERIDO' "
+//					+ "				else 'INDEFINIDO' "
+//					+ "		end as status_recepcion, "
+//					+ "		isnull(convert(varchar(20),mi.fecha_cancelacion,103)+' '+convert(varchar(20),mi.fecha_cancelacion,108),'') as fecha_cancelacion, "
+//					+ "		isnull(ltrim(rtrim(usuarios.nombre)),'') as usuario_cancelacion "
+//					+ " from movimientos_internos mi with (nolock) "
+//					+ " left outer join (select folio,folio_referencia from movimientos_internos with (nolock) where transaccion = '65') r on r.folio_referencia = mi.folio_referencia "
+//					+ " inner join establecimientos estabsurt on estabsurt.cod_estab = mi.cod_estab and estabSurt.nombre = @establecimiento "
+//					+ " inner join establecimientos estabRecibe on estabRecibe.cod_estab = mi.cod_estab_alterno "
+//					+ " left outer join usuarios on usuarios.usuario = mi.usuario_cancelacion "
+//					+ " where mi.fecha > convert(varchar(20),getdate(),103) "
+//					+ " and mi.transaccion = '35' "
+//					+ " GROUP BY mi.folio,estabSurt.nombre,estabRecibe.nombre,mi.status,mi.status_recepcion, "
+//					+ " 		mi.surtido,usuarios.nombre,mi.fecha_cancelacion,mi.transaccion_referencia";
+		
+		String[][] Matriz = new String[getFilas(query)][7];
 		Statement s;
 		ResultSet rs;
 		try {			
-			s = con.conexion_IZAGAR().createStatement();
+			s = con.conexion().createStatement();
 			rs = s.executeQuery(query);
 			int i=0;
 			while(rs.next()){
