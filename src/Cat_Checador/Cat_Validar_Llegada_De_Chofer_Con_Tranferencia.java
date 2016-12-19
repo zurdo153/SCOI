@@ -46,16 +46,16 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
 	
 	public Cat_Validar_Llegada_De_Chofer_Con_Tranferencia(){
 		this.setModal(true);
-		this.setSize(360, 115);
+		this.setSize(390, 115);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
 		this.setTitle("Llegada De Tranferencia");
 		
-		panel.add(new JLabel("Establecimiento:")).setBounds(15,20,110,20) ;
-		panel.add(cmbEstablecimiento).setBounds(120,20,210,20) ;
-		panel.add(new JLabel("Clave Chofer:")).setBounds(15,45,110,20) ;
-		panel.add(txtGafeteChofer).setBounds(120,45,210,20) ;
+		panel.add(new JLabel("Establecimiento Recibe:")).setBounds(15,20,150,20) ;
+		panel.add(cmbEstablecimiento).setBounds(160,20,210,20) ;
+		panel.add(new JLabel("Clave Chofer:")).setBounds(75,45,110,20) ;
+		panel.add(txtGafeteChofer).setBounds(160,45,210,20) ;
 		
 		txtGafeteChofer.setEditable(false);
 		

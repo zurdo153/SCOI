@@ -5,9 +5,14 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+
 import Obj_Principal.JCButton;
+import jxl.format.BorderLineStyle;
 
 @SuppressWarnings("serial")
 public class Cat_Menu_Checador extends JDialog  {
@@ -15,9 +20,12 @@ public class Cat_Menu_Checador extends JDialog  {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JCButton btnSalidaDeEmbarque = new JCButton("Salida De Embarque", "", "");
-	JCButton btnLlegadaDeEmbarque = new JCButton("Llegada De Embarque", "", "");
-	
+	JCButton btnSalidaDeEmbarque = new JCButton("Salida De Embarque", "", "AzulC");
+	JCButton btnLlegadaDeEmbarque = new JCButton("Llegada De Embarque", "", "AzulC");
+		
+	Border thickBorder = new LineBorder(Color.BLACK, 12);
+	Border bl = BorderFactory.createLineBorder(Color.BLACK);
+		
 	public Cat_Menu_Checador(){
 		this.setModal(true);
 		this.setSize(275, 125);
@@ -30,7 +38,7 @@ public class Cat_Menu_Checador extends JDialog  {
 		
 		btnSalidaDeEmbarque.addActionListener(opValidarEncargado);
 		btnLlegadaDeEmbarque.addActionListener(opValidarEncargado);
-		
+
 		cont.add(panel);
 		cont.setBackground(Color.ORANGE);
 	}

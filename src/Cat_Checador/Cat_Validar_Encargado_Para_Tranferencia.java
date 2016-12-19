@@ -32,17 +32,17 @@ public class Cat_Validar_Encargado_Para_Tranferencia extends JDialog  {
 
 	public Cat_Validar_Encargado_Para_Tranferencia(){
 		this.setModal(true);
-		this.setSize(360, 120);
+		this.setSize(390, 120);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
 		this.setTitle("Programar Tranferencia");
 		
 		
-		panel.add(new JLabel("Establecimiento:")).setBounds(15,20,110,20) ;
-		panel.add(cmbEstablecimiento).setBounds(120,20,210,20) ;
-		panel.add(new JLabel("Clave Encargado:")).setBounds(15,45,110,20) ;
-		panel.add(txtGafeteEncargado).setBounds(120,45,210,20) ;
+		panel.add(new JLabel("Establecimiento Salida:")).setBounds(15,20,150,20) ;
+		panel.add(cmbEstablecimiento).setBounds(160,20,210,20) ;
+		panel.add(new JLabel("Clave Encargado:")).setBounds(50,45,110,20) ;
+		panel.add(txtGafeteEncargado).setBounds(160,45,210,20) ;
 		
 		cmbEstablecimiento.addActionListener(opEstablecimiento);
 		txtGafeteEncargado.addActionListener(opValidarUsuario);
