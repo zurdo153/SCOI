@@ -273,8 +273,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
         viewport.scrollRectToVisible(rect);
     }
 	
-
-	
 	public void validarCelda(){
 		try{
 	        	if(!tabla.getValueAt(fila, 4).toString().trim().equals("")){

@@ -3,9 +3,6 @@ package Biblioteca;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.UIManager;
-
-import Cat_Reportes.Cat_Reporte_De_Diferencia_De_Recepcion_De_Transferencia;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -39,7 +36,8 @@ public class TreeTableViewSample extends Application {
         Application.launch(TreeTableViewSample.class, args);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void start(Stage stage) {
         root.setExpanded(true);
         employees.stream().forEach((employee) -> {
