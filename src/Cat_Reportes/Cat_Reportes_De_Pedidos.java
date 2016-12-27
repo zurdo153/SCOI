@@ -35,7 +35,7 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String operador[] = {"Selecciona Un Reporte","Reporte Indicador De Nivel De Surtido","Reporte Indicador De Nivel De Servicio","Reporte De Productos Negados Por Establecimientos","Reporte De Total De Productos Negados Con Localizacion"};
+	String operador[] = {"Selecciona Un Reporte","Reporte Indicador De Nivel De Surtido","Reporte Indicador De Nivel De Servicio","Reporte De Productos Negados Por Establecimientos","Reporte De Total De Productos Negados Con Localizacion","Reporte De Productos Con Ajuste Por Establecimientos"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
 	
@@ -77,7 +77,7 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 		c_inicio.setDate( cargar_fechas(7));
 		c_final.setDate( cargar_fechas(0));
 
-		 btngenerar_reporte.addActionListener(opGenerar_reporte);
+		btngenerar_reporte.addActionListener(opGenerar_reporte);
 	}
 	
 	public Date cargar_fechas(Integer dias){
@@ -147,7 +147,12 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 								        comando="exec sp_select_total_de_productos_negados '"+fecha_inicio+"','"+fecha_final+"'";
 									    reporte = "Obj_Reporte_De_Total_De_Productos_Negados.jrxml";
 								  }
-
+								  
+								  if(concepto.equals("Reporte De Productos Con Ajuste Por Establecimientos")){
+								        comando="exec sp_select_productos_de_pedido_con_ajustes '"+fecha_inicio+"','"+fecha_final+"'";
+									    reporte = "Obj_Reporte_De_Ajustes_De_Pedidos_A_Establecimientos.jrxml";
+								  }
+								  
 							  }else{
 						        JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							     return;
