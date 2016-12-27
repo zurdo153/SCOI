@@ -9555,7 +9555,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				+ " where folio_chofer = "+chofer+" "
 				+ " and hist_emb.status = 'V' "
 				+ " and hist_emb.estab_recibe = (select ltrim(rtrim(estab.cod_estab)) from [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab where ltrim(rtrim(estab.nombre)) = ltrim(rtrim('"+establecimiento+"')) ) "
-				+ " and CONVERT(varchar(20),hist_emb.fecha_salida,103) = CONVERT(varchar(20),GETDATE()-4,103)";
+				+ " and CONVERT(varchar(20),hist_emb.fecha_salida,103) > CONVERT(varchar(20),GETDATE()-1,103)";
 		
 		Object[][] Matriz = new Object[getFilas(query)][4];
 		Statement s;

@@ -219,11 +219,19 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 		}
 	};
 	
-	
-		public  void obtiene_lista_de_raya_selecionada(final Integer folio){
+	public  void obtiene_lista_de_raya_selecionada(final Integer folio){
+		 String	Foliorecibido = folio+"";
+		 reporte = "Obj_Reporte_De_Lista_de_Raya_Pasadas.jrxml";
+		 comando = "exec sp_Reporte_De_Lista_De_Raya_Pasada "+Foliorecibido  ;
+		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		 txtFolio.setText(Foliorecibido);
+		 return;	
+	}
+		
+	public  void obtiene_lista_de_raya_selecionada2(final Integer folio){
 			 String	Foliorecibido = folio+"";
-			 reporte = "Obj_Reporte_De_Lista_de_Raya_Pasadas.jrxml";
-			 comando = "exec sp_Reporte_De_Lista_De_Raya_Pasada "+Foliorecibido  ;
+			 reporte = "Obj_Reporte_De_Plantilla_De_Lista_De_Raya.jrxml";
+			 comando = "exec sp_select_plantilla_de_lista_de_raya "+Foliorecibido  ;
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			 txtFolio.setText(Foliorecibido);
 			 return;	

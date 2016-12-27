@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -99,7 +101,7 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
     			           	dispose();
     				           break;
     				           
-		    				case 3:		new Cat_Reportes_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada(folio);
+		    				case 3:		seleccionDeReporte(folio);
     			           	dispose();
     				           break;
 		    				case 4:		new Cat_Reportes_De_Infonavit_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada(folio);
@@ -128,7 +130,21 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
 	        });
 	    }
 		
-		
+		public void seleccionDeReporte(int folio){
+			
+			Icon icon = new ImageIcon("Imagen/equipos-de-tarea-asignada-icono-7668-32.png");
+	        
+			String[] options = {"Lista De Raya", "Plantilla De Lista De Raya", "Cancelar"};
+			String aviso = "";
+			int seleccion = JOptionPane.showOptionDialog(null, aviso, "Seleccion De Status", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, icon, options, options[0]);
+			
+			if(seleccion==0){
+				new Cat_Reportes_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada(folio);
+			}
+			if(seleccion==1){
+				new Cat_Reportes_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada2(folio);
+			}
+		} 
 		
 		KeyListener opFiltroFolio = new KeyListener(){
 			@SuppressWarnings("unchecked")

@@ -6003,6 +6003,7 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 			+ "	 update mpedestab set cantidad_pedida=@surtido, cantidad_autorizada=@surtido, importe=@importe, iva=@iva, ieps=@ieps, costo=@costo, partida=@partida"
 			+ "	   where LTRIM(RTRIM(folio)) = LTRIM(RTRIM(@folio_pedido)) and LTRIM(RTRIM(cod_prod))=LTRIM(RTRIM(@cod_prod)) AND LTRIM(RTRIM(transaccion))='29'"
 			+ " end ";
+	
 //	String query2 ="exec sp_IZAGAR_gestion_de_pedido ?,?,?,?";
 	Connection con2 = new Connexion().conexion_IZAGAR();
 	PreparedStatement pstmt2 = null;
