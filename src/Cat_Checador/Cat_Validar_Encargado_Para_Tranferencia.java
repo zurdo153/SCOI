@@ -10,14 +10,12 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.JPasswordField;
 
 import Conexiones_SQL.BuscarSQL;
 import Obj_Checador.Obj_Entosal;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
-import Obj_Principal.Componentes;
-import Obj_Principal.JCTextField;
 
 @SuppressWarnings("serial")
 public class Cat_Validar_Encargado_Para_Tranferencia extends JDialog  {
@@ -28,7 +26,7 @@ public class Cat_Validar_Encargado_Para_Tranferencia extends JDialog  {
 	String[] establecimiento = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
-	JTextField txtGafeteEncargado = new Componentes().text(new JCTextField(), "", 20, "String");
+	JPasswordField txtGafeteEncargado = new JPasswordField();
 
 	public Cat_Validar_Encargado_Para_Tranferencia(){
 		this.setModal(true);
@@ -64,6 +62,7 @@ public class Cat_Validar_Encargado_Para_Tranferencia extends JDialog  {
     }
     
     ActionListener opEstablecimiento = new ActionListener() {
+		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
 			
 			txtGafeteEncargado.setText(cmbEstablecimiento.getSelectedIndex()==0?"":txtGafeteEncargado.getText());
@@ -75,6 +74,7 @@ public class Cat_Validar_Encargado_Para_Tranferencia extends JDialog  {
     int folio_empleado;
     String claveMaster;
 	ActionListener opValidarUsuario = new ActionListener() {
+		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
 			
 			
@@ -156,7 +156,8 @@ public class Cat_Validar_Encargado_Para_Tranferencia extends JDialog  {
 		}
 	};
 	
-    public void registrarTransferencia(String checada, String establecimiento){
+    @SuppressWarnings("deprecation")
+	public void registrarTransferencia(String checada, String establecimiento){
 //    	Obj_Entosal entosal=new Obj_Entosal().checar_dia_descanso(folio_empleado);
 //    	if (entosal.getValor_Descanso().equals("true")){
 //	    		

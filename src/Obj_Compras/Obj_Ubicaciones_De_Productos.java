@@ -12,6 +12,7 @@ public class Obj_Ubicaciones_De_Productos {
 	String Categoria;
 	String Familia;
 	String Area;
+	String Fecha_Ultima_Vez_Se_Agoto;
 	
 	double Ultimo_Costo;
 	double Costo_Promedio;
@@ -19,7 +20,27 @@ public class Obj_Ubicaciones_De_Productos {
 	double Existencia_Total;
 	double Cantidad_Negada_Ultimos_7_dias;
 	double precio_de_venta;
-	
+	double Minimo;
+	double Maximo;
+		
+	public String getFecha_Ultima_Vez_Se_Agoto() {
+		return Fecha_Ultima_Vez_Se_Agoto;
+	}
+	public void setFecha_Ultima_Vez_Se_Agoto(String fecha_Ultima_Vez_Se_Agoto) {
+		Fecha_Ultima_Vez_Se_Agoto = fecha_Ultima_Vez_Se_Agoto;
+	}
+	public double getMinimo() {
+		return Minimo;
+	}
+	public void setMinimo(double minimo) {
+		Minimo = minimo;
+	}
+	public double getMaximo() {
+		return Maximo;
+	}
+	public void setMaximo(double maximo) {
+		Maximo = maximo;
+	}
 	public String getCod_Prod() {
 		return Cod_Prod;
 	}

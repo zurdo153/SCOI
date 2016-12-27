@@ -9603,7 +9603,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	}
 
 	public Obj_Ubicaciones_De_Productos datos_producto_ubicacion(String cod_prod,String establecimiento) throws SQLException{
-		
 		Obj_Ubicaciones_De_Productos datosproducto = new Obj_Ubicaciones_De_Productos();
 		
 		String query = " declare @exist_cedis real,@cod_prod varchar(35),@cod_estab int set @cod_prod='"+cod_prod+"'"
@@ -9625,6 +9624,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				+ "							,isnull(upper(familias.nombre),'') as familia"
 				+ "							,isnull(upper(areas.nombre),'') as area"
 				+ "							,0 as cantidad_negada_los_ultimos_7_dias"
+				+ "    				        ,prodestab.inventario_minimo"
+				+ "   				        ,prodestab.inventario_maximo"
+				+ "                 		,isnull(convert(varchar(20),prodestab.fecha_agotado,103)+' '+convert(varchar(20),prodestab.fecha_agotado,108),'') as fecha_ultima_vez_se_agoto "				
 				+ "				 from productos with (nolock)"
 				+ "					     left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod AND prodestab.cod_estab= @cod_estab"
 				+ "						 LEFT OUTER JOIN clases_productos with (nolock) on clases_productos.clase_producto=productos.clase_producto"
@@ -9632,7 +9634,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				+ "						 LEFT OUTER JOIN familias with (nolock) on familias.familia=productos.familia"
 				+ "						 LEFT OUTER JOIN areas with (nolock) on areas.area=productos.area"
 				+ "					  where productos.cod_prod=@cod_prod"
-				+ "						  group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio,productos.iva_interior,prodestab.cod_estab,clases_productos.nombre,categorias.nombre,familias.nombre,areas.nombre";
+				+ "						  group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio,productos.iva_interior,prodestab.cod_estab,clases_productos.nombre,categorias.nombre,familias.nombre,areas.nombre ,prodestab.inventario_minimo"
+				+ "								,prodestab.inventario_maximo ,prodestab.fecha_agotado ";
 		
 		Statement stmt2= null;
 		
@@ -9653,7 +9656,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 									   datosproducto.setCategoria(rs2.getString("categoria"));
 									   datosproducto.setFamilia(rs2.getString("familia"));
 									   datosproducto.setArea(rs2.getString("area"));
-									   
+									   datosproducto.setMaximo(rs2.getDouble("inventario_minimo"));
+									   datosproducto.setMinimo(rs2.getDouble("inventario_maximo"));
+									   datosproducto.setFecha_Ultima_Vez_Se_Agoto(rs2.getString("fecha_ultima_vez_se_agoto"));
 									   
 									   System.out.println(rs2.getString("descripcion"));
 								   }

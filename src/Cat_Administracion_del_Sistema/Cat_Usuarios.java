@@ -318,6 +318,8 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_inventarios[2], false),
 		new Obj_CheckBoxNode(Sub_inventarios[3], false),
 		new Obj_CheckBoxNode(Sub_inventarios[4], false),
+		new Obj_CheckBoxNode(Sub_inventarios[5], false),
+		
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Vector_inventarios = new Obj_NombreVector("Inventarios", Inventarios);
@@ -328,13 +330,10 @@ public class Cat_Usuarios extends JFrame{
 	    
 	@SuppressWarnings("rawtypes")
 	Vector rootVector = new Obj_NombreVector("Permisos", rootNodos);
-	 
 	JTree tree = new JTree(rootVector);
-
 	JScrollPane scrolltree = new JScrollPane(tree);
 	
 	Obj_CheckBoxNodeRenderer  renderer = new Obj_CheckBoxNodeRenderer ();	
-	
 	String[][] Matriz = new Obj_SubMenus().UsuarioMatriz();
 	
 	DefaultTableModel model = new DefaultTableModel(Matriz,

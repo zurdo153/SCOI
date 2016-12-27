@@ -13,9 +13,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.ActualizarSQL;
@@ -23,9 +23,7 @@ import Conexiones_SQL.BuscarSQL;
 import Obj_Checador.Obj_Entosal;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
-import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
-import Obj_Principal.JCTextField;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -37,7 +35,7 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
 	String[] estab = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(estab);
-	JTextField txtGafeteChofer = new Componentes().text(new JCTextField(), "", 20, "String");
+	JPasswordField txtGafeteChofer = new JPasswordField();
 
 	String trasferencia = "";
 	String estab_surte = "";
@@ -92,6 +90,7 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
     String establecimiento = "";
     String claveMaster;	
 	ActionListener opValidarChofer = new ActionListener() {
+		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
 			
 				if(!txtGafeteChofer.getText().toUpperCase().equals("") && cmbEstablecimiento.getSelectedIndex() != 0){

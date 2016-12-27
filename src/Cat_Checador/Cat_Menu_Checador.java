@@ -12,7 +12,6 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import Obj_Principal.JCButton;
-import jxl.format.BorderLineStyle;
 
 @SuppressWarnings("serial")
 public class Cat_Menu_Checador extends JDialog  {
