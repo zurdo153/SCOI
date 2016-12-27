@@ -57,6 +57,7 @@ import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
 import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
+import Obj_Compras.Obj_Ubicaciones_De_Productos;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
@@ -6142,6 +6143,30 @@ public class BuscarSQL {
 	}
 	
 	
+	
+	public String cod_prod_principal_bms(String cod_prod){
+		String query = "declare @exist_cedis real,@cod_prod varchar(20),@Producto varchar(20)  set @Producto='"+cod_prod+"' "+
+				"  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto))" +
+				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end" +
+				"  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end" +
+				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_unidad=@Producto)) end" +
+				"  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end" +
+				"  if @cod_prod is null select 'false no existe' else select @cod_prod";
+		
+		String existe = "";
+		try { Statement s = con.conexion_IZAGAR().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	existe = rs.getString(1);
+			      }
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion existe_Producto \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+    return existe;
+	}
+	
 	public String datos_pedido(String cod_prod) throws SQLException{
 		
 		String cadena = "''";
@@ -9575,6 +9600,74 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			e1.printStackTrace();
 		}
 		return Matriz; 
+	}
+
+	public Obj_Ubicaciones_De_Productos datos_producto_ubicacion(String cod_prod,String establecimiento) throws SQLException{
+		
+		Obj_Ubicaciones_De_Productos datosproducto = new Obj_Ubicaciones_De_Productos();
+		
+		String query = " declare @exist_cedis real,@cod_prod varchar(35),@cod_estab int set @cod_prod='"+cod_prod+"'"
+				+ " set @cod_estab=(select cod_estab from establecimientos where nombre='"+establecimiento+"')"
+				+ "         	 	SELECT   productos.cod_prod"
+				+ "				            ,productos.descripcion"
+				+ "							,convert(numeric(10,2),prodestab.ultimo_costo) as ultimo_costo"
+				+ "							,convert(numeric(10,2),prodestab.costo_promedio) as costo_promedio"
+				+ "							,convert(numeric(10,2),isnull(sum((Productos.contenido*prodestab.exist_unidades)+exist_piezas),0)) as existencia_total"
+				+ "							,convert(numeric (10,2),case 1 WHEN 0 then dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0)"
+				+ "																  ELSE 	dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0)"
+				+ "																	* (1 + dbo.Ieps(productos.cod_prod)/100) * (1 + (CASE 'I' WHEN 'I' THEN productos.iva_interior ELSE productos.iva_fronterizo END/100))  END) as precio_de_venta"
+//				+ "							,convert(numeric (10,2),case 1 WHEN 0 then dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '1', 1, 0, 0)"
+//				+ "																  ELSE 	dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '1', 1, 0, 0)"
+//				+ "																	* (1 + dbo.Ieps(productos.cod_prod)/100) * (1 + (CASE 'I' WHEN 'I' THEN productos.iva_interior ELSE productos.iva_fronterizo END/100))  END) as precio_de_venta_normal"
+				+ "                         ,isnull((select top 1 upper(localizacion) from localizaciones_surtido_productos with(nolock) where cod_prod = productos.cod_prod and cod_estab = prodestab.cod_estab),'NO TIENE') as localicacion"
+				+ "    					    ,isnull(upper(clases_productos.nombre),'') as clase_producto"
+				+ "							,isnull(upper(categorias.nombre),'') as categoria"
+				+ "							,isnull(upper(familias.nombre),'') as familia"
+				+ "							,isnull(upper(areas.nombre),'') as area"
+				+ "							,0 as cantidad_negada_los_ultimos_7_dias"
+				+ "				 from productos with (nolock)"
+				+ "					     left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod AND prodestab.cod_estab= @cod_estab"
+				+ "						 LEFT OUTER JOIN clases_productos with (nolock) on clases_productos.clase_producto=productos.clase_producto"
+				+ "						 LEFT OUTER JOIN categorias with (nolock) on categorias.categoria=productos.categoria"
+				+ "						 LEFT OUTER JOIN familias with (nolock) on familias.familia=productos.familia"
+				+ "						 LEFT OUTER JOIN areas with (nolock) on areas.area=productos.area"
+				+ "					  where productos.cod_prod=@cod_prod"
+				+ "						  group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio,productos.iva_interior,prodestab.cod_estab,clases_productos.nombre,categorias.nombre,familias.nombre,areas.nombre";
+		
+		Statement stmt2= null;
+		
+						try {
+							stmt2= con.conexion_IZAGAR().createStatement();
+									
+							ResultSet rs2= stmt2.executeQuery(query);
+							
+								   while(rs2.next()){
+									   datosproducto.setCod_Prod(rs2.getString("cod_prod"));
+									   datosproducto.setDescripcion_Prod(rs2.getString("descripcion"));
+									   datosproducto.setUltimo_Costo(rs2.getDouble("ultimo_costo"));
+									   datosproducto.setCosto_Promedio(rs2.getDouble("costo_promedio"));
+									   datosproducto.setExistencia_Total(rs2.getDouble("existencia_total"));
+									   datosproducto.setPrecio_de_venta(rs2.getDouble("precio_de_venta"));
+									   datosproducto.setLocalizacion(rs2.getString("localicacion"));
+									   datosproducto.setClase_De_Producto(rs2.getString("clase_producto"));
+									   datosproducto.setCategoria(rs2.getString("categoria"));
+									   datosproducto.setFamilia(rs2.getString("familia"));
+									   datosproducto.setArea(rs2.getString("area"));
+									   
+									   
+									   System.out.println(rs2.getString("descripcion"));
+								   }
+							
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_producto \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+							return null;
+						}
+
+		finally{
+			if(stmt2!=null){stmt2.close();}
+		}
+		return datosproducto;
 	}
 	
 //	public int  Folios_generados(String folio_original){

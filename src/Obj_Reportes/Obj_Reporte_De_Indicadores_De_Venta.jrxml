@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2016-12-16T15:01:55 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Indicadores_De_Venta" pageWidth="1008" pageHeight="9008" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4153f53-7705-4a10-ad46-d7febe6afa57">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[exec reporte_de_APV_y_ticket_promedio_por_un_grupo_de_establecimientos_en_un_rango 'S','01/12/2016','15/12/2016 23:59:59']]>
+	</queryString>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="numero_tickets_por_dia" class="java.lang.Integer"/>
+	<field name="APV" class="java.lang.Double"/>
+	<field name="importe_totalxdia" class="java.math.BigDecimal"/>
+	<field name="importe_simpuestoxdia" class="java.math.BigDecimal"/>
+	<field name="costoxdia" class="java.math.BigDecimal"/>
+	<field name="TPROM_IMPORTE" class="java.math.BigDecimal"/>
+	<field name="TPROM_IMPORTE_SIN_IMPUESTO" class="java.math.BigDecimal"/>
+	<field name="TPROM_COSTO" class="java.math.BigDecimal"/>
+	<field name="cod_estab" class="java.lang.Short"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="semana_del_año" class="java.lang.Short"/>
+	<field name="año" class="java.lang.Short"/>
+	<field name="dia" class="java.lang.Short"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="reporte" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="65" splitType="Stretch">
+			<textField pattern="">
+				<reportElement x="0" y="0" width="872" height="65" backcolor="#FFFFFF" uuid="a2d7c868-20a2-4b69-b417-02067ec44d31">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reporte}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="96" height="13" uuid="3c3738d8-b165-4a04-828c-93dd15b607c7">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" Establecimiento"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="0" width="24" height="13" uuid="c0c16711-2698-4432-b53c-1f67325cf5b5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Año"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="312" y="0" width="70" height="13" uuid="6a575635-4c41-4ccf-bc5a-ee7c4f2d28e3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["# TicketxDia"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="199" y="0" width="62" height="13" uuid="3b34c96c-3421-48e4-b3bf-eaf79a84b202">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="382" y="0" width="70" height="13" uuid="9e87c498-7a1a-468e-b699-36c6c15fd6f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Importe Venta"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="55" height="13" uuid="f68c204c-5bed-4b8d-b480-82e3a0d4dde0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Mes"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="175" y="0" width="24" height="13" uuid="bc0ce2da-ed87-4317-91c3-17734336f170">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dia"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="452" y="0" width="70" height="13" uuid="b9bddfe9-5319-4bf5-9c94-d443159b2a15">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Importe S/Impuesto"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="522" y="0" width="70" height="13" uuid="dfe61201-8412-4a69-bd98-def1b1060df5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Costo Venta"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="592" y="0" width="70" height="13" uuid="e268e38b-22e1-4524-a0cb-27fa0b89f0bf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ArticulosxVenta(APV)"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="662" y="0" width="70" height="13" uuid="135d1ac3-88b3-4ff3-983c-96c24499a88c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ticket Prom.Importe"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="732" y="0" width="70" height="13" uuid="e17cfbd3-d67d-4e5b-9790-acb3461432ab">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ticket Prom.Importe S/Impuesto"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="802" y="0" width="70" height="13" uuid="4a7943f8-8232-42ed-bd68-c5ee2e58f7b3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ticket Prom.Costo"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="261" y="0" width="51" height="13" uuid="cf22c43f-92e1-443e-adc2-0f25a56ed7f3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Semana Año"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="96" height="11" uuid="89f52607-eb48-4cd6-9b37-15754723dd7f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="0" width="24" height="11" uuid="f5d23531-d9f9-4618-8515-02b580592e78">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{año}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="199" y="0" width="62" height="11" uuid="da4ba3d8-66f1-4638-ad72-b6b70e39a020">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="312" y="0" width="70" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="0261b84a-5306-42ab-b1e2-b6733bb200e9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_tickets_por_dia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="382" y="0" width="70" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="bf959073-fd6c-4063-99ac-b0ccae468675"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe_totalxdia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="55" height="11" uuid="ac331602-8ddc-4431-b66f-d0302078cde9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="175" y="0" width="24" height="11" uuid="f59867ad-db50-4081-b14b-9cfe8c8f30ad">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="452" y="0" width="70" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="2c3ce05b-8fe4-40d6-a528-72c09f2eae1c"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe_simpuestoxdia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="522" y="0" width="70" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="e6712bd8-0121-4335-bd71-d40bcec8208c"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costoxdia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="592" y="0" width="70" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="39933bf2-4e55-4a51-bfa5-49e688ef8114"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APV}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="802" y="0" width="70" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="cf18ec53-de8b-423b-92f7-c4e8a0240e14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TPROM_COSTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="662" y="0" width="70" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="006badc0-519e-456d-8678-b71bfa55dbe7"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TPROM_IMPORTE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="732" y="0" width="70" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="3267b79b-2e14-43f0-89b7-6f3c28a441af"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TPROM_IMPORTE_SIN_IMPUESTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="261" y="0" width="51" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="44f47425-d6bb-42fe-a966-c983aba606cc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{semana_del_año}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
