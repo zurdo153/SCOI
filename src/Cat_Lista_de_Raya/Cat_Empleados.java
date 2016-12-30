@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -658,9 +659,9 @@ public class Cat_Empleados extends JFrame{
 		btnLimpiarPerfil.addActionListener(opLimpiarPerfil);
 		btnAgregarPerfil.addActionListener(opPerfil);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
-//		btnHorario.addActionListener(opFiltroHorairo);
-//		btnHorario2.addActionListener(opFiltroHorairo2);
-//		btnHorario3.addActionListener(opFiltroHorairo3);
+		btnHorario.addActionListener(opFiltroHorairo);
+		btnHorario2.addActionListener(opFiltroHorairo2);
+		btnHorario3.addActionListener(opFiltroHorairo3);
 		
 		txtTarjetaNomina.addKeyListener(txtlogns);
 		
@@ -686,10 +687,12 @@ public class Cat_Empleados extends JFrame{
 		btnHorario2.setEnabled(false);
 		btnHorario3.setEnabled(false);
 		
+		btnHorarioNew.setEnabled(false);
 		txtHorario.setEditable(false);
 		txtHorario2.setEditable(false);
 		txtHorario3.setEditable(false);
 		
+		cmbHorarioRotativo.setEnabled(false);
 		
 		cmbEstablecimiento.setEnabled(false);
 		cmbDepartamento.setEnabled(false);
@@ -926,19 +929,21 @@ public class Cat_Empleados extends JFrame{
 			
 			switch(cmbHorarioRotativo.getSelectedIndex()){
 				case 0: 
-//					btnHorario.setEnabled(true);
-//						btnHorario2.setEnabled(false);
-//						btnHorario3.setEnabled(false);
+					btnHorario.setEnabled(true);
+						btnHorario2.setEnabled(false);
+						btnHorario3.setEnabled(false);
 						
 						rbHorario.setEnabled(true);
 						rbHorario2.setEnabled(false);
 						rbHorario3.setEnabled(false);
+						
+						rbHorario.setSelected(true);
 						break;
 						
 				case 1: 
-//					btnHorario.setEnabled(true);
-//						btnHorario2.setEnabled(true);
-//						btnHorario3.setEnabled(false);
+					btnHorario.setEnabled(true);
+						btnHorario2.setEnabled(true);
+						btnHorario3.setEnabled(false);
 						
 						rbHorario.setEnabled(true);
 						rbHorario2.setEnabled(true);
@@ -946,9 +951,9 @@ public class Cat_Empleados extends JFrame{
 						break;
 						
 				case 2: 
-//					btnHorario.setEnabled(true);
-//						btnHorario2.setEnabled(true);
-//						btnHorario3.setEnabled(true);
+					btnHorario.setEnabled(true);
+						btnHorario2.setEnabled(true);
+						btnHorario3.setEnabled(true);
 						
 						rbHorario.setEnabled(true);
 						rbHorario2.setEnabled(true);
@@ -1083,6 +1088,8 @@ public class Cat_Empleados extends JFrame{
 					cmbBonoAsistencia.setEnabled(false);
 					cmbBonopuntualidad.setEnabled(false);
 					cmbActivo_Inactivo.setSelectedIndex(1);
+					
+					PerfilesActivos();
 				}
 			}
 		}
@@ -1326,7 +1333,8 @@ public class Cat_Empleados extends JFrame{
 					btnFiltro.setEnabled(true);
 					btnLimpiarPerfil.setEnabled(false);
 					btnAgregarPerfil.setEnabled(false);
-//					btnHorario.setEnabled(false);
+					btnHorario.setEnabled(false);
+					btnHorarioNew.setEnabled(false);
 					cmbHorarioRotativo.setEnabled(false);
 				}else{
 					
@@ -1500,7 +1508,7 @@ public void guardar_modificar_Empleado(){
 //									empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp.jpg"));
 //								}
 		
-								empleado.setPerfil(lblFolioPerfil.equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
+								empleado.setPerfil(lblFolioPerfil.getText().trim().equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
 		//				laboral
 								empleado.setHorario(lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText()));
 								empleado.setHorario2(lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText()));
@@ -1574,7 +1582,7 @@ public void guardar_modificar_Empleado(){
 								empleado.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? Float.parseFloat(0.0+"") : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString()));
 								empleado.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? Float.parseFloat(0.0+"") : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
 								
-								empleado.setInfonacot(Float.valueOf(txtDInfonacot.getText()));
+								empleado.setInfonacot(Float.valueOf(txtDInfonacot.getText().equals("")?"0":txtDInfonacot.getText()));
 								empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
 								empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
 								empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("Aplica")?1:0);
@@ -1659,7 +1667,7 @@ public void guardar_modificar_Empleado(){
 //								empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp.jpg"));
 //							}
 	
-							empleado.setPerfil(lblFolioPerfil.equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
+							empleado.setPerfil(lblFolioPerfil.getText().trim().equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
 	//				laboral
 							empleado.setHorario(lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText()));
 							empleado.setHorario2(lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText()));
@@ -1733,7 +1741,7 @@ public void guardar_modificar_Empleado(){
 							empleado.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? Float.parseFloat(0.0+"") : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString()));
 							empleado.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? Float.parseFloat(0.0+"") : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
 							
-							empleado.setInfonacot(Float.valueOf(txtDInfonacot.getText()));
+							empleado.setInfonacot(Float.valueOf(txtDInfonacot.getText().equals("")?"0":txtDInfonacot.getText()));
 							empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
 							empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
 							empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("Aplica")?1:0);
@@ -1783,33 +1791,62 @@ public void guardar_modificar_Empleado(){
 				
 					case 0: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(0);
-							cmbHorarioRotativo.setEnabled(true);
+//							cmbHorarioRotativo.setEnabled(true);
 							rbHorario.setSelected(true);
 							break;
 							
 					case 1: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(1);
-							cmbHorarioRotativo.setEnabled(true);
+//							cmbHorarioRotativo.setEnabled(true);
 							rbHorario2.setEnabled(true);
 							break;
 							
 					case 2: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(2);
-							cmbHorarioRotativo.setEnabled(true);
+//							cmbHorarioRotativo.setEnabled(true);
 							rbHorario3.setEnabled(true);
 							break;
 				}
-				btnLimpiarPerfil.setEnabled(true);
-				btnAgregarPerfil.setEnabled(true);
+//				btnLimpiarPerfil.setEnabled(true);
+//				btnAgregarPerfil.setEnabled(true);
 				txtFolioEmpleado.setEditable(false);
 				btnEditar.setEnabled(false);
 				btnNuevo.setEnabled(true);
+				
+				PerfilesActivos();
+				
 			}else{
 				JOptionPane.showMessageDialog(null,"El Registró Que Desea Editar no Existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}		
 	};
+	
+	
+	
+	public void PerfilesActivos(){
+		
+		if(new BuscarSQL().PerfilDeColaboradorActivo()){
+			cmbEstablecimiento.setEnabled(true);
+			cmbDepartamento.setEnabled(true);
+			cmbPuesto.setEnabled(true);
+			
+			btnLimpiarPerfil.setEnabled(false);
+			btnAgregarPerfil.setEnabled(false);
+			
+			cmbHorarioRotativo.setEnabled(true);
+			
+			btnHorarioNew.setEnabled(true);			
+		}else{
+			btnLimpiarPerfil.setEnabled(true);
+			btnAgregarPerfil.setEnabled(true);
+			
+			btnHorario.setEnabled(false);
+			btnHorarioNew.setEnabled(false);
+		}
+		
+		
+	}
 	
 	public void panelEnabledTrue(){	
 		txtNombre.setEnabled(true);
@@ -1873,8 +1910,8 @@ public void guardar_modificar_Empleado(){
 		txtApPaterno.setEnabled(false);                                                                    
 		txtApMaterno.setEnabled(false);                                                                    
 		txtPensionAli.setEnabled(false);                                                                   
-//		cmbEstablecimiento.setEnabled(false);                                                              
-//		cmbPuesto.setEnabled(false);                                                                       
+		cmbEstablecimiento.setEnabled(false);                                                              
+		cmbPuesto.setEnabled(false);                                                                       
 		cmbSueldo.setEnabled(false);                                                                       
 		cmbBono.setEnabled(false);                                                                         
 		cmbPrestamos.setEnabled(false);                                                                    
@@ -1911,7 +1948,7 @@ public void guardar_modificar_Empleado(){
 		rbHorario3.setEnabled(false);                                                                      
 		                                                                                                   
 		txtBaja.setEnabled(false);                                                                         
-//		cmbDepartamento.setEnabled(false);                                                                 
+		cmbDepartamento.setEnabled(false);                                                                 
 		txtNumeroInfonavit.setEnabled(false);                                                              
 		                                                                                                   
 		txtSalarioDiario.setEnabled(false);
@@ -1932,6 +1969,8 @@ public void guardar_modificar_Empleado(){
 		
 		btnLimpiarPerfil.setEnabled(false);
 		btnAgregarPerfil.setEnabled(false);
+		
+		cmbHorarioRotativo.setEnabled(false);
 	}
 
 	///boton deshacer
@@ -1968,6 +2007,9 @@ public void guardar_modificar_Empleado(){
 	    chb_cuadrante_parcial.setSelected(false);
 	    txtFechaNacimiento.setDate(null);
 	    cmbStatusChecador.setSelectedIndex(0);
+	    
+	    lblFolioPerfil.setText("");
+		txtPerfil.setText("");
 	    
 		txtCalle.setText("");
 		txtColonia.setText("");
@@ -2036,6 +2078,21 @@ public void guardar_modificar_Empleado(){
 			         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
 			         btnFoto.setIcon(iconoDefault);
 			         
+			         
+//	copiar archivo de un directorio a otro --------------------------------------------------------------------------------------------------------------------
+			         try{
+			        	 FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+"/Iconos/Un.JPG"); //inFile -> Archivo a copiar
+			        	 FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir")+"/tmp/tmp.jpg"); //outFile -> Copia del archivo
+			        	 FileChannel inChannel = fis.getChannel(); 
+			        	 FileChannel outChannel = fos.getChannel(); 
+			        	 inChannel.transferTo(0, inChannel.size(), outChannel); 
+			        	 fis.close(); 
+			        	 fos.close();
+			        	 }catch (IOException ioe) {
+			        	 System.err.println("Error al Generar Copia");
+			        	 }
+//	fin de copiar archivo -------------------------------------------------------------------------------------------------------------------------------------
+			         
 					 ImageIcon file_status = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Vigente.png");
 			         Icon iconoStatus = new ImageIcon(file_status.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));
 			         btnStatus.setIcon(iconoStatus);
@@ -2067,6 +2124,7 @@ public void guardar_modificar_Empleado(){
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			rbHorario.setSelected(true);
 			panelLimpiar();
 			rbHorario2.setEnabled(false);
 			panelEnabledFalse();
@@ -2076,6 +2134,9 @@ public void guardar_modificar_Empleado(){
 			btnEditar.setEnabled(false);
 			btnNuevo.setEnabled(true);
 //			txtHorario.setEnabled(false);
+			btnHorario.setEnabled(false);
+			btnHorario2.setEnabled(false);
+			btnHorario3.setEnabled(false);
 			
 			btnBuscar.setEnabled(true);
 			btnFiltro.setEnabled(true);
@@ -2226,24 +2287,24 @@ public void guardar_modificar_Empleado(){
 		}
 	};
 	
-//	ActionListener opFiltroHorairo = new ActionListener(){
-//		public void actionPerformed(ActionEvent e){
-//			seleccion_de_asignacion_de_Horario1Horario2Horario3=1;
-//			new Filtro_Horario_Empleado().setVisible(true);
-//		}
-//	};
-//	ActionListener opFiltroHorairo2 = new ActionListener(){
-//		public void actionPerformed(ActionEvent e){
-//			seleccion_de_asignacion_de_Horario1Horario2Horario3=2;
-//			new Filtro_Horario_Empleado().setVisible(true);
-//		}
-//	};
-//	ActionListener opFiltroHorairo3 = new ActionListener(){
-//		public void actionPerformed(ActionEvent e){
-//			seleccion_de_asignacion_de_Horario1Horario2Horario3=3;
-//			new Filtro_Horario_Empleado().setVisible(true);
-//		}
-//	};
+	ActionListener opFiltroHorairo = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			seleccion_de_asignacion_de_Horario1Horario2Horario3=1;
+			new Filtro_Horario_Empleado().setVisible(true);
+		}
+	};
+	ActionListener opFiltroHorairo2 = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			seleccion_de_asignacion_de_Horario1Horario2Horario3=2;
+			new Filtro_Horario_Empleado().setVisible(true);
+		}
+	};
+	ActionListener opFiltroHorairo3 = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			seleccion_de_asignacion_de_Horario1Horario2Horario3=3;
+			new Filtro_Horario_Empleado().setVisible(true);
+		}
+	};
 	
 	ActionListener opGenerarHorairo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -2365,7 +2426,14 @@ public void guardar_modificar_Empleado(){
 //		if(cmbEstablecimiento.getSelectedItem().equals("Selecciona un Establecimiento")) error += "Establecimiento\n";
 //		if(cmbPuesto.getSelectedItem().equals("Selecciona un Puesto")) error += "Puesto\n";
 		
-		if(txtPerfil.getText().trim().equals("")) error += "Perfil\n";
+		
+		if(txtPerfil.getText().trim().equals("")){
+			if(!new BuscarSQL().PerfilDeColaboradorActivo()){
+				error +="Perfil\n";
+			}
+		}
+			
+			
 		
 		switch(cmbHorarioRotativo.getSelectedIndex()){
 		case 0:	if(txtHorario.getText().equals("")) 		error+= "Horario\n"; break;

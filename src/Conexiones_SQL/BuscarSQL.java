@@ -9675,6 +9675,28 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return datosproducto;
 	}
 	
+	public boolean PerfilDeColaboradorActivo(){
+		String query = "select case when usar_perfiles_en_colaboradores = 'NO' then 'true' else 'false' end as usar_perfiles_en_colaboradores from tb_configuracion_sistema";
+		
+		boolean existe = false;
+		Statement s;
+		ResultSet rs;
+		
+		try {				
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				existe = Boolean.parseBoolean(rs.getString(1).trim());
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+			
+		return existe;
+	}
+	
 //	public int  Folios_generados(String folio_original){
 //		int numero_de_folios=0;
 //		String query = "select count(distinct(folio_pedido))-1 as folios_generados from tb_gestion_de_pedido where folio_pedido like '%"+folio_original+"'";

@@ -440,8 +440,6 @@ public class Cat_Finiquitos extends JFrame{
 			fchBajaBnns.setEnabled(folio_emp_bms.equals("")?false:true);
 			
 			Constructor(folio_emp_scoi, nombre_scoi, establecimiento, folio_emp_bms);
-			
-			
 		}
 		
 		public void Constructor(String folio_emp_scoi, String nombre_scoi, String establecimiento, String folio_emp_bms){
@@ -873,8 +871,7 @@ public class Cat_Finiquitos extends JFrame{
 //			return diffDays;
 //		}
 		
-		int dias_de_vacaciones_correspondientes_scoi=0;
-		int dias_de_vacaciones_correspondientes_bms=0;
+		int dias_de_vacaciones_actuales=0;
 		public void buscar_finiquito(){
 			
 			String fechaBms = new SimpleDateFormat("dd/MM/yyyy").format(fchBajaBnns.getDate());
@@ -882,10 +879,8 @@ public class Cat_Finiquitos extends JFrame{
 			
 			Obj_Finiquitos finiquito = new Obj_Finiquitos().buscar_finiquito(folio_empleado_bms, Integer.valueOf(folio_empleado_scoi), fechaSCOI, fechaBms);
 			
-//			dias_de_vacaciones_correspondientes_scoi=finiquito.getDias_correspondiente_vacaciones();
-			
-			dias_de_vacaciones_correspondientes_scoi=new BuscarSQL().anios_de_vacaciones(finiquito.getFecha_ingreso_SCOI(), finiquito.getFecha_baja_SCOI());
-			System.out.println(dias_de_vacaciones_correspondientes_scoi+" <------------------------------");
+			dias_de_vacaciones_actuales=finiquito.getDias_correspondiente_vacaciones();
+			System.out.println(dias_de_vacaciones_actuales);
 			
 			try {
 				fchIngresoSCOI.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(finiquito.getFecha_ingreso_SCOI()));
@@ -918,7 +913,7 @@ public class Cat_Finiquitos extends JFrame{
 					e.printStackTrace();
 				}
 			}
-			dias_de_vacaciones_correspondientes_bms=new BuscarSQL().anios_de_vacaciones(finiquito.getFecha_ingreso_BMS(), finiquito.getFecha_baja_BMS());
+	
 //				bms
 				txtDiasTrabajadosBnns.setText(finiquito.getDias_trabajados_BMS()+"");
 				txtaniosTrabajadosBnns.setText(df.format(finiquito.getAnios_trabajados_BMS())+"");
@@ -947,45 +942,15 @@ public class Cat_Finiquitos extends JFrame{
 //			System.out.print("aaaaaaaaaaaaaaaaaa "+(Float.valueOf(dias_de_vacaciones_actuales)/Float.valueOf(365)));
 			
 			//redondeo acia el entero anterior( truncar decimales )
-//			float anios_SCOI = (float) Math.floor(Float.valueOf(txtaniosTrabajadosSCOI.getText()) );
-			
-			String fecha_in_SCOI = new SimpleDateFormat("dd/MM/yyyy").format(fchIngresoSCOI.getDate());
-			String fecha_fin_SCOI = new SimpleDateFormat("dd/MM/yyyy").format(fchBajaSCOI.getDate());
-			float dias_de_vacaciones_SCOI = 0;
-			
-			try {
-					dias_de_vacaciones_SCOI = new BuscarSQL().dias_de_vacaciones_pendientes_del_ultimo_anio(fecha_in_SCOI, fecha_fin_SCOI);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-//			float dias_de_vacaciones_SCOI = ( Float.valueOf(txtDiasTrabajadosSCOI.getText()) - (anios_SCOI * 365) );
-			System.out.println("aaaaaaaaaaaaaaaaaa "+dias_de_vacaciones_SCOI);
+			float anios_SCOI = (float) Math.floor(Float.valueOf(txtaniosTrabajadosSCOI.getText()) );
+			float dias_de_vacaciones_SCOI = ( Float.valueOf(txtDiasTrabajadosSCOI.getText()) - (anios_SCOI * 365) );
 			
 			//redondeo acia el entero anterior( truncar decimales )
-//			float anios_BMS = (float) Math.floor(Float.valueOf(txtaniosTrabajadosBnns.getText()) );
-//			float dias_de_vacaciones_BMS = ( Float.valueOf(txtDiasTrabajadosBnns.getText()) - (anios_BMS * 365) );
-			
-//			System.out.println(anios_SCOI);
-//			System.out.println(anios_BMS);
-			
-			float dias_de_vacaciones_BMS = 0;
-			if(Float.valueOf(txtDiasTrabajadosBnns.getText())>0){
-				String fecha_in_BMS = new SimpleDateFormat("dd/MM/yyyy").format(fchIngresoBnns.getDate());
-				String fecha_fin_BMS = new SimpleDateFormat("dd/MM/yyyy").format(fchBajaBnns.getDate());
-				try {
-					dias_de_vacaciones_BMS = new BuscarSQL().dias_de_vacaciones_pendientes_del_ultimo_anio(fecha_in_BMS, fecha_fin_BMS);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-			System.out.println("bbbbbbbbbbbbbbbbb "+dias_de_vacaciones_BMS);
+			float anios_BMS = (float) Math.floor(Float.valueOf(txtaniosTrabajadosBnns.getText()) );
+			float dias_de_vacaciones_BMS = ( Float.valueOf(txtDiasTrabajadosBnns.getText()) - (anios_BMS * 365) );
 //			
-			txtVacacionesBnns.setText(df.format((Float.valueOf(dias_de_vacaciones_correspondientes_bms)/Float.valueOf(365))*(dias_de_vacaciones_BMS)*(Float.valueOf(txtDiasCuotaDiarioBnns.getText()))));
-			txtVacacionesSCOI.setText(df.format((Float.valueOf(dias_de_vacaciones_correspondientes_scoi)/Float.valueOf(365))*(dias_de_vacaciones_SCOI)*(Float.valueOf(txtDiasCuotaDiarioSCOI.getText()))));
+			txtVacacionesBnns.setText(df.format((Float.valueOf(dias_de_vacaciones_actuales)/Float.valueOf(365))*(dias_de_vacaciones_BMS)*(Float.valueOf(txtDiasCuotaDiarioBnns.getText()))));
+			txtVacacionesSCOI.setText(df.format((Float.valueOf(dias_de_vacaciones_actuales)/Float.valueOf(365))*(dias_de_vacaciones_SCOI)*(Float.valueOf(txtDiasCuotaDiarioSCOI.getText()))));
 			
 			txtSueldoDiferencia.setText(df.format( Double.valueOf(txtSueldoSCOI.getText().toString().trim())-Double.valueOf(txtSueldoBnns.getText().toString().trim()) ) +"");			
 			txtAguinaldoDiferencia.setText(df.format( Double.valueOf(txtAguinaldoSCOI.getText().toString().trim())-Double.valueOf(txtAguinaldoBnns.getText().toString().trim()) ) +"");		
