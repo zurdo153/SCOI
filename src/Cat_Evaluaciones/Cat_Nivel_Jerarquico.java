@@ -5,6 +5,7 @@ import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -20,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -38,7 +40,10 @@ import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
+import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -49,14 +54,16 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio", 100, "Int");
 	JTextField txtDescripcion = new Componentes().text(new JCTextField(), "Descripcion", 100, "String");
 	
-	JButton btnBuscar = new JButton(new ImageIcon("Imagen/buscar.png"));
-	JButton btnFiltro = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
-	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
-	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
-	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
-	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
-	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
 	JButton btnEliminar = new JButton("Quitar", new ImageIcon("imagen/eliminar-bala-icono-7773-32.png"));
+	
+	JCButton btnFiltroEmpleado = new JCButton("Colaboradores" ,"asistencia-comunitaria-icono-9465-16.png","Azul");
+	JCButton btnBuscar         = new JCButton(""              ,"buscar.png"            ,"Azul");
+	JCButton btnFiltro         = new JCButton(""              ,"Filter-List-icon16.png","Azul");
+	JCButton btnSalir          = new JCButton("Salir"         ,"salir16.png"      ,"Azul");
+	JCButton btnDeshacer       = new JCButton("Deshacer"      ,"deshacer16.png"   ,"Azul");
+	JCButton btnGuardar        = new JCButton("Guardar"       ,"Guardar.png"      ,"Azul");
+	JCButton btnEditar         = new JCButton("Editar"        ,"editara.png"      ,"Azul");
+	JCButton btnNuevo          = new JCButton("Nuevo"         ,"Nuevo.png"        ,"Azul");
 	
 	JButton btnAgregar = new JButton("Agregar",new ImageIcon("imagen/double-arrow-icone-3883-16.png"));
 
@@ -97,13 +104,14 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		this.setTitle("Nivel Jerarquico");
 		render();
 		
-		int y=30,width=100,height=20;
+		int x=20, y=30,sep=100,width=100,height=20;
 		
 		this.panel.add(new JLabel("Folio:")).setBounds(20,y,50,height);
 		this.panel.add(txtFolio).setBounds(130,y,width,height);
 		this.panel.add(btnBuscar).setBounds(235,y,height,height);
 		this.panel.add(btnFiltro).setBounds(255,y,height,height);
 		this.panel.add(btnNuevo).setBounds(300,y,width,height);
+		this.panel.add(btnFiltroEmpleado).setBounds(460, y, width+40, height);;
 		
 		this.panel.add(new JLabel("Estatus:")).setBounds(20,y+=30,width,height);
 		this.panel.add(cmb_status).setBounds(130,y,width,height);
@@ -128,12 +136,14 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		this.panel.add(btnAgregar).setBounds(340,y,130,height);
 		this.panel.add(btnEliminar).setBounds(475,y,130,height);
 		
-		this.panel.add(panelScroll).setBounds(20,y+=30,582,195);
+		x=20;width=582;height=195;
+		this.panel.add(panelScroll).setBounds(x      ,y+=30 ,width,height);
 		
-		this.panel.add(btnSalir).setBounds(20,410,width,height);
-		this.panel.add(btnDeshacer).setBounds(200,410,width,height);
-		this.panel.add(btnEditar).setBounds(340,410,width,height);
-		this.panel.add(btnGuardar).setBounds(503,410,width,height);
+		width=110;height=25;sep=158;
+		this.panel.add(btnSalir).setBounds   (x      ,y+=200,width,height);
+		this.panel.add(btnDeshacer).setBounds(x+=sep ,y     ,width,height);
+		this.panel.add(btnEditar).setBounds  (x+=sep ,y     ,width,height);
+		this.panel.add(btnGuardar).setBounds (x+=sep ,y     ,width,height);
 		
 		this.btnSalir.addActionListener(salir);
 		this.txtFolio.addKeyListener(guardaAction);
@@ -149,6 +159,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		this.btnFiltro.addActionListener(filtro);
 		this.btnFiltroPuestosPrincipal.addActionListener(opFiltroPuestos);
 		this.btnFiltroPuestosDependiente.addActionListener(opFiltroPuestos);
+		this.btnFiltroEmpleado.addActionListener(Filtro_Colaboradores);
 		
 		this.txtDescripcion.setEditable(false);
 		this.btnFiltroPuestosDependiente.setEnabled(false);
@@ -494,6 +505,19 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	};
 	
 	
+	ActionListener Filtro_Colaboradores = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			if(txtFolioPuestoPrincipal.getText().toString().equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Es Requerido que haya consultado un Nivel Jerarquico ya Guardado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}else{
+			new Filtro_Colaboradores().setVisible(true);
+			}
+		}
+	};
+	
+	
 	KeyListener guardaAction = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e){
@@ -610,8 +634,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 							txtFolioP_Dependiente.setText(folioPuesto+"");
 							txtP_Dependiente.setText(nombre+""); 
 						}
-//						if(botonPresionado.equals("")){
-//							txtPuestoPrincipal.setText(nombre+""); 
 //						}
 		        	}
 		        }
@@ -693,6 +715,73 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		    return scrol; 
 		}
 	}
+	
+	//TODO Filtro De Colaboradores del Nivel Jerarquico
+	public class Filtro_Colaboradores extends JDialog{
+		Container cont = getContentPane();
+		JLayeredPane campo = new JLayeredPane();
+		Connexion con = new Connexion();
+		Obj_tabla  Objetotabla = new Obj_tabla();
+		
+		int columnas = 5,checkbox=-1;
+		public void init_tabla(){
+	    	this.tabla3.getColumnModel().getColumn(1).setMinWidth(230);
+	    	this.tabla3.getColumnModel().getColumn(2).setMinWidth(100);
+	    	this.tabla3.getColumnModel().getColumn(3).setMinWidth(180);
+	    	this.tabla3.getColumnModel().getColumn(4).setMinWidth(180);
+	    	
+			String comando="exec sp_filtro_colaboradores_por_nivel_jerarquico "+txtFolioPuestoPrincipal.getText().trim() ;
+			String basedatos="26",pintar="si";
+			Objetotabla.Obj_Refrescar(tabla3,modelo3, columnas, comando, basedatos,pintar,checkbox);
+	    }
+		
+	  public DefaultTableModel modelo3 = new DefaultTableModel(null, new String[]{"Folio" ,"Colaborador" ,"Establecimiento" ,"Departamento" ,"Puesto"}){
+		 @SuppressWarnings("rawtypes")
+			Class[] types = new Class[]{
+					java.lang.Object.class,
+			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+	         return types[columnIndex];
+	        }
+			public boolean isCellEditable(int fila, int columna){
+				if(columna < 0) return true; return false;
+			 }
+	        };
+	    
+	     JTable tabla3 = new JTable(modelo3);
+		public JScrollPane scroll_tabla = new JScrollPane(tabla3);
+         JScrollPane scrollAsignado = new JScrollPane(tabla3,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+   	     @SuppressWarnings("rawtypes")
+	    private TableRowSorter trsfiltro;
+				
+		JTextField txtBuscar = new Componentes().text(new JCTextField(), "Teclee Aqui Para Buscar En La Tabla", 250, "String");
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Filtro_Colaboradores()	{
+			this.setSize(800,470);
+			this.setModal(true);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+			this.setTitle("Filtro Colaboradores Por Nivel Jerarquico");
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			trsfiltro = new TableRowSorter(modelo3); 
+			tabla3.setRowSorter(trsfiltro);
+			
+			txtBuscar.addKeyListener(new KeyAdapter() {
+			public void keyReleased(final KeyEvent e) { 
+					int[] columnas = {0,1,2,3,4};
+					new Obj_Filtro_Dinamico_Plus(tabla3, txtBuscar.getText().toUpperCase(), columnas);
+	            } 
+	        });
+			
+			campo.add(txtBuscar).setBounds      (10,20,770,20 );
+			campo.add(scrollAsignado).setBounds (10,40,770,390);
+			init_tabla();
+			cont.add(campo);
+		}
+	}
+	
 	
 	public static void main(String args[]){
 		try{

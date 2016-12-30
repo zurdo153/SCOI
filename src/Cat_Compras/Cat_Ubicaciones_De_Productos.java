@@ -138,9 +138,6 @@ public class Cat_Ubicaciones_De_Productos extends JFrame{
 				String codigo=txtcodigo_prod .getText().toUpperCase().trim();
 				String cod_prod=new BuscarSQL().cod_prod_principal_bms(codigo);
 				btndeshacer.doClick();
-
-				
-				
 				if(cmbEstablecimiento.getSelectedIndex()==0){
 					      JOptionPane.showMessageDialog(null,"Debe de Seleccionar Primero Un Establecimiento: ","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 					      cmbEstablecimiento.requestFocus();

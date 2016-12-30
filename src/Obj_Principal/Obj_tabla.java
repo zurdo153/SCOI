@@ -202,9 +202,9 @@ public class Obj_tabla {
 			}else{
 				int cantidadDeFilas = tabla.getRowCount();
 				if(fila == cantidadDeFilas-1){
-					if(columna==3){
+//					if(columna==3){
 						sacarFocoDeTabla="si";
-							}
+//							}
 				}else{
 					sacarFocoDeTabla = "no";
 					fila=fila+1;
