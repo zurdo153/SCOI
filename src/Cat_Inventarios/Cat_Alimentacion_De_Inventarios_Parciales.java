@@ -489,7 +489,8 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 			if(Objetotabla.RecorridoFocotabla(tabla, filap, 3, parametrosacarfoco).equals("si")){
 				txtcod_prod.requestFocus();
 			};
-		}	
+		}
+	
 	
 	//TODO Filtro De productos
 	public class Cat_Filtro_De_Productos extends JDialog{

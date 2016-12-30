@@ -924,11 +924,10 @@ public class Filtro_Permisos_Checador extends JFrame{
 }
 	
 //TODO Filtro COLABORADOR
-public class Filtro_Permiso_Empleado extends JFrame{
+public class Filtro_Permiso_Empleado extends JDialog{
 	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
-	
 	Connexion con = new Connexion();
 	
 	DefaultTableModel model = new DefaultTableModel(0,5){
@@ -947,8 +946,9 @@ public class Filtro_Permiso_Empleado extends JFrame{
 	JTextField txtBuscar = new Componentes().text(new JCTextField(), "Teclee Aqui Para Buscar En La Tabla", 250, "String");
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Filtro_Permiso_Empleado()	{
+		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
-		this.setTitle("Filtro Empleados");
+		this.setTitle("Filtro Colaboradores Por Nivel Jerarquico");
 		this.setSize(655,470);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);

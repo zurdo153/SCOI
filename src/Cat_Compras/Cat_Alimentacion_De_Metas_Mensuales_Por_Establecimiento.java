@@ -1,12 +1,12 @@
 package Cat_Compras;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,12 +25,12 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.JTextComponent;
 
 import Conexiones_SQL.Connexion;
 import Obj_Compras.Obj_Metas_Establecimiento_periodo;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.JCButton;
+import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -40,11 +40,11 @@ public class Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento extends JFr
 	JLayeredPane panel = new JLayeredPane();
 	String[]Colum={"Folio","Nombre de Clasificacion ","Venta Real ","Sugerido A %","Meta de Venta 'A'","Sugerido B %","Meta de Venta 'B'","Sugerido C %","Meta de Venta 'C'"};
 
-	 int columna=3;
-	 int columna2=5;
-	 int columna3=7;
+	 int columna=0;
      int fila=0;
 	
+     Obj_tabla  Objetotabla = new Obj_tabla();
+     
 	Obj_Metas_Establecimiento_periodo omep = new Obj_Metas_Establecimiento_periodo();
 	
 	JLabel lblEstablecimiento =new JLabel("Establecimiento:");
@@ -98,8 +98,6 @@ public class Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento extends JFr
 		public JTable tabla = new JTable(modelo);
 		public JScrollPane scroll_tabla = new JScrollPane(tabla);
 		
-		
-		
 public Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento() {
 	            this.setSize(1024,550);
 				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bandera-a-cuadros-para-terminar-icono-8019-64.png"));
@@ -131,7 +129,9 @@ public Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento() {
 			
 				cont.add(panel);
 				
-				tabla.addKeyListener(op_key);
+				agregar_alclick(tabla);
+				tabla.addKeyListener(op_validanumero_en_celda);
+				
 				btnGuardar.addActionListener(opGuargar);
 				btnGenerar.addActionListener(opGenerarTabla);
 				btnDeshacer.addActionListener(opDeshacer);
@@ -202,19 +202,7 @@ public void init_tablaconsulta(){
 										  }
 	}
 	
-	public void ReCalcular(){
-		   for(int i = 0; i<tabla.getRowCount(); i++){
-			//Funcion Redondeo necesita parametro vta y sugerido            columna vta                       columna sugerido     pone colum meta                                  
-		 		tabla.setValueAt((Redondear(Double.valueOf((String) modelo.getValueAt(i, 2)),Float.valueOf((String) modelo.getValueAt(i, 3)))), i, 4);
-		 		tabla.setValueAt((Redondear(Double.valueOf((String) modelo.getValueAt(i, 2)),Float.valueOf((String) modelo.getValueAt(i, 5)))), i, 6);
-				tabla.setValueAt((Redondear(Double.valueOf((String) modelo.getValueAt(i, 2)),Float.valueOf((String) modelo.getValueAt(i, 7)))), i, 8);
-			}
-	}	
-	
-	public double Redondear(double numero, float porcentaje){
-		porcentaje=1+(porcentaje/100);
-		return (Math.rint((((numero*porcentaje)/100)+0.5))*100);
-    }
+
 	
 	public void buscaMetaFecha(){    
 			modelo.setRowCount(0);
@@ -351,11 +339,8 @@ public void init_tablaconsulta(){
 				modelo.setRowCount(0);
 				btnGuardar.setEnabled(false);
 				cmbAnio.setEnabled(true);
-				cmbAnio.setSelectedIndex(0);
 				cmbMes.setEnabled(true);
-				cmbMes.setSelectedIndex(0);
 				cmbEstablecimiento.setEnabled(true);
-				cmbEstablecimiento.setSelectedIndex(0);
 				cmbGrupo.setEnabled(true);	
 				cmbGrupo.setSelectedIndex(0);
 				btnGenerar.setEnabled(true);
@@ -365,6 +350,7 @@ public void init_tablaconsulta(){
 		
 	ActionListener opGuargar = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ReCalcular();
 				if(tabla.isEditing()){
 					tabla.getCellEditor().stopCellEditing();
 				}
@@ -409,230 +395,73 @@ public void init_tablaconsulta(){
 											}
 									return tab;
 										}
-		  KeyListener op_key = new KeyListener() {
-		
+						
+	     public void ReCalcular(){
+		  	   for(int i = 0; i<tabla.getRowCount(); i++){
+					//Funcion Redondeo necesita parametro vta y sugerido            columna vta                       columna sugerido     pone colum meta                                  
+			         		tabla.setValueAt((Redondear(Double.valueOf((String) modelo.getValueAt(i, 2)),Float.valueOf((String) modelo.getValueAt(i, 3)))), i, 4);
+					 		tabla.setValueAt((Redondear(Double.valueOf((String) modelo.getValueAt(i, 2)),Float.valueOf((String) modelo.getValueAt(i, 5)))), i, 6);
+		 				    tabla.setValueAt((Redondear(Double.valueOf((String) modelo.getValueAt(i, 2)),Float.valueOf((String) modelo.getValueAt(i, 7)))), i, 8);
+			    }
+	      }	
+							
+		  public double Redondear(double numero, float porcentaje){
+			  		    porcentaje=1+(porcentaje/100);
+					 return (Math.rint((((numero*porcentaje)/100)+0.5))*100);
+		  }
+						
+		  KeyListener op_validanumero_en_celda = new KeyListener() {
 				public void keyTyped(KeyEvent e) {}
 				public void keyReleased(KeyEvent e) {
-					switch (tabla.getSelectedColumn()) {
-				
+					fila=tabla.getSelectedRow();
+					columna=tabla.getSelectedColumn();
+					ReCalcular();
+					switch (columna) {
 				case 3:
-					ValidaValor();	
-		
+					if(Objetotabla.validacelda(tabla,"decimal", fila, columna)){
+						  RecorridoFoco(fila,"x"); 
+						  ReCalcular(); 
+					}
 					break;
-
 				case 5:
-					ValidaValor2();	
+					if(Objetotabla.validacelda(tabla,"decimal", fila, columna)){
+						  RecorridoFoco(fila,"x"); 
+						  ReCalcular(); 
+					}
 					break;
 				case 7:
-					ValidaValor3();	
+					if(Objetotabla.validacelda(tabla,"decimal", fila, columna)){
+						  RecorridoFoco(fila,"x"); 
+						  ReCalcular(); 
+					}
 					break;
 				}
 				}
 				public void keyPressed(KeyEvent e) {}
 			};
-			
-			 public boolean ValidaValor(){
-					boolean valor=false;
-								if(isNumeric(modelo.getValueAt(tabla.getSelectedRow()+1,columna).toString().trim())){
-											RecorridoFoco(tabla.getSelectedRow());
-											valor = true;
-									}else{
-											tabla.getSelectionModel().setSelectionInterval(fila, fila);
-											JOptionPane.showMessageDialog(null, "La Fila  [ "+(fila+1)+" ] En La Columna Cantidad Solo Acepta Numeros Enteros","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-											tabla.editCellAt(fila, columna);
-											Component accion=tabla.getEditorComponent();
-											accion.requestFocus();
-									}
-					return valor;
-				}
+		
+			private void agregar_alclick(final JTable tbl) {
+		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+			        public void mouseClicked(MouseEvent e) {
+			        	if(e.getClickCount() == 1){
+			        		columna=tabla.getSelectedColumn();
+			        		if(columna==3||columna==5||columna==7){
+			        		RecorridoFoco(tbl.getSelectedRow()-1,"x");
+			        		}else{
+			        			return;
 
-		   private boolean isNumeric(String cadena){
-					try {
-						if(cadena.equals("")){
-				    		return true;
-						}else{
-							Integer.parseInt(cadena);
-				    		return true;
-						}
-					} catch (NumberFormatException nfe){
-						return false;
-					}
+			        		}
+			        	}
+			        }
+		        });
+		    }
+			
+			public void RecorridoFoco(int filap,String parametrosacarfoco){
+					if(Objetotabla.RecorridoFocotabla(tabla, filap, columna, parametrosacarfoco).equals("si")){
+						Objetotabla.RecorridoFocotabla(tabla, -1, columna, parametrosacarfoco);
+					};
 				}
-		@SuppressWarnings("deprecation")
-		public void RecorridoFoco(int filap){
-			fila=filap;
-			int cantidadDeFilas = tabla.getRowCount();
-			String sacarFocoDeTabla = "no";
-			if(fila == cantidadDeFilas-1){
-					if(columna==3){
-						for(int i =0; i<tabla.getRowCount(); i++){
-							 ReCalcular(); 
-						}
-						sacarFocoDeTabla="si";
-							}
-			}else{
-				sacarFocoDeTabla = "no";
-					for(int i =0; i<tabla.getRowCount(); i++){
-					      ReCalcular(); 
-				}
-				fila=fila+1;
-			}
-			tabla.getSelectionModel().setSelectionInterval(fila, fila);
-			tabla.editCellAt(fila, columna);
-			Component accion=tabla.getEditorComponent();
 			
-			final JTextComponent jtc = (JTextComponent)accion;
-			  jtc.requestFocus();
-			  jtc.selectAll();	
-			
-			if(sacarFocoDeTabla.equals("si")){
-				tabla.lostFocus(null, null);
-				tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-				tabla.getSelectionModel().clearSelection();
-				if(fila >= tabla.getRowCount()-1)
-				{
-				fila=0;
-				return;
-					
-				}
-			}
-		};
-		//foco2
-		KeyListener op_key2 = new KeyListener() {
-			public void keyTyped(KeyEvent e) {}
-			public void keyReleased(KeyEvent e) {
-				ValidaValor2();	
-			}
-			public void keyPressed(KeyEvent e) {}
-		};
-		
-		 public boolean ValidaValor2(){
-				boolean valor=false;
-							if(isNumeric(modelo.getValueAt(tabla.getSelectedRow()+1,columna2).toString().trim())){
-										RecorridoFoco2(tabla.getSelectedRow());
-										valor = true;
-								}else{
-										tabla.getSelectionModel().setSelectionInterval(fila, fila);
-										JOptionPane.showMessageDialog(null, "La Fila  [ "+(fila+1)+" ] En La Columna Cantidad Solo Acepta Numeros Enteros","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-										tabla.editCellAt(fila, columna2);
-										Component accion=tabla.getEditorComponent();
-										accion.requestFocus();
-								}
-				return valor;
-			}
-
-	@SuppressWarnings("deprecation")
-	public void RecorridoFoco2(int filap){
-		fila=filap;
-		int cantidadDeFilas = tabla.getRowCount();
-		String sacarFocoDeTabla = "no";
-		if(fila == cantidadDeFilas-1){
-				if(columna2==5){
-					for(int i =0; i<tabla.getRowCount(); i++){
-						 ReCalcular(); 
-					}
-					sacarFocoDeTabla="si";
-						}
-			
-				
-		}else{
-			sacarFocoDeTabla = "no";
-				for(int i =0; i<tabla.getRowCount(); i++){
-				      ReCalcular(); 
-			}
-			fila=fila+1;
-		}
-		tabla.getSelectionModel().setSelectionInterval(fila, fila);
-		tabla.editCellAt(fila, columna2);
-		Component accion=tabla.getEditorComponent();
-		
-		final JTextComponent jtc = (JTextComponent)accion;
-		  jtc.requestFocus();
-		  jtc.selectAll();	
-		
-		if(sacarFocoDeTabla.equals("si")){
-			tabla.lostFocus(null, null);
-			tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-			tabla.getSelectionModel().clearSelection();
-			//fila=0;
-			if(fila >= tabla.getRowCount()-1)
-			{
-			fila=0;
-			return;
-				
-			}
-		}
-	};
-	//foco3
-	KeyListener op_key3 = new KeyListener() {
-		public void keyTyped(KeyEvent e) {}
-		public void keyReleased(KeyEvent e) {
-			ValidaValor3();	
-		}
-		public void keyPressed(KeyEvent e) {}
-	};
-	
-	 public boolean ValidaValor3(){
-			boolean valor=false;
-						if(isNumeric(modelo.getValueAt(tabla.getSelectedRow()+1,columna3).toString().trim())){
-							
-									RecorridoFoco3(tabla.getSelectedRow());
-									valor = true;
-							 
-							 }else{
-									tabla.getSelectionModel().setSelectionInterval(fila, fila);
-									JOptionPane.showMessageDialog(null, "La Fila  [ "+(fila+1)+" ] En La Columna Cantidad Solo Acepta Numeros Enteros","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-									tabla.editCellAt(fila, columna3);
-									Component accion=tabla.getEditorComponent();
-									accion.requestFocus();
-							}
-			return valor;
-		}
-
-@SuppressWarnings("deprecation")
-public void RecorridoFoco3(int filap){
-	fila=filap;
-	int cantidadDeFilas = tabla.getRowCount();
-	String sacarFocoDeTabla = "no";
-	if(fila == cantidadDeFilas-1){
-			if(columna3==7){
-				for(int i =0; i<tabla.getRowCount(); i++){
-					 ReCalcular(); 
-				}
-				sacarFocoDeTabla="si";
-					}
-		
-			
-	}else{
-		sacarFocoDeTabla = "no";
-			for(int i =0; i<tabla.getRowCount(); i++){
-			      ReCalcular(); 
-		}
-		fila=fila+1;
-	}
-	tabla.getSelectionModel().setSelectionInterval(fila, fila);
-	tabla.editCellAt(fila, columna3);
-	Component accion=tabla.getEditorComponent();
-	
-	final JTextComponent jtc = (JTextComponent)accion;
-	  jtc.requestFocus();
-	  jtc.selectAll();	
-	
-	if(sacarFocoDeTabla.equals("si")){
-		tabla.lostFocus(null, null);
-		tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-		tabla.getSelectionModel().clearSelection();
-		//fila=0;
-		if(fila >= tabla.getRowCount()-1)
-		{
-		fila=0;
-		return ;
-			
-		}
-	}
-};
-
-		
 public static void main(String []yo)
 {
 try{
@@ -642,5 +471,3 @@ try{
 					}
 				  }
 		  }
-
-		  
