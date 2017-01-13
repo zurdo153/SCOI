@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import Cat_Principal.Cat_Comandos;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -36,13 +37,13 @@ public class Cat_Reportes_De_Ubicaciones_De_Productos extends JFrame {
 	JLayeredPane panel = new JLayeredPane();
 	Connexion con = new Connexion();
 	
-	String operador[] = {"Selecciona Un Reporte","Consulta De Recepcion De Mercancia","Reporte De Productos Clasificados Del Establecimiento","Reporte De Productos Faltantes De Clasificar Del Establecimiento","Reporte De Productos Faltantes De Clasificar Con Existencia Del Establecimiento"};
+	String operador[] = {"Selecciona Un Reporte","Consulta De Recepcion De Mercancia","Consulta De Entrada De Mercancia","Reporte De Productos Clasificados Del Establecimiento","Reporte De Productos Faltantes De Clasificar Del Establecimiento","Reporte De Productos Faltantes De Clasificar Con Existencia Del Establecimiento"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
 	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);	
 	
 	JCButton btn_Origen = new JCButton  ("","list-icon-1440-32px.png","Azul");
 	JCButton btn_generarpdf = new JCButton  ("","pdf-icon-png-2081-32px.png","Azul");
@@ -59,6 +60,7 @@ public class Cat_Reportes_De_Ubicaciones_De_Productos extends JFrame {
 	String Lista="";
 	String factor="";
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+	
 	public Cat_Reportes_De_Ubicaciones_De_Productos(){
 		this.setSize(400,290);
 		cont.add(panel);
@@ -113,89 +115,68 @@ public class Cat_Reportes_De_Ubicaciones_De_Productos extends JFrame {
 			int vista_previa_de_ventana=0;
 			String comando="";
 			String reporte ="";
+			String concepto=cmbConcepto.getSelectedItem().toString().trim();
 			
-			if(cmbConcepto.getSelectedItem().toString().trim().equals("Selecciona Un Reporte")){
+			if(concepto.equals("Selecciona Un Reporte")){
 			  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Concepto Para Poder Generar El Reporte Del Concepto", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 			  cmbConcepto.requestFocus();
 			  cmbConcepto.showPopup();
                return;
 			}else{
-			    if(cmbConcepto.getSelectedItem().toString().trim().equals("Consulta De Recepcion De Mercancia") ){
+			    if(concepto.equals("Consulta De Recepcion De Mercancia" )||concepto.equals("Consulta De Entrada De Mercancia") ){
 			    	 if(txtFolio.getText().equals("")){
 						  JOptionPane.showMessageDialog(null,"El Campo Folio Esta Vacio Es Requerido Un Folio Para Este Reporte", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 							txtFolio.requestFocus();
 							return;
 			    	 }else{
-							comando="    SELECT     RTRIM(LTRIM(E.cod_prod))  AS cod_prod"
-									+ "	          ,P.codigo_barras_pieza"
-									+ "	          ,P.descripcion_completa"
-									+ "			  ,isnull((select top 1 upper(localizacion)+'      ' from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),'SIN LOCALIZACION') as localicacion"
-									+ "			  ,isnull((select top 1 SUBSTRING(upper(localizacion),0,3) from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),0) as zona"
-									+ "			  ,isnull((select top 1 SUBSTRING(upper(localizacion),3,3) from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),0) as pasillo"
-									+ "			  ,isnull((select top 1 SUBSTRING(upper(localizacion),6,3) from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),0) as rack"
-									+ "			  ,isnull((select top 1 SUBSTRING(upper(localizacion),9,1) from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),0) as nivel"
-									+ "			  ,E.cantidad"
-									+ "           ,E.abreviatura_unidad"
-									+ "			  ,(select rtrim(ltrim(nombre)) from establecimientos Est where Est.cod_estab=E.cod_estab) as establecimiento"
-									+ "			  ,E.folio as recepcion"
-									+ "   		  ,E.status"
-									+ "			  ,E.fecha"
-									+ "			  ,E.precio_lista"
-									+ "			  ,E.descuento_porcentual"
-									+ "			  ,E.importe_descuento"
-									+ "			  ,E.importe"
-									+ "			  ,E.iva"
-									+ "			  ,E.ieps"
-									+ "			  ,E.costo"
-									+ "			  ,E.total"
-									+ "			  ,PRV.razon_social"
-									+ "			  ,'"+usuario.getNombre_completo()+"' as usuario"
-									+ "		 	  ,'' as ubicador"
-									+ "     FROM  entysal E"
-									+ "	  LEFT OUTER JOIN  productos P WITH (nolock) ON E.cod_prod = P.cod_prod"
-									+ "	  LEFT OUTER JOIN  proveedores PRV WITH (nolock) ON E.cod_prv=PRV.cod_prv "
-									+ " WHERE   E.folio = '"+txtFolio.getText().toString().trim()+"' AND (E.transaccion ='44') "
-									+ " ORDER BY ZONA,PASILLO,RACK,NIVEL,descripcion_completa";
-							
-							reporte = "Obj_Reporte_De_Recepcion_De_Mercacia_Con_Localizacion_Para_Su_Acomodo.jrxml";
-							testigo=1;
+			    		 
+			    		 if(concepto.equals("Consulta De Recepcion De Mercancia" )){			    			 
+			    		 comando = new Cat_Comandos().Ubicaciones(concepto, txtFolio.getText().toString().trim());
+ 						 reporte = "Obj_Reporte_De_Recepcion_De_Mercacia_Con_Localizacion_Para_Su_Acomodo.jrxml";
+						 testigo=1;
+			    		 }else{
+				    		 comando = new Cat_Comandos().Ubicaciones(concepto, txtFolio.getText().toString().trim());
+	 						 reporte = "Obj_Reporte_De_Entrada_De_Mercacia_Con_Localizacion_Para_Su_Acomodo.jrxml";
+							 testigo=1;
+			    		 }
+			    		 
 			    	 }	
 				}
 			    
-			    if(cmbConcepto.getSelectedItem().toString().trim().equals( "Reporte De Productos Clasificados Del Establecimiento") ){
+			    if(concepto.equals( "Reporte De Productos Clasificados Del Establecimiento") ){
 			    	 if(cmbEstablecimiento.getSelectedItem().toString().trim().equals( "Selecciona un Establecimiento")){
 						  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Establecimiento Para Este Reporte", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 						   cmbEstablecimiento.requestFocus();
 						   cmbEstablecimiento.showPopup();
 						return;
 			    	 }else{
-							comando="exec sp_reporte_de_productos_clasificados '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+cmbConcepto.getSelectedItem().toString().trim()+"'";
+							comando="exec sp_reporte_de_productos_clasificados '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+concepto+"'";
 							reporte = "Obj_Reporte_De_Productos_Localizaciones.jrxml";
 							testigo=1;
 			    	 }	
 				}
 			    
-			    if(cmbConcepto.getSelectedItem().toString().trim().equals( "Reporte De Productos Faltantes De Clasificar Del Establecimiento") ){
+			    if(concepto.equals( "Reporte De Productos Faltantes De Clasificar Del Establecimiento") ){
 			    	 if(cmbEstablecimiento.getSelectedItem().toString().trim().equals( "Selecciona un Establecimiento")){
 						  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Establecimiento Para Este Reporte", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 						   cmbEstablecimiento.requestFocus();
 						   cmbEstablecimiento.showPopup();
 						return;
 			    	 }else{
-							comando="exec sp_reporte_de_productos_clasificados '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+cmbConcepto.getSelectedItem().toString().trim()+"'";
+							comando="exec sp_reporte_de_productos_clasificados '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+concepto+"'";
 							reporte = "Obj_Reporte_De_Productos_Localizaciones.jrxml";
 							testigo=1;
 			    	 }	
 				}
 			    
-			    if(cmbConcepto.getSelectedItem().toString().trim().equals( "Reporte De Productos Faltantes De Clasificar Con Existencia Del Establecimiento") ){
+			    if(concepto.equals( "Reporte De Productos Faltantes De Clasificar Con Existencia Del Establecimiento") ){
 			    	 if(cmbEstablecimiento.getSelectedItem().toString().trim().equals( "Selecciona un Establecimiento")){
 						  JOptionPane.showMessageDialog(null,"Es Necesario Seleccionar Un Establecimiento Para Este Reporte", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 						   cmbEstablecimiento.requestFocus();
 						   cmbEstablecimiento.showPopup();
 						return;
 			    	 }else{
-							comando="exec sp_reporte_de_productos_clasificados '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+cmbConcepto.getSelectedItem().toString().trim()+"'";
+							comando="exec sp_reporte_de_productos_clasificados '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+concepto+"'";
 							reporte = "Obj_Reporte_De_Productos_Localizaciones.jrxml";
 							testigo=1;
 			    	 }	

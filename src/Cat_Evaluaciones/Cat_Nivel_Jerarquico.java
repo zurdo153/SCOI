@@ -736,14 +736,15 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	    }
 		
 	  public DefaultTableModel modelo3 = new DefaultTableModel(null, new String[]{"Folio" ,"Colaborador" ,"Establecimiento" ,"Departamento" ,"Puesto"}){
-		 @SuppressWarnings("rawtypes")
+		 @SuppressWarnings({ "rawtypes", "unused" })
 			Class[] types = new Class[]{
 					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
 			};
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			public Class getColumnClass(int columnIndex) {
-	         return types[columnIndex];
-	        }
+			
 			public boolean isCellEditable(int fila, int columna){
 				if(columna < 0) return true; return false;
 			 }

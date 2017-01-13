@@ -51,8 +51,10 @@ import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
+import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -62,10 +64,8 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	JTextField txtFolio= new Componentes().text(new JTextField(), "Folio", 15, "Int");
-	JTextField txtCantidad= new Componentes().text(new JTextField(), "Cantidad", 20, "Double");
-	
-	JTextField txtBeneficiario= new Componentes().text(new JTextField(), "Beneficiario", 250, "String");
-	
+	JTextField txtCantidad= new Componentes().text(new JTextField(), "Cantidad", 20, "Double");	
+	JTextField txtBeneficiario= new Componentes().text(new JTextField(), "Beneficiario", 250, "String");	
 	JDateChooser fhFecha 	= new JDateChooser();
 	
 	public String[] establecimiento(){try {return new Cargar_Combo().EstablecimientoTb();} catch (SQLException e) {e.printStackTrace();}return null;}
@@ -95,10 +95,10 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 	JRadioButton rbEmpleado 		= new JRadioButton("Empleado");
 	ButtonGroup grupo = new ButtonGroup();
 	
-	JButton btnBuscar = new JButton(new ImageIcon("imagen/Filter-List-icon16.png"));
-	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
-	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
-	JButton btnReporte = new JButton("Reporte",new ImageIcon("imagen/Print.png"));
+	JButton btnBuscar   = new JCButton("","Filter-List-icon16.png","Azul");
+	JButton btnGuardar  = new JCButton("Guardar","Guardar.png"    ,"Azul");
+	JButton btnDeshacer = new JCButton("Deshacer","deshacer16.png","Azul");
+	JButton btnReporte  = new JCButton("Reporte","Print.png"      ,"Azul");
 	
 	JButton btnAltaproveedor = new JButton("Nuevo Proveedor",new ImageIcon("imagen/tarjeta-de-informacion-del-usuario-icono-7370-16.png"));
 	Border borderline;
@@ -142,9 +142,10 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		panel.add(btnAltaproveedor).setBounds(258,y,137,20);
 		panel.add(rbEmpleado).setBounds(25,y+=20,90,20);
 		panel.add(txtBeneficiario).setBounds(115,y,280,20);
-		panel.add(btnReporte).setBounds(15,y+=30,100,20);
-		panel.add(btnDeshacer).setBounds(155,y,100,20);
-		panel.add(btnGuardar).setBounds(295,y,100,20);
+		
+		panel.add(btnReporte).setBounds(15,y+=30,110,20);
+		panel.add(btnDeshacer).setBounds(155,y,110,20);
+		panel.add(btnGuardar).setBounds(285,y,110,20);
 		
 		cont.add(panel);
 		
@@ -587,9 +588,33 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 	
 	
 	public class Cat_Filtro_Order_De_Pago_Efectivo extends JDialog{
-
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
+		
+		Obj_tabla  Objetotabla = new Obj_tabla();
+		
+		int columnas = 5,checkbox=-1;
+		public void init_tabla(){
+			String fechaInicial = new SimpleDateFormat("dd/MM/yyyy").format(fhFechaReporte.getDate())+" 00:00:00";
+			
+	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(1).setMinWidth(130);
+	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(3).setMinWidth(240);
+	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(4).setMinWidth(350);
+	    	
+			String comando=" select folio "
+						+ " ,CONVERT(varchar(20),tb_orden_de_pago_en_efectivo.fecha_mov,103)+' '+CONVERT(varchar(20),tb_orden_de_pago_en_efectivo.fecha_mov,108) as fecha "
+						+ " ,tb_orden_de_pago_en_efectivo.cantidad as importe "
+						+ " ,CASE WHEN (tb_orden_de_pago_en_efectivo.tipo_beneficiario = 'E') "
+						+ "		THEN (select tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno from tb_empleado where tb_empleado.folio = tb_orden_de_pago_en_efectivo.folio_beneficiario) "
+						+ "	  ELSE (select tb_proveedores.nombre+' '+tb_proveedores.ap_paterno+' '+tb_proveedores.ap_materno from tb_proveedores where tb_proveedores.folio_proveedor = tb_orden_de_pago_en_efectivo.folio_beneficiario) "
+						+ "	END beneficiario "
+						+ " ,detalle "
+						+ " from tb_orden_de_pago_en_efectivo "
+						+ " where tb_orden_de_pago_en_efectivo.fecha_mov > '"+fechaInicial+"'"
+						+ "order by fecha_mov desc" ;
+			String basedatos="26",pintar="si";
+			Objetotabla.Obj_Refrescar(tabla_Filtro_Ref,modelo_Filtro_Ref, columnas, comando, basedatos,pintar,checkbox);
+	    }
 		
 		DefaultTableModel modelo_Filtro_Ref = new DefaultTableModel(null,
 	            new String[]{"Folio", "Fecha", "Importe", "Beneficiario", "Concepto"}
@@ -625,28 +650,19 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		
 		JLabel lblNota = new JLabel("");
 		
-		public Cat_Filtro_Order_De_Pago_Efectivo() throws SQLException{
-			
-			this.setModal(true);
-			
+		public Cat_Filtro_Order_De_Pago_Efectivo() throws SQLException{			
+			this.setModal(true);			
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 			this.setTitle("Filtro De Ordern De Pago En Efectivo");
 			campo.setBorder(BorderFactory.createTitledBorder("Seleccionar Orden De Pago"));
-			
 			lblNota.setText("<html><p><h4><font color='blue'>Para Generar Una Orden De Pago En Efectivo\nEs Necesario Dar Doble Click En La Orden Requerida</font></h4></p></html>");
-			
 			campo.add(new JLabel("Buscar Ordenes De Pago En Efectivo A Partir De La Fecha: ")).setBounds(20,20,390,20);
-			campo.add(fhFechaReporte).setBounds(320,20,90,20);
-			
-			campo.add(lblNota).setBounds(415,0,210,60);
-			
-			campo.add(txtCodigo).setBounds(15,45,390,20);
-			
-			campo.add(scroll_Filtro_Ref).setBounds(15,65,610,540);
-			
+			campo.add(fhFechaReporte).setBounds(320,20,90,20);			
+			campo.add(lblNota).setBounds(415,0,210,60);			
+			campo.add(txtCodigo).setBounds(15,45,390,20);			
+			campo.add(scroll_Filtro_Ref).setBounds(15,65,760,540);
 			fhFechaReporte.setDate(cargar_fecha_Sugerida(20));
-			llenarFiltro();
-			render();
+			init_tabla();
 			agregar(tabla_Filtro_Ref);
 			
 			cont.add(campo);
@@ -654,12 +670,11 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			fhFechaReporte.addPropertyChangeListener(opBusqueda);
 			txtCodigo.addKeyListener(opFiltroLoco);
 			
-			this.setSize(640,650);
+			this.setSize(790,650);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
-//          asigna el foco al JTextField del nombre deseado al arrancar la ventana
             this.addWindowListener(new WindowAdapter() {
                     public void windowOpened( WindowEvent e ){
                     	txtCodigo.requestFocus();
@@ -672,25 +687,10 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		  	  public void propertyChange(PropertyChangeEvent e) {
 		  		  
 	  	            if ("date".equals(e.getPropertyName())){
-	  	            	try {
-							llenarFiltro();
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						}
+	  	            	init_tabla();
 	  	            }
 		  	  }
 		};
-		
-		public void llenarFiltro() throws SQLException{
-			
-			modelo_Filtro_Ref.setRowCount(0);
-			
-			Object[][] datos = new BuscarSQL().Filtro_De_Orden_De_Pago_Efectivo(new SimpleDateFormat("dd/MM/yyyy").format(fhFechaReporte.getDate())+" 00:00:00");
-			for(Object[] d : datos){
-				modelo_Filtro_Ref.addRow(d);
-			}
-		}
-		
 		
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -724,33 +724,6 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
-		
-	   	private void render(){		
-			
-			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-			tcr.setHorizontalAlignment(SwingConstants.CENTER);
-			
-			tabla_Filtro_Ref.getTableHeader().setReorderingAllowed(false) ;
-			
-    		tabla_Filtro_Ref.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-		    tabla_Filtro_Ref.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-		    tabla_Filtro_Ref.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-		    tabla_Filtro_Ref.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-		    tabla_Filtro_Ref.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-			
-			tabla_Filtro_Ref.getColumnModel().getColumn(0).setMinWidth(40);
-		    tabla_Filtro_Ref.getColumnModel().getColumn(0).setMaxWidth(40);
-			tabla_Filtro_Ref.getColumnModel().getColumn(1).setMinWidth(120);
-			tabla_Filtro_Ref.getColumnModel().getColumn(1).setMaxWidth(120);
-			
-			tabla_Filtro_Ref.getColumnModel().getColumn(2).setMinWidth(50);
-		    tabla_Filtro_Ref.getColumnModel().getColumn(2).setMaxWidth(80);
-			tabla_Filtro_Ref.getColumnModel().getColumn(3).setMinWidth(150);
-			tabla_Filtro_Ref.getColumnModel().getColumn(3).setMaxWidth(400);
-			tabla_Filtro_Ref.getColumnModel().getColumn(4).setMinWidth(200);
-		    tabla_Filtro_Ref.getColumnModel().getColumn(4).setMaxWidth(400);
-			
-		}
 	}
 	
 	public static void main(String[] args) {
