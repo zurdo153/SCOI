@@ -25,7 +25,7 @@ import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 
 @SuppressWarnings("serial")
-public class Cat_Ubicaciones_De_Productos extends JFrame{
+public class Cat_Datos_De_Productos_BMS extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
@@ -58,12 +58,12 @@ public class Cat_Ubicaciones_De_Productos extends JFrame{
 	String htmlinib ="<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=BLUE><RIGHT><b><p>";
 	String htmlfinb ="</p></b></RIGHT></FONT></html>";
 	
-	public Cat_Ubicaciones_De_Productos(){
+	public Cat_Datos_De_Productos_BMS(){
 		setSize(700,400);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("Ubicaciones De Productos ");
+		setTitle("Datos De Productos BMS");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione Establecimiento y Escanee El Codigo Del Producto"));
 		
@@ -174,7 +174,7 @@ public class Cat_Ubicaciones_De_Productos extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Ubicaciones_De_Productos().setVisible(true);
+			new Cat_Datos_De_Productos_BMS().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

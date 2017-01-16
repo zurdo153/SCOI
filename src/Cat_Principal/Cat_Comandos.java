@@ -1,9 +1,11 @@
 package Cat_Principal;
 
+import Obj_Administracion_del_Sistema.Obj_Usuario;
+
 public class Cat_Comandos {
 	
 	String comando="";
-	
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 public String maximos_y_minimos(String Reporte, String Establecimiento){	
 		
@@ -205,5 +207,43 @@ public String dinero_electronico(String Reporte, String tarjeta_Pyde, String Asi
 	return comando;
 }
 
+public String Ubicaciones(String Reporte, String folio){	
+	
+	if(Reporte.equals("Consulta De Recepcion De Mercancia")){
+		comando=     "   SELECT     RTRIM(LTRIM(E.cod_prod))  AS cod_prod"
+					+ "	          ,P.codigo_barras_pieza"
+					+ "	          ,P.descripcion_completa"
+					+ "			  ,isnull((select top 1 upper(localizacion)+'      ' from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),'SIN LOCALIZACION') as localicacion"
+					+ "			  ,isnull((select top 1 SUBSTRING(upper(localizacion),0,3) from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),0) as zona"
+					+ "			  ,isnull((select top 1 SUBSTRING(upper(localizacion),3,3) from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),0) as pasillo"
+					+ "			  ,isnull((select top 1 SUBSTRING(upper(localizacion),6,3) from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),0) as rack"
+					+ "			  ,isnull((select top 1 SUBSTRING(upper(localizacion),9,1) from localizaciones_surtido_productos with(nolock) where cod_prod = E.cod_prod and cod_estab = E.cod_estab),0) as nivel"
+					+ "			  ,E.cantidad"
+					+ "           ,E.abreviatura_unidad"
+					+ "			  ,(select rtrim(ltrim(nombre)) from establecimientos Est where Est.cod_estab=E.cod_estab) as establecimiento"
+					+ "			  ,E.folio as recepcion"
+					+ "   		  ,E.status"
+					+ "			  ,E.fecha"
+					+ "			  ,E.precio_lista"
+					+ "			  ,E.descuento_porcentual"
+					+ "			  ,E.importe_descuento"
+					+ "			  ,E.importe"
+					+ "			  ,E.iva"
+					+ "			  ,E.ieps"
+					+ "			  ,E.costo"
+					+ "			  ,E.total"
+					+ "			  ,PRV.razon_social"
+					+ "			  ,'"+usuario.getNombre_completo()+"' as usuario"
+					+ "		 	  ,'' as ubicador"
+					+ "     FROM  entysal E"
+					+ "	  LEFT OUTER JOIN  productos P WITH (nolock) ON E.cod_prod = P.cod_prod"
+					+ "	  LEFT OUTER JOIN  proveedores PRV WITH (nolock) ON E.cod_prv=PRV.cod_prv "
+					+ " WHERE   E.folio = '"+folio+"' AND (E.transaccion ='44') "
+					+ " ORDER BY ZONA,PASILLO,RACK,NIVEL,descripcion_completa";
+	}
+			
+	return comando;
+
+}
 	
 }

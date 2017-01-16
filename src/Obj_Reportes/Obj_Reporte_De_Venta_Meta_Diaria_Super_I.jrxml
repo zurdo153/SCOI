@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-06-14T09:13:29 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Indicador_de_Costos_Logistico_De_Choferes" pageWidth="350" pageHeight="490" orientation="Landscape" columnWidth="310" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
+<!-- 2017-01-04T09:11:57 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Venta_Meta_Diaria_Super_I" pageWidth="350" pageHeight="520" orientation="Landscape" columnWidth="310" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
@@ -11,7 +12,6 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -22,72 +22,24 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
-	<queryString>
-		<![CDATA[exec reporte_de_venta_meta_diaria_supermercados_consulta_final]]>
+	<queryString language="SQL">
+		<![CDATA[exec reporte_de_venta_meta_diaria_por_establecimiento 1,'S']]>
 	</queryString>
 	<field name="fecha_de_venta" class="java.lang.String"/>
 	<field name="dia_del_mes_venta" class="java.lang.Integer"/>
-	<field name="mes" class="java.lang.String"/>
+	<field name="mes" class="java.lang.Integer"/>
 	<field name="tipo_periodo" class="java.lang.String"/>
 	<field name="clasificacion_meta" class="java.lang.Integer"/>
 	<field name="nombre_clasificacion" class="java.lang.String"/>
 	<field name="reporte" class="java.lang.String"/>
-	<field name="s1" class="java.lang.String"/>
-	<field name="s1importe" class="java.lang.Double"/>
-	<field name="s1meta" class="java.lang.Double"/>
-	<field name="s2" class="java.lang.String"/>
-	<field name="s2importe" class="java.lang.Double"/>
-	<field name="s2meta" class="java.lang.Double"/>
-	<field name="s3" class="java.lang.String"/>
-	<field name="s3importe" class="java.lang.Double"/>
-	<field name="s3meta" class="java.lang.Double"/>
-	<field name="s4" class="java.lang.String"/>
-	<field name="s4importe" class="java.lang.Double"/>
-	<field name="s4meta" class="java.lang.Double"/>
-	<field name="s5" class="java.lang.String"/>
-	<field name="s5importe" class="java.lang.Double"/>
-	<field name="s5meta" class="java.lang.Double"/>
-	<variable name="ImporteS1" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s1importe}]]></variableExpression>
+	<field name="Establecimiento" class="java.lang.String"/>
+	<field name="Rimporte" class="java.lang.Double"/>
+	<field name="Rmeta" class="java.lang.Double"/>
+	<variable name="ImporteR1" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{Rimporte}]]></variableExpression>
 	</variable>
-	<variable name="ImporteS2" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s2importe}]]></variableExpression>
-	</variable>
-	<variable name="ImporteS3" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s3importe}]]></variableExpression>
-	</variable>
-	<variable name="ImporteS4" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s4importe}]]></variableExpression>
-	</variable>
-	<variable name="ImporteS5" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s5importe}]]></variableExpression>
-	</variable>
-	<variable name="MetaS1" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s1meta}]]></variableExpression>
-	</variable>
-	<variable name="MetaS2" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s2meta}]]></variableExpression>
-	</variable>
-	<variable name="MetaS3" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s3meta}]]></variableExpression>
-	</variable>
-	<variable name="MetaS4" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s4meta}]]></variableExpression>
-	</variable>
-	<variable name="MetaS5" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
-		<variableExpression><![CDATA[$F{s5meta}]]></variableExpression>
-	</variable>
-	<variable name="Suma_Fila_Importe" class="java.lang.Double">
-		<variableExpression><![CDATA[$F{s1importe}+$F{s2importe}+$F{s3importe}+$F{s4importe}+$F{s5importe}]]></variableExpression>
-	</variable>
-	<variable name="Suma_Fila_Meta" class="java.lang.Double">
-		<variableExpression><![CDATA[$F{s1meta}+$F{s2meta}+$F{s3meta}+$F{s4meta}+$F{s5meta}]]></variableExpression>
-	</variable>
-	<variable name="Suma_Fila_Importe_Totales" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{ImporteS1}+$V{ImporteS2}+$V{ImporteS3}+$V{ImporteS4}+$V{ImporteS5}]]></variableExpression>
-	</variable>
-	<variable name="Suma_Fila_Meta_Totales" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{MetaS1}+$V{MetaS2}+$V{MetaS3}+$V{MetaS4}+$V{MetaS5}]]></variableExpression>
+	<variable name="MetaR1" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{Rmeta}]]></variableExpression>
 	</variable>
 	<group name="Group1" keepTogether="true">
 		<groupExpression><![CDATA[$F{tipo_periodo}]]></groupExpression>
@@ -113,7 +65,7 @@
 						<textElement textAlignment="Center">
 							<font size="12" isBold="true"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$F{s1}]]></textFieldExpression>
+						<textFieldExpression><![CDATA[$F{Establecimiento}]]></textFieldExpression>
 					</textField>
 					<staticText>
 						<reportElement x="162" y="16" width="70" height="16" forecolor="#FFFFFF" uuid="3a428da9-202f-4685-9535-58d4bc300732">
@@ -185,7 +137,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{ImporteS1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{ImporteR1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.###">
 					<reportElement x="232" y="0" width="69" height="14" uuid="8f82ced6-b9ce-430a-b149-583bb3c0348a">
@@ -196,7 +148,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{MetaS1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{MetaR1}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="14" width="310" height="1" uuid="85bd6df5-fed6-40e9-aa58-6a3e2a43183a">
@@ -234,12 +186,12 @@
 				<textField pattern="#,##0.###">
 					<reportElement mode="Opaque" x="162" y="0" width="70" height="14" backcolor="#00CC66" uuid="eebe6357-7e1c-4a92-bc9f-f5e329c7b924">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<printWhenExpression><![CDATA[$V{ImporteS1}>=$V{MetaS1}]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$V{ImporteR1}>=$V{MetaR1}]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{ImporteS1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{ImporteR1}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="0" width="1" height="15" uuid="1ef3dd66-1151-46ff-ad9b-222cfd2af9cb">
@@ -265,7 +217,7 @@
 					<textElement textAlignment="Center">
 						<font size="15" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Reporte De Venta Meta Diaria Super I"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Reporte De Venta Meta Diaria Refaccionaria"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="3" y="21" width="306" height="17" forecolor="#FFFFFF" uuid="da89dabc-a200-4df0-b07f-dcd8bb1c2fc6"/>
@@ -334,7 +286,7 @@
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{s1meta}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{Rmeta}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="309" y="0" width="1" height="13" uuid="ba350886-1dad-46f7-bd0d-ff85bd20fd8e">
@@ -353,19 +305,19 @@
 				<textField pattern="#,##0.00#">
 					<reportElement mode="Transparent" x="162" y="0" width="70" height="13" backcolor="#00CC66" uuid="2b2882f7-ee55-4213-a66c-bee1b5f5845a">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<printWhenExpression><![CDATA[$F{s1importe}<$F{s1meta}]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$F{Rimporte}<$F{Rmeta}]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{s1importe}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{Rimporte}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<textField pattern="#,##0.00#">
 				<reportElement mode="Opaque" x="162" y="0" width="70" height="13" backcolor="#00CC66" uuid="c596d074-f105-4cf2-96ac-d6887cf361db">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<printWhenExpression><![CDATA[$F{s1importe}>=$F{s1meta}]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{Rimporte}>=$F{Rmeta}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{s1importe}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Rimporte}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="0" width="1" height="13" uuid="aca865a9-2edc-4997-a797-91bfea3c6ba7">

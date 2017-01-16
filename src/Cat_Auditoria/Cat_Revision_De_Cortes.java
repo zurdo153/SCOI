@@ -42,6 +42,7 @@ import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 import Obj_Renders.CaveceraTablaRenderer;
 import Obj_Renders.tablaRenderer;
 
@@ -66,7 +67,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
     
     JCheckBox chbMosrtarTodo = new JCheckBox("Mostrar Todo");
     
-    JButton btnGenerar = new JButton("Consultar",new ImageIcon("imagen/buscar.png"));
+    JButton btnGenerar = new JCButton("Consultar","buscar.png","Azul");
     
 //	TODO (Variables globales)
 	int fila = 0;
@@ -199,9 +200,9 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		panel.add(cfecha_in).setBounds(x+=20, y, ancho, alto); 
 		panel.add(new JLabel("A: ")).setBounds(x+=(ancho+10), y, 20, alto); 
 		panel.add(cfecha_fin).setBounds(x+=20, y, ancho, alto); 
-		panel.add(btnGenerar).setBounds(x+=(ancho+20), y, 100, alto);
+		panel.add(btnGenerar).setBounds(x+=(ancho+20), y, 130, alto);
 		
-		panel.add(chbMosrtarTodo).setBounds(x+120, y, 100, alto);
+		panel.add(chbMosrtarTodo).setBounds(x+140, y, 100, alto);
 		
 		x=65;
 		
@@ -231,16 +232,16 @@ public class Cat_Revision_De_Cortes extends JFrame{
 	
 //	TODO Funcion (llamar_render())
 	public void llamar_render(){
-    
-		Color fondoEncabezado_grupos = new Color(255,171,0);
+ 
+		Color fondoEncabezado_grupos = new Color(77,135,237);
 		
-		Color textoEncabezado = Color.black;
+		Color textoEncabezado = Color.white;
 		
 		tabla.getColumnModel().getColumn(0).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_grupos,textoEncabezado,"centro","Arial","negrita",10));
 		for(int i = 0; i<tabla.getColumnCount(); i++){
 			
 			if(i==13 || i==26 || i==31){
-				tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(Color.blue,Color.WHITE,"centro","Arial","negrita",10));
+				tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(Color.orange,Color.WHITE,"centro","Arial","negrita",10));
 			}else{
 				tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_grupos,textoEncabezado,"centro","Arial","negrita",10));
 			}

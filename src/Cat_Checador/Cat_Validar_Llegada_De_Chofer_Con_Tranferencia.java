@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.ActualizarSQL;
@@ -23,6 +24,7 @@ import Conexiones_SQL.BuscarSQL;
 import Obj_Checador.Obj_Entosal;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Renders.tablaRenderer;
 
@@ -272,7 +274,7 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
     		
     		llenarTabla();
     		
-    		btnRegistrarLlegada.addActionListener(opRegistrarLlegada);
+    		btnRegistrarLlegada.addActionListener(opPasarTransferencias);
     		
     		cont.add(panel);
     	}
@@ -319,7 +321,7 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
     		
     	}
     	
-    	ActionListener opRegistrarLlegada = new ActionListener() {
+    	ActionListener opPasarTransferencias = new ActionListener() {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public void actionPerformed(ActionEvent e) {
 			
@@ -335,16 +337,17 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
 				if(folios.size()>0){
 					if(JOptionPane.showConfirmDialog(null,"Verifique Si Los Folios Seleccionados Son Los Correctos:\n"+tranferencias+" Desea Continuar?") == 0){
 
-						if(new ActualizarSQL().Registrar_Llegada_De_Transferencia(folios) ){
-							
-							llenarTabla();
-							
-							JOptionPane.showMessageDialog(null, "Se Ha Registrado La LLegada Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-							return;
-						}else{
-							JOptionPane.showMessageDialog(null, "No Se Pudo Registrar La Llegada De La Transferencia","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-		                    return;
-						}
+						new Cat_Valida_Seguridad(folios).setVisible(true);
+//						if(new ActualizarSQL().Registrar_Llegada_De_Transferencia(folios) ){
+//							
+//							llenarTabla();
+//							
+//							JOptionPane.showMessageDialog(null, "Se Ha Registrado La LLegada Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+//							return;
+//						}else{
+//							JOptionPane.showMessageDialog(null, "No Se Pudo Registrar La Llegada De La Transferencia","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//		                    return;
+//						}
 					}
 				}else{
 					JOptionPane.showMessageDialog(null, "Favor De Seleccionar Las Tranferencias Que Entregará","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -353,6 +356,100 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
 
 			}
 		};
+		
+		   //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	    public class Cat_Valida_Seguridad extends JDialog  {
+	    	
+	    	Container cont = getContentPane();
+	    	JLayeredPane panel = new JLayeredPane();
+	    	
+	    	JLabel lblTransferencias = new JLabel("");
+	    	JCButton btnRegistrarLlegada = new JCButton("Registrar Lleagada","","Azul");
+	    	
+	    	JTextField txtCincho = new Componentes().text(new JTextField(), "No Cincho", 20, "String");
+	    	JPasswordField pswSeguridad = new JPasswordField();
+	    	
+	         
+	       @SuppressWarnings("rawtypes")
+	       Vector Folios = null;
+	       
+			@SuppressWarnings("rawtypes")
+			public Cat_Valida_Seguridad(Vector folios){
+	    		this.setModal(true);
+	    		this.setSize(390, 145);
+	    		this.setLocationRelativeTo(null);
+	    		this.setResizable(false);
+	    		
+	    		this.setTitle("Confirmar Por Seguridad");
+	    		
+	    		this.Folios = folios;    		
+	    		
+	    		panel.add(new JLabel("Transferencias:")).setBounds(15,20,150,20) ;
+	    		panel.add(lblTransferencias).setBounds(160,20,210,20) ;
+	    		panel.add(new JLabel("No Cincho:")).setBounds(15,45,150,20) ;
+	    		panel.add(txtCincho).setBounds(160,45,210,20) ;
+	    		panel.add(new JLabel("Clave Seguridad:")).setBounds(50,70,110,20) ;
+	    		panel.add(pswSeguridad).setBounds(160,70,210,20) ;
+	    		
+	    		lblTransferencias.setText(foliosDeTransferencia());
+	    		
+	    		txtCincho.addActionListener(opCincho);
+	    		pswSeguridad.addActionListener(opRegistrarLlegada);
+	    		
+	    		cont.add(panel);
+	    		
+	    	}
+			
+			public String foliosDeTransferencia(){
+				String tranferencias = "";
+				for(int i = 0; i<Folios.size(); i++){
+						tranferencias += Folios.get(i)+", ";
+				}
+				tranferencias = tranferencias.substring(0,tranferencias.length()-2);
+				return tranferencias;
+			}
+			
+		    ActionListener opCincho = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					pswSeguridad.requestFocus();
+				}
+			};
+	    	
+	    	ActionListener opRegistrarLlegada = new ActionListener() {
+				@SuppressWarnings({ "deprecation", "unused" })
+				public void actionPerformed(ActionEvent e) {
+					
+					if(!txtCincho.getText().equals("")){
+						
+						if(new BuscarSQL().validacion_usuario_trasferencia_de_embarque(pswSeguridad.getText()) /*validar usuario autorizados como revision de seguridad*/){
+							
+								if(new ActualizarSQL().Registrar_Llegada_De_Transferencia(Folios,txtCincho.getText().toUpperCase(),pswSeguridad.getText().trim().toUpperCase()) ){
+									
+									llenarTabla();
+									dispose();
+									JOptionPane.showMessageDialog(null, "Se Ha Registrado La LLegada Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+									return;
+								}else{
+									JOptionPane.showMessageDialog(null, "No Se Pudo Registrar La Llegada De La Transferencia","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				                    return;
+								}
+						}else{
+								JOptionPane.showMessageDialog(null, "El Usuario No Esta Registrado Para Realizar Autorizaciones De Seguridad","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+			                    return;
+						}
+						
+					}else{
+						JOptionPane.showMessageDialog(null, "Es Necesario Registrar EL Numero De Cincho","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	                    return;
+					}
+				
+				}
+			};
+			
+			
+	    	
+	    }
     	
     }
 
