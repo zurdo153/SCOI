@@ -43,7 +43,7 @@ public class Cat_Reportes_De_Ubicaciones_De_Productos extends JFrame {
 	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);	
 	
 	JCButton btn_Origen = new JCButton  ("","list-icon-1440-32px.png","Azul");
 	JCButton btn_generarpdf = new JCButton  ("","pdf-icon-png-2081-32px.png","Azul");
@@ -130,10 +130,16 @@ public class Cat_Reportes_De_Ubicaciones_De_Productos extends JFrame {
 							return;
 			    	 }else{
 			    		 
+			    		 if(concepto.equals("Consulta De Recepcion De Mercancia" )){			    			 
 			    		 comando = new Cat_Comandos().Ubicaciones(concepto, txtFolio.getText().toString().trim());
  						 reporte = "Obj_Reporte_De_Recepcion_De_Mercacia_Con_Localizacion_Para_Su_Acomodo.jrxml";
 						 testigo=1;
-							
+			    		 }else{
+				    		 comando = new Cat_Comandos().Ubicaciones(concepto, txtFolio.getText().toString().trim());
+	 						 reporte = "Obj_Reporte_De_Entrada_De_Mercacia_Con_Localizacion_Para_Su_Acomodo.jrxml";
+							 testigo=1;
+			    		 }
+			    		 
 			    	 }	
 				}
 			    

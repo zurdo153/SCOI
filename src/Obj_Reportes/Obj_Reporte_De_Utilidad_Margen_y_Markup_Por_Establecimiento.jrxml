@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-01-12T16:34:08 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte De Ventas Supermercados Metas Comparativo Semana,Mes Año Actual vs Año Pasado " pageWidth="2050" pageHeight="1000" orientation="Landscape" columnWidth="2010" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
+<!-- 2017-01-12T17:53:56 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte De Ventas Supermercados Metas Comparativo Semana,Mes Año Actual vs Año Pasado " pageWidth="2050" pageHeight="850" orientation="Landscape" columnWidth="2010" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6950b42b-72cd-4761-8a92-a085e53f3137">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -102,14 +102,17 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="18">
+		<band height="30">
 			<frame>
-				<reportElement x="0" y="1" width="1950" height="17" uuid="1d3dffa7-b82c-4927-b92b-f27312581f66">
+				<reportElement x="0" y="1" width="1950" height="29" uuid="1d3dffa7-b82c-4927-b92b-f27312581f66">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<staticText>
-					<reportElement mode="Transparent" x="147" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="8da6c136-d066-439f-acb8-95075ea2a0d1"/>
+					<reportElement mode="Transparent" x="147" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="8da6c136-d066-439f-acb8-95075ea2a0d1">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -122,7 +125,9 @@
 					<text><![CDATA[Enero:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="297" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="eadcf900-e57b-476d-a75b-0c2659ad2d62"/>
+					<reportElement mode="Transparent" x="297" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="eadcf900-e57b-476d-a75b-0c2659ad2d62">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -135,7 +140,9 @@
 					<text><![CDATA[Febrero:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="447" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="9e9380c0-3d56-47d6-96ca-d3baa6bb33fd"/>
+					<reportElement mode="Transparent" x="447" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="9e9380c0-3d56-47d6-96ca-d3baa6bb33fd">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -148,7 +155,9 @@
 					<text><![CDATA[Marzo:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="597" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="c5c3d2ad-7d31-4368-b155-0ce513f6ab05"/>
+					<reportElement mode="Transparent" x="597" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="c5c3d2ad-7d31-4368-b155-0ce513f6ab05">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -161,7 +170,9 @@
 					<text><![CDATA[Abril:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="747" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="39492215-8d09-4e36-9d3a-3529f4f24b2d"/>
+					<reportElement mode="Transparent" x="747" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="39492215-8d09-4e36-9d3a-3529f4f24b2d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -174,7 +185,9 @@
 					<text><![CDATA[Mayo:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="897" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="d531cfa7-c176-4c97-9f62-48b17b2f0d73"/>
+					<reportElement mode="Transparent" x="897" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="d531cfa7-c176-4c97-9f62-48b17b2f0d73">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -187,7 +200,9 @@
 					<text><![CDATA[Junio:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="1047" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="2a56159e-20fb-4332-a5c7-81a4e548a8a7"/>
+					<reportElement mode="Transparent" x="1047" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="2a56159e-20fb-4332-a5c7-81a4e548a8a7">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -200,7 +215,9 @@
 					<text><![CDATA[Julio:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="1197" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="07c1c191-b230-4526-bbb3-69a5afa44414"/>
+					<reportElement mode="Transparent" x="1197" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="07c1c191-b230-4526-bbb3-69a5afa44414">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -213,7 +230,9 @@
 					<text><![CDATA[Agosto:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="1347" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="1211632b-145f-4445-9fae-86eed8cc3bbe"/>
+					<reportElement mode="Transparent" x="1347" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="1211632b-145f-4445-9fae-86eed8cc3bbe">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -226,7 +245,9 @@
 					<text><![CDATA[Septiembre:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="1497" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="08a94a7a-5355-47da-a865-3a0e34f9a9f4"/>
+					<reportElement mode="Transparent" x="1497" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="08a94a7a-5355-47da-a865-3a0e34f9a9f4">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -239,7 +260,9 @@
 					<text><![CDATA[Octubre:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="1647" y="0" width="150" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="13a63e6b-9dcf-4361-9d85-700aeb830e64"/>
+					<reportElement mode="Transparent" x="1647" y="0" width="150" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="13a63e6b-9dcf-4361-9d85-700aeb830e64">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -252,7 +275,9 @@
 					<text><![CDATA[Noviembre:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="1797" y="0" width="151" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="9738b03d-1617-4529-9724-6b5936ddff47"/>
+					<reportElement mode="Transparent" x="1797" y="0" width="151" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="9738b03d-1617-4529-9724-6b5936ddff47">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.4" lineColor="#000000"/>
 						<leftPen lineWidth="0.4" lineColor="#000000"/>
@@ -264,7 +289,559 @@
 					</textElement>
 					<text><![CDATA[Diciembre:]]></text>
 				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="207" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="08cfb031-dd61-4773-9c28-b27d1c448265">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="252" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="d9be6930-5eb2-4cc0-98b6-0b8ec825a650">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="297" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="8d9356a3-357c-4244-ac07-2d85fc2d4752">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="357" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="ea5117e1-96b5-4b82-8eb3-fa00af2a2df5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="402" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="4641e041-540f-4f48-acb9-bb71db0faaf1">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="552" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="6140ec1b-f49f-489c-8044-ff72757798a3">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="507" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="bcfc4317-df2c-4fee-ad3c-3d6b819ec52b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="447" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="39bc9a23-efcb-4215-9141-566338c4bd40">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="702" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="b054e33d-ab04-47f6-905f-0fd077386a34">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="657" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a8883255-c973-4a0d-883b-84f31332a73a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="597" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a0738318-3646-4f59-ab36-1080472b0b59">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="747" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="b8898208-7425-428d-8608-c9c8294a97e5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="807" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="947e8592-f029-470c-b571-d35bcef4c930">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="852" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="86b333f6-09dd-42f0-9511-c6c7a7006624">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="897" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="6415b92c-05b9-439f-b99b-cba088e8d0aa">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="957" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="d8ac97ac-a5d3-499a-a7c9-822e193e0f6a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1002" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="c31d1439-0cbb-4c5b-b7ec-db0bae5458d2">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1047" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="8890c494-83ca-483a-bf36-45dfd108fbc0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1107" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="6aaa1e97-0b82-45dd-9d37-082834fcd656">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1152" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="2669e155-53a3-4405-b854-f4353f040b23">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1197" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="29cf4053-409a-4fa2-bf69-dba91552b58c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1257" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="ad78fce8-38ad-4f41-9bca-fde8412f3aa1">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1302" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="8bce9e3a-fa78-4f5a-a6d5-da90169790de">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1452" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="6ec0cfce-9579-4b55-acfc-5a06d12239b1">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1407" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="b0ea3b13-0081-4070-b837-de7200464e4a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1347" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="d2df9129-00b3-4f06-9fb0-5927d5512891">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1497" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="99b6b0ad-fae8-4b31-b7cf-45654facbdad">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1557" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="44f562ba-245a-4694-be64-4236de2f13be">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1602" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="21a15093-2452-4111-9e86-14c17437719f">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1647" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="e2b1cd24-ba08-4def-b1c1-d827930be56d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1707" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="98df4df2-17ef-4bfa-a8b9-3ea33602b210">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1752" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="b5eb4513-d38d-4833-8db4-f0fa002d8f8f">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1797" y="13" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="d5a5b30b-f5d6-4e0f-b4fe-195feee40f9b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.4" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Utilidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1857" y="13" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="65268025-aa49-4f4e-8ae8-725decd79ae2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Margen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="1902" y="13" width="46" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="daefa28f-e1c6-419e-9725-0516d3a4433d">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<bottomPen lineColor="#FFFFFF"/>
+						<rightPen lineWidth="0.4" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Markup]]></text>
+				</staticText>
 			</frame>
+			<staticText>
+				<reportElement mode="Transparent" x="147" y="14" width="60" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="9fcc4016-22ed-4bbe-8a32-f5ad4709d23a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.4" lineColor="#000000"/>
+					<bottomPen lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Utilidad]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>

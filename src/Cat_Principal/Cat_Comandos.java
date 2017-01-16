@@ -241,7 +241,32 @@ public String Ubicaciones(String Reporte, String folio){
 					+ " WHERE   E.folio = '"+folio+"' AND (E.transaccion ='44') "
 					+ " ORDER BY ZONA,PASILLO,RACK,NIVEL,descripcion_completa";
 	}
-			
+	
+	if(Reporte.equals("Consulta De Entrada De Mercancia")){
+		comando=     " SELECT      RTRIM(LTRIM(P.cod_prod))  AS cod_prod"
+				+ "		   ,P.codigo_barras_pieza"
+				+ "		   ,P.descripcion_completa"
+				+ "        ,isnull((select top 1 upper(localizacion)+'      ' from localizaciones_surtido_productos with(nolock) where cod_prod = m_eos_mercancia.cod_prod and cod_estab = m_eos_mercancia.cod_estab),'SIN LOCALIZACION') as localicacion"
+				+ "		   ,isnull((select top 1 SUBSTRING(upper(localizacion),0,3) from localizaciones_surtido_productos with(nolock) where cod_prod = m_eos_mercancia.cod_prod and cod_estab = m_eos_mercancia.cod_estab),0) as zona"
+				+ "		   ,isnull((select top 1 SUBSTRING(upper(localizacion),3,3) from localizaciones_surtido_productos with(nolock) where cod_prod = m_eos_mercancia.cod_prod and cod_estab = m_eos_mercancia.cod_estab),0) as pasillo"
+				+ "		   ,isnull((select top 1 SUBSTRING(upper(localizacion),6,3) from localizaciones_surtido_productos with(nolock) where cod_prod = m_eos_mercancia.cod_prod and cod_estab = m_eos_mercancia.cod_estab),0) as rack"
+				+ "		   ,isnull((select top 1 SUBSTRING(upper(localizacion),9,1) from localizaciones_surtido_productos with(nolock) where cod_prod = m_eos_mercancia.cod_prod and cod_estab = m_eos_mercancia.cod_estab),0) as nivel"
+				+ "        ,m_eos_mercancia.cantidad"
+				+ "		   ,m_eos_mercancia.abreviatura_unidad"
+				+ "		   ,(select rtrim(ltrim(nombre)) from establecimientos Est where Est.cod_estab=m_eos_mercancia.cod_estab) as establecimiento"
+				+ "		   ,m_eos_mercancia.folio"
+				+ "		   ,m_eos_mercancia.status"
+				+ "		   ,m_eos_mercancia.fecha"
+				+ " 		   ,PRV.razon_social"
+				+ "		   ,'+usuario.getNombre_completo()+' as usuario"
+				+ "		   ,'' as ubicador"
+				+ "  FROM  m_eos_mercancia WITH (nolock)"
+				+ "      LEFT OUTER JOIN  productos P WITH (nolock) ON  m_eos_mercancia.cod_prod = P.cod_prod"
+				+ "      LEFT OUTER JOIN  proveedores PRV WITH (nolock) ON m_eos_mercancia.cod_prv=PRV.cod_prv"
+				+ "   WHERE (m_eos_mercancia.folio = '"+folio+"') AND (m_eos_mercancia.transaccion = '56')"
+				+ "     ORDER BY ZONA,PASILLO,RACK,NIVEL,descripcion_completa";
+	}
+	
 	return comando;
 
 }
