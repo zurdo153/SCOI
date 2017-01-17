@@ -137,7 +137,7 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1, 	empleado.getNumero_infonavit().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getEstablecimiento());
 			pstmt.setInt(i+=1, 		empleado.getPuesto());
-			pstmt.setString(i+=1, 		empleado.getStatus_checador());
+			pstmt.setString(i+=1, 	empleado.getStatus_checador());
 			
 //			percepciones y deducciones
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
@@ -146,7 +146,7 @@ public class ActualizarSQL {
 			pstmt.setFloat(i+=1,	empleado.getStatus()==4||empleado.getStatus()==5?0:empleado.getSueldo());
 			pstmt.setInt(i+=1, 		empleado.getStatus()==4||empleado.getStatus()==5?1:empleado.getBono());
 			
-			pstmt.setFloat(i+=1,   empleado.getBono_asistencia());
+			pstmt.setFloat(i+=1,    empleado.getBono_asistencia());
 			pstmt.setFloat(i+=1, 	empleado.getBono_puntualidad());
 			pstmt.setFloat(i+=1, 	empleado.getInfonacot());
 			
@@ -4377,9 +4377,9 @@ public boolean Borrar_Observacion_DH(){
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public boolean Registrar_Llegada_De_Transferencia(Vector transf){
+	public boolean Registrar_Llegada_De_Transferencia(Vector transf,String cincho, String usuario){
 		
-		String query = "exec sp_update_llegada_de_transferencia_a_establecimiento ?,?,?";
+		String query = "exec sp_update_llegada_de_transferencia_a_establecimiento ?,?,?,?,?";
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -4396,6 +4396,10 @@ public boolean Borrar_Observacion_DH(){
 				pstmt.setString(1, transf.get(i).toString().trim());
 				pstmt.setString(2, ip);
 				pstmt.setString(3, pc);
+				
+				pstmt.setString(4, cincho);
+				pstmt.setString(5, usuario);				
+				
 				pstmt.executeUpdate();
 			}
 			

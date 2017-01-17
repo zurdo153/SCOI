@@ -267,7 +267,6 @@ public String Ubicaciones(String Reporte, String folio){
 				+ "     ORDER BY ZONA,PASILLO,RACK,NIVEL,descripcion_completa";
 	}
 	
-	
 	return comando;
 
 }

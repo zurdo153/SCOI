@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.sun.glass.events.KeyEvent;
@@ -28,7 +29,7 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 	
 	JTextField txtNoCarro = new Componentes().text(new JCTextField(), "", 3, "Int");
 	JTextField txtNoCincho = new Componentes().text(new JCTextField(), "", 20, "String");
-	JTextField txtGafeteChofer = new Componentes().text(new JCTextField(), "", 20, "String");
+	JPasswordField pwfGafeteChofer = new JPasswordField();
 
 	String trasferencia = "";
 	String estab_surte = "";
@@ -53,11 +54,11 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 		panel.add(new JLabel("No. De Cincho:")).setBounds(15,45,110,20) ;
 		panel.add(txtNoCincho).setBounds(120,45,210,20) ;
 		panel.add(new JLabel("Clave Chofer:")).setBounds(15,70,110,20) ;
-		panel.add(txtGafeteChofer).setBounds(120,70,210,20) ;
+		panel.add(pwfGafeteChofer).setBounds(120,70,210,20) ;
 		
 		txtNoCarro.addKeyListener(opCincho);
 		txtNoCincho.addKeyListener(opCincho);
-		txtGafeteChofer.addActionListener(opValidarChofer);
+		pwfGafeteChofer.addActionListener(opValidarChofer);
 		
 		cont.add(panel);
 		
@@ -94,7 +95,7 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 				if(txtNoCincho.getText().trim().equals("")){
 					txtNoCincho.requestFocus();
 				}else{
-					txtGafeteChofer.requestFocus();
+					pwfGafeteChofer.requestFocus();
 				}
 			}
 		}
@@ -113,13 +114,14 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
     int folio_chofer;
     String claveMaster;	
 	ActionListener opValidarChofer = new ActionListener() {
+		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
 			
 			if(validaCampos().equals("")){
 				
-				if(!txtGafeteChofer.getText().toUpperCase().equals("")){
+				if(!pwfGafeteChofer.getText().toUpperCase().equals("")){
 					 
-					String codigoBarrar = txtGafeteChofer.getText().toUpperCase().trim();
+					String codigoBarrar = pwfGafeteChofer.getText().toUpperCase().trim();
 					 
 				 	int posicionC = codigoBarrar.indexOf('C');
 				 	
@@ -137,16 +139,16 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 		                        	
 	                           		switch (re.getStatus()){
 	                                          case 4:	JOptionPane.showMessageDialog(null, "No puedes Realizar Movimientos, tu estatus es de baja\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
-				                                        txtGafeteChofer.setText("");
-				                                        txtGafeteChofer.requestFocus();
+	                                          			pwfGafeteChofer.setText("");
+				                                        pwfGafeteChofer.requestFocus();
 	                                          break;
 	                                          case 5:	JOptionPane.showMessageDialog(null, "No puedes Realizar Movimientos, tu estatus es de baja\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
-				                                        txtGafeteChofer.setText("");
-				                                        txtGafeteChofer.requestFocus();
+				                                        pwfGafeteChofer.setText("");
+				                                        pwfGafeteChofer.requestFocus();
 	                                          break;
 	                                          case 7:	JOptionPane.showMessageDialog(null, "No puedes Realizar Movimientos, tu estatus es de baja\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
-				                                        txtGafeteChofer.setText("");
-				                                        txtGafeteChofer.requestFocus();
+	                                          			pwfGafeteChofer.setText("");
+				                                        pwfGafeteChofer.requestFocus();
 		                             		  break;
 		                             		  default: if(re.getNo_checador().equals(codigoBarrar)){
 	                                        	  				registrarTransferencia("-",Integer.valueOf(txtNoCarro.getText().toUpperCase().trim()),txtNoCincho.getText().toUpperCase().trim());
@@ -156,8 +158,8 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 			                                          		 }else{
 			                                          			 
 				                    				     		     JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-				                    				     		     	txtGafeteChofer.setText("");
-			                    				     		     		txtGafeteChofer.requestFocus();
+				                    				     		     pwfGafeteChofer.setText("");
+				                    				     		     pwfGafeteChofer.requestFocus();
 			                                                         return;
 			                                          		 }
 			                                          	 }
@@ -166,28 +168,28 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 	                       
 							}else{
 			     		  		 JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador > ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-			     		  		 txtGafeteChofer.setText("");
-			     		  		 txtGafeteChofer.requestFocus();
+			     		  		 pwfGafeteChofer.setText("");
+			     		  		 pwfGafeteChofer.requestFocus();
 		                         return;
 							}
 		                        
 				 	}else{
-					 		txtGafeteChofer.setText("");
-					 		txtGafeteChofer.requestFocus();
+				 			pwfGafeteChofer.setText("");
+					 		pwfGafeteChofer.requestFocus();
 					  		JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador >>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			                return;
 		                }
 					
 				 	}else{
-				 		txtGafeteChofer.setText("");
-				 		txtGafeteChofer.requestFocus();
+				 		pwfGafeteChofer.setText("");
+				 		pwfGafeteChofer.requestFocus();
 				  		JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador >>>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			            return;
 			 		}
 	               
 				 }else{
-					 txtGafeteChofer.setText("");
-					 txtGafeteChofer.requestFocus();
+					 pwfGafeteChofer.setText("");
+					 pwfGafeteChofer.requestFocus();
 					JOptionPane.showMessageDialog(null, "Es Necesario Pasar El Gafete Por El Lector","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));                  
 					return;
 				 }
@@ -220,7 +222,7 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
     		if(pedido.guardar()){
     			txtNoCarro.setText("");
     			txtNoCincho.setText("");
-    			txtGafeteChofer.setText("");
+    			pwfGafeteChofer.setText("");
         		JOptionPane.showMessageDialog(null, "Se Registro Salida Del Embarque Exitosamete","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
     			return;
     		}else{

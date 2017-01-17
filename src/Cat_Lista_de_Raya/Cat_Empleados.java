@@ -1591,7 +1591,7 @@ public void guardar_modificar_Empleado(){
 								empleado.setObservasiones(txaObservaciones.getText()+"");
 								empleado.setFecha_actualizacion(txtFechaActualizacion.getText());
 								
-								//TODO 
+								
 							  if(!cmbStatus.getSelectedItem().toString().equals("Vigente")){
 								double importe_fuente_sodas =tiene_deuda_fuente_sodas();
 								  if(importe_fuente_sodas>0){
@@ -1609,6 +1609,7 @@ public void guardar_modificar_Empleado(){
 									}
 								}
 								
+							//TODO (Actualizar)
 								if(empleado.actualizar(Integer.parseInt(txtFolioEmpleado.getText()))){
 									panelLimpiar();
 									panelEnabledFalse();
@@ -1750,6 +1751,7 @@ public void guardar_modificar_Empleado(){
 							empleado.setObservasiones(txaObservaciones.getText()+"");
 							empleado.setFecha_actualizacion(txtFechaActualizacion.getText());
 							
+							//TODO (Guardar)
 							if(empleado.guardar()){
 								panelLimpiar();
 								panelEnabledFalse();

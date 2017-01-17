@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-10-08T19:02:28 -->
+<!-- 2017-01-16T11:11:01 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Nivel_De_Servicio" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f63a393-85b7-45a3-a31e-c5b91967267e">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -23,38 +23,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[declare @fecha_in datetime,@fecha_fin datetime
-
-set @fecha_in = '01/09/2016 00:00:00'
-set @fecha_fin= '14/09/2016 23:59:59'
-
-select convert(varchar(20),@fecha_in,103) as fecha_inicial
-		,convert(varchar(20),@fecha_fin,103) as fecha_final
-		,b.pidio
-		,b.surte
-		,count(b.folio_pedido) as pedidos
-		,sum(b.cantidad_de_filas) as cantidad_de_filas
-		,sum(b.negados) as negados
-		,convert(numeric(15,4),(convert(float,sum(b.negados))/sum(b.cantidad_de_filas))) as porcetage_de_negados
-		,sum(b.surtidos) as surtidos
-		,convert(numeric(15,4),(convert(float,sum(b.cantidad_de_filas)-sum(b.negados))/sum(b.cantidad_de_filas))) as porcetage_de_surtidos
-from (select a.folio_pedido
-						,a.pidio
-						,a.surte
-						,a.cantidad_de_filas
-						,(select count(surtido) from tb_gestion_de_pedido where folio_pedido = a.folio_pedido and surtido = 0) as negados
-						,(select count(surtido) from tb_gestion_de_pedido where folio_pedido = a.folio_pedido and surtido > 0) as surtidos
-				 from (select pedido.folio_pedido
-										,estab_ori.establecimiento as pidio
-										,estab_des.establecimiento as surte
-										,count(pedido.folio_pedido) AS cantidad_de_filas
-								from tb_gestion_de_pedido pedido
-								inner join IZAGAR_establecimientos_calculo estab_ori on estab_ori.cod_estab = pedido.establecimiento_origen
-								inner join IZAGAR_establecimientos_calculo estab_des on estab_des.cod_estab = pedido.establecimiento_destino
-								where convert(varchar(20),pedido.fecha_de_captura,103) between @fecha_in and @fecha_fin
-								group by pedido.folio_pedido,estab_ori.establecimiento,estab_des.establecimiento) a
-				group by a.folio_pedido,a.pidio,a.surte,a.cantidad_de_filas) b
-group by b.pidio,b.surte]]>
+		<![CDATA[exec sp_select_reporte_de_nivel_surtido '01/01/2017 00:00:00','16/01/2017 23:59:59']]>
 	</queryString>
 	<field name="fecha_inicial" class="java.lang.String"/>
 	<field name="fecha_final" class="java.lang.String"/>
