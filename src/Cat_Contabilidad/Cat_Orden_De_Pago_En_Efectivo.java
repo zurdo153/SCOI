@@ -37,10 +37,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
@@ -55,7 +53,6 @@ import Obj_Principal.JCButton;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
-import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
@@ -403,11 +400,26 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 		return date1;
 	};
 	
-///////////////////////////////////////////////////////////////////////////////////////Filtro de Referencia ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//TODO Filtro de Referencia ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	public class Cat_Filtro_Referencia extends JDialog{
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
+		
+        Obj_tabla  Objetotabla = new Obj_tabla();
+		
+		int columnas = 2,checkbox=-1;
+		public void init_tabla(){
+			 String ref =rbProveedor.isSelected()?"Proveedor":"Empleado";
+			 String comando=" " ;
+			switch(ref){
+			    case "Empleado": 		comando = "select folio,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_empleado order by nombre"; break;
+		    	case "Proveedor": 		comando = "select folio_proveedor,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_proveedores where status=1  order by nombre"; break;
+		        }
+	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(1).setMinWidth(375);
+			String basedatos="26",pintar="si";
+			Objetotabla.Obj_Refrescar(tabla_Filtro_Ref,modelo_Filtro_Ref, columnas, comando, basedatos,pintar,checkbox);
+	    }
 		
 		DefaultTableModel modelo_Filtro_Ref = new DefaultTableModel(null,
 	            new String[]{"Folio", "Nombre"}
@@ -442,48 +454,30 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
 			this.setTitle("Filtro De Beneficiario De La Orden De Pago En Efectivo");
 			campo.setBorder(BorderFactory.createTitledBorder("Selecciona El Beneficiario"));
-			
 			campo.add(scroll_Filtro_Ref).setBounds(15,42,470,565);
-			
 			campo.add(txtCodigo).setBounds(15,20,90,20);
 			campo.add(txtDescripcion).setBounds(104,20,360,20);
 			
-			llenarFiltro();
-			render();
+			init_tabla();
 			agregar(tabla_Filtro_Ref);
-			
 			cont.add(campo);
-			
 			new Obj_Filtro_Dinamico(tabla_Filtro_Ref,"Codigo", txtCodigo.getText().toUpperCase(),"Nombre",txtDescripcion.getText(), "", "", "", "");
-			
 			txtCodigo.addKeyListener(opFiltroLoco);
 			txtDescripcion.addKeyListener(opFiltroLoco);
 			txtDescripcion.addKeyListener(enterpasaraTabla);
 			txtDescripcion.addKeyListener(enterpasaraTablaENTER);
 			tabla_Filtro_Ref.addKeyListener(enterpasaraaOrden_Pago);
-			
+
 			this.setSize(510,650);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
-//          asigna el foco al JTextField del nombre deseado al arrancar la ventana
             this.addWindowListener(new WindowAdapter() {
                     public void windowOpened( WindowEvent e ){
                     	txtDescripcion.requestFocus();
                  }
             });
-              
-		}
-		
-		public void llenarFiltro() throws SQLException{
-			
-			modelo_Filtro_Ref.setRowCount(0);
-			
-			Object[][] datos = new BuscarSQL().Filtro_De_Referencia_Polizas(rbProveedor.isSelected()?"Proveedor":"Empleado");
-			for(Object[] d : datos){
-				modelo_Filtro_Ref.addRow(d);
-			}
 		}
 		
 		public Object[][] Filtro_Cuentas( ){
@@ -567,26 +561,9 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 				}
 			}
 		};
-		
-		
-	   	private void render(){		
-			
-			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-			tcr.setHorizontalAlignment(SwingConstants.CENTER);
-			
-			tabla_Filtro_Ref.getTableHeader().setReorderingAllowed(false) ;
-			
-    		tabla_Filtro_Ref.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-		    tabla_Filtro_Ref.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-			
-			tabla_Filtro_Ref.getColumnModel().getColumn(0).setMinWidth(0);
-		    tabla_Filtro_Ref.getColumnModel().getColumn(0).setMaxWidth(100);
-			tabla_Filtro_Ref.getColumnModel().getColumn(1).setMinWidth(300);
-			tabla_Filtro_Ref.getColumnModel().getColumn(1).setMaxWidth(400);
-		}
 	}
 	
-	
+	//TODO FILTRO ORDEN DE PAGO
 	public class Cat_Filtro_Order_De_Pago_Efectivo extends JDialog{
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();

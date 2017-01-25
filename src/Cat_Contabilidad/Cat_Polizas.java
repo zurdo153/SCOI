@@ -1421,15 +1421,6 @@ public class Cat_Polizas extends JFrame{
 			}
 		}
 		
-//		public Object[][] Filtro_Cuentas( ){
-//			try {
-//				return new BuscarSQL().Filtro_De_Cuentas_polizas();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//			return null;
-//	}
-		
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {
