@@ -32,6 +32,9 @@ package Biblioteca;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -198,6 +201,22 @@ class WaitLayerUI extends LayerUI<JPanel> implements ActionListener {
     int tick = 1000 / fps;
     mTimer = new Timer(tick, this);
     mTimer.start();
+    
+    ExecutorService executor = Executors.newFixedThreadPool(5);
+	
+//	 for(int i = 0; i < 10; i++) {
+		 
+		 
+	     Runnable worker = new WorkerThread(""+ 1);
+	     executor.execute(worker);
+//	 }
+	
+	 executor.shutdown();
+//	 while (!executor.isTerminated()) {
+//	
+//	 }
+	 System.out.println("Finished all threads");
+
   }
 
   public void stop() {
