@@ -22,7 +22,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 
 @SuppressWarnings("serial")
-public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
+public class Borrar_Cat_Validar_Chofer_Para_Tranferencia2 extends JDialog  {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -31,12 +31,12 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 	JTextField txtNoCincho = new Componentes().text(new JCTextField(), "", 20, "String");
 	JPasswordField pwfGafeteChofer = new JPasswordField();
 
-	String trasferencia = "";
+	Object[] trasferencias=null;
 	String estab_surte = "";
 	String estab_recibe = "";
 	int folio_encargado = 0;
 	
-	public Cat_Validar_Chofer_Para_Tranferencia(String trasferencia,String estab_surte,String estab_recibe,int folio_encargado){
+	public Borrar_Cat_Validar_Chofer_Para_Tranferencia2(Object[] trasferencias,String estab_surte,String estab_recibe,int folio_encargado){
 		this.setModal(true);
 		this.setSize(360, 145);
 		this.setLocationRelativeTo(null);
@@ -44,7 +44,7 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 		
 		this.setTitle("Programar Tranferencia");
 		
-		this.trasferencia = trasferencia;
+		this.trasferencias = trasferencias;
 		this.estab_surte = estab_surte;
 		this.estab_recibe = estab_recibe;
 		this.folio_encargado = folio_encargado;
@@ -202,16 +202,9 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
 	
     public void registrarTransferencia(String checada, int NoCarro, String NoCincho){
 	    
-//    	String trasferencia = "";
-//    	String estab_surte = "";
-//    	String estab_recibe = "";
-//    	int folio_encargado = 0;
-    	
-//    	if(!new BuscarSQL().chofer_ocupado(folio_chofer)){
-    		
     		Obj_Chacador_De_Embarque_De_Pedidos pedido = new Obj_Chacador_De_Embarque_De_Pedidos();
     		
-    		pedido.setFolio_transferencia(trasferencia);
+    		pedido.setFolio_transferencia(trasferencias);
     		pedido.setEstab_surte(estab_surte);
     		pedido.setEstab_recibe(estab_recibe);
     		pedido.setFolio_encagado_asigno_embarque(folio_encargado);
@@ -220,24 +213,18 @@ public class Cat_Validar_Chofer_Para_Tranferencia extends JDialog  {
     		pedido.setNo_cincho(NoCincho);
     		
     		if(pedido.guardar()){
-    			txtNoCarro.setText("");
-    			txtNoCincho.setText("");
-    			pwfGafeteChofer.setText("");
+//    			deshacer();
+    			dispose();
         		JOptionPane.showMessageDialog(null, "Se Registro Salida Del Embarque Exitosamete","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
     			return;
     		}else{
     			JOptionPane.showMessageDialog(null, "No Se Pudo Registrar La Salida Del Embarque","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
     			return;
     		}
-    		
-//    	}else{
-//    		JOptionPane.showMessageDialog(null, "No Puede Asignarle Tranferencia A Este Chofer Debido A Que Ya No A Registrado Entrega Del Ultimo Embarque","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//			return;
-//    	}
 	}
 
 	public static void main(String[] args) {
-		new Cat_Validar_Chofer_Para_Tranferencia("","","",491).setVisible(true);
+		new Borrar_Cat_Validar_Chofer_Para_Tranferencia2(null,"","",491).setVisible(true);
 
 	}
 

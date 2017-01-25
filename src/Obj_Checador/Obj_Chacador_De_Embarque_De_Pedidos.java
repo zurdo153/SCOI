@@ -5,7 +5,7 @@ import Conexiones_SQL.GuardarSQL;
 public class Obj_Chacador_De_Embarque_De_Pedidos {
 	
 	int folio;
-	String folio_transferencia;
+	Object[] folio_transferencia;
 	String folio_pedido;
 	String estab_surte;
 	String estab_recibe;			
@@ -22,7 +22,7 @@ public class Obj_Chacador_De_Embarque_De_Pedidos {
 	String pc_llegada_nombre;
     
 	public Obj_Chacador_De_Embarque_De_Pedidos(){
-		folio =0;		folio_transferencia="";		folio_pedido="";		estab_surte="";		estab_recibe="";		folio_encagado_asigno_embarque=0;
+		folio =0;		folio_transferencia=null;		folio_pedido="";		estab_surte="";		estab_recibe="";		folio_encagado_asigno_embarque=0;
 		folio_chofer=0;		no_cincho="";		no_carro=0;		status="";		pc_salida_ip="";		pc_salida_nombre="";		pc_llegada_ip="";
 		pc_llegada_nombre="";
 	}
@@ -35,11 +35,11 @@ public class Obj_Chacador_De_Embarque_De_Pedidos {
 		this.folio = folio;
 	}
 
-	public String getFolio_transferencia() {
+	public Object[] getFolio_transferencia() {
 		return folio_transferencia;
 	}
 
-	public void setFolio_transferencia(String folio_transferencia) {
+	public void setFolio_transferencia(Object[] folio_transferencia) {
 		this.folio_transferencia = folio_transferencia;
 	}
 

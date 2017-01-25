@@ -6240,21 +6240,35 @@ public boolean Guardar_Salida_De_Embarque_De_Pedido(Obj_Chacador_De_Embarque_De_
 		String pc = InetAddress.getLocalHost().getHostName();
 		String ip = InetAddress.getLocalHost().getHostAddress();
 		
-		int i=1;
 		pstmt = con.prepareStatement(query);
-		pstmt.setString(i,	 	ped.getFolio_transferencia());
-		pstmt.setString(i+=1,	ped.getEstab_surte().trim());
-		pstmt.setString(i+=1,	ped.getEstab_recibe().trim());
-		pstmt.setInt(i+=1,	ped.getFolio_encagado_asigno_embarque());
-		pstmt.setInt(i+=1, 	ped.getFolio_chofer());
-		pstmt.setInt(i+=1, 	ped.getNo_carro());
-		pstmt.setString(i+=1, 	ped.getNo_cincho());
 		
-		pstmt.setString(i+=1, 	ip);
-		pstmt.setString(i+=1, 	pc);
-		
-		pstmt.executeUpdate();
+		for(int fol=0; fol<ped.getFolio_transferencia().length; fol++){
+			int i=1;
+			pstmt.setString(i,	 	ped.getFolio_transferencia()[fol].toString());
+			pstmt.setString(i+=1,	ped.getEstab_surte().trim());
+			pstmt.setString(i+=1,	ped.getEstab_recibe().trim());
+			pstmt.setInt(i+=1,	ped.getFolio_encagado_asigno_embarque());
+			pstmt.setInt(i+=1, 	ped.getFolio_chofer());
+			pstmt.setInt(i+=1, 	ped.getNo_carro());
+			pstmt.setString(i+=1, 	ped.getNo_cincho());
+			
+			pstmt.setString(i+=1, 	ip);
+			pstmt.setString(i+=1, 	pc);
+			
+//			System.out.print(ped.getFolio_transferencia()[fol].toString().trim()+"   ");
+//			System.out.print(ped.getEstab_surte().toString().trim()+"   ");
+//			System.out.print(ped.getEstab_recibe().toString().trim()+"   ");
+//			System.out.print(ped.getFolio_encagado_asigno_embarque()+"   ");
+//			System.out.print(ped.getFolio_chofer()+"   ");
+//			System.out.print(ped.getNo_carro()+"   ");
+//			System.out.print(ped.getNo_cincho().toString().trim()+"   ");
+//			System.out.print(ip.toString().trim()+"   ");
+//			System.out.println(pc.toString().trim()+"   ");
+			
+			pstmt.executeUpdate();
+		}
 		con.commit();
+		
 	} catch (Exception e) {
 		System.out.println("SQLException: " + e.getMessage());
 		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Salida_De_Embarque_De_Pedido ] Insert  SQLException: sp_insert_historial_embarque_de_pedido "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
