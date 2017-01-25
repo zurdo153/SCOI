@@ -2334,4 +2334,39 @@ public class Cargar_Combo {
 		return pila;
 			
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public String[] Prioridad() throws SQLException{
+		String query = "select nombre from tb_prioridad  where estatus = 'V'";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona una Prioridad");
+				}
+				miVector.add(rs.getString("nombre"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
 }

@@ -417,7 +417,7 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
 			};
 	    	
 	    	ActionListener opRegistrarLlegada = new ActionListener() {
-				@SuppressWarnings({ "deprecation", "unused" })
+				@SuppressWarnings({ "deprecation" })
 				public void actionPerformed(ActionEvent e) {
 					
 					if(!txtCincho.getText().equals("")){

@@ -47,11 +47,11 @@ public class Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas extends JFrame 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento = new JComboBox(departamento);
 	
-	JCButton btn_generar_altas = new JCButton  ("Reporte de Altas","vigente16.png","");
-	JCButton btn_generar_Bajas = new JCButton  ("Reporte de Bajas","baja16.png","");
+	JCButton btn_generar_altas = new JCButton  ("Reporte de Altas","vigente16.png","Azul");
+	JCButton btn_generar_Bajas = new JCButton  ("Reporte de Bajas","baja16.png","Azul");
 	
-	JCButton btn_cant_personal = new JCButton  ("Colaboradores Por Lista De Raya Detalle","asistencia-comunitaria-icono-9465-16.png","");
-	JCButton btn_cant_personaltotales = new JCButton  ("Colaboradores Por Lista De Raya Resumen","verde-de-usuario-icono-7340-16.png","");
+	JCButton btn_cant_personal = new JCButton  ("Colaboradores Por Lista De Raya Detalle","asistencia-comunitaria-icono-9465-16.png","Azul");
+	JCButton btn_cant_personaltotales = new JCButton  ("Colaboradores Por Lista De Raya Resumen","verde-de-usuario-icono-7340-16.png","Azul");
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );

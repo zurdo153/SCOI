@@ -76,9 +76,13 @@ public class Componentes {
 		return tmp;
 	}
 	
+
+	
 	public final JTextArea textArea(final JTextArea tmp, final String caption, final int longitud){
 		tmp.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {
+				tmp.setLineWrap(true); 
+				tmp.setWrapStyleWord(true);
 				if(getTextProcesa(tmp.getText()).length() >= longitud)
 					e.consume();
 			}

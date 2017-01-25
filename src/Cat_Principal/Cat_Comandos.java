@@ -270,5 +270,39 @@ public String Ubicaciones(String Reporte, String folio){
 	return comando;
 
 }
+public String markup(String Reporte, String establecimiento){	
 	
+	if(Reporte.equals("Reporte De Markup De Productos Por Establecimiento")){
+		comando=     " declare @cod_estab int set @cod_estab=(SELECT cod_estab from establecimientos  where nombre='"+establecimiento+"')"
+				   + "    SELECT"
+				   + "        productos.cod_prod"
+				   + "        ,productos.descripcion"
+				   + "  	  ,isnull(clases_productos.nombre,'NO TIENE') as clases_productos"
+				   + " 		  ,isnull(categorias.nombre,'NO TIENE') as categorias"
+				   + "        ,isnull(familias.nombre,'NO TIENE') as familia"
+				   + "        ,convert(numeric(10,2),isnull( (case when (productos.contenido)<>1 then((productos.contenido*prodestab.exist_unidades)+exist_piezas) else (prodestab.exist_piezas)end),0 )) as existencia_pz"
+				   + "        ,convert(numeric (10,2),case when(productos.contenido<>1) then (case when productos.iva_interior=16 then (prodestab.ultimo_costo*1.16)/productos.contenido else (prodestab.ultimo_costo)/productos.contenido end)"
+				   + "		                             else (case when productos.iva_interior=16 then  prodestab.ultimo_costo*1.16 else prodestab.ultimo_costo end ) end  )as ultimo_costo_con_iva"
+				   + "        ,case when productos.tasa_ieps=1 then 0.08 else 0 end as ieps"
+				   + "		  ,productos.contenido"
+				   + "        ,productos.iva_interior"
+				   + "        ,convert(numeric (10,2),case 1 WHEN 0 then dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0)"
+				   + "		     ELSE	dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '', 1, 0, 0) * (1 + dbo.Ieps(productos.cod_prod)/100)"
+				   + "				* (1 + (CASE 'I' WHEN 'I' THEN productos.iva_interior ELSE productos.iva_fronterizo END/100))  END) as precio_pieza"
+				   + "        ,'Reporte De Markup y Margen De Productos Por Establecimiento '+'"+establecimiento+"' as reporte"
+				   + "       FROM prodestab with (nolock)"
+				   + "           inner join productos with (nolock) on productos.cod_prod=prodestab.cod_prod"
+				   + "	         inner join establecimientos on establecimientos.cod_estab=prodestab.cod_estab"
+				   + "           left outer join familias on familias.familia=productos.familia"
+				   + "   		 left outer join clases_productos on clases_productos.clase_producto=productos.clase_producto"
+				   + "			 left outer join categorias on categorias.categoria=productos.categoria"
+				   + "    where prodestab.cod_estab= @cod_estab order by productos.cod_prod";
+	}
+	
+
+	
+	return comando;
+
+   }
+
 }
