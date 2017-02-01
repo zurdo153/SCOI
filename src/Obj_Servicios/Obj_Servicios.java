@@ -21,14 +21,6 @@ public class Obj_Servicios {
 	String fecha=""; 
 	String fecha_ultima_modificacion="";
     String guardar_actualizar="";
-    		
-	public String getEstablecimiento() {
-		return establecimiento;
-	}
-
-	public void setEstablecimiento(String establecimiento) {
-		this.establecimiento = establecimiento;
-	}
 
 	public String getGuardar_actualizar() {
 		return guardar_actualizar;
@@ -84,6 +76,14 @@ public class Obj_Servicios {
 
 	public void setDepartamento(String departamento) {
 		this.departamento = departamento;
+	}
+
+	public String getEstablecimiento() {
+		return establecimiento;
+	}
+
+	public void setEstablecimiento(String establecimiento) {
+		this.establecimiento = establecimiento;
 	}
 
 	public String getServicio() {

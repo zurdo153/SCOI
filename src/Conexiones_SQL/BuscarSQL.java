@@ -189,6 +189,7 @@ public class BuscarSQL {
 			while(rs.next()){
 				fecha=(rs.getString("fecha"));
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -324,6 +325,7 @@ public class BuscarSQL {
 			while(rs.next()){
 				Cantidad_Letra=(rs.getString("cant_letra"));
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -3678,6 +3680,7 @@ public class BuscarSQL {
 	public Obj_Nivel_Jerarquico buscarDescripcion(String descripcion) throws SQLException{
 		Obj_Nivel_Jerarquico nivel_gerarquico = new Obj_Nivel_Jerarquico();
 		String query = "select tb_nivel_jerarquico.folio as folio, descripcion " +
+		                                            
 					   "from tb_nivel_jerarquico " +
 					   "where tb_nivel_jerarquico.descripcion = "+"'"+descripcion+"'";
 				
@@ -9569,16 +9572,17 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	}
 	
 	public Object[][] getLlegadaTransferencias(int chofer, String establecimiento){
-		String query = "select hist_emb.folio_transferencia, "
-				+ " 		estab_sur.nombre as estab_surte, "
-				+ " 		estab_rec.nombre as estab_recibe"
-				+ " from tb_historial_de_trasporte_de_embarque  hist_emb "
-				+ " inner join [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab_sur on estab_sur.cod_estab = hist_emb.estab_surte "
-				+ " inner join [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab_rec on estab_rec.cod_estab = hist_emb.estab_recibe "
-				+ " where folio_chofer = "+chofer+" "
-				+ " and hist_emb.status = 'V' "
-				+ " and hist_emb.estab_recibe = (select ltrim(rtrim(estab.cod_estab)) from [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab where ltrim(rtrim(estab.nombre)) = ltrim(rtrim('"+establecimiento+"')) ) "
-				+ " and CONVERT(varchar(20),hist_emb.fecha_salida,103) > CONVERT(varchar(20),GETDATE()-1,103)";
+//		String query = "select hist_emb.folio_transferencia, "
+//				+ " 		estab_sur.nombre as estab_surte, "
+//				+ " 		estab_rec.nombre as estab_recibe"
+//				+ " from tb_historial_de_trasporte_de_embarque  hist_emb "
+//				+ " inner join [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab_sur on estab_sur.cod_estab = hist_emb.estab_surte "
+//				+ " inner join [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab_rec on estab_rec.cod_estab = hist_emb.estab_recibe "
+//				+ " where folio_chofer = "+chofer+" "
+//				+ " and hist_emb.status = 'V' "
+//				+ " and hist_emb.estab_recibe = (select ltrim(rtrim(estab.cod_estab)) from [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab where ltrim(rtrim(estab.nombre)) = ltrim(rtrim('"+establecimiento+"')) ) "
+//				+ " and CONVERT(DATETIME,CONVERT(varchar(20),hist_emb.fecha_salida,103)) > CONVERT(DATETIME,CONVERT(varchar(20),GETDATE()-1,103))";
+		String query = "exec sp_cosultar_folios_de_transferencia_que_lleva_chofer "+chofer+",'"+establecimiento+"'";
 		
 		Object[][] Matriz = new Object[getFilas(query)][4];
 		Statement s;
@@ -9675,6 +9679,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	
 	public boolean PerfilDeColaboradorActivo(){
 		String query = "select case when usar_perfiles_en_colaboradores = 'NO' then 'true' else 'false' end as usar_perfiles_en_colaboradores from tb_configuracion_sistema";
+		
 		boolean existe = false;
 		Statement s;
 		ResultSet rs;
@@ -9743,6 +9748,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return status;
 	}
 	
+
 	public int serviciocatalogo() throws SQLException{
 		int folio = 0;
 		String query = "select max(folio) from tb_servicios_catalogo with(nolock)";
