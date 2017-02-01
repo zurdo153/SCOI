@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-01-14T18:01:05 -->
+<!-- 2017-01-27T12:27:10 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Nivel_De_Servicio" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f63a393-85b7-45a3-a31e-c5b91967267e">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -23,8 +23,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec sp_Reporte_De_Nivel_De_Servicio '01/01/2017 00:00:00','13/01/2017 23:59:59'
-]]>
+		<![CDATA[exec sp_Reporte_De_Nivel_De_Servicio '01/01/2017 00:00:00','13/01/2017 23:59:59']]>
 	</queryString>
 	<field name="fecha_inicial" class="java.lang.String"/>
 	<field name="fecha_final" class="java.lang.String"/>
@@ -171,7 +170,7 @@
 				<text><![CDATA[Ajuste]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="480" y="-2" width="70" height="34" forecolor="#000000" uuid="e7d15aca-cee7-460d-bc26-8b3e34290d4b">
+				<reportElement style="Column header" x="472" y="-2" width="68" height="34" forecolor="#000000" uuid="e7d15aca-cee7-460d-bc26-8b3e34290d4b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">

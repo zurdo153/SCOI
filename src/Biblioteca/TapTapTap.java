@@ -207,8 +207,8 @@ class WaitLayerUI extends LayerUI<JPanel> implements ActionListener {
 //	 for(int i = 0; i < 10; i++) {
 		 
 		 
-	     Runnable worker = new WorkerThread(""+ 1);
-	     executor.execute(worker);
+//	     Runnable worker = new WorkerThread(""+ 1);
+//	     executor.execute(worker);
 //	 }
 	
 	 executor.shutdown();

@@ -129,8 +129,8 @@ public class Cat_Usuarios extends JFrame{
 	    new Obj_CheckBoxNode(Sub_Checador[14], false),
 	    new Obj_CheckBoxNode(Sub_Checador[15], false),
 	    new Obj_CheckBoxNode(Sub_Checador[16], false),
-
 	};
+	
 	@SuppressWarnings("rawtypes")
 	Vector ChecadorVector = new Obj_NombreVector("Checador", Checador);
 	
@@ -299,6 +299,7 @@ public class Cat_Usuarios extends JFrame{
 				new Obj_CheckBoxNode(Sub_Compras[26], false),
 				new Obj_CheckBoxNode(Sub_Compras[27], false),
 				new Obj_CheckBoxNode(Sub_Compras[28], false),
+				new Obj_CheckBoxNode(Sub_Compras[29], false),
 			};
 			@SuppressWarnings("rawtypes")
 			Vector ComprasVector = new Obj_NombreVector("Compras", Compras);
@@ -312,7 +313,6 @@ public class Cat_Usuarios extends JFrame{
 	@SuppressWarnings("rawtypes")
 	Vector Vector_Punto_De_Venta = new Obj_NombreVector("Punto De Venta", Punto_de_Venta);
 	
-	
 	// MENU PRINCIPAL INVENTARIOS (10) el numero es el menu principal
 	String[] Sub_inventarios = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(10);
 	Obj_CheckBoxNode Inventarios[] = {
@@ -322,14 +322,22 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_inventarios[3], false),
 		new Obj_CheckBoxNode(Sub_inventarios[4], false),
 		new Obj_CheckBoxNode(Sub_inventarios[5], false),
-		
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Vector_inventarios = new Obj_NombreVector("Inventarios", Inventarios);
 	
+	// MENU PRINCIPAL SERVICIOS (11) el numero es el menu principal
+	String[] Sub_servicios = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(11);
+	Obj_CheckBoxNode Servicios[] = {
+		new Obj_CheckBoxNode(Sub_servicios[0], false),
+	};
+	@SuppressWarnings("rawtypes")
+	Vector Vector_servicios = new Obj_NombreVector("Servicios", Servicios);
+	
+	
 		////ESTA PARTE SE ORDENA LA POSICION EN LA QUE SE QUIERE EL MENU PRINCIPAL  EN EL ARBOL
 	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ComprasVector,Vector_inventarios, ContabilidadVector, EvaluacionesVector, 
-			Lista_de_RayaVector,ReportesEspecialesVector,Vector_Punto_De_Venta};
+			Lista_de_RayaVector,ReportesEspecialesVector,Vector_Punto_De_Venta,Vector_servicios};
 	    
 	@SuppressWarnings("rawtypes")
 	Vector rootVector = new Obj_NombreVector("Permisos", rootNodos);
@@ -566,6 +574,11 @@ public class Cat_Usuarios extends JFrame{
 	        		}
 	        		tree.collapseRow(9);
 	        		
+					Vector servicios = new Obj_Usuario().returnPermisos(folio_empleado, 11);
+	        		for(int i = 0; i<Servicios.length; i ++){
+	        			Servicios[i].setSelected(Boolean.parseBoolean(servicios.get(i).toString()));
+	        		}
+	        		tree.collapseRow(9);
 	        		
 				}else{
 					
@@ -609,10 +622,20 @@ public class Cat_Usuarios extends JFrame{
 	        		}
 	        		tree.collapseRow(6);
 	        		
-//	        		for(int i = 0; i<Punto_de_Venta.length; i ++){
-//	        			Punto_de_Venta[i].setSelected(false);
-//	        		}
-//	        		tree.collapseRow(7);
+	        		for(int i = 0; i<Punto_de_Venta.length; i ++){
+	        			Punto_de_Venta[i].setSelected(false);
+	        		}
+	        		tree.collapseRow(7);
+	        		
+	        		for(int i = 0; i<Inventarios.length; i ++){
+	        			Inventarios[i].setSelected(false);
+	        		}
+	        		tree.collapseRow(8);
+	        		
+	        		for(int i = 0; i<Servicios.length; i ++){
+	        			Servicios[i].setSelected(false);
+	        		}
+	        		tree.collapseRow(9);
 	        		
 				}        		
 			}

@@ -1,4 +1,4 @@
-package Cat_Contabilidad;
+package Cat_Servicios;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Toolkit;

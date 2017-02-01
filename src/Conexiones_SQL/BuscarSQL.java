@@ -188,7 +188,6 @@ public class BuscarSQL {
 			while(rs.next()){
 				fecha=(rs.getString("fecha"));
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -324,7 +323,6 @@ public class BuscarSQL {
 			while(rs.next()){
 				Cantidad_Letra=(rs.getString("cant_letra"));
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -3679,7 +3677,6 @@ public class BuscarSQL {
 	public Obj_Nivel_Jerarquico buscarDescripcion(String descripcion) throws SQLException{
 		Obj_Nivel_Jerarquico nivel_gerarquico = new Obj_Nivel_Jerarquico();
 		String query = "select tb_nivel_jerarquico.folio as folio, descripcion " +
-		                                            
 					   "from tb_nivel_jerarquico " +
 					   "where tb_nivel_jerarquico.descripcion = "+"'"+descripcion+"'";
 				
@@ -9677,7 +9674,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	
 	public boolean PerfilDeColaboradorActivo(){
 		String query = "select case when usar_perfiles_en_colaboradores = 'NO' then 'true' else 'false' end as usar_perfiles_en_colaboradores from tb_configuracion_sistema";
-		
 		boolean existe = false;
 		Statement s;
 		ResultSet rs;
@@ -9721,6 +9717,47 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		}
 		return status;
 	}
+	
+	public int serviciocatalogo() throws SQLException{
+		int folio = 0;
+		String query = "select max(folio) from tb_servicios_catalogo with(nolock)";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){				
+				folio=rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return folio;
+	}
+	
+	public String serviciodepartamento(int folio) throws SQLException{
+		String Departamento = "";
+		String query = "Select departamento from tb_departamento where folio=(select departamento from tb_empleado with(nolock) where folio="+folio+")";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){				
+				Departamento=rs.getString(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return Departamento;
+	}
+	
 	
 //	public int  Folios_generados(String folio_original){
 //		int numero_de_folios=0;

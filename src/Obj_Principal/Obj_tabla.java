@@ -45,35 +45,22 @@ public class Obj_tabla {
 	 int RfilaS =usuario.getRfilaS();
 	 int GfilaS =usuario.getGfilaS();
 	 int BfilaS =usuario.getBfilaS();
-	 
 	 int tamanio_fuente=usuario.getTamanio_fuente();
 
-   private String tipo="text";
-   private String alineacion="text";
+     private String tipo="text";
+     private String alineacion="text";
+     private Font fuente;
+     private JLabel label = new JLabel();
+     private JCheckBox chb = new JCheckBox();
+     private ImageIcon salida = new ImageIcon("imagen/Delete.png");
+     private ImageIcon entrada = new ImageIcon("imagen/Aplicar.png");
    
-//   tipo de letra: "Arial","Courier New","TimesRoman"
-   private Font fuente;
-   
-   private JLabel label = new JLabel();
-   private JCheckBox chb = new JCheckBox();
-   
-   private ImageIcon salida = new ImageIcon("imagen/Delete.png");
-   private ImageIcon entrada = new ImageIcon("imagen/Aplicar.png");
-   
-   String color_especial_de_columna ="";
-   
+     String color_especial_de_columna ="";
 	
 	public boolean validacampo(String valorcelda){
-			
-		try {
-			if(valorcelda.equals("")){
-	    		return false;
-			}else{
-				 Double.parseDouble(valorcelda);
+		try { Double.parseDouble(valorcelda);
 	    		return true;
-			}
-		} catch (NumberFormatException nfe){
-			
+		}catch (NumberFormatException nfe){
 			return false;
 		}
  	}
@@ -82,26 +69,23 @@ public class Obj_tabla {
     	tabla.getTableHeader().setReorderingAllowed(false) ;
     	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		modelo.setRowCount(0);
-		
 		Connexion con = new Connexion();
 		Statement  s =null;
 		
 		if(BasdeDatos.equals("200")){
-			 try {
-				s = con.conexion_IZAGAR().createStatement();
+			 try { s = con.conexion_IZAGAR().createStatement();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}else{
-			 try {
-					s = con.conexion().createStatement();
+			 try { s = con.conexion().createStatement();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 		}
 
 		if(checkbox>-1){
-			try {
+			try{
 				ResultSet rs = s.executeQuery(comando);
 				while (rs.next()){ 
 				    	String [] fila = new String[columnas];
@@ -133,9 +117,7 @@ public class Obj_tabla {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en la funcion refrescar tabla SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
-			
 	     }	
-		
 		
 		for(int i = 0; i<tabla.getColumnCount(); i++){
     		tabla.getColumnModel().getColumn(i).setMaxWidth(2000);
@@ -146,11 +128,10 @@ public class Obj_tabla {
 			if(checkbox>-1&&i==checkbox){
 			 tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("CHB","centro","Arial","negrita",12));
 			}else{
-
 				if(tabla.getRowCount()>0){
 					if( validacampo(modelo.getValueAt(0,i).toString().trim()) ){
-					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","derecha","Arial","negrita",11));
-					  tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CabeceraTablaRendererizado(new java.awt.Color(RfilaS,GfilaS,BfilaS),Color.WHITE));
+					    tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","derecha","Arial","negrita",11));
+					    tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CabeceraTablaRendererizado(new java.awt.Color(RfilaS,GfilaS,BfilaS),Color.WHITE));
 					}else{
 					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));	
 					  tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CabeceraTablaRendererizado(new java.awt.Color(RfilaS,GfilaS,BfilaS),Color.WHITE));
@@ -162,8 +143,36 @@ public class Obj_tabla {
 		      }
            }
 		}
-		
 	   }
+		
+//	public class Obj_Filtro{
+//		@SuppressWarnings({ "unchecked", "rawtypes" })
+//		public Obj_Filtro(JTable tabla,String contenido,int columnas){
+//			int[] columnasa= new int [columnas];
+//			for(int i=0;i<columnas;i++){
+//				columnasa[i]=i;
+//			}
+//			
+//			TableRowSorter sorter = new  TableRowSorter(tabla.getModel());
+//			
+//			ArrayList arregloDePalabrar = new ArrayList(); 
+//			RowFilter filtradoDeArregloDePalabras = null; 
+//
+//			try {
+//			    String[] listaDePalabras = contenido.split(" ");
+//				    for(int i = 0; i < listaDePalabras.length; i++){
+//				    	arregloDePalabrar.add(RowFilter.regexFilter(listaDePalabras[i],columnas));
+//				    }
+//				    filtradoDeArregloDePalabras = RowFilter.andFilter(arregloDePalabrar);
+//			} catch (java.util.regex.PatternSyntaxException e){
+//				return;
+//			}
+//			ArrayList andFilters = new ArrayList(); 	
+//			if(!contenido.equals("")){andFilters.add(filtradoDeArregloDePalabras);}
+//			sorter.setRowFilter(RowFilter.andFilter (andFilters));
+//			tabla.setRowSorter(sorter);
+//		}
+//	};
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public  String[][] tabla_guardar(JTable tabla){ 
@@ -289,22 +298,20 @@ public class Obj_tabla {
 
 		@SuppressWarnings("serial")
 		public class tablaRendererizado extends DefaultTableCellRenderer {
-		     public tablaRendererizado( String tipo ,String alineacionTexto,	String tipoDeLetra, String estilo, int tamanio)
-		     {
-//		         tipo = tipo;
+		     public tablaRendererizado( String tipo ,String alineacionTexto, String tipoDeLetra, String estilo, int tamanio){
 		         alineacion = alineacionTexto;
+		         this.alineacionHorizontal( alineacion );
 		         if(tamanio_fuente==0){
 		            fuente(tipoDeLetra,estilo,tamanio);
-		           }else
-		             {fuente(tipoDeLetra,estilo,tamanio_fuente);
+		         }else{
+		        	 fuente(tipoDeLetra,estilo,tamanio_fuente);
 		         }
-		       ////para mandar llamar colores en alguna columna en  especial
 		         if(estilo.equals("Verde") ){
 		         color_especial_de_columna=estilo;
 		         }
 		     }
 		     
-		     public Component getTableCellRendererComponent ( JTable table, Object value, boolean selected, boolean focused, int row, int column ){  
+		     public Component getTableCellRendererComponent ( JTable table, Object value, boolean selected, boolean focused, int row, int column ){ 
 		    	 if(color_especial_de_columna.equals("Verde")){
 		    		 if(row %2 == 0){
 							this.setBackground(new java.awt.Color(80,245,234));	
@@ -333,25 +340,20 @@ public class Obj_tabla {
 		             return label;
 		         }
 		         
-		         
 		         if( tipo.toUpperCase().trim().equals("VENTA")){
-		         	
 						JLabel lbl = new JLabel(value == null? "": value.toString());
 						lbl.setFont(fuente);
 						lbl.setOpaque(true); 
 						lbl.setBackground(new java.awt.Color(182,211,255));
-							
-							if(selected){
-								lbl.setOpaque(true); 
-								lbl.setBackground(new java.awt.Color(100,181,255));
-							}
-							lbl.setHorizontalAlignment(JLabel.CENTER);
-		        	 
+					if(selected){
+						lbl.setOpaque(true); 
+						lbl.setBackground(new java.awt.Color(100,181,255));
+					}
+					lbl.setHorizontalAlignment(JLabel.CENTER);
 		             return lbl;
 		         }
-		         
+
 		         if(tipo.toUpperCase().trim().equals("CHB")){
-						
 						chb = new JCheckBox("",Boolean.parseBoolean(value.toString()));
 						if(row%2==0){
 							((JComponent) chb).setOpaque(true); 
@@ -369,12 +371,10 @@ public class Obj_tabla {
 						return chb;
 					
 		         }else{
-		        	 
-		        	 this.alineacionHorizontal( alineacion );
+		        	
 		             this.setText( value.toString() );
 		             this.setForeground( (selected)?new Color(RFuenteS,GFuenteS,BFuenteS):new Color(RFuente,GFuente,BFuente) ); 
 		             this.setFont(fuente);            
-		             
 		         }
 		         return this;
 		     }

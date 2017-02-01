@@ -83,7 +83,6 @@ public class Cat_Agregar_Comentario_A_Corte_Guardado extends JDialog {
 		this.setTitle("Agregar Observacion A Cortes Del Dia");
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Filtrar"));
 
-		
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);  
 		

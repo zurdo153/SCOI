@@ -104,6 +104,7 @@ import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
 import Obj_Servicios.Obj_Registro_De_Desarrollo;
+import Obj_Servicios.Obj_Servicios;
 
 
 
@@ -6285,6 +6286,56 @@ public boolean Guardar_Salida_De_Embarque_De_Pedido(Obj_Chacador_De_Embarque_De_
 	}finally{
 		try {
 			pstmt.close();
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+}
+
+public boolean Guardar_servicios_catalogo(Obj_Servicios servicios){
+	int folio_transaccion=servicios.getFolio();
+	if(servicios.getGuardar_actualizar().equals("S")){
+	  folio_transaccion=busca_y_actualiza_proximo_folio(39);
+	  servicios.setFolio(folio_transaccion);
+	}
+	String query = "exec sp_guardar_servicios_catalogo ?,?,?,?,?,?,?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+//		  @folio int ,@servicio varchar(150)   ,@detalle varchar(500) ,@prioridad varchar(100),@dias_estimado int ,@tiempo_estimado datetime ,@departamento varchar(100),@estatus varchar(25),@folio_usuario int ,@folio_usuario_modifico int,@guardar char(1)
+			pstmt.setInt   (1 ,  folio_transaccion);
+			pstmt.setString(2 ,  servicios.getServicio().toString());
+			pstmt.setString(3 ,  servicios.getDetalle().toString());
+			pstmt.setString(4 ,  servicios.getPrioridad().toString());
+			pstmt.setInt   (5 ,  Integer.valueOf(servicios.getDias_estimado()));
+			pstmt.setString(6 ,  servicios.getTiempo_estimado().toString());
+			pstmt.setString(7 ,  servicios.getDepartamento().toString());
+			pstmt.setString(8 ,  servicios.getEstatus().toString());
+			pstmt.setInt   (9 ,  Integer.valueOf(servicios.getUsuario()));
+			pstmt.setInt   (10 , Integer.valueOf(servicios.getUsuario_modifico()));
+			pstmt.setString(11,  servicios.getGuardar_actualizar().toString());
+			pstmt.executeUpdate();
+		con.commit();
+		
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_servicios_catalogo ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_servicios_catalogo ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
 			con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
