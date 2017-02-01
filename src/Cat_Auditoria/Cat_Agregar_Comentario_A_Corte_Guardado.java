@@ -106,11 +106,8 @@ public class Cat_Agregar_Comentario_A_Corte_Guardado extends JDialog {
 	
 	@SuppressWarnings("unchecked")
 	public void llamar_render(){
-		
 		this.tabla.getTableHeader().setReorderingAllowed(false) ;
-		
 		int x = 90;
-		
 		this.tabla.getColumnModel().getColumn(0).setMaxWidth(x);
 		this.tabla.getColumnModel().getColumn(0).setMinWidth(x);		
 		this.tabla.getColumnModel().getColumn(1).setMaxWidth(320);

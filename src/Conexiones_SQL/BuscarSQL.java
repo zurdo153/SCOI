@@ -108,6 +108,7 @@ import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
 import Obj_Reportes.Obj_Reportes_De_Ventas;
+import Obj_Servicios.Obj_Servicios;
 
 public class BuscarSQL {
 	
@@ -9762,24 +9763,28 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return folio;
 	}
 	
-	public String serviciodepartamento(int folio) throws SQLException{
-		String Departamento = "";
-		String query = "Select departamento from tb_departamento where folio=(select departamento from tb_empleado with(nolock) where folio="+folio+")";
+	public Obj_Servicios serviciodepartamento(int folio) throws SQLException{
+		Obj_Servicios servicios = new Obj_Servicios();
+		String query = "select tb_departamento.departamento,tb_establecimiento.nombre from tb_empleado"
+				+ " inner join tb_departamento on tb_departamento.folio=tb_empleado.departamento"
+				+ " inner join tb_establecimiento on tb_establecimiento.folio=tb_empleado.establecimiento_id"
+				+ " where tb_empleado.folio="+folio;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){				
-				Departamento=rs.getString(1);
+				servicios.setDepartamento(rs.getString(1));
+				servicios.setEstablecimiento(rs.getString(2));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "";
+			return null;
 		}
 		finally{
 			if(stmt!=null){stmt.close();}
 		}
-		return Departamento;
+		return servicios;
 	}
 	
 	

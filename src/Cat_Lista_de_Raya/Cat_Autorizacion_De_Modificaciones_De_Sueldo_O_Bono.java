@@ -47,7 +47,7 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 			Class[] tip = new Class[Cantidad_Real_De_Columnas];
 			
 			for(int i =0; i<Cantidad_Real_De_Columnas; i++){
-				if(i==checkboxindex){
+				if(i==checkboxindex-1){
 					tip[i]=java.lang.Boolean.class;
 				}else{
 					tip[i]=java.lang.Object.class;
@@ -57,7 +57,7 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 			return tip;
 		}
 		
-		int Cantidad_Real_De_Columnas=16,checkboxindex=15;
+		int Cantidad_Real_De_Columnas=16,checkboxindex=16;
 		public void init_tabla(){
 	    	this.tabla.getColumnModel().getColumn(0).setMinWidth(40);		
 	    	this.tabla.getColumnModel().getColumn(1).setMinWidth(300);
@@ -90,7 +90,7 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 	         return types[columnIndex];
 	     }
 			public boolean isCellEditable(int fila, int columna){
-				if(columna ==checkboxindex||columna==14)
+				if(columna>=14)
 					return true; return false;
 			}
 	    };

@@ -13,6 +13,7 @@ public class Obj_Servicios {
 	int usuario_modifico=0;
 	String prioridad="";
 	String departamento="";
+	String establecimiento="";
 	String servicio="";
 	String detalle="";
 	String tiempo_estimado="";
@@ -21,6 +22,14 @@ public class Obj_Servicios {
 	String fecha_ultima_modificacion="";
     String guardar_actualizar="";
     		
+	public String getEstablecimiento() {
+		return establecimiento;
+	}
+
+	public void setEstablecimiento(String establecimiento) {
+		this.establecimiento = establecimiento;
+	}
+
 	public String getGuardar_actualizar() {
 		return guardar_actualizar;
 	}
@@ -154,11 +163,11 @@ public class Obj_Servicios {
 		return 0; 
 	}
 	
-	public String buscar_Departamento(int folio){
+	public Obj_Servicios buscar_Departamento(int folio){
 		try {
 			return new BuscarSQL().serviciodepartamento(folio);
 		}catch (SQLException e) {e.printStackTrace();}
-		return ""; 
+		return null; 
 	}
 	
 	

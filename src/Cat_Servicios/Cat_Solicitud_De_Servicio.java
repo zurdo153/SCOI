@@ -44,7 +44,7 @@ import Obj_Principal.Obj_tabla;
 import Obj_Servicios.Obj_Servicios;
 
 @SuppressWarnings("serial")
-public class Cat_Catalogo_De_Servicios extends JFrame{
+public class Cat_Solicitud_De_Servicio extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
@@ -126,7 +126,7 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
 	JSpinner spDiasEstimados = new JSpinner(new SpinnerNumberModel( 0, 0, 90, 1 )); 
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Cat_Catalogo_De_Servicios(){
+	public Cat_Solicitud_De_Servicio(){
 		this.setSize(1035,768);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -427,7 +427,7 @@ ActionListener guardar = new ActionListener(){
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Catalogo_De_Servicios().setVisible(true);
+			new Cat_Solicitud_De_Servicio().setVisible(true);
 		}catch(Exception e){	}
 	}
 	
