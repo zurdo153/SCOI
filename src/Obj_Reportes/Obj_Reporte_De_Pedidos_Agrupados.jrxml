@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-01-31T13:25:02 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Pedidos_Agrupados" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1456cf5f-bb9d-4d70-b3f2-39a39a5f8c3c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[select tg.folio_pedido_agrupa
+		,agrupo.nombre+' '+agrupo.ap_paterno+' '+agrupo.ap_materno as empleado_agrupo
+		,tg.fecha_agrupacion
+		,tg.folio_pedido 
+		,tg.usuario_realizo_pedido
+		,convert(varchar(20),tg.fecha_de_captura,103) AS fecha_elaboracion 
+		,convert(varchar(20),tg.fecha_de_modificacion,103) as ultima_modificacion 
+		,estab_o.establecimiento as establecimiento_origen
+		,estab_d.establecimiento as establecimiento_destino
+from tb_gestion_de_pedido tg 
+inner join tb_empleado agrupo on agrupo.folio = tg.folio_empleado_agrupo
+inner join IZAGAR_establecimientos_calculo estab_o on estab_o.cod_estab = tg.establecimiento_origen
+inner join IZAGAR_establecimientos_calculo estab_d on estab_d.cod_estab = tg.establecimiento_destino
+where len(tg.folio_pedido_agrupa) > 0 
+AND convert(datetime,convert(varchar(20),tg.fecha_agrupacion ,103)) > convert(datetime,convert(varchar(20),GETDATE()-3 ,103))
+group by tg.folio_pedido_agrupa, agrupo.nombre+' '+agrupo.ap_paterno+' '+agrupo.ap_materno, tg.fecha_agrupacion, tg.folio_pedido, tg.usuario_realizo_pedido
+		, convert(varchar(20),tg.fecha_de_captura,103), convert(varchar(20),tg.fecha_de_modificacion,103), estab_o.establecimiento, estab_d.establecimiento]]>
+	</queryString>
+	<field name="folio_pedido_agrupa" class="java.lang.String"/>
+	<field name="empleado_agrupo" class="java.lang.String"/>
+	<field name="fecha_agrupacion" class="java.sql.Timestamp"/>
+	<field name="folio_pedido" class="java.lang.String"/>
+	<field name="usuario_realizo_pedido" class="java.lang.String"/>
+	<field name="fecha_elaboracion" class="java.lang.String"/>
+	<field name="ultima_modificacion" class="java.lang.String"/>
+	<field name="establecimiento_origen" class="java.lang.String"/>
+	<field name="establecimiento_destino" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{establecimiento_origen}]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="2" width="570" height="20" forecolor="#B89F7D" backcolor="#0000FF" uuid="0893866c-141a-4969-b9d0-e5cd61901d46"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="30" y="0" width="340" height="20" forecolor="#FFFFFF" uuid="8981d6a4-b932-4bde-b514-5a8a8b60c24e">
+							<property name="local_mesure_unitheight" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font size="14" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{establecimiento_origen}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement style="Column header" x="0" y="0" width="30" height="20" forecolor="#FFFFFF" uuid="a4f69a2e-938b-440f-b408-b525995819b4">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font isBold="true"/>
+						</textElement>
+						<text><![CDATA[De:]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="4"/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{folio_pedido_agrupa}]]></groupExpression>
+		<groupHeader>
+			<band height="53">
+				<textField>
+					<reportElement positionType="Float" x="129" y="18" width="90" height="18" forecolor="#000000" uuid="aa4f5b2c-e55b-44d7-85e0-dc5896f5d172"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{folio_pedido_agrupa}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="333" y="18" width="237" height="18" uuid="0c0401e4-418a-4126-a38d-161439a28894"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{empleado_agrupo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="472" y="0" width="98" height="18" uuid="67ff9467-f4de-4b47-983c-997c5572c5d5"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha_agrupacion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="42" y="0" width="79" height="18" uuid="e1668313-e71b-451b-8f7f-cdc117cc9f1d"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{establecimiento_destino}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="12" y="0" width="30" height="18" forecolor="#000000" uuid="16ba9d38-1fd4-4300-a8bf-459804039198"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Al:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="12" y="18" width="128" height="18" forecolor="#000000" uuid="9ec83254-4f16-4ae9-9253-d93bfed51cbf"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Folio Pedido Agrupa:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="344" y="0" width="124" height="18" forecolor="#000000" uuid="c45ccc91-5056-4496-98d3-96ff1517c783"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha De Agrupacion:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="288" y="18" width="49" height="18" forecolor="#000000" uuid="6f27e091-5eb4-482b-abbf-d5984bdb66e0"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Agrupo:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="2" y="41" width="77" height="12" forecolor="#000000" uuid="ea5a795c-54e1-4919-8374-232b18d07d3d">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Folio Pedido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="79" y="41" width="311" height="12" forecolor="#000000" uuid="70947370-5c61-4831-bd0c-48034a47a277">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Realizo Pedido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="408" y="41" width="77" height="12" forecolor="#000000" uuid="35741f86-4dda-497c-bdf8-b94b21e34c2a">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Elaborado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="486" y="41" width="80" height="12" forecolor="#000000" uuid="2ac1560c-5f53-4216-b92e-742a35d50dc4">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Modificado]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="52" width="570" height="1" uuid="81ec25de-c4f1-47fb-abf5-bcb95eb92c4c">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="570" height="66" backcolor="#0000CC" uuid="81c298b8-3682-4fd2-ba46-581301f46b15"/>
+				<staticText>
+					<reportElement style="Title" x="5" y="0" width="556" height="66" uuid="b1a41fd2-9cc9-49e7-ae72-91efa1e40779"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="38" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Reporte De Pedidos Agrupados]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="68" width="570" height="20" forecolor="#000000" backcolor="#F07400" uuid="6985744f-7fdf-45e7-b7cb-dfb798bb7683"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="422" y="0" width="144" height="20" forecolor="#000000" uuid="822ee13a-4153-4edd-8a46-72fd00fff685"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="1" width="570" height="12" uuid="436909a6-a4da-4a07-b425-9c56104ee93b"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="2" y="0" width="77" height="12" uuid="630b4da4-963b-40ec-b769-453e60506796">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{folio_pedido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="80" y="0" width="310" height="12" uuid="e11672b5-583e-4acc-a140-bcbd7d12751c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{usuario_realizo_pedido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="407" y="0" width="79" height="12" uuid="f502a789-fc36-4ccb-b6ea-5bf4337fe7f2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha_elaboracion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="486" y="0" width="79" height="12" uuid="cbf5b118-e534-4b35-9572-bf9674c1c629">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ultima_modificacion}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="61d60eec-1db7-4afa-b246-7bb1f0f5e71e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="17" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="570" height="16" forecolor="#D0B48E" backcolor="#0000CC" uuid="b15c8d08-40e1-4ada-95bc-530a09c841fe"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="526" y="1" width="40" height="15" forecolor="#FFFFFF" uuid="69cffa7a-87d6-4c4d-bf1c-1ae774c36634">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="446" y="1" width="80" height="15" forecolor="#FFFFFF" uuid="949818e3-3d48-4a62-8933-19ae2e5461be">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="1" width="197" height="15" forecolor="#FFFFFF" uuid="7ee92524-cc65-434b-9ed7-73b64980522a">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
