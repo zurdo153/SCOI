@@ -1151,7 +1151,6 @@ public class BuscarTablasModel {
 	
 	public String[][] filtro_impuntualidad_a_considerar(String fecha_inicio,String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
 		String[][] Matriz = null;
-		
 		String query = "sp_select_consideracion_checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"';";
 		
 		Matriz = new String[get_filas(query)][17];
@@ -1184,8 +1183,9 @@ public class BuscarTablasModel {
 				i++;
 			}
 		} catch (SQLException e1) {
+//			System.out.println(query);
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [filtro_impuntualidad_a_considerar] \n  en el procedimiento : sp_Select_Consideracion_Checador  \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [filtro_impuntualidad_a_considerar] \n  en el procedimiento :"+query+"\n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return Matriz;

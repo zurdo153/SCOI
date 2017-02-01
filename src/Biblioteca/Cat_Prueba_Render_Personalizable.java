@@ -9,10 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -36,7 +33,6 @@ import javax.swing.table.TableRowSorter;
 import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.ActualizarSQL;
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
@@ -185,7 +181,7 @@ public class Cat_Prueba_Render_Personalizable extends JFrame {
 		c_inicio.setEnabled(false);
 		agregar(tabla);
 		llamar_render();
-		cargar_fechas();
+//		cargar_fechas();
 		
 		txtFolio.addKeyListener(opFiltroAsignacion);
 		txtNombre.addKeyListener(opFiltroFolioCajero);
@@ -196,34 +192,34 @@ public class Cat_Prueba_Render_Personalizable extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 	
-	public void cargar_fechas(){
-			int dias=0;
-					try {
-						dias= new BuscarSQL().dias_para_fecha_revision_consideracion();
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
-				
-			Date date1 = null;
-					  try {
-						date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
-					} catch (ParseException e) {
-						e.printStackTrace();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-			c_inicio.setDate(date1);
-						
-		    Date date2 = null;
-						  try {
-							date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
-						} catch (ParseException e) {
-							e.printStackTrace();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-			c_final.setDate(date2);
-		};
+//	public void cargar_fechas(){
+//			int dias=0;
+//					try {
+//						dias= new BuscarSQL().dias_para_fecha_revision_consideracion();
+//					} catch (SQLException e1) {
+//						e1.printStackTrace();
+//					}
+//				
+//			Date date1 = null;
+//					  try {
+//						date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
+//					} catch (ParseException e) {
+//						e.printStackTrace();
+//					} catch (SQLException e) {
+//						e.printStackTrace();
+//					}
+//			c_inicio.setDate(date1);
+//						
+//		    Date date2 = null;
+//						  try {
+//							date2 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
+//						} catch (ParseException e) {
+//							e.printStackTrace();
+//						} catch (SQLException e) {
+//							e.printStackTrace();
+//						}
+//			c_final.setDate(date2);
+//		};
 
 	
 	

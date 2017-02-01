@@ -1,105 +1,393 @@
-cuteSelectionAction" commandName="Execute Selected Text" category="__ruF54EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFCoEPEearMJYwpCVujg" elementId="org.eclipse.jpt.jaxb.ui.command.createPackageInfo" commandName="Create package-info.java" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFC4EPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.edit.text.java.extract.class" commandName="Extract Class..." description="Extracts fields into a new class" category="__ruF3IEPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFDIEPEearMJYwpCVujg" elementId="org.eclipse.jdt.ui.correction.extractConstant.assist" commandName="Quick Assist - Extract constant" description="Invokes quick assist and selects 'Extract constant'" category="__ruF7YEPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFDYEPEearMJYwpCVujg" elementId="org.eclipse.recommenders.rcp.commands.extensionDiscovery" commandName="Discover New Extensions" category="__ruF84EPEearMJYwpCVujg">
-    <parameters xmi:id="__ruFDoEPEearMJYwpCVujg" elementId="org.eclipse.recommenders.utils.rcp.linkContribution.href" name="URI" optional="false"/>
-  </commands>
-  <commands xmi:id="__ruFD4EPEearMJYwpCVujg" elementId="org.eclipse.compare.copyRightToLeft" commandName="Copy from Right to Left" description="Copy Current Change from Right to Left" category="__ruF2IEPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFEIEPEearMJYwpCVujg" elementId="org.eclipse.debug.ui.commands.OpenProfileConfigurations" commandName="Profile..." description="Open profile launch configuration dialog" category="__ruF44EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFEYEPEearMJYwpCVujg" elementId="org.eclipse.jpt.jpa.ui.newMappingFile" commandName="JPA ORM Mapping File" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFEoEPEearMJYwpCVujg" elementId="org.eclipse.ui.ide.markCompleted" commandName="Mark Completed" description="Mark the selected tasks as completed" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFE4EPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.comment" commandName="Comment" description="Turn the selected lines into JavaScript comments" category="__ruFz4EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFFIEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.recenter" commandName="Recenter" description="Scroll cursor line to center, top and bottom" category="__ruFzYEPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFFYEPEearMJYwpCVujg" elementId="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion" commandName="Upgrade JPA Document Version" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFFoEPEearMJYwpCVujg" elementId="org.eclipse.ui.edit.text.scroll.lineDown" commandName="Scroll Line Down" description="Scroll down one line of text" category="__ruFzYEPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFF4EPEearMJYwpCVujg" elementId="org.eclipse.wst.sse.ui.search.find.occurrences" commandName="Occurrences in File" description="Find occurrences of the selection in the file" category="__ruFx4EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFGIEPEearMJYwpCVujg" elementId="org.eclipse.ui.ToggleCoolbarAction" commandName="Toggle Toolbar Visibility" description="Toggles the visibility of the window toolbar" category="__ruF2oEPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFGYEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.navigate.open.type.in.hierarchy" commandName="Open Type in Hierarchy" description="Open a type in the type hierarchy view" category="__ruF0YEPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFGoEPEearMJYwpCVujg" elementId="org.eclipse.wst.sse.ui.outline.customFilter" commandName="&amp;Filters" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFG4EPEearMJYwpCVujg" elementId="org.eclipse.datatools.sqltools.sqlscrapbook.commands.openscrapbook" commandName="Open SQL Scrapboo&amp;k" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFHIEPEearMJYwpCVujg" elementId="org.eclipse.ui.navigate.openResource" commandName="Open Resource" description="Open an editor on a particular resource" category="__ruF0YEPEearMJYwpCVujg">
-    <parameters xmi:id="__ruFHYEPEearMJYwpCVujg" elementId="filePath" name="File Path" typeId="org.eclipse.ui.ide.resourcePath"/>
-  </commands>
-  <commands xmi:id="__ruFHoEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.correction.addBlock.assist" commandName="Quick Assist - Replace statement with block" description="Invokes quick assist and selects 'Replace statement with block'" category="__ruFz4EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFH4EPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.goto.previous.member" commandName="Go to Previous Member" description="Move the caret to the previous member of the JavaScript file" category="__ruF0YEPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFIIEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.CompareWithCommit" commandName="org.eclipse.egit.ui.team.CompareWithCommit"/>
-  <commands xmi:id="__ruFIYEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.CompareWithRevision" commandName="org.eclipse.egit.ui.team.CompareWithRevision"/>
-  <commands xmi:id="__ruFIoEPEearMJYwpCVujg" elementId="org.eclipse.egit.ui.team.ReplaceWithPrevious" commandName="org.eclipse.egit.ui.team.ReplaceWithPrevious"/>
-  <commands xmi:id="__ruFI4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.ant.ui.actionSet.presentation/org.eclipse.ant.ui.toggleAutoReconcile" commandName="Toggle Ant Editor Auto Reconcile" description="Toggle Ant Editor Auto Reconcile" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFJIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.datatools.sqltools.sqlscrapbook.actionSet/org.eclipse.datatools.sqltools.sqlscrapbook.actions.OpenScrapbookAction" commandName="Open SQL Scrapbook" description="Open scrapbook to edit SQL statements" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFJYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.debug.ui.launchActionSet/org.eclipse.debug.internal.ui.actions.RunWithConfigurationAction" commandName="Run As" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFJoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.debug.ui.launchActionSet/org.eclipse.debug.internal.ui.actions.RunHistoryMenuAction" commandName="Run History" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFJ4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.debug.ui.launchActionSet/org.eclipse.debug.internal.ui.actions.RunDropDownAction" commandName="Run" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFKIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.debug.ui.launchActionSet/org.eclipse.debug.internal.ui.actions.DebugWithConfigurationAction" commandName="Debug As" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFKYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.debug.ui.launchActionSet/org.eclipse.debug.internal.ui.actions.DebugHistoryMenuAction" commandName="Debug History" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFKoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.debug.ui.launchActionSet/org.eclipse.debug.internal.ui.actions.DebugDropDownAction" commandName="Debug" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFK4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.debug.ui.profileActionSet/org.eclipse.debug.internal.ui.actions.ProfileDropDownAction" commandName="Profile" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFLIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.debug.ui.profileActionSet/org.eclipse.debug.internal.ui.actions.ProfileWithConfigurationAction" commandName="Profile As" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFLYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.debug.ui.profileActionSet/org.eclipse.debug.internal.ui.actions.ProfileHistoryMenuAction" commandName="Profile History" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFLoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.ui.JavaElementCreationActionSet/org.eclipse.jdt.ui.actions.NewTypeDropDown" commandName="Class..." description="New Java Class" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFL4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.ui.JavaElementCreationActionSet/org.eclipse.jdt.ui.actions.OpenPackageWizard" commandName="Package..." description="New Java Package" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFMIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.ui.JavaElementCreationActionSet/org.eclipse.jdt.ui.actions.OpenProjectWizard" commandName="Java Project..." description="New Java Project" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFMYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.ui.SearchActionSet/org.eclipse.jdt.ui.actions.OpenJavaSearchPage" commandName="Java..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFMoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jst.j2ee.J2eeMainActionSet/org.eclipse.jst.j2ee.internal.actions.NewJavaEEArtifact" commandName="Servlet" description="Create a new Servlet" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFM4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jst.j2ee.J2eeMainActionSet/org.eclipse.jst.j2ee.internal.actions.NewJavaEEProject" commandName="Dynamic Web Project" description="Create a Dynamic Web project" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFNIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.mylyn.java.actionSet.browsing/org.eclipse.mylyn.java.ui.actions.ApplyMylynToBrowsingPerspectiveAction" commandName="Focus Browsing Perspective" description="Focus Java Browsing Views on Active Task" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFNYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.mylyn.doc.actionSet/org.eclipse.mylyn.tasks.ui.bug.report" commandName="Report Bug or Enhancement..." description="Report Bug or Enhancement" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFNoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.mylyn.tasks.ui.navigation.additions/org.eclipse.mylyn.tasks.ui.navigate.task.history" commandName="Activate Previous Task" description="Activate Previous Task" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFN4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.pde.ui.SearchActionSet/org.eclipse.pde.ui.actions.OpenPluginSearchPage" commandName="Plug-in..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFOIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction" commandName="Cheat Sheets..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFOYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.rse.core.search.searchActionSet/org.eclipse.rse.core.search.searchAction" commandName="Remote..." description="Opens Remote Search dialog page for text and file searching on remote systems" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFOoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.search.searchActionSet/org.eclipse.search.OpenSearchDialogPage" commandName="Search..." description="Search" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFO4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.team.ui.actionSet/org.eclipse.team.ui.synchronizeAll" commandName="Synchronize..." description="Synchronize..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFPIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.team.ui.actionSet/org.eclipse.team.ui.ConfigureProject" commandName="Share Project..." description="Share the project with others using a version and configuration management system." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFPYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.ui.externaltools.ExternalToolsSet/org.eclipse.ui.externaltools.ExternalToolMenuDelegateMenu" commandName="External Tools" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFPoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.jsdt.ui.JavaElementCreationActionSet/org.eclipse.wst.jsdt.ui.actions.OpenFileWizard" commandName="JavaScript Source File" description="New JavaScript file" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFP4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.jsdt.ui.JavaElementCreationActionSet/org.eclipse.wst.jsdt.ui.actions.OpenProjectWizard" commandName="JavaScript Project..." description="New JavaScript Project" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFQIEPEearMJYwpCVujg" elementId="org.eclipse.wst.jsdt.ui.refactor.show.refactoring.history" commandName="History..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFQYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.jsdt.ui.SearchActionSet/org.eclipse.wst.jsdt.ui.actions.OpenJavaSearchPage" commandName="JavaScript..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFQoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.server.ui.new.actionSet/org.eclipse.wst.server.ui.action.new.server" commandName="Create Server" description="Create Server" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFQ4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.server.ui.internal.webbrowser.actionSet/org.eclipse.wst.server.ui.internal.webbrowser.action.open" commandName="Open Web Browser" description="Open Web Browser" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFRIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.server.ui.internal.webbrowser.actionSet/org.eclipse.wst.server.ui.internal.webbrowser.action.switch" commandName="Web Browser" description="Web Browser" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFRYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.web.ui.wizardsActionSet/org.eclipse.wst.web.ui.actions.newCSSFile" commandName="CSS" description="Create a new Cascading Style Sheet" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFRoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.web.ui.wizardsActionSet/org.eclipse.wst.web.ui.actions.newJSFile" commandName="JavaScript" description="Create a new JavaScript file" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFR4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.web.ui.wizardsActionSet/org.eclipse.wst.web.ui.actions.newHTMLFile" commandName="HTML" description="Create a new HTML page" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFSIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.ws.explorer.explorer/org.eclipse.wst.ws.internal.explorer.action.LaunchWSEAction" commandName="Launch the Web Services Explorer" description="Launch the Web Services Explorer" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFSYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.ant.ui.BreakpointRulerActions/org.eclipse.ant.ui.actions.ManageBreakpointRulerAction" commandName="Toggle Breakpoint" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFSoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.datatools.sqltools.rullerDoubleClick/org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction" commandName="Add Breakpoint" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFS4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.emf.exporter.genModelEditorContribution/org.eclipse.emf.exporter.ui.GenModelExportActionDelegate.Editor" commandName="Export Model..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFTIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.emf.importer.genModelEditorContribution/org.eclipse.emf.importer.ui.GenModelReloadActionDelegate.Editor" commandName="Reload..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFTYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.emf.mapping.ecore2ecore.presentation.Ecore2EcoreContributionID/org.eclipse.emf.mapping.action.RemoveMappingActionID" commandName="Remove Mapping" description="Remove the mapping associated with the selected objects." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFToEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.emf.mapping.ecore2ecore.presentation.Ecore2EcoreContributionID/org.eclipse.emf.mapping.action.TypeMatchMappingActionID" commandName="Match Mapping by Type" description="Create child mappings automatically by type." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFT4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.emf.mapping.ecore2ecore.presentation.Ecore2EcoreContributionID/org.eclipse.emf.mapping.action.NameMatchMappingActionID" commandName="Match Mapping by Name" description="Create child mappings automatically by name." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFUIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.emf.mapping.ecore2ecore.presentation.Ecore2EcoreContributionID/org.eclipse.emf.mapping.action.CreateOneSidedMappingActionID" commandName="Create One-sided Mapping" description="Create a new mapping for the selected object." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFUYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.emf.mapping.ecore2ecore.presentation.Ecore2EcoreContributionID/org.eclipse.emf.mapping.action.CreateMappingActionID" commandName="Create Mapping" description="Create a new mapping between the selected objects." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFUoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.emf.mapping.ecore2ecore.presentation.Ecore2EcoreContributionID/org.eclipse.emf.mapping.ecore2ecore.action.AddOuputRootActionID" commandName="Add Output Root..." description="Add new output root." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFU4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.emf.mapping.ecore2ecore.presentation.Ecore2EcoreContributionID/org.eclipse.emf.mapping.ecore2ecore.action.AddInputRootActionID" commandName="Add Input Root..." description="Add new input root." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFVIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.debug.CompilationUnitEditor.BreakpointRulerActions/org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction" commandName="Toggle Breakpoint" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFVYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.debug.ClassFileEditor.BreakpointRulerActions/org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction" commandName="Toggle Breakpoint" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFVoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.debug.ui.JavaSnippetToolbarActions/org.eclipse.jdt.debug.ui.SnippetExecute" commandName="Execute" description="Execute the Selected Text" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFV4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.debug.ui.JavaSnippetToolbarActions/org.eclipse.jdt.debug.ui.SnippetDisplay" commandName="Display" description="Display Result of Evaluating Selected Text" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFWIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.debug.ui.JavaSnippetToolbarActions/org.eclipse.jdt.debug.ui.SnippetInspect" commandName="Inspect" description="Inspect Result of Evaluating Selected Text" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFWYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.internal.ui.CompilationUnitEditor.ruler.actions/org.eclipse.jdt.internal.ui.javaeditor.BookmarkRulerAction" commandName="Java Editor Bookmark Ruler Action" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFWoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.internal.ui.CompilationUnitEditor.ruler.actions/org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction" commandName="Java Editor Ruler Single-Click" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFW4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.internal.ui.ClassFileEditor.ruler.actions/org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction" commandName="Java Editor Ruler Single-Click" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFXIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.internal.ui.PropertiesFileEditor.ruler.actions/org.eclipse.jdt.internal.ui.propertiesfileeditor.BookmarkRulerAction" commandName="Java Editor Bookmark Ruler Action" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFXYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jdt.internal.ui.PropertiesFileEditor.ruler.actions/org.eclipse.jdt.internal.ui.propertiesfileeditor.SelectRulerAction" commandName="Java Editor Ruler Single-Click" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFXoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jst.jsp.core.jspsource.ruler.actions/org.eclipse.ui.texteditor.BookmarkRulerAction" commandName="Add Bookmark..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFX4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.jst.jsp.core.jspsource.ruler.actions/org.eclipse.ui.texteditor.SelectRulerAction" commandName="Select Ruler" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFYIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.m2e.jdt.ui.downloadSourcesContribution/org.eclipse.m2e.jdt.ui.downloadSourcesAction" commandName="label" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFYYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.m2e.jdt.ui.downloadSourcesContribution_38/org.eclipse.m2e.jdt.ui.downloadSourcesAction_38" commandName="label" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFYoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.ui.texteditor.ruler.actions/org.eclipse.ui.texteditor.BookmarkRulerAction" commandName="Text Editor Bookmark Ruler Action" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFY4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.ui.texteditor.ruler.actions/org.eclipse.ui.texteditor.SelectRulerAction" commandName="Text Editor Ruler Single-Click" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFZIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.css.core.csssource.ruler.actions/org.eclipse.ui.texteditor.BookmarkRulerAction" commandName="Add Bookmark..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFZYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.css.core.csssource.ruler.actions/org.eclipse.ui.texteditor.SelectRulerAction" commandName="Select Ruler" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFZoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.dtd.core.dtdsource.ruler.actions/org.eclipse.ui.texteditor.BookmarkRulerAction" commandName="Add Bookmark..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFZ4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.dtd.core.dtdsource.ruler.actions/org.eclipse.ui.texteditor.SelectRulerAction" commandName="Select Ruler" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFaIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.html.core.htmlsource.ruler.actions/org.eclipse.ui.texteditor.BookmarkRulerAction" commandName="Add Bookmark..." category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFaYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.html.core.htmlsource.ruler.actions/org.eclipse.ui.texteditor.SelectRulerAction" commandName="Select Ruler" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFaoEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.jsdt.debug.ui.togglebreakpoint/org.eclipse.wst.jsdt.debug.ui.RulerToggleBreakpoint" commandName="Toggle Breakpoint" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFa4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.jsdt.internal.ui.CompilationUnitEditor.ruler.actions/org.eclipse.wst.jsdt.internal.ui.javaeditor.BookmarkRulerAction" commandName="JavaScript Editor Bookmark Ruler Action" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFbIEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.jsdt.internal.ui.CompilationUnitEditor.ruler.actions/org.eclipse.wst.jsdt.internal.ui.javaeditor.JavaSelectRulerAction" commandName="JavaScript Editor Ruler Single-Click" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFbYEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.jsdt.internal.ui.ClassFileEditor.ruler.actions/org.eclipse.wst.jsdt.internal.ui.javaeditor.JavaSelectRulerAction" commandName="JavaScript Editor Ruler Single-Click" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFboEPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.jsdt.internal.ui.PropertiesFileEditor.ruler.actions/org.eclipse.wst.jsdt.internal.ui.propertiesfileeditor.BookmarkRulerAction" commandName="JavaScript Editor Bookmark Ruler Action" category="__ruF84EPEearMJYwpCVujg"/>
-  <commands xmi:id="__ruFb4EPEearMJYwpCVujg" elementId="AUTOGEN:::org.eclipse.wst.jsdt.internal.ui.PropertiesFileEditor.ruler.actions/org.eclipse.wst.jsdt.internal.ui.propertiesfileeditor.SelectRulerAction" commandName="JavaScript Editor Ruler Single-Click" categor
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-03-20T09:45:44 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="94c28d3b-fcff-46c1-a86d-6b9ba4669dad">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString language="SQL">
+		<![CDATA[exec sp_Reporte_De_Contrato_Indeterminado 'VICTOR HUGO HERRERA CUEVAS','SISTEMAS','SISTEMAS','AUXILIAR DE SISTEMAS','MASCULINO','CASADO','30','10 DE MAYO NUM.52, COL. LIENZO CHARRO, ELDORADO','10 DE MAYO NUM.52, COL. LIENZO CHARRO, ELDORADO','1125.0','UN MIL CIENTO VEINTICINCO PESOS 00/100 PESOS','DIA DE LAS MADRES','EDGAR EDUARDO JIMENEZ MOLINA','MARCO ANTONIO BODART GUZMAN','04/05/2015','03/06/2015','22/05/10',2]]>
+	</queryString>
+	<field name="folio_empleado" class="java.lang.Integer"/>
+	<field name="nombre_completo" class="java.lang.String"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="departamento" class="java.lang.String"/>
+	<field name="puesto" class="java.lang.String"/>
+	<field name="sexo" class="java.lang.String"/>
+	<field name="estado_civil" class="java.lang.String"/>
+	<field name="edad" class="java.lang.Integer"/>
+	<field name="domicilio" class="java.lang.String"/>
+	<field name="horario" class="java.lang.String"/>
+	<field name="sueldo" class="java.math.BigDecimal"/>
+	<field name="sueldo_letra" class="java.lang.String"/>
+	<field name="temporada" class="java.lang.String"/>
+	<field name="testigo1" class="java.lang.String"/>
+	<field name="testigo2" class="java.lang.String"/>
+	<field name="fecha_inicial" class="java.lang.String"/>
+	<field name="fecha_final" class="java.lang.String"/>
+	<field name="dia" class="java.lang.Integer"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="año" class="java.lang.Integer"/>
+	<field name="fecha_ingreso" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="779">
+			<staticText>
+				<reportElement x="120" y="20" width="330" height="70" uuid="0db7ea77-e36a-4595-afe0-7dc6f10c9afe"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[
+SUPERMERCADO LA COMPETIDORA S.A. DE C.V.
+FCO. JAVIER MINA Y DESIDERIO OCHOA S/N COL. CENTRO
+ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="452" y="10" width="101" height="103" uuid="e73442ca-a8e4-4fa6-bc99-46a446ee777e"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/Logotipo_IZAGAR.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="-2" y="130" width="551" height="50" uuid="ab1608f1-b924-4fb7-8048-672c7572fbf1"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[      CONTRATO INDIVIDUAL DE TRABAJO POR TIEMPO INDETERMINADO (O INDEFINIDO) CELEBRAN POR UNA PARTE  LA EMPRESA SUPERMERCADO LA COMPETIDORA S.A. DE C.V. REPRESENTADA POR EL SR. OMAR IZABAL GARMENDIA, EN SU CARÁCTER DE REPRESENTANTE LEGAL Y POR LA OTRA EL TRABAJADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="200" width="311" height="21" uuid="899f99b0-372c-498d-a285-6d77c98333ec"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[D E C L A R A C I O N E S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="230" width="551" height="260" uuid="4f378612-21b1-41b7-9151-643ad39f65f8"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[I.- Supermercado La Competidora S.A. DE C.V., declara:
+
+
+
+a)	. Ser una sociedad mercantil legalmente constituida conforme alas leyes del país. 
+
+
+b)	.- Tener como giro mercantil supermercado y miscelánea con venta de papelería revistas, regalos, electrónica, electrodomésticos y varios.
+
+
+c)	.- Tener  su establecimiento ubicado en Francisco Javier Mina y Deciderio Ochoa  S/n. colonia Centro  de esta ciudad ; Eldorado Sinaloa ,
+
+
+d)	- Por lo que se requiere de los servicios de una persona que desempeñe el puesto de ________________________________________________________. Ingresando a laborar en esta empresa el dia ___________________________.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="490" width="551" height="220" uuid="c3020f4a-d3ec-4810-97dc-9f49a9c1da67"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[II.-                                                                                           
+
+
+a).- Que es de nacionalidad mexicana, sexo                      , estado civil                          ; de        años de edad, con domicilio en 
+
+
+b).- Que posee la experiencia y conocimientos necesarios para desempeñar el puesto a que se refiere el inciso d) de la declaración anterior, en el establecimiento  ubicado en Francisco Javier Mina y Deciderio Ochoa S/n colonia Centro de esta ciudad, en cualquier sucursal ya establecida, la que en futuro llegare a fijarse;
+
+
+c).- Que conoce y acepta para todos los efectos legales la causa extraordinaria que origina este contrato.
+]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Bottom">
+				<reportElement x="0" y="698" width="555" height="81" uuid="8242f746-8d76-4f60-9b76-70d5c91161e0"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/Orange wave.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="1" y="164" width="548" height="14" uuid="a7296327-7fb3-484a-9b15-1979801ec416">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}+" AL TENOR DE LA SIGUIENTES  DECLARACIONES Y CLAUSULAS:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="489" width="259" height="16" uuid="850deb2d-6861-4598-845b-2391bbc4d946">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}+" ,declara:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="197" y="524" width="69" height="14" uuid="146a0803-cece-4e26-8084-b18f5f7b8c48">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="524" width="72" height="14" uuid="48575050-0121-4e41-bb7a-2b37b2d2c4c2"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{estado_civil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="405" y="524" width="23" height="14" uuid="12a70a65-8599-4e03-85fa-d534ecb33b38"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{edad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="536" width="454" height="13" uuid="2ea36715-fb91-4275-bc78-0aa7377539f1"/>
+				<textFieldExpression><![CDATA[$F{domicilio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="410" width="293" height="14" uuid="da531e5d-b113-4194-8dd8-a69c42bd6354">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="423" width="138" height="16" uuid="04bcecc1-1dea-4e97-aa33-22847681c790"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha_ingreso}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="801">
+			<staticText>
+				<reportElement x="130" y="7" width="311" height="21" uuid="c551be99-e7bd-4abd-9eb9-f55352c3a5cf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[CLAUSULAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="40" width="548" height="660" uuid="1a0155e9-eb18-4515-9c52-9a22ed32530a"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[	PRIMERA.- Ambas partes convienen en que para abreviar en el curso de este contrato se usaran las palabras “LA EMPRESA “para aludir a Supermercado la Competidora, S.A. De CV  “EL TRABAJADOR “para referirse a
+
+
+	SEGUNDA.- El trabajador se obliga a presentar sus  servicios con el carácter mencionado y tendrá todas las obligaciones que se deriven de este contrato, de ley o de las costumbres de la empresa. 
+	
+	TERCERA.- El trabajador deberá prestar sus servicios con la intensidad y atención apropiados, en la forma y condiciones que la empresa le indique, ejecutando todas las labores inherentes al puesto para que se  contrata y todas aquellas que se relacionen con otros puestos o actividades.
+
+	CUARTA.- La empresa queda facultada para cambiar transitorios o permanente  al trabajador del puesto al que se refiere el inciso d) de la declaración primera a otra diferente, o de una actividad a otra dentro de las labores propias de la empresa, siempre y cuando tales cambios sean necesarios de acuerdo con las necesidades del servicio y sin perjuicio de su salario. 
+
+	QUINTA.- Por cada seis días de trabajo ordinario, el trabajador disfrutara con goce de salario, de un día de descanso que será fijado por la empresa y modificado conforme alas necesidades del servicio, Asimismo, cuando el trabajador no labore la semana completa, percibirá el salario correspondiente al día de descanso conforme proporcional al tiempo trabajado en la semana .
+
+	Ambas partes convienen que cuando por necesidad de la empresa, esta requiere de los servicios del trabajador en el día señalado como de descanso. Este concurrirá a laborar y la empresa a su vez le señalara otro día para su descansó o le pagara el salario correspondiente en los términos de la ley.
+
+	SEXTA.- Por cada falta injustificada de asistencia a su trabajo, la empresa podrá sancionar al trabajador, suspendiéndolo en su trabajo por un día, sin derecho  a recibir el salario relativo a su falta y el que corresponda al día de la suspensión. Cuando el trabajador acumule hasta tres faltas injustificadas de asistencia, dentro de un término de treinta días, el patrón podrá suspenderlo en su trabajo, hasta por ocho días.
+
+	SEPTIMA.- Será días de descanso obligatorios para el trabajador, con goce de salario los contemplados en el articulo 74 de la Ley Federal de Trabajo, que queden comprendidos dentro de la vigencia de este contrato. Ambas partes convienen que cuando sea necesario concurrir a laborar en los días señalados por la ley como descanso, el trabajador estará obligado a presentar sus servicios y la empresa deberá de asignarle otro DIA de descanso o cubrirá aquel en los términos de Ley.
+
+	OCTAVA.- El trabajador esta obligado a registrar, o a firmar la lista de asistencia diaria mente en la oficina de la empresa. El registro de las tarjetas o su firma en la lista de asistencia será la constancia de haberse presentado puntualmente a sus labores, por lo que la omisión de este hecho indicara falta injustificada a su trabajo, para todos los efectos legales.
+
+	NOVENA.- Cuando el trabajador no se presente puntualmente a sus labores siendo su retardo de 10 minutos o mayor, ya no será admitido en el mismo por ese día, lo que se reputará como falta injustificada a sus labores para todos los efectos legales.
+	
+	Para el caso de que el retardo sea inferior a 10 minutos, se le descontara  la parte proporcional que corresponda a su salario, en el entendido de tres retardos en esas condiciones integra una falta injustificada de asistencia.
+	
+	DECIMA.- Por cada falta injustificada de asistencia a su trabajo, la empresa podrá sancionar al trabajador, suspendiéndolo en su trabajo por un día, sin derecho  a recibir el salario relativo a su falta y el que corresponda al día de la suspensión. Cuando el trabajador acumule hasta tres faltas injustificadas de asistencia, dentro de un término de treinta días, el patrón podrá suspenderlo en su trabajo, hasta por ocho días.
+
+]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Bottom">
+				<reportElement x="0" y="710" width="555" height="81" uuid="80f20e34-4a8d-456d-ad9a-a59a6bf446cb"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/Orange wave.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="2" y="63" width="546" height="14" uuid="18695c1f-559c-453d-a66b-da982d4217b4">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}+" y “LA LEY “para designar a la Ley Federal del Trabajo."]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="801">
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="2" y="20" width="551" height="540" uuid="0f49ade7-3aaf-4559-a459-22aac03d8d40"/>
+				<box>
+					<topPen lineStyle="Dotted" lineColor="#FFFFFF"/>
+					<leftPen lineStyle="Dotted" lineColor="#FFFFFF"/>
+					<bottomPen lineStyle="Dotted" lineColor="#FFFFFF"/>
+					<rightPen lineStyle="Dotted" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[
+	DECIMA PRIMERA.- Las violaciones o faltas que cometa el trabajador en contravención alo establecido en este contrato, en la ley y sus reglamentos, así como en las disposiciones de carácter administrativo que dicte la empresa y que por su naturaleza no ameriten rescisión de contrato, podrán ser sancionadas suspendiendo el trabajador de sus labores, de uno a ocho días sin gocé de salario, según la gravedad de la falta o la reincidencia del trabajador.
+
+	DECIMA SEGUNDA.- Independientemente de las causales de rescisión contenidas en el articulo 47 de la ley, surgirán los mismos efectos en los casos siguientes : a).- Disponer el trabajador, para si o a favor de terceros, sin autorización de la empresa, de mercancías, artículos, o cualquier otro tipo de bienes de los que constituyen  el patrimonio de dicha empresa, sin importar su valor y utilidad;  b).- Desobedecer cualquier orden sobre el trabajo contratado que durante su jornada laboral le gire cualquier de las personas que ejerzan funciones de dirección y administración a nombre de la empresa . c).-y cometer,  dentro de su jornada laboral y dentro de las instalaciones de la empresa, cualquier tipo de acto inmoral. 
+
+	DECIMA TERCERA .- Queda estrictamente prohibido al trabajador consumir cualquier clase de alimento dentro de su jornada laboral, salvo que medie autorización expresa de su jefe inmediato, por lo que falta de observancia de esa obligación de no hacer se entenderá como causal rescisoria de la relación laboral, sin responsabilidad para la empresa .
+
+	DECIMA CUARTA.- Al término de la vigencia del presente contrato, el patrón entregara al trabajador la cantidad correspondiente a las vacaciones proporcionarles al tiempo laborado. Incluida la prima adicional de 25 % Asimismo, el trabajador tendrá derecho al pago del aguinaldo en proporción al tiempo laborado.
+
+	DECIMA QUINTA .- El trabajador disfrutara de su  salario de $__________                                      (______________________________________________________________________ ) por jornada diaria . El pago del salario se hará al trabajador en periodos semanales, al concluir la jornada de labores en el domicilió de la empresa.
+
+	DECIMA SEXTA.- La empresa se obliga a retener al trabajador y a enterar a las autoridades correspondientes. Las cantidades que por concepto del impuesto  sobre productos del  trabajo  le corresponda, así como las que autorice la Ley del  Seguro  Social, a cargo del trabajador.
+
+	DECIMA SEPTIMA.- El trabajador se obliga a observar las medidas de higiene y seguridad en el trabajo que la empresa y/o autoridades  respectivas hayan acordado, así como a someterse a los reconocimientos medico que periódicamente  ordene la empresa de acuerdo con lo estipulado por la Ley.
+
+	DECIMA OCTAVA.- El trabajador se compromete expresamente a cumplir con el Reglamento Interior de Trabajo.
+
+	DECIMA NOVENA.- Ambas partes convienen que para dar cumplimiento al capitulo III  Bis de Titulo Cuarto de la ley, el trabajador será capacitado y adiestrado conforme a los planes y programa establecidos o que establezca el patrón. 
+
+	VIGESIMA.- Ambas partes convienen en que estarán a lo dispuesto por la Ley en todo aquello que no haya sido motivo de pacto expreso 0n este contrato.
+
+
+Leído que fue por ambas partes el presente contrato, enterado de su contenido y obligatoriedad, lo firma en la ciudad de Eldorado, Sinaloa, el día       del mes de                  del año de              .
+
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="597" width="122" height="15" uuid="57f97e6e-cb92-44fa-a011-ae742baaeec3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LA EMPRESA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="142" y="678" width="128" height="15" uuid="ce74efd5-9d8d-4758-ac7a-6627bd0c3f6f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[_____________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="628" width="124" height="15" uuid="27078ead-5903-4fdc-a025-be287e81a723"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[_____________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="596" width="127" height="15" uuid="46904431-e59e-4f9f-bba0-257265a815ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[_____________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="628" width="125" height="15" uuid="7fa50316-ef95-48e0-9f1e-2edce0eaf24c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[_____________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="142" y="651" width="128" height="15" uuid="cc50c863-b3f8-4c2f-8f20-e589eec7718e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TESTIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="597" width="125" height="15" uuid="34f3c708-e369-4480-8d31-258af80f0041"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EL TRABAJADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="144" y="567" width="126" height="15" uuid="565e0780-540a-4477-8a84-8387e46f1a4a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TESTIGO]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Bottom">
+				<reportElement x="0" y="710" width="555" height="81" uuid="d68f67c0-5204-4343-bdde-f1ec4e6485c9"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/Orange wave.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="498" y="272" width="56" height="14" uuid="b0e3b098-5aff-4202-9be7-822f0cb8012d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{sueldo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="7" y="284" width="392" height="14" uuid="0f5673b5-5da0-44cb-ad17-de066d2577a0">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sueldo_letra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="142" y="693" width="128" height="30" uuid="6be3940c-38d6-4b15-9c4a-2b1639b84665"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{testigo2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="611" width="127" height="27" uuid="2646ef6c-1b5e-4e91-a26d-a6d96ccd5606"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{testigo1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="643" width="125" height="32" uuid="d3792bd5-a36f-450e-92ff-a01d52a2eba2">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="112" y="526" width="22" height="14" uuid="380bb9ab-433b-4690-8d4b-cac755337e1e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="181" y="526" width="48" height="14" uuid="3a9492f1-e6a5-4bb9-98fc-ec9e330adf70">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="526" width="40" height="14" uuid="8f55946d-0dd9-4414-ac99-7f2ccd88930a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{año}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="643" width="124" height="30" uuid="7d67b4a7-4c84-42a9-96c2-ce15be8575c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[SR. OMAR IZABAL  GARMENDIA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="450" y="580" width="84" height="111" uuid="0fd1a676-e317-422e-b34d-77d0b9ab17cd"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="450" y="675" width="84" height="15" uuid="59390e23-c56a-44a3-9826-0d106ba4c87c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HUELLA]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

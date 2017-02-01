@@ -138,15 +138,15 @@ public class BuscarSQL {
 			
 	}
 
-	public int  dias_para_fecha_revision_consideracion() throws SQLException{
-		int dias=0;
-		String query = "select dias_atras_para_fecha_consideracion_asistencia as dias from tb_configuracion_sistema";
-		Statement stmt = null;
+   public String dias_para_fecha_revision_consideracion() throws SQLException{
+		 String fecha="";
+		 String query = "select convert(varchar(15),fecha_lista_raya_pasada,103)as fecha from tb_configuracion_sistema";
+		 Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				dias=(rs.getInt("dias"));
+				fecha=(rs.getString("fecha"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,7 +154,7 @@ public class BuscarSQL {
 		finally{
 			if(stmt!=null){stmt.close();}
 		}
-		return dias;
+		return fecha;
 	}
 	
 	public String fecha(int dias) throws SQLException{
@@ -9719,6 +9719,31 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		}
 			
 		return folio_pedido_generado;
+	}
+	
+	public String Op_status_consideracion(){
+		String status  ="";
+		String query = "select status_consideraciones_por_nivel_jerarquico from tb_configuracion_sistema";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				status = rs.getString("status_consideraciones_por_nivel_jerarquico");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			}}
+		}
+		return status;
 	}
 	
 //	public int  Folios_generados(String folio_original){

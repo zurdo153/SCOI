@@ -884,13 +884,6 @@ public class Cat_Empleados extends JFrame{
 //				cambiar los campos de sueldos y bonos
 			}
 		
-		
-		
-		
-		
-		
-		
-		
 		}
 	};
 	
@@ -2211,9 +2204,7 @@ public void guardar_modificar_Empleado(){
 				String comando="exec sp_select_datos_completos_empleado "+txtFolioEmpleado.getText()+"";
 				String reporte = "Obj_Reporte_De_Empleado_Datos_Completos.jrxml";
 							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-						
 			}
-						
 	 	}
 	   };
 	   

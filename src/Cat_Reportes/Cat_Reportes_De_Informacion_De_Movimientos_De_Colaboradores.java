@@ -58,16 +58,16 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 	JComboBox cmbDepartamento = new JComboBox(departamento);
 	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio de la Lista de Raya", 15, "String");
 	
-	JCButton btn_cant_personal = new JCButton  ("Sueldos y Bonos General","asistencia-comunitaria-icono-9465-16.png","");
-	JCButton btn_sueldosybonos_pend=new JCButton  ("Sueldos y Bonos Pendientes","asistencia-comunitaria-icono-9465-16.png","");
+	JCButton btn_cant_personal = new JCButton  ("Sueldos y Bonos General","asistencia-comunitaria-icono-9465-16.png","Azul");
+	JCButton btn_sueldosybonos_pend=new JCButton  ("Sueldos y Bonos Pendientes","asistencia-comunitaria-icono-9465-16.png","Azul");
 
-	JCButton btnSeleccionLR               = new JCButton("Filtro","Filter-List-icon16.png","");
-	JCButton btnReporte_Infonavit_Pasados = new JCButton("Infonavit Pasado","orange-folder-saved-search-icone-8197-16.png","");
-	JCButton btnReporte_Infonavit_actual  = new JCButton("Infonavit Actual","infonavit.png","");
-	JCButton btnReporte_Infonacot_Pasados = new JCButton("Infonacot Pasado","orange-folder-saved-search-icone-8197-16.png","");
-	JCButton btnReporte_Infonacot_actual  = new JCButton("Infonacot Actual","infonacotsinfondo-1 32.png","");
-	JCButton btnReporte_Prestamos_Pasados = new JCButton("Prestamos Pasado","orange-folder-saved-search-icone-8197-16.png","");
-	JCButton btnReporte_Prestamos_actual  = new JCButton("Prestamos Actual","dinero-icono-8797-16.png","");
+	JCButton btnSeleccionLR               = new JCButton("Filtro","Filter-List-icon16.png","Azul");
+	JCButton btnReporte_Infonavit_Pasados = new JCButton("Infonavit Pasado","orange-folder-saved-search-icone-8197-16.png","Azul");
+	JCButton btnReporte_Infonavit_actual  = new JCButton("Infonavit Actual","infonavit.png","Azul");
+	JCButton btnReporte_Infonacot_Pasados = new JCButton("Infonacot Pasado","orange-folder-saved-search-icone-8197-16.png","Azul");
+	JCButton btnReporte_Infonacot_actual  = new JCButton("Infonacot Actual","infonacotsinfondo-1 32.png","Azul");
+	JCButton btnReporte_Prestamos_Pasados = new JCButton("Prestamos Pasado","orange-folder-saved-search-icone-8197-16.png","Azul");
+	JCButton btnReporte_Prestamos_actual  = new JCButton("Prestamos Actual","dinero-icono-8797-16.png","Azul");
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );

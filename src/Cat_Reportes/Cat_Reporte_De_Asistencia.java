@@ -11,7 +11,6 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +23,7 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.JCButton;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -45,10 +45,10 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento = new JComboBox(departamento);
 	
-	JButton btn_generar_faltas = new JButton  ("Reporte de Faltas",new ImageIcon("imagen/inasistencia16x16.png"));
-	JButton btn_generar_consideraciones = new JButton  ("Reporte de Consideraciones",new ImageIcon("imagen/check-vcard-icone-9025-16.png"));
-	JButton btn_generar_Permisos = new JButton  ("Reporte de Permisos a Empleados",new ImageIcon("imagen/apoyo-y-asistencia-icono-6525-16.png"));
-	JButton btn_generar_completo = new JButton  ("Reporte de Asistencia Completo",new ImageIcon("imagen/proceso-para-los-usuarios-icono-5903-16.png"));
+	JCButton btn_generar_faltas          = new JCButton  ("Reporte de Faltas","inasistencia16x16.png","Azul");
+	JCButton btn_generar_consideraciones = new JCButton  ("Reporte de Consideraciones","check-vcard-icone-9025-16.png","Azul");
+	JCButton btn_generar_Permisos        = new JCButton  ("Reporte de Permisos a Empleados","apoyo-y-asistencia-icono-6525-16.png","Azul");
+	JCButton btn_generar_completo        = new JCButton  ("Reporte de Asistencia Completo","proceso-para-los-usuarios-icono-5903-16.png","Azul");
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -59,23 +59,24 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia-comunitaria-icono-9465-32.png"));
 		this.setTitle("Reportes de Asistencia");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Reportes de Asistencia"));
-		this.panel.add(new JLabel("Fecha Inicio:")).setBounds(15,25,100,20);
-		this.panel.add(JLBlinicio).setBounds(75,25,20,20);
-		this.panel.add(c_inicio).setBounds(95,25,100,20);
-		this.panel.add(new JLabel("Fecha Final:")).setBounds(15,55,100,20);
-		this.panel.add(JLBfin).setBounds(75,55,20,20);
-		this.panel.add(c_final).setBounds(95,55,100,20);
-	    this.panel.add(new JLabel("Establecimiento:")).setBounds(220,25,150,20);
-	    this.panel.add(JLBestablecimiento).setBounds(300,25,20,20);
-		this.panel.add(cmbEstablecimiento).setBounds(320,25,170,20);
-		this.panel.add(new JLabel("Departamento:")).setBounds(225,55,150,20);
-		this.panel.add(JLBdepartamento).setBounds(300,55,20,20);
-		this.panel.add(cmbDepartamento).setBounds(320,55,170,20);
-	
-		this.panel.add(btn_generar_faltas).setBounds(120,100,250,35);
-		this.panel.add(btn_generar_consideraciones).setBounds(120,145,250,35);
-		this.panel.add(btn_generar_Permisos).setBounds(120,190,250,35);
-		this.panel.add(btn_generar_completo).setBounds(120,235,250,35);
+		int x=15, y=25, width=100, height=20;
+		this.panel.add(new JLabel("Fecha Inicio:")).setBounds    (x    ,y,width,height);
+		this.panel.add(JLBlinicio).setBounds(75,25,height,height);
+		this.panel.add(c_inicio).setBounds(95,25,width,height);
+		this.panel.add(new JLabel("Fecha Final:")).setBounds(15,55,width,height);
+		this.panel.add(JLBfin).setBounds(75,55,20,height);
+		this.panel.add(c_final).setBounds(95,55,width,height);
+	    this.panel.add(new JLabel("Establecimiento:")).setBounds(220,25,150,height);
+	    this.panel.add(JLBestablecimiento).setBounds(300,25,height,height);
+		this.panel.add(cmbEstablecimiento).setBounds(320,25,170,height);
+		this.panel.add(new JLabel("Departamento:")).setBounds(225,55,150,height);
+		this.panel.add(JLBdepartamento).setBounds(300,55,height,height);
+		this.panel.add(cmbDepartamento).setBounds(320,55,170,height);
+		x=110;width=280;height=35;
+		this.panel.add(btn_generar_faltas).setBounds             (x     ,100    ,width,height);
+		this.panel.add(btn_generar_consideraciones).setBounds    (x     ,145    ,width,height);
+		this.panel.add(btn_generar_Permisos).setBounds           (x     ,190    ,width,height);
+		this.panel.add(btn_generar_completo).setBounds           (x     ,235    ,width,height);
 				
 		this.cont.add(panel);
 		this.setSize(510,330);
@@ -187,15 +188,13 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	
 	public void Reporte_de_faltas(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
 		 reporte = "Obj_Reporte_De_Asistencia_Faltas.jrxml";
-		 
 		 comando = "exec sp_Reporte_De_Faltas '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-		 
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	
 	public void Reporte_de_Permisos(String fecha_inicio, String fecha_final,String Establecimiento,String folios_empleados){
 		 reporte = "Obj_Reporte_De_Permisos_A_Empleados.jrxml";
-		 comando = "exec sp_Reporte_De_Permisos_A_Empleados '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+folios_empleados+"'";
+		 comando = "exec sp_Reporte_De_Permisos_A_Empleados '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','Selecciona un Empleado'";
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	
