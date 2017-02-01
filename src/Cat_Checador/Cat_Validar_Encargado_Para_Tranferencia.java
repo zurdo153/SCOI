@@ -704,7 +704,7 @@ public class Cat_Validar_Encargado_Para_Tranferencia extends JDialog  {
 	    		if(pedido.guardar()){
 	    			deshacer();
 	    			dispose();
-	        		JOptionPane.showMessageDialog(null, "Se Registro Salida Del Embarque Exitosamete","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	        		JOptionPane.showMessageDialog(null, "Se Registro Salida Del Embarque Exitosamete","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 	    			return;
 	    		}else{
 	    			JOptionPane.showMessageDialog(null, "No Se Pudo Registrar La Salida Del Embarque","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));

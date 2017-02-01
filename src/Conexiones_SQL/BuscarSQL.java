@@ -9697,6 +9697,30 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return existe;
 	}
 	
+	public String folio_Pedido_Agrupado(String folios){
+		
+		int usuario = new Obj_Usuario().LeerSession().getFolio();
+		String query = "exec sp_Agrupacion_De_Pedidos_De_Establecimiento '"+folios+"',"+usuario;
+		
+		String folio_pedido_generado = "";
+		Statement s;
+		ResultSet rs;
+		
+		try {				
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				folio_pedido_generado = rs.getString(1).trim();
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+			
+		return folio_pedido_generado;
+	}
+	
 //	public int  Folios_generados(String folio_original){
 //		int numero_de_folios=0;
 //		String query = "select count(distinct(folio_pedido))-1 as folios_generados from tb_gestion_de_pedido where folio_pedido like '%"+folio_original+"'";
