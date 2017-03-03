@@ -64,8 +64,8 @@ public class Cat_Indicadores extends JFrame {
 	JLayeredPane panel = new JLayeredPane();
 	Connexion con = new Connexion();
 	
-	JDateChooser c_inicio = new JDateChooser();
-	JDateChooser c_final = new JDateChooser();
+	static JDateChooser c_inicio = new JDateChooser();
+	static JDateChooser c_final = new JDateChooser();
 	
 	String operador[] =new Obj_Indicadores().Combo_Indicadores();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -308,13 +308,16 @@ public class Cat_Indicadores extends JFrame {
 	boolean bandera = false;
 	ActionListener opValidaIndicador = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if(cmbConcepto.getSelectedItem().toString().trim().equals("Ausentismo") || cmbConcepto.getSelectedItem().toString().trim().equals("Valor De Nomina")){
+			if(cmbConcepto.getSelectedItem().toString().trim().equals("Ausentismo") || cmbConcepto.getSelectedItem().toString().trim().equals("Valor De Nomina") || cmbConcepto.getSelectedItem().toString().trim().equals("Surtido De Pedido En Tiempo")){
 				
 				bandera = true;
 				
 				cmbEstablecimiento.setSelectedIndex(0);
 				cmbEstablecimiento.setEnabled(false);
-				c_final.setEnabled(false);
+				
+				c_final.setEnabled(cmbConcepto.getSelectedItem().toString().trim().equals("Surtido De Pedido En Tiempo")?true:false);
+				
+				
 			}else{
 				
 				bandera = false;
@@ -353,6 +356,7 @@ public class Cat_Indicadores extends JFrame {
 						switch(cmbConcepto.getSelectedItem().toString().trim()){
 							case "Ausentismo": Cat_Reporte_De_Ausentismo(anio+"",mes+""); break;
 							case "Valor De Nomina": Cat_Reporte_De_Valor_De_Nomina(anio+"",mes+""); break;
+							case "Surtido De Pedido En Tiempo": Cat_Reporte_De_Surtido_De_Pedido_En_Tiempo(); break;
 							default: JOptionPane.showMessageDialog(null, "No Se Encontro El Indicador","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png")); break;
 						}
 						
@@ -441,6 +445,22 @@ public class Cat_Indicadores extends JFrame {
 			
 			JasperPrint print = JasperFillManager.fillReport(report, parametro, new Connexion().conexion());
 			JasperViewer.viewReport(print, false);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+		}
+	}
+	
+	public static void Cat_Reporte_De_Surtido_De_Pedido_En_Tiempo() {
+		
+		try {
+			String basedatos="2.26";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+
+			String comando="exec sp_select_pedidos_en_tiempo_especifico '"+(new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate()))+"','"+(new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate()))+"'";
+			String reporte = "Obj_Reporte_De_Surtido_De_Pedido_En_Tiempo_Especifico.jrxml";
+			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));

@@ -156,7 +156,7 @@ public class Cat_Agrupacion_De_Pedidos_Surtidos extends JFrame{
 					cadenaTransferencias+=modelo.getValueAt(i, 1)+",";
 				}
 			}
-		
+			System.out.println(cadenaTransferencias);
 			if(cadenaTransferencias.length()>0){
 				
 				String folioGenerado = new BuscarSQL().folio_Pedido_Agrupado(cadenaTransferencias);

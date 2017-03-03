@@ -55,6 +55,7 @@ import Obj_Compras.Obj_Alimentacion_De_Inventarios_Parciales;
 import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
+import Obj_Compras.Obj_Horario_Base_De_Entrega_De_Pedidos;
 import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Ubicaciones_De_Productos;
@@ -109,6 +110,7 @@ import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
 import Obj_Reportes.Obj_Reportes_De_Ventas;
 import Obj_Servicios.Obj_Catalogo_Servicios;
+import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Servicios;
 
 public class BuscarSQL {
@@ -9794,6 +9796,225 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return servicios;
 	}
 	
+	public String folio_Administracion_De_Equipos(){
+		
+		String folio = "";
+		Statement stmt = null;
+		try {
+				System.out.println(buscar_folio_consecutivo_por_folio_de_transaccion(71).trim());
+				folio = buscar_folio_consecutivo_por_folio_de_transaccion(71);
+//			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return folio;
+	}
+	
+	public boolean existeActivo(int folio){
+		
+		boolean existe = false;
+		
+		String query = "declare @existe varchar(5) "
+					+ " set @existe = (select 'true' as existe "
+					+ " 				from tb_administracion_de_activos "
+					+ "				where folio = "+folio+") "
+					+ " if(@existe is null) "
+					+ " begin "
+					+ "	set @existe = 'false' "
+					+ "end "
+					+ "select @existe";
+		System.out.println(query);
+		Statement s;
+		ResultSet rs;
+		try{
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				existe = rs.getBoolean(1);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ existeActivo ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			existe = false;
+		}
+		return existe;
+		
+	}
+	
+	public Obj_Administracion_De_Activos getActivo(int folio)  throws SQLException{
+		
+		Obj_Administracion_De_Activos activo = new Obj_Administracion_De_Activos();
+		
+		String query = " select folio,descripcion,status,establecimiento,departamento,tipo,marca,modelo,serie,anio_fabricacion, "
+				+ " 		fecha_compra,garantia,unidad_garantia,vida_util,unidad_vida_util,costo,depreciacion,caracteristicas "
+				+ " from tb_administracion_de_activos "
+				+ " where folio = "+folio;
+		
+		System.out.println(query);
+		
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				
+				activo.setFolio(rs.getInt("folio"));
+				activo.setDescripcion(rs.getString("descripcion"));
+				activo.setStatus(rs.getString("status"));
+				activo.setEstablecimiento(rs.getString("establecimiento"));
+				activo.setDepartamento(rs.getString("departamento"));
+				activo.setTipo(rs.getString("tipo"));
+				activo.setMarca(rs.getString("marca"));
+				activo.setModelo(rs.getString("modelo"));
+				activo.setSerie(rs.getString("serie"));
+				activo.setAnio_fabricacion(rs.getInt("anio_fabricacion"));
+				activo.setFecha_compra(rs.getString("fecha_compra"));
+				activo.setGarantia(rs.getInt("garantia"));
+				activo.setUnidad_garantia(rs.getString("unidad_garantia"));
+				activo.setVida_util(rs.getInt("vida_util"));
+				activo.setUnidad_vida_util(rs.getString("unidad_vida_util"));
+				activo.setCosto(rs.getDouble("costo"));
+				activo.setDepreciacion(rs.getDouble("depreciacion"));
+				activo.setCaracteristicas(rs.getString("caracteristicas"));
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ getActivo ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+		}
+		return activo; 
+	}
+	
+	public String folio_Horario_De_Entrega_De_Pedidos(){
+		
+		String folio = "";
+		Statement stmt = null;
+		try {
+				folio = buscar_folio_consecutivo_por_folio_de_transaccion(72);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return folio;
+	}
+	
+	public int validar_coincidencia(String establecimientoOrigen,String establecimientoDestino,String hora){
+		
+		int folio = 0;
+		
+		String query = "exec sp_buscar_horarios_de_entrega_en_establecimiento_repetido '"+establecimientoOrigen+"','"+establecimientoDestino+"','"+hora+"'";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				folio = rs.getInt("folio"); 
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ validar_coincidencia ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		finally{
+			 if (stmt != null) { try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} }
+		}
+		return folio;
+	}
+	
+	public Obj_Horario_Base_De_Entrega_De_Pedidos horario_entrega_pedido(int folio) throws SQLException{
+		Obj_Horario_Base_De_Entrega_De_Pedidos horario = new Obj_Horario_Base_De_Entrega_De_Pedidos();
+		String query = "exec sp_select_horario_de_surtido_de_pedido "+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				horario.setFolio(rs.getInt("folio"));
+				horario.setEstablecimientoOrigen(rs.getString("establecimientoOrigen").trim());
+				horario.setEstablecimientoDestino(rs.getString("establecimientoDestino").trim());
+				horario.setStatus(rs.getString("status").trim());
+				
+				horario.setLunes(rs.getInt("lunes"));
+				horario.setMartes(rs.getInt("martes"));
+				horario.setMiercoles(rs.getInt("miercoles"));
+				horario.setJueves(rs.getInt("jueves"));
+				horario.setViernes(rs.getInt("viernes"));
+				horario.setSabado(rs.getInt("sabado"));
+				horario.setDomingo(rs.getInt("domingo"));
+				
+				horario.setHora(rs.getString("hora"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt != null){stmt.close();}
+		}
+		return horario;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Vector validar_coincidencia_de_dias_para_pedidos(String cadena,String establecimientoOrigen, String establecimientoDestino, int folio_reg){
+		
+		Vector dias = new Vector();
+		
+		String query = "exec sp_select_dias_disponibles_para_entrega_de_pedidos_por_establecimiento '"+cadena+"','"+establecimientoOrigen+"','"+establecimientoDestino+"',"+folio_reg;
+		
+		System.out.println(query);
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				dias.add(rs.getString("dia")); 
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ validar_coincidencia_de_dias_para_pedidos ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		finally{
+			 if (stmt != null) { try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} }
+		}
+		return dias;
+	}
 	
 	public Obj_Servicios correos_del_departamento_de_servicios(String departamento) throws SQLException{
 		Obj_Servicios servicios = new Obj_Servicios();

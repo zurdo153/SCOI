@@ -35,7 +35,14 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String operador[] = {"Selecciona Un Reporte","Reporte Indicador De Nivel De Surtido","Reporte Indicador De Nivel De Servicio","Reporte De Productos Negados Por Establecimientos","Reporte De Total De Productos Negados Con Localizacion","Reporte De Productos Con Ajuste Por Establecimientos"};
+	String operador[] = {"Selecciona Un Reporte"
+							,"Reporte Indicador De Nivel De Surtido"
+							,"Reporte Indicador De Nivel De Servicio"
+							,"Reporte De Productos Negados Por Establecimientos"
+							,"Reporte De Total De Productos Negados Con Localizacion"
+							,"Reporte De Productos Con Ajuste Por Establecimientos"
+							,"Surtido De Pedido En Tiempo"
+							,"Surtido De Pedido En Tiempo A Detalle"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
 	
@@ -125,6 +132,12 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 							  
 							  if(fecha1.before(fecha2)){
 								  String concepto=cmbConcepto.getSelectedItem().toString().trim();
+								  
+								if(concepto.equals("Surtido De Pedido En Tiempo") || concepto.equals("Surtido De Pedido En Tiempo A Detalle")){
+									  Obj_Indicadores indicador = new Obj_Indicadores().buscar(concepto);
+										comando=indicador.getProcedimiento_almacenado()+" '"+fecha_inicio.substring(0, 10)+"','"+fecha_final.substring(0, 10)+"'";
+										reporte =indicador.getReporte();
+								   }
 								  
 								  if(concepto.equals("Reporte Indicador De Nivel De Surtido")){
 									  Obj_Indicadores indicador = new Obj_Indicadores().buscar("Nivel De Surtido");
