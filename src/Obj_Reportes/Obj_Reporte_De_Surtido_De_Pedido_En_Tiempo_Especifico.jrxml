@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-03-02T12:29:00 -->
+<!-- 2017-03-02T17:54:28 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Surtido_De_Pedido_En_Tiempo_Especifico" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d987bb8d-7d06-4ddb-b066-6e1e791c3866">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -54,7 +54,10 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="6"/>
+			<band>
+				<property name="local_mesure_unitheight" value="pixel"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
 		</groupFooter>
 	</group>
 	<group name="Group2">
@@ -62,7 +65,7 @@
 		<groupHeader>
 			<band height="39">
 				<textField>
-					<reportElement positionType="Float" x="10" y="2" width="559" height="22" forecolor="#000000" uuid="e4fae221-ab0a-42c0-a225-1211b955e427">
+					<reportElement positionType="Float" x="10" y="-1" width="559" height="22" forecolor="#000000" uuid="e4fae221-ab0a-42c0-a225-1211b955e427">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -74,21 +77,21 @@
 				<staticText>
 					<reportElement style="Column header" x="22" y="21" width="104" height="18" forecolor="#000000" uuid="fc0370f2-d68f-4086-ab74-2d6a9761ac14"/>
 					<textElement textAlignment="Center" verticalAlignment="Bottom">
-						<font isBold="true"/>
+						<font isBold="true" isUnderline="true"/>
 					</textElement>
 					<text><![CDATA[fecha]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="Column header" x="129" y="21" width="104" height="18" forecolor="#000000" uuid="d13abfac-192e-4f2a-817b-a3cbca5efbf8"/>
 					<textElement textAlignment="Center" verticalAlignment="Bottom">
-						<font isBold="true"/>
+						<font isBold="true" isUnderline="true"/>
 					</textElement>
 					<text><![CDATA[Cumplimiento]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="39">
+			<band height="18">
 				<textField evaluationTime="Group" evaluationGroup="Group2" pattern="#,##0.###">
 					<reportElement x="129" y="2" width="104" height="15" uuid="54d2997c-3ca8-42f7-a506-8f4edc8217b8">
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -100,7 +103,12 @@
 					<textFieldExpression><![CDATA[(($V{Cumplimiento}*100)/$V{Contador})==10000?100:0]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement x="132" y="1" width="103" height="1" uuid="a073a46b-afd0-45cf-b71f-d0c968a7155a"/>
+					<reportElement x="138" y="1" width="87" height="1" uuid="a073a46b-afd0-45cf-b71f-d0c968a7155a">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
 				</line>
 				<staticText>
 					<reportElement style="Column header" x="22" y="0" width="104" height="18" forecolor="#000000" uuid="16795e19-d9eb-4c3b-9fb1-7a5119a3d098"/>
@@ -164,7 +172,7 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="5" splitType="Stretch"/>
+		<band height="2" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
 		<band height="13" splitType="Stretch">
@@ -193,9 +201,9 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="7" splitType="Stretch">
+		<band height="2" splitType="Stretch">
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="570" height="1" uuid="f27e668a-edf3-4639-90dc-e7fbe423500d">
+				<reportElement positionType="FixRelativeToBottom" x="0" y="1" width="570" height="1" uuid="f27e668a-edf3-4639-90dc-e7fbe423500d">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>

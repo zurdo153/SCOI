@@ -6409,10 +6409,11 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 			}catch(SQLException ex){
 				System.out.println(ex.getMessage());
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_servicios ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-
+				return false;
 			}
 		}	
 	}
+	return true;
 };
 		
 		
