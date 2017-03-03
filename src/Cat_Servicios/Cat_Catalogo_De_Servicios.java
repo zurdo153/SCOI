@@ -39,9 +39,8 @@ import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
-import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
-import Obj_Servicios.Obj_Servicios;
+import Obj_Servicios.Obj_Catalogo_Servicios;
 
 @SuppressWarnings("serial")
 public class Cat_Catalogo_De_Servicios extends JFrame{
@@ -49,12 +48,13 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
-	Obj_Servicios servicios	=new Obj_Servicios();
+	Obj_Catalogo_Servicios servicios	=new Obj_Catalogo_Servicios();
 	
 	String Departamento= servicios.buscar_Departamento(usuario.getFolio()).getDepartamento();
 	
 	JTextField txtFiltro = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
 	Connexion con = new Connexion();
+	Obj_tabla ObjTab =new Obj_tabla();
 	int columnas = 12,checkbox=-1;
 	public void init_tabla(){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(60);	
@@ -68,7 +68,7 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
     	this.tabla.getColumnModel().getColumn(11).setMinWidth(250);
 		String comando="sp_select_servicios_catalogo '"+Departamento+"'";
 		String basedatos="26",pintar="si";
-		new Obj_tabla().Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
 	@SuppressWarnings("rawtypes")
@@ -90,7 +90,6 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
 	     @SuppressWarnings("rawtypes")
 	    private TableRowSorter trsfiltro;
 	     
-	     
 	JTextField txtFolio        = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
 	JTextField txtServicio       = new Componentes().text(new JCTextField(), "Teclea La Descripción Del Servicio", 150, "String");
 	
@@ -111,11 +110,11 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
 	  @SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstatus = new JComboBox(status);
 	
-	 String Departamentos[] = new Obj_Departamento().Combo_Departamento();
+	 String Departamentos[] = new Obj_Departamento().Combo_Departamentoservicio();
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbDepartamento = new JComboBox(Departamentos);  
 	 
-	 String Prioridades[] = new Obj_Servicios().Prioridad();
+	 String Prioridades[] = new Obj_Catalogo_Servicios().Prioridad();
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbPrioridades = new JComboBox(Prioridades);  
 	 
@@ -127,7 +126,7 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Catalogo_De_Servicios(){
-		this.setSize(1035,768);
+		this.setSize(1035,750);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -144,7 +143,6 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
 		this.panel.add(cmbPrioridades).setBounds            (x+=120 ,y      ,width+45 ,height  );
 		this.panel.add(lblUsuario).setBounds                (x+=170 ,y      ,width*2  ,height  );
 		this.panel.add(lblDepartamento).setBounds           (x+=170 ,y      ,width*2  ,height  );		
-		
 		  x=15;
 		this.panel.add(new JLabel("Servicio:")).setBounds   (x      ,y+=30  ,width    ,height  );
 		this.panel.add(txtServicio).setBounds               (x+=45  ,y      ,width+325,height  );
@@ -158,16 +156,15 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
 		this.panel.add(scrollDetalle).setBounds             (x+=45  ,y      ,953      ,height*4); 
 		  x=15;
 		this.panel.add(txtFiltro).setBounds         (x      ,y+=90  ,width*10 ,height  );
-		this.panel.add(scroll_tabla).setBounds              (x      ,y+20   ,width*10 ,width*5 );
+		this.panel.add(scroll_tabla).setBounds              (x      ,y+20   ,width*10 ,width*5-20 );
 		  width=120;sep=220;
-		this.panel.add(btnNuevo).setBounds                  (x      ,y+=540 ,width    ,height  );
+		this.panel.add(btnNuevo).setBounds                  (x      ,y+=510 ,width    ,height  );
 		this.panel.add(btnSalir).setBounds                  (x+=sep ,y      ,width    ,height  );
 		this.panel.add(btnDeshacer).setBounds               (x+=sep ,y      ,width    ,height  );
 		this.panel.add(btnEditar).setBounds                 (x+=sep ,y      ,width    ,height  );
 		this.panel.add(btnGuardar).setBounds                (x+=sep ,y      ,width    ,height  );
 
 		lblUsuario.setText(usuario.getNombre_completo());
-		
 		cmbDepartamento.setSelectedItem(Departamento);
 		
 		init_tabla();
@@ -230,12 +227,7 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
 	
 	KeyListener opFiltroNombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			
-			int[] columnasa= new int [columnas];
-			for(int i=0;i<columnas;i++){
-				columnasa[i]=i;
-			}
-			new Obj_Filtro_Dinamico_Plus(tabla, txtFiltro.getText().toUpperCase(), columnasa);
+			ObjTab.Obj_Filtro(tabla, txtFiltro.getText().toUpperCase(), columnas);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -332,8 +324,6 @@ ActionListener guardar = new ActionListener(){
 		}
 	};
 	
-
-	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			servicios.setGuardar_actualizar("E");//ACTUALIZAR
@@ -390,7 +380,6 @@ ActionListener guardar = new ActionListener(){
 		spDiasEstimados.setEnabled(true);
 		cmbEstatus.setEnabled(true);
 		cmbPrioridades.setEnabled(true);
-//		cmbDepartamento.setEnabled(true);
 	}
 	
 	public void panelLimpiar(){	
@@ -401,7 +390,6 @@ ActionListener guardar = new ActionListener(){
 		txaDetalle.setText("");
 		cmbEstatus.setSelectedIndex(0);
 		cmbPrioridades.setSelectedIndex(0);
-//		cmbDepartamento.setSelectedIndex(0);
 		spDiasEstimados.setValue(Integer.valueOf(0));
 		tiempodefault("00:00:00");
 		servicios.setGuardar_actualizar("");//guardar

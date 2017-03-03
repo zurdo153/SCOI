@@ -278,9 +278,8 @@ public class Cargar_Combo {
 	
 	
 	@SuppressWarnings("unchecked")
-	public String[] Departamento(String tabla) throws SQLException{
-		String query = "select ltrim(rtrim(departamento)) as departamento from " + tabla + " where status = 1 order by departamento asc";
-		
+	public String[] Departamentos() throws SQLException{
+		String query = "select ltrim(rtrim(departamento)) as departamento from tb_departamento where status = 1 order by departamento asc";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -308,8 +307,40 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] DepartamentoDeServicios() throws SQLException{
+		String query = "select ltrim(rtrim(departamento)) as departamento from tb_departamento where status = 1 and aplica_para_servicios ='S' order by departamento asc";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona un Departamento");
+				}
+				miVector.add(rs.getString("departamento"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public String[] Establecimiento_Caja() throws SQLException{
@@ -2348,7 +2379,7 @@ public class Cargar_Combo {
 			int j=0;
 			while(rs.next()){
 				if(j == 0){
-					miVector.add("Selecciona una Prioridad");
+					miVector.add("SELECCIONA UNA PRIORIDAD");
 				}
 				miVector.add(rs.getString("nombre"));
 				j++;

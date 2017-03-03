@@ -29,7 +29,7 @@ public class Init_Menu_Bar extends Init_Login{
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.182");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.184");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -56,7 +56,7 @@ public class Init_Menu_Bar extends Init_Login{
 			String[] tmpSTR = String.valueOf(SubMenuVector.get(i)).split(",");
 			lsSubMenus.add(new WP_Submenu(tmpSTR[0], tmpSTR[1], tmpSTR[2]));
 		}
-		
+				
 		for(WP_Menu me: lsMenus)
 			relacion.add(new WP_Relation(me, lsMenus, lsSubMenus));
 		for(WP_Menu tmp : lsMenus){
@@ -303,7 +303,6 @@ public class Init_Menu_Bar extends Init_Login{
 					}
 					}
 					}
-					
 					
 				} catch (ClassNotFoundException e1) {
 					System.err.println(e1.getMessage());

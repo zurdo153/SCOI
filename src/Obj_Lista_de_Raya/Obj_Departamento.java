@@ -116,9 +116,17 @@ public class Obj_Departamento {
 		return new BuscarTablasModel().tabla_model_departamento();
 	}
 	
+	public String[] Combo_Departamentoservicio(){
+		try {
+			return new Cargar_Combo().DepartamentoDeServicios();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return null; }
+	
 	public String[] Combo_Departamento(){
 		try {
-			return new Cargar_Combo().Departamento("tb_departamento");
+			return new Cargar_Combo().Departamentos();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
