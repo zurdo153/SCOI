@@ -3,32 +3,30 @@ package Obj_Servicios;
 import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
-import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Servicios {
 	int folio=0;
-	int dias_estimado=0;
-	int usuario=0;
-	int usuario_modifico=0;
+	int folio_usuario_solicito=0;
+	int folio_usuario_modifico=0;
+	int cantidad_de_correos=0;
+	int usuario_realizo_servicio=0;
+	float costo=0;
+	
 	String prioridad="";
-	String departamento="";
-	String establecimiento="";
+	String equipo="";
 	String servicio="";
-	String detalle="";
-	String tiempo_estimado="";
+	String departamento_solicito="";
+	String establecimiento_solicito="";
+    String detalle="";
+	String estatus_equipo="";
 	String estatus="";
-	String fecha=""; 
-	String fecha_ultima_modificacion="";
-    String guardar_actualizar="";
-
-	public String getGuardar_actualizar() {
-		return guardar_actualizar;
-	}
-
-	public void setGuardar_actualizar(String guardar_actualizar) {
-		this.guardar_actualizar = guardar_actualizar;
-	}
+	String Guardar_actualizar="";
+	String notas_servicio="";
+	String correos="";
+	String fecha_guardado="";
+	String adjunto="";
+	String evaluacion="";
 
 	public int getFolio() {
 		return folio;
@@ -38,28 +36,44 @@ public class Obj_Servicios {
 		this.folio = folio;
 	}
 
-	public int getDias_estimado() {
-		return dias_estimado;
+	public int getFolio_usuario_solicito() {
+		return folio_usuario_solicito;
 	}
 
-	public void setDias_estimado(int dias_estimado) {
-		this.dias_estimado = dias_estimado;
+	public void setFolio_usuario_solicito(int folio_usuario_solicito) {
+		this.folio_usuario_solicito = folio_usuario_solicito;
 	}
 
-	public int getUsuario() {
-		return usuario;
+	public int getFolio_usuario_modifico() {
+		return folio_usuario_modifico;
 	}
 
-	public void setUsuario(int usuario) {
-		this.usuario = usuario;
+	public void setFolio_usuario_modifico(int folio_usuario_modifico) {
+		this.folio_usuario_modifico = folio_usuario_modifico;
 	}
 
-	public int getUsuario_modifico() {
-		return usuario_modifico;
+	public int getCantidad_de_correos() {
+		return cantidad_de_correos;
 	}
 
-	public void setUsuario_modifico(int usuario_modifico) {
-		this.usuario_modifico = usuario_modifico;
+	public void setCantidad_de_correos(int cantidad_de_correos) {
+		this.cantidad_de_correos = cantidad_de_correos;
+	}
+
+	public int getUsuario_realizo_servicio() {
+		return usuario_realizo_servicio;
+	}
+
+	public void setUsuario_realizo_servicio(int usuario_realizo_servicio) {
+		this.usuario_realizo_servicio = usuario_realizo_servicio;
+	}
+
+	public float getCosto() {
+		return costo;
+	}
+
+	public void setCosto(float costo) {
+		this.costo = costo;
 	}
 
 	public String getPrioridad() {
@@ -70,20 +84,12 @@ public class Obj_Servicios {
 		this.prioridad = prioridad;
 	}
 
-	public String getDepartamento() {
-		return departamento;
+	public String getEquipo() {
+		return equipo;
 	}
 
-	public void setDepartamento(String departamento) {
-		this.departamento = departamento;
-	}
-
-	public String getEstablecimiento() {
-		return establecimiento;
-	}
-
-	public void setEstablecimiento(String establecimiento) {
-		this.establecimiento = establecimiento;
+	public void setEquipo(String equipo) {
+		this.equipo = equipo;
 	}
 
 	public String getServicio() {
@@ -94,6 +100,22 @@ public class Obj_Servicios {
 		this.servicio = servicio;
 	}
 
+	public String getDepartamento_solicito() {
+		return departamento_solicito;
+	}
+
+	public void setDepartamento_solicito(String departamento_solicito) {
+		this.departamento_solicito = departamento_solicito;
+	}
+
+	public String getEstablecimiento_solicito() {
+		return establecimiento_solicito;
+	}
+
+	public void setEstablecimiento_solicito(String establecimiento_solicito) {
+		this.establecimiento_solicito = establecimiento_solicito;
+	}
+
 	public String getDetalle() {
 		return detalle;
 	}
@@ -102,12 +124,12 @@ public class Obj_Servicios {
 		this.detalle = detalle;
 	}
 
-	public String getTiempo_estimado() {
-		return tiempo_estimado;
+	public String getEstatus_equipo() {
+		return estatus_equipo;
 	}
 
-	public void setTiempo_estimado(String tiempo_estimado) {
-		this.tiempo_estimado = tiempo_estimado;
+	public void setEstatus_equipo(String estatus_equipo) {
+		this.estatus_equipo = estatus_equipo;
 	}
 
 	public String getEstatus() {
@@ -118,57 +140,61 @@ public class Obj_Servicios {
 		this.estatus = estatus;
 	}
 
-	public String getFecha() {
-		return fecha;
+	public String getGuardar_actualizar() {
+		return Guardar_actualizar;
 	}
 
-	public void setFecha(String fecha) {
-		this.fecha = fecha;
+	public void setGuardar_actualizar(String guardar_actualizar) {
+		Guardar_actualizar = guardar_actualizar;
 	}
 
-	public String getFecha_ultima_modificacion() {
-		return fecha_ultima_modificacion;
+	public String getNotas_servicio() {
+		return notas_servicio;
 	}
 
-	public void setFecha_ultima_modificacion(String fecha_ultima_modificacion) {
-		this.fecha_ultima_modificacion = fecha_ultima_modificacion;
+	public void setNotas_servicio(String notas_servicio) {
+		this.notas_servicio = notas_servicio;
 	}
 
-	public String[] Prioridad(){
-		try {
-			return new Cargar_Combo().Prioridad();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	return null; }
-	
-	public String cargar_fechas(int dias){
-		String date = null;
-	    	try {
-				date = new BuscarSQL().fecha(dias);
-				} catch (SQLException e) {
-					// catch block
-					e.printStackTrace();
-					}
-		return date;
-	};
-	
+	public String getCorreos() {
+		return correos;
+	}
+
+	public void setCorreos(String correos) {
+		this.correos = correos;
+	}
+
+	public String getFecha_guardado() {
+		return fecha_guardado;
+	}
+
+	public void setFecha_guardado(String fecha_guardado) {
+		this.fecha_guardado = fecha_guardado;
+	}
+
+	public String getAdjunto() {
+		return adjunto;
+	}
+
+	public void setAdjunto(String adjunto) {
+		this.adjunto = adjunto;
+	}
+
+	public String getEvaluacion() {
+		return evaluacion;
+	}
+
+	public void setEvaluacion(String evaluacion) {
+		this.evaluacion = evaluacion;
+	}
+
 	public boolean GuardarActualizar(){ 
-		return new GuardarSQL().Guardar_servicios_catalogo(this); }
-	
+	return new GuardarSQL().Guardar_servicios(this); }
 	
 	public int buscar_nuevo(){
 		try {return new BuscarSQL().serviciocatalogo();
 		}catch (SQLException e) {e.printStackTrace();}
 		return 0; 
 	}
-	
-	public Obj_Servicios buscar_Departamento(int folio){
-		try {
-			return new BuscarSQL().serviciodepartamento(folio);
-		}catch (SQLException e) {e.printStackTrace();}
-		return null; 
-	}
-	
 	
 }

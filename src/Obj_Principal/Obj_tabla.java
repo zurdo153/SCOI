@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
@@ -18,9 +19,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
 
 import Conexiones_SQL.Connexion;
@@ -47,13 +50,9 @@ public class Obj_tabla {
 	 int BfilaS =usuario.getBfilaS();
 	 int tamanio_fuente=usuario.getTamanio_fuente();
 
-
      private String alineacion="text";
      private Font fuente;
-
      private JCheckBox chb = new JCheckBox();
-
- 
 	
 	public boolean validacampo(String valorcelda){
 		try { Double.parseDouble(valorcelda);
@@ -122,34 +121,28 @@ public class Obj_tabla {
            }
     	
 		if (pintar.equals("si")||checkbox>-1){
-			
-		for(int i = 0; i<tabla.getColumnCount(); i++){
-			 tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CabeceraTablaRendererizado(new java.awt.Color(RfilaS,GfilaS,BfilaS),Color.WHITE));
-			 
-			System.out.println(checkbox);
-			if(checkbox>-1&&i==checkbox-1){
-				System.out.println(checkbox);
-				System.out.println(i);
-				System.out.println("si");
-			 tabla.getColumnModel().getColumn(checkbox-1).setCellRenderer(new tablaRendererizado("CHB","centro","Arial","negrita",12));
-			}else{
-				if(tabla.getRowCount()>0){
-					if( validacampo(modelo.getValueAt(0,i).toString().trim()) ){
-					    tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","derecha","Arial","negrita",11));
-					}else{
-					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));	
-					}
+			for(int i = 0; i<tabla.getColumnCount(); i++){
+				 tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CabeceraTablaRendererizado(new java.awt.Color(RfilaS,GfilaS,BfilaS),Color.WHITE));
+				if(checkbox>-1&&i==checkbox-1){
+				 tabla.getColumnModel().getColumn(checkbox-1).setCellRenderer(new tablaRendererizado("CHB","centro","Arial","negrita",12));
 				}else{
-					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));
-			  	}
-		      }
-           }
-		}
+					if(tabla.getRowCount()>0){
+						if( validacampo(modelo.getValueAt(0,i).toString().trim()) ){
+						    tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","derecha","Arial","negrita",11));
+						}else{
+						  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));	
+						}
+					}else{
+						  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));
+				  	}
+			      }
+	           }
+		 }
 	   }
+	
 	@SuppressWarnings("serial")
 	public class tablaRendererizado extends DefaultTableCellRenderer {
 	     private String tipo="";
-	     
 	     public tablaRendererizado( String tipop ,String alineacionTexto, String tipoDeLetra, String estilo, int tamanio){
 	    	 tipo=tipop;
 	         alineacion = alineacionTexto;
@@ -162,15 +155,8 @@ public class Obj_tabla {
 	     }
 	     
 	     public Component getTableCellRendererComponent ( JTable table, Object value, boolean selected, boolean focused, int row, int column ){ 
-		     if(row %2 == 0){
-				this.setBackground(new java.awt.Color(Rfila,Gfila,Bfila));	
-			  }else{
-			      this.setBackground(Color.white);
-			  }
-	    	 
-	    	 if (selected) {  
-	        	 this.setBackground(new java.awt.Color(RfilaS,GfilaS,BfilaS));
-	           }
+		     if(row %2 == 0){this.setBackground(new java.awt.Color(Rfila,Gfila,Bfila));}else{ this.setBackground(Color.white); }
+	    	 if (selected){ this.setBackground(new java.awt.Color(RfilaS,GfilaS,BfilaS)); }
 
 	         if(tipo.toUpperCase().trim().equals("CHB")){
 					chb = new JCheckBox("",Boolean.parseBoolean(value.toString()));
@@ -235,35 +221,31 @@ public class Obj_tabla {
 		}
 	}
 	
-//	public class Obj_Filtro{
-//		@SuppressWarnings({ "unchecked", "rawtypes" })
-//		public Obj_Filtro(JTable tabla,String contenido,int columnas){
-//			int[] columnasa= new int [columnas];
-//			for(int i=0;i<columnas;i++){
-//				columnasa[i]=i;
-//			}
-//			
-//			TableRowSorter sorter = new  TableRowSorter(tabla.getModel());
-//			
-//			ArrayList arregloDePalabrar = new ArrayList(); 
-//			RowFilter filtradoDeArregloDePalabras = null; 
-//
-//			try {
-//			    String[] listaDePalabras = contenido.split(" ");
-//				    for(int i = 0; i < listaDePalabras.length; i++){
-//				    	arregloDePalabrar.add(RowFilter.regexFilter(listaDePalabras[i],columnas));
-//				    }
-//				    filtradoDeArregloDePalabras = RowFilter.andFilter(arregloDePalabrar);
-//			} catch (java.util.regex.PatternSyntaxException e){
-//				return;
-//			}
-//			ArrayList andFilters = new ArrayList(); 	
-//			if(!contenido.equals("")){andFilters.add(filtradoDeArregloDePalabras);}
-//			sorter.setRowFilter(RowFilter.andFilter (andFilters));
-//			tabla.setRowSorter(sorter);
-//		}
-//	};
-		
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void Obj_Filtro(JTable tabla,String contenido,int columnasa) {
+			int[] columnas= new int [columnasa];
+			for(int i=0;i<columnasa;i++){
+				columnas[i]=i;
+			}
+			TableRowSorter sorter = new  TableRowSorter(tabla.getModel());
+			ArrayList arregloDePalabrar = new ArrayList(); 
+			RowFilter filtradoDeArregloDePalabras = null; 
+
+			try {
+			    String[] listaDePalabras = contenido.split(" ");
+				    for(int i = 0; i < listaDePalabras.length; i++){
+				    	arregloDePalabrar.add(RowFilter.regexFilter(listaDePalabras[i],columnas));
+				    }
+				    filtradoDeArregloDePalabras = RowFilter.andFilter(arregloDePalabrar);
+			} catch (java.util.regex.PatternSyntaxException e){
+				return;
+			}
+			ArrayList andFilters = new ArrayList(); 	
+			if(!contenido.equals("")){andFilters.add(filtradoDeArregloDePalabras);}
+			sorter.setRowFilter(RowFilter.andFilter (andFilters));
+			tabla.setRowSorter(sorter);
+		};
+	
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public  String[][] tabla_guardar(JTable tabla){ 
 			int columnas=tabla.getColumnCount();
@@ -382,6 +364,8 @@ public class Obj_tabla {
 	        // Scroll the area into view
 	        viewport.scrollRectToVisible(rect);
 	}
+
+
 	
 		
 

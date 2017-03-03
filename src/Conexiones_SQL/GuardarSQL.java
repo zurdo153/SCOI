@@ -107,6 +107,7 @@ import Obj_Punto_De_Venta.Obj_Clientes;
 import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Registro_De_Desarrollo;
 import Obj_Servicios.Obj_Servicios;
+import Obj_Servicios.Obj_Catalogo_Servicios;
 
 
 
@@ -4945,6 +4946,8 @@ public int  busca_y_actualiza_proximo_folio(int transaccion) {
 	return foliosiguiente;
 		}
 
+
+
 @SuppressWarnings("rawtypes")
 public boolean Guardar_Objetivos_De_La_Semana(Vector objetivos, String folioObjetivo, String periodoObjetivo){
 //	String queryUpdate =  " delete tb_objetivos_de_plan_semanal  where estatus = 'PLA' and folio = "+folioObjetivo+"and usuario = "+(new Obj_Usuario().LeerSession().getFolio());
@@ -6296,7 +6299,7 @@ public boolean Guardar_Salida_De_Embarque_De_Pedido(Obj_Chacador_De_Embarque_De_
 	return true;
 }
 
-public boolean Guardar_servicios_catalogo(Obj_Servicios servicios){
+public boolean Guardar_servicios_catalogo(Obj_Catalogo_Servicios servicios){
 	int folio_transaccion=servicios.getFolio();
 	if(servicios.getGuardar_actualizar().equals("S")){
 	  folio_transaccion=busca_y_actualiza_proximo_folio(39);
@@ -6346,6 +6349,73 @@ public boolean Guardar_servicios_catalogo(Obj_Servicios servicios){
 	return true;
 }
 
+public boolean Guardar_servicios(Obj_Servicios servicios){
+	int folio_transaccion=servicios.getFolio();
+	String adjunto="";
+	if(servicios.getGuardar_actualizar().equals("S")){
+	  folio_transaccion=busca_y_actualiza_proximo_folio(40);
+	  servicios.setFolio(folio_transaccion);
+	}
+	
+	if(servicios.getAdjunto().toString().equals("")){
+		adjunto ="C:\\SCOI\\imagen\\Actions-document-encrypt-icon.png";
+	}else{
+		adjunto=servicios.getAdjunto().toString();
+	}
+	
+	String query = "exec sp_guardar_servicios ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	Connection con = new Connexion().conexion();
+	
+	try {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		
+//		@folio int, @servicio varchar(150), @equipo varchar(150), @detalle varchar(500), @prioridad_solicito varchar(150),  @departamento_solicito varchar(150),  @establecimiento_solicito varchar(150),   @folio_usuario_solicito int,
+//	    @estatus_equipo varchar(100), @folio_usuario_modifico int, @usuario_realizo_servicio varchar(350), @estatus_servicio varchar(100), @notas_servicio varchar(500),  @costo_servicio money, @valoracion_del_servicio int
+//		,@Guardar_actualizar char(1)   ,@estatusv char(9)
+		
+			pstmt.setInt   (1 ,  folio_transaccion);
+			pstmt.setString(2 ,  servicios.getServicio().toString());
+			pstmt.setString(3 ,  servicios.getEquipo().toString());
+			pstmt.setString(4 ,  servicios.getDetalle().toString());
+			pstmt.setString(5 ,  servicios.getPrioridad().toString());
+			pstmt.setString(6 ,  servicios.getDepartamento_solicito().toString());
+			pstmt.setString(7 ,  servicios.getEstablecimiento_solicito().toString());
+			pstmt.setInt   (8 ,  Integer.valueOf(servicios.getFolio_usuario_solicito()));
+			
+			pstmt.setString(9 ,  servicios.getEstatus_equipo());
+			pstmt.setInt   (10,  Integer.valueOf(servicios.getFolio_usuario_modifico()));
+			pstmt.setInt   (11,  Integer.valueOf(servicios.getUsuario_realizo_servicio()));
+			
+			pstmt.setString(12,  servicios.getNotas_servicio());
+			pstmt.setDouble(13,  Double.valueOf(servicios.getCosto()));
+			pstmt.setString(14,  servicios.getEvaluacion());			
+			pstmt.setString(15,  servicios.getGuardar_actualizar().toString());
+			
+			pstmt.setString(16,  servicios.getEstatus().toString().trim());
+			pstmt.setBinaryStream(17, new FileInputStream(new File(adjunto)));
+			pstmt.setString(18,  servicios.getAdjunto().toString());
+			
+			pstmt.executeUpdate();
+		con.commit();
+		
+	} catch (Exception e) {
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_servicios ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_servicios ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+
+			}
+		}	
+	}
+};
+		
+		
 public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos equipos, String movimiento,String rutaFactura, String rutaImagen){
 	
 	String query =  "exec sp_insert_administracion_de_activos ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";//"exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?,?";
@@ -6425,6 +6495,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			}catch(SQLException ex){
 				System.out.println(ex.getMessage());
 				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Actividades_Con_Respuesta  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+
 			}
 		}
 		return false;
@@ -6436,7 +6507,44 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		}
 	}		
 	return true;
-	}
+
+}
+
+//--------------------traba el servicio
+//public boolean envio_de_correo(){
+//	String query =  "sp_envio_de_correo_automatico_de_servicios_nuevos";
+//	Connection con = new Connexion().conexion();
+//	PreparedStatement pstmt = null;
+//	
+//	try {
+//		con.setAutoCommit(false);
+//		pstmt = con.prepareStatement(query);
+//		pstmt.executeUpdate();
+//		
+//		con.commit();
+//	} catch (Exception e) {
+//		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+//		if (con != null){
+//			try {
+//				System.out.println("La transacción ha sido abortada");
+//				con.rollback();
+//			} catch(SQLException ex) {
+//				System.out.println(ex.getMessage());
+//				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ envio_de_correo ] Insert  SQLException: sp_envio_de_correo_automatico_de_servicios_nuevos "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//			}
+//		} 
+//		return false;
+//	}finally{
+//		try {
+//			con.close();
+//		} catch(SQLException e){
+//			e.printStackTrace();
+//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ envio_de_correo ] Insert  SQLException: sp_envio_de_correo_automatico_de_servicios_nuevos "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//		}
+//	}		
+//	return true;
+//}
+
 
 	public boolean Guardar_Horario_De_Surtido_De_Pedido(Obj_Horario_Base_De_Entrega_De_Pedidos horario,String movimiento){
 		String query = "exec sp_insert_horarios_de_entrega_para_pedidos ?,?,?,?,?,?,?,?,?,?,?,?,?";

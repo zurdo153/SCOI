@@ -331,6 +331,8 @@ public class Cat_Usuarios extends JFrame{
 	String[] Sub_servicios = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(11);
 	Obj_CheckBoxNode Servicios[] = {
 		new Obj_CheckBoxNode(Sub_servicios[0], false),
+		new Obj_CheckBoxNode(Sub_servicios[1], false),
+		new Obj_CheckBoxNode(Sub_servicios[2], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Vector_servicios = new Obj_NombreVector("Servicios", Servicios);

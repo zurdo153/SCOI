@@ -1,7 +1,7 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -10,23 +10,21 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
-
-
+import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
-public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
+public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JFrame{
 	
 	DecimalFormat decimal = new DecimalFormat("#0.00");
 	Container cont = getContentPane();
@@ -76,25 +74,31 @@ public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
 	JLabel lblTotalRH = new JLabel();
 	JLabel lblTotalAX = new JLabel();
 	
-	JButton btnAceptar = new JButton("Aceptar",new ImageIcon("imagen/Aplicar.png"));
-	JButton btnActualizar = new JButton("Actualizar",new ImageIcon("imagen/Actualizar.png"));
+	JCButton btnAceptar    = new JCButton("Aceptar"    ,"Aplicar.png"    ,"Azul");
+	JCButton btnActualizar = new JCButton("Actualizar" ,"Actualizar.png" ,"Azul");
 	
 	public Cat_Lista_De_Comparacion_De_Fuente_De_Sodas(){
-		this.setTitle("Comparación Fuente de Sodas DH");
+		
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/el-simulador-es-igual-a-icono-9686-32.png"));
+		this.setTitle("Comparación Fuente de Sodas Desarrollo Humano Vs Finanzas");
+		this.setSize(980,750);
+		this.setResizable(true);
+		this.setLocationRelativeTo(null);
 		
 		Etiqueta();
 		
-		panel.add(new JLabel("Tabla Desarrollo Humanos")).setBounds(110,40,200,20);
+		panel.add(new JLabel("Tabla Desarrollo Humanos")).setBounds(60,40,250,20);
 		panel.add(lblTotalRH).setBounds(370,40,200,20);
-		panel.add(scrollRh).setBounds(110,65,320,290);
-		panel.add(new JLabel("Tabla de Diferencia Desarrollo Humanos")).setBounds(110,365,200,20);
-		panel.add(scrollTotalRH).setBounds(110,390,320,290);
+		panel.add(scrollRh).setBounds(50,65,400,290);
+		panel.add(new JLabel("Tabla de Diferencia Desarrollo Humanos")).setBounds(60,365,250,20);
+		panel.add(scrollTotalRH).setBounds(50,390,400,290);
 
-		panel.add(new JLabel("Tabla Auxiliar de Finanzas")).setBounds(550,40,200,20);
+		panel.add(new JLabel("Tabla Auxiliar de Finanzas")).setBounds(530,40,250,20);
 		panel.add(lblTotalAX).setBounds(810,40,200,20);
-		panel.add(scrollAx).setBounds(550,65,320,290);
-		panel.add(new JLabel("Tabla de Diferencia Auxiliar de Finanzas")).setBounds(550,365,250,20);
-		panel.add(scrollTotalAX).setBounds(550,390,320,290);
+		panel.add(scrollAx).setBounds(530,65,400,290);
+		panel.add(new JLabel("Tabla de Diferencia Auxiliar de Finanzas")).setBounds(530,365,250,20);
+		panel.add(scrollTotalAX).setBounds(530,390,400,290);
 		
 		panel.add(btnActualizar).setBounds(310,5,120,20);
 		panel.add(btnAceptar).setBounds(550,5,120,20);
@@ -141,20 +145,9 @@ public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
 		sumaRH();
 		sumaAX();
 		comparacion();
-//		if((TablaDifAX.length == 0 && TablaDifRH.length == 0)	){
-//			btnAceptar.setEnabled(new Obj_fuente_sodas_rh().busquedaautoizacionfs().isStatus_autorizacion());
-//
-//		}else{
-//			btnAceptar.setEnabled(new Obj_fuente_sodas_rh().busquedaautoizacionfs().isStatus_autorizacion());
-//		}
 		
 		cont.add(panel);
 		agregar(tablaRh);
-		this.setSize(980,750);
-		this.setModal(true);
-		this.setResizable(true);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
 	private void agregar(final JTable tbl) {
@@ -186,6 +179,7 @@ public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
 			new Obj_Fue_Sodas_DH().actualizar_status_ticket();
 			btnAceptar.setEnabled(false);
 			JOptionPane.showMessageDialog(null, "Se Comprobaron con exito","Aviso",JOptionPane.INFORMATION_MESSAGE);
+			btnActualizar.doClick();
 		}
 	};
 	
@@ -193,14 +187,6 @@ public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
 		public void actionPerformed(ActionEvent arg0){
 			Actualizar();
 			comparacion();
-			
-//			String[][] TablaDifRH = getMatrizDifRH();
-//			String[][] TablaDifAX = getMatrizDifAX();
-//			if(TablaDifAX.length == 0 && TablaDifRH.length == 0){
-//				btnAceptar.setEnabled(true);
-//			}else{
-//				btnAceptar.setEnabled(false);		
-//			}
 		}	
 	};
 	
@@ -281,82 +267,44 @@ public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
 		tablaRh.getColumnModel().getColumn(fila).setMaxWidth(50);
 		tablaRh.getColumnModel().getColumn(fila).setMinWidth(50);
 		tablaRh.getColumnModel().getColumn(fila+=1).setHeaderValue("Nombre");
-		tablaRh.getColumnModel().getColumn(fila).setMaxWidth(200);
 		tablaRh.getColumnModel().getColumn(fila).setMinWidth(200);
 		tablaRh.getColumnModel().getColumn(fila+=1).setHeaderValue("Totales");
-		tablaRh.getColumnModel().getColumn(fila).setMaxWidth(70);
 		tablaRh.getColumnModel().getColumn(fila).setMinWidth(70);
+		tablaRh.getColumnModel().getColumn(fila).setMaxWidth(70);
 		
 		tablaAx.getColumnModel().getColumn(fila=0).setHeaderValue("Folio");
 		tablaAx.getColumnModel().getColumn(fila).setMaxWidth(50);
 		tablaAx.getColumnModel().getColumn(fila).setMinWidth(50);
 		tablaAx.getColumnModel().getColumn(fila+=1).setHeaderValue("Nombre");
-		tablaAx.getColumnModel().getColumn(fila).setMaxWidth(200);
 		tablaAx.getColumnModel().getColumn(fila).setMinWidth(200);
 		tablaAx.getColumnModel().getColumn(fila+=1).setHeaderValue("Totales");
-		tablaAx.getColumnModel().getColumn(fila).setMaxWidth(70);
 		tablaAx.getColumnModel().getColumn(fila).setMinWidth(70);
+		tablaAx.getColumnModel().getColumn(fila).setMaxWidth(70);
 		
 		tablaTotalRH.getColumnModel().getColumn(fila=0).setHeaderValue("Folio");
-		tablaTotalRH.getColumnModel().getColumn(fila).setMaxWidth(50);
 		tablaTotalRH.getColumnModel().getColumn(fila).setMinWidth(50);
+		tablaTotalRH.getColumnModel().getColumn(fila).setMaxWidth(50);
 		tablaTotalRH.getColumnModel().getColumn(fila+=1).setHeaderValue("Nombre");
-		tablaTotalRH.getColumnModel().getColumn(fila).setMaxWidth(200);
 		tablaTotalRH.getColumnModel().getColumn(fila).setMinWidth(200);
 		tablaTotalRH.getColumnModel().getColumn(fila+=1).setHeaderValue("Totales");
-		tablaTotalRH.getColumnModel().getColumn(fila).setMaxWidth(70);
 		tablaTotalRH.getColumnModel().getColumn(fila).setMinWidth(70);
+		tablaTotalRH.getColumnModel().getColumn(fila).setMaxWidth(70);
 		
 		tablaTotalAX.getColumnModel().getColumn(fila=0).setHeaderValue("Folio");
-		tablaTotalAX.getColumnModel().getColumn(fila).setMaxWidth(50);
 		tablaTotalAX.getColumnModel().getColumn(fila).setMinWidth(50);
+		tablaTotalAX.getColumnModel().getColumn(fila).setMaxWidth(50);
 		tablaTotalAX.getColumnModel().getColumn(fila+=1).setHeaderValue("Nombre");
-		tablaTotalAX.getColumnModel().getColumn(fila).setMaxWidth(200);
 		tablaTotalAX.getColumnModel().getColumn(fila).setMinWidth(200);
 		tablaTotalAX.getColumnModel().getColumn(fila+=1).setHeaderValue("Totales");
-		tablaTotalAX.getColumnModel().getColumn(fila).setMaxWidth(70);
 		tablaTotalAX.getColumnModel().getColumn(fila).setMinWidth(70);
+		tablaTotalAX.getColumnModel().getColumn(fila).setMaxWidth(70);
 		
 		
-		TableCellRenderer render = new TableCellRenderer() 
-		{ 
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) { 
-				JLabel lbl = new JLabel(value == null? "": value.toString());
-		
-				if(row%2==0){
-						lbl.setOpaque(true); 
-						lbl.setBackground(new java.awt.Color(177,177,177));
-				} 
-			return lbl; 
-			} 
-		}; 
-		tablaRh.getColumnModel().getColumn(0).setCellRenderer(render);
-		tablaRh.getColumnModel().getColumn(1).setCellRenderer(render);
-		tablaRh.getColumnModel().getColumn(2).setCellRenderer(render);
-		
-		tablaAx.getColumnModel().getColumn(0).setCellRenderer(render);
-		tablaAx.getColumnModel().getColumn(1).setCellRenderer(render);
-		tablaAx.getColumnModel().getColumn(2).setCellRenderer(render);
-		
-		tablaTotalRH.getColumnModel().getColumn(0).setCellRenderer(render);
-		tablaTotalRH.getColumnModel().getColumn(1).setCellRenderer(render);
-		tablaTotalRH.getColumnModel().getColumn(2).setCellRenderer(render);
-		
-		tablaTotalAX.getColumnModel().getColumn(0).setCellRenderer(render);
-		tablaTotalAX.getColumnModel().getColumn(1).setCellRenderer(render);
-		tablaTotalAX.getColumnModel().getColumn(2).setCellRenderer(render);
 		
 	}
 	
 	public String[][] getMatrizRH(){
-		String qry = "select tb_fuente_sodas_rh.folio_empleado as Num," + 
-        					"tb_fuente_sodas_rh.nombre_completo as Nombre," +
-        					"sum(tb_fuente_sodas_rh.cantidad)as Total " +
-        					"from tb_fuente_sodas_rh " +
-        				"where tb_fuente_sodas_rh.status ='1' and tb_fuente_sodas_rh.status_ticket='0' " +
-        					"group by tb_fuente_sodas_rh.nombre_completo,tb_fuente_sodas_rh.folio_empleado "+
-        					"order by tb_fuente_sodas_rh.folio_empleado";
+		String qry = "sp_select_fuente_de_sodas_comparativo_base 'D'";
 		
 		String[][] Matriz = new String[getFilas(qry)][3];
 		
@@ -380,14 +328,9 @@ public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
 	    return Matriz; 
 	}
 	
+	//finanzas F
 	public String[][] getMatrizAux(){
-		String qry = " select tb_fuente_sodas_auxf.folio_empleado as Num,"+
-        					"tb_fuente_sodas_auxf.nombre_completo as Nombre,"+
-        					"sum(tb_fuente_sodas_auxf.cantidad)as Total "+
-        					"from tb_fuente_sodas_auxf "+
-        				"where tb_fuente_sodas_auxf.status ='1' and tb_fuente_sodas_auxf.status_ticket='0' "+
-        					"group by tb_fuente_sodas_auxf.nombre_completo,tb_fuente_sodas_auxf.folio_empleado "+
-        					"order by tb_fuente_sodas_auxf.folio_empleado";
+		String qry = "sp_select_fuente_de_sodas_comparativo_base 'F'";
 		
 		String[][] Matriz = new String[getFilas(qry)][3];
 		Statement s;
@@ -411,19 +354,7 @@ public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
 	}
 	
 	public String[][] getMatrizDifRH(){
-		String qry = "((select tb_fuente_sodas_rh.folio_empleado as Num,"+ 
-          					"tb_fuente_sodas_rh.nombre_completo as Personal_Con_Diferencia,"+
-          					"sum(tb_fuente_sodas_rh.cantidad)as Total "+
-          						"from tb_fuente_sodas_rh "+
-          					"where tb_fuente_sodas_rh.status ='1' and tb_fuente_sodas_rh.status_ticket='0' "+
-          						"group by tb_fuente_sodas_rh.nombre_completo,tb_fuente_sodas_rh.folio_empleado) "+
-          					"except "+
-          						"(select tb_fuente_sodas_auxf.folio_empleado as Num,"+
-          						"tb_fuente_sodas_auxf.nombre_completo as Personal_Con_Diferencia,"+
-          						"sum(tb_fuente_sodas_auxf.cantidad)as Total "+
-          						"from tb_fuente_sodas_auxf "+
-          					"where tb_fuente_sodas_auxf.status ='1' and tb_fuente_sodas_auxf.status_ticket='0' "+
-          						"group by tb_fuente_sodas_auxf.nombre_completo,tb_fuente_sodas_auxf.folio_empleado))";
+		String qry = "sp_select_fuente_de_sodas_comparativo_except 'D'";
 		
 		String[][] Matriz = new String[getFilas(qry)][3];
 		Statement s;
@@ -447,19 +378,7 @@ public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
 	}
 	
 	public String[][] getMatrizDifAX(){
-		String qry = "((select tb_fuente_sodas_auxf.folio_empleado as Num,"+
-        					"tb_fuente_sodas_auxf.nombre_completo as Personal_Con_Diferencia,"+
-        					"sum(tb_fuente_sodas_auxf.cantidad)as Total "+
-        				"from tb_fuente_sodas_auxf "+
-        				"where tb_fuente_sodas_auxf.status ='1' and tb_fuente_sodas_auxf.status_ticket='0' "+
-        					"group by tb_fuente_sodas_auxf.nombre_completo,tb_fuente_sodas_auxf.folio_empleado) "+
-        				"except "+
-        					"(select tb_fuente_sodas_rh.folio_empleado as Num,"+
-        					"tb_fuente_sodas_rh.nombre_completo as Personal_Con_Diferencia,"+
-        					"sum(tb_fuente_sodas_rh.cantidad)as Total "+
-        				"from tb_fuente_sodas_rh "+
-        				"where tb_fuente_sodas_rh.status ='1' and tb_fuente_sodas_rh.status_ticket='0' "+
-        					"group by tb_fuente_sodas_rh.nombre_completo,tb_fuente_sodas_rh.folio_empleado))";
+		String qry = "sp_select_fuente_de_sodas_comparativo_except 'F'";
 		
 		String[][] Matriz = new String[getFilas(qry)][3];
 		Statement s;
@@ -531,5 +450,11 @@ public class Cat_Lista_De_Comparacion_De_Fuente_De_Sodas extends JDialog{
 			
 	}
 	
+	public static void main(String args[]){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Lista_De_Comparacion_De_Fuente_De_Sodas().setVisible(true);
+		}catch(Exception e){	}
+	}
 			
 }

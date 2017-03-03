@@ -109,6 +109,7 @@ import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
 import Obj_Reportes.Obj_Reportes_De_Ventas;
+import Obj_Servicios.Obj_Catalogo_Servicios;
 import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Servicios;
 
@@ -143,7 +144,7 @@ public class BuscarSQL {
 
    public String dias_para_fecha_revision_consideracion() throws SQLException{
 		 String fecha="";
-		 String query = "select convert(varchar(15),fecha_lista_raya_pasada,103)as fecha from tb_configuracion_sistema";
+		 String query = "select convert(varchar(15),(DATEADD(DAY,1,fecha_lista_raya_pasada)),103)as fecha from tb_configuracion_sistema";
 		 Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -6882,7 +6883,7 @@ public class BuscarSQL {
 
 			while(rs.next()){
 				
-				String ruta = "C:\\DOCUMENTACION DE EMPLEADOS GENERADA EN SCOI\\"+rs.getString(1)+" ("+rs.getString(2)+")\\";
+				String ruta = "C:\\REPORTES SCOI\\PDF\\"+rs.getString(1)+" ("+rs.getString(2)+")\\";
 				File archivos = new File(ruta);
 				
 					// creamos fichero si no existe y escribimos archivo 
@@ -9771,8 +9772,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return folio;
 	}
 	
-	public Obj_Servicios serviciodepartamento(int folio) throws SQLException{
-		Obj_Servicios servicios = new Obj_Servicios();
+	public Obj_Catalogo_Servicios serviciodepartamento(int folio) throws SQLException{
+		Obj_Catalogo_Servicios servicios = new Obj_Catalogo_Servicios();
 		String query = "select tb_departamento.departamento,tb_establecimiento.nombre from tb_empleado"
 				+ " inner join tb_departamento on tb_departamento.folio=tb_empleado.departamento"
 				+ " inner join tb_establecimiento on tb_establecimiento.folio=tb_empleado.establecimiento_id"
@@ -10015,29 +10016,75 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return dias;
 	}
 	
-//	public int  Folios_generados(String folio_original){
-//		int numero_de_folios=0;
-//		String query = "select count(distinct(folio_pedido))-1 as folios_generados from tb_gestion_de_pedido where folio_pedido like '%"+folio_original+"'";
-//		Statement stmt = null;
-//		try {
-//			stmt = con.conexion().createStatement();
-//			ResultSet rs = stmt.executeQuery(query);
-//			while(rs.next()){
-//				numero_de_folios=(rs.getInt("folios_generados"));
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		finally{
-//			if(stmt!=null){
-//				try {
-//					stmt.close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		return numero_de_folios;
-//	}
+	public Obj_Servicios correos_del_departamento_de_servicios(String departamento) throws SQLException{
+		Obj_Servicios servicios = new Obj_Servicios();
+		String query = "declare @correos nvarchar(max),@folio_departamento int, @cantidad_de_correos int"
+				+ " set @folio_departamento=(select folio from tb_departamento where departamento='"+departamento+"')"
+				+ " select @correos = COALESCE(@correos + ',', '')+ email from tb_servicios_correos  with(nolock) where folio_departamento=@folio_departamento"
+				+ " select @cantidad_de_correos=count(email) from tb_servicios_correos  with(nolock) where folio_departamento=@folio_departamento"
+				+ " select @correos,@cantidad_de_correos,convert(varchar(20),getdate(),103)+' '+convert(varchar(20),getdate(),108) ";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){				
+				servicios.setCorreos(rs.getString(1));
+				servicios.setCantidad_de_correos(rs.getInt(2));
+				servicios.setFecha_guardado(rs.getString(3));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return servicios;
+	}
+	
+	public int Archivos_Seguimiento_De_Servicios(int folio) throws SQLException{
+		int contadorDeArchivosGenerados=0;
+		String query = "select folio_servicio,adjunto_solicitud,adjunto_solicitud_extencion, convert(varchar(11),fecha)  from tb_servicios_adjuntos where folio_servicio="+folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				
+				String ruta = "C:\\REPORTES SCOI\\SERVICIOS\\"+rs.getString(4)+"\\";
+				File archivos = new File(ruta);
+				
+					// creamos fichero si no existe y escribimos archivo 
+					if(!archivos.exists()){ 
+						archivos.mkdirs();
+					}
+					
+	            		Blob blob_pdf = rs.getBlob(2);
+	            		
+	            		if(blob_pdf.length() > 0){
+								File photo = new File(ruta+rs.getString(1)+"-Servicio Solicitado"+rs.getString(4)+"."+rs.getString(3));
+								FileOutputStream fos = new FileOutputStream(photo);
+							
+					            byte[] buffer = new byte[1];
+					            InputStream is = rs.getBinaryStream(2);
+					            
+					            while (is.read(buffer) > 0) {
+					                fos.write(buffer);
+					            }fos.close();
+					            
+					            contadorDeArchivosGenerados++;
+					}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return contadorDeArchivosGenerados;
+	}
 
 }
