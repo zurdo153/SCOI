@@ -47,6 +47,7 @@ import Obj_Compras.Obj_Alta_De_Productos;
 import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
+import Obj_Compras.Obj_Horario_Base_De_Entrega_De_Pedidos;
 import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
@@ -103,6 +104,7 @@ import Obj_Planeacion.Obj_Prioridad_Y_Ponderacion;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
+import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Registro_De_Desarrollo;
 import Obj_Servicios.Obj_Servicios;
 
@@ -6343,5 +6345,148 @@ public boolean Guardar_servicios_catalogo(Obj_Servicios servicios){
 	}		
 	return true;
 }
+
+public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos equipos, String movimiento,String rutaFactura, String rutaImagen){
+	
+	String query =  "exec sp_insert_administracion_de_activos ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";//"exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?,?";
+
+	Connection con = new Connexion().conexion();
+	PreparedStatement pstmt = null;
+	
+	try {
+		int folio = movimiento.equals("GUARDAR") ? busca_y_actualiza_proximo_folio(71) : equipos.getFolio();
+		
+		con.setAutoCommit(false);
+		pstmt = con.prepareStatement(query);
+		
+		System.out.println(folio);
+		System.out.println(equipos.getDescripcion());
+		System.out.println(equipos.getStatus());
+		System.out.println(equipos.getEstablecimiento());
+		System.out.println(equipos.getDepartamento());
+		System.out.println(equipos.getTipo());
+		System.out.println(equipos.getMarca());
+		System.out.println(equipos.getModelo());
+		System.out.println(equipos.getSerie());
+		System.out.println(equipos.getAnio_fabricacion());
+		System.out.println(equipos.getFecha_compra());
+		System.out.println(equipos.getGarantia());
+		System.out.println(equipos.getUnidad_garantia());
+		System.out.println(equipos.getVida_util());
+		System.out.println(equipos.getUnidad_vida_util());
+		System.out.println(equipos.getCosto());
+		System.out.println(equipos.getDepreciacion());
+		System.out.println(equipos.getCaracteristicas());
+		System.out.println(equipos.getRuta_factura());
+		System.out.println(equipos.getRuta_foto());
+		System.out.println(movimiento);
+
+//			int i=1;
+				pstmt.setInt(1, folio); //actualiza folio en tb_folios y retorna el folio mas actualizado para posteriormente mandarlo de parametro                      
+				pstmt.setString(2, equipos.getDescripcion());  
+				pstmt.setString(3, equipos.getStatus());
+				pstmt.setString(4, equipos.getEstablecimiento());
+				pstmt.setString(5, equipos.getDepartamento());
+				pstmt.setString(6, equipos.getTipo());
+				pstmt.setString(7, equipos.getMarca());
+				pstmt.setString(8, equipos.getModelo());
+				pstmt.setString(9, equipos.getSerie());
+				pstmt.setInt(10, equipos.getAnio_fabricacion());
+				pstmt.setString(11, equipos.getFecha_compra());
+				pstmt.setInt(12, equipos.getGarantia());
+				pstmt.setString(13, equipos.getUnidad_garantia());
+				pstmt.setInt(14, equipos.getVida_util());
+				pstmt.setString(15, equipos.getUnidad_vida_util());
+				pstmt.setDouble(16, Double.valueOf(equipos.getCosto()));
+				pstmt.setDouble(17, Double.valueOf(equipos.getDepreciacion()));
+				pstmt.setString(18, equipos.getCaracteristicas());
+				
+				pstmt.setBinaryStream(19, new FileInputStream(equipos.getRuta_factura()));		
+				pstmt.setString(20, equipos.getRuta_factura().substring(equipos.getRuta_factura().indexOf(".")).toLowerCase());
+				
+				pstmt.setBinaryStream(21, new FileInputStream(equipos.getRuta_foto()));
+				pstmt.setString(22, equipos.getRuta_foto().substring(equipos.getRuta_foto().indexOf(".")).toLowerCase());
+				
+				pstmt.setString(23, movimiento);
+				pstmt.setString(24, rutaFactura);
+				pstmt.setString(25, rutaImagen);
+				
+				pstmt.executeUpdate();
+				con.commit();
+				
+	} catch (Exception e){
+		System.out.println("SQLException: "+e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Actividades_Con_Respuesta  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		if(con != null){
+			try{
+				System.out.println("La transacción ha sido abortada");
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Actividades_Con_Respuesta \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				con.rollback();
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Actividades_Con_Respuesta  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
+	return true;
+	}
+
+	public boolean Guardar_Horario_De_Surtido_De_Pedido(Obj_Horario_Base_De_Entrega_De_Pedidos horario,String movimiento){
+		String query = "exec sp_insert_horarios_de_entrega_para_pedidos ?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			
+			int folio = movimiento.equals("GUARDAR") ? busca_y_actualiza_proximo_folio(72) : horario.getFolio();
+			
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, folio);
+			pstmt.setString(2, horario.getEstablecimientoOrigen().toUpperCase().trim());
+			pstmt.setString(3, horario.getEstablecimientoDestino().toUpperCase().trim());
+			pstmt.setString(4, horario.getStatus().toUpperCase().trim());
+			pstmt.setInt(5, horario.getLunes());
+			pstmt.setInt(6, horario.getMartes());
+			pstmt.setInt(7, horario.getMiercoles());
+			pstmt.setInt(8, horario.getJueves());
+			pstmt.setInt(9, horario.getViernes());
+			pstmt.setInt(10, horario.getSabado());
+			pstmt.setInt(11, horario.getDomingo());
+			pstmt.setString(12, horario.getHora());
+			pstmt.setString(13, movimiento);
+			
+			pstmt.executeUpdate();
+			con.commit();
+		}catch (Exception e){
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Horario_De_Surtido_De_Pedido["+movimiento+"]  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Horario_De_Surtido_De_Pedido["+movimiento+"] \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Horario_De_Surtido_De_Pedido["+movimiento+"]  \n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}	
+		return true;
+	}
 
 } 
