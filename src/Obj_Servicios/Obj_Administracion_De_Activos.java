@@ -29,12 +29,14 @@ public class Obj_Administracion_De_Activos {
 	String ruta_factura;		
 	String ruta_foto;
 	
+	int grupo_equipo;
+	
 	public Obj_Administracion_De_Activos() {
 		folio = 0;		descripcion = "";		status = "";				establecimiento = "";		departamento = "";		tipo = "";				marca = "";
 		modelo = "";	serie = "";				anio_fabricacion = 0;		fecha_compra = null;		garantia = 0;			unidad_garantia = "";	vida_util = 0;
 		unidad_vida_util = "";					costo = 0;					depreciacion = 0;			caracteristicas = "";
 		
-		ruta_factura="";		ruta_foto="";
+		ruta_factura="";		ruta_foto="";   grupo_equipo=0;
 	}
 
 	public int getFolio() {
@@ -195,6 +197,14 @@ public class Obj_Administracion_De_Activos {
 
 	public void setRuta_foto(String ruta_foto) {
 		this.ruta_foto = ruta_foto;
+	}
+
+	public int getGrupo_equipo() {
+		return grupo_equipo;
+	}
+
+	public void setGrupo_equipo(int grupo_equipo) {
+		this.grupo_equipo = grupo_equipo;
 	}
 
 	public boolean guardarActualizarActivos(String movimiento, String rutaFactura, String rutaImagen){

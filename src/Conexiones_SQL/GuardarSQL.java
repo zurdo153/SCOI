@@ -6419,7 +6419,7 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 		
 public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos equipos, String movimiento,String rutaFactura, String rutaImagen){
 	
-	String query =  "exec sp_insert_administracion_de_activos ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";//"exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?,?";
+	String query =  "exec sp_insert_administracion_de_activos ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";//"exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?,?";
 
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
@@ -6481,6 +6481,8 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setString(23, movimiento);
 				pstmt.setString(24, rutaFactura);
 				pstmt.setString(25, rutaImagen);
+				
+				pstmt.setInt(26, equipos.getGrupo_equipo());
 				
 				pstmt.executeUpdate();
 				con.commit();
