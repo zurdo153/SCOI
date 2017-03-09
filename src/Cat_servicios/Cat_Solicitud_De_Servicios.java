@@ -99,12 +99,12 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 	JTextField txtFolio        = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
 	JTextField txtServicio     = new Componentes().text(new JCTextField(), "Descripción Corta Del Servicio", 150, "String");
 	
-	JCButton btnFiltro         = new JCButton(""              ,"Filter-List-icon16.png","Azul");
-	JCButton btnDeshacer       = new JCButton("Deshacer"      ,"deshacer16.png"   ,"Azul");
-	JCButton btnGuardar        = new JCButton("Guardar"       ,"Guardar.png"      ,"Azul");
-	JCButton btnEditar         = new JCButton("Editar"        ,"editara.png"      ,"Azul");
-	JCButton btnNuevo          = new JCButton("Nuevo"         ,"Nuevo.png"        ,"Azul");
+	JCButton btnDeshacer       = new JCButton("Deshacer"        ,"deshacer16.png"            ,"Azul" );
+	JCButton btnGuardar        = new JCButton("Guardar"         ,"Guardar.png"               ,"Azul" );
+	JCButton btnEditar         = new JCButton("Editar"          ,"editara.png"               ,"Azul" );
+	JCButton btnNuevo          = new JCButton("Nuevo"           ,"Nuevo.png"                 ,"Azul" );
 	JCButton btnAdjuntar       = new JCButton("Adjuntar Archivo","adjuntar-icono-7764-16.png","AzulC");
+	JCButton btnMisSolicitudes = new JCButton("Mis Solicitudes" ,"Lista.png"                 ,"Azul" );
 	
 	JLabel lblUsuario          = new JLabel("");
 	JLabel lblDepartamento     = new JLabel("");
@@ -156,21 +156,21 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		this.panel.add(lblEstablecimiento).setBounds        (x+=150 ,y      ,width*2  ,height   );	
 		this.panel.add(cmbEstatus).setBounds                (x+=200 ,y      ,width    ,height   );
 		
-			  x=15;
+		x=15;
 		this.panel.add(txtFiltro).setBounds                 (x      ,y+=30  ,width+885 ,height  );
 		this.panel.add(scroll_tabla).setBounds              (x      ,y+20   ,width+885 ,width*3 );
 		
-		  x=15;
+		x=15;
 		this.panel.add(new JLabel("Solicitar al")).setBounds(x      ,y+=330  ,width    ,height   );
 		this.panel.add(new JLabel("Departamento:")).setBounds(x     ,y+=10  ,width    ,height   );
 			
-			  x=15;
+		x=15;
 		this.panel.add(cmbDepartamento).setBounds           (x+=95  ,y-=5   ,width+65 ,height   );
 		this.panel.add(txtServicio).setBounds               (x+=180 ,y      ,width+350,height   );
 		this.panel.add(new JLabel("Tiempo Estimado:")).setBounds(x+=460,y   ,width    ,height   );
 		this.panel.add(lblTiempoEstimado).setBounds         (x+=90  ,y      ,width+100,height   );
 			
-		  x=15;
+		x=15;
 		this.panel.add(btnNuevo).setBounds                  (x      ,y+=25 ,width-10 ,height   );
 		this.panel.add(cmbPrioridades).setBounds            (x+=95  ,y      ,width+75 ,height   );
 		this.panel.add(cmbEstatus_Equipo).setBounds         (x+=185 ,y      ,width+245,height   );
@@ -179,13 +179,13 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		x=15;
 		this.panel.add(new JLabel("Detalle:")).setBounds    (x      ,y+=25  ,width    ,height   );
 		this.panel.add(scrollDetalle).setBounds             (x      ,y+=15  ,985      ,height*4 ); 
-		
 		this.panel.add(btnAdjuntar).setBounds               (x      ,y+=90 ,width+80    ,height );
 		this.panel.add(new JLabel("Adjunto:")).setBounds    (x+=200 ,y     ,width       ,height );
 		this.panel.add(lblArchivoAdjunto).setBounds         (x+50   ,y     ,width*8     ,height );
  	    
-		x=15;width=120;sep=182;
-		this.panel.add(btnDeshacer).setBounds               (x+=500 ,y+=25 ,width       ,height );
+		x=15;width=120;sep=152;
+		this.panel.add(btnMisSolicitudes).setBounds         (x+=383 ,y+=25 ,width+25    ,height );
+		this.panel.add(btnDeshacer).setBounds               (x+=175 ,y     ,width       ,height );
 		this.panel.add(btnEditar).setBounds                 (x+=sep ,y     ,width       ,height );
 		this.panel.add(btnGuardar).setBounds                (x+=sep ,y     ,width       ,height );
 
@@ -196,6 +196,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		cmbDepartamento.addActionListener(actualizar_tabla);
 		cmbPrioridades.addActionListener(seleccion_prioridad);
 		cmbEstatus_Equipo.addActionListener(seleccion_Estatus_Equipo);
+		btnMisSolicitudes.addActionListener(mis_pendientes);
 		
 		agregar(tabla);
 		panelEnabledFalse();
@@ -215,7 +216,6 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		cmbEstatus.setEnabled(false);
 		cmbEquipo.setEnabled(false);
 		
-		
 		txtFiltro.addKeyListener(opFiltroNombre);
 		cont.add(panel);
 		
@@ -229,29 +229,25 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
         getRootPane().getActionMap().put("escape", new AbstractAction(){
             public void actionPerformed(ActionEvent e)
-            {                 	    btnDeshacer.doClick();
-          	    }
+            {         	    btnDeshacer.doClick();    	    }
         });
 	
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
         getRootPane().getActionMap().put("nuevo", new AbstractAction(){
             public void actionPerformed(ActionEvent e)
-            {                 	    btnNuevo.doClick();
-              	    }
+            {          	    btnNuevo.doClick();        	    }
         });
                     
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
 	         getRootPane().getActionMap().put("nuevo", new AbstractAction(){
 	             public void actionPerformed(ActionEvent e)
-	             {                 	    btnNuevo.doClick();
-	              	    }
+	             {          btnNuevo.doClick();        	    }
 	       });
 	         
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
             getRootPane().getActionMap().put("editar", new AbstractAction(){
                 public void actionPerformed(ActionEvent e)
-                {                 	    btnEditar.doClick();
-                  	    }
+                {      	    btnEditar.doClick();       	    }
            });
 
             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,Event.CTRL_MASK), "editar");
@@ -269,7 +265,6 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
-	
 	
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -294,7 +289,6 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 	    						cmbEstatus.setEnabled(false);
 	    						txaDetalle.setEditable(false);
 //	    						servicios.setGuardar_actualizar("");
-	    						
 	        				return;
 	        			}
 	        		}else{		
@@ -321,8 +315,13 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 	        }
         });
     };
-
- 
+	
+	ActionListener mis_pendientes = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+             new Cat_Mis_Solicitudes_De_Servicios().setVisible(true);
+		}		
+	};
+	
     ActionListener AdjuntarArchivo  = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
             	JFileChooser elegir = new JFileChooser();

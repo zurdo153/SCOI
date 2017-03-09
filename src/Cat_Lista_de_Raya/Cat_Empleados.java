@@ -157,6 +157,7 @@ public class Cat_Empleados extends JFrame{
 	
 	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
 	
+
 	JTextField txtFolioEmpleado = new Componentes().text( new JCTextField(), "Folio Colaborador", 9, "Int");
 	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 70, "String");
 	JTextField txtApPaterno = new Componentes().text( new JTextField(), "Apellido Paterno", 20, "String");
@@ -173,10 +174,11 @@ public class Cat_Empleados extends JFrame{
 	JTextField txtColonia = new Componentes().text( new JTextField(), "Colonia", 30, "String");
 	JTextField txtCalle = new Componentes().text( new JTextField(), "Calle", 30, "String");
 	
+	JTextField txtemail                  = new Componentes().text(new JCTextField(),"@email", 150, "String");
 	JTextField txtDescanso               = new Componentes().text(new JCTextField(),"Dia De Descanso", 100, "String");
 	JTextField txtDobla                  = new Componentes().text(new JCTextField(),"Dia Dobla", 100, "String");
-	JTextField txtFechaUltimasVacaciones  = new Componentes().text(new JCTextField(),"Ultimas Vaciones", 100, "String");
-	JTextField txtFechaIncapacidad = new JTextField();
+	JTextField txtFechaUltimasVacaciones = new Componentes().text(new JCTextField(),"Ultimas Vaciones", 100, "String");
+	JTextField txtFechaIncapacidad       = new JTextField();
 	
 	JTextField txtImss                   = new Componentes().text(new JCTextField(),"Número de Seguro Social", 11, "Int");
 	JTextField txtNumeroInfonavit        = new Componentes().text(new JCTextField(), "Número de Infonavit", 15, "Int");
@@ -498,10 +500,13 @@ public class Cat_Empleados extends JFrame{
 		panel.add(cmbEscolaridad).setBounds(x+(ancho*3)+110,y,ancho-15,20);
 		
 		panel.add(new JLabel("Perfil:")).setBounds         (x           	,y+=25 ,width   ,height );
-		panel.add(btnLimpiarPerfil).setBounds              (x+50        	,y     ,height  ,height );
-		panel.add(btnAgregarPerfil).setBounds              (x+70        	,y     ,height  ,height );
-		panel.add(lblFolioPerfil).setBounds                (x+70+height     ,y     ,height  ,height );
-		panel.add(txtPerfil).setBounds                     (x+75+(height*2) ,y     ,340		,height );
+		panel.add(btnLimpiarPerfil).setBounds              (x+=50        	,y     ,height  ,height );
+		panel.add(btnAgregarPerfil).setBounds              (x+=20        	,y     ,height  ,height );
+		panel.add(lblFolioPerfil).setBounds                (x+=20           ,y     ,height  ,height );
+		panel.add(txtPerfil).setBounds                     (x+=25           ,y     ,320		,height );
+		panel.add(new JLabel("Email:")).setBounds          (x+=335         	,y     ,width   ,height );
+		panel.add(txtemail).setBounds                      (x+=40         	,y     ,width+30,height );		
+		
 		
 //TODO Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
 		x=17 ;y=255;width=340;sep=120;
@@ -699,6 +704,7 @@ public class Cat_Empleados extends JFrame{
 		cmbPuesto.setEnabled(false);
 		
 		txtDescanso.setEnabled(false);
+		txtemail.setEditable(false);
 		txtDobla.setEnabled(false);
 		txtChecador.setEnabled(false);
 		txtChecador.setVisible(false);
@@ -1191,7 +1197,7 @@ public class Cat_Empleados extends JFrame{
 					txtRFC.setText(re.getRfc()+"");
 					txtCurp.setText(re.getCurp()+"");
 					cmbSexo.setSelectedItem(re.getSexo()==0 ? "MASCULINO" : "FEMENINO");
-					
+					txtemail.setText(re.getEmail()+"");
 					if(re.getEstado_civil().equals("0")){	cmbEstadoCivil.setSelectedIndex(0);		}else{	cmbEstadoCivil.setSelectedItem(re.getEstado_civil());	}
 					if(re.getTipo_sangre().equals("0")){	cmbTipoDeSangre.setSelectedIndex(0);	}else{	cmbTipoDeSangre.setSelectedItem(re.getTipo_sangre());	}
 					if(re.getEscolaridad().equals("0")){	cmbEscolaridad.setSelectedIndex(0);		}else{	cmbEscolaridad.setSelectedItem(re.getEscolaridad());	}
@@ -1400,11 +1406,9 @@ public class Cat_Empleados extends JFrame{
 			 horario3=lblFolioHorario3.getText().equals("")?0:Integer.valueOf(lblFolioHorario3.getText());
 			
 			if(new BuscarSQL().existe_horario_con_otro_empleado(horario,horario2,horario3, Integer.valueOf(txtFolioEmpleado.getText().toString()) )){
-				System.out.println(horario+" 2"+horario2+" 3"+horario3);
 				JOptionPane.showMessageDialog(null, "No Se Puede Asignar Un Mismo Horario A Mas De Un Colaborador Con Estatus\nVigente, Incapacitado, De Vacaciones o Provicional Checador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/error-de-reloj-icono-5961-32.png"));
 				return;
 			}else{
-				System.out.println(horario+" 2"+horario2+" 3"+horario3);
 				
 			
 			if(cmbStatus.getSelectedItem().toString().trim().equals("Baja") || cmbStatus.getSelectedItem().toString().trim().equals("No Contratable") || cmbStatus.getSelectedItem().toString().trim().equals("Renuncia")){
@@ -1493,7 +1497,7 @@ public void guardar_modificar_Empleado(){
 								empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
 								empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
 								empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
-								
+								empleado.setEmail(txtemail.getText().toString().toLowerCase().trim());
 								
 //								if(btnTrueFoto.isSelected()){
 									empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
@@ -1653,7 +1657,7 @@ public void guardar_modificar_Empleado(){
 							empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
 							empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
 							empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
-							
+							empleado.setEmail(txtemail.getText().toString().toLowerCase().trim());
 							
 //							if(btnTrueFoto.isSelected()){
 								empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
@@ -1871,6 +1875,7 @@ public void guardar_modificar_Empleado(){
 		
 		txtIngresoImss.setEnabled(true);
 		txtVencimientoLicencia.setEnabled(true);
+		txtemail.setEditable(true);
 		
 		txtCalle.setEnabled(true);
 		txtColonia.setEnabled(true);
@@ -1927,7 +1932,8 @@ public void guardar_modificar_Empleado(){
 		cmbStatusChecador.setEnabled(false);
 		                                                                                                   
 		txtIngresoImss.setEnabled(false);                                                                  
-		txtVencimientoLicencia.setEnabled(false);                                                          
+		txtVencimientoLicencia.setEnabled(false);   
+		txtemail.setEditable(false);
 		                                                                                                   
 		txtCalle.setEnabled(false);                                                                        
 		txtColonia.setEnabled(false);                                                                      
@@ -2003,6 +2009,7 @@ public void guardar_modificar_Empleado(){
 	    txtFechaNacimiento.setDate(null);
 	    cmbStatusChecador.setSelectedIndex(0);
 	    
+	    txtemail.setText("");
 	    lblFolioPerfil.setText("");
 		txtPerfil.setText("");
 	    
@@ -2305,7 +2312,11 @@ public void guardar_modificar_Empleado(){
 				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-			new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString())).setVisible(true);
+				if(lblFolioHorario1.getText().equals("")){
+					new Cat_Horarios().setVisible(true);
+				}else{
+			     new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString())).setVisible(true);
+				}
 			}
 		}
 	};
@@ -2415,9 +2426,9 @@ public void guardar_modificar_Empleado(){
 		if(cmbEstadoCivil.getSelectedIndex()==0)	error+= "Estado Civil\n";
 		if(cmbTipoDeSangre.getSelectedIndex()==0)	error+= "Tipo De Sangre\n";
 		if(cmbEscolaridad.getSelectedIndex()==0)	error+= "Escolaridad\n";
-//		if(cmbDepartamento.getSelectedItem().equals("Selecciona un Departamento"))	error+= "Departamento\n";
-//		if(cmbEstablecimiento.getSelectedItem().equals("Selecciona un Establecimiento")) error += "Establecimiento\n";
-//		if(cmbPuesto.getSelectedItem().equals("Selecciona un Puesto")) error += "Puesto\n";
+		if(cmbDepartamento.getSelectedItem().equals("Selecciona un Departamento"))	error+= "Departamento\n";
+		if(cmbEstablecimiento.getSelectedItem().equals("Selecciona un Establecimiento")) error += "Establecimiento\n";
+		if(cmbPuesto.getSelectedItem().equals("Selecciona un Puesto")) error += "Puesto\n";
 		
 		
 		if(txtPerfil.getText().trim().equals("")){
@@ -2425,8 +2436,6 @@ public void guardar_modificar_Empleado(){
 				error +="Perfil\n";
 			}
 		}
-			
-			
 		
 		switch(cmbHorarioRotativo.getSelectedIndex()){
 		case 0:	if(txtHorario.getText().equals("")) 		error+= "Horario\n"; break;
@@ -2582,7 +2591,6 @@ public void guardar_modificar_Empleado(){
 	        rpta+=cdi.getName()+"\n";
 	      }
 	      
-	      System.out.println(rpta);
 	      if(rpta.compareTo("")!=0)
 	          rpta="Dispositivos detectados:\n\n"+rpta;
 	      else
@@ -2895,7 +2903,7 @@ public void guardar_modificar_Empleado(){
 			
 			campo.add(txtFolioFiltroEmpleado).setBounds(15,20,48,20);
 			campo.add(txtNombre_Completo).setBounds(64,20,229,20);
-			campo.add(cmbEstablecimientos).setBounds(295,20, 148, 20);
+			campo.add(cmbEstablecimientos).setBounds(295,20, 160, 20);
 			
 			agregar(tabla);
 			
@@ -3053,13 +3061,10 @@ public void guardar_modificar_Empleado(){
 			tabla.getColumnModel().getColumn(0).setMaxWidth(50);
 			tabla.getColumnModel().getColumn(0).setMinWidth(50);
 			tabla.getColumnModel().getColumn(1).setHeaderValue("Nombre Completo");
-			tabla.getColumnModel().getColumn(1).setMaxWidth(230);
 			tabla.getColumnModel().getColumn(1).setMinWidth(230);
 			tabla.getColumnModel().getColumn(2).setHeaderValue("Establecimiento");
-			tabla.getColumnModel().getColumn(2).setMaxWidth(150);
 			tabla.getColumnModel().getColumn(2).setMinWidth(150);
 			tabla.getColumnModel().getColumn(3).setHeaderValue("Puesto");
-			tabla.getColumnModel().getColumn(3).setMaxWidth(180);
 			tabla.getColumnModel().getColumn(3).setMinWidth(180);
 			tabla.getColumnModel().getColumn(4).setHeaderValue("Sueldo");
 			tabla.getColumnModel().getColumn(4).setMaxWidth(70);

@@ -67,6 +67,15 @@ public class JCButton extends JButton{
             setBackground(CA);  
         }
         
+        if(color.equals("Gris")){
+            CA    =   new Color(207, 207 ,207);
+            CB    =   new Color(232, 232 ,232);
+            CD    =   new Color(150, 150 ,150);
+            setForeground(new Color(0, 0, 0));
+            setBackground(CA);  
+        }
+        
+        
         setContentAreaFilled(false);
         setOpaque(false);
         setBorderPainted(false);

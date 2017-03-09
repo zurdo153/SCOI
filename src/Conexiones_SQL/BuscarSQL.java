@@ -1394,6 +1394,7 @@ public class BuscarSQL {
 				empleado.setRfc(rs.getString("rfc").trim());
 				empleado.setCurp(rs.getString("curp").trim());
 				empleado.setSexo(rs.getInt("sexo"));
+				empleado.setEmail(rs.getString("email").trim());
 				
 //				laboral
 				empleado.setHorario(rs.getInt("horario"));
@@ -1449,7 +1450,7 @@ public class BuscarSQL {
 				empleado.setPresencia_fisica(rs.getInt("presencia_fisica"));
 				empleado.setBonocomplemento(rs.getInt("bono_complemento"));
 				empleado.setPerfil(rs.getInt("folio_perfil"));
-				
+			
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);
 				

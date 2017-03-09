@@ -30,6 +30,7 @@ public class Obj_Empleados {
 	private String tipo_sangre;
 	private String escolaridad;	
 	private File foto;
+	private String email;
 	
 	private int perfil;
 //	laboral
@@ -58,8 +59,6 @@ public class Obj_Empleados {
 	private String fecha_vencimiento_licencia;
 	private String ultimo_usuario_modifico;
 	private String status_checador;
-	
-
 
 	//	percepciones y deducciones
 	private float salario_diario;
@@ -93,20 +92,26 @@ public class Obj_Empleados {
 	
 	
 	public Obj_Empleados(){
-		
 		folio=0; no_checador=""; nombre=""; ap_paterno=""; ap_materno=""; fecha_nacimiento=""; calle=""; colonia=""; poblacion=""; telefono_familiar="";
-		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; foto=null;
+		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; foto=null; email="";
 		
 		perfil = 0;
 		
 		horario=0; horario2=0; horario2=0; status_h1=0; status_h2=0; status_h3=0; status_rotativo=0; contrato=0; descanso=""; dobla=""; fecha_ingreso=""; status=0; fecha_baja=""; cuadrante_parcial=false;
 		departameto=0; imss=""; status_imss=0; numero_infonavit=""; establecimiento=0; puesto=0;
-		
 		salario_diario=0; salario_diario_integrado=0; forma_pago=""; sueldo=0; bono=0; prestamo=0; pension_alimenticia=0; infonavit=0; targeta_nomina="";
 		tipo_banco=0; presencia_fisica=0; gafete=false; fuente_sodas=false; observasiones="";
 		
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public float getBono_asistencia() {
 		return bono_asistencia;
 	}

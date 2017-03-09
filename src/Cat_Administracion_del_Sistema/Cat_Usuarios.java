@@ -301,6 +301,7 @@ public class Cat_Usuarios extends JFrame{
 				new Obj_CheckBoxNode(Sub_Compras[28], false),
 				new Obj_CheckBoxNode(Sub_Compras[29], false),
 				new Obj_CheckBoxNode(Sub_Compras[30], false),
+				new Obj_CheckBoxNode(Sub_Compras[31], false),
 			};
 			@SuppressWarnings("rawtypes")
 			Vector ComprasVector = new Obj_NombreVector("Compras", Compras);

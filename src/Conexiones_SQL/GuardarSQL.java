@@ -117,7 +117,7 @@ public class GuardarSQL {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public boolean Guardar_Empleado(Obj_Empleados empleado){
-		String query = "exec sp_insert_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec sp_insert_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -151,6 +151,7 @@ public class GuardarSQL {
 			pstmt.setString(i+=1, 	empleado.getRfc().toUpperCase());
 			pstmt.setString(i+=1, 	empleado.getCurp().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getSexo());
+			pstmt.setString(i+=1, 	empleado.getEmail());
 			
 			FileInputStream stream_foto = new FileInputStream(empleado.getFoto());
 			pstmt.setBinaryStream(i+=1, stream_foto, empleado.getFoto().length());
@@ -6409,12 +6410,18 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 			}catch(SQLException ex){
 				System.out.println(ex.getMessage());
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_servicios ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-				return false;
 			}
-		}	
-	}
+		}
+		return false;
+	}finally{
+		try {
+			con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}		
 	return true;
-};
+}
 		
 		
 public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos equipos, String movimiento,String rutaFactura, String rutaImagen){
