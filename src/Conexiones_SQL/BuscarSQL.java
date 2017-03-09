@@ -9857,10 +9857,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		
 		Obj_Administracion_De_Activos activo = new Obj_Administracion_De_Activos();
 		
-		String query = " select folio,descripcion,status,establecimiento,departamento,tipo,marca,modelo,serie,anio_fabricacion, "
-				+ " 		fecha_compra,garantia,unidad_garantia,vida_util,unidad_vida_util,costo,depreciacion,caracteristicas "
-				+ " from tb_administracion_de_activos "
-				+ " where folio = "+folio;
+		String query = "exec sp_select_administracion_de_activos "+folio;
 		
 		System.out.println(query);
 		
@@ -9890,6 +9887,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				activo.setCosto(rs.getDouble("costo"));
 				activo.setDepreciacion(rs.getDouble("depreciacion"));
 				activo.setCaracteristicas(rs.getString("caracteristicas"));
+				activo.setGrupo_equipo(rs.getInt("grupo_de_equipo"));
 			}
 			
 		}catch (Exception e) {
@@ -10088,4 +10086,31 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return contadorDeArchivosGenerados;
 	}
 
+	public Object[][] getFiltro_De_Administracion_De_Activos(){
+		String query = "exec sp_filtro_de_administracion_de_activos";
+		
+		Object[][] Matriz = new Object[getFilas(query)][8];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0] = rs.getString(1);
+				Matriz[i][1] = rs.getString(2);
+				Matriz[i][2] = rs.getString(3);
+				Matriz[i][3] = rs.getString(4);
+				Matriz[i][4] = rs.getString(5);
+				Matriz[i][5] = rs.getString(6);
+				Matriz[i][6] = rs.getString(7);
+				Matriz[i][7] = rs.getString(8);
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz; 
+	}
+	
 }

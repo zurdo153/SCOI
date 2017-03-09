@@ -2548,4 +2548,40 @@ public class Cargar_Combo {
 		}
 		return pila;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] tipo_de_equipo(){
+		String query = "select ltrim(rtrim(nombre)) as equipo from tb_tipos_de_equipo where status = 'V' order by nombre asc";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona un Equipo");
+				}
+				miVector.add(rs.getString("equipo"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+	}
 }
