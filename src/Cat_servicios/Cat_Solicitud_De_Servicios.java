@@ -112,7 +112,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 	JLabel lblTiempoEstimado   = new JLabel("");
 	JLabel lblArchivoAdjunto   = new JLabel("");
 	
-	JTextArea txaDetalle       = new Componentes().textArea(new JTextArea(), "", 1000);
+	JTextArea txaDetalle       = new Componentes().textArea(new JTextArea(), "", 500);
 	JScrollPane scrollDetalle  = new JScrollPane(txaDetalle);
 	
 	String[] status = {"SOLICITADO","CANCELADO"};
@@ -428,7 +428,7 @@ ActionListener guardar = new ActionListener(){
 				servicios_solicitud.setFolio(Integer.valueOf(txtFolio.getText().trim()+"" ));
 				servicios_solicitud.setServicio(txtServicio.getText().toUpperCase().trim());
 				servicios_solicitud.setPrioridad(cmbPrioridades.getSelectedItem().toString().trim());
-				servicios_solicitud.setDepartamento_solicito(lblDepartamento.getText().toString().trim());
+				servicios_solicitud.setDepartamento_solicito(cmbDepartamento.getSelectedItem().toString().trim());
 				servicios_solicitud.setEstablecimiento_solicito(lblEstablecimiento.getText().trim());
 				servicios_solicitud.setDetalle(txaDetalle.getText().toUpperCase().trim());
 				servicios_solicitud.setEstatus_equipo(cmbEstatus_Equipo.getSelectedItem().toString());

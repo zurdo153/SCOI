@@ -132,7 +132,7 @@ public class Cat_Catalogo_De_Servicios extends JFrame{
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/utilidades-agt-icono-6387-32.png"));
 		this.panel.setBorder(BorderFactory.createTitledBorder("Servicios"));
-		this.setTitle("Alimentacion y Modificacion De Servicios");
+		this.setTitle("Catalogo De Servicios: Alimentacion y Modificacion");
 		
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);

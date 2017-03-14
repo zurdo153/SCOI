@@ -90,9 +90,9 @@ public class Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas extends JFrame 
 		this.panel.add(btn_cant_personaltotales).setBounds      (x+80   ,y+=40, width ,height);
 		
 		this.cont.add(panel);
-		btn_generar_altas.addActionListener(op_generar); 
-		btn_generar_Bajas.addActionListener(op_generar);
-		btn_cant_personal.addActionListener(op_generar);
+		btn_generar_altas.addActionListener       (op_generar); 
+		btn_generar_Bajas.addActionListener       (op_generar);
+		btn_cant_personal.addActionListener       (op_generar);
 		btn_cant_personaltotales.addActionListener(op_generar);
 
 		
@@ -173,7 +173,6 @@ public class Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas extends JFrame 
 		if(fechafinalNull.equals("null"))error+= "Fecha Final\n";
 		return error;
 	}
-	
 	
 	public static void main(String args[]){
 		try{

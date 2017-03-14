@@ -36,6 +36,8 @@ public class Generacion_Reportes {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void  Reporte(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
+
+		
 			    Obj_Usuario usuario = new Obj_Usuario();
                 String query =comando ;
 				Statement stmt = null;
@@ -43,7 +45,8 @@ public class Generacion_Reportes {
 				if (vista_previa_de_ventana==0){
 					vista_previa_reporte=usuario.buscar(usuario.LeerSession().getFolio()).getVista_previa_impresion();
 				}
-				
+	
+					
 				
 				if (basedatos=="2.200"){
 					try {
@@ -84,6 +87,7 @@ public class Generacion_Reportes {
 					
 					// En mapa se especifican los parametros del reporte
 					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+				
 					if (vista_previa_reporte.equals("si")){
 						// Mostrar el reporte
 							JRViewer jrv = new JRViewer(print);

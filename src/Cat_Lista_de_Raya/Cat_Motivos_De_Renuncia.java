@@ -99,7 +99,8 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 	JCheckBox chbAmbienteLaboral 	= new JCheckBox("Ambiente Laboral");
 	JCheckBox chbCapacitacion 		= new JCheckBox("Capacitación");
 	JCheckBox chbDescuentoNomina 	= new JCheckBox("Descuento De Nomina");
-	JCheckBox chbProblemaPersonal 	= new JCheckBox("Probema Personal");
+	JCheckBox chbProblemaPersonal 	= new JCheckBox("Problema Personal");
+	JCheckBox chbAbandonoTrabajo 	= new JCheckBox("Abandono De Trabajo");
 	JCheckBox chbOtros 				= new JCheckBox("Otros");
 	
 	JTextArea txaDescripcionDelMotivo = new Componentes().textArea(new JTextArea(), "Descripcion Del Motivo De Renuncia", 500);
@@ -169,7 +170,8 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 		chbCapacitacion.setBackground(CFondo); 		
 		chbDescuentoNomina.setBackground(CFondo); 	
 		chbProblemaPersonal.setBackground(CFondo); 	
-		chbOtros.setBackground(CFondo); 				
+		chbOtros.setBackground(CFondo); 	
+		chbAbandonoTrabajo.setBackground(CFondo);
 		
 		menu_toolbar.setEnabled(true);
 //		this.cont.add(menu_toolbar).setBounds(0,0,800,25);
@@ -209,10 +211,11 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 		pMotivos.add(chbCapacitacion).setBounds(x+ancho*3, y, ancho+10, 20);
 		pMotivos.add(chbDescuentoNomina).setBounds(x+ancho*6, y, ancho*2-30, 20);
 		
-		pMotivos.add(chbProblemaPersonal).setBounds(x, y+=25, ancho*2-45, 20);
-		pMotivos.add(chbOtros).setBounds(x+ancho*3, y, ancho-25, 20);
+		pMotivos.add(chbProblemaPersonal).setBounds     (x          ,y+=25 ,ancho*2-45 ,20);
+		pMotivos.add(chbAbandonoTrabajo).setBounds      (x+=ancho*3 ,y     ,ancho*2    ,20);
+		pMotivos.add(chbOtros).setBounds                (x+ancho*3  ,y     ,ancho-25   ,20);
 		
-		x-=50;
+		x=15;
 		
 		pMotivos.add(new JLabel("Descripcion:")).setBounds(x, y+=45, ancho*2, 20);
 		pMotivos.add(ObsDescripcionDelMotivo).setBounds(x, y+=20, ancho*9+35, 100);
@@ -315,6 +318,7 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 						, chbCapacitacion.isSelected()
 						, chbDescuentoNomina.isSelected()
 						, chbProblemaPersonal.isSelected()
+						, chbAbandonoTrabajo.isSelected()
 						, chbOtros.isSelected()
 						, txaDescripcionDelMotivo.getText().trim()
 						, txa1.getText().trim()
@@ -324,8 +328,8 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 						, txa5.getText().trim())){
 					
 					String basedatos="2.26";
-					String vista_previa_reporte="no";
-					int vista_previa_de_ventana=0;
+					String vista_previa_reporte="si";
+					int vista_previa_de_ventana=1;
 					
 					String comando="exec sp_select_encuensta_de_salida "+txtFolioEmpleado.getText()+"";
 					String reporte = "Obj_Reporte_De_Encuenta_Y_Motivos_De_Salida.jrxml";
@@ -348,7 +352,7 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 		
 		error+=txtFolioJefeInmediato.getText().equals("")?"  - Jefe Inmediato\n":"";
 		
-		if(!(chbSueldo.isSelected() || chbHorario.isSelected() || chbRealacionConJefe.isSelected() || chbAmbienteLaboral.isSelected() || chbCapacitacion.isSelected() || chbDescuentoNomina.isSelected() || chbProblemaPersonal.isSelected() || chbOtros.isSelected())){
+		if(!(chbSueldo.isSelected() || chbHorario.isSelected() || chbRealacionConJefe.isSelected() || chbAmbienteLaboral.isSelected() || chbCapacitacion.isSelected() || chbDescuentoNomina.isSelected() || chbProblemaPersonal.isSelected()|| chbAbandonoTrabajo.isSelected() || chbOtros.isSelected())){
 			error+="  - Motivo\n";
 		}
 		error+=txaDescripcionDelMotivo.getText().equals("")?"  - Descripcion\n":"";
@@ -376,6 +380,7 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 		chbDescuentoNomina.setSelected(false); 	
 		chbProblemaPersonal.setSelected(false); 	
 		chbOtros.setSelected(false); 
+		chbDescuentoNomina.setSelected(false); 
 		
 		txaDescripcionDelMotivo.setText("");
 		txa1.setText("");

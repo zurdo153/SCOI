@@ -610,6 +610,7 @@ public class Obj_Empleados {
 
 	public boolean guardar(){ return new GuardarSQL().Guardar_Empleado(this); }
 	
+	
 	public Obj_Empleados buscar(int folio){ 
 		try {
 			return new BuscarSQL().Empleado(folio);
@@ -618,6 +619,7 @@ public class Obj_Empleados {
 		}
 	return null; 
 	}
+	
 	
 	public boolean actualizar(int folio){ return new ActualizarSQL().Empleado(this,folio); }
 	

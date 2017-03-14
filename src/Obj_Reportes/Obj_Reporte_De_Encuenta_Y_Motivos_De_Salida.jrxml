@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-06-09T14:08:06 -->
+<!-- 2017-03-10T11:07:10 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Encuenta_Y_Motivos_De_Salida" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1db2c330-549b-43dc-b695-08d66ddf76bf">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -12,7 +12,7 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
-	<queryString>
+	<queryString language="SQL">
 		<![CDATA[exec sp_select_encuensta_de_salida 1785]]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer"/>
@@ -44,6 +44,7 @@
 	<field name="capturo" class="java.lang.String"/>
 	<field name="fecha" class="java.lang.String"/>
 	<field name="foto" class="java.io.InputStream"/>
+	<field name="abandono_trabajo" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -178,14 +179,14 @@
 				<textFieldExpression><![CDATA[$F{sueldo}.equals("N")?"-":"X"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="339" y="110" width="30" height="15" uuid="d0b4c111-8515-4cb2-85bd-84e4abdde5e1">
+				<reportElement x="353" y="110" width="30" height="15" uuid="d0b4c111-8515-4cb2-85bd-84e4abdde5e1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{horario}.equals("N")?"-":"X"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="475" y="110" width="30" height="15" uuid="f87de02e-cd86-4b38-bc42-334e648e7850">
+				<reportElement x="498" y="110" width="30" height="15" uuid="f87de02e-cd86-4b38-bc42-334e648e7850">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -199,14 +200,14 @@
 				<textFieldExpression><![CDATA[$F{ambiente_laboral}.equals("N")?"-":"X"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="339" y="127" width="30" height="15" uuid="608f2212-3b0e-482c-8d74-ee5f931f8086">
+				<reportElement x="353" y="127" width="30" height="15" uuid="608f2212-3b0e-482c-8d74-ee5f931f8086">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{capacitacion}.equals("N")?"-":"X"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="475" y="127" width="30" height="15" uuid="21f43e7a-1e4f-4bee-91dc-399f3092288d">
+				<reportElement x="498" y="127" width="30" height="15" uuid="21f43e7a-1e4f-4bee-91dc-399f3092288d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -220,7 +221,7 @@
 				<textFieldExpression><![CDATA[$F{problema_personal}.equals("N")?"-":"X"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="339" y="144" width="30" height="15" uuid="4618adcb-a7e1-4f27-893f-b81185f1f171">
+				<reportElement x="499" y="144" width="30" height="15" uuid="4618adcb-a7e1-4f27-893f-b81185f1f171">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -337,7 +338,7 @@
 				<text><![CDATA[Observacion:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="375" y="127" width="96" height="15" uuid="5ed4f374-c7f4-48cd-a259-088f67c9ac5d">
+				<reportElement x="398" y="127" width="96" height="15" uuid="5ed4f374-c7f4-48cd-a259-088f67c9ac5d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -347,7 +348,7 @@
 				<text><![CDATA[Descuento Nomina:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="239" y="127" width="96" height="15" uuid="f0bdebe3-7b88-4ccc-9bf6-d7ae466ef5f6">
+				<reportElement x="239" y="127" width="110" height="15" uuid="f0bdebe3-7b88-4ccc-9bf6-d7ae466ef5f6">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -386,7 +387,7 @@
 				<text><![CDATA[Sueldo:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="239" y="144" width="96" height="15" uuid="d708f67f-1ee0-413f-9fd8-da27207e9a4e">
+				<reportElement x="398" y="144" width="96" height="15" uuid="d708f67f-1ee0-413f-9fd8-da27207e9a4e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -396,7 +397,7 @@
 				<text><![CDATA[Otros:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="375" y="110" width="96" height="15" uuid="33df72fc-42c1-48bd-8018-bc74ea099186">
+				<reportElement x="398" y="110" width="96" height="15" uuid="33df72fc-42c1-48bd-8018-bc74ea099186">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -425,7 +426,7 @@
 				<text><![CDATA[Jefe  Inmediato:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="239" y="110" width="96" height="15" uuid="64ceb8fb-daa9-4913-9d66-d580b98daf71">
+				<reportElement x="239" y="110" width="110" height="15" uuid="64ceb8fb-daa9-4913-9d66-d580b98daf71">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -532,6 +533,23 @@
 				</textElement>
 				<text><![CDATA[Motivos:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="239" y="144" width="110" height="15" uuid="5ecd3d30-f8e2-4e39-9664-492fa8e90b06">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Abandono De Trabajo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="353" y="144" width="30" height="15" uuid="3e48b78f-ec4e-400a-94ac-5790e339cabe">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{abandono_trabajo}.equals("N")?"-":"X"]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

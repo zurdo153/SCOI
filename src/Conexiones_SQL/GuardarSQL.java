@@ -5555,9 +5555,9 @@ public boolean Guardar_Configuracion_De_Meta_Mensual_De_Venta(Obj_Configuracion_
 
 public boolean guardar_motivos_de_renuncia(int folioEmp,String estab,String depto, String puesto,int jefeInmediato, String fecha_baja
 											,boolean sueldo,boolean horario,boolean relacionJefe,boolean ambienteLaboral,boolean capacitacion,boolean descuentoNomina
-											,boolean problemaPersonal,boolean otros
+											,boolean problemaPersonal,boolean abandono_trabajo,boolean otros
 											,String descripcionMotivo,String respuesta1,String respuesta2,String respuesta3,String respuesta4,String respuesta5){
-	String query = "exec sp_insert_encuesta_y_motivo_de_renuncia ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	String query = "exec sp_insert_encuesta_y_motivo_de_renuncia ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
 	try {
@@ -5586,6 +5586,7 @@ public boolean guardar_motivos_de_renuncia(int folioEmp,String estab,String dept
 		pstmt.setString(19, respuesta4);
 		pstmt.setString(20, respuesta5);
 		pstmt.setInt(21, new Obj_Usuario().LeerSession().getFolio());
+		pstmt.setString(22, abandono_trabajo==true?"S":"N");
 		
 		pstmt.executeUpdate();
 		con.commit();
@@ -6364,7 +6365,7 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 		adjunto=servicios.getAdjunto().toString();
 	}
 	
-	String query = "exec sp_guardar_servicios ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	String query = "exec sp_guardar_servicios ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 	Connection con = new Connexion().conexion();
 	
 	try {
@@ -6396,6 +6397,7 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 			pstmt.setString(16,  servicios.getEstatus().toString().trim());
 			pstmt.setBinaryStream(17, new FileInputStream(new File(adjunto)));
 			pstmt.setString(18,  servicios.getAdjunto().toString());
+			pstmt.setString(19,  servicios.getComentario_evaluacion().toString().trim());
 			
 			pstmt.executeUpdate();
 		con.commit();
@@ -6436,29 +6438,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		
 		con.setAutoCommit(false);
 		pstmt = con.prepareStatement(query);
-		
-		System.out.println(folio);
-		System.out.println(equipos.getDescripcion());
-		System.out.println(equipos.getStatus());
-		System.out.println(equipos.getEstablecimiento());
-		System.out.println(equipos.getDepartamento());
-		System.out.println(equipos.getTipo());
-		System.out.println(equipos.getMarca());
-		System.out.println(equipos.getModelo());
-		System.out.println(equipos.getSerie());
-		System.out.println(equipos.getAnio_fabricacion());
-		System.out.println(equipos.getFecha_compra());
-		System.out.println(equipos.getGarantia());
-		System.out.println(equipos.getUnidad_garantia());
-		System.out.println(equipos.getVida_util());
-		System.out.println(equipos.getUnidad_vida_util());
-		System.out.println(equipos.getCosto());
-		System.out.println(equipos.getDepreciacion());
-		System.out.println(equipos.getCaracteristicas());
-		System.out.println(equipos.getRuta_factura());
-		System.out.println(equipos.getRuta_foto());
-		System.out.println(movimiento);
-
 //			int i=1;
 				pstmt.setInt(1, folio); //actualiza folio en tb_folios y retorna el folio mas actualizado para posteriormente mandarlo de parametro                      
 				pstmt.setString(2, equipos.getDescripcion());  

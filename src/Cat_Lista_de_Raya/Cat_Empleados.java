@@ -127,6 +127,7 @@ import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
+import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
 import com.toedter.calendar.JDateChooser;
@@ -246,17 +247,17 @@ public class Cat_Empleados extends JFrame{
 	
 	JCheckBox chb_cuadrante_parcial = new JCheckBox("Permite Cuadrante Parcial",false);
 	
-	JCButton btnBuscar   = new JCButton("Buscar","buscar.png","Azul");
-	JCButton btnFiltro   = new JCButton("Filtro","Filter-List-icon16.png","Azul");
-	JCButton btnNuevo    = new JCButton("Nuevo","Nuevo.png","Azul");
-	JCButton btnEditar   = new JCButton("Editar","editara.png","Azul");
-	JCButton btnSalir    = new JCButton("Salir","salir16.png","Azul");
-	JCButton btnGuardar  = new JCButton("Guardar","Guardar.png","Azul");
-	JCButton btnDeshacer = new JCButton("Deshacer","deshacer16.png","Azul");
-	JCButton btnVerificar= new JCButton("Verificar Nombre Del Nuevo Colaborador","","AzulC");
-	JButton btnHorario   = new JButton(".");
-	JButton btnHorario2 = new JButton(".");
-	JButton btnHorario3 = new JButton(".");
+	JCButton btnBuscar    = new JCButton("Buscar","buscar.png","Azul");
+	JCButton btnFiltro    = new JCButton("Filtro","Filter-List-icon16.png","Azul");
+	JCButton btnNuevo     = new JCButton("Nuevo","Nuevo.png","Azul");
+	JCButton btnEditar    = new JCButton("Editar","editara.png","Azul");
+	JCButton btnSalir     = new JCButton("Salir","salir16.png","Azul");
+	JCButton btnGuardar   = new JCButton("Guardar","Guardar.png","Azul");
+	JCButton btnDeshacer  = new JCButton("Deshacer","deshacer16.png","Azul");
+	JCButton btnVerificar = new JCButton("Verificar Nombre Del Nuevo Colaborador","","AzulC");
+	JButton btnHorario    = new JButton(".");
+	JButton btnHorario2   = new JButton(".");
+	JButton btnHorario3   = new JButton(".");
 	JButton btnHorarioNew = new JButton("new");
 	
 	JButton btnFechaUltimasVacaciones = new JButton();
@@ -271,16 +272,13 @@ public class Cat_Empleados extends JFrame{
 	JCButton btnContratacion        = new JCButton("Contratacion","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png","AzulC");
 	JCButton btnDocumentacion       = new JCButton("Documentación","carpeta-de-correo-icono-4002-16.png","AzulC");
 	JCButton btnEncuentaDeSalida    = new JCButton("Encuesta De Salida","Lista.png","AzulC");
-
 	JCButton btnIncontratables      = new JCButton("No Contratables","tarjeta-de-informacion-del-usuario-icono-7370-16.png","Azul");
-
 	JCButton btnLicencias           = new JCButton("Licencias","truck-icon.png","Azul");
 	JCButton btnCumpleaños_del_Mes  = new JCButton("Cumpleaños","cookies-tarta-de-cumpleanos-icono-9840-16.png","Azul");
 	JCButton btnAusentismo		    = new JCButton("Ausentismo","reloj.png","Azul");
 	JCButton btn_Adeudo        		= new JCButton("Adeudos","detective-icono-5257-16.png","Azul");
 	JCButton btnReporteSalida		= new JCButton("Encuesta De Salida","baja16.png","Azul");
 	JCButton btnReporteRenuncia		= new JCButton("Renuncia","baja16.png","Azul");
-
 	JCButton btnImp_Datos_Completos = new JCButton("Datos Colaborador","informacion-del-usuario-icono-8370-16.png","Azul");
 	
 	JCButton btnAltasBajas          = new JCButton("Rotacion","bajas_altas_16p.png","Azul");
@@ -898,8 +896,8 @@ public class Cat_Empleados extends JFrame{
 			
 			if(!txtNombre.getText().trim().equals("")){
 				String basedatos="2.26";
-				String vista_previa_reporte="no";
-				int vista_previa_de_ventana=0;
+				String vista_previa_reporte="si";
+				int vista_previa_de_ventana=1;
 				
 				String comando="exec sp_select_encuensta_de_salida "+txtFolioEmpleado.getText()+"";
 				String reporte = "Obj_Reporte_De_Encuenta_Y_Motivos_De_Salida.jrxml";
@@ -1171,17 +1169,8 @@ public class Cat_Empleados extends JFrame{
 						txtFechaNacimiento.setDate(date);
 						txtIngreso.setDate(date_ingreso);
 						
-//						if(date_ingreso_imss_comparacion.before(date_ingreso_imss)){
 							txtIngresoImss.setDate(date_ingreso_imss_comparacion.before(date_ingreso_imss) ? date_ingreso_imss : null);
-//						}else{
-//							txtIngresoImss.setDate(null);
-//						}
-						
-//						if(date_vencimiento_licencia_comparacion.before(date_vencimiento_licencia)){
 							txtVencimientoLicencia.setDate(date_vencimiento_licencia_comparacion.before(date_vencimiento_licencia) ? date_vencimiento_licencia : null);
-//						}else{
-//							txtVencimientoLicencia.setDate(null);
-//						}
 					} catch (ParseException e1) {
 						e1.printStackTrace();
 					}
@@ -1430,7 +1419,6 @@ public class Cat_Empleados extends JFrame{
 	
    @SuppressWarnings("deprecation")
 public void guardar_modificar_Empleado(){
-
 				Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
 				Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
 				
@@ -1533,11 +1521,7 @@ public void guardar_modificar_Empleado(){
 									case 2: empleado.setStatus_rotativo(2); break;
 								}
 		
-//								if(cmbContratacion.getSelectedItem().toString().contains(" ")){
-									empleado.setContrato(cmbContratacion.getSelectedItem().toString().contains(" ")?Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))):0);
-//								}else{
-//									empleado.setContrato(0);
-//								}
+								empleado.setContrato(cmbContratacion.getSelectedItem().toString().contains(" ")?Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))):0);
 								
 								empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
 								empleado.setStatus(cmbStatus.getSelectedIndex()+1);
@@ -2862,27 +2846,46 @@ public void guardar_modificar_Empleado(){
 		    return scrol; 
 		}
 	}
-
+//TODO filtro Busqueda de Colaborador
 	public class Cat_Filtro_Empleado extends JDialog {
 		
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
 		
-		DefaultTableModel model = new DefaultTableModel(0,9){
-			public boolean isCellEditable(int fila, int columna){
-				if(columna < 0)
-					return true;
-				return false;
-			}
-		};
-		
-		JTable tabla = new JTable(model);
+		Connexion con = new Connexion();
+		Obj_tabla ObjTabf =new Obj_tabla();
+		int columnas = 9,checkbox=-1;
+		public void init_tablaf(){
+	    	this.tablaf.getColumnModel().getColumn(0).setMinWidth(50);
+	    	this.tablaf.getColumnModel().getColumn(0).setMaxWidth(50);
+	    	this.tablaf.getColumnModel().getColumn(1).setMinWidth(270);
+	    	this.tablaf.getColumnModel().getColumn(2).setMinWidth(120);
+	    	this.tablaf.getColumnModel().getColumn(3).setMinWidth(250);
+			String comandof="exec sp_filtro_empleado";
+			String basedatos="26",pintar="si";
+			ObjTabf.Obj_Refrescar(tablaf,modelf, columnas, comandof, basedatos,pintar,checkbox);
+	    }
 		
 		@SuppressWarnings("rawtypes")
-		private TableRowSorter trsfiltro;
+		public Class[] base (){
+			Class[] types = new Class[columnas];
+			for(int i = 0; i<columnas; i++){types[i]= java.lang.Object.class;}
+			return types;
+		}
 		
-		JTextField txtFolioFiltroEmpleado = new JTextField();
-		JTextField txtNombre_Completo = new JTextField();
+		 public DefaultTableModel modelf = new DefaultTableModel(null, new String[]{"Folio","Colaborador","Establecimiento","Puesto","Sueldo","Bono","Estatus","Fuente Sodas","Gafete"}){
+			 @SuppressWarnings("rawtypes")
+				Class[] types = base();
+				@SuppressWarnings("rawtypes")
+				public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+				public boolean isCellEditable(int fila, int columna){return false;}
+		    };
+		    JTable tablaf = new JTable(modelf);
+			public JScrollPane scroll_tablaf = new JScrollPane(tablaf);
+		     @SuppressWarnings("rawtypes")
+		    private TableRowSorter trsfiltro;
+		
+		JTextField txtFolioFiltroEmpleado  = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
 		
 		String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
 		@SuppressWarnings("rawtypes")
@@ -2890,38 +2893,37 @@ public void guardar_modificar_Empleado(){
 
 		@SuppressWarnings("rawtypes")
 		public Cat_Filtro_Empleado(){
-			
+			this.setSize(1040,650);
 			this.setModal(true);
-			
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
 			this.setTitle("Filtro de Empleados");
 			campo.setBorder(BorderFactory.createTitledBorder("Filtro De Empleado"));
-			trsfiltro = new TableRowSorter(model); 
-			tabla.setRowSorter(trsfiltro);  
-			
-			campo.add(getPanelTabla()).setBounds(15,42,1000,565);
-			
-			campo.add(txtFolioFiltroEmpleado).setBounds(15,20,48,20);
-			campo.add(txtNombre_Completo).setBounds(64,20,229,20);
-			campo.add(cmbEstablecimientos).setBounds(295,20, 160, 20);
-			
-			agregar(tabla);
-			
-			cont.add(campo);
-			
-			txtFolioFiltroEmpleado.addKeyListener(opFiltroFolio);
-			txtNombre_Completo.addKeyListener(opFiltroLoco);
-			cmbEstablecimientos.addActionListener(opFiltro);
-			
-			this.setSize(1040,650);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+			trsfiltro = new TableRowSorter(modelf); 
+			tablaf.setRowSorter(trsfiltro); 
+			
+			campo.add(scroll_tablaf).setBounds(15,42,1000,565);
+			campo.add(txtFolioFiltroEmpleado).setBounds(15,20,300,20);
+			campo.add(cmbEstablecimientos).setBounds(315,20, 180, 20);
+			
+			init_tablaf();
+			
+			agregar(tablaf);
+			
+			cont.add(campo);
+			
+			txtFolioFiltroEmpleado.addKeyListener(opFiltrof);
+			
+			cmbEstablecimientos.addActionListener(opFiltro);
+
 			
 //          asigna el foco al JTextField del nombre deseado al arrancar la ventana
             this.addWindowListener(new WindowAdapter() {
                     public void windowOpened( WindowEvent e ){
-                    	txtNombre_Completo.requestFocus();
+                    	txtFolioFiltroEmpleado.requestFocus();
                  }
             });
               
@@ -2933,12 +2935,12 @@ public void guardar_modificar_Empleado(){
                   @Override
                   public void actionPerformed(ActionEvent e)
                   {
-                	  txtNombre_Completo.setText("");
-                      txtNombre_Completo.requestFocus();
+                	  txtFolioFiltroEmpleado.setText("");
+                	  txtFolioFiltroEmpleado.requestFocus();
                   }
               });
               
-              tabla.addKeyListener(seleccionEmpleadoconteclado);
+              tablaf.addKeyListener(seleccionEmpleadoconteclado);
               
 //            pone el foco en la tabla al presionar f4
               getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -2948,25 +2950,22 @@ public void guardar_modificar_Empleado(){
                   @Override
                   public void actionPerformed(ActionEvent e)
                   {
-                	tabla.requestFocus();
+                	tablaf.requestFocus();
                 	iniciarSeleccionConTeclado();
                   }
               });
               
-              
 				KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
-				tabla.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(tab, "TAB");
+				tablaf.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(tab, "TAB");
 				
-				tabla.getActionMap().put("TAB", new AbstractAction(){
+				tablaf.getActionMap().put("TAB", new AbstractAction(){
 	                 public void actionPerformed(ActionEvent e)
 	                 {
 	                	iniciarSeleccionConTeclado();
-	                	
 	                 }
 	            });
-			 
-			
 		}
+		
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {
@@ -2975,8 +2974,8 @@ public void guardar_modificar_Empleado(){
 		        		iniciarSeleccionConTeclado();
 		        	}
 		        	if(e.getClickCount() == 2){
-		    			fila = tabla.getSelectedRow();
-		    			Object folio =  tabla.getValueAt(fila, 0).toString().trim();
+		    			fila = tablaf.getSelectedRow();
+		    			Object folio =  tablaf.getValueAt(fila, 0).toString().trim();
 		    			dispose();
 		    			txtFolioEmpleado.setText(folio+"");
 		    			btnBuscar.doClick();
@@ -3002,15 +3001,15 @@ public void guardar_modificar_Empleado(){
 			public void keyTyped(KeyEvent e) {
 				
 				KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-				tabla.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, "Enter");
+				tablaf.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, "Enter");
 				
-				tabla.getActionMap().put("Enter", new AbstractAction(){
+				tablaf.getActionMap().put("Enter", new AbstractAction(){
 	                 public void actionPerformed(ActionEvent e)
 	                 {
 	                	iniciarSeleccionConTeclado();
 	                	
-	                	fila=tabla.getSelectedRow();
-	     				String folio = tabla.getValueAt(fila,0).toString().trim();
+	                	fila=tablaf.getSelectedRow();
+	     				String folio = tablaf.getValueAt(fila,0).toString().trim();
 	     					
 	     				txtFolioEmpleado.setText(folio);
 	     				btnBuscar.doClick();
@@ -3022,106 +3021,22 @@ public void guardar_modificar_Empleado(){
 			public void keyReleased(KeyEvent e){}
 		};
 		
-		KeyListener opFiltroFolio = new KeyListener(){
-			public void keyReleased(KeyEvent arg0) {
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioFiltroEmpleado.getText(), 0));
-			}
-			public void keyTyped(KeyEvent arg0) {
-				char caracter = arg0.getKeyChar();
-				if(((caracter < '0') ||
-					(caracter > '9')) &&
-				    (caracter != KeyEvent.VK_BACK_SPACE)){
-					arg0.consume(); 
-				}	
-			}
-			public void keyPressed(KeyEvent arg0) {}		
-		};
 		
-		KeyListener opFiltroLoco = new KeyListener(){
+		KeyListener opFiltrof = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				
-				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
+				ObjTabf.Obj_Filtro(tablaf, txtFolioFiltroEmpleado.getText().toUpperCase(), columnas);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
+		
 		ActionListener opFiltro = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
+				new Obj_Filtro_Dinamico(tablaf,"Nombre Completo", txtFolioFiltroEmpleado.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
 			}
 		};
 		
-	   	private JScrollPane getPanelTabla()	{		
-	   		this.tabla.getTableHeader().setReorderingAllowed(false) ;
-			DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
-			tcr.setHorizontalAlignment(SwingConstants.CENTER);
-
-			tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
-			tabla.getColumnModel().getColumn(0).setMaxWidth(50);
-			tabla.getColumnModel().getColumn(0).setMinWidth(50);
-			tabla.getColumnModel().getColumn(1).setHeaderValue("Nombre Completo");
-			tabla.getColumnModel().getColumn(1).setMinWidth(230);
-			tabla.getColumnModel().getColumn(2).setHeaderValue("Establecimiento");
-			tabla.getColumnModel().getColumn(2).setMinWidth(150);
-			tabla.getColumnModel().getColumn(3).setHeaderValue("Puesto");
-			tabla.getColumnModel().getColumn(3).setMinWidth(180);
-			tabla.getColumnModel().getColumn(4).setHeaderValue("Sueldo");
-			tabla.getColumnModel().getColumn(4).setMaxWidth(70);
-			tabla.getColumnModel().getColumn(4).setMinWidth(70);
-			tabla.getColumnModel().getColumn(5).setHeaderValue("Bono");
-			tabla.getColumnModel().getColumn(5).setMaxWidth(70);
-			tabla.getColumnModel().getColumn(5).setMinWidth(70);
-			tabla.getColumnModel().getColumn(6).setHeaderValue("Status");
-			tabla.getColumnModel().getColumn(6).setMaxWidth(120);
-			tabla.getColumnModel().getColumn(6).setMinWidth(120);
-			tabla.getColumnModel().getColumn(7).setHeaderValue("F Sodas");
-			tabla.getColumnModel().getColumn(7).setMaxWidth(50);
-			tabla.getColumnModel().getColumn(7).setMinWidth(50);
-			tabla.getColumnModel().getColumn(8).setHeaderValue("Gafete");
-			tabla.getColumnModel().getColumn(8).setMaxWidth(50);
-			tabla.getColumnModel().getColumn(8).setMinWidth(50);
-			
-			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
-			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-			tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-			tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-			tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-			tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-			tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-			tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-			
-			
-			Statement s;
-			ResultSet rs;
-			try {
-				s = new Connexion().conexion().createStatement();
-				rs = s.executeQuery("exec sp_filtro_empleado");
-				
-				while (rs.next())
-				{ 
-				   String [] fila = new String[9];
-				   fila[0] = rs.getString(1)+"  ";
-				   fila[1] = "   "+rs.getString(2);
-				   fila[2] = "   "+rs.getString(3).trim();
-				   fila[3] = "   "+rs.getString(4).trim();
-				   fila[4] = rs.getString(5).trim();
-				   fila[5] = rs.getString(6).trim();
-				   fila[6] = "   "+rs.getString(7).trim();
-				   fila[7] = rs.getString(8).trim();
-				   fila[8] = rs.getString(9).trim();
-				
-				   model.addRow(fila); 
-				}	
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null,"Error Al Abrir El Filtro De El Empleado Error en El Procedimiento sp_filtro_empleado"+e1, "Avisa Al Administrador Del Sistema!",JOptionPane.ERROR_MESSAGE);
-			}
-			 JScrollPane scrol = new JScrollPane(tabla);
-			   
-		    return scrol; 
-		}
 	}
 
 	

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-06-20T18:38:04 -->
+<!-- 2017-03-13T09:46:54 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Motivo_De_Renuncia" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="799747e2-4848-43d5-b220-cb7f7349c283">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -23,8 +23,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec sp_select_concentrado_de_motivos_de_renuncia '01/06/2016 00:00:00','30/06/2016 23:59:59','EDGAR EDUARDO JIMÉNEZ MOLINA'
-]]>
+		<![CDATA[exec sp_select_concentrado_de_motivos_de_renuncia '01/03/2017 00:00:00','31/03/2017 23:59:59','EDGAR EDUARDO JIMÉNEZ MOLINA']]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer"/>
 	<field name="establecimiento" class="java.lang.String"/>
@@ -39,6 +38,7 @@
 	<field name="fecha_inicial" class="java.lang.String"/>
 	<field name="fecha_final" class="java.lang.String"/>
 	<field name="consulto" class="java.lang.String"/>
+	<field name="abandono_trabajo" class="java.lang.Integer"/>
 	<variable name="sueldo" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{sueldo}]]></variableExpression>
 	</variable>
@@ -62,6 +62,9 @@
 	</variable>
 	<variable name="otros" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{otros}]]></variableExpression>
+	</variable>
+	<variable name="AbandonoDeTrabajo" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{abandono_trabajo}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -125,30 +128,46 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="35" splitType="Stretch">
+		<band height="37" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="3" width="572" height="32" forecolor="#D0B48E" backcolor="#0000FF" uuid="4481645c-ed2d-4b40-852a-cad563c61f52"/>
+				<reportElement mode="Opaque" x="0" y="3" width="572" height="34" forecolor="#D0B48E" backcolor="#0000FF" uuid="4481645c-ed2d-4b40-852a-cad563c61f52"/>
+				<staticText>
+					<reportElement style="Column header" x="440" y="0" width="52" height="31" forecolor="#FFFFFF" uuid="5d013ad9-8c73-49d4-86ad-f90d5c8565e3">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Abandono De Trabajo]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement mode="Opaque" x="493" y="1" width="33" height="31" backcolor="#0028B8" uuid="2b23a6ba-4ba0-4dfc-837d-8900db89336b"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
 			</frame>
 			<rectangle>
-				<reportElement mode="Opaque" x="139" y="4" width="40" height="31" backcolor="#0028B8" uuid="d0c28394-add0-42de-a2df-141b088878da"/>
+				<reportElement mode="Opaque" x="139" y="4" width="30" height="31" backcolor="#0028B8" uuid="d0c28394-add0-42de-a2df-141b088878da"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Opaque" x="481" y="4" width="56" height="31" backcolor="#0028B8" uuid="109cfb2c-e068-4479-8d48-0b5a6f259249"/>
+				<reportElement mode="Opaque" x="394" y="4" width="44" height="31" backcolor="#0028B8" uuid="109cfb2c-e068-4479-8d48-0b5a6f259249"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Opaque" x="342" y="4" width="71" height="31" backcolor="#0028B8" uuid="a875664a-fa22-4aa6-abf5-d3309ea0cac3"/>
+				<reportElement mode="Opaque" x="286" y="4" width="57" height="31" backcolor="#0028B8" uuid="a875664a-fa22-4aa6-abf5-d3309ea0cac3"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Opaque" x="225" y="4" width="57" height="31" backcolor="#0028B8" uuid="db9c8cb8-ac19-4c12-b68a-b2f91ab6b48f"/>
+				<reportElement mode="Opaque" x="205" y="3" width="39" height="31" backcolor="#0028B8" uuid="db9c8cb8-ac19-4c12-b68a-b2f91ab6b48f"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
@@ -161,58 +180,80 @@
 				<text><![CDATA[Establecimiento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="139" y="2" width="40" height="33" forecolor="#FFFFFF" uuid="be4a5f15-f274-4097-baa1-87421e3c53ef"/>
+				<reportElement style="Column header" x="139" y="2" width="30" height="33" forecolor="#FFFFFF" uuid="be4a5f15-f274-4097-baa1-87421e3c53ef">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Sueldo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="180" y="2" width="45" height="33" forecolor="#FFFFFF" uuid="7b7ad643-6c82-4404-bab8-e1a143b12c07"/>
+				<reportElement style="Column header" x="169" y="2" width="36" height="33" forecolor="#FFFFFF" uuid="7b7ad643-6c82-4404-bab8-e1a143b12c07">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Horario]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="225" y="2" width="60" height="33" forecolor="#FFFFFF" uuid="269d5d4e-6a30-46e7-8661-eaaf10786fe9"/>
+				<reportElement style="Column header" x="206" y="2" width="38" height="33" forecolor="#FFFFFF" uuid="269d5d4e-6a30-46e7-8661-eaaf10786fe9">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Relacion Con Jefe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="282" y="2" width="60" height="33" forecolor="#FFFFFF" uuid="92e06037-4f78-4fa9-8acd-fa223c987a48"/>
+				<reportElement style="Column header" x="245" y="2" width="42" height="33" forecolor="#FFFFFF" uuid="92e06037-4f78-4fa9-8acd-fa223c987a48">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Ambiente Laboral]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="341" y="2" width="72" height="33" forecolor="#FFFFFF" uuid="cc91046d-1b43-404b-9208-22630e95dc8e"/>
+				<reportElement style="Column header" x="286" y="2" width="57" height="33" forecolor="#FFFFFF" uuid="cc91046d-1b43-404b-9208-22630e95dc8e">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Capacitacion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="415" y="2" width="66" height="33" forecolor="#FFFFFF" uuid="ba3fc1fc-1d84-4b44-8533-a5b668a7e819"/>
+				<reportElement style="Column header" x="345" y="2" width="50" height="33" forecolor="#FFFFFF" uuid="ba3fc1fc-1d84-4b44-8533-a5b668a7e819">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descuento De Nomina]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="481" y="2" width="55" height="33" forecolor="#FFFFFF" uuid="ae92c733-3d9f-41ce-9e52-c67b0951d3cd"/>
+				<reportElement style="Column header" x="396" y="2" width="42" height="33" forecolor="#FFFFFF" uuid="ae92c733-3d9f-41ce-9e52-c67b0951d3cd">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Problema Personal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="537" y="2" width="33" height="33" forecolor="#FFFFFF" uuid="ef2033dc-8ed0-4993-9d9a-7c597fbebf2a"/>
+				<reportElement style="Column header" x="493" y="2" width="33" height="33" forecolor="#FFFFFF" uuid="ef2033dc-8ed0-4993-9d9a-7c597fbebf2a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Otros]]></text>
 			</staticText>
@@ -239,7 +280,7 @@
 					<textFieldExpression><![CDATA[$F{sueldo}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="180" y="0" width="31" height="18" uuid="5b386eac-acf7-48e8-ba94-5b888a45fd1f">
+					<reportElement style="Detail" positionType="Float" x="169" y="0" width="31" height="18" uuid="5b386eac-acf7-48e8-ba94-5b888a45fd1f">
 						<printWhenExpression><![CDATA[$F{horario}!=0]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -248,16 +289,9 @@
 					<textFieldExpression><![CDATA[$F{horario}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="225" y="0" width="43" height="18" uuid="665a178b-854d-440b-87be-d2ae1c045901">
-						<printWhenExpression><![CDATA[$F{relacion_con_jefe}!=0]]></printWhenExpression>
-					</reportElement>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{relacion_con_jefe}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="284" y="0" width="40" height="18" uuid="1407ac08-345a-4f64-9a6a-b3a661f56e28">
+					<reportElement style="Detail" positionType="Float" x="244" y="0" width="31" height="18" uuid="1407ac08-345a-4f64-9a6a-b3a661f56e28">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[$F{ambiente_laboral}!=0]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -266,7 +300,7 @@
 					<textFieldExpression><![CDATA[$F{ambiente_laboral}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="342" y="0" width="45" height="18" uuid="14b29d52-9dee-46d8-8cc4-b9ce6dfdda56">
+					<reportElement style="Detail" positionType="Float" x="287" y="0" width="45" height="18" uuid="14b29d52-9dee-46d8-8cc4-b9ce6dfdda56">
 						<printWhenExpression><![CDATA[$F{capacitacion}!=0]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -275,7 +309,8 @@
 					<textFieldExpression><![CDATA[$F{capacitacion}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="415" y="0" width="42" height="18" uuid="26d12a3c-7989-4cb4-a446-fbd9576750e2">
+					<reportElement style="Detail" positionType="Float" x="345" y="0" width="31" height="18" uuid="26d12a3c-7989-4cb4-a446-fbd9576750e2">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[$F{descuento_nomina}!=0]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -284,7 +319,8 @@
 					<textFieldExpression><![CDATA[$F{descuento_nomina}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="481" y="0" width="36" height="18" uuid="5f6a2d83-c163-4ebd-85b9-365e8cff3af8">
+					<reportElement style="Detail" positionType="Float" x="396" y="0" width="31" height="18" uuid="5f6a2d83-c163-4ebd-85b9-365e8cff3af8">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[$F{problema_personal}!=0]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -293,7 +329,7 @@
 					<textFieldExpression><![CDATA[$F{problema_personal}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="536" y="0" width="34" height="18" uuid="a1ba2349-644b-4cf9-9c65-3cc502c480f5">
+					<reportElement style="Detail" positionType="Float" x="492" y="0" width="34" height="18" uuid="a1ba2349-644b-4cf9-9c65-3cc502c480f5">
 						<printWhenExpression><![CDATA[$F{otros}!=0]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -308,47 +344,63 @@
 					</reportElement>
 				</line>
 				<line>
-					<reportElement x="178" y="0" width="1" height="18" uuid="38a23091-7e6b-4482-bac1-6d9e9a099808">
+					<reportElement x="168" y="0" width="1" height="18" uuid="38a23091-7e6b-4482-bac1-6d9e9a099808">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 				</line>
 				<line>
-					<reportElement x="225" y="0" width="1" height="18" uuid="791a6ca7-219c-46ed-92a4-e4610e12f3b9">
+					<reportElement x="205" y="0" width="1" height="18" uuid="791a6ca7-219c-46ed-92a4-e4610e12f3b9">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 				</line>
 				<line>
-					<reportElement x="281" y="0" width="1" height="18" uuid="cf626b9b-cea3-4c21-9b99-e16de9035bea">
+					<reportElement x="243" y="0" width="1" height="18" uuid="cf626b9b-cea3-4c21-9b99-e16de9035bea">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 				</line>
 				<line>
-					<reportElement x="342" y="0" width="1" height="18" uuid="0d38edf3-5f82-4a87-8807-40cd3f77cbaa">
+					<reportElement x="286" y="0" width="1" height="18" uuid="0d38edf3-5f82-4a87-8807-40cd3f77cbaa">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 				</line>
 				<line>
-					<reportElement x="412" y="0" width="1" height="18" uuid="3b7f9570-48c9-4053-89e8-ce2fc15388ae">
+					<reportElement x="343" y="0" width="1" height="18" uuid="3b7f9570-48c9-4053-89e8-ce2fc15388ae">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 				</line>
 				<line>
-					<reportElement x="481" y="0" width="1" height="18" uuid="89bbc0d6-3675-4c8d-8165-261539bf11a1">
+					<reportElement x="394" y="0" width="1" height="18" uuid="89bbc0d6-3675-4c8d-8165-261539bf11a1">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 				</line>
 				<line>
-					<reportElement x="536" y="0" width="1" height="18" uuid="6e7fd115-8961-4650-8a0a-e350842e1dbc">
+					<reportElement x="492" y="0" width="1" height="18" uuid="6e7fd115-8961-4650-8a0a-e350842e1dbc">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 				</line>
+				<line>
+					<reportElement x="438" y="0" width="1" height="18" uuid="c610e7fc-b8be-4ce2-a6d0-ed351a79e3c1">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+				</line>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="450" y="0" width="31" height="18" uuid="414eb25b-ecab-495f-95a1-b85f757eeed0">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$F{problema_personal}!=0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{abandono_trabajo}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</detail>
@@ -360,6 +412,17 @@
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="206" y="-18" width="31" height="18" uuid="665a178b-854d-440b-87be-d2ae1c045901">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$F{relacion_con_jefe}!=0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{relacion_con_jefe}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
@@ -422,7 +485,7 @@
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="181" y="2" width="30" height="16" uuid="d034a26e-3cf6-45b5-a507-57dbe7d372f8">
+				<reportElement x="170" y="2" width="30" height="16" uuid="d034a26e-3cf6-45b5-a507-57dbe7d372f8">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -433,7 +496,7 @@
 				<textFieldExpression><![CDATA[$V{horario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="225" y="2" width="43" height="16" uuid="68d9998e-cf92-4913-97de-1f9855796b8a">
+				<reportElement x="206" y="2" width="31" height="16" uuid="68d9998e-cf92-4913-97de-1f9855796b8a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -443,7 +506,7 @@
 				<textFieldExpression><![CDATA[$V{relacionConJefe}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="284" y="2" width="40" height="16" uuid="3e96420f-cf57-4819-a06e-513779662ed3">
+				<reportElement x="244" y="2" width="31" height="16" uuid="3e96420f-cf57-4819-a06e-513779662ed3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -453,7 +516,7 @@
 				<textFieldExpression><![CDATA[$V{ambienteLaboral}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="357" y="2" width="30" height="16" uuid="7e495f59-5933-4c0c-99e6-5976a6d1e709">
+				<reportElement x="302" y="2" width="30" height="16" uuid="7e495f59-5933-4c0c-99e6-5976a6d1e709">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -463,9 +526,10 @@
 				<textFieldExpression><![CDATA[$V{capacitacion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="415" y="2" width="42" height="16" uuid="366aecfc-488c-43a1-bffb-bd6599d1f24e">
+				<reportElement x="345" y="2" width="31" height="16" uuid="366aecfc-488c-43a1-bffb-bd6599d1f24e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
@@ -473,7 +537,7 @@
 				<textFieldExpression><![CDATA[$V{descuentoNomina}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="481" y="2" width="36" height="16" uuid="533e68a6-51aa-4dfc-b6b8-5ea25a4f141f">
+				<reportElement x="396" y="2" width="31" height="16" uuid="533e68a6-51aa-4dfc-b6b8-5ea25a4f141f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -485,7 +549,7 @@
 				<textFieldExpression><![CDATA[$V{problemaPersonal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="529" y="2" width="34" height="16" uuid="ec220adf-ce4a-4c92-9561-3eee1da0ed93">
+				<reportElement x="494" y="2" width="34" height="16" uuid="ec220adf-ce4a-4c92-9561-3eee1da0ed93">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -493,6 +557,13 @@
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{otros}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="450" y="2" width="31" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="bd3705e0-d7c4-4ccc-bab2-dce50c4811b3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{AbandonoDeTrabajo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

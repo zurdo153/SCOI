@@ -27,6 +27,15 @@ public class Obj_Servicios {
 	String fecha_guardado="";
 	String adjunto="";
 	String evaluacion="";
+	String comentario_evaluacion="";
+
+	public String getComentario_evaluacion() {
+		return comentario_evaluacion;
+	}
+
+	public void setComentario_evaluacion(String comentario_evaluacion) {
+		this.comentario_evaluacion = comentario_evaluacion;
+	}
 
 	public int getFolio() {
 		return folio;

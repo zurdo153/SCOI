@@ -52,7 +52,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	JTextField txtFiltro = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
 	Connexion con = new Connexion();
 	Obj_tabla ObjTab =new Obj_tabla();
-	int columnas = 17,checkbox=-1;
+	int columnas = 18,checkbox=-1;
  public void init_tabla(String status_pedidos){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(45);
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(45);
@@ -73,6 +73,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
     	this.tabla.getColumnModel().getColumn(14).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(15).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(16).setMinWidth(150);
+    	this.tabla.getColumnModel().getColumn(17).setMinWidth(250);
 		String comando="exec sp_select_servicios_por_colaborador "+String.valueOf(usuario.getFolio()+"")+",'"+status_pedidos+"',''";
 		
 		String basedatos="26",pintar="si";
@@ -86,7 +87,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		return types;
 	}
 	
-  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Detalle","Estatus","Prioridad","Departamento Solicito","Establecimiento Solicito","Usuario Solicito","Servicio Solicitado","Fecha Solicitud","Archivo","Fecha Atendio","Folio Atendio","Usuario Atendio","Notas ","Costo ","Evaluacion","Archivo Respuesta"}){
+  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Detalle","Estatus","Prioridad","Departamento Solicito","Establecimiento Solicito","Usuario Solicito","Servicio Solicitado","Fecha Solicitud","Archivo","Fecha Atendio","Folio Atendio","Usuario Atendio","Notas ","Costo ","Evaluacion","Archivo Respuesta","Comentario Evaluacion"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = base();
 			@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -104,7 +105,6 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	JTextField txtUsuario      = new Componentes().text(new JCTextField(), "Usuario Solicito", 300, "String");
 	JTextField txtFAtendio     = new Componentes().text(new JCTextField(), "", 10, "Int");
 	JTextField txtAtendio      = new Componentes().text(new JCTextField(), "Usuario Atendio", 300, "String");
-	
 	JTextField txtFcSolicito   = new Componentes().text(new JCTextField(), "Fecha Solicito", 30, "String");
 	JTextField txtFcAtendio    = new Componentes().text(new JCTextField(), "Fecha Atendio" , 30, "String");
 	JTextField txtFcActual     = new Componentes().text(new JCTextField(), "Fecha Actual"  , 30, "String");
@@ -115,10 +115,12 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	
 	JLabel lblUsuario          = new JLabel("");
 	JLabel lblDepartamento     = new JLabel("");
-	JTextArea txaDetalle       = new Componentes().textArea(new JTextArea(), "", 1000);
-	JTextArea txaNotas         = new Componentes().textArea(new JTextArea(), "", 1000);
+	JTextArea txaDetalle       = new Componentes().textArea(new JTextArea(), "", 500);
+	JTextArea txaNotas         = new Componentes().textArea(new JTextArea(), "", 500);
+	JTextArea txaComentario    = new Componentes().textArea(new JTextArea(), "", 500);
 	JScrollPane scrollDetalle  = new JScrollPane(txaDetalle);
 	JScrollPane scrollNotas    = new JScrollPane(txaNotas);
+	JScrollPane scrollComentario= new JScrollPane(txaComentario);
 	
 	String[] status = {"TODOS","SOLICITADO Y EN PROCESO","SOLICITADO","EN PROCESO","TERMINADO","CANCELADO","NEGADO"};
 	  @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -154,7 +156,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-32-mas.png"));
 		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione El Servicio De Que Desea Evaluar"));
-		this.setTitle("Seguimiento De Mis Servicios Solicitados");
+		this.setTitle("Mis Servicios Solicitados");
 		
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
@@ -168,10 +170,10 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		
 		x=15;
 		this.panel.add(txtFiltro).setBounds                  (x       ,y+=19  ,width*10 ,height   );
-		this.panel.add(scroll_tabla).setBounds               (x       ,y+20   ,width*10,width+270);
+		this.panel.add(scroll_tabla).setBounds               (x       ,y+20   ,width*10,width+250);
 		
 		x=15;
-		this.panel.add(new JLabel("Folio:")).setBounds       (x       ,y+=395 ,width    ,height   );
+		this.panel.add(new JLabel("Folio:")).setBounds       (x       ,y+=375 ,width    ,height   );
 		this.panel.add(txtFolio).setBounds                   (x+=40   ,y      ,width    ,height   );  
 		this.panel.add(new JLabel("Servicio:")).setBounds    (x+=110  ,y      ,width    ,height   );
 		this.panel.add(txtServicio).setBounds                (x+=45   ,y      ,width+325,height   );
@@ -186,22 +188,22 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		this.panel.add(new JLabel("Establecimiento:")).setBounds(x+=410,y     ,width    ,height   );
 		this.panel.add(cmbEstablecimiento).setBounds          (x+=80  ,y      ,width+85 ,height   );
 		this.panel.add(new JLabel("Departamento:")).setBounds(x+=195  ,y      ,width    ,height   );
-		this.panel.add(cmbDepartamento).setBounds            (x+=75  ,y       ,width*2  ,height   );
+		this.panel.add(cmbDepartamento).setBounds            (x+=75   ,y      ,width*2  ,height   );
 
 		x=15;
 		this.panel.add(new JLabel("Detalle:")).setBounds     (x       ,y+=30  ,width    ,height   );
-		this.panel.add(scrollDetalle).setBounds              (x+=40   ,y      ,958      ,height*4 ); 
+		this.panel.add(scrollDetalle).setBounds              (x+=40   ,y      ,958      ,height*3 ); 
 		
 		x=15;
-		this.panel.add(new JLabel("Fecha S:")).setBounds     (x       ,y+=90  ,width    ,height   );  
+		this.panel.add(new JLabel("Fecha S:")).setBounds     (x       ,y+=70  ,width    ,height   );  
 		this.panel.add(txtFcSolicito).setBounds              (x+=40   ,y      ,width+28 ,height   );  
-		this.panel.add(btnDescAdjunto).setBounds             (x+=145  ,y      ,width+150,height   );
-		this.panel.add(new JLabel("Evaluacion:")).setBounds  (x+=265  ,y      ,width    ,height   );  
-		this.panel.add(cmbEvaluacionServicio).setBounds      (x+=55   ,y      ,width+20 ,height   );
-		this.panel.add(new JLabel("Estatus Resuelto:")).setBounds(x+=130,y    ,width    ,height   );  
-		this.panel.add(cmbEstatusCo).setBounds               (x+=85   ,y      ,width+35 ,height   );
+		this.panel.add(btnDescAdjunto).setBounds             (x+=135  ,y      ,width+150,height   );
+		this.panel.add(new JLabel("Estatus Resuelto:")).setBounds(x+=260,y    ,width    ,height   );  
+		this.panel.add(cmbEstatusCo).setBounds               (x+=85   ,y      ,width+30 ,height   );
 		this.panel.add(new JLabel("Costo:")).setBounds       (x+=144  ,y      ,width    ,height   ); 
-		this.panel.add(txtCosto).setBounds                   (x+=34   ,y      ,width    ,height   ); 
+		this.panel.add(txtCosto).setBounds                   (x+=34   ,y      ,width-10 ,height   ); 
+		this.panel.add(new JLabel("Fecha Atendio:")).setBounds(x+=95  ,y      ,width    ,height   ); 
+		this.panel.add(txtFcAtendio).setBounds                (x+=75  ,y      ,width+28 ,height   ); 
 		
 		x=15;
 		this.panel.add(new JLabel("Notas:")).setBounds       (x       ,y+=30  ,width    ,height   );
@@ -211,11 +213,18 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		this.panel.add(new JLabel("Atendio:")).setBounds     (x       ,y+=70  ,width    ,height   ); 
 		this.panel.add(txtFAtendio).setBounds                (x+=40   ,y      ,50       ,height   );
 		this.panel.add(txtAtendio).setBounds                 (x+=50   ,y      ,width+200,height   ); 
-		this.panel.add(new JLabel("Fecha Atendio:")).setBounds(x+=330 ,y      ,width    ,height   ); 
-		this.panel.add(txtFcAtendio).setBounds                (x+=75  ,y      ,width+28 ,height   ); 
-		this.panel.add(btnNuevaSolicitud).setBounds          (x+=200  ,y      ,width+50 ,height   );
-		this.panel.add(btnGuardar).setBounds                 (x+=200  ,y      ,width    ,height   );
-	    
+		this.panel.add(new JLabel("Evaluacion:")).setBounds  (x+=330  ,y      ,width    ,height   );  
+		this.panel.add(cmbEvaluacionServicio).setBounds      (x+=75   ,y      ,width+28 ,height   );
+		this.panel.add(btnNuevaSolicitud).setBounds          (x+=235  ,y      ,width+50 ,height   );
+
+		
+		x=15;	
+		this.panel.add(new JLabel("Comentario")).setBounds   (x       ,y+=30  ,width    ,height   ); 
+		this.panel.add(scrollComentario).setBounds           (x+=60   ,y      ,820      ,height*2 );
+		this.panel.add(new JLabel("Evaluacion:")).setBounds  (x-=60   ,y+=15  ,width    ,height   ); 
+		this.panel.add(btnGuardar).setBounds                 (x+=893  ,y      ,width    ,height   );
+		
+		
 		lblUsuario.setText(usuario.getNombre_completo());
 		lblDepartamento.setText(Departamento);
 		
@@ -271,31 +280,34 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	                    txaNotas.setText(tabla.getValueAt(fila,13)+"");
 	                    txtCosto.setText(tabla.getValueAt(fila,14)+"");
 	                    cmbEvaluacionServicio.setSelectedItem(tabla.getValueAt(fila,15)+"");
-	                    
+	                    txtFcSolicito.setText(tabla.getValueAt(fila,8)+"");
+						txtFcAtendio.setText(tabla.getValueAt(fila,10)+"");
+						txaComentario.setText(tabla.getValueAt(fila,17)+"");
+						
+						
 	                    //validacion del estatus de la actividad
 	                    if(tabla.getValueAt(fila,2).toString().equals("TERMINADO")||tabla.getValueAt(fila,2).toString().equals("CANCELADO")){
-	                    	cmbEstatusCo.setEnabled(false);
-	                    	cmbEvaluacionServicio.setEnabled(false);
-	                    	txtCosto.setEditable(false);
-	                    	txaNotas.setEditable(false);
 	                    	btnGuardar.setEnabled(false);
 	                    	
 	                         	if(!tabla.getValueAt(fila,10).toString().equals("")){	
+	                         		//validacion fecha
 			                    	String fecha_atendio = (tabla.getValueAt(fila,10).toString()).substring(0,10);
 			                    	if(txtFcActual.getText().toString().trim().equals(fecha_atendio)){
-				                    	btnGuardar.setEnabled(true);
 				                    	//validacion si es el usuario creador para que clasifique la evaluacion
 					                    if(tabla.getValueAt(fila,6).toString().equals(lblUsuario.getText())){
 					                    	cmbEvaluacionServicio.setEnabled(true);
 					                    	btnGuardar.setEnabled(true);
+					                    	txaComentario.setEditable(true);
+					                    	cmbEvaluacionServicio.requestFocus();
+					                    	cmbEvaluacionServicio.showPopup();
 					                    }else{
 					                    	cmbEvaluacionServicio.setEnabled(false);
+					                    	
 					                    }
 			                    	}
 			                   	}	
 	                    }
-						txtFcSolicito.setText(tabla.getValueAt(fila,8)+"");
-						txtFcAtendio.setText(tabla.getValueAt(fila,10)+"");
+						
 						
 						if(tabla.getValueAt(fila,9).toString().equals("")){
 							btnDescAdjunto.setText("No Contiene Archivos Adjuntos");
@@ -369,6 +381,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 				servicios_solicitud.setUsuario_realizo_servicio(Integer.valueOf(txtFAtendio.getText().trim()));
 				servicios_solicitud.setGuardar_actualizar("A");
 				servicios_solicitud.setFolio_usuario_modifico(usuario.getFolio());
+				servicios_solicitud.setComentario_evaluacion(txaComentario.getText().toString().trim());
 				
 				if(servicios_solicitud.GuardarActualizar()){
 					  init_tabla(cmbEstatusFiltrado.getSelectedItem().toString().trim());
@@ -389,6 +402,8 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		String error ="";
 		if(cmbEvaluacionServicio.getSelectedIndex()==0) 
 			error+= "Es Requerido Que Evalue el Servicio Solicitado, Que fue Marcado Como Terminado\n";
+		if((cmbEvaluacionServicio.getSelectedItem().toString().trim().equals("DEFICIENTE") ||cmbEvaluacionServicio.getSelectedItem().toString().trim().equals("PESIMO")) && txaComentario.getText().equals(""))
+			error+= "<<Comentario Evaluacion:>>Con El Fin De Mejorar El Servicio Es Requerido, Su Valioso Comentario\n";
 		return error;
 	}
 	
@@ -411,6 +426,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
     	cmbEvaluacionServicio.setEnabled(false);
     	txtCosto.setEditable(false);
     	txaNotas.setEditable(false);
+    	txaComentario.setEditable(false);
 	}		
 	
 	public void panelLimpiar(){	
@@ -423,6 +439,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		txtAtendio.setText("");
 		txtFAtendio.setText("");
 		txtFcAtendio.setText("");
+		txaComentario.setText("");
 		
 		cmbEstatus.setSelectedIndex(0);
 		cmbEstatusCo.setSelectedIndex(0);

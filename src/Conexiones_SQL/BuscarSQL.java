@@ -10042,6 +10042,33 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return servicios;
 	}
 	
+	public Obj_Servicios correo_informa_servicio_terminado(int folio) throws SQLException{
+		Obj_Servicios servicios = new Obj_Servicios();
+		String query = "declare @email varchar(150)"
+				+ " select @email=email from tb_empleado with (nolock) where folio=(select folio_usuario_solicito from tb_servicios where folio="+folio+")"
+				+ " if @email='' set @email='NO TIENE'"
+				+ " if @email is null  set @email='NO TIENE'"
+				+ " select @email,convert(varchar(20),getdate(),103)+' '+convert(varchar(20),getdate(),108)";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){				
+				servicios.setCorreos(rs.getString(1));
+				servicios.setCantidad_de_correos(1);
+				servicios.setFecha_guardado(rs.getString(2));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return servicios;
+	}
+	
 	public int Archivos_Seguimiento_De_Servicios(int folio) throws SQLException{
 		int contadorDeArchivosGenerados=0;
 		String query = "select folio_servicio,adjunto_solicitud,adjunto_solicitud_extencion, convert(varchar(11),fecha)  from tb_servicios_adjuntos where folio_servicio="+folio;
