@@ -9871,6 +9871,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				
 				activo.setFolio(rs.getInt("folio"));
 				activo.setDescripcion(rs.getString("descripcion"));
+				activo.setDepartamento_responsable(rs.getString("departamento_responsable"));
 				activo.setStatus(rs.getString("status"));
 				activo.setEstablecimiento(rs.getString("establecimiento"));
 				activo.setDepartamento(rs.getString("departamento"));
@@ -10089,7 +10090,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public Object[][] getFiltro_De_Administracion_De_Activos(){
 		String query = "exec sp_filtro_de_administracion_de_activos";
 		
-		Object[][] Matriz = new Object[getFilas(query)][8];
+		Object[][] Matriz = new Object[getFilas(query)][10];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -10105,6 +10106,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				Matriz[i][5] = rs.getString(6);
 				Matriz[i][6] = rs.getString(7);
 				Matriz[i][7] = rs.getString(8);
+				Matriz[i][8] = rs.getString(9);
+				Matriz[i][9] = rs.getString(10);
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -10113,4 +10116,31 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return Matriz; 
 	}
 	
+	public int maximoDeActivoPorEstablecimiento(String establecimiento){
+		int max=0;
+		String query = "declare @folio_estab int "
+						+ "	set @folio_estab = (select folio from tb_establecimiento where ltrim(rtrim(nombre)) = '"+establecimiento+"') "
+						+ " select max(grupo_de_equipo) from tb_administracion_de_activos where folio_establecimiento = @folio_estab";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				max=(rs.getInt(1));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+		}
+		return max;
+	}
 }

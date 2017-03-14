@@ -9,6 +9,7 @@ public class Obj_Administracion_De_Activos {
 
 	int folio;
 	String descripcion;
+	String departamento_responsable;
 	String status;
 	String establecimiento;
 	String departamento;
@@ -32,11 +33,10 @@ public class Obj_Administracion_De_Activos {
 	int grupo_equipo;
 	
 	public Obj_Administracion_De_Activos() {
-		folio = 0;		descripcion = "";		status = "";				establecimiento = "";		departamento = "";		tipo = "";				marca = "";
-		modelo = "";	serie = "";				anio_fabricacion = 0;		fecha_compra = null;		garantia = 0;			unidad_garantia = "";	vida_util = 0;
-		unidad_vida_util = "";					costo = 0;					depreciacion = 0;			caracteristicas = "";
-		
-		ruta_factura="";		ruta_foto="";   grupo_equipo=0;
+		folio = 0;		descripcion = "";		departamento_responsable="";status = "";	establecimiento = "";		departamento = "";		tipo = "";				
+		marca = "";		modelo = "";	serie = "";				anio_fabricacion = 0;		fecha_compra = null;		garantia = 0;			
+		unidad_garantia = "";			vida_util = 0;			unidad_vida_util = "";		costo = 0;					depreciacion = 0;			
+		caracteristicas = "";			ruta_factura="";		ruta_foto="";   			grupo_equipo=0;
 	}
 
 	public int getFolio() {
@@ -53,6 +53,14 @@ public class Obj_Administracion_De_Activos {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getDepartamento_responsable() {
+		return departamento_responsable;
+	}
+
+	public void setDepartamento_responsable(String departamento_responsable) {
+		this.departamento_responsable = departamento_responsable;
 	}
 
 	public String getStatus() {

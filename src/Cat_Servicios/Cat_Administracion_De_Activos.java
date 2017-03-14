@@ -15,8 +15,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,6 +29,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -50,12 +53,18 @@ public class Cat_Administracion_De_Activos extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
+	JTextField txtGrupoMayor = new Componentes().text(new JCTextField(), "G. Mayor", 3, "Int");
+	
 	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio", 10, "Int");
 	JTextField txtDescripcion = new Componentes().text(new JCTextField(), "Descripcion Corta", 100, "String");
 	JTextField txtSerie = new Componentes().text(new JCTextField(), "Serie De Activo", 50, "String");
 	
 	JTextField txtCosto = new Componentes().text(new JCTextField(), "Costo Neto", 15, "Double");
 	JTextField txtDepreciacion = new Componentes().text(new JCTextField(), "Depreciacion Anual", 15, "Double");
+	
+	String[] deptoResponsable = new Obj_Departamento().Combo_Departamentoservicio();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbDepartamentoResponsable = new JComboBox(deptoResponsable);
 	
 	String[] status = {"Vigente","Baja"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -165,7 +174,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 	String movimiento = "";
 	
 	public Cat_Administracion_De_Activos() {
-		this.setSize(590,410);
+		this.setSize(590,435);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -177,7 +186,9 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		btnNuevo.setToolTipText("Nuevo Activo");
 		
 		int x=15,y=20,ancho=80;
-		   
+		
+		
+		
 		panel.add(new JLabel("Folio:")).setBounds(x, y, ancho, 20);
 		panel.add(txtFolio).setBounds(x+ancho, y, ancho, 20);
 		
@@ -187,6 +198,12 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		
 		panel.add(new JLabel("Grupo:")).setBounds(x+(ancho*3)+40, y, ancho, 20);
 		panel.add(spnGrupoEquipo).setBounds(x+(ancho*4), y, ancho, 20);
+		
+		panel.add(new JLabel("Grupo Mayor:")).setBounds(x+(ancho*4)+80, y, ancho, 20);
+		panel.add(txtGrupoMayor).setBounds(x+(ancho*6)-5, y, ancho, 20);
+		
+		panel.add(new JLabel("Departamento Responsable:")).setBounds(x, y+=25, ancho*2+10, 20);
+		panel.add(cmbDepartamentoResponsable).setBounds(x+ancho*2-10, y, ancho*2+10, 20);
 		
 		panel.add(new JLabel("Status:")).setBounds(x+(ancho*5)+30, y, ancho, 20);
 		panel.add(cmbStatus).setBounds(x+(ancho*6)-5, y, ancho, 20);
@@ -249,6 +266,8 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		
 		cont.add(panel);
 		
+		txtGrupoMayor.setEditable(false);
+		
 		componentesDefault();
 		ArchivosCargados();
 		
@@ -264,8 +283,6 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		lblImgFactura.addMouseListener(opQuitarArchivoFactura);
 		lblImgFoto.addMouseListener(opQuitarArchivoFoto);
 		
-		actionListenerEnabled(true);
-		
 		btnNuevo.addActionListener(opNuevo);
 		btnBuscar.addActionListener(opBuscar);
 		txtFolio.addActionListener(opBuscar);
@@ -273,34 +290,25 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		btnEditar.addActionListener(opEditar);
 		btnDeshacer.addActionListener(opDeshacer);
 		btnGuardar.addActionListener(opGuardar);
+		cmbEstablecimiento.addActionListener(opEstablecimeinto);
+		
+		//  abre el filtro de busqueda de activos al presionar la tecla f2
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+	       KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "foco");
+	    
+	    getRootPane().getActionMap().put("foco", new AbstractAction(){
+	        @Override
+	        public void actionPerformed(ActionEvent e)
+	        {	        	btnFiltro.doClick();    	     }
+	    });
 		
 	}
 	
-	public void actionListenerEnabled(boolean asignado){
-		
-		if(asignado){
-			cmbEstablecimiento.addActionListener(opIdentificarEstab);
-			cmbDepartamento.addActionListener(opIdentificarDepto);
-			cmbTipo.addActionListener(opIdentificarTipo);
-			cmbMarca.addActionListener(opIdentificarMarca);
-			cmbModelo.addActionListener(opIdentificarModelo);
-			txtSerie.addActionListener(opIdentificarSerie);
-			cmbAnioFabricacion.addActionListener(opIdentificarAnioFab);
-			txtCosto.addActionListener(opIdentificarCosto);
-			txtDepreciacion.addActionListener(opIdentificarDepreciacion);
-		}else{
-			cmbEstablecimiento.removeActionListener(opIdentificarEstab);
-			cmbDepartamento.removeActionListener(opIdentificarDepto);
-			cmbTipo.removeActionListener(opIdentificarTipo);
-			cmbMarca.removeActionListener(opIdentificarMarca);
-			cmbModelo.removeActionListener(opIdentificarModelo);
-			txtSerie.removeActionListener(opIdentificarSerie);
-			cmbAnioFabricacion.removeActionListener(opIdentificarAnioFab);
-			txtCosto.removeActionListener(opIdentificarCosto);
-			txtDepreciacion.removeActionListener(opIdentificarDepreciacion);
+	ActionListener opEstablecimeinto = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			txtGrupoMayor.setText(cmbEstablecimiento.getSelectedIndex()==0?"0":(new BuscarSQL().maximoDeActivoPorEstablecimiento(cmbEstablecimiento.getSelectedItem().toString()))+"");
 		}
-		
-	}
+	};
 	
 	ActionListener opNuevo = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -336,6 +344,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 					
 					txtFolio.setText(activos.getFolio()+"");
 					txtDescripcion.setText(activos.getDescripcion());
+					cmbDepartamentoResponsable.setSelectedItem(activos.getDepartamento_responsable());
 					cmbStatus.setSelectedItem(activos.getStatus());
 					cmbEstablecimiento.setSelectedItem(activos.getEstablecimiento());
 					cmbDepartamento.setSelectedItem(activos.getDepartamento());
@@ -437,6 +446,8 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		txtDepreciacion.setText("");
 		txaCaracteristicas.setText("");
 		
+		txtGrupoMayor.setText("0");
+		
 		rutaFactura = "";
 		rutaImagen = "";
 		movimiento = "";
@@ -454,6 +465,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 				if(!movimiento.equals("")){
 						activos.setFolio(Integer.parseInt(txtFolio.getText().trim()));
 						activos.setDescripcion(txtDescripcion.getText().toUpperCase().trim());
+						activos.setDepartamento_responsable(cmbDepartamentoResponsable.getSelectedItem().toString().toUpperCase().trim());
 						activos.setStatus(cmbStatus.getSelectedItem().toString().toUpperCase().trim());
 						activos.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().toUpperCase().trim());
 						activos.setDepartamento(cmbDepartamento.getSelectedItem().toString().toUpperCase().trim());
@@ -480,13 +492,14 @@ public class Cat_Administracion_De_Activos extends JFrame{
 						activos.setRuta_foto(rutaImagen.equals("")?"C:\\SCOI\\imagen\\SIN EVIDENCIA.jpg":rutaImagen);
 						
 						if(activos.guardarActualizarActivos(movimiento,rutaFactura,rutaImagen)){
+							
+							JOptionPane.showMessageDialog(null,"El registró se "+(movimiento.equals("GUARDAR")?"Guardar":"Actualizo")+" de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
 							componentesDefault();
 							movimiento = "";
-							JOptionPane.showMessageDialog(null,"El registró se "+(movimiento.equals("GUARDAR")?"Guardar":"Actualizar")+" de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
 							return;
 						}else{
+							JOptionPane.showMessageDialog(null, "Problemas Al "+(movimiento.equals("GUARDAR")?"Guardar":"Actualizar")+" El Registro", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							movimiento = "";
-							JOptionPane.showMessageDialog(null, "Problemas Al "+(movimiento.equals("GUARDAR")?"Guardar":"Actualizar")+"El Registro", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;
 						}
 
@@ -632,6 +645,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		
 		error += txtFolio.getText().equals("")?"Folio/n":"";
 		error += txtDescripcion.getText().equals("")?"Descripcion/n":"";
+		error += cmbDepartamentoResponsable.getSelectedIndex()==0?"Departamento Responsable/n":"";
 		error += cmbEstablecimiento.getSelectedIndex()==0?"Establecimiento/n":"";
 		error += cmbDepartamento.getSelectedIndex()==0?"Departamento/n":"";
 		error += cmbTipo.getSelectedIndex()==0?"Tipo/n":"";
@@ -653,6 +667,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		
 		txtFolio.setEditable(!block);
 		txtDescripcion.setEditable(block);
+		cmbDepartamentoResponsable.setEnabled(block);
 		cmbStatus.setEnabled(block);
 		cmbEstablecimiento.setEnabled(block);
 		cmbDepartamento.setEnabled(block);
@@ -692,7 +707,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		JTextField txtFiltro = new Componentes().text(new JCTextField(), "Fitlro De Busqueda", 80, "String");
 		
 		DefaultTableModel modelo = new DefaultTableModel(new BuscarSQL().getFiltro_De_Administracion_De_Activos(),
-    		new String[]{	"Folio", "Descripcion", "Tipo", "Marca", "Modelo", "Serie", "Establecimiento", "Departamento"}){
+    		new String[]{	"Folio", "Descripcion", "Tipo", "Marca", "Modelo", "Serie", "Grupo", "Depto Responsable", "Establecimiento", "Departamento"}){
     	
 	        	@SuppressWarnings("rawtypes")
 				public Class[] tipos(){
@@ -735,7 +750,6 @@ public class Cat_Administracion_De_Activos extends JFrame{
 			this.setSize(1040,590);
 	        this.setResizable(false);
 	        this.setLocationRelativeTo(null);
-	        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		}
 		
         public void llamarRender(){
@@ -744,12 +758,14 @@ public class Cat_Administracion_De_Activos extends JFrame{
                 
     			tabla.getColumnModel().getColumn(0).setMinWidth(30);
     			tabla.getColumnModel().getColumn(1).setMinWidth(220);
-    			tabla.getColumnModel().getColumn(2).setMinWidth(180);
-    			tabla.getColumnModel().getColumn(3).setMinWidth(180);
-    			tabla.getColumnModel().getColumn(4).setMinWidth(180);
-    			tabla.getColumnModel().getColumn(5).setMinWidth(180);
+    			tabla.getColumnModel().getColumn(2).setMinWidth(160);
+    			tabla.getColumnModel().getColumn(3).setMinWidth(160);
+    			tabla.getColumnModel().getColumn(4).setMinWidth(160);
+    			tabla.getColumnModel().getColumn(5).setMinWidth(120);
     			tabla.getColumnModel().getColumn(6).setMinWidth(120);
-    			tabla.getColumnModel().getColumn(7).setMinWidth(120);
+    			tabla.getColumnModel().getColumn(7).setMinWidth(50);
+    			tabla.getColumnModel().getColumn(8).setMinWidth(120);
+    			tabla.getColumnModel().getColumn(9).setMinWidth(120);
     			
     			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12)); 
     			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
@@ -757,15 +773,17 @@ public class Cat_Administracion_De_Activos extends JFrame{
     			tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
     			tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
     			tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-    			tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+    			tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12));
     			tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+    			tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+    			tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
         }
         
         KeyListener opFiltro = new KeyListener() {
 			public void keyTyped(KeyEvent e) {			}
 			
 			public void keyReleased(KeyEvent e) {
-				int[] columnas = {0,1,2,3,4,5,6,7};
+				int[] columnas = {0,1,2,3,4,5,6,7,8,9};
 				new Obj_Filtro_Dinamico_Plus(tabla, txtFiltro.getText().toString().trim().toUpperCase(), columnas);
 			}
 			public void keyPressed(KeyEvent e) {			}
@@ -778,9 +796,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 		    			int folio =  Integer.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim());
 		    			txtFolio.setText(folio+"");	
 		    			dispose();
-		    			actionListenerEnabled(false);
 		    			btnBuscar.doClick();
-		    			actionListenerEnabled(true);
 		        	}
 		        }
 	        });
