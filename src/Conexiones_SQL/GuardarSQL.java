@@ -6428,7 +6428,7 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 		
 public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos equipos, String movimiento,String rutaFactura, String rutaImagen){
 	
-	String query =  "exec sp_insert_administracion_de_activos ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";//"exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?,?";
+	String query =  "exec sp_insert_administracion_de_activos ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";//"exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?,?";
 
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
@@ -6438,37 +6438,37 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		
 		con.setAutoCommit(false);
 		pstmt = con.prepareStatement(query);
-//			int i=1;
 				pstmt.setInt(1, folio); //actualiza folio en tb_folios y retorna el folio mas actualizado para posteriormente mandarlo de parametro                      
 				pstmt.setString(2, equipos.getDescripcion());  
-				pstmt.setString(3, equipos.getStatus());
-				pstmt.setString(4, equipos.getEstablecimiento());
-				pstmt.setString(5, equipos.getDepartamento());
-				pstmt.setString(6, equipos.getTipo());
-				pstmt.setString(7, equipos.getMarca());
-				pstmt.setString(8, equipos.getModelo());
-				pstmt.setString(9, equipos.getSerie());
-				pstmt.setInt(10, equipos.getAnio_fabricacion());
-				pstmt.setString(11, equipos.getFecha_compra());
-				pstmt.setInt(12, equipos.getGarantia());
-				pstmt.setString(13, equipos.getUnidad_garantia());
-				pstmt.setInt(14, equipos.getVida_util());
-				pstmt.setString(15, equipos.getUnidad_vida_util());
-				pstmt.setDouble(16, Double.valueOf(equipos.getCosto()));
-				pstmt.setDouble(17, Double.valueOf(equipos.getDepreciacion()));
-				pstmt.setString(18, equipos.getCaracteristicas());
+				pstmt.setString(3, equipos.getDepartamento_responsable());
+				pstmt.setString(4, equipos.getStatus());
+				pstmt.setString(5, equipos.getEstablecimiento());
+				pstmt.setString(6, equipos.getDepartamento());
+				pstmt.setString(7, equipos.getTipo());
+				pstmt.setString(8, equipos.getMarca());
+				pstmt.setString(9, equipos.getModelo());
+				pstmt.setString(10, equipos.getSerie());
+				pstmt.setInt(11, equipos.getAnio_fabricacion());
+				pstmt.setString(12, equipos.getFecha_compra());
+				pstmt.setInt(13, equipos.getGarantia());
+				pstmt.setString(14, equipos.getUnidad_garantia());
+				pstmt.setInt(15, equipos.getVida_util());
+				pstmt.setString(16, equipos.getUnidad_vida_util());
+				pstmt.setDouble(17, Double.valueOf(equipos.getCosto()));
+				pstmt.setDouble(18, Double.valueOf(equipos.getDepreciacion()));
+				pstmt.setString(19, equipos.getCaracteristicas());
 				
-				pstmt.setBinaryStream(19, new FileInputStream(equipos.getRuta_factura()));		
-				pstmt.setString(20, equipos.getRuta_factura().substring(equipos.getRuta_factura().indexOf(".")).toLowerCase());
+				pstmt.setBinaryStream(20, new FileInputStream(equipos.getRuta_factura()));		
+				pstmt.setString(21, equipos.getRuta_factura().substring(equipos.getRuta_factura().indexOf(".")).toLowerCase());
 				
-				pstmt.setBinaryStream(21, new FileInputStream(equipos.getRuta_foto()));
-				pstmt.setString(22, equipos.getRuta_foto().substring(equipos.getRuta_foto().indexOf(".")).toLowerCase());
+				pstmt.setBinaryStream(22, new FileInputStream(equipos.getRuta_foto()));
+				pstmt.setString(23, equipos.getRuta_foto().substring(equipos.getRuta_foto().indexOf(".")).toLowerCase());
 				
-				pstmt.setString(23, movimiento);
-				pstmt.setString(24, rutaFactura);
-				pstmt.setString(25, rutaImagen);
+				pstmt.setString(24, movimiento);
+				pstmt.setString(25, rutaFactura);
+				pstmt.setString(26, rutaImagen);
 				
-				pstmt.setInt(26, equipos.getGrupo_equipo());
+				pstmt.setInt(27, equipos.getGrupo_equipo());
 				
 				pstmt.executeUpdate();
 				con.commit();
