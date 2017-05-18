@@ -16,7 +16,6 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -35,6 +34,7 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.tablaRenderer;
@@ -47,15 +47,15 @@ public class Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual extends JDialog {
 	
 	JLabel lblFolioEmpleado = new JLabel("Folio Empleado:");
 	JTextField txtFolioEmpleado = new Componentes().text(new JTextField(), "Folio De Empleado", 10, "Int");
-	JButton btnFiltroEmpleado = new JButton(new ImageIcon("imagen/Filter-List-icon16.png"));
+	JCButton btnFiltroEmpleado = new JCButton("","Filter-List-icon16.png","Azul");
 	
-	JButton btncortes_Limpio = new JButton(new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
-	JButton btnPrestamos_Por_Establecimiento =new JButton(new ImageIcon("imagen/plan-icono-5073-16.png"));
+	JCButton btncortes_Limpio = new JCButton("","hoja-de-calculo-excel-icono-5223-16.png","Azul");
+	JCButton btnPrestamos_Por_Establecimiento =new JCButton("","plan-icono-5073-16.png","Azul");
 	
 	JLabel lblLinea = new JLabel();
 	JDateChooser fechaIn = new JDateChooser();
 	JDateChooser fechaFin = new JDateChooser();
-	JButton btnAbonos_Cortes = new JButton(new ImageIcon("imagen/plan-icono-5073-16.png"));
+	JCButton btnAbonos_Cortes = new JCButton("","plan-icono-5073-16.png","Azul");
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	TitledBorder title4; 
@@ -85,7 +85,7 @@ public class Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual extends JDialog {
 
 	public void Constructor(){
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-icono-8797-48.jpg"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-icono-8797-32.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		this.setModal(true);
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccion Del Reporte de Diferencia de Cortes de Lista de Raya Actual"));
@@ -98,12 +98,12 @@ public class Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual extends JDialog {
 				"		<CENTER><p>Para Exportar a Excel</p></CENTER></FONT>" +
 				"</html>"); 
 		
-		btnPrestamos_Por_Establecimiento.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btnPrestamos_Por_Establecimiento.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=white>" +
 				"		<p>Impresion De Reporte De Abonos y Saldo </p>" +
 				"		<CENTER><p>De Lista de Raya Actual Por Establecimiento</p></CENTER></FONT>" +
 				"</html>"); 
 		
-		btnAbonos_Cortes.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btnAbonos_Cortes.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=white>" +
 				"		<p>Impresion De Reporte De Abonos </p>" +
 				"		<CENTER><p>De Cortes Por Fecha</p></CENTER></FONT>" +
 				"</html>"); 
@@ -111,7 +111,7 @@ public class Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual extends JDialog {
 		int x= 35,y=30,ancho=300;
 		
 		
-		panel.add(btnPrestamos_Por_Establecimiento).setBounds(x,y,ancho,40);
+		panel.add(btnPrestamos_Por_Establecimiento).setBounds(x,y,ancho,45);
 		
 		panel.add(lblLinea			).setBounds(x,y+=65,ancho,130);
 		panel.add(lblFolioEmpleado).setBounds(x+10,y+=20,80,20);
@@ -121,7 +121,7 @@ public class Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual extends JDialog {
 		panel.add(fechaIn			).setBounds(x+30,y,100,20);
 		panel.add(new JLabel("A:")	).setBounds(x*4+67,y,100,20);
 		panel.add(fechaFin			).setBounds(x*5+47,y,100,20);
-		panel.add(btnAbonos_Cortes	).setBounds(x+10,y+=30,ancho-20,40);
+		panel.add(btnAbonos_Cortes	).setBounds(x+10,y+=30,ancho-20,45);
 		
 		Date date1=null;
 		try {

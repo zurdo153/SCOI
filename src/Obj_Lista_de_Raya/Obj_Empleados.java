@@ -90,6 +90,11 @@ public class Obj_Empleados {
 	private String observasiones;
 	private String fecha_actualizacion;
 	
+	private String nombre_beneficiario;
+	private String rfc_beneficiario;
+	private String parentesco_beneficiario;
+	private String fecha_nacimiento_beneficiario;
+	
 	
 	public Obj_Empleados(){
 		folio=0; no_checador=""; nombre=""; ap_paterno=""; ap_materno=""; fecha_nacimiento=""; calle=""; colonia=""; poblacion=""; telefono_familiar="";
@@ -101,9 +106,41 @@ public class Obj_Empleados {
 		departameto=0; imss=""; status_imss=0; numero_infonavit=""; establecimiento=0; puesto=0;
 		salario_diario=0; salario_diario_integrado=0; forma_pago=""; sueldo=0; bono=0; prestamo=0; pension_alimenticia=0; infonavit=0; targeta_nomina="";
 		tipo_banco=0; presencia_fisica=0; gafete=false; fuente_sodas=false; observasiones="";
-		
+		nombre_beneficiario=""; rfc_beneficiario="";parentesco_beneficiario="";fecha_nacimiento_beneficiario="";
 	}
 	
+	public String getNombre_beneficiario() {
+		return nombre_beneficiario;
+	}
+
+	public void setNombre_beneficiario(String nombre_beneficiario) {
+		this.nombre_beneficiario = nombre_beneficiario;
+	}
+
+	public String getRfc_beneficiario() {
+		return rfc_beneficiario;
+	}
+
+	public void setRfc_beneficiario(String rfc_beneficiario) {
+		this.rfc_beneficiario = rfc_beneficiario;
+	}
+
+	public String getParentesco_beneficiario() {
+		return parentesco_beneficiario;
+	}
+
+	public void setParentesco_beneficiario(String parentesco_beneficiario) {
+		this.parentesco_beneficiario = parentesco_beneficiario;
+	}
+
+	public String getFecha_nacimiento_beneficiario() {
+		return fecha_nacimiento_beneficiario;
+	}
+
+	public void setFecha_nacimiento_beneficiario(String fecha_nacimiento_beneficiario) {
+		this.fecha_nacimiento_beneficiario = fecha_nacimiento_beneficiario;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -623,6 +660,8 @@ public class Obj_Empleados {
 	
 	public boolean actualizar(int folio){ return new ActualizarSQL().Empleado(this,folio); }
 	
+	public boolean actualizarbeneficiario(){ return new ActualizarSQL().BeneficiarioColaborador(this); }
+	
 	public Obj_Empleados buscar_nuevo() throws SQLException{ return new BuscarSQL().Empleado_Nuevo(); }
 	
 	public boolean existe_foto(int folio){
@@ -688,6 +727,16 @@ public class Obj_Empleados {
 		}
 		return null;
 	}
+	
+	public String[] Combo_Parentesco(){ 
+		try {
+			return new Cargar_Combo().Parentesco();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	public String[] Combo_Escolaridad(){ 
 		try {

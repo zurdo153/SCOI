@@ -50,6 +50,9 @@ public class Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas extends JFrame 
 	JCButton btn_generar_altas = new JCButton  ("Reporte de Altas","vigente16.png","Azul");
 	JCButton btn_generar_Bajas = new JCButton  ("Reporte de Bajas","baja16.png","Azul");
 	
+	JCButton btn_generar_altas_excel = new JCButton  ("Reporte de Altas Excel","vigente16.png","Verde");
+	JCButton btn_generar_Bajas_excel = new JCButton  ("Reporte de Bajas Excel","baja16.png","Verde");
+	
 	JCButton btn_cant_personal = new JCButton  ("Colaboradores Por Lista De Raya Detalle","asistencia-comunitaria-icono-9465-16.png","Azul");
 	JCButton btn_cant_personaltotales = new JCButton  ("Colaboradores Por Lista De Raya Resumen","verde-de-usuario-icono-7340-16.png","Azul");
 	
@@ -59,11 +62,11 @@ public class Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas extends JFrame 
 	JLabel JLBdepartamento= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
 	
 	public Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas(){
-		this.setSize(510,250);
+		this.setSize(510,300);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		 cargar_fechas();
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bajas_altas.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/arrow1_405291532.png"));
 		this.setTitle("Reportes de Rotacion De Personal En Un Rango de Fechas");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione un Rango De Fechas y De Click al Reporte Deseado"));
 		
@@ -82,9 +85,12 @@ public class Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas extends JFrame 
 		this.panel.add(new JLabel("Departamento:")).setBounds   (x+=120 ,y    ,150    ,height);
 		this.panel.add(JLBdepartamento).setBounds               (x+=75  ,y    ,height ,height);
 		this.panel.add(cmbDepartamento).setBounds               (x+=25  ,y    ,170    ,height);
-		x=15;width=180;height=25;
+		x=15;width=200;height=25;
 		this.panel.add(btn_generar_altas).setBounds             (x      ,y+=40,width  ,height);
-		this.panel.add(btn_generar_Bajas).setBounds             (x+=290 ,y    ,width  ,height);
+		this.panel.add(btn_generar_Bajas).setBounds             (x+=270 ,y    ,width  ,height);
+		this.panel.add(btn_generar_altas_excel).setBounds       (x-=270 ,y+=40,width  ,height);
+		this.panel.add(btn_generar_Bajas_excel).setBounds       (x+=270 ,y    ,width  ,height);
+		
 		x=15;width=320;
 		this.panel.add(btn_cant_personal).setBounds             (x+80   ,y+=40, width ,height);
 		this.panel.add(btn_cant_personaltotales).setBounds      (x+80   ,y+=40, width ,height);
@@ -94,7 +100,8 @@ public class Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas extends JFrame 
 		btn_generar_Bajas.addActionListener       (op_generar);
 		btn_cant_personal.addActionListener       (op_generar);
 		btn_cant_personaltotales.addActionListener(op_generar);
-
+		btn_generar_altas_excel.addActionListener (op_generar); 
+		btn_generar_Bajas_excel.addActionListener (op_generar);
 		
 	}
 	
@@ -144,14 +151,19 @@ public class Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas extends JFrame 
 				   
 				   if( e.getActionCommand().equals("Colaboradores Por Lista De Raya Resumen")){
 					   reporte ="Obj_Reporte_De_Indicador_De_Indice_De_Rotacion_Colaboradores_De_Lista_De_Raya.jrxml";
-						comando="exec sp_IZAGAR_indicador_de_Indice_de_rotacion_colaboradores_por_lista_de_raya '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','Selecciona un Establecimiento','Indice De Rotacion De Personal Colaboradores Por Lista De Raya Totales'";
+					   comando="exec sp_IZAGAR_indicador_de_Indice_de_rotacion_colaboradores_por_lista_de_raya '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','Selecciona un Establecimiento','Indice De Rotacion De Personal Colaboradores Por Lista De Raya Totales'";
 				   }
 				   
 				   if( e.getActionCommand().equals("Colaboradores Por Lista De Raya Detalle")){
 					   reporte ="Obj_Reporte_De_Indicador_De_Indice_De_Rotacion_Colaboradores_De_Lista_De_Raya.jrxml";
-						comando="exec sp_IZAGAR_indicador_de_Indice_de_rotacion_colaboradores_por_lista_de_raya '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','Selecciona un Establecimiento','Indice De Rotacion De Personal Colaboradores Por Lista De Raya'";
+					   comando="exec sp_IZAGAR_indicador_de_Indice_de_rotacion_colaboradores_por_lista_de_raya '"+fecha_inicio+"','"+fecha_final+"','"+usuario.getNombre_completo()+"','Selecciona un Establecimiento','Indice De Rotacion De Personal Colaboradores Por Lista De Raya'";
 				   }	
 			
+				   if( e.getActionCommand().equals("Reporte de Altas Excel")|| e.getActionCommand().equals("Reporte de Bajas Excel")){
+					   reporte ="Obj_Reporte_De_Altas_y_Bajas_En_Un_Rango_De_Fecha.jrxml";
+					   comando = "exec sp_Reporte_De_Altas_y_Bajas_De_Personal '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+(e.getActionCommand().equals("Reporte de Altas Excel")?"altas":"bajas")+"'";
+				   }	
+				   
 				   new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 				   return;
 				}else{

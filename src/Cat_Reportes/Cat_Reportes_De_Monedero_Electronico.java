@@ -39,9 +39,13 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String operador[] = {"Selecciona Un Reporte","Reporte De Dinero Electronico Usado En Una Asignacion","Reporte De Dinero Electronico Acumulado De La Tarjeta","Reporte De Dinero Electronico Usado De La Tarjeta","Reporte De Dinero Electronico De Tarjetas Acumulado, Usado y Saldo "};
+	String operador[] = {"Selecciona Un Reporte","Reporte A Detalle Del Monedero Electronico","Reporte De Dinero Electronico Usado En Una Asignacion","Reporte De Dinero Electronico Acumulado De La Tarjeta","Reporte De Dinero Electronico Usado De La Tarjeta","Reporte De Dinero Electronico De Tarjetas Acumulado, Usado y Saldo "};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
+	
+	String detalle[] = { "Colonia","Edad","Poblacion","Sexo","Tarjeta"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbDetalle = new JComboBox(detalle);
 	
 	JCButton btngenerar_reporte = new JCButton("Generar Reporte En Pantalla","hoja-de-calculo-icono-8865-32.png","Azul");
 	JCButton btngenerar_excel   = new JCButton("Generar Reporte En XLS ","xls-icon-3376-32px.png","Verde");
@@ -50,7 +54,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 	JLabel JLBfin				= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	JLabel JLBestablecimiento	= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	JLabel JLBdepartamento		= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
-	JLabel JLtexto              = new JLabel("");    
+	JLabel JLtexto              = new JLabel("Teclee El Dato Solicitado");    
 	
 	String textotxt="";
 	JTextField txtTexto= new Componentes().text(new JCTextField(), textotxt, 300, "String");
@@ -63,12 +67,13 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 		this.setTitle("Reportes De Monedero Electronico");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
 		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione  el Tipo de Reporte y de click a Generar el Reporte "));
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
 
 		int x=20, y=25,width=380,height=20;
 		this.panel.add(cmbConcepto).setBounds                 (x     ,y      ,width    ,height    );
 		
 		width=100;
+		this.panel.add(new JLabel("Detalle:")).setBounds      (x     ,y+=35  ,width    ,height    );
+		this.panel.add(cmbDetalle).setBounds                  (x+160,y      ,width+120,height    );
 		this.panel.add(JLtexto).setBounds                     (x     ,y+=35  ,width+80 ,height    );
 		this.panel.add(txtTexto).setBounds                    (x+160 ,y      ,width+120,height    );
 		this.panel.add(new JLabel("Fecha Inicio:")).setBounds (x     ,y+=35  ,width    ,height    );
@@ -79,17 +84,16 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 		this.panel.add(c_final).setBounds                     (x+=20 ,y      ,width    ,height    );
 		
 		x=70;width=300;
-		this.panel.add(btngenerar_reporte).setBounds          (x    ,y+=50   ,width    ,height*2 );
+		this.panel.add(btngenerar_reporte).setBounds          (x    ,y+=45   ,width    ,height*2 );
 //		this.panel.add(btngenerar_excel).setBounds            (x    ,y+=50   ,width    ,height*2 );
 
 		this.cont.add(panel);
-
-//		lblComentario.setFont(new Font("arial",Font.BOLD,16));
-//		lblComentario.setForeground(Color.BLACK);
 		
         cmbConcepto.addActionListener(opSeleccion_combo);
+        cmbDetalle.addActionListener(opSeleccion_detalle_combo);
         btngenerar_reporte.addActionListener(opGenerar_reporte);
         btngenerar_reporte.setEnabled(false);
+        cmbDetalle.setEnabled(false);
         txtTexto.setEditable(false);
 		c_final.setEnabled(false);
 		c_inicio.setEnabled(false);
@@ -119,21 +123,34 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 	ActionListener opSeleccion_combo = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			 String concepto=cmbConcepto.getSelectedItem().toString().trim();
-			 
+			  btngenerar_reporte.setEnabled(true);
+			  
 			 if(concepto.equals("Selecciona Un Reporte") ){
 				  c_final.setEnabled(false);
 				  c_inicio.setEnabled(false);
 				  txtTexto.setEditable(false);
-				  txtTexto.setText("");
+				  txtTexto.setText("Teclee El Dato Solicitado");
 				  c_final.setDate(null);
 				  c_inicio.setDate(null);
 				  cmbConcepto.requestFocus();
 				  cmbConcepto.showPopup();
+				  btngenerar_reporte.setEnabled(false);
+			  }
+			 
+			 if(concepto.equals("Reporte De Dinero Electronico De Tarjetas Acumulado, Usado y Saldo") ){
+				  c_final.setEnabled(false);
+				  c_inicio.setEnabled(false);
+				  cmbDetalle.setEnabled(false);
+				  txtTexto.setEditable(false);
+				  txtTexto.setText("Teclee El Dato Solicitado");
+				  c_final.setDate(null);
+				  c_inicio.setDate(null);
 			  }
 			 
 			  if(concepto.equals("Reporte De Dinero Electronico Usado De La Tarjeta")||concepto.equals("Reporte De Dinero Electronico Acumulado De La Tarjeta") ){
 				  c_final.setEnabled(false);
-				  c_inicio.setEnabled(false);	
+				  c_inicio.setEnabled(false);
+				  cmbDetalle.setEnabled(false);
 				  JLtexto.setText("Teclee El Folio De La Tarjeta:");
 				  txtTexto.setText("");
 				  txtTexto.setEditable(true);
@@ -141,7 +158,8 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 			  }else{
 				  if(concepto.equals("Reporte De Dinero Electronico Usado En Una Asignacion")){
 					  c_final.setEnabled(false);
-					  c_inicio.setEnabled(false);	
+					  c_inicio.setEnabled(false);
+					  cmbDetalle.setEnabled(false);
 					  JLtexto.setText("Teclee El Folio De La Asignacion:");
 					  txtTexto.setText("");
 					  txtTexto.setEditable(true);
@@ -153,18 +171,33 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 				  }
 			  }
 			  
-			  if(concepto.equals("Reporte De Dinero Electronico x rango de fechas")){
-				  txtTexto.setEditable(false);
+			  if(concepto.equals("Reporte A Detalle Del Monedero Electronico")){
+				  txtTexto.setEditable(true);
+				  cmbDetalle.setEnabled(true);
 				  c_final.setEnabled(true);
 				  c_inicio.setEnabled(true);
 				  c_inicio.setDate( cargar_fechas(7));
 				  c_final.setDate( cargar_fechas(0));
 				  c_final.requestFocus();
+				  JLtexto.setText("Teclee La (El) "+cmbDetalle.getSelectedItem().toString().trim()+":");
+                  cmbDetalle.requestFocus(true);
+                  cmbDetalle.showPopup();
 			  }
-				
-			  btngenerar_reporte.setEnabled(true);
+			  
 		}
 	};
+	
+	ActionListener opSeleccion_detalle_combo = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		  if(cmbDetalle.getSelectedItem().toString().trim().equals("Sexo")){
+			  JLtexto.setText("Teclee El "+cmbDetalle.getSelectedItem().toString().trim()+":");  
+		  }else{
+			  JLtexto.setText("Teclee La "+cmbDetalle.getSelectedItem().toString().trim()+":"); 
+		  }
+		  txtTexto.requestFocus();
+		}
+	};
+	
 	
 	ActionListener opGenerar_reporte = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -185,51 +218,57 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 				         txtTexto.requestFocus();
 					    return;  
 				  }
-		     }else{
-				 if(concepto.equals("Reporte De Dinero Electronico Usado En Una Asignacion")){
-					  if(!txtTexto.getText().toString().trim().equals("")){
-					 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" );
-						     reporte="Obj_Reporte_De_Dinero_Electronico_Por_Asignacion.jrxml";
-					  }else{
-					        JOptionPane.showMessageDialog(null,"Es Necesario Que Teclee Un Folio de Asignacion Para Que Genere El Reporte","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-					         txtTexto.requestFocus();
-						    return;  
-					  }		    
-				  }else{
-		    	 
-						    	 if(concepto.equals("Reporte De Dinero Electronico De Tarjetas Acumulado, Usado y Saldo" )){
-							 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" );
-								     reporte="Obj_Reporte_De_Dinero_Electronico_Saldos_En_Tarjetas.jrxml"; 
-						    	 }else{
-										if(validar_fechas().equals("")){
-											String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
-											  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
-											  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
-											  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
-											  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
-											  
-											  if(fecha1.before(fecha2)){
-					//							  if(concepto.equals("Reporte De Total De Productos Negados Con Localizacion")){
-					//							        comando="exec sp_select_total_de_productos_negados '"+fecha_inicio+"','"+fecha_final+"'";
-					//								    reporte = "Obj_Reporte_De_Total_De_Productos_Negados.jrxml";
-					//							  }
-											  }else{
-										        JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-											     return;
-											  }
-										}else{
-										  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-							               return;
-										} 
-						    	 }	
-								
-		    	 
-		    	 
-		    	 
-					  }
 		     }
-			    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-			   return;
+			 
+			 
+			 if(concepto.equals("Reporte De Dinero Electronico Usado En Una Asignacion")){
+				  if(!txtTexto.getText().toString().trim().equals("")){
+				 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" );
+					     reporte="Obj_Reporte_De_Dinero_Electronico_Por_Asignacion.jrxml";
+				  }else{
+				        JOptionPane.showMessageDialog(null,"Es Necesario Que Teclee Un Folio de Asignacion Para Que Genere El Reporte","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				         txtTexto.requestFocus();
+					    return;  
+				  }		    
+			  }
+			 
+			 
+			 if(concepto.equals("Reporte De Dinero Electronico De Tarjetas Acumulado, Usado y Saldo" )){
+		 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" );
+			     reporte="Obj_Reporte_De_Dinero_Electronico_Saldos_En_Tarjetas.jrxml"; 
+	    	 }
+			 
+			 
+			 if(concepto.equals("Reporte A Detalle Del Monedero Electronico")){
+				  if(!txtTexto.getText().toString().trim().equals("")){
+						  if(validar_fechas().equals("")){
+									  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+									  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
+									  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+									  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+									  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+									  
+									  if(fecha1.before(fecha2)){
+										     comando = "exec sp_IZAGAR_reporte_de_monedero_electronico '"+txtTexto.getText().toString().trim()+"','"+cmbDetalle.getSelectedItem().toString().trim()+"','"+fecha_inicio+"','"+fecha_final+"'";
+										     reporte="Obj_Reporte_De_Dinero_Electronico_A_Detalle.jrxml";
+									  }else{
+								        JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+									     return;
+									  }
+						  }else{
+						   JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				           return;
+						  } 
+					  
+				 	    					     
+				  }else{
+				        JOptionPane.showMessageDialog(null,"Es Necesario Que Teclee El Dato >"+cmbDetalle.getSelectedItem().toString()+"< Solicitado Para Generar El Reporte","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				         txtTexto.requestFocus();
+					    return;  
+				  }
+		     }
+  	      new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		  return;
 		}
 	};
 	

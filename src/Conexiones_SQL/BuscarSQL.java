@@ -1450,7 +1450,10 @@ public class BuscarSQL {
 				empleado.setPresencia_fisica(rs.getInt("presencia_fisica"));
 				empleado.setBonocomplemento(rs.getInt("bono_complemento"));
 				empleado.setPerfil(rs.getInt("folio_perfil"));
-			
+			    empleado.setNombre_beneficiario(rs.getString("nombre_beneficiario"));
+			    empleado.setRfc_beneficiario(rs.getString("rfc_beneficiario"));
+			    empleado.setParentesco_beneficiario(rs.getString("parentesco"));
+			    empleado.setFecha_nacimiento_beneficiario(rs.getString("fecha_nacimiento_beneficiario"));
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);
 				
@@ -8182,7 +8185,7 @@ public class BuscarSQL {
 		Statement stmt = null;
 		String query = "exec sp_reporte_de_estado_resultados '"+fecha_inicial+"','"+fecha_final+"'" ;
 //		String query = " SELECT     TOP(20)   0,'xyz concepto', 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 FROM  tb_empleado" ;
-		Object[][] rp_competencia = new Object[getFilas(query)][cantidad_de_columnas];
+		Object[][] rp_competencia = new Object[25][cantidad_de_columnas];
 		DecimalFormat df= new DecimalFormat("#0.00");
 		try {
 			stmt = con.conexion().createStatement();
@@ -8263,10 +8266,14 @@ public class BuscarSQL {
 	
 	public String  Factor(String Fecha){
 		Statement stmt = null;
-		String query = "declare  @existe varchar(100)"
-				+ " set @existe=(SELECT 'Calculo ISR Sobre Venta Factor:'+ convert(varchar(10),factor)+' Tasa:'+convert(varchar(10),tasa) from  IZAGAR_factor_y_tasa_ISR  where CONVERT(VARCHAR(2),datepart(MONTH,'"+Fecha+"'))+CONVERT(VARCHAR(4),datepart(YEAR,'"+Fecha+"'))=mes_año)"
-				+ " if @existe is null set @existe='Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y Tasa'"
-				+ " select @existe";
+		String query = "declare  @existe varchar(200),@fi datetime,@anio_porcentaje int "
+				     + "  set @fi='"+Fecha+"'"
+				     + "  set @anio_porcentaje=(select datepart(year,@fi)-1)"
+				     + "  set @existe=(SELECT 'Calculo ISR Sobre Venta Factor:'+ convert(varchar(10),factor)+' Tasa:'+convert(varchar(10),tasa)"
+				     + "                     +' Porcentaje De Partiipacion Alimentado:'+(select convert(varchar(20),sum(porcentaje_participacion))from IZAGAR_establecimientos_porcentaje_participacion where datepart(year,año)=@anio_porcentaje)"
+				     + "       from  IZAGAR_factor_y_tasa_ISR  where CONVERT(VARCHAR(2),datepart(MONTH,@fi))+CONVERT(VARCHAR(4),datepart(YEAR,@fi))=mes_año)"
+				     + "  if @existe is null set @existe='Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y La Tasa >>Para El Prorrateo Falta El Porcentaje De Participacion del año Anterior'"
+				     + "  select @existe  ";
 		String factor = "";
 		
 		try {
@@ -9114,6 +9121,33 @@ public boolean  existe_horario_con_otro_empleado(int horario1, int horario2, int
 	return existe;
 }
 
+public String  existe_encuentas_de_salida_del_colaborador(String folio_empleado){
+   String existe = "";
+   String query = "declare @existe varchar(150) select top 1 @existe='El Colaborador Tiene Renuncias Capturadas Despues De Su Fecha De Ingreso De Sea Capturar Otra'  from tb_encuesta_y_motivos_de_renuncia "
+   		        + "     inner join tb_empleado with (nolock) on tb_empleado.folio=tb_encuesta_y_motivos_de_renuncia.folio "
+   		        + "   where folio_empleado="+folio_empleado+" and tb_empleado.fecha_ingreso < tb_encuesta_y_motivos_de_renuncia.fecha_mov"
+   		        + " if @existe is null set @existe='N' Select @existe as existe";	
+	Statement stmt = null;
+	try {
+		stmt = con.conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()){
+			existe=(rs.getString("existe") );
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	finally{
+		if(stmt!=null){try {
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}}
+	}
+	return existe;
+}
+
+
 public String[] getTablaRangoDeEdadesParaPerfiles(){
 	String[] Matriz = null;
 	
@@ -9773,6 +9807,27 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return folio;
 	}
 	
+	public int servicios() throws SQLException{
+		int folio = 0;
+		String query = "select max(folio) from tb_servicios with(nolock)";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){				
+				folio=rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return folio;
+	}
+	
+	
 	public Obj_Catalogo_Servicios serviciodepartamento(int folio) throws SQLException{
 		Obj_Catalogo_Servicios servicios = new Obj_Catalogo_Servicios();
 		String query = "select tb_departamento.departamento,tb_establecimiento.nombre from tb_empleado"
@@ -10179,4 +10234,30 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		}
 		return max;
 	}
+	
+	public String existe_nivel_jerarquico(int folio_colaborador){
+		String status  ="";
+		String query = "exec sp_validacion_de_nivel_jerarquico_existente_por_colaborador "+folio_colaborador;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				status = rs.getString("valor");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			}}
+		}
+		return status;
+	}
+	
 }

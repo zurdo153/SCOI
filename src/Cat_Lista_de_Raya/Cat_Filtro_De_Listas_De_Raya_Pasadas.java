@@ -119,7 +119,15 @@ public class Cat_Filtro_De_Listas_De_Raya_Pasadas extends JDialog {
 		    				case 8:		new  Cat_Reportes_De_Infonacot_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada(folio);
     			           	dispose();
     				           break;   
-    				           
+		    				case 9:		new  Cat_Reportes_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada_pasada_limpia(folio);
+    			           	dispose();
+    				           break; 
+		    				case 10:		new  Cat_Reportes_De_Lista_De_Raya().generar_reporte(folio,Catalogo);
+    			           	dispose();
+    				           break;  
+		    				case 11:		new  Cat_Reportes_De_Lista_De_Raya().generar_reporte(folio,Catalogo);
+    			           	dispose();
+    				           break;     
 		    				}
 		    			}
 		    			else{

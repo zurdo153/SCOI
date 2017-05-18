@@ -124,7 +124,6 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar Un Colaborador De La Tabla Para Revisar Su Finiquito", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
-				
 			}
 		};
 		
@@ -134,15 +133,12 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			int vista_previa_de_ventana=0;
 			String comando="";
 			String reporte = "";
-			
-			System.out.println(tipo_de_reporte);
-			comando = "exec sp_select_reporte_de_finiquito "+folio_finiquito+",'"+tipo_de_reporte+"','"+new Obj_Usuario().LeerSession().getNombre_completo()+"'";
+			 comando = "exec sp_select_reporte_de_finiquito "+folio_finiquito+",'"+tipo_de_reporte+"','"+new Obj_Usuario().LeerSession().getNombre_completo()+"'";
 			
 			 reporte="Obj_Finiquito.jrxml";
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			 reporte="Obj_Registro_De_Finiquito.jrxml";
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-			 
 		}
 		
 		ActionListener opAceptar = new ActionListener() {
@@ -164,7 +160,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 				if(tabla.getSelectedRow() >= 0){
 	    			Autorizar_Negar("N", Integer.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim()));
 				}else{
-					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El EL Registro De Finiquito Que Sera Rechazado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El Registro De Finiquito Que Sera Rechazado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			}
@@ -188,16 +184,13 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 		        	}else{
 						JOptionPane.showMessageDialog(null, "Se Actualizo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		        	}
-	        	
 			}else{
 				JOptionPane.showMessageDialog(null, "Error Al Actualizar", "Avise al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
-			
 		};
 		
 		ActionListener opFiniquitos = new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
-	    		
 	    		new Cat_Finiquitos_Autorizados().setVisible(true);
 			}
 		};
@@ -293,7 +286,6 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 		}
 		
 		public class Cat_Finiquitos_Autorizados extends JFrame{
-		    
 			Container contFiltro = getContentPane();
 			JLayeredPane campoFiltro = new JLayeredPane();
 //			Connexion con = new Connexion();
@@ -320,9 +312,6 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 		   };
 			
 			JTable tablaFiltro = new JTable(modelFiltro);
-//			@SuppressWarnings("rawtypes")
-//			private TableRowSorter trsfiltro;
-			
 			JTextField txtFiltro = new Componentes().text(new JTextField(),"Teclee Folio De Finiquito, Folio o Nombre Del Empleado", 150, "String");
 		    
 		    JButton btnReporteFiniquito = new JCButton("Finiquito", "Report.png","Azul");
@@ -379,21 +368,6 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 					
 				}
 			};
-			
-//			public void reporte(int folio_empleado_scoi, String tipo_de_reporte){
-//				String basedatos="2.26";
-//				String vista_previa_reporte="no";
-//				int vista_previa_de_ventana=0;
-//				String comando="";
-//				String reporte = "";
-//				
-//				comando = "exec sp_select_reporte_de_finiquito "+folio_empleado_scoi+",'"+tipo_de_reporte+"'";
-//				
-//				 reporte="Obj_Finiquito.jrxml";
-//				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-//				 reporte="Obj_Registro_De_Finiquito.jrxml";
-//				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-//			}
 			
 	    	public void cargar_render(){
 	    		tablaFiltro.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","normal",10)); 

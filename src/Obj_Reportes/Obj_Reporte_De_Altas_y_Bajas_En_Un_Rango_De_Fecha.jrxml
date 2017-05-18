@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-05-08T11:52:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Meta_y_Establecimiento.jrxml" language="groovy" pageWidth="1130" pageHeight="90000" columnWidth="1130" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[EXEC sp_Reporte_De_Altas_y_Bajas_De_Personal '01/04/2017 00:00:00','01/05/2017 23:59:59','Selecciona un Establecimiento','Selecciona un Departamento','bajas']]>
+	</queryString>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="reporte" class="java.lang.String"/>
+	<field name="folio_empleado" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="puesto" class="java.lang.String"/>
+	<field name="fecha_alta" class="java.lang.String"/>
+	<field name="fecha_baja" class="java.lang.String"/>
+	<field name="fecha_ultima_modificacion" class="java.lang.String"/>
+	<field name="fecha_de" class="java.lang.String"/>
+	<field name="fecha_a" class="java.lang.String"/>
+	<field name="departamento" class="java.lang.String"/>
+	<field name="dias_laborados" class="java.lang.Integer"/>
+	<pageHeader>
+		<band height="49" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="1120" height="36" uuid="8edb66d8-5633-4865-aa34-1820fba6b99d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reporte}+" Del Periodo Del: "+$F{fecha_de}+" Al: "+$F{fecha_a}+"    Fecha Generacion:"+new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="36" width="40" height="13" uuid="296613f0-e349-40ea-8961-ecdab493bd95">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Folio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="36" width="200" height="13" uuid="1f18054e-049b-4dc9-991e-f2f5d736e8b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Nombre Completo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="550" y="36" width="180" height="13" uuid="2ad37360-d92c-4eed-8084-f652391cee4a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Puesto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="36" width="130" height="13" uuid="08d88f9c-82d7-421c-bfbd-4ed25b100517">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Departamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="730" y="36" width="110" height="13" uuid="4b6b0662-1737-459c-92d6-171e3e73eb15">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha De Alta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="840" y="36" width="110" height="13" uuid="c358ab75-2467-4477-94f8-38e3821639dd"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha De Baja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1010" y="36" width="110" height="13" uuid="ab0cdb8d-d48c-4fd3-866c-c8eb0a0aa304"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha Ultima M.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="950" y="36" width="60" height="13" uuid="d5aaec9b-ea40-4651-b5aa-c21ecceea939"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Dias Laborados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="36" width="180" height="13" uuid="26690246-6426-4186-b088-5292fb07417b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Establecimiento]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="13" uuid="5ddef106-2ff8-476d-a270-aeddceb10289">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{folio_empleado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##%">
+				<reportElement x="40" y="0" width="200" height="13" uuid="46fa0d29-0136-4273-ac69-dfbd01fdce52">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="0" width="130" height="13" uuid="32c2e15d-6e98-4b31-9fde-d93271e5e235">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{departamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="730" y="0" width="110" height="13" uuid="9b97ccad-c31e-4bd1-9a73-914419899320">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fecha_alta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="840" y="0" width="110" height="13" uuid="6016e456-23f9-45ea-8127-617a5f6ed00d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fecha_baja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1010" y="0" width="110" height="13" uuid="96a2c319-2dfe-4f25-b0b3-33311b92777d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fecha_ultima_modificacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###">
+				<reportElement x="950" y="0" width="60" height="13" uuid="f5b541e4-ef07-44b1-aa69-75112b351ec5">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{dias_laborados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="0" width="180" height="13" uuid="d92ad5c7-c405-4c67-b544-a7c5b21dbcb4">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="550" y="0" width="180" height="13" uuid="8ebb7b43-9656-4ebd-972c-b4c881e8a233">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

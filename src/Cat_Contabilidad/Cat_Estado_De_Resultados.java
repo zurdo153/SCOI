@@ -96,9 +96,9 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		tabla.getColumnModel().getColumn(1).setMaxWidth(b*2);
 		tabla.getColumnModel().getColumn(1).setMinWidth(b);
 		try {
-			String[] competidor = new BuscarSQL().Vector_De_Establecimientos_Edo_Resultados();
+			String[] establecimiento = new BuscarSQL().Vector_De_Establecimientos_Edo_Resultados();
 			for(int i=2; i<cantidad_de_columnas-1; i++){
-				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-2)].toString());
+				tabla.getColumnModel().getColumn(i).setHeaderValue(establecimiento[(i-2)].toString());
 				tabla.getColumnModel().getColumn(i).setMinWidth(a);
 				tabla.getColumnModel().getColumn(i).setMaxWidth(a+b);
 			}
@@ -112,6 +112,15 @@ public class Cat_Estado_De_Resultados extends JFrame {
     	tabla.getTableHeader().setReorderingAllowed(false) ;
     	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		 JScrollPane scrol = new JScrollPane(tabla);
+		 
+		 for(int i = 0; i < cantidad_de_columnas; i++){
+				if(i<=1){
+					tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
+				}else{
+					tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
+				}
+			}
+		 
 	    return scrol; 
 	}
     
@@ -141,7 +150,6 @@ public class Cat_Estado_De_Resultados extends JFrame {
 				"		<CENTER><p>Generar Reportes En PDF</p></CENTER></FONT>" +
 				"</html>");
 		
-		
 		int x=15,y=25,l=100,a=20;
 
 		this.panel.add(new JLabel("Fecha Inicial:")).setBounds(x   ,y     ,l  ,a);
@@ -151,8 +159,6 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		this.panel.add(new JLabel("Fecha Final:")).setBounds  (x   ,y+30  ,l  ,a);
 		this.panel.add(JLBfin).setBounds                      (x+60,y+30  ,a  ,a);
 		this.panel.add(c_final).setBounds                     (x+80,y+30  ,l  ,a);
-		
-		this.panel.add(JLBFactor).setBounds                   (x+200,y-15 ,l*5,a);
 		this.panel.add(btn_buscar).setBounds                  (x+200,y+10,200 ,a*2);
 		
 		this.panel.add(cmbConcepto).setBounds                 (x+550,y-15 ,200,a);
@@ -162,13 +168,12 @@ public class Cat_Estado_De_Resultados extends JFrame {
 		this.panel.add(btn_Origen  ).setBounds                (x+770,y    ,200,a);
 		this.panel.add(btn_generarpdf).setBounds              (x+770,y+40 ,200,a);
 		
-
+		this.panel.add(JLBFactor).setBounds                   (x-5 ,y+58,l*12,a);
 		panel.add(getPanelTabla()).setBounds(10,y+=80,ancho-30,460);
         
         c_inicio.setDate(cargar_fechas(1));
         c_final.setDate(cargar_fechas(0));
         cargar_factor();
-        render_tabla();
 
 		btn_buscar.addActionListener(op_generar);
 		btn_Origen.addActionListener(opGenerarReporte_de_concepto);
@@ -179,17 +184,6 @@ public class Cat_Estado_De_Resultados extends JFrame {
             	c_inicio.requestFocus();
                       } });
 	}
-	
-	public void render_tabla(){
-		for(int i = 0; i < cantidad_de_columnas; i++){
-			if(i<=1){
-				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-			}else{
-				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-			}
-		}
-	}
-	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String[][] calculo_fila_final(){
@@ -219,6 +213,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";		
 		return error;
 	}
+	
 	PropertyChangeListener opfactorytasa = new PropertyChangeListener() {
  	     public void propertyChange(PropertyChangeEvent e) {
  	    	 if ("date".equals(e.getPropertyName())) {
@@ -233,7 +228,7 @@ public class Cat_Estado_De_Resultados extends JFrame {
     	factor= new BuscarSQL().Factor(new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00"); 
     	JLBFactor.setText(	"<html><FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
 				"		<CENTER><p>"+factor+"</p></CENTER></FONT></html>");
-    if(factor.equals("Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y Tasa")){
+    if(factor.equals("Para El Calculo ISR Sobre Venta Falta Alimentar El Factor y La Tasa >>Para El Prorrateo Falta El Porcentaje De Participacion del año Anterior")){
     	btn_buscar.setEnabled(false);
      }else{
     	btn_buscar.setEnabled(true);
@@ -275,8 +270,6 @@ public class Cat_Estado_De_Resultados extends JFrame {
 					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales','"+usuario.getNombre_completo()+"'" ;
 				  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";
 					new Generacion_Reportes().Reporte_Guardado(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana,"xlsciclo","Gastos De Ventas Globales "+fecha_guardado);
-				
-			
 			
 					comando="exec sp_Reporte_De_Gastos_En_Un_Periodo '','"+fecha_inicio+"','"+fecha_final+"','Gastos De Ventas Globales','"+usuario.getNombre_completo()+"'" ;
 				  	reporte = "Obj_Reporte_De_Gastos_Estado_Resultados_Globales.jrxml";

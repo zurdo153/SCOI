@@ -91,8 +91,7 @@ public class Cat_Consulta_Lista_de_Raya_Pasadas extends JFrame {
 	    				    			
 	    			if (new Obj_Revision_De_Lista_Raya().Lista_de_Raya_Pasada(folio)) {
 	    				dispose();
-	    				
-	    				new Cat_Reportes_De_Lista_De_Raya().obtiene_lista_de_raya_selecionada(folio);
+	    				new Cat_Reportes_De_Lista_De_Raya().generar_reporte(folio,3);
 	    			}
 	    			else{
 	    				JOptionPane.showMessageDialog(null,"Error Al Intentar Abrir el Reporte","Error",JOptionPane.ERROR_MESSAGE);

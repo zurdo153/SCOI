@@ -336,7 +336,9 @@ public class Cat_Motivos_De_Renuncia extends JFrame{
 					 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 					 
 					Limpiar();
-					JOptionPane.showMessageDialog(null, "Guardardo ", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null, "Se Guardo La Encuesta De Salida Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                    dispose();
+                    new Cat_Empleados().setVisible(true);
 					return;
 				}else{
 					JOptionPane.showMessageDialog(null, "Error Al Guardar ", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));

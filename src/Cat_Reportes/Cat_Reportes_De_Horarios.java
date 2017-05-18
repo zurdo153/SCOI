@@ -6,8 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.UIManager;
@@ -17,12 +15,13 @@ import javax.swing.border.Border;
 
 
 import Conexiones_SQL.Generacion_Reportes;
+import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
 public class Cat_Reportes_De_Horarios extends JFrame {
-	JButton btnHorariosAsignados = new JButton("",new ImageIcon("imagen/reloj-de-juego-icono-7360-32.png"));
-	JButton btnDepositos_Bancos_Por_Establecimiento = new JButton("",new ImageIcon("imagen/alterar-el-reloj-icono-8395-32.png"));
-	JButton btnHorarios_Provicionales = new JButton("",new ImageIcon("imagen/error-de-reloj-icono-5961-32.png"));
+	JCButton btnHorariosAsignados                    = new JCButton("","reloj-de-juego-icono-7360-32.png","Azul");
+	JCButton btnDepositos_Bancos_Por_Establecimiento = new JCButton("","alterar-el-reloj-icono-8395-32.png","Azul");
+	JCButton btnHorarios_Provicionales               = new JCButton("","error-de-reloj-icono-5961-32.png","Azul");
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
@@ -34,21 +33,21 @@ public class Cat_Reportes_De_Horarios extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Reportes De Horarios");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/checador.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/reloj-icono-9211-32.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione el Tipo de Reporte"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		
-		btnHorariosAsignados.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btnHorariosAsignados.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE>" +
 				"		<p>Impresion de Reporte de</p>" +
 				"		<CENTER><p>Horarios Asignados</p></CENTER></FONT>" +
 				"</html>"); 
 		
-		btnDepositos_Bancos_Por_Establecimiento.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btnDepositos_Bancos_Por_Establecimiento.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE>" +
 				"		<p>Impresion de Reporte de</p>" +
 				"		<CENTER><p>Horarios Sin Asignar</p></CENTER></FONT>" +
 				"</html>"); 
 		
-		btnHorarios_Provicionales.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btnHorarios_Provicionales.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE>" +
 				"		<p>Impresion de Reporte de</p>" +
 				"		<CENTER><p>Horarios Provicionales</p></CENTER></FONT>" +
 				"</html>"); 

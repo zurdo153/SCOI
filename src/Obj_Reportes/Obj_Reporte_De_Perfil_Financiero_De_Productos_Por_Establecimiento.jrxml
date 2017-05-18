@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-05-08T17:47:50 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_Letter_Landscape" pageWidth="2490" pageHeight="9000" orientation="Landscape" columnWidth="2490" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="242e6e30-bc2c-4e40-908a-f03f9ba085c9">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ventas"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[EXEC reporte_de_perfil_financiero_de_productos_por_establecimiento_con_categorias 'SUPER I']]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="clase_producto" class="java.lang.String"/>
+	<field name="categoria" class="java.lang.String"/>
+	<field name="familias" class="java.lang.String"/>
+	<field name="proveedor" class="java.lang.String"/>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="existencia_total_piezas" class="java.lang.Double"/>
+	<field name="ultimo_costo_con_impuesto" class="java.math.BigDecimal"/>
+	<field name="costo_promedio" class="java.math.BigDecimal"/>
+	<field name="fecha_ultima_compra" class="java.sql.Timestamp"/>
+	<field name="fecha_venta" class="java.sql.Timestamp"/>
+	<field name="diferencia_en_meses_con_respespecto_a_ultima_compra" class="java.lang.Integer"/>
+	<field name="diferencia_en_dias_con_respespecto_a_ultima_compra" class="java.lang.Integer"/>
+	<field name="diferencia_en_dias_con_respespecto_a_ultima_venta" class="java.lang.Integer"/>
+	<field name="Estatus_Concepto" class="java.lang.String"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="total_costo_promedio" class="java.lang.Double"/>
+	<group name="Estatus_Concepto">
+		<groupExpression><![CDATA[$F{Estatus_Concepto}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+	</group>
+	<columnHeader>
+		<band height="31">
+			<staticText>
+				<reportElement x="200" y="15" width="119" height="16" uuid="31e204d1-2862-4074-b112-d6a1dc483591">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Clase De Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="319" y="15" width="130" height="16" uuid="7119d847-bc6b-4740-9f1a-61fe43ea9d2e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="449" y="15" width="158" height="16" uuid="1ff1aba6-8c35-46c3-97e2-454f178856c1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Familias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="607" y="15" width="340" height="16" uuid="a1ac0b15-7c87-4217-afef-93b99626125c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Proveedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="947" y="15" width="55" height="16" uuid="04b3e1b3-2efb-40f2-9d9d-30e53aba438b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Codigo Prod]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1002" y="15" width="390" height="16" uuid="ccc26f75-8350-4e58-980d-8bd74e473cde">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1392" y="15" width="85" height="16" uuid="135f4b74-4f9f-4b41-b5ff-b6a496b4f118">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Exist. Total Pzas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1477" y="15" width="85" height="16" uuid="ff3d71ab-9804-4b10-b26e-8d8b60864c62">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Ultimo Costo/Imp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1562" y="15" width="85" height="16" uuid="9c6c8a58-a681-4150-af04-b3a3f4ccdba7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Costo Prom.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1733" y="15" width="95" height="16" uuid="d92e9c1e-3d7b-4e4c-b1a2-6c4f44f7e80e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[Fecha Ult. Compra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1828" y="15" width="95" height="16" uuid="c110ffed-3451-4f39-bb24-f343ab0ae61d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[Fecha Ult. Venta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1923" y="15" width="190" height="16" uuid="f24773d9-09be-43b7-acd6-f9837ac7938d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Diferencia Meses C/Respespecto Ult. Compra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2113" y="15" width="180" height="16" uuid="c2a44a6e-a6f8-4fc6-983b-c6148577d82c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Diferencia Dias C/Respespecto Ult. Compra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2293" y="15" width="190" height="16" uuid="1f28fdcd-0c80-4611-9ad4-fb2ea3613aec">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Diferencia Dias C/Respespecto Ult. Venta]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="748" height="15" uuid="9544cf60-89db-4026-b6d6-ca4c920fdcbb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" Reporte De Perfil Financiero De Productos Del Establecimiento "+$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="15" width="200" height="16" uuid="d461194b-62b8-4318-9534-5f508dd15c41">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Estatus Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1647" y="15" width="86" height="16" uuid="4bb54caa-514f-41eb-9208-6ccf04ad9688">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Total Costo Prom.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="200" y="0" width="119" height="15" uuid="4f8eeb4d-ff29-4504-bf10-b8aa00946145">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{clase_producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="319" y="0" width="130" height="15" uuid="b555cd3d-3158-4fa3-b174-f36770e6736f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="607" y="0" width="340" height="15" uuid="cc6501a5-4b7f-4e2b-8cae-25920ee13b2a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{proveedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="947" y="0" width="55" height="15" uuid="6a1a01d9-a0da-4654-bc33-453196180364">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1002" y="0" width="390" height="15" uuid="a67898a0-ed6b-41bc-8b86-ebb8f952a8c2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="1392" y="0" width="85" height="15" uuid="9ada50b9-2d2e-475a-875b-6e2ea02db064">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{existencia_total_piezas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="1477" y="0" width="85" height="15" uuid="37901435-9033-4258-bc99-714767581e9a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ultimo_costo_con_impuesto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1733" y="0" width="95" height="15" uuid="7c6cb836-402c-40df-a206-979f4752a7b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fecha_ultima_compra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1828" y="0" width="95" height="15" uuid="ff460934-db4a-4a67-92af-f0cdefe3ac8c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fecha_venta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1923" y="0" width="190" height="15" uuid="0b8bd2b5-c2c4-4ef9-a08d-fc4120472929">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{diferencia_en_meses_con_respespecto_a_ultima_compra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2113" y="0" width="180" height="15" uuid="0b8bc572-2cca-4d5f-b527-658390ed91dc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{diferencia_en_dias_con_respespecto_a_ultima_compra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2293" y="0" width="190" height="15" uuid="5721e8b0-4cd8-4791-a9b7-081662a0ec27">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{diferencia_en_dias_con_respespecto_a_ultima_venta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="0" width="158" height="15" uuid="80856d4a-da4f-42b5-9a8a-e8629e162121">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{familias}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="1562" y="0" width="85" height="15" uuid="462c7808-e8a6-44e2-af71-d5abcc95a2fa">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{costo_promedio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="200" height="15" uuid="864eb741-b366-47a6-b163-2ba142cf59c1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Estatus_Concepto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="1647" y="0" width="86" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="d9eb1322-dc18-4117-931c-b0f937544e80"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_costo_promedio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="4" splitType="Stretch"/>
+	</summary>
+</jasperReport>

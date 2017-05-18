@@ -369,7 +369,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-			int valor =servicios.buscar_nuevo();
+			int valor =servicios.buscar_nuevo_servicio();
 			if(valor != 0){
 				txtFolio.setText(valor+1+"");
 			}else{
@@ -418,7 +418,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		}
 	};
 	
-ActionListener guardar = new ActionListener(){
+    ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(ValidaCampos()!=""){
 				txtFiltro.setText("");
@@ -440,14 +440,12 @@ ActionListener guardar = new ActionListener(){
 				
 				String statusequipo= cmbEstatus_Equipo.getSelectedItem().toString().trim().toLowerCase().equals("no aplica")?"" :" El estatus del Equipo menciona que esta:"+cmbEstatus_Equipo.getSelectedItem().toString().trim().toLowerCase();
 						
-				String Mensaje= "El usuario:"+lblUsuario.getText().toString()+" ,Del Establecimiento:"+lblEstablecimiento.getText().trim().toLowerCase()+" ,Del Departamento:"+lblDepartamento.getText().trim().toLowerCase()
-						       +" ,Solicito el Servicio de:"+txtServicio.getText().toString().toLowerCase()+" Con Una Prioridad de:"+cmbPrioridades.getSelectedItem().toString().trim().toLowerCase()
-						       +statusequipo+"   Detalle:"+txaDetalle.getText().toUpperCase().trim().toLowerCase();
+				String Mensaje= "El usuario:"+lblUsuario.getText().toString()+" ,Solicito el Servicio "+txtServicio.getText().toString().toLowerCase()+" Con Una Prioridad de "+cmbPrioridades.getSelectedItem().toString().trim().toLowerCase()
+						+"   >>Detalle:"+txaDetalle.getText().toUpperCase().trim().toLowerCase()+statusequipo+" << Establecimiento "+lblEstablecimiento.getText().trim().toLowerCase()+" ,Del Departamento:"+lblDepartamento.getText().trim().toLowerCase() ;
 				
 				if(servicios_solicitud.getGuardar_actualizar().equals("E")){
 						if(JOptionPane.showConfirmDialog(null, "El Registro Ya Existe, ¿Desea Cambiarlo?") == 0){
 							if(servicios_solicitud.GuardarActualizar()){
-								
 								init_tabla();
 								  btnDeshacer.doClick();
 								JOptionPane.showMessageDialog(null,"El Registró Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
@@ -461,7 +459,6 @@ ActionListener guardar = new ActionListener(){
 						}
 				 }else{
 						if(servicios_solicitud.GuardarActualizar()){
-							
 							try {
 								servicios_solicitud = new BuscarSQL().correos_del_departamento_de_servicios(cmbDepartamento.getSelectedItem().toString().trim());
 							} catch (SQLException e1) {

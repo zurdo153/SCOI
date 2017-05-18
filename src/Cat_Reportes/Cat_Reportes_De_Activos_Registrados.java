@@ -17,7 +17,7 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Equipos_Registrados extends JFrame{
+public class Cat_Reportes_De_Activos_Registrados extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -36,8 +36,8 @@ public class Cat_Reporte_De_Equipos_Registrados extends JFrame{
 	
 	JCButton btnGenerar = new JCButton("Generar", "lista.png", "Azul");
 	
-	public Cat_Reporte_De_Equipos_Registrados() {
-		this.setTitle("Consunta De Equipos Registrados");
+	public Cat_Reportes_De_Activos_Registrados() {
+		this.setTitle("Consulta De Activos Registrados");
 		
 		int x = 20,y=15,ancho=80;
 		
@@ -75,7 +75,7 @@ public class Cat_Reporte_De_Equipos_Registrados extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Equipos_Registrados().setVisible(true);
+			new Cat_Reportes_De_Activos_Registrados().setVisible(true);
 		}catch(Exception e){	}
 	}
 

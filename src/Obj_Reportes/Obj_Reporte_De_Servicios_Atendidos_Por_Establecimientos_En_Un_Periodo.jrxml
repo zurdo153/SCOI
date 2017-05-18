@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-05-08T18:13:21 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Servicios_Atendidos_Por_Establecimientos_En_Un_Periodo" language="groovy" pageWidth="400" pageHeight="792" columnWidth="400" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[sp_Reporte_De_Servicios_Atendidos_Por_Establecimientos_En_Un_Periodo '01/04/2017 00:00:00' , ' 23/04/2017 23:59:59','SISTEMAS']]>
+	</queryString>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="cantidad_de_servicios_solicitados" class="java.lang.Double"/>
+	<field name="promedio_evaluacion" class="java.lang.Double"/>
+	<field name="reporte" class="java.lang.String"/>
+	<field name="porcentaje_de_evaluacion" class="java.lang.Double"/>
+	<variable name="Total_servicios_atendidos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad_de_servicios_solicitados}]]></variableExpression>
+	</variable>
+	<variable name="Total_promedios" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{promedio_evaluacion}]]></variableExpression>
+	</variable>
+	<variable name="Total_Porcentaje_De_Evaluacion" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{porcentaje_de_evaluacion}]]></variableExpression>
+	</variable>
+	<variable name="Cantidad_Registros" class="java.lang.Double" calculation="Count">
+		<variableExpression><![CDATA[$F{establecimiento}]]></variableExpression>
+	</variable>
+	<variable name="Promedio_Global" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{Total_promedios}/$V{Cantidad_Registros}]]></variableExpression>
+	</variable>
+	<variable name="Promedio_Global_Porcentaje" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{Total_Porcentaje_De_Evaluacion}/$V{Cantidad_Registros}]]></variableExpression>
+	</variable>
+	<pageHeader>
+		<band height="46" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="390" height="33" uuid="8edb66d8-5633-4865-aa34-1820fba6b99d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{reporte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="33" width="130" height="13" uuid="296613f0-e349-40ea-8961-ecdab493bd95">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Establecimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="33" width="80" height="13" uuid="1f18054e-049b-4dc9-991e-f2f5d736e8b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[# Servicios Atendidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="33" width="90" height="13" uuid="c578b18a-969c-4496-8424-3e58f6cbae1c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Promedio Calificacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="33" width="90" height="13" uuid="6775c4fb-54c0-48a2-bc86-a14423c385e4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Porcentaje Evaluacion]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="130" height="14" uuid="74f185a8-f374-453b-8572-84fb2b2c3337"/>
+				<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="140" y="0" width="80" height="14" uuid="3f5c1d7b-03ad-46f9-94ef-8c29273152bb"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cantidad_de_servicios_solicitados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="220" y="0" width="90" height="14" uuid="d7cb72af-5ca3-4743-ab8c-c3d297f299e4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{promedio_evaluacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00%" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="310" y="0" width="90" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="86224e52-cf25-479c-90fd-789422462ef7"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{porcentaje_de_evaluacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="14">
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="140" y="0" width="80" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="8e58083a-aeab-42df-ba79-92d4647377c9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_servicios_atendidos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="220" y="0" width="90" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="e9e79d94-4d31-4021-b247-9f539ebbfd74"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Promedio_Global}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="0" width="130" height="14" uuid="caf91578-9715-4d1f-bc5d-b705091ef0e7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTALES:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00%" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="310" y="0" width="90" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="3bc5c3d4-a386-45c7-bc48-844919f1910e"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Promedio_Global_Porcentaje}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

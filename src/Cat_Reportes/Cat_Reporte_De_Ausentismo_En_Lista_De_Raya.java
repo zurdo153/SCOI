@@ -59,16 +59,13 @@ public class Cat_Reporte_De_Ausentismo_En_Lista_De_Raya extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/cesta-de-la-compra-verde-icono-9705-64.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/inasistencia32.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione El Mes Que Desea Calcular"));
 		
 		int x=15,y=20,ancho=230;
-		
 		panel.add(new JLabel("Fecha: ")).setBounds(x,y,80,20);
 		panel.add(cmbAnios).setBounds(x+45,y,55,20);
-		
 		panel.add(cmbMeses).setBounds(x+100,y,ancho,20);
-		
 		panel.add(btngenerar).setBounds(x,y+=35,100,20);
 		
 		cont.add(panel);

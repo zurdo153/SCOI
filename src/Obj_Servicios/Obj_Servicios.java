@@ -9,6 +9,7 @@ public class Obj_Servicios {
 	int folio=0;
 	int folio_usuario_solicito=0;
 	int folio_usuario_modifico=0;
+	int folio_equipo=0;
 	int cantidad_de_correos=0;
 	int usuario_realizo_servicio=0;
 	float costo=0;
@@ -28,6 +29,14 @@ public class Obj_Servicios {
 	String adjunto="";
 	String evaluacion="";
 	String comentario_evaluacion="";
+
+	public int getFolio_equipo() {
+		return folio_equipo;
+	}
+
+	public void setFolio_equipo(int folio_equipo) {
+		this.folio_equipo = folio_equipo;
+	}
 
 	public String getComentario_evaluacion() {
 		return comentario_evaluacion;

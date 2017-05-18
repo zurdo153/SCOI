@@ -6365,7 +6365,7 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 		adjunto=servicios.getAdjunto().toString();
 	}
 	
-	String query = "exec sp_guardar_servicios ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	String query = "exec sp_guardar_servicios ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 	Connection con = new Connexion().conexion();
 	
 	try {
@@ -6398,6 +6398,7 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 			pstmt.setBinaryStream(17, new FileInputStream(new File(adjunto)));
 			pstmt.setString(18,  servicios.getAdjunto().toString());
 			pstmt.setString(19,  servicios.getComentario_evaluacion().toString().trim());
+			pstmt.setInt   (20,  Integer.valueOf(servicios.getFolio_equipo()));
 			
 			pstmt.executeUpdate();
 		con.commit();

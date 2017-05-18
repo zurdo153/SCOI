@@ -48,8 +48,6 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Obj_Filtro_Dinamico;
 
 
-
-
 @SuppressWarnings("serial")
 public class Cat_Usuarios extends JFrame{
 	
@@ -302,6 +300,8 @@ public class Cat_Usuarios extends JFrame{
 				new Obj_CheckBoxNode(Sub_Compras[29], false),
 				new Obj_CheckBoxNode(Sub_Compras[30], false),
 				new Obj_CheckBoxNode(Sub_Compras[31], false),
+				new Obj_CheckBoxNode(Sub_Compras[32], false),
+				new Obj_CheckBoxNode(Sub_Compras[33], false),
 			};
 			@SuppressWarnings("rawtypes")
 			Vector ComprasVector = new Obj_NombreVector("Compras", Compras);
@@ -335,10 +335,12 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_servicios[1], false),
 		new Obj_CheckBoxNode(Sub_servicios[2], false),
 		new Obj_CheckBoxNode(Sub_servicios[3], false),
+		new Obj_CheckBoxNode(Sub_servicios[4], false),
+		new Obj_CheckBoxNode(Sub_servicios[5], false),
 	};
+	
 	@SuppressWarnings("rawtypes")
 	Vector Vector_servicios = new Obj_NombreVector("Servicios", Servicios);
-	
 	
 		////ESTA PARTE SE ORDENA LA POSICION EN LA QUE SE QUIERE EL MENU PRINCIPAL  EN EL ARBOL
 	Object rootNodos[] = { Administracion_del_sistemaVector, AuditoriaVector, ChecadorVector, ComprasVector,Vector_inventarios, ContabilidadVector, EvaluacionesVector, 

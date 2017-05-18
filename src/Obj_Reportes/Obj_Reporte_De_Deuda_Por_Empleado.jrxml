@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-06-08T17:49:37 -->
+<!-- 2017-05-11T10:20:43 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Deuda_Por_Empleado" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9417c1b6-7a92-4606-86ba-0d96b415f6d7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
-	<queryString>
+	<queryString language="SQL">
 		<![CDATA[exec sp_select_deducciones_de_empleado_pendientes 2,'EDGAR EDUADO JIMÉNEZ MOLINA']]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer"/>
@@ -25,6 +25,7 @@
 	<field name="fuente_de_sodas" class="java.math.BigDecimal"/>
 	<field name="total" class="java.math.BigDecimal"/>
 	<field name="usuario" class="java.lang.String"/>
+	<field name="infonacot" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -191,16 +192,6 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				</textElement>
 				<text><![CDATA[Tel:]]></text>
 			</staticText>
-			<image>
-				<reportElement x="385" y="26" width="140" height="105" uuid="27b71921-e747-4deb-9395-c404b2607b57"/>
-				<box>
-					<topPen lineWidth="0.7" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.7" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.7" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.7" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<imageExpression><![CDATA[$F{foto}]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="0" y="130" width="100" height="15" uuid="1c724523-32e3-4b8e-b1cd-fc4aff2812d8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -224,7 +215,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[Deuda Pendiente:]]></text>
 			</staticText>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="297" y="255" width="63" height="20" uuid="ff957302-1298-4f66-b7ca-626a68153c7d">
+				<reportElement x="297" y="235" width="63" height="20" uuid="ff957302-1298-4f66-b7ca-626a68153c7d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -234,7 +225,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<textFieldExpression><![CDATA[$F{prestamo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="297" y="284" width="63" height="20" uuid="90e6c525-b298-44b5-a097-37621dffc397">
+				<reportElement x="297" y="264" width="63" height="20" uuid="90e6c525-b298-44b5-a097-37621dffc397">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -243,7 +234,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<textFieldExpression><![CDATA[$F{cortes}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="297" y="313" width="63" height="20" uuid="82939ce5-cd8d-4c06-bdbc-48bdcf9a123b">
+				<reportElement x="297" y="293" width="63" height="20" uuid="82939ce5-cd8d-4c06-bdbc-48bdcf9a123b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -252,7 +243,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<textFieldExpression><![CDATA[$F{infonavit}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="297" y="342" width="63" height="20" uuid="a1fbb54a-f9ae-4dee-83ad-d9dde7fc9e09">
+				<reportElement x="297" y="343" width="63" height="20" uuid="a1fbb54a-f9ae-4dee-83ad-d9dde7fc9e09">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -261,7 +252,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<textFieldExpression><![CDATA[$F{fuente_de_sodas}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="170" y="342" width="119" height="20" uuid="25fbbf61-03e7-4302-ba74-60aa99b85d05">
+				<reportElement x="170" y="343" width="119" height="20" uuid="25fbbf61-03e7-4302-ba74-60aa99b85d05">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -270,7 +261,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[Fuente De Sodas:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="313" width="119" height="20" uuid="a20e94fd-5418-4a2b-89ca-41a29a521319">
+				<reportElement x="170" y="293" width="119" height="20" uuid="a20e94fd-5418-4a2b-89ca-41a29a521319">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -279,7 +270,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[Infonavit:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="284" width="119" height="20" uuid="e8899bc7-7e7f-4d1c-ad82-eabcce813028">
+				<reportElement x="170" y="264" width="119" height="20" uuid="e8899bc7-7e7f-4d1c-ad82-eabcce813028">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -288,7 +279,7 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<text><![CDATA[Cortes:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="255" width="119" height="20" uuid="d0c344b7-3cde-4693-b68b-127e6808d972">
+				<reportElement x="170" y="235" width="119" height="20" uuid="d0c344b7-3cde-4693-b68b-127e6808d972">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -353,6 +344,32 @@ ELDORADO, SINALOA, MEXICO TEL/FAX  (667) 726 0104 -726 1848
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="170" y="319" width="119" height="20" uuid="a6d4bb67-9df9-488f-8a99-7f164a71540a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Infonacot:]]></text>
+			</staticText>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="297" y="320" width="62" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="d285e6d1-c11e-4384-921c-b2e32b8c6426"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="13" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{infonacot}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" hAlign="Center">
+				<reportElement x="380" y="0" width="90" height="87" uuid="a2b485be-790c-4167-94ad-6e04c2bb0023"/>
+				<box>
+					<topPen lineWidth="2.4"/>
+					<leftPen lineWidth="2.4"/>
+					<bottomPen lineWidth="2.4"/>
+					<rightPen lineWidth="2.4"/>
+				</box>
+				<imageExpression><![CDATA[$F{foto}]]></imageExpression>
+			</image>
 		</band>
 	</columnHeader>
 	<pageFooter>

@@ -181,17 +181,13 @@ public class Cat_Establecimiento extends JFrame{
 			panel.add(btnEditar).setBounds(x+(ancho*2)+30,y+=30,100,20);
 			panel.add(btnGuardar).setBounds(x+ancho*2+30,y+=30,100,20);
 			
-			
 			panel.add(btnDeshacer).setBounds(x-25,y+=90,100,20);
 			panel.add(btnSalir).setBounds(x+115,y,100,20);
-			
-
 			
 			panel.add(txtFolioFiltro).setBounds((x*2)+(ancho*3)-5,15,58,20);
 			panel.add(txtUnidadFiltro).setBounds((x*2)+(ancho*3)+53,15,240,20);
 			
 			panel.add(getPanelTabla()).setBounds((x*2)+(ancho*3)-5,35,623,355);
-			
 			
 			txtEstablecimiento.setEditable(false);
 			txtAbreviatura.setEditable(false);
@@ -701,7 +697,6 @@ public class Cat_Establecimiento extends JFrame{
 	
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
 				try {
 					if(validaCampos()!="") {
 						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
@@ -726,13 +721,11 @@ public class Cat_Establecimiento extends JFrame{
 								  							Establecimiento.setRfc(txtRFC.getText().toLowerCase().toString());
 								  							Establecimiento.setTelefono(txtTelefono.getText().toLowerCase().toString());
 							  							
-															switch(cmb_status.getSelectedIndex()){
-																		case 0: Establecimiento.setStatus(1); break;
-																		case 1: Establecimiento.setStatus(0); break;	}
-																
-																			if(Establecimiento.actualizar(Integer.parseInt(txtFolio.getText()))){
+								  							Establecimiento.setStatus((cmb_status.getSelectedItem().toString().equals("VIGENTE"))?0:1); 
+								  							
+															if(Establecimiento.actualizar(Integer.parseInt(txtFolio.getText()))){
 																						refrestabla();
-																JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+																JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 																btnDeshacer.doClick();
 																txtFolio.setEditable(true);
 																txtFolio.requestFocus();

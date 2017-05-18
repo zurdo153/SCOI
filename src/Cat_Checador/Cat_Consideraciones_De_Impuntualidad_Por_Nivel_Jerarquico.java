@@ -53,6 +53,8 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	String status_funcion  =	new BuscarSQL().Op_status_consideracion().toString().trim();
+	String existe_nivel_jerarquico =new BuscarSQL().existe_nivel_jerarquico(usuario.getFolio()).toString().trim();
+	   
 	String Folio           = String.valueOf(usuario.getFolio());
 	String empleado        = ""; 	
 	String fecha           = ""; 	
@@ -85,6 +87,7 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 	JCButton btnConsideraciones = new JCButton("Reporte Consideraciones" ,"Lista.png","Azul"     );
 	JCButton btnPermisos        = new JCButton("Reporte Permisos"        ,"Lista.png","Azul"     );
 	
+
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
 	
@@ -187,16 +190,24 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 		llamar_render();
 		cargar_fechas();
 		
-		if(status_funcion.equals("F")){
+		if(existe_nivel_jerarquico.equals("T")){
 			btnGenerar.setEnabled(false);
 			c_final.setEnabled(false);
 			txtNombre.setEditable(false);
-			JLBStatus.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=RED><CENTER><b><p>La Consideracion Esta Desactivada  Hasta La Generacion De La Nueva Lista De Raya</p></b></CENTER></FONT></html>");	 
-			JOptionPane.showMessageDialog(null,"La Consideracion Esta Desactivada  Hasta La Generacion De La Nueva Lista De Raya \n Si Tiene Pendientes De Considerar Comuniquese A Recursos Humanos","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+			JLBStatus.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=RED><CENTER><b><p>La Consideracion Para su Puesto No Es Posible Comuniquese a Recursos Humanos y Mensione Que Alimenten El Nivel  Jerarquico De Su Puesto</p></b></CENTER></FONT></html>");	 
+			JOptionPane.showMessageDialog(null,"La Consideracion Para su Puesto No Es Posible Comuniquese a Recursos Humanos y Mensione Que Alimenten El Nivel  Jerarquico De Su Puesto","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 		}else{
-			refrescar();
+			if(status_funcion.equals("F")){
+				btnGenerar.setEnabled(false);
+				c_final.setEnabled(false);
+				txtNombre.setEditable(false);
+				JLBStatus.setText("<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=RED><CENTER><b><p>La Consideracion Esta Desactivada  Hasta La Generacion De La Nueva Lista De Raya</p></b></CENTER></FONT></html>");	 
+				JOptionPane.showMessageDialog(null,"La Consideracion Esta Desactivada  Hasta La Generacion De La Nueva Lista De Raya \n Si Tiene Pendientes De Considerar Comuniquese A Recursos Humanos","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+			}else{
+				
+				refrescar();
+			}
 		}
-		
 		txtNombre.addKeyListener(opFiltroFolioCajero);
 		btnGenerar.addActionListener(opGenerarTabla);
 		btnConsideraciones.addActionListener(op_generar_Consideraciones);
@@ -347,7 +358,7 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 	        }
         });
     }
-	
+
 	public void refrescar(){
 		String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 		String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";

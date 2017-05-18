@@ -8,6 +8,7 @@ import java.util.Vector;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 
+
 public class Cargar_Combo {
 	Connexion con = new Connexion();
 	@SuppressWarnings("rawtypes")
@@ -382,13 +383,12 @@ public class Cargar_Combo {
 
 	@SuppressWarnings("unchecked")
 	public String[] Establecimiento_para_revision_de_cortes() throws SQLException{
-		String query = "select convert(varchar(10),a.folio_establecimiento)+'.- '+a.establecimiento as establecimiento"
-		+ "					 from (select distinct tb_establecimiento.folio as folio_establecimiento,tb_establecimiento.nombre as establecimiento "
-		+ "							   from tb_empleado "
-		+ "							   right join tb_establecimiento on tb_establecimiento.folio = tb_empleado.establecimiento_id "
-		+ "							   right join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id "
-		+ "							   where tb_empleado.puesto_id=32) a "
-		+ "				order by a.folio_establecimiento,a.establecimiento";
+		String query = "select convert(varchar(10),a.folio_establecimiento)+'.- '+a.establecimiento as establecimiento "
+				+ "			 from (select distinct tb_establecimiento.folio as folio_establecimiento"
+				+ "                               ,tb_establecimiento.nombre as establecimiento"
+				+ "			              from  tb_establecimiento "
+				+ "                   where folio_grupo_para_cortes<>0 and status=1)a"
+				+ "     order by a.folio_establecimiento,a.establecimiento";
 		
 		Statement stmt = null;
 		try {
@@ -1511,6 +1511,38 @@ public class Cargar_Combo {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public String[] Parentesco() throws SQLException{
+		String query = "select parentesco from  tb_parentesco order by folio_parentesco";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			@SuppressWarnings("unused")
+			int j=0;
+			while(rs.next()){
+				miVector.add(rs.getString("parentesco"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
+	
+	@SuppressWarnings("unchecked")
 	public String[] Escolaridad(String tabla) throws SQLException{
 		String query = "select escolaridad from " + tabla+ " where status=1";
 		Statement stmt = null;
@@ -2403,7 +2435,7 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] Tipos_De_Equipo(){
-		String query = "select nombre from tb_tipos_de_equipo  where status = 'V'";
+		String query = "select nombre from tb_tipos_de_equipo  where status = 'V' order by nombre";
 		
 		Statement stmt = null;
 		try {
@@ -2440,7 +2472,7 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] Marca_De_Equipo(){
-		String query = "select nombre from tb_marca_de_equipo  where status = 'V'";
+		String query = "select nombre from tb_marca_de_equipo  where status = 'V' order by nombre";
 		
 		Statement stmt = null;
 		try {
@@ -2477,7 +2509,7 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] Modelo_De_Equipo(){
-		String query = "select nombre from tb_modelo_de_equipo  where status = 'V'";
+		String query = "select nombre from tb_modelo_de_equipo  where status = 'V' order by nombre";
 		
 		Statement stmt = null;
 		try {

@@ -169,6 +169,7 @@ public class BuscarTablasModel {
 				matriz[i][24] = Float.parseFloat(rs.getString(25)) == 0 ? "" : Float.parseFloat(rs.getString(25));
 				matriz[i][25] = Float.parseFloat(rs.getString(26)) == 0 ? "" : Float.parseFloat(rs.getString(26));
 				matriz[i][26] = Float.parseFloat(rs.getString(27)) == 0 ? "" : Decimal(Float.parseFloat(rs.getString(27)));
+				
 				matriz[i][27] = "   "+rs.getString(28);
 				matriz[i][28] = "   "+rs.getString(29);
 				
@@ -1151,8 +1152,8 @@ public class BuscarTablasModel {
 	
 	public String[][] filtro_impuntualidad_a_considerar(String fecha_inicio,String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
 		String[][] Matriz = null;
-		String query = "sp_select_consideracion_checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"';";
-		
+		String query = "sp_select_consideracion_checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
+System.out.println("sp_select_consideracion_checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'");		
 		Matriz = new String[get_filas(query)][17];
 		
 		try {	

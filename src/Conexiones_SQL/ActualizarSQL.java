@@ -14,11 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 
-
-
-
-
-
 import javax.swing.JTable;
 
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
@@ -203,6 +198,44 @@ public class ActualizarSQL {
 		return true;
 	}
 	
+	public boolean BeneficiarioColaborador(Obj_Empleados beneficiario){
+		String query = "exec sp_actualizar_beneficiario ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, beneficiario.getNombre_beneficiario());
+			pstmt.setString(2, beneficiario.getRfc_beneficiario());
+			pstmt.setString(3, beneficiario.getParentesco_beneficiario());
+			pstmt.setString(4, beneficiario.getFecha_nacimiento_beneficiario());
+			pstmt.setInt   (5, beneficiario.getFolio());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ BeneficiarioColaborador ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 	public boolean Denom(Obj_Alimentacion_Denominacion denom, String asignacion, int folioDenom){
 		
 		String query = "update tb_alimentacion_denominaciones set asignacion=?, folio_empleado=?, " +
@@ -276,7 +309,7 @@ public class ActualizarSQL {
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Establecimiento ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Establecimiento ] update  SQLException: "+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 				}
@@ -3770,6 +3803,37 @@ public boolean Borrar_movimiento_contabilidad(String id){
 	}		
 	return true;
 }
+
+public boolean cancelar_movimiento_bancario(String id){
+	String delete ="update IZAGAR_movimientos_bancarios set status_conciliado='CA' WHERE status_conciliado='PE'  AND id='"+id+"'";
+			Connection con = new Connexion().conexion();
+  try {	con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(delete);
+		  pstmt.executeUpdate();
+		  con.commit();
+	} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [Borrar_movimiento_contabilidad] \n SQLException: "+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						 JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [Borrar_movimiento_contabilidad] \n SQLException: "+e.getMessage(), "Avisa al Administrador del Sistema", JOptionPane.ERROR_MESSAGE);
+				}
+				return false;
+				}	
+	}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	}		
+	return true;
+}
+
 
 public boolean desconciliar_movimiento_contabilidad(String id,String referencia,String poliza,String id_mov_bancario){
 	String query =" exec sp_desconciliar_movimientos_contables_y_movimientos_bancarios '"+id+"','"+referencia+"','"+poliza+"','"+id_mov_bancario+"'";
