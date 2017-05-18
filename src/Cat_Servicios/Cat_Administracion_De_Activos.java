@@ -493,7 +493,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 						
 						if(activos.guardarActualizarActivos(movimiento,rutaFactura,rutaImagen)){
 							
-							JOptionPane.showMessageDialog(null,"El registró se "+(movimiento.equals("GUARDAR")?"Guardar":"Actualizo")+" de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+							JOptionPane.showMessageDialog(null,"El registró se "+(movimiento.equals("GUARDAR")?"Guardo":"Actualizo")+" de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
 							componentesDefault();
 							movimiento = "";
 							return;
@@ -508,7 +508,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 					return;
 				}
 			}else{
-				JOptionPane.showMessageDialog(null, "Los Suguientes Campos Son Requeridos: "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				JOptionPane.showMessageDialog(null, "Los Suguientes Campos Son Requeridos: \n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}

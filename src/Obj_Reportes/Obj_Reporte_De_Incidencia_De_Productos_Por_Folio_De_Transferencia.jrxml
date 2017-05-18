@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-05-10T14:56:15 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Incidencia_De_Productos_Por_Folio_De_Transferencia" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="73ac000d-19e1-45a9-a0d5-ca09a99a560c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[declare @folio_transferencia char(10)
+set @folio_transferencia = 'C82083'
+
+select folio_transferencia
+		,cod_prod
+		,descripcion_completa
+		,cantidad_transferida
+		,max(cantidad_recepcionada) as cantidad_recepcionada 
+		,case when cantidad_transferida > max(cantidad_recepcionada) 
+				then cantidad_transferida - max(cantidad_recepcionada) 
+				when cantidad_transferida < max(cantidad_recepcionada) 
+				then max(cantidad_recepcionada) - cantidad_transferida
+				else 0 end as diferiencia
+		,case when cantidad_transferida > max(cantidad_recepcionada) 
+					then 'FALTANTE' 
+				when cantidad_transferida < max(cantidad_recepcionada) 
+					then 'SOBRANTE' 
+				else 'COMPLETO' end as sobrante
+from (select trans.folio as folio_transferencia
+				,trans.cod_prod
+				,prod.descripcion_completa
+				--,convert(varchar(20),trans.fecha,103)+' '+convert(varchar(20),trans.fecha,108) as fecha
+				,trans.cantidad as cantidad_transferida
+				, sum(recep.cantidad) as cantidad_recepcionada
+		from BMSIZAGAR.dbo.entysal trans with (nolock) 
+		inner join BMSIZAGAR.dbo.productos prod with (nolock) on prod.cod_prod = trans.cod_prod
+		inner join BMSIZAGAR.dbo.entysal recep with (nolock) on recep.folio in (select mi.folio 
+																	from BMSIZAGAR.dbo.movimientos_internos mi with (nolock) 
+																	where mi.folio_alterno = @folio_transferencia and mi.transaccion = '65'
+																	and mi.status = 'V') 
+															and recep.cod_prod = trans.cod_prod
+															and recep.transaccion = '65'
+		where trans.folio =  @folio_transferencia
+		and trans.transaccion = '35'
+		group by trans.folio,trans.cod_prod,prod.descripcion_completa,trans.cantidad 
+
+		union
+
+		select inc.folio_transferencia as folio_transferencia
+				,inc.cod_prod
+				,prod.descripcion_completa as descripcion_completa
+				,inc.cantidad_transferencia
+				,sum(inc.cantidad_recepcion) as cantidad_recepcion
+		from Grupo_Izagar.dbo.tb_incidencias_de_recepcion_de_transferencia inc
+		inner join BMSIZAGAR.dbo.productos prod with (nolock) on prod.cod_prod = inc.cod_prod
+		where inc.folio_transferencia = @folio_transferencia
+		group by inc.folio_transferencia,inc.cod_prod,prod.descripcion_completa,inc.cantidad_transferencia
+		having sum(inc.cantidad_recepcion) > inc.cantidad_transferencia) a
+		group by a.folio_transferencia,a.cod_prod,a.descripcion_completa,a.cantidad_transferida
+		order by sobrante desc]]>
+	</queryString>
+	<field name="folio_transferencia" class="java.lang.String"/>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="descripcion_completa" class="java.lang.String"/>
+	<field name="cantidad_transferida" class="java.lang.Double"/>
+	<field name="cantidad_recepcionada" class="java.lang.Double"/>
+	<field name="diferiencia" class="java.lang.Double"/>
+	<field name="sobrante" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{folio_transferencia}]]></groupExpression>
+		<groupHeader>
+			<band height="48">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="2" width="570" height="17" forecolor="#B89F7D" backcolor="#0000FF" uuid="444fe9cc-8a99-4343-adae-dee86addd298"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="479" height="17" forecolor="#FFFFFF" uuid="28176578-ad85-4207-bdd0-42f2b769a09b">
+							<property name="local_mesure_unitheight" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font size="14" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Folio De Transferencia: "+$F{folio_transferencia}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<staticText>
+					<reportElement style="Column header" x="500" y="19" width="70" height="29" forecolor="#000000" uuid="f59a518d-48d8-43f4-a721-e5050198cf3b"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Status]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="296" y="19" width="77" height="29" forecolor="#000000" uuid="61bc5d75-0653-4063-941c-04ba669ea030"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cant. Transferida]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="441" y="19" width="70" height="29" forecolor="#000000" uuid="86544842-3e83-4a88-9872-1bfc436f83f4"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Diferiencia]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="367" y="19" width="79" height="29" forecolor="#000000" uuid="c65d79e0-70bc-4789-82b8-c4fd4b754356"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cant. Recepcionada]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="60" y="19" width="236" height="29" forecolor="#000000" uuid="51c5354c-2857-4e18-86e6-216e25cb3618"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descripcion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="0" y="19" width="60" height="29" forecolor="#000000" uuid="d88c9f67-1414-467d-91c7-ba0ba8650b7f"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cod. Prod.]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="570" height="66" backcolor="#0000CC" uuid="4908ae47-bc85-419d-8afe-27e0f1201769"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="569" height="66" uuid="99b7cddf-a2b4-4a24-9f42-66eedf5b71c3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="24" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Reporte De Sobrante Y Faltante De Productos Por Folio De Transferencia]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="69" width="570" height="10" forecolor="#000000" backcolor="#FF9933" uuid="75b76636-fedc-4879-9231-0cd49c6a137f"/>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="1" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="570" height="15" uuid="cdaba418-06f4-4083-9fbb-1b93f9664385">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+				<rectangle radius="4">
+					<reportElement x="1" y="4" width="7" height="7" forecolor="#FF9933" backcolor="#FF9933" uuid="8920f191-bb83-41ab-aabd-035694bd9d65">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unity" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$F{cantidad_transferida}==0.0]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="1.0" lineColor="#000000"/>
+					</graphicElement>
+				</rectangle>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="7" y="0" width="53" height="15" uuid="d6c4b325-a55e-4161-b8a8-5afb99f6463f">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="60" y="0" width="250" height="15" uuid="d4b9c014-a282-4701-a66d-58009601c868">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descripcion_completa}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
+					<reportElement style="Detail" positionType="Float" x="296" y="0" width="55" height="15" uuid="a20cf27f-6f06-4f29-96d6-63f5d62d5662">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cantidad_transferida}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
+					<reportElement style="Detail" positionType="Float" x="367" y="0" width="59" height="15" uuid="0f007e0f-cef8-455b-a571-26f9d1d8ab15">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cantidad_recepcionada}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00#">
+					<reportElement style="Detail" positionType="Float" x="441" y="0" width="51" height="15" uuid="a20e40c2-e7d4-4b54-a4af-5550809343fd">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{diferiencia}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="500" y="0" width="70" height="15" uuid="c165f53b-27ca-4b51-9547-c2d158f8fbbc">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sobrante}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="570" height="15" forecolor="#D0B48E" backcolor="#0000CC" uuid="10528342-3c0e-4acf-97bc-cefb62cbc91e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="529" y="0" width="40" height="15" forecolor="#FFFFFF" uuid="baea910e-ddb5-4f25-94f2-dd3308fd533c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="449" y="0" width="80" height="15" forecolor="#FFFFFF" uuid="1e90bc1f-032f-46cc-9f72-53f85cfe4f88">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="0" width="197" height="15" forecolor="#FFFFFF" uuid="77d88fe9-8dd3-484d-a7da-421df91d6e3e">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -10123,6 +10123,15 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		try {			
 			s = con.conexion().createStatement();
 			rs = s.executeQuery(query);
+			
+//			rs.last(); //me voy al último
+//			int tamano = rs.getRow(); //pillo el tamaño
+//			rs.beforeFirst(); // lo dejo donde estaba para tratarlo 		
+//			Matriz = new Object[tamano][10];			
+//			System.out.println(tamano);
+//			rs.first();
+//			System.out.println(rs.getRow());
+			
 			int i=0;
 			while(rs.next()){
 				Matriz[i][0] = rs.getString(1);

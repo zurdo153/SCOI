@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-05-11T18:08:35 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="183fe69d-686a-4182-a078-9cafe294a1ac">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[--exec sp_select_detalle_de_recepcion 'folio_transferencia','status','26/04/2017 00:00:00','10/05/2017 23:59:59'
+exec sp_select_detalle_de_recepcion  '','ST','26/04/2017 00:00:00','10/05/2017 23:59:59']]>
+	</queryString>
+	<field name="folio_transferencia" class="java.lang.String"/>
+	<field name="folio_recepcion" class="java.lang.String"/>
+	<field name="usuario_scoi" class="java.lang.String"/>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="cantidad_transferencia" class="java.lang.Double"/>
+	<field name="cantidad_recepcion" class="java.lang.Double"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="folio_usuario_scoi" class="java.lang.Integer"/>
+	<field name="titulo_reporte" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="descripcion_completa" class="java.lang.String"/>
+	<variable name="Diferencia" class="java.lang.Double" resetType="None">
+		<variableExpression><![CDATA[$F{cantidad_recepcion}-$F{cantidad_transferencia}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{folio_transferencia}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="1" width="570" height="24" forecolor="#B89F7D" backcolor="#0000FF" uuid="0b481a51-8f12-48bb-871f-a2d317cc0678"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="288" height="24" forecolor="#FFFFFF" uuid="25ca213b-756a-4465-9ad7-179b41fbcee0"/>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Folio De Transferencia: "+$F{folio_transferencia}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="Group2" keepTogether="true">
+		<groupExpression><![CDATA[$F{folio_recepcion}]]></groupExpression>
+		<groupHeader>
+			<band height="59">
+				<rectangle>
+					<reportElement x="0" y="3" width="570" height="15" backcolor="#FFAA00" uuid="0bdb471a-9af1-4481-a037-7eb5f6aeb8d3"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement x="320" y="18" width="248" height="15" uuid="99381874-ffb5-4eb8-a997-49292a41c05a">
+						<property name="local_mesure_unity" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+				</rectangle>
+				<textField>
+					<reportElement positionType="Float" x="3" y="2" width="210" height="17" forecolor="#000000" uuid="7bfb991d-abbb-491a-9e1c-d71511c24269"/>
+					<textElement>
+						<font fontName="Times New Roman" size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Folio De Recepcion: "+$F{folio_recepcion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="0" y="24" width="60" height="34" forecolor="#000000" uuid="06cf7481-7184-4f50-a47b-c17c487ec7a8"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cod Prod]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="279" y="24" width="78" height="34" forecolor="#000000" uuid="48529688-6425-4a17-9d6d-aeab75198140"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cant. Transferida]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="352" y="24" width="76" height="34" forecolor="#000000" uuid="cb2b5754-df08-4cb1-bb23-1b6c5b617485"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cant. Recepcionada]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="427" y="25" width="63" height="34" forecolor="#000000" uuid="cf7883b1-0f44-42fe-a15b-d658a22d2463"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Diferencia]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="386" y="0" width="58" height="20" forecolor="#000000" uuid="34fcb233-8793-4f2e-bc2e-6f05ef6f91e8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="487" y="25" width="85" height="32" forecolor="#000000" uuid="1a2a55cf-7eff-417c-a891-5421ca1aad2b"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Incidencias]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="58" width="570" height="1" uuid="d9a3e2a1-3317-423e-b04f-d26c49749703">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="local_mesure_unity" value="pixel"/>
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+				</line>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="441" y="0" width="128" height="20" uuid="22064418-a804-4d6c-b0ce-aa2ac5d8f5ce"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="326" y="20" width="238" height="11" uuid="dada091b-bb98-4e9b-8d1e-55a1a2324f53"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Usuario: "+$F{usuario_scoi}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="60" y="25" width="222" height="34" forecolor="#000000" uuid="c1f9990c-5988-4c9e-a206-2582f26cfcf4"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descripción]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="59" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="570" height="50" backcolor="#0000CC" uuid="9293fbbf-8d26-47f2-9917-f79ed7131553"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="4" y="0" width="566" height="50" forecolor="#FFFFFF" uuid="640d894b-b6d6-4d36-ac8f-9278d6ef9a83"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="26"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Reporte De Productos "+
+($F{titulo_reporte}.toString().equals("ST")?"Recepcionados Sin Transfrencia":($F{titulo_reporte}.toString().equals("SR")?"En Transferencia Sin Recepcionar":($F{titulo_reporte}.toString().equals("A")?"Con Ajuste":
+($F{titulo_reporte}.toString().equals("C")?"Cancelados":
+($F{titulo_reporte}.toString().equals("")?"Con Diferencias Por Transferencia":
+"")))))]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="53" width="570" height="6" forecolor="#000000" backcolor="#FF9100" uuid="68912d1c-7de4-4e5e-8337-06ad64eb81db"/>
+			</frame>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="3" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="570" height="14" uuid="bad364fa-18d0-425b-8d7d-d068f37a1854">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="2" y="0" width="38" height="14" uuid="2fdb1d1f-bc96-490b-ad11-96ad35005eac">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cod_prod}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="281" y="0" width="45" height="14" uuid="e9924349-d475-4e3b-b03e-718e81990b88">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cantidad_transferencia}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="353" y="0" width="49" height="14" uuid="e04c8818-eeff-4008-9bdf-60da5b36dfa1">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cantidad_recepcion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="490" y="0" width="78" height="14" uuid="a6a24f7b-afaf-414f-bec4-c870657c0191">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="427" y="0" width="42" height="14" uuid="857ab96d-2aa0-45d6-8ae7-a92857a68a30">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Diferencia}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="50" y="0" width="231" height="14" uuid="8bba64ab-ca63-4942-a754-d39766b8d1bb"/>
+					<textElement>
+						<font fontName="Times New Roman"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descripcion_completa}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="21" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
