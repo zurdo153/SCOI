@@ -14,12 +14,6 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 
-
-
-
-
-
-
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -40,7 +34,6 @@ import javax.swing.table.DefaultTableModel;
 import Cat_Auditoria.Cat_Cortes_De_Cajeros;
 import Cat_Auditoria.Cat_Retiros_A_Cajeros;
 import Cat_Checador.Cat_Checador;
-import Cat_Checador.Cat_Solicitud_De_Empleados;
 import Cat_Lista_de_Raya.Cat_Captura_De_Fuente_De_Sodas_De_Cajeras;
 import Cat_Lista_de_Raya.Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya;
 import Cat_Lista_de_Raya.Cat_Depositos_A_Bancos;
@@ -52,6 +45,7 @@ import Cat_Lista_de_Raya.Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH;
 import Cat_Planeacion.Cat_Alimentacion_De_Plan_Semanal;
 import Cat_Planeacion.Cat_Programacion_Y_Revision_Del_Plan_Semanal;
 import Cat_Planeacion.Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico;
+import Cat_Servicios.Cat_Seguimiento_De_Servicios;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.CLabel;
@@ -121,8 +115,9 @@ public class Init_Login extends JFrame{
 	JLabel lblRevision_Nivel_Jerarquico12 = new JLabel("Por Nivel Jerarquico");
 	
 	/* BOTON SOLICITUDES */
-	JButton btnSolicitudes= new JButton(new ImageIcon("imagen/Solicitud-64.png"));
-	JLabel lblSolicitudes= new JLabel("Solicitudes");
+	JButton btnServicios= new JButton(new ImageIcon("imagen/Solicitud-64.png"));
+	JLabel lblSolicitudes1 = new JLabel("Seguimiento a");
+	JLabel lblSolicitudes= new JLabel("Servicios");
 	
 	/* BOTON LISTA DE RAYA */
 	JButton btnListaRaya= new JButton(new ImageIcon("imagen/listaR.png"));
@@ -198,8 +193,6 @@ public class Init_Login extends JFrame{
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         cont.setBackground(new java.awt.Color(255, 255, 255));
-
-
     	
         Resolucion(ancho, alto);
 		
@@ -234,7 +227,7 @@ public class Init_Login extends JFrame{
 		
 		btnBanco.addActionListener(Opciones);
 		btnInasistencia.addActionListener(Opciones);
-		btnSolicitudes.addActionListener(Opciones);
+		btnServicios.addActionListener(Opciones);
 		btnCaja.addActionListener(Opciones);
 		btnFsRH.addActionListener(Opciones);
 		btnCortes_Cajeros.addActionListener(Opciones);
@@ -258,7 +251,7 @@ public class Init_Login extends JFrame{
 		btnRetirosCajeras.setEnabled(false);
 		btnPrestamo.setEnabled(false);
 		btnPlaneacionyRevision.setEnabled(false);
-		btnSolicitudes.setEnabled(false);
+		btnServicios.setEnabled(false);
 		btnListaRaya.setEnabled(false);
 		btnListaFirma.setEnabled(false);
 		btnColaborador.setEnabled(false);
@@ -335,7 +328,7 @@ public class Init_Login extends JFrame{
 			panel.add(btnPlaneacionyRevision).setBounds  (x+=140, y    ,z,z);
 			panel.add(btnAlimentacionPlan_Semanal).setBounds    (x     ,y+=115,z,z);
 			panel.add(btnRevision_Jerarquias).setBounds      (x     ,y+=115,z,z);
-			panel.add(btnSolicitudes).setBounds          (x     ,y+=115,z,z);
+			panel.add(btnServicios).setBounds          (x     ,y+=115,z,z);
 			panel.add(btnChecador).setBounds             (x     ,y+=115,z,z);
 			
 			y = 60;	
@@ -345,7 +338,8 @@ public class Init_Login extends JFrame{
 			panel.add(lblAlimentacionPlan12).setBounds   (x     ,y+10  ,zl,w);
 			panel.add(lblRevision_Nivel_Jerarquico1).setBounds      (x     ,y+=115,zl,w);
 			panel.add(lblRevision_Nivel_Jerarquico12).setBounds     (x     ,y+10  ,zl,w);
-			panel.add(lblSolicitudes).setBounds          (x     ,y+=115,zl,w);
+			panel.add(lblSolicitudes1).setBounds         (x     ,y+=115,zl,w);
+			panel.add(lblSolicitudes).setBounds          (x     ,y+10,zl,w);
 			panel.add(lblListaChecador2).setBounds       (x     ,y+=115,zl,w);
 
 			/* COLUMNA 4 *///////////////////////////////////////////////////////
@@ -432,8 +426,8 @@ public class Init_Login extends JFrame{
 			panel.add(lblCaja2).setBounds                (x     ,y+=115,zl,w);
 			panel.add(lblCaja3).setBounds                (x     ,y+10  ,zl,w);
 			panel.add(lblPrestamo2).setBounds            (x     ,y+=115,zl,w);
-			panel.add(lblColaboradores1).setBounds    (x     ,y+=115,zl,w);
-			panel.add(lblColaboradores2).setBounds    (x     ,y+10  ,zl,w);
+			panel.add(lblColaboradores1).setBounds       (x     ,y+=115,zl,w);
+			panel.add(lblColaboradores2).setBounds       (x     ,y+10  ,zl,w);
 			panel.add(lblListaRaya2).setBounds           (x     ,y+=115,zl,w);
 			panel.add(lblListaRaya3).setBounds           (x     ,y+10  ,zl,w);
 			
@@ -442,7 +436,7 @@ public class Init_Login extends JFrame{
 			panel.add(btnPlaneacionyRevision).setBounds  (x+=140, y    ,z,z);
 			panel.add(btnAlimentacionPlan_Semanal).setBounds    (x     ,y+=115,z,z);
 			panel.add(btnRevision_Jerarquias).setBounds      (x     ,y+=115,z,z);
-			panel.add(btnSolicitudes).setBounds          (x     ,y+=115,z,z);
+			panel.add(btnServicios).setBounds          (x     ,y+=115,z,z);
 			panel.add(btnChecador).setBounds             (x     ,y+=115,z,z);
 			
 			y = 30;	
@@ -452,7 +446,8 @@ public class Init_Login extends JFrame{
 			panel.add(lblAlimentacionPlan12).setBounds   (x     ,y+10  ,zl,w);
 			panel.add(lblRevision_Nivel_Jerarquico1).setBounds      (x     ,y+=115,zl,w);
 			panel.add(lblRevision_Nivel_Jerarquico12).setBounds     (x     ,y+10  ,zl,w);			
-			panel.add(lblSolicitudes).setBounds          (x     ,y+=115,zl,w);
+			panel.add(lblSolicitudes1).setBounds         (x     ,y+=115,zl,w);
+			panel.add(lblSolicitudes).setBounds          (x     ,y+10  ,zl,w);
 			panel.add(lblListaChecador2).setBounds       (x     ,y+=115,zl,w);
 
 			/* COLUMNA 4 *///////////////////////////////////////////////////////
@@ -547,7 +542,7 @@ public class Init_Login extends JFrame{
 			panel.add(btnPlaneacionyRevision).setBounds  (x+=100,y    ,z,z);
 			panel.add(btnAlimentacionPlan_Semanal).setBounds    (x     ,y+=90,z,z);
 			panel.add(btnRevision_Jerarquias).setBounds      (x     ,y+=90,z,z);
-			panel.add(btnSolicitudes).setBounds          (x     ,y+=90,z,z);
+			panel.add(btnServicios).setBounds          (x     ,y+=90,z,z);
 			panel.add(btnChecador).setBounds             (x     ,y+=90,z,z);
 			
 			y = 20;	
@@ -557,8 +552,9 @@ public class Init_Login extends JFrame{
 			panel.add(lblAlimentacionPlan12).setBounds   (x     ,y+10  ,zl,w);
 			panel.add(lblRevision_Nivel_Jerarquico1).setBounds      (x     ,y+=90 ,zl,w);
 			panel.add(lblRevision_Nivel_Jerarquico12).setBounds     (x     ,y+10  ,zl,w);
-			panel.add(lblSolicitudes).setBounds          (x     ,y+=90 ,zl,w);
-			panel.add(lblListaChecador2).setBounds       (x     ,y+=90 ,zl,w);
+			panel.add(lblSolicitudes1).setBounds          (x     ,y+=90 ,zl,w);
+			panel.add(lblSolicitudes).setBounds           (x     ,y+10 ,zl,w);
+			panel.add(lblListaChecador2).setBounds        (x     ,y+=90 ,zl,w);
 
 			/* COLUMNA 4 *///////////////////////////////////////////////////////
 			y=10;
@@ -820,8 +816,8 @@ public class Init_Login extends JFrame{
 					btnPrestamo.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 51)
 					btnListaRaya.setEnabled(true);
-				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 79)
-					btnSolicitudes.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 184)
+					btnServicios.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 143)
 					btnRevision_Jerarquias.setEnabled(true);
 
@@ -867,8 +863,8 @@ ActionListener Opciones = new ActionListener(){
 			if(click.getSource().equals(btnListaRaya))
 				new Cat_Revision_De_Lista_Raya().setVisible(true);
 			
-			if(click.getSource().equals(btnSolicitudes))
-				new Cat_Solicitud_De_Empleados().setVisible(true);
+			if(click.getSource().equals(btnServicios))
+				new Cat_Seguimiento_De_Servicios().setVisible(true);
 			
 			if(click.getSource().equals(btnRevision_Jerarquias))
 				new Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico().setVisible(true);

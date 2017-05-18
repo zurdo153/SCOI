@@ -12,7 +12,9 @@ import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class JCButton extends JButton{
-    
+    //CA color Base
+    //CB color Medio
+    //CD color Presionado
     private Color CA    =   new Color(7  , 255 , 7);
     private Color CB    =   new Color(98  ,255  ,103);
     private Color CD    =   new Color(32 ,198  ,38);
@@ -31,6 +33,14 @@ public class JCButton extends JButton{
             CA    =   new Color(5,184,255);
             CB    =   new Color(1,213,255);
             CD    =   new Color(1,42,113);
+            setForeground(new Color(255, 255, 255));
+            setBackground(CA);  
+        }
+        
+        if(color.equals("AzulO")){
+            CA    =   new Color(5 , 13 , 165);
+            CB    =   new Color(25, 92 , 198);
+            CD    =   new Color( 5 , 42 , 165);
             setForeground(new Color(255, 255, 255));
             setBackground(CA);  
         }
@@ -74,7 +84,6 @@ public class JCButton extends JButton{
             setForeground(new Color(0, 0, 0));
             setBackground(CA);  
         }
-        
         
         setContentAreaFilled(false);
         setOpaque(false);

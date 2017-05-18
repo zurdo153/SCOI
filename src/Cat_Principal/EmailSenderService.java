@@ -6,15 +6,14 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class EmailSenderService {
- 
 
 		public boolean enviarcorreo(String para,int cantidad_de_correos,String mensaje,String asunto){
 		boolean enviado = false;
-		
-		System.out.println(para);
-		
+
 		String de="scoi.izagar@gmail.com";
 		String clave="Ragazi/*-1";
 		
@@ -52,7 +51,8 @@ public class EmailSenderService {
 		enviado=true;
 
 		}catch (Exception e){
-		e.printStackTrace();
+		JOptionPane.showMessageDialog(null," Posible Falla de Internet intente guardar de nuevo la informacion "+e+"\nNo Se envio el Correo a:"+para+" \n numero de correos:"+cantidad_de_correos+"  \n Mensaje:"+mensaje+" \nAsunto:"+asunto ,"Avise al Administrador Del Sistema",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+		  e.printStackTrace();
 
 		}
 		return enviado;

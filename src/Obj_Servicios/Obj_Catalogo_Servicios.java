@@ -163,6 +163,12 @@ public class Obj_Catalogo_Servicios {
 		return 0; 
 	}
 	
+	public int buscar_nuevo_servicio(){
+		try {return new BuscarSQL().servicios();
+		}catch (SQLException e) {e.printStackTrace();}
+		return 0; 
+	}
+	
 	public Obj_Catalogo_Servicios buscar_Departamento(int folio){
 		try {
 			return new BuscarSQL().serviciodepartamento(folio);

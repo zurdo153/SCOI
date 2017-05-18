@@ -148,11 +148,11 @@ public class Cat_Autorizacion_De_Modificaciones_De_Sueldo_O_Bono extends JFrame 
 		
 		
 		public void verificar(){
-			if(tabla.isEditing()){
-				tabla.getCellEditor().stopCellEditing();
-			}
+			if(tabla.isEditing()){			tabla.getCellEditor().stopCellEditing();	}
+			
 			for (int i=0;i<tabla.getRowCount();i++){
-			if((tabla.getValueAt(i,checkboxindex).toString().trim()).equals("true")){
+				
+			if((tabla.getValueAt(i,checkboxindex-1).toString().trim()).equals("true")){
 				if((tabla.getValueAt(i,14).toString().trim()).equals("")){
 					JOptionPane.showMessageDialog(null, "Todo Sueldo o Bono, Aprobado o Cancelado Necesita Tener Observacion \n El Sueldo o Bono Selecionado Del Colaborador: \n"+tabla.getValueAt(i,1).toString().trim()+" No Tiene" , "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 	                return;

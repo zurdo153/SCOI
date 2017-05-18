@@ -57,7 +57,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	JTextField txtFiltro = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
 	Connexion con = new Connexion();
 	Obj_tabla ObjTab =new Obj_tabla();
-	int columnas = 18,checkbox=-1;
+	int columnas = 20,checkbox=-1;
 	public void init_tabla(String status_pedidos){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(45);
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(45);
@@ -79,6 +79,10 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
     	this.tabla.getColumnModel().getColumn(15).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(16).setMinWidth(150);
     	this.tabla.getColumnModel().getColumn(17).setMinWidth(400);
+    	this.tabla.getColumnModel().getColumn(18).setMinWidth(60);
+    	this.tabla.getColumnModel().getColumn(18).setMaxWidth(60);
+    	this.tabla.getColumnModel().getColumn(19).setMinWidth(300);
+    	
 		String comando="exec sp_select_seguimiento_a_servicios_pendientes '"+Departamento+"','"+status_pedidos+"'";
 		
 		String basedatos="26",pintar="si";
@@ -92,7 +96,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		return types;
 	}
 	
-	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Detalle","Estatus","Prioridad","Departamento Solicito","Establecimiento Solicito","Usuario Solicito","Servicio Solicitado","Fecha Solicitud","Archivo","Fecha Atendio","Folio Atendio","Usuario Atendio","Notas ","Costo ","Evaluacion","Archivo Respuesta","Comentario Evaluacion"}){
+	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Detalle","Estatus","Prioridad","Departamento Solicito","Establecimiento Solicito","Usuario Solicito","Servicio Solicitado","Fecha Solicitud","Archivo","Fecha Atendio","Folio Atendio","Usuario Atendio","Notas ","Costo ","Evaluacion","Archivo Respuesta","Comentario Evaluacion","Folio Equipo","Descripcion Equipo"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = base();
 			@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -164,7 +168,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 //		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 //		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 //		this.setSize(ancho,alto);
-		this.setSize(1024,768);
+		this.setSize(1024,700);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -183,10 +187,10 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		this.panel.add(txtFcActual).setBounds                (x+=215  ,y      ,width    ,height   );
 		x=15;
 		this.panel.add(txtFiltro).setBounds                  (x       ,y+=19  ,width*10 ,height   );
-		this.panel.add(scroll_tabla).setBounds               (x       ,y+20   ,width*10,width+270);
+		this.panel.add(scroll_tabla).setBounds               (x       ,y+20   ,width*10,width+200);
 		
 		x=15;
-		this.panel.add(new JLabel("Folio:")).setBounds       (x       ,y+=395 ,width    ,height   );
+		this.panel.add(new JLabel("Folio:")).setBounds       (x       ,y+=335 ,width    ,height   );
 		this.panel.add(txtFolio).setBounds                   (x+=40   ,y      ,width    ,height   );  
 		this.panel.add(new JLabel("Servicio:")).setBounds    (x+=110  ,y      ,width    ,height   );
 		this.panel.add(txtServicio).setBounds                (x+=45   ,y      ,width+325,height   );
@@ -205,10 +209,10 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 
 		x=15;
 		this.panel.add(new JLabel("Detalle:")).setBounds     (x       ,y+=30  ,width    ,height   );
-		this.panel.add(scrollDetalle).setBounds              (x+=40   ,y      ,958      ,height*4 ); 
+		this.panel.add(scrollDetalle).setBounds              (x+=40   ,y      ,958      ,height*3 ); 
 		
 		x=15;
-		this.panel.add(new JLabel("Fecha S:")).setBounds     (x       ,y+=90  ,width    ,height   );  
+		this.panel.add(new JLabel("Fecha S:")).setBounds     (x       ,y+=70  ,width    ,height   );  
 		this.panel.add(txtFcSolicito).setBounds              (x+=40   ,y      ,width+28 ,height   );  
 		this.panel.add(btnDescAdjunto).setBounds             (x+=145  ,y      ,width+150,height   );
 		this.panel.add(new JLabel("Evaluacion:")).setBounds  (x+=265  ,y      ,width    ,height   );  
@@ -232,7 +236,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 //		this.panel.add(btnAdjuntar).setBounds                (x+=130  ,y      ,width+168 ,height  );
 
 		x=15;width=120;sep=153;
-		this.panel.add(new JLabel("Atendio:")).setBounds     (x       ,y+=35  ,width    ,height   ); 
+		this.panel.add(new JLabel("Atendio:")).setBounds     (x       ,y+=30  ,width    ,height   ); 
 		this.panel.add(txtFolioequipo).setBounds             (x+=40   ,y      ,50       ,height   );
 		this.panel.add(txtEquipo).setBounds                  (x+=50   ,y      ,width+180,height   );
 		this.panel.add(btnEquipo).setBounds                  (x+=303  ,y      ,width-10 ,height   );
@@ -250,6 +254,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		btnGuardar.addActionListener(guardar);
 		btnDeshacer.addActionListener(deshacer);
 		btnAtendio.addActionListener(modificaratendio);
+		btnEquipo.addActionListener(modificarequipo);
+		
 		cmbEstatusFiltrado.addActionListener(actualizartabla);
 		txtFiltro.addKeyListener(opFiltroNombre);
 		
@@ -306,6 +312,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	                    txaNotas.setText(tabla.getValueAt(fila,13)+"");
 	                    txtCosto.setText(tabla.getValueAt(fila,14)+"");
 	                    cmbEvaluacionServicio.setSelectedItem(tabla.getValueAt(fila,15)+"");
+	                    txtFolioequipo.setText(tabla.getValueAt(fila, 18)+"");
+	                    txtEquipo.setText(tabla.getValueAt(fila, 19)+"");
 	                    
 	                    //validacion del estatus de la actividad
 	                    if(tabla.getValueAt(fila,2).toString().equals("TERMINADO")||tabla.getValueAt(fila,2).toString().equals("CANCELADO")){
@@ -320,6 +328,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 			                    	String fecha_atendio = (tabla.getValueAt(fila,10).toString()).substring(0,10);
 			                    	if(txtFcActual.getText().toString().trim().equals(fecha_atendio)){
 				                    	cmbEstatusCo.setEnabled(true);
+				                    	cmbEstablecimiento.setEnabled(true);
 				                    	txtCosto.setEditable(true);
 				                    	txaNotas.setEditable(true);
 				                    	btnAtendio.setEnabled(true);
@@ -333,7 +342,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 			                    	}
 			                   	}	
 	                    }else{
-	                    	
+	                    	cmbEstablecimiento.setEnabled(true);
 	                    	cmbEstatusCo.setEnabled(true);
 	                    	txtCosto.setEditable(true);
 	                    	txaNotas.setEditable(true);
@@ -400,11 +409,16 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		}		
 	};
 	
+	ActionListener modificarequipo = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			new Filtro_Equipos().setVisible(true);
+		}		
+	};
+	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			panelLimpiar();
 			panelEnabledFalse();
-		
 			init_tabla(cmbEstatusFiltrado.getSelectedItem().toString().trim());
 			txtFiltro.requestFocus();
 		}
@@ -416,7 +430,6 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 				JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+ValidaCampos(), "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-				
 				servicios_solicitud.setServicio(txtServicio.getText().toUpperCase().trim());
 				servicios_solicitud.setPrioridad(cmbPrioridades.getSelectedItem().toString().trim());
 				servicios_solicitud.setDepartamento_solicito(lblDepartamento.getText().toString().trim());
@@ -425,31 +438,38 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 				servicios_solicitud.setEquipo("PENDIENTE");
 				servicios_solicitud.setEstatus_equipo("NO APLICA");
 				servicios_solicitud.setEstatus(cmbEstatusCo.getSelectedItem().toString().trim());
-
 				servicios_solicitud.setFolio_usuario_solicito(usuario.getFolio());
-				
 				servicios_solicitud.setEvaluacion(cmbEvaluacionServicio.getSelectedItem().toString().trim());
 				servicios_solicitud.setFolio(Integer.valueOf(txtFolio.getText().trim()+"" ));
-				
 				servicios_solicitud.setCosto(Float.valueOf(txtCosto.getText().toString().trim()));
 				servicios_solicitud.setNotas_servicio(txaNotas.getText().toUpperCase().trim());
 				servicios_solicitud.setUsuario_realizo_servicio(Integer.valueOf(txtFAtendio.getText().trim()));
 				servicios_solicitud.setGuardar_actualizar("A");
 				servicios_solicitud.setFolio_usuario_modifico(usuario.getFolio());
-				
+				servicios_solicitud.setFolio_equipo(Integer.valueOf(txtFolioequipo.getText().toString()));
+
 				if(servicios_solicitud.GuardarActualizar()){
 					   if(cmbEstatusCo.getSelectedItem().toString().trim().equals("TERMINADO")){
-						   
 						   try {servicios_solicitud = new BuscarSQL().correo_informa_servicio_terminado(Integer.valueOf(txtFolio.getText().toString().trim()));
 							} catch (SQLException e1) {e1.printStackTrace();}
 						   
 						   if(!servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
-							String Mensaje= " Hola "+txtUsuario.getText()+" Tu Servicio solicitado el dia "+txtFcSolicito.getText().toString()+" con Detalle:"+txaDetalle.getText().toString().trim()+" fue atendido  y marcado como terminado el dia de hoy por "
-									+txtAtendio.getText().toString().trim()+ " >>>informa que "+txaNotas.getText().toString().trim()+"      Tienes 24 horas para Evaluar, despues de ese tiempo el servicio se cierra y se evaluara con la maxima calificacion  Saludos: SCOI";
+							String Mensaje= " Hola "+txtUsuario.getText()+" Tu Servicio solicitado el dia "+txtFcSolicito.getText().toString()+" Detalle:"+txaDetalle.getText().toString().trim()+" fue atendido  y marcado como terminado el dia de hoy por "
+									+txtAtendio.getText().toString().trim()+ " >>>"+txaNotas.getText().toString().trim()+"      Tienes el dia de hoy para Evaluar, despues de ese tiempo el servicio se cierra y se evaluara con la maxima calificacion  Saludos: SCOI";
 							new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Informe De Servicio Terminado "+servicios_solicitud.getFecha_guardado());
 						   }
 					   }
-					 
+					   
+					   if(cmbEstatusCo.getSelectedItem().toString().trim().equals("CANCELADO") || cmbEstatusCo.getSelectedItem().toString().trim().equals("NEGADO")){
+						   try {servicios_solicitud = new BuscarSQL().correo_informa_servicio_terminado(Integer.valueOf(txtFolio.getText().toString().trim()));
+							} catch (SQLException e1) {e1.printStackTrace();}
+						  
+						   if(!servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
+							String Mensaje= " Hola "+txtUsuario.getText()+" Tu Servicio solicitado el dia "+txtFcSolicito.getText().toString()+" con Detalle:"+txaDetalle.getText().toString().trim()+" fue atendido  y marcado como  "+cmbEstatusCo.getSelectedItem().toString().trim()+" el dia de hoy por "
+									+txtAtendio.getText().toString().trim()+ " >>>informa que "+txaNotas.getText().toString().trim()+" Saludos: SCOI";
+							new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Informe De Servicio Terminado "+servicios_solicitud.getFecha_guardado());
+						   }
+					   }
 					init_tabla(cmbEstatusFiltrado.getSelectedItem().toString().trim());
 					 btnDeshacer.doClick();
 					JOptionPane.showMessageDialog(null,"El Registró Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
@@ -474,7 +494,6 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 			error+= "El Estatus Del Servicio debe de Cambiar De Solicitado\n";
 		return error;
 	}
-
 	
 	public void panelEnabledFalse(){	
 		txtFolio.setEditable(false);
@@ -518,7 +537,6 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		cmbDepartamento.setSelectedIndex(0);
 		cmbEstablecimiento.setSelectedIndex(0);
 		cmbEvaluacionServicio.setSelectedItem(0);
-		
 		servicios.setGuardar_actualizar("");
 	}
 
@@ -625,6 +643,110 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		};
 	}
 	
+	//TODO Filtro Equipos
+		public class Filtro_Equipos extends JDialog{
+			Container cont = getContentPane();
+			JLayeredPane campo = new JLayeredPane();
+			JTextField txtFiltrof = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
+			Connexion con = new Connexion();
+			Obj_tabla ObjTabf =new Obj_tabla();
+			int columnas = 6,checkbox=-1;
+			public void init_tablaf(){
+		    	this.tablaf.getColumnModel().getColumn(0).setMinWidth(50);
+		    	this.tablaf.getColumnModel().getColumn(0).setMaxWidth(50);
+		    	this.tablaf.getColumnModel().getColumn(1).setMinWidth(290);
+		    	this.tablaf.getColumnModel().getColumn(2).setMinWidth(180);
+		    	this.tablaf.getColumnModel().getColumn(3).setMinWidth(130);
+		    	this.tablaf.getColumnModel().getColumn(4).setMinWidth(130);
+		    	this.tablaf.getColumnModel().getColumn(5).setMinWidth(220);
+				String comandof="sp_select_filtro_equipos ";
+				String basedatos="26",pintar="si";
+				ObjTabf.Obj_Refrescar(tablaf,modelf, columnas, comandof, basedatos,pintar,checkbox);
+		    }
+			
+			@SuppressWarnings("rawtypes")
+			public Class[] base (){
+				Class[] types = new Class[columnas];
+				for(int i = 0; i<columnas; i++){types[i]= java.lang.Object.class;}
+				return types;
+			}
+			
+			 public DefaultTableModel modelf = new DefaultTableModel(null, new String[]{"Folio","Descripcion","Tipo","Establecimiento","Departamento","Caracteristicas"}){
+				 @SuppressWarnings("rawtypes")
+					Class[] types = base();
+					@SuppressWarnings({ "unchecked", "rawtypes" })
+					public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+					public boolean isCellEditable(int fila, int columna){return false;}
+			    };
+			    JTable tablaf = new JTable(modelf);
+				public JScrollPane scroll_tablaf = new JScrollPane(tablaf);
+			     @SuppressWarnings("rawtypes")
+			    private TableRowSorter trsfiltro;
+			
+			JLabel lblBuscar = new JLabel("BUSCAR: ");
+			@SuppressWarnings({"rawtypes", "unchecked" })
+			public Filtro_Equipos()	{
+				this.setModal(true);
+				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+				this.setTitle("Filtro Equipos");
+				this.setSize(1000,470);
+				this.setResizable(false);
+				this.setLocationRelativeTo(null);
+				this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+				trsfiltro = new TableRowSorter(modelf); 
+				tablaf.setRowSorter(trsfiltro); 
+				campo.add(txtFiltrof).setBounds   (10,20,970,20);
+				campo.add(scroll_tablaf).setBounds(10,40,970,390);
+				init_tablaf();
+				cont.add(campo);
+				agregar(tablaf);
+				txtFiltrof.addKeyListener(opFiltrof);
+				tablaf.addKeyListener(seleccionEmpleadoconteclado);
+			}
+			
+			private void agregar(final JTable tbl) {
+		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+			        	if(e.getClickCount() == 2){
+			        		int fila = tablaf.getSelectedRow();
+			        		txtFolioequipo.setText(tablaf.getValueAt(fila, 0).toString().trim());
+			    			txtEquipo.setText (tablaf.getValueAt(fila, 1).toString().trim());
+			    			dispose();
+			    			return;
+			        	}
+			        }
+		        });
+		    }
+			
+			KeyListener opFiltrof = new KeyListener(){
+				public void keyReleased(KeyEvent arg0) {
+					ObjTabf.Obj_Filtro(tablaf, txtFiltrof.getText().toUpperCase(), columnas);
+				}
+				public void keyTyped(KeyEvent arg0) {}
+				public void keyPressed(KeyEvent arg0) {}		
+			};
+			
+			KeyListener seleccionEmpleadoconteclado = new KeyListener() {
+				@SuppressWarnings("static-access")
+				@Override
+				public void keyTyped(KeyEvent e) {
+					char caracter = e.getKeyChar();
+					if(caracter==e.VK_ENTER){
+					int fila=tabla.getSelectedRow()-1;
+					txtFolioequipo.setText(tablaf.getValueAt(fila, 0).toString().trim());
+					txtEquipo.setText (tablaf.getValueAt(fila, 1).toString().trim());
+	    			dispose();
+	    			return;
+					}
+				}
+				@Override
+				public void keyPressed(KeyEvent e){}
+				@Override
+				public void keyReleased(KeyEvent e){}
+			};
+		}
+		
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

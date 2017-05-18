@@ -5,8 +5,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -14,6 +12,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.UIManager;
 
 import Conexiones_SQL.Generacion_Reportes;
+import Obj_Principal.JCButton;
 
 
 @SuppressWarnings("serial")
@@ -26,7 +25,7 @@ public class Cat_Reporte_De_Cumpleanios_Del_Mes extends JDialog{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbMeses = new JComboBox(Meses);
 		
-		JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
+		JCButton btngenerar = new JCButton("Generar","buscar.png","Azul");
 		
 		public Cat_Reporte_De_Cumpleanios_Del_Mes(){
 			
@@ -36,7 +35,7 @@ public class Cat_Reporte_De_Cumpleanios_Del_Mes extends JDialog{
 					
 			panel.add(new JLabel("Seleciona El Mes:")).setBounds(15,35,110,20);
 			panel.add(cmbMeses).setBounds(100,35,120,20);
-			panel.add(btngenerar).setBounds(70, 70, 100, 20);
+			panel.add(btngenerar).setBounds(60, 70, 130, 32);
 			cont.add(panel);
 			
 			btngenerar.addActionListener(opGenerar);

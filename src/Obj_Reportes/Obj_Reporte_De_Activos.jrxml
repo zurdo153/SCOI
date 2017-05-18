@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-03-08T12:09:16 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Activos" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f3baa908-c466-4931-8622-4c0323cbfd5a">
+<!-- 2017-03-21T12:15:14 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Activos" pageWidth="1150" pageHeight="612" orientation="Landscape" columnWidth="1110" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f3baa908-c466-4931-8622-4c0323cbfd5a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -47,8 +39,7 @@ inner join tb_tipos_de_equipo equipo on equipo.folio = activo.folio_tipo
 inner join tb_marca_de_equipo marca on marca.folio = activo.folio_marca
 inner join tb_modelo_de_equipo modelo on modelo.folio = activo.folio_modelo
 inner join tb_unidad_vida_util_y_garantia unidad_garantia on unidad_garantia.folio = activo.folio_unidad_garantia
-inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.folio = activo.folio_unidad_vida_util
-]]>
+inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.folio = activo.folio_unidad_vida_util]]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer"/>
 	<field name="descripcion" class="java.lang.String"/>
@@ -70,9 +61,9 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 	<title>
 		<band height="65" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="968" height="50" backcolor="#FFFFFF" uuid="a2a0a386-1c9a-4e38-836c-1f2a7519a2a7"/>
+				<reportElement mode="Opaque" x="0" y="0" width="974" height="50" backcolor="#FFFFFF" uuid="a2a0a386-1c9a-4e38-836c-1f2a7519a2a7"/>
 				<staticText>
-					<reportElement style="Title" x="0" y="0" width="968" height="50" forecolor="#000000" uuid="aec03df9-11db-49ec-93f2-0d79a9deedb1"/>
+					<reportElement style="Title" x="0" y="0" width="974" height="50" forecolor="#000000" uuid="aec03df9-11db-49ec-93f2-0d79a9deedb1"/>
 					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="28" isBold="false"/>
@@ -81,21 +72,21 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="50" width="968" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="5b45f82d-6b0f-4463-b861-9966fdfe2f46">
+				<reportElement mode="Opaque" x="0" y="50" width="974" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="5b45f82d-6b0f-4463-b861-9966fdfe2f46">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement x="833" y="0" width="135" height="15" forecolor="#000000" uuid="e3e71ad4-7074-4423-8ca8-b6035517aa9e">
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Right">
-						<font size="10"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-				</textField>
 			</frame>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="974" y="50" width="135" height="15" forecolor="#000000" uuid="e3e71ad4-7074-4423-8ca8-b6035517aa9e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -111,14 +102,14 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Folio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="41" y="0" width="103" height="30" forecolor="#000000" uuid="eb94563a-abd4-4ae0-87aa-265385eb69ca"/>
+				<reportElement style="Column header" x="41" y="0" width="134" height="30" forecolor="#000000" uuid="eb94563a-abd4-4ae0-87aa-265385eb69ca"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="144" y="0" width="43" height="30" forecolor="#000000" uuid="ebbfb0df-202b-436a-b53c-35836cc6ff8b">
+				<reportElement style="Column header" x="175" y="0" width="43" height="30" forecolor="#000000" uuid="ebbfb0df-202b-436a-b53c-35836cc6ff8b">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -127,7 +118,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="187" y="0" width="84" height="30" forecolor="#000000" uuid="ccaba0e4-a2bb-4f50-a499-44b446aada1c">
+				<reportElement style="Column header" x="218" y="0" width="84" height="30" forecolor="#000000" uuid="ccaba0e4-a2bb-4f50-a499-44b446aada1c">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -136,7 +127,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Establecimiento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="271" y="0" width="80" height="30" forecolor="#000000" uuid="480ee436-c3be-4f5a-a9db-1d8124ec25a9">
+				<reportElement style="Column header" x="302" y="0" width="80" height="30" forecolor="#000000" uuid="480ee436-c3be-4f5a-a9db-1d8124ec25a9">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -145,7 +136,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Departamento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="351" y="0" width="63" height="30" forecolor="#000000" uuid="904fcef8-61b6-4fcd-8be8-0cba4ec6cf1a">
+				<reportElement style="Column header" x="382" y="0" width="63" height="30" forecolor="#000000" uuid="904fcef8-61b6-4fcd-8be8-0cba4ec6cf1a">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -154,7 +145,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Tipo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="414" y="0" width="63" height="30" forecolor="#000000" uuid="4b0ec312-3594-43b1-87ca-a86b8b90ea4e">
+				<reportElement style="Column header" x="445" y="0" width="63" height="30" forecolor="#000000" uuid="4b0ec312-3594-43b1-87ca-a86b8b90ea4e">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -164,7 +155,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Marca]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="477" y="0" width="63" height="30" forecolor="#000000" uuid="5794172b-1d20-4b08-8d99-839d45eb1e18">
+				<reportElement style="Column header" x="508" y="0" width="63" height="30" forecolor="#000000" uuid="5794172b-1d20-4b08-8d99-839d45eb1e18">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -173,7 +164,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Modelo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="540" y="0" width="80" height="30" forecolor="#000000" uuid="82433c42-9997-490c-aa55-2343a301b7a5">
+				<reportElement style="Column header" x="571" y="0" width="130" height="30" forecolor="#000000" uuid="82433c42-9997-490c-aa55-2343a301b7a5">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -182,7 +173,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Serie]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="620" y="0" width="80" height="30" forecolor="#000000" uuid="890107c6-53bd-4193-85b2-b1606ee851f0">
+				<reportElement style="Column header" x="701" y="0" width="140" height="30" forecolor="#000000" uuid="890107c6-53bd-4193-85b2-b1606ee851f0">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -191,7 +182,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Clave]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="700" y="0" width="43" height="30" forecolor="#000000" uuid="ccef10f8-cd65-4a34-8e1f-fe493301ad38">
+				<reportElement style="Column header" x="841" y="0" width="43" height="30" forecolor="#000000" uuid="ccef10f8-cd65-4a34-8e1f-fe493301ad38">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -200,7 +191,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Fecha Compra]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="743" y="0" width="45" height="30" forecolor="#000000" uuid="6d4cadef-796a-4255-a991-94a6602fed3c">
+				<reportElement style="Column header" x="884" y="0" width="45" height="30" forecolor="#000000" uuid="6d4cadef-796a-4255-a991-94a6602fed3c">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -209,7 +200,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Costo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="788" y="0" width="45" height="30" forecolor="#000000" uuid="2c480e84-fafc-4221-9cc4-751d8e0a3a33">
+				<reportElement style="Column header" x="929" y="0" width="45" height="30" forecolor="#000000" uuid="2c480e84-fafc-4221-9cc4-751d8e0a3a33">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -218,7 +209,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 				<text><![CDATA[Depreciacion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="833" y="0" width="135" height="30" forecolor="#000000" uuid="816b77b4-0cb6-47ad-9784-85805141be1e">
+				<reportElement style="Column header" x="974" y="0" width="135" height="30" forecolor="#000000" uuid="816b77b4-0cb6-47ad-9784-85805141be1e">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -231,7 +222,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 	<detail>
 		<band height="18" splitType="Stretch">
 			<frame>
-				<reportElement style="Row" mode="Opaque" x="0" y="0" width="968" height="18" uuid="9e1dc37a-fd47-4527-b107-6850736f8fad">
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="1110" height="18" uuid="9e1dc37a-fd47-4527-b107-6850736f8fad">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -243,14 +234,14 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="41" y="0" width="103" height="18" uuid="5e165c5d-3235-4a5b-b0a7-63fdcc2d9de0"/>
+					<reportElement style="Detail" positionType="Float" x="41" y="0" width="134" height="18" uuid="5e165c5d-3235-4a5b-b0a7-63fdcc2d9de0"/>
 					<textElement verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="144" y="0" width="43" height="18" uuid="c619d3ea-a7fd-45dd-a80c-083805f97490">
+					<reportElement style="Detail" positionType="Float" x="175" y="0" width="43" height="18" uuid="c619d3ea-a7fd-45dd-a80c-083805f97490">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -259,7 +250,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="187" y="0" width="84" height="18" uuid="86b3cc19-6bac-4592-a732-0285c25e6f90">
+					<reportElement style="Detail" positionType="Float" x="218" y="0" width="84" height="18" uuid="86b3cc19-6bac-4592-a732-0285c25e6f90">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -268,7 +259,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="271" y="0" width="80" height="18" uuid="fe29de8b-f3f5-42b2-b16d-b961886fc153">
+					<reportElement style="Detail" positionType="Float" x="302" y="0" width="80" height="18" uuid="fe29de8b-f3f5-42b2-b16d-b961886fc153">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -277,7 +268,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{departamento}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="351" y="0" width="63" height="18" uuid="aaab89c2-6108-48c8-a051-3fd5ea2e7f38">
+					<reportElement style="Detail" positionType="Float" x="382" y="0" width="63" height="18" uuid="aaab89c2-6108-48c8-a051-3fd5ea2e7f38">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -288,7 +279,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="414" y="0" width="63" height="18" uuid="e84bef06-e458-4858-8e9e-2d5726816b57">
+					<reportElement style="Detail" positionType="Float" x="445" y="0" width="63" height="18" uuid="e84bef06-e458-4858-8e9e-2d5726816b57">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -297,7 +288,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="477" y="0" width="63" height="18" uuid="b88215fb-6f0e-4fb6-a97c-0768e4353e1e">
+					<reportElement style="Detail" positionType="Float" x="508" y="0" width="63" height="18" uuid="b88215fb-6f0e-4fb6-a97c-0768e4353e1e">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -306,7 +297,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{modelo}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="540" y="0" width="80" height="18" uuid="c507d1d7-af1f-4ff7-aaeb-1365891edfb1">
+					<reportElement style="Detail" positionType="Float" x="571" y="0" width="130" height="18" uuid="c507d1d7-af1f-4ff7-aaeb-1365891edfb1">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -315,7 +306,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{serie}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="620" y="0" width="80" height="18" uuid="a8dda55a-8022-4c06-bda0-148ab94a7b49">
+					<reportElement style="Detail" positionType="Float" x="701" y="0" width="140" height="18" uuid="a8dda55a-8022-4c06-bda0-148ab94a7b49">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -324,7 +315,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{clave}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="700" y="0" width="43" height="18" uuid="7f14bf00-d07a-4815-9767-bc962ac5dfec">
+					<reportElement style="Detail" positionType="Float" x="841" y="0" width="43" height="18" uuid="7f14bf00-d07a-4815-9767-bc962ac5dfec">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -333,7 +324,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{fecha_compra}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="743" y="0" width="45" height="18" uuid="0b429ba3-eb26-46fb-8557-2d25db785da8">
+					<reportElement style="Detail" positionType="Float" x="884" y="0" width="45" height="18" uuid="0b429ba3-eb26-46fb-8557-2d25db785da8">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -342,7 +333,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement style="Detail" positionType="Float" x="788" y="0" width="45" height="18" uuid="490b6657-ca74-49b0-baf4-d9975106d199">
+					<reportElement style="Detail" positionType="Float" x="929" y="0" width="45" height="18" uuid="490b6657-ca74-49b0-baf4-d9975106d199">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -351,7 +342,7 @@ inner join tb_unidad_vida_util_y_garantia unidad_vida_util on unidad_vida_util.f
 					<textFieldExpression><![CDATA[$F{depreciacion}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" positionType="Float" x="833" y="0" width="135" height="18" uuid="af526905-f472-4359-bc2d-ab4101b58b0e">
+					<reportElement style="Detail" positionType="Float" x="974" y="0" width="135" height="18" uuid="af526905-f472-4359-bc2d-ab4101b58b0e">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">

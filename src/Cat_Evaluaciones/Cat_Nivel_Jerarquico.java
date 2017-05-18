@@ -231,7 +231,6 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			new Cat_Filtro_puestos_jerarquico(e.getActionCommand()).setVisible(true);
 		}
-		
 	};
 	
 	ActionListener guardar = new ActionListener(){

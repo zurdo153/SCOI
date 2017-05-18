@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-03-09T17:05:19 -->
+<!-- 2017-05-08T09:37:10 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="ireport.zoom" value="2.593742460100005"/>
@@ -37,6 +37,7 @@
 	<field name="fecha_baja" class="java.lang.String"/>
 	<field name="fecha_ultima_modificacion" class="java.lang.String"/>
 	<field name="folio_empleado" class="java.lang.Integer"/>
+	<field name="reporte" class="java.lang.String"/>
 	<variable name="Cantidad_Por_Establecimiento" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Count">
 		<variableExpression><![CDATA[$F{folio_empleado}]]></variableExpression>
 	</variable>
@@ -145,13 +146,6 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<staticText>
-					<reportElement style="Title" x="3" y="0" width="296" height="49" uuid="31bea70f-4e17-4539-aad9-9162208eeb59"/>
-					<textElement textAlignment="Center">
-						<font size="20" isBold="false"/>
-					</textElement>
-					<text><![CDATA[Reporte de Altas y Bajas de Empleados]]></text>
-				</staticText>
-				<staticText>
 					<reportElement style="Title" x="306" y="4" width="38" height="45" uuid="2a0bf306-fccb-4da9-848f-d9917f8a2e7a"/>
 					<textElement textAlignment="Right">
 						<font size="17" isBold="false"/>
@@ -172,6 +166,13 @@ A:]]></text>
 						<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{fecha_a}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Title" mode="Transparent" x="0" y="3" width="320" height="46" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="2a3495a8-e1e7-420a-a633-3c40e7f8194c"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="20" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{reporte}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<image>

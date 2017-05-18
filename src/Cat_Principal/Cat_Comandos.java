@@ -2,6 +2,7 @@ package Cat_Principal;
 
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 
+
 public class Cat_Comandos {
 	
 	String comando="";
@@ -151,7 +152,7 @@ public String dinero_electronico(String Reporte, String tarjeta_Pyde, String Asi
 				+ " 	   ,establecimientos.nombre as establecimiento"
 				+ "        ,convert(varchar(15),facremtick.fecha,103)+' '+convert(varchar(15),facremtick.fecha,108) as fecha"
 				+ " 	   ,facremtick.total as total_ticket"
-				+ " 	   ,(select cantidad from bonificaciones_analiticas with (nolock)  where folio=facremtick.folio and transaccion in ('36','37','38') and operacion=@operacion ) as cantidad_dinero_electronico"
+				+ " 	   ,(select top 1 cantidad from bonificaciones_analiticas with (nolock)  where folio=facremtick.folio and transaccion in ('36','37','38') and operacion=@operacion ) as cantidad_dinero_electronico"
 				+ " 	   ,case when @operacion='B' then 'Dinero Electronico Acumulado De La Tarjeta '+@tarjeta_pyde+' A Nombre De '+tarjetas_pyde.nombre when @operacion='U' then 'Dinero Electronico Usado De La Tarjeta '+@tarjeta_pyde+' A Nombre De '+tarjetas_pyde.nombre  end as reporte"
 				+ "   from facremtick with (nolock)"
 				+ "    left outer join IZAGAR_Relacion_de_Asignaciones_Liquidadas with (nolock) on IZAGAR_Relacion_de_Asignaciones_Liquidadas.Asignacion=facremtick.folio_cajero"

@@ -4,139 +4,110 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 
 import Cat_Lista_de_Raya.Cat_Filtro_De_Listas_De_Raya_Pasadas;
-import Conexiones_SQL.Connexion;
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
+import Conexiones_SQL.Generacion_Reportes;
+import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
 public class Cat_Reportes_De_Prestamos_De_Lista_De_Raya extends JFrame {
-	JButton btnPrestamos_Limpio = new JButton();
-	JButton btnPrestamos_Por_Establecimiento = new JButton("Impresion de Reporte De Prestamos Por Establecimiento");
-	JButton btnPrestamos_Listaraya_pasadas = new JButton();
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	//declaracion de Bordes
-	Border blackline, etched, raisedbevel, loweredbevel, empty;
-	TitledBorder title4; 
-
-	public Cat_Reportes_De_Prestamos_De_Lista_De_Raya() {
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-en-efectivo-cartera-monedero-icono-7127-32.png"));
-		
-		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
-		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccion Del Reporte de Prestamos de Lista de Raya Actual"));
-		this.setTitle("Reportes de Prestamos");
-		
-		btnPrestamos_Limpio.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<p>Impresion de Reporte de Prestamos Para</p>" +
-				"		<CENTER><p>Exp Por Empleado de Lista de Raya Actual</p></CENTER></FONT>" +
-				"</html>"); 
-		
-		btnPrestamos_Por_Establecimiento.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<p>Impresion de Reporte De Prestamos Por</p>" +
-				"		<CENTER><p>Establecimiento de Lista de Raya Actual</p></CENTER></FONT>" +
-				"</html>"); 
-		
-		btnPrestamos_Listaraya_pasadas.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"		<p>Impresion de Reporte De Prestamos Por</p>" +
-				"		<CENTER><p>Establecimiento de Listas de Raya Pasadas</p></CENTER></FONT>" +
-				"</html>"); 
-		
-		
-		panel.add(btnPrestamos_Limpio).setBounds(40,40,280,40);
-		panel.add(btnPrestamos_Por_Establecimiento).setBounds(40,100,280,40);
-		panel.add(btnPrestamos_Listaraya_pasadas).setBounds(40,160,280,40);
-		
-		
-		btnPrestamos_Limpio.addActionListener(Reporte_Prestamos_Lista_de_Raya_Actual_limpio);
-		btnPrestamos_Por_Establecimiento.addActionListener(Reporte_Prestamos_Lista_de_Raya_Actual_Por_Establecimiento);
-		btnPrestamos_Listaraya_pasadas.addActionListener(Reporte_Prestamos_de_Listas_de_Raya_Pasadas_Por_Establecimiento);
-		cont.add(panel);
-		this.setSize(365,260);
+	String operador[] = {"Selecciona Un Reporte"
+							,"Reporte De Prestamos Por Establecimiento de Lista de Raya Actual"
+							,"Reporte De Prestamos Por Establecimiento de Listas de Raya Pasadas"
+							,"Reporte De Prestamos Para Exportar Por Empleado de Lista de Raya Actual" 
+							,"Reporte De Prestamos Por Establecimiento de Lista de Raya Actual Por Estatus"
+							};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbConcepto = new JComboBox(operador);
+	
+	JCButton btngenerar_reporte = new JCButton("Generar Reporte En Pantalla","hoja-de-calculo-icono-8865-32.png","Azul");
+	
+	JLabel JLBlinicio			= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
+	JLabel JLBfin				= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
+	JLabel JLBestablecimiento	= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
+	JLabel JLBdepartamento		= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
+	
+	public Cat_Reportes_De_Prestamos_De_Lista_De_Raya(){
+		this.setSize(470,150);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setTitle("Reportes De Prestamos");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
+		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione  La Fecha, El Tipo de Reporte, el Establecimiento y Genere El Reporte "));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
+
+		int x=20, y=25, width=100,height=20;
+		x=20;width=420;
+		this.panel.add(cmbConcepto).setBounds                 (x     ,y      ,width   ,height   );
+		this.panel.add(btngenerar_reporte).setBounds          (x+70  ,y+=40   ,300   ,height*2 );
+		this.cont.add(panel);
 		
+		btngenerar_reporte.addActionListener(opGenerar_reporte);
 	}
 	
-	ActionListener Reporte_Prestamos_Lista_de_Raya_Actual_Por_Establecimiento = new ActionListener(){
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public void actionPerformed(ActionEvent e){
-			try {
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Prestamos_De_Lista_De_Raya_Actual.jrxml");
-				
-				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
-				JasperViewer.viewReport(print, false);
-			} catch (Exception e1) {
-				System.out.println(e1.getMessage());
-				JOptionPane.showMessageDialog(null, "Error en Cat_Reporte_De_Prestamos_De_Lista_De_Raya_Actual  en la funcion [ ActionListener Reporte_Prestamos_Lista_de_Raya_Actual_Por_Establecimiento ]   SQLException:  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-
-			}
-		}
-	};
-	
-	
-	ActionListener Reporte_Prestamos_Lista_de_Raya_Actual_limpio = new ActionListener(){
-		@SuppressWarnings("rawtypes")
-		public void actionPerformed(ActionEvent e){
-				try {
-					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Prestamos_De_Lista_De_Raya_Actual_Para_Exportar.jrxml");
-					@SuppressWarnings("unchecked")
-					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new Connexion().conexion());
-					JasperViewer.viewReport(print, false);
-				} catch (Exception e2) {
-					System.out.println(e2.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en Cat_Reporte_De_Prestamos_De_Lista_De_Raya_Actual  en la funcion [ ActionListener Reporte_Depositos_Bancos_limpio ]   SQLException:  "+e2.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-		}
-	};
-	
-	
-	ActionListener Reporte_Prestamos_de_Listas_de_Raya_Pasadas_Por_Establecimiento = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-            new Cat_Filtro_De_Listas_De_Raya_Pasadas(2).setVisible(true);     
-		}
-	};
-	
-	
-	
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public void Impresion_de_Reporte_Prestamos_LRPasadas(int folio) {
+	ActionListener opGenerar_reporte = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+					String basedatos="2.98";
+					String vista_previa_reporte="no";
+					int vista_previa_de_ventana=0;
+					String comando= "";
+					String reporte = "";
 			
-			String query_corte_caja = "exec sp_consulta_de_prestamos_de_listas_de_raya_pasadas '"+folio+"';";
-			Statement stmt = null;
-			try {
-				stmt =  new Connexion().conexion().createStatement();
-			    ResultSet rs = stmt.executeQuery(query_corte_caja);
-				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Prestamos_De_Listas_De_Raya_Pasadas.jrxml");
-				JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-				JasperViewer.viewReport(print, false);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Prestamos en la funcion Impresion_de_Reporte_Prestamos_LRPasadas ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-			}
+			 if(cmbConcepto.getSelectedIndex()==0){
+			       JOptionPane.showMessageDialog(null,"Debe de Seleccionar Un Tipo De Reporte","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+			        cmbConcepto.requestFocus();
+			        cmbConcepto.showPopup();
+				    return;		
+			      }else{ 
+							 String concepto=cmbConcepto.getSelectedItem().toString().trim();
+							 
+								if(concepto.equals("Reporte De Prestamos Para Exportar Por Empleado de Lista de Raya Actual" )){
+										comando="exec sp_Reporte_De_Prestamos_De_Lista_De_Raya_Actual";
+										reporte ="Obj_Reporte_De_Prestamos_De_Lista_De_Raya_Actual_Para_Exportar.jrxml";
+								   }
+								
+								if(concepto.equals("Reporte De Prestamos Por Establecimiento de Lista de Raya Actual")){
+									comando="exec sp_Reporte_De_Prestamos_De_Lista_De_Raya_Actual";
+									reporte ="Obj_Reporte_De_Prestamos_De_Lista_De_Raya_Actual.jrxml";
+							   }
+								
+								if(concepto.equals("Reporte De Prestamos Por Establecimiento de Lista de Raya Actual Por Estatus")){
+									comando="sp_Reporte_De_Prestamos_De_Lista_De_Raya_Actual_Por_Estatus";
+									reporte ="Obj_Reporte_De_Prestamos_De_Lista_De_Raya_Actual_Por_Estatus.jrxml";
+							   }
+								
+								if(concepto.equals("Reporte De Prestamos Por Establecimiento de Listas de Raya Pasadas"	)){
+								    new Cat_Filtro_De_Listas_De_Raya_Pasadas(2).setVisible(true);   
+								    return;
+							   }
+								
+		       }
+			    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			   return;
+		}
+	};
+	
+		public void Impresion_de_Reporte_Prestamos_LRPasadas(int folio) {
+			String basedatos="2.98";
+			String vista_previa_reporte="no";
+			int vista_previa_de_ventana=0;
+			String comando = "exec sp_consulta_de_prestamos_de_listas_de_raya_pasadas '"+folio+"';";
+			String reporte ="Obj_Reporte_De_Prestamos_De_Listas_De_Raya_Pasadas.jrxml";
+		    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		 }
-//	}
 
 	public static void main(String args[]){
 		try{

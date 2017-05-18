@@ -5,10 +5,8 @@ import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;    
-
 import java.util.ArrayList;
 import java.util.Vector;
-
 import javax.swing.*;
 
 import Cat_Compras.Cat_Alimentacion_De_Precios_De_Competencia;
@@ -29,7 +27,7 @@ public class Init_Menu_Bar extends Init_Login{
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.187");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.200");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -38,7 +36,6 @@ public class Init_Menu_Bar extends Init_Login{
 		this.setSize(ancho,alto);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	 }	
-	
 		
 	@SuppressWarnings("rawtypes")
 	public JMenuBar miMenuTop(){
@@ -56,7 +53,7 @@ public class Init_Menu_Bar extends Init_Login{
 			String[] tmpSTR = String.valueOf(SubMenuVector.get(i)).split(",");
 			lsSubMenus.add(new WP_Submenu(tmpSTR[0], tmpSTR[1], tmpSTR[2]));
 		}
-				
+				 
 		for(WP_Menu me: lsMenus)
 			relacion.add(new WP_Relation(me, lsMenus, lsSubMenus));
 		for(WP_Menu tmp : lsMenus){
@@ -227,7 +224,6 @@ public class Init_Menu_Bar extends Init_Login{
 	        		new Obj_Usuario().BuscarUsuario(folio_empleado);
 	    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
 	    	 		fotolb.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(140, 110, Image.SCALE_DEFAULT)));
-	    	 		
 	    	 		
 					if(Integer.valueOf(buscarRegistro_Contrato()[0])>0){
 						if(Integer.valueOf(buscarRegistro_Contrato()[1])>0){

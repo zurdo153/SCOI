@@ -85,8 +85,8 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 		this.setLocationRelativeTo(null);
 		this.setModal(true);
 		 cargar_fechas();
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/detective-icono-5257-64.png"));
-		this.setTitle("Reportes De Personal");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/percepciones_y_deducciones32.png"));
+		this.setTitle("Reportes De Percepciones y Deducciones");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione un Rango De Fechas y De Click al Reporte Deseado"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		this.lbl0.setBorder(BorderFactory.createTitledBorder(blackline,"Reportes En Un Periodo De Fechas"));
