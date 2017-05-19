@@ -5114,7 +5114,7 @@ public boolean Guardar_Alimentacion_De_Inventario_Fisico(Object[][] inv_fis){
 	}
 
 public boolean Guardar_Finiquito(Obj_Finiquitos finiquito, String status_emplead, String observacion){
-	String query = "exec sp_insert_finiquito ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	String query = "exec sp_insert_finiquito ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 	
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
@@ -5189,6 +5189,7 @@ public boolean Guardar_Finiquito(Obj_Finiquitos finiquito, String status_emplead
 		pstmt.setDouble(i+=1,	finiquito.getPretamo());
 		pstmt.setDouble(i+=1,	finiquito.getCortes());
 		pstmt.setDouble(i+=1,	finiquito.getInfonavit());
+		pstmt.setDouble(i+=1,	finiquito.getInfonacot());
 		pstmt.setDouble(i+=1,	finiquito.getFuente_sodas());
 		pstmt.setDouble(i+=1,	finiquito.getOtras_deducciones());
 		

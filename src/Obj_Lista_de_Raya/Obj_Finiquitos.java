@@ -60,6 +60,7 @@ public class Obj_Finiquitos {
 	double pretamo					= 0;
 	double cortes					= 0;
 	double infonavit				= 0;
+	double infonacot				= 0;
 	double fuente_sodas				= 0;
 	double otras_deducciones		= 0;
 	
@@ -406,6 +407,14 @@ public class Obj_Finiquitos {
 
 	public void setInfonavit(double infonavit) {
 		this.infonavit = infonavit;
+	}
+	
+	public double getInfonacot() {
+		return infonacot;
+	}
+
+	public void setInfonacot(double infonacot) {
+		this.infonacot = infonacot;
 	}
 
 	public double getFuente_sodas() {

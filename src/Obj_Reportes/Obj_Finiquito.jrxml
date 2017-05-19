@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-10-18T08:05:01 -->
+<!-- 2017-05-18T11:20:16 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Finiquito" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0da01221-44cd-40ac-a362-fac4dfb62e72">
 	<property name="template.type" value="columnar"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -14,7 +14,7 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
-	<queryString>
+	<queryString language="SQL">
 		<![CDATA[select top 1 finiquitos.folio_empleado_scoi
 			,empleado.nombre+' '+empleado.ap_paterno+' '+empleado.ap_materno as empleado
 			,finiquitos.folio_empleado_bms
@@ -59,6 +59,7 @@
 			,finiquitos.prestamo
 			,finiquitos.cortes
 			,finiquitos.infonavit
+			,finiquitos.infonacot
 			,finiquitos.fuente_de_sodas
 			,finiquitos.otras_deducciones
 			,finiquitos.usuario
@@ -125,6 +126,7 @@ order by finiquitos.fecha_mov desc]]>
 	<field name="nombre_usuario" class="java.lang.String"/>
 	<field name="tipo_de_reporte" class="java.lang.String"/>
 	<field name="imprimio" class="java.lang.String"/>
+	<field name="infonacot" class="java.math.BigDecimal"/>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{folio_empleado_scoi}]]></groupExpression>
 		<groupHeader>
@@ -145,13 +147,13 @@ order by finiquitos.fecha_mov desc]]>
 					</graphicElement>
 				</rectangle>
 				<rectangle radius="4">
-					<reportElement x="30" y="568" width="320" height="20" backcolor="#E0E0E0" uuid="e13ba57a-c365-4822-b268-32b1d7a82fda"/>
+					<reportElement x="30" y="578" width="320" height="20" backcolor="#E0E0E0" uuid="e13ba57a-c365-4822-b268-32b1d7a82fda"/>
 					<graphicElement>
 						<pen lineWidth="0.0"/>
 					</graphicElement>
 				</rectangle>
 				<rectangle radius="4">
-					<reportElement x="30" y="514" width="320" height="20" backcolor="#E0E0E0" uuid="0ae4bd6c-fceb-478b-a286-ccfe7f5671e8"/>
+					<reportElement x="30" y="535" width="320" height="20" backcolor="#E0E0E0" uuid="0ae4bd6c-fceb-478b-a286-ccfe7f5671e8"/>
 					<graphicElement>
 						<pen lineWidth="0.0"/>
 					</graphicElement>
@@ -350,7 +352,7 @@ order by finiquitos.fecha_mov desc]]>
 					<textFieldExpression><![CDATA[$F{fecha_ingreso_bms}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement x="262" y="569" width="80" height="20" uuid="12d7358e-7e1c-46cd-877c-c0aa39cf1390">
+					<reportElement x="262" y="558" width="80" height="20" uuid="12d7358e-7e1c-46cd-877c-c0aa39cf1390">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -380,7 +382,7 @@ order by finiquitos.fecha_mov desc]]>
 					<textFieldExpression><![CDATA[$F{tiempo_extra}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement x="262" y="596" width="80" height="20" uuid="e38fd1ac-c46b-47c6-8a3a-a313c427f8f1">
+					<reportElement x="262" y="600" width="80" height="20" uuid="e38fd1ac-c46b-47c6-8a3a-a313c427f8f1">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -625,7 +627,7 @@ order by finiquitos.fecha_mov desc]]>
 					<textFieldExpression><![CDATA[$F{fecha_ingreso_scoi}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00#">
-					<reportElement x="262" y="541" width="80" height="20" uuid="90e2732d-fa89-4dd5-9999-428051574eef">
+					<reportElement x="262" y="536" width="80" height="20" uuid="90e2732d-fa89-4dd5-9999-428051574eef">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -792,21 +794,21 @@ order by finiquitos.fecha_mov desc]]>
 					<text><![CDATA[PRESTAMO:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="40" y="541" width="218" height="19" uuid="85094f2d-6ee8-4abc-9ff0-c81df0b54461"/>
+					<reportElement x="40" y="536" width="218" height="19" uuid="85094f2d-6ee8-4abc-9ff0-c81df0b54461"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[CORTES:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="40" y="570" width="218" height="19" uuid="48791ea2-0c2e-424c-ada0-f202738bd3ff"/>
+					<reportElement x="40" y="559" width="218" height="19" uuid="48791ea2-0c2e-424c-ada0-f202738bd3ff"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[INFONAVIT:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="40" y="597" width="218" height="19" uuid="6b3569c1-6d66-4e03-a0f3-9fa8b0c5021b"/>
+					<reportElement x="40" y="601" width="218" height="19" uuid="6b3569c1-6d66-4e03-a0f3-9fa8b0c5021b"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
@@ -836,6 +838,23 @@ order by finiquitos.fecha_mov desc]]>
 					</textElement>
 					<text><![CDATA[DEDUCCIONES]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="40" y="578" width="218" height="19" uuid="6743580e-4d01-4be2-9fc4-718faf086be1"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[INFONACOT:]]></text>
+				</staticText>
+				<textField pattern="#,##0.00#">
+					<reportElement x="262" y="578" width="80" height="20" uuid="5f46eef5-ac8f-4181-86e5-c152fad4b692">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{infonacot}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
