@@ -8431,6 +8431,7 @@ public class BuscarSQL {
 							   finiquito.setPretamo(rs.getDouble("prestamo"));
 							   finiquito.setCortes(rs.getDouble("cortes"));
 							   finiquito.setInfonavit(rs.getDouble("infonavit"));
+							   finiquito.setInfonacot(0/*rs.getDouble("infonacot")*/);
 							   finiquito.setFuente_sodas(rs.getDouble("fuente_de_sodas"));
 								   
 						   }

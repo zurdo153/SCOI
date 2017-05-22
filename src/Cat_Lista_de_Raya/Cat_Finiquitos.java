@@ -375,6 +375,7 @@ public class Cat_Finiquitos extends JFrame{
 		JTextField   txtPrestamoBnns					= new Componentes().text(new JTextField(), "Prestamo",  15, "Double");
 		JTextField   txtCortesBnns						= new Componentes().text(new JTextField(), "Cortes",  15, "Double");
 		JTextField   txtInfonavitBnns					= new Componentes().text(new JTextField(), "Infonavit",  15, "Double");
+		JTextField   txtInfonacotBnns					= new Componentes().text(new JTextField(), "Infonacot",  15, "Double");
 		JTextField   txtFuenteSodasBnns					= new Componentes().text(new JTextField(), "Fuente De Sodas",  15, "Double");
 		JTextField   txtOtrasDeduccionesBnns			= new Componentes().text(new JTextField(), "Otras Deducciones",  15, "Double");
 		             
@@ -489,11 +490,12 @@ public class Cat_Finiquitos extends JFrame{
 			panel_quitados.add(new JLabel("Prestamo:")			   				).setBounds(x, y+=25, ancho, 20);   panel_quitados.add(txtPrestamoBnns					   	).setBounds(x2, y, ancho2, 20);   panel_quitados.add(new JLabel("Status:")				).setBounds(x3, y, 50, 20);		 panel_quitados.add(cmbStatus				).setBounds(x3+50, y, 200, 20);
 			panel_quitados.add(new JLabel("Cortes:")							).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtCortesBnns						).setBounds(x2, y, ancho2, 20);   panel_quitados.add(new JLabel("Observacion:")			).setBounds(x3, y, 80, 20);
 			panel_quitados.add(new JLabel("Infonavit:")			   				).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtInfonavitBnns					   	).setBounds(x2, y, ancho2, 20);   panel_quitados.add(Observasiones						).setBounds(x3, y, 250,85);
+			panel_quitados.add(new JLabel("Infonacot:")			   				).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtInfonacotBnns					   	).setBounds(x2, y, ancho2, 20);   
 			panel_quitados.add(new JLabel("Fuente De Sodas:")					).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtFuenteSodasBnns					).setBounds(x2, y, ancho2, 20);    
 			panel_quitados.add(new JLabel("Otras Deducciones:")	   				).setBounds(x, y+=20, ancho, 20);   panel_quitados.add(txtOtrasDeduccionesBnns			   	).setBounds(x2, y, ancho2, 20);      
                                                                                                                                                                                                             
 			panel_quitados.add(new JLabel("Total A Pagar:")						).setBounds(x, y+=25, ancho, 20);   panel_quitados.add(txtTotalAPagarBnns					).setBounds(x2, y, ancho2, 20);   
-			/*panel_quitados.add(btnReporte								   ).setBounds(x, y+=25, ancho2*2+10, 45);*/panel_quitados.add(btnGuardar							).setBounds(x3, y+=25, ancho2*2+10, 45);
+			/*panel_quitados.add(btnReporte								   ).setBounds(x, y+=25, ancho2*2+10, 45);*/panel_quitados.add(btnGuardar							).setBounds(x3, y+5, ancho2*2+10, 45);
 			
 			
 			cont_quitados.add(panel_quitados);
@@ -524,7 +526,8 @@ public class Cat_Finiquitos extends JFrame{
 
 			txtPrestamoBnns						.setEditable(false);                                       
 			txtCortesBnns						.setEditable(false);                                       
-			txtInfonavitBnns					.setEditable(false);                                       
+			txtInfonavitBnns					.setEditable(false);  
+			txtInfonacotBnns					.setEditable(false);
 			txtFuenteSodasBnns					.setEditable(false);                                       
 //			txtOtrasDeduccionesBnns				.setEditable(false);                                       
 
@@ -658,6 +661,7 @@ public class Cat_Finiquitos extends JFrame{
 			finiquito.setPretamo(Double.valueOf(txtPrestamoBnns.getText().trim()));
 			finiquito.setCortes(Double.valueOf(txtCortesBnns.getText().trim()));
 			finiquito.setInfonavit(Double.valueOf(txtInfonavitBnns.getText().trim()));
+			finiquito.setInfonacot(Double.valueOf(txtInfonacotBnns.getText().trim()));
 			finiquito.setFuente_sodas(Double.valueOf(txtFuenteSodasBnns.getText().trim()));
 			finiquito.setOtras_deducciones(Double.valueOf(txtOtrasDeduccionesBnns.getText().trim().equals("")?"0":txtOtrasDeduccionesBnns.getText().trim()));
 			
@@ -932,6 +936,7 @@ public class Cat_Finiquitos extends JFrame{
 			   txtPrestamoBnns.setText(finiquito.getPretamo()+"");
 			   txtCortesBnns.setText(finiquito.getCortes()+"");
 			   txtInfonavitBnns.setText(finiquito.getInfonavit()+"");
+			   txtInfonacotBnns.setText(finiquito.getInfonacot()+"");
 			   txtFuenteSodasBnns.setText(finiquito.getFuente_sodas()+"");
 			   
 			   diferencias();
@@ -1038,6 +1043,7 @@ public class Cat_Finiquitos extends JFrame{
 													 -Double.valueOf(txtPrestamoBnns.getText().toString().trim()) 
 													 -Double.valueOf(txtCortesBnns.getText().toString().trim()) 
 													 -Double.valueOf(txtInfonavitBnns.getText().toString().trim()) 
+													 -Double.valueOf(txtInfonacotBnns.getText().toString().trim()) 
 													 -Double.valueOf(txtFuenteSodasBnns.getText().toString().trim()) 
 													 -Double.valueOf(txtOtrasDeduccionesBnns.getText().toString().trim().equals("")?"0":txtOtrasDeduccionesBnns.getText().toString().trim()) 
 												) 
