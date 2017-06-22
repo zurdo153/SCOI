@@ -43,7 +43,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
 	
-	String detalle[] = { "Colonia","Edad","Poblacion","Sexo","Tarjeta"};
+	String detalle[] = { "Colonia","Edad","Poblacion","Sexo","Tarjeta","General"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbDetalle = new JComboBox(detalle);
 	
@@ -189,12 +189,21 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 	
 	ActionListener opSeleccion_detalle_combo = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			txtTexto.setText("");
 		  if(cmbDetalle.getSelectedItem().toString().trim().equals("Sexo")){
-			  JLtexto.setText("Teclee El "+cmbDetalle.getSelectedItem().toString().trim()+":");  
+			  JLtexto.setText("Teclee El "+cmbDetalle.getSelectedItem().toString().trim()+":"); 
+			  txtTexto.setEditable(true);		
+			  txtTexto.requestFocus();
 		  }else{
-			  JLtexto.setText("Teclee La "+cmbDetalle.getSelectedItem().toString().trim()+":"); 
-		  }
-		  txtTexto.requestFocus();
+			  if(cmbDetalle.getSelectedItem().toString().trim().equals("General")){
+				  JLtexto.setText("");
+				  txtTexto.setEditable(false);				  
+			  }else{			  
+				  JLtexto.setText("Teclee La "+cmbDetalle.getSelectedItem().toString().trim()+":"); 
+				  txtTexto.setEditable(true);	
+				  txtTexto.requestFocus();
+			  }
+		  }		
 		}
 	};
 	
@@ -240,7 +249,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 			 
 			 
 			 if(concepto.equals("Reporte A Detalle Del Monedero Electronico")){
-				  if(!txtTexto.getText().toString().trim().equals("")){
+				 if(!txtTexto.getText().toString().trim().equals("") || cmbDetalle.getSelectedIndex()>4 ){
 						  if(validar_fechas().equals("")){
 									  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 									  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";

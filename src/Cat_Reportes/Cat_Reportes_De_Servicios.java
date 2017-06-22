@@ -36,6 +36,8 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 	
 	String operador[] = {"Selecciona Un Reporte"
 							,"Reporte De Servicios Atendidos Por Establecimiento Totales"
+							,"Reporte De Servicios Terminados A Detalle"
+							,"Reporte De Servicios Pendientes y En Proceso A Detalle"
 	};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
@@ -99,8 +101,10 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 		String error = "";
 		String fechainicioNull = c_inicio.getDate()+"";
 		String fechafinalNull = c_final.getDate()+"";
+		String departamento =cmbDepartamento.getSelectedItem().toString();
 	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";
 		if(fechafinalNull.equals("null"))error+= "Fecha Final\n";
+		if(departamento.equals("Selecciona un Departamento"))error+= "Departamento\n";
 		return error;
 	}
 	
@@ -130,6 +134,18 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 										comando="exec sp_Reporte_De_Servicios_Atendidos_Por_Establecimientos_En_Un_Periodo '"+fecha_inicio+"','"+fecha_final+"','"+cmbDepartamento.getSelectedItem().toString()+"'";
 										reporte ="Obj_Reporte_De_Servicios_Atendidos_Por_Establecimientos_En_Un_Periodo.jrxml";
 								   }
+								
+								if(concepto.equals("Reporte De Servicios Terminados A Detalle")){
+									comando="exec sp_Reporte_De_Servicios_a_Detalle_Por_Departamento '"+fecha_inicio+"','"+fecha_final+"','"+cmbDepartamento.getSelectedItem().toString()+"','TERMINADO'";
+									reporte ="Obj_Reporte_De_Servicios_A_Detalle.jrxml";
+							    }
+								
+								if(concepto.equals("Reporte De Servicios Pendientes y En Proceso A Detalle")){
+									comando="exec sp_Reporte_De_Servicios_a_Detalle_Por_Departamento '"+fecha_inicio+"','"+fecha_final+"','"+cmbDepartamento.getSelectedItem().toString()+"','SOLICITADO Y EN PROCESO'";
+									reporte ="Obj_Reporte_De_Servicios_A_Detalle.jrxml";
+							   }
+								
+								
 							  }else{
 						        JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							     return;

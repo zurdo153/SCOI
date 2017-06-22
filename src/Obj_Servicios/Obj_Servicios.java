@@ -12,6 +12,7 @@ public class Obj_Servicios {
 	int folio_equipo=0;
 	int cantidad_de_correos=0;
 	int usuario_realizo_servicio=0;
+    int colaborador_asignado=0; 
 	float costo=0;
 	
 	String prioridad="";
@@ -29,6 +30,14 @@ public class Obj_Servicios {
 	String adjunto="";
 	String evaluacion="";
 	String comentario_evaluacion="";
+
+	public int getColaborador_asignado() {
+		return colaborador_asignado;
+	}
+
+	public void setColaborador_asignado(int colaborador_asignado) {
+		this.colaborador_asignado = colaborador_asignado;
+	}
 
 	public int getFolio_equipo() {
 		return folio_equipo;
@@ -208,6 +217,9 @@ public class Obj_Servicios {
 
 	public boolean GuardarActualizar(){ 
 	return new GuardarSQL().Guardar_servicios(this); }
+	
+	public boolean GuardarAsignacion(){ 
+	return new GuardarSQL().Guardar_Asignacion(this); }
 	
 	public int buscar_nuevo(){
 		try {return new BuscarSQL().serviciocatalogo();

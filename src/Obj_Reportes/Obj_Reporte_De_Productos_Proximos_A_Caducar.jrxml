@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-06-21T17:54:47 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Productos_Proximos_A_Caducar.jrxml" language="groovy" pageWidth="1100" pageHeight="500" columnWidth="1100" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[exec  Sp_Reporte_De_Captura_De_Productos_Proximos_A_Caducar 3]]>
+	</queryString>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="folio_proximos_caducar" class="java.lang.Integer"/>
+	<field name="cod_estab" class="java.lang.Integer"/>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="ultimo_costo" class="java.math.BigDecimal"/>
+	<field name="costo_promedio" class="java.math.BigDecimal"/>
+	<field name="precio_de_lista" class="java.math.BigDecimal"/>
+	<field name="fecha_caducidad" class="java.lang.String"/>
+	<field name="usuario_capturo" class="java.lang.String"/>
+	<field name="estatus" class="java.lang.String"/>
+	<field name="notas" class="java.lang.String"/>
+	<field name="precio_remate" class="java.math.BigDecimal"/>
+	<field name="clasificacion" class="java.lang.String"/>
+	<field name="usuario_remato" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<pageHeader>
+		<band height="49" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="943" height="20" uuid="8edb66d8-5633-4865-aa34-1820fba6b99d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["Reporte De Productos Proximos a Caducar Del Establecimiento: "+$F{establecimiento}+" Del Dia "+$F{fecha}+ " Folio: "+$F{folio_proximos_caducar}+" Capturo: "+$F{usuario_capturo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="36" width="50" height="13" uuid="296613f0-e349-40ea-8961-ecdab493bd95">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="36" width="350" height="13" uuid="2ad37360-d92c-4eed-8084-f652391cee4a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Detalle Del Servicio Solicitado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="36" width="40" height="13" uuid="c358ab75-2467-4477-94f8-38e3821639dd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="665" y="36" width="185" height="13" uuid="eaca3adc-1edb-4f2e-9626-4bf9ea643174">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Clasificacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="585" y="36" width="40" height="13" uuid="c13826ad-6950-467b-b690-57534dd18873">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[P. Lista]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="850" y="36" width="93" height="13" uuid="22c49c1c-ef5b-427f-bcb1-03842ac37f21"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Estatus]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="505" y="36" width="40" height="13" uuid="1c2aeb85-b340-4c86-9234-6ac6ebc9502d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Ult. Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="545" y="36" width="40" height="13" uuid="315f1cee-fc70-4bd9-b9f4-23b9b6a8ac4c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Costo Pm.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="625" y="36" width="40" height="13" uuid="54177ec1-5dcd-41e0-bad1-4b9c5af8504a">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[P. Remate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="36" width="65" height="13" uuid="88399a08-22b3-4636-80cd-96de68e806b1">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha Caducidad]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="20" width="943" height="16" uuid="ae94168b-de16-4c58-b29c-3c612a0da95d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["Notas: "+$F{notas}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="50" height="13" uuid="5ddef106-2ff8-476d-a270-aeddceb10289">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="350" height="13" uuid="42c212b8-b535-4b2a-9a6c-9b75ac5267ae"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="400" y="0" width="40" height="13" uuid="6bd574af-7c11-4b48-a861-738c079a93a6">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="505" y="0" width="40" height="13" uuid="5ff6a89f-4ae7-49d6-a6f0-f388a668f27f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ultimo_costo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="545" y="0" width="40" height="13" uuid="f1d83742-da7f-468d-a50f-9de36e498bbf">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{costo_promedio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="585" y="0" width="40" height="13" uuid="cb0e8452-8fbb-4381-91b4-da17cdecb7c6">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{precio_de_lista}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="625" y="0" width="40" height="13" uuid="77c7c8b0-4b7c-4d43-9891-8089689b5a3f">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{precio_remate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="65" height="13" uuid="a86545c8-dad5-4e5e-bb8a-235d8cc7c9e2"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fecha_caducidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="665" y="0" width="185" height="13" uuid="a77482a1-9b2c-4ef6-baec-86f139d89fdd"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{clasificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="850" y="0" width="93" height="13" uuid="6aeb48fc-4b02-45d1-8967-d322871b72c4"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{estatus}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

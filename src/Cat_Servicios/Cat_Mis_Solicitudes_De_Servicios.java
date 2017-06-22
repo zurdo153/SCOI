@@ -10,6 +10,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -115,6 +119,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	
 	JLabel lblUsuario          = new JLabel("");
 	JLabel lblDepartamento     = new JLabel("");
+	JLabel lblCalificacion     = new JLabel("10");
 	JTextArea txaDetalle       = new Componentes().textArea(new JTextArea(), "", 500);
 	JTextArea txaNotas         = new Componentes().textArea(new JTextArea(), "", 500);
 	JTextArea txaComentario    = new Componentes().textArea(new JTextArea(), "", 500);
@@ -215,7 +220,8 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		this.panel.add(txtAtendio).setBounds                 (x+=50   ,y      ,width+200,height   ); 
 		this.panel.add(new JLabel("Evaluacion:")).setBounds  (x+=330  ,y      ,width    ,height   );  
 		this.panel.add(cmbEvaluacionServicio).setBounds      (x+=75   ,y      ,width+28 ,height   );
-		this.panel.add(btnNuevaSolicitud).setBounds          (x+=235  ,y      ,width+50 ,height   );
+		this.panel.add(lblCalificacion).setBounds            (x+=140  ,y      ,width*2  ,height   );
+		this.panel.add(btnNuevaSolicitud).setBounds          (x+=200  ,y      ,width+50 ,height   );
 
 		
 		x=15;	
@@ -232,9 +238,11 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		agregar(tabla);
 		panelEnabledFalse();
 		
+		lblCalificacion.setText("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=GREEN><CENTER><b><p>Calificacion:10</p></b></CENTER></FONT></html>");
 		btnDescAdjunto.addActionListener(opDescargarArchivoSolicitud);
 		btnGuardar.addActionListener(guardar);
 		cmbEstatusFiltrado.addActionListener(actualizartabla);
+		cmbEvaluacionServicio.addActionListener(calificacion);
 		btnNuevaSolicitud.addActionListener(nuevasolicidtud);
 		txtFiltro.addKeyListener(opFiltroNombre);
 		
@@ -291,8 +299,17 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	                    	
 	                         	if(!tabla.getValueAt(fila,10).toString().equals("")){	
 	                         		//validacion fecha
-			                    	String fecha_atendio = (tabla.getValueAt(fila,10).toString()).substring(0,10);
-			                    	if(txtFcActual.getText().toString().trim().equals(fecha_atendio)){
+			                    	Date fechaterminado_masuno=null;
+			                    	Date fechaactual=null;
+			                    	try {
+			                    		Date fechaterminado = new SimpleDateFormat("dd/MM/yyyy").parse( tabla.getValueAt(fila,10)+"");
+			                    		fechaactual = new SimpleDateFormat("dd/MM/yyyy").parse(txtFcActual.getText().toString().trim());
+			                    		fechaterminado_masuno=sumarRestarDiasFecha(fechaterminado,2);
+									} catch (ParseException e1) {
+										e1.printStackTrace();
+									}
+			                    	
+			                    	if(fechaactual.before(fechaterminado_masuno) ){
 				                    	//validacion si es el usuario creador para que clasifique la evaluacion
 					                    if(tabla.getValueAt(fila,6).toString().equals(lblUsuario.getText())){
 					                    	cmbEvaluacionServicio.setEnabled(true);
@@ -321,6 +338,38 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	        }
         });
     }
+	
+	public Date sumarRestarDiasFecha(Date fecha, int dias){
+		      Calendar calendar = Calendar.getInstance();
+		      calendar.setTime(fecha); 
+		      calendar.add(Calendar.DAY_OF_YEAR, dias);
+		      return calendar.getTime(); 
+		 }
+	
+	ActionListener calificacion = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			
+			 if(cmbEvaluacionServicio.getSelectedItem().toString().equals("EXCELENTE")||cmbEvaluacionServicio.getSelectedItem().toString().equals("EXCELENTE")){
+				 lblCalificacion.setText("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=GREEN><CENTER><b><p>Calificacion:10</p></b></CENTER></FONT></html>"); 
+			 }
+			 if(cmbEvaluacionServicio.getSelectedItem().toString().equals("BIEN")){
+				 lblCalificacion.setText("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=BLUE><CENTER><b><p>Calificacion:8</p></b></CENTER></FONT></html>"); 
+			 }
+			 
+			 if(cmbEvaluacionServicio.getSelectedItem().toString().equals("REGULAR")){
+				 lblCalificacion.setText("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=ORANGE><CENTER><b><p>Calificacion:6</p></b></CENTER></FONT></html>"); 
+			 }
+			 
+			 if(cmbEvaluacionServicio.getSelectedItem().toString().equals("DEFICIENTE")){
+				 lblCalificacion.setText("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=RED><CENTER><b><p>Calificacion:4</p></b></CENTER></FONT></html>"); 
+			 }
+			 
+			 if(cmbEvaluacionServicio.getSelectedItem().toString().equals("PESIMO")){
+				 lblCalificacion.setText("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=RED><CENTER><b><p>Calificacion:2</p></b></CENTER></FONT></html>"); 
+			 }
+			 
+		}
+	};
 	
 	ActionListener nuevasolicidtud = new ActionListener(){
 		public void actionPerformed(ActionEvent e){

@@ -38,9 +38,12 @@ public class Cat_Reportes_De_80_20 extends JFrame {
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	String operador[] = {"Selecciona Un Reporte"
-							,"Reporte De Agotados Por Establecimiento En Una Fecha" 
-							,"Reporte De Agotados Promedios Por Establecimiento De Una Semana"
-							,"Reporte 80/20 Por Establecimiento General"							
+			                ,"80/20 De Agotados Por Establecimiento En Una Fecha Por Clase De Producto" 
+			                ,"80/20 De Agotados Por Establecimiento En Una Fecha Por Categoria De Producto" 
+			                ,"80/20 De Agotados Por Establecimiento En Una Fecha Por Familia De Producto" 
+							,"80/20 De Agotados Por Establecimiento En Una Fecha Por Meta De Venta" 
+							,"80/20 De Agotados Promedios Por Establecimiento De Una Semana"
+							,"80/20 Por Establecimiento De Toda La Venta"							
 							};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
@@ -53,23 +56,21 @@ public class Cat_Reportes_De_80_20 extends JFrame {
 	JLabel JLBdepartamento		= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
 	
 	public Cat_Reportes_De_80_20(){
-		this.setSize(430,250);
+		this.setSize(445,200);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setTitle("Reportes De Agotados");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
+		this.setTitle("Reportes 80/20 De Agotados");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/80-20 32px.png"));
 		this.panel.setBorder(BorderFactory.createTitledBorder("Seleccione  La Fecha, El Tipo de Reporte, el Establecimiento y Genere El Reporte "));
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
 
 		int x=20, y=25, width=100,height=20;
-		x=20;width=380;
-		this.panel.add(cmbConcepto).setBounds                 (x     ,y      ,width   ,height   );
-		width=100;
+		x=20;width=100;
+		this.panel.add(cmbConcepto).setBounds                 (x     ,y      ,width*4   ,height   );
 		this.panel.add(new JLabel("Fecha:")).setBounds        (x     ,y+=35  ,width   ,height    );
 		this.panel.add(JLBlinicio).setBounds                  (x+=55 ,y      ,height  ,height    );
 		this.panel.add(c_inicio).setBounds                    (x+=20 ,y      ,width   ,height    );
-		this.panel.add(cmbEstablecimiento).setBounds          (x+=120,y      ,width+88,height    );
+		this.panel.add(cmbEstablecimiento).setBounds          (x+=136,y      ,width+88,height    );
 
 		x=70;width=300;
 		this.panel.add(btngenerar_reporte).setBounds          (x    ,y+=50   ,width   ,height*2 );
@@ -116,32 +117,36 @@ public class Cat_Reportes_De_80_20 extends JFrame {
 						if(validar_campos().equals("")){
 							 String concepto=cmbConcepto.getSelectedItem().toString().trim();
 							 String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
-							 
-//							  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
-//							  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
-//							  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
-//							  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
-//							  if(fecha1.before(fecha2)){
-//							 
-//						      }else{
-//						        JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//							     return;
-//							  }
-								  
-								if(concepto.equals("Reporte De Agotados Por Establecimiento En Una Fecha")){
+								
+								if(concepto.equals("80/20 De Agotados Por Establecimiento En Una Fecha Por Clase De Producto" )){
+									comando="exec reporte_de_agotados_y_proximos_agotar_por_clasificador_por_establecimiento '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio.substring(0, 10)+"','clase'";
+									reporte ="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Clase_de_Producto_y_Establecimiento.jrxml";
+							    }
+								
+								if(concepto.equals("80/20 De Agotados Por Establecimiento En Una Fecha Por Categoria De Producto")){
+									comando="exec reporte_de_agotados_y_proximos_agotar_por_clasificador_por_establecimiento '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio.substring(0, 10)+"','categoria'";
+									reporte ="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Clase_de_Producto_y_Establecimiento.jrxml";
+							    }
+								
+								if(concepto.equals("80/20 De Agotados Por Establecimiento En Una Fecha Por Familia De Producto" )){
+									comando="exec reporte_de_agotados_y_proximos_agotar_por_clasificador_por_establecimiento '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio.substring(0, 10)+"','familia'";
+									reporte ="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Clase_de_Producto_y_Establecimiento.jrxml";
+							    }
+								
+								if(concepto.equals("80/20 De Agotados Por Establecimiento En Una Fecha Por Meta De Venta")){
 										comando="reporte_de_agotados_y_proximos_agotar_por_clasificacion_meta_por_establecimiento '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio.substring(0, 10)+"'";
 										reporte ="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Meta_y_Establecimiento.jrxml";
-								   }
+								}
 								
-								if(concepto.equals("Reporte 80/20 Por Establecimiento General")){
+								if(concepto.equals("80/20 Por Establecimiento De Toda La Venta")){
 									comando="exec reporte_80_20_venta_con_impuesto_por_establecimiento_scoi '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio.substring(0, 10)+"'";
 									reporte ="Obj_Reporte_De_Venta_80_20_Por_Establecimiento.jrxml";
-							   }
-								if(concepto.equals("Reporte De Agotados Promedios Por Establecimiento De Una Semana")){
+							    }
+								
+								if(concepto.equals("80/20 De Agotados Promedios Por Establecimiento De Una Semana")){
 									comando="exec reporte_de_agotados_porcentaje_de_la_semana_del_anio_por_establecimiento '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio.substring(0, 10)+"'";
 									reporte ="Obj_Reporte_De_Agotados_y_Proximos_Agotar_Por_Meta_y_Establecimiento_Promedios.jrxml";
-							   }
-							
+							     }
 						}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_campos(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			               return;

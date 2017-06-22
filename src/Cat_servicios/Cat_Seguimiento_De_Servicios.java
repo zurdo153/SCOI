@@ -57,18 +57,18 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	JTextField txtFiltro = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
 	Connexion con = new Connexion();
 	Obj_tabla ObjTab =new Obj_tabla();
-	int columnas = 20,checkbox=-1;
+	int columnas = 22,checkbox=-1;
 	public void init_tabla(String status_pedidos){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(45);
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(45);
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(400);
     	this.tabla.getColumnModel().getColumn(2).setMinWidth(80);
-    	this.tabla.getColumnModel().getColumn(3).setMinWidth(100);
-    	this.tabla.getColumnModel().getColumn(4).setMinWidth(150);
-    	this.tabla.getColumnModel().getColumn(5).setMinWidth(160);
-    	this.tabla.getColumnModel().getColumn(6).setMinWidth(250);
-    	this.tabla.getColumnModel().getColumn(7).setMinWidth(200);
-    	this.tabla.getColumnModel().getColumn(8).setMinWidth(120);
+    	this.tabla.getColumnModel().getColumn(3).setMinWidth(80);
+    	this.tabla.getColumnModel().getColumn(4).setMinWidth(120);
+    	this.tabla.getColumnModel().getColumn(5).setMinWidth(150);
+    	this.tabla.getColumnModel().getColumn(6).setMinWidth(240);
+    	this.tabla.getColumnModel().getColumn(7).setMinWidth(90);
+    	this.tabla.getColumnModel().getColumn(8).setMinWidth(300);
     	this.tabla.getColumnModel().getColumn(9).setMinWidth(80);
     	this.tabla.getColumnModel().getColumn(10).setMinWidth(120);
     	
@@ -82,8 +82,10 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
     	this.tabla.getColumnModel().getColumn(18).setMinWidth(60);
     	this.tabla.getColumnModel().getColumn(18).setMaxWidth(60);
     	this.tabla.getColumnModel().getColumn(19).setMinWidth(300);
+    	this.tabla.getColumnModel().getColumn(20).setMinWidth(60);
+    	this.tabla.getColumnModel().getColumn(21).setMinWidth(300);
     	
-		String comando="exec sp_select_seguimiento_a_servicios_pendientes '"+Departamento+"','"+status_pedidos+"'";
+		String comando="exec sp_select_seguimiento_a_servicios_pendientes_2 '"+Departamento+"','"+status_pedidos+"',"+usuario.getFolio();
 		
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
@@ -96,7 +98,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		return types;
 	}
 	
-	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Detalle","Estatus","Prioridad","Departamento Solicito","Establecimiento Solicito","Usuario Solicito","Servicio Solicitado","Fecha Solicitud","Archivo","Fecha Atendio","Folio Atendio","Usuario Atendio","Notas ","Costo ","Evaluacion","Archivo Respuesta","Comentario Evaluacion","Folio Equipo","Descripcion Equipo"}){
+	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Detalle","Estatus","Prioridad","Fecha Solicitud","Establecimiento Solicito","Usuario Solicito","Departamento","Servicio Solicitado","Archivo","Fecha Atendio","Folio Atendio","Usuario Atendio","Notas ","Costo ","Evaluacion","Archivo Respuesta","Comentario Evaluacion","Folio Equipo","Descripcion Equipo","Folio Colaborador A.","Colaborador Asignado"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = base();
 			@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -108,41 +110,44 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	     @SuppressWarnings("rawtypes")
 	    private TableRowSorter trsfiltro;
 	     
-	JTextField txtFolio        = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
-	JTextField txtCosto        = new Componentes().text(new JCTextField(), "Costo", 9, "Double");
-	JTextField txtServicio     = new Componentes().text(new JCTextField(), "Descripción Del Servicio", 150, "String");
-	JTextField txtUsuario      = new Componentes().text(new JCTextField(), "Usuario Solicito", 300, "String");
-	JTextField txtFAtendio     = new Componentes().text(new JCTextField(), "", 10, "Int");
-	JTextField txtAtendio      = new Componentes().text(new JCTextField(), "Usuario Atendio", 300, "String");
-	JTextField txtFcSolicito   = new Componentes().text(new JCTextField(), "Fecha Solicito", 30, "String");
-	JTextField txtFcAtendio    = new Componentes().text(new JCTextField(), "Fecha Atendio" , 30, "String");
-	JTextField txtFcActual     = new Componentes().text(new JCTextField(), "Fecha Actual"  , 30, "String");
+	JTextField txtFolio         = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
+	JTextField txtCosto         = new Componentes().text(new JCTextField(), "Costo", 9, "Double");
+	JTextField txtServicio      = new Componentes().text(new JCTextField(), "Descripción Del Servicio", 150, "String");
+	JTextField txtUsuario       = new Componentes().text(new JCTextField(), "Usuario Solicito", 300, "String");
+	JTextField txtFAtendio      = new Componentes().text(new JCTextField(), "", 10, "Int");
+	JTextField txtAtendio       = new Componentes().text(new JCTextField(), "Usuario Atendio", 300, "String");
+	JTextField txtFcSolicito    = new Componentes().text(new JCTextField(), "Fecha Solicito", 30, "String");
+	JTextField txtFcAtendio     = new Componentes().text(new JCTextField(), "Fecha Atendio" , 30, "String");
+	JTextField txtFcActual      = new Componentes().text(new JCTextField(), "Fecha Actual"  , 30, "String");
+	JTextField txtFolioequipo   = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
+	JTextField txtEquipo        = new Componentes().text(new JCTextField(), "Equipo Del Servicio", 150, "String");
+	JTextField txtFolioasignado = new Componentes().text(new JCTextField(), "Folio Asignado", 9, "Int");
+	JTextField txtAsignado      = new Componentes().text(new JCTextField(), "Colaborador Asignado", 150, "String");
 	
-	JTextField txtFolioequipo  = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
-	JTextField txtEquipo       = new Componentes().text(new JCTextField(), "Equipo Del Servicio", 150, "String");
+	JCButton btnActualizar      = new JCButton("Actualizar"           ,"Actualizar.png","Azul");
+	JCButton btnFiltro          = new JCButton(""              ,"Filter-List-icon16.png","Azul");
+	JCButton btnDeshacer        = new JCButton("Deshacer"      ,"deshacer16.png"   ,"Azul");
+	JCButton btnGuardar         = new JCButton("Guardar"       ,"Guardar.png"      ,"Azul");
+	JCButton btnDescAdjunto     = new JCButton("No Contiene Archivos Adjuntos","arrow-descarga-unidad-de-disco-duro-hdd-icono-9640-16.png","AzulC");
+	JCButton btnAdjuntar        = new JCButton("Adjuntar Archivo Evidencia Servicio","adjuntar-icono-7764-16.png","AzulC");
+	JCButton btnAtendio         = new JCButton("Atendio"              ,"key-group-icone-5159-16.png","AzulC");
+	JCButton btnEquipo          = new JCButton("Equipo"               ,"los-parametros-de-las-herramientas-de-icono-8319-16.png","AzulC");
+	JCButton btnAsignado        = new JCButton("Asignacion"           ,"verde-de-usuario-icono-7340-16.png","AzulC");
 	
-	JCButton btnFiltro         = new JCButton(""              ,"Filter-List-icon16.png","Azul");
-	JCButton btnDeshacer       = new JCButton("Deshacer"      ,"deshacer16.png"   ,"Azul");
-	JCButton btnGuardar        = new JCButton("Guardar"       ,"Guardar.png"      ,"Azul");
-	JCButton btnDescAdjunto    = new JCButton("No Contiene Archivos Adjuntos","arrow-descarga-unidad-de-disco-duro-hdd-icono-9640-16.png","AzulC");
-	JCButton btnAdjuntar       = new JCButton("Adjuntar Archivo Evidencia Servicio","adjuntar-icono-7764-16.png","AzulC");
-	JCButton btnAtendio        = new JCButton("Atendio"            ,"key-group-icone-5159-16.png","AzulC");
-	JCButton btnEquipo         = new JCButton("Equipo"             ,"los-parametros-de-las-herramientas-de-icono-8319-16.png","AzulC");
+	JLabel lblUsuario           = new JLabel("");
+	JLabel lblDepartamento      = new JLabel("");
+	JTextArea txaDetalle        = new Componentes().textArea(new JTextArea(), "", 500);
+	JTextArea txaNotas          = new Componentes().textArea(new JTextArea(), "", 500);
+	JScrollPane scrollDetalle   = new JScrollPane(txaDetalle);
+	JScrollPane scrollNotas     = new JScrollPane(txaNotas);
 	
-	
-	JLabel lblUsuario          = new JLabel("");
-	JLabel lblDepartamento     = new JLabel("");
-	JTextArea txaDetalle       = new Componentes().textArea(new JTextArea(), "", 500);
-	JTextArea txaNotas         = new Componentes().textArea(new JTextArea(), "", 500);
-	JScrollPane scrollDetalle  = new JScrollPane(txaDetalle);
-	JScrollPane scrollNotas    = new JScrollPane(txaNotas);
-	
-	String[] status = {"SOLICITADO Y EN PROCESO","SOLICITADO","EN PROCESO","TERMINADO","CANCELADO","NEGADO"};
+	String[] status = {"SOLICITADO Y EN PROCESO","SOLICITADO","EN PROCESO","TERMINADO","CANCELADO","NEGADO","MIS SERVICIOS ASIGNADOS"};
 	  @SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstatus = new JComboBox(status);
 	
+   String[] statuscontesta = {"SOLICITADO","EN PROCESO","TERMINADO","CANCELADO","NEGADO"};	  
 	  @SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbEstatusCo = new JComboBox(status);
+	JComboBox cmbEstatusCo = new JComboBox(statuscontesta);
 	  
 	  @SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstatusFiltrado = new JComboBox(status);
@@ -167,7 +172,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	public Cat_Seguimiento_De_Servicios(){
 //		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 //		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
-//		this.setSize(ancho,alto);
+//		this.setSize(ancho,700);
 		this.setSize(1024,700);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -182,15 +187,17 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 
 		this.panel.add(new JLabel("Usuario:")).setBounds     (x       ,y      ,width    ,height   );
 		this.panel.add(lblUsuario).setBounds                 (x+=45   ,y      ,width*2  ,height   );
-		this.panel.add(lblDepartamento).setBounds            (x+=250  ,y      ,width*2  ,height   );	
-		this.panel.add(cmbEstatusFiltrado).setBounds         (x+=390  ,y      ,width+70 ,height   );
-		this.panel.add(txtFcActual).setBounds                (x+=215  ,y      ,width    ,height   );
+		this.panel.add(lblDepartamento).setBounds            (x+=250  ,y      ,width*2  ,height   );
+		this.panel.add(btnActualizar).setBounds              (x+=300  ,y      ,width+20 ,height   );
+		this.panel.add(cmbEstatusFiltrado).setBounds         (x+=140  ,y      ,width+75 ,height   );
+		this.panel.add(txtFcActual).setBounds                (x+=195  ,y      ,width-30 ,height   );
+
 		x=15;
 		this.panel.add(txtFiltro).setBounds                  (x       ,y+=19  ,width*10 ,height   );
 		this.panel.add(scroll_tabla).setBounds               (x       ,y+20   ,width*10,width+200);
 		
 		x=15;
-		this.panel.add(new JLabel("Folio:")).setBounds       (x       ,y+=335 ,width    ,height   );
+		this.panel.add(new JLabel("Folio:")).setBounds       (x       ,y+=325 ,width    ,height   );
 		this.panel.add(txtFolio).setBounds                   (x+=40   ,y      ,width    ,height   );  
 		this.panel.add(new JLabel("Servicio:")).setBounds    (x+=110  ,y      ,width    ,height   );
 		this.panel.add(txtServicio).setBounds                (x+=45   ,y      ,width+325,height   );
@@ -200,7 +207,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		this.panel.add(cmbPrioridades).setBounds             (x+=45   ,y      ,width+75 ,height   );
 		
 		x=15;
-		this.panel.add(new JLabel("Solicito:")).setBounds    (x       ,y+=30  ,width    ,height   );
+		this.panel.add(new JLabel("Solicito:")).setBounds    (x       ,y+=25  ,width    ,height   );
 		this.panel.add(txtUsuario).setBounds                 (x+=40   ,y      ,width+300,height   );
 		this.panel.add(new JLabel("Establecimiento:")).setBounds(x+=410,y     ,width    ,height   );
 		this.panel.add(cmbEstablecimiento).setBounds          (x+=80  ,y      ,width+85 ,height   );
@@ -208,11 +215,11 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		this.panel.add(cmbDepartamento).setBounds            (x+=75   ,y      ,width*2  ,height   );
 
 		x=15;
-		this.panel.add(new JLabel("Detalle:")).setBounds     (x       ,y+=30  ,width    ,height   );
-		this.panel.add(scrollDetalle).setBounds              (x+=40   ,y      ,958      ,height*3 ); 
+		this.panel.add(new JLabel("Detalle:")).setBounds     (x       ,y+=25  ,width    ,height   );
+		this.panel.add(scrollDetalle).setBounds              (x+=40   ,y      ,958      ,height*5 ); 
 		
 		x=15;
-		this.panel.add(new JLabel("Fecha S:")).setBounds     (x       ,y+=70  ,width    ,height   );  
+		this.panel.add(new JLabel("Fecha S:")).setBounds     (x       ,y+=105  ,width    ,height   );  
 		this.panel.add(txtFcSolicito).setBounds              (x+=40   ,y      ,width+28 ,height   );  
 		this.panel.add(btnDescAdjunto).setBounds             (x+=145  ,y      ,width+150,height   );
 		this.panel.add(new JLabel("Evaluacion:")).setBounds  (x+=265  ,y      ,width    ,height   );  
@@ -223,25 +230,31 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		this.panel.add(txtCosto).setBounds                   (x+=34   ,y      ,width    ,height   ); 
 		
 		x=15;
-		this.panel.add(new JLabel("Notas:")).setBounds       (x       ,y+=30  ,width    ,height   );
+		this.panel.add(new JLabel("Notas:")).setBounds       (x       ,y+=25  ,width    ,height   );
 		this.panel.add(scrollNotas).setBounds                (x+=40   ,y      ,958      ,height*3 ); 
 
 		x=15;
-		this.panel.add(new JLabel("Atendio:")).setBounds     (x       ,y+=70  ,width    ,height   ); 
+		this.panel.add(new JLabel("Atendio:")).setBounds     (x       ,y+=65  ,width    ,height   ); 
 		this.panel.add(txtFAtendio).setBounds                (x+=40   ,y      ,50       ,height   );
 		this.panel.add(txtAtendio).setBounds                 (x+=50   ,y      ,width+200,height   ); 
-		this.panel.add(btnAtendio).setBounds                 (x+=303  ,y      ,width+10 ,height   ); 
+		this.panel.add(btnAtendio).setBounds                 (x+=303  ,y      ,width+20 ,height   ); 
 		this.panel.add(new JLabel("Fecha Atendio:")).setBounds(x+=130 ,y      ,width    ,height   ); 
 		this.panel.add(txtFcAtendio).setBounds                (x+=75  ,y      ,width+28 ,height   ); 
 //		this.panel.add(btnAdjuntar).setBounds                (x+=130  ,y      ,width+168 ,height  );
 
 		x=15;width=120;sep=153;
-		this.panel.add(new JLabel("Atendio:")).setBounds     (x       ,y+=30  ,width    ,height   ); 
+		this.panel.add(new JLabel("Asignad:")).setBounds    (x       ,y+=25  ,width    ,height   ); 
+		this.panel.add(txtFolioasignado).setBounds           (x+=40   ,y      ,50       ,height   );
+		this.panel.add(txtAsignado).setBounds                (x+=50   ,y      ,width+180,height   );
+		this.panel.add(btnAsignado).setBounds                (x+=303  ,y      ,width    ,height   );
+		this.panel.add(btnDeshacer).setBounds                (x+=330  ,y      ,width    ,height   );
+		this.panel.add(btnGuardar).setBounds                 (x+=sep  ,y      ,width    ,height   );
+		
+		x=15;
+		this.panel.add(new JLabel("Equipo:")).setBounds      (x       ,y+=25  ,width    ,height   ); 
 		this.panel.add(txtFolioequipo).setBounds             (x+=40   ,y      ,50       ,height   );
 		this.panel.add(txtEquipo).setBounds                  (x+=50   ,y      ,width+180,height   );
-		this.panel.add(btnEquipo).setBounds                  (x+=303  ,y      ,width-10 ,height   );
-		this.panel.add(btnDeshacer).setBounds                (x+=330   ,y      ,width    ,height   );
-		this.panel.add(btnGuardar).setBounds                 (x+=sep  ,y      ,width    ,height   );
+		this.panel.add(btnEquipo).setBounds                  (x+=303  ,y      ,width    ,height   );
 		
 		lblUsuario.setText(usuario.getNombre_completo());
 		lblDepartamento.setText(Departamento);
@@ -249,15 +262,18 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		init_tabla(cmbEstatusFiltrado.getSelectedItem().toString().trim());
 		agregar(tabla);
 		panelEnabledFalse();
+		tabla.addKeyListener(seleccionservicio_teclado);
 		
 		btnDescAdjunto.addActionListener(opDescargarArchivoSolicitud);
 		btnGuardar.addActionListener(guardar);
 		btnDeshacer.addActionListener(deshacer);
 		btnAtendio.addActionListener(modificaratendio);
 		btnEquipo.addActionListener(modificarequipo);
-		
+		btnAsignado.addActionListener(asignanarcolaborador);
+		btnActualizar.addActionListener(actualizartabla);
 		cmbEstatusFiltrado.addActionListener(actualizartabla);
 		txtFiltro.addKeyListener(opFiltroNombre);
+		
 		
 		try {
 			txtFcActual.setText(new BuscarSQL().fecha(0));
@@ -290,6 +306,91 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 	
+	KeyListener seleccionservicio_teclado = new KeyListener() {
+		@Override
+		public void keyTyped(KeyEvent e) {}
+		@Override
+		public void keyPressed(KeyEvent e){
+		}
+		@Override
+		public void keyReleased(KeyEvent e){
+			panelEnabledFalse();
+    		int fila = tabla.getSelectedRow();
+				txtFolio.setText(tabla.getValueAt(fila,0)+"");
+				txaDetalle.setText(tabla.getValueAt(fila,1)+"");
+				cmbEstatus.setSelectedItem(tabla.getValueAt(fila,2)+"");
+				cmbEstatusCo.setSelectedItem(tabla.getValueAt(fila,2)+"");
+				cmbPrioridades.setSelectedItem(tabla.getValueAt(fila,3)+"");
+                cmbDepartamento.setSelectedItem(tabla.getValueAt(fila,7)+"");
+                cmbEstablecimiento.setSelectedItem(tabla.getValueAt(fila,5)+"");
+				txtUsuario.setText(tabla.getValueAt(fila,6)+"");
+				txtServicio.setText(tabla.getValueAt(fila,7)+"");
+				
+				txtFAtendio.setText(tabla.getValueAt(fila,11)+"");
+                txtAtendio.setText(tabla.getValueAt(fila,12)+"");
+                txaNotas.setText(tabla.getValueAt(fila,13)+"");
+                txtCosto.setText(tabla.getValueAt(fila,14)+"");
+                cmbEvaluacionServicio.setSelectedItem(tabla.getValueAt(fila,15)+"");
+                txtFolioequipo.setText(tabla.getValueAt(fila, 18)+"");
+                txtEquipo.setText(tabla.getValueAt(fila, 19)+"");
+                txtFolioasignado.setText(tabla.getValueAt(fila,20)+"");
+                txtAsignado.setText(tabla.getValueAt(fila, 21)+"");
+                
+                //validacion del estatus de la actividad
+                if(tabla.getValueAt(fila,2).toString().equals("TERMINADO")||tabla.getValueAt(fila,2).toString().equals("CANCELADO")){
+                	cmbEstatusCo.setEnabled(false);
+                	cmbEvaluacionServicio.setEnabled(false);
+                	txtCosto.setEditable(false);
+                	txaNotas.setEditable(false);
+                	btnAtendio.setEnabled(false);
+                	btnGuardar.setEnabled(false);
+                	
+                     	if(!tabla.getValueAt(fila,10).toString().equals("")){	
+	                    	String fecha_atendio = (tabla.getValueAt(fila,10).toString()).substring(0,10);
+	                    	if(txtFcActual.getText().toString().trim().equals(fecha_atendio)){
+		                    	cmbEstatusCo.setEnabled(true);
+		                    	cmbEstablecimiento.setEnabled(true);
+		                    	txtCosto.setEditable(true);
+		                    	txaNotas.setEditable(true);
+		                    	btnAtendio.setEnabled(true);
+		                    	btnGuardar.setEnabled(true);
+		                    	//validacion si es el usuario creador para que clasifique la evaluacion
+			                    if(tabla.getValueAt(fila,6).toString().equals(lblUsuario.getText())){
+			                    	cmbEvaluacionServicio.setEnabled(true);
+			                    }else{
+			                    	cmbEvaluacionServicio.setEnabled(false);
+			                    }
+	                    	}
+	                   	}	
+                }else{
+                	cmbEstablecimiento.setEnabled(true);
+                	cmbEstatusCo.setEnabled(true);
+                	txtCosto.setEditable(true);
+                	txaNotas.setEditable(true);
+                	btnAtendio.setEnabled(true);
+                	btnAsignado.setEnabled(true);
+                	btnGuardar.setEnabled(true);
+                	
+                	//validacion si es el usuario creador para que clasifique la evaluacion
+                    if(tabla.getValueAt(fila,6).toString().equals(lblUsuario.getText())){
+                    	cmbEvaluacionServicio.setEnabled(true);
+                    }else{
+                    	cmbEvaluacionServicio.setEnabled(false);
+                    }
+                }
+				txtFcSolicito.setText(tabla.getValueAt(fila,4)+"");
+				txtFcAtendio.setText(tabla.getValueAt(fila,10)+"");
+				if(tabla.getValueAt(fila,9).toString().equals("")){
+					btnDescAdjunto.setText("No Contiene Archivos Adjuntos");
+					btnDescAdjunto.setEnabled(false);
+				}else{
+					btnDescAdjunto.setText("Descargar Archivo Adjunto");
+					btnDescAdjunto.setEnabled(true);
+				}
+				return;
+    	}
+	};
+	
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -302,7 +403,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 						cmbEstatus.setSelectedItem(tabla.getValueAt(fila,2)+"");
 						cmbEstatusCo.setSelectedItem(tabla.getValueAt(fila,2)+"");
 						cmbPrioridades.setSelectedItem(tabla.getValueAt(fila,3)+"");
-	                    cmbDepartamento.setSelectedItem(tabla.getValueAt(fila,4)+"");
+	                    cmbDepartamento.setSelectedItem(tabla.getValueAt(fila,7)+"");
 	                    cmbEstablecimiento.setSelectedItem(tabla.getValueAt(fila,5)+"");
 						txtUsuario.setText(tabla.getValueAt(fila,6)+"");
 						txtServicio.setText(tabla.getValueAt(fila,7)+"");
@@ -314,6 +415,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	                    cmbEvaluacionServicio.setSelectedItem(tabla.getValueAt(fila,15)+"");
 	                    txtFolioequipo.setText(tabla.getValueAt(fila, 18)+"");
 	                    txtEquipo.setText(tabla.getValueAt(fila, 19)+"");
+	                    txtFolioasignado.setText(tabla.getValueAt(fila,20)+"");
+	                    txtAsignado.setText(tabla.getValueAt(fila, 21)+"");
 	                    
 	                    //validacion del estatus de la actividad
 	                    if(tabla.getValueAt(fila,2).toString().equals("TERMINADO")||tabla.getValueAt(fila,2).toString().equals("CANCELADO")){
@@ -347,6 +450,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	                    	txtCosto.setEditable(true);
 	                    	txaNotas.setEditable(true);
 	                    	btnAtendio.setEnabled(true);
+	                    	btnAsignado.setEnabled(true);
 	                    	btnGuardar.setEnabled(true);
 	                    	
 	                    	//validacion si es el usuario creador para que clasifique la evaluacion
@@ -356,10 +460,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		                    	cmbEvaluacionServicio.setEnabled(false);
 		                    }
 	                    }
-	                    
-						txtFcSolicito.setText(tabla.getValueAt(fila,8)+"");
+						txtFcSolicito.setText(tabla.getValueAt(fila,4)+"");
 						txtFcAtendio.setText(tabla.getValueAt(fila,10)+"");
-						
 						if(tabla.getValueAt(fila,9).toString().equals("")){
 							btnDescAdjunto.setText("No Contiene Archivos Adjuntos");
 							btnDescAdjunto.setEnabled(false);
@@ -372,7 +474,6 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	        }
         });
     }
-	
 	
 	ActionListener actualizartabla = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -405,7 +506,13 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	
 	ActionListener modificaratendio = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Filtro_Colaborador().setVisible(true);
+			new Filtro_Colaborador("Atendio",Integer.valueOf(txtFolio.getText().toString())).setVisible(true);
+		}		
+	};
+	
+	ActionListener asignanarcolaborador = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			new Filtro_Colaborador("Asignar",Integer.valueOf(txtFolio.getText().toString())).setVisible(true);
 		}		
 	};
 	
@@ -463,7 +570,6 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 					   if(cmbEstatusCo.getSelectedItem().toString().trim().equals("CANCELADO") || cmbEstatusCo.getSelectedItem().toString().trim().equals("NEGADO")){
 						   try {servicios_solicitud = new BuscarSQL().correo_informa_servicio_terminado(Integer.valueOf(txtFolio.getText().toString().trim()));
 							} catch (SQLException e1) {e1.printStackTrace();}
-						  
 						   if(!servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
 							String Mensaje= " Hola "+txtUsuario.getText()+" Tu Servicio solicitado el dia "+txtFcSolicito.getText().toString()+" con Detalle:"+txaDetalle.getText().toString().trim()+" fue atendido  y marcado como  "+cmbEstatusCo.getSelectedItem().toString().trim()+" el dia de hoy por "
 									+txtAtendio.getText().toString().trim()+ " >>>informa que "+txaNotas.getText().toString().trim()+" Saludos: SCOI";
@@ -484,12 +590,10 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	
 	public String ValidaCampos(){
 		String error ="";
-		
 		if(txaNotas.getText().equals("")) 
 			error+= "Notas Del Servicio\n";
 		if(txtFAtendio.getText().equals("")||txtFAtendio.getText().toString().equals("0")) 
 			error+= "Selecione Quien Atendio\n";
-		
 		if(cmbEstatusCo.getSelectedIndex()==0) 
 			error+= "El Estatus Del Servicio debe de Cambiar De Solicitado\n";
 		return error;
@@ -517,6 +621,9 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
     	btnAtendio.setEnabled(false);
 		txtFolioequipo.setEditable(false);
 		txtEquipo.setEditable(false);
+		btnAsignado.setEnabled(false);
+		txtFolioasignado.setEditable(false);
+		txtAsignado.setEditable(false);
 	}		
 	
 	public void panelLimpiar(){	
@@ -531,6 +638,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		txtFcAtendio.setText("");
 		txtFolioequipo.setText("");
 		txtEquipo.setText("");
+		txtFolioasignado.setText("");
+		txtAsignado.setText("");
 		cmbEstatus.setSelectedIndex(0);
 		cmbEstatusCo.setSelectedIndex(0);
 		cmbPrioridades.setSelectedIndex(0);
@@ -579,9 +688,14 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		     @SuppressWarnings("rawtypes")
 		    private TableRowSorter trsfiltro;
 		
-		JLabel lblBuscar = new JLabel("BUSCAR : ");
+		JCButton btnGuardarf      = new JCButton("Guardar Colaborador Asignado y Enviar Correo"       ,"Guardar.png"      ,"Azul");
+		JTextField txtfolioselecionado = new Componentes().text(new JCTextField(), "Folio", 20, "Integer");
+		JTextField txtselecionado = new Componentes().text(new JCTextField(), "Colaborador Asignado", 500, "String");
+		JLabel lblBuscar      = new JLabel("BUSCAR : ");
+		int folio_servicio=0;
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public Filtro_Colaborador()	{
+		public Filtro_Colaborador(String tipo_filtro,int Folio_solicitud)	{
+			folio_servicio=Folio_solicitud;
 			this.setModal(true);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 			this.setTitle("Filtro Colaboradores");
@@ -593,14 +707,67 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 			trsfiltro = new TableRowSorter(modelf); 
 			tablaf.setRowSorter(trsfiltro); 
 			campo.add(txtFiltrof).setBounds   (10,20,780,20);
-			campo.add(scroll_tablaf).setBounds(10,40,780,390);
+
+
+			if (tipo_filtro.equals("Atendio")){
+				campo.add(scroll_tablaf).setBounds(10,40,780,390);
+				agregar(tablaf);
+				tablaf.addKeyListener(seleccionEmpleadoconteclado);		
+			}else{
+				campo.add(scroll_tablaf).setBounds      (10 , 40,780,360);
+				campo.add(txtfolioselecionado).setBounds(10 ,410, 50, 20);
+				campo.add(txtselecionado).setBounds     (60 ,410,320, 20);
+				campo.add(btnGuardarf).setBounds        (440,410,350, 20);
+				txtfolioselecionado.setEditable(false);
+				txtselecionado.setEditable(false);
+				agregarasignado(tablaf);
+				tablaf.addKeyListener(seleccionEmpleadocontecladopara_asignacion);	
+				btnGuardarf.addActionListener(Guardar_asignacion);
+			}
+			
 			init_tablaf();
 			cont.add(campo);
-			agregar(tablaf);
 			txtFiltrof.addKeyListener(opFiltrof);
-			tablaf.addKeyListener(seleccionEmpleadoconteclado);
 		}
 		
+		ActionListener Guardar_asignacion = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+             if(txtfolioselecionado.getText().toString().equals("")){
+ 				JOptionPane.showMessageDialog(null, "Es Requerido Selecionar Primero Un colaborador:", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+            	 return;
+             }else{
+            	    servicios_solicitud.setFolio(folio_servicio);
+            	    servicios_solicitud.setColaborador_asignado(Integer.valueOf(txtfolioselecionado.getText()+""));
+            	    
+
+            	    if(servicios_solicitud.GuardarAsignacion()){
+	                    try { servicios_solicitud = new BuscarSQL().correo_informa_asignacion(Integer.valueOf(txtfolioselecionado.getText().toString().trim()));
+	     					 }catch (SQLException e1) {e1.printStackTrace();}
+	    				if(servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
+				 				JOptionPane.showMessageDialog(null, "El Colaborador Selecionado No Tiene Correo Registrado \nPor Lo Cual Solo Se Guardará El Colaborador Asignado:", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						}else{
+						String Mensaje= " HOLA "+txtselecionado.getText()+"  "+lblUsuario.getText()+"  TE HA ASIGNADO EL SERVICIO "+txtFolio.getText().toString()+"  "+txaDetalle.getText().toString().trim()+" SOLICITADO EL DIA"+txtFcSolicito.getText().toString()
+									+" SALUDOS: SCOI";
+						new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Te An Asignado Una solicitud de Servicio "+servicios_solicitud.getFecha_guardado());
+						}
+	    				
+						JOptionPane.showMessageDialog(null,"El Registró Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						txtFolioasignado.setText(txtfolioselecionado.getText()+"");
+						txtAsignado.setText(txtselecionado.getText()+"");
+						dispose();
+						init_tabla(cmbEstatusFiltrado.getSelectedItem().toString().trim());
+						return;
+					
+            	}else{
+					JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+					return;
+                
+			  }	
+             }
+			}
+		};
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
@@ -609,6 +776,19 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		        		txtFAtendio.setText(tablaf.getValueAt(fila, 0).toString().trim());
 		    			txtAtendio.setText (tablaf.getValueAt(fila, 1).toString().trim());
 		    			dispose();
+		    			return;
+		        	}
+		        }
+	        });
+	    }
+		
+		private void agregarasignado(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+		        	if(e.getClickCount() == 2){
+		        		int fila = tablaf.getSelectedRow();
+		        		txtfolioselecionado.setText(tablaf.getValueAt(fila, 0).toString().trim());
+		    			txtselecionado.setText (tablaf.getValueAt(fila, 1).toString().trim());
 		    			return;
 		        	}
 		        }
@@ -624,23 +804,43 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		};
 		
 		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
-			@SuppressWarnings("static-access")
 			@Override
 			public void keyTyped(KeyEvent e) {
+			}
+			@Override
+			public void keyPressed(KeyEvent e){}
+			@SuppressWarnings("static-access")
+			@Override
+			public void keyReleased(KeyEvent e){
 				char caracter = e.getKeyChar();
 				if(caracter==e.VK_ENTER){
-				int fila=tabla.getSelectedRow()-1;
-        		txtFAtendio.setText(tablaf.getValueAt(fila, 0).toString().trim());
-    			txtAtendio.setText (tablaf.getValueAt(fila, 1).toString().trim());
+				int fila=tablaf.getSelectedRow()-1;
+				if(fila==-1){
+					fila=tablaf.getRowCount()-1;
+				}
+	        	txtFAtendio.setText(tablaf.getValueAt(fila,0)+"");
+	    		txtAtendio.setText (tablaf.getValueAt(fila, 1)+"");	
     			dispose();
     			return;
 				}
 			}
-			@Override
-			public void keyPressed(KeyEvent e){}
-			@Override
-			public void keyReleased(KeyEvent e){}
 		};
+		
+		KeyListener seleccionEmpleadocontecladopara_asignacion = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e){
+			}
+			@Override
+			public void keyReleased(KeyEvent e){
+				int fila=tablaf.getSelectedRow();
+        		txtfolioselecionado.setText(tablaf.getValueAt(fila, 0).toString().trim());
+    			txtselecionado.setText (tablaf.getValueAt(fila, 1).toString().trim());
+    			return;
+			}
+		};
+		
 	}
 	
 	//TODO Filtro Equipos

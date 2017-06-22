@@ -26,6 +26,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
 
+import java.time.LocalDate;
+
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 
@@ -61,6 +63,10 @@ public class Obj_tabla {
 			return false;
 		}
  	}
+	
+	
+
+	
 	
 	public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,String comando,String BasdeDatos, String pintar, Integer checkbox){
     	tabla.getTableHeader().setReorderingAllowed(false) ;
@@ -280,10 +286,46 @@ public class Obj_tabla {
 			return matriz;
 		}
 		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public  String[][] tabla_guardar_sin_validacion(JTable tabla){ 
+			int columnas=tabla.getColumnCount();
+			DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
+			String[][] matriz = null ;
+			if(tabla.isEditing()){
+				tabla.getCellEditor().stopCellEditing();
+			}
+			
+			if(tabla.getRowCount()==0){
+				 matriz = new String[0][0];
+				 return matriz;
+			}else{ 
+			
+				Vector vector = new Vector();
+				for(int i=0; i<tabla.getRowCount(); i++){
+					for(int c=0; c<columnas; c++){
+							  vector.add(modelo.getValueAt(i,c).toString().trim());
+					}		  
+				}
+							matriz = new String[vector.size()/columnas][columnas];
+					 int i=0,j =0,columnafor=0;
+					while(i<vector.size()){
+						columnafor=0;
+					      for(int f =0;  f<columnas;  f++,columnafor++,i++  ){	
+					  matriz[j][columnafor] = vector.get(i).toString();
+					  }
+					  j++;
+				}
+			}	
+				
+			return matriz;
+		}
+		
 		public boolean validacelda(JTable tabla,String tipo, int fila,int columna){
 			    DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
 			   String valorcelda= modelo.getValueAt(fila,columna).toString().trim();
 			   String Aviso="";
+			  
+			   if(tipo.equals("decimal")|| tipo.equals("entero")){
 				    if(tipo.equals("decimal")){						
 				    	 Aviso="Numeros";
 					}
@@ -291,33 +333,102 @@ public class Obj_tabla {
 						Aviso="Numeros Enteros";
 					}
 					
-				try {
-					if(valorcelda.equals("")){
+					try {
+						if(valorcelda.equals("")){
+							modelo.setValueAt(0, fila, columna);
+				    		return true;
+						}else{
+							
+							if(tipo.equals("decimal")){						
+							 Double.parseDouble(valorcelda);
+							}
+							
+							if(tipo.equals("entero")){						
+								Integer.parseInt(valorcelda);
+							}
+							
+				    		return true;
+						}
+					} catch (NumberFormatException nfe){
+						tabla.getSelectionModel().setSelectionInterval(fila, fila);
+						JOptionPane.showMessageDialog(null, "La Fila  "+(fila+1)+"  En La Columna Cantidad Solo Acepta "+Aviso,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						modelo.setValueAt(0, fila, columna);
-			    		return true;
-					}else{
-						
-						if(tipo.equals("decimal")){						
-						 Double.parseDouble(valorcelda);
-						}
-						
-						if(tipo.equals("entero")){						
-							Integer.parseInt(valorcelda);
-						}
-						
-			    		return true;
+						tabla.editCellAt(fila, columna);
+						Component accion=tabla.getEditorComponent();
+						accion.requestFocus();
+						return false;
 					}
-				} catch (NumberFormatException nfe){
-					tabla.getSelectionModel().setSelectionInterval(fila, fila);
-					JOptionPane.showMessageDialog(null, "La Fila  "+(fila+1)+"  En La Columna Cantidad Solo Acepta "+Aviso,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-					modelo.setValueAt(0, fila, columna);
-					tabla.editCellAt(fila, columna);
-					Component accion=tabla.getEditorComponent();
-					accion.requestFocus();
+			     }	
+			   
+				if(tipo.equals("fecha")){
+                 if(validarfecha(valorcelda).equals("Fecha Valida")){
+                	  return true;
+                 }else{
+							    JOptionPane.showMessageDialog(null, "La Fila  "+(fila+1)+" Requiere Teclear Una Fecha Valida"+Aviso,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+							    tabla.editCellAt(fila, columna);
+							    Component accion=tabla.getEditorComponent();
+								accion.requestFocus();
+								return false;
+							}
+			         }
 					return false;
-				}
-		 	}
+		 	};
 		
+		 	public String validarfecha(String fecha){
+				String aviso = "";
+				int dayOfMonth 		=0;
+				int month 		=0;
+				int year 	=0;
+				
+				int contarChar = 0 ;
+				char[] arrayChar = fecha.toCharArray();
+		 
+				for(int i=0; i<arrayChar.length; i++){
+					if( arrayChar[i] == '/')
+						contarChar++;
+				}
+				
+				if(contarChar==2){
+					
+							if(validaNumero(fecha.substring(0,fecha.indexOf("/")))){
+								dayOfMonth = Integer.valueOf(fecha.substring(0,fecha.indexOf("/")));
+								fecha = fecha.substring(fecha.indexOf("/")+1,fecha.length());
+							}
+							if(validaNumero(fecha.substring(0,fecha.indexOf("/")))){
+								month 		= Integer.valueOf(fecha.substring(0,fecha.indexOf("/")));
+								fecha = fecha.substring(fecha.indexOf("/")+1,fecha.length());
+							}
+							if(validaNumero(fecha)){
+								year 	= Integer.valueOf(fecha);
+							}
+							if (year < 1900) {
+								aviso = "Fecha Invalida";
+					        } else{
+						        try {
+					        		LocalDate.of(year, month, dayOfMonth);
+					        		aviso = "Fecha Valida";
+								} catch (Exception e) {
+									aviso = "Fecha Invalida";
+								}
+					        }
+				}else{
+					aviso = "Fecha Invalida";
+				}
+				return aviso;
+			}
+			
+			public boolean validaNumero(String dia){
+				boolean validar = false;
+				try {
+					Integer.valueOf(dia);
+					validar = true;
+					
+				} catch (Exception e) {
+					validar = false;
+				}
+				return validar;
+			}
+			
 		@SuppressWarnings("deprecation")
 		public String RecorridoFocotabla(JTable tabla,int fila,int columna, String parametrosacarfoco){
 			 String sacarFocoDeTabla = "";
@@ -364,6 +475,8 @@ public class Obj_tabla {
 	        // Scroll the area into view
 	        viewport.scrollRectToVisible(rect);
 	}
+
+			
 
 
 	

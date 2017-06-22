@@ -101,7 +101,9 @@ public class Cat_Usuarios extends JFrame{
 	    new Obj_CheckBoxNode(Sub_Auditoria[10], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[11], false),
 	    new Obj_CheckBoxNode(Sub_Auditoria[12], false),
-	    new Obj_CheckBoxNode(Sub_Auditoria[13], false),	    
+	    new Obj_CheckBoxNode(Sub_Auditoria[13], false),	  
+	    new Obj_CheckBoxNode(Sub_Auditoria[14], false),	
+	    new Obj_CheckBoxNode(Sub_Auditoria[15], false),	
 	};
 	
 	@SuppressWarnings("rawtypes")
