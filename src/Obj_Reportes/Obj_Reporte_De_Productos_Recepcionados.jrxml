@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-05-11T18:33:01 -->
+<!-- 2017-06-08T10:27:43 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte De Productos Recepcionados" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3af0543a-35ab-4e00-8efe-faa61fe8993c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -14,7 +14,7 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec sp_select_productos_recepcionados 'S222047']]>
+		<![CDATA[exec sp_select_productos_recepcionados 'S222403']]>
 	</queryString>
 	<field name="folio_transferencia" class="java.lang.String"/>
 	<field name="folio_recepcion" class="java.lang.String"/>
@@ -23,9 +23,9 @@
 	<field name="estab_tranf" class="java.lang.String"/>
 	<field name="estab_recib" class="java.lang.String"/>
 	<field name="cod_prod" class="java.lang.String"/>
-	<field name="cantidad_transferida" class="java.math.BigDecimal"/>
-	<field name="cantidad_recepcionada" class="java.math.BigDecimal"/>
-	<field name="diferencia" class="java.math.BigDecimal"/>
+	<field name="cantidad_transferida" class="java.lang.Double"/>
+	<field name="cantidad_recepcionada" class="java.lang.Double"/>
+	<field name="diferencia" class="java.lang.Double"/>
 	<field name="fecha" class="java.sql.Timestamp"/>
 	<field name="status" class="java.lang.String"/>
 	<field name="incidencias" class="java.lang.String"/>

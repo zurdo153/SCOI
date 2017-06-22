@@ -67,8 +67,6 @@ public class TapTapTap {
     });
     stopper.setRepeats(false);
 
-    
-    
 //  asigna el foco al JTextField deseado al arrancar la ventana
     f.addWindowListener(new WindowAdapter() {
             public void windowOpened( WindowEvent e ){
