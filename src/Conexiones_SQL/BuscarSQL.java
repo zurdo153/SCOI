@@ -10261,4 +10261,107 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return status;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String[] Razones_De_Mermas(){
+		Statement stmt = null;
+		
+		String query = "select descripcion as Razones from tb_Razon_De_Merma order by orden";
+		Vector miVector = new Vector();
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					miVector.add(rs.getString("Razones"));
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			}}
+		}
+		
+		int i=0;
+		String[] lista= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			lista[i]= miVector.get(i).toString();
+			i++;
+		}
+		return lista;
+	}	
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String[] Destino_De_Mermas(String filtro){
+		Statement stmt = null;
+		
+		String query = "declare @captura char(1)"
+					+ " set @captura = '"+filtro+"' "
+					+ "	select descripcion as Destino "
+					+ "	from tb_destino_de_merma "
+					+ "	where inicio_merma = case @captura when 'S' then 'S' else inicio_merma end "
+					+ " order by orden ";
+		Vector miVector = new Vector();
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					miVector.add(rs.getString("Destino"));
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			}}
+		}
+		
+		int i=0;
+		String[] lista= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			lista[i]= miVector.get(i).toString();
+			i++;
+		}
+		return lista;
+	}	
+	
+	public boolean valida_usuarioGuardo_vs_usuario_seguridad(int folio,int folioGafete){
+		String query = "declare @folio int, @folio_gafete int"
+					+ "	set @folio ="+folio
+					+ " set @folio_gafete ="+folioGafete
+					+ "select case when usuario_guardado != @folio_gafete "
+					+ "	then 'true' "
+					+ "		else 'false' end as validacion"
+					+ "	from tb_mermas where folio = @folio";
+		
+		System.out.println(query);
+		boolean disponible = false;
+		try {				
+			Statement s = con.conexion().createStatement();
+			ResultSet rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				disponible = rs.getBoolean("validacion");
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+			
+		return disponible;
+	}
+	
 }

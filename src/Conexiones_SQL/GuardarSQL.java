@@ -69,6 +69,7 @@ import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
 import Obj_Evaluaciones.Obj_Temporada;
+import Obj_Inventarios.Obj_Alimentacion_De_Mermas;
 import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
@@ -6585,6 +6586,96 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				e.printStackTrace();
 			}
 		}	
+		return true;
+	}
+	
+	public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimiento){
+		
+		int folio = movimiento.equals("NORMAL")?busca_y_actualiza_proximo_folio(41):mermas.getFolio(); //alimentacion de merma
+		
+		
+		
+		String query = "exec sp_insert_movimiento_de_mermas ?,?,?,?,?,?,?,?,?,?,?,?";
+		String query2 = "exec sp_insert_concentrado_de_movimiento_de_mermas ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			con.setAutoCommit(false);
+			PreparedStatement pstmt = con.prepareStatement(query);
+			PreparedStatement pstmt2 = con.prepareStatement(query2);
+			
+			int i = 0;
+			for( i=0; i<mermas.getArreglo().length; i++){
+				
+//				System.out.println(mermas.getArreglo()[i][0].toString().trim());			
+//				System.out.println(Double.valueOf(mermas.getArreglo()[i][2].toString().trim()));
+//				System.out.println(Double.valueOf(mermas.getArreglo()[i][3].toString().trim()));
+//				System.out.println(mermas.getArreglo()[i][5].toString().trim());			
+//				System.out.println(mermas.getArreglo()[i][6].toString().trim());			
+//				System.out.println(Double.valueOf(mermas.getArreglo()[i][7].toString().trim()));
+//				System.out.println(Double.valueOf(mermas.getArreglo()[i][8].toString().trim()));
+//				System.out.println(Double.valueOf(mermas.getArreglo()[i][9].toString().trim()));
+//				System.out.println(mermas.getEstablecimiento().toString().trim());							//
+//				System.out.println((movimiento.equals("TERMINADO")?"T":(movimiento.equals("NORMAL")?"V":"A")));
+				
+				
+				
+				pstmt.setInt   (1, folio);																	//folio
+				pstmt.setString(2, mermas.getArreglo()[i][0].toString().trim());							//cod_prod
+//				pstmt.setString(3, mermas.getArreglo()[i][1].toString().trim());							//--------------desc
+				pstmt.setDouble(3, Double.valueOf(mermas.getArreglo()[i][2].toString().trim()));			//existencia
+				pstmt.setDouble(4, Double.valueOf(mermas.getArreglo()[i][3].toString().trim()));			//merma
+//				pstmt.setDouble(5, Double.valueOf(mermas.getArreglo()[i][4].toString().trim()));			//--------------dif
+				pstmt.setString(5, mermas.getArreglo()[i][5].toString().trim());							//razon de merma
+				pstmt.setString(6, mermas.getArreglo()[i][6].toString().trim());							//destino de merma
+				pstmt.setDouble(7, Double.valueOf(mermas.getArreglo()[i][7].toString().trim()));			//ultimo costo   
+				pstmt.setDouble(8, Double.valueOf(mermas.getArreglo()[i][8].toString().trim()));			//costo promedio 
+				pstmt.setDouble(9, Double.valueOf(mermas.getArreglo()[i][9].toString().trim()));    		//precio lista   
+				pstmt.setString(10, mermas.getEstablecimiento().toString().trim());							//establecimiento bms
+				pstmt.setString(11, (movimiento.equals("TERMINADO")?"T":(movimiento.equals("NORMAL")?"V":"A")));//status
+				pstmt.setInt(12, usuario.getFolio());														//usuario SCOI
+				pstmt.executeUpdate();
+				
+			}
+			
+			if(i==mermas.getArreglo().length){
+				
+				//insertar registro en tb_mermas			
+				pstmt2.setInt   (1, folio);
+				pstmt2.setString(2, mermas.getNota().toString().toUpperCase().trim());
+				pstmt2.setString(3, (movimiento.equals("TERMINADO")?"T":(movimiento.equals("NORMAL")?"V":"A")));
+				
+				pstmt2.setString(4, mermas.getEstablecimiento().toString().trim());
+				pstmt2.setInt(5, usuario.getFolio());
+				
+				File imag = new File(movimiento.equals("NORMAL")? (System.getProperty("user.dir")+"/Imagen/merma_default.jpg") : mermas.getRutaFoto() );
+				FileInputStream stream_foto = new FileInputStream(imag);
+				pstmt2.setBinaryStream(6, stream_foto, imag.length());
+				
+				pstmt2.executeUpdate();
+			}
+			con.commit();
+
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Mermas ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Mermas ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
 		return true;
 	}
 

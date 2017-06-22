@@ -22,6 +22,7 @@ public class Obj_Alimentacion_De_Inventarios_Parciales {
 	String Establecimiento;
     Object[][] tabla_obj =null;
     String status;
+    double Precio_Lista;
 
 	public String getCod_Prod() {
 		return Cod_Prod;
@@ -117,6 +118,14 @@ public class Obj_Alimentacion_De_Inventarios_Parciales {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public double getPrecio_Lista() {
+		return Precio_Lista;
+	}
+
+	public void setPrecio_Lista(double precio_Lista) {
+		Precio_Lista = precio_Lista;
 	}
 
 	public Obj_Alimentacion_De_Inventarios_Parciales buscardatos_producto(String cod_prod, String Establecimiento){ 

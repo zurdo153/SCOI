@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-05-11T18:08:35 -->
+<!-- 2017-06-08T19:03:14 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="183fe69d-686a-4182-a078-9cafe294a1ac">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -15,7 +15,7 @@
 	</style>
 	<queryString language="SQL">
 		<![CDATA[--exec sp_select_detalle_de_recepcion 'folio_transferencia','status','26/04/2017 00:00:00','10/05/2017 23:59:59'
-exec sp_select_detalle_de_recepcion  '','ST','26/04/2017 00:00:00','10/05/2017 23:59:59']]>
+exec sp_select_detalle_de_recepcion  '','A','26/04/2017 00:00:00','10/05/2017 23:59:59']]>
 	</queryString>
 	<field name="folio_transferencia" class="java.lang.String"/>
 	<field name="folio_recepcion" class="java.lang.String"/>

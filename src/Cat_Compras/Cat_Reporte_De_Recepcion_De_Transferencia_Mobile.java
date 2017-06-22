@@ -9,6 +9,7 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,10 +39,19 @@ public class Cat_Reporte_De_Recepcion_De_Transferencia_Mobile extends JFrame{
 	JTextField txtFolioTransferencia = new Componentes().text(new JCTextField(), "Folio De Transferencia", 12, "String");
 	JTextField txtFolioRecepcion = new Componentes().text(new JCTextField(), "Folio De Recepcion", 12, "String");
 	
+	JCheckBox chbFaltante 	= new JCheckBox("Faltante");
+	JCheckBox chbSobrante 	= new JCheckBox("Sobrante");
+	JCheckBox chbAjuste 	= new JCheckBox("Ajuste");
+	JCheckBox chbCompleto 	= new JCheckBox("Completo");
+	JCheckBox chbCancelado 	= new JCheckBox("Cancelado");
+	JCheckBox chbTodos	 	= new JCheckBox("Todos");
+	
 	JDateChooser fhIn = new JDateChooser();
 	JDateChooser fhFin = new JDateChooser();
 	
 	JCButton btnGenerar = new JCButton("Buscar", "buscar.png", "Azul");
+	
+	JLabel lblStatus = new JLabel("");
 
 	Border borde;
 	public Cat_Reporte_De_Recepcion_De_Transferencia_Mobile() {
@@ -50,6 +60,8 @@ public class Cat_Reporte_De_Recepcion_De_Transferencia_Mobile extends JFrame{
 		borde = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(borde,"Reporte De Movimiento De Productos En Recepcion Mobile"));
 		this.setTitle("Reporte De Movimiento De Productos En Recepcion Mobile");
+		
+		lblStatus.setBorder(BorderFactory.createLineBorder(new java.awt.Color(105,105,105)) );
 		
 		int x=10,	y=20,	ancho=90;
 		
@@ -62,13 +74,20 @@ public class Cat_Reporte_De_Recepcion_De_Transferencia_Mobile extends JFrame{
 		panel.add(new JLabel("Folio De Transferencia: ")).setBounds(x,y+=25,ancho+30,20);
 		panel.add(txtFolioTransferencia).setBounds(x+ancho+40, y, ancho*3, 20);
 		
+		panel.add(lblStatus).setBounds(x-3,y+=25,ancho*4+42,50);
+		panel.add(new JLabel("Status: ")).setBounds(x+3,y+=3,ancho+30,20);
+		panel.add(chbFaltante ).setBounds(x+ancho+40 , y, 80, 20);
+		panel.add(chbSobrante ).setBounds(x+ancho+140, y, 80, 20);
+		panel.add(chbAjuste   ).setBounds(x+ancho+240, y, 60, 20);
+		panel.add(chbCompleto ).setBounds(x+ancho+40 , y+=25, 80, 20);
+		panel.add(chbCancelado).setBounds(x+ancho+140, y, 80, 20);
+		panel.add(chbTodos    ).setBounds(x+ancho+240, y, 60, 20);
+		
 		panel.add(new JLabel("Fecha                      Del:")).setBounds(x,y+=25,ancho+30,20);
 		panel.add(fhIn).setBounds(x+ancho+40, y, ancho+30, 20);
 		
 		panel.add(new JLabel("Al:")).setBounds(x+ancho*3-10,y,30,20);
 		panel.add(fhFin).setBounds(x+ancho*3+10, y, ancho+30, 20);
-		
-		
 		
 		panel.add(btnGenerar).setBounds(x+(ancho*3)+20,y+=25,ancho+20,20);
 		
@@ -78,10 +97,23 @@ public class Cat_Reporte_De_Recepcion_De_Transferencia_Mobile extends JFrame{
 		cmbTipoDeReporte.addActionListener(opTipoDeReporte);
 		btnGenerar.addActionListener(opGenerar);
 		
-		this.setSize(425, 180);
+		chbTodos.addActionListener(opTodos);
+		
+		this.setSize(425, 230);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 	}
+	
+	ActionListener opTodos = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			
+			chbFaltante   .setSelected(chbTodos.isSelected());
+			chbSobrante   .setSelected(chbTodos.isSelected());
+			chbAjuste     .setSelected(chbTodos.isSelected());
+			chbCompleto   .setSelected(chbTodos.isSelected());
+			chbCancelado  .setSelected(chbTodos.isSelected());
+		}
+	};
 	
 	ActionListener opTipoDeReporte = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -193,6 +225,21 @@ public class Cat_Reporte_De_Recepcion_De_Transferencia_Mobile extends JFrame{
 	}
 	
 	public void reporte(){
+		
+		String faltante = chbFaltante.isSelected()?"FALTANTE,":"";
+		String sobrante = chbSobrante.isSelected()?"SOBRANTE,":"";
+		String ajuste 	= chbAjuste.isSelected()?"AJUSTE,":"";
+		String completo = chbCompleto.isSelected()?"COMPLETO,":"";
+		String cancelado= chbCancelado.isSelected()?"CANCELADO,":"";
+		
+		String Cadena_Status = faltante+sobrante+ajuste+completo+cancelado;
+		
+		if(Cadena_Status.length()>0){
+			Cadena_Status = Cadena_Status.substring(0,Cadena_Status.length()-1);
+		}
+		System.out.println(Cadena_Status);
+		
+		
 		String basedatos="2.98";
 		String vista_previa_reporte="no";
 		int vista_previa_de_ventana=0;
@@ -201,11 +248,11 @@ public class Cat_Reporte_De_Recepcion_De_Transferencia_Mobile extends JFrame{
 			String consulta = "";
 			
 			switch(cmbTipoDeReporte.getSelectedItem().toString().trim()){
-				case "Reporte De Productos Sin Transferir":		reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','ST','"+fecha_inicio+"','"+fecha_final+"'"; break;
-				case "Reporte De Productos Sin Recepcionar":	reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','SR','"+fecha_inicio+"','"+fecha_final+"'"; break;
-				case "Reporte De Productos Con Ajuste":			reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','A','"+fecha_inicio+"','"+fecha_final+"'"; break;
-				case "Reporte De Productos Diferencias":		reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','','"+fecha_inicio+"','"+fecha_final+"'"; break;
-				case "Reporte De Productos Con Cancelacion":	reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','C','"+fecha_inicio+"','"+fecha_final+"'"; break;
+				case "Reporte De Productos Sin Transferir General":		reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','ST','"+fecha_inicio+"','"+fecha_final+"'"; break;
+				case "Reporte De Productos Sin Recepcionar, Por Transferencia":	reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','SR','"+fecha_inicio+"','"+fecha_final+"'"; break;
+				case "Reporte De Productos Con Ajuste, Por Transferencia":			reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','A','"+fecha_inicio+"','"+fecha_final+"'"; break;
+				case "Reporte De Productos Con Diferencias, Por Transferencia":		reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','','"+fecha_inicio+"','"+fecha_final+"'"; break;
+				case "Reporte De Productos Cancelados, Por Transferencia":	reporte = "Obj_Reporte_De_Productos_Recepcionados_Sin_Tranferir.jrxml";				consulta = "exec sp_select_detalle_de_recepcion '"+txtFolioTransferencia.getText().trim().toUpperCase()+"','C','"+fecha_inicio+"','"+fecha_final+"'"; break;
 				case "Reporte De Productos Recepcionados":		reporte = "Obj_Reporte_De_Productos_Recepcionados.jrxml";							consulta = "exec sp_select_productos_recepcionados '"+txtFolioRecepcion.getText().trim().toUpperCase()+"'"; break;
 				case "Reporte De Incidencias Por Transferencia":reporte = "Obj_Reporte_De_Incidencia_De_Productos_Por_Folio_De_Transferencia.jrxml";consulta = "exec sp_select_incidencias_por_folio_de_transferencia '"+txtFolioTransferencia.getText().trim().toUpperCase()+"'"; break;
 				
