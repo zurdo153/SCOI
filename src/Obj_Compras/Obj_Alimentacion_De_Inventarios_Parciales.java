@@ -17,12 +17,21 @@ public class Obj_Alimentacion_De_Inventarios_Parciales {
 	double Diferencia;
 	double Ultimo_Costo;
 	double Costo_Promedio;
+	double precio_venta;
 	String folio;
 	String Notas;
 	String Establecimiento;
     Object[][] tabla_obj =null;
     String status;
     double Precio_Lista;
+
+	public double getPrecio_venta() {
+		return precio_venta;
+	}
+
+	public void setPrecio_venta(double precio_venta) {
+		this.precio_venta = precio_venta;
+	}
 
 	public String getCod_Prod() {
 		return Cod_Prod;

@@ -1,4 +1,4 @@
-package Cat_Compras;
+package Cat_Auditoria;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -30,7 +30,7 @@ public class Cat_Reporte_De_Retiros_Programados_A_Cajeros extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	JTextField txtFolioAsignacion = new Componentes().text(new JCTextField(), "Folio De Asignacion", 12, "String");
-	JTextField txtFolioCajero = new Componentes().text(new JCTextField(), "Folio De Cajero(a)", 12, "String");
+	JTextField txtFolioCajero = new Componentes().text(new JCTextField(), "Folio De Cajero(a)", 12, "Int");
 	
 	JDateChooser fhIn = new JDateChooser();
 	JDateChooser fhFin = new JDateChooser();

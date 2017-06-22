@@ -199,6 +199,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		btnMisSolicitudes.addActionListener(mis_pendientes);
 		
 		agregar(tabla);
+		tabla.addKeyListener(opbusquedateclado);
 		panelEnabledFalse();
 		
 		btnGuardar.addActionListener(guardar);
@@ -231,7 +232,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
             public void actionPerformed(ActionEvent e)
             {         	    btnDeshacer.doClick();    	    }
         });
-	
+        
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
         getRootPane().getActionMap().put("nuevo", new AbstractAction(){
             public void actionPerformed(ActionEvent e)
@@ -266,6 +267,60 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 	
+	KeyListener opbusquedateclado = new KeyListener(){
+		@SuppressWarnings("static-access")
+		public void keyReleased(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if(caracter==e.VK_ENTER){
+				btnNuevo.doClick();
+				return;
+			}
+			
+			if(servicios.getGuardar_actualizar().equals("E")){	
+    			if(JOptionPane.showConfirmDialog(null, "Esta Editando Un Registro y No A Guardado Los Datos, \n"
+    					                             + "Al Dar Si Se Cargaran Los Datos Del Registro Seleccionado Sin Guardar La Edicion \n ¿Desea Continuar? " ) == 0){
+	        		int fila = tabla.getSelectedRow();
+	        		   folio_selecionado=Integer.valueOf(tabla.getValueAt(fila,0)+"");
+						txtServicio.setText(tabla.getValueAt(fila,1)+"");
+						txaDetalle.setText(tabla.getValueAt(fila,2)+"");
+						cmbPrioridades.removeActionListener(seleccion_prioridad);
+						cmbPrioridades.setSelectedItem(tabla.getValueAt(fila,3)+"");
+						cmbPrioridades.addActionListener(seleccion_prioridad);
+						cmbDepartamento.setEnabled(false);
+						cmbEstatus_Equipo.setEnabled(false);
+						cmbPrioridades.setEnabled(false);
+						btnGuardar.setEnabled(false);
+						btnAdjuntar.setEnabled(false);
+						lblArchivoAdjunto.setText("");
+						cmbEstatus.setEnabled(false);
+						txaDetalle.setEditable(false);
+    				return;
+    			}
+    		}else{		
+    		int fila = tabla.getSelectedRow();
+    		    btnNuevo.setEnabled(true);
+    		    folio_selecionado=Integer.valueOf(tabla.getValueAt(fila,0)+"");
+				txtServicio.setText(tabla.getValueAt(fila,1)+"");
+				txaDetalle.setText(tabla.getValueAt(fila,2)+"");
+				lblTiempoEstimado.setText(tabla.getValueAt(fila,4)+" Dia(s)"+tabla.getValueAt(fila,5)+" Hora(s)");
+				cmbPrioridades.removeActionListener(seleccion_prioridad);
+				cmbPrioridades.setSelectedItem(tabla.getValueAt(fila,3)+"");
+				cmbPrioridades.addActionListener(seleccion_prioridad);
+				cmbDepartamento.setEnabled(false);
+				cmbEstatus_Equipo.setEnabled(false);
+				cmbPrioridades.setEnabled(false);
+				btnGuardar.setEnabled(false);
+				btnAdjuntar.setEnabled(false);
+				lblArchivoAdjunto.setText("");
+				cmbEstatus.setEnabled(false);
+				txaDetalle.setEditable(false);
+				return;
+    	 }
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
+	
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -288,7 +343,6 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 	    						lblArchivoAdjunto.setText("");
 	    						cmbEstatus.setEnabled(false);
 	    						txaDetalle.setEditable(false);
-//	    						servicios.setGuardar_actualizar("");
 	        				return;
 	        			}
 	        		}else{		
@@ -345,7 +399,6 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		}
 	};
 	
-	
 	ActionListener actualizar_tabla = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			txtFolio.setText("");
@@ -388,7 +441,6 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 			cmbPrioridades.requestFocus();
 			cmbPrioridades.showPopup();
 			servicios_solicitud.setGuardar_actualizar("S");//guardar
-			
 		}
 	};
 	
@@ -407,7 +459,6 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){	
-			
 			panelLimpiar();
 			panelEnabledFalse();
 			txtFiltro.requestFocus();
@@ -415,6 +466,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 			btnAdjuntar.setEnabled(false);
 			cmbDepartamento.setEnabled(true);
 			modelo.setRowCount(0);
+			cmbDepartamento.showPopup();
 		}
 	};
 	
@@ -446,8 +498,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 				if(servicios_solicitud.getGuardar_actualizar().equals("E")){
 						if(JOptionPane.showConfirmDialog(null, "El Registro Ya Existe, ¿Desea Cambiarlo?") == 0){
 							if(servicios_solicitud.GuardarActualizar()){
-								init_tabla();
-								  btnDeshacer.doClick();
+								btnNuevo.doClick();
 								JOptionPane.showMessageDialog(null,"El Registró Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 								cmbDepartamento.requestFocus();
 								cmbDepartamento.showPopup();
@@ -464,11 +515,8 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 							} catch (SQLException e1) {
 								e1.printStackTrace();
 							}
-							
-							new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Solicitud Nueva De Servicio "+servicios_solicitud.getFecha_guardado());
-							
-							init_tabla();
-							btnDeshacer.doClick();
+							new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Solicitud De: "+txtServicio.getText().toString().toLowerCase()+" "+servicios_solicitud.getFecha_guardado());
+							btnNuevo.doClick();
 							JOptionPane.showMessageDialog(null,"La Solicitud Se Guardó y se ha enviado un correo al departamento de que solicito el servicio!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							cmbDepartamento.requestFocus();
 							cmbDepartamento.showPopup();

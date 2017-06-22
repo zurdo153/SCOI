@@ -27,7 +27,7 @@ public class Cat_Root_Lista_Raya extends JFrame {
 	
 	public JButton btn_guardar = new JButton("Guardar",new ImageIcon("Iconos/save_icon&16.png"));
 	public JButton btn_imprimir = new JButton("Imprimir",new ImageIcon("Iconos/print_icon&16.png"));
-	public JButton btn_refrescar = new JButton("Guardar y Actualizar",new ImageIcon("Iconos/refresh_icon&16.png"));
+	public JButton btn_refrescar = new JButton("Guardar y Actualizar",new ImageIcon("Imagen/Actualizar.png"));
 	public JButton btn_nomina = new JButton("Totales Nomina",new ImageIcon("Iconos/nomina_icon&16.png"));
 	public JButton btn_generar = new JButton("Generar Lista Raya",new ImageIcon("Iconos/generar_icon&16.png"));
 	//se agrega el nombre de la variable boton y se le agrega el icono

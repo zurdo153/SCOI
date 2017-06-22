@@ -12,6 +12,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -27,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
@@ -34,10 +38,13 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.toedter.calendar.JDateChooser;
+
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Compras.Obj_Alimentacion_De_Inventarios_Parciales;
+import Obj_Compras.Obj_Alimentacion_De_Productos_Proximos_A_Caducar;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
@@ -47,31 +54,34 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
+public class Cat_Alimentacion_De_Productos_Proximos_A_Caducar extends JFrame{
 	
-	Container cont = getContentPane();
-	JLayeredPane panel = new JLayeredPane();
-	Connexion con = new Connexion();
-	 Obj_tabla  Objetotabla = new Obj_tabla();
+	Container cont         = getContentPane();
+	JLayeredPane panel     = new JLayeredPane();
+    JToolBar menu_toolbar  = new JToolBar();
+	Connexion         con  = new Connexion();
+	Obj_tabla  Objetotabla = new Obj_tabla();
 	
-	int columnas = 7,checkbox=-1;
+	int columnas = 8,checkbox=-1;
 	public void init_tabla(){
-    	this.tabla.getColumnModel().getColumn(0).setMinWidth(90);	
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(50);	
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(380);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(100);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(70);
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(4).setMinWidth(100);
-    	this.tabla.getColumnModel().getColumn(5).setMinWidth(100);
-    	this.tabla.getColumnModel().getColumn(6).setMinWidth(100);
+    	this.tabla.getColumnModel().getColumn(5).setMinWidth(80);
+    	this.tabla.getColumnModel().getColumn(6).setMinWidth(80);
+    	this.tabla.getColumnModel().getColumn(7).setMinWidth(80);
     	
-		String comando="Select '' as Codigo_Producto, '' as Descripcion, 0 as  Existencia, 0 as Existencia_Fisica ,0 as Diferencia, 0 as Ultimo_Costo, 0 as Costo_Promedio " ;
+		String comando="Select '' as Codigo_Producto, '' as Descripcion, 0 as  Existencia, 0 as Cantidad ,'' as Fecha_Caducidad, 0 as Ultimo_Costo, 0 as Costo_Promedio , 0 as Precio_Venta" ;
 		String basedatos="26",pintar="si";
 		Objetotabla.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
-  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Existencia","Existencia Fisica","Diferencia","Ultimo_Costo","Costo_Promedio" }){
+  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Existencia","Cantidad","Fecha Caducidad","Ultimo Costo","Costo Promedio "," Precio Venta" }){
 	 @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
+				java.lang.Object.class,
 				java.lang.Object.class,
 				java.lang.Object.class,
 				java.lang.Object.class,
@@ -83,10 +93,11 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
-         return types[columnIndex];
-     }
+              return types[columnIndex];
+        }
+		
 		public boolean isCellEditable(int fila, int columna){
-			if(columna ==3)
+			if(columna ==3||columna ==4)
 				return true; return false;
 		}
     };
@@ -101,64 +112,82 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	JCButton btnQuitarfila= new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
 	JCButton btnProducto  = new JCButton("Productos"    ,"Filter-List-icon16.png","Azul");
 	JCButton btnReporte   = new JCButton("Reporte"      ,"Lista.png","Azul");
-	JCButton btnBuscar    = new JCButton("Inventarios"  ,"Filter-List-icon16.png","Azul"); 
+	JCButton btnBuscar    = new JCButton("Buscar"       ,"Filter-List-icon16.png","Azul"); 
 	JCButton btnNuevo     = new JCButton("Nuevo"        ,"Nuevo.png","Azul");
 	JCButton btnEditar    = new JCButton("Editar"       ,"editara.png","Azul");
 	JCButton btnGuardar   = new JCButton("Guardar"      ,"Guardar.png","Azul");
 	JCButton btnDeshacer  = new JCButton("Deshacer"     ,"deshacer16.png","Azul");
 	
-	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+
+	String status[] = {"VIGENTE","CANCELADO"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmb_status = new JComboBox(status);
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	int fila=0;
     int columna=0;
-    Object[] vector = new Object[7];
+    Object[] vector = new Object[8];
     
     JTextArea txaNota 	= new Componentes().textArea(new JTextArea(), "Nota", 500);
 	JScrollPane Nota = new JScrollPane(txaNota);
-    
-   public  Cat_Alimentacion_De_Inventarios_Parciales(){
+	JDateChooser fecha = new JDateChooser();
+
+   public  Cat_Alimentacion_De_Productos_Proximos_A_Caducar(){
 	   this.cont.add(panel);
 		this.setSize(1024,768);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		this.setTitle("Alimentacion De Inventarios Parciales");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
+		this.setTitle("Alimentacion De Productos Proximos a Caducar");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/de-entrada-de-alerta-icono-4398-48.png"));
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
-		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Alimentacion De Inventarios Parciales Fisicos De Establecimientos "));
+		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Alimentacion De Productos Proximos a Caducar "));
         cont.setBackground(new java.awt.Color(255, 255, 255));
    	    tabla.getTableHeader().setReorderingAllowed(false) ;
    	
 		int x=20, y=20,width=122,height=20, sep=135;
-		panel.add(txtFolio).setBounds                      (x         ,y      ,width   ,height );
-		panel.add(btnBuscar).setBounds                     (x+=sep    ,y      ,width   ,height );
-		panel.add(cmbEstablecimiento).setBounds            (x+=sep+30 ,y      ,width+60,height );
+		panel.add(menu_toolbar).setBounds                  (x         ,y      ,400     ,height );
+		panel.add(txtFolio).setBounds                      (x         ,y+=30  ,width   ,height );
+		panel.add(cmb_status).setBounds   		           (x+=sep    ,y      ,width   ,height );
+		panel.add(cmbEstablecimiento).setBounds            (x+=sep    ,y      ,width+60,height );
 		panel.add(new JLabel("Nota:")).setBounds           (x+sep+60  ,y-15   ,50      ,height );
-		panel.add(Nota).setBounds                          (x+sep+60  ,y      ,480     ,50     );
+		panel.add(Nota).setBounds                          (x+sep+60  ,y      ,508     ,50     );
 		
 		x=20;
 		panel.add(txtcod_prod).setBounds                   (x         ,y+=30  ,width   ,height );
 		panel.add(btnProducto).setBounds                   (x+=sep    ,y      ,width   ,height );
+		panel.add(new JLabel("Fecha:")).setBounds          (x+=sep    ,y      ,width   ,height );
+		panel.add(fecha).setBounds                         (x+=35     ,y      ,width+25,height );
 		
 		x=20;
 		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,800     ,height );
+
 		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
 		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
-		panel.add(btnNuevo  ).setBounds                    (x         ,y+=600 ,width   ,height );
-		panel.add(btnDeshacer).setBounds                   (x+=sep    ,y      ,width   ,height );
-		panel.add(btnGuardar).setBounds                    (x+=sep    ,y      ,width   ,height );
-		panel.add(btnReporte).setBounds                    (x+=sep    ,y      ,width   ,height );
-//		panel.add(btnEditar).setBounds                     (x+=sep    ,y    ,width   ,height );
+
+		this.menu_toolbar.add(btnBuscar);
+	    this.menu_toolbar.addSeparator( );
+	    this.menu_toolbar.addSeparator( );
+	    this.menu_toolbar.add(btnNuevo);
+	    this.menu_toolbar.addSeparator();
+	    this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnDeshacer);
+		this.menu_toolbar.addSeparator();
+		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnReporte);
+		this.menu_toolbar.addSeparator();
+		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnGuardar);
+		this.menu_toolbar.setFloatable(false);
 		
 		txaNota.setLineWrap(true); 
 		txaNota.setWrapStyleWord(true);
 		txaNota.setEditable(false);
-		
+		cmb_status.setEnabled(false);
 		txtcod_prod.setEnabled(false);
 		btnGuardar.setEnabled(false);
 		btnQuitarfila.setEnabled(false);
@@ -184,7 +213,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 		btnReporte.addActionListener(opGenerar);
 		
 		agregar(tabla);
-		
+		fecha.setDate(cargar_fechas(-3));
 		
 		 this.addWindowListener(new WindowAdapter() {
 	            public void windowOpened( WindowEvent e ){
@@ -222,6 +251,18 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	                 
     }
    
+	public Date cargar_fechas(Integer dias){
+		Date date1 = null;
+				  try {
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		return date1;
+	};
+	
 	KeyListener Buscar_Datos_Producto = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
 		public void keyReleased(KeyEvent e) {}
@@ -236,10 +277,19 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {
 			fila=tabla.getSelectedRow();
-			if(Objetotabla.validacelda(tabla,"decimal", fila, columna)){
-				  RecorridoFoco(fila,"x"); 
-				  calculo_diferencia(fila);
-			}
+			
+            if(columna==4){
+            	if(Objetotabla.validacelda(tabla,"fecha", fila, columna)){
+  				  txtcod_prod.requestFocus();
+  			     }
+            	
+            }else{
+            	columna=3;
+            	if(Objetotabla.validacelda(tabla,"decimal", fila, columna)){
+  				  RecorridoFoco(fila,"x"); 
+  			     }
+            }
+            
 		}
 		public void keyPressed(KeyEvent e) {}
 	};
@@ -252,13 +302,6 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	public void keyTyped(KeyEvent arg0) {}
 	public void keyPressed(KeyEvent arg0) {}	
     };
-	
-	public void calculo_diferencia(int fila){
-  		  double existencia=Double.valueOf(tabla.getValueAt(fila,2).toString());
-		  double existenciafisica=Double.valueOf(tabla.getValueAt(fila,3).toString());
-		  double valor=existenciafisica-existencia;
-		 tabla.setValueAt(valor, fila, 4);
-	 }
 	
 	ActionListener Establecimiento = new ActionListener() {
         @Override
@@ -283,9 +326,8 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	
 	ActionListener opQuitarfila = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
 			int seleccion = tabla.getSelectedRow();
-			
+
 			if(seleccion<0){
 				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -302,7 +344,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			String folio_inventario="";
 			try {
-				folio_inventario= new BuscarSQL().folio_siguiente(70+"");
+				folio_inventario= new BuscarSQL().folio_siguiente(42+"");
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -315,6 +357,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 			btnReporte.setEnabled(false);
 			btnNuevo.setEnabled(false);
 			txaNota.setEditable(true);
+			cmb_status.setSelectedIndex(0);
 			cmbEstablecimiento.setEnabled(true);
 			cmbEstablecimiento.requestFocus();
 			cmbEstablecimiento.showPopup();
@@ -353,23 +396,44 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 		}
 	};
 	
-	
 	ActionListener guardar = new ActionListener(){
 	public void actionPerformed(ActionEvent e){
-			 String[][] tabla_guardado = Objetotabla.tabla_guardar(tabla);
+			 String[][] tabla_guardado = Objetotabla.tabla_guardar_sin_validacion(tabla);
 			 if(tabla_guardado.length==0){
-				 return;
+				 if(txaNota.getText().toString().trim().equals("")){
+					  JOptionPane.showMessageDialog(null, "Para Guardar El Registro Vacio Se Requiere Que Argumente En Las Notas El Porque Se Guarda Sin Alimentar Productos", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				 }else{
+					 
+					 Obj_Alimentacion_De_Productos_Proximos_A_Caducar Productos_Proximos_a_Caducar = new Obj_Alimentacion_De_Productos_Proximos_A_Caducar();
+					 Productos_Proximos_a_Caducar.setTabla_obj(tabla_guardado);
+					 Productos_Proximos_a_Caducar.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
+					 Productos_Proximos_a_Caducar.setNotas    (txaNota.getText().toString().trim()+" ");
+					 Productos_Proximos_a_Caducar.setStatus(cmb_status.getSelectedItem().toString().trim());
+					 Productos_Proximos_a_Caducar.setGuardar_actualizar("Registro Vacio");
+					  
+					  if(Productos_Proximos_a_Caducar.Guardar_Alimentacion_Proximos_A_Caducar() ){
+			                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente los Productos Proximos a Caducar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+			                 deshacer();
+						     btnReporte.doClick();
+				      }else{
+						JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+				    	return;
+				      }
+					 return;
+				 }
 			 }else{		 
-				 Obj_Alimentacion_De_Inventarios_Parciales Inventarios_Parciales= new Obj_Alimentacion_De_Inventarios_Parciales();
-				  Inventarios_Parciales.setTabla_obj(tabla_guardado);
-				  Inventarios_Parciales.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
-				  Inventarios_Parciales.setNotas    (txaNota.getText().toString().trim()+" ");
-				  Inventarios_Parciales.setStatus("V");
+				 
+				 Obj_Alimentacion_De_Productos_Proximos_A_Caducar Productos_Proximos_a_Caducar = new Obj_Alimentacion_De_Productos_Proximos_A_Caducar();
+				 Productos_Proximos_a_Caducar.setTabla_obj(tabla_guardado);
+				 Productos_Proximos_a_Caducar.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
+				 Productos_Proximos_a_Caducar.setNotas    (txaNota.getText().toString().trim()+" ");
+				 Productos_Proximos_a_Caducar.setStatus(cmb_status.getSelectedItem().toString().trim());
+				 Productos_Proximos_a_Caducar.setGuardar_actualizar("Guardar");
 				  
-				  if(Inventarios_Parciales.Guardar_inventario_parcial()){
-		                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente el inventario parcial", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-		            	 deshacer();
-//		           	btnReporte.doClick();
+				  if(Productos_Proximos_a_Caducar.Guardar_Alimentacion_Proximos_A_Caducar() ){
+		                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente los Productos Proximos a Caducar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+		                 deshacer();
+					     btnReporte.doClick();
 			      }else{
 					JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 			    	return;
@@ -378,24 +442,22 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	  }			
     };
     
-    
     ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 	   		 if(!txtFolio.getText().equals("")){
 	 			String basedatos="2.26";
 				String vista_previa_reporte="no";
 				int vista_previa_de_ventana=0;
-				String comando="exec sp_select_datos_inventario_fisico_parcial  "+Integer.valueOf(txtFolio.getText().toUpperCase().trim());
-				String reporte = "Obj_Reporte_De_Inventario_Parcial.jrxml";
+				String comando="exec Sp_Reporte_De_Captura_De_Productos_Proximos_A_Caducar  "+Integer.valueOf(txtFolio.getText().toUpperCase().trim());
+				String reporte = "Obj_Reporte_De_Productos_Proximos_A_Caducar.jrxml";
     			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		       }else{
-		    	   JOptionPane.showMessageDialog(null,"Necesita Teclear Un Folio de Inventario Fisico Parcial para Generar El Reporte","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+		    	   JOptionPane.showMessageDialog(null,"Necesita Teclear Un Folio para Generar El Reporte","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 		    	   txtFolio.requestFocus();
 		    	   return;
 		       }
 		}
 	};
-	
 	
 	public void deshacer(){
 		txaNota.setText("");
@@ -413,16 +475,16 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 		btnQuitarfila.setEnabled(false);
 		btnBuscar.setEnabled(true);
 		btnReporte.setEnabled(true);
+		fecha.setDate(cargar_fechas(-3));
 	}
-	
 	
 	public void buscar_producto(){
 		int testigo=0;
 	     if(!txtcod_prod.getText().equals("")){
 	    	 txtFiltro.setText("");
 	    	 
-	    	int[] columnas ={0,1,2,3,4,5};
-	    	new Obj_Filtro_Dinamico_Plus(tabla , txtFiltro.getText().toString().trim().toUpperCase(), columnas  );
+	    	int[] columnas ={0,1,2,3,4,5,6};
+	    	new Obj_Filtro_Dinamico_Plus(tabla , txtFiltro.getText().toString().trim().toUpperCase(), columnas);
 	    	 
 			try {
 				if(new Obj_Cotizaciones_De_Un_Producto().Existe_Producto(txtcod_prod.getText().trim().toUpperCase()+"")){
@@ -434,37 +496,47 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 				         	   fila=i+1;
 						 };							
 					  }
-					
 					if(Datos_Producto.getUltimo_Costo()==0){
 						JOptionPane.showMessageDialog(null, "El Producto "+Datos_Producto.getCod_Prod()+"\n"+Datos_Producto.getDescripcion_Prod()+"\n No Tiene Costo En El Establecimiento" ,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					    return;
 					}else{
+						 String fechaventana=fecha.getDate()+"";
+						 if(fechaventana.equals("null")){
+				         	 JOptionPane.showMessageDialog(null, "Alimente o Selecione una Fecha Valida", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png")); 
+						   return;
+						 }
 						
-					  if(testigo==0){
-				 		  vector[0] = Datos_Producto.getCod_Prod() ;
-				 		  vector[1] = Datos_Producto.getDescripcion_Prod();
-				 		  vector[2] = Datos_Producto.getExistencia();
-				 		  vector[3] = 0;
-				 		  vector[4] = 0;
-				 		  vector[5] = Datos_Producto.getUltimo_Costo();
-				 		  vector[6] = Datos_Producto.getCosto_Promedio();
+						String fecha_dato = new SimpleDateFormat("dd/MM/yyyy").format(fecha.getDate());
+						if(Objetotabla.validarfecha(fecha_dato).equals("Fecha Invalida")){
+				         	 JOptionPane.showMessageDialog(null, "Alimente o Selecione una Fecha Valida", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png")); 
+						return;
+						}
 
-				 		  modelo.addRow(vector);
-	 			 		  txtcod_prod.setText("");
-	 			 		  fila=tabla.getRowCount();
-	 			 		  
-						  	 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-							  	       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "BUSCA");
-								        getRootPane().getActionMap().put("BUSCA", new AbstractAction(){
+						if(testigo==0){
+					 		  vector[0] = Datos_Producto.getCod_Prod() ;
+					 		  vector[1] = Datos_Producto.getDescripcion_Prod();
+					 		  vector[2] = Datos_Producto.getExistencia();
+					 		  vector[3] = 0;
+					 		  vector[4] = fecha_dato;
+					 		  vector[5] = Datos_Producto.getUltimo_Costo();
+					 		  vector[6] = Datos_Producto.getCosto_Promedio();
+					 		  vector[7] = Datos_Producto.getPrecio_venta();
+					 		  modelo.addRow(vector);
+		 			 		  txtcod_prod.setText("");
+		 			 		  fila=tabla.getRowCount();
+		 			 		  
+		 			 		 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+							  KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "BUSCA");
+							 getRootPane().getActionMap().put("BUSCA", new AbstractAction(){
 								        @Override
-								     public void actionPerformed(ActionEvent e){
+							    public void actionPerformed(ActionEvent e){
 								        	  columna=3;
-								                    RecorridoFoco(fila, "no");
-								                    }
-								    });
-					      }
+								              RecorridoFoco(fila, "no");
+							    }
+							 });
+								        
+					    }
 					}
-					return;
 				}else{
 					fila=1;
 					JOptionPane.showMessageDialog(null, "El Codigo Esta Mal Escrito o El Producto No Existe" ,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -486,7 +558,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 1){
-	        		columna=3;
+	        		columna=tabla.getSelectedColumn();
 	        		RecorridoFoco(tbl.getSelectedRow()-1,"x");
 	        	}
 	        }
@@ -642,12 +714,12 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 			    	this.tabla3.getColumnModel().getColumn(6).setMinWidth(120);
 			    	this.tabla3.getColumnModel().getColumn(7).setMinWidth(220);
 			    	
-					String comando="exec sp_select_filtro_de_inventarios_fisicos_parciales '01/11/2016 23:59:59'" ;
+					String comando="exec sp_select_filtro_de_productos_proximos_a_caducar " ;
 					String basedatos="26",pintar="si";
 					Objetotabla.Obj_Refrescar(tabla3,modelo3, columnas, comando, basedatos,pintar,checkbox);
 			    }
 				
-			  public DefaultTableModel modelo3 = new DefaultTableModel(null, new String[]{"Folio Inventario" ,"Establecimiento" ,"Fecha" ,"Diferencia" ,"Usuario Capturo" ,"Estatus","Fecha Cancelacion","Usuario Cancelacion"}){
+			  public DefaultTableModel modelo3 = new DefaultTableModel(null, new String[]{"Folio Inventario" ,"Establecimiento" ,"Fecha" ,"Costo total" ,"Usuario Capturo" ,"Estatus","Fecha Cancelacion","Usuario Cancelacion"}){
 				 @SuppressWarnings("rawtypes")
 					Class[] types = new Class[]{
 							java.lang.Object.class,
@@ -686,11 +758,11 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 				this.setSize(ancho, alto);
 				this.setResizable(false);
 				this.setLocationRelativeTo(null);
-				this.setTitle("Filtro De Busqueda De Inventarios Fisicos Parciales");
+				this.setTitle("Filtro De Busqueda De Productos Proximos a Caducar");
 				this.setModal(true);				
 				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/lista-icono-7220-32.png"));
 				blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
-				panel.setBorder(BorderFactory.createTitledBorder(blackline,"Doble Click A El Inventario Deseado"));
+				panel.setBorder(BorderFactory.createTitledBorder(blackline,"Doble Click Al Registro Deseado"));
 				this.cont.add(panel);
 
 				trsfiltro = new TableRowSorter(modelo3); 
@@ -738,7 +810,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Alimentacion_De_Inventarios_Parciales().setVisible(true);
+			new Cat_Alimentacion_De_Productos_Proximos_A_Caducar().setVisible(true);
 		}catch(Exception e){	}
 	}
 };

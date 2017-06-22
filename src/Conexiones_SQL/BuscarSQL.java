@@ -9475,9 +9475,9 @@ public int  dias_de_vacaciones_pendientes_del_ultimo_anio(String fecha_in,String
 	return dias;
 }
 
-public String Folio_Siguiente_alimentacion_inventarios_parciales() throws SQLException{
+public String folio_siguiente(String Transaccion) throws SQLException{
 	String folio = "";
-	String query = "select folio+1 from tb_folios where folio_transaccion=70 ";
+	String query = "select folio+1 from tb_folios where folio_transaccion="+Transaccion;
 	Statement stmt = null;
 	try {
 		stmt = con.conexion().createStatement();
@@ -9513,12 +9513,16 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			+ "			 SELECT   productos.cod_prod"
 			+ "					 ,productos.descripcion"
 			+ " 		         ,convert(numeric(10,2),isnull(sum( ((productos.contenido*prodestab.exist_unidades)+exist_piezas) ),0)) as existencia"
+			+ "                  ,convert(varchar(10),getdate(),103) as fecha_actual "
 			+ "				     ,ISNULL(convert(numeric(10,2),prodestab.ultimo_costo),0) as ultimo_costo "
 			+ "				     ,ISNULL(convert(numeric(10,2),prodestab.costo_promedio),0) as costo_promedio "
+			+ "                  ,convert(numeric (10,2),case 1 WHEN 0 then dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '1', 1, 0, 0) "
+			+ "												  ELSE 	dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '1', 1, 0, 0) "
+			+ "													* (1 + dbo.Ieps(productos.cod_prod)/100) * (1 + (CASE 'I' WHEN 'I' THEN productos.iva_interior ELSE productos.iva_fronterizo END/100))  END) as precio_venta"
 			+ "  		  from productos with (nolock)"
 			+ "  	  	    left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod and prodestab.cod_estab=@cod_estab"
 			+ "			  where productos.cod_prod=@cod_prod "
-			+ "						  group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio ";	
+			+ "						  group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio,productos.iva_interior,productos.iva_fronterizo ";	
 	
 	Statement stmt2= null;
 					try {
@@ -9530,8 +9534,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 								   datosproducto.setExistencia      (rs2.getDouble("existencia"));
 								   datosproducto.setUltimo_Costo    (rs2.getDouble("ultimo_costo"));
 								   datosproducto.setCosto_Promedio  (rs2.getDouble("costo_promedio"));
+								   datosproducto.setPrecio_venta    (rs2.getDouble("precio_venta"));
 							   }
-						
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_producto_existencia \n SQLException: "+e.getMessage(),"Avise Al Adiministrador",JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 						e.printStackTrace();
@@ -10106,6 +10110,29 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				+ " if @email='' set @email='NO TIENE'"
 				+ " if @email is null  set @email='NO TIENE'"
 				+ " select @email,convert(varchar(20),getdate(),103)+' '+convert(varchar(20),getdate(),108)";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){				
+				servicios.setCorreos(rs.getString(1));
+				servicios.setCantidad_de_correos(1);
+				servicios.setFecha_guardado(rs.getString(2));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return servicios;
+	}
+	
+	public Obj_Servicios correo_informa_asignacion(int folio) throws SQLException{
+		Obj_Servicios servicios = new Obj_Servicios();
+		String query = "exec sp_correo_de_persona_se_asigno "+folio;
 		
 		Statement stmt = null;
 		try {
