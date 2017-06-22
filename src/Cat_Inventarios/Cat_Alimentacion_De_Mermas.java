@@ -1,7 +1,5 @@
 package Cat_Inventarios;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.FileDialog;
@@ -18,52 +16,27 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
-import javax.media.Buffer;
-import javax.media.CannotRealizeException;
-import javax.media.CaptureDeviceInfo;
-import javax.media.Format;
-import javax.media.Manager;
-import javax.media.MediaLocator;
-import javax.media.NoPlayerException;
-import javax.media.Player;
-import javax.media.cdm.CaptureDeviceManager;
-import javax.media.control.FrameGrabbingControl;
-import javax.media.format.RGBFormat;
-import javax.media.format.VideoFormat;
-import javax.media.format.YUVFormat;
-import javax.media.util.BufferToImage;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.LayoutStyle;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -149,7 +122,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 	JTextField txtcod_prod =new Componentes().text(new JTextField(), "Codigo Del Producto", 25, "String");
 	JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 	
-	JCButton btnQuitarfila= new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
+//	JCButton btnQuitarfila= new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
 	JCButton btnProducto  = new JCButton("Productos"    ,"Filter-List-icon16.png","Azul");
 	JCButton btnReporte   = new JCButton("Reporte"      ,"Lista.png","Azul");
 	JCButton btnBuscar    = new JCButton("Mermas"  ,"Filter-List-icon16.png","Azul"); 
@@ -249,7 +222,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		
 		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,800     ,height );
 		
-		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
+//		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
 		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
 		panel.add(btnNuevo  ).setBounds                    (x         ,y+=585 ,width   ,height );
 		panel.add(btnDeshacer).setBounds                   (x+=sep    ,y      ,width   ,height );
@@ -263,7 +236,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		
 		txtcod_prod.setEnabled(false);
 		btnGuardar.setEnabled(false);
-		btnQuitarfila.setEnabled(false);
+//		btnQuitarfila.setEnabled(false);
 		btnProducto.setEnabled(false);
 		cmbEstablecimiento.setEnabled(false);
 //		btnExaminar.setEnabled(false);
@@ -287,13 +260,13 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		txtcod_prod.addKeyListener(Buscar_Datos_Producto);
 		tabla.addKeyListener(op_validanumero_en_celda);
 		
-//		cmbEstablecimiento.addActionListener(Establecimiento);
+		cmbEstablecimiento.addActionListener(Establecimiento);
 		btnNuevo.addActionListener(nuevo);
 		btnDeshacer.addActionListener(deshacer);
 		btnProducto.addActionListener(filtro_productos);
 		btnBuscar.addActionListener(filtro_inventarios);
 		btnGuardar.addActionListener(guardar);
-		btnQuitarfila.addActionListener(opQuitarfila);
+//		btnQuitarfila.addActionListener(opQuitarfila);
 		btnReporte.addActionListener(opGenerar);
 		
 		btnExaminar.addActionListener(opExaminar);
@@ -431,43 +404,43 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		  tabla.setValueAt(total_costo_promedio, fila, 11);
 	 }
 	
-//	ActionListener Establecimiento = new ActionListener() {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            String s = cmbEstablecimiento.getSelectedItem().toString().trim();
-//            switch (s) {
-//                case "Selecciona un Establecimiento":
-//                	 JOptionPane.showMessageDialog(null, "Se Requiere Seleccionar Un Establecimiento", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//         			 cmbEstablecimiento.setEnabled(true);
-//        			 cmbEstablecimiento.requestFocus();
-//        			 cmbEstablecimiento.showPopup();
-//                	 break;
-//                  default:
-//                	 cmbEstablecimiento.setEnabled(false);
-//                	 btnProducto.setEnabled(true);
-//                	 txtcod_prod.setEnabled(true);
-//                	 txtcod_prod.requestFocus();
-//                     break;
-//            }
-//        }
-//    };
-	
-	ActionListener opQuitarfila = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			
-			int seleccion = tabla.getSelectedRow();
-			
-			if(seleccion<0){
-				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-				return;
-			}else{
-				if(seleccion < tabla.getRowCount()){
-					modelo.removeRow(seleccion);
-					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
-				}
-			}
-		}
-	};
+	ActionListener Establecimiento = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String s = cmbEstablecimiento.getSelectedItem().toString().trim();
+            switch (s) {
+                case "Selecciona un Establecimiento":
+                	 JOptionPane.showMessageDialog(null, "Se Requiere Seleccionar Un Establecimiento", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+         			 cmbEstablecimiento.setEnabled(true);
+        			 cmbEstablecimiento.requestFocus();
+        			 cmbEstablecimiento.showPopup();
+                	 break;
+                  default:
+                	 cmbEstablecimiento.setEnabled(false);
+                	 btnProducto.setEnabled(true);
+                	 txtcod_prod.setEnabled(true);
+                	 txtcod_prod.requestFocus();
+                     break;
+            }
+        }
+    };
+    
+//	ActionListener opQuitarfila = new ActionListener() {
+//		public void actionPerformed(ActionEvent e) {
+//			
+//			int seleccion = tabla.getSelectedRow();
+//			
+//			if(seleccion<0){
+//				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+//				return;
+//			}else{
+//				if(seleccion < tabla.getRowCount()){
+//					modelo.removeRow(seleccion);
+//					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
+//				}
+//			}
+//		}
+//	};
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -490,7 +463,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 			txtFolio.setEditable(false);
            
 			btnGuardar.setEnabled(true);
-			btnQuitarfila.setEnabled(true);
+//			btnQuitarfila.setEnabled(true);
 			btnBuscar.setEnabled(false);
 			btnReporte.setEnabled(false);
 			btnNuevo.setEnabled(false);
@@ -624,7 +597,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		btnGuardar.setEnabled(false);
 		btnNuevo.setEnabled(true);
 		btnProducto.setEnabled(false);
-		btnQuitarfila.setEnabled(false);
+//		btnQuitarfila.setEnabled(false);
 		btnBuscar.setEnabled(true);
 		btnReporte.setEnabled(true);
 		
@@ -634,7 +607,8 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		folio_usuario_valida = 0;
 		tipo_de_usuario = "NORMAL";
 		
-		rutaFoto=null;
+		rutaFoto="";
+		imagMerma();
 	}
 	
 	public void buscar_producto(){
@@ -838,295 +812,6 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 				public void mouseClicked(MouseEvent e) {}
 			});
 		}
-	}
-	
-	public class MainCamara extends javax.swing.JFrame {
-		
-		
-	    private Dispositivos misDispositivos;
-	    String nombre;
-	    JButton btnGuardar = new JButton("Guardar");
-	    JButton btnSalir = new JButton("Salir");
-	    JPanel jPWebCam = new JPanel();
-	    JPanel jPanel1 = new JPanel();
-	    JScrollPane jScrollPane1 = new JScrollPane();
-	    JTextArea txtInfo = new JTextArea();
-	    JTextField txtNombre = new JTextField();
-	    
-	    public MainCamara(String folio) {
-	    	nombre=folio;
-	        initComponents();
-	        misDispositivos= new Dispositivos(this);
-	        btnGuardar.setEnabled(false);
-	        setLocationRelativeTo(null);
-	        ver();
-	    }
-
-	    private void initComponents() {
-	    	this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/camara_icon&16.png"));
-	        this.setTitle("Captura Foto");
-	 
-	        jPWebCam.setBorder(javax.swing.BorderFactory.createTitledBorder("Wisky!"));
-	        jPWebCam.setLayout(new java.awt.BorderLayout());
-	        
-	        getContentPane().add(jPWebCam, java.awt.BorderLayout.CENTER);
-
-	        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-	        jPanel1.setPreferredSize(new java.awt.Dimension(397, 160));
-
-	        txtInfo.setColumns(20);
-	        txtInfo.setRows(5);
-	        jScrollPane1.setViewportView(txtInfo);
-	        
-	        btnSalir.addActionListener(new ActionListener(){
-	        	public void actionPerformed(ActionEvent evt){
-	        		misDispositivos.salir();
-	        		dispose();
-	        	}
-	        });
-	        btnGuardar.addActionListener(new ActionListener(){
-	            public void actionPerformed(ActionEvent evt){
-	            	 misDispositivos.CapturaFoto();
-	            }
-	        });
-	        
-	        addWindowListener( new java.awt.event.WindowAdapter() {
-	        	public void windowClosing(java.awt.event.WindowEvent e ) { 
-	        		misDispositivos.salir();
-	        		dispose();
-	        	} 
-	        });
-
-	        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
-	        
-	        jPanel1.setLayout(jPanel1Layout);
-	        jPanel1Layout.setHorizontalGroup(
-	        		jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-	            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-	                .addGap(71, 71, 71)
-	                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
-	                .addComponent(btnGuardar)
-	                .addGap(20, 20, 20)
-	                .addComponent(btnSalir)
-	                .addGap(10, 10, 10))
-	            .addGroup(jPanel1Layout.createSequentialGroup()
-	                .addContainerGap()
-	                .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
-	                .addContainerGap()));
-	        
-	        jPanel1Layout.setVerticalGroup(
-	            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-	            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-	                .addContainerGap()
-	                .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-	                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-	                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-	                    .addComponent(btnGuardar)
-	                    .addComponent(btnSalir))
-	                .addContainerGap()));
-	      
-	        getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
-
-	        setSize(new java.awt.Dimension(430, 513));
-	    }
-
-	    public void ver(){
-	    	btnGuardar.setEnabled(true);
-	    	infoDispositivo();
-	    	try {
-				misDispositivos.MuestraWebCam(jPWebCam,"vfw:Microsoft WDM Image Capture (Win32):0","yuv");
-			} catch (CannotRealizeException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	    }
-	    
-	    private void infoDispositivo() {
-	        txtInfo.setText(misDispositivos.verInfoDispositivos());
-	    }
-	 
-	}
-	
-	public class JMenuFormato extends JMenuItem implements ActionListener{
-	    private int ancho;
-	    private int alto;
-	    @SuppressWarnings("unused")
-		private JPanel modificable;
-	    private MainCamara padre;
-
-	    public JMenuFormato(String etiqueta,int ancho,int alto,MainCamara Padre,JPanel modificable)
-	    {
-	        super(etiqueta);
-	        this.modificable=modificable;
-	        this.ancho=ancho;
-	        this.alto=alto;
-	        this.addActionListener(this);
-	        this.padre=Padre;
-	    }
-
-	    public void actionPerformed(ActionEvent e) {
-	        padre.setSize(ancho, alto+200);
-	    }
-	}
-	
-	public class Dispositivos {
-
-	    private MainCamara padre;
-		private Player player;
-		
-		public Dispositivos(){
-			
-		}
-		
-		public Dispositivos(MainCamara padre){
-	        this.padre=padre;
-	    }
-
-	   
-		@SuppressWarnings("rawtypes")
-		public String verInfoDispositivos()
-	    {
-	      String rpta="";
-	      Vector listaDispositivos = null;
-	      
-	     listaDispositivos = CaptureDeviceManager.getDeviceList();
-	     Iterator it = listaDispositivos.iterator();
-	      while (it.hasNext())
-	      {
-	        CaptureDeviceInfo cdi = (CaptureDeviceInfo)it.next();
-	        rpta+=cdi.getName()+"\n";
-	      }
-	      
-	      if(rpta.compareTo("")!=0)
-	          rpta="Dispositivos detectados:\n\n"+rpta;
-	      else
-	          rpta="Sin Dispositivos Detectados";
-	      
-	      return rpta;
-	    }
-		public void salir(){
-			player.close();
-		}
-		
-		@SuppressWarnings("rawtypes")
-		public void detectarDispositivos(JMenu dispositivos)
-	    {
-	      Vector listaDispositivos = null;
-	      listaDispositivos = CaptureDeviceManager.getDeviceList();
-	      Iterator it = listaDispositivos.iterator();
-
-	      String nombre="";
-	      while (it.hasNext())
-	      {
-	          CaptureDeviceInfo cdi = (CaptureDeviceInfo)it.next();
-	          nombre=cdi.getName(); //cdi.getName() --> Obtiene el nombre del Dispositivo Detectado
-	          
-	          if(nombre.indexOf("Image")!=-1)
-	          {
-	              JMenu menuFormato=new JMenu(nombre);
-	              JMenuFormato tamanios=null;
-	              CaptureDeviceInfo dev = CaptureDeviceManager.getDevice(nombre);
-	              Format[] cfmts = dev.getFormats();
-
-	              for(int i=0; i<cfmts.length;i++)
-	              {
-	                  if(cfmts[i].getEncoding().compareTo("yuv")==0)
-	                  {tamanios=new JMenuFormato(cfmts[i].getEncoding()+" "+
-	                          ((YUVFormat)cfmts[i]).getSize().width+"x"+
-	                          ((YUVFormat)cfmts[i]).getSize().height,
-	                          ((YUVFormat)cfmts[i]).getSize().width,
-	                          ((YUVFormat)cfmts[i]).getSize().height,
-	                          padre,
-	                          padre.jPWebCam);
-	                  }
-	                  else if(cfmts[i].getEncoding().compareTo("rgb")==0)
-	                  {tamanios=new JMenuFormato(cfmts[i].getEncoding()+" "+
-	                          ((RGBFormat)cfmts[i]).getSize().width+"x"+
-	                          ((RGBFormat)cfmts[i]).getSize().height,
-	                          ((RGBFormat)cfmts[i]).getSize().width,
-	                          ((RGBFormat)cfmts[i]).getSize().height,
-	                          padre,
-	                          padre.jPWebCam);
-	                  }
-	                  menuFormato.add(tamanios);
-	              }
-	              dispositivos.add(menuFormato);
-	          }
-	      }
-	    }
-
-		public void MuestraWebCam(JPanel panelCam,String dispositivo,String FormatoColor) throws IOException, CannotRealizeException {
-			if(player != null)
-	            return;
-	        
-	        CaptureDeviceInfo dev = CaptureDeviceManager.getDevice(dispositivo);
-	        MediaLocator loc = dev.getLocator();
-	        try {
-	                player = Manager.createRealizedPlayer(loc);
-	                System.out.println(player);
-	               
-	            } catch (IOException ex) {
-	            	System.out.println("Ponga la camara 0");
-	            } catch (NoPlayerException ex) {
-	            	System.out.println("Ponga la camara 1");
-	            } catch (CannotRealizeException ex) { 
-	            	System.out.println("Ponga la camara 3");
-	            }
-	          
-	    
-	        player.start();
-	           
-	        try {
-	        	
-	            Thread.sleep(1000);
-	        } catch (InterruptedException ex) { }
-
-	        Component comp;
-
-	        if ((comp = player.getVisualComponent())!= null) {
-	          panelCam.add(comp,BorderLayout.CENTER);
-	          padre.pack();
-	        }
-	    }
-	    
-		@SuppressWarnings("unused")
-		public void CapturaFoto() {
-	    	Image img=null;
-	        FrameGrabbingControl fgc = (FrameGrabbingControl)
-	        player.getControl("javax.media.control.FrameGrabbingControl");
-	        Buffer buf = fgc.grabFrame();
-	        BufferToImage btoi = new BufferToImage((VideoFormat)buf.getFormat());
-	        img = btoi.createImage(buf);
-
-	        if (img != null) {
-	            Integer i = new Integer(JFileChooser.APPROVE_OPTION);
-	            if (i != null){
-	            	File folder = new File(System.getProperty("user.dir")+"/tmp/tmp_merma");
-	            	folder.mkdirs();
-					String imagen = System.getProperty("user.dir")+"/tmp/tmp_merma/imgMerma";
-					File imagenArch = new File(imagen);
-					String formato = "JPG";
-					player.close();
-					padre.dispose();
-					
-					try{
-						ImageIO.write((RenderedImage) img,formato,imagenArch);
-						ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_update/tmp.jpg");
-						System.out.println(System.getProperty("user.dir")+"/tmp/tmp_update/tmp.jpg");
-//					    btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(230, 195, Image.SCALE_DEFAULT)));	
-						imagMerma();
-					}catch(IOException ioe){
-						JOptionPane.showMessageDialog(null,"Error al guardar la imagen", "Error!",JOptionPane.ERROR_MESSAGE);
-					}
-	            }
-	        }
-	        else
-	        {
-	            javax.swing.JOptionPane.showMessageDialog(padre, "A ocurrido un error!!");
-	        }
-	        img=null;
-	    }
 	}
 	
 	//TODO Filtro De inventarios parciales

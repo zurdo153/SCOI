@@ -110,7 +110,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	JTextField txtcod_prod =new Componentes().text(new JTextField(), "Codigo Del Producto", 25, "String");
 	JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 	
-	JCButton btnQuitarfila= new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
+//	JCButton btnQuitarfila= new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
 	JCButton btnProducto  = new JCButton("Productos"    ,"Filter-List-icon16.png","Azul");
 	JCButton btnBuscar    = new JCButton("Mermas"  ,"Filter-List-icon16.png","Azul"); 
 	JCButton btnEditar    = new JCButton("Editar"       ,"editara.png","Azul");
@@ -178,7 +178,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		
 		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,800     ,height );
 		
-		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
+//		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
 		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
 		panel.add(btnDeshacer).setBounds                   (x+=sep    ,y+=585 ,width   ,height );
 		panel.add(btnGuardar).setBounds                    (x+=sep    ,y      ,width   ,height );
@@ -190,7 +190,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		
 		txtcod_prod.setEnabled(false);
 		btnGuardar.setEnabled(false);
-		btnQuitarfila.setEnabled(false);
+//		btnQuitarfila.setEnabled(false);
 		btnProducto.setEnabled(false);
 		cmbEstablecimiento.setEnabled(false);
 		
@@ -216,7 +216,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		btnProducto.addActionListener(filtro_productos);
 		btnBuscar.addActionListener(filtro_inventarios);
 		btnGuardar.addActionListener(guardar);
-		btnQuitarfila.addActionListener(opQuitarfila);
+//		btnQuitarfila.addActionListener(opQuitarfila);
 		
 		agregar(tabla);
 		
@@ -326,29 +326,29 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
         }
     };
 	
-	ActionListener opQuitarfila = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			
-			int seleccion = tabla.getSelectedRow();
-			
-			if(seleccion<0){
-				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-				return;
-			}else{
-				if(seleccion < tabla.getRowCount()){
-					modelo.removeRow(seleccion);
-					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
-				}
-			}
-		}
-	};
+//	ActionListener opQuitarfila = new ActionListener() {
+//		public void actionPerformed(ActionEvent e) {
+//			
+//			int seleccion = tabla.getSelectedRow();
+//			
+//			if(seleccion<0){
+//				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+//				return;
+//			}else{
+//				if(seleccion < tabla.getRowCount()){
+//					modelo.removeRow(seleccion);
+//					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
+//				}
+//			}
+//		}
+//	};
 	
 	public void validaGuardado(){
 			
 			txtFolio.setEditable(false);
            
 			btnGuardar.setEnabled(true);
-			btnQuitarfila.setEnabled(true);
+//			btnQuitarfila.setEnabled(true);
 			btnBuscar.setEnabled(false);
 			txaNota.setEditable(true);
 			cmbEstablecimiento.setEnabled(true);
@@ -426,7 +426,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		modelo.setRowCount(0);
 		btnGuardar.setEnabled(false);
 		btnProducto.setEnabled(false);
-		btnQuitarfila.setEnabled(false);
+//		btnQuitarfila.setEnabled(false);
 		btnBuscar.setEnabled(true);
 		
 		cmbRazonDeMerma.setSelectedIndex(0);

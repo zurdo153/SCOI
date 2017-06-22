@@ -6596,7 +6596,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		
 		
 		String query = "exec sp_insert_movimiento_de_mermas ?,?,?,?,?,?,?,?,?,?,?,?";
-		String query2 = "exec sp_insert_concentrado_de_movimiento_de_mermas ?,?,?,?";
+		String query2 = "exec sp_insert_concentrado_de_movimiento_de_mermas ?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -6606,19 +6606,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			
 			int i = 0;
 			for( i=0; i<mermas.getArreglo().length; i++){
-				
-//				System.out.println(mermas.getArreglo()[i][0].toString().trim());			
-//				System.out.println(Double.valueOf(mermas.getArreglo()[i][2].toString().trim()));
-//				System.out.println(Double.valueOf(mermas.getArreglo()[i][3].toString().trim()));
-//				System.out.println(mermas.getArreglo()[i][5].toString().trim());			
-//				System.out.println(mermas.getArreglo()[i][6].toString().trim());			
-//				System.out.println(Double.valueOf(mermas.getArreglo()[i][7].toString().trim()));
-//				System.out.println(Double.valueOf(mermas.getArreglo()[i][8].toString().trim()));
-//				System.out.println(Double.valueOf(mermas.getArreglo()[i][9].toString().trim()));
-//				System.out.println(mermas.getEstablecimiento().toString().trim());							//
-//				System.out.println((movimiento.equals("TERMINADO")?"T":(movimiento.equals("NORMAL")?"V":"A")));
-				
-				
 				
 				pstmt.setInt   (1, folio);																	//folio
 				pstmt.setString(2, mermas.getArreglo()[i][0].toString().trim());							//cod_prod
