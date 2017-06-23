@@ -251,7 +251,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		btnQuitarfila.setEnabled(false);
 		btnProducto.setEnabled(false);
 		cmbEstablecimiento.setEnabled(false);
-		btnExaminar.setEnabled(false);
+//		btnExaminar.setEnabled(false);
 		
 		folio_usuario = new Obj_Usuario().LeerSession().getFolio();
 		
@@ -283,10 +283,8 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		
 		btnExaminar.addActionListener(opExaminar);
 		btnCamara.addActionListener(opFoto);
-		
-		
 
-		
+		btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 		
 		agregar(tabla);
 		
@@ -471,6 +469,8 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 			cmbEstablecimiento.requestFocus();
 			cmbEstablecimiento.showPopup();
 			validaGuardado();
+			
+			btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 		}
 	};
 	
@@ -527,7 +527,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		 String[][] tabla_guardado = new String[tabla.getRowCount()][tabla.getColumnCount()];
 		 if(tabla.getRowCount()>0){
 			 for(int i = 0; i<tabla.getRowCount(); i++){
-				 for(int j=0; j<tabla.getRowCount(); j++){
+				 for(int j=0; j<tabla.getColumnCount(); j++){
 					 tabla_guardado[i][j] = tabla.getValueAt(i, j).toString();
 				 }
 			 }
@@ -622,6 +622,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		
 		folio_usuario_valida = 0;
 		tipo_de_usuario = "NORMAL";
+		btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 		
 		rutaFoto="";
 		imagMerma();
@@ -1055,6 +1056,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 					                             			  				validaGuardado();
 					                             			  				cmbEstablecimiento.setEnabled(false);
 					                             			  				
+					                             			  				btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 					                             			  				
 					                             			  				dispose();
 							                             				}else{
@@ -1064,6 +1066,9 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 					                             			  				txaNota.setText("");
 					                             			  				folio_usuario_valida = 0;
 					                             			  				tipo_de_usuario = "NORMAL";
+					                             			  				
+					                             			  				btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
+					                             			  				
 					                             			  				txaGafeteSeguridad.setText("");
 							                             					JOptionPane.showMessageDialog(null, "Esta Intentando Validar La Merma Con El Mismo Usuario Que La Guardó, Lo Cual No Esta Permitido.","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							                             					return;
@@ -1075,6 +1080,9 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 				                             			  				txaNota.setText("");
 				                             			  				folio_usuario_valida = 0;
 				                             			  				tipo_de_usuario = "NORMAL";
+				                             			  				
+				                             			  				btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
+				                             			  				
 						                             					JOptionPane.showMessageDialog(null, "Su Puesto No Tiene Acceso A Este Modulo, Comuniquese Con El Administrador","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						                             					return;
 						                             				}

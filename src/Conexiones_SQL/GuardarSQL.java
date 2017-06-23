@@ -6692,7 +6692,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 
-public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimiento){
+	public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimiento){
 		
 		int folio = movimiento.equals("NORMAL")?busca_y_actualiza_proximo_folio(41):mermas.getFolio(); //alimentacion de merma
 		
@@ -6707,6 +6707,19 @@ public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimient
 			
 			int i = 0;
 			for( i=0; i<mermas.getArreglo().length; i++){
+				
+				System.out.println(folio);
+				System.out.println(mermas.getArreglo()[i][0].toString().trim());
+				System.out.println(mermas.getArreglo()[i][2].toString().trim());
+				System.out.println(mermas.getArreglo()[i][3].toString().trim());
+				System.out.println(mermas.getArreglo()[i][5].toString().trim());
+				System.out.println(mermas.getArreglo()[i][6].toString().trim());
+				System.out.println(mermas.getArreglo()[i][7].toString().trim());
+				System.out.println(mermas.getArreglo()[i][8].toString().trim());
+				System.out.println(mermas.getArreglo()[i][9].toString().trim());
+				System.out.println("'"+mermas.getEstablecimiento().toString().trim()+"'");
+				System.out.println((movimiento.equals("TERMINADO")?"T":(movimiento.equals("NORMAL")?"V":"A")));
+				System.out.println(usuario.getFolio());
 				
 				pstmt.setInt   (1, folio);																	//folio
 				pstmt.setString(2, mermas.getArreglo()[i][0].toString().trim());							//cod_prod
@@ -6736,7 +6749,7 @@ public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimient
 				pstmt2.setString(4, mermas.getEstablecimiento().toString().trim());
 				pstmt2.setInt(5, usuario.getFolio());
 				
-				File imag = new File(movimiento.equals("NORMAL")? (System.getProperty("user.dir")+"/Imagen/merma_default.jpg") : mermas.getRutaFoto() );
+				File imag = new File(movimiento.equals("NORMAL")? System.getProperty("user.dir")+"/Imagen/merma_default.jpg" : mermas.getRutaFoto() );
 				FileInputStream stream_foto = new FileInputStream(imag);
 				pstmt2.setBinaryStream(6, stream_foto, imag.length());
 				
@@ -6766,8 +6779,5 @@ public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimient
 		}		
 		return true;
 	}
-	
-	
-	
 	
 } 
