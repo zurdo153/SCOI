@@ -6692,7 +6692,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 
-public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimiento){
+	public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimiento){
 		
 		int folio = movimiento.equals("NORMAL")?busca_y_actualiza_proximo_folio(41):mermas.getFolio(); //alimentacion de merma
 		
@@ -6766,8 +6766,5 @@ public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimient
 		}		
 		return true;
 	}
-	
-	
-	
 	
 } 
