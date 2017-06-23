@@ -235,10 +235,10 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 	    this.menu_toolbar.addSeparator( );
 		this.menu_toolbar.add(btnDeshacer);
 		this.menu_toolbar.addSeparator();
-		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.addSeparator( );
 		this.menu_toolbar.add(btnReporte);
 		this.menu_toolbar.addSeparator();
-		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.addSeparator( );
 		this.menu_toolbar.add(btnGuardar);
 		this.menu_toolbar.setFloatable(false);
 		
