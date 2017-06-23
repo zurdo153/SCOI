@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 import com.github.sarxos.webcam.Webcam;
@@ -71,8 +72,9 @@ public class Cat_Camara extends JDialog{
 
 		webcam = picker.getSelectedWebcam();
 		if (webcam == null) {
+			JOptionPane.showMessageDialog(null, "No Se Encontraron WebCams...","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			System.out.println("No Se Encontraron WebCams...");
-			System.exit(1);
+//			System.exit(1);
 		}
 		panelCam = new WebcamPanel(webcam, false);
 		panelCam.setFPSDisplayed(true);
