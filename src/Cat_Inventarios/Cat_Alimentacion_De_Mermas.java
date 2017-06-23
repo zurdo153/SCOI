@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
@@ -65,6 +66,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
+    JToolBar menu_toolbar  = new JToolBar();
 	Connexion con = new Connexion();
 	 Obj_tabla  Objetotabla = new Obj_tabla();
 	
@@ -75,8 +77,8 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
     	this.tabla.getColumnModel().getColumn(2).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(4).setMinWidth(100);
-    	this.tabla.getColumnModel().getColumn(5).setMinWidth(100);
-    	this.tabla.getColumnModel().getColumn(6).setMinWidth(100);
+    	this.tabla.getColumnModel().getColumn(5).setMinWidth(180);
+    	this.tabla.getColumnModel().getColumn(6).setMinWidth(150);
     	this.tabla.getColumnModel().getColumn(7).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(8).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(9).setMinWidth(100);
@@ -88,7 +90,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		Objetotabla.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
-  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo_Producto","Descripcion","Existencia","Merma","Existencia_Sin_Merma","Razon_De_Merma","Destino_De_Merma","Ultimo_Costo","Costo_Promedio", "Precio_De_Lista", "Total_Ultimo_Costo","Total_Costo_Promedio"}){
+  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Existencia","Merma","Existencia Sin_Merma","Razon De Merma","Destino De Merma","Ultimo Costo","Costo Promedio", "Precio De Lista", "Total Ultimo Costo","Total Costo Promedio"}){
 	 @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
 				java.lang.Object.class,
@@ -122,7 +124,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 	JTextField txtcod_prod =new Componentes().text(new JTextField(), "Codigo Del Producto", 25, "String");
 	JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 	
-//	JCButton btnQuitarfila= new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
+	JCButton btnQuitarfila= new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
 	JCButton btnProducto  = new JCButton("Productos"    ,"Filter-List-icon16.png","Azul");
 	JCButton btnReporte   = new JCButton("Reporte"      ,"Lista.png","Azul");
 	JCButton btnBuscar    = new JCButton("Mermas"  ,"Filter-List-icon16.png","Azul"); 
@@ -199,20 +201,20 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 //   	    this.lblSinImag.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
    	
 		int x=20, y=20,width=122,height=20, sep=135;
-		panel.add(txtFolio).setBounds                      (x         ,y      ,width   ,height );
-		panel.add(btnBuscar).setBounds                     (x+=sep    ,y      ,width   ,height );
-		panel.add(cmbEstablecimiento).setBounds            (x+=sep+30 ,y      ,width+60,height );
-		panel.add(new JLabel("Nota:")).setBounds           (x+sep+60  ,y-15   ,50      ,height );
-		panel.add(Nota).setBounds                          (x+sep+60  ,y      ,480     ,50     );
+		panel.add(menu_toolbar).setBounds                  (x          ,y      ,400     ,height );
+		panel.add(txtFolio).setBounds                      (x          ,y+=30  ,width   ,height );
+		panel.add(cmbEstablecimiento).setBounds            (x+=sep     ,y      ,width+60,height );
+		panel.add(new JLabel("Nota:")).setBounds           (x+=355     ,y-15   ,50      ,height );
+		panel.add(Nota).setBounds                          (x    ,y      ,480     ,50     );
 		
 		x=20;
-		panel.add(txtcod_prod).setBounds                   (x         ,y+=30  ,width   ,height );
-		panel.add(btnProducto).setBounds                   (x+=sep    ,y      ,width   ,height );
-		panel.add(new JLabel("Foto:")).setBounds		   (x+sep+30  ,y	  ,100   ,height );
-		panel.add(btnExaminar).setBounds				   (x+sep+60  ,y	  ,100   ,height );
-		panel.add(btnCamara).setBounds					   (x+=sep*2+30,y	  ,30   ,height );
-		panel.add(lblSinImag).setBounds					   (x+32	   ,y	  ,30   ,height );
-		panel.add(lblConImag).setBounds					   (x+32	   ,y	  ,30   ,height );
+		panel.add(txtcod_prod).setBounds                   (x          ,y+=30  ,width   ,height );
+		panel.add(btnProducto).setBounds                   (x+=sep     ,y      ,width   ,height );
+		panel.add(new JLabel("Foto:")).setBounds		   (x+=160     ,y	   ,100     ,height );
+		panel.add(btnExaminar).setBounds				   (x+=30      ,y	   ,100     ,height );
+		panel.add(btnCamara).setBounds					   (x+=110     ,y	   ,30      ,height );
+		panel.add(lblSinImag).setBounds					   (x+32	   ,y	   ,30      ,height );
+		panel.add(lblConImag).setBounds					   (x+32	   ,y	   ,30      ,height );
 		
 		x=20;
 		panel.add(new JLabel("Razon De Merma:")).setBounds (x  		  ,y+=27  ,150     ,height );
@@ -222,13 +224,23 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		
 		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,800     ,height );
 		
-//		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
+		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
 		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
-		panel.add(btnNuevo  ).setBounds                    (x         ,y+=585 ,width   ,height );
-		panel.add(btnDeshacer).setBounds                   (x+=sep    ,y      ,width   ,height );
-		panel.add(btnGuardar).setBounds                    (x+=sep    ,y      ,width   ,height );
-		panel.add(btnReporte).setBounds                    (x+=sep    ,y      ,width   ,height );
-//		panel.add(btnEditar).setBounds                     (x+=sep    ,y    ,width   ,height );
+		
+		this.menu_toolbar.add(btnBuscar);
+	    this.menu_toolbar.addSeparator( );
+	    this.menu_toolbar.addSeparator( );
+	    this.menu_toolbar.add(btnNuevo);
+	    this.menu_toolbar.addSeparator();
+	    this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnDeshacer);
+		this.menu_toolbar.addSeparator();
+		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnReporte);
+		this.menu_toolbar.addSeparator();
+		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnGuardar);
+		this.menu_toolbar.setFloatable(false);
 		
 		txaNota.setLineWrap(true); 
 		txaNota.setWrapStyleWord(true);
@@ -236,10 +248,10 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		
 		txtcod_prod.setEnabled(false);
 		btnGuardar.setEnabled(false);
-//		btnQuitarfila.setEnabled(false);
+		btnQuitarfila.setEnabled(false);
 		btnProducto.setEnabled(false);
 		cmbEstablecimiento.setEnabled(false);
-//		btnExaminar.setEnabled(false);
+		btnExaminar.setEnabled(false);
 		
 		folio_usuario = new Obj_Usuario().LeerSession().getFolio();
 		
@@ -266,11 +278,15 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		btnProducto.addActionListener(filtro_productos);
 		btnBuscar.addActionListener(filtro_inventarios);
 		btnGuardar.addActionListener(guardar);
-//		btnQuitarfila.addActionListener(opQuitarfila);
+		btnQuitarfila.addActionListener(opQuitarfila);
 		btnReporte.addActionListener(opGenerar);
 		
 		btnExaminar.addActionListener(opExaminar);
 		btnCamara.addActionListener(opFoto);
+		
+		
+
+		
 		
 		agregar(tabla);
 		
@@ -425,22 +441,22 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
         }
     };
     
-//	ActionListener opQuitarfila = new ActionListener() {
-//		public void actionPerformed(ActionEvent e) {
-//			
-//			int seleccion = tabla.getSelectedRow();
-//			
-//			if(seleccion<0){
-//				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-//				return;
-//			}else{
-//				if(seleccion < tabla.getRowCount()){
-//					modelo.removeRow(seleccion);
-//					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
-//				}
-//			}
-//		}
-//	};
+	ActionListener opQuitarfila = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			int seleccion = tabla.getSelectedRow();
+			
+			if(seleccion<0){
+				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}else{
+				if(seleccion < tabla.getRowCount()){
+					modelo.removeRow(seleccion);
+					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
+				}
+			}
+		}
+	};
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -463,7 +479,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 			txtFolio.setEditable(false);
            
 			btnGuardar.setEnabled(true);
-//			btnQuitarfila.setEnabled(true);
+			btnQuitarfila.setEnabled(true);
 			btnBuscar.setEnabled(false);
 			btnReporte.setEnabled(false);
 			btnNuevo.setEnabled(false);
@@ -615,7 +631,6 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		int testigo=0;
 	     if(!txtcod_prod.getText().equals("")){
 	    	 txtFiltro.setText("");
-	    	 
 	    	int[] columnas ={0,1,2,3,4,5};
 	    	new Obj_Filtro_Dinamico_Plus(tabla , txtFiltro.getText().toString().trim().toUpperCase(), columnas  );
 	    	 
@@ -640,7 +655,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 				 		  vector[6] = cmbDestinoDeMerma.getSelectedItem().toString();
 				 		  vector[7] = Datos_Producto.getUltimo_Costo();
 				 		  vector[8] = Datos_Producto.getCosto_Promedio();
-				 		  vector[9] = 1;
+				 		  vector[9] = Datos_Producto.getPrecio_venta();
 				 		  vector[10] = 0;
 				 		  vector[11] = 0;
 
