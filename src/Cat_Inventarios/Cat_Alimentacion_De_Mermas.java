@@ -348,7 +348,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 			file.setVisible(true);
 			
 			if(file.getDirectory() != null){
-						imagenCargada = false ;
+						imagenCargada = true ;
 						rutaFoto = file.getDirectory()+file.getFile();
 //						System.out.println(rutaFoto);
 				    	imagMerma();
@@ -561,7 +561,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 				      }
 					  
 				 }else{
-					 JOptionPane.showMessageDialog(null, "Es Necesario Que ", "Aviso",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+					 JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese La Foto De La Merma", "Aviso",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 					 return;
 				 }
 				 
