@@ -10325,6 +10325,42 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	}	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String[] Razones_De_Remate(){
+		Statement stmt = null;
+		
+		String query = "SELECT razon_remate from tb_razon_de_remate order by razon_remate desc";
+		Vector miVector = new Vector();
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+				while(rs.next()){
+					miVector.add(rs.getString("razon_remate"));
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			}}
+		}
+		
+		int i=0;
+		String[] lista= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			lista[i]= miVector.get(i).toString();
+			i++;
+		}
+		return lista;
+	}	
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String[] Destino_De_Mermas(String filtro){
 		Statement stmt = null;
 		

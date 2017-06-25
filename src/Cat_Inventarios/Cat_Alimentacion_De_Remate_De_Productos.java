@@ -11,10 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -36,9 +32,8 @@ import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
-
-import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
@@ -61,20 +56,22 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 	
 	int columnas = 9,checkbox=-1;
 	public void init_tabla_principal(String consulta){
-    	this.tabla.getColumnModel().getColumn(0).setMinWidth(50);	
-    	this.tabla.getColumnModel().getColumn(1).setMinWidth(380);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(70);
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(40);	
+     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(50);	
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(340);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(60);
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(100);
-    	this.tabla.getColumnModel().getColumn(4).setMinWidth(100);
-    	this.tabla.getColumnModel().getColumn(5).setMinWidth(80);
+    	this.tabla.getColumnModel().getColumn(4).setMinWidth(90);
+    	this.tabla.getColumnModel().getColumn(5).setMinWidth(98);
     	this.tabla.getColumnModel().getColumn(6).setMinWidth(80);
-    	this.tabla.getColumnModel().getColumn(7).setMinWidth(80);
+    	this.tabla.getColumnModel().getColumn(7).setMinWidth(90);
+    	this.tabla.getColumnModel().getColumn(8).setMinWidth(150);
 		String comando=consulta;
 		String basedatos="26",pintar="si";
 		Objetotabla.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
-  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Cantidad","Fecha Caducidad","Ultimo Costo","Costo Promedio "," Precio Venta" ,"Precio Remate" ,"Clasificacion" }){
+  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo","Descripcion","Cantidad","Fecha Caducidad","Ultimo Costo","Costo Promedio "," Precio Venta" ,"Precio Remate" ,"Clasificacion" }){
 	 @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
 				java.lang.Object.class,
@@ -108,7 +105,6 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 	JCButton btnQuitarfila = new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
 	JCButton btnReporte    = new JCButton("Reporte"      ,"Lista.png","Azul");
 	JCButton btnBuscar     = new JCButton("Buscar"       ,"Filter-List-icon16.png","Azul"); 
-	JCButton btnEditar    = new JCButton("Editar"       ,"editara.png","Azul");
 	JCButton btnGuardar   = new JCButton("Guardar"      ,"Guardar.png","Azul");
 	JCButton btnDeshacer  = new JCButton("Deshacer"     ,"deshacer16.png","Azul");
 	
@@ -116,9 +112,13 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 
-	String status[] = {"VIGENTE","CANCELADO"};
+	String status[] = {"VIGENTE","CANCELADO", "REMATE"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
+	
+	String razones_remate[] = new BuscarSQL().Razones_De_Remate();
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbRazonDeRemate = new JComboBox(razones_remate);
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	int fila=0;
@@ -127,11 +127,10 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
     
     JTextArea txaNota 	= new Componentes().textArea(new JTextArea(), "Nota", 500);
 	JScrollPane Nota = new JScrollPane(txaNota);
-	JDateChooser fecha = new JDateChooser();
 
    public  Cat_Alimentacion_De_Remate_De_Productos(){
 	   this.cont.add(panel);
-		this.setSize(1024,768);
+		this.setSize(1024,728);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -143,37 +142,32 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
         cont.setBackground(new java.awt.Color(255, 255, 255));
    	    tabla.getTableHeader().setReorderingAllowed(false) ;
    	
-		int x=20, y=20,width=122,height=20, sep=135;
-		panel.add(menu_toolbar).setBounds                  (x         ,y      ,400     ,height );
+		int x=10, y=20,width=122,height=20, sep=135;
+		panel.add(menu_toolbar).setBounds                  (x         ,y      ,330     ,height );
 		panel.add(txtFolio).setBounds                      (x         ,y+=30  ,width   ,height );
 		panel.add(cmb_status).setBounds   		           (x+=sep    ,y      ,width   ,height );
 		panel.add(cmbEstablecimiento).setBounds            (x+=sep    ,y      ,width+60,height );
 		panel.add(new JLabel("Nota:")).setBounds           (x+sep+60  ,y-15   ,50      ,height );
-		panel.add(Nota).setBounds                          (x+sep+60  ,y      ,508     ,50     );
+		panel.add(Nota).setBounds                          (x+sep+60  ,y      ,533     ,47     );
 		
-		x=20;
-		panel.add(new JLabel("Fecha:")).setBounds          (x+=sep    ,y      ,width   ,height );
-		panel.add(fecha).setBounds                         (x+=35     ,y      ,width+25,height );
-		
-		x=20;
-		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,800     ,height );
-		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
-		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
+		x=10;
+		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,453     ,height );
+		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,997     ,580    );
 
 		this.menu_toolbar.add(btnBuscar);
-	    this.menu_toolbar.addSeparator( );
-	    this.menu_toolbar.addSeparator( );
-	    this.menu_toolbar.add(btnEditar);
 	    this.menu_toolbar.addSeparator();
 	    this.menu_toolbar.addSeparator( );
 		this.menu_toolbar.add(btnDeshacer);
 		this.menu_toolbar.addSeparator();
-		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.addSeparator( );
 		this.menu_toolbar.add(btnReporte);
 		this.menu_toolbar.addSeparator();
-		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.addSeparator( );
 		this.menu_toolbar.add(btnGuardar);
 		this.menu_toolbar.setFloatable(false);
+		
+		TableColumn razon = tabla.getColumnModel().getColumn(8);		
+		razon.setCellEditor(new javax.swing.DefaultCellEditor(cmbRazonDeRemate));
 		
 		txaNota.setLineWrap(true); 
 		txaNota.setWrapStyleWord(true);
@@ -192,7 +186,6 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 		tabla.addKeyListener(op_validanumero_en_celda);
 		
 		cmbEstablecimiento.addActionListener(Establecimiento);
-		btnEditar.addActionListener(Editar);
 		btnDeshacer.addActionListener(deshacer);
 		btnBuscar.addActionListener(filtro_inventarios);
 		btnGuardar.addActionListener(guardar);
@@ -200,7 +193,6 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 		btnReporte.addActionListener(opGenerar);
 		
 		agregar(tabla);
-		fecha.setDate(cargar_fechas(-3));
 		
 		 this.addWindowListener(new WindowAdapter() {
 	            public void windowOpened( WindowEvent e ){
@@ -237,17 +229,6 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 	                 });
     }
    
-	public Date cargar_fechas(Integer dias){
-		Date date1 = null;
-				  try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		return date1;
-	};
 	
 	KeyListener op_validanumero_en_celda = new KeyListener() {
 		public void keyTyped(KeyEvent e) {}
@@ -255,7 +236,7 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 			    fila=tabla.getSelectedRow();
             	columna=6;
            Objetotabla.validacelda(tabla,"decimal", fila, columna);
-           
+           RecorridoFoco(fila,"x"); 
 		}
 		public void keyPressed(KeyEvent e) {}
 	};
@@ -303,24 +284,6 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 		}
 	};
 	
-	ActionListener Editar = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-//			String folio_inventario="";
-//			txtFolio.setText(folio_inventario);
-//			txtFolio.setEditable(false);
-//            modelo.setRowCount(0);
-//			btnGuardar.setEnabled(true);
-//			btnQuitarfila.setEnabled(true);
-//			btnBuscar.setEnabled(false);
-//			btnReporte.setEnabled(false);
-//			btnNuevo.setEnabled(false);
-//			txaNota.setEditable(true);
-//			cmb_status.setSelectedIndex(0);
-//			cmbEstablecimiento.setEnabled(true);
-//			cmbEstablecimiento.requestFocus();
-//			cmbEstablecimiento.showPopup();
-		}
-	};
 	
 	ActionListener filtro_inventarios = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -423,9 +386,7 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 		btnQuitarfila.setEnabled(false);
 		btnBuscar.setEnabled(true);
 		btnReporte.setEnabled(true);
-		fecha.setDate(cargar_fechas(-3));
 	}
-	
 	
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -442,8 +403,6 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 			Objetotabla.RecorridoFocotabla(tabla, filap, 7, parametrosacarfoco).equals("si");
 			
 		}
-	
-	
 	
 	//TODO Filtro De inventarios parciales
 		public class Cat_Filtro_De_Inventarios_Parciales extends JDialog{
@@ -551,6 +510,7 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 				    			cmb_status.setSelectedItem(tabla3.getValueAt(fila_Select, 5).toString().trim());
 				    		    txaNota.setText(tabla3.getValueAt(fila_Select, 6).toString().trim());
 				    		    init_tabla_principal("exec sp_select_productos_proximos_a_caducar "+tabla3.getValueAt(fila_Select, 0).toString().trim());
+				    		    btnGuardar.setEnabled(true);
 				    			dispose();
 							}
 					}

@@ -165,7 +165,6 @@ public class Cat_Alimentacion_De_Productos_Proximos_A_Caducar extends JFrame{
 		
 		x=20;
 		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,800     ,height );
-
 		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
 		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
 
@@ -177,10 +176,10 @@ public class Cat_Alimentacion_De_Productos_Proximos_A_Caducar extends JFrame{
 	    this.menu_toolbar.addSeparator( );
 		this.menu_toolbar.add(btnDeshacer);
 		this.menu_toolbar.addSeparator();
-		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.addSeparator( );
 		this.menu_toolbar.add(btnReporte);
 		this.menu_toolbar.addSeparator();
-		 this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.addSeparator( );
 		this.menu_toolbar.add(btnGuardar);
 		this.menu_toolbar.setFloatable(false);
 		
