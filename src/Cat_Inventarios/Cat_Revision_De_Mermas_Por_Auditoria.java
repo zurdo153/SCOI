@@ -583,7 +583,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 				 		  vector[6] = cmbDestinoDeMerma.getSelectedItem().toString();
 				 		  vector[7] = Datos_Producto.getUltimo_Costo();
 				 		  vector[8] = Datos_Producto.getCosto_Promedio();
-				 		  vector[9] = 1;
+				 		  vector[9] = Datos_Producto.getPrecio_Lista();
 				 		  vector[10] = 0;
 				 		  vector[11] = 0;
 

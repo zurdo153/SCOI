@@ -251,7 +251,8 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		btnQuitarfila.setEnabled(false);
 		btnProducto.setEnabled(false);
 		cmbEstablecimiento.setEnabled(false);
-//		btnExaminar.setEnabled(false);
+		btnExaminar.setEnabled(false);
+		btnCamara.setEnabled(false);
 		
 		folio_usuario = new Obj_Usuario().LeerSession().getFolio();
 		
@@ -551,7 +552,53 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 					 
 					 mermas.setRutaFoto(rutaFoto+"merma.jpg");
 					 
-//					 guardar con valiacion de cargar imagen por seguridad
+					 if(tabla.getRowCount()==0 && txaNota.getText().equals("")){
+						 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+					    	return;
+					 }else{
+//						 guardar con valiacion de cargar imagen por seguridad
+						  if(mermas.Guardar_Merma(tipo_de_usuario)){
+				                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+				            	 deshacer();
+					      }else{
+							JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+					    	return;
+					      }
+					 }
+
+					  
+				 }else{
+					 
+//					 permitir guardado sin imagen si  no hay productos mermados
+					 if(tabla.getRowCount()==0){
+						 mermas.setRutaFoto("");
+						 
+						 if(txaNota.getText().equals("")){
+							 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+						    	return;
+						 }else{
+							  if(mermas.Guardar_Merma(tipo_de_usuario)){
+					                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					            	 deshacer();
+						      }else{
+								JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+						    	return;
+						      }
+						 }
+					 }else{
+						 JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese La Foto De La Merma", "Aviso",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+						 return;
+					 }
+				 }
+				 
+			 }else{
+				 mermas.setRutaFoto("");
+				 
+				 if(tabla.getRowCount()==0 && txaNota.getText().equals("")){
+					 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+				    	return;
+				 }else{
+//					 guardar sin validar usuario (si es usuario normal se manda sin imagen)
 					  if(mermas.Guardar_Merma(tipo_de_usuario)){
 			                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 			            	 deshacer();
@@ -559,22 +606,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 						JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 				    	return;
 				      }
-					  
-				 }else{
-					 JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese La Foto De La Merma", "Aviso",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-					 return;
 				 }
-				 
-			 }else{
-				 mermas.setRutaFoto(null);
-//				 guardar sin validar usuario (si es usuario normal se manda sin imagen)
-				  if(mermas.Guardar_Merma(tipo_de_usuario)){
-		                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-		            	 deshacer();
-			      }else{
-					JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-			    	return;
-			      }
 			 }
 
 			 
@@ -589,8 +621,8 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 	 			String basedatos="2.26";
 				String vista_previa_reporte="no";
 				int vista_previa_de_ventana=0;
-				String comando="exec sp_select_datos_inventario_fisico_parcial  "+Integer.valueOf(txtFolio.getText().toUpperCase().trim());
-				String reporte = "Obj_Reporte_De_Inventario_Parcial.jrxml";
+				String comando="exec sp_select_reporte_de_mermas '01/01/1900 00:00:000','31/12/2078 23:59:000',"+Integer.valueOf(txtFolio.getText().toUpperCase().trim());
+				String reporte = "Obj_Reporte_De_Mermas.jrxml";
     			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		       }else{
 		    	   JOptionPane.showMessageDialog(null,"Necesita Teclear Un Folio de Inventario Fisico Parcial para Generar El Reporte","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -604,10 +636,10 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		txaNota.setText("");
 		txtcod_prod.setText("");
 		txtcod_prod.setEnabled(false);
-//		cmbEstablecimiento.removeActionListener(Establecimiento);
-//		cmbEstablecimiento.setSelectedIndex(0);
-//		cmbEstablecimiento.setEnabled(false);
-//		cmbEstablecimiento.addActionListener(Establecimiento);
+		cmbEstablecimiento.removeActionListener(Establecimiento);
+		cmbEstablecimiento.setSelectedIndex(0);
+		cmbEstablecimiento.setEnabled(false);
+		cmbEstablecimiento.addActionListener(Establecimiento);
 		txtFolio.setEditable(true);
 		modelo.setRowCount(0);
 		btnGuardar.setEnabled(false);
@@ -625,7 +657,11 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 		
 		rutaFoto="";
+		imagenCargada = false;
 		imagMerma();
+		
+		btnExaminar.setEnabled(false);
+		btnCamara.setEnabled(false);
 	}
 	
 	public void buscar_producto(){
@@ -1056,6 +1092,12 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 					                             			  				validaGuardado();
 					                             			  				cmbEstablecimiento.setEnabled(false);
 					                             			  				
+					                             			  				txtcod_prod.setEditable(false);
+					                             			  				btnProducto.setEnabled(false);
+					                             			  				
+					                             			  				btnExaminar.setEnabled(true);
+					                             			  				btnCamara.setEnabled(true);
+					                             			  				
 					                             			  				btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 					                             			  				
 					                             			  				dispose();
@@ -1066,6 +1108,12 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 					                             			  				txaNota.setText("");
 					                             			  				folio_usuario_valida = 0;
 					                             			  				tipo_de_usuario = "NORMAL";
+					                             			  				
+					                             			  				txtcod_prod.setEditable(true);
+					                             			  				btnProducto.setEnabled(true);
+					                             			  				
+					                             			  				btnExaminar.setEnabled(false);
+					                             			  				btnCamara.setEnabled(false);
 					                             			  				
 					                             			  				btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 					                             			  				
@@ -1080,6 +1128,12 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 				                             			  				txaNota.setText("");
 				                             			  				folio_usuario_valida = 0;
 				                             			  				tipo_de_usuario = "NORMAL";
+				                             			  				
+				                             			  				txtcod_prod.setEditable(true);
+				                             			  				btnProducto.setEnabled(true);
+				                             			  				
+				                             			  				btnExaminar.setEnabled(false);
+				                             			  				btnCamara.setEnabled(false);
 				                             			  				
 				                             			  				btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 				                             			  				
