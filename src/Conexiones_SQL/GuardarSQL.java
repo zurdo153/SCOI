@@ -6767,6 +6767,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				
 			}
 			
+			
 			if(i==mermas.getArreglo().length){
 				
 				//insertar registro en tb_mermas			
@@ -6777,7 +6778,16 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt2.setString(4, mermas.getEstablecimiento().toString().trim());
 				pstmt2.setInt(5, usuario.getFolio());
 				
-				File imag = new File(movimiento.equals("NORMAL")? System.getProperty("user.dir")+"/Imagen/merma_default.jpg" : mermas.getRutaFoto() );
+				String rutaFoto="";
+				if(movimiento.equals("TERMINADO") || (movimiento.equals("SEGURIDAD") && mermas.getArreglo().length>0) ){
+					rutaFoto=mermas.getRutaFoto();
+				}else{
+					rutaFoto=System.getProperty("user.dir")+"/Imagen/merma_default.jpg";
+				}
+				
+				
+//				File imag = new File(movimiento.equals("NORMAL")? System.getProperty("user.dir")+"/Imagen/merma_default.jpg" : mermas.getRutaFoto() );
+				File imag = new File(rutaFoto);
 				FileInputStream stream_foto = new FileInputStream(imag);
 				pstmt2.setBinaryStream(6, stream_foto, imag.length());
 				
