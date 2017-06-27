@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-06-27T17:14:23 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Productos_Proximos_A_Caducar.jrxml" language="groovy" pageWidth="380" pageHeight="500" columnWidth="380" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[exec sp_Reporte_De_Incidencias]]>
+	</queryString>
+	<field name="Actividad" class="java.lang.String"/>
+	<field name="Establecimiento" class="java.lang.String"/>
+	<field name="Acontecimiento" class="java.lang.String"/>
+	<field name="Estatus" class="java.lang.String"/>
+	<field name="Hora" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{Actividad}]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<textField>
+					<reportElement mode="Opaque" x="9" y="0" width="342" height="18" forecolor="#FFFFFF" backcolor="#000066" uuid="855f78af-852e-4890-9c3a-693c9a2381c6">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box topPadding="1" leftPadding="0"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial Black" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Actividad}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="4"/>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="9" y="0" width="231" height="20" uuid="8edb66d8-5633-4865-aa34-1820fba6b99d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial Black" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REPORTE DE INCIDENCIAS DE SUCURSALES"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="240" y="0" width="80" height="20" uuid="7b28cf3f-58a9-47ae-b614-f85eae26b470"/>
+				<textElement>
+					<font fontName="Arial Black" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="320" y="0" width="31" height="20" uuid="a79d6d82-bc5d-4c36-a4ba-53fefc0fcd68"/>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement x="9" y="0" width="100" height="14" uuid="aeab2493-f1b3-4eb2-ad5d-c565124ea523">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{Establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="0" width="140" height="14" uuid="fa1dd6c7-f0d4-46f9-b274-94d972d1350e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{Acontecimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="249" y="0" width="81" height="14" uuid="87eecb5a-489d-4451-b5d4-e0904a25d9f9"/>
+				<textFieldExpression><![CDATA[$F{Hora}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="330" y="0" width="21" height="14" uuid="7702bd54-74f0-4f11-b883-4a1404cb4a69">
+					<printWhenExpression><![CDATA[$F{Estatus}.equals("N")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/circulo-rojo-icono-9411-128.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="330" y="0" width="20" height="14" uuid="16b272c6-4e5f-4c29-a3fc-c84f8b5ab295">
+					<printWhenExpression><![CDATA[$F{Estatus}.equals("S")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/aplicara-el-dialogo-icono-6256-32.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="330" y="0" width="20" height="14" uuid="ddf701b3-7c36-45ed-80ea-8213e68db56d">
+					<printWhenExpression><![CDATA[$F{Estatus}.equals("P")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/la-localizacion-gps-de-la-aguja-icono-9649-64.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="330" y="0" width="21" height="14" uuid="86a21a6b-a9f0-4909-9430-9db552e37414">
+					<printWhenExpression><![CDATA[$F{Estatus}.equals("T")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/check-tick-icon-14179.png"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

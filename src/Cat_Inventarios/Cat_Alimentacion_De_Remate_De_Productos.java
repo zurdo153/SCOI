@@ -314,45 +314,24 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 	ActionListener guardar = new ActionListener(){
 	public void actionPerformed(ActionEvent e){
 			 String[][] tabla_guardado = Objetotabla.tabla_guardar_sin_validacion(tabla);
-			 if(tabla_guardado.length==0){
-				 if(txaNota.getText().toString().trim().equals("")){
-					  JOptionPane.showMessageDialog(null, "Para Guardar El Registro Vacio Se Requiere Que Argumente En Las Notas El Porque Se Guarda Sin Alimentar Productos", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-				 }else{
-					 
-					 Obj_Alimentacion_De_Productos_Proximos_A_Caducar Productos_Proximos_a_Caducar = new Obj_Alimentacion_De_Productos_Proximos_A_Caducar();
-					 Productos_Proximos_a_Caducar.setTabla_obj(tabla_guardado);
-					 Productos_Proximos_a_Caducar.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
-					 Productos_Proximos_a_Caducar.setNotas    (txaNota.getText().toString().trim()+" ");
-					 Productos_Proximos_a_Caducar.setStatus(cmb_status.getSelectedItem().toString().trim());
-					 Productos_Proximos_a_Caducar.setGuardar_actualizar("Registro Vacio");
-					  
-					  if(Productos_Proximos_a_Caducar.Guardar_Alimentacion_Proximos_A_Caducar() ){
-			                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente los Productos Proximos a Caducar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-			                 deshacer();
-						     btnReporte.doClick();
-				      }else{
-						JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-				    	return;
-				      }
-					 return;
-				 }
+			 if(txaNota.getText().toString().trim().equals("")){
+					  JOptionPane.showMessageDialog(null, "Para Guardar Es Requerido Las Notas", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			 }else{		 
-				 
 				 Obj_Alimentacion_De_Productos_Proximos_A_Caducar Productos_Proximos_a_Caducar = new Obj_Alimentacion_De_Productos_Proximos_A_Caducar();
 				 Productos_Proximos_a_Caducar.setTabla_obj(tabla_guardado);
 				 Productos_Proximos_a_Caducar.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
 				 Productos_Proximos_a_Caducar.setNotas    (txaNota.getText().toString().trim()+" ");
-				 Productos_Proximos_a_Caducar.setStatus(cmb_status.getSelectedItem().toString().trim());
-				 Productos_Proximos_a_Caducar.setGuardar_actualizar("Guardar");
-				  
-				  if(Productos_Proximos_a_Caducar.Guardar_Alimentacion_Proximos_A_Caducar() ){
-		                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente los Productos Proximos a Caducar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+				 Productos_Proximos_a_Caducar.setStatus("R");
+				 Productos_Proximos_a_Caducar.setGuardar_actualizar("Remate");
+				 Productos_Proximos_a_Caducar.setFolio(Integer.valueOf(txtFolio.getText().toString()));
+   			   if(Productos_Proximos_a_Caducar.Guardar_Alimentacion_Proximos_A_Caducar() ){
+		                JOptionPane.showMessageDialog(null, "Se Guardo El Remate Del Producto", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		                 deshacer();
 					     btnReporte.doClick();
-			      }else{
+			   }else{
 					JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 			    	return;
-			      }
+			   }
 			 }
 	  }			
     };
@@ -424,7 +403,7 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 			    	this.tabla3.getColumnModel().getColumn(7).setMinWidth(120);
 			    	this.tabla3.getColumnModel().getColumn(8).setMinWidth(220);
 			    	
-					String comando="exec sp_select_filtro_de_productos_proximos_a_caducar " ;
+					String comando="exec sp_select_filtro_de_productos_proximos_a_caducar 'V' " ;
 					String basedatos="26",pintar="si";
 					Objetotabla.Obj_Refrescar(tabla3,modelo3, columnas, comando, basedatos,pintar,checkbox);
 			    }
@@ -511,6 +490,7 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 				    		    txaNota.setText(tabla3.getValueAt(fila_Select, 6).toString().trim());
 				    		    init_tabla_principal("exec sp_select_productos_proximos_a_caducar "+tabla3.getValueAt(fila_Select, 0).toString().trim());
 				    		    btnGuardar.setEnabled(true);
+				    		    txaNota.setEditable(true);
 				    			dispose();
 							}
 					}

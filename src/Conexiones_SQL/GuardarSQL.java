@@ -6625,19 +6625,22 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	
 	
 	public boolean Guardar_Alimentacion_De_Productos_Proximos_A_Caducar(Obj_Alimentacion_De_Productos_Proximos_A_Caducar proximos_caducar){
-		int folio_transaccion=busca_y_actualiza_proximo_folio(42);
-		proximos_caducar.setFolio(folio_transaccion+"");
-		String query = "exec sp_guardar_actualizar_productos_proximos_a_caducar ?,?,?,?,?,?,?,?,?,?,?,?";
+		int folio_transaccion=0;
+		if(!proximos_caducar.getGuardar_actualizar().equals("Remate")){
+			 folio_transaccion=busca_y_actualiza_proximo_folio(42);
+			proximos_caducar.setFolio(folio_transaccion);	
+		}
+
+		String query = "exec sp_guardar_actualizar_productos_proximos_a_caducar ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();	
 		try {
 			con.setAutoCommit(false);
 			PreparedStatement pstmt = con.prepareStatement(query);
 			//@folio_proximos_caducar int, @establecimiento char(100) ,@cod_prod char(10) ,@cantidad int  ,@ultimo_costo money ,@costo_promedio money ,@precio_de_lista money ,@fecha_caducidad datetime ,@estatus char(1), @folio_usuario int, @notas varchar(500),@guarda_actualiza char(1)
 			int cantidad_filas=proximos_caducar.getTabla_obj().length;
-			//guarda solo notas y el registro en 0
-			
+			//guarda solo notas y el registro en 0			
 			 if(cantidad_filas==0){
-				 pstmt.setInt   (1 , folio_transaccion);
+				 pstmt.setInt   (1 ,  folio_transaccion );
  				 pstmt.setString(2 , proximos_caducar.getEstablecimiento());
 				 pstmt.setString(3 , "0");
 				 pstmt.setFloat (4 ,  0 );
@@ -6649,24 +6652,50 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				 pstmt.setInt   (10, usuario.getFolio());
 				 pstmt.setString(11, proximos_caducar.getNotas());				
 				 pstmt.setString(12, proximos_caducar.getGuardar_actualizar());
+				 pstmt.setFloat (13 ,  0 );
+				 pstmt.setString(14 , "");
 				 pstmt.executeUpdate();
 			 }else{
+				//guardado remate
+				 if(proximos_caducar.getStatus().equals("R")){
+					 for(int i=0; i<cantidad_filas ; i++){
+						 
+							pstmt.setInt   (1 ,  proximos_caducar.getFolio());
+							pstmt.setString(2 ,  proximos_caducar.getEstablecimiento());
+							pstmt.setString(3 ,  proximos_caducar.getTabla_obj()[i][0].toString().trim());
+							pstmt.setFloat (4 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][2].toString().trim()));
+							pstmt.setFloat (5 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][4].toString().trim()));
+							pstmt.setFloat (6 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][5].toString().trim()));
+							pstmt.setFloat (7 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][6].toString().trim()));
+							pstmt.setString(8 ,  proximos_caducar.getTabla_obj()[i][3].toString().trim());
+							pstmt.setString(9 ,  proximos_caducar.getStatus() );
+							pstmt.setInt   (10,  usuario.getFolio());
+							pstmt.setString(11,  proximos_caducar.getNotas());	
+							pstmt.setString(12,  proximos_caducar.getGuardar_actualizar());
+							pstmt.setFloat (13,  Float.valueOf(proximos_caducar.getTabla_obj()[i][7].toString().trim()));
+							pstmt.setString(14,  proximos_caducar.getTabla_obj()[i][8].toString().trim());
+							pstmt.executeUpdate();
+					    } 
+				 }else{
 				 //guardado normal
-				for(int i=0; i<cantidad_filas ; i++){
-					pstmt.setInt   (1 ,  folio_transaccion);
-					pstmt.setString(2 ,  proximos_caducar.getEstablecimiento());
-					pstmt.setString(3 ,  proximos_caducar.getTabla_obj()[i][0].toString().trim());
-					pstmt.setFloat (4 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][3].toString().trim()));
-					pstmt.setFloat (5 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][5].toString().trim()));
-					pstmt.setFloat (6 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][6].toString().trim()));
-					pstmt.setFloat (7 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][7].toString().trim()));
-					pstmt.setString(8 ,  proximos_caducar.getTabla_obj()[i][4].toString().trim());
-					pstmt.setString(9 ,  proximos_caducar.getStatus());
-					pstmt.setInt   (10,  usuario.getFolio());
-					pstmt.setString(11,  proximos_caducar.getNotas());				
-					pstmt.setString(12,  proximos_caducar.getGuardar_actualizar());
-					pstmt.executeUpdate();
-			    }
+					for(int i=0; i<cantidad_filas ; i++){
+						pstmt.setInt   (1 ,  folio_transaccion);
+						pstmt.setString(2 ,  proximos_caducar.getEstablecimiento());
+						pstmt.setString(3 ,  proximos_caducar.getTabla_obj()[i][0].toString().trim());
+						pstmt.setFloat (4 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][3].toString().trim()));
+						pstmt.setFloat (5 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][5].toString().trim()));
+						pstmt.setFloat (6 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][6].toString().trim()));
+						pstmt.setFloat (7 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][7].toString().trim()));
+						pstmt.setString(8 ,  proximos_caducar.getTabla_obj()[i][4].toString().trim());
+						pstmt.setString(9 ,  proximos_caducar.getStatus() );
+						pstmt.setInt   (10,  usuario.getFolio());
+						pstmt.setString(11,  proximos_caducar.getNotas());				
+						pstmt.setString(12,  proximos_caducar.getGuardar_actualizar());
+						pstmt.setFloat (13 ,  0 );
+						pstmt.setString(14 , "");
+						pstmt.executeUpdate();
+				    }
+				 }
 			 }
 			con.commit();
 		} catch (Exception e) {
@@ -6695,7 +6724,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	public boolean Guardar_Mermas(Obj_Alimentacion_De_Mermas mermas,String movimiento){
 		
 		int folio = movimiento.equals("NORMAL")?busca_y_actualiza_proximo_folio(41):mermas.getFolio(); //alimentacion de merma
-		
 		String query = "exec sp_insert_movimiento_de_mermas ?,?,?,?,?,?,?,?,?,?,?,?";
 		String query2 = "exec sp_insert_concentrado_de_movimiento_de_mermas ?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
@@ -6779,5 +6807,76 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		}		
 		return true;
 	}
+	
+	
+	
+	
+//	public boolean Guardar_Alimentacion_De_Productos_Proximos_A_Caducar(Obj_Alimentacion_De_Productos_Proximos_A_Caducar proximos_caducar){
+//		int folio_transaccion=busca_y_actualiza_proximo_folio(42);
+//		proximos_caducar.setFolio(folio_transaccion+"");
+//		String query = "exec sp_guardar_actualizar_productos_proximos_a_caducar ?,?,?,?,?,?,?,?,?,?,?,?";
+//		Connection con = new Connexion().conexion();	
+//		try {
+//			con.setAutoCommit(false);
+//			PreparedStatement pstmt = con.prepareStatement(query);
+//			//@folio_proximos_caducar int, @establecimiento char(100) ,@cod_prod char(10) ,@cantidad int  ,@ultimo_costo money ,@costo_promedio money ,@precio_de_lista money ,@fecha_caducidad datetime ,@estatus char(1), @folio_usuario int, @notas varchar(500),@guarda_actualiza char(1)
+//			int cantidad_filas=proximos_caducar.getTabla_obj().length;
+//			//guarda solo notas y el registro en 0
+//			
+//			 if(cantidad_filas==0){
+//				 pstmt.setInt   (1 , folio_transaccion);
+// 				 pstmt.setString(2 , proximos_caducar.getEstablecimiento());
+//				 pstmt.setString(3 , "0");
+//				 pstmt.setFloat (4 ,  0 );
+//				 pstmt.setFloat (5 ,  0 );
+//				 pstmt.setFloat (6 ,  0 );
+//				 pstmt.setFloat (7 ,  0 );
+//				 pstmt.setString(8 , "01/01/1900");
+//				 pstmt.setString(9 , proximos_caducar.getStatus());
+//				 pstmt.setInt   (10, usuario.getFolio());
+//				 pstmt.setString(11, proximos_caducar.getNotas());				
+//				 pstmt.setString(12, proximos_caducar.getGuardar_actualizar());
+//				 pstmt.executeUpdate();
+//			 }else{
+//				 //guardado normal
+//				for(int i=0; i<cantidad_filas ; i++){
+//					pstmt.setInt   (1 ,  folio_transaccion);
+//					pstmt.setString(2 ,  proximos_caducar.getEstablecimiento());
+//					pstmt.setString(3 ,  proximos_caducar.getTabla_obj()[i][0].toString().trim());
+//					pstmt.setFloat (4 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][3].toString().trim()));
+//					pstmt.setFloat (5 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][5].toString().trim()));
+//					pstmt.setFloat (6 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][6].toString().trim()));
+//					pstmt.setFloat (7 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][7].toString().trim()));
+//					pstmt.setString(8 ,  proximos_caducar.getTabla_obj()[i][4].toString().trim());
+//					pstmt.setString(9 ,  proximos_caducar.getStatus());
+//					pstmt.setInt   (10,  usuario.getFolio());
+//					pstmt.setString(11,  proximos_caducar.getNotas());				
+//					pstmt.setString(12,  proximos_caducar.getGuardar_actualizar());
+//					pstmt.executeUpdate();
+//			    }
+//			 }
+//			con.commit();
+//		} catch (Exception e) {
+//			System.out.println("SQLException: "+e.getMessage());
+//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_inventarios_parciales ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+// 		if(con != null){
+//				try{
+//					System.out.println("La transacción ha sido abortada");
+//					con.rollback();
+//				}catch(SQLException ex){
+//					System.out.println(ex.getMessage());
+//					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_inventarios_parciales ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+//				}
+//			}
+//			return false;
+//		}finally{
+//			try {
+//				con.close();
+//			} catch(SQLException e){
+//				e.printStackTrace();
+//			}
+//		}		
+//		return true;
+//	}
 	
 } 
