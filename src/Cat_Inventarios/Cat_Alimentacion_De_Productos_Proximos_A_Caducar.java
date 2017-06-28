@@ -407,8 +407,9 @@ public class Cat_Alimentacion_De_Productos_Proximos_A_Caducar extends JFrame{
 					 Productos_Proximos_a_Caducar.setTabla_obj(tabla_guardado);
 					 Productos_Proximos_a_Caducar.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
 					 Productos_Proximos_a_Caducar.setNotas    (txaNota.getText().toString().trim()+" ");
-					 Productos_Proximos_a_Caducar.setStatus(cmb_status.getSelectedItem().toString().trim());
-					 Productos_Proximos_a_Caducar.setGuardar_actualizar("Registro Vacio");
+					 Productos_Proximos_a_Caducar.setStatus("T");
+					 Productos_Proximos_a_Caducar.setGuardar_actualizar("Vacio");
+					 Productos_Proximos_a_Caducar.setFolio(Integer.valueOf(txtFolio.getText().toString()));
 					  
 					  if(Productos_Proximos_a_Caducar.Guardar_Alimentacion_Proximos_A_Caducar() ){
 			                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente los Productos Proximos a Caducar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
@@ -713,7 +714,7 @@ public class Cat_Alimentacion_De_Productos_Proximos_A_Caducar extends JFrame{
 			    	this.tabla3.getColumnModel().getColumn(6).setMinWidth(120);
 			    	this.tabla3.getColumnModel().getColumn(7).setMinWidth(220);
 			    	
-					String comando="exec sp_select_filtro_de_productos_proximos_a_caducar " ;
+					String comando="exec sp_select_filtro_de_productos_proximos_a_caducar 'T'" ;
 					String basedatos="26",pintar="si";
 					Objetotabla.Obj_Refrescar(tabla3,modelo3, columnas, comando, basedatos,pintar,checkbox);
 			    }

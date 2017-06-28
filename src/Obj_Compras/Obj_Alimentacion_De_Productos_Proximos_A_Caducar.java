@@ -7,7 +7,7 @@ public class Obj_Alimentacion_De_Productos_Proximos_A_Caducar {
 	String cod_prod="";
 	String descripcion_Prod="";
 	String fecha_caducidad="";
-	String folio="";
+	int folio=0;
 	String Notas="";
 	String establecimiento="";
 	String guardar_actualizar="";
@@ -46,11 +46,30 @@ public class Obj_Alimentacion_De_Productos_Proximos_A_Caducar {
 	public void setFecha_caducidad(String fecha_caducidad) {
 		this.fecha_caducidad = fecha_caducidad;
 	}
-	public String getFolio() {
+
+	public int getFolio() {
 		return folio;
 	}
-	public void setFolio(String folio) {
+	public void setFolio(int folio) {
 		this.folio = folio;
+	}
+	public String getClasificacion() {
+		return clasificacion;
+	}
+	public void setClasificacion(String clasificacion) {
+		this.clasificacion = clasificacion;
+	}
+	public String getCodigo_nuevo() {
+		return codigo_nuevo;
+	}
+	public void setCodigo_nuevo(String codigo_nuevo) {
+		this.codigo_nuevo = codigo_nuevo;
+	}
+	public double getPrecio_remate() {
+		return precio_remate;
+	}
+	public void setPrecio_remate(double precio_remate) {
+		this.precio_remate = precio_remate;
 	}
 	public String getNotas() {
 		return Notas;
