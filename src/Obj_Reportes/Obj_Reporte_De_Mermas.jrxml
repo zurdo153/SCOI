@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-06-26T17:14:30 -->
+<!-- 2017-06-28T15:29:57 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Mermas" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa25be24-42c0-4c58-97d3-472a5d206ee5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -118,7 +118,7 @@
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="367" y="1" width="82" height="18" uuid="d3cd9cf0-d6f7-46b1-9df0-ed61e0feb075"/>
 					<textElement>
-						<font size="12" isBold="true"/>
+						<font size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 				</textField>
@@ -128,9 +128,9 @@
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="10"/>
+						<font size="9"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{nota_guardado}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Nota: "+$F{nota_guardado}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="0" y="77" width="450" height="24" uuid="d8c82744-8a3b-49a5-8d37-066325b2b3d1">
@@ -138,18 +138,18 @@
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="10"/>
+						<font size="9"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{nota_seguridad}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Nota: "+$F{nota_seguridad}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="0" y="114" width="450" height="24" uuid="46058646-b509-4688-b949-01a9f2b8c643">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="10"/>
+						<font size="9"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{nota_auditoria}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Nota: "+$F{nota_auditoria}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement style="Column header" x="0" y="30" width="60" height="12" forecolor="#000000" uuid="da1b404b-8300-479b-833f-416b4b90539a">
@@ -182,7 +182,7 @@
 				<staticText>
 					<reportElement style="Column header" x="329" y="1" width="38" height="18" forecolor="#000000" uuid="447c2535-ca16-4956-8ad0-407297bb01e6"/>
 					<textElement>
-						<font size="12" isBold="true"/>
+						<font size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Status:]]></text>
 				</staticText>
