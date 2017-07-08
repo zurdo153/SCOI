@@ -136,6 +136,14 @@ public class Obj_Establecimiento {
 		}
 	return null; }
 	
+	public String[] Combo_Establecimiento_valida_permiso_cambio_de_establecimiento(){
+		try {
+			return new Cargar_Combo().Establecimiento_valida_permiso_para_captura_merma();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return null; }
+	
 	public String[] Combo_Establecimiento_desc(){
 		try {
 			return new Cargar_Combo().Establecimiento_desc("establecimientos");

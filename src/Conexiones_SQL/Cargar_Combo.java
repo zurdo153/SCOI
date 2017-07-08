@@ -2616,4 +2616,43 @@ public class Cargar_Combo {
 		}
 		return pila;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] Establecimiento_valida_permiso_para_captura_merma() throws SQLException{
+		
+		int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
+		System.out.println(folio_usuario);
+		String query = "exec sp_consulta_establecimiento_de_merma_por_usuario "+folio_usuario+"";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println(rs.getRow());
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona un Establecimiento");
+				}
+				System.out.println(rs.getString("nombre"));
+				miVector.add(rs.getString("nombre"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+			
+	}
 }

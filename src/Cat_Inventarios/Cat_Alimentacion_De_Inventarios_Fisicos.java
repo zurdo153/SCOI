@@ -234,8 +234,11 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 		    		return;						 
 				 }
 				 
+				 
+				 
 				 if(existe.equals("N")){
-//					 System.out.println(hoja.getRows());
+					 System.out.println(hoja.getRows());
+					 System.out.println(hoja.getColumns());
 					 for (int fila = 1; fila < hoja.getRows(); fila++){         
 						 total_diferencia += Double.valueOf(hoja.getCell( 10 , fila ).getContents().toString().trim().equals("")?"0":hoja.getCell( 10 , fila ).getContents().toString().trim());
 						
@@ -243,10 +246,13 @@ public class Cat_Alimentacion_De_Inventarios_Fisicos extends JFrame{
 //							 System.out.println(fila+"   "+hoja.getCell(0 , fila ).getContents().toString().trim());
 //						 }
 						 
-						 for (int columna = 0; columna < hoja.getColumns(); columna++){
-							 vector[columna]=hoja.getCell(columna, fila).getContents();
+						 System.out.println(hoja.getCell(0, fila).getContents().toString().trim());
+						 if(!hoja.getCell(0, fila).getContents().toString().trim().equals("")){
+							 for (int columna = 0; columna < hoja.getColumns(); columna++){
+									 vector[columna]=hoja.getCell(columna, fila).getContents();
+							 }
+							 model.addRow(vector);
 						 }
-						 model.addRow(vector);
 					 }
 					 
 			     }else{
