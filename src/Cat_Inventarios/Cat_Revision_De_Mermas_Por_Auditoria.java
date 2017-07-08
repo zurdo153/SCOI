@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
@@ -50,7 +51,6 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Compras.Obj_Alimentacion_De_Inventarios_Parciales;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Inventarios.Obj_Alimentacion_De_Mermas;
-import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
@@ -62,10 +62,11 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
+    JToolBar menu_toolbar  = new JToolBar();
 	Connexion con = new Connexion();
 	 Obj_tabla  Objetotabla = new Obj_tabla();
 	
-	int columnas = 12,checkbox=-1;
+	int columnas = 14,checkbox=-1;
 	public void init_tabla(String folio_merma){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(90);	
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(380);
@@ -79,15 +80,19 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
     	this.tabla.getColumnModel().getColumn(9).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(10).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(11).setMinWidth(100);
+    	this.tabla.getColumnModel().getColumn(12).setMinWidth(100);
+    	this.tabla.getColumnModel().getColumn(13).setMinWidth(100);
     	
-		String comando= folio_merma.equals("")?"Select '' as Codigo_Producto, '' as Descripcion, 0 as  Existencia, 0 as Merma ,0 as Existencia_Sin_Merma,'' as Razon_De_Merma,'' as Destino_De_Merma, 0 as Ultimo_Costo, 0 as Costo_Promedio , 0 as Precio_De_Lista, 0 as Total_Ultimo_Costo, 0 as Total_Costo_Promedio ":"sp_verificacion_de_merma_por_seguridad '"+folio_merma+"'" ;
+		String comando= folio_merma.equals("")?"Select '' as Codigo_Producto, '' as Descripcion, 0 as  Existencia, 0 as Merma_Captura, 0 as Merma_Seguridad, 0 as Merma_Supervisor ,0 as Existencia_Sin_Merma,'' as Razon_De_Merma,'' as Destino_De_Merma, 0 as Ultimo_Costo, 0 as Costo_Promedio , 0 as Precio_De_Lista, 0 as Total_Ultimo_Costo, 0 as Total_Costo_Promedio ":"sp_verificacion_de_merma_por_supervisor '"+folio_merma+"'" ;
 		String basedatos="26",pintar="si";
 		Objetotabla.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
-  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo_Producto","Descripcion","Existencia","Merma","Existencia_Sin_Merma","Razon_De_Merma","Destino_De_Merma","Ultimo_Costo","Costo_Promedio", "Precio_De_Lista", "Total_Ultimo_Costo","Total_Costo_Promedio"}){
+  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo_Producto","Descripcion","Existencia","Merma_Captura","Merma_Seguridad","Merma_Supervisor","Existencia_Sin_Merma","Razon_De_Merma","Destino_De_Merma","Ultimo_Costo","Costo_Promedio", "Precio_De_Lista", "Total_Ultimo_Costo","Total_Costo_Promedio"}){
 	 @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
+				java.lang.Object.class,
+				java.lang.Object.class,
 				java.lang.Object.class,
 				java.lang.Object.class,
 				java.lang.Object.class,
@@ -107,7 +112,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
          return types[columnIndex];
 		}
 		public boolean isCellEditable(int fila, int columna){
-			if(columna ==3 || columna==5 || columna==6)
+			if(columna ==5 || columna==7 || columna==8)
 				return true; return false;
 		}
     };
@@ -127,9 +132,11 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	JCButton btnDeshacer  = new JCButton("Deshacer"     ,"deshacer16.png","Azul");
 	
 	
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+//	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
+	
+	JTextField txtEstablecimiento = new Componentes().text(new JCTextField(), "Establecimiento", 100, "String");
 	
 	String razon_de_merma[] = new BuscarSQL().Razones_De_Mermas();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -146,7 +153,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	int fila=0;
     int columna=0;
-    Object[] vector = new Object[12];
+    Object[] vector = new Object[14];
     
     JTextArea txaNota 	= new Componentes().textArea(new JTextArea(), "Nota", 500);
 	JScrollPane Nota = new JScrollPane(txaNota);
@@ -196,9 +203,10 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	    lblConImag.setIcon(iconoConImag);
    	
 		int x=20, y=20,width=122,height=20, sep=135;
-		panel.add(txtFolio).setBounds                      (x         ,y      ,width   ,height );
-		panel.add(btnBuscar).setBounds                     (x+=sep    ,y      ,width   ,height );
-		panel.add(cmbEstablecimiento).setBounds            (x+=sep+30 ,y      ,width+60,height );
+		panel.add(menu_toolbar).setBounds                  (x         ,y      ,250     ,height );
+		panel.add(txtFolio).setBounds                      (x         ,y+=30  ,width   ,height );
+//		panel.add(btnBuscar).setBounds                     (x+=sep    ,y      ,width   ,height );
+		panel.add(txtEstablecimiento).setBounds            (x+=sep*2+30 ,y      ,width+60,height );
 		panel.add(new JLabel("Nota:")).setBounds           (x+sep+60  ,y-15   ,50      ,height );
 		panel.add(Nota).setBounds                          (x+sep+60  ,y      ,480     ,50     );
 		
@@ -222,9 +230,24 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		
 		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
 		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
-		panel.add(btnDeshacer).setBounds                   (x    	  ,y+=585 ,width   ,height );
-		panel.add(btnGuardar).setBounds                    (x+=sep    ,y      ,width   ,height );
+//		panel.add(btnDeshacer).setBounds                   (x    	  ,y+=585 ,width   ,height );
+//		panel.add(btnGuardar).setBounds                    (x+=sep    ,y      ,width   ,height );
 //		panel.add(btnEditar).setBounds                     (x+=sep    ,y    ,width   ,height );
+		
+		this.menu_toolbar.add(btnBuscar);
+	    this.menu_toolbar.addSeparator( );
+	    this.menu_toolbar.addSeparator( );
+//	    this.menu_toolbar.add(btnNuevo);
+//	    this.menu_toolbar.addSeparator();
+//	    this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnDeshacer);
+		this.menu_toolbar.addSeparator();
+		this.menu_toolbar.addSeparator( );
+//		this.menu_toolbar.add(btnReporte);
+//		this.menu_toolbar.addSeparator();
+//		this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnGuardar);
+		this.menu_toolbar.setFloatable(false);
 		
 		txaNota.setLineWrap(true); 
 		txaNota.setWrapStyleWord(true);
@@ -234,14 +257,14 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		btnGuardar.setEnabled(false);
 		btnQuitarfila.setEnabled(false);
 		btnProducto.setEnabled(false);
-		cmbEstablecimiento.setEnabled(false);
+		txtEstablecimiento.setEnabled(false);
 		
 		folio_usuario = new Obj_Usuario().LeerSession().getFolio();
 		
-		TableColumn razon = tabla.getColumnModel().getColumn(5);		
+		TableColumn razon = tabla.getColumnModel().getColumn(7);		
 		razon.setCellEditor(new javax.swing.DefaultCellEditor(cmbRazonDeMermaTabla));
 		
-		TableColumn destino = tabla.getColumnModel().getColumn(6);		
+		TableColumn destino = tabla.getColumnModel().getColumn(8);		
 		destino.setCellEditor(new javax.swing.DefaultCellEditor(cmbDestinoDeMermaTabla));
 		
 		imagMerma();
@@ -255,7 +278,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		txtcod_prod.addKeyListener(Buscar_Datos_Producto);
 		tabla.addKeyListener(op_validanumero_en_celda);
 		
-		cmbEstablecimiento.addActionListener(Establecimiento);
+//		cmbEstablecimiento.addActionListener(Establecimiento);
 		btnDeshacer.addActionListener(deshacer);
 		btnProducto.addActionListener(filtro_productos);
 		btnBuscar.addActionListener(filtro_inventarios);
@@ -381,40 +404,40 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	public void calculo_diferencia(int fila){
 		
   		  double existencia=Double.valueOf(tabla.getValueAt(fila,2).toString());
-		  double merma=Double.valueOf(tabla.getValueAt(fila,3).toString());
+		  double merma=Double.valueOf(tabla.getValueAt(fila,5).toString());
 		  double valor=existencia-merma;
-		  tabla.setValueAt(valor, fila, 4);
+		  tabla.setValueAt(valor, fila, 6);
 		  
-		  double ultimo_costo = Double.valueOf(tabla.getValueAt(fila, 7).toString().trim());
-		  double costo_promedio = Double.valueOf(tabla.getValueAt(fila, 8).toString().trim());
+		  double ultimo_costo = Double.valueOf(tabla.getValueAt(fila, 9).toString().trim());
+		  double costo_promedio = Double.valueOf(tabla.getValueAt(fila, 10).toString().trim());
 		  
 		  double total_ultimo_costo = merma*ultimo_costo;
 		  double total_costo_promedio = merma*costo_promedio;
 		  
-		  tabla.setValueAt(total_ultimo_costo, fila, 10);
-		  tabla.setValueAt(total_costo_promedio, fila, 11);
+		  tabla.setValueAt(total_ultimo_costo, fila, 12);
+		  tabla.setValueAt(total_costo_promedio, fila, 13);
 	 }
 	
-	ActionListener Establecimiento = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String s = cmbEstablecimiento.getSelectedItem().toString().trim();
-            switch (s) {
-                case "Selecciona un Establecimiento":
-                	 JOptionPane.showMessageDialog(null, "Se Requiere Seleccionar Un Establecimiento", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-         			 cmbEstablecimiento.setEnabled(true);
-        			 cmbEstablecimiento.requestFocus();
-        			 cmbEstablecimiento.showPopup();
-                	 break;
-                  default:
-                	 cmbEstablecimiento.setEnabled(false);
-                	 btnProducto.setEnabled(true);
-                	 txtcod_prod.setEnabled(true);
-                	 txtcod_prod.requestFocus();
-                     break;
-            }
-        }
-    };
+//	ActionListener Establecimiento = new ActionListener() {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            String s = cmbEstablecimiento.getSelectedItem().toString().trim();
+//            switch (s) {
+//                case "Selecciona un Establecimiento":
+//                	 JOptionPane.showMessageDialog(null, "Se Requiere Seleccionar Un Establecimiento", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//         			 cmbEstablecimiento.setEnabled(true);
+//        			 cmbEstablecimiento.requestFocus();
+//        			 cmbEstablecimiento.showPopup();
+//                	 break;
+//                  default:
+//                	 cmbEstablecimiento.setEnabled(false);
+//                	 btnProducto.setEnabled(true);
+//                	 txtcod_prod.setEnabled(true);
+//                	 txtcod_prod.requestFocus();
+//                     break;
+//            }
+//        }
+//    };
 	
 	ActionListener opQuitarfila = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -458,19 +481,19 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 			btnQuitarfila.setEnabled(true);
 			btnBuscar.setEnabled(false);
 			txaNota.setEditable(true);
-			cmbEstablecimiento.setEnabled(true);
+//			txtEstablecimiento.setEnabled(true);
 			 
 	}
 	
 	ActionListener filtro_productos = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Filtro_De_Productos(cmbEstablecimiento.getSelectedItem().toString()).setVisible(true);
+			new Cat_Filtro_De_Productos(txtEstablecimiento.getText().trim()).setVisible(true);
 		}
 	};
 	
 	ActionListener filtro_inventarios = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Filtro_De_Mermas().setVisible(true);
+			new Cat_Filtro_De_Mermas("").setVisible(true);
 		}
 	};
 	
@@ -508,12 +531,12 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 				 Obj_Alimentacion_De_Mermas mermas = new Obj_Alimentacion_De_Mermas();
 				 mermas.setArreglo(tabla_guardado);
 				 mermas.setFolio(Integer.valueOf(txtFolio.getText().trim()));
-				 mermas.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
+				 mermas.setEstablecimiento(txtEstablecimiento.getText().toString().trim());
 				 mermas.setNota(txaNota.getText().toString().trim());
 				 mermas.setRutaFoto(rutaFoto);
 				 
 //				 guardar con valiacion de cargar imagen por seguridad
-				  if(mermas.Guardar_Merma("TERMINADO")){
+				  if(mermas.Guardar_Merma("TERMINADO",folio_usuario_valida)){
 		                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		            	 deshacer();
 			      }else{
@@ -534,10 +557,10 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		txaNota.setText("");
 		txtcod_prod.setText("");
 		txtcod_prod.setEnabled(false);
-		cmbEstablecimiento.removeActionListener(Establecimiento);
-		cmbEstablecimiento.setSelectedIndex(0);
-		cmbEstablecimiento.setEnabled(false);
-		cmbEstablecimiento.addActionListener(Establecimiento);
+//		cmbEstablecimiento.removeActionListener(Establecimiento);
+		txtEstablecimiento.setText("");
+//		txtEstablecimiento.setEnabled(false);
+//		cmbEstablecimiento.addActionListener(Establecimiento);
 		txtFolio.setEditable(true);
 		modelo.setRowCount(0);
 		btnGuardar.setEnabled(false);
@@ -547,8 +570,6 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		
 		cmbRazonDeMerma.setSelectedIndex(0);
 		cmbDestinoDeMerma.setSelectedIndex(0);
-		
-		folio_usuario_valida = 0;
 		
 		rutaFoto="";
 		imagMerma();
@@ -564,7 +585,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	    	 
 			try {
 				if(new Obj_Cotizaciones_De_Un_Producto().Existe_Producto(txtcod_prod.getText().trim().toUpperCase()+"")){
-			      Obj_Alimentacion_De_Inventarios_Parciales  Datos_Producto= new Obj_Alimentacion_De_Inventarios_Parciales().buscardatos_producto(txtcod_prod.getText().trim().toUpperCase()+"", cmbEstablecimiento.getSelectedItem().toString().trim());
+			      Obj_Alimentacion_De_Inventarios_Parciales  Datos_Producto= new Obj_Alimentacion_De_Inventarios_Parciales().buscardatos_producto(txtcod_prod.getText().trim().toUpperCase()+"", txtEstablecimiento.getText().toString().trim());
 					for(int i=0; i<tabla.getRowCount(); i++){
 						if(tabla.getValueAt(i, 0).toString().equals(Datos_Producto.getCod_Prod().trim())){
 							testigo=1;
@@ -623,7 +644,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 1){
-	        		columna=3;
+	        		columna=5;
 	        		RecorridoFoco(tbl.getSelectedRow()-1,"x");
 	        	}
 	        }
@@ -631,7 +652,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
     }
 	
 	public void RecorridoFoco(int filap,String parametrosacarfoco){
-			if(Objetotabla.RecorridoFocotabla(tabla, filap, 3, parametrosacarfoco).equals("si")){
+			if(Objetotabla.RecorridoFocotabla(tabla, filap, 5, parametrosacarfoco).equals("si")){
 				txtcod_prod.requestFocus();
 			};
 		}
@@ -768,7 +789,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 			  Obj_tabla  Objetotabla = new Obj_tabla();
 				
 				int columnas = 8,checkbox=-1;
-				public void init_tabla_f(String status){
+				public void init_tabla_f(String status,String establecimiento){
 			    	this.tabla3.getColumnModel().getColumn(0).setMinWidth(100);	
 			    	this.tabla3.getColumnModel().getColumn(1).setMinWidth(200);
 			    	this.tabla3.getColumnModel().getColumn(2).setMinWidth(120);
@@ -778,7 +799,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 			    	this.tabla3.getColumnModel().getColumn(6).setMinWidth(120);
 			    	this.tabla3.getColumnModel().getColumn(7).setMinWidth(220);
 			    	
-					String comando="exec sp_filtro_de_mermas '"+status+"'" ;
+					String comando="exec sp_filtro_de_mermas '"+status+"','"+establecimiento+"'" ;
 					String basedatos="26",pintar="si";
 					Objetotabla.Obj_Refrescar(tabla3,modelo3, columnas, comando, basedatos,pintar,checkbox);
 			    }
@@ -816,7 +837,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 			Border blackline, etched, raisedbevel, loweredbevel, empty;
 		    
 			@SuppressWarnings({ "unchecked", "rawtypes" })
-			public Cat_Filtro_De_Mermas(){
+			public Cat_Filtro_De_Mermas(String estab){
 				int ancho = 1024;//Toolkit.getDefaultToolkit().getScreenSize().width;
 				int alto = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 				this.setSize(ancho, alto);
@@ -837,7 +858,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 				panel.add(txtFiltrop).setBounds(15,y,500,20);
 				panel.add(scrollAsignado).setBounds(15,y+=20,ancho-30,alto-70);
 		        
-				init_tabla_f("A");
+				init_tabla_f("A",estab);
 				agregar(tabla3);
 			}
 
@@ -863,11 +884,11 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 				    			String nota = tabla3.getValueAt(fila_Select, 7).toString().trim();
 				    			
 				    			txtFolio.setText(folio);
-				    			cmbEstablecimiento.setSelectedItem(estab);
+				    			txtEstablecimiento.setText(estab);
 				    			txaNota.setText(nota);
      			  				
      			  				validaGuardado();
-     			  				cmbEstablecimiento.setEnabled(false);
+//     			  				cmbEstablecimiento.setEnabled(false);
      			  				
      			  				init_tabla(folio);
      			  				

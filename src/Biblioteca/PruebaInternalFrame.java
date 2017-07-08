@@ -111,7 +111,7 @@ public class PruebaInternalFrame extends JFrame{
 		internal.setSize(400,380);
 		internal2.setSize(Toolkit.getDefaultToolkit().getScreenSize().width-15,Toolkit.getDefaultToolkit().getScreenSize().height-490);
 		
-		internal2.setLocation(0, 380);
+//		internal2.setLocation(0, 380);
 		
 		// Se visualiza el JInternalFrame 
 		internal.setVisible(true);
@@ -124,9 +124,9 @@ public class PruebaInternalFrame extends JFrame{
 		internal.setIconifiable(true);//minimizar
 		internal.setClosable(true);//cerrar
 		
-		internal2.setResizable(true);//modificar tamaño de ventana interna
-		internal2.setIconifiable(true);//minimizar
-		internal2.setClosable(true);//cerrar
+//		internal2.setResizable(true);//modificar tamaño de ventana interna
+//		internal2.setIconifiable(true);//minimizar
+//		internal2.setClosable(true);//cerrar
 		
 		internal2.setResizable(true);
 //		internal2.setClosable(true);

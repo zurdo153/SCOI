@@ -134,7 +134,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 	JCButton btnDeshacer  = new JCButton("Deshacer"     ,"deshacer16.png","Azul");
 	
 	
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_valida_permiso_cambio_de_establecimiento();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
@@ -175,7 +175,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
     String fileConImag = "Imagen/cancelar-icono-4961-16.png";
     ImageIcon tmpIconConImag;
     
-   public  Cat_Alimentacion_De_Mermas(){
+public  Cat_Alimentacion_De_Mermas(){
 	   this.cont.add(panel);
 		this.setSize(1024,768);
 		this.setResizable(false);
@@ -323,6 +323,31 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 	                      {                 	    btnGuardar.doClick();
 		                    	    }
 	                 });
+	                  
+      		if(cmbEstablecimiento.getComponentCount()==2){
+    			cmbEstablecimiento.setSelectedIndex(1);
+    			if(cmbEstablecimiento.getSelectedItem().toString().equals("EL Colaborador No Tiene Asignado Un Establecimiento Valido")){
+    				this.dispose();
+    				
+    				btnBuscar.setEnabled(false);
+    				btnDeshacer.setEnabled(false);
+    				btnNuevo.setEnabled(false);
+    				btnReporte.setEnabled(false);
+    				btnProducto.setEnabled(false);
+    				btnQuitarfila.setEnabled(false);
+    				txtFolio.setEnabled(false);
+    				txtcod_prod.setEnabled(false);
+    				txtFiltro.setEnabled(false);
+    				txaNota.setEnabled(false);
+    				cmbRazonDeMerma.setEnabled(false);
+    				cmbDestinoDeMerma.setEnabled(false);
+    				
+    				JOptionPane.showMessageDialog(null, cmbEstablecimiento.getSelectedItem().toString(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+    	         	return;
+    			}
+    		}else{
+    			cmbEstablecimiento.setSelectedIndex(0);
+    		}
 	                 
     }
    
@@ -467,10 +492,16 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 			tipo_de_usuario = "NORMAL";
 			
 			modelo.setRowCount(0);
-			cmbEstablecimiento.requestFocus();
-			cmbEstablecimiento.showPopup();
-			validaGuardado();
 			
+			if(cmbEstablecimiento.getItemCount()>2){
+				cmbEstablecimiento.setEnabled(true);
+    			cmbEstablecimiento.setSelectedIndex(0);
+    			cmbEstablecimiento.requestFocus();
+    			cmbEstablecimiento.showPopup();
+    		}else{
+				cmbEstablecimiento.setSelectedIndex(1);
+    		}
+			validaGuardado();
 			btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 		}
 	};
@@ -485,7 +516,6 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 			btnReporte.setEnabled(false);
 			btnNuevo.setEnabled(false);
 			txaNota.setEditable(true);
-			cmbEstablecimiento.setEnabled(true);
 			 
 	}
 	
@@ -497,7 +527,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 	
 	ActionListener filtro_inventarios = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Filtro_De_Mermas().setVisible(true);
+			new Cat_Filtro_De_Mermas(cmbEstablecimiento.getSelectedItem().toString().trim()).setVisible(true);
 		}
 	};
 	
@@ -557,7 +587,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 					    	return;
 					 }else{
 //						 guardar con valiacion de cargar imagen por seguridad
-						  if(mermas.Guardar_Merma(tipo_de_usuario)){
+						  if(mermas.Guardar_Merma(tipo_de_usuario,folio_usuario_valida)){
 				                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 				            	 deshacer();
 					      }else{
@@ -577,7 +607,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 							 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 						    	return;
 						 }else{
-							  if(mermas.Guardar_Merma(tipo_de_usuario)){
+							  if(mermas.Guardar_Merma(tipo_de_usuario,folio_usuario_valida)){
 					                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 					            	 deshacer();
 						      }else{
@@ -599,7 +629,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 				    	return;
 				 }else{
 //					 guardar sin validar usuario (si es usuario normal se manda sin imagen)
-					  if(mermas.Guardar_Merma(tipo_de_usuario)){
+					  if(mermas.Guardar_Merma(tipo_de_usuario,folio_usuario_valida)){
 			                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 			            	 deshacer();
 				      }else{
@@ -636,10 +666,14 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		txaNota.setText("");
 		txtcod_prod.setText("");
 		txtcod_prod.setEnabled(false);
-		cmbEstablecimiento.removeActionListener(Establecimiento);
-		cmbEstablecimiento.setSelectedIndex(0);
-		cmbEstablecimiento.setEnabled(false);
-		cmbEstablecimiento.addActionListener(Establecimiento);
+		
+		if(cmbEstablecimiento.getItemCount()>2){
+			cmbEstablecimiento.removeActionListener(Establecimiento);
+//			cmbEstablecimiento.setSelectedIndex(0);
+			cmbEstablecimiento.setEnabled(false);
+			cmbEstablecimiento.addActionListener(Establecimiento);
+		}		
+
 		txtFolio.setEditable(true);
 		modelo.setRowCount(0);
 		btnGuardar.setEnabled(false);
@@ -875,7 +909,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 			  Obj_tabla  Objetotabla = new Obj_tabla();
 				
 				int columnas = 8,checkbox=-1;
-				public void init_tabla(String status){
+				public void init_tabla(String status,String establecimiento){
 			    	this.tabla3.getColumnModel().getColumn(0).setMinWidth(100);	
 			    	this.tabla3.getColumnModel().getColumn(1).setMinWidth(200);
 			    	this.tabla3.getColumnModel().getColumn(2).setMinWidth(120);
@@ -885,7 +919,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 			    	this.tabla3.getColumnModel().getColumn(6).setMinWidth(120);
 			    	this.tabla3.getColumnModel().getColumn(7).setMinWidth(220);
 			    	
-					String comando="exec sp_filtro_de_mermas '"+status+"'" ;
+					String comando="exec sp_filtro_de_mermas '"+status+"','"+establecimiento+"'" ;
 					String basedatos="26",pintar="si";
 					Objetotabla.Obj_Refrescar(tabla3,modelo3, columnas, comando, basedatos,pintar,checkbox);
 			    }
@@ -919,11 +953,15 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 			@SuppressWarnings("rawtypes")
 			private TableRowSorter trsfiltro;
 			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			JComboBox cmbEstablecimientoFiltro = new JComboBox(establecimiento);
+			JCButton btnActializar = new JCButton("", "Actualizar.png", "Azul");
+			
 			JTextField txtFiltrop = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 			Border blackline, etched, raisedbevel, loweredbevel, empty;
 			
 			@SuppressWarnings({ "unchecked", "rawtypes" })
-			public Cat_Filtro_De_Mermas(){
+			public Cat_Filtro_De_Mermas(String estab){
 				int ancho = 1024;//Toolkit.getDefaultToolkit().getScreenSize().width;
 				int alto = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 				this.setSize(ancho, alto);
@@ -942,11 +980,23 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 
 				int y = 20;
 				panel.add(txtFiltrop).setBounds(15,y,500,20);
+				panel.add(cmbEstablecimientoFiltro).setBounds(828,y,150,20);
+				panel.add(btnActializar).setBounds(980,y,30,20);
 				panel.add(scrollAsignado).setBounds(15,y+=20,ancho-30,alto-70);
 		        
-				init_tabla("V");
+				init_tabla("V",estab);
 				agregar(tabla3);
+				
+				cmbEstablecimientoFiltro.addActionListener(opEstab);
+				btnActializar.addActionListener(opEstab);
 			}
+			
+			ActionListener opEstab = new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					modelo3.setRowCount(0);
+					init_tabla("V",cmbEstablecimientoFiltro.getSelectedItem().toString().trim());
+				}
+			};
 
 			KeyListener opFiltro = new KeyListener(){
 				@SuppressWarnings("unchecked")
@@ -957,7 +1007,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}	
-			    };
+		    };
 			
 			private void agregar(final JTable tbl) {
 				tbl.addMouseListener(new MouseListener() {
@@ -1030,8 +1080,11 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 				public void windowDeiconified(WindowEvent e){}
 				public void windowDeactivated(WindowEvent e){}
 				public void windowClosing(WindowEvent e){		
-					cmbEstablecimiento.setSelectedIndex(0);
+//					cmbEstablecimiento.setSelectedIndex(0);
 					txaNota.setText("");
+					btnProducto.setEnabled(false);
+					txtcod_prod.setEnabled(false);
+					txtFolio.requestFocus();
 				}
 				public void windowClosed(WindowEvent e) {}
 				public void windowActivated(WindowEvent e){}
@@ -1046,7 +1099,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		    	}
 		    }
 		    
-		    int folio_usuario_gafete;
+		    int folio_usuario_gafete=0;
 		    String establecimiento = "";
 		    String claveMaster;	
 			ActionListener opValidarChofer = new ActionListener() {

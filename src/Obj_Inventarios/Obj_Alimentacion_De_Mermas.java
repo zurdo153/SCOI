@@ -52,8 +52,8 @@ public class Obj_Alimentacion_De_Mermas {
 		return new BuscarSQL().Destino_De_Mermas(filtro);
 	}
 
-	public boolean Guardar_Merma(String movimiento){
-		return new GuardarSQL().Guardar_Mermas(this, movimiento);
+	public boolean Guardar_Merma(String movimiento, int usuario_seguridad){
+		return new GuardarSQL().Guardar_Mermas(this, movimiento,usuario_seguridad);
 	}
 	
 	public boolean validaUsuarioGuardo_vs_usuarioSeguridad(int folio, int userGafete){
