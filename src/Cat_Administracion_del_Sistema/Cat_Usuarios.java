@@ -326,6 +326,11 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_inventarios[3], false),
 		new Obj_CheckBoxNode(Sub_inventarios[4], false),
 		new Obj_CheckBoxNode(Sub_inventarios[5], false),
+		new Obj_CheckBoxNode(Sub_inventarios[6], false),
+		new Obj_CheckBoxNode(Sub_inventarios[7], false),
+		new Obj_CheckBoxNode(Sub_inventarios[8], false),
+		new Obj_CheckBoxNode(Sub_inventarios[9], false),
+		new Obj_CheckBoxNode(Sub_inventarios[10], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Vector_inventarios = new Obj_NombreVector("Inventarios", Inventarios);

@@ -116,7 +116,7 @@ public String maximos_y_minimos(String Reporte, String Establecimiento){
 	}	
 	
 
-public String dinero_electronico(String Reporte, String tarjeta_Pyde, String Asignacion,String Cajero){	
+public String dinero_electronico(String Reporte, String tarjeta_Pyde, String Asignacion,String Cajero, String fecha_inicial, String fecha_final, String Establecimiento, String operacion){	
 	
 	if(Reporte.equals(	"Reporte De Dinero Electronico Usado En Una Asignacion")){
 		comando=" declare @asignacion varchar(20) set @asignacion='"+ tarjeta_Pyde+"'"
@@ -159,6 +159,38 @@ public String dinero_electronico(String Reporte, String tarjeta_Pyde, String Asi
 				+ "    inner join establecimientos with (nolock) on establecimientos.cod_estab=facremtick.cod_estab"
 				+ "    left outer join tarjetas_pyde with (nolock) on tarjetas_pyde.tarjeta_pyde=@tarjeta_pyde"
 				+ "  where transaccion in ('36','37','38') and folio in (select folio from bonificaciones_analiticas where tarjeta_pyde=@tarjeta_pyde AND transaccion in ('36','37','38') AND operacion=@operacion ) order by facremtick.fecha";
+	}
+
+	if(Reporte.equals("Reporte De Dinero Electronico En Un Periodo Por Establecimiento Acumulado")||Reporte.equals("Reporte De Dinero Electronico En Un Periodo Por Establecimiento Usado")){	
+		comando="declare @fi datetime,@ff datetime, @tarjeta_pyde varchar(20) , @operacion char(1),@establecimiento varchar(80)   ,@cod_estab int"
+				+ " 	set @tarjeta_pyde='"+ tarjeta_Pyde+"'"+" set @operacion='"+operacion+"'"
+				+ "	    set @fi ='"+fecha_inicial+"' set @ff='"+fecha_final+"' set @establecimiento='"+Establecimiento+"' "
+				+ " set @cod_estab =( select cod_estab from establecimientos where nombre =@establecimiento )  if @cod_estab is null set @cod_estab=0 "
+				+ "	 select  facremtick.folio as ticket"
+				+ "	        ,IZAGAR_Relacion_de_Asignaciones_Liquidadas.Nombre_Cajero"
+				+ " 	    ,folio_cajero as asignacion"
+				+ " 	    ,IZAGAR_Relacion_de_Asignaciones_Liquidadas.fecha_asignacion"
+				+ "	  	    ,IZAGAR_Relacion_de_Asignaciones_Liquidadas.fecha_liquidacion"
+				+ "	 	    ,rtrim(ltrim(establecimientos.nombre)) as establecimiento"
+				+ "	        ,convert(varchar(15),facremtick.fecha,103)+' '+convert(varchar(15),facremtick.fecha,108) as fecha"
+				+ "			,bonificaciones_analiticas.tarjeta_pyde"
+				+ "			,tarjetas_pyde.nombre"
+				+ "			,dbo.edad(tarjetas_pyde.fecha_nacimiento,getdate()) as edad"
+				+ "			,tarjetas_pyde.calle"
+				+ " 		,tarjetas_pyde.colonia"
+				+ "			,tarjetas_pyde.pobmunedo"
+				+ "	 	    ,facremtick.total as total_ticket"
+				+ "	 	    ,(select top 1 cantidad from bonificaciones_analiticas with (nolock)  where folio=facremtick.folio and transaccion in ('36','37','38') and operacion=@operacion ) as cantidad_dinero_electronico"
+				+ "	 	    ,case when @operacion='B' then 'Dinero Electronico Acumulado De Las Tarjeta En El Periodo de '+convert(varchar(10),@fi,103)+' al '+convert(varchar(10),@ff,103) end as reporte"
+				+ "	   from facremtick with (nolock)"
+				+ "      inner join bonificaciones_analiticas with (nolock) on bonificaciones_analiticas.folio=facremtick.folio"
+				+ "      left join tarjetas_pyde with (nolock) on tarjetas_pyde.tarjeta_pyde=bonificaciones_analiticas.tarjeta_pyde"
+				+ "      left outer join IZAGAR_Relacion_de_Asignaciones_Liquidadas with (nolock) on IZAGAR_Relacion_de_Asignaciones_Liquidadas.Asignacion=facremtick.folio_cajero"
+				+ "      inner join establecimientos with (nolock) on establecimientos.cod_estab=facremtick.cod_estab"
+				+ "	  where facremtick.transaccion in ('36','37','38') and facremtick.fecha between @fi and @ff and facremtick.cod_estab = case when @cod_estab =0 then facremtick.cod_estab else @cod_estab end"
+				+ "			    and bonificaciones_analiticas.tarjeta_pyde= case when @tarjeta_pyde='' then bonificaciones_analiticas.tarjeta_pyde else @tarjeta_pyde end AND operacion=@operacion"
+				+ "					  order by establecimientos.nombre,facremtick.fecha ";
+					     
 	}
 	
 	if(Reporte.equals(	"Reporte De Dinero Electronico Usado De La Tarjeta")){

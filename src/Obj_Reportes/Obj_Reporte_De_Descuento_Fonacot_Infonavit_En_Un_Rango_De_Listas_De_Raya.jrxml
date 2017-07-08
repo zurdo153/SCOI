@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-07-05T11:30:00 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Descuento_Fonacot_Infonavit_En_Un_Rango_De_Listas_De_Raya" pageWidth="310" pageHeight="100" orientation="Landscape" columnWidth="310" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[exec sp_Reporte_De_Descuento_Fonacot_Infonavit_En_Un_Rango_De_Listas_De_Raya 150,300 ,1900]]>
+	</queryString>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="numero_lista" class="java.lang.Integer"/>
+	<field name="folio_empleado" class="java.lang.Integer"/>
+	<field name="nombre_completo" class="java.lang.String"/>
+	<field name="d_infonavit" class="java.math.BigDecimal"/>
+	<field name="infonacot" class="java.math.BigDecimal"/>
+	<variable name="Infonavit" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{d_infonavit}]]></variableExpression>
+	</variable>
+	<variable name="fonacot" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{infonacot}]]></variableExpression>
+	</variable>
+	<variable name="Cantidad De Listas" class="java.lang.Double" calculation="Count">
+		<variableExpression><![CDATA[$F{numero_lista}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{folio_empleado}]]></groupExpression>
+		<groupFooter>
+			<band height="13">
+				<textField pattern="###0.00#" isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="87" y="0" width="60" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="8cbcd8fe-7d65-4859-a87c-f5cae6aab402">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Infonavit}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00#">
+					<reportElement x="147" y="0" width="60" height="13" uuid="74d24ac2-0106-4337-8338-17e6700ac6a4">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{fonacot}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.###">
+					<reportElement x="3" y="0" width="84" height="13" uuid="41397f26-cb68-4529-8440-1ead95b83563">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Cantidad De Listas}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="0" width="304" height="30" uuid="8edb66d8-5633-4865-aa34-1820fba6b99d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["Reporte De Descuentos de Fonacot e Infonavit en un Rango de Listas de Raya del Colaborador "+$F{nombre_completo}+ " Con Folio:"+$F{folio_empleado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="0" width="84" height="13" uuid="296613f0-e349-40ea-8961-ecdab493bd95">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Numero de Lista Raya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="0" width="60" height="13" uuid="1f18054e-049b-4dc9-991e-f2f5d736e8b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Infonavit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="0" width="60" height="13" uuid="2ad37360-d92c-4eed-8084-f652391cee4a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Infonacot]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="207" y="0" width="100" height="13" uuid="08d88f9c-82d7-421c-bfbd-4ed25b100517"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="0" width="84" height="13" uuid="5ddef106-2ff8-476d-a270-aeddceb10289">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{numero_lista}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="207" y="0" width="100" height="13" uuid="550ae7e3-11e4-4ef7-b376-40b08205fe0a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#0.00#">
+				<reportElement x="87" y="0" width="60" height="13" uuid="884819cc-2d44-496b-94ba-b0b1a062e719"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{d_infonavit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#0.00#">
+				<reportElement x="147" y="0" width="60" height="13" uuid="72824e98-7ec8-4b9a-bf16-e316d852f843">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{infonacot}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
