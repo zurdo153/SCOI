@@ -2331,7 +2331,12 @@ public void guardar_modificar_Empleado(){
 	
 	ActionListener opGenerarInformacionDeColaboradores = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores().setVisible(true);
+			if(txtFolioEmpleado.getText().equals("")){
+				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}else{
+			new Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores(Integer.valueOf(txtFolioEmpleado.getText().toString()),txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText()).setVisible(true);
+			}
 		}
 	};
 	

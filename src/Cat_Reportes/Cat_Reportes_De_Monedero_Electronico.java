@@ -22,6 +22,7 @@ import javax.swing.UIManager;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
@@ -39,13 +40,17 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	String operador[] = {"Selecciona Un Reporte","Reporte A Detalle Del Monedero Electronico","Reporte De Dinero Electronico Usado En Una Asignacion","Reporte De Dinero Electronico Acumulado De La Tarjeta","Reporte De Dinero Electronico Usado De La Tarjeta","Reporte De Dinero Electronico De Tarjetas Acumulado, Usado y Saldo "};
+	String operador[] = {"Selecciona Un Reporte","Reporte A Detalle Del Monedero Electronico","Reporte De Dinero Electronico En Un Periodo Por Establecimiento Acumulado","Reporte De Dinero Electronico En Un Periodo Por Establecimiento Usado","Reporte De Dinero Electronico Usado En Una Asignacion","Reporte De Dinero Electronico Acumulado De La Tarjeta","Reporte De Dinero Electronico Usado De La Tarjeta","Reporte De Dinero Electronico De Tarjetas Acumulado, Usado y Saldo "};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
 	
 	String detalle[] = { "Colonia","Edad","Poblacion","Sexo","Tarjeta","General"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbDetalle = new JComboBox(detalle);
+	
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	JCButton btngenerar_reporte = new JCButton("Generar Reporte En Pantalla","hoja-de-calculo-icono-8865-32.png","Azul");
 	JCButton btngenerar_excel   = new JCButton("Generar Reporte En XLS ","xls-icon-3376-32px.png","Verde");
@@ -60,7 +65,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 	JTextField txtTexto= new Componentes().text(new JCTextField(), textotxt, 300, "String");
 	
 	public Cat_Reportes_De_Monedero_Electronico(){
-		this.setSize(430,250);
+		this.setSize(430,300);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -72,8 +77,11 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 		this.panel.add(cmbConcepto).setBounds                 (x     ,y      ,width    ,height    );
 		
 		width=100;
+		
+		this.panel.add(new JLabel("Establecimiento:")).setBounds(x  ,y+=35  ,width    ,height     );
+		this.panel.add(cmbEstablecimiento).setBounds          (x+160,y      ,width+120,height     );
 		this.panel.add(new JLabel("Detalle:")).setBounds      (x     ,y+=35  ,width    ,height    );
-		this.panel.add(cmbDetalle).setBounds                  (x+160,y      ,width+120,height    );
+		this.panel.add(cmbDetalle).setBounds                  (x+160,y      ,width+120,height     );
 		this.panel.add(JLtexto).setBounds                     (x     ,y+=35  ,width+80 ,height    );
 		this.panel.add(txtTexto).setBounds                    (x+160 ,y      ,width+120,height    );
 		this.panel.add(new JLabel("Fecha Inicio:")).setBounds (x     ,y+=35  ,width    ,height    );
@@ -93,6 +101,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
         cmbDetalle.addActionListener(opSeleccion_detalle_combo);
         btngenerar_reporte.addActionListener(opGenerar_reporte);
         btngenerar_reporte.setEnabled(false);
+        cmbEstablecimiento.setEnabled(false);
         cmbDetalle.setEnabled(false);
         txtTexto.setEditable(false);
 		c_final.setEnabled(false);
@@ -129,6 +138,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 				  c_final.setEnabled(false);
 				  c_inicio.setEnabled(false);
 				  txtTexto.setEditable(false);
+				  cmbEstablecimiento.setEnabled(false);
 				  txtTexto.setText("Teclee El Dato Solicitado");
 				  c_final.setDate(null);
 				  c_inicio.setDate(null);
@@ -141,6 +151,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 				  c_final.setEnabled(false);
 				  c_inicio.setEnabled(false);
 				  cmbDetalle.setEnabled(false);
+				  cmbEstablecimiento.setEnabled(false);
 				  txtTexto.setEditable(false);
 				  txtTexto.setText("Teclee El Dato Solicitado");
 				  c_final.setDate(null);
@@ -151,6 +162,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 				  c_final.setEnabled(false);
 				  c_inicio.setEnabled(false);
 				  cmbDetalle.setEnabled(false);
+				  cmbEstablecimiento.setEnabled(false);
 				  JLtexto.setText("Teclee El Folio De La Tarjeta:");
 				  txtTexto.setText("");
 				  txtTexto.setEditable(true);
@@ -160,6 +172,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 					  c_final.setEnabled(false);
 					  c_inicio.setEnabled(false);
 					  cmbDetalle.setEnabled(false);
+					  cmbEstablecimiento.setEnabled(false);
 					  JLtexto.setText("Teclee El Folio De La Asignacion:");
 					  txtTexto.setText("");
 					  txtTexto.setEditable(true);
@@ -168,6 +181,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 					  JLtexto.setText("");	  
 					  txtTexto.setText("");
 					  txtTexto.setEditable(false);
+					  cmbEstablecimiento.setEnabled(false);
 				  }
 			  }
 			  
@@ -179,11 +193,28 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 				  c_inicio.setDate( cargar_fechas(7));
 				  c_final.setDate( cargar_fechas(0));
 				  c_final.requestFocus();
+				  cmbEstablecimiento.setEnabled(false);
 				  JLtexto.setText("Teclee La (El) "+cmbDetalle.getSelectedItem().toString().trim()+":");
                   cmbDetalle.requestFocus(true);
                   cmbDetalle.showPopup();
 			  }
 			  
+				 
+				 if(concepto.equals("Reporte De Dinero Electronico En Un Periodo Por Establecimiento Usado")||concepto.equals("Reporte De Dinero Electronico En Un Periodo Por Establecimiento Acumulado")  ){
+					  c_final.setEnabled(true);
+					  c_inicio.setEnabled(true);
+					  JLtexto.setText("Teclee La Tarjeta (Vacio P/Todas)");
+					  txtTexto.setText("");
+					  txtTexto.setEditable(true);
+					  txtTexto.requestFocus();
+					  c_inicio.setDate( cargar_fechas(7));
+					  c_final.setDate( cargar_fechas(0));
+					  c_final.requestFocus();
+					  cmbEstablecimiento.setEnabled(true);
+					  cmbDetalle.setEnabled(false);
+					  btngenerar_reporte.setEnabled(true);
+				  }
+				 
 		}
 	};
 	
@@ -220,7 +251,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 			 
 			 if(concepto.equals("Reporte De Dinero Electronico Usado De La Tarjeta")||concepto.equals("Reporte De Dinero Electronico Acumulado De La Tarjeta")){
 				  if(!txtTexto.getText().toString().trim().equals("")){
-				 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" );
+				 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" ,"","","","");
 					     reporte="Obj_Reporte_De_Dinero_Electronico_General_I.jrxml";
 				  }else{
 				        JOptionPane.showMessageDialog(null,"Es Necesario Que Teclee Un Folio de Tarjeta Para Que Genere El Reporte","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -232,7 +263,7 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 			 
 			 if(concepto.equals("Reporte De Dinero Electronico Usado En Una Asignacion")){
 				  if(!txtTexto.getText().toString().trim().equals("")){
-				 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" );
+				 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" ,"","","","" );
 					     reporte="Obj_Reporte_De_Dinero_Electronico_Por_Asignacion.jrxml";
 				  }else{
 				        JOptionPane.showMessageDialog(null,"Es Necesario Que Teclee Un Folio de Asignacion Para Que Genere El Reporte","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -241,14 +272,62 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 				  }		    
 			  }
 			 
-			 
 			 if(concepto.equals("Reporte De Dinero Electronico De Tarjetas Acumulado, Usado y Saldo" )){
-		 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" );
+		 	     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" ,"","","" ,"");
 			     reporte="Obj_Reporte_De_Dinero_Electronico_Saldos_En_Tarjetas.jrxml"; 
 	    	 }
 			 
+			 if(concepto.equals("Reporte De Dinero Electronico En Un Periodo Por Establecimiento Acumulado")){
+						  if(validar_fechas().equals("")){
+									  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+									  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
+									  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+									  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+									  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+									  String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+								
+									  if(fecha1.before(fecha2)){
+										  System.out.println(concepto);
+										     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" ,  fecha_inicio,fecha_final,Establecimiento,"B" );
+										    
+										     System.out.println(comando);
+										     reporte="Obj_Reporte_De_Dinero_Electronico_General.jrxml";
+									  }else{
+								        JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+									     return;
+									  }
+						  }else{
+						   JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				           return;
+						  } 
+		     }
+			
+		     if(concepto.equals("Reporte De Dinero Electronico En Un Periodo Por Establecimiento Usado")){
+				  if(validar_fechas().equals("")){
+							  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+							  String fecha_final  = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+"  23:59:00";
+							  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+							  Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+							  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+							  String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+						
+							  if(fecha1.before(fecha2)){
+								     comando = new Cat_Comandos().dinero_electronico(concepto,txtTexto.getText().toString().trim(),"","" ,  fecha_inicio,fecha_final,Establecimiento,"U" );
+								    
+								     System.out.println(comando);
+								     reporte="Obj_Reporte_De_Dinero_Electronico_General.jrxml";
+							  }else{
+						        JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+							     return;
+							  }
+				  }else{
+				   JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+		           return;
+				  } 
+            }
 			 
-			 if(concepto.equals("Reporte A Detalle Del Monedero Electronico")){
+			 
+		 if(concepto.equals("Reporte A Detalle Del Monedero Electronico")){
 				 if(!txtTexto.getText().toString().trim().equals("") || cmbDetalle.getSelectedIndex()>4 ){
 						  if(validar_fechas().equals("")){
 									  String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
@@ -276,6 +355,8 @@ public class Cat_Reportes_De_Monedero_Electronico extends JFrame {
 					    return;  
 				  }
 		     }
+			 
+			 
   	      new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		  return;
 		}

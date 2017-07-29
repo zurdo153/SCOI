@@ -56,11 +56,13 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento = new JComboBox(departamento);
-	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio de la Lista de Raya", 15, "String");
+	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio de la Lista de Raya", 15, "Int");
 	
-	JCButton btn_cant_personal = new JCButton  ("Sueldos y Bonos General","asistencia-comunitaria-icono-9465-16.png","Azul");
-	JCButton btn_sueldosybonos_pend=new JCButton  ("Sueldos y Bonos Pendientes","asistencia-comunitaria-icono-9465-16.png","Azul");
-
+	JTextField txtFolioLRI = new Componentes().text(new JCTextField(), "Folio Inicial LR ", 15, "Int");
+	JTextField txtFolioLRF = new Componentes().text(new JCTextField(), "Folio Final LR ", 15, "Int");
+	
+	JCButton btn_cant_personal            = new JCButton("Sueldos y Bonos General","asistencia-comunitaria-icono-9465-16.png","Azul");
+	JCButton btn_sueldosybonos_pend       = new JCButton("Sueldos y Bonos Pendientes","asistencia-comunitaria-icono-9465-16.png","Azul");
 	JCButton btnSeleccionLR               = new JCButton("Filtro","Filter-List-icon16.png","Azul");
 	JCButton btnReporte_Infonavit_Pasados = new JCButton("Infonavit Pasado","orange-folder-saved-search-icone-8197-16.png","Azul");
 	JCButton btnReporte_Infonavit_actual  = new JCButton("Infonavit Actual","infonavit.png","Azul");
@@ -68,6 +70,7 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 	JCButton btnReporte_Infonacot_actual  = new JCButton("Infonacot Actual","infonacotsinfondo-1 32.png","Azul");
 	JCButton btnReporte_Prestamos_Pasados = new JCButton("Prestamos Pasado","orange-folder-saved-search-icone-8197-16.png","Azul");
 	JCButton btnReporte_Prestamos_actual  = new JCButton("Prestamos Actual","dinero-icono-8797-16.png","Azul");
+	JCButton btnReporte_Infonavit_Fonacot = new JCButton("Infonavit E Infonacot","orange-folder-saved-search-icone-8197-16.png","Azul");
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -77,10 +80,13 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	JLabel lbl0 = new JLabel();
 	JLabel lbl1 = new JLabel();
-
+	JLabel lbl2 = new JLabel();
+	JLabel lblfolio = new JLabel();
 	
-	public Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores(){
-		this.setSize(930,200);
+	public Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores(int folio_colaborador, String Colaborador){
+		System.out.println(folio_colaborador);
+		
+		this.setSize(930,220);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setModal(true);
@@ -91,10 +97,10 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		this.lbl0.setBorder(BorderFactory.createTitledBorder(blackline,"Reportes En Un Periodo De Fechas"));
 		this.lbl1.setBorder(BorderFactory.createTitledBorder(blackline,"Reportes De Lista De Raya Pasadas O Actual"));
-		
+		this.lbl2.setBorder(BorderFactory.createTitledBorder(blackline,"Reportes De Un Rango De Listas De Raya"));
 		
 		int x=15,y=30,width=100,height=20,sep=200;
-		this.panel.add(lbl0).setBounds                          (x-10   ,y-15, 490, 150);
+		this.panel.add(lbl0).setBounds                          (x-10   ,y-15, 490, 100);
 		this.panel.add(new JLabel("Fecha Inicio:")).setBounds   (x      ,y    ,width  ,height);
 		this.panel.add(JLBlinicio).setBounds                    (x+=60  ,y    ,height ,height);
 		this.panel.add(c_inicio).setBounds                      (x+=20  ,y    ,width  ,height);
@@ -110,11 +116,11 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 //		this.panel.add(cmbDepartamento).setBounds               (x+=25  ,y    ,170    ,height);
 		
 		x=15;width=225;height=25;sep=240;
-		this.panel.add(btn_cant_personal).setBounds             (x      ,y+=45,width  ,height);
+		this.panel.add(btn_cant_personal).setBounds             (x      ,y+=25,width  ,height);
 		this.panel.add(btn_sueldosybonos_pend).setBounds        (x+sep  ,y    ,width  ,height);
 
 		x=510;y=30;width=180;sep=200;
-		this.panel.add(lbl1).setBounds                          (x-10   ,y-15 ,420    ,150   );
+		this.panel.add(lbl1).setBounds                          (x-10   ,y-15 ,420    ,170   );
 		this.panel.add(txtFolio).setBounds                      (x+=10  ,y    ,width  ,height);
 		this.panel.add(btnSeleccionLR).setBounds                (x+185  ,y    ,90     ,height);
 		this.panel.add(btnReporte_Infonavit_Pasados).setBounds  (x      ,y+=35,width  ,height);
@@ -124,7 +130,16 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 		this.panel.add(btnReporte_Prestamos_Pasados).setBounds  (x      ,y+=35,width  ,height);
 		this.panel.add(btnReporte_Prestamos_actual).setBounds   (x+sep  ,y    ,width  ,height);
 		
+		x=15;y=130;width=100;sep=200;height=20;
+		this.panel.add(lbl2).setBounds                          (x-10   ,y-15 ,490    ,70   );
+		this.panel.add(lblfolio).setBounds                      (x      ,y    ,width*3,height);
+		this.panel.add(new JLabel(Colaborador)).setBounds       (x+50   ,y    ,width*3,height);
+		this.panel.add(txtFolioLRI).setBounds                   (x      ,y+=25,width+5,height);
+		this.panel.add(txtFolioLRF).setBounds                   (x+=120 ,y    ,width+5,height);
+		this.panel.add(btnReporte_Infonavit_Fonacot).setBounds  (x+=120 ,y    ,225    ,height);
 		this.cont.add(panel);
+		
+		lblfolio.setText(folio_colaborador+"");
 		
 		btn_cant_personal.addActionListener(op_generar);
 		btn_sueldosybonos_pend.addActionListener(op_generar);
@@ -135,7 +150,7 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 		btnReporte_Infonacot_actual.addActionListener(op_generar_pasado_actual);
 		btnReporte_Prestamos_Pasados.addActionListener(op_generar_pasado_actual);
 		btnReporte_Prestamos_actual.addActionListener(op_generar_pasado_actual);
-		
+		btnReporte_Infonavit_Fonacot.addActionListener(op_reporte_infocacotinfonavitenrangolr);
 	}
 	
 	public void cargar_fechas(){
@@ -166,13 +181,30 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 	String comando="";
 	String reporte = "";
 	
+	ActionListener op_reporte_infocacotinfonavitenrangolr = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+     	   if(txtFolioLRI.getText().equals("")||txtFolioLRF.getText().equals("")){
+   			  JOptionPane.showMessageDialog(null, "Para Este Reporte Se Requiere Teclear La Lista De Raya Inicial y Lista de Raya Final","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+              return;       
+           }else{
+               if(Integer.valueOf(txtFolioLRI.getText())>Integer.valueOf(txtFolioLRF.getText()) ) {
+    			   JOptionPane.showMessageDialog(null, "La Lista De Raya Inicial Debe De Ser Menor A La Final","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                   return;
+        	   }else{
+        		   comando="exec sp_Reporte_De_Descuento_Fonacot_Infonavit_En_Un_Rango_De_Listas_De_Raya "+txtFolioLRI.getText()+","+txtFolioLRF.getText()+","+lblfolio.getText();
+        		   reporte="Obj_Reporte_De_Descuento_Fonacot_Infonavit_En_Un_Rango_De_Listas_De_Raya.jrxml";
+    			   new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+    			   return;   
+        	   }
+           }
+		}
+	};
+	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:58";
-//				String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
-//				String Departamento = cmbDepartamento.getSelectedItem().toString();
 			
 				if(c_inicio.getDate().before(c_final.getDate())){
 				   
@@ -234,7 +266,6 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 					}
 			 	}
 				
-				
 			   if( e.getActionCommand().equals("Infonacot Actual")){
 				   reporte = "Obj_Reporte_De_Infonacot_De_Lista_De_Raya.jrxml";
 			  	   comando = "exec sp_Reporte_De_Infonacot_De_Lista_De_Raya 'Colaboradores Con Infonacot En Lista De Raya Actual',0" ;
@@ -244,7 +275,6 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 				   reporte = "Obj_Reporte_De_Infonavit_De_Lista_De_Raya.jrxml";
 			  	   comando = "exec sp_reporte_de_infonavit_de_lista_de_raya 'Colaboradores Con Infonavit En Lista De Raya Actual',0" ;
 			   }
-			   
 			   
 			   if( e.getActionCommand().equals("Prestamos Actual")){
 				   reporte = "Obj_Reporte_De_Prestamos_De_Lista_De_Raya_Actual.jrxml";
@@ -353,7 +383,7 @@ public class Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores extends
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores().setVisible(true);
+			new Cat_Reportes_De_Informacion_De_Movimientos_De_Colaboradores(1, "MARCO ANTONIO BODART GUZMAN").setVisible(true);
 		}catch(Exception e){	}
 	}
 

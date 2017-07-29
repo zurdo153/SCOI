@@ -140,7 +140,7 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		panel.setBorder(BorderFactory.createTitledBorder(blackline,"Alimentacion De Remate De Productos Proximos A Caducar "));
         cont.setBackground(new java.awt.Color(255, 255, 255));
-   	    tabla.getTableHeader().setReorderingAllowed(false) ;
+   	    tabla.getTableHeader().setReorderingAllowed(false);
    	
 		int x=10, y=20,width=122,height=20, sep=135;
 		panel.add(menu_toolbar).setBounds                  (x         ,y      ,330     ,height );
@@ -234,7 +234,7 @@ public class Cat_Alimentacion_De_Remate_De_Productos extends JFrame{
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {
 			    fila=tabla.getSelectedRow();
-            	columna=6;
+            	columna=7;
            Objetotabla.validacelda(tabla,"decimal", fila, columna);
            RecorridoFoco(fila,"x"); 
 		}
