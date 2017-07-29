@@ -401,7 +401,12 @@ public  Cat_Alimentacion_De_Mermas(){
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				buscar_producto();
+				if(!txtFolio.isEditable()){
+					buscar_producto();
+				}else{
+					JOptionPane.showMessageDialog(null, "Es Necesario Que Se Genere El Folio De La Merma (NUEVO)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				}
+				
 			}
 		}
 	};

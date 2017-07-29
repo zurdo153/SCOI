@@ -598,15 +598,17 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 				 		  vector[0] = Datos_Producto.getCod_Prod().trim() ;
 				 		  vector[1] = Datos_Producto.getDescripcion_Prod();
 				 		  vector[2] = Datos_Producto.getExistencia();
-				 		  vector[3] = 0;
-				 		  vector[4] = 0;
-				 		  vector[5] = cmbRazonDeMerma.getSelectedItem().toString();
-				 		  vector[6] = cmbDestinoDeMerma.getSelectedItem().toString();
-				 		  vector[7] = Datos_Producto.getUltimo_Costo();
-				 		  vector[8] = Datos_Producto.getCosto_Promedio();
-				 		  vector[9] = Datos_Producto.getPrecio_Lista();
-				 		  vector[10] = 0;
-				 		  vector[11] = 0;
+				 		  vector[3] = 0;			//merma captura
+				 		  vector[4] = 0;			//merma seguridad
+				 		  vector[5] = 0;			//merma auditoria
+				 		  vector[6] = 0;			//existencia sin merma
+				 		  vector[7] = cmbRazonDeMerma.getSelectedItem().toString();
+				 		  vector[8] = cmbDestinoDeMerma.getSelectedItem().toString();
+				 		  vector[9] = Datos_Producto.getUltimo_Costo();
+				 		  vector[10] = Datos_Producto.getCosto_Promedio();
+				 		  vector[11] = Datos_Producto.getPrecio_Lista();
+				 		  vector[12] = 0;
+				 		  vector[13] = 0;
 
 				 		  modelo.addRow(vector);
 	 			 		  txtcod_prod.setText("");
@@ -896,6 +898,9 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
      			  					productos_originales.add(tabla.getValueAt(i, 0).toString());
      			  				}
      			  				
+     		                	 btnProducto.setEnabled(true);
+     		                	 txtcod_prod.setEnabled(true);
+     		                	 txtcod_prod.requestFocus();
 				    			dispose();
 							}
 					}

@@ -949,7 +949,7 @@ public class Filtro_Permiso_Empleado extends JDialog{
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 		this.setTitle("Filtro Colaboradores Por Nivel Jerarquico");
-		this.setSize(655,470);
+		this.setSize(700,470);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -965,7 +965,7 @@ public class Filtro_Permiso_Empleado extends JDialog{
 		trsfiltro = new TableRowSorter(model); 
 		tabla.setRowSorter(trsfiltro); 
 		campo.add(txtBuscar).setBounds      (10,20,418,20);
-		campo.add(getPanelTabla()).setBounds(10,40,630,390);
+		campo.add(getPanelTabla()).setBounds(10,40,680,390);
 
 		
 		cont.add(campo);
@@ -1004,11 +1004,11 @@ public class Filtro_Permiso_Empleado extends JDialog{
 		tabla.getColumnModel().getColumn(1).setHeaderValue("Colaborador");
 		tabla.getColumnModel().getColumn(1).setMinWidth(280);
 		tabla.getColumnModel().getColumn(2).setHeaderValue("Establecimiento");
-		tabla.getColumnModel().getColumn(2).setMinWidth(90);
+		tabla.getColumnModel().getColumn(2).setMinWidth(110);
 		tabla.getColumnModel().getColumn(3).setHeaderValue("Departamento");
-		tabla.getColumnModel().getColumn(3).setMinWidth(130);
+		tabla.getColumnModel().getColumn(3).setMinWidth(100);
 		tabla.getColumnModel().getColumn(4).setHeaderValue("Puesto");
-		tabla.getColumnModel().getColumn(4).setMinWidth(100);
+		tabla.getColumnModel().getColumn(4).setMinWidth(200);
 		
 	    tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",9)); 	
 	    tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
