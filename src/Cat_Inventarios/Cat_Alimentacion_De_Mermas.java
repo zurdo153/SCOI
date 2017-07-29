@@ -45,6 +45,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
+//import com.nilo.plaf.nimrod.NimRODLookAndFeel;
+//import com.nilo.plaf.nimrod.NimRODTheme;
+
 import Cat_Camaras.Cat_Camara;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
@@ -1268,6 +1271,24 @@ public  Cat_Alimentacion_De_Mermas(){
 			};
 		}
 		
+		
+//		@SuppressWarnings({ "static-access", "deprecation" })
+//		public static void main(String args[]){
+//		      try{
+//		         NimRODTheme nt = new NimRODTheme( "aaaa.theme");
+//		         NimRODLookAndFeel nf = new NimRODLookAndFeel();
+//		         nf.setCurrentTheme(nt);
+//		         UIManager.setLookAndFeel(nf);
+//		   
+//		         Cat_Alimentacion_De_Mermas frame=new Cat_Alimentacion_De_Mermas();
+//		         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		         frame.show(); 
+//		      }
+//		      catch (Exception event){
+//		         System.out.print("No se puede mostrar Look");
+//		      }  
+//		   }
+
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
