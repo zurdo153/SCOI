@@ -8431,7 +8431,7 @@ public class BuscarSQL {
 							   finiquito.setPretamo(rs.getDouble("prestamo"));
 							   finiquito.setCortes(rs.getDouble("cortes"));
 							   finiquito.setInfonavit(rs.getDouble("infonavit"));
-							   finiquito.setInfonacot(0/*rs.getDouble("infonacot")*/);
+							   finiquito.setInfonacot(rs.getDouble("infonacot"));
 							   finiquito.setFuente_sodas(rs.getDouble("fuente_de_sodas"));
 								   
 						   }
@@ -10409,6 +10409,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					+ "	then 'true' "
 					+ "		else 'false' end as validacion"
 					+ "	from tb_mermas where folio = @folio";
+
 		
 		System.out.println(query);
 		boolean disponible = false;
