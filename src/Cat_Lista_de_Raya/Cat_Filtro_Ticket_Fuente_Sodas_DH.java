@@ -24,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import Conexiones_SQL.BuscarTablasModel;
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
 import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 
@@ -204,7 +205,6 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 			}
 			
 			ActionListener opAgregar = new ActionListener() {
-				@SuppressWarnings("static-access")
 				public void actionPerformed(ActionEvent arg0) {
 					
 						if(tablaFiltro.isEditing()){
@@ -258,9 +258,11 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				}
 			}
 			
-			@SuppressWarnings("static-access")
+			public static Object[][] get_tabla(){
+			return new BuscarTablasModel().tabla_model_empleados_conpendiente_en_fuente_de_sodas_dh();
+		}
 			public void buscar_tabla_empleado_con_pendiente_en_fuente_sodas(){
-				Object [][] lista_tabla_empleados = new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH().get_tabla();
+				Object [][] lista_tabla_empleados = get_tabla();
 				 String[] fila = new String[9];
 				         for(int i=0; i<lista_tabla_empleados.length; i++){
 				                 fila[0] = lista_tabla_empleados[i][0]+"";

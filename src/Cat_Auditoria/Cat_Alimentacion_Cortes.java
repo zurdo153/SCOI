@@ -49,9 +49,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-
-
-
 import Cat_Reportes.Cat_Reporte_De_Cheques_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
 import Cat_Reportes.Cat_Reporte_De_Depositos_Cortes;
@@ -69,6 +66,7 @@ import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -76,7 +74,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	
 	Connexion con = new Connexion();
 	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observasiones", 500);
@@ -129,8 +126,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	JTextField txtTotalVaucher      = new JTextField("");
 	JTextField txtTotalRetiros      = new JTextField("");
 	JTextField txtTotalFS           = new JTextField("");
-	
-//	JTextField txtTarjeta= new Componentes().text(new JCTextField(), "Teclee El Folio De Tarjeta", 300, "String");
 
 	Border border = LineBorder.createGrayLineBorder();
 //	    Icon warnIcon = MetalIconFactory.getTreeComputerIcon();
@@ -142,178 +137,166 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	int folio_usuario;
 	JLabel lblUsuario = new JLabel("USUARIO: ");
 	
-	DefaultTableModel modelo_asignaciones = new DefaultTableModel(null,
-            new String[]{"Asignacion", "F. Cajero(a)","Nombre Cajera(o)","Total","Cod Estab","Establecimiento","Fecha de Asignacion","Fecha de Liquidacion"}
-			){
-	     @SuppressWarnings("rawtypes")
-		Class[] types = new Class[]{
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class
-	    
-         };
-	     @SuppressWarnings({ "rawtypes", "unchecked" })
-		public Class getColumnClass(int columnIndex) {
-             return types[columnIndex];
-         }
-         public boolean isCellEditable(int fila, int columna){
-        	 switch(columna){
-        	 	case 0 : return false; 
-        	 	case 1 : return false; 
-        	 	case 2 : return false;
-        	 	case 3 : return false;
-        	 	case 4 : return false;
-        	 	case 5 : return false;
-        	 	case 6 : return false;
-        	 	case 7 : return false;
-        	 	} 				
- 			return false;
- 		}
-	};
+	Obj_tabla ObjTabf =new Obj_tabla();
 	
-	JTable tabla_asignaciones = new JTable(modelo_asignaciones);
-	JScrollPane scroll = new JScrollPane(tabla_asignaciones,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	int columnasig = 8,checkbox=-1;
+	public void init_tabla_asignaciones(){
+    	this.tabla_asignaciones.getColumnModel().getColumn(0).setMinWidth(70);
+    	this.tabla_asignaciones.getColumnModel().getColumn(1).setMinWidth(70);
+    	this.tabla_asignaciones.getColumnModel().getColumn(2).setMinWidth(210);
+    	this.tabla_asignaciones.getColumnModel().getColumn(3).setMinWidth(90);
+    	this.tabla_asignaciones.getColumnModel().getColumn(4).setMinWidth(70);
+     	this.tabla_asignaciones.getColumnModel().getColumn(5).setMinWidth(160);
+     	this.tabla_asignaciones.getColumnModel().getColumn(6).setMinWidth(140);
+     	this.tabla_asignaciones.getColumnModel().getColumn(7).setMinWidth(140);
+		String comandof="";
+		String basedatos="0",pintar="si";
+		ObjTabf.Obj_Refrescar(tabla_asignaciones,modelo_asignaciones, columnasig, comandof, basedatos,pintar,checkbox);
+    }
 	
-	DefaultTableModel modelo_turno = new DefaultTableModel(null,
-            new String[]{"Turno", "Nombre","Cod.Estab","Usuario","Fecha Inicial","Fecha Final"}
-			){
-	     @SuppressWarnings("rawtypes")
-		Class[] types = new Class[]{
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class
-	    
-         };
-	     @SuppressWarnings({ "rawtypes", "unchecked" })
-		public Class getColumnClass(int columnIndex) {
-             return types[columnIndex];
-         }
-         public boolean isCellEditable(int fila, int columna){
-        	 switch(columna){
-        	 	case 0 : return false; 
-        	 	case 1 : return false; 
-        	 	case 2 : return false;
-        	 	case 3 : return false;
-        	 	case 4 : return false;
-        	 	case 5 : return false;
-        	 	} 				
- 			return false;
- 		}
-	};
+	@SuppressWarnings("rawtypes")
+	public Class[] base (){
+		Class[] types = new Class[columnasig];
+		for(int i = 0; i<columnasig; i++){types[i]= java.lang.Object.class;}
+		return types;
+	}
 	
-	JTable tabla_turno = new JTable(modelo_turno);
-	JScrollPane scrollTurno = new JScrollPane(tabla_turno,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	 public DefaultTableModel modelo_asignaciones = new DefaultTableModel(null, new String[]{"Asignacion", "F.Cajero(a)","Nombre Cajera(o)","Total","Cod Estab","Establecimiento","Fecha de Asignacion","Fecha de Liquidacion"}){
+		 @SuppressWarnings("rawtypes")
+			Class[] types = base();
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+			public boolean isCellEditable(int fila, int columna){return false;}
+	    };
+	    JTable tabla_asignaciones = new JTable(modelo_asignaciones);
+		public JScrollPane scroll = new JScrollPane(tabla_asignaciones);
+		
+		
+	 	int columnaturno = 6;
+	 	public void init_tabla_turno(){
+	     	this.tabla_turno.getColumnModel().getColumn(0).setMinWidth(70);
+	     	this.tabla_turno.getColumnModel().getColumn(1).setMinWidth(230);
+	     	this.tabla_turno.getColumnModel().getColumn(2).setMinWidth(70);
+	     	this.tabla_turno.getColumnModel().getColumn(3).setMinWidth(150);
+	     	this.tabla_turno.getColumnModel().getColumn(4).setMinWidth(130);
+	      	this.tabla_turno.getColumnModel().getColumn(5).setMinWidth(130);
+	 		String comandof="";
+	 		String basedatos="0",pintar="si";
+	 		ObjTabf.Obj_Refrescar(tabla_turno,modelo_turno, columnaturno, comandof, basedatos,pintar,checkbox);
+	     }
+	 	
+	 	@SuppressWarnings("rawtypes")
+	 	public Class[] baseturno (){
+	 		Class[] types = new Class[columnaturno];
+	 		for(int i = 0; i<columnaturno; i++){types[i]= java.lang.Object.class;}
+	 		return types;
+	 	}
+	 	
+	    public DefaultTableModel modelo_turno = new DefaultTableModel(null, new String[]{"Turno", "Nombre","Cod.Estab","Usuario","Fecha Inicial","Fecha Final"}){
+	 		 @SuppressWarnings("rawtypes")
+	 			Class[] types = base();
+	 			@SuppressWarnings({ "unchecked", "rawtypes" })
+	 			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+	 			public boolean isCellEditable(int fila, int columna){return false;}
+	 	};
+	 	 JTable tabla_turno = new JTable(modelo_turno);
+	 	 public JScrollPane scrollTurno = new JScrollPane(tabla_turno);
+	 	 
+	 	int columnavouchers = 12;
+	 	public void init_tabla_vauchers(){
+		     	this.tabla_vauchers.getColumnModel().getColumn(0).setMinWidth(70);
+		     	this.tabla_vauchers.getColumnModel().getColumn(1).setMinWidth(80);
+		     	this.tabla_vauchers.getColumnModel().getColumn(2).setMinWidth(120);
+		     	this.tabla_vauchers.getColumnModel().getColumn(3).setMinWidth(120);
+		     	this.tabla_vauchers.getColumnModel().getColumn(4).setMinWidth(70);
+		      	this.tabla_vauchers.getColumnModel().getColumn(5).setMinWidth(100);
+		      	this.tabla_vauchers.getColumnModel().getColumn(6).setMinWidth(100);
+		      	this.tabla_vauchers.getColumnModel().getColumn(7).setMinWidth(80);
+		      	this.tabla_vauchers.getColumnModel().getColumn(8).setMinWidth(110);
+		      	this.tabla_vauchers.getColumnModel().getColumn(9).setMinWidth(70);
+		      	this.tabla_vauchers.getColumnModel().getColumn(10).setMinWidth(70);
+		      	this.tabla_vauchers.getColumnModel().getColumn(11).setMinWidth(70);
+		 		String comandof="";
+		 		String basedatos="0",pintar="si";
+		 		ObjTabf.Obj_Refrescar(tabla_vauchers,modelo_vauchers,columnavouchers, comandof, basedatos,pintar,checkbox);
+		     }
+		 	
+		 	@SuppressWarnings("rawtypes")
+		 	public Class[] basevouchers (){
+		 		Class[] types = new Class[columnavouchers];
+		 		for(int i = 0; i<columnavouchers; i++){types[i]= java.lang.Object.class;}
+		 		return types;
+		 	}
+		 	
+		    public DefaultTableModel modelo_vauchers = new DefaultTableModel(null, new String[]{"Ticket", "Afiliacion", "Numero De Tarjeta",  "Fecha E.", "Cod. Aut.", "Tipo De Tarjeta", "Banco Emisor", "Tipo De Operacion", "Fecha Aut", "Importe","Asignacion","Retiro cliente"}){
+		 		 @SuppressWarnings("rawtypes")
+		 			Class[] types = base();
+		 			@SuppressWarnings({ "unchecked", "rawtypes" })
+		 			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+		 			public boolean isCellEditable(int fila, int columna){return false;}
+		 	};
+		 	 JTable tabla_vauchers = new JTable(modelo_vauchers);
+		 	 public JScrollPane scrollVauchers = new JScrollPane(tabla_vauchers);
+
+				
+			int columnatotales_fecha = 3;
+			 public void init_tabla_totales_fecha(){
+			    	this.tabla_totales_por_fecha.getColumnModel().getColumn(0).setMinWidth(80);
+			     	this.tabla_totales_por_fecha.getColumnModel().getColumn(1).setMinWidth(110);
+			     	this.tabla_totales_por_fecha.getColumnModel().getColumn(2).setMinWidth(120);
+			 		String comandof="";
+			 		String basedatos="0",pintar="si";
+			 		ObjTabf.Obj_Refrescar(tabla_totales_por_fecha,modelo_totales_por_fecha,columnatotales_fecha, comandof, basedatos,pintar,checkbox);
+			  }
+				 	
+			 	@SuppressWarnings("rawtypes")
+			 public Class[] basetotalesfecha (){
+			 		Class[] types = new Class[columnatotales_fecha];
+			 		for(int i = 0; i<columnatotales_fecha; i++){types[i]= java.lang.Object.class;}
+			 		return types;
+			 }
+				 	
+			 public DefaultTableModel modelo_totales_por_fecha = new DefaultTableModel(null, new String[]{"Asignacion","Fecha", "Importe Total"}){
+			 		@SuppressWarnings("rawtypes")
+					Class[] types = base();
+					@SuppressWarnings({ "unchecked", "rawtypes" })
+				    public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+				 	public boolean isCellEditable(int fila, int columna){return false;}
+		  	 };
+		  	 
+			 JTable tabla_totales_por_fecha = new JTable(modelo_totales_por_fecha);
+			 public JScrollPane scroll_totales_por_fecha = new JScrollPane(tabla_totales_por_fecha);
+
 	
-	
-	DefaultTableModel modelo_vauchers = new DefaultTableModel(null,
-            new String[]{"Ticket", "Afiliacion", "Numero De Tarjeta",  "Fecha E.", "Cod. Aut.", "Tipo De Tarjeta", "Banco Emisor", "Tipo De Operacion", "Fecha Aut", "Importe","Asignacion","Retiro cliente"}
-			){
-	     @SuppressWarnings("rawtypes")
-		Class[] types = new Class[]{
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class
-	    
-         };
-	     @SuppressWarnings({ "rawtypes", "unchecked" })
-		public Class getColumnClass(int columnIndex) {
-             return types[columnIndex];
-         }
-         public boolean isCellEditable(int fila, int columna){
-        	 switch(columna){
-        	 	case 0 : return false; 
-        	 	case 1 : return false; 
-        	 	case 2 : return false;
-        	 	case 3 : return false;
-        	 	case 4 : return false;
-        	 	case 5 : return false;
-        	 	case 6 : return false;
-        	 	case 7 : return false;
-        	 	case 8 : return false;
-        	 	case 9 : return false;
-        	 	case 10 : return false;
-        	 	case 11 : return false;
-        	 	} 				
- 			return false;
- 		}
-	};
-	
-	JTable tabla_vauchers = new JTable(modelo_vauchers);
-	JScrollPane scrollVauchers = new JScrollPane(tabla_vauchers,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	
-	DefaultTableModel modelo_totales_por_fecha = new DefaultTableModel(null,
-            new String[]{"Asignacion","Fecha", "Importe Total"}
-			){
-	     @SuppressWarnings("rawtypes")
-		Class[] types = new Class[]{
-	    	java.lang.String.class,
-	    	java.lang.String.class,
-	    	java.lang.String.class
-         };
-	     
-	     @SuppressWarnings({ "rawtypes", "unchecked" })
-		public Class getColumnClass(int columnIndex) {
-             return types[columnIndex];
-         }
-         public boolean isCellEditable(int fila, int columna){
-        	 switch(columna){
-	        	 	case 0 : return false; 
-	        	 	case 1 : return false;
-	        	 	case 2 : return false;
-        	 	} 				
- 			return false;
- 		}
-	};
-	
-	JTable tabla_totales_por_fecha = new JTable(modelo_totales_por_fecha);
-	JScrollPane scroll_totales_por_fecha = new JScrollPane(tabla_totales_por_fecha,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	
-	DefaultTableModel modelo_retiro_de_clientes = new DefaultTableModel(null,
-            new String[]{"Tickets", "Retiro"}
-			){
-	     @SuppressWarnings("rawtypes")
-		Class[] types = new Class[]{
-	    	java.lang.String.class,
-	    	java.lang.String.class
-         };
-	     
-	     @SuppressWarnings({ "rawtypes", "unchecked" })
-		public Class getColumnClass(int columnIndex) {
-             return types[columnIndex];
-         }
-         public boolean isCellEditable(int fila, int columna){
-        	 switch(columna){
-	        	 	case 0 : return false; 
-	        	 	case 1 : return false;
-        	 	} 				
- 			return false;
- 		}
-	};
-	
-	JTable tabla_retiro_de_clientes = new JTable(modelo_retiro_de_clientes);
-	JScrollPane scroll_retiro_de_clientes = new JScrollPane(tabla_retiro_de_clientes,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	
+				int columnaretiro_clientes = 2;
+				 public void init_tabla_retiros_clientes(){
+				    	this.tabla_retiro_de_clientes.getColumnModel().getColumn(0).setMinWidth(90);
+				     	this.tabla_retiro_de_clientes.getColumnModel().getColumn(1).setMinWidth(110);
+				 		String comandof="";
+				 		String basedatos="0",pintar="si";
+				 		ObjTabf.Obj_Refrescar(tabla_retiro_de_clientes,modelo_retiro_de_clientes,columnaretiro_clientes, comandof, basedatos,pintar,checkbox);
+				  }
+					 	
+				 	@SuppressWarnings("rawtypes")
+				 public Class[] basetoretiros_clientes(){
+				 		Class[] types = new Class[columnaretiro_clientes];
+				 		for(int i = 0; i<columnaretiro_clientes; i++){types[i]= java.lang.Object.class;}
+				 		return types;
+				 }
+					 	
+				 public DefaultTableModel modelo_retiro_de_clientes = new DefaultTableModel(null, new String[]{"Tickets", "Retiro"}){
+				 		@SuppressWarnings("rawtypes")
+						Class[] types = base();
+						@SuppressWarnings({ "unchecked", "rawtypes" })
+					    public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+					 	public boolean isCellEditable(int fila, int columna){return false;}
+			  	 };
+			  	 
+				 JTable tabla_retiro_de_clientes = new JTable(modelo_retiro_de_clientes);
+				 public JScrollPane scroll_retiro_de_clientes = new JScrollPane(tabla_retiro_de_clientes);
+				 
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
-	
 	DecimalFormat formato = new DecimalFormat("#0.00");
-	
 	String cadenaAsignacionesSeleccionadas="";
 	
 	int filaDep = 0;
@@ -448,12 +431,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(btnCancelar).setBounds(x*29+110,y,ancho-37,20);
 		panel.add(btnSalir).setBounds(x*29+220,y,ancho-40,20);
 
-		tablaLargoColumnas();
-		tablaRender(tabla_asignaciones);
-		tablaRender(tabla_turno);
-		tablaRender(tabla_vauchers);
-		tablaRender(tabla_totales_por_fecha);
-		tablaRender(tabla_retiro_de_clientes);
+		init_tabla_asignaciones();
+		init_tabla_turno();
+		init_tabla_vauchers();
+		init_tabla_totales_fecha();
+		init_tabla_retiros_clientes();
 		
 		lblEstablecimineto.setText(estab);
 		
@@ -579,75 +561,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
  	      }
 	}
 	
-	public void tablaLargoColumnas(){
 
-		tabla_asignaciones.getColumnModel().getColumn(0).setMaxWidth(70);
-		tabla_asignaciones.getColumnModel().getColumn(0).setMinWidth(70);
-		tabla_asignaciones.getColumnModel().getColumn(1).setMaxWidth(70);
-		tabla_asignaciones.getColumnModel().getColumn(1).setMinWidth(70);
-		tabla_asignaciones.getColumnModel().getColumn(2).setMaxWidth(210);
-		tabla_asignaciones.getColumnModel().getColumn(2).setMinWidth(210);
-		tabla_asignaciones.getColumnModel().getColumn(3).setMaxWidth(90);
-		tabla_asignaciones.getColumnModel().getColumn(3).setMinWidth(90);
-		tabla_asignaciones.getColumnModel().getColumn(4).setMaxWidth(70);
-		tabla_asignaciones.getColumnModel().getColumn(4).setMinWidth(70);
-		tabla_asignaciones.getColumnModel().getColumn(5).setMaxWidth(160);
-		tabla_asignaciones.getColumnModel().getColumn(5).setMinWidth(160);
-		tabla_asignaciones.getColumnModel().getColumn(6).setMaxWidth(140);
-		tabla_asignaciones.getColumnModel().getColumn(6).setMinWidth(140);
-		tabla_asignaciones.getColumnModel().getColumn(7).setMaxWidth(140);
-		tabla_asignaciones.getColumnModel().getColumn(7).setMinWidth(140);
-		
-		tabla_turno.getColumnModel().getColumn(0).setMaxWidth(70);  
-		tabla_turno.getColumnModel().getColumn(0).setMinWidth(70);  
-		tabla_turno.getColumnModel().getColumn(1).setMaxWidth(230); 
-		tabla_turno.getColumnModel().getColumn(1).setMinWidth(230); 
-		tabla_turno.getColumnModel().getColumn(2).setMaxWidth(70);  
-		tabla_turno.getColumnModel().getColumn(2).setMinWidth(70);  
-		tabla_turno.getColumnModel().getColumn(3).setMaxWidth(150); 
-		tabla_turno.getColumnModel().getColumn(3).setMinWidth(150); 
-		tabla_turno.getColumnModel().getColumn(4).setMaxWidth(130); 
-		tabla_turno.getColumnModel().getColumn(4).setMinWidth(130); 
-		tabla_turno.getColumnModel().getColumn(5).setMaxWidth(130); 
-		tabla_turno.getColumnModel().getColumn(5).setMinWidth(130); 
-		
-		tabla_vauchers.getColumnModel().getColumn(0).setMaxWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(0).setMinWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(1).setMaxWidth(80);
-		tabla_vauchers.getColumnModel().getColumn(1).setMinWidth(80);
-		tabla_vauchers.getColumnModel().getColumn(2).setMaxWidth(120);
-		tabla_vauchers.getColumnModel().getColumn(2).setMinWidth(120);
-		tabla_vauchers.getColumnModel().getColumn(3).setMaxWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(3).setMinWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(4).setMaxWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(4).setMinWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(5).setMaxWidth(100);
-		tabla_vauchers.getColumnModel().getColumn(5).setMinWidth(100);
-		tabla_vauchers.getColumnModel().getColumn(6).setMaxWidth(100);
-		tabla_vauchers.getColumnModel().getColumn(6).setMinWidth(100);
-		tabla_vauchers.getColumnModel().getColumn(7).setMaxWidth(80);
-		tabla_vauchers.getColumnModel().getColumn(7).setMinWidth(80);
-		tabla_vauchers.getColumnModel().getColumn(8).setMaxWidth(110);
-		tabla_vauchers.getColumnModel().getColumn(8).setMinWidth(110);
-		tabla_vauchers.getColumnModel().getColumn(9).setMaxWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(9).setMinWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(10).setMaxWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(10).setMinWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(11).setMaxWidth(70);
-		tabla_vauchers.getColumnModel().getColumn(11).setMinWidth(70);
-		
-		tabla_totales_por_fecha.getColumnModel().getColumn(0).setMaxWidth(80);
-		tabla_totales_por_fecha.getColumnModel().getColumn(0).setMinWidth(80);
-		tabla_totales_por_fecha.getColumnModel().getColumn(1).setMaxWidth(90);
-		tabla_totales_por_fecha.getColumnModel().getColumn(1).setMinWidth(90);
-		tabla_totales_por_fecha.getColumnModel().getColumn(2).setMaxWidth(120);
-		tabla_totales_por_fecha.getColumnModel().getColumn(2).setMinWidth(120);
-		
-		tabla_retiro_de_clientes.getColumnModel().getColumn(0).setMaxWidth(90);
-		tabla_retiro_de_clientes.getColumnModel().getColumn(0).setMinWidth(90);
-		tabla_retiro_de_clientes.getColumnModel().getColumn(1).setMaxWidth(100);
-		tabla_retiro_de_clientes.getColumnModel().getColumn(1).setMinWidth(100);
-	}
 	
 	public void tablaRender(JTable tbl){
 		tbl.getTableHeader().setReorderingAllowed(false) ;
@@ -1279,45 +1193,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				}
 		}
 	};
-	
-//	String cadena_de_vouchers_para_retiro_clientes="";
-//	public void cargar_cadena_de_vouchers_para_retiro_clientes(){
-//		
-//		
-//		for(int i=0; i<tabla_asignaciones.getRowCount(); i++){
-//			cadena_de_vouchers_para_retiro_clientes += "'"+tabla_asignaciones.getValueAt(i, 0).toString().trim()+"',";		
-//		}
-//		
-//		if(cadena_de_vouchers_para_retiro_clientes.length()<2){
-//			cadena_de_vouchers_para_retiro_clientes = "''";
-//		}else{
-//			cadena_de_vouchers_para_retiro_clientes = cadena_de_vouchers_para_retiro_clientes.substring(0,cadena_de_vouchers_para_retiro_clientes.length()-1);
-//		}
-//		
-//		while(tabla_retiro_de_clientes.getRowCount()>0){
-//            modelo_retiro_de_clientes.removeRow(0);
-//        }
-//		
-//		Object[][] getTablaVauchersRetiroClientes = getTablaRetiroClientes(cadena_de_vouchers_para_retiro_clientes);
-//		Object[] vectorDeRetiro_Cliente = new Object[2];
-//		
-//		
-//		
-//
-//		double suma_total_retiros =0;
-//		
-//				for(int j=0; j<getTablaVauchersRetiroClientes.length; j++){
-//					vectorDeRetiro_Cliente[0] = getTablaVauchersRetiroClientes[j][0]+"";
-//					vectorDeRetiro_Cliente[1] = getTablaVauchersRetiroClientes[j][1]+"";
-//                        modelo_retiro_de_clientes.addRow(vectorDeRetiro_Cliente);
-//                        suma_total_retiros += (Double.valueOf(vectorDeRetiro_Cliente[1].toString().trim()));
-//				}
-//				
-//		cadena_de_vouchers_para_retiro_clientes="";
-//		txtTotalRetiros.setText(suma_total_retiros+"");
-//		
-//		suma_total_retiros =0;
-//	}
 	
  	public Object[][] getTablaRetiroClientes(String cadena_de_vouchers_para_retiro_clientes){
 		
@@ -1987,10 +1862,10 @@ public class Cat_Alimentacion_Cortes extends JFrame{
     }
 }
 	
+///TODO Ventana Deposito	
 	JTextField txtFaltanteDeDeposito = new JTextField();
 	//guardar deposito
 	public class Cat_Alimentacion_Deposito extends JDialog {
-		
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
 		
@@ -2319,7 +2194,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	}
 	
 //  ---------------------------------------------------------------------------------------------------------------------------------------------------------	
-	//modificar deposito
+	//TODO modificar deposito
 	public class Cat_Alimentacion_Deposito_Modificar extends JDialog {
 		
 		Container cont = getContentPane();
@@ -2611,6 +2486,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
                 	txtNombreCajero.requestFocus();
              }
         });
+            
+            
 				 modeloFiltro.setRowCount(0);
 			String[] fila = new String[9];
 			Object[][] getTablaFiltro = getTablaFiltro(cadena,establecimiento);
@@ -2626,6 +2503,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
                     fila[8] = getTablaFiltro[i][8]+"";
                     modeloFiltro.addRow(fila);
             }
+				 
             btnCargar.addActionListener(opCargar);
 		}
 		

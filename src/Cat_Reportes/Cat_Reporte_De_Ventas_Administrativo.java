@@ -379,13 +379,8 @@ public class Cat_Reporte_De_Ventas_Administrativo extends JFrame {
 				  Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
 
 				if(fecha1.before(fecha2)){
-//					
 //					String Indic = cmbIndicadores.getSelectedItem().toString();
 //					String presen_por = cmbPresentado.getSelectedItem().toString();
-//					
-					
-					
-					
 					JOptionPane.showMessageDialog(null,"EN ESTA PARTE VA EL REOPERTE SOLICITADO Ó\nEL AVISO DE QUE NO SE ENCONTRO ","Aviso!", JOptionPane.WARNING_MESSAGE);
 					return;
 					

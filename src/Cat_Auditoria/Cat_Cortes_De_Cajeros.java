@@ -3,15 +3,11 @@ package Cat_Auditoria;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -25,7 +21,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -35,30 +30,43 @@ import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
-import Obj_Renders.tablaRenderer;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Cortes_De_Cajeros extends JFrame{
-	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
-	
 	Connexion con = new Connexion();
-	
-	DefaultTableModel model = new DefaultTableModel(0,2){
-		public boolean isCellEditable(int fila, int columna){
-			if(columna < 0)
-				return true;
-			return false;
-		}
-	};
-	
-	JTable tabla = new JTable(model);
+    JTextField txtFiltrof = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
+    
+	Obj_tabla ObjTabf =new Obj_tabla();
+	int columnas = 2,checkbox=-1;
+	public void init_tablaf(){
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(65);
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(270);
+		String comandof="exec sp_select_empleados_en_cortes";
+		String basedatos="26",pintar="si";
+		ObjTabf.Obj_Refrescar(tabla,model, columnas, comandof, basedatos,pintar,checkbox);
+    }
 	
 	@SuppressWarnings("rawtypes")
-	private TableRowSorter trsfiltro;
+	public Class[] base (){
+		Class[] types = new Class[columnas];
+		for(int i = 0; i<columnas; i++){types[i]= java.lang.Object.class;}
+		return types;
+	}
 	
-	JTextField txtBuscar = new Componentes().text(new JCTextField(), "Busqueda Por Nombre de Cajero", 50, "String");
+	 public DefaultTableModel model = new DefaultTableModel(null, new String[]{"Folio","Nombre Colaborador"}){
+		 @SuppressWarnings("rawtypes")
+			Class[] types = base();
+			@SuppressWarnings({ "rawtypes" })
+			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+			public boolean isCellEditable(int fila, int columna){return false;}
+	    };
+	    JTable tabla = new JTable(model);
+		public JScrollPane scroll_tablaf = new JScrollPane(tabla);
+	     @SuppressWarnings("rawtypes")
+	    private TableRowSorter trsfiltro;
 	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings("rawtypes")
@@ -71,44 +79,46 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 	public Cat_Cortes_De_Cajeros(String establecimiento)	{
 		cmbEstablecimiento.setSelectedItem(establecimiento);
 		Constructor();
-		
         this.addWindowListener(new WindowAdapter() {
             public void windowOpened( WindowEvent e ){
-          	  txtBuscar.requestFocus();
+            	txtFiltrof.requestFocus();
            }
         });
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public void Constructor(){
-		this.setTitle("Filtro Cortes ");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bolsa-de-dinero-en-efectivo-icono-6673-64.png"));
-		
-		txtBuscar.addKeyListener(new KeyAdapter() { 
-			public void keyReleased(final KeyEvent e) { 
-                filtro(); 
-            } 
-        });
-	
-		trsfiltro = new TableRowSorter(model); 
-		tabla.setRowSorter(trsfiltro);  
-		
-		campo.add(new JLabel("ESTABLECIMIENTO:")).setBounds(15,15,120,20);
-		campo.add(new JLabel(new ImageIcon("imagen/folder-home-home-icone-5663-16.png"))).setBounds(120,15,20,20); 
-		campo.add(cmbEstablecimiento).setBounds(138, 15, 235, 20);
-		campo.add(new JLabel("BUSCAR : ")).setBounds(15,40,70,20);
-		campo.add(txtBuscar).setBounds(80,40,295,20);
-		campo.add(getPanelTabla()).setBounds(10,60,365,450);
-		cmbEstablecimiento.addKeyListener(op_key);
-		agregar(tabla);
-		cont.add(campo);
-		
 		this.setSize(390,550);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setTitle("Filtro Cortes ");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bolsa-de-dinero-en-efectivo-icono-6673-64.png"));
+		
+		trsfiltro = new TableRowSorter(model); 
+		tabla.setRowSorter(trsfiltro); 
+		init_tablaf();
+		
+		campo.add(new JLabel("Establecimiento:")).setBounds(15,15,120,20);
+		campo.add(new JLabel(new ImageIcon("imagen/folder-home-home-icone-5663-16.png"))).setBounds(120,15,20,20); 
+		campo.add(cmbEstablecimiento).setBounds (138, 15, 235, 20);
+		campo.add(txtFiltrof).setBounds         (10,40,365,20);
+		campo.add(scroll_tablaf).setBounds      (10,60,365,450);
+		cmbEstablecimiento.addKeyListener(op_key);
+		
+		txtFiltrof.addKeyListener(opFiltrof);
+		agregar(tabla);
+		cont.add(campo);
 		
 	}
+	
+	KeyListener opFiltrof = new KeyListener(){
+		public void keyReleased(KeyEvent arg0) {
+			ObjTabf.Obj_Filtro(tabla, txtFiltrof.getText().toUpperCase(), columnas);
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
 	
 	KeyListener op_key = new KeyListener() {
 	public void keyTyped(KeyEvent e) {}
@@ -122,7 +132,7 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 		        public void actionPerformed(ActionEvent e)
 		        {
 		    		if(cmbEstablecimiento.getSelectedIndex()>0){
-		    			txtBuscar.requestFocus();
+		    			txtFiltrof.requestFocus();
 		    		} 	
 		        }
 	    });
@@ -160,47 +170,6 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 	        }
         });
     }
-	
-	public void filtro() { 
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText().toUpperCase().trim(), 1));
-	}  
-	private JScrollPane getPanelTabla()	{		
-		new Connexion();
-		
-		this.tabla.getTableHeader().setReorderingAllowed(false) ;
-		this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
-		tabla.getColumnModel().getColumn(0).setMaxWidth(70);
-		tabla.getColumnModel().getColumn(0).setMinWidth(70);
-		tabla.getColumnModel().getColumn(1).setHeaderValue("Nombre Completo");
-		tabla.getColumnModel().getColumn(1).setMaxWidth(285);
-		tabla.getColumnModel().getColumn(1).setMinWidth(285);
-		
-		for(int i=0; i<tabla.getColumnCount(); i++){
-			tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-		}
-		
-		Statement s;
-		ResultSet rs;
-		try {
-			s = con.conexion().createStatement();
-			rs = s.executeQuery("exec sp_select_empleados_en_cortes" );
-			while (rs.next())
-			{ 
-			   String [] fila = new String[2];
-			   fila[0] = rs.getString(1).trim();
-			   fila[1] = rs.getString(2).trim();
-			   
-			   model.addRow(fila); 
-			}	
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		 JScrollPane scrol = new JScrollPane(tabla);
-		   
-	    return scrol; 
-	}
-	
 	
 	public static void main(String args[]){
 		try{

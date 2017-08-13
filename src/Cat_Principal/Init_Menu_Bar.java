@@ -66,6 +66,7 @@ public class Init_Menu_Bar extends Init_Login{
 			}
 		}
 		
+		
 		for(WP_Menu tmp : lsMenus){
 			for(WP_Relation tmps : relacion){
 				if(tmp.Nivel == 1 && tmps.Id.getActionCommand().equalsIgnoreCase(tmp.Name)){

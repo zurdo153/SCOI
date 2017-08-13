@@ -2,134 +2,167 @@ package Obj_Evaluaciones;
 
 import java.sql.SQLException;
 
-import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Actividad {
-	int folio;
-	String actividad;
-	String descripcion;
-	String respuesta;
-	String atributos;
-	String nivel_critico;
-	String temporada;
-	boolean carga;
-	int repetir;
-	boolean status;
-
-	public Obj_Actividad(){
-		this.folio=0; this.actividad=""; this.descripcion=""; this.respuesta=""; this.atributos=""; this.nivel_critico="";
-		this.temporada=""; this.carga=false; this.repetir=0; this.status = false;
-	}
-
+	 int folio=0;
+	 String Actividad="";
+	 String Descripcion="";
+	 String Respuesta="";
+	 String Aspecto= "";
+	 String Nivel_Critico="";
+	 String Temporada="";
+	 String Exige_Evidencia="";
+	 String Exige_Observacion="";
+	 String Estatus="";
+	 String Genera_Alerta=""; 
+	 int tolerancia_minutos=0; 
+	 String NuevoModifica="";
+	
 	public int getFolio() {
 		return folio;
 	}
+
 
 	public void setFolio(int folio) {
 		this.folio = folio;
 	}
 
+
 	public String getActividad() {
-		return actividad;
+		return Actividad;
 	}
+
 
 	public void setActividad(String actividad) {
-		this.actividad = actividad;
+		Actividad = actividad;
 	}
+
 
 	public String getDescripcion() {
-		return descripcion;
+		return Descripcion;
 	}
+
 
 	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+		Descripcion = descripcion;
 	}
+
 
 	public String getRespuesta() {
-		return respuesta;
+		return Respuesta;
 	}
+
 
 	public void setRespuesta(String respuesta) {
-		this.respuesta = respuesta;
+		Respuesta = respuesta;
 	}
 
-	public String getAtributos() {
-		return atributos;
+
+	public String getAspecto() {
+		return Aspecto;
 	}
 
-	public void setAtributos(String atributos) {
-		this.atributos = atributos;
+
+	public void setAspecto(String aspecto) {
+		Aspecto = aspecto;
 	}
 
-	public String getNivel_critico() {
-		return nivel_critico;
+
+	public String getNivel_Critico() {
+		return Nivel_Critico;
 	}
 
-	public void setNivel_critico(String nivel_critico) {
-		this.nivel_critico = nivel_critico;
+
+	public void setNivel_Critico(String nivel_Critico) {
+		Nivel_Critico = nivel_Critico;
 	}
+
 
 	public String getTemporada() {
-		return temporada;
+		return Temporada;
 	}
+
 
 	public void setTemporada(String temporada) {
-		this.temporada = temporada;
+		Temporada = temporada;
 	}
 
-	public boolean isCarga() {
-		return carga;
+
+	public String getExige_Evidencia() {
+		return Exige_Evidencia;
 	}
 
-	public void setCarga(boolean carga) {
-		this.carga = carga;
+
+	public void setExige_Evidencia(String exige_Evidencia) {
+		Exige_Evidencia = exige_Evidencia;
 	}
 
-	public int getRepetir() {
-		return repetir;
+
+	public String getExige_Observacion() {
+		return Exige_Observacion;
 	}
 
-	public void setRepetir(int repetir) {
-		this.repetir = repetir;
+
+	public void setExige_Observacion(String exige_Observacion) {
+		Exige_Observacion = exige_Observacion;
 	}
 
-	public boolean isStatus() {
-		return status;
+
+	public String getEstatus() {
+		return Estatus;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+
+	public void setEstatus(String estatus) {
+		Estatus = estatus;
 	}
+
+
+	public String getGenera_Alerta() {
+		return Genera_Alerta;
+	}
+
+
+	public void setGenera_Alerta(String genera_Alerta) {
+		Genera_Alerta = genera_Alerta;
+	}
+
+
+	public int getTolerancia_minutos() {
+		return tolerancia_minutos;
+	}
+
+
+	public void setTolerancia_minutos(int tolerancia_minutos) {
+		this.tolerancia_minutos = tolerancia_minutos;
+	}
+
+
+	public String getNuevoModifica() {
+		return NuevoModifica;
+	}
+
+
+	public void setNuevoModifica(String nuevoModifica) {
+		NuevoModifica = nuevoModifica;
+	}
+
 
 	public int Nuevo(){
-		return new BuscarSQL().Nueva_Actividad();
+		return new BuscarSQL().Devuelve_ultimo_folio_transaccion("73");
 	}
 	
-	public boolean Existe(int folio){ 
-		return new BuscarSQL().ActividadExiste(folio);
-	}
-	
-	public boolean Existe_Nombre(String nombre){ 
-		return new BuscarSQL().ActividadExiste(nombre);
-	}
-	public String Nombre_Old(int folio){ 
-		return new BuscarSQL().ActividadExisteNameOld(folio);
-	}
 	
 	public boolean Guardar(){
 		return new GuardarSQL().Guardar_Actividad(this);
 	}
 	
-	public boolean Actualizar(int folio){
-		return new ActualizarSQL().Actualizar_Actividad(this, folio);
-	}
-	
 	public Obj_Actividad Buscar(int folio){
 		try {
-			return new BuscarSQL().Buscar_Actividad(folio);
+			return new BuscarSQL().Buscar_Actividad(folio);		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

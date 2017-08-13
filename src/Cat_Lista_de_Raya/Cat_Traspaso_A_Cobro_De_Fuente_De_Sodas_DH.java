@@ -1,10 +1,7 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -14,108 +11,96 @@ import java.lang.reflect.Method;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
-import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Principal.Componentes;
+import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH extends JFrame {
-	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	
 	Connexion con = new Connexion();
-	
-	public static Object[][] get_tabla(){
-		return new BuscarTablasModel().tabla_model_empleados_conpendiente_en_fuente_de_sodas_dh();
-	}
-	
-    public static DefaultTableModel tabla_model = new DefaultTableModel(
-    		get_tabla(),	new String[]{	"Folio",	"Nombre Completo", "Establecimiento", "Puesto", "Saldo"}){
-                    @SuppressWarnings("rawtypes")
-                    Class[] types = new Class[]{
-                               java.lang.Object.class, 
-                               java.lang.Object.class, 
-                               java.lang.Object.class,  
-                               java.lang.Object.class,  
-                               java.lang.Object.class
-                };
-                    @SuppressWarnings({ "rawtypes" })
-                    public Class getColumnClass(int columnIndex) {
-                            return types[columnIndex];
-                    }
-                public boolean isCellEditable(int fila, int columna){
-                            switch(columna){
-                                    case 0  : return false; 
-                                    case 1  : return false; 
-                                    case 2  : return false; 
-                                    case 3  : return false; 
-                                    case 4  : return false; 
-                            }
-                             return false;
-                     }
-            };
-	
-	JTable tabla = new JTable(tabla_model);
-	JScrollPane panelScroll = new JScrollPane(tabla);
+
+	Obj_tabla ObjTab =new Obj_tabla();
+	int columnas = 5,checkbox=-1;
+	public void init_tablaf(){
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(50);
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(280);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(150);
+    	this.tabla.getColumnModel().getColumn(3).setMinWidth(200);
+    	this.tabla.getColumnModel().getColumn(4).setMinWidth(55);
+		String comandof="sp_select_filtro_empleados_con_pendiente_en_fuente_de_sodas_dh";
+		String basedatos="26",pintar="si";
+		ObjTab.Obj_Refrescar(tabla,tabla_model, columnas, comandof, basedatos,pintar,checkbox);
+    }
 	
 	@SuppressWarnings("rawtypes")
-	private TableRowSorter trsfiltro;
+	public Class[] base (){
+		Class[] types = new Class[columnas];
+		for(int i = 0; i<columnas; i++){types[i]= java.lang.Object.class;}
+		 return types;
+	}
 	
-	JTextField txtFolio = new JTextField();
-	JTextField txtNombre_Completo = new JTextField();
+	public DefaultTableModel tabla_model = new DefaultTableModel(null, new String[]{"Folio",	"Nombre Completo", "Establecimiento", "Puesto", "Saldo"}){
+		 @SuppressWarnings("rawtypes")
+			Class[] types = base();
+			@SuppressWarnings({ "rawtypes" })
+			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+			public boolean isCellEditable(int fila, int columna){return false;}
+	};
+	
+	JTable tabla = new JTable(tabla_model);
+	public JScrollPane scroll_tabla = new JScrollPane(tabla);
+     @SuppressWarnings({ "rawtypes" })
+    private TableRowSorter trsfiltro;
+	     
+	JTextField txtBuscar  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
+	
+
 	String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
 	
 	@SuppressWarnings({ "rawtypes" })
 	public Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH()	{
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/sun_icon&16.png"));
+		this.setSize(850,415);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/fast-food-icon32.png"));
 		this.setTitle("Filtro de empleados con Saldo en fuente de sodas (Desarrollo Humano)");
-		panel.setBorder(BorderFactory.createTitledBorder("Empleados consaldo en fuente de sodas"));
+		panel.setBorder(BorderFactory.createTitledBorder("Transpaso a Cobro De Fuente De Sodas D.H."));
 
-		this.init_tabla();
+		this.init_tablaf();
 		
 		trsfiltro = new TableRowSorter(tabla_model); 
 		tabla.setRowSorter(trsfiltro);  
 		
-		panel.add(panelScroll).setBounds(15,42,800,327);
+		panel.add(scroll_tabla).setBounds(15,42,800,327);
 		
-		panel.add(txtFolio).setBounds(15,20,68,20);
-		panel.add(txtNombre_Completo).setBounds(85,20,300,20);
+		panel.add(txtBuscar).setBounds(15,20,800,20);
 		panel.add(cmbEstablecimientos).setBounds(387,20, 180, 20);
 		
 		agregar(tabla);
 		
 		cont.add(panel);
 		
-		txtFolio.addKeyListener(opFiltroFolio);
-		txtNombre_Completo.addKeyListener(opFiltroNombre);
-		cmbEstablecimientos.addActionListener(opFiltro);
-		
-		this.setSize(850,415);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		txtBuscar.addKeyListener(opFiltroFolio);
 		
         this.addWindowListener(new WindowAdapter() {
             public void windowOpened( WindowEvent e ){
-            	txtNombre_Completo.requestFocus();
+            	txtBuscar.requestFocus();
          }
        });
         
@@ -139,148 +124,12 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH extends JFrame {
 	
 	KeyListener opFiltroFolio = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
-		}
-		public void keyTyped(KeyEvent arg0) {
-			char caracter = arg0.getKeyChar();
-			if(((caracter < '0') ||
-				(caracter > '9')) &&
-			    (caracter != KeyEvent.VK_BACK_SPACE)){
-				arg0.consume(); 
-			}	
-		}
-		public void keyPressed(KeyEvent arg0) {}
-		
-	};
-	
-	KeyListener opFiltroNombre = new KeyListener(){
-		public void keyReleased(KeyEvent arg0) {
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
+			ObjTab.Obj_Filtro(tabla, txtBuscar.getText().toUpperCase(), columnas);
 		}
 		public void keyTyped(KeyEvent arg0) {}
-		public void keyPressed(KeyEvent arg0) {}
-		
+		public void keyPressed(KeyEvent arg0) {}		
 	};
-	
-	ActionListener opFiltro = new ActionListener(){
-		public void actionPerformed(ActionEvent arg0){
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
-		}
-	};
-	
-	public void init_tabla(){
-        this.tabla.getTableHeader().setReorderingAllowed(false) ;
-        
-        	   int w=60;
-               int x=330;
-               int y=160;
-               int z=80;
-               
-                this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                
-                this.tabla.getColumnModel().getColumn(0).setMaxWidth(w);
-                this.tabla.getColumnModel().getColumn(0).setMinWidth(w);
-                this.tabla.getColumnModel().getColumn(1).setMaxWidth(x);
-                this.tabla.getColumnModel().getColumn(1).setMinWidth(x);
-                this.tabla.getColumnModel().getColumn(2).setMaxWidth(y);
-                this.tabla.getColumnModel().getColumn(2).setMinWidth(y);
-                this.tabla.getColumnModel().getColumn(3).setMaxWidth(y);
-                this.tabla.getColumnModel().getColumn(3).setMinWidth(y);
-                this.tabla.getColumnModel().getColumn(4).setMaxWidth(z);
-                this.tabla.getColumnModel().getColumn(4).setMinWidth(z);
-                
-        TableCellRenderer render = new TableCellRenderer() { 
-                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-                boolean hasFocus, int row, int column) { 
-                        
-                        Component componente = null;
-                
-                        switch(column){
-                                case 0: 
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-                                        break;
-                                case 1:
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));        
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-                                        break;
-                                case 2: 
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));        
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                        break;
-                                case 3: 
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));        
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                        break;
-                                case 4: 
-                                        componente = new JLabel(value == null? "": value.toString());
-                                        if(row%2==0){
-                                                ((JComponent) componente).setOpaque(true); 
-                                                componente.setBackground(new java.awt.Color(177,177,177));        
-                                        }
-                                        ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                        break;
-                        }
-                        return componente;
-                } 
-        }; 
-        for(int i=0; i<tabla.getColumnCount(); i++){
-                this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
-        }
-}
-	
-	KeyListener validaCantidad = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e){
-			char caracter = e.getKeyChar();				
-			if(((caracter < '0') ||	
-			    	(caracter > '9')) && 
-			    	(caracter != '.' )){
-			    	e.consume();
-			    	}
-		}
-		@Override
-		public void keyReleased(KeyEvent e) {	
-		}
-		@Override
-		public void keyPressed(KeyEvent arg0) {
-		}	
-	};
-	
-	KeyListener validaNumericoConPunto = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e) {
-			char caracter = e.getKeyChar();
 
-			if(((caracter < '0') ||	
-		    	(caracter > '9')) && 
-		    	(caracter != '.')){
-		    	e.consume();
-		    	}
-		    		    		       	
-		}
-		@Override
-		public void keyPressed(KeyEvent e){}
-		@Override
-		public void keyReleased(KeyEvent e){}
-								
-	};
 	public static void main(String [] args){
 		try{
 			UIManager.setLookAndFeel(

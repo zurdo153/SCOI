@@ -33,15 +33,12 @@ import Obj_Checador.Obj_Mensajes;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Proveedores;
-import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
-import Obj_Evaluaciones.Obj_Atributos;
 import Obj_Evaluaciones.Obj_Cuadrante;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Jefatura;
-import Obj_Evaluaciones.Obj_Nivel_Critico;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
@@ -70,7 +67,6 @@ import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Punto_De_Venta.Obj_Clientes;
-
 
 public class ActualizarSQL {
 	String Qbitacora ="exec sp_insert_empleado_en_bitacora ?,?,?,?,?";
@@ -466,40 +462,6 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Atributos(Obj_Atributos atrib, int folio){
-		String query = "update tb_atributo set descripcion=?, valor=?, status=? where folio=" + folio;
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, atrib.getDescripcion().toUpperCase());
-			pstmt.setFloat(2, atrib.getValor());
-			pstmt.setString(3, (atrib.getStatus())?"1":"0");
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Atributos ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Atributos ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
 	
 	public boolean Jefatura(Obj_Jefatura jefat, int folio){
 		String query = "update tb_jefatura set descripcion=?, status=? where folio=" + folio;
@@ -601,41 +563,6 @@ public class ActualizarSQL {
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Ponderacion ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
-	
-	public boolean Nivel(Obj_Nivel_Critico nc, int folio){
-		String query = "update tb_nivel_critico set descripcion=?, valor=?, status=? where folio=" + folio;
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, nc.getDescripcion().toUpperCase());
-			pstmt.setFloat(2, nc.getValor());
-			pstmt.setString(3, (nc.getStatus())?"1":"0");
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Nivel ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Nivel ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1593,50 +1520,7 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Actualizar_Actividad(Obj_Actividad actividad, int folio){
-		
-		String query = "exec sp_update_actividad ?,?,?,?,?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, actividad.getActividad().toUpperCase());
-			pstmt.setString(2, actividad.getDescripcion().toUpperCase());
-			pstmt.setString(3, actividad.getRespuesta());
-			pstmt.setString(4, actividad.getAtributos());
-			pstmt.setString(5, actividad.getNivel_critico());
-			pstmt.setString(6, actividad.getTemporada());
-			pstmt.setInt(7, actividad.isCarga()? 1 : 0);
-			pstmt.setInt(8, actividad.getRepetir());
-			pstmt.setInt(9, folio);
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad ]   SQLException: sp_update_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad ]   SQLException: sp_update_actividad "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
-	
 	public boolean Actualizar_Actividad_Nivel_Jerarquico(Obj_Actividad_Asignadas_Nivel_Jerarquico actividad, int folio, String nombre){
-		
 		String query = "exec sp_update_actividad_nivel_jerarquico ?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;

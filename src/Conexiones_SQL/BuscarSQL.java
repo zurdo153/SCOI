@@ -66,14 +66,12 @@ import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
-import Obj_Evaluaciones.Obj_Atributos;
 import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
 import Obj_Evaluaciones.Obj_Cuadrante;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Jefatura;
-import Obj_Evaluaciones.Obj_Nivel_Critico;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
@@ -740,30 +738,6 @@ public class BuscarSQL {
 		return diaIA;
 	}
 	
-	public Obj_Atributos Atributos(int folio) throws SQLException{
-		Obj_Atributos atrib = new Obj_Atributos();
-		String query = "select * from tb_atributo where folio ="+ folio;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				atrib.setFolio(rs.getInt("folio"));
-				atrib.setDescripcion(rs.getString("Descripcion").trim());
-				atrib.setValor(rs.getFloat("Valor"));
-				atrib.setStatus((rs.getString("status").equals("1"))?true:false);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return atrib;
-	}
-	
 	public Obj_Jefatura Jefatura(int folio) throws SQLException{
 		Obj_Jefatura jefat = new Obj_Jefatura();
 		String query = "select * from tb_jefatura where folio ="+ folio;
@@ -843,30 +817,6 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return pond;
-	}
-	
-	public Obj_Nivel_Critico Nivel(int folio) throws SQLException{
-		Obj_Nivel_Critico nc = new Obj_Nivel_Critico();
-		String query = "select * from tb_nivel_critico where folio ="+ folio;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				nc.setFolio(rs.getInt("folio"));
-				nc.setDescripcion(rs.getString("Descripcion").trim());
-				nc.setValor(rs.getInt("Valor"));
-				nc.setStatus((rs.getString("status").equals("1"))?true:false);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return nc;
 	}
 	
 	public Obj_Opciones_De_Respuestas OpRespuesta(int folio) throws SQLException{
@@ -1094,27 +1044,6 @@ public class BuscarSQL {
 		return diaIA;
 	}
 	
-	public Obj_Atributos Atributo_Nuevo() throws SQLException{
-		Obj_Atributos atrib = new Obj_Atributos();
-		String query = "select max(folio) as 'Maximo' from tb_atributo";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				atrib.setFolio(rs.getInt("Maximo"));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return atrib;
-	}
-	
 	public Obj_Jefatura Jefatura_Nuevo() throws SQLException{
 		Obj_Jefatura jefat = new Obj_Jefatura();
 		String query = "select max(folio) as 'Maximo' from tb_jefatura";
@@ -1176,27 +1105,6 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return pond;
-	}
-	
-	public Obj_Nivel_Critico Nivel_Nuevo() throws SQLException{
-		Obj_Nivel_Critico nc = new Obj_Nivel_Critico();
-		String query = "select max(folio) as 'Maximo' from tb_nivel_critico";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				nc.setFolio(rs.getInt("Maximo"));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return nc;
 	}
 	
 	public int Cuadrante_Nuevo() throws SQLException{
@@ -2795,24 +2703,26 @@ public class BuscarSQL {
 		return temporada;
 	}
 
-	public int Nueva_Actividad(){
-		String sp_total_cheques = "exec sp_nueva_actividad";
+	public int Devuelve_ultimo_folio_transaccion(String folio_transaccion){
+		String query = "exec folio_siguiente_transaccion "+folio_transaccion;
 		int resultado = 0;
 		Statement s;
 		ResultSet rs;
 		try {		
 			s = con.conexion().createStatement();
-			rs = s.executeQuery(sp_total_cheques);
-			
+			rs = s.executeQuery(query);
 			while(rs.next()){
 				resultado = rs.getInt(1);
-				
 			}
+			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Devuelve_ultimo_folio_transaccion ] SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return resultado; 
 	}
+	
+	
 	
 	public int Nueva_Actividad_Jerarquico(){
 		String sp_total_cheques = "exec [sp_nueva_actividad_jerarquico]";
@@ -2831,73 +2741,6 @@ public class BuscarSQL {
 			e1.printStackTrace();
 		}
 		return resultado; 
-	}
-
-	public boolean ActividadExiste(int actividad){
-		String query = "exec sp_folio_actividad "+actividad;
-		
-		boolean existe = false;
-		Statement s;
-		ResultSet rs;
-		
-		try {				
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				existe = Boolean.parseBoolean(rs.getString("Existe").trim());
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return existe;
-	}
-	
-	public boolean ActividadExiste(String actividad){
-		String query = "exec sp_actividad_duplicada '"+actividad+"'";
-		
-		boolean existe = false;
-		Statement s;
-		ResultSet rs;
-		
-		try {				
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				existe = Boolean.parseBoolean(rs.getString("Existe").trim());
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return existe;
-	}
-	
-	
-	public String ActividadExisteNameOld(int actividad){
-		String query = "exec sp_select_actividad_nombre "+actividad;
-		
-		String nombre = "";
-		Statement s;
-		ResultSet rs;
-		
-		try {				
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				nombre = rs.getString("actividad").trim();
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return nombre;
 	}
 	
 	public String ActividadExisteNameOldJerarquica(int actividad){
@@ -3126,31 +2969,35 @@ public class BuscarSQL {
 	
 	public Obj_Actividad Buscar_Actividad(int folio) throws SQLException{
 		Obj_Actividad actividad = new Obj_Actividad();
-		String query = "exec sp_select_actividad "+folio+";";
+		String query = "exec cuadrantes_actividad_select "+folio;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				actividad.setActividad(rs.getString("actividad"));
-				actividad.setDescripcion(rs.getString("descripcion"));
-				actividad.setRespuesta(rs.getString("respuesta"));
-				actividad.setAtributos(rs.getString("atributo"));
-				actividad.setNivel_critico(rs.getString("critico"));
-				actividad.setTemporada(rs.getString("temporada"));
-				actividad.setCarga(rs.getInt("carga") == 1 ? true : false);
-				actividad.setRepetir(rs.getInt("repetir"));
-				actividad.setStatus(rs.getString("status").equals("1") ? true : false);
-				
-			}
+			while(rs.next()){	
+				actividad.setFolio(rs.getInt(1));				
+				actividad.setActividad(rs.getString(2));
+				actividad.setDescripcion(rs.getString(3));
+				actividad.setRespuesta(rs.getString(4));
+				actividad.setAspecto(rs.getString(5));
+				actividad.setNivel_Critico(rs.getString(6));
+				actividad.setTemporada(rs.getString(7));
+				actividad.setExige_Evidencia(rs.getString(8));
+				actividad.setExige_Observacion(rs.getString(9));
+				actividad.setEstatus(rs.getString(10));
+				actividad.setGenera_Alerta(rs.getString(11));
+				actividad.setTolerancia_minutos(rs.getInt(12));
+			}      
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Buscar_Actividad ] SQLException: "+query+";"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			return null;
 		}
 		finally{
 			if(stmt!=null){stmt.close();}
 		}
+	
 		return actividad;
 	}
 	

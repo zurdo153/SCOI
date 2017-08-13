@@ -35,7 +35,6 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Evaluaciones.Cat_Filtro_Nivel_Jerarquico;
 import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Lista_de_Raya.Obj_Establecimiento;

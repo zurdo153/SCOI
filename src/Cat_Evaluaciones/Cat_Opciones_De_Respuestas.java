@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import Cat_Evaluaciones.Cat_Filtro_Opciones_Respuesta;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
@@ -271,5 +272,13 @@ public class Cat_Opciones_De_Respuestas extends JFrame {
 	};
 	
 	
+	public static void main(String args[]){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Opciones_De_Respuestas().setVisible(true);
+		}catch(Exception e){
+			System.err.println("Error en Main: "+e.getMessage());
+		}
+	}
 	
 }

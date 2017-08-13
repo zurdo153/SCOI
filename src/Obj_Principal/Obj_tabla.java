@@ -64,16 +64,13 @@ public class Obj_tabla {
 		}
  	}
 	
-	
-
-	
-	
 	public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,String comando,String BasdeDatos, String pintar, Integer checkbox){
     	tabla.getTableHeader().setReorderingAllowed(false) ;
     	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		modelo.setRowCount(0);
 		Connexion con = new Connexion();
 		Statement  s =null;
+	 if(!BasdeDatos.equals("0")){
 		
 		if(BasdeDatos.equals("200")){
 			 try { s = con.conexion_IZAGAR().createStatement();
@@ -121,6 +118,7 @@ public class Obj_tabla {
 				JOptionPane.showMessageDialog(null, "Error en la funcion refrescar tabla SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 	     }	
+	}
 		
 		for(int i = 0; i<tabla.getColumnCount(); i++){
     		tabla.getColumnModel().getColumn(i).setMaxWidth(2000);

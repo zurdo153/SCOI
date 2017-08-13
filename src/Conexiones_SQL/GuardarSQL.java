@@ -58,7 +58,7 @@ import Obj_Contabilidad.Obj_Importar_Voucher;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
-import Obj_Evaluaciones.Obj_Atributos;
+import Obj_Evaluaciones.Obj_Aspectos;
 import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
 import Obj_Evaluaciones.Obj_Cuadrante;
 import Obj_Evaluaciones.Obj_Directorios;
@@ -356,28 +356,31 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Atributos(Obj_Atributos atrib){
-		String query = "exec sp_insert_atributo		 ?,?,?";
+	public boolean Guardar_Aspectos(Obj_Aspectos aspecto){
+		String query   = "exec cuadrantes_aspecto_insert ?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, atrib.getDescripcion().toUpperCase());
-			pstmt.setFloat(2, atrib.getValor());
-			pstmt.setString(3, (atrib.getStatus())?"1":"0");
+			pstmt.setInt   (1, aspecto.getFolio()      );
+			pstmt.setString(2, aspecto.getAspecto()    );
+			pstmt.setInt   (3, aspecto.getPonderacion());
+			pstmt.setInt   (4, aspecto.getOrden()      );
+			pstmt.setString(5, aspecto.getEstatus()    );
+			pstmt.setString(6, aspecto.getGuardaModifica());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Atributos ] Insert  SQLException: sp_insert_atributo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Aspectos ] Insert  SQLException: sp_insert_atributo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Atributos ] Insert  SQLException: sp_insert_atributo "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Aspectos ] Insert  SQLException: sp_insert_atributo "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -386,7 +389,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Atributos ] Insert  SQLException: sp_insert_atributo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Aspectos ] Insert  SQLException: sp_insert_atributo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -506,29 +509,32 @@ public class GuardarSQL {
 		}		
 		return true;
 	}
-	
-	public boolean Guardar_Nivel(Obj_Nivel_Critico nc){
-		String query = "exec sp_insert_nivel_critico		 ?,?,?";
+
+	public boolean Guardar_Nivel_Critico(Obj_Nivel_Critico nivel_critico){
+		String query   = "exec cuadrantes_nivel_critico_insert ?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, nc.getDescripcion().toUpperCase());
-			pstmt.setFloat(2, nc.getValor());
-			pstmt.setString(3, (nc.getStatus())?"1":"0");
+			pstmt.setInt   (1, nivel_critico.getFolio()      );
+			pstmt.setString(2, nivel_critico.getNivel_critico() );
+			pstmt.setInt   (3, nivel_critico.getPonderacion());
+			pstmt.setInt   (4, nivel_critico.getOrden()      );
+			pstmt.setString(5, nivel_critico.getEstatus()    );
+			pstmt.setString(6, nivel_critico.getNuevoModifica());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel ] Insert  SQLException: sp_insert_nivel_critico "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel_Critico ] Insert  SQLException:  "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel ] Insert  SQLException: sp_insert_nivel_critico "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel_Critico ] Insert  SQLException:  "+query+" "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -537,7 +543,7 @@ public class GuardarSQL {
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel ] Insert  SQLException: sp_insert_nivel_critico "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel_Critico ] Insert  SQLException:  "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;
@@ -2051,26 +2057,37 @@ public class GuardarSQL {
 	
 	
 	public boolean Guardar_Actividad(Obj_Actividad actividad){
-		String query = "exec sp_insert_actividad ?,?,?,?,?,?,?,?";
+		int folio_transaccion=0;
+		if(actividad.getNuevoModifica().equals("N")){
+			 folio_transaccion=busca_y_actualiza_proximo_folio(73);
+			 actividad.setFolio(folio_transaccion);	
+		}
+		String query = "exec cuadrantes_actividad_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,"+usuario.getFolio();
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-					
-			pstmt.setString(1, actividad.getActividad().toUpperCase());
-			pstmt.setString(2, actividad.getDescripcion().toUpperCase());
-			pstmt.setString(3, actividad.getRespuesta());
-			pstmt.setString(4, actividad.getAtributos());
-			pstmt.setString(5, actividad.getNivel_critico());
-			pstmt.setString(6, actividad.getTemporada());
-			pstmt.setInt(7, actividad.isCarga() ? 1 : 0);
-			pstmt.setInt(8, actividad.getRepetir());
 			
+			pstmt.setInt   (1, actividad.getFolio());
+			pstmt.setString(2, actividad.getActividad());
+			pstmt.setString(3, actividad.getDescripcion());
+			pstmt.setString(4, actividad.getRespuesta());
+			pstmt.setString(5, actividad.getAspecto());
+			pstmt.setString(6, actividad.getNivel_Critico());
+			pstmt.setString(7, actividad.getTemporada());
+			pstmt.setString(8, actividad.getExige_Evidencia());
+			pstmt.setString(9, actividad.getExige_Observacion());
+			pstmt.setString(10, actividad.getEstatus());
+			pstmt.setString(11, actividad.getNuevoModifica());
+			pstmt.setString(12, actividad.getGenera_Alerta());
+			pstmt.setInt   (13, actividad.getTolerancia_minutos());
 			
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Actividad ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
 				try {
@@ -6431,15 +6448,11 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 		
 		
 public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos equipos, String movimiento,String rutaFactura, String rutaImagen){
-	
 	String query =  "exec sp_insert_administracion_de_activos ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";//"exec sp_insert_actividades_de_plan_semanal_contestadas ?,?,?,?,?,?,?,?,?";
-
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
-	
 	try {
 		int folio = movimiento.equals("GUARDAR") ? busca_y_actualiza_proximo_folio(71) : equipos.getFolio();
-		
 		con.setAutoCommit(false);
 		pstmt = con.prepareStatement(query);
 				pstmt.setInt(1, folio); //actualiza folio en tb_folios y retorna el folio mas actualizado para posteriormente mandarlo de parametro                      

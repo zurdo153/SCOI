@@ -81,11 +81,7 @@ public class Cat_Reporte_Evaluacione_Operativas extends JDialog {
 					e.printStackTrace();   
 				}
 		c_inicio.setDate(date1);
-					
-	
-	
 	};
-	
 	
 	String basedatos="2.26";
 	String vista_previa_reporte="no";
@@ -93,15 +89,10 @@ public class Cat_Reporte_Evaluacione_Operativas extends JDialog {
 	String comando="";
 	String reporte = "";
 	
-
-	
 	ActionListener op_generar_reporte_matrices = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
-			//	String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
-				System.out.println(fecha_inicio);
-			
 					Reporte_de_EvaluacionesOperativas(fecha_inicio,Integer.valueOf(txtFolio.getText().toString()));
 			}		
 		}
@@ -110,8 +101,6 @@ public class Cat_Reporte_Evaluacione_Operativas extends JDialog {
 		public void actionPerformed(ActionEvent e) {
 			if(validar_fechas().equals("")){
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());
-			   
-			
 				Reporte_de_EvaluacionesOperativas_observaciones(fecha_inicio,txtFolio.getText().toString());
 			}		    
 		}     
@@ -120,28 +109,21 @@ public class Cat_Reporte_Evaluacione_Operativas extends JDialog {
 	public void Reporte_de_EvaluacionesOperativas(String fecha, int FolioMat){  
 		 reporte = "Obj_Reporte_Matrices2.jrxml";
 		 comando = "exec sp_generar_promedio_departamentos_matrices_operativas '"+fecha+"', "+FolioMat+"";  
-		 System.out.println(comando);
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		 
 	}  
 	public void Reporte_de_EvaluacionesOperativas_observaciones(String fecha, String FolioMat){
 		 reporte = "Obj_Reporte_Matriz_Observaciones.jrxml";
 		 comando = "exec sp_generar_reporte_observaciones_matriz '"+fecha+"', "+FolioMat+"";       
-		 System.out.println(comando);
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
-	
-	  
 	
 	public String validar_fechas(){   
 		String error = "";
 		String fechainicioNull = c_inicio.getDate()+"";
-		
 	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n"; 
-	
 		return error;
 	}  
-	
 	
 	public static void main(String args[]){
 		try{

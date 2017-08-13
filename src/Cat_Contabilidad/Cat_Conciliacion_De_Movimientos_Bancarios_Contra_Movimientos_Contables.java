@@ -889,7 +889,6 @@ public class Cat_Conciliacion_De_Movimientos_Bancarios_Contra_Movimientos_Contab
 					 	 modelocontabilidad.removeRow(i1);
 					 	 modeloconciliados.addRow(vector);
 					 	importe_mov_bancarios=0;
-					 	 
 			    	  }
 				   }	
 			   }

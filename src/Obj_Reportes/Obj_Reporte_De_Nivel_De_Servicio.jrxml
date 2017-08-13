@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-01-27T12:27:10 -->
+<!-- 2017-08-03T09:55:11 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Nivel_De_Servicio" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f63a393-85b7-45a3-a31e-c5b91967267e">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -134,7 +134,7 @@
 				<text><![CDATA[Pedidos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="223" y="-2" width="61" height="34" forecolor="#000000" uuid="9bbf52f0-3143-40d9-b9ec-e78598e01eb2">
+				<reportElement style="Column header" x="223" y="-2" width="62" height="34" forecolor="#000000" uuid="9bbf52f0-3143-40d9-b9ec-e78598e01eb2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -143,13 +143,13 @@
 				<text><![CDATA[Cantidad De Filas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="292" y="-2" width="55" height="34" forecolor="#636363" uuid="8abecfa1-fc56-49c3-af56-e62115c99573">
+				<reportElement style="Column header" x="285" y="-2" width="70" height="34" forecolor="#000000" uuid="8abecfa1-fc56-49c3-af56-e62115c99573">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Negados]]></text>
+				<text><![CDATA[Agotados]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="355" y="-2" width="53" height="34" forecolor="#000000" uuid="027fbbee-56c6-42df-aaab-17cf28fc03b1">
@@ -161,22 +161,22 @@
 				<text><![CDATA[Surtidos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="416" y="-2" width="56" height="34" forecolor="#636363" uuid="dce523ce-0c22-4481-be07-48fda4030c51">
+				<reportElement style="Column header" x="408" y="-2" width="72" height="34" forecolor="#000000" uuid="dce523ce-0c22-4481-be07-48fda4030c51">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Ajuste]]></text>
+				<text><![CDATA[Negados]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="472" y="-2" width="68" height="34" forecolor="#000000" uuid="e7d15aca-cee7-460d-bc26-8b3e34290d4b">
+				<reportElement style="Column header" x="480" y="-2" width="60" height="34" forecolor="#000000" uuid="e7d15aca-cee7-460d-bc26-8b3e34290d4b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[% De Ajuste]]></text>
+				<text><![CDATA[% De Negado]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="20" y="-2" width="140" height="34" forecolor="#000000" uuid="c0e4a1d8-3059-465b-a74a-25a9bb943040">
@@ -215,7 +215,7 @@
 					<textFieldExpression><![CDATA[$F{cantidad_de_filas}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="292" y="0" width="55" height="16" forecolor="#636363" uuid="14dc9bdf-90a9-40a9-b5c8-660d8b1bdda9">
+					<reportElement style="Detail" positionType="Float" x="285" y="0" width="70" height="16" forecolor="#000000" uuid="14dc9bdf-90a9-40a9-b5c8-660d8b1bdda9">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -243,7 +243,7 @@
 					<textFieldExpression><![CDATA[$F{pidio}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="416" y="0" width="56" height="16" forecolor="#636363" uuid="b6ed93b7-aba8-4b6b-9d9e-a2c3c81a3202"/>
+					<reportElement x="408" y="0" width="72" height="16" forecolor="#000000" uuid="b6ed93b7-aba8-4b6b-9d9e-a2c3c81a3202"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{ajuste}]]></textFieldExpression>
 				</textField>

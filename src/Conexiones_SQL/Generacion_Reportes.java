@@ -73,7 +73,7 @@ public class Generacion_Reportes {
 							}
 				  }
 				try{
-					JDialog viewer = new JDialog(new JFrame(),reporte, true);
+					JDialog viewer = new JDialog(new JFrame(),reporte, false);// en caso que de que  se  dese modal se le pone true en el final de los parametros
 					viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
 					viewer.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 					viewer.setLocationRelativeTo(null);
