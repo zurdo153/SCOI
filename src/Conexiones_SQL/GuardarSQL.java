@@ -52,6 +52,7 @@ import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
 import Obj_Compras.Obj_Horario_Base_De_Entrega_De_Pedidos;
 import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
+import Obj_Compras.Obj_Registrar_Zona_Completada;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
@@ -6024,7 +6025,9 @@ public boolean Finalizar_Pedido(String folio_pedido){
 
 public boolean Guardar_Asignacion_De_Pedido(Object[][] asignacion,String folio_pedido){
 	
-	String query =  "EXEC sp_insert_asignacion_de_pedido_por_paginas ?,?,?,?";
+//	String query =  "EXEC sp_insert_asignacion_de_pedido_por_paginas ?,?,?,?";
+	String query =  "EXEC sp_insert_asignacion_de_pedido_por_zonas ?,?,?,?,?";
+	
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
 	
@@ -6035,9 +6038,10 @@ public boolean Guardar_Asignacion_De_Pedido(Object[][] asignacion,String folio_p
 		System.out.print(asignacion.length);
 		for(int i=0; i<asignacion.length; i++){
 				pstmt.setString(1, folio_pedido);
-				pstmt.setInt   (2, Integer.valueOf(asignacion[i][0].toString()));
-				pstmt.setInt   (3, Integer.valueOf(asignacion[i][2].toString()));
-				pstmt.setInt   (4, usuario.getFolio());
+				pstmt.setInt   (2, usuario.getFolio());
+				pstmt.setString(3, asignacion[i][0].toString());
+				pstmt.setInt   (4, Integer.valueOf(asignacion[i][1].toString().equals("")?"0":asignacion[i][1].toString()));
+				pstmt.setString(5, asignacion[i][2].toString());
 				
 				pstmt.executeUpdate();
 		}
@@ -6758,6 +6762,52 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				e.printStackTrace();
 			}
 		}		
+		return true;
+	}
+	
+	public boolean Guardar_Recibir_Pedido(Obj_Registrar_Zona_Completada recibir_zona){
+		
+//		String query =  "delete from mpedestab where LTRIM(RTRIM(folio)) = LTRIM(RTRIM(@folio_pedido)) AND LTRIM(RTRIM(transaccion))='29'";	
+		String query = "exec sp_recibir_pedido_por_zona ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, recibir_zona.getFolio_pedido());
+			pstmt.setString(2, recibir_zona.getZona());
+			pstmt.setString(3, recibir_zona.getStatus());
+			pstmt.setInt(4, recibir_zona.getFolio_surtidor());
+			pstmt.setInt(5, recibir_zona.getFolio_emp_recibe());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			
+		} catch (SQLException e) {
+			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Recibir_Pedido ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Recibir_Pedido ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Recibir_Pedido ] "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Recibir_Pedido ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		
 		return true;
 	}
 	

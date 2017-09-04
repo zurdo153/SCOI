@@ -11,6 +11,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+import Cat_Compras.Cat_Registrar_Zona_Completada;
 import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
@@ -19,6 +20,7 @@ public class Cat_Menu_Checador extends JDialog  {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
+	JCButton btnRecibirPedido = new JCButton("Recibir Pedido Por Zona", "", "Azul");
 	JCButton btnSalidaDeEmbarque = new JCButton("Salida De Embarque", "", "AzulC");
 	JCButton btnLlegadaDeEmbarque = new JCButton("Llegada De Embarque", "", "AzulC");
 		
@@ -27,14 +29,16 @@ public class Cat_Menu_Checador extends JDialog  {
 		
 	public Cat_Menu_Checador(){
 		this.setModal(true);
-		this.setSize(275, 125);
+		this.setSize(275, 155);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setTitle("Menu");
 		
-		panel.add(btnSalidaDeEmbarque).setBounds(30,20,210,25) ;
-		panel.add(btnLlegadaDeEmbarque).setBounds(30,50,210,25) ;
+		panel.add(btnRecibirPedido).setBounds(30,20,210,25) ;
+		panel.add(btnSalidaDeEmbarque).setBounds(30,50,210,25) ;
+		panel.add(btnLlegadaDeEmbarque).setBounds(30,80,210,25) ;
 		
+		btnRecibirPedido.addActionListener(opValidarEncargado);
 		btnSalidaDeEmbarque.addActionListener(opValidarEncargado);
 		btnLlegadaDeEmbarque.addActionListener(opValidarEncargado);
 
@@ -45,6 +49,9 @@ public class Cat_Menu_Checador extends JDialog  {
 	ActionListener opValidarEncargado = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
+			if(e.getActionCommand().equals("Recibir Pedido Por Zona")){
+				new Cat_Registrar_Zona_Completada().setVisible(true);
+			}
 			if(e.getActionCommand().equals("Salida De Embarque")){
 				new Cat_Validar_Encargado_Para_Tranferencia().setVisible(true);
 			}

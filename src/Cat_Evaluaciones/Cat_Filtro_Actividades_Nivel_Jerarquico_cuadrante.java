@@ -3,7 +3,7 @@ package Cat_Evaluaciones;
 
 import Cat_Cuadrantes.Cat_Filtro_Actividades;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial"})
 public class Cat_Filtro_Actividades_Nivel_Jerarquico_cuadrante extends Cat_Filtro_Actividades {
 	
 	public Cat_Filtro_Actividades_Nivel_Jerarquico_cuadrante(){

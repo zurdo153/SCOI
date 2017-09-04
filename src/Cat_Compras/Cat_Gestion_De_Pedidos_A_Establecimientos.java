@@ -169,7 +169,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		
 		llamarRender();
 		cmbEstablecimientos.setSelectedItem("CEDIS");
-		cmbEstablecimientos.setEnabled(false);
+//		cmbEstablecimientos.setEnabled(false);
 		
 		txtEstablecimientoOrigen.setEditable(false);
 		txtEstablecimientoDestino.setEditable(false);
@@ -319,6 +319,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
    	
    	public void limpiar(){
    		
+   		cmbEstablecimientos.setEnabled(true);
    		txtPedido.setEditable(true);
    		txtPedido.setText("");
    		txtEstablecimientoOrigen.setText("");
@@ -335,7 +336,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
    	
 	ActionListener opCargarInventario = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			if(new BuscarSQL().existeInventarioElDiaActual()){
+			if(new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim())){
 				if(JOptionPane.showConfirmDialog(null, "Ya Existe Inventario El Dia De Hoy, Desea Recalcularlo?") == 0){
 					cargarInventario();
 				}
@@ -388,8 +389,9 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 							}
 					  }
 				}else{
-					if(new BuscarSQL().existeInventarioElDiaActual()){
+					if(new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim())){
 						BUSCAR();
+						
 					}else{
 						limpiar();
 						JOptionPane.showMessageDialog(null, "El Dia De Hoy No Se Ha Calculado El Inventario", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -416,6 +418,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			return;
 		}else{
 				if(!pedido.getUsuario().equals("")){
+								cmbEstablecimientos.setEnabled(false);
 								txtPedido.setEditable(false);
 								txtEstablecimientoOrigen.setText(pedido.getOrigen());
 								txtEstablecimientoDestino.setText(pedido.getDestino());
@@ -476,7 +479,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	ActionListener opFiltroAsignacion = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			new Cat_Asignacion_De_Pedido().setVisible(true);
+			new Cat_Asignacion_De_Pedido(cmbEstablecimientos.getSelectedItem().toString().trim()).setVisible(true);
 		}
 	};
 	
@@ -659,11 +662,14 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		
 	    String FechaIn = "";
 		String FechaFin = "";
+		String estab = "";
 	    
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Cat_Filtro_De_Pedidos_Nuevos(String establecimiento){
 			int ancho = 1024;//Toolkit.getDefaultToolkit().getScreenSize().width;
 			int alto = Toolkit.getDefaultToolkit().getScreenSize().height-50;
+			
+			estab = establecimiento;
 			
 			this.setSize(ancho, alto);
 			this.setResizable(false);
@@ -696,7 +702,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			panel.add(scrollAsignado).setBounds(15,y+=20,ancho-30,alto-70);
 	             
 //			buscarEntradas(establecimiento,"Refresh");
-			consultarfiltro("","");
+			consultarfiltro("","",establecimiento);
 			agregar(tabla);
 			btnActualizarFiltro.addActionListener(Buscar_Cambios);
 			btnCancelar.addActionListener(Buscar_Cambios);
@@ -736,7 +742,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 					
 						if((boton.toUpperCase().equals("ACTUALIZAR")) || (boton.toUpperCase().equals("CANCELAR") && status_pedido.equals("VIGENTE")) ){
 							
-							 consultarfiltro(boton,folio_pedido);
+							 consultarfiltro(boton,folio_pedido,estab);
 							 dispose();
 							 
 						}else{
@@ -763,7 +769,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 							if(new GuardarSQL().Finalizar_Pedido(folio_pedido))
 							{
 //								System.out.println("Finalizar Pedido Aqui");
-								consultarfiltro(e.getActionCommand(),folio_pedido);
+								consultarfiltro(e.getActionCommand(),folio_pedido,estab);
 								JOptionPane.showMessageDialog(null, "EL Pedido Se Finalizo Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								dispose();
 							}
@@ -779,15 +785,23 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			}
 		};
 		
-		public void consultarfiltro(String Modificar,String folio_pedido){
+		public void consultarfiltro(String Modificar,String folio_pedido, String establecim){
 			
 			modelo.setRowCount(0);
 			Statement s;
 			ResultSet rs;
 			try {
-				String query = "exec sp_select_filtro_de_seleccion_de_pedido2 '"+Modificar+"','"+folio_pedido+"','"+(new Obj_Usuario().LeerSession().getFolio())+"'"; 
+				String query = "exec sp_select_filtro_de_seleccion_de_pedido2 '"+Modificar+"','"+folio_pedido+"','"+(new Obj_Usuario().LeerSession().getFolio())+"','"+establecim+"'"; 
 				s = con.conexion().createStatement();
 				rs = s.executeQuery(query);
+				
+				System.out.println(rs.getRow());
+//				if(rs.getRow()>0){
+//					System.out.println(rs.getRow());
+//				}
+//				else{
+//					
+//				}
 				while (rs.next())
 				{ 
 				   String [] fila = new String[7];
@@ -801,6 +815,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 
 				   modelo.addRow(fila); 
 				}
+				
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en consultarfiltro SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);

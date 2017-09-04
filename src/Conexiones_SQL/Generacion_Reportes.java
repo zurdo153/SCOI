@@ -77,6 +77,7 @@ public class Generacion_Reportes {
 					JDialog viewer = new JDialog(new JFrame(),reporte, true);// en caso que de que  se  dese modal se le pone true en el final de los parametros
 					viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
 					viewer.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+//					viewer.setSize(700, 800);
 					viewer.setLocationRelativeTo(null);
 					
 					// Cargar el archivo .jrxml
