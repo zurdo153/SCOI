@@ -58,6 +58,7 @@ import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
 import Obj_Compras.Obj_Horario_Base_De_Entrega_De_Pedidos;
 import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
+import Obj_Compras.Obj_Registrar_Zona_Completada;
 import Obj_Compras.Obj_Ubicaciones_De_Productos;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
@@ -9243,13 +9244,11 @@ public boolean existenPedidosActivos(){
 	return mov;
 }
 
-public boolean existeInventarioElDiaActual(){
+public boolean existeInventarioElDiaActual(String establecimiento){
 	
 	boolean existe = false;
 	
-	String query = "select count(cod_prod) as existe_inventario "
-					+ " from tb_inventario_de_gestion_de_pedidos "
-					+ " where convert(varchar(20),fecha,103) = convert(varchar(20),GETDATE(),103)";
+	String query = "exec sp_verificar_inventario_diario_para_gestion_de_pedidos '"+establecimiento+"'";
 	
 	Statement stmt = null;
 	try {
@@ -9262,7 +9261,7 @@ public boolean existeInventarioElDiaActual(){
 	} catch (Exception e) {
 		e.printStackTrace();
 		System.err.println("Error");
-		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ existeInventarioElDiaActual ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Existe Inventario El Dia Actual En "+establecimiento+"] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 	}
 	finally{
 		 if (stmt != null) { try {
@@ -10275,4 +10274,86 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return disponible;
 	}
 	
+	public Object[][] Consultar_Zonas_Para_Asignacion_De_Surtidores(String folioPedido,int numero_de_zonas){
+		
+	String query = " exec sp_select_para_asignacion_de_zonas '"+folioPedido+"'";
+	
+	System.out.println(query);
+	
+	Object[][] lista = new Object[numero_de_zonas][8];
+	
+		try {
+			Statement stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int i=0;
+				while(rs.next()){
+					lista[i][0 ]= rs.getString(1 );
+					lista[i][1 ]= rs.getString(2 );
+					lista[i][2 ]= rs.getString(3 );
+					lista[i][3 ]= rs.getString(4 );
+					lista[i][4 ]= rs.getString(5 );
+					lista[i][5 ]= rs.getString(6 );
+					lista[i][6 ]= false;
+					lista[i][7 ]= rs.getString(7 );
+					
+					i++;
+				}
+			
+		} catch (SQLException e){
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Consultar_Zonas_Para_Asignacion_De_Surtidores \n "+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			e.printStackTrace();
+			return null;
+		}
+		return lista;
+	}
+	
+	public Obj_Registrar_Zona_Completada buscar_codigo_surtidor(String codigo_De_barras) throws SQLException{
+		Obj_Registrar_Zona_Completada datos = new Obj_Registrar_Zona_Completada();
+		String query = "exec sp_select_pedido_para_surtir_por_zona '"+codigo_De_barras+"'";
+		
+		Statement stmt2= null;
+		
+						try {
+							stmt2= con.conexion().createStatement();
+									
+							ResultSet rs2= stmt2.executeQuery(query);
+							
+								   while(rs2.next()){
+									   datos.setFolio_pedido(rs2.getString("folio_pedido"));
+									   datos.setZona(rs2.getString("zona"));
+									   datos.setFolio_surtidor(Integer.valueOf(rs2.getString("folio_surtidor")));
+									   datos.setNombre_surtidor(rs2.getString("nombre_surtidor"));
+									   datos.setStatus(rs2.getString("status"));
+								   }
+							
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_codigo_surtidor \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+							return null;
+						}
+
+		finally{
+			if(stmt2!=null){stmt2.close();}
+		}
+		return datos;
+	}
+	
+	   public int zonas_disponible_en_el_pedido(String folio_pedido) throws SQLException{
+			 int cantidad_de_zonas=0;
+			 String query = "exec sp_select_existen_zonas_disponibles_en_el_pedido '"+folio_pedido+"'";
+			 Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					cantidad_de_zonas=(rs.getInt("zonas_disponibles"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally{
+				if(stmt!=null){stmt.close();}
+			}
+			return cantidad_de_zonas;
+		}
 }
