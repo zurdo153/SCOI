@@ -7,7 +7,6 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 
-
 public class Obj_Establecimiento {
 	private int folio;
 	private String establecimiento;

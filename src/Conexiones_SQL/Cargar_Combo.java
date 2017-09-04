@@ -8,7 +8,6 @@ import java.util.Vector;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 
-
 public class Cargar_Combo {
 	Connexion con = new Connexion();
 	@SuppressWarnings("rawtypes")

@@ -50,7 +50,6 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.Connexion;
 import Obj_Renders.ColorCeldas;
 
-
 @SuppressWarnings("serial")
 public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFrame{
 	

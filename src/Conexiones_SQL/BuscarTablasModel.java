@@ -14,6 +14,7 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 public class BuscarTablasModel {
 	
+	
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
 	public Object[][] tabla_model_bancos(){
@@ -424,27 +425,6 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
-	public Object[][] filtro_actividad_nivel_jerarquico(){
-		String query_lista = "exec sp_filtro_actividad_nivel_jerarquico";
-		Object[][] matriz = new Object[get_filas(query_lista)][3];
-		try {
-			Statement stmt = new Connexion().conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query_lista);
-			
-			int i = 0;
-			while(rs.next()){
-				matriz[i][0] = rs.getInt(1)+" ";
-				matriz[i][1] = "   "+rs.getString(2);
-				matriz[i][2] = "   "+rs.getString(3);
-				i++;
-			}
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	    return matriz; 
-	}
-	
 	public Object[][] tabla_model_respuesta(String nombre){
 		String query_lista = "exec sp_select_tabla_respuesta '"+nombre+"'";
 		Object[][] matriz = new Object[get_filas(query_lista)][2];
@@ -561,32 +541,6 @@ public class BuscarTablasModel {
 				matriz[i][3] = "   "+rs.getString(4);
 				matriz[i][4] = "   "+rs.getString(5);
 				
-				i++;
-			}
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	    return matriz; 
-	}
-	public Object[][] tabla_model_filtro_Obtener_Emp_imprimir_cuadrantes(){
-		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
-		
-		String query_lista = "exec sp_select_impresion_cuadrante "+"'"+usuario.getNombre_completo()+"'" ;
-		
-		Object[][] matriz = new Object[get_filas(query_lista)][6];
-		try {
-			Statement stmt = new Connexion().conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query_lista);
-			
-			int i = 0;
-			while(rs.next()){
-				matriz[i][0] = rs.getInt(1);
-				matriz[i][1] = "   "+rs.getString(2);
-				matriz[i][2] = "   "+rs.getString(3);
-				matriz[i][3] = "   "+rs.getString(4);
-				matriz[i][4] = "   "+rs.getString(5);
-				matriz[i][5] = rs.getString(6);
 				i++;
 			}
 
@@ -1153,7 +1107,6 @@ public class BuscarTablasModel {
 	public String[][] filtro_impuntualidad_a_considerar(String fecha_inicio,String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
 		String[][] Matriz = null;
 		String query = "sp_select_consideracion_checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-System.out.println("sp_select_consideracion_checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'");		
 		Matriz = new String[get_filas(query)][17];
 		
 		try {	

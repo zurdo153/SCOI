@@ -2,7 +2,6 @@ package Cat_Principal;
 
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 
-
 public class Cat_Comandos {
 	
 	String comando="";
@@ -34,7 +33,7 @@ public String maximos_y_minimos(String Reporte, String Establecimiento){
 					+ " 			 ,p.inventario_minimo"
 					+ " 			 ,p.inventario_maximo"
 					+ " 			 ,(p.exist_unidades*contenido)+p.exist_piezas as exist_piezas"
-					+ " 			 ,isnull((select (prodestab.exist_unidades*contenido)+prodestab.exist_piezas from prodestab where prodestab.cod_prod=p.cod_prod and cod_estab=7),0) as existencia_cedis"
+					+ " 			 ,isnull((select (prodestab.exist_unidades*contenido)+prodestab.exist_piezas from prodestab where prodestab.cod_prod=p.cod_prod and cod_estab=28),0) as existencia_cedis"
 					+ " 			 ,(p.inventario_maximo)-((p.exist_unidades*contenido)+p.exist_piezas) as nresurtido"
 					+ "              ,isnull(areas.nombre,'Sin Clasificacion de Distribucion') as area"
 					+ "              ,case when productos.status_producto=1 then 'VIGENTE' when productos.status_producto=2 then 'CANCELADO' when productos.status_producto=3 then 'DESCONTINUADO'  end as estatus_producto"								 
@@ -68,7 +67,7 @@ public String maximos_y_minimos(String Reporte, String Establecimiento){
 					+ " 			 ,p.inventario_minimo"
 					+ " 			 ,p.inventario_maximo"
 					+ " 			 ,(p.exist_unidades*contenido)+p.exist_piezas as exist_piezas"
-					+ " 			 ,isnull((select (prodestab.exist_unidades*contenido)+prodestab.exist_piezas from prodestab where prodestab.cod_prod=p.cod_prod and cod_estab=7),0) as existencia_cedis"
+					+ " 			 ,isnull((select (prodestab.exist_unidades*contenido)+prodestab.exist_piezas from prodestab where prodestab.cod_prod=p.cod_prod and cod_estab=28),0) as existencia_cedis"
 					+ " 			 ,(p.inventario_maximo)-((p.exist_unidades*contenido)+p.exist_piezas) as nresurtido"
 					+ "              ,isnull(areas.nombre,'Sin Clasificacion de Distribucion') as area"
 					+ "              ,case when productos.status_producto=1 then 'VIGENTE' when productos.status_producto=2 then 'CANCELADO' when productos.status_producto=3 then 'DESCONTINUADO'  end as estatus_producto"
@@ -102,7 +101,7 @@ public String maximos_y_minimos(String Reporte, String Establecimiento){
 					+ " 			 ,p.inventario_minimo"
 					+ " 			 ,p.inventario_maximo"
 					+ " 			 ,(p.exist_unidades*contenido)+p.exist_piezas as exist_piezas"
-					+ " 			 ,isnull((select (prodestab.exist_unidades*contenido)+prodestab.exist_piezas from prodestab where prodestab.cod_prod=p.cod_prod and cod_estab=7),0) as existencia_cedis"
+					+ " 			 ,isnull((select (prodestab.exist_unidades*contenido)+prodestab.exist_piezas from prodestab where prodestab.cod_prod=p.cod_prod and cod_estab=28),0) as existencia_cedis"
 					+ " 			 ,(p.inventario_maximo)-((p.exist_unidades*contenido)+p.exist_piezas) as nresurtido"
 					+ "              ,isnull(areas.nombre,'Sin Clasificacion de Distribucion') as area"
 					+ "              ,case when productos.status_producto=1 then 'VIGENTE' when productos.status_producto=2 then 'CANCELADO' when productos.status_producto=3 then 'DESCONTINUADO'  end as estatus_producto"

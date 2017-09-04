@@ -11,7 +11,6 @@ public class Obj_Frecuencia_De_Actividades {
 //unica repeticion
 	String fh_unica_repeticion = cargar_fechas(0);
 	
-	
 	boolean seleccion_con_hora = false; 
 	String hora_unica_repeticion = "23:59:00";
 	

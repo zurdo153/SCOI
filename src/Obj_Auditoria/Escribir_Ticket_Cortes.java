@@ -15,7 +15,6 @@ public class Escribir_Ticket_Cortes {
 		{
 			
 			bw = new BufferedWriter(new FileWriter(nomArchivo));
-			
 			//escribe
 			bw.write("\n\n\n\n\n\n\n\n\n"+ex.getIzagar() + "\n");
 			bw.write(ex.getTalon() + "\n\n");

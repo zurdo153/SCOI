@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
 
+
 public class Obj_Ubicaciones_De_Productos {
 	String Cod_Prod;
 	String Descripcion_Prod;

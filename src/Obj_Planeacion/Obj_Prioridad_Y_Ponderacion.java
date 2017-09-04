@@ -35,5 +35,4 @@ public class Obj_Prioridad_Y_Ponderacion {
 		Ponderacion = ponderacion;
 	}
 
-
 }

@@ -21,7 +21,6 @@ public class XMLGenerator {
             System.out.println("ERROR empty ArrayList");
             return;
         }else{
-
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             DOMImplementation implementation = builder.getDOMImplementation();

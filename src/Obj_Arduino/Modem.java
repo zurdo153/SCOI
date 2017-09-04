@@ -25,7 +25,6 @@ public class Modem {
 		Com com4 = new Com(param);
 
 		param.setMinDelayWrite(100);
-
 		com4.sendString("AT\r");
 		com4.sendString("ATZ\r");
 //		com4.sendString("ATZ+CSQ\r");

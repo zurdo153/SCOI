@@ -3,6 +3,7 @@ package Obj_Contabilidad;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
+
 public class Obj_Conceptos_De_Ordenes_De_Pago {
 	public int getFolio() {
 		return folio;
@@ -12,7 +13,6 @@ public class Obj_Conceptos_De_Ordenes_De_Pago {
 	public void setFolio(int folio) {
 		this.folio = folio;
 	}
-
 
 	public String getConcepto() {
 		return Concepto;

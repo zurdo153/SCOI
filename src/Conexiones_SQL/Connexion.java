@@ -9,6 +9,7 @@ import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_2;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_3;
 
+
 public class Connexion {
 //	Connection conn = null;	
 	

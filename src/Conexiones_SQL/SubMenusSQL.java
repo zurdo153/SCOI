@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_SubMenus;
 
+
 public class SubMenusSQL {
 	Connexion con = new Connexion();
 	@SuppressWarnings("rawtypes")
@@ -38,7 +39,6 @@ public class SubMenusSQL {
 				        	fos.write(buffer);
 				        }
 				        fos.close();
-				
 			}
 			
 			

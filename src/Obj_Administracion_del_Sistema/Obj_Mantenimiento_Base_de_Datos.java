@@ -14,11 +14,5 @@ public class Obj_Mantenimiento_Base_de_Datos {
     	
                                                 }
 
-
-	
-
-	
-	
-	
 	
 }

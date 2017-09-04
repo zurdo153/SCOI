@@ -6,7 +6,6 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
 
-
 public class Obj_Cotizaciones_De_Un_Producto {
 	
 	String Cod_Prod;

@@ -20,6 +20,5 @@ public void setColaboradores(String colaboradores) {
 
 public boolean guardar(){
     return new GuardarSQL().Guardar_Pendiente(this); }
-
 	
 }

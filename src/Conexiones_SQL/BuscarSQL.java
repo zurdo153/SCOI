@@ -64,10 +64,8 @@ import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Contabilidad.Obj_Proveedores;
-import Obj_Evaluaciones.Obj_Actividad;
-import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
+import Obj_Cuadrantes.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
-import Obj_Evaluaciones.Obj_Cuadrante;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
@@ -110,6 +108,7 @@ import Obj_Reportes.Obj_Reportes_De_Ventas;
 import Obj_Servicios.Obj_Catalogo_Servicios;
 import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Servicios;
+
 
 public class BuscarSQL {
 	
@@ -1105,27 +1104,6 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return pond;
-	}
-	
-	public int Cuadrante_Nuevo() throws SQLException{
-		int folio = 0;
-		String query = "exec sp_nuevo_cuadrante";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				folio =  rs.getInt("Maximo");
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 1;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return folio;
 	}
 	
 	public int Relacion_Actividad_Nueva() throws SQLException{
@@ -2722,142 +2700,6 @@ public class BuscarSQL {
 		return resultado; 
 	}
 	
-	
-	
-	public int Nueva_Actividad_Jerarquico(){
-		String sp_total_cheques = "exec [sp_nueva_actividad_jerarquico]";
-		int resultado = 0;
-		Statement s;
-		ResultSet rs;
-		try {		
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(sp_total_cheques);
-			
-			while(rs.next()){
-				resultado = rs.getInt(1);
-				
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return resultado; 
-	}
-	
-	public String ActividadExisteNameOldJerarquica(int actividad){
-		String query = "exec sp_select_actividad_nombre_jerarquico "+actividad;
-		String nombre = "";
-		Statement s;
-		ResultSet rs;
-		
-		try {				
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				nombre = rs.getString("actividad").trim();
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return nombre;
-	}
-	
-	public boolean ActividadExisteJerarquico(int actividad){
-		String query = "exec [sp_folio_actividad_jerarquico] "+actividad;
-		
-		boolean existe = false;
-		Statement s;
-		ResultSet rs;
-		
-		try {				
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				existe = Boolean.parseBoolean(rs.getString("Existe").trim());
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return existe;
-	}
-	
-	public boolean ActividadExisteJerarquico(String actividad){
-		String query = "exec [sp_actividad_jerarquico_duplicada] '"+actividad+"'";
-		
-		boolean existe = false;
-		Statement s;
-		ResultSet rs;
-		
-		try {				
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				existe = Boolean.parseBoolean(rs.getString("Existe").trim());
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return existe;
-	}
-	
-	public String ActividadExisteJerarquicoNameOld(int actividad){
-		String query = "exec [sp_select_actividad_jerarquica_nombre] '"+actividad+"'";
-		
-		String existe = "";
-		Statement s;
-		ResultSet rs;
-		
-		try {				
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				existe = rs.getString("actividad").trim();
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return existe;
-	}
-	
-	public String puestosDependientes(){
-		Obj_Usuario user = new Obj_Usuario().LeerSession();
-		String query = "exec sp_puestos_dependientes '"+ procesa_texto(user.getNombre_completo()) +"';";
-		
-		String existe = "";
-		Statement s;
-		ResultSet rs;
-		
-		try {				
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				existe = rs.getString("puesto_dependiente") + ", ";
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		
-		if(existe.length() > 0){
-			existe = existe.substring(0, existe.length()-2);
-		}else{
-			existe = "";
-		}
-		return existe;
-	}
-	
 	public String procesa_texto(String texto) {
         StringTokenizer tokens = new StringTokenizer(texto);
         texto = "";
@@ -3001,36 +2843,6 @@ public class BuscarSQL {
 		return actividad;
 	}
 	
-	public Obj_Actividad_Asignadas_Nivel_Jerarquico Buscar_Actividad_Nivel_Jerarquico(int folio) throws SQLException{
-		Obj_Actividad_Asignadas_Nivel_Jerarquico actividad = new Obj_Actividad_Asignadas_Nivel_Jerarquico();
-		String query = "exec sp_select_actividad_nivel_jerarquico "+folio+";";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				actividad.setActividad(rs.getString("actividad"));
-				actividad.setDescripcion(rs.getString("descripcion"));
-				actividad.setRespuesta(rs.getString("respuesta"));
-				actividad.setAtributos(rs.getString("atributo"));
-				actividad.setNivel_critico(rs.getString("critico"));
-				actividad.setTemporada(rs.getString("temporada"));
-				actividad.setCarga(rs.getInt("carga") == 1 ? true : false);
-				actividad.setRepetir(rs.getInt("repetir"));
-				actividad.setStatus(rs.getString("status").equals("1") ? true : false);
-				
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return actividad;
-	}
-	
 	public boolean existeActividadRelacionada(int relacion) throws SQLException{
 		boolean resultado = false;
 		String query = "exec sp_existe_relacion_actividad "+relacion+";";
@@ -3122,28 +2934,6 @@ public class BuscarSQL {
 	public boolean existeCuadrante(int cuadrante) throws SQLException{
 		boolean resultado = false;
 		String query = "exec sp_existe_cuadrante "+cuadrante+";";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				resultado = rs.getBoolean(1);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error");
-			return false;
-		}
-		finally{
-			 if (stmt != null) { stmt.close(); }
-		}
-		return resultado;
-	}
-	
-	public boolean existeCuadrante(String cuadrante) throws SQLException{
-		boolean resultado = false;
-		String query = "exec sp_existe_cuadrante_nombre '"+cuadrante+"';";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -3374,100 +3164,6 @@ public class BuscarSQL {
 				Matriz[i][2] = rs.getString(3);
 				Matriz[i][3] = rs.getString(4);
 				
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		
-		return Matriz;
-	}
-	
-	public Obj_Cuadrante Cuadrante(int folio) throws SQLException{
-		Obj_Cuadrante cuadrante = new Obj_Cuadrante();
-		String query = "exec sp_select_cuadrante_folio "+ folio;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				cuadrante.setCuadrante(rs.getString(1));
-				cuadrante.setPerfil(rs.getString(2));
-				cuadrante.setJefatura(rs.getString(3));
-				cuadrante.setNivel_gerarquico(rs.getString(4));
-				cuadrante.setEquipo_trabajo(rs.getString(5));
-				cuadrante.setEstablecimiento(rs.getString(6));
-				cuadrante.setDomingo(rs.getInt(7));
-				cuadrante.setLunes(rs.getInt(8));
-				cuadrante.setMartes(rs.getInt(9));
-				cuadrante.setMiercoles(rs.getInt(10));
-				cuadrante.setJueves(rs.getInt(11));
-				cuadrante.setViernes(rs.getInt(12));
-				cuadrante.setSabado(rs.getInt(13));
-				cuadrante.setStatus(rs.getInt(14));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error");
-			return null;
-		}
-		finally{
-			 if (stmt != null) { stmt.close(); }
-		}
-		return cuadrante;
-	}
-	
-	
-	public String[][] getTablaDias(int cuadrante){
-		String[][] Matriz = null;
-		
-		String datosif = "exec sp_select_tabla_cuadrante " + cuadrante;
-		
-		Matriz = new String[getFilas(datosif)][7];
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datosif);
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2)+"  ";
-				Matriz[i][2] = "   "+rs.getString(3);
-				Matriz[i][3] = "   "+rs.getString(4);
-				Matriz[i][4] = rs.getString(5);
-				Matriz[i][5] = rs.getString(6);
-				Matriz[i][6] = rs.getString(7);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		
-		return Matriz;
-	}
-	
-	public String[][] getTablaActividadesCuadrante(int folio){
-		String[][] Matriz = null;
-		
-		String datosif = "exec sp_select_tabla_cuadrante_actividad " + folio;
-		
-		Matriz = new String[getFilas(datosif)][7];
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datosif);
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2)+"  ";
-				Matriz[i][2] = "   "+rs.getString(3);
-				Matriz[i][3] = "   "+rs.getString(4);
-				Matriz[i][4] = rs.getString(5);
-				Matriz[i][5] = rs.getString(6);
-				Matriz[i][6] = rs.getString(7);
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -10273,6 +9969,43 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		}
 			
 		return disponible;
+	}
+	
+	
+	public String[][] TablaActividades_Cuadrante(int folio_cuadrante){
+		String[][] Matriz = null;
+		String query = "exec cuadrantes_actividades_semana_por_folio "+folio_cuadrante;
+		
+		Matriz = new String[getFilas(query)][15];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0]  = rs.getString( 1);
+				Matriz[i][1]  = rs.getString( 2);
+				Matriz[i][2]  = rs.getString( 3);
+				Matriz[i][3]  = rs.getString( 4);
+				Matriz[i][4]  = rs.getString( 5);
+				Matriz[i][5]  = rs.getString( 6);
+				Matriz[i][6]  = rs.getString( 7);
+				Matriz[i][7]  = rs.getString( 8);
+				Matriz[i][8]  = rs.getString( 9);
+				Matriz[i][9]  = rs.getString(10);
+				Matriz[i][10] = rs.getString(11);
+				Matriz[i][11] = rs.getString(12);
+				Matriz[i][12] = rs.getString(13);
+				Matriz[i][13] = rs.getString(14);
+				Matriz[i][14] = rs.getString(15);
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz;
 	}
 	
 }

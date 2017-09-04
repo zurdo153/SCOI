@@ -11,6 +11,7 @@ import org.krysalis.barcode4j.impl.code128.Code128Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.tools.UnitConv;
 
+
 public class Obj_Gen_Code_Bar {
 	public void Generar_Code(String code, String name){
 		Code128Bean bean = new Code128Bean();

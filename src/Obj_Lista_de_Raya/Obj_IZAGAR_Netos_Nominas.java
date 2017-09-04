@@ -18,5 +18,4 @@ public class Obj_IZAGAR_Netos_Nominas {
 	public boolean guardar_totales_deposito_nomina_bancos(){
 		return new GuardarTablasModel().IZAGAR_insert_totales_deposito_nomina_bancos();
 	}
-	
 }

@@ -29,7 +29,6 @@ public class Componentes {
 			if(comp instanceof JCheckBox)
 				((JCheckBox) comp).setSelected(true);
 		}
-		
 	}
 	
 	@SuppressWarnings("rawtypes")

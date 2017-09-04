@@ -7,6 +7,7 @@ import Conexiones_SQL.Cargar_Combo;
 
 public class Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad {
 	
+	
 	String Cuenta_Bancaria;
 	String Banco;
 	String Cuenta_Contable;

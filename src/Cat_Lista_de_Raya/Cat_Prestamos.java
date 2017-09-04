@@ -51,6 +51,7 @@ public class Cat_Prestamos extends JFrame {
 		}
 	};
 	
+	
 	JTable tabla = new JTable(model);
 	
 	@SuppressWarnings("rawtypes")
