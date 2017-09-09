@@ -375,12 +375,12 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				Obj_Gestion_De_Pedidos_A_Establecimientos pedido = new Obj_Gestion_De_Pedidos_A_Establecimientos().buscar(txtPedido.getText().toUpperCase());
 				
 				if(new BuscarSQL().existenPedidosPendientesPorSurtir()){
-					if(pedido.getStatus_pedido().trim().equals("VIGENTE") || pedido.getStatus_pedido().equals("ASIGNADO")){
+					if(pedido.getStatus_pedido().trim().equals("VIGENTE") || pedido.getStatus_pedido().equals("RECIBIDO")){
 						BUSCAR();
 					  }else{
-		  				    if(pedido.getStatus_pedido().equals("SURTIDO")){
+		  				    if(pedido.getStatus_pedido().equals("SURTIDO") || pedido.getStatus_pedido().equals("ASIGNADO")){
 		  				    	limpiar();
-								JOptionPane.showMessageDialog(null, "El Pedido "+pedido.getFolio_pedido()+" Ya Fue Surtido y No Puede Ser Modificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								JOptionPane.showMessageDialog(null, "Los Pedidos Con Status SURTIDO y ASIGNADO No Pueden Ser Modificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 		  				    }else{
 								limpiar();
@@ -487,7 +487,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	ActionListener opGuardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-				if(txtStatus.getText().equals("ASIGNADO")){
+				if(txtStatus.getText().equals("RECIBIDO")){
 					 seleccionDeStatus();
 				}else{
 					//el parametro vacio no altera el estatus (quedara el valor default)
@@ -500,8 +500,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				
 			Icon icon = new ImageIcon("Imagen/equipos-de-tarea-asignada-icono-7668-32.png");
 	        
-			String[] options = {"Asignado", "Surtir", "Cancelar"};
-			String aviso = "El Pedido Ya Se Encuentra Asignado, Si Desea Seguir Realizando Cambios Selecciones [Asignado],\nSi El Pedido Ya Es Correcto Seleccione [Surtir], Si No Desea Realizar Cambios Seleccione [Cancelar]";
+			String[] options = {"Recibido", "Surtir", "Cancelar"};
+			String aviso = "El Pedido Ya Se Encuentra Asignado, Si Desea Seguir Realizando Cambios Seleccione [Recibido],\nSi El Pedido Ya Es Correcto Seleccione [Surtir], Si No Desea Realizar Cambios Seleccione [Cancelar]";
 			int seleccion = JOptionPane.showOptionDialog(null, aviso, "Seleccion De Status", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, icon, options, options[0]);
 			
 			//entra si selecciona [Asignado] ó [Surtir]
@@ -762,7 +762,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				
 		    	if(tabla.getSelectedRow() >= 0){
 		    		
-					if(status_pedido.equals("ASIGNADO") /*&& cantidad_pedidos_generados > 0*/ ){
+					if(status_pedido.equals("ASIGNADO") || status_pedido.equals("RECIBIDO") /*&& cantidad_pedidos_generados > 0*/ ){
 						
 						if(JOptionPane.showConfirmDialog(null, "Al Finalizar El Pedido No Podra Realizar El Embarque Del Mismo,\nSerá Necesario Realizar Un Pedido Nuevo, Desea Continuar?") == 0){
 							System.out.println("Finalizar Pedido Aqui");
@@ -771,11 +771,11 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 //								System.out.println("Finalizar Pedido Aqui");
 								consultarfiltro(e.getActionCommand(),folio_pedido,estab);
 								JOptionPane.showMessageDialog(null, "EL Pedido Se Finalizo Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-								dispose();
+//								dispose();
 							}
 						}	
 					}else{
-						JOptionPane.showMessageDialog(null, "Solo Se Pueden Finalizar Pedidos Con Status Asignado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						JOptionPane.showMessageDialog(null, "Solo Se Pueden Finalizar Pedidos Con Status ASIGNADO y RECIBIDO", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}
 		    	}else{
@@ -853,9 +853,18 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 						if(e.getClickCount() == 2){
 							int fila_Select = tabla.getSelectedRow();
 			    			String folio =  tabla.getValueAt(fila_Select, 0).toString().trim();
+			    			String status = tabla.getValueAt(fila_Select, 6).toString().trim();
 			    			dispose();
-			    			txtPedido.setText(folio);
-			    			btnBuscar.doClick();
+			    			System.out.println(status);
+			    			if(status.equals("NUEVO") || status.equals("VIGENTE") || status.equals("RECIBIDO")){
+			    				txtPedido.setText(folio);
+			    				btnBuscar.doClick();
+			    			}else{
+			    				JOptionPane.showMessageDialog(null, "No Se Pueden Realizar Movimientos Sobre Un Pedido Con Status: MULTIPLES ó ASIGNADO", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+			    			}
+			    			
+			    			
 						}
 				}
 				public void mousePressed(MouseEvent e) {}
