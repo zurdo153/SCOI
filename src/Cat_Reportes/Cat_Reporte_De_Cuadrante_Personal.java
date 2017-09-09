@@ -20,7 +20,6 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
@@ -102,7 +101,6 @@ public class Cat_Reporte_De_Cuadrante_Personal extends JFrame{
 		this.agregar(tablab);
 		this.txtBuscarb.addKeyListener  (opFiltropuestos );
 		this.btnGenerar.addActionListener(opGenerar);
-		
 		txtfolio.setEditable(false);
 		txtcolaborador.setEditable(false);
 		contfb.add(panelfb);

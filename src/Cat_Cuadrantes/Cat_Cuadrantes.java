@@ -520,6 +520,7 @@ public class Cat_Cuadrantes extends JFrame{
 		this.btnBajLunes.addActionListener(new opMoverAbajo(tablaLunes));
 		this.btnEljLunes.addActionListener(new opEliminarfila(tablaLunes));
 		this.btnAgregLunes.addActionListener(new opAgregar_Actividad(tablaLunes));
+		this.btnCopLunes.addActionListener(new OpCopiar_Tabla_Cuadrante(tablaLunes));
     }
 	
 	public void init_tablamartes(){
@@ -831,6 +832,16 @@ public class Cat_Cuadrantes extends JFrame{
 		}
 	};
 	
+	class OpCopiar_Tabla_Cuadrante implements ActionListener{   
+		JTable tablaparametro;
+	    public OpCopiar_Tabla_Cuadrante (final JTable tblp){
+	    	tablaparametro = tblp;
+	    }
+	    public void actionPerformed(ActionEvent evt){
+	    	new Cat_Copiar_Cuadrante(tablaparametro).setVisible(true);
+	    }
+	};
+	
 	class opAgregar_Actividad implements ActionListener{   
 		JTable tablaparametro;
 	    public opAgregar_Actividad(final JTable tblp){
@@ -958,7 +969,87 @@ public class Cat_Cuadrantes extends JFrame{
 	    }
 	};
     
-	//TODO FALTA LA FUNCION COPIAR
+	//TODO inicia catalogo copiar cuadrante	
+		public class Cat_Copiar_Cuadrante extends JDialog{
+			Container contf = getContentPane();
+			JLayeredPane panelf = new JLayeredPane();
+			Connexion con = new Connexion();
+			int columnacopiar = 2,checkbox=-1;
+			
+			@SuppressWarnings("rawtypes")
+			public Class[] base (){
+				Class[] types = new Class[columnacopiar];
+				for(int i = 0; i<columnacopiar; i++){types[i]= java.lang.Object.class;}
+				 return types;
+			}
+			
+			public DefaultTableModel modelocopiar = new DefaultTableModel(null, new String[]{"Orden","Folio","Actividad","Inicia","Termina"}){
+				 @SuppressWarnings("rawtypes")
+					Class[] types = base();
+					@SuppressWarnings({ "rawtypes", "unchecked" })
+					public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+					public boolean isCellEditable(int fila, int columna){return false;}
+			};
+			
+			JTable tablacopiar = new JTable(modelocopiar);
+			public JScrollPane scroll_tabla_copiar = new JScrollPane(tablacopiar);
+		     @SuppressWarnings({ "rawtypes" })
+		    private TableRowSorter trsfiltro;
+			     
+			JTextField txtBuscarfp  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
+			String [][] tablaparametro=null;
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			public Cat_Copiar_Cuadrante(final JTable tablaparam){
+				tablacopiar.setModel(tablaparam.getModel());
+				ObjTab.tablas_dias_del_cuadrante(tablacopiar);
+				
+//				for(int i=0;i<tablaparam.lenght;i++){
+//					if(Integer.valueOf(tablaparam[i][5].toString())==1){
+//						for(int j=0;j<5;j++){
+//						vector[j] = tablacompleta[i][j].toString();
+//						}
+//						modelLunes.addRow(vector);
+//					}
+//				}
+//					
+					
+				
+				this.setSize(610,650);
+				this.setResizable(false);
+				this.setLocationRelativeTo(null);
+				this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				this.setModal(true);
+				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/tarjeta-de-informacion-del-usuario-icono-7370-32.png"));
+				this.panelf.setBorder(BorderFactory.createTitledBorder("Selecione los Dias a Los que se Copiarara El Cuadrante"));
+				trsfiltro = new TableRowSorter(modelocopiar); 
+				tablacopiar.setRowSorter(trsfiltro);
+				
+				this.setTitle("Copiar Cuadrantes");
+				this.panelf.add(txtBuscarfp).setBounds         (10 ,50 ,470 , 20 );
+				this.panelf.add(scroll_tabla_copiar).setBounds (10 ,70 ,585 ,495 );
+				this.agregar(tablacopiar);
+				this.txtBuscarfp.addKeyListener  (opFiltropuestos );
+				contf.add(panelf);
+			}
+			
+			private void agregar(final JTable tbl) {
+		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+			        	if(e.getClickCount()==1){
+			        		int fila = tablacopiar.getSelectedRow();
+			        	}	
+			        }
+		        });
+		    }
+			
+	        private KeyListener opFiltropuestos = new KeyListener(){
+				public void keyReleased(KeyEvent arg0) {
+					ObjTab.Obj_Filtro(tablacopiar, txtBuscarfp.getText().toUpperCase(), columnacopiar);
+				}
+				public void keyTyped(KeyEvent arg0) {}
+				public void keyPressed(KeyEvent arg0) {}		
+			};
+		}//termina filtro copiar cuadrante
 //	class opcopiartabla implements ActionListener{   
 //		JTable tablaparametroDe;JTable tablaparametroA;
 //	    public opcopiartabla(final JTable tblDe,final JTable tblpA){
