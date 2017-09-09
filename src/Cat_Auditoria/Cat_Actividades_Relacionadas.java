@@ -39,7 +39,7 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
-import Obj_Evaluaciones.Obj_Nivel_Critico;
+import Obj_Cuadrantes.Obj_Nivel_Critico;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 

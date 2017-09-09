@@ -1,5 +1,6 @@
 package Conexiones_SQL;
 
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,16 +58,15 @@ import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Importar_Voucher;
 import Obj_Contabilidad.Obj_Proveedores;
-import Obj_Evaluaciones.Obj_Actividad;
-import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
-import Obj_Evaluaciones.Obj_Aspectos;
+import Obj_Cuadrantes.Obj_Actividad;
+import Obj_Cuadrantes.Obj_Aspectos;
+import Obj_Cuadrantes.Obj_Cuadrantes;
+import Obj_Cuadrantes.Obj_Nivel_Critico;
 import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
-import Obj_Evaluaciones.Obj_Cuadrante;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Jefatura;
-import Obj_Evaluaciones.Obj_Nivel_Critico;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
@@ -710,103 +710,6 @@ public class GuardarSQL {
 			} catch(SQLException e){
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto_Tabla ] Insert  SQLException: sp_insert_tabla_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}
-		}		
-		return true;
-	}
-	
-	public boolean Guardar_Cuadrante(Obj_Cuadrante cuadrante){
-		String query = "exec sp_insert_cuadrante ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, cuadrante.getCuadrante().toUpperCase());
-			pstmt.setString(2, cuadrante.getPerfil().toUpperCase());
-			pstmt.setString(3, cuadrante.getJefatura());
-			pstmt.setString(4, cuadrante.getNivel_gerarquico());
-			pstmt.setString(5, cuadrante.getEquipo_trabajo());
-			pstmt.setString(6, cuadrante.getEstablecimiento());
-			pstmt.setInt(7, cuadrante.getDomingo());
-			pstmt.setInt(8, cuadrante.getLunes());
-			pstmt.setInt(9, cuadrante.getMartes());
-			pstmt.setInt(10, cuadrante.getMiercoles());
-			pstmt.setInt(11, cuadrante.getJueves());
-			pstmt.setInt(12, cuadrante.getViernes());
-			pstmt.setInt(13, cuadrante.getSabado());
-			pstmt.setInt(14, cuadrante.getStatus());
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] Insert  SQLException: sp_insert_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] Insert  SQLException: sp_insert_cuadrante "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] Insert  SQLException: sp_insert_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}
-		}		
-		return true;
-	}
-	
-	public boolean Guardar_Cuadrante_Tabla(Obj_Cuadrante cuadrante, String[][] tabla){
-		String querytabla = "exec sp_insert_tabla_cuadrante ?,?,?,?,?,?,?,?";
-				
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmtTabla = null;
-		try {
-			con.setAutoCommit(false);
-			
-			pstmtTabla = con.prepareStatement(querytabla);
-				
-			for(int i=0; i<tabla.length; i++){
-				
-				pstmtTabla.setString(1, cuadrante.getCuadrante().toUpperCase());
-				pstmtTabla.setInt(2, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmtTabla.setString(3, tabla[i][1].toString().trim().toUpperCase());
-				pstmtTabla.setString(4, tabla[i][2].toString().trim());
-				pstmtTabla.setInt(5, Boolean.parseBoolean(tabla[i][3]) ? 1 : 0);
-				pstmtTabla.setString(6, tabla[i][4]);
-				pstmtTabla.setString(7, tabla[i][5]);
-				pstmtTabla.setString(8, tabla[i][6]);
-				pstmtTabla.executeUpdate();
-			}
-			
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante_Tabla ] Insert  SQLException: sp_insert_tabla_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada Guardar_Cuadrante_Tabla");
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante_Tabla ] Insert  SQLException: sp_insert_tabla_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante_Tabla ] Insert  SQLException: sp_insert_tabla_cuadrante "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante_Tabla ] Insert  SQLException: sp_insert_tabla_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-
 			}
 		}		
 		return true;
@@ -2089,49 +1992,6 @@ public class GuardarSQL {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Actividad ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			
-			System.out.println("SQLException: " + e.getMessage());
-			if (con != null){
-				try {
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-				} catch(SQLException ex) {
-					System.out.println(ex.getMessage());
-				}
-			} 
-			return false;
-		}finally{
-			try {
-				pstmt.close();
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
-	
-	public boolean Guardar_Actividad_Nivel_Jerarquico(Obj_Actividad_Asignadas_Nivel_Jerarquico actividad, String nombre){
-		String query = "exec sp_insert_actividad_nivel_jerarquico ?,?,?,?,?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-					
-			pstmt.setString(1, actividad.getActividad().toUpperCase());
-			pstmt.setString(2, actividad.getDescripcion().toUpperCase());
-			pstmt.setString(3, actividad.getRespuesta());
-			pstmt.setString(4, actividad.getAtributos());
-			pstmt.setString(5, actividad.getNivel_critico());
-			pstmt.setString(6, actividad.getTemporada());
-			pstmt.setInt(7, actividad.isCarga() ? 1 : 0);
-			pstmt.setInt(8, actividad.getRepetir());
-			pstmt.setString(9, nombre);
-			
-			
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
 				try {
@@ -6836,6 +6696,67 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			return false;
 		}finally{
 			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+
+	
+	public boolean Guardar_Cuadrante(Obj_Cuadrantes cuadrante){
+		int folio_transaccion=0;
+		int cantidad_filas=cuadrante.getTabla_actividades().length;	
+		if(cuadrante.getNuevoModifica().equals("N")){
+			 folio_transaccion=busca_y_actualiza_proximo_folio(74);
+			 cuadrante.setFolio(folio_transaccion);	
+		}
+		String query = "exec  cuadrantes_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+		
+			for(int i=0; i<cantidad_filas ; i++){
+				pstmt.setInt   (1,  cuadrante.getFolio());
+				pstmt.setString(2,  cuadrante.getCuadrante());
+				pstmt.setString(3,  cuadrante.getEstablecimiento());
+				pstmt.setString(4,  cuadrante.getDepartamento());
+				pstmt.setString(5,  cuadrante.getPuesto());
+				pstmt.setString(6,  cuadrante.getPuesto_reporta());
+				pstmt.setString(7,  cuadrante.getResponsabilidades());
+				pstmt.setString(8,  cuadrante.getObjetivo());
+				pstmt.setString(9,  cuadrante.getEstatus());
+				pstmt.setInt   (10,  usuario.getFolio());
+				pstmt.setString(11,  cuadrante.getNuevoModifica());
+//				@orden smallint  ,@folio_actividad int, @hora_inicio time(2) ,@hora_final time(2)  ,@dia_semana tinyint
+				pstmt.setString(12 ,  cuadrante.getTabla_actividades()[i][0].toString().trim());
+				pstmt.setString(13 ,  cuadrante.getTabla_actividades()[i][1].toString().trim());
+				pstmt.setString(14 ,  cuadrante.getTabla_actividades()[i][3].toString().trim());
+				pstmt.setString(15 ,  cuadrante.getTabla_actividades()[i][4].toString().trim());
+				pstmt.setString(16 ,  cuadrante.getTabla_actividades()[i][5].toString().trim());
+				pstmt.setString(17 ,  i+"");
+				pstmt.executeUpdate();
+			} 
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();

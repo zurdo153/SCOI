@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import Conexiones_SQL.Cargar_Combo;
 
+
 public class Obj_Cuentas_Contables {
 	String folio_cuenta_contable ;
 	String cuenta_contable ;

@@ -226,5 +226,4 @@ public class Obj_Servicios {
 		}catch (SQLException e) {e.printStackTrace();}
 		return 0; 
 	}
-	
 }

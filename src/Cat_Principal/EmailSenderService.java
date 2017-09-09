@@ -9,6 +9,7 @@ import javax.mail.internet.MimeMessage;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+
 public class EmailSenderService {
 
 		public boolean enviarcorreo(String para,int cantidad_de_correos,String mensaje,String asunto){

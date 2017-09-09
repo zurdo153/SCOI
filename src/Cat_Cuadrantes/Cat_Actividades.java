@@ -27,9 +27,9 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import Obj_Evaluaciones.Obj_Actividad;
-import Obj_Evaluaciones.Obj_Aspectos;
-import Obj_Evaluaciones.Obj_Nivel_Critico;
+import Obj_Cuadrantes.Obj_Actividad;
+import Obj_Cuadrantes.Obj_Aspectos;
+import Obj_Cuadrantes.Obj_Nivel_Critico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Temporada;
 import Obj_Principal.Componentes;
@@ -42,6 +42,7 @@ public class Cat_Actividades extends JFrame {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
     JToolBar menu_toolbar  = new JToolBar();
+    
     
     Obj_tabla ObjTab =new Obj_tabla();
 	int columnas = 3,checkbox=-1;
@@ -217,7 +218,7 @@ public class Cat_Actividades extends JFrame {
 		this.btnModificar.addActionListener (opModificar  );
 		this.btnSimilar.addActionListener   (op_similar   );
 		this.btnizquierda.addActionListener (opLeft       );
-		this.btnderecha.addActionListener   (opRigth      );
+		this.btnderecha.addActionListener   (opderecha    );
 		this.txaActividad.addKeyListener    (op_filtro    );
 		
 		panelEnabledFalse();
@@ -335,7 +336,7 @@ public class Cat_Actividades extends JFrame {
 		}
 	};
 	
-	ActionListener opRigth = new ActionListener() {
+	ActionListener opderecha = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			int Folio=0;
 			if(!txtFolio.getText().equals("")){

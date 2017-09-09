@@ -28,7 +28,6 @@ public class Cat_Reporte_De_Cuadrantes extends JFrame {
 										int operadorNivelCritico, String cadenaNivelCritico,
 										int operadorRespuesta, String cadenaRespuesta,
 										int reportePresentado) {
-
 		if(reportePresentado < 2){
 			NombreReporte="Obj_Reporte_Dinamico_De_Cuadrantes";
 			System.out.println("abrira reportes por establecimiento");

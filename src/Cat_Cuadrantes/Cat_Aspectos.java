@@ -30,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.Connexion;
-import Obj_Evaluaciones.Obj_Aspectos;
+import Obj_Cuadrantes.Obj_Aspectos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
@@ -74,7 +74,7 @@ public class Cat_Aspectos extends JFrame{
 	
 	JTable tabla = new JTable(modelo);
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
-     @SuppressWarnings({ "rawtypes", "unused" })
+     @SuppressWarnings({ "rawtypes" })
     private TableRowSorter trsfiltro;
 	     
 	JTextField txtBuscar  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
@@ -95,6 +95,7 @@ public class Cat_Aspectos extends JFrame{
 	JToolBar menu_toolbar = new JToolBar();
 	
 	String NuevoModifica ="";
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Aspectos(){
 		this.setSize(960,180);
 		this.setResizable(false);
@@ -141,6 +142,9 @@ public class Cat_Aspectos extends JFrame{
 		this.agregar(tabla);
 		this.txtBuscar.addKeyListener  (opFiltro );
 		this.btnNuevo.addActionListener(nuevo    );
+		
+		trsfiltro = new TableRowSorter(modelo); 
+		tabla.setRowSorter(trsfiltro);
 		
 		btnGuardar.addActionListener(guardar);
 		btnDeshacer.addActionListener(deshacer);

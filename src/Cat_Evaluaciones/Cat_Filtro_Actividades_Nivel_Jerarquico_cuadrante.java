@@ -2,9 +2,8 @@ package Cat_Evaluaciones;
 
 
 import Cat_Cuadrantes.Cat_Filtro_Actividades;
-import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
 
-@SuppressWarnings({ "serial", "unused" })
+@SuppressWarnings({ "serial"})
 public class Cat_Filtro_Actividades_Nivel_Jerarquico_cuadrante extends Cat_Filtro_Actividades {
 	
 	public Cat_Filtro_Actividades_Nivel_Jerarquico_cuadrante(){

@@ -11,10 +11,6 @@ public class Obj_Entosal {
 	 String Valor_Descanso;
 	 String Valor_Pc;
 	
-	
-	
-
-
 	public String getClave() {
 		return clave;
 	}

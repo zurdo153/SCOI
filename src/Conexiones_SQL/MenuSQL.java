@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 public class MenuSQL {
 	
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Vector getMenusNivel (int folio){
 		Vector vec = new Vector();

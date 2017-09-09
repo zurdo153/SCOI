@@ -14,7 +14,6 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Alimentacion_De_Cheques;
 
 
-
 public class GuardarTablasModel {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
@@ -883,55 +882,6 @@ public class GuardarTablasModel {
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
-	
-	public boolean Guardar_Cuadrante_Tabla_Real(int folio, int cuadrante, String encargado, String[][] tabla){
-		String queryDelete = "exec sp_delete_tabla_cuadrante_nivel_jerarquico "+ folio;
-		String querytabla = "exec sp_insert_tabla_cuadrante_real ?,?,?,?,?,?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmtDelete = null;
-		PreparedStatement pstmtTabla = null;
-		try {
-			con.setAutoCommit(false);
-			pstmtDelete = con.prepareStatement(queryDelete);
-			pstmtDelete.execute();
-			
-			pstmtTabla = con.prepareStatement(querytabla);
-			for(int i=0; i<tabla.length; i++){
-				pstmtTabla.setInt(1, folio);
-				pstmtTabla.setString(2, procesa_texto(encargado));
-				pstmtTabla.setInt(3, cuadrante);
-				pstmtTabla.setInt(4, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmtTabla.setString(5, tabla[i][1].toString().trim().toUpperCase());
-				pstmtTabla.setString(6, tabla[i][2].toString().trim());
-				pstmtTabla.setInt(7, Boolean.parseBoolean(tabla[i][3]) ? 1 : 0);
-				pstmtTabla.setString(8, tabla[i][4]);
-				pstmtTabla.setString(9, tabla[i][5]);
-				pstmtTabla.setString(10, tabla[i][6]);
-				pstmtTabla.execute();
-			}
-			
-			con.commit();
-		} catch (Exception e) {
-			
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada Guardar_Cuadrante_Tabla");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());

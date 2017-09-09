@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JProgressBar;
 
+
 @SuppressWarnings("serial")
 public class LoadingBar2 extends JDialog
 {

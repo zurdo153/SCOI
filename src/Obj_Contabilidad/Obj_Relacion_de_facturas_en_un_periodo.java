@@ -2,7 +2,6 @@ package Obj_Contabilidad;
 
 import Conexiones_SQL.GuardarTablasModel;
 
-
 public class Obj_Relacion_de_facturas_en_un_periodo {
 	private String folio;
 	private int Cod_Estab;

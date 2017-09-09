@@ -1,5 +1,6 @@
 package Obj_Planeacion;
 
+
 public class Obj_Opciones_De_Respuesta {
 	//defecto
 	String Resuelta ="true",Incumplida="true",Pendiente="true",EnProceso="true",PasoAOtroDepartamento="true",No_Exige_Evidencia="true",Exige_Evidencia="false",NoExigeObservacion="true",ExigeObservacion="false";

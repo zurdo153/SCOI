@@ -64,6 +64,43 @@ public class Obj_tabla {
 		}
  	}
 	
+public void tablas_dias_del_cuadrante(JTable tabla){
+	DefaultTableModel modelo= (DefaultTableModel) tabla.getModel();
+	
+	tabla.getTableHeader().setReorderingAllowed(false) ;
+	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	modelo.setRowCount(0);
+	
+	tabla.getColumnModel().getColumn(0).setMinWidth(55);
+	tabla.getColumnModel().getColumn(0).setMaxWidth(55);
+	tabla.getColumnModel().getColumn(1).setMinWidth(55);
+	tabla.getColumnModel().getColumn(1).setMaxWidth(55);	
+	tabla.getColumnModel().getColumn(2).setMinWidth(375);
+	tabla.getColumnModel().getColumn(3).setMinWidth(50);
+ 	tabla.getColumnModel().getColumn(3).setMaxWidth(50);
+	tabla.getColumnModel().getColumn(4).setMinWidth(50);
+ 	tabla.getColumnModel().getColumn(4).setMaxWidth(50);
+ 	
+	for(int i = 0; i<tabla.getColumnCount(); i++){
+		tabla.getColumnModel().getColumn(i).setMaxWidth(2000);
+       }
+		
+		for(int i = 0; i<tabla.getColumnCount(); i++){
+			 tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CabeceraTablaRendererizado(new java.awt.Color(RfilaS,GfilaS,BfilaS),Color.WHITE));
+			
+				if(tabla.getRowCount()>0){
+					if( validacampo(modelo.getValueAt(0,i).toString().trim()) ){
+					    tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","derecha","Arial","negrita",11));
+					}else{
+					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));	
+					}
+				}else{
+					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));
+			  	}
+		      }
+ }
+
+
 	public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,String comando,String BasdeDatos, String pintar, Integer checkbox){
     	tabla.getTableHeader().setReorderingAllowed(false) ;
     	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -90,11 +127,11 @@ public class Obj_tabla {
 				while (rs.next()){ 
 				    	String [] fila = new String[columnas];
 						for(int i=0;i<columnas;i++){
-							if(i==checkbox){
-								 fila[i] = "false";
-							}else{
+//							if(i==checkbox){
+//								 fila[i] = "false";
+//							}else{
 						         fila[i] = rs.getString(i+1).trim();
-							}
+//							}
 						 }
 				   modelo.addRow(fila); 
 				}	
@@ -221,7 +258,6 @@ public class Obj_tabla {
 			comp.setFont(fuente);
 			this.setHorizontalAlignment(JLabel.CENTER);
 			return comp;
-		
 		}
 	}
 	

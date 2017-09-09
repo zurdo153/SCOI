@@ -1,6 +1,5 @@
 package Obj_Compras;
 
-
 import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;

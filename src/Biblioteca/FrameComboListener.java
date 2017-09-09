@@ -61,10 +61,10 @@ public class FrameComboListener extends JFrame
 		TextAutoCompleter textAutoAcompleter = new TextAutoCompleter( txtbuscar );
 		textAutoAcompleter.setMode(0);
 		
-		textAutoAcompleter.addItem("item de prueba");
-		textAutoAcompleter.addItem("segunda prueba");
-		textAutoAcompleter.addItem("autoAcompletar");
-		textAutoAcompleter.addItem("Java");
+		textAutoAcompleter.addItem("Super 1");
+		textAutoAcompleter.addItem("Super 2");
+		textAutoAcompleter.addItem("Super 5");
+		textAutoAcompleter.addItem("Refaccionaria");
 		
 
 		setLocationRelativeTo(null);

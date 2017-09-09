@@ -1,5 +1,8 @@
 package Conexiones_SQL;
 
+
+
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.InetAddress;
@@ -33,8 +36,6 @@ import Obj_Checador.Obj_Mensajes;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Proveedores;
-import Obj_Evaluaciones.Obj_Actividad_Asignadas_Nivel_Jerarquico;
-import Obj_Evaluaciones.Obj_Cuadrante;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
@@ -1520,50 +1521,6 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Actualizar_Actividad_Nivel_Jerarquico(Obj_Actividad_Asignadas_Nivel_Jerarquico actividad, int folio, String nombre){
-		String query = "exec sp_update_actividad_nivel_jerarquico ?,?,?,?,?,?,?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			System.out.println(actividad.getDescripcion().toUpperCase());
-			pstmt.setString(1, actividad.getActividad().toUpperCase());
-			pstmt.setString(2, actividad.getDescripcion().toUpperCase());
-			pstmt.setString(3, actividad.getRespuesta());
-			pstmt.setString(4, actividad.getAtributos());
-			pstmt.setString(5, actividad.getNivel_critico());
-			pstmt.setString(6, actividad.getTemporada());
-			pstmt.setInt(7, actividad.isCarga()? 1 : 0);
-			pstmt.setInt(8, actividad.getRepetir());
-			pstmt.setInt(9, folio);
-			pstmt.setString(10, nombre);
-			pstmt.setInt(11, actividad.isStatus()? 1:0);
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad_Nivel_Jerarquico ] update  SQLException: sp_update_actividad_nivel_jerarquico "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Actividad_Nivel_Jerarquico ] update  SQLException: sp_update_actividad_nivel_jerarquico "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
-		
 	public boolean Relacion_Actividad(Obj_Actividades_Relacionadas relacion, String[][] tabla){
 		String queryDelete ="delete tb_tabla_relacion_actividad where folio_proyecto = ?";
 		String query = "exec sp_update_relacion_actividad ?,?,?,?,?";
@@ -1688,79 +1645,6 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Cuadrante(Obj_Cuadrante cuadrante, String[][] tabla){
-		String queryDelete ="delete tb_tabla_cuadrante where folio_cuadrante = ?";
-		String query = "exec sp_update_cuadrante ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
-		String querytabla = "exec sp_insert_tabla_cuadrante ?,?,?,?,?,?,?,?";
-		
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmtDelete = null;
-		PreparedStatement pstmt = null;
-		PreparedStatement pstmtTabla = null;
-		try {
-			con.setAutoCommit(false);
-			
-			// Elimina primero la lista de cuadrante
-			pstmtDelete = con.prepareStatement(queryDelete);
-			pstmtDelete.setInt(1, cuadrante.getFolio());
-			pstmtDelete.execute();
-			
-			// Actualiza el Cuadrante
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, cuadrante.getCuadrante().toUpperCase());
-			pstmt.setString(2, cuadrante.getPerfil().toUpperCase());
-			pstmt.setString(3, cuadrante.getJefatura());
-			pstmt.setString(4, cuadrante.getNivel_gerarquico());
-			pstmt.setString(5, cuadrante.getEquipo_trabajo());
-			pstmt.setString(6, cuadrante.getEstablecimiento());
-			pstmt.setInt(7, cuadrante.getDomingo());
-			pstmt.setInt(8, cuadrante.getLunes());
-			pstmt.setInt(9, cuadrante.getMartes());
-			pstmt.setInt(10, cuadrante.getMiercoles());
-			pstmt.setInt(11, cuadrante.getJueves());
-			pstmt.setInt(12, cuadrante.getViernes());
-			pstmt.setInt(13, cuadrante.getSabado());
-			pstmt.setInt(14, cuadrante.getStatus());
-			pstmt.setInt(15, cuadrante.getFolio());
-			pstmt.execute();
-			
-			// Inserta valores a la tabla
-			pstmtTabla = con.prepareStatement(querytabla);
-			
-			for(int i=0; i<tabla.length; i++){
-				pstmtTabla.setString(1, cuadrante.getCuadrante().toUpperCase());
-				pstmtTabla.setInt(2, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmtTabla.setString(3, tabla[i][1].toString().trim());
-				pstmtTabla.setString(4, tabla[i][2].toString().trim());
-				pstmtTabla.setInt(5, Boolean.parseBoolean(tabla[i][3]) ? 1 : 0);
-				pstmtTabla.setString(6, tabla[i][4]);
-				pstmtTabla.setString(7, tabla[i][5]);
-				pstmtTabla.setString(8, tabla[i][6]);
-				pstmtTabla.execute();
-			}
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada Actualizar - Cuadrante");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cuadrante ] update  SQLException: sp_update_cuadrante,sp_insert_tabla_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Cuadrante ] update  SQLException: sp_update_cuadrante,sp_insert_tabla_cuadrante "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
 	
 	public boolean mensajePersonal(Obj_Mensaje_Personal msjPersonal, int folio){
 		 
