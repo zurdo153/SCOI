@@ -777,7 +777,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 						if((boton.toUpperCase().equals("ACTUALIZAR")) || (boton.toUpperCase().equals("CANCELAR") && status_pedido.equals("VIGENTE")) ){
 							
 							 consultarfiltro(boton,folio_pedido,estab);
-							 dispose();
+//							 dispose();
 							 
 						}else{
 								JOptionPane.showMessageDialog(null, "Solo Se Pueden Cancelar Registros Con Status Vigente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
