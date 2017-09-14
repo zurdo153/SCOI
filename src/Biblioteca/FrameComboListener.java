@@ -7,7 +7,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import com.mxrck.autocompleter.TextAutoCompleter;
+//import com.mxrck.autocompleter.TextAutoCompleter;
 
 import Obj_Principal.ComboListener;
 import Obj_Principal.Componentes;
@@ -58,13 +58,13 @@ public class FrameComboListener extends JFrame
 		txtbuscar.setBounds(144, 100, 165, 24);
 		contentPane.add(txtbuscar);
 		
-		TextAutoCompleter textAutoAcompleter = new TextAutoCompleter( txtbuscar );
-		textAutoAcompleter.setMode(0);
-		
-		textAutoAcompleter.addItem("Super 1");
-		textAutoAcompleter.addItem("Super 2");
-		textAutoAcompleter.addItem("Super 5");
-		textAutoAcompleter.addItem("Refaccionaria");
+//		TextAutoCompleter textAutoAcompleter = new TextAutoCompleter( txtbuscar );
+//		textAutoAcompleter.setMode(0);
+//		
+//		textAutoAcompleter.addItem("Super 1");
+//		textAutoAcompleter.addItem("Super 2");
+//		textAutoAcompleter.addItem("Super 5");
+//		textAutoAcompleter.addItem("Refaccionaria");
 		
 
 		setLocationRelativeTo(null);

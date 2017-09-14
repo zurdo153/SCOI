@@ -8912,7 +8912,7 @@ public boolean existenPedidosActivos(){
 	
 	boolean mov = false;
 	
-	String query = "IF exists(select '1' from tb_gestion_de_pedido WHERE status in ('V','A')) "
+	String query = "IF exists(select '1' from tb_gestion_de_pedido WHERE status in ('V','A','R')) "
 			+ "	SELECT 'false' as activar_inventario "
 			+ " ELSE "
 			+ "	SELECT 'true' as activar_inventario";
