@@ -99,15 +99,6 @@ public class Obj_Establecimiento {
 		return null; 
 	}
 	
-	public String[] Combo_Jefatura() {
-		try {
-			return new Cargar_Combo().Jefatura("tb_jefatura");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
 	public String[] Combo_Establecimiento(){
 		try {
 			return new Cargar_Combo().Establecimiento("tb_establecimiento");

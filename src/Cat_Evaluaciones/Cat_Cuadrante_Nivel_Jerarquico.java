@@ -28,10 +28,6 @@ public class Cat_Cuadrante_Nivel_Jerarquico extends JFrame {
 	JTextArea txaDescripcion = new Componentes().textArea(new JTextArea(), "Descripción", 700);
 	JScrollPane Descripcion = new JScrollPane(txaDescripcion);
 	
-	String jefatura[] = new Obj_Establecimiento().Combo_Jefatura();
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbJefatura = new JComboBox(jefatura);
-	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Empleados();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);

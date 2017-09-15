@@ -494,6 +494,7 @@ public class Cat_Cuadrantes extends JFrame{
 	
 	public void init_tablalunes(){
 		ObjTab.tablas_dias_del_cuadrante(tablaLunes);
+		
 		this.pLunes.setBorder(BorderFactory.createTitledBorder("Lunes"));
 		this.pLunes.setOpaque(true); 
 		this.pLunes.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
@@ -1036,7 +1037,7 @@ public class Cat_Cuadrantes extends JFrame{
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
 			        	if(e.getClickCount()==1){
-			        		int fila = tablacopiar.getSelectedRow();
+//			        		int fila = tablacopiar.getSelectedRow();
 			        	}	
 			        }
 		        });

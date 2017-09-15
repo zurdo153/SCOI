@@ -533,6 +533,18 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	
     ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			int folio_servicio_solicitado=0;
+             String Validacion_Guarda_Desde_PC="";
+            try {
+            	Validacion_Guarda_Desde_PC=servicios_solicitud.Validad_PC_Guarda(cmbEstablecimiento.getSelectedItem().toString().trim(),Departamento);
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		  if(Validacion_Guarda_Desde_PC.equals("NO")){
+				JOptionPane.showMessageDialog(null, "Es Requerido Que Esta Actividad Sea Contestada En el Establecimiento Que Lo Solicita", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+		  }else{			
+				
 			if(ValidaCampos()!=""){
 				JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+ValidaCampos(), "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -555,7 +567,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 				servicios_solicitud.setFolio_usuario_modifico(usuario.getFolio());
 				servicios_solicitud.setFolio_equipo(Integer.valueOf(txtFolioequipo.getText().toString()));
 
-				if(servicios_solicitud.GuardarActualizar()){
+				folio_servicio_solicitado=servicios_solicitud.GuardarActualizar();
+				if(folio_servicio_solicitado>0){
 					   if(cmbEstatusCo.getSelectedItem().toString().trim().equals("TERMINADO")){
 						   try {servicios_solicitud = new BuscarSQL().correo_informa_servicio_terminado(Integer.valueOf(txtFolio.getText().toString().trim()));
 							} catch (SQLException e1) {e1.printStackTrace();}
@@ -585,6 +598,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 					return;
 				}
 			}
+		  }	  
 		}
 	};
 	

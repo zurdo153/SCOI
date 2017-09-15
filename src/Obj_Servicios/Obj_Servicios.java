@@ -215,11 +215,15 @@ public class Obj_Servicios {
 		this.evaluacion = evaluacion;
 	}
 
-	public boolean GuardarActualizar(){ 
+	public int GuardarActualizar(){ 
 	return new GuardarSQL().Guardar_servicios(this); }
 	
 	public boolean GuardarAsignacion(){ 
 	return new GuardarSQL().Guardar_Asignacion(this); }
+	
+	public String Validad_PC_Guarda(String Establecimiento, String Departamento) throws SQLException{ 
+	return new BuscarSQL().Valida_La_PC_Para_Captura(Establecimiento,Departamento);
+	}
 	
 	public int buscar_nuevo(){
 		try {return new BuscarSQL().serviciocatalogo();
