@@ -1,5 +1,6 @@
 package Obj_Compras;
 
+
 public class Obj_Compra_De_Cascos {
 	private int folio_compra;
 	private String beneficiario;

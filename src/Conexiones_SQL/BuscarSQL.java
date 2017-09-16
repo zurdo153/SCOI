@@ -70,7 +70,6 @@ import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
-import Obj_Evaluaciones.Obj_Jefatura;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
@@ -738,29 +737,6 @@ public class BuscarSQL {
 		return diaIA;
 	}
 	
-	public Obj_Jefatura Jefatura(int folio) throws SQLException{
-		Obj_Jefatura jefat = new Obj_Jefatura();
-		String query = "select * from tb_jefatura where folio ="+ folio;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				jefat.setFolio(rs.getInt("folio"));
-				jefat.setDescripcion(rs.getString("Descripcion").trim());
-				jefat.setStatus((rs.getString("status").equals("1"))?true:false);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return jefat;
-	}
-	
 	public Obj_Equipo_De_Trabajo Eq_Tabajo(int folio) throws SQLException{
 		Obj_Equipo_De_Trabajo EqTrabajo = new Obj_Equipo_De_Trabajo();
 		String query = "select * from tb_equipo_trabajo where folio ="+ folio;
@@ -1042,27 +1018,6 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return diaIA;
-	}
-	
-	public Obj_Jefatura Jefatura_Nuevo() throws SQLException{
-		Obj_Jefatura jefat = new Obj_Jefatura();
-		String query = "select max(folio) as 'Maximo' from tb_jefatura";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				jefat.setFolio(rs.getInt("Maximo"));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return jefat;
 	}
 	
 	public Obj_Equipo_De_Trabajo Eq_Trabajo_Nuevo() throws SQLException{
@@ -9039,7 +8994,6 @@ public String folio_siguiente(String Transaccion) throws SQLException{
 		}}
 	}
 	return folio;
-
 }
 
 public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(String cod_prod, String Establecimiento) throws SQLException{
@@ -10090,4 +10044,32 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			}
 			return cantidad_de_zonas;
 		}
+	   
+	   public String Valida_La_PC_Para_Captura(String Establecimiento, String Departamento) throws SQLException{
+			String valor = "";
+			String pc="";
+			try {pc = InetAddress.getLocalHost().getHostName();} catch (UnknownHostException e1) {e1.printStackTrace();}
+			
+			String query = "sp_servicios_validacion_establecimiento_pertenesca_pc_donde_contesta '"+pc+"','"+Departamento+"','"+Establecimiento+"'";
+			Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					valor=(rs.getString(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Folio_Siguiente_alta_Servicios ] SQLException: "+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+			finally{
+				if(stmt!=null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return valor;
+		}
+	   
 }

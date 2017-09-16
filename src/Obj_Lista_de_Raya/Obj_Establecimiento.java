@@ -7,6 +7,7 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 
+
 public class Obj_Establecimiento {
 	private int folio;
 	private String establecimiento;
@@ -93,15 +94,6 @@ public class Obj_Establecimiento {
 	public String[] Combo_Eq_Trabajo() {
 		try {
 			return new Cargar_Combo().EquipoTrabajo("tb_equipo_trabajo");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
-	public String[] Combo_Jefatura() {
-		try {
-			return new Cargar_Combo().Jefatura("tb_jefatura");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

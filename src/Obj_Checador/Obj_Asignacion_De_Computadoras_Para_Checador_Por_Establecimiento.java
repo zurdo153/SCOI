@@ -4,6 +4,7 @@ import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
+
 public class Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento {
 	private int folio;
 	private String Nombre_Pc;

@@ -120,6 +120,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	JLabel lblUsuario          = new JLabel("");
 	JLabel lblDepartamento     = new JLabel("");
 	JLabel lblCalificacion     = new JLabel("10");
+	
 	JTextArea txaDetalle       = new Componentes().textArea(new JTextArea(), "", 500);
 	JTextArea txaNotas         = new Componentes().textArea(new JTextArea(), "", 500);
 	JTextArea txaComentario    = new Componentes().textArea(new JTextArea(), "", 500);
@@ -234,6 +235,8 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		lblUsuario.setText(usuario.getNombre_completo());
 		lblDepartamento.setText(Departamento);
 		
+		cmbEstatusFiltrado.setSelectedItem("SOLICITADO Y EN PROCESO");
+		
 		init_tabla(cmbEstatusFiltrado.getSelectedItem().toString().trim());
 		agregar(tabla);
 		panelEnabledFalse();
@@ -255,7 +258,8 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		
         this.addWindowListener(new WindowAdapter() {
             public void windowOpened( WindowEvent e ){
-           	 txtFiltro.requestFocus();
+            	cmbEstatusFiltrado.requestFocus();
+            	cmbEstatusFiltrado.showPopup();
            }
         });
 	}
@@ -291,7 +295,6 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	                    txtFcSolicito.setText(tabla.getValueAt(fila,8)+"");
 						txtFcAtendio.setText(tabla.getValueAt(fila,10)+"");
 						txaComentario.setText(tabla.getValueAt(fila,17)+"");
-						
 						
 	                    //validacion del estatus de la actividad
 	                    if(tabla.getValueAt(fila,2).toString().equals("TERMINADO")||tabla.getValueAt(fila,2).toString().equals("CANCELADO")){
@@ -410,6 +413,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	
     ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			int folio_servicio_solicitado=0;
 			if(ValidaCampos()!=""){
 				JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+ValidaCampos(), "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -432,7 +436,8 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 				servicios_solicitud.setFolio_usuario_modifico(usuario.getFolio());
 				servicios_solicitud.setComentario_evaluacion(txaComentario.getText().toString().trim());
 				
-				if(servicios_solicitud.GuardarActualizar()){
+				folio_servicio_solicitado=servicios_solicitud.GuardarActualizar();
+				if(folio_servicio_solicitado>0){
 					  init_tabla(cmbEstatusFiltrado.getSelectedItem().toString().trim());
 					  panelLimpiar();
 					  panelEnabledFalse();
@@ -451,7 +456,7 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		String error ="";
 		if(cmbEvaluacionServicio.getSelectedIndex()==0) 
 			error+= "Es Requerido Que Evalue el Servicio Solicitado, Que fue Marcado Como Terminado\n";
-		if((cmbEvaluacionServicio.getSelectedItem().toString().trim().equals("DEFICIENTE") ||cmbEvaluacionServicio.getSelectedItem().toString().trim().equals("PESIMO")) && txaComentario.getText().equals(""))
+		if(txaComentario.getText().equals(""))
 			error+= "<<Comentario Evaluacion:>>Con El Fin De Mejorar El Servicio Es Requerido, Su Valioso Comentario\n";
 		return error;
 	}
@@ -499,7 +504,6 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 		servicios.setGuardar_actualizar("");
 	}
 
-	//TODO Filtro COLABORADOR
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

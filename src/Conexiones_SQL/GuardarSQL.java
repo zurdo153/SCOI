@@ -66,7 +66,6 @@ import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
-import Obj_Evaluaciones.Obj_Jefatura;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
@@ -111,6 +110,7 @@ import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Registro_De_Desarrollo;
 import Obj_Servicios.Obj_Servicios;
 import Obj_Servicios.Obj_Catalogo_Servicios;
+import Obj_Servicios.Obj_Pc_Por_Establecimientos;
 
 
 
@@ -396,41 +396,7 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Jefatura(Obj_Jefatura jefat){
-		String query = "exec sp_insert_jefatura	?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, jefat.getDescripcion().toUpperCase());
-			pstmt.setString(2, (jefat.getStatus())?"1":"0");
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Jefatura ] Insert  SQLException: sp_insert_jefatura "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Jefatura ] Insert  SQLException: sp_insert_jefatura "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Jefatura ] Insert  SQLException: sp_insert_jefatura "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}
-		}		
-		return true;
-	}
-
+	
 	public boolean Guardar_Eq_Trabajo(Obj_Equipo_De_Trabajo EqTabajo){
 		String query = "exec sp_insert_equipo_trabajo ?,?";
 		Connection con = new Connexion().conexion();
@@ -5393,8 +5359,6 @@ public boolean Guardar_Configuracion_De_Meta_Mensual_De_Venta(Obj_Configuracion_
 		con.setAutoCommit(false);
 		PreparedStatement pstmt = con.prepareStatement(query);
 		
-		System.out.println(conf.getTipo_de_reporte()+"<--------------------");
-		
 		pstmt.setInt(1, folio_transaccion);
 		pstmt.setString(2, conf.getNombre().toUpperCase().trim());
 		pstmt.setString(3, conf.getEstablecimiento().trim());
@@ -5643,17 +5607,6 @@ public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos perfil,String movi
 	try {
 		con.setAutoCommit(false);
 		
-		// insert bitacora
-//		String pc = InetAddress.getLocalHost().getHostName();  
-//		String ip = InetAddress.getLocalHost().getHostAddress();
-//		pstmtb = con.prepareStatement(Qbitacora);
-//		pstmtb.setString(1, pc);
-//		pstmtb.setString(2, ip);
-//		pstmtb.setInt(3, usuario.getFolio());
-//		pstmtb.setString(4, "sp_insert_empleado alta "+empleado.getNombre().toUpperCase()+empleado.getAp_paterno().toUpperCase()+empleado.getAp_materno().toUpperCase());
-//		pstmtb.setString(5, "Empleados Nuevo");
-//		pstmtb.executeUpdate();
-		
 		int i=1;
 //		--------------------------------------------------------------------------------------------------------------------------------
 		pstmt = con.prepareStatement(query);
@@ -5697,42 +5650,6 @@ public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos perfil,String movi
 		pstmt.setString(i+=1, 	perfil.getConocimiento().toUpperCase());
 		
 		pstmt.setInt(i+=1, 	usuario.getFolio());
-//		fecha de modificacion
-		
-//		System.out.println(perfil.getFolio());
-//		System.out.println(perfil.getPerfil());
-//		System.out.println(perfil.getSexo());
-//		System.out.println(perfil.getEdad());
-//		System.out.println(perfil.getPuesto_al_que_reporta());
-//		
-//		System.out.println(perfil.getEstablecimiento());
-//		System.out.println(perfil.getDepartameto());
-//		System.out.println(perfil.getPuesto());
-//		System.out.println(perfil.getNivel_de_puesto());
-//		
-//		System.out.println(perfil.getHorario());
-//		System.out.println(perfil.getHorario2());
-//		System.out.println(perfil.getHorario3());
-//		System.out.println(perfil.getStatus_h1());
-//		System.out.println(perfil.getStatus_h2());
-//		System.out.println(perfil.getStatus_h3());
-//		System.out.println(perfil.getStatus_rotativo());
-//		
-//		System.out.println(perfil.getSalario_diario());
-//		System.out.println(perfil.getSalario_diario_integrado());
-//		System.out.println(perfil.getSueldo());
-//		System.out.println(perfil.getBonocomplemento());
-//		System.out.println(perfil.getBono_asistencia());
-//		System.out.println(perfil.getBono_puntualidad());
-//		System.out.println(perfil.getPrestamo());
-//		System.out.println((perfil.isGafete())? 1: 0);
-//		
-//		System.out.println(perfil.getObjetivo_del_puesto().toUpperCase());
-//		System.out.println(perfil.getExperiencia().toUpperCase());
-//		System.out.println(perfil.getActividades_Principales().toUpperCase());
-//		System.out.println(perfil.getHabilidades().toUpperCase());
-//		System.out.println(perfil.getConocimiento().toUpperCase());
-		
 		pstmt.executeUpdate();
 		con.commit();
 		
@@ -5761,8 +5678,6 @@ public boolean Guardar_Perfil_De_Puesto(Obj_Perfil_De_Puestos perfil,String movi
 }
 
 public boolean Guardar_Registro_De_Desarollo(Obj_Registro_De_Desarrollo registro, String movimiento){
-	
-	
 	int folio = movimiento.equals("GUARDAR") ? new GuardarSQL().busca_y_actualiza_proximo_folio(33) : registro.getFolio_registro();
 	
 	String query =  "";
@@ -5775,7 +5690,6 @@ public boolean Guardar_Registro_De_Desarollo(Obj_Registro_De_Desarrollo registro
 		
 		query =  "EXEC sp_insert_registros_de_desarrollo ?,?,?,?,?,?,?,?";
 		pstmt = con.prepareStatement(query);
-		
 		pstmt.setInt   (1, folio);
 		pstmt.setInt   (2, registro.getUsuario_solicitante());
 		pstmt.setInt   (3, registro.getUsuario_atendio());
@@ -5922,18 +5836,6 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 				pstmt.setString  (15, pedido.getMatriz()[i][7].toString());
 				pstmt.setInt     (16, Integer.valueOf(pedido.getMatriz()[i][8].toString()));
 				
-//				System.out.println(pedido.getFolio_pedido());
-//				System.out.println(pedido.getOrigen());
-//				System.out.println(pedido.getDestino());
-//				System.out.println(pedido.getUsuario());
-//				System.out.println(pedido.getMatriz()[i][0].toString());
-//				System.out.println(pedido.getMatriz()[i][1].toString());
-//				System.out.println(Float.valueOf(pedido.getMatriz()[i][2].toString()));
-//				System.out.println(Float.valueOf(pedido.getMatriz()[i][3].toString()));
-//				System.out.println(Float.valueOf(pedido.getMatriz()[i][4].toString()));
-//				System.out.println(Float.valueOf(pedido.getMatriz()[i][5].toString()));
-//				System.out.println(pedido.getMatriz()[i][6].toString());
-//				System.out.println(usuario.getFolio());
 			pstmt.executeUpdate();
 		}
 		
@@ -5943,12 +5845,6 @@ public boolean GuardarPedido(Obj_Gestion_De_Pedidos_A_Establecimientos pedido,St
 			pstmt2.setString (2, pedido.getMatriz()[i2][0].toString());
 			pstmt2.setFloat  (3, Float.valueOf(pedido.getMatriz()[i2][4].toString()));
 			pstmt2.setInt    (4, Integer.valueOf(pedido.getMatriz()[i2][8].toString()));
-
-			//			System.out.println(pedido.getFolio_pedido());
-//			System.out.println(pedido.getMatriz()[i2][0].toString());
-//			System.out.println(Float.valueOf(pedido.getMatriz()[i2][4].toString()));
-//			System.out.println(Integer.valueOf(pedido.getMatriz()[i2][8].toString()));
-//			System.out.println(query2);
          pstmt2.executeUpdate();
 	     }
 		con2.commit();	
@@ -6148,16 +6044,6 @@ public boolean Guardar_Salida_De_Embarque_De_Pedido(Obj_Chacador_De_Embarque_De_
 			pstmt.setString(i+=1, 	ip);
 			pstmt.setString(i+=1, 	pc);
 			
-//			System.out.print(ped.getFolio_transferencia()[fol].toString().trim()+"   ");
-//			System.out.print(ped.getEstab_surte().toString().trim()+"   ");
-//			System.out.print(ped.getEstab_recibe().toString().trim()+"   ");
-//			System.out.print(ped.getFolio_encagado_asigno_embarque()+"   ");
-//			System.out.print(ped.getFolio_chofer()+"   ");
-//			System.out.print(ped.getNo_carro()+"   ");
-//			System.out.print(ped.getNo_cincho().toString().trim()+"   ");
-//			System.out.print(ip.toString().trim()+"   ");
-//			System.out.println(pc.toString().trim()+"   ");
-			
 			pstmt.executeUpdate();
 		}
 		con.commit();
@@ -6236,7 +6122,7 @@ public boolean Guardar_servicios_catalogo(Obj_Catalogo_Servicios servicios){
 	return true;
 }
 
-public boolean Guardar_servicios(Obj_Servicios servicios){
+public int Guardar_servicios(Obj_Servicios servicios){
 	int folio_transaccion=servicios.getFolio();
 	String adjunto="";
 	if(servicios.getGuardar_actualizar().equals("S")){
@@ -6250,12 +6136,15 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 		adjunto=servicios.getAdjunto().toString();
 	}
 	
-	String query = "exec sp_guardar_servicios ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	String query = "exec sp_guardar_servicios_2 ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 	Connection con = new Connexion().conexion();
 	
 	try {
 		con.setAutoCommit(false);
 		PreparedStatement pstmt = con.prepareStatement(query);
+		
+		String pc = InetAddress.getLocalHost().getHostName();
+		String ip = InetAddress.getLocalHost().getHostAddress();
 		
 //		@folio int, @servicio varchar(150), @equipo varchar(150), @detalle varchar(500), @prioridad_solicito varchar(150),  @departamento_solicito varchar(150),  @establecimiento_solicito varchar(150),   @folio_usuario_solicito int,
 //	    @estatus_equipo varchar(100), @folio_usuario_modifico int, @usuario_realizo_servicio varchar(350), @estatus_servicio varchar(100), @notas_servicio varchar(500),  @costo_servicio money, @valoracion_del_servicio int
@@ -6284,6 +6173,8 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 			pstmt.setString(18,  servicios.getAdjunto().toString());
 			pstmt.setString(19,  servicios.getComentario_evaluacion().toString().trim());
 			pstmt.setInt   (20,  Integer.valueOf(servicios.getFolio_equipo()));
+			pstmt.setString(21,  ip);
+			pstmt.setString(22,  pc);
 			
 			pstmt.executeUpdate();
 		con.commit();
@@ -6300,7 +6191,7 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_servicios ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		}
-		return false;
+		return 0;
 	}finally{
 		try {
 			con.close();
@@ -6308,7 +6199,7 @@ public boolean Guardar_servicios(Obj_Servicios servicios){
 			e.printStackTrace();
 		}
 	}		
-	return true;
+	return folio_transaccion;
 }
 		
 		
@@ -6380,41 +6271,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	return true;
 
 }
-
-//--------------------traba el servicio
-//public boolean envio_de_correo(){
-//	String query =  "sp_envio_de_correo_automatico_de_servicios_nuevos";
-//	Connection con = new Connexion().conexion();
-//	PreparedStatement pstmt = null;
-//	
-//	try {
-//		con.setAutoCommit(false);
-//		pstmt = con.prepareStatement(query);
-//		pstmt.executeUpdate();
-//		
-//		con.commit();
-//	} catch (Exception e) {
-//		System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
-//		if (con != null){
-//			try {
-//				System.out.println("La transacción ha sido abortada");
-//				con.rollback();
-//			} catch(SQLException ex) {
-//				System.out.println(ex.getMessage());
-//				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ envio_de_correo ] Insert  SQLException: sp_envio_de_correo_automatico_de_servicios_nuevos "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//			}
-//		} 
-//		return false;
-//	}finally{
-//		try {
-//			con.close();
-//		} catch(SQLException e){
-//			e.printStackTrace();
-//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ envio_de_correo ] Insert  SQLException: sp_envio_de_correo_automatico_de_servicios_nuevos "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//		}
-//	}		
-//	return true;
-//}
 
 	public boolean Guardar_Asignacion(Obj_Servicios servicios){
 		String query = "exec sp_guardar_colaborador_asignado_a_un_servicio ?,?";
@@ -6615,32 +6471,12 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			int i = 0;
 			for( i=0; i<mermas.getArreglo().length; i++){
 				
-				System.out.println(folio);
-				System.out.println(mermas.getArreglo()[i][0].toString().trim());
-				System.out.println(mermas.getArreglo()[i][2].toString().trim());
-				System.out.println(mermas.getArreglo()[i][3].toString().trim());
-				System.out.println(mermas.getArreglo()[i][5].toString().trim());
-				System.out.println(mermas.getArreglo()[i][6].toString().trim());
-				System.out.println(mermas.getArreglo()[i][7].toString().trim());
-				System.out.println(mermas.getArreglo()[i][8].toString().trim());
-				System.out.println(mermas.getArreglo()[i][9].toString().trim());
-				System.out.println("'"+mermas.getEstablecimiento().toString().trim()+"'");
-				System.out.println((movimiento.equals("TERMINADO")?"T":(movimiento.equals("NORMAL")?"V":"A")));
-				System.out.println(usuario_seguridad==0?usuario.getFolio():usuario_seguridad);
-				
 				pstmt.setInt   (1, folio);																	//folio
 				pstmt.setString(2, mermas.getArreglo()[i][0].toString().trim());							//cod_prod
-				
-//				pstmt.setString(3, mermas.getArreglo()[i][1].toString().trim());							//--------------desc
 				
 				pstmt.setDouble(3, Double.valueOf(mermas.getArreglo()[i][2].toString().trim()));			//existencia
 				
 				pstmt.setDouble(4, Double.valueOf(mermas.getArreglo()[i][3+columna].toString().trim()));			//merma_capturista
-//				pstmt.setDouble(4, Double.valueOf(mermas.getArreglo()[i][4].toString().trim()));			//merma_seguridad
-				
-//				pstmt.setDouble(4, Double.valueOf(mermas.getArreglo()[i][5].toString().trim()));			//merma_supervisor
-				
-//				pstmt.setDouble(5, Double.valueOf(mermas.getArreglo()[i][6].toString().trim()));			//--------------dif
 				
 				pstmt.setString(5, mermas.getArreglo()[i][5+columna].toString().trim());							//razon de merma
 				pstmt.setString(6, mermas.getArreglo()[i][6+columna].toString().trim());							//destino de merma
@@ -6671,8 +6507,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				}else{
 					rutaFoto=System.getProperty("user.dir")+"/Imagen/merma_default.jpg";
 				}
-				
-				
 //				File imag = new File(movimiento.equals("NORMAL")? System.getProperty("user.dir")+"/Imagen/merma_default.jpg" : mermas.getRutaFoto() );
 				File imag = new File(rutaFoto);
 				FileInputStream stream_foto = new FileInputStream(imag);
@@ -6767,7 +6601,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	}
 	
 	public boolean Guardar_Recibir_Pedido(Obj_Registrar_Zona_Completada recibir_zona){
-		
 //		String query =  "delete from mpedestab where LTRIM(RTRIM(folio)) = LTRIM(RTRIM(@folio_pedido)) AND LTRIM(RTRIM(transaccion))='29'";	
 		String query = "exec sp_recibir_pedido_por_zona ?,?,?,?,?";
 		Connection con = new Connexion().conexion();
@@ -6809,6 +6642,50 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			}
 		}		
 		
+		return true;
+	}
+
+	public boolean Guardar_PC_Por_Establecimiento(Obj_Pc_Por_Establecimientos pc_x_estab){
+		int folio_transaccion=0;
+		
+		if(pc_x_estab.getGetNuevoModifica().equals("N")){
+			 folio_transaccion=busca_y_actualiza_proximo_folio(75);
+			 pc_x_estab.setFolio(folio_transaccion);	
+		}
+		String query = "exec  pc_por_establecimiento_insert_y_actualiza ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+				pstmt.setInt   (1,  pc_x_estab.getFolio());
+				pstmt.setString(2,  pc_x_estab.getNombre_pc());
+				pstmt.setString(3,  pc_x_estab.getEstablecimiento());
+				pstmt.setString(4,  pc_x_estab.getEstatus());
+				pstmt.setString(5,  pc_x_estab.getGetNuevoModifica());
+				pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_PC_Por_Establecimiento ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
 		return true;
 	}
 	
@@ -6879,5 +6756,40 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 //		}		
 //		return true;
 //	}
+	
+	//--------------------traba el servicio
+	//public boolean envio_de_correo(){
+//		String query =  "sp_envio_de_correo_automatico_de_servicios_nuevos";
+//		Connection con = new Connexion().conexion();
+//		PreparedStatement pstmt = null;
+	//	
+//		try {
+//			con.setAutoCommit(false);
+//			pstmt = con.prepareStatement(query);
+//			pstmt.executeUpdate();
+//			
+//			con.commit();
+//		} catch (Exception e) {
+//			System.out.println("SQLException: " + e.getMessage() +"   >   "+ e.getLocalizedMessage() );
+//			if (con != null){
+//				try {
+//					System.out.println("La transacción ha sido abortada");
+//					con.rollback();
+//				} catch(SQLException ex) {
+//					System.out.println(ex.getMessage());
+//					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ envio_de_correo ] Insert  SQLException: sp_envio_de_correo_automatico_de_servicios_nuevos "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//				}
+//			} 
+//			return false;
+//		}finally{
+//			try {
+//				con.close();
+//			} catch(SQLException e){
+//				e.printStackTrace();
+//				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ envio_de_correo ] Insert  SQLException: sp_envio_de_correo_automatico_de_servicios_nuevos "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//			}
+//		}		
+//		return true;
+	//}
 	
 } 

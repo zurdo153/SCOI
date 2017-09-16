@@ -21,10 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import Obj_Checador.Obj_Mensajes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
-import Obj_Evaluaciones.Obj_Jefatura;
 import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Puestos;
@@ -60,10 +60,6 @@ public class Cat_Asignacion_Mensajes extends JFrame
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEquipo = new JComboBox(equipo);
 
-	String jefatura[] = new Obj_Jefatura().Combo_Jefatura();
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	JComboBox cmbJefatura = new JComboBox(jefatura);
-	
 	String empleado[] = new Obj_Empleados().Combo_Empleado();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEmpleado = new JComboBox(empleado);
@@ -105,7 +101,6 @@ public class Cat_Asignacion_Mensajes extends JFrame
 		
 		panel.add(cmbPuesto).setBounds(330,80,300,20);
 		panel.add(cmbEquipo).setBounds(330,120,300,20);
-		panel.add(cmbJefatura).setBounds(330,160,300,20);
 		panel.add(cmbEmpleado).setBounds(330,200,300,20);
 		
 		panel.add(rbPuesto).setBounds(640,80,20,20);
@@ -169,7 +164,6 @@ public class Cat_Asignacion_Mensajes extends JFrame
 			seleccion();
 			cmbPuesto.setSelectedItem(msj2.getPuesto()+"");
 			cmbEquipo.setSelectedItem(msj2.getEquipo()+"");
-			cmbJefatura.setSelectedItem(msj2.getJefatura()+"");
 			cmbEmpleado.setSelectedItem(msj2.getEmpleado()+"");	
 			
 			panelfalse();
@@ -200,7 +194,6 @@ public class Cat_Asignacion_Mensajes extends JFrame
 							
 							mensaje.setPuesto(cmbPuesto.getSelectedItem()+"");
 							mensaje.setEquipo(cmbEquipo.getSelectedItem()+"");
-							mensaje.setJefatura(cmbJefatura.getSelectedItem()+"");
 							mensaje.setEmpleado(cmbEmpleado.getSelectedItem()+"");
 							
 							
@@ -228,7 +221,6 @@ public class Cat_Asignacion_Mensajes extends JFrame
 						
 						mensaje.setPuesto(cmbPuesto.getSelectedItem()+"");
 						mensaje.setEquipo(cmbEquipo.getSelectedItem()+"");
-						mensaje.setJefatura(cmbJefatura.getSelectedItem()+"");
 						mensaje.setEmpleado(cmbEmpleado.getSelectedItem()+"");
 						
 						mensaje.setRbpuesto(rbPuesto.isSelected());
@@ -342,12 +334,10 @@ public class Cat_Asignacion_Mensajes extends JFrame
 					
 					cmbPuesto.setEnabled(true);
 					cmbEquipo.setEnabled(false);
-					cmbJefatura.setEnabled(false);
 					cmbEmpleado.setEnabled(false);
 					
 					cmbPuesto.setSelectedIndex(0);
 					cmbEquipo.setSelectedIndex(1);
-					cmbJefatura.setSelectedIndex(1);
 					cmbEmpleado.setSelectedIndex(1);
 					
 					rbPuesto.setSelected(true);
@@ -358,12 +348,10 @@ public class Cat_Asignacion_Mensajes extends JFrame
 
 					cmbPuesto.setEnabled(true);
 					cmbEquipo.setEnabled(false);
-					cmbJefatura.setEnabled(false);
 					cmbEmpleado.setEnabled(false);
 					
 					cmbPuesto.setSelectedIndex(0);
 					cmbEquipo.setSelectedIndex(1);
-					cmbJefatura.setSelectedIndex(1);
 					cmbEmpleado.setSelectedIndex(1);
 					
 					rbPuesto.setSelected(true);
@@ -409,10 +397,8 @@ public class Cat_Asignacion_Mensajes extends JFrame
 			cmbPuesto.setEnabled(true);
 			cmbPuesto.setSelectedIndex(0);
 			cmbEquipo.setSelectedIndex(1);
-			cmbJefatura.setSelectedIndex(1);
 			cmbEmpleado.setSelectedIndex(1);
 			cmbEquipo.setEnabled(false);
-			cmbJefatura.setEnabled(false);
 			cmbEmpleado.setEnabled(false);
 		}
 		
@@ -422,9 +408,7 @@ public class Cat_Asignacion_Mensajes extends JFrame
 			cmbEquipo.setEnabled(true);
 			cmbPuesto.setSelectedIndex(1);	
 			cmbEquipo.setSelectedIndex(0);
-			cmbJefatura.setSelectedIndex(1);
 			cmbEmpleado.setSelectedIndex(1);
-			cmbJefatura.setEnabled(false);
 			cmbEmpleado.setEnabled(false);
 		}
 		
@@ -432,10 +416,8 @@ public class Cat_Asignacion_Mensajes extends JFrame
 		{
 			cmbPuesto.setEnabled(false);
 			cmbEquipo.setEnabled(false);
-			cmbJefatura.setEnabled(true);
 			cmbPuesto.setSelectedIndex(1);
 			cmbEquipo.setSelectedIndex(1);
-			cmbJefatura.setSelectedIndex(0);
 			cmbEmpleado.setSelectedIndex(1);
 			cmbEmpleado.setEnabled(false);
 		}
@@ -444,11 +426,9 @@ public class Cat_Asignacion_Mensajes extends JFrame
 		{
 			cmbPuesto.setEnabled(false);
 			cmbEquipo.setEnabled(false);
-			cmbJefatura.setEnabled(false);
 			cmbEmpleado.setEnabled(true);
 			cmbPuesto.setSelectedIndex(1);
 			cmbEquipo.setSelectedIndex(1);
-			cmbJefatura.setSelectedIndex(1);
 			cmbEmpleado.setSelectedIndex(0);
 		}
 	}
@@ -457,12 +437,10 @@ public class Cat_Asignacion_Mensajes extends JFrame
 	{
 		cmbPuesto.setEnabled(true);
 		cmbEquipo.setEnabled(false);
-		cmbJefatura.setEnabled(false);
 		cmbEmpleado.setEnabled(false);
 		
 		cmbPuesto.setSelectedIndex(0);
 		cmbEquipo.setSelectedIndex(1);
-		cmbJefatura.setSelectedIndex(1);
 		cmbEmpleado.setSelectedIndex(1);
 		
 		txtFolio.requestFocus();
@@ -569,4 +547,12 @@ public class Cat_Asignacion_Mensajes extends JFrame
 			
 		}
 	};
+	
+	public static void main(String args[]){
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Asignacion_Mensajes().setVisible(true);
+		}catch(Exception e){	}
+	}
+	
 }

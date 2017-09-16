@@ -41,11 +41,11 @@ import Cat_Lista_de_Raya.Cat_Diferencia_De_Cortes;
 import Cat_Lista_de_Raya.Cat_Empleados;
 import Cat_Lista_de_Raya.Cat_Prestamos;
 import Cat_Lista_de_Raya.Cat_Revision_De_Lista_Raya;
-import Cat_Lista_de_Raya.Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH;
 import Cat_Planeacion.Cat_Alimentacion_De_Plan_Semanal;
 import Cat_Planeacion.Cat_Programacion_Y_Revision_Del_Plan_Semanal;
 import Cat_Planeacion.Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico;
 import Cat_Servicios.Cat_Seguimiento_De_Servicios;
+import Cat_Servicios.Cat_Solicitud_De_Servicios;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.CLabel;
@@ -65,6 +65,34 @@ public class Init_Login extends JFrame{
 	public Container cont = getContentPane();
 	public JLayeredPane panel = new JLayeredPane();
 	
+
+	
+	
+	/* BOTON CAPTURA DE FUENTE DE SODAS CAJERAS */
+	JCButton btnFuenteSodasCajeras= new JCButton("","captura_fuente_de_Sodas_64.png","Gris");
+	JLabel lblFuente_sodascajeras = new JLabel("Captura Fsodas");
+	JLabel lblFuente_sodascajeras2 = new JLabel("por Cajeras");
+	
+	/* BOTON RETIROS CAJERAS */
+	JCButton btnRetirosCajeras= new JCButton("","boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-64.png","Gris");
+	JLabel lblPExtras1= new JLabel("Retiros A");
+	JLabel lblPExtras2= new JLabel("Cajeras");
+	
+	/* BOTON CORTES CAJAEROS */
+	JCButton btnCortes_Cajeros= new JCButton("","bolsa-de-dinero-en-efectivo-icono-6673-64.png","Gris");
+	JLabel lblcorteCajero1= new JLabel("Cortes");
+	JLabel lblcorteCajero2= new JLabel("De Cajera(o)s");
+	
+	/* BOTON SOLICITUD DE SERVICIOS*/
+	JCButton btnSolSer= new JCButton("","utilidades-agt-icono-6387-64.png","Gris");
+	JLabel lblFsRH2= new JLabel("Solicitud De");
+	JLabel lblFsRH3= new JLabel("Servicios");
+	
+	/* BOTON SOLICITUDES */
+	JCButton btnServicios= new JCButton("","Solicitud-64.png","Gris");
+	JLabel lblSolicitudes1 = new JLabel("Seguimiento a");
+	JLabel lblSolicitudes= new JLabel("Servicios");
+	
 	/* BOTON DEPOSITOS A BANCO */
 	JButton btnBanco= new JButton(new ImageIcon("imagen/banco.png"));
 	JLabel lblBanco= new JLabel("Depositos");
@@ -79,21 +107,6 @@ public class Init_Login extends JFrame{
 	JButton btnCaja= new JButton(new ImageIcon("imagen/caja2.png"));
 	JLabel lblCaja2= new JLabel("Diferencia de");
 	JLabel lblCaja3= new JLabel("Cortes");
-	
-	/* BOTON FUENTE DE SODAS DH*/
-	JButton btnFsRH= new JButton(new ImageIcon("imagen/fsRH.png"));
-	JLabel lblFsRH2= new JLabel("Fuente de Sodas");
-	JLabel lblFsRH3= new JLabel("DH");
-	
-	/* BOTON FUENTE DE SODAS AUX FIN */
-	JButton btnCortes_Cajeros= new JButton(new ImageIcon("imagen/bolsa-de-dinero-en-efectivo-icono-6673-64.png"));
-	JLabel lblcorteCajero1= new JLabel("Cortes");
-	JLabel lblcorteCajero2= new JLabel("De Cajera(o)s");
-	
-	/* BOTON RETIROS CAJERAS */
-	JButton btnRetirosCajeras= new JButton(new ImageIcon("imagen/boveda-de-dinero-en-efectivo-de-seguridad-icono-6192-64.png"));
-	JLabel lblPExtras1= new JLabel("Retiros A");
-	JLabel lblPExtras2= new JLabel("Cajeras");
 	
 	/* BOTON PRESTAMOS */
 	JButton btnPrestamo= new JButton(new ImageIcon("imagen/prestamo.png"));
@@ -114,11 +127,6 @@ public class Init_Login extends JFrame{
 	JLabel lblRevision_Nivel_Jerarquico1 = new JLabel("Revision De Planes");
 	JLabel lblRevision_Nivel_Jerarquico12 = new JLabel("Por Nivel Jerarquico");
 	
-	/* BOTON SOLICITUDES */
-	JButton btnServicios= new JButton(new ImageIcon("imagen/Solicitud-64.png"));
-	JLabel lblSolicitudes1 = new JLabel("Seguimiento a");
-	JLabel lblSolicitudes= new JLabel("Servicios");
-	
 	/* BOTON LISTA DE RAYA */
 	JButton btnListaRaya= new JButton(new ImageIcon("imagen/listaR.png"));
 	JLabel lblListaRaya2= new JLabel("Lista de");
@@ -135,17 +143,13 @@ public class Init_Login extends JFrame{
 	JLabel lblColaboradores2= new JLabel("Colaboradores");
 	
 	/* BOTON CHECADOR */
-	JButton btnChecador= new JButton(new ImageIcon("imagen/checador.png"));
+	JCButton btnChecador= new JCButton("","checador.png","Gris");
 	JLabel lblListaChecador2= new JLabel("Checador");
 	
 	/*BOTON SALIR DE SCOI*/
-	JButton btnCerrar= new JButton(new ImageIcon("imagen/salir_Scoi-3964-64.png"));
+	JCButton btnCerrar= new JCButton("","RedPowerButton64.png","GrisR");
 	JLabel lblListaCerrar= new JLabel("Cerrar SCOI");
 	
-	/* BOTON CAPTURA DE FUENTE DE SODAS CAJERAS */
-	JButton btnFuenteSodasCajeras= new JButton(new ImageIcon("imagen/captura_fuente_de_Sodas_64.png"));
-	JLabel lblFuente_sodascajeras = new JLabel("Captura Fsodas");
-	JLabel lblFuente_sodascajeras2 = new JLabel("por Cajeras");
 	
 	/* BOTONES,ETIQUETAS Y TEXTFIELDS DEL LOGIN*/
     JLabel lblfolio=new JLabel("Folio:");
@@ -164,9 +168,9 @@ public class Init_Login extends JFrame{
 	JPasswordField txtContrasenaNueva = new Componentes().textPassword(new JPasswordField(), "Contraseña Nueva", 50);
 	JPasswordField txtContrasenaConfirmar = new Componentes().textPassword(new JPasswordField(), "Confirmar Contraseña", 50);
 	
-	JCButton btnSalir = new JCButton("Salir","logout-icone-6625-16.png","Azul");
-	JCButton btnCambiarContrasena = new JCButton("Cambiar Contraseña","signo-kgpg-icono-4248-16.png","Azul");
-	JCButton btnBuscar = new JCButton("","buscar.png","Azul"); 
+	JCButton btnSalir = new JCButton("Salir","logout-icone-6625-16.png","AzulO");
+	JCButton btnCambiarContrasena = new JCButton("Cambiar Contraseña","signo-kgpg-icono-4248-16.png","AzulO");
+	JCButton btnBuscar = new JCButton("","buscar.png","AzulO"); 
 	
 	JButton btnAceptar = new JButton("Entrar");
 	
@@ -229,7 +233,7 @@ public class Init_Login extends JFrame{
 		btnInasistencia.addActionListener(Opciones);
 		btnServicios.addActionListener(Opciones);
 		btnCaja.addActionListener(Opciones);
-		btnFsRH.addActionListener(Opciones);
+		btnSolSer.addActionListener(Opciones);
 		btnCortes_Cajeros.addActionListener(Opciones);
 		btnRetirosCajeras.addActionListener(Opciones);
 		btnPrestamo.addActionListener(Opciones);
@@ -246,7 +250,7 @@ public class Init_Login extends JFrame{
 		btnBanco.setEnabled(false);
 		btnInasistencia.setEnabled(false);
 		btnCaja.setEnabled(false);
-		btnFsRH.setEnabled(false);
+		btnSolSer.setEnabled(false);
 		btnCortes_Cajeros.setEnabled(false);
 		btnRetirosCajeras.setEnabled(false);
 		btnPrestamo.setEnabled(false);
@@ -287,8 +291,9 @@ public class Init_Login extends JFrame{
 			panel.add(btnFuenteSodasCajeras).setBounds   (x     ,y     ,z,z);
 			panel.add(btnRetirosCajeras).setBounds       (x     ,y+=115,z,z);
 			panel.add(btnCortes_Cajeros).setBounds                (x     ,y+=115,z,z);	
-			panel.add(btnFsRH).setBounds                 (x     ,y+=115,z,z);
-			panel.add(btnInasistencia).setBounds         (x     ,y+=115,z,z);
+			panel.add(btnSolSer).setBounds                 (x     ,y+=115,z,z);
+			panel.add(btnServicios).setBounds          (x     ,y+=115,z,z);  
+	
 			
 
 			y = 60;
@@ -300,9 +305,9 @@ public class Init_Login extends JFrame{
 			panel.add(lblcorteCajero2).setBounds               (x     ,y+10  ,zl,w);
 			panel.add(lblFsRH2).setBounds                (x     ,y+=115,zl,w);
 			panel.add(lblFsRH3).setBounds                (x     ,y+10  ,zl,w);
-			panel.add(lblInasistencia2).setBounds        (x     ,y+=115,zl,w);
-			panel.add(lblInasistencia3).setBounds        (x     ,y+10  ,zl,w);
-
+			panel.add(lblSolicitudes1).setBounds           (x     ,y+=115,zl,w);
+			panel.add(lblSolicitudes).setBounds         (x     ,y+10  ,zl,w);  
+			
 			
 			/* COLUMNA 2 *//////////////////////////////////////////////////////
 			y=40;			
@@ -328,7 +333,7 @@ public class Init_Login extends JFrame{
 			panel.add(btnPlaneacionyRevision).setBounds  (x+=140, y    ,z,z);
 			panel.add(btnAlimentacionPlan_Semanal).setBounds    (x     ,y+=115,z,z);
 			panel.add(btnRevision_Jerarquias).setBounds      (x     ,y+=115,z,z);
-			panel.add(btnServicios).setBounds          (x     ,y+=115,z,z);
+			panel.add(btnInasistencia).setBounds       (x     ,y+=115,z,z);
 			panel.add(btnChecador).setBounds             (x     ,y+=115,z,z);
 			
 			y = 60;	
@@ -338,8 +343,8 @@ public class Init_Login extends JFrame{
 			panel.add(lblAlimentacionPlan12).setBounds   (x     ,y+10  ,zl,w);
 			panel.add(lblRevision_Nivel_Jerarquico1).setBounds      (x     ,y+=115,zl,w);
 			panel.add(lblRevision_Nivel_Jerarquico12).setBounds     (x     ,y+10  ,zl,w);
-			panel.add(lblSolicitudes1).setBounds         (x     ,y+=115,zl,w);
-			panel.add(lblSolicitudes).setBounds          (x     ,y+10,zl,w);
+			panel.add(lblInasistencia2).setBounds      (x     ,y+=115,zl,w);
+			panel.add(lblInasistencia3).setBounds      (x     ,y+10,zl,w); 
 			panel.add(lblListaChecador2).setBounds       (x     ,y+=115,zl,w);
 
 			/* COLUMNA 4 *///////////////////////////////////////////////////////
@@ -395,9 +400,8 @@ public class Init_Login extends JFrame{
 			panel.add(btnFuenteSodasCajeras).setBounds   (x     ,y     ,z,z);
 			panel.add(btnRetirosCajeras).setBounds       (x     ,y+=115,z,z);
 			panel.add(btnCortes_Cajeros).setBounds                (x     ,y+=115,z,z);	
-			panel.add(btnFsRH).setBounds                 (x     ,y+=115,z,z);
-			panel.add(btnInasistencia).setBounds         (x     ,y+=115,z,z);
-			
+			panel.add(btnSolSer).setBounds                 (x     ,y+=115,z,z);
+			panel.add(btnServicios).setBounds          (x     ,y+=115,z,z);   
 
 			y = 30;
 			panel.add(lblFuente_sodascajeras).setBounds  (x+=75 ,y     ,zl,w);
@@ -408,9 +412,8 @@ public class Init_Login extends JFrame{
 			panel.add(lblcorteCajero2).setBounds               (x     ,y+10  ,zl,w);
 			panel.add(lblFsRH2).setBounds                (x     ,y+=115,zl,w);
 			panel.add(lblFsRH3).setBounds                (x     ,y+10  ,zl,w);
-			panel.add(lblInasistencia2).setBounds        (x     ,y+=115,zl,w);
-			panel.add(lblInasistencia3).setBounds        (x     ,y+10  ,zl,w);
-
+			panel.add(lblSolicitudes1).setBounds         (x     ,y+=115,zl,w); 
+			panel.add(lblSolicitudes).setBounds            (x     ,y+10  ,zl,w);
 			
 			/* COLUMNA 2 *//////////////////////////////////////////////////////
 			y=10;			
@@ -436,7 +439,7 @@ public class Init_Login extends JFrame{
 			panel.add(btnPlaneacionyRevision).setBounds  (x+=140, y    ,z,z);
 			panel.add(btnAlimentacionPlan_Semanal).setBounds    (x     ,y+=115,z,z);
 			panel.add(btnRevision_Jerarquias).setBounds      (x     ,y+=115,z,z);
-			panel.add(btnServicios).setBounds          (x     ,y+=115,z,z);
+			panel.add(btnInasistencia).setBounds      (x     ,y+=115,z,z);
 			panel.add(btnChecador).setBounds             (x     ,y+=115,z,z);
 			
 			y = 30;	
@@ -444,11 +447,11 @@ public class Init_Login extends JFrame{
 			panel.add(lblPlaneacionRev2).setBounds       (x     ,y+10  ,zl,w);
 			panel.add(lblAlimentacionPlan1).setBounds    (x     ,y+=115,zl,w);
 			panel.add(lblAlimentacionPlan12).setBounds   (x     ,y+10  ,zl,w);
-			panel.add(lblRevision_Nivel_Jerarquico1).setBounds      (x     ,y+=115,zl,w);
-			panel.add(lblRevision_Nivel_Jerarquico12).setBounds     (x     ,y+10  ,zl,w);			
-			panel.add(lblSolicitudes1).setBounds         (x     ,y+=115,zl,w);
-			panel.add(lblSolicitudes).setBounds          (x     ,y+10  ,zl,w);
-			panel.add(lblListaChecador2).setBounds       (x     ,y+=115,zl,w);
+			panel.add(lblRevision_Nivel_Jerarquico1).setBounds (x     ,y+=115,zl,w);
+			panel.add(lblRevision_Nivel_Jerarquico12).setBounds(x     ,y+10  ,zl,w);			
+			panel.add(lblInasistencia2).setBounds              (x     ,y+=115,zl,w);
+			panel.add(lblInasistencia3).setBounds              (x     ,y+10  ,zl,w);
+			panel.add(lblListaChecador2).setBounds             (x     ,y+=115,zl,w);
 
 			/* COLUMNA 4 *///////////////////////////////////////////////////////
 			y=10;
@@ -486,7 +489,7 @@ public class Init_Login extends JFrame{
 			cont.add(panel);
 			this.setSize(ancho,alto);
 		}
-		if(ancho == 800){
+		if(ancho < 1024){
 			ImageIcon tmpIconAux = new ImageIcon("imagen/LogPrincipal.png");
 			panel.add(new JLabel(new ImageIcon(tmpIconAux.getImage().getScaledInstance(150,150, Image.SCALE_DEFAULT)))).setBounds(500,0,400,218);
 			
@@ -501,8 +504,9 @@ public class Init_Login extends JFrame{
 			panel.add(btnFuenteSodasCajeras).setBounds   (x     ,y     ,z,z);
 			panel.add(btnRetirosCajeras).setBounds       (x     ,y+=90,z,z);
 			panel.add(btnCortes_Cajeros).setBounds                (x     ,y+=90,z,z);	
-			panel.add(btnFsRH).setBounds                 (x     ,y+=90,z,z);
-			panel.add(btnInasistencia).setBounds         (x     ,y+=90,z,z);
+			panel.add(btnSolSer).setBounds                 (x     ,y+=90,z,z);
+			panel.add(btnServicios).setBounds          (x     ,y+=90,z,z); 
+
 
 
 			y = 20;
@@ -513,11 +517,9 @@ public class Init_Login extends JFrame{
 			panel.add(lblcorteCajero1).setBounds               (x     ,y+=90,zl,w);
 			panel.add(lblcorteCajero2).setBounds               (x     ,y+10  ,zl,w);
 			panel.add(lblFsRH2).setBounds                (x     ,y+=90,zl,w);
-			panel.add(lblFsRH3).setBounds                (x     ,y+10  ,zl,w);
-			panel.add(lblInasistencia2).setBounds        (x     ,y+=90,zl,w);
-			panel.add(lblInasistencia3).setBounds        (x     ,y+10  ,zl,w);
-
-			
+			panel.add(lblFsRH3).setBounds                (x     ,y+10  ,zl,w);	
+			panel.add(lblSolicitudes1).setBounds          (x     ,y+=90,zl,w);  
+			panel.add(lblSolicitudes).setBounds           (x     ,y+10  ,zl,w);
 			/* COLUMNA 2 *//////////////////////////////////////////////////////
 			y=10;			
 			panel.add(btnBanco).setBounds                (x+=100,y     ,z,z);
@@ -539,22 +541,22 @@ public class Init_Login extends JFrame{
 			
 			/* COLUMNA 3 *///////////////////////////////////////////////////////
 			y=10;			
-			panel.add(btnPlaneacionyRevision).setBounds  (x+=100,y    ,z,z);
-			panel.add(btnAlimentacionPlan_Semanal).setBounds    (x     ,y+=90,z,z);
-			panel.add(btnRevision_Jerarquias).setBounds      (x     ,y+=90,z,z);
-			panel.add(btnServicios).setBounds          (x     ,y+=90,z,z);
-			panel.add(btnChecador).setBounds             (x     ,y+=90,z,z);
+			panel.add(btnPlaneacionyRevision).setBounds     (x+=100,y    ,z,z);
+			panel.add(btnAlimentacionPlan_Semanal).setBounds(x     ,y+=90,z,z);
+			panel.add(btnRevision_Jerarquias).setBounds     (x     ,y+=90,z,z);
+			panel.add(btnInasistencia).setBounds            (x     ,y+=90,z,z);
+			panel.add(btnChecador).setBounds                (x     ,y+=90,z,z);
 			
 			y = 20;	
 			panel.add(lblPlaneacionRev1).setBounds       (x+=65 ,y     ,zl,w);
 			panel.add(lblPlaneacionRev2).setBounds       (x     ,y+10  ,zl,w);
 			panel.add(lblAlimentacionPlan1).setBounds    (x     ,y+=90 ,zl,w);
 			panel.add(lblAlimentacionPlan12).setBounds   (x     ,y+10  ,zl,w);
-			panel.add(lblRevision_Nivel_Jerarquico1).setBounds      (x     ,y+=90 ,zl,w);
-			panel.add(lblRevision_Nivel_Jerarquico12).setBounds     (x     ,y+10  ,zl,w);
-			panel.add(lblSolicitudes1).setBounds          (x     ,y+=90 ,zl,w);
-			panel.add(lblSolicitudes).setBounds           (x     ,y+10 ,zl,w);
-			panel.add(lblListaChecador2).setBounds        (x     ,y+=90 ,zl,w);
+			panel.add(lblRevision_Nivel_Jerarquico1).setBounds (x     ,y+=90 ,zl,w);
+			panel.add(lblRevision_Nivel_Jerarquico12).setBounds(x     ,y+10  ,zl,w);
+			panel.add(lblInasistencia2).setBounds              (x     ,y+=90 ,zl,w);
+			panel.add(lblInasistencia3).setBounds              (x     ,y+10 ,zl,w); 
+			panel.add(lblListaChecador2).setBounds             (x     ,y+=90 ,zl,w);
 
 			/* COLUMNA 4 *///////////////////////////////////////////////////////
 			y=10;
@@ -802,8 +804,8 @@ public class Init_Login extends JFrame{
 					btnFuenteSodasCajeras.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 59)
 					btnCortes_Cajeros.setEnabled(true);
-				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 45)
-					btnFsRH.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 183)
+					btnSolSer.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 14)
 					btnColaborador.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 97)
@@ -842,8 +844,8 @@ ActionListener Opciones = new ActionListener(){
 			if(click.getSource().equals(btnCortes_Cajeros))
 				new Cat_Cortes_De_Cajeros().setVisible(true);
 
-			if(click.getSource().equals(btnFsRH))
-				new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH().setVisible(true);
+			if(click.getSource().equals(btnSolSer))
+				new Cat_Solicitud_De_Servicios().setVisible(true);
 			
 			if(click.getSource().equals(btnColaborador))
 				new Cat_Empleados().setVisible(true);

@@ -485,40 +485,6 @@ public class Cargar_Combo {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String[] Jefatura(String tabla) throws SQLException{
-		String query = "select descripcion from " + tabla + " order by descripcion asc";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona una Jefatura");
-					miVector.add("");
-				}
-				miVector.add(rs.getString("descripcion"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-			
-	}
-	
-	@SuppressWarnings("unchecked")
 	public String[] EquipoTrabajo(String tabla) throws SQLException{
 		String query = "select descripcion from " + tabla + " order by descripcion asc";
 		Statement stmt = null;
