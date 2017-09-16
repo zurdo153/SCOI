@@ -2,6 +2,7 @@ package Obj_Compras;
 
 import Conexiones_SQL.GuardarSQL;
 
+
 public class Obj_Alimentacion_De_Productos_Proximos_A_Caducar {
 	String cod_prod="";
 	String descripcion_Prod="";

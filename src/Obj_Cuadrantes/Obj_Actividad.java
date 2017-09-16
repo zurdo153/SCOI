@@ -6,7 +6,6 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.GuardarSQL;
 
-
 public class Obj_Actividad {
 	 int folio=0;
 	 String Actividad="";

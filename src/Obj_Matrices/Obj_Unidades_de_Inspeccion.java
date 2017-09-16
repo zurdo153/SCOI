@@ -4,8 +4,6 @@ import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
-
-
 public class Obj_Unidades_de_Inspeccion {
 	private int folio;
 	private String unidades_de_inspeccion;

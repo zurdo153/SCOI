@@ -5740,9 +5740,9 @@ public boolean Guardar_Registro_De_Desarollo(Obj_Registro_De_Desarrollo registro
 	return true;
 }
 
-public boolean Cargar_Inventario(String establecimiento){
+public boolean Cargar_Inventario(String establecimiento,String bandera){
 	
-	String query =  "EXEC sp_insert_inventario_de_gestion_de_pedidos ?,?";
+	String query =  "EXEC sp_insert_inventario_de_gestion_de_pedidos ?,?,?";
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
 	
@@ -5751,8 +5751,9 @@ public boolean Cargar_Inventario(String establecimiento){
 		con.setAutoCommit(false);
 		pstmt = con.prepareStatement(query);
 		
-		pstmt.setString   (1, establecimiento);
+		pstmt.setString(1, establecimiento);
 		pstmt.setInt   (2, usuario.getFolio());
+		pstmt.setString(3, bandera);
 		pstmt.executeUpdate();
 		
 		con.commit();

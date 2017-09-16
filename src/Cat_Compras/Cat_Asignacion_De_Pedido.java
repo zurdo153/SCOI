@@ -210,7 +210,7 @@ public class Cat_Asignacion_De_Pedido extends JDialog {
 							}
 							
 						if(zonas_disponibles>0){		
-								tabla.setValueAt(zonas_disponibles, fila, 3);
+//								tabla.setValueAt(zonas_disponibles, fila, 3);
 								
 								Object[] reg = new Object[4];
 								reg[0]= tabla.getValueAt(fila, 0).toString().trim();

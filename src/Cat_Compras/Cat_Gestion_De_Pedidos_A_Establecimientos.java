@@ -336,20 +336,31 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
    	
 	ActionListener opCargarInventario = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			if(new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim())){
-				if(JOptionPane.showConfirmDialog(null, "Ya Existe Inventario El Dia De Hoy, Desea Recalcularlo?") == 0){
-					cargarInventario();
+			
+			if(new BuscarSQL().existenPedidosActivos()){
+				
+				if(!new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim())){
+					//limpiar pedidos
+					cargarInventario("FINALIZAR_PEDIDOS");
+					
+				}else{
+					if(JOptionPane.showConfirmDialog(null, "Ya Existe Inventario El Dia De Hoy, Desea Recalcularlo?") == 0){
+						cargarInventario("");
+					}
 				}
 			}else{
-				cargarInventario();
+				JOptionPane.showMessageDialog(null, "No Se Puede Generar Nuevamente El Inventario Una Vez Que Se Guardó Un Pedido", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
 			}
+			
+			
 		}
 	};
 	
-	public void cargarInventario(){
-		if(new BuscarSQL().existenPedidosActivos()){
+	public void cargarInventario(String bandera){
+//		if(new BuscarSQL().existenPedidosActivos()){
 			if(cmbEstablecimientos.getSelectedIndex()>0){
-					if(new GuardarSQL().Cargar_Inventario(cmbEstablecimientos.getSelectedItem().toString())){
+					if(new GuardarSQL().Cargar_Inventario(cmbEstablecimientos.getSelectedItem().toString().trim(),bandera)){
 						JOptionPane.showMessageDialog(null, "El Inventario Se Cargo Exitosamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						return;
 					}else{
@@ -360,10 +371,30 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				JOptionPane.showMessageDialog(null, "Seleccione Un Establecimiento", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
-	}else{
-		JOptionPane.showMessageDialog(null, "No Se Ha Podido Cargar El Inventario Debido A Que Hay Pedidos Pendientes\nPara Cargar El Inventario Surta O Cancele Los Pedidos.", "Error", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-		return;
-	}
+//		}else{
+////			if(bandera.equals("FINALIZAR_PEDIDOS")){
+////				if(new GuardarSQL().Cargar_Inventario(cmbEstablecimientos.getSelectedItem().toString().trim(),bandera)){
+////					JOptionPane.showMessageDialog(null, "El Inventario Se Cargo Exitosamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+////					return;
+////				}else{
+////					JOptionPane.showMessageDialog(null, "No Se Ha Podido Cargar El Inventario", "Error", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+////					return;
+////				}
+////			}else{
+//			
+//			if(new GuardarSQL().Cargar_Inventario(cmbEstablecimientos.getSelectedItem().toString().trim(),bandera)){
+//				JOptionPane.showMessageDialog(null, "El Inventario Se Cargo Exitosamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+//				return;
+//			}else{
+//				JOptionPane.showMessageDialog(null, "No Se Ha Podido Cargar El Inventario", "Error", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+//				return;
+//			}
+//			
+////				JOptionPane.showMessageDialog(null, "No Se Ha Podido Cargar El Inventario Debido A Que Hay Pedidos Pendientes\nPara Cargar El Inventario, Surta O Cancele Los Pedidos.", "Error", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+////				return;
+////			}
+//			
+//		}
 	}
 	
 	ActionListener opBuscarPedido = new ActionListener(){
@@ -374,10 +405,13 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			if(!txtPedido.getText().equals("")){
 				Obj_Gestion_De_Pedidos_A_Establecimientos pedido = new Obj_Gestion_De_Pedidos_A_Establecimientos().buscar(txtPedido.getText().toUpperCase());
 				
+				//S211515
+				System.out.println(pedido.getStatus_pedido().toString().trim());
 				if(new BuscarSQL().existenPedidosPendientesPorSurtir()){
-					if(pedido.getStatus_pedido().trim().equals("VIGENTE") || pedido.getStatus_pedido().equals("RECIBIDO")){
+					if(pedido.getStatus_pedido().trim().equals("VIGENTE") || pedido.getStatus_pedido().equals("RECIBIDO") || pedido.getStatus_pedido().equals("NUEVO")){
 						BUSCAR();
 					  }else{
+						  
 		  				    if(pedido.getStatus_pedido().equals("SURTIDO") || pedido.getStatus_pedido().equals("ASIGNADO")){
 		  				    	limpiar();
 								JOptionPane.showMessageDialog(null, "Los Pedidos Con Status SURTIDO y ASIGNADO No Pueden Ser Modificado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -743,7 +777,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 						if((boton.toUpperCase().equals("ACTUALIZAR")) || (boton.toUpperCase().equals("CANCELAR") && status_pedido.equals("VIGENTE")) ){
 							
 							 consultarfiltro(boton,folio_pedido,estab);
-							 dispose();
+//							 dispose();
 							 
 						}else{
 								JOptionPane.showMessageDialog(null, "Solo Se Pueden Cancelar Registros Con Status Vigente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -762,7 +796,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 				
 		    	if(tabla.getSelectedRow() >= 0){
 		    		
-					if(status_pedido.equals("ASIGNADO") || status_pedido.equals("RECIBIDO") /*&& cantidad_pedidos_generados > 0*/ ){
+					if(status_pedido.equals("ASIGNADO") || status_pedido.equals("RECIBIDO") || status_pedido.equals("MULTIPLES")/*&& cantidad_pedidos_generados > 0*/ ){
 						
 						if(JOptionPane.showConfirmDialog(null, "Al Finalizar El Pedido No Podra Realizar El Embarque Del Mismo,\nSerá Necesario Realizar Un Pedido Nuevo, Desea Continuar?") == 0){
 							System.out.println("Finalizar Pedido Aqui");
@@ -775,7 +809,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 							}
 						}	
 					}else{
-						JOptionPane.showMessageDialog(null, "Solo Se Pueden Finalizar Pedidos Con Status ASIGNADO y RECIBIDO", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						JOptionPane.showMessageDialog(null, "Solo Se Pueden Finalizar Pedidos Con Status: ASIGNADO, RECIBIDO Ó MULTIPLES", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}
 		    	}else{
@@ -860,7 +894,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			    				txtPedido.setText(folio);
 			    				btnBuscar.doClick();
 			    			}else{
-			    				JOptionPane.showMessageDialog(null, "No Se Pueden Realizar Movimientos Sobre Un Pedido Con Status: MULTIPLES ó ASIGNADO", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+			    				JOptionPane.showMessageDialog(null, "Solo Pueden Realizar Movimientos Sobre Pedidos Con Status: NUEVO, VIGENTE Y RECIBIDO", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 			    			}
 			    			

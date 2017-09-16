@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 
-
 public class Obj_Aspectos {
 	
 	private int folio=0;
