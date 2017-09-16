@@ -40,6 +40,15 @@ public class ColorCeldas extends DefaultTableCellRenderer{
     	if(tipo_de_tabla.equals("Relacion_De_Estatus_De_Pedido_De_Clientes_Del_Dia")){
 	    	cFondo = table.getValueAt(row, columna_patron).toString().trim().equals("NO SURTIDO") ? Color.RED : Color.WHITE;
     	}
+    	if(tipo_de_tabla.equals("Filtro De Pedido De Pendientes Por Establecimiento")){
+    		cFondo = (table.getValueAt(row, columna_patron).toString().trim().equals("NUEVO") || table.getValueAt(row, columna_patron).toString().trim().equals("VIGENTE")) ? Color.RED 
+    					: table.getValueAt(row, columna_patron).toString().trim().equals("MULTIPLES") ? Color.ORANGE
+    							: table.getValueAt(row, columna_patron).toString().trim().equals("ASIGNADO") ? Color.YELLOW
+	    							: table.getValueAt(row, columna_patron).toString().trim().equals("RECIBIDO") ? new Color(229, 255, 165)
+	    									: table.getValueAt(row, columna_patron).toString().trim().equals("SURTIDO") ? Color.GREEN
+	    											: Color.WHITE;
+    	}
+    	
     	
 		setBackground(cFondo);
 		setForeground(cTexto);
