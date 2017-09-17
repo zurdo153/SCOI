@@ -494,7 +494,6 @@ public class Cat_Cuadrantes extends JFrame{
 	
 	public void init_tablalunes(){
 		ObjTab.tablas_dias_del_cuadrante(tablaLunes);
-		
 		this.pLunes.setBorder(BorderFactory.createTitledBorder("Lunes"));
 		this.pLunes.setOpaque(true); 
 		this.pLunes.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
@@ -552,6 +551,7 @@ public class Cat_Cuadrantes extends JFrame{
 		this.btnBajMartes.addActionListener(new opMoverAbajo(tablaMartes));
 		this.btnEljMartes.addActionListener(new opEliminarfila(tablaMartes));
 		this.btnAgregMartes.addActionListener(new opAgregar_Actividad(tablaMartes));
+		this.btnCopMartes.addActionListener(new OpCopiar_Tabla_Cuadrante(tablaMartes));
     }
 	
 	public void init_tablamiercoles(){
@@ -582,6 +582,7 @@ public class Cat_Cuadrantes extends JFrame{
 		this.btnBajMiercoles.addActionListener(new opMoverAbajo(tablaMiercoles));
 		this.btnEljMiercoles.addActionListener(new opEliminarfila(tablaMiercoles));
 		this.btnAgregMiercoles.addActionListener(new opAgregar_Actividad(tablaMiercoles));
+		this.btnCopMiercoles.addActionListener(new OpCopiar_Tabla_Cuadrante(tablaMiercoles));
     }
 	
 	public void init_tablajueves(){
@@ -612,6 +613,7 @@ public class Cat_Cuadrantes extends JFrame{
 	this.btnBajJueves.addActionListener(new opMoverAbajo(tablaJueves));
 	this.btnEljJueves.addActionListener(new opEliminarfila(tablaJueves));
 	this.btnAgregJueves.addActionListener(new opAgregar_Actividad(tablaJueves));
+	this.btnCopJueves.addActionListener(new OpCopiar_Tabla_Cuadrante(tablaJueves));
 	}
 	
 	public void init_tablaviernes(){
@@ -642,6 +644,7 @@ public class Cat_Cuadrantes extends JFrame{
 		this.btnBajViernes.addActionListener(new opMoverAbajo(tablaViernes));
 		this.btnEljViernes.addActionListener(new opEliminarfila(tablaViernes));
 		this.btnAgregViernes.addActionListener(new opAgregar_Actividad(tablaViernes));
+		this.btnCopViernes.addActionListener(new OpCopiar_Tabla_Cuadrante(tablaViernes));
 		}
 	
 	public void init_tablasabado(){
@@ -672,6 +675,7 @@ public class Cat_Cuadrantes extends JFrame{
 		this.btnBajSabado.addActionListener(new opMoverAbajo(tablaSabado));
 		this.btnEljSabado.addActionListener(new opEliminarfila(tablaSabado));
 		this.btnAgregSabado.addActionListener(new opAgregar_Actividad(tablaSabado));
+		this.btnCopSabado.addActionListener(new OpCopiar_Tabla_Cuadrante(tablaSabado));
 		}
 
 	public void init_tablaDomingo(){
@@ -702,6 +706,7 @@ public class Cat_Cuadrantes extends JFrame{
 		this.btnBajDomingo.addActionListener(new opMoverAbajo(tablaDomingo));
 		this.btnEljDomingo.addActionListener(new opEliminarfila(tablaDomingo));
 		this.btnAgregDomingo.addActionListener(new opAgregar_Actividad(tablaDomingo));
+		this.btnCopDomingo.addActionListener(new OpCopiar_Tabla_Cuadrante(tablaDomingo));
 		}
 	
 	KeyListener opFiltro_lunes = new KeyListener(){
@@ -833,15 +838,21 @@ public class Cat_Cuadrantes extends JFrame{
 		}
 	};
 	
+
+	
 	class OpCopiar_Tabla_Cuadrante implements ActionListener{   
 		JTable tablaparametro;
 	    public OpCopiar_Tabla_Cuadrante (final JTable tblp){
 	    	tablaparametro = tblp;
 	    }
 	    public void actionPerformed(ActionEvent evt){
-	    	new Cat_Copiar_Cuadrante(tablaparametro).setVisible(true);
+	    	
+	    	String[][] tablaCopiar =(ObjTab.tabla_guardar_sin_validacion(tablaparametro));
+	    	
+	    	new Cat_Copiar_Cuadrante(tablaCopiar).setVisible(true);
 	    }
 	};
+
 	
 	class opAgregar_Actividad implements ActionListener{   
 		JTable tablaparametro;
@@ -975,7 +986,7 @@ public class Cat_Cuadrantes extends JFrame{
 			Container contf = getContentPane();
 			JLayeredPane panelf = new JLayeredPane();
 			Connexion con = new Connexion();
-			int columnacopiar = 2,checkbox=-1;
+			int columnacopiar = 5,checkbox=-1;
 			
 			@SuppressWarnings("rawtypes")
 			public Class[] base (){
@@ -1000,21 +1011,7 @@ public class Cat_Cuadrantes extends JFrame{
 			JTextField txtBuscarfp  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 			String [][] tablaparametro=null;
 			@SuppressWarnings({ "rawtypes", "unchecked" })
-			public Cat_Copiar_Cuadrante(final JTable tablaparam){
-				tablacopiar.setModel(tablaparam.getModel());
-				ObjTab.tablas_dias_del_cuadrante(tablacopiar);
-				
-//				for(int i=0;i<tablaparam.lenght;i++){
-//					if(Integer.valueOf(tablaparam[i][5].toString())==1){
-//						for(int j=0;j<5;j++){
-//						vector[j] = tablacompleta[i][j].toString();
-//						}
-//						modelLunes.addRow(vector);
-//					}
-//				}
-//					
-					
-				
+			public Cat_Copiar_Cuadrante(String[][] arregloparametro){
 				this.setSize(610,650);
 				this.setResizable(false);
 				this.setLocationRelativeTo(null);
@@ -1022,15 +1019,26 @@ public class Cat_Cuadrantes extends JFrame{
 				this.setModal(true);
 				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/tarjeta-de-informacion-del-usuario-icono-7370-32.png"));
 				this.panelf.setBorder(BorderFactory.createTitledBorder("Selecione los Dias a Los que se Copiarara El Cuadrante"));
-				trsfiltro = new TableRowSorter(modelocopiar); 
-				tablacopiar.setRowSorter(trsfiltro);
-				
 				this.setTitle("Copiar Cuadrantes");
+				this.trsfiltro = new TableRowSorter(modelocopiar); 
+				this.tablacopiar.setRowSorter(trsfiltro);
+				
+				ObjTab.tablas_dias_del_cuadrante(tablacopiar);
+				String[][] tablacompiada= arregloparametro;
+				Object[]   vectorc = new Object[5];				  
+					for(int i=0;i<tablacompiada.length;i++){
+				    	for(int j=0;j<5;j++){
+							vectorc[j] = tablacompiada[i][j].toString();
+						}
+				      modelocopiar.addRow(vectorc);
+					}	
+
 				this.panelf.add(txtBuscarfp).setBounds         (10 ,50 ,470 , 20 );
 				this.panelf.add(scroll_tabla_copiar).setBounds (10 ,70 ,585 ,495 );
 				this.agregar(tablacopiar);
-				this.txtBuscarfp.addKeyListener  (opFiltropuestos );
+				this.txtBuscarfp.addKeyListener  (opFiltroCopiar );
 				contf.add(panelf);
+				
 			}
 			
 			private void agregar(final JTable tbl) {
@@ -1043,9 +1051,9 @@ public class Cat_Cuadrantes extends JFrame{
 		        });
 		    }
 			
-	        private KeyListener opFiltropuestos = new KeyListener(){
+	        private KeyListener opFiltroCopiar = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablacopiar, txtBuscarfp.getText().toUpperCase(), columnacopiar);
+					ObjTab.Obj_Filtro(tablacopiar, txtBuscarfp.getText(), columnacopiar);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		
