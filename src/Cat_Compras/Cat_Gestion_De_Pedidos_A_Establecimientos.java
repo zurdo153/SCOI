@@ -1,9 +1,15 @@
 package Cat_Compras;
 
+import java.applet.AudioClip;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,17 +19,24 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JApplet;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -52,6 +65,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Renders.ColorCeldas;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
@@ -339,6 +353,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			
 			if(new BuscarSQL().existenPedidosActivos()){
 				
+				System.out.println(new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim()));
 				if(!new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim())){
 					//limpiar pedidos
 					cargarInventario("FINALIZAR_PEDIDOS");
@@ -632,6 +647,45 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		vacios += tabla.getRowCount()==0?"Pedido Sin Productos\n":"";
 		return vacios;
 	}
+	
+	String[][] filtroDePendientes;
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void consultarfiltro(String Modificar,String folio_pedido, String establecim){
+		
+		modelo.setRowCount(0);
+		Connexion con = new Connexion();
+		Statement s;
+		ResultSet rs;
+		try {
+			String query = "exec sp_select_filtro_de_seleccion_de_pedido2 '"+Modificar+"','"+folio_pedido+"','"+(new Obj_Usuario().LeerSession().getFolio())+"','"+establecim+"'"; 
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			Vector vPrincipal = new Vector();//filas
+			Vector SubVector;//columnas
+			
+			while (rs.next())
+			{ 
+				SubVector = new Vector();
+				for(int j =0; j<7; j++){
+					SubVector.add(rs.getString(j+1).trim());
+				}
+				vPrincipal.add(SubVector);
+			}
+			
+			filtroDePendientes = new String[vPrincipal.size()][((Vector) vPrincipal.get(0)).size()];
+			for(int i=0; i<vPrincipal.size(); i++){
+				for(int j=0; j<((Vector) vPrincipal.get(0)).size(); j++){
+					filtroDePendientes[i][j] = ((Vector) vPrincipal.get(i)).get(j).toString(); 
+				}
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en consultarfiltro SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 
 	public static void main(String[] args) {
 		try{
@@ -643,14 +697,13 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	}
 	
 	//TODO Filtro De Pedidos
-	public class Cat_Filtro_De_Pedidos_Nuevos extends JFrame{
+	public class Cat_Filtro_De_Pedidos_Nuevos extends JDialog{
 		Object[][] Matriz_pedidos_ctes ;
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
-		Connexion con = new Connexion();
-		Runtime R = Runtime.getRuntime();
+//		Runtime R = Runtime.getRuntime();
 		
-		DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Folio", "Usuario Capturo","Estab Solicitante","Estab Surte","Fecha Elaboracion","Fecha Modificacion","Status"}
+		DefaultTableModel modeloFiltro = new DefaultTableModel(null,new String[]{"Folio", "Usuario Capturo","Estab Solicitante","Estab Surte","Fecha Elaboracion","Fecha Modificacion","Status"}
 				){
 		     @SuppressWarnings("rawtypes")
 			Class[] types = new Class[]{
@@ -680,7 +733,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	 		}
 		};
 		
-	    JTable tabla = new JTable(modelo);
+	    JTable tabla = new JTable(modeloFiltro);
 	    JScrollPane scrollAsignado = new JScrollPane(tabla,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
@@ -692,18 +745,23 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		JButton btnCancelar 			= new JCButton("CANCELAR", "Delete.png", "Azul");
 		JButton btnActualizarFiltro = new JCButton("ACTUALIZAR","refrescar-volver-a-cargar-las-flechas-icono-4094-32.png","Azul");
 
+		JCheckBox chbActivar_Avisos = new JCheckBox("Ventana De Avisos");
+		
 		Border blackline, etched, raisedbevel, loweredbevel, empty;
 		
+		int cantidad_pedido_actual = 0;
 	    String FechaIn = "";
 		String FechaFin = "";
 		String estab = "";
 	    
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Cat_Filtro_De_Pedidos_Nuevos(String establecimiento){
+			this.setModal(true);
 			int ancho = 1024;//Toolkit.getDefaultToolkit().getScreenSize().width;
 			int alto = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 			
 			estab = establecimiento;
+			chbActivar_Avisos.setSelected(true);
 			
 			this.setSize(ancho, alto);
 			this.setResizable(false);
@@ -717,7 +775,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			btnActualizarFiltro.setEnabled(true);
 			btnActualizarFiltro.setToolTipText("<F5> Tecla Directa");
 			
-			trsfiltro = new TableRowSorter(modelo); 
+			trsfiltro = new TableRowSorter(modeloFiltro); 
 			tabla.setRowSorter(trsfiltro);
 			txtFolio.setToolTipText("Filtro Por Folio De Entrada");
 			txtFolioProveedor.setToolTipText("Filtro Por Codigo De Proveedor");
@@ -725,7 +783,9 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			txtFolio.addKeyListener(opFiltro);
 			txtFolioProveedor.addKeyListener(opFiltro);
 			
-			llamarRender();
+//			llamarRender();
+			
+			llenarTablaFiltro("");
 			
 			int y = 20;
 			panel.add(btnFinalizarEmbarque).setBounds(375,y-12,200,32);
@@ -733,10 +793,16 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			panel.add(btnActualizarFiltro).setBounds(815,y-12,180,32);
 			panel.add(txtFolio).setBounds(15,y,60,20);
 			panel.add(txtFolioProveedor).setBounds(75,y,260,20);
+			panel.add(chbActivar_Avisos).setBounds(340,y,150,20);
 			panel.add(scrollAsignado).setBounds(15,y+=20,ancho-30,alto-70);
-	             
+	            
+			cantidad_pedido_actual = tabla.getRowCount();
+			
+			PintarEstatusTabla(tabla,"Filtro De Pedido De Pendientes Por Establecimiento",6);//tipo_de_tabla , columnas 0 
+			Hilo_1_Minuto();
+			
 //			buscarEntradas(establecimiento,"Refresh");
-			consultarfiltro("","",establecimiento);
+//			consultarfiltro("","",establecimiento);
 			agregar(tabla);
 			btnActualizarFiltro.addActionListener(Buscar_Cambios);
 			btnCancelar.addActionListener(Buscar_Cambios);
@@ -749,12 +815,75 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	                      public void actionPerformed(ActionEvent e)
 	                      {        	    btnActualizarFiltro.doClick();          	    }
 	                  });
+	                  
+////		Buscar Con CLOSE
+//	        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+//	                     KeyStroke.getKeyStroke(KeyEvent.VK, 0), "cerrar");
+//	                  getRootPane().getActionMap().put("cerrar", new AbstractAction(){
+//	                      public void actionPerformed(ActionEvent e)
+//	                      {        	    seg.stop();          	    }
+//	                  });
+	                  
 //	     asigna el foco al JTextField fecha al arrancar la ventana
 	                  this.addWindowListener(new WindowAdapter() {
 	                          public void windowOpened( WindowEvent e ){
 	                        	  txtFolioProveedor.requestFocus();
 	                       }
 	                  });
+	                  
+	    this.addWindowListener(new WindowListener() {
+			public void windowOpened(WindowEvent e) {
+			}
+			public void windowIconified(WindowEvent e) {
+			}
+			public void windowDeiconified(WindowEvent e) {
+			}
+			public void windowDeactivated(WindowEvent e) {
+			}
+			@SuppressWarnings("deprecation")
+			public void windowClosing(WindowEvent e) {
+				seg.stop();
+			}
+			public void windowClosed(WindowEvent e) {
+			}
+			public void windowActivated(WindowEvent e) {
+			}
+		});
+		}
+		
+		public void llenarTablaFiltro(String actualizar){
+			modeloFiltro.setRowCount(0);
+			
+			if(filtroDePendientes==null ||  actualizar.equals("SI") ||  actualizar.equals("HILO")){
+				
+				System.out.println("nulooo");
+				consultarfiltro("","",cmbEstablecimientos.getSelectedItem().toString().trim());
+			}			
+				
+			int Existen_pedidos_nuevos = filtroDePendientes.length;
+			
+				String[] fila = new String[7];
+				for(int i=0 ; i<filtroDePendientes.length; i++){
+					
+					fila[0] = filtroDePendientes[i][0].toString();
+					fila[1] = filtroDePendientes[i][1].toString();
+					fila[2] = filtroDePendientes[i][2].toString();
+					fila[3] = filtroDePendientes[i][3].toString();
+					fila[4] = filtroDePendientes[i][4].toString();
+					fila[5] = filtroDePendientes[i][5].toString();
+					fila[6] = filtroDePendientes[i][6].toString();
+					
+					modeloFiltro.addRow(fila);
+				}
+				
+				if(actualizar.equals("HILO") && Existen_pedidos_nuevos > cantidad_pedido_actual){
+			    	cantidad_pedido_actual=Existen_pedidos_nuevos;
+			    	mostrarAviso = "si";
+			    	
+			    }else{
+			    	cantidad_pedido_actual=Existen_pedidos_nuevos;
+			    	mostrarAviso = "no";
+			    }
 		}
 		
 		ActionListener Buscar_Cambios = new ActionListener(){
@@ -776,7 +905,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 					
 						if((boton.toUpperCase().equals("ACTUALIZAR")) || (boton.toUpperCase().equals("CANCELAR") && status_pedido.equals("VIGENTE")) ){
 							
-							 consultarfiltro(boton,folio_pedido,estab);
+							 llenarTablaFiltro("SI");
 //							 dispose();
 							 
 						}else{
@@ -803,7 +932,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 							if(new GuardarSQL().Finalizar_Pedido(folio_pedido))
 							{
 //								System.out.println("Finalizar Pedido Aqui");
-								consultarfiltro(e.getActionCommand(),folio_pedido,estab);
+								llenarTablaFiltro("SI");
 								JOptionPane.showMessageDialog(null, "EL Pedido Se Finalizo Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 //								dispose();
 							}
@@ -818,44 +947,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		    	}
 			}
 		};
-		
-		public void consultarfiltro(String Modificar,String folio_pedido, String establecim){
-			
-			modelo.setRowCount(0);
-			Statement s;
-			ResultSet rs;
-			try {
-				String query = "exec sp_select_filtro_de_seleccion_de_pedido2 '"+Modificar+"','"+folio_pedido+"','"+(new Obj_Usuario().LeerSession().getFolio())+"','"+establecim+"'"; 
-				s = con.conexion().createStatement();
-				rs = s.executeQuery(query);
-				
-				System.out.println(rs.getRow());
-//				if(rs.getRow()>0){
-//					System.out.println(rs.getRow());
-//				}
-//				else{
-//					
-//				}
-				while (rs.next())
-				{ 
-				   String [] fila = new String[7];
-				   fila[0] = rs.getString(1).trim();
-				   fila[1] = rs.getString(2).trim();
-				   fila[2] = rs.getString(3).trim(); 
-				   fila[3] = rs.getString(4).trim(); 
-				   fila[4] = rs.getString(5).trim(); 
-				   fila[5] = rs.getString(6).trim(); 
-				   fila[6] = rs.getString(7).trim(); 
-
-				   modelo.addRow(fila); 
-				}
-				
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en consultarfiltro SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		
 		
 		KeyListener opFiltro = new KeyListener(){
 			@SuppressWarnings("unchecked")
@@ -883,12 +974,14 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 
 		private void agregar(final JTable tbl) {
 			tbl.addMouseListener(new MouseListener() {
+				@SuppressWarnings("deprecation")
 				public void mouseReleased(MouseEvent e) {
 						if(e.getClickCount() == 2){
 							int fila_Select = tabla.getSelectedRow();
 			    			String folio =  tabla.getValueAt(fila_Select, 0).toString().trim();
 			    			String status = tabla.getValueAt(fila_Select, 6).toString().trim();
 			    			dispose();
+			    			seg.stop();
 			    			System.out.println(status);
 			    			if(status.equals("NUEVO") || status.equals("VIGENTE") || status.equals("RECIBIDO")){
 			    				txtPedido.setText(folio);
@@ -908,24 +1001,172 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			});
 		}
 		
-	   	private void llamarRender()	{		
-			tabla.getTableHeader().setReorderingAllowed(false) ;
-			tabla.getColumnModel().getColumn(0).setMinWidth(80);
-			tabla.getColumnModel().getColumn(1).setMinWidth(270);
-			tabla.getColumnModel().getColumn(2).setMinWidth(130);
-			tabla.getColumnModel().getColumn(3).setMinWidth(130);
-			tabla.getColumnModel().getColumn(4).setMinWidth(85);
-			tabla.getColumnModel().getColumn(5).setMinWidth(85);
-			tabla.getColumnModel().getColumn(6).setMinWidth(80);
-			
-			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 	
-			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 	
-			tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
-			tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 	
-			tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
-			tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 	
-	   	}
-	}	
+		int SeActivoSonido=0;
+		String mostrarAviso = "no";
+		 AudioClip sonido;
+		 boolean cerrarhilo = false;
+		
+//	  	pintado De tabla
+		public void PintarEstatusTabla(final JTable tb, String tipo_de_tabla, int columnas){
+			//se crea instancia a clase FormatoTable y se indica columna patron
+	        ColorCeldas ft = new ColorCeldas(tipo_de_tabla,columnas);
+	        tb.setDefaultRenderer (Object.class, ft );
+		}
+		
+		@SuppressWarnings({ "unchecked", "deprecation" })
+		public void MostrarAvisoEmergente(){
+			try {
+				
+					if(mostrarAviso.equals("si")){
+						  //////Limpiar	Filtros
+								trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
+								trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
+								trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
+								
+								txtFolio.setText("");
+								txtFolioProveedor.setText("");
+						         
+						         txtFolioProveedor.requestFocus();
+						         
+									if(chbActivar_Avisos.isSelected()){
+										   File f=new File("M:\\SISTEMA DE CONTROL OPERATIVO IZAGAR\\SCOI\\voz\\Nuevo_Pedido.wav");//archivo de audio
+							        	    URL u=f.toURL();//lo convertimos a url
+							        	    sonido=JApplet.newAudioClip(u); //Bueno de la AudioClip no se puede instancias por eso esto
+								        	    sonido.play();//para que suene
+								        	    SeActivoSonido=1;
+								        	    
+								        	//   apartado para configurar el uso de la pantalla de avisos--------------------------------
+						                    JDialog frame = new JDialog();
+						                     String ruta= "prueba mensaje";//fila_mensaje.get(3).toString().trim();
+						        		    frame.setUndecorated(true);
+						        		    new Cat_Avisos_De_Pedido(frame,ruta);
+						        		    frame.setVisible(true);
+									}
+						    	 // seresetea la variable para que no muestre aviso de nuevo asta que existan entradas nuevas
+									mostrarAviso="no";
+			    	}
+//				}
+				
+		
+		} catch (Exception e1) {
+			System.out.println(e1.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en Cat_Supervision_De_Entrada_De_Mercancia en la funcion MostrarAvisoEmergente   SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+		}
+		
+	/////////////////////////////////////////////////////////////////////////////////////
+	////////////HILO REVISION AUTOMATICA DE PEDIDOS CADA 60 SEGUNDOS
+		segundero seg = new segundero();
+		public void Hilo_1_Minuto() {
+				
+				seg.start();
+			    	}
+			    	int reconsultar=0;
+			    	public class segundero extends Thread {
+			    		public void run() {
+			    			while(cerrarhilo !=true){
+			    					try {
+			    						Thread.sleep(1000);
+			    						reconsultar+=1;
+			    						if(reconsultar==600)////cambiar a 600 segundos = 10 min
+			    						{
+			    						   reconsultar=0;
+			    						   
+//			    						   FechaIn = new SimpleDateFormat("dd/MM/yyyy").format(fh_inicial.getDate());
+//			    						   FechaFin = new SimpleDateFormat("dd/MM/yyyy").format(fh_final.getDate());
+										
+			    						   llenarTablaFiltro("HILO");
+										   MostrarAvisoEmergente();
+//					    				   btnBuscar.doClick();	
+			    						   
+			    						   
 
+			    						}
+			    					} catch (InterruptedException e) {
+			    		                 JOptionPane.showMessageDialog(null, "Error en Cat_Hilo_1_Minuto en la funcion segundero  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			    						System.err.println("Error: "+ e.getMessage());
+			    				}
+			    			}
+			    	}
+			    }
+	//////////////////////////////////////////////////////////////////////////////////
+	///////////CATALOO EMERGENTE DE AVISO		    	
+			    	
+		  	public class Cat_Avisos_De_Pedido extends JComponent {
+			    		
+						private Image background;
+			    		
+			    		JLabel lblAviso = new JLabel();
+			    		String fileFoto = System.getProperty("user.dir")+"/imagen/avisos/PedidoNuevo.png";
+			    		ImageIcon tmpIconAuxFoto = new ImageIcon(fileFoto);
+
+			    		public Cat_Avisos_De_Pedido(final JDialog frame,String ruta) {
+			    			
+			    			//fileFoto=ruta;
+			    			frame.setModal(true);
+			    			updateBackground( );
+			    			frame.add(lblAviso).setBounds(0, 0, 500, 400);
+			    			 Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(lblAviso.getWidth(), lblAviso.getHeight(), Image.SCALE_DEFAULT));
+			                 lblAviso.setIcon(iconoFoto);
+			                 
+			    			frame.setLayout(new BorderLayout( ));
+			    			frame.getContentPane( ).add("Center",this);
+			    			frame.pack( );
+			    			frame.setAlwaysOnTop( true );
+			    			frame.setSize(500,400);
+			    			frame.setLocationRelativeTo(null);
+			    		    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+			    				       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "foco");
+			    		    
+			    		    getRootPane().getActionMap().put("foco", new AbstractAction(){
+			    		        @Override
+			    		        public void actionPerformed(ActionEvent e)
+			    		        {
+			    		        	frame.dispose();
+			    		        }
+			    		    });
+			    		}
+		  	
+		  	
+		  	public void updateBackground( ) {
+	    		try {
+	    		Robot rbt = new Robot( );
+	    		Toolkit tk = Toolkit.getDefaultToolkit( );
+	    		Dimension dim = tk.getScreenSize( );
+	    		background = rbt.createScreenCapture(
+	    		new Rectangle(0,0,(int)dim.getWidth( ),
+	    		(int)dim.getHeight( )));
+	    		} catch (Exception ex) {
+	    		ex.printStackTrace( );
+	    		}
+	    		}
+		  	
+		  	public void paintComponent(Graphics g) {
+	    		Point pos = this.getLocationOnScreen( );
+	    		Point offset = new Point(-pos.x,-pos.y);
+	    		g.drawImage(background,offset.x,offset.y,null);
+	    		repaint();
+	    		}
+		  	}
+//	   	@SuppressWarnings("unused")
+//		private void llamarRender()	{		
+//			tabla.getTableHeader().setReorderingAllowed(false) ;
+//			tabla.getColumnModel().getColumn(0).setMinWidth(80);
+//			tabla.getColumnModel().getColumn(1).setMinWidth(270);
+//			tabla.getColumnModel().getColumn(2).setMinWidth(130);
+//			tabla.getColumnModel().getColumn(3).setMinWidth(130);
+//			tabla.getColumnModel().getColumn(4).setMinWidth(85);
+//			tabla.getColumnModel().getColumn(5).setMinWidth(85);
+//			tabla.getColumnModel().getColumn(6).setMinWidth(80);
+//			
+//			tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 	
+//			tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+//			tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 	
+//			tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+//			tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 	
+//			tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 
+//			tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 	
+//	   	}
+	}	
+	
 }
