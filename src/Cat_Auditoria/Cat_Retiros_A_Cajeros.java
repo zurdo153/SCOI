@@ -181,7 +181,28 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
                         	  txtFolio_empleado.requestFocus();
                        }
                   });
-		}    
+		} 
+		
+	    this.addWindowListener(new WindowListener() {
+			public void windowOpened(WindowEvent e) {
+			}
+			public void windowIconified(WindowEvent e) {
+			}
+			public void windowDeiconified(WindowEvent e) {
+			}
+			public void windowDeactivated(WindowEvent e) {
+			}
+			@SuppressWarnings("deprecation")
+			public void windowClosing(WindowEvent e) {
+				seg.stop();
+			}
+			public void windowClosed(WindowEvent e) {
+			}
+			public void windowActivated(WindowEvent e) {
+			}
+		});
+		
+	
 		dispose();
 	}
 	
@@ -434,8 +455,9 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 };
    	
 ////////////HILO REVISION AUTOMATICA DE PEDIDOS CADA 60 SEGUNDOS
+	segundero seg = new segundero();
 	public void Hilo_1_Minuto() {
-			segundero seg = new segundero();
+			
 			seg.start();
 		    	}
 		    	int reconsultar=0;
