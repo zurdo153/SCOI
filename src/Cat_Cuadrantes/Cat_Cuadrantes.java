@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -273,49 +274,49 @@ public class Cat_Cuadrantes extends JFrame{
 	JCButton btnSubLunes          = new JCButton("Subir"  ,"Up.png"                          ,"Azul" );
 	JCButton btnBajLunes          = new JCButton("Bajar"  ,"Down.png"                        ,"Azul" );
 	JCButton btnEljLunes          = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
-	JCButton btnCopLunes          = new JCButton("Copiar A Martes","igual.png               ","Azul" );
+	JCButton btnCopLunes          = new JCButton("Copiar","igual.png               ","Azul" );
 	
 	JToolBar toolbarMartes        = new JToolBar();
 	JCButton btnAgregMartes       = new JCButton("Agregar Martes","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnSubMartes         = new JCButton("Subir"  ,"Up.png"                          ,"Azul" );
 	JCButton btnBajMartes         = new JCButton("Bajar"  ,"Down.png"                        ,"Azul" );
 	JCButton btnEljMartes         = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
-	JCButton btnCopMartes         = new JCButton("Copiar A Miercoles","igual.png               ","Azul" );
+	JCButton btnCopMartes         = new JCButton("Copiar","igual.png               ","Azul" );
 	
 	JToolBar toolbarMiercoles     = new JToolBar();
 	JCButton btnAgregMiercoles    = new JCButton("Agregar Miercoles","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnSubMiercoles      = new JCButton("Subir"  ,"Up.png"                          ,"Azul" );
 	JCButton btnBajMiercoles      = new JCButton("Bajar"  ,"Down.png"                        ,"Azul" );
 	JCButton btnEljMiercoles      = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
-	JCButton btnCopMiercoles      = new JCButton("Copiar A Jueves","igual.png               ","Azul" );
+	JCButton btnCopMiercoles      = new JCButton("Copiar","igual.png               ","Azul" );
 	
 	JToolBar toolbarJueves        = new JToolBar();
 	JCButton btnAgregJueves       = new JCButton("Agregar Jueves","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnSubJueves         = new JCButton("Subir"  ,"Up.png"                          ,"Azul" );
 	JCButton btnBajJueves         = new JCButton("Bajar"  ,"Down.png"                        ,"Azul" );
 	JCButton btnEljJueves         = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
-	JCButton btnCopJueves         = new JCButton("Copiar A Viernes","igual.png               ","Azul" );
+	JCButton btnCopJueves         = new JCButton("Copiar","igual.png               ","Azul" );
 	
 	JToolBar toolbarViernes       = new JToolBar();
 	JCButton btnAgregViernes      = new JCButton("Agregar Viernes","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnSubViernes        = new JCButton("Subir"  ,"Up.png"                          ,"Azul" );
 	JCButton btnBajViernes        = new JCButton("Bajar"  ,"Down.png"                        ,"Azul" );
 	JCButton btnEljViernes        = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
-	JCButton btnCopViernes        = new JCButton("Copiar A Sabado","igual.png               ","Azul" );
+	JCButton btnCopViernes        = new JCButton("Copiar","igual.png               ","Azul" );
 	
 	JToolBar toolbarSabado        = new JToolBar();
 	JCButton btnAgregSabado       = new JCButton("Agregar Sabado","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnSubSabado         = new JCButton("Subir"  ,"Up.png"                          ,"Azul" );
 	JCButton btnBajSabado         = new JCButton("Bajar"  ,"Down.png"                        ,"Azul" );
 	JCButton btnEljSabado         = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
-	JCButton btnCopSabado         = new JCButton("Copiar A Domingo","igual.png               ","Azul" );
+	JCButton btnCopSabado         = new JCButton("Copiar","igual.png               ","Azul" );
 	
 	JToolBar toolbarDomingo       = new JToolBar();
 	JCButton btnAgregDomingo      = new JCButton("Agregar Domingo","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnSubDomingo        = new JCButton("Subir"  ,"Up.png"                          ,"Azul" );
 	JCButton btnBajDomingo        = new JCButton("Bajar"  ,"Down.png"                        ,"Azul" );
 	JCButton btnEljDomingo        = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
-	JCButton btnCopDomingo        = new JCButton("Copiar A Lunes","igual.png               ","Azul" );
+	JCButton btnCopDomingo        = new JCButton("Copiar","igual.png               ","Azul" );
 	
 	JTabbedPane pestanas    = new JTabbedPane();
 	JLayeredPane pDomingo   = new JLayeredPane(); 
@@ -423,7 +424,10 @@ public class Cat_Cuadrantes extends JFrame{
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar"        );
         getRootPane().getActionMap().put("guardar", new AbstractAction(){public void actionPerformed(ActionEvent e){btnGuardar.doClick();   }  });
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar"                  );
-        getRootPane().getActionMap().put("guardar", new AbstractAction(){public void actionPerformed(ActionEvent e) { btnGuardar.doClick(); }  });             
+        getRootPane().getActionMap().put("guardar", new AbstractAction(){public void actionPerformed(ActionEvent e) { btnGuardar.doClick(); }  });    
+        
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscar"                );
+        getRootPane().getActionMap().put("buscar", new AbstractAction(){ public void actionPerformed(ActionEvent e){ btnBuscar.doClick(); }  });
 	}
 	
 	public void cargar_datos_tablas(int cuadranteparametro){
@@ -838,8 +842,6 @@ public class Cat_Cuadrantes extends JFrame{
 		}
 	};
 	
-
-	
 	class OpCopiar_Tabla_Cuadrante implements ActionListener{   
 		JTable tablaparametro;
 	    public OpCopiar_Tabla_Cuadrante (final JTable tblp){
@@ -852,7 +854,6 @@ public class Cat_Cuadrantes extends JFrame{
 	    	new Cat_Copiar_Cuadrante(tablaCopiar).setVisible(true);
 	    }
 	};
-
 	
 	class opAgregar_Actividad implements ActionListener{   
 		JTable tablaparametro;
@@ -981,99 +982,7 @@ public class Cat_Cuadrantes extends JFrame{
 	    }
 	};
     
-	//TODO inicia catalogo copiar cuadrante	
-		public class Cat_Copiar_Cuadrante extends JDialog{
-			Container contf = getContentPane();
-			JLayeredPane panelf = new JLayeredPane();
-			Connexion con = new Connexion();
-			int columnacopiar = 5,checkbox=-1;
-			
-			@SuppressWarnings("rawtypes")
-			public Class[] base (){
-				Class[] types = new Class[columnacopiar];
-				for(int i = 0; i<columnacopiar; i++){types[i]= java.lang.Object.class;}
-				 return types;
-			}
-			
-			public DefaultTableModel modelocopiar = new DefaultTableModel(null, new String[]{"Orden","Folio","Actividad","Inicia","Termina"}){
-				 @SuppressWarnings("rawtypes")
-					Class[] types = base();
-					@SuppressWarnings({ "rawtypes", "unchecked" })
-					public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
-					public boolean isCellEditable(int fila, int columna){return false;}
-			};
-			
-			JTable tablacopiar = new JTable(modelocopiar);
-			public JScrollPane scroll_tabla_copiar = new JScrollPane(tablacopiar);
-		     @SuppressWarnings({ "rawtypes" })
-		    private TableRowSorter trsfiltro;
-			     
-			JTextField txtBuscarfp  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
-			String [][] tablaparametro=null;
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			public Cat_Copiar_Cuadrante(String[][] arregloparametro){
-				this.setSize(610,650);
-				this.setResizable(false);
-				this.setLocationRelativeTo(null);
-				this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				this.setModal(true);
-				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/tarjeta-de-informacion-del-usuario-icono-7370-32.png"));
-				this.panelf.setBorder(BorderFactory.createTitledBorder("Selecione los Dias a Los que se Copiarara El Cuadrante"));
-				this.setTitle("Copiar Cuadrantes");
-				this.trsfiltro = new TableRowSorter(modelocopiar); 
-				this.tablacopiar.setRowSorter(trsfiltro);
-				
-				ObjTab.tablas_dias_del_cuadrante(tablacopiar);
-				String[][] tablacompiada= arregloparametro;
-				Object[]   vectorc = new Object[5];				  
-					for(int i=0;i<tablacompiada.length;i++){
-				    	for(int j=0;j<5;j++){
-							vectorc[j] = tablacompiada[i][j].toString();
-						}
-				      modelocopiar.addRow(vectorc);
-					}	
 
-				this.panelf.add(txtBuscarfp).setBounds         (10 ,50 ,470 , 20 );
-				this.panelf.add(scroll_tabla_copiar).setBounds (10 ,70 ,585 ,495 );
-				this.agregar(tablacopiar);
-				this.txtBuscarfp.addKeyListener  (opFiltroCopiar );
-				contf.add(panelf);
-				
-			}
-			
-			private void agregar(final JTable tbl) {
-		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-			        	if(e.getClickCount()==1){
-//			        		int fila = tablacopiar.getSelectedRow();
-			        	}	
-			        }
-		        });
-		    }
-			
-	        private KeyListener opFiltroCopiar = new KeyListener(){
-				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablacopiar, txtBuscarfp.getText(), columnacopiar);
-				}
-				public void keyTyped(KeyEvent arg0) {}
-				public void keyPressed(KeyEvent arg0) {}		
-			};
-		}//termina filtro copiar cuadrante
-//	class opcopiartabla implements ActionListener{   
-//		JTable tablaparametroDe;JTable tablaparametroA;
-//	    public opcopiartabla(final JTable tblDe,final JTable tblpA){
-//	    	tablaparametroDe = tblDe;
-//	    	tablaparametroA  = tblA;
-//	    }
-//	    public void actionPerformed(ActionEvent evt){
-//	    	DefaultTableModel modeloparametro= (DefaultTableModel) tablaparametro.getModel();
-//	    	if(!tablaparametro.isRowSelected(tablaparametro.getSelectedRow())){
-//				JOptionPane.showMessageDialog(null, "Es Requerido El Selecionar Una Fila Para Poder Moverla ", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//				return;	
-//	    	}
-//
-//	    }
-//	};
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -1144,7 +1053,6 @@ public class Cat_Cuadrantes extends JFrame{
 			int fila  = 0;
 			int i     = 0;
 			String[][] tablas = new String[filas][6];	
-			
 			while(rengloneslunes > 0){
 					tablas[i][0] = modelLunes.getValueAt(fila, 0)+"";
 					tablas[i][1] = modelLunes.getValueAt(fila, 1)+"";
@@ -1333,7 +1241,13 @@ public class Cat_Cuadrantes extends JFrame{
         btnSubViernes.setEnabled(false);
         btnSubSabado.setEnabled(false);
         btnSubDomingo.setEnabled(false);
-        
+        btnCopLunes.setEnabled(false);
+        btnCopMartes.setEnabled(false);
+        btnCopMiercoles.setEnabled(false);
+        btnCopJueves.setEnabled(false);
+        btnCopViernes.setEnabled(false);
+        btnCopSabado.setEnabled(false);
+        btnCopDomingo.setEnabled(false);
 		cmb_status.setEnabled (false);
 		cmbDepartamento.setEnabled(false);
 		cmbEstablecimiento.setEnabled(false);
@@ -1382,6 +1296,13 @@ public class Cat_Cuadrantes extends JFrame{
         btnSubViernes.setEnabled(true);
         btnSubSabado.setEnabled(true);
         btnSubDomingo.setEnabled(true);
+        btnCopLunes.setEnabled(true);
+        btnCopMartes.setEnabled(true);
+        btnCopMiercoles.setEnabled(true);
+        btnCopJueves.setEnabled(true);
+        btnCopViernes.setEnabled(true);
+        btnCopSabado.setEnabled(true);
+        btnCopDomingo.setEnabled(true);
         
 		cmb_status.setEnabled (true);
 		cmbDepartamento.setEnabled(true);
@@ -1389,6 +1310,146 @@ public class Cat_Cuadrantes extends JFrame{
 		btnBuscar.requestFocus();
 	}
 	
+	//TODO inicia catalogo copiar cuadrante	
+	public class Cat_Copiar_Cuadrante extends JDialog{
+		Container contf = getContentPane();
+		JLayeredPane panelf = new JLayeredPane();
+		Connexion con = new Connexion();
+		int columnacopiar = 5,checkbox=-1;
+		
+		@SuppressWarnings("rawtypes")
+		public Class[] base (){
+			Class[] types = new Class[columnacopiar];
+			for(int i = 0; i<columnacopiar; i++){types[i]= java.lang.Object.class;}
+			 return types;
+		}
+		
+		public DefaultTableModel modelocopiar = new DefaultTableModel(null, new String[]{"Orden","Folio","Actividad","Inicia","Termina"}){
+			 @SuppressWarnings("rawtypes")
+				Class[] types = base();
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+				public boolean isCellEditable(int fila, int columna){return false;}
+		};
+		
+		JTable tablacopiar = new JTable(modelocopiar);
+		public JScrollPane scroll_tabla_copiar = new JScrollPane(tablacopiar);
+	     @SuppressWarnings({ "rawtypes" })
+	    private TableRowSorter trsfiltro;
+		
+	    JCheckBox chbP_Lunes     = new JCheckBox("Lunes    ");
+	 	JCheckBox chbP_Martes    = new JCheckBox("Martes   ");
+	 	JCheckBox chbP_Miercoles = new JCheckBox("Miercoles");
+	 	JCheckBox chbP_Jueves    = new JCheckBox("Jueves   ");
+	 	JCheckBox chbP_Viernes   = new JCheckBox("Viernes  ");
+	 	JCheckBox chbP_Sabado    = new JCheckBox("Sabado   ");
+	 	JCheckBox chbP_Domingo   = new JCheckBox("Domingo  ");
+	 	
+		JCButton btnAgregCopiar      = new JCButton("Agregar Actividad","double-arrow-icone-3883-16.png"                  ,"Azul" );
+		JCButton btnSubCopiar        = new JCButton("Subir"            ,"Up.png"                                          ,"Azul" );
+		JCButton btnBajCopiar        = new JCButton("Bajar"            ,"Down.png"                                        ,"Azul" );
+		JCButton btnEljCopiar        = new JCButton("Eliminar"         ,"eliminar-bala-icono-7773-32.png"                 ,"Azul" );
+		JCButton btnCopiar           = new JCButton("Copiar A Dias Selecionados","copy-documents-files-icone-9003-16.png","Azul" );
+		
+		JToolBar toolbarcopiar = new JToolBar();
+		
+		JTextField txtBuscarfp  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
+		String [][] tablaparametro=null;
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Cat_Copiar_Cuadrante(String[][] arregloparametro){
+			this.setSize(610,620);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			this.setModal(true);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/tarjeta-de-informacion-del-usuario-icono-7370-32.png"));
+			this.panelf.setBorder(BorderFactory.createTitledBorder("Selecione los Dias a Los Que Se Copiarará El Cuadrante"));
+			this.setTitle("Copiar Cuadrantes");
+			this.trsfiltro = new TableRowSorter(modelocopiar); 
+			this.tablacopiar.setRowSorter(trsfiltro);
+			
+		    this.toolbarcopiar.add(btnAgregCopiar);
+			this.toolbarcopiar.addSeparator(    );
+			this.toolbarcopiar.addSeparator(    );
+			this.toolbarcopiar.add(btnSubCopiar  );
+		    this.toolbarcopiar.addSeparator(    );
+		    this.toolbarcopiar.addSeparator(    );
+		    this.toolbarcopiar.add(btnBajCopiar  );
+		    this.toolbarcopiar.addSeparator(    );
+		    this.toolbarcopiar.addSeparator(    );
+		    this.toolbarcopiar.add(btnEljCopiar  );
+		    this.toolbarcopiar.addSeparator(    );
+		    this.toolbarcopiar.addSeparator(    );
+		    this.toolbarcopiar.add(btnCopiar    );
+		    
+			this.toolbarcopiar.setFloatable(false);
+            
+			ObjTab.tablas_dias_del_cuadrante(tablacopiar);
+			String[][] tablacompiada= arregloparametro;
+			Object[]   vectorc = new Object[5];				  
+				for(int i=0;i<tablacompiada.length;i++){
+			    	for(int j=0;j<5;j++){
+						vectorc[j] = tablacompiada[i][j].toString();
+					}
+			      modelocopiar.addRow(vectorc);
+				}
+			int	x=10, y=20, width=73, height=20,sep=70;
+				
+            this.panelf.add(chbP_Lunes).setBounds          (x      ,y     ,width     ,height);
+            this.panelf.add(chbP_Martes).setBounds         (x+=sep ,y     ,width     ,height);
+            this.panelf.add(chbP_Miercoles).setBounds      (x+=sep ,y     ,width     ,height);
+            this.panelf.add(chbP_Jueves).setBounds         (x+=sep ,y     ,width     ,height);
+            this.panelf.add(chbP_Viernes).setBounds        (x+=sep ,y     ,width     ,height);
+            this.panelf.add(chbP_Sabado).setBounds         (x+=sep ,y     ,width     ,height);
+            this.panelf.add(chbP_Domingo).setBounds        (x+=sep ,y     ,width     ,height);
+            this.panelf.add(toolbarcopiar).setBounds       (x=10   ,y+=30 ,width=585 ,height);
+			this.panelf.add(txtBuscarfp).setBounds         (x      ,y+=30 ,width     ,height);
+			this.panelf.add(scroll_tabla_copiar).setBounds (x      ,y+=20 ,width     ,495   );
+			
+			this.txtBuscarfp.addKeyListener      (opFiltroCopiar );
+			this.btnAgregCopiar.addActionListener(new opAgregar_Actividad(tablacopiar));
+			this.btnSubCopiar.addActionListener  (new opMoverArriba(tablacopiar));
+			this.btnBajCopiar.addActionListener  (new opMoverAbajo(tablacopiar));
+			this.btnEljCopiar.addActionListener  (new opEliminarfila(tablacopiar));
+			this.btnCopiar.addActionListener     (copiar);
+			
+			contf.add(panelf);
+		}
+		
+		ActionListener copiar = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(chbP_Lunes.isSelected())    {copiar_al_modelo(modelLunes    );}
+				if(chbP_Martes.isSelected())   {copiar_al_modelo(modelMartes   );}
+				if(chbP_Miercoles.isSelected()){copiar_al_modelo(modelMiercoles);}
+				if(chbP_Jueves.isSelected())   {copiar_al_modelo(modelJueves   );}
+				if(chbP_Viernes.isSelected())  {copiar_al_modelo(modelViernes  );}
+				if(chbP_Sabado.isSelected())   {copiar_al_modelo(modelSabado   );}
+				if(chbP_Domingo.isSelected())  {copiar_al_modelo(modelDomingo  );}
+				dispose();
+			}		
+			};
+			
+		public void copiar_al_modelo(DefaultTableModel  modelo){
+			modelo.setRowCount(0);
+			String[][] tablaCopiar =(ObjTab.tabla_guardar_sin_validacion(tablacopiar));
+			Object[]   vectorc = new Object[5];				  
+			for(int i=0;i<tablaCopiar.length;i++){
+		    	for(int j=0;j<5;j++){
+					vectorc[j] = tablaCopiar[i][j].toString();
+				}
+		    	modelo.addRow(vectorc);
+			}
+		}
+		
+        private KeyListener opFiltroCopiar = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				ObjTab.Obj_Filtro(tablacopiar, txtBuscarfp.getText(), columnacopiar);
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+	}
+//termina filtro copiar cuadrante 	
 //TODO inicia filtro actividades
 	public class Cat_Filtro_Actividades_De_Cuadrantes extends JDialog {
 		Container cont = getContentPane();
@@ -1638,6 +1699,7 @@ public class Cat_Cuadrantes extends JFrame{
 			        		int fila = tablab.getSelectedRow();
 			        		    panelLimpiar();
 			        		    panelEnabledFalse();
+			        		    btnModificar.setEnabled(true);
 							    txtFolio.setText   (tablab.getValueAt(fila,1)+"");
 			        		   cargar_datos_tablas(Integer.valueOf(tablab.getValueAt(fila,0).toString()));
 							dispose();

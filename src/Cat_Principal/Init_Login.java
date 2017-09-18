@@ -33,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Cat_Auditoria.Cat_Cortes_De_Cajeros;
 import Cat_Auditoria.Cat_Retiros_A_Cajeros;
+import Cat_Chat.Cat_Chat;
 import Cat_Checador.Cat_Checador;
 import Cat_Lista_de_Raya.Cat_Captura_De_Fuente_De_Sodas_De_Cajeras;
 import Cat_Lista_de_Raya.Cat_Deducciones_Y_Percepciones_De_Lista_De_Raya;
@@ -168,9 +169,10 @@ public class Init_Login extends JFrame{
 	JPasswordField txtContrasenaNueva = new Componentes().textPassword(new JPasswordField(), "Contraseña Nueva", 50);
 	JPasswordField txtContrasenaConfirmar = new Componentes().textPassword(new JPasswordField(), "Confirmar Contraseña", 50);
 	
-	JCButton btnSalir = new JCButton("Salir","logout-icone-6625-16.png","AzulO");
+	JCButton btnSalir             = new JCButton("Salir"             ,"logout-icone-6625-16.png","AzulO");
 	JCButton btnCambiarContrasena = new JCButton("Cambiar Contraseña","signo-kgpg-icono-4248-16.png","AzulO");
-	JCButton btnBuscar = new JCButton("","buscar.png","AzulO"); 
+	JCButton btnBuscar            = new JCButton(""                  ,"buscar.png","AzulO"); 
+	JCButton btnChat              = new JCButton("Chat"              ,"google-talk-chat-icone-6146-16.png","AzulO"); 
 	
 	JButton btnAceptar = new JButton("Entrar");
 	
@@ -246,6 +248,7 @@ public class Init_Login extends JFrame{
 		btnChecador.addActionListener(Opciones);
 		btnCerrar.addActionListener(Opciones);
 		btnRevision_Jerarquias.addActionListener(Opciones);
+		btnChat.addActionListener(Opciones);
 		
 		btnBanco.setEnabled(false);
 		btnInasistencia.setEnabled(false);
@@ -263,6 +266,7 @@ public class Init_Login extends JFrame{
 		btnRevision_Jerarquias.setEnabled(false);
 		btnFuenteSodasCajeras.setEnabled(false);
 		btnChecador.setEnabled(false);
+		btnChat.setEnabled(false);
 		fotolb.setVisible(false);
 		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -365,7 +369,10 @@ public class Init_Login extends JFrame{
 			
 			
 			y=490;
-			panel.add(txtFolio).setBounds                (x+=60  ,y    ,240,w);
+			panel.add(txtFolio).setBounds                (x+=60  ,y    ,150,w);
+			panel.add(btnBuscar).setBounds               (x+150  ,y    ,30 ,w);
+			panel.add(btnChat).setBounds                 (x+185  ,y    ,90 ,w);
+			
 			panel.add(txtContrasenaActual).setBounds     (x     ,y     ,240,w);
 			panel.add(txtUsuario).setBounds              (x     ,y+=30 ,275,w);
 			panel.add(txtContrasenaNueva).setBounds      (x     ,y     ,275,w);
@@ -374,11 +381,12 @@ public class Init_Login extends JFrame{
 			panel.add(btnCambiarContrasena).setBounds    (x     ,y+=30 ,175,w);
 			panel.add(btnGuardarContrasena).setBounds    (x     ,y     ,175,w);
 			panel.add(btnValidarContrasena).setBounds    (x     ,y     ,175,w);
-			panel.add(btnSalir).setBounds                (x+=195,y     ,78 ,w);
+			panel.add(btnSalir).setBounds                (x+=185,y     ,90 ,w);
 			
 			y=490;
-			panel.add(btnBuscar).setBounds               (x+50  ,y     ,30,w);
-					
+			
+
+			
 			cont.add(panel);
 			this.setSize(ancho,alto);
 		}
@@ -822,6 +830,8 @@ public class Init_Login extends JFrame{
 					btnServicios.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 143)
 					btnRevision_Jerarquias.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 198)
+					btnChat.setEnabled(true);
 
 		                                            }
 	}
@@ -873,6 +883,9 @@ ActionListener Opciones = new ActionListener(){
 	
 			if(click.getSource().equals(btnChecador))
 				new Cat_Checador().setVisible(true);
+			
+			if(click.getSource().equals(btnChat))
+				new Cat_Chat().setVisible(true);
 
 			if(click.getSource().equals(btnCerrar)){
 				dispose();			

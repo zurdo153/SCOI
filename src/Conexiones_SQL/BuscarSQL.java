@@ -10057,7 +10057,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Folio_Siguiente_alta_Servicios ] SQLException: "+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Valida_La_PC_Para_Captura ] SQLException: "+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 			finally{
 				if(stmt!=null){try {
@@ -10067,6 +10067,30 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				}}
 			}
 			return valor;
+		}
+	   
+	   public String ip_server_chat() throws SQLException{
+			String ip = "";			
+			String query = "select ip_servidor_chat from tb_configuracion_sistema";
+			Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					ip=(rs.getString(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ ip_server_chat ] SQLException: "+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+			finally{
+				if(stmt!=null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return ip;
 		}
 	   
 }
