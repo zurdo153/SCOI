@@ -706,7 +706,7 @@ public class Cat_Chat extends JFrame {
 					
 					ruta = Emoticons.emoticonos.get(token);
 					
-					img  = new ImageIcon(getClass().getResource(ruta));			
+					img  = new ImageIcon(System.getProperty("user.dir")+ruta);			
 					if(!blockEmotes)
 					insertEmoticon(img, token);
 				}

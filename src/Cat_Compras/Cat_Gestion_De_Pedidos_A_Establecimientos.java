@@ -190,6 +190,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 		txtUsuario.setEditable(false);
 		txtStatus.setEditable(false);
 		
+		ExisteInventarioElDiaActual();
+		
 		btnCalcularInventario.addActionListener(opCargarInventario);
 		
 		btnPendientes.addActionListener(opPendientes);
@@ -211,6 +213,13 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
          {                 	    btnDeshacer.doClick();
        	    }
      });
+	}
+	
+	public void ExisteInventarioElDiaActual(){
+		boolean ExisteInventario = new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim());
+		txtPedido.setEditable(ExisteInventario);
+		btnBuscar.setEnabled(ExisteInventario);
+		btnPendientes.setEnabled(ExisteInventario);
 	}
 	
 	float surtido = 0;
@@ -353,7 +362,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			
 			if(new BuscarSQL().existenPedidosActivos()){
 				
-				System.out.println(new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim()));
+//				System.out.println(new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim()));
 				if(!new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim())){
 					//limpiar pedidos
 					cargarInventario("FINALIZAR_PEDIDOS");
@@ -376,6 +385,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 //		if(new BuscarSQL().existenPedidosActivos()){
 			if(cmbEstablecimientos.getSelectedIndex()>0){
 					if(new GuardarSQL().Cargar_Inventario(cmbEstablecimientos.getSelectedItem().toString().trim(),bandera)){
+						ExisteInventarioElDiaActual();
 						JOptionPane.showMessageDialog(null, "El Inventario Se Cargo Exitosamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						return;
 					}else{
@@ -414,6 +424,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	
 	ActionListener opBuscarPedido = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			
 //			//MODIFICAR ESTA FUNCION  (BUSCAR SI YA SE CAPTURO Y RECONSULTAR DE SCOI O  BUSCAR DIRECTO)
 			banderaGuardarModificar = new BuscarSQL().existeEnScoi(txtPedido.getText().trim());
 			
