@@ -485,6 +485,7 @@ public class Cat_Asignacion_De_Pedido_Por_Zona extends JDialog {
 				e1.printStackTrace();
 			}
 			
+			System.out.println(zonas_disponibles);
 			if(zonas_disponibles==tablaAsignacion.getRowCount()){		
 					
 					if(modeloAsignacion.getRowCount()>0){
