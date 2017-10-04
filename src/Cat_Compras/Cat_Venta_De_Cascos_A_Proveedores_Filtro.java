@@ -61,7 +61,7 @@ public class Cat_Venta_De_Cascos_A_Proveedores_Filtro extends JDialog {
     }
 	
 	
- public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre de Proveedor", "Descripción"}){
+ public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Nombre de Proveedor", "Domicilio"}){
 	 @SuppressWarnings("rawtypes")
 		Class[] types = tipos();
 		

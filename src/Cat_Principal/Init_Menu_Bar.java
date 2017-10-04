@@ -13,7 +13,6 @@ import Cat_Compras.Cat_Alimentacion_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Analisis_De_Precios_De_Competencia;
 import Cat_Compras.Cat_Cotizaciones_De_Un_Producto_En_Proveedores;
 import Cat_Compras.Cat_Reporte_De_Ventas;
-import Cat_Evaluaciones.Cat_Captura_Del_Cuadrante_Personal;
 import Cat_Lista_de_Raya.Cat_Aviso_Vencimiento_De_Contrato;
 import Cat_Reportes.Cat_Reportes_De_Apartados;
 import Cat_Reportes.Cat_Reportes_De_Vouchers;
@@ -27,7 +26,7 @@ public class Init_Menu_Bar extends Init_Login{
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.219");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.221");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/IconoSCOI.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -269,14 +268,7 @@ public class Init_Menu_Bar extends Init_Login{
 		public void actionPerformed(ActionEvent e){
 			if(! new Componentes().classExiste(e.getActionCommand()).equalsIgnoreCase("")){
 				try {
-					if(e.getActionCommand().equalsIgnoreCase("Captura Del Cuadrante Personal")){
-						Obj_Usuario usuario = new Obj_Usuario().LeerSession();
-						Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal datos_cuadrante = new Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal().buscarEmpleado( new Componentes().getTextProcesa(usuario.getNombre_completo()));
-						if(!datos_cuadrante.getEquipo_trabajo().equals(""))
-							new Cat_Captura_Del_Cuadrante_Personal(new Componentes().getTextProcesa(usuario.getNombre_completo())).setVisible(true);
-						else
-							JOptionPane.showMessageDialog(null, "El usuario no tiene cuadrante", "Aviso!", JOptionPane.OK_CANCEL_OPTION);
-					}else{if(e.getActionCommand().equalsIgnoreCase("Cotizaciones De Un Producto En Proveedores")){
+					if(e.getActionCommand().equalsIgnoreCase("Cotizaciones De Un Producto En Proveedores")){
 					        	new Cat_Cotizaciones_De_Un_Producto_En_Proveedores("").setVisible(true);
 					}else{if(e.getActionCommand().equalsIgnoreCase("Alimentacion De Precios De Competencia")){
 			        	new Cat_Alimentacion_De_Precios_De_Competencia("").setVisible(true);
@@ -293,7 +285,6 @@ public class Init_Menu_Bar extends Init_Login{
 						Object instanceObject = instance.newInstance();
 						((Window) instanceObject).setVisible(true);
 					}	
-					}
 					}
 					}
 					}

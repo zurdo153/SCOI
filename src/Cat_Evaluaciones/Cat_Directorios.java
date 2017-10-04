@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Lista_de_Raya.Obj_Empleados;
@@ -188,4 +189,12 @@ public class Cat_Directorios extends JFrame {
 		}
 		public void keyReleased(KeyEvent arg0) {}
 	};
+
+	public static void main(String args[]){
+		try{UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Directorios(1).setVisible(true);
+		}catch(Exception e){System.err.println("Error en Main: "+e.getMessage());
+		}
+	}
+
 }

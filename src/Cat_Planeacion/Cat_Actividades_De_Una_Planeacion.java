@@ -296,7 +296,6 @@ public class Cat_Actividades_De_Una_Planeacion extends JFrame{
 	   			   chbSabado.setEnabled   (true );
 	   			   chbDomingo.setSelected (true );
 			       }
-			   
 				
 		    panel.add(new JLabel("Fecha Selecionada:")).setBounds                  (x    ,y     ,width+100,height    );
 		    panel.add(fecha_de_la_actividad).setBounds                             (x+100,y     ,width+50,height     );

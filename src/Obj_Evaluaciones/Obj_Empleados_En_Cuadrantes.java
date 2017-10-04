@@ -92,7 +92,4 @@ public class Obj_Empleados_En_Cuadrantes {
 		return new ActualizarSQL().EmpleadoCuadrante(this,tabla);
 	}
 	
-	public static String[][] getTablaCuadrante(int folio){
-		return new BuscarSQL().getTablaEmpleadoCuadrante(folio);
-	}
 }

@@ -66,7 +66,6 @@ import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Cuadrantes.Obj_Actividad;
-import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
@@ -105,9 +104,11 @@ import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
 import Obj_Reportes.Obj_Reportes_De_Ventas;
+import Obj_Seguridad.Obj_Registro_Proveedores;
 import Obj_Servicios.Obj_Catalogo_Servicios;
 import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Servicios;
+
 
 
 public class BuscarSQL {
@@ -873,29 +874,6 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return corte;
-	}
-	
-	public Object Obj_Obtener_Folio_Empleado (String nombre) throws SQLException{
-		int folio=0;
-				
-		String query = "select folio from tb_empleado where RTRIM(LTRIM(nombre))+' '+RTRIM(LTRIM(ap_paterno))+' '+RTRIM(LTRIM(ap_materno))='"+ nombre+"'";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-
-                folio=(rs.getInt("folio"));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return folio;
 	}
 	
 	public Obj_Alimentacion_Cortes Corte(String asignacion) throws SQLException{
@@ -3492,27 +3470,6 @@ public class BuscarSQL {
 		return existe;
 	}
 	
-	public String[][] getTablaEmpleadoCuadrante(int folio){
-		String datos = "exec sp_select_tabla_empleado_cuadrante "+folio;
-		
-		String[][] Matriz = new String[getFilas(datos)][2];
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz; 
-	}
-	
 	@SuppressWarnings({ "rawtypes", "resource", "unchecked" })
 	public Obj_Usuario getSession() throws IOException {
 		Vector myVector = new Vector();
@@ -3532,45 +3489,6 @@ public class BuscarSQL {
 		return usuario;
 	}
 	
-	public Obj_Captura_Del_Cuadrante_Personal EmpleadoNombre(String nombre) throws SQLException{
-		Obj_Captura_Del_Cuadrante_Personal empleado_cuadrante = new Obj_Captura_Del_Cuadrante_Personal();
-		String query = "exec sp_select_cuadrante_empleado '"+nombre+"'";
-
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				empleado_cuadrante.setNombre(rs.getString("Nombre"));
-				empleado_cuadrante.setPuesto(rs.getString("Puesto"));
-				empleado_cuadrante.setEstablecimiento(rs.getString("Establecimiento"));
-				empleado_cuadrante.setEquipo_trabajo(rs.getString("Equipo_Trabajo"));
-				empleado_cuadrante.setJefatura(rs.getString("Jefatura"));
-				empleado_cuadrante.setDia(rs.getString("Dia"));
-				empleado_cuadrante.setFecha(rs.getString("Fecha"));
-				empleado_cuadrante.setCuadrante(rs.getString("Cuadrante"));
-				
-				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cuadrante/tmp.jpg");
-				FileOutputStream fos = new FileOutputStream(photo);
-
-		        byte[] buffer = new byte[1];
-		        InputStream is = rs.getBinaryStream("Foto");
-		        while (is.read(buffer) > 0) {
-		        	fos.write(buffer);
-		        }
-		        fos.close();
-
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return empleado_cuadrante;
-	}
 	
 	public String[][] tabla_alimentacion_cuadrante_libre(String nombre, String dia){
 		String[][] Matriz = null;
@@ -3585,10 +3503,8 @@ public class BuscarSQL {
 			rs = s.executeQuery(datosif);
 			int i=0;
 			while(rs.next()){
-
 				Matriz[i][0] = rs.getString(1);
 				Matriz[i][1] = rs.getString(2);
-				
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -3596,151 +3512,6 @@ public class BuscarSQL {
 		}
 		return Matriz;
 	}
-	
-	public String[][] tabla_alimentacion_cuadrante_multiple_jerarquico(String nomgbre){
-		String[][] Matriz = null;
-		
-		String datosif = "exec sp_select_tabla_alimentacion_multiple_jerar '"+nomgbre+"';";
-
-		Matriz = new String[getFilas(datosif)][4];
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datosif);
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2);
-				Matriz[i][2] = rs.getString(3);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz;
-	}
-	
-	public String[][] tabla_alimentacion_cuadrante_multiple(String nomgbre){
-		String[][] Matriz = null;
-		
-		String datosif = "exec sp_select_tabla_alimentacion_multiple '"+nomgbre+"';";
-		String datosfi = "exec sp_select_tabla_alimentacion_multiple_por_proyecto '"+nomgbre+"';";
-		
-		Matriz = new String[getFilas(datosif)+getFilas(datosfi)][4];
-		Statement s;
-		Statement s1;
-		ResultSet rs;
-		ResultSet rs1;
-		
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datosif);
-			
-			s1 = con.conexion().createStatement();
-			rs1 = s1.executeQuery(datosfi);
-			
-			int i=0;
-			while(rs.next()){
-
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2);
-				Matriz[i][2] = rs.getString(3);
-				
-				i++;
-			}
-			while(rs1.next()){
-				Matriz[i][0] = rs1.getString(1);
-				Matriz[i][1] = "N/A";
-				Matriz[i][2] = rs1.getString(3);
-				
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz;
-	}
-	
-	public String[][] tabla_alimentacion_cuadrante_multiple_capturada(String nombre){
-		String[][] Matriz = null;
-		String datosif = "exec sp_select_tabla_alimentacion_multiple_capturada '"+nombre+"';";
-
-		Matriz = new String[getFilas(datosif)][6];
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datosif);
-			int i=0;
-			while(rs.next()){
-
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2).equals("0") ? "N/A" : rs.getString(2);
-				Matriz[i][2] = rs.getString(3);
-				Matriz[i][3] = rs.getString(4);
-				Matriz[i][4] = rs.getString(5);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz;
-	}
-	
-	public String[][] tabla_alimentacion_cuadrante_multiple_capturada_jerarquica(String nombre){
-		String[][] Matriz = null;
-		String datosif = "exec sp_select_tabla_alimentacion_multiple_capturada_jerarquica '"+nombre+"';";
-
-		Matriz = new String[getFilas(datosif)][6];
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datosif);
-			int i=0;
-			while(rs.next()){
-
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2).equals("0") ? "N/A" : rs.getString(2);
-				Matriz[i][2] = rs.getString(3);
-				Matriz[i][3] = rs.getString(4);
-				Matriz[i][4] = rs.getString(5);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz;
-	}
-	
-	public String[][] tabla_alimentacion_cuadrante_primera_parte(String nombre){
-		String[][] Matriz = null;
-		String datosif = "exec sp_pre_captura_cuadrante '"+nombre+"';";
-		System.out.println(datosif);
-		Matriz = new String[getFilas(datosif)][5];
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datosif);
-			int i=0;
-			while(rs.next()){
-
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2);
-				Matriz[i][2] = rs.getString(3);
-				Matriz[i][3] = rs.getString(4);
-				Matriz[i][4] = rs.getString(5);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz;
-	}
-	
-
 	
 	public Obj_Opciones_De_Respuestas buscar_opcion_respuesta(int folio) throws SQLException{
 		Obj_Opciones_De_Respuestas respuesta = new Obj_Opciones_De_Respuestas();
@@ -3865,24 +3636,6 @@ public class BuscarSQL {
 			}}
 		}
 		return horas;
-	}
-	
-	public boolean Existe_Cuadrante_Muliple(String nombre){
-		String query = "exec sp_existe_respuesta_cuadrante '" + nombre + "';";
-		boolean disponible = false;
-		try {				
-			Statement s = con.conexion().createStatement();
-			ResultSet rs = s.executeQuery(query);
-			
-			while(rs.next()){
-				disponible = rs.getBoolean(1);
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-			
-		return disponible;
 	}
 	
 	//Buscar Mensaje
@@ -4422,106 +4175,7 @@ public class BuscarSQL {
 	}
 	
 	
-	public String[][] tabla_libre_jerarquico(String nomgbre){
-		String datos = "exec sp_select_tabla_alimentacion_jerarquico_libre '"+nomgbre+"';";
-
-		String[][] Matriz = new String[getFilas(datos)][4];
-		
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = String.valueOf(i+1)+"  ";
-				Matriz[i][1] = "  "+rs.getString(2);
-				Matriz[i][2] = "  ";
-				Matriz[i][3] = "  ";
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz;
-	}
 	
-	public String[][] tabla_libre_jerarquico_contestada(String nomgbre){
-		String datos = "exec sp_select_tabla_alimentacion_libre_jerarquico_contestada '"+nomgbre+"';";
-
-		String[][] Matriz = new String[getFilas(datos)][4];
-		
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = String.valueOf(i+1)+"  ";
-				Matriz[i][1] = "  "+rs.getString(2);
-				Matriz[i][2] = "  "+rs.getString(3);
-				Matriz[i][3] = "  "+rs.getString(4);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz;
-	}
-	
-	public String[][] tabla_libre(String nomgbre){
-		String datos = "exec sp_select_tabla_alimentacion_libre '"+nomgbre+"';";
-
-		String[][] Matriz = new String[getFilas(datos)][4];
-		
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = String.valueOf(i+1)+"  ";
-				Matriz[i][1] = "  "+rs.getString(2);
-				Matriz[i][2] = "  ";
-				Matriz[i][3] = "  ";
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz;
-	}
-	
-	public String[][] tabla_libre_contestada(String nomgbre){
-		String datos = "exec sp_select_tabla_alimentacion_libre_contestada '"+nomgbre+"';";
-
-		String[][] Matriz = new String[getFilas(datos)][4];
-		
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = String.valueOf(i+1)+"  ";
-				Matriz[i][1] = "  "+rs.getString(2);
-				Matriz[i][2] = "  "+rs.getString(3);
-				Matriz[i][3] = "  "+rs.getString(4);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz;
-	}
-
 	public Obj_Base_De_Solicitud_De_Empleado Solicitud_empleado(int folio) throws SQLException{
 		Obj_Base_De_Solicitud_De_Empleado solicitud = new Obj_Base_De_Solicitud_De_Empleado();
 		String query = "exec sp_select_solicitud_permiso_empleado_operaciones "+ folio;
@@ -9920,13 +9574,33 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			
 		return disponible;
 	}
-	
 
-	public String[][] TablaActividades_Cuadrante(int folio_cuadrante){
+	public String[][] TablaProveedores(){
 		String[][] Matriz = null;
-		String query = "exec cuadrantes_actividades_semana_por_folio "+folio_cuadrante;
-		
-		Matriz = new String[getFilas(query)][15];
+		String query = "select cod_prv as folio,case when rtrim(ltrim(razon_social))='' then 'Proveedor'else rtrim(ltrim(razon_social)) end as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio from proveedores where status_proveedor =1 order by proveedor asc ";
+		Matriz = new String[getFilasExterno(query)][3];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion_IZAGAR().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0]  = rs.getString( 1);
+				Matriz[i][1]  = rs.getString( 2);
+				Matriz[i][2]  = rs.getString( 3);
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz;
+	}
+	
+	public String[][] TablaOrdenes_De_Compra(String Establecimiento){
+		String[][] Matriz = null;
+		String query = "exec proveedores_ordenes_de_compra '"+Establecimiento+"'";
+		Matriz = new String[getFilas(query)][11];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -9945,11 +9619,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				Matriz[i][8]  = rs.getString( 9);
 				Matriz[i][9]  = rs.getString(10);
 				Matriz[i][10] = rs.getString(11);
-				Matriz[i][11] = rs.getString(12);
-				Matriz[i][12] = rs.getString(13);
-				Matriz[i][13] = rs.getString(14);
-				Matriz[i][14] = rs.getString(15);
-				
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -9962,8 +9631,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public Object[][] Consultar_Zonas_Para_Asignacion_De_Surtidores(String folioPedido,int numero_de_zonas){
 		
 	String query = " exec sp_select_para_asignacion_de_zonas '"+folioPedido+"'";
-	
-	System.out.println(query);
 	
 	Object[][] lista = new Object[numero_de_zonas][8];
 	
@@ -10091,6 +9758,142 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				}}
 			}
 			return ip;
+		}
+	   
+	   public String[][] TablaActividades_Cuadrante_captura(String Clave_Gafete){
+			String[][] Matriz = null;
+			String query = "exec cuadrantes_actividades_por_colaborador_captura '"+Clave_Gafete+"'";
+			
+			Matriz = new String[getFilas(query)][27];
+			Statement s;
+			ResultSet rs;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					Matriz[i][0]  = rs.getString( 1);
+					Matriz[i][1]  = rs.getString( 2);
+					Matriz[i][2]  = rs.getString( 3);
+					Matriz[i][3]  = rs.getString( 4);
+					Matriz[i][4]  = rs.getString( 5);
+					Matriz[i][5]  = rs.getString( 6);
+					Matriz[i][6]  = rs.getString( 7);
+					Matriz[i][7]  = rs.getString( 8);
+					Matriz[i][8]  = rs.getString( 9);
+					Matriz[i][9]  = rs.getString(10);
+					Matriz[i][10] = rs.getString(11);
+					Matriz[i][11] = rs.getString(12);
+					Matriz[i][12] = rs.getString(13);
+					Matriz[i][13] = rs.getString(14);
+					Matriz[i][14] = rs.getString(15);
+					
+					Matriz[i][15] = rs.getString(16);
+					Matriz[i][16] = rs.getString(17);
+					Matriz[i][17] = rs.getString(18);
+					Matriz[i][18] = rs.getString(19);
+					Matriz[i][19] = rs.getString(20);
+					Matriz[i][20] = rs.getString(21);
+					Matriz[i][21] = rs.getString(22);
+					Matriz[i][22] = rs.getString(23);
+					Matriz[i][23] = rs.getString(24);
+					Matriz[i][24] = rs.getString(25);
+					Matriz[i][25] = rs.getString(26);
+					Matriz[i][26] = rs.getString(27);
+					i++;
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Matriz;
+		}
+	   
+	   public boolean Valida_Clave_Checador_Si_Existe_Cuadrante(String Clave_Checador){
+		   boolean valor = false;
+			
+			String query = "cuadrantes_actividades_por_colaborador_validacion_existe '"+Clave_Checador+"'";
+			Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					valor=(rs.getBoolean(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Valida_Clave_Checador_Si_Existe_Cuadrante ] SQLException: "+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+			finally{
+				if(stmt!=null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return valor;
+		}
+	   
+	   public String[][] TablaActividades_Cuadrante(int folio_cuadrante){
+			String[][] Matriz = null;
+			String query = "exec cuadrantes_actividades_semana_por_folio "+folio_cuadrante;
+			
+			Matriz = new String[getFilas(query)][15];
+			Statement s;
+			ResultSet rs;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					Matriz[i][0]  = rs.getString( 1);
+					Matriz[i][1]  = rs.getString( 2);
+					Matriz[i][2]  = rs.getString( 3);
+					Matriz[i][3]  = rs.getString( 4);
+					Matriz[i][4]  = rs.getString( 5);
+					Matriz[i][5]  = rs.getString( 6);
+					Matriz[i][6]  = rs.getString( 7);
+					Matriz[i][7]  = rs.getString( 8);
+					Matriz[i][8]  = rs.getString( 9);
+					Matriz[i][9]  = rs.getString(10);
+					Matriz[i][10] = rs.getString(11);
+					Matriz[i][11] = rs.getString(12);
+					Matriz[i][12] = rs.getString(13);
+					Matriz[i][13] = rs.getString(14);
+					Matriz[i][14] = rs.getString(15);
+					i++;
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Matriz;
+		}
+	   
+	   public Obj_Registro_Proveedores buscar_Datos_Colaborador_por_clave_checador(String codigo_De_barras){
+		   Obj_Registro_Proveedores datos = new Obj_Registro_Proveedores();
+			String query = "exec proveedores_validacion_existe_colaborador '"+codigo_De_barras+"'";
+			Statement stmt2= null;
+							try {
+								stmt2= con.conexion().createStatement();
+								ResultSet rs2= stmt2.executeQuery(query);
+									   while(rs2.next()){
+										   datos.setFolio_colaborador_recibe(rs2.getInt(1));
+										   datos.setNombre_recibe(rs2.getString(2));
+										   datos.setEstablecimiento(rs2.getString(3));
+										   datos.setExiste(rs2.getString(4));
+									   }
+							} catch (Exception e) {
+								JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_Datos_Colaborador_por_clave_checador \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+								e.printStackTrace();
+								return null;
+							}
+			finally{
+				if(stmt2!=null){try {
+					stmt2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return datos;
 		}
 	   
 }

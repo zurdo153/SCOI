@@ -127,7 +127,7 @@ public class Cat_Checador extends JFrame {
                 
                 
                 int anchoMon = Toolkit.getDefaultToolkit().getScreenSize().width;
-        		int altoMon = Toolkit.getDefaultToolkit().getScreenSize().height;
+        		int altoMon  = Toolkit.getDefaultToolkit().getScreenSize().height;
                 
                 static JLabel fondo = new JLabel();
               
@@ -418,15 +418,6 @@ public class Cat_Checador extends JFrame {
                          return;
         	
          }else{
-//         	if (entosal.getValor_Pc().equals("false")){
-//         		lblSemaforoRojo.setEnabled(true);
-// 		            lblSemaforoVerde.setEnabled(false);
-// 		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-// 		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/red-de-usuario-icono-6758-64.png"));
-// 		  			  txtClaveReal.setText("");
-//                                                 txtClaveReal.requestFocus();
-//                          return;
-//            	}
          	
                 if(new Obj_Entosal().buscar_colicion(folio_empleado)){
                 	lblSemaforoRojo.setEnabled(true);
@@ -506,55 +497,6 @@ public class Cat_Checador extends JFrame {
                 txtClaveReal.setText("");
                 txtClaveReal.requestFocus();
    }
-        
-//        ActionListener opExaminar = new ActionListener(){
-//                public void actionPerformed(ActionEvent e) {
-//                        FileDialog file = new FileDialog(new Frame());
-//                        
-//                        file.setTitle("Selecciona una Imagen");
-//                        file.setMode(FileDialog.LOAD);
-//                        file.setVisible(true);
-//                        
-//                        if(file.getDirectory() != null){
-//
-//                                try {
-//                                        String rootPicture = file.getDirectory()+file.getFile();
-//                                        
-//                                        File foto = new File(rootPicture);
-//                                        File destino = new File(System.getProperty("user.dir")+"/tmp/mensaje.jpg");
-//                                    
-//                                        InputStream in = new FileInputStream(foto);
-//                                        OutputStream out = new FileOutputStream(destino);
-//                                        
-//	                                    byte[] buf = new byte[1024];
-//	                                    int len;
-//
-//	                                    while ((len = in.read(buf)) > 0) {
-//	                                            out.write(buf, 0, len);
-//	                                    }
-//                                    
-//	                                    in.close();
-//	                                    out.close();
-//                                        
-//                                        String fileFoto = System.getProperty("user.dir")+"/tmp/mensaje.jpg";
-//                                        ImageIcon tmpIconAuxFoto = new ImageIcon(fileFoto);
-//                                        Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(btnMensaje.getWidth(), btnMensaje.getHeight(), Image.SCALE_DEFAULT));
-//                                        btnMensaje.setIcon(iconoFoto);        
-//                                } catch (IOException e1) {
-//                                        e1.printStackTrace();
-//                                }
-//                        }else{
-//                                JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna imagen","Aviso",JOptionPane.WARNING_MESSAGE);
-//                                return;
-//                        }
-//                }
-//        };
-
-//        ActionListener cerrar = new ActionListener(){
-//                public void actionPerformed(ActionEvent e){
-//                        System.exit(getDefaultCloseOperation());                
-//                }
-//        };
         
         public void panelLimpiar(){        
                 txtClaveReal.setText("");

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-09-04T10:01:56 -->
+<!-- 2017-10-04T15:00:21 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Meta_y_Establecimiento.jrxml" language="groovy" pageWidth="255" pageHeight="400" columnWidth="255" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -98,17 +98,17 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
-					<font fontName="Arial Black" size="8"/>
+					<font fontName="Arial Black" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["PUESTO: "+$F{puesto}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="">
 				<reportElement x="14" y="96" width="232" height="12" forecolor="#000000" uuid="773e8d83-c982-4b05-b303-b79e199c3fa4">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
-					<font fontName="Arial Black" size="8"/>
+					<font fontName="Arial Black" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["ESTAB: "+$F{establecimiento}+"  "+" DEPA: "+$F{departamento}]]></textFieldExpression>
 			</textField>
@@ -127,27 +127,27 @@
 				<text><![CDATA[Inicio 
 Fin]]></text>
 			</staticText>
-			<textField isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="14" y="110" width="232" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="4f1b8d86-7d37-44b3-a1f8-75ffca2c207d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="Arial Black" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Arial Black" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["REPORTA: "+$F{puesto_reporta}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="14" y="124" width="232" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="8f1b8db8-4aa6-4cd1-875b-40410e731fdf"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="Arial Black" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Arial Black" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["HORARIO ENTRADA:"+$F{entradahoradiahorario}+ "-SALIDA:"+$F{salida}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["HORARIO ENTRADA:>"+$F{entradahoradiahorario}+ "  SALIDA:<"+$F{salida}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="14" y="138" width="232" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="c0b06e88-25a9-4dc6-9c80-de7fe5eef5c3"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="Arial Black" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Arial Black" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["TIEMPO COMIDA"+$F{tiempo_comida}]]></textFieldExpression>
 			</textField>
@@ -159,6 +159,9 @@ Fin]]></text>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
 				<reportElement x="7" y="1" width="153" height="24" uuid="9d079bbf-cfcf-4225-a380-20e31385f631"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
 			</textField>
 			<textField>
