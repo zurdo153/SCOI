@@ -536,7 +536,7 @@ public class Cat_Prueba_Render_Personalizable extends JFrame {
 								clave_master="";    			}
 							
 //							System.out.println("aqui es igual a = "+realizo_consideracion);
-						if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod,"SELECCIONE UNA OPCION","DESCANSO")){
+						if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod,"SELECCIONE UNA OPCION","DESCANSO","")){
 							
 							folio_emp = 0; 	
 							empleado = ""; 	

@@ -2664,6 +2664,28 @@ public Object[][] tabla_model_horarios_de_entrega_de_pedidos(){
     return matriz; 
 }
 
+public String[] tipos_de_falta(){
+	String query_lista = "SELECT nombre AS tipo_de_falta FROM tb_tipos_de_falta where status = 'V' order by nombre";
+	String[] matriz = new String[get_filas(query_lista)];
+	
+	Connection con = new Connexion().conexion();
+	try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query_lista);
+			
+			int i = 0;
+			while(rs.next()){
+				matriz[i ] = rs.getString(1);
+				i++;
+			}
+
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tipos_de_falta() "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+	}
+    return matriz; 
+}
+
 }
 
 

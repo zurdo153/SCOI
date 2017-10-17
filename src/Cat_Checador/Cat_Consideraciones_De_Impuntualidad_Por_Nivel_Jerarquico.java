@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -25,6 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -346,7 +348,7 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 		    					folio_emp = 	Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
 	    						 empleado = 	tabla.getValueAt(fila, 1).toString().trim();
 	    						 	fecha = 	tabla.getValueAt(fila, 2).toString().trim()+" "+tabla.getValueAt(fila, 3).toString().trim();
-		    					  ent_sal = 	tabla.getValueAt(fila, 5).toString().trim();
+		    					  ent_sal = 	tabla.getValueAt(fila, 6).toString().trim().equals("-")? tabla.getValueAt(fila, 5).toString().trim() : tabla.getValueAt(fila, 6).toString().trim();
 					   	     tipo_checada = 	tabla.getValueAt(fila, 7).toString().trim();	    					  
 		    					   	  imp = 	Integer.valueOf(tabla.getValueAt(fila, 8).toString().trim());
 		    					   	  fav = 	Integer.valueOf(tabla.getValueAt(fila, 9).toString().trim());
@@ -435,9 +437,17 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbstatus_checada =new JComboBox(new String[]{"Vigente","Cancelado"});
 		
-		String justificar[] = {"SELECCIONAR UNA OPCION","JUSTUFICO","NO JUSTUFICO"};
+//		String justificar[] = {"SELECCIONAR UNA OPCION","JUSTUFICO","NO JUSTUFICO"};
+//		@SuppressWarnings({ "unchecked", "rawtypes" })
+//		JComboBox cmbJustificar = new JComboBox(justificar);
+		
+		JRadioButton rbSi = new JRadioButton("SI");
+		JRadioButton rbNo = new JRadioButton("NO");
+		ButtonGroup GRb = new ButtonGroup();
+		
+		String tipo_de_falta[] = new BuscarTablasModel().tipos_de_falta();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		JComboBox cmbJustificar = new JComboBox(justificar);
+		JComboBox cmbTipoDeFalta = new JComboBox(tipo_de_falta);
 		
 		JTextArea txaObservacion =new Componentes().textArea(new JTextArea(), "Observaciones", 150);
 		JScrollPane scrollObservacion = new JScrollPane(txaObservacion,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -450,11 +460,21 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 			this.setTitle("Consideracion checador");
 			this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Guardar consideracion de checador seleccionado"));
 			
+			rbSi.setSelected(true);
 			if(ent_sal.equals("FALT.REG.") && fecha.substring(fecha.indexOf(" ")+1, fecha.length()).equals("00:00:00")){
-				cmbJustificar.setEnabled(true);
+				cmbTipoDeFalta.setEnabled(true);
+				rbSi.setEnabled(true);
+				rbNo.setEnabled(true);
+//				cmbJustificar.setEnabled(true);
 			}else{
-				cmbJustificar.setEnabled(false);
+				cmbTipoDeFalta.setEnabled(false);
+				rbSi.setEnabled(false);
+				rbNo.setEnabled(false);
+//				cmbJustificar.setEnabled(false);
 			}
+			
+			GRb.add(rbSi);
+			GRb.add(rbNo);
 
 			lblFolio_corte.setText("Folio Empleado:  "+folio_emp);
 			lblCajero.setText("Empleado:  "+empleado);
@@ -502,17 +522,23 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 			panel.add(new JLabel("Estatus Checada: ")).setBounds(15,y+=25,90,20);
 			panel.add(cmbstatus_checada).setBounds(100,y,80,20);
 			panel.add(btnGuardar).setBounds(370,y+15,100,30);
-			panel.add(new JLabel("Falta: ")).setBounds(15,y+=25,90,20);
-			panel.add(cmbJustificar).setBounds(100,y,170,20);
-
+			panel.add(new JLabel("Tipo De Falta: ")).setBounds(15,y+=25,90,20);
+			panel.add(cmbTipoDeFalta).setBounds(100, y, 210, 20);
+			
+			panel.add(new JLabel("Aplica Descuento: ")).setBounds(15,y+=25,90,20);
+			panel.add(rbSi).setBounds(120,y,40,20);
+			panel.add(rbNo).setBounds(190,y,40,20);
+			
 			txaObservacion.setLineWrap(true); 
 			txaObservacion.setWrapStyleWord(true);
 			
 			cont.add(panel);
 			
+			cmbTipoDeFalta.setSelectedItem("INJUSTIFICADA");
+			
 			btnGuardar.addActionListener(opGuardarObservacion);
 			
-			this.setSize(500,270);
+			this.setSize(500,310);
 			this.setLocationRelativeTo(null);
 		}
 		
@@ -529,17 +555,17 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 					dispose();
 				}else{
 				if(!txaObservacion.getText().equals("")){
-							if(!cmbJustificar.isEnabled()){
+//							if(!rbNo.isEnabled()){
 								actualizar();
-							}else{
-								if(cmbJustificar.getSelectedItem().equals("SELECCIONAR UNA OPCION")){
-									JOptionPane.showMessageDialog(null,"Se Requiere Seleccionar Una Opcion En El Campo Falta","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-									cmbJustificar.showPopup();
-									return;
-								}else{
-									actualizar();
-								}
-							}
+//							}else{
+//								if(cmbJustificar.getSelectedItem().equals("SELECCIONAR UNA OPCION")){
+//									JOptionPane.showMessageDialog(null,"Se Requiere Seleccionar Una Opcion En El Campo Falta","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//									cmbJustificar.showPopup();
+//									return;
+//								}else{
+//									actualizar();
+//								}
+//							}
 				}else{
 	  			  JOptionPane.showMessageDialog(null, "Es Necesario Teclear Una Observacion \n El Porque Se Modifico El Registro","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 	  		        txaObservacion.requestFocus();
@@ -576,7 +602,10 @@ public class Cat_Consideraciones_De_Impuntualidad_Por_Nivel_Jerarquico extends J
 				consid_fav=fav*-1;
 				omision_mod="No Aplica";
 				clave_master="";    			}
-		if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod,cmbJustificar.getSelectedItem().toString(),ent_sal)){
+			
+			
+			
+		if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod,rbSi.isSelected()?"JUSTUFICO":"NO JUSTUFICO",ent_sal,cmbTipoDeFalta.getSelectedItem().toString().trim())){
 			
 			 folio_emp    = 0; 	
 			 empleado     = ""; 	
