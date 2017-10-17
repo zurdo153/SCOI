@@ -34,7 +34,6 @@ import javax.swing.table.TableRowSorter;
 
 import Cat_Checador.Cat_Reloj_Sincronizado_Servidor;
 import Conexiones_SQL.Connexion;
-import Obj_Cuadrantes.Obj_Cuadrantes;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
@@ -65,12 +64,10 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 			Class[] types = baselunes();
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
-			public boolean isCellEditable(int fila, int columna){if(columna>2){return true;}else{ return false;}}
+			public boolean isCellEditable(int fila, int columna){if(columna>1){return true;}else{ return false;}}
 	};
 	JTable tablaEntrada_Salida = new JTable(modelo);
 	public JScrollPane Scroll_tablaEntrada_Salida = new JScrollPane(tablaEntrada_Salida);
-     @SuppressWarnings({ "rawtypes", "unused" })
-    private TableRowSorter trsfiltroLunes;
      
  	@SuppressWarnings("rawtypes")
  	public Class[] baseorden (){
@@ -78,7 +75,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
  		for(int i = 0; i<columnas; i++){types[i]= java.lang.Object.class;}
  		 return types;
  	}
- 	public DefaultTableModel modeloorden = new DefaultTableModel(null, new String[]{"Factura","Importe","Oden De Compra","Importe","Diferencia"}){
+ 	public DefaultTableModel modeloorden = new DefaultTableModel(null, new String[]{"Factura","Importe","Oden De Compra","Importe","Diferencia","Tipo Proveedor"}){
  		 @SuppressWarnings("rawtypes")
  			Class[] types = baselunes();
  			@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -90,28 +87,10 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
         @SuppressWarnings({ "rawtypes", "unused" })
        private TableRowSorter trsfiltroOrden;
       
-   	@SuppressWarnings("rawtypes")
-   	public Class[] baseEvaluacion(){
-   		Class[] types = new Class[columnas];
-   		for(int i = 0; i<columnas; i++){types[i]= java.lang.Object.class;}
-   		 return types;
-   	}
-   	public DefaultTableModel modeloEvaluacion = new DefaultTableModel(null, new String[]{"Folio","Aspecto","Evaluacion"}){
-   		 @SuppressWarnings("rawtypes")
-   			Class[] types = baselunes();
-   			@SuppressWarnings({ "rawtypes", "unchecked" })
-   			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
-   			public boolean isCellEditable(int fila, int columna){return false;}
-   	};
-   	JTable tablaEvaluacion = new JTable(modeloEvaluacion);
- 	public JScrollPane Scroll_Tabla_Evaluacion = new JScrollPane(tablaEvaluacion);
-      @SuppressWarnings({ "rawtypes", "unused" })
-     private TableRowSorter trsfiltroEvaluacion;
-      
-	JTextField txtBuscar       = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<"    , 300, "String");
-	JTextField txtFolio        = new Componentes().text(new JCTextField(), "Folio", 10                                                   , "Int"   );
-	JTextField txtProveedor    = new Componentes().text(new JCTextField(), "Proveedor", 200                                              , "String");
-	JTextField txtEjecutivo    = new Componentes().text(new JCTextField(), "Nombre Del Ejecutivo Del Proveedor", 200                     , "String");
+	JTextField txtFolio        = new Componentes().text(new JCTextField(), "Folio", 10                                                , "Int"   );
+	JTextField txtProveedor    = new Componentes().text(new JCTextField(), "Proveedor", 200                                           , "String");
+	JTextField txtEjecutivo    = new Componentes().text(new JCTextField(), "Nombre Del Chofer Del Proveedor", 200                     , "String");
+	JTextField txtFechaGuardo  = new Componentes().text(new JCTextField(), "Fecha Guardo"                      , 200                  , "String");
 	
 	JPasswordField PtxtClave   = new Componentes().textPassword(new JPasswordField(), "Clave", 100);
 	
@@ -125,16 +104,16 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 	
 	JToolBar menu_toolbar = new JToolBar();
 	JCButton btnBuscar    = new JCButton("Buscar"    ,"Filter-List-icon16.png"     ,"Azul"); 
+	JCButton btnModificar = new JCButton("Modificar" ,"Modify.png"                 ,"Azul");
 	JCButton btnNuevo     = new JCButton("Nuevo"     ,"Nuevo.png"                  ,"Azul");
 	JCButton btnGuardar   = new JCButton("Guardar"   ,"Guardar.png"                ,"Azul");
 	JCButton btnDeshacer  = new JCButton("Deshacer"  ,"deshacer16.png"             ,"Azul");
 	JCButton btnderecha   = new JCButton(""          ,"adelante.png"               ,"Azul");
 	JCButton btnizquierda = new JCButton(""          ,"atras.png"                  ,"Azul");
-	JCButton btnfilpuestos= new JCButton(""          ,"Filter-List-icon16.png"     ,"Azul");
-	JCButton btnfilrepora = new JCButton(""          ,"Filter-List-icon16.png"     ,"Azul");
+	JCButton btnfilproveedor= new JCButton(""        ,"Filter-List-icon16.png"     ,"Azul");
 	
 	JToolBar toolbarEntradaSalida   = new JToolBar();
-	JCButton btnAgregLunes  = new JCButton("Agregar Movimiento","double-arrow-icone-3883-16.png"  ,"Azul" );
+	JCButton btnAgregMov  = new JCButton("Agregar Movimiento","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnEljLunes    = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
 
 	JToolBar toolbarOden    = new JToolBar();
@@ -155,37 +134,42 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 	String[][] tablaordenes_compra;
 	Object[]   vector = new Object[3];
 	public Cat_Registro_De_Entrada_y_Salida_De_Proveedores(){
-		this.setSize(819,540);
+		this.setSize(819,390);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/favoritos-ver-boton-icono-8318-32.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia.png"));
 		this.setTitle("Registro De Entrada y Salida De Proveedores");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Registro De Entrada y Salida De Proveedores"));
 		
-		this.menu_toolbar.add(btnBuscar  );
-	    this.menu_toolbar.addSeparator(  );
-	    this.menu_toolbar.addSeparator(  );
-	    this.menu_toolbar.add(btnNuevo   );
-	    this.menu_toolbar.addSeparator(  );
-	    this.menu_toolbar.addSeparator(  );
-		this.menu_toolbar.add(btnDeshacer);
-		this.menu_toolbar.addSeparator(  );
-		this.menu_toolbar.addSeparator(  );
-		this.menu_toolbar.add(btnGuardar );
+		this.menu_toolbar.add(btnBuscar   );
+	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.add(btnModificar);
+	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.add(btnNuevo    );
+	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnDeshacer );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnGuardar  );
 		this.menu_toolbar.setFloatable(false);
 		
 		trae_hora.lblHora.setFont(new java.awt.Font("Arial",0,40));
+		lblFecha.setFont(new java.awt.Font("Arial",0,40));
 		
 		 int x=15, y=0,width=130,height=20,sep=75;
+		this.panel.add(lblFecha).setBounds                      (x+480 ,y      ,width*2    ,height*3);
 		this.panel.add(trae_hora.lblHora).setBounds             (x+690 ,y      ,width*2    ,height*3); 
 		this.panel.add(menu_toolbar).setBounds                  (x     ,y+=20  ,width*4    ,height );
 		this.panel.add(new JLabel("Folio:")).setBounds          (x     ,y+=40  ,width      ,height );
 		this.panel.add(txtFolio).setBounds                      (x+=sep,y      ,width      ,height );
         this.panel.add(btnizquierda).setBounds                  (x+=135,y      ,height     ,height );
         this.panel.add(btnderecha).setBounds                    (x+=25 ,y      ,height     ,height );
-		this.panel.add(new JLabel("Estatus:")).setBounds        (x+=35 ,y      ,width      ,height );
-		this.panel.add(cmb_status).setBounds                    (x+=45 ,y      ,width-50   ,height );
+		this.panel.add(new JLabel("Estatus:")).setBounds        (x+=55 ,y      ,width      ,height );
+		this.panel.add(cmb_status).setBounds                    (x+=45 ,y      ,width      ,height );
 		this.panel.add(new JLabel("Pase El Gafete:")).setBounds (x=15  ,y+=30  ,width      ,height ); 
 		this.panel.add(PtxtClave).setBounds                     (x+sep ,y      ,width      ,height );
 		this.panel.add(lblFolio).setBounds                      (x+210 ,y      ,width      ,height ); 
@@ -194,24 +178,21 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		this.panel.add(cmbEstablecimiento).setBounds            (x+sep ,y      ,width*3    ,height );
 		this.panel.add(new JLabel("Proveedor:")).setBounds      (x     ,y+=30  ,width      ,height );
 		this.panel.add(txtProveedor).setBounds                  (x+sep ,y      ,width*3-20 ,height );
-		this.panel.add(btnfilpuestos).setBounds                 (x+445 ,y      ,height     ,height );		
+		this.panel.add(btnfilproveedor).setBounds               (x+445 ,y      ,height     ,height );		
 		this.panel.add(new JLabel("Ejecutivo:")).setBounds      (x     ,y+=30  ,width      ,height );
-		this.panel.add(txtEjecutivo).setBounds                  (x+sep ,y      ,width*3-20 ,height );
-		this.panel.add(btnfilrepora).setBounds                  (x+445 ,y      ,height     ,height );
-		this.panel.add(new JLabel("Observaciones:")).setBounds  (x     ,y+=30  ,width      ,height );
-		this.panel.add(scrollobjet).setBounds                   (x+sep ,y      ,width*3    ,140    );
-		this.panel.add(toolbarOden).setBounds                   (x     ,y+=150 ,465        ,height );
+		this.panel.add(txtEjecutivo).setBounds                  (x+sep ,y      ,width*3    ,height );
+		this.panel.add(toolbarOden).setBounds                   (x     ,y+=30  ,335        ,height );
+		this.panel.add(txtFechaGuardo).setBounds                (x+335 ,y      ,width      ,height );
 		this.panel.add(Scroll_tablaOrden).setBounds             (x     ,y+=25  ,465        ,115    );
-		
-		this.panel.add(toolbarEntradaSalida).setBounds          (x=500 ,y=60   ,300        ,height );
-		this.panel.add(Scroll_tablaEntrada_Salida).setBounds    (x     ,y+=25  ,300        ,115    );
-		this.panel.add(Scroll_Tabla_Evaluacion).setBounds       (x     ,y+=125 ,300        ,290    );
+		this.panel.add(toolbarEntradaSalida).setBounds          (x=500 ,y=60   ,width=300  ,height );
+		this.panel.add(Scroll_tablaEntrada_Salida).setBounds    (x     ,y+=25  ,width      ,115    );
+		this.panel.add(new JLabel("Observaciones:")).setBounds  (x     ,y+=130 ,width      ,height );
+		this.panel.add(scrollobjet).setBounds                   (x     ,y+=20  ,width      ,115    );
 		
 		ObjTab.tabla_precargada(tablaEntrada_Salida);
 		ObjTab.tabla_precargada(tablaOrden         );
-		ObjTab.tabla_precargada(tablaEvaluacion    );
 		
-		    this.toolbarEntradaSalida.add(btnAgregLunes);
+		    this.toolbarEntradaSalida.add(btnAgregMov);
 			this.toolbarEntradaSalida.addSeparator(    );
 			this.toolbarEntradaSalida.addSeparator(    );
 		    this.toolbarEntradaSalida.add(btnEljLunes  );
@@ -223,24 +204,21 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		    this.toolbarOden.add(btnEljOrden    );
 			this.toolbarOden.setFloatable(false );
 			
-		this.txtBuscar.addKeyListener(opFiltro);
 		this.btnAgregFactura.addActionListener(opBuscarOrden_Compra);
 		this.btnEljLunes.addActionListener(new opEliminarfila(tablaEntrada_Salida));
-		this.btnAgregLunes.addActionListener(new opAgregar_Movimiento(tablaEntrada_Salida));
+		this.btnAgregMov.addActionListener(new opAgregar_Movimiento(tablaEntrada_Salida));
 		this.PtxtClave.addKeyListener(busqueda_datos);
+		this.btnEljOrden.addActionListener(new opEliminarOrdenCompra(tablaOrden));
 		
 		this.tablaEntrada_Salida.getColumnModel().getColumn(2).setMinWidth(148);
 		this.tablaOrden.getColumnModel().getColumn(0).setMinWidth(110);
 		this.tablaOrden.getColumnModel().getColumn(1).setMinWidth(85 );
 		this.tablaOrden.getColumnModel().getColumn(2).setMinWidth(110);
 		this.tablaOrden.getColumnModel().getColumn(3).setMinWidth(83 );
-		this.tablaEvaluacion.getColumnModel().getColumn(0).setMaxWidth(30 );
-		this.tablaEvaluacion.getColumnModel().getColumn(1).setMinWidth(193);
 		
 		panelEnabledFalse();
 		this.btnNuevo.addActionListener     (nuevo          );		
-		this.btnfilpuestos.addActionListener(opBuscarProveedor );
-		this.btnfilrepora.addActionListener (opBuscarPuesto );		
+		this.btnfilproveedor.addActionListener(opBuscarProveedor );
 		this.btnGuardar.addActionListener   (guardar        );
 		this.btnDeshacer.addActionListener  (deshacer       );
 		this.btnBuscar.addActionListener    (buscar         );
@@ -265,20 +243,22 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscar"                );
         getRootPane().getActionMap().put("buscar", new AbstractAction(){ public void actionPerformed(ActionEvent e){ btnBuscar.doClick(); }  });
 		tablaproveedores = proveedores.refrescar_tablas();
+		lblFecha.setText(tablaproveedores[0][2].toString());
+		txtFechaGuardo.setText(tablaproveedores[0][2].toString());
 	}
 	
 	 KeyListener busqueda_datos = new KeyListener(){
 			public void keyReleased(KeyEvent evento) {
 				if(evento.getKeyCode()==KeyEvent.VK_ENTER){
 				     @SuppressWarnings("deprecation")
-				     String clave_checador=PtxtClave.getText().toString().toUpperCase().trim();
-				     int posicionC = clave_checador.indexOf('C');
-				     panelLimpiar();
+					     String clave_checador=PtxtClave.getText().toString().toUpperCase().trim();
+					     int posicionC = clave_checador.indexOf('C');
+					     lblNombre.setText("");
+					     lblFolio.setText("");
 				 	if(posicionC>0){
 				 		if(isNumeric(clave_checador.substring(0, posicionC))){
 							Obj_Registro_Proveedores provedorvalida =new Obj_Registro_Proveedores().Valida_existe_colaborador(clave_checador);
 							if(provedorvalida.getExiste().equals("true")){
-								 panelEnabledTrue();
 								 cmbEstablecimiento.setSelectedItem(provedorvalida.getEstablecimiento());
 								 lblFolio.setText(provedorvalida.getFolio_colaborador_recibe()+"");
 								 lblNombre.setText(provedorvalida.getNombre_recibe());
@@ -365,6 +345,28 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 	    }
 	};
 	
+	class opEliminarOrdenCompra implements ActionListener{   
+		JTable tablaparametro;
+	    public opEliminarOrdenCompra(final JTable tblp){
+	    	tablaparametro = tblp;
+	    }
+		public void actionPerformed(ActionEvent evt){
+	    	DefaultTableModel modeloparametro= (DefaultTableModel) tablaparametro.getModel();
+	    	if(!tablaparametro.isRowSelected(tablaparametro.getSelectedRow())){
+				JOptionPane.showMessageDialog(null, "Es Requerido El Selecionar Una Fila Para Poder Eliminarla ", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;	
+	    	}
+	    	if(tablaparametro.getRowCount()>0){
+					Object primeraColum     = modeloparametro.getValueAt(tablaparametro.getSelectedRow(),1);
+					modeloparametro.setValueAt(primeraColum,tablaparametro.getSelectedRow()    ,1);
+		    		modeloparametro.removeRow(tablaparametro.getSelectedRow());
+	    	}else{
+				JOptionPane.showMessageDialog(null, "Es Requerido Que Seleccione Una Fila De La Tabla Para Eliminar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+	    	}
+	    }
+	};
+	
 	ActionListener opBuscarProveedor = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
          new Cat_Filtro_Proveedores().setVisible(true);
@@ -383,50 +385,72 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		}
 	};
 	
-	
-
-	
-	
-		
-		
-
-		public void cargar_datos_tablas(int cuadranteparametro){
-			  Obj_Cuadrantes cuadrante = new Obj_Cuadrantes();
-			  String[][] tablacompleta= cuadrante.refrescar_tablas(cuadranteparametro);
-			  Object[]   vector = new Object[5];
-			  
-			  txtFolio.setText                  (tablacompleta[0][ 6].toString());
-			  cmbEstablecimiento.setSelectedItem(tablacompleta[0][ 8].toString());
-			  txtProveedor.setText              (tablacompleta[0][10].toString());
-			  txtEjecutivo.setText                (tablacompleta[0][11].toString());
-			  cmb_status.setSelectedItem        (tablacompleta[0][14].toString());
-			for(int i=0;i<tablacompleta.length;i++){
-				if(Integer.valueOf(tablacompleta[i][5].toString())==1){
-					for(int j=0;j<5;j++){
-					vector[j] = tablacompleta[i][j].toString();
-					}
-					modelo.addRow(vector);
-				}
-				
-			 }	
-			}
-			
-			KeyListener opFiltro = new KeyListener(){
-				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablaEntrada_Salida, txtBuscar.getText(), columnas);
-				}
-				public void keyTyped(KeyEvent arg0) {}
-				public void keyPressed(KeyEvent arg0) {}		
-			};
-		
-		
-	ActionListener opBuscarPuesto = new ActionListener(){
+	ActionListener seleccionar_estab = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-         new Cat_Filtro_Puestos("Puesto").setVisible(true);
+			 btnfilproveedor.doClick();
+		}		
+	};
+
+	ActionListener deshacer = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			panelLimpiar();
+			panelEnabledFalse();
+			btnNuevo.setEnabled(true);
+			NuevoModifica="";
 		}
 	};
 	
-
+	ActionListener nuevo = new ActionListener(){
+		public void actionPerformed(ActionEvent e) {
+			panelLimpiar();
+			panelEnabledTrue();
+			txtFolio.setText(new Obj_Registro_Proveedores().Nuevo()+"");
+			btnGuardar.setEnabled(true);
+			NuevoModifica="N";
+			PtxtClave.setEditable(true);
+            PtxtClave.requestFocus();   
+    		txaObservaciones.setEditable(true);
+    		cmb_status.setEnabled(false);
+    		
+    		vector[0] ="Entrada" ;
+    		vector[1] =trae_hora.lblHora.getText().toString().trim();
+    		vector[2] ="" ;
+    		modelo.addRow(vector);
+    		btnModificar.setEnabled(false);
+			return;
+		}
+	};
+		
+	public void cargar_datos_tablas(int folio){
+			  Obj_Registro_Proveedores proveedores = new Obj_Registro_Proveedores().refrescar_tablas(folio);
+			  String [][] Tabla_facturas  = proveedores.getTabla_facturas(); 
+			  String [][] Tabla_registros = proveedores.getTabla_registros(); 
+			  Object []   vector = new Object[6];
+			  txtFolio.setText                  (proveedores.getFolio()+"");
+			  cmb_status.setSelectedItem(proveedores.getEstatus() );
+			  lblFolio.setText(proveedores.getFolio_colaborador_recibe()+"");
+			  lblNombre.setText(proveedores.getNombre_recibe());
+			  cmbEstablecimiento.setSelectedItem(proveedores.getEstablecimiento() );
+			  txtProveedor.setText              (proveedores.getProveedor().toString());
+			  txtEjecutivo.setText              (proveedores.getChofer().toString());
+			  txtFechaGuardo.setText            (proveedores.getFecha().toString());
+			  
+			for(int i=0;i<Tabla_facturas.length;i++){
+				for(int j=0;j<6;j++){
+				  vector[j] = Tabla_facturas[i][j].toString();
+				}
+					modeloorden.addRow(vector);
+			 }	
+			
+			vector = new Object[3];
+			for(int i=0;i<Tabla_registros.length;i++){
+				for(int j=0;j<3;j++){
+				  vector[j] = Tabla_registros[i][j].toString();
+				}
+					modelo.addRow(vector);
+			 }	
+			
+	}
 	
 	ActionListener opDerecha = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -452,45 +476,9 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		}
 	};
 	
-	ActionListener deshacer = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			panelLimpiar();
-			panelEnabledFalse();
-			btnNuevo.setEnabled(true);
-			NuevoModifica="";
-		}
-	};
-	
 	ActionListener buscar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			new Cat_Filtro_Buscar_Cuadrantes().setVisible(true);
-		}
-	};
-	
-	
-
-	
-	
-    
-
-	
-	ActionListener nuevo = new ActionListener(){
-		public void actionPerformed(ActionEvent e) {
-			panelLimpiar();
-			panelEnabledTrue();
-			txtFolio.setText(new Obj_Registro_Proveedores().Nuevo()+"");
-			btnGuardar.setEnabled(true);
-			NuevoModifica="N";
-			PtxtClave.setEditable(true);
-            PtxtClave.requestFocus();   
-    		txaObservaciones.setEditable(true);
-    		
-    		vector[0] ="Entrada" ;
-    		vector[1] =trae_hora.lblHora.getText().toString().trim();
-    		vector[2] ="" ;
-    		modelo.addRow(vector);
-			return;
-			
 		}
 	};
 	
@@ -500,17 +488,18 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 					if(!Mensaje.equals("Para Poder Guardar Es Requerido Alimente:")){
 						JOptionPane.showMessageDialog(null, Mensaje, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					}else{
-					Obj_Cuadrantes cuadrantes =new Obj_Cuadrantes();
-
-					cuadrantes.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));
-					cuadrantes.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString());
-					cuadrantes.setPuesto(txtProveedor.getText().toString().trim());
-					cuadrantes.setPuesto_reporta(txtEjecutivo.getText().toString().trim());
-					cuadrantes.setEstatus(cmb_status.getSelectedItem().toString().trim());
-                    cuadrantes.setNuevoModifica(NuevoModifica);  
-                    cuadrantes.setTabla_actividades(TablaGuardado());
-                    
-        			if(cuadrantes.Guardar()){
+						proveedores.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));
+						proveedores.setFolio_colaborador_recibe(Integer.valueOf(lblFolio.getText().toString()));
+						proveedores.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString()); 					
+						proveedores.setProveedor(txtProveedor.getText().toString().trim());
+						proveedores.setChofer(txtEjecutivo.getText().toString().trim());
+						proveedores.setObservaciones(txaObservaciones.getText().toString().trim());		
+						proveedores.setEstatus(cmb_status.getSelectedItem().toString().trim());
+						proveedores.setNuevoModifica(NuevoModifica);
+						proveedores.setTabla_registros(TablaGuardado());
+						proveedores.setTabla_facturas(TablaGuardadotb2());
+						
+					if(proveedores.Guardar_Captura()){
     					JOptionPane.showMessageDialog(null,"El Registro Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
     					btnDeshacer.doClick();
     					return;
@@ -527,37 +516,61 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 			int filas = rengloneslunes;
 			int fila  = 0;
 			int i     = 0;
-			String[][] tablas = new String[filas][6];	
+			String[][] tablas = new String[filas][3];	
 			while(rengloneslunes > 0){
 					tablas[i][0] = modelo.getValueAt(fila, 0)+"";
 					tablas[i][1] = modelo.getValueAt(fila, 1)+"";
 					tablas[i][2] = modelo.getValueAt(fila, 2)+"";
-					tablas[i][3] = modelo.getValueAt(fila, 3)+"";
-					tablas[i][4] = modelo.getValueAt(fila, 4)+"";
-					tablas[i][5] = "1";
 					i+=1;
 					fila+=1;
 					rengloneslunes--;
 			}
 			return tablas;
 		}
+ 	 
+ 	 public String[][] TablaGuardadotb2(){
+			int rengloneslunes     = tablaOrden.getRowCount()    ;
+			int filas = rengloneslunes;
+			int fila  = 0;
+			int i     = 0;
+			String[][] tablas = new String[filas][6];	
+			while(rengloneslunes > 0){
+					tablas[i][0] = modeloorden.getValueAt(fila, 0)+"";
+					tablas[i][1] = modeloorden.getValueAt(fila, 1)+"";
+					tablas[i][2] = modeloorden.getValueAt(fila, 2)+"";
+					tablas[i][3] = modeloorden.getValueAt(fila, 3)+"";
+					tablas[i][4] = modeloorden.getValueAt(fila, 4)+"";
+					tablas[i][5] = modeloorden.getValueAt(fila, 5)+"";
+					i+=1;
+					fila+=1;
+					rengloneslunes--;
+			}
+			return tablas;
+		}
+ 	 
 		
 	public String Valida(){
 	    String Mensaje ="Para Poder Guardar Es Requerido Alimente:";
-	    if(cmbEstablecimiento.getSelectedIndex()==0){Mensaje+="\nEl Establecimiento"; }
-	    if(txtProveedor.getText().equals("")){Mensaje+="\nEl Nombre Del Puesto"; }
-	    if(txtEjecutivo.getText().equals("")){Mensaje+="\nEl Puesto Al Que Reporta"; }
+	    if(lblFolio.getText().equals("")){Mensaje+="\nEl La Persona Que Recibe Al Proveedor"; }
+	    if(cmbEstablecimiento.getSelectedIndex()==0){Mensaje+="\nEl Establecimiento";         }
+	    if(txtProveedor.getText().equals("")){Mensaje+="\nEl Nombre Del Puesto";              }
+	    if(txtEjecutivo.getText().equals("")){Mensaje+="\nEl Nombre Ejecutivo Del Proveedor"; }
+	    if(modeloorden.getRowCount()==0){Mensaje+="\nEs Requerido Alimente La Factura Que Se Recibe"; }
 		return Mensaje;
 	}	
 	
 	public void panelLimpiar(){	
 		modelo.setRowCount(0);
+		modeloorden.setRowCount(0);
+		lblFolio.setText("");
+		lblNombre.setText("");
 		txtFolio.setText("");
 		txtProveedor.setText("");
 		txtEjecutivo.setText("");
+		txaObservaciones.setText("");
+		PtxtClave.setText("");
 		cmb_status.setSelectedIndex(0);
 		cmbEstablecimiento.setSelectedIndex(0);
-		
 		ObjTab.Obj_Filtro(tablaEntrada_Salida    , "", columnas);
 	}	
 	
@@ -569,12 +582,13 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		txaObservaciones.setEditable(false);
 		
         btnGuardar.setEnabled (false);
-        btnfilpuestos.setEnabled(false);
-        btnfilrepora.setEnabled(false);
-        btnAgregLunes.setEnabled(false);
+        btnfilproveedor.setEnabled(false);
+        btnAgregMov.setEnabled(false);
         btnEljLunes.setEnabled(false);
         btnAgregFactura.setEnabled(false);
         btnEljOrden.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtFechaGuardo.setEditable(false);
         
 		cmb_status.setEnabled (false);
 		cmbEstablecimiento.setEnabled(false);
@@ -582,12 +596,13 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 	
 	public void panelEnabledTrue(){	
         btnGuardar.setEnabled (true);
-        btnfilpuestos.setEnabled(true);
-        btnfilrepora.setEnabled(true);
-        btnAgregLunes.setEnabled(true);
+        btnfilproveedor.setEnabled(true);
+        btnAgregMov.setEnabled(true);
+        btnModificar.setEnabled(true);
         btnEljLunes.setEnabled(true);
         btnAgregFactura.setEnabled(true);
         btnEljOrden.setEnabled(true);
+        txtEjecutivo.setEditable(true);
         
 		cmb_status.setEnabled (true);
 		cmbEstablecimiento.setEnabled(true);
@@ -668,7 +683,9 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 					public void mouseClicked(MouseEvent e) {
 			        	if(e.getClickCount()==1){
 			        		int fila = tablafprv.getSelectedRow();
-			        			txtProveedor.setText  (tablafprv.getValueAt(fila,1)+"");	
+			        		txtProveedor.setText  (tablafprv.getValueAt(fila,1)+"");
+			        		
+			        		
 							dispose();
 			        	}
 			        }
@@ -725,7 +742,6 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		     @SuppressWarnings({ "rawtypes" })
 		    private TableRowSorter trsfiltro;
 		     
-		    JCButton btnActualizar       = new JCButton("Actualizar" ,"Actualizar.png"                  ,"Azul");   
 		    JCButton btnAceptar          = new JCButton("Aceptar"    ,"double-arrow-icone-3883-16.png"  ,"Azul");  
 		    
 			JTextField txtBuscarfp       = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
@@ -735,9 +751,13 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 			JTextField txtImporteorden   = new Componentes().text(new JCTextField(), "Importe Total Orden De Compra", 10, "Double");
 			JLabel     JlProveedor         = new JLabel();    
 			
+			String TipoPoveedor[] = {"Compra","Gasto"};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			JComboBox cmb_tipo_Proveedor = new JComboBox(TipoPoveedor);
+			
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Cat_Filtro_Ordenes_de_Compra(){
-				this.setSize(800,500);
+				this.setSize(800,380);
 				this.setResizable(false);
 				this.setLocationRelativeTo(null);
 				this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -752,19 +772,21 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 	            this.panelf.add(new JLabel("Folio Factura:")).setBounds    (x     ,y     ,width ,height );
 	            this.panelf.add(txtFolioFactura).setBounds                 (x+80  ,y     ,170   ,height ); 
 	            this.panelf.add(new JLabel("Importe Factura:")).setBounds  (x+270 ,y     ,width ,height );
-	            this.panelf.add(txtImporteFactura).setBounds               (x+360 ,y     ,170   ,height ); 
-				this.panelf.add(btnActualizar).setBounds                   (x+630 ,y     ,150   ,height );
+	            this.panelf.add(txtImporteFactura).setBounds               (x+360 ,y     ,170   ,height );
+	            
+	            this.panelf.add(new JLabel("Tipo Proveedor:")).setBounds   (x+550 ,y     ,width ,height );
+				this.panelf.add(cmb_tipo_Proveedor).setBounds              (x+630 ,y     ,150   ,height );
 				
 	            this.panelf.add(new JLabel("Folio Orden C.:")).setBounds   (x     ,y+=25 ,width ,height );
 	            this.panelf.add(txtFolioOrden).setBounds                   (x+80  ,y     ,170   ,height ); 
 	            this.panelf.add(new JLabel("Importe Orden C.:")).setBounds (x+270 ,y     ,width ,height );
 	            this.panelf.add(txtImporteorden).setBounds                 (x+360 ,y     ,170   ,height ); 
-				this.panelf.add(btnAceptar).setBounds                      (x+630 ,y     ,150   ,height );
+				this.panelf.add(btnAceptar).setBounds                      (x+630 ,y+15  ,150   ,height );
 	            
-				 this.panelf.add(new JLabel("Proveedor:")).setBounds       (x     ,y+=25 ,width ,height );
+				 this.panelf.add(new JLabel("Proveedor:")).setBounds       (x     ,y+=20 ,width ,height );
 				this.panelf.add(JlProveedor).setBounds                     (x+80  ,y     ,width ,height );
-				this.panelf.add(txtBuscarfp).setBounds                     (x     ,y+=25 ,width ,height );
-				this.panelf.add(scroll_tablafp).setBounds                  (x     ,y+=20 ,width ,350    );
+				this.panelf.add(txtBuscarfp).setBounds                     (x     ,y+=18 ,width ,height );
+				this.panelf.add(scroll_tablafp).setBounds                  (x     ,y+=20 ,width ,245    );
 				
 				ObjTab.tabla_precargada(tablafilordenes);
 		    	this.tablafilordenes.getColumnModel().getColumn(0).setMinWidth(70);		
@@ -780,7 +802,10 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		    	
 		    	txtFolioOrden.setEditable(false);
 		    	txtImporteorden.setEditable(false);
-		    
+		        txtBuscarfp.setText(txtProveedor.getText().toString().trim());
+		        
+				ObjTab.Obj_Filtro(tablafilordenes, txtProveedor.getText().toString().trim().toUpperCase(), columnaspo);
+				
 				  Object[]   vector = new Object[11];
 				for(int i=0;i<tablaordenes_compra.length;i++){
 					  for(int j=0;j<11;j++){
@@ -793,22 +818,53 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 				this.txtBuscarfp.addKeyListener  (opFiltropuestos );
 				this.btnAceptar.addActionListener(aceptar);
 				contf.add(panelf);
+				 this.addWindowListener(new WindowAdapter() {public void windowOpened( WindowEvent e ){
+	                	txtFolioFactura.requestFocus();}});
 			}
-
 
 			ActionListener aceptar = new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					 
-				      Object[]   vector = new Object[5];
-				      vector[0]=txtFolioFactura.getText().toString().toUpperCase().trim();
-				      vector[1]=txtImporteFactura.getText().toString().toUpperCase().trim();
-				      vector[2]=txtFolioOrden.getText().toString().toUpperCase().trim();
-				      vector[3]=txtImporteorden.getText().toString().toUpperCase().trim();
-				      vector[4]= Double.valueOf(txtImporteFactura.getText().toString())- Double.valueOf(txtImporteorden.getText().toString()); 
-						  modeloorden.addRow(vector);
-				}		
+					Object[]   vector = new Object[6];
+					 String Mensaje =Validaprov();
+						if(!Mensaje.equals("Para Poder Aceptar Es Requerido Alimente:")){
+							   JOptionPane.showMessageDialog(null,Mensaje, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
+						}else{
+							if(txtFolioOrden.getText().toString().toUpperCase().trim().equals("")){
+								if(JOptionPane.showConfirmDialog(null, "Falta Selecionar Una Orden De compra De La Lista"+"\n ¿Desea Continuar? " ) == 0){
+									  vector[0]=txtFolioFactura.getText().toString().toUpperCase().trim();
+								      vector[1]=txtImporteFactura.getText().toString().toUpperCase().trim();
+								      vector[2]="";
+								      vector[3]=0;
+								      vector[4]= Double.valueOf(txtImporteFactura.getText().toString())- 0; 
+								      vector[5]= cmb_tipo_Proveedor.getSelectedItem().toString().trim();
+								      modeloorden.addRow(vector);
+									  dispose();
+									  return;
+								}else{
+									return;
+								}
+							}else{						
+						      vector[0]=txtFolioFactura.getText().toString().toUpperCase().trim();
+						      vector[1]=txtImporteFactura.getText().toString().toUpperCase().trim();
+						      vector[2]=txtFolioOrden.getText().toString().toUpperCase().trim();
+						      vector[3]=txtImporteorden.getText().toString().toUpperCase().trim();
+						      vector[4]= Double.valueOf(txtImporteFactura.getText().toString())- Double.valueOf(txtImporteorden.getText().toString()); 
+						      vector[5]= cmb_tipo_Proveedor.getSelectedItem().toString().trim();
+						      modeloorden.addRow(vector);
+							  dispose();
+							  return;
+					        }		
+					}
+				}	
 			};
-				
+			
+			public String Validaprov(){
+			    String Mensaje ="Para Poder Aceptar Es Requerido Alimente:";
+			    if(txtFolioFactura.getText().equals("")){Mensaje+="\nEl Folio De La Factura"; }
+			    if(txtImporteFactura.getText().equals("")){Mensaje+="\nEl Importe De La Factura"; }
+				return Mensaje;
+			}	
+			
 			private void agregar(final JTable tbl) {
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
@@ -824,116 +880,29 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 			
 	        private KeyListener opFiltropuestos = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablafilordenes, txtBuscarfp.getText().toUpperCase(), columnaspo);
+					ObjTab.Obj_Filtro(tablafilordenes, txtBuscarfp.getText(), columnaspo);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		
 			};
 		}
 		
-//TODO inicia filtro_puestos	
-	public class Cat_Filtro_Puestos extends JDialog{
-		Container contf = getContentPane();
-		JLayeredPane panelf = new JLayeredPane();
-		Connexion con = new Connexion();
-		
-		Obj_tabla ObjTab =new Obj_tabla();
-		int columnasp = 2,checkbox=-1;
-		public void init_tablafp(){
-	    	this.tablafp.getColumnModel().getColumn(0).setMinWidth(55);
-	    	this.tablafp.getColumnModel().getColumn(1).setMinWidth(375);
-	    	String comandof="select folio, nombre  from tb_puesto order by nombre ";
-			String basedatos="26",pintar="si";
-			ObjTab.Obj_Refrescar(tablafp,modelof, columnasp, comandof, basedatos,pintar,checkbox);
-	    }
-		
-		@SuppressWarnings("rawtypes")
-		public Class[] base (){
-			Class[] types = new Class[columnasp];
-			for(int i = 0; i<columnasp; i++){types[i]= java.lang.Object.class;}
-			 return types;
-		}
-		
-		public DefaultTableModel modelof = new DefaultTableModel(null, new String[]{"Folio","Puesto"}){
-			 @SuppressWarnings("rawtypes")
-				Class[] types = base();
-				@SuppressWarnings({ "rawtypes", "unchecked" })
-				public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
-				public boolean isCellEditable(int fila, int columna){return false;}
-		};
-		
-		JTable tablafp = new JTable(modelof);
-		public JScrollPane scroll_tablafp = new JScrollPane(tablafp);
-	     @SuppressWarnings({ "rawtypes" })
-	    private TableRowSorter trsfiltro;
-		     
-		JTextField txtBuscarfp  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
-		String parametro="";
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public Cat_Filtro_Puestos(String btnparametro){
-			parametro=btnparametro;
-			this.setSize(500,500);
-			this.setResizable(false);
-			this.setLocationRelativeTo(null);
-			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			this.setModal(true);
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
-			this.panelf.setBorder(BorderFactory.createTitledBorder("Selecione Un Puesto Con Doble Click"));
-			trsfiltro = new TableRowSorter(modelof); 
-			tablafp.setRowSorter(trsfiltro);
-			
-			this.setTitle("Filtro De Puestos");
-			this.panelf.add(txtBuscarfp).setBounds      (10 ,20 ,470 , 20 );
-			this.panelf.add(scroll_tablafp).setBounds   (10 ,40 ,470 ,415 );
-			this.init_tablafp();
-			this.agregar(tablafp);
-			this.txtBuscarfp.addKeyListener  (opFiltropuestos );
-			contf.add(panelf);
-		}
-		
-		private void agregar(final JTable tbl) {
-	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-		        	if(e.getClickCount()==1){
-		        		int fila = tablafp.getSelectedRow();
-		        			txtEjecutivo.setText  (tablafp.getValueAt(fila,1)+"");	
-		        		
-						dispose();
-		        	}
-		        }
-	        });
-	    }
-		
-        private KeyListener opFiltropuestos = new KeyListener(){
-			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablafp, txtBuscarfp.getText().toUpperCase(), columnasp);
-			}
-			public void keyTyped(KeyEvent arg0) {}
-			public void keyPressed(KeyEvent arg0) {}		
-		};
-	}
-	//termina filtro puestos
-	
 	//TODO inicia filtro_Buscar	
 		public class Cat_Filtro_Buscar_Cuadrantes extends JDialog{
 			Container contfb = getContentPane();
 			JLayeredPane panelfb = new JLayeredPane();
 			Connexion con = new Connexion();
 			Obj_tabla ObjTab =new Obj_tabla();
-			int columnasb = 12,checkbox=-1;
+			int columnasb = 7,checkbox=-1;
 			public void init_tablafp(){
 		    	this.tablab.getColumnModel().getColumn( 0).setMinWidth(55);
-		    	this.tablab.getColumnModel().getColumn( 1).setMinWidth(355);
-		    	this.tablab.getColumnModel().getColumn( 2).setMinWidth(150);
+		    	this.tablab.getColumnModel().getColumn( 1).setMinWidth(60);
+		    	this.tablab.getColumnModel().getColumn( 2).setMinWidth(250);
 		    	this.tablab.getColumnModel().getColumn( 3).setMinWidth(150);
 		    	this.tablab.getColumnModel().getColumn( 4).setMinWidth(200);
-		    	this.tablab.getColumnModel().getColumn( 5).setMinWidth(200);
+		    	this.tablab.getColumnModel().getColumn( 5).setMinWidth(100);
 		    	this.tablab.getColumnModel().getColumn( 6).setMinWidth(120);
-		    	this.tablab.getColumnModel().getColumn( 7).setMinWidth(120);
-		    	this.tablab.getColumnModel().getColumn( 8).setMinWidth(120);
-		    	this.tablab.getColumnModel().getColumn( 9).setMinWidth(120);
-		    	this.tablab.getColumnModel().getColumn(10).setMinWidth(120);
-		    	String comandof=" exec cuadrantes_filtro";
+		    	String comandof=" exec proveedores_registro_de_entradas_y_salidas_filtro";
 				String basedatos="26",pintar="si";
 				ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandof, basedatos,pintar,checkbox);
 		    }
@@ -945,8 +914,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 				 return types;
 			}
 			
-			public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{"Folio","Nombre Cuadrante","Establecimiento","Departamento","Puesto","Puesto Reporta","Responsabilidades","Objetivos"
-					 ,"Estatus","Fecha Guardado","Fecha Ultima Modificacion","Usuario Ultima Modificacion"}){
+			public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{"Folio","Cod Proveedor","Proveedor","Establecimiento","Recibio","Fecha","Observaciones"}){
 				 @SuppressWarnings("rawtypes")
 					Class[] types = base();
 					@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -962,18 +930,18 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 			JTextField txtBuscarb  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String");
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Cat_Filtro_Buscar_Cuadrantes(){
-				this.setSize(1024,500);
+				this.setSize(780,350);
 				this.setResizable(false);
 				this.setLocationRelativeTo(null);
 				this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 				this.setModal(true);
 				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
-				this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Un Cuadrante Con Doble Click"));
-				this.setTitle("Filtro De Cuadrantes");
+				this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Un Registro Con Doble Click"));
+				this.setTitle("Filtro De Registro De Entrada y Salida De Proveedores");
 				trsfiltro = new TableRowSorter(modelob); 
 				tablab.setRowSorter(trsfiltro);
-				this.panelfb.add(txtBuscarb).setBounds      (10 ,20 ,1004 , 20 );
-				this.panelfb.add(scroll_tablab).setBounds   (10 ,40 ,1004 ,415 );
+				this.panelfb.add(txtBuscarb).setBounds      (10 ,20 ,750 , 20 );
+				this.panelfb.add(scroll_tablab).setBounds   (10 ,40 ,750 ,280 );
 				this.init_tablafp();
 				this.agregar(tablab);
 				this.txtBuscarb.addKeyListener  (opFiltropuestos );

@@ -105,6 +105,7 @@ import Obj_Planeacion.Obj_Prioridad_Y_Ponderacion;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
+import Obj_Seguridad.Obj_Registro_Proveedores;
 import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Registro_De_Desarrollo;
 import Obj_Servicios.Obj_Servicios;
@@ -6498,67 +6499,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 
-	
-	public boolean Guardar_Cuadrante(Obj_Cuadrantes cuadrante){
-		int folio_transaccion=0;
-		int cantidad_filas=cuadrante.getTabla_actividades().length;	
-		if(cuadrante.getNuevoModifica().equals("N")){
-			 folio_transaccion=busca_y_actualiza_proximo_folio(74);
-			 cuadrante.setFolio(folio_transaccion);	
-		}
-		String query = "exec  cuadrantes_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-		
-			for(int i=0; i<cantidad_filas ; i++){
-				pstmt.setInt   (1,  cuadrante.getFolio());
-				pstmt.setString(2,  cuadrante.getCuadrante());
-				pstmt.setString(3,  cuadrante.getEstablecimiento());
-				pstmt.setString(4,  cuadrante.getDepartamento());
-				pstmt.setString(5,  cuadrante.getPuesto());
-				pstmt.setString(6,  cuadrante.getPuesto_reporta());
-				pstmt.setString(7,  cuadrante.getResponsabilidades());
-				pstmt.setString(8,  cuadrante.getObjetivo());
-				pstmt.setString(9,  cuadrante.getEstatus());
-				pstmt.setInt   (10,  usuario.getFolio());
-				pstmt.setString(11,  cuadrante.getNuevoModifica());
-//				@orden smallint  ,@folio_actividad int, @hora_inicio time(2) ,@hora_final time(2)  ,@dia_semana tinyint
-				pstmt.setString(12 ,  cuadrante.getTabla_actividades()[i][0].toString().trim());
-				pstmt.setString(13 ,  cuadrante.getTabla_actividades()[i][1].toString().trim());
-				pstmt.setString(14 ,  cuadrante.getTabla_actividades()[i][3].toString().trim());
-				pstmt.setString(15 ,  cuadrante.getTabla_actividades()[i][4].toString().trim());
-				pstmt.setString(16 ,  cuadrante.getTabla_actividades()[i][5].toString().trim());
-				pstmt.setString(17 ,  i+"");
-				pstmt.executeUpdate();
-			} 
-			con.commit();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-			
-			System.out.println("SQLException: " + e.getMessage());
-			if (con != null){
-				try {
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-				} catch(SQLException ex) {
-					System.out.println(ex.getMessage());
-				}
-			} 
-			return false;
-		}finally{
-			try {
-				pstmt.close();
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
-	
 	public boolean Guardar_Recibir_Pedido(Obj_Registrar_Zona_Completada recibir_zona){
 //		String query =  "delete from mpedestab where LTRIM(RTRIM(folio)) = LTRIM(RTRIM(@folio_pedido)) AND LTRIM(RTRIM(transaccion))='29'";	
 		String query = "exec sp_recibir_pedido_por_zona ?,?,?,?,?";
@@ -6626,6 +6566,193 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			con.commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_PC_Por_Establecimiento ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Cuadrante (Obj_Cuadrantes cuadrante){
+		int folio_transaccion=0;
+		int cantidad_filas=cuadrante.getTabla_actividades().length;	
+		if(cuadrante.getNuevoModifica().equals("N")){
+			 folio_transaccion=busca_y_actualiza_proximo_folio(74);
+			 cuadrante.setFolio(folio_transaccion);	
+		}
+		String query = "exec  cuadrantes_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			for(int i=0; i<cantidad_filas ; i++){
+				pstmt.setInt   (1,  cuadrante.getFolio());
+				pstmt.setString(2,  cuadrante.getCuadrante());
+				pstmt.setString(3,  cuadrante.getEstablecimiento());
+				pstmt.setString(4,  cuadrante.getDepartamento());
+				pstmt.setString(5,  cuadrante.getPuesto());
+				pstmt.setString(6,  cuadrante.getPuesto_reporta());
+				pstmt.setString(7,  cuadrante.getResponsabilidades());
+				pstmt.setString(8,  cuadrante.getObjetivo());
+				pstmt.setString(9,  cuadrante.getEstatus());
+				pstmt.setInt   (10,  usuario.getFolio());
+				pstmt.setString(11,  cuadrante.getNuevoModifica());
+//				@orden smallint  ,@folio_actividad int, @hora_inicio time(2) ,@hora_final time(2)  ,@dia_semana tinyint
+				pstmt.setString(12 ,  cuadrante.getTabla_actividades()[i][0].toString().trim());
+				pstmt.setString(13 ,  cuadrante.getTabla_actividades()[i][1].toString().trim());
+				pstmt.setString(14 ,  cuadrante.getTabla_actividades()[i][3].toString().trim());
+				pstmt.setString(15 ,  cuadrante.getTabla_actividades()[i][4].toString().trim());
+				pstmt.setString(16 ,  cuadrante.getTabla_actividades()[i][5].toString().trim());
+				pstmt.setString(17 ,  i+"");
+				pstmt.executeUpdate();
+			} 
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	
+	public boolean Guardar_Captura_Cuadrante (Obj_Cuadrantes cuadrante){
+		int cantidad_filas=cuadrante.getTabla_actividades().length;	
+		int dia=0;
+		String query1 = "exec cuadrantes_captura_borrado_para_actualizacion ?,?" ;
+		String query = "EXEC cuadrantes_captura_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
+		
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt1 = con.prepareStatement(query1);
+		
+			for(int i=0; i<cantidad_filas ; i++){
+				pstmt.setInt   (1 ,  cuadrante.getFolio_colaborador());
+				pstmt.setInt   (2 ,  cuadrante.getFolio_cuadrante());
+				pstmt.setInt   (3 ,  usuario.getFolio());
+				pstmt.setString(4 ,  cuadrante.getNuevoModifica());				
+				pstmt.setString(5 ,  cuadrante.getTabla_actividades()[i][1].toString().trim());
+				pstmt.setString(6 ,  cuadrante.getTabla_actividades()[i][2].toString().trim());
+				pstmt.setString(7 ,  cuadrante.getTabla_actividades()[i][5].toString().trim());
+				pstmt.setString(8 ,  cuadrante.getTabla_actividades()[i][6].toString().trim());
+				pstmt.setString(9 ,  cuadrante.getTabla_actividades()[i][8].toString().trim());
+				pstmt.setString(10,  cuadrante.getTabla_actividades()[i][9].toString().trim());
+				
+				if(Integer.valueOf(cuadrante.getTabla_actividades()[i][9].toString().trim())!=dia){
+					dia= Integer.valueOf(cuadrante.getTabla_actividades()[i][9].toString().trim());
+					pstmt1.setInt   (1 ,  cuadrante.getFolio_colaborador());
+					pstmt1.setInt   (2 ,dia);
+					pstmt1.executeUpdate();
+					System.out.println( "SI"+dia);
+				}
+				pstmt.executeUpdate();
+			} 
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	
+	public boolean Guardar_Registro_De_Entradas_y_Salida (Obj_Registro_Proveedores proveedores){
+		int folio_transaccion=0;
+		int cantidad_filasf= proveedores.getTabla_facturas().length;
+		int cantidad_filasm= proveedores.getTabla_registros().length;
+		if(proveedores.getNuevoModifica().equals("N")){
+			 folio_transaccion=busca_y_actualiza_proximo_folio(76);
+			 proveedores.setFolio(folio_transaccion);	
+		}
+		String query = "exec  proveedores_registro_entradaysalida_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?";
+		String queryr = "exec  proveedores_registro_entradaysalida_insert_y_actualiza_movimientos ?,?,?,?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmtr = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			 pstmtr = con.prepareStatement(queryr);
+			 for(int i=0; i<cantidad_filasf ; i++){
+				pstmt.setInt   (1 ,  proveedores.getFolio());
+				pstmt.setInt   (2 ,  proveedores.getFolio_colaborador_recibe());
+				pstmt.setString(3 ,  proveedores.getEstablecimiento());
+				pstmt.setString(4 ,  proveedores.getProveedor());
+				pstmt.setString(5 ,  proveedores.getChofer());
+				pstmt.setString(6 ,  proveedores.getObservaciones());
+				pstmt.setString(7 ,  proveedores.getNuevoModifica());
+				pstmt.setString(8 ,  proveedores.getTabla_facturas()[i][0].toString().trim());
+				pstmt.setString(9 ,  proveedores.getTabla_facturas()[i][1].toString().trim());
+				pstmt.setString(10,  proveedores.getTabla_facturas()[i][2].toString().trim());
+				pstmt.setString(11,  proveedores.getTabla_facturas()[i][3].toString().trim());
+				pstmt.setString(12,  proveedores.getTabla_facturas()[i][5].toString().trim());
+				pstmt.executeUpdate();
+			} 
+			 for(int i=0; i<cantidad_filasm ; i++){
+				 pstmtr.setInt   (1,  proveedores.getFolio());
+				 pstmtr.setString(2,  proveedores.getTabla_registros()[i][0].toString().trim());
+				 pstmtr.setString(3,  proveedores.getTabla_registros()[i][1].toString().trim());
+				 pstmtr.setString(4,  proveedores.getTabla_registros()[i][2].toString().trim());
+				 pstmtr.setString(5,  proveedores.getNuevoModifica());
+				 pstmtr.executeUpdate();
+			 }
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Registro_De_Entradas_y_Salida ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){

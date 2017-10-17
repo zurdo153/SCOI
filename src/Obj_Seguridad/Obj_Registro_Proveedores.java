@@ -1,6 +1,7 @@
 package Obj_Seguridad;
 
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Registro_Proveedores {
 	int folio;
@@ -8,13 +9,13 @@ public class Obj_Registro_Proveedores {
 	String nombre_recibe;
 	String establecimiento;
 	String proveedor;
-	String chofer_del_proveedor;
+	String chofer;
 	String observaciones;
 	String estatus;
 	String NuevoModifica;
 	String existe;
+	String fecha;
 	String [][] tabla_facturas;
-	String [][] tabla_evaluacion;
 	String [][] tabla_registros;
 	 
 	public Obj_Registro_Proveedores(){
@@ -23,22 +24,14 @@ public class Obj_Registro_Proveedores {
 		this.nombre_recibe="";
 		this.establecimiento="";
 		this.proveedor="";
-		this.chofer_del_proveedor="";
+		this.chofer="";
 		this.observaciones="";		
 		this.estatus="";
 		this.NuevoModifica="";
+		this.fecha="";
 		this.tabla_facturas=null;
-		this.tabla_evaluacion=null;
 		this.tabla_registros=null;
 		this.existe="";
-	}
-	
-	public String getExiste() {
-		return existe;
-	}
-
-	public void setExiste(String existe) {
-		this.existe = existe;
 	}
 
 	public int getFolio() {
@@ -81,12 +74,12 @@ public class Obj_Registro_Proveedores {
 		this.proveedor = proveedor;
 	}
 
-	public String getChofer_del_proveedor() {
-		return chofer_del_proveedor;
+	public String getChofer() {
+		return chofer;
 	}
 
-	public void setChofer_del_proveedor(String chofer_del_proveedor) {
-		this.chofer_del_proveedor = chofer_del_proveedor;
+	public void setChofer(String chofer) {
+		this.chofer = chofer;
 	}
 
 	public String getObservaciones() {
@@ -113,20 +106,28 @@ public class Obj_Registro_Proveedores {
 		NuevoModifica = nuevoModifica;
 	}
 
+	public String getExiste() {
+		return existe;
+	}
+
+	public void setExiste(String existe) {
+		this.existe = existe;
+	}
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+
 	public String[][] getTabla_facturas() {
 		return tabla_facturas;
 	}
 
 	public void setTabla_facturas(String[][] tabla_facturas) {
 		this.tabla_facturas = tabla_facturas;
-	}
-
-	public String[][] getTabla_evaluacion() {
-		return tabla_evaluacion;
-	}
-
-	public void setTabla_evaluacion(String[][] tabla_evaluacion) {
-		this.tabla_evaluacion = tabla_evaluacion;
 	}
 
 	public String[][] getTabla_registros() {
@@ -153,5 +154,12 @@ public class Obj_Registro_Proveedores {
 		return new BuscarSQL().TablaOrdenes_De_Compra(Establecimiento);
 	}
 	
+	public boolean Guardar_Captura(){
+		return new GuardarSQL().Guardar_Registro_De_Entradas_y_Salida(this);
+	}
+	
+	public Obj_Registro_Proveedores refrescar_tablas(int folio){
+		return new BuscarSQL().Busqueda_de_Registro_Entrada_y_Salida_De_Proveedores(folio);
+	}
 	
 }

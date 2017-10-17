@@ -1,6 +1,7 @@
 package Cat_Servicios;
 
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
@@ -496,6 +499,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 			}
 			if(cantidadDeRegistrosGenerados > 0){
 				JOptionPane.showMessageDialog(null, "Se Genero el Archivo En La Ruta:\n C:\\REPORTES SCOI\\SERVICIOS\\","Aviso",JOptionPane.INFORMATION_MESSAGE);
+				abrirarchivo("C:\\REPORTES SCOI\\SERVICIOS\\");
 				return;
 			}else{
 				JOptionPane.showMessageDialog(null, "No Se Pudo Generar el Archivo Avise Al Administrador Del Sistema","Aviso",JOptionPane.WARNING_MESSAGE);
@@ -503,6 +507,15 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 			}
 		}
 	};
+	
+	public void abrirarchivo(String archivo){
+	     try {
+	            File objetofile = new File (archivo);
+	            Desktop.getDesktop().open(objetofile);
+	     }catch (IOException ex) {
+	            System.out.println(ex);
+	     }
+	}       
 	
 	ActionListener modificaratendio = new ActionListener(){
 		public void actionPerformed(ActionEvent e){

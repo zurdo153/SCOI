@@ -178,7 +178,9 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	JPasswordField txtFolio = new Componentes().textPassword(new JPasswordField(), "Clave", 100);
 			
 	JTextField txtColaborador    = new Componentes().text(new JCTextField()  , "Nombre Colaborador", 200                                     , "String");
+	JTextField txtfolioColaborado= new Componentes().text(new JCTextField()  , "Folio Colaborador", 50                                       , "String");
 	JTextField txtCuadrante      = new Componentes().text(new JCTextField()  , "Cuadrante", 200                                              , "String");
+	JTextField txtfolioCuadrante = new Componentes().text(new JCTextField()  , "Folio Cuadrante", 200                                        , "String");
 	JTextField txtEstablecimiento= new Componentes().text(new JCTextField()  , "Establecimiento", 200                                        , "String");
 	JTextField txtDepartamento   = new Componentes().text(new JCTextField()  , "Departamento", 200                                           , "String");
 	JTextField txtPuesto         = new Componentes().text(new JCTextField()  , "Puesto", 200                                                 , "String");
@@ -309,17 +311,19 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		this.Principal.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
 		 int x=15, y=20,width=100,height=20,sep=75;
 			this.Principal.add(new JLabel("Colaborador:")).setBounds    (x     ,y      ,width      ,height );
-			this.Principal.add(txtColaborador).setBounds                (x+sep ,y      ,width*4    ,height );
+			this.Principal.add(txtColaborador).setBounds                (x+sep ,y      ,width*5-50 ,height );
+			this.Principal.add(txtfolioColaborado).setBounds            (x+525 ,y      ,50         ,height );			
 			this.Principal.add(new JLabel("Cuadrante:")).setBounds      (x     ,y+=30  ,width      ,height );
-			this.Principal.add(txtCuadrante).setBounds                  (x+sep ,y      ,width*4    ,height );
+			this.Principal.add(txtCuadrante).setBounds                  (x+sep ,y      ,width*5-50 ,height );
+			this.Principal.add(txtfolioCuadrante).setBounds             (x+525 ,y      ,50         ,height );
 			this.Principal.add(new JLabel("Establecimiento:")).setBounds(x     ,y+=30  ,width      ,height );
-			this.Principal.add(txtEstablecimiento).setBounds            (x+sep ,y      ,width*4    ,height );
+			this.Principal.add(txtEstablecimiento).setBounds            (x+sep ,y      ,width*5    ,height );
 			this.Principal.add(new JLabel("Departamento:")).setBounds   (x     ,y+=30  ,width      ,height );
-			this.Principal.add(txtDepartamento).setBounds               (x+sep ,y      ,width*4    ,height );
+			this.Principal.add(txtDepartamento).setBounds               (x+sep ,y      ,width*5    ,height );
 			this.Principal.add(new JLabel("Puesto:")).setBounds         (x     ,y+=30  ,width      ,height );
-			this.Principal.add(txtPuesto).setBounds                     (x+sep ,y      ,width*4    ,height );
+			this.Principal.add(txtPuesto).setBounds                     (x+sep ,y      ,width*5    ,height );
 			this.Principal.add(new JLabel("Reporta A:")).setBounds      (x     ,y+=30  ,width      ,height );
-			this.Principal.add(txtReporta).setBounds                    (x+sep ,y      ,width*4    ,height );
+			this.Principal.add(txtReporta).setBounds                    (x+sep ,y      ,width*5    ,height );
 			this.Principal.add(new JLabel("Objetivo Del Puesto:")).setBounds(x ,y+=30  ,width      ,height );
 			this.Principal.add(scrollobjet).setBounds                   (x     ,y+=20  ,width*6    ,140    );
 			this.Principal.add(new JLabel("Responsabilidades Del Puesto:")).setBounds(x,y+=150,180 ,height );
@@ -327,7 +331,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
     }
 	
 	public void init_tablalunes(){
-		ObjTab.tablas_dias_del_cuadrante(tablaLunes);
+		ObjTab.tabla_mascara(tablaLunes,-1,-1);
 		this.pLunes.setBorder(BorderFactory.createTitledBorder("Lunes"));
 		this.pLunes.setOpaque(true); 
 		this.pLunes.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
@@ -346,7 +350,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
     }
 	
 	public void init_tablamartes(){
-		ObjTab.tablas_dias_del_cuadrante(tablaMartes);
+		ObjTab.tabla_mascara(tablaMartes,-1,-1);
 		this.pMarte.setBorder(BorderFactory.createTitledBorder("Martes"));
 		this.pMarte.setOpaque(true); 
 		this.pMarte.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
@@ -365,7 +369,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
     }
 	
 	public void init_tablamiercoles(){
-		ObjTab.tablas_dias_del_cuadrante(tablaMiercoles);
+		ObjTab.tabla_mascara(tablaMiercoles,-1,-1);
 		this.pMiercoles.setBorder(BorderFactory.createTitledBorder("Miercoles"));
 		this.pMiercoles.setOpaque(true); 
 		this.pMiercoles.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
@@ -384,7 +388,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
     }
 	
 	public void init_tablajueves(){
-	ObjTab.tablas_dias_del_cuadrante(tablaJueves);
+	ObjTab.tabla_mascara(tablaJueves,-1,-1);
 	this.pJueves.setBorder(BorderFactory.createTitledBorder("Jueves"));
 	this.pJueves.setOpaque(true); 
 	this.pJueves.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
@@ -403,7 +407,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	}
 	
 	public void init_tablaviernes(){
-		ObjTab.tablas_dias_del_cuadrante(tablaViernes);
+		ObjTab.tabla_mascara(tablaViernes,-1,-1);
 		this.pViernes.setBorder(BorderFactory.createTitledBorder("Viernes"));
 		this.pViernes.setOpaque(true); 
 		this.pViernes.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
@@ -422,7 +426,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		}
 	
 	public void init_tablasabado(){
-		ObjTab.tablas_dias_del_cuadrante(tablaSabado);
+		ObjTab.tabla_mascara(tablaSabado,-1,-1);
 		this.pSabado.setBorder(BorderFactory.createTitledBorder("Sabado"));
 		this.pSabado.setOpaque(true); 
 		this.pSabado.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
@@ -441,7 +445,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		}
 
 	public void init_tablaDomingo(){
-		ObjTab.tablas_dias_del_cuadrante(tablaDomingo);
+		ObjTab.tabla_mascara(tablaDomingo,-1,-1);
 		this.pDomingo.setBorder(BorderFactory.createTitledBorder("Domingo"));
 		this.pDomingo.setOpaque(true); 
 		this.pDomingo.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
@@ -527,9 +531,10 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		
 		public void cargar_datos_tablas(){
 		  Object[]   vector = new Object[9];
-
 		  txtColaborador.setText            (tablacompleta[0][15].toString());
+		  txtfolioColaborado.setText        (tablacompleta[0][14].toString());
 		  txtCuadrante.setText              (tablacompleta[0][ 7].toString());
+		  txtfolioCuadrante.setText         (tablacompleta[0][ 6].toString());
 		  txtEstablecimiento.setText        (tablacompleta[0][ 8].toString());
 		  txtDepartamento.setText           (tablacompleta[0][ 9].toString());
 		  txtPuesto.setText                 (tablacompleta[0][10].toString());
@@ -908,28 +913,30 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	    }
 	};
 
+	//TODO Guardar
     ActionListener guardar = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				    String Mensaje =Valida();
 					if(!Mensaje.equals("Para Poder Guardar Es Requerido Alimente:")){
 						JOptionPane.showMessageDialog(null, Mensaje, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					}else{
-//					Obj_Cuadrantes cuadrantes =new Obj_Cuadrantes();
-//
-//        			if(cuadrantes.Guardar()){
-//    					JOptionPane.showMessageDialog(null,"El Registro Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
-//    					btnDeshacer.doClick();
-//    					return;
-//    				}else{
+					Obj_Cuadrantes cuadrantes =new Obj_Cuadrantes();
+					cuadrantes.setFolio_colaborador(Integer.valueOf(txtfolioColaborado.getText().toString()));
+					cuadrantes.setFolio_cuadrante(Integer.valueOf(txtfolioCuadrante.getText().toString()));
+                    cuadrantes.setNuevoModifica(NuevoModifica);  
+                    cuadrantes.setTabla_actividades(TablaGuardado());
+        			if(cuadrantes.Guardar_Captura()){
+    					JOptionPane.showMessageDialog(null,"La Captura De El Cuadrante Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+    			    	return;
+    				}else{
     					JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
     					return;
-//    				}		
+    				}		
 				}
 		 }
 	 };
 	
 	
-//	 "Orden","Folio","Actividad","Inicia","Termina","Respuestas","Observaciones","Evidencia","Tipo" 
  	 public String[][] TablaGuardado(){
 			int rengloneslunes     = tablaLunes.getRowCount()    ;
 			int renglonesMartes    = tablaMartes.getRowCount()   ;
@@ -941,7 +948,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			int filas = rengloneslunes+renglonesMartes+renglonesMiercoles+renglonesJueves+renglonesViernes+renglonesSabado+renglonesdomingo;
 			int fila  = 0;
 			int i     = 0;
-			String[][] tablas = new String[filas][9];	
+			String[][] tablas = new String[filas][10];	
 			while(rengloneslunes > 0){
 					tablas[i][0] = modelLunes.getValueAt(fila, 0)+"";
 					tablas[i][1] = modelLunes.getValueAt(fila, 1)+"";
@@ -952,6 +959,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 					tablas[i][6] = modelLunes.getValueAt(fila, 6)+"";
 					tablas[i][7] = modelLunes.getValueAt(fila, 7)+"";
 					tablas[i][8] = modelLunes.getValueAt(fila, 8)+"";
+					tablas[i][9] = 1+"";
 					i+=1;
 					fila+=1;
 					rengloneslunes--;
@@ -968,6 +976,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 					tablas[i][6] = modelMartes.getValueAt(fila, 6)+"";
 					tablas[i][7] = modelMartes.getValueAt(fila, 7)+"";
 					tablas[i][8] = modelMartes.getValueAt(fila, 8)+"";
+					tablas[i][9] = 2+"";
 					i+=1;
 					fila+=1;
 					renglonesMartes--;
@@ -984,6 +993,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 					tablas[i][6] = modelMiercoles.getValueAt(fila, 6)+"";
 					tablas[i][7] = modelMiercoles.getValueAt(fila, 7)+"";
 					tablas[i][8] = modelMiercoles.getValueAt(fila, 8)+"";
+					tablas[i][9] = 3+"";
 					i+=1;
 					fila+=1;
 					renglonesMiercoles--;
@@ -1000,7 +1010,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 					tablas[i][6] = modelJueves.getValueAt(fila, 6)+"";
 					tablas[i][7] = modelJueves.getValueAt(fila, 7)+"";
 					tablas[i][8] = modelJueves.getValueAt(fila, 8)+"";
-					tablas[i][9] = modelJueves.getValueAt(fila, 9)+"";
+					tablas[i][9] = 4+"";
 					i+=1;
 					fila+=1;
 					renglonesJueves--;
@@ -1017,6 +1027,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 					tablas[i][6] = modelViernes.getValueAt(fila, 6)+"";
 					tablas[i][7] = modelViernes.getValueAt(fila, 7)+"";
 					tablas[i][8] = modelViernes.getValueAt(fila, 8)+"";
+					tablas[i][9] = 5+"";
 					i+=1;
 					fila+=1;
 					renglonesViernes--;
@@ -1033,6 +1044,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 					tablas[i][6] = modelSabado.getValueAt(fila, 6)+"";
 					tablas[i][7] = modelSabado.getValueAt(fila, 7)+"";
 					tablas[i][8] = modelSabado.getValueAt(fila, 8)+"";
+					tablas[i][9] = 6+"";
 					i+=1;
 					fila+=1;
 					renglonesSabado--;
@@ -1049,6 +1061,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 				tablas[i][6] = modelDomingo.getValueAt(fila, 6)+"";
 				tablas[i][7] = modelDomingo.getValueAt(fila, 7)+"";
 				tablas[i][8] = modelDomingo.getValueAt(fila, 8)+"";
+				tablas[i][9] = 7+"";
 				i+=1;
 				fila+=1;
 			renglonesdomingo--;
@@ -1058,6 +1071,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		
 	public String Valida(){
 	    String Mensaje ="Para Poder Guardar Es Requerido Alimente:";
+	    if(txtColaborador.getText().equals("") ){ Mensaje+=" El Nombre De Un Colaborador"; }
 		return Mensaje;
 	}	
 	
@@ -1072,6 +1086,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		
 		txtFolio.setText("");
 		txtCuadrante.setText("");
+		txtfolioCuadrante.setText("");
 		txtPuesto.setText("");
 		txtReporta.setText("");
 		txaResponsabili.setText("");
@@ -1084,6 +1099,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		txtBuscarSabado.setText("");
 		txtBuscarDomingo.setText("");
 		txtColaborador.setText("");
+		txtfolioColaborado.setText("");
 		txtEstablecimiento.setText("");
 		txtDepartamento.setText("");
 		
@@ -1098,9 +1114,11 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	
 	public void panelEnabledFalse(){
 		txtColaborador.setEditable(false);
+		txtfolioColaborado.setEditable(false);
 		txtDepartamento.setEditable(false);
 		txtEstablecimiento.setEditable(false);
 		txtCuadrante.setEditable(false);
+		txtfolioCuadrante.setEditable(false);
 		txtPuesto.setEditable(false);
 		txtReporta.setEditable(false);
 		txaResponsabili.setEditable(false);
