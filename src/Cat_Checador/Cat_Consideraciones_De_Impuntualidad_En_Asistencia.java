@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -26,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -417,7 +419,7 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		    					folio_emp = 	Integer.valueOf(tabla.getValueAt(fila, 0).toString().trim());
 	    						 empleado = 	tabla.getValueAt(fila, 1).toString().trim();
 	    						 	fecha = 	tabla.getValueAt(fila, 2).toString().trim()+" "+tabla.getValueAt(fila, 3).toString().trim();
-		    					  ent_sal = 	tabla.getValueAt(fila, 5).toString().trim();
+	    						  ent_sal = 	tabla.getValueAt(fila, 6).toString().trim().equals("-")? tabla.getValueAt(fila, 5).toString().trim() : tabla.getValueAt(fila, 6).toString().trim();
 					   	     tipo_checada = 	tabla.getValueAt(fila, 7).toString().trim();	    					  
 		    					   	  imp = 	Integer.valueOf(tabla.getValueAt(fila, 8).toString().trim());
 		    					   	  fav = 	Integer.valueOf(tabla.getValueAt(fila, 9).toString().trim());
@@ -502,8 +504,7 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 	
-	 ///////VENTANA EMERGENTE
-	
+	 ///////TODO VENTANA DE CONSIDERACION	
 	public class Cat_Ventana_Consideracion extends JDialog {
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
@@ -525,9 +526,17 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbstatus_checada =new JComboBox(new String[]{"Vigente","Cancelado"});
 		
-		String justificar[] = {"SELECCIONAR UNA OPCION","JUSTUFICO","NO JUSTUFICO"};
+//		String justificar[] = {"SELECCIONAR UNA OPCION","JUSTUFICO","NO JUSTUFICO"};
+//		@SuppressWarnings({ "unchecked", "rawtypes" })
+//		JComboBox cmbJustificar = new JComboBox(justificar);
+		
+		String tipo_de_falta[] = new BuscarTablasModel().tipos_de_falta();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		JComboBox cmbJustificar = new JComboBox(justificar);
+		JComboBox cmbTipoDeFalta = new JComboBox(tipo_de_falta);
+		
+		JRadioButton rbSi = new JRadioButton("SI");
+		JRadioButton rbNo = new JRadioButton("NO");
+		ButtonGroup GRb = new ButtonGroup();
 		
 		JTextArea txaObservacion =new Componentes().textArea(new JTextArea(), "Observaciones", 150);
 		JScrollPane scrollObservacion = new JScrollPane(txaObservacion,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -541,10 +550,15 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 			this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Guardar consideracion de checador seleccionado"));
 			
 			
+			rbSi.setSelected(true);
 			if(ent_sal.equals("FALT.REG.") && fecha.substring(fecha.indexOf(" ")+1, fecha.length()).equals("00:00:00")){
-				cmbJustificar.setEnabled(true);
+				rbSi.setEnabled(true);
+				rbNo.setEnabled(true);
+//				cmbJustificar.setEnabled(true);
 			}else{
-				cmbJustificar.setEnabled(false);
+				rbSi.setEnabled(false);
+				rbNo.setEnabled(false);
+//				cmbJustificar.setEnabled(false);
 			}
 			
 
@@ -599,22 +613,25 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 			panel.add(new JLabel("Estatus Checada: ")).setBounds(15,y+=25,90,20);
 			panel.add(cmbstatus_checada).setBounds(100,y,80,20);
 
-			panel.add(new JLabel("Falta: ")).setBounds(15,y+=25,90,20);
-			panel.add(cmbJustificar).setBounds(100,y,170,20);
+//			panel.add(new JLabel("Falta: ")).setBounds(15,y+=25,90,20);
+//			panel.add(cmbJustificar).setBounds(100,y,170,20);
 			
-			panel.add(btnGuardar).setBounds(370,y,100,20);
+			panel.add(btnGuardar).setBounds(370,y+15,100,30);
+			panel.add(new JLabel("Tipo De Falta: ")).setBounds(15,y+=25,90,20);
+			panel.add(cmbTipoDeFalta).setBounds(100, y, 210, 20);
 			
-			txaObservacion.setLineWrap(true); 
-			txaObservacion.setWrapStyleWord(true);
+			panel.add(new JLabel("Aplica Descuento: ")).setBounds(15,y+=25,90,20);
+			panel.add(rbSi).setBounds(120,y,40,20);
+			panel.add(rbNo).setBounds(190,y,40,20);
 //			panel.add(scroll).setBounds(20,45,970,500);
 			
 			cont.add(panel);
 			
+			cmbTipoDeFalta.setSelectedItem("INJUSTIFICADA");
+			
 			btnGuardar.addActionListener(opGuardarObservacion);
 			
-			System.out.println(cmbJustificar.isEnabled());
-			
-			this.setSize(500,270);
+			this.setSize(500,310);
 			this.setLocationRelativeTo(null);
 		}
 		
@@ -622,19 +639,19 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(!txaObservacion.getText().equals("")){
 							
-							if(!cmbJustificar.isEnabled()){
-								System.out.println("actualizar");
+//							if(!cmbJustificar.isEnabled()){
+//								System.out.println("actualizar");
 								actualizar();
-							}else{
-								if(cmbJustificar.getSelectedItem().equals("SELECCIONAR UNA OPCION")){
-									JOptionPane.showMessageDialog(null,"Se Requiere Seleccionar Una Opcion En El Campo Falta","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-									return;
-								}else{
-									System.out.println("actualizar");
-									actualizar();
-								}
-								
-							}
+//							}else{
+//								if(cmbJustificar.getSelectedItem().equals("SELECCIONAR UNA OPCION")){
+//									JOptionPane.showMessageDialog(null,"Se Requiere Seleccionar Una Opcion En El Campo Falta","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+//									return;
+//								}else{
+//									System.out.println("actualizar");
+//									actualizar();
+//								}
+//								
+//							}
 				}else{
 	  			  JOptionPane.showMessageDialog(null, "Es Necesario Teclear Una Observacion \n El Porque Se Modifico El Registro","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
@@ -671,7 +688,7 @@ public class Cat_Consideraciones_De_Impuntualidad_En_Asistencia extends JFrame {
 				omision_mod="No Aplica";
 				clave_master="";    			}
 //			System.out.println("aqui es igual a = "+realizo_consideracion);
-		if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod,cmbJustificar.getSelectedItem().toString(),ent_sal)){
+		if(new ActualizarSQL().consideracion_para_checador(folio_emp, fecha, consid_imp, consid_fav, clave_master, txaObservacion.getText().toUpperCase().trim(),omision_mod,status_mod,rbSi.isSelected()?"JUSTUFICO":"NO JUSTUFICO",ent_sal,cmbTipoDeFalta.getSelectedItem().toString().trim())){
 			
 			folio_emp = 0; 	
 			empleado = ""; 	
