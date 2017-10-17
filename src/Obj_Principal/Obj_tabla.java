@@ -81,6 +81,37 @@ public void tablas_dias_del_cuadrante(JTable tabla){
 	tabla.getColumnModel().getColumn(4).setMinWidth(50);
  	tabla.getColumnModel().getColumn(4).setMaxWidth(50);
  	
+ 	if(tabla.getColumnCount()>5){
+	tabla.getColumnModel().getColumn(5).setMinWidth(80);
+ 	tabla.getColumnModel().getColumn(5).setMaxWidth(80);
+	tabla.getColumnModel().getColumn(6).setMinWidth(150);
+ 	tabla.getColumnModel().getColumn(6).setMaxWidth(150);
+ 	}
+	for(int i = 0; i<tabla.getColumnCount(); i++){
+		tabla.getColumnModel().getColumn(i).setMaxWidth(2000);
+       }
+		
+		for(int i = 0; i<tabla.getColumnCount(); i++){
+			 tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CabeceraTablaRendererizado(new java.awt.Color(RfilaS,GfilaS,BfilaS),Color.WHITE));
+			
+				if(tabla.getRowCount()>0){
+					if( validacampo(modelo.getValueAt(0,i).toString().trim()) ){
+					    tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","derecha","Arial","negrita",11));
+					}else{
+					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));	
+					}
+				}else{
+					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));
+			  	}
+		      }
+ }
+
+public void tabla_precargada(JTable tabla){
+	DefaultTableModel modelo= (DefaultTableModel) tabla.getModel();
+	tabla.getTableHeader().setReorderingAllowed(false) ;
+	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	modelo.setRowCount(0);
+
 	for(int i = 0; i<tabla.getColumnCount(); i++){
 		tabla.getColumnModel().getColumn(i).setMaxWidth(2000);
        }

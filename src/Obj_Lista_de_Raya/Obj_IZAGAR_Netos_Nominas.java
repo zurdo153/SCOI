@@ -2,6 +2,8 @@ package Obj_Lista_de_Raya;
 
 import Conexiones_SQL.GuardarTablasModel;
 
+
+
 public class Obj_IZAGAR_Netos_Nominas {
 
 //	guardado inicial defaultt

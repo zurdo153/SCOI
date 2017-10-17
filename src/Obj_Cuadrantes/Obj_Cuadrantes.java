@@ -118,7 +118,6 @@ public class Obj_Cuadrantes {
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
 	}
-
 	
 	public String[][] refrescar_tablas(int folio_cuadrante){
 		return new BuscarSQL().TablaActividades_Cuadrante(folio_cuadrante);
@@ -130,6 +129,14 @@ public class Obj_Cuadrantes {
 
 	public boolean Guardar(){
 		return new GuardarSQL().Guardar_Cuadrante(this);
+	}
+	
+	public String[][] refrescar_tabla_captura_cuadrante(String clave_checador){
+		return new BuscarSQL().TablaActividades_Cuadrante_captura(clave_checador);
+	}
+	
+	public boolean Validacion_captura_existe_cuadrante(String clave_checador){
+		return new BuscarSQL().Valida_Clave_Checador_Si_Existe_Cuadrante(clave_checador);
 	}
 	
 }

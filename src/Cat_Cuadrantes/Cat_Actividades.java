@@ -77,7 +77,7 @@ public class Cat_Actividades extends JFrame {
 	private TableRowSorter trsfiltro;
     
 	JTextField txtFolio      = new Componentes().text(new JCTextField(), "Folio Actividad", 20, "Int");
-	JTextField txttolerancia = new Componentes().text(new JCTextField(), "Tolerancia", 20, "Int");
+	JTextField txttolerancia = new Componentes().text(new JCTextField(), "Tolerancia", 3, "Negativo");
 	
 	JTextArea txaActividad 	 = new Componentes().textArea(new JTextArea(), "Actividad", 200);
 	JScrollPane scrollact    = new JScrollPane(txaActividad);
@@ -143,6 +143,7 @@ public class Cat_Actividades extends JFrame {
 	    OBuscarActividad(Folio);
 		panelEnabledFalse();
 		btnModificar.setEnabled(true);
+		btnSimilar.setEnabled(true);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -384,6 +385,7 @@ public class Cat_Actividades extends JFrame {
 				txaActividad.requestFocus();
 				txtFolio.setText(new Obj_Actividad().Nuevo()+"");
 				cmb_status.setSelectedIndex(0);
+				NuevoModifica="N";
 			}else{
 				JOptionPane.showMessageDialog(null, "Busque un registro primero antes de hacer un similar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -397,31 +399,36 @@ public class Cat_Actividades extends JFrame {
 				JOptionPane.showMessageDialog(null, "Los Siguientes Datos Son Requeridos:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-				Obj_Actividad actividad = new Obj_Actividad();
 				
-				actividad.setFolio(Integer.valueOf(txtFolio.getText().toString()));
-				actividad.setActividad(txaActividad.getText().toString().trim());
-				actividad.setDescripcion(txaDescripcion.getText().toString().trim());
-				actividad.setEstatus(cmb_status.getSelectedItem().toString());
-				actividad.setRespuesta(cmbRespuesta.getSelectedItem().toString());
-				actividad.setAspecto(cmbAspectos.getSelectedItem().toString());
-				actividad.setNivel_Critico(cmbNivelCritico.getSelectedItem().toString());
-				actividad.setTemporada(cmbTemporada.getSelectedItem().toString());
-				actividad.setExige_Evidencia(cmb_evidencia.getSelectedItem().toString());
-				actividad.setExige_Observacion(cmb_Observacion.getSelectedItem().toString());
-				actividad.setGenera_Alerta(cmbGeneraAlerta.getSelectedItem().toString());
-				actividad.setTolerancia_minutos(Integer.valueOf(txttolerancia.getText().toString()));
-				
-				actividad.setNuevoModifica(NuevoModifica);
-				
-				if(actividad.Guardar()){
-					JOptionPane.showMessageDialog(null,"El Registro Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
-					btnDeshacer.doClick();
+				if(Integer.valueOf(txttolerancia.getText().toString())<-1){
+					JOptionPane.showMessageDialog(null, "La Tolerancia Menor Posible Es -1 y Para Cuando No Aplica Tolerancia En Una Actividad:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}else{
-					JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-					return;
-				}		
+					Obj_Actividad actividad = new Obj_Actividad();
+					
+					actividad.setFolio(Integer.valueOf(txtFolio.getText().toString()));
+					actividad.setActividad(txaActividad.getText().toString().trim());
+					actividad.setDescripcion(txaDescripcion.getText().toString().trim());
+					actividad.setEstatus(cmb_status.getSelectedItem().toString());
+					actividad.setRespuesta(cmbRespuesta.getSelectedItem().toString());
+					actividad.setAspecto(cmbAspectos.getSelectedItem().toString());
+					actividad.setNivel_Critico(cmbNivelCritico.getSelectedItem().toString());
+					actividad.setTemporada(cmbTemporada.getSelectedItem().toString());
+					actividad.setExige_Evidencia(cmb_evidencia.getSelectedItem().toString());
+					actividad.setExige_Observacion(cmb_Observacion.getSelectedItem().toString());
+					actividad.setGenera_Alerta(cmbGeneraAlerta.getSelectedItem().toString());
+					actividad.setTolerancia_minutos(Integer.valueOf(txttolerancia.getText().toString()));
+					actividad.setNuevoModifica(NuevoModifica);
+					
+					if(actividad.Guardar()){
+						JOptionPane.showMessageDialog(null,"El Registro Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						btnDeshacer.doClick();
+						return;
+					}else{
+						JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+						return;
+					}	
+				}
 			}
 		}
 	};
@@ -436,6 +443,7 @@ public class Cat_Actividades extends JFrame {
 		if(cmbAspectos.getSelectedIndex()==0) error += "Aspecto\n";
 		if(cmbNivelCritico.getSelectedIndex()==0) error += "Nivel Crítico\n";
 		if(cmbTemporada.getSelectedIndex()==0) error += "Temporada\n";
+		if(txttolerancia.getText().equals("")) error += "Tolerancia\n";
 		return error;
 	}
 	

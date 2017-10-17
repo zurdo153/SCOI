@@ -1,8 +1,8 @@
 package IZAGAR_Obj;
 
-
 public class Obj_IZAGAR_Netos_Nominas {
 
+	
 //	guardado inicial defaultt
 	public boolean guardar_netos_nominas_temp(Object[][] tabla){
 		return new Conexiones_SQL.GuardarTablasModel().IZAGAR_insert_Netos_Nominas_Temp(tabla );

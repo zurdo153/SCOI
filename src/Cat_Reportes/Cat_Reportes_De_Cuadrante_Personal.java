@@ -28,7 +28,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Cuadrante_Personal extends JFrame{
+public class Cat_Reportes_De_Cuadrante_Personal extends JFrame{
 			
 	Container contfb = getContentPane();
 	JLayeredPane panelfb = new JLayeredPane();
@@ -82,7 +82,7 @@ public class Cat_Reporte_De_Cuadrante_Personal extends JFrame{
 	JTextField txtcolaborador = new Componentes().text(new JCTextField(), "Selecione a Un Colaborador De La Tabla", 500, "String");
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Cat_Reporte_De_Cuadrante_Personal(){
+	public Cat_Reportes_De_Cuadrante_Personal(){
 		this.setSize(1024,520);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -259,7 +259,7 @@ public class Cat_Reporte_De_Cuadrante_Personal extends JFrame{
 //	};
 	public static void main(String args[]){
 		try{UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Cuadrante_Personal().setVisible(true);
+			new Cat_Reportes_De_Cuadrante_Personal().setVisible(true);
 		}catch(Exception e){System.err.println("Error en Main: "+e.getMessage());
 		}
 	}

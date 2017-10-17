@@ -62,7 +62,6 @@ import Obj_Cuadrantes.Obj_Actividad;
 import Obj_Cuadrantes.Obj_Aspectos;
 import Obj_Cuadrantes.Obj_Cuadrantes;
 import Obj_Cuadrantes.Obj_Nivel_Critico;
-import Obj_Evaluaciones.Obj_Captura_Del_Cuadrante_Personal;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
@@ -1953,6 +1952,7 @@ public class GuardarSQL {
 			pstmt.setString(12, actividad.getGenera_Alerta());
 			pstmt.setInt   (13, actividad.getTolerancia_minutos());
 			
+			System.out.println(actividad.getTemporada());;
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -2274,47 +2274,6 @@ public class GuardarSQL {
 				ex.printStackTrace();
 			}
 		}return true;
-	}
-	
-	public boolean guardarAlimentacionCuadrante(Obj_Captura_Del_Cuadrante_Personal datos_cuadrante){
-		String query = "exec sp_insert_alimentacion_cuadrante ?,?,?,?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-					
-			pstmt.setString(1, datos_cuadrante.getNombre());
-			pstmt.setString(2, datos_cuadrante.getPuesto());
-			pstmt.setString(3, datos_cuadrante.getEstablecimiento());
-			pstmt.setString(4, datos_cuadrante.getEquipo_trabajo());
-			pstmt.setString(5, datos_cuadrante.getJefatura());
-			pstmt.setString(6, datos_cuadrante.getFecha());
-			pstmt.setString(7, datos_cuadrante.getDia());
-			pstmt.setString(8, datos_cuadrante.getCuadrante());	
-			
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: " + e.getMessage());
-			if (con != null){
-				try {
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-				} catch(SQLException ex) {
-					System.out.println(ex.getMessage());
-				}
-			} 
-			return false;
-		}finally{
-			try {
-				pstmt.close();
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-		}		
-		return true;
 	}
 
 	public boolean Guardar_Mensajes(Obj_Mensajes mensaje){

@@ -214,17 +214,12 @@ public class Cat_Empleados_En_Cuadrante extends JFrame {
 						modelo.removeRow(0);
 						
 					}
-					String[][] lista_tabla = Obj_Empleados_En_Cuadrantes.getTablaCuadrante(Integer.parseInt(txtFolio_Cuadrante.getText()));
 					String[] fila = new String[2];
-					for(int i=0; i<lista_tabla.length; i++){
-						fila[0] = lista_tabla[i][0]+"  ";
-						fila[1] = "   "+lista_tabla[i][1];
 						modelo.addRow(fila);
 						
 						btnCuadrante.setEnabled(true);
 						btnEmpleado.setEnabled(true);
 						btnRemover.setEnabled(true);
-					}
 				}
 			}
 		}
@@ -957,7 +952,6 @@ public class Cat_Empleados_En_Cuadrante extends JFrame {
 			txtNombre.addKeyListener(opFiltroNombre);
 			txtFolio.addKeyListener(opFiltroFolio);
 			
-			buscarEmpleado(tabla_cuadrantes);
 			filtro_cuadrante(tabla_cuadrantes);
 			
 			this.cont.add(panel);
@@ -1047,28 +1041,6 @@ public class Cat_Empleados_En_Cuadrante extends JFrame {
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		
-		 private void buscarEmpleado(final JTable tbl) {
-		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-			        public void mouseClicked(MouseEvent e) {
-			        	if(e.getClickCount() == 1){
-			    			int fila_cuadrante = tabla_cuadrantes.getSelectedRow();
-			    			int folio =  Integer.parseInt(tabla_cuadrantes.getValueAt(fila_cuadrante, 0).toString().trim());
-			    			
-								while(tabla_empleados.getRowCount()>0){
-									modelo_empleados.removeRow(0);
-								}
-								String[][] lista_tabla = Obj_Empleados_En_Cuadrantes.getTablaCuadrante(folio);
-								String[] fila = new String[2];
-								for(int i=0; i<lista_tabla.length; i++){
-									fila[0] = lista_tabla[i][0]+"  ";
-									fila[1] = "   "+lista_tabla[i][1];
-									modelo_empleados.addRow(fila);
-							}
-			        	}
-			        }
-		        });
-		    }
-		 
 		 private void filtro_cuadrante(final JTable tbl) {
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 			        public void mouseClicked(MouseEvent e) {

@@ -146,6 +146,27 @@ public class Componentes {
 						    	}
 						    }
 							break;
+							
+						case "Negativo" :
+							if(getTextProcesa(tmp.getText()).length() >= longitud)
+								e.consume();
+						    if(((caracter < '0') ||	
+						    	(caracter > '9')) && 
+						    	(caracter != '-' )){
+						    	e.consume();
+						    }
+						    	
+//						    if (caracter==KeyEvent.VK_PERIOD)
+//								if (tmp.getText().indexOf(".")>-1){
+//									e.consume();
+//								}
+//							
+//						    if (caracter==KeyEvent.VK_MINUS){
+//						    	if(tmp.getText().indexOf("-")>=-1 && !tmp.getText().equals("")){
+//						    			e.consume();
+//						    	}
+//						    }
+							break;	
 					}
 								
 				}

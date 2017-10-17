@@ -650,22 +650,6 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
-	public boolean tablas_status(String nombre){
-		boolean varlor = false;
-		try {
-			Connexion con = new Connexion();
-			Statement s = con.conexion().createStatement();
-			ResultSet rs = s.executeQuery("exec sp_status_tabla_cuadrantes '" + nombre + "';");
-			while(rs.next()){
-				varlor = rs.getString(1).trim().equals("true") ? true : false;			
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return varlor;
-	}
-
 	public Object[][] tabla_model_filtro_solicitudes(String status){
 		String query_lista = "exec sp_filtro_solicitudes_empleados '"+status+"';";
 		
