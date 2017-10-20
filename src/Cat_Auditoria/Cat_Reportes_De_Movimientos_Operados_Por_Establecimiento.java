@@ -1,4 +1,4 @@
-package Cat_IZAGAR;
+package Cat_Auditoria;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -10,43 +10,49 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.JCButton;
 
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Movimientos_Operados extends JFrame {
+public class Cat_Reportes_De_Movimientos_Operados_Por_Establecimiento extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
 	JDateChooser c_inicio = new JDateChooser();
-	JButton btn_generar = new JButton("Generar Reporte",new ImageIcon("imagen/buscar.png"));
+	JCButton btn_generar    = new JCButton("Generar Reporte"    ,"buscar.png"     ,"Azul"); 
 	
-	public Cat_Reporte_De_Movimientos_Operados(){
+	String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento201();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbEstablecimiento = new JComboBox(establecimientos);
+	
+	public Cat_Reportes_De_Movimientos_Operados_Por_Establecimiento(){
+		this.setSize(270,180);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/reporte_icon&16.png"));
-		this.setTitle("Reportes IZAGAR de Movimientos Operados");
-		this.panel.setBorder(BorderFactory.createTitledBorder("Movimientos Operados"));
-		this.panel.add(new JLabel("Fecha:")).setBounds(110,40,100,20);
-		this.panel.add(c_inicio).setBounds(150,40,140,20);
-
-	   
+		this.setTitle("Movimientos Operados");
+		this.panel.setBorder(BorderFactory.createTitledBorder("Movimientos Operados Por Establecimiento"));
+        this.panel.add(cmbEstablecimiento).setBounds  (40 ,30 ,180 ,20);
+		this.panel.add(new JLabel("Fecha:")).setBounds(40 ,60 ,100 ,20);
+		this.panel.add(c_inicio).setBounds            (80 ,60 ,140 ,20);
+		this.panel.add(btn_generar).setBounds         (40 ,100,180 ,20);
 		this.btn_generar.addActionListener(op_generar);
-		this.panel.add(btn_generar).setBounds(110,100,180,20);
 		c_inicio.setDate(cargar_fecha_Sugerida(1));;
 
 		this.cont.add(panel);
-		this.setSize(400,200);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
+
 	}
 	
 	public Date cargar_fecha_Sugerida(Integer dias){
@@ -71,8 +77,8 @@ public class Cat_Reporte_De_Movimientos_Operados extends JFrame {
 				String comando="";
 				String reporte = "";
 				
-				 reporte = "Obj_Reporte_IZAGAR_de_Movimientos_Operados.jrxml";
-				 comando = "exec sp_Reporte_IZAGAR_de_Movimientos_Operados '"+fecha+"';";
+				 reporte = "Obj_Reporte_IZAGAR_de_Movimientos_Operados_Por_Establecimiento.jrxml";
+				 comando = "exec sp_Reporte_IZAGAR_de_Movimientos_Operados_Por_Establecimiento '"+fecha+"','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'";
 				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			}else{
 				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
@@ -86,11 +92,14 @@ public class Cat_Reporte_De_Movimientos_Operados extends JFrame {
 		String error = "";
 		String fechaNull = c_inicio.getDate()+"";
 	    if(fechaNull.equals("null"))error+= "Fecha \n";
+	    if(cmbEstablecimiento.getSelectedIndex()==0)error+= "Establecimiento \n";
 		return error;
 	}
-	
-	public static  void main(String []arg){
-	new Cat_Reporte_De_Movimientos_Operados().setVisible(true);	
-		
+
+	public static void main(String args[]){
+		try{UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		new Cat_Reportes_De_Movimientos_Operados_Por_Establecimiento().setVisible(true);	
+		}catch(Exception e){System.err.println("Error en Main: "+e.getMessage());
+		}
 	}
 }

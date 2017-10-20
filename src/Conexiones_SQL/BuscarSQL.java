@@ -9577,8 +9577,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 
 	public String[][] TablaProveedores(){
 		String[][] Matriz = null;
-		String query = "select cod_prv as folio,case when rtrim(ltrim(razon_social))='' then 'Proveedor'else rtrim(ltrim(razon_social)) end as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio from proveedores where status_proveedor =1 order by proveedor asc ";
-		Matriz = new String[getFilasExterno(query)][3];
+		String query = "select cod_prv as folio,case when rtrim(ltrim(razon_social))='' then 'Proveedor'else rtrim(ltrim(razon_social)) end as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio,convert(varchar(10),getdate(),103) as fecha_actual from proveedores where status_proveedor =1 order by proveedor asc ";
+		Matriz = new String[getFilasExterno(query)][4];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -9589,6 +9589,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				Matriz[i][0]  = rs.getString( 1);
 				Matriz[i][1]  = rs.getString( 2);
 				Matriz[i][2]  = rs.getString( 3);
+				Matriz[i][2]  = rs.getString( 4);
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -9894,6 +9895,58 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				}}
 			}
 			return datos;
+		}
+	   
+	   public Obj_Registro_Proveedores Busqueda_de_Registro_Entrada_y_Salida_De_Proveedores(int folio){
+		   Obj_Registro_Proveedores proveedores = new Obj_Registro_Proveedores();
+			String query = "exec proveedores_registro_de_entradas_y_salidas_buscar "+folio;
+			String[][] Matriz = null;
+			Matriz = new String[getFilas(query)][6];
+			
+			String queryr = "exec proveedores_registro_de_entradas_y_salidas_buscar_movimientos "+folio;
+			String[][] Matrizr = null;
+			Matrizr = new String[getFilas(queryr)][3];
+			
+			Statement s;
+			ResultSet rs;
+			ResultSet rsr;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					proveedores.setFolio( Integer.valueOf(rs.getString( 1)));
+					proveedores.setEstatus(rs.getString( 2));
+					proveedores.setFolio_colaborador_recibe( Integer.valueOf(rs.getString( 3)));
+					proveedores.setNombre_recibe(rs.getString(4));
+					proveedores.setEstablecimiento(rs.getString(5));
+					proveedores.setProveedor(rs.getString(6));
+					proveedores.setChofer(rs.getString(7));
+					proveedores.setFecha(rs.getString(8));
+					proveedores.setObservaciones(rs.getString(9));
+					Matriz[i][0]  = rs.getString( 10);
+					Matriz[i][1]  = rs.getString( 11);
+					Matriz[i][2]  = rs.getString( 12);
+					Matriz[i][3]  = rs.getString( 13);
+					Matriz[i][4]  = rs.getString( 14);
+					Matriz[i][5]  = rs.getString( 15);
+					i++;
+				}
+				proveedores.setTabla_facturas(Matriz);
+			
+				rsr = s.executeQuery(queryr);
+				 i=0;
+				while(rsr.next()){	
+					Matrizr[i][0]  = rsr.getString( 1);
+					Matrizr[i][1]  = rsr.getString( 2);
+					Matrizr[i][2]  = rsr.getString( 3);
+					i++;
+				}
+				proveedores.setTabla_registros(Matrizr);
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return proveedores;
 		}
 	   
 }

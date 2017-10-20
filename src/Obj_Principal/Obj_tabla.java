@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -25,6 +27,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.MaskFormatter;
 
 import java.time.LocalDate;
 
@@ -64,8 +67,33 @@ public class Obj_tabla {
 		}
  	}
 	
-public void tablas_dias_del_cuadrante(JTable tabla){
+public void tabla_mascara(JTable tabla,int columnamask1, int columnamask2 ){
 	DefaultTableModel modelo= (DefaultTableModel) tabla.getModel();
+
+	if(columnamask1>-1){
+	JFormattedTextField ftext = new JFormattedTextField();
+	MaskFormatter mask;
+	try {
+	    mask = new MaskFormatter("##:##");
+	    mask.install(ftext);
+	} catch (java.text.ParseException e) {
+	    e.printStackTrace();
+	}
+	tabla.getColumnModel().getColumn(columnamask1).setCellEditor(new DefaultCellEditor(ftext));
+	}
+	
+	if(columnamask2>-1){
+	JFormattedTextField ftext = new JFormattedTextField();
+	MaskFormatter mask;
+	try {
+	    mask = new MaskFormatter("##:##");
+	    mask.install(ftext);
+	} catch (java.text.ParseException e) {
+	    e.printStackTrace();
+	}
+	tabla.getColumnModel().getColumn(columnamask2).setCellEditor(new DefaultCellEditor(ftext));
+	}
+	
 	
 	tabla.getTableHeader().setReorderingAllowed(false) ;
 	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -106,7 +134,7 @@ public void tablas_dias_del_cuadrante(JTable tabla){
 		      }
  }
 
-public void tabla_precargada(JTable tabla){
+  public void tabla_precargada(JTable tabla){
 	DefaultTableModel modelo= (DefaultTableModel) tabla.getModel();
 	tabla.getTableHeader().setReorderingAllowed(false) ;
 	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -129,7 +157,7 @@ public void tabla_precargada(JTable tabla){
 					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));
 			  	}
 		      }
- }
+   }
 
 
 	public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,String comando,String BasdeDatos, String pintar, Integer checkbox){
@@ -411,7 +439,6 @@ public void tabla_precargada(JTable tabla){
 							if(tipo.equals("entero")){						
 								Integer.parseInt(valorcelda);
 							}
-							
 				    		return true;
 						}
 					} catch (NumberFormatException nfe){
@@ -424,6 +451,47 @@ public void tabla_precargada(JTable tabla){
 						return false;
 					}
 			     }	
+			   
+			   if(tipo.equals("hora")){
+				   if(valorcelda.length()==5){
+				    String hora=valorcelda.substring(0, 2);
+				    String separador=valorcelda.substring(2, 3);
+				    String minuto=valorcelda.substring(3, 5);
+				    if(separador.equals(":")){
+				    	if(validarHora(Integer.valueOf(hora)) ){
+				        	if(validarMinuto(Integer.valueOf(minuto)) ){
+				        		return true;
+				        	}else{
+				        		 JOptionPane.showMessageDialog(null, "La Fila  "+(fila+1)+"\nEl Rango De Minutos Debe De Ser De 0 a 59 \nRequiere Teclear Una Hora Valida en formato 24 hr \n Ejemplos:\nPara La 7 de La Mañana 07:00 \nPara Las 7 De La Tarde 19:00   "+Aviso,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								 tabla.editCellAt(fila, columna);
+								 Component accion=tabla.getEditorComponent();
+								 accion.requestFocus();
+								 return false;
+				        	}
+				    	}else{
+						    JOptionPane.showMessageDialog(null, "La Fila  "+(fila+1)+"\nEl Rango De Hora Debe De Ser De 0 a 23 \nRequiere Teclear Una Hora Valida en formato 24 hr \n Ejemplos:\nPara La 7 de La Mañana 07:00 \nPara Las 7 De La Tarde 19:00   "+Aviso,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						    tabla.editCellAt(fila, columna);
+						    Component accion=tabla.getEditorComponent();
+							accion.requestFocus();
+							return false;
+		                 }
+
+				    }else{
+								    JOptionPane.showMessageDialog(null, "La Fila  "+(fila+1)+"\nEs un Formato Invalido De Hora \nRequiere Teclear Una Hora Valida en formato 24 hr \n Ejemplos:\nPara La 7 de La Mañana 07:00 \nPara Las 7 De La Tarde 19:00   "+Aviso,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								    tabla.editCellAt(fila, columna);
+								    Component accion=tabla.getEditorComponent();
+									accion.requestFocus();
+									return false;
+				      }
+				   }else{
+					    JOptionPane.showMessageDialog(null, "La Fila  "+(fila+1)+"\nTiene Mas De 5 o Menos De 4 Caracteres \nRequiere Teclear Una Hora Valida en formato 24 hr \n Ejemplos:\nPara La 7 de La Mañana 07:00 \nPara Las 7 De La Tarde 19:00   "+Aviso,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					    tabla.editCellAt(fila, columna);
+					    Component accion=tabla.getEditorComponent();
+						accion.requestFocus();
+						return false;
+				   }
+			     }
+			   
 			   
 				if(tipo.equals("fecha")){
                  if(validarfecha(valorcelda).equals("Fecha Valida")){
@@ -438,7 +506,24 @@ public void tabla_precargada(JTable tabla){
 			         }
 					return false;
 		 	};
-		
+		 	
+		 	 public boolean validarHora(int hora){
+		             boolean valida = false;
+		            if( (hora >= 0) && (hora < 24) ){
+		            	valida = true;            
+		            }  
+		            return valida;
+		        }  
+		 	 
+		 	 public boolean validarMinuto(int hora){
+	             boolean valida = false;
+	            if( (hora >= 0) && (hora < 60) ){
+	            	valida = true;            
+	            }  
+	            return valida;
+	        }    
+		 	 
+		 	 
 		 	public String validarfecha(String fecha){
 				String aviso = "";
 				int dayOfMonth 		=0;
@@ -499,18 +584,31 @@ public void tabla_precargada(JTable tabla){
 			 String sacarFocoDeTabla = "";
 			 sacarFocoDeTabla=parametrosacarfoco;
 			
-			if(sacarFocoDeTabla.equals("no")){
+			if(sacarFocoDeTabla.equals("seguir")){
+				int Cantidad_filas =tabla.getRowCount();
 				sacarFocoDeTabla = "no";
-				fila=fila-1;
-			}else{
-				int cantidadDeFilas = tabla.getRowCount();
-				if(fila == cantidadDeFilas-1){
-						sacarFocoDeTabla="si";
+				if(Cantidad_filas==fila+1){
+					fila=0;
 				}else{
-					sacarFocoDeTabla = "no";
-					fila=fila+1;
+				 fila=fila+1;
 				}
+			}else{	
+	            if(sacarFocoDeTabla.equals("no")){	
+					sacarFocoDeTabla = "no";
+					fila=fila-1;
+				}else{
+					int cantidadDeFilas = tabla.getRowCount();
+					if(fila == cantidadDeFilas-1){
+							sacarFocoDeTabla="si";
+					}else{
+						sacarFocoDeTabla = "no";
+						fila=fila+1;
+					}
+			     }
+			
 			}
+			
+			
 			tabla.getSelectionModel().setSelectionInterval(fila, fila);
 			tabla.editCellAt(fila, columna);
 			Component accion=tabla.getEditorComponent();

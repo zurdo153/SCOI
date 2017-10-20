@@ -6,6 +6,8 @@ import Conexiones_SQL.GuardarSQL;
 public class Obj_Cuadrantes {
 	
 	int folio;
+	int folio_colaborador;
+	int folio_cuadrante;
 	String cuadrante;
 	String establecimiento;
 	String departamento;
@@ -19,6 +21,8 @@ public class Obj_Cuadrantes {
 	 
 	public Obj_Cuadrantes(){
 		this.folio=0;
+		this.folio_colaborador=0;
+		this.folio_cuadrante=0;
 		this.cuadrante="";
 		this.establecimiento="";
 		this.departamento="";
@@ -29,6 +33,22 @@ public class Obj_Cuadrantes {
 		this.estatus="";
 		this.NuevoModifica="";
 		this.tabla_actividades=null;
+	}
+
+	public int getFolio_cuadrante() {
+		return folio_cuadrante;
+	}
+
+	public void setFolio_cuadrante(int folio_cuadrante) {
+		this.folio_cuadrante = folio_cuadrante;
+	}
+
+	public int getFolio_colaborador() {
+		return folio_colaborador;
+	}
+
+	public void setFolio_colaborador(int folio_colaborador) {
+		this.folio_colaborador = folio_colaborador;
 	}
 
 	public String[][] getTabla_actividades() {
@@ -131,12 +151,17 @@ public class Obj_Cuadrantes {
 		return new GuardarSQL().Guardar_Cuadrante(this);
 	}
 	
+	
 	public String[][] refrescar_tabla_captura_cuadrante(String clave_checador){
 		return new BuscarSQL().TablaActividades_Cuadrante_captura(clave_checador);
 	}
 	
 	public boolean Validacion_captura_existe_cuadrante(String clave_checador){
 		return new BuscarSQL().Valida_Clave_Checador_Si_Existe_Cuadrante(clave_checador);
+	}
+	
+	public boolean Guardar_Captura(){
+		return new GuardarSQL().Guardar_Captura_Cuadrante(this);
 	}
 	
 }
