@@ -6450,7 +6450,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				
 			}
 			
-			
 			if(i==mermas.getArreglo().length){
 				
 				//insertar registro en tb_mermas			
@@ -6763,6 +6762,56 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 					System.out.println(ex.getMessage());
 				}
 			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_minimo_maximo_pedido_por_estab(Object[][] arreglo,String establecimiento,String Observacion){
+		String query = " exec sp_insert_permisos_submenus_usuario_nuevo ?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			for(int i=0; i<arreglo.length; i++){
+				
+				pstmt.setString(1, (String) arreglo[i][0]);
+				pstmt.setFloat(2, (float) arreglo[i][2]);
+				pstmt.setFloat(3, (float) arreglo[i][3]);
+				pstmt.setFloat(4, (float) arreglo[i][4]);
+				pstmt.setFloat(5, (float) arreglo[i][5]);
+				pstmt.setFloat(6, (float) arreglo[i][6]);
+				pstmt.setFloat(7, (float) arreglo[i][7]);
+				pstmt.setString(8, (String) arreglo[i][8]);
+				pstmt.setString(9, (String) arreglo[i][9]);
+				
+				pstmt.setString(10, establecimiento);
+				pstmt.setString(11, Observacion);
+				pstmt.setInt(12, usuario.getFolio());
+				pstmt.setString(13, i==arreglo.length-1?"FIN":"EN PROCESO");//bandera para finalizar los movimientos y generar el ultimo registro en la BD
+				pstmt.execute();
+//				System.out.println(usuario.getFolio());
+			}
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+ e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+				}
+			}
 			return false;
 		}finally{
 			try {
