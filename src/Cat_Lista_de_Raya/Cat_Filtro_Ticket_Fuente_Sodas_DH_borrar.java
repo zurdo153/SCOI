@@ -1,36 +1,29 @@
 package Cat_Lista_de_Raya;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
-import Conexiones_SQL.BuscarTablasModel;
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
 import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
+import Obj_Renders.tablaRenderer;
 
 //FILTRO DE TICKETS QUE NO SE LE AN DESCONTADO AL EMPLEADO SELECCIONADO	
 	 	@SuppressWarnings("serial")
-		public class Cat_Filtro_Ticket_Fuente_Sodas_DH extends JDialog {
+		public class Cat_Filtro_Ticket_Fuente_Sodas_DH_borrar extends JFrame {
 			
 			Container cont = getContentPane();
 			JLayeredPane campo = new JLayeredPane();
@@ -75,9 +68,9 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 			
 			JButton btnAgregar = new JButton(new ImageIcon("Iconos/agregar.png"));
 			
-			public Cat_Filtro_Ticket_Fuente_Sodas_DH(int folio,String empleado) {
+			public Cat_Filtro_Ticket_Fuente_Sodas_DH_borrar(int folio,String empleado) {
 				
-				this.setModal(true);
+//				this.setModal(true);
 				setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
 				setTitle("Tabla De Ticket Por Empleado (Desarrollo humano)");
 				campo.setBorder(BorderFactory.createTitledBorder("Seleccion De Ticket Por Empleado"));
@@ -112,7 +105,9 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 			}
 			
 			public void configuracionTabla(){
-				
+				this.tablaFiltro.getTableHeader().setReorderingAllowed(false) ;
+		   		this.tablaFiltro.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		   		
 				tablaFiltro.getColumnModel().getColumn(0).setMaxWidth(100);
 				tablaFiltro.getColumnModel().getColumn(0).setMinWidth(100);
 				tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(150);
@@ -122,86 +117,92 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				tablaFiltro.getColumnModel().getColumn(3).setMaxWidth(40);
 				tablaFiltro.getColumnModel().getColumn(3).setMinWidth(40);
 				
-				TableCellRenderer render = new TableCellRenderer() { 
-					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-					boolean hasFocus, int row, int column) { 
-						
-						Component componente = null;
-						
-						switch(column){
-							case 0: 
-								componente = new JLabel(value == null? "": value.toString());
-								if(row %2 == 0){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(177,177,177));	
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(table.getSelectedRow() == row){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-								break;
-							case 1: 
-								componente = new JLabel(value == null? "": value.toString());
-								if(row %2 == 0){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(177,177,177));	
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(table.getSelectedRow() == row){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-								break;
-							case 2: 
-								componente = new JLabel(value == null? "": value.toString());
-								if(row %2 == 0){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(177,177,177));	
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(table.getSelectedRow() == row){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-								break;
-							case 3: 
-								componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
-								if(row%2==0){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(177,177,177));	
-								}
-								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								if(table.getSelectedRow() == row){
-									((JComponent) componente).setOpaque(true); 
-									componente.setBackground(new java.awt.Color(186,143,73));
-								}
-								((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
-								break;
-						}
-						return componente;
-					} 
-				}; 
-			
-				tablaFiltro.getColumnModel().getColumn(0).setCellRenderer(render); 
-				tablaFiltro.getColumnModel().getColumn(1).setCellRenderer(render);
-				tablaFiltro.getColumnModel().getColumn(2).setCellRenderer(render);
-				tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(render);
+				
+				tablaFiltro.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 	
+				tablaFiltro.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12)); 
+				tablaFiltro.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",12)); 	
+				tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("CHB","centro","Arial","normal",12)); 
+				
+//				TableCellRenderer render = new TableCellRenderer() { 
+//					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+//					boolean hasFocus, int row, int column) { 
+//						
+//						Component componente = null;
+//						
+//						switch(column){
+//							case 0: 
+//								componente = new JLabel(value == null? "": value.toString());
+//								if(row %2 == 0){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(177,177,177));	
+//								}
+//								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(186,143,73));
+//								}
+//								if(table.getSelectedRow() == row){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(186,143,73));
+//								}
+//								((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
+//								break;
+//							case 1: 
+//								componente = new JLabel(value == null? "": value.toString());
+//								if(row %2 == 0){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(177,177,177));	
+//								}
+//								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(186,143,73));
+//								}
+//								if(table.getSelectedRow() == row){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(186,143,73));
+//								}
+//								((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
+//								break;
+//							case 2: 
+//								componente = new JLabel(value == null? "": value.toString());
+//								if(row %2 == 0){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(177,177,177));	
+//								}
+//								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(186,143,73));
+//								}
+//								if(table.getSelectedRow() == row){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(186,143,73));
+//								}
+//								((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
+//								break;
+//							case 3: 
+//								componente = new JCheckBox("",Boolean.parseBoolean(value.toString()));
+//								if(row%2==0){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(177,177,177));	
+//								}
+//								if(Boolean.parseBoolean(modeloFiltro.getValueAt(row,2).toString())){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(186,143,73));
+//								}
+//								if(table.getSelectedRow() == row){
+//									((JComponent) componente).setOpaque(true); 
+//									componente.setBackground(new java.awt.Color(186,143,73));
+//								}
+//								((AbstractButton) componente).setHorizontalAlignment(SwingConstants.CENTER);
+//								break;
+//						}
+//						return componente;
+//					} 
+//				}; 
+//			
+//				tablaFiltro.getColumnModel().getColumn(0).setCellRenderer(render); 
+//				tablaFiltro.getColumnModel().getColumn(1).setCellRenderer(render);
+//				tablaFiltro.getColumnModel().getColumn(2).setCellRenderer(render);
+//				tablaFiltro.getColumnModel().getColumn(3).setCellRenderer(render);
 			}
 			
 			ActionListener opAgregar = new ActionListener() {
@@ -223,12 +224,13 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 						if(tablaFiltro.getRowCount()==0){
 							dispose();
 							
-							//tabla de empleados con adeudo en fuente de sodas DH--------------------------------
-							while(new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH().tabla_model.getRowCount()>0){
-								new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH().tabla_model.removeRow(0);
-						    }
-							buscar_tabla_empleado_con_pendiente_en_fuente_sodas();
-							//------------------------------------------------
+//							//tabla de empleados con adeudo en fuente de sodas DH--------------------------------
+//							while(new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH().tabla_model.getRowCount()>0){
+//								new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH().tabla_model.removeRow(0);
+//						    }
+//							
+//							buscar_tabla_empleado_con_pendiente_en_fuente_sodas();
+//							//------------------------------------------------
 							
 						}
 					}else{
@@ -258,21 +260,21 @@ import Obj_Lista_de_Raya.Obj_Filtro_Ticket_Fuente_Sodas;
 				}
 			}
 			
-			public static Object[][] get_tabla(){
-			return new BuscarTablasModel().tabla_model_empleados_conpendiente_en_fuente_de_sodas_dh();
-		}
-			public void buscar_tabla_empleado_con_pendiente_en_fuente_sodas(){
-				Object [][] lista_tabla_empleados = get_tabla();
-				 String[] fila = new String[9];
-				         for(int i=0; i<lista_tabla_empleados.length; i++){
-				                 fila[0] = lista_tabla_empleados[i][0]+"";
-				                 fila[1] = lista_tabla_empleados[i][1]+"";
-				                 fila[2] = lista_tabla_empleados[i][2]+"";
-				                 fila[3] = lista_tabla_empleados[i][3]+"";
-				                 fila[4] = lista_tabla_empleados[i][4]+"";
-				                 new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH().tabla_model.addRow(fila);
-				         }
-			}
+//			public static Object[][] get_tabla(){
+//			return new BuscarTablasModel().tabla_model_empleados_conpendiente_en_fuente_de_sodas_dh();
+//		}
+//			public void buscar_tabla_empleado_con_pendiente_en_fuente_sodas(){
+//				Object [][] lista_tabla_empleados = get_tabla();
+//				 String[] fila = new String[9];
+//				         for(int i=0; i<lista_tabla_empleados.length; i++){
+//				                 fila[0] = lista_tabla_empleados[i][0]+"";
+//				                 fila[1] = lista_tabla_empleados[i][1]+"";
+//				                 fila[2] = lista_tabla_empleados[i][2]+"";
+//				                 fila[3] = lista_tabla_empleados[i][3]+"";
+//				                 fila[4] = lista_tabla_empleados[i][4]+"";
+//				                 new Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH().tabla_model.addRow(fila);
+//				         }
+//			}
 			
 			private Object[][] tabla_guardar(){
 

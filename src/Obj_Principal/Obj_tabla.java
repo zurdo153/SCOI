@@ -3,7 +3,6 @@ package Obj_Principal;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -629,22 +628,8 @@ public void tabla_mascara(JTable tabla,int columnamask1, int columnamask2 ){
 		public static void scrollposicion(JTable table, int fila, int columna) {
 	        if (!(table.getParent() instanceof JViewport)) {
 	            return;
-	        }
-	        JViewport viewport = (JViewport)table.getParent();
-	        Rectangle rect = table.getCellRect(fila, columna, true);
-	        Point pt = viewport.getViewPosition();
-	        rect.setLocation(rect.x-pt.x, rect.y-pt.y);
-	        table.scrollRectToVisible(rect);
-	        // Scroll the area into view
-	        viewport.scrollRectToVisible(rect);
+	        }	    
+	        table.scrollRectToVisible(new Rectangle(table.getCellRect(fila, columna, true)));
 	}
-
-			
-
-
-	
-		
-
-
 		
 }

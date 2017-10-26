@@ -9882,4 +9882,19 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			return proveedores;
 		}
 	   
+		public boolean existe_pedido_de_maximos_y_minimos_vigente(){
+			String query = "exec existe_pedido_de_maximos_y_minimos_vigente";
+			boolean existe = false;
+			try {
+				Statement stmt = new Connexion().conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				
+				while(rs.next()){ existe = rs.getBoolean(1); }
+		
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		    return existe; 
+		}
+	   
 }
