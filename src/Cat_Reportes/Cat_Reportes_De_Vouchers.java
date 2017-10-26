@@ -33,7 +33,7 @@ public class Cat_Reportes_De_Vouchers extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Empleados();
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 

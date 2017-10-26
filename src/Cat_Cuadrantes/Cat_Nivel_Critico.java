@@ -50,7 +50,6 @@ public class Cat_Nivel_Critico extends JFrame{
     	this.tabla.getColumnModel().getColumn(2).setMinWidth(55);
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(55);
     	this.tabla.getColumnModel().getColumn(4).setMinWidth(55);
-    	
 		String comandof="select folio,nivel_critico,ponderacion,orden,case when estatus='V' then 'Vigente' else 'Cancelado' end as estatus from cuadrantes_nivel_critico order by orden";
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comandof, basedatos,pintar,checkbox);

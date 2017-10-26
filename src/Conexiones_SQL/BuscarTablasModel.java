@@ -14,7 +14,6 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 public class BuscarTablasModel {
 	
-	
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
 	public Object[][] tabla_model_bancos(){
@@ -335,50 +334,6 @@ public class BuscarTablasModel {
 			while(rs.next()){
 				matriz[i][0] = rs.getString(1).toString().trim();
 				matriz[i][1] = rs.getString(2).toString().trim().equals("0") ? "" : rs.getString(2).toString().trim();
-				i++;
-			}
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	    return matriz; 
-	}
-	
-	public Object[][] tabla_model_filtro_cuadrante(){
-		String query_lista = "exec sp_select_filtro_relacion_empleados_en_cuadrantes";
-		
-		Object[][] matriz = new Object[get_filas(query_lista)][2];
-		try {
-			Statement stmtl = new Connexion().conexion().createStatement();
-			
-			ResultSet rs = stmtl.executeQuery(query_lista);
-
-			int i = 0;
-			while(rs.next()){
-				matriz[i][0] = rs.getString(1).toString().trim()+"  ";
-				matriz[i][1] = "  "+rs.getString(2).toString().trim();
-				i++;
-			}
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	    return matriz; 
-	}
-	
-	public Object[][] tabla_filtro_empleados_en_cuadrantes(){
-		String query_lista = "exec sp_select_filtro_empleados_en_cuadreantes";
-		
-		Object[][] matriz = new Object[get_filas(query_lista)][2];
-		try {
-			Statement stmtl = new Connexion().conexion().createStatement();
-			
-			ResultSet rs = stmtl.executeQuery(query_lista);
-
-			int i = 0;
-			while(rs.next()){
-				matriz[i][0] = rs.getString(1).toString().trim()+"  ";
-				matriz[i][1] = "  "+rs.getString(2).toString().trim();
 				i++;
 			}
 

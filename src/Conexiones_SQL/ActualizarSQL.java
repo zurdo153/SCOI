@@ -37,7 +37,6 @@ import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Evaluaciones.Obj_Directorios;
-import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
@@ -1732,58 +1731,6 @@ public class ActualizarSQL {
 				e.printStackTrace();
 			}
 			}
-		return true;
-	}
-	
-	public boolean EmpleadoCuadrante(Obj_Empleados_En_Cuadrantes empleado_cuadrante, String[] tabla){
-		String queryClear = "exec sp_borrar_empleados_en_cuadrantes "+empleado_cuadrante.getFolio();
-		String queryUpdate = "exec sp_update_tb_empleado_cuadrante ?,?,?";
-		String querytabla = "exec sp_insert_tabla_empleado_cuadrante ?,?";
-		
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmtDelete = null;
-		PreparedStatement pstmtUpdate = null;
-		PreparedStatement pstmtTabla = null;
-		try {
-			con.setAutoCommit(false);
-			pstmtDelete = con.prepareStatement(queryClear);
-			pstmtDelete.executeUpdate();
-			pstmtUpdate = con.prepareStatement(queryUpdate);
-	    	pstmtUpdate.setString(1, empleado_cuadrante.getCuadrante());
-			pstmtUpdate.setInt(2, empleado_cuadrante.isStatus() ? 1 : 0);
-			pstmtUpdate.setInt(3, empleado_cuadrante.getFolio());
-			pstmtUpdate.executeUpdate();
-			pstmtTabla = con.prepareStatement(querytabla);
-			for(int i=0; i<tabla.length; i++){
-				System.out.println(empleado_cuadrante.getCuadrante().toUpperCase().trim());
-				System.out.println(Integer.parseInt(tabla[i]));
-				System.out.println(empleado_cuadrante.getFolio());
-				pstmtTabla.setString(1, empleado_cuadrante.getCuadrante().toUpperCase().trim());
-				pstmtTabla.setInt(2, Integer.parseInt(tabla[i]));
-				pstmtTabla.executeUpdate();
-			}
-						
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ EmpleadoCuadrante ] update  SQLException: sp_borrar_empleados_en_cuadrantes,sp_update_tb_empleado_cuadrante,sp_insert_tabla_empleado_cuadrante "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ EmpleadoCuadrante ] update  SQLException: sp_borrar_empleados_en_cuadrantes,sp_update_tb_empleado_cuadrante,sp_insert_tabla_empleado_cuadrante "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-		}		
 		return true;
 	}
 	

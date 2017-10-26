@@ -23,17 +23,7 @@ public class Obj_Establecimiento {
 	public String rfc;
 	public String telefono;
 	
-	
 
-		public String[] Combo_Establecimiento_Empleados() {
-		try {
-			return new Cargar_Combo().Establecimiento_Empleado("tb_establecimiento");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
 	public int getFolio() {
 			return folio;
 		}
@@ -85,15 +75,6 @@ public class Obj_Establecimiento {
 	public String[] Combo_Establecimiento_Entysal() {
 		try {
 			return new Cargar_Combo().Establecimiento_Empleado_Entysal("establecimientos");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null; 
-	}
-	
-	public String[] Combo_Eq_Trabajo() {
-		try {
-			return new Cargar_Combo().EquipoTrabajo("tb_equipo_trabajo");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
