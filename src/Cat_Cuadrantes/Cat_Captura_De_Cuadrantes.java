@@ -50,6 +50,10 @@ import Obj_Principal.Obj_tabla;
 public class Cat_Captura_De_Cuadrantes extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
+	
+	Container contfiltro = getContentPane();
+	JLayeredPane panelfiltro = new JLayeredPane();
+	
 	Connexion con = new Connexion();
 	
 	Obj_tabla ObjTab =new Obj_tabla();
@@ -192,9 +196,12 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
     JTextArea txaResponsabili    = new Componentes().textArea(new JTextArea(), "Responsabilidad",1000);
 	JScrollPane scrollrespons    = new JScrollPane(txaResponsabili);
 	
-	JToolBar menu_toolbar = new JToolBar();
-	JCButton btnGuardar   = new JCButton("Guardar"   ,"Guardar.png"                ,"Azul");
-	JCButton btnDeshacer  = new JCButton("Deshacer"  ,"deshacer16.png"             ,"Azul");
+	JToolBar menu_toolbar       = new JToolBar();
+	JCButton btnGuardar         = new JCButton("Guardar"                           ,"Guardar.png"                                                      ,"Azul");
+	JCButton btnDeshacer        = new JCButton("Deshacer"                          ,"deshacer16.png"                                                   ,"Azul");
+	JCButton btnCapturaPersonal = new JCButton("Captura De Mi Cuadrante Personal"  ,"Usuario.png"                                                      ,"Azul");
+	JCButton btnCapturaNivelJera= new JCButton("Captura De Cuadrante Por Nivel Jerarquico","plan-de-organizacion-de-la-red-de-sitio-icono-5788-16.png" ,"Azul");
+	JCButton btnMenuPrincipal   = new JCButton("Volver Al Menu Principal","folder-home-home-icone-5663-16.png" ,"Azul");
 	
 	JToolBar toolbarLunes         = new JToolBar();
 	JCButton btnAgregLunes        = new JCButton("Agregar Actividad Lunes","double-arrow-icone-3883-16.png"  ,"Azul" );
@@ -203,7 +210,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	JToolBar toolbarMartes        = new JToolBar();
 	JCButton btnAgregMartes       = new JCButton("Agregar Actividad Martes","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnEljMartes         = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
-	
+
 	JToolBar toolbarMiercoles     = new JToolBar();
 	JCButton btnAgregMiercoles    = new JCButton("Agregar Actividad Miercoles","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnEljMiercoles      = new JCButton("Eliminar","eliminar-bala-icono-7773-32.png","Azul" );
@@ -243,74 +250,71 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	String FActividadesCargado ="";
 	String[][] tablaprecargadaactividades;
 	public Cat_Captura_De_Cuadrantes(){
+		this.setSize(355,200);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/todo-list-control-icone-3792-48.png"));
+		this.setTitle("Captura De Cuadrantes");
+		this.panelfiltro.setBorder(BorderFactory.createTitledBorder("Selecione La Forma de Captura Del Cuadrante"));
+  
+		 int x=15, y=30,width=320,height=20;
+
+		this.panelfiltro.add(new JLabel("Captura Por Gafete De Colaborador:")).setBounds (x     ,y      ,width      ,height );
+		this.panelfiltro.add(txtFolio).setBounds                                         (x+180 ,y      ,140        ,height );
+		this.panelfiltro.add(btnCapturaPersonal).setBounds                               (x     ,y+=35  ,width      ,height );
+		this.panelfiltro.add(btnCapturaNivelJera).setBounds                              (x     ,y+=35  ,width      ,height );
+		
+		this.txtFolio.addKeyListener        (busqueda_datos_por_gafete_abre_catalogo ); 
+		this.btnCapturaPersonal.addActionListener(porColaborador           );
+		contfiltro.add(panelfiltro);
+		
+	}
+	
+	 Obj_Cuadrantes cuadrante = new Obj_Cuadrantes();
+	public void constructor_cuadrante_gafete (String clave_checador, String tipo){
 		this.setSize(1024,685);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/favoritos-ver-boton-icono-8318-32.png"));
-		this.setTitle("Cuadrantes");
-		this.panel.setBorder(BorderFactory.createTitledBorder("Cuadrantes"));
-		
-		this.menu_toolbar.add(btnDeshacer );
-		this.menu_toolbar.addSeparator(   );
-		this.menu_toolbar.addSeparator(   );
-		this.menu_toolbar.add(btnGuardar  );
-		this.menu_toolbar.setFloatable(false);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/todo-list-control-icone-3792-48.png"));
+		this.setTitle("Captura De Cuadrante Del Colaborador");
+		this.panel.setBorder(BorderFactory.createTitledBorder("Selecione La Pestana Del Dia Que Desea Contestar El Cuadrante"));		
 		
 		this.pestanas.addTab("Principal"    ,Principal    );
-		this.init_tablaPrincipal();
-		
-		this.pestanas.addTab("Lunes"    ,pLunes    );
-		this.init_tablalunes();
-		this.pestanas.addTab("Martes"   ,pMarte    );
-		this.init_tablamartes();
-		this.pestanas.addTab("Miércoles",pMiercoles);
-		this.init_tablamiercoles();
-		this.pestanas.addTab("Jueves"   ,pJueves   );
-		this.init_tablajueves();
-		this.pestanas.addTab("Viernes"  ,pViernes  );
-		this.init_tablaviernes();
-		this.pestanas.addTab("Sábado"   ,pSabado   );
-		this.init_tablasabado();
-		this.pestanas.addTab("Domingo"  ,pDomingo  );
-		this.init_tablaDomingo();
-	
-		 int x=15, y=20,width=120,height=20;
-
-		this.panel.add(new JLabel("Folio:")).setBounds          (x     ,y      ,width      ,height );
-		this.panel.add(txtFolio).setBounds                      (x+=30 ,y      ,width      ,height );
-		this.panel.add(menu_toolbar).setBounds                  (x+=120,y      ,width*4    ,height );
-		this.panel.add(pestanas).setBounds                      (x=15  ,y+=30  ,990        ,590    );
-		
-		this.panelEnabledFalse();
-		
-		this.btnGuardar.addActionListener   (guardar        );
-		this.btnDeshacer.addActionListener  (deshacer       );
-		this.txtFolio.addKeyListener        (busqueda_datos ); 
-		cont.add(panel);
-		Seleccionar_Respuesta(tablaLunes);
-		Seleccionar_Respuesta(tablaMartes);
-		Seleccionar_Respuesta(tablaMiercoles);
-		Seleccionar_Respuesta(tablaJueves);
-		Seleccionar_Respuesta(tablaViernes);
-		Seleccionar_Respuesta(tablaSabado);
-		Seleccionar_Respuesta(tablaDomingo);
-		
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape"                );
-        getRootPane().getActionMap().put("escape", new AbstractAction(){ public void actionPerformed(ActionEvent e){ btnDeshacer.doClick(); }  });
-         
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar"        );
-        getRootPane().getActionMap().put("guardar", new AbstractAction(){public void actionPerformed(ActionEvent e){btnGuardar.doClick();   }  });
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar"                  );
-        getRootPane().getActionMap().put("guardar", new AbstractAction(){public void actionPerformed(ActionEvent e) { btnGuardar.doClick(); }  });    
-	}
-
-	public void init_tablaPrincipal(){
 		this.Principal.setBorder(BorderFactory.createTitledBorder("Principal"));
 		this.Principal.setOpaque(true); 
 		this.Principal.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
-		 int x=15, y=20,width=100,height=20,sep=75;
-			this.Principal.add(new JLabel("Colaborador:")).setBounds    (x     ,y      ,width      ,height );
+		
+		 int x=15, y=20,width=120,height=20,sep=75;
+		 
+		   if(tipo.equals("colaborador")){
+			this.menu_toolbar.add(btnDeshacer );
+			this.menu_toolbar.addSeparator(   );
+			this.menu_toolbar.addSeparator(   );
+			this.menu_toolbar.add(btnGuardar  );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.add(btnMenuPrincipal);
+			this.menu_toolbar.setFloatable(false);
+			
+			this.panel.add(new JLabel("Folio:")).setBounds              (x     ,y      ,width      ,height );
+			this.panel.add(txtFolio).setBounds                          (x+=30 ,y      ,width      ,height );
+			this.panel.add(menu_toolbar).setBounds                      (x+=120,y      ,width*5    ,height );
+			getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape"                );
+	        getRootPane().getActionMap().put("escape", new AbstractAction(){ public void actionPerformed(ActionEvent e){ btnDeshacer.doClick(); }  });
+		   }
+		   
+		   if(tipo.equals("personal")){
+			this.menu_toolbar.add(btnGuardar      );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.add(btnMenuPrincipal);
+			this.menu_toolbar.setFloatable(false);
+			this.panel.add(menu_toolbar).setBounds                      (x     ,y      ,width*3      ,height );
+		   }
+			this.panel.add(pestanas).setBounds                          (x=15  ,y+=30  ,990        ,590    );
+			this.Principal.add(new JLabel("Colaborador:")).setBounds    (x     ,y      ,width=100  ,height );
 			this.Principal.add(txtColaborador).setBounds                (x+sep ,y      ,width*5-50 ,height );
 			this.Principal.add(txtfolioColaborado).setBounds            (x+525 ,y      ,50         ,height );			
 			this.Principal.add(new JLabel("Cuadrante:")).setBounds      (x     ,y+=30  ,width      ,height );
@@ -328,7 +332,48 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			this.Principal.add(scrollobjet).setBounds                   (x     ,y+=20  ,width*6    ,140    );
 			this.Principal.add(new JLabel("Responsabilidades Del Puesto:")).setBounds(x,y+=150,180 ,height );
 			this.Principal.add(scrollrespons).setBounds                 (x     ,y+=20  ,width*6    ,140    );
-    }
+			
+
+		this.pestanas.addTab("Lunes"    ,pLunes    );
+		this.init_tablalunes();
+		this.pestanas.addTab("Martes"   ,pMarte    );
+		this.init_tablamartes();
+		this.pestanas.addTab("Miércoles",pMiercoles);
+		this.init_tablamiercoles();
+		this.pestanas.addTab("Jueves"   ,pJueves   );
+		this.init_tablajueves();
+		this.pestanas.addTab("Viernes"  ,pViernes  );
+		this.init_tablaviernes();
+		this.pestanas.addTab("Sábado"   ,pSabado   );
+		this.init_tablasabado();
+		this.pestanas.addTab("Domingo"  ,pDomingo  );
+		this.init_tablaDomingo();
+	
+		this.panelEnabledFalse();
+		
+		this.btnGuardar.addActionListener   (guardar                  );
+		this.btnDeshacer.addActionListener  (deshacer                 );
+		this.txtFolio.addKeyListener        (busqueda_datos_por_gafete); 
+		this.btnMenuPrincipal.addActionListener(volver_al_menu_principal);
+
+		cont.add(panel);
+		Seleccionar_Respuesta(tablaLunes);
+		Seleccionar_Respuesta(tablaMartes);
+		Seleccionar_Respuesta(tablaMiercoles);
+		Seleccionar_Respuesta(tablaJueves);
+		Seleccionar_Respuesta(tablaViernes);
+		Seleccionar_Respuesta(tablaSabado);
+		Seleccionar_Respuesta(tablaDomingo);
+
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar"        );
+        getRootPane().getActionMap().put("guardar", new AbstractAction(){public void actionPerformed(ActionEvent e){btnGuardar.doClick();   }  });
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar"                  );
+        getRootPane().getActionMap().put("guardar", new AbstractAction(){public void actionPerformed(ActionEvent e) { btnGuardar.doClick(); }  });  
+        
+		 tablacompleta= cuadrante.refrescar_tabla_captura_cuadrante(clave_checador);
+		 cargar_datos_tablas();
+		 panelEnabledTrue();
+	}
 	
 	public void init_tablalunes(){
 		ObjTab.tabla_mascara(tablaLunes,-1,-1);
@@ -500,6 +545,95 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			    });
 			}
 		
+		ActionListener porColaborador = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				panelfiltro.removeAll();
+ 				contfiltro.removeAll();
+ 				txtFolio.removeKeyListener(busqueda_datos_por_gafete_abre_catalogo);
+ 				String clave_checador =cuadrante.devuelve_clave_checador();
+ 				constructor_cuadrante_gafete(clave_checador,"personal");
+			}
+		};
+		
+		ActionListener volver_al_menu_principal = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(JOptionPane.showConfirmDialog(null, " Si A Hecho Captura Y No Ha Guardado Se Perderá La Información, ¿Desea Volver Al Menu Principal?", "Aviso", JOptionPane.INFORMATION_MESSAGE,0, new ImageIcon("Imagen/usuario-icono-noes_usuario9131-64.png") )== 0){
+					dispose();
+					new Cat_Captura_De_Cuadrantes().setVisible(true);
+				}
+			}
+		};
+		
+		 KeyListener busqueda_datos_por_gafete_abre_catalogo = new KeyListener(){
+				public void keyReleased(KeyEvent evento) {
+					if(evento.getKeyCode()==KeyEvent.VK_ENTER){
+					   Obj_Cuadrantes cuadrante = new Obj_Cuadrantes();
+					   @SuppressWarnings("deprecation")
+					String clave_checador=txtFolio.getText().toString().toUpperCase().trim();
+					   int posicionC = clave_checador.indexOf('C');
+					   panelLimpiar();
+					 	if(posicionC>0){
+					 		if(isNumeric(clave_checador.substring(0, posicionC))){
+					 			if(cuadrante.Validacion_captura_existe_cuadrante(clave_checador)){
+					 				panelfiltro.removeAll();
+					 				contfiltro.removeAll();
+					 				txtFolio.removeKeyListener(busqueda_datos_por_gafete_abre_catalogo);
+					 				constructor_cuadrante_gafete(clave_checador, "colaborador");
+									  return;
+								}else{
+								   JOptionPane.showMessageDialog(null, "El Colaborador No tiene Ningun Cuadrante Asignado En Su Puesto \n Solicita A Mejora Continua Se Asigne Su Cuadrante", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
+								   return;
+								}	
+					 		}else{
+							  JOptionPane.showMessageDialog(null, "La Clave No Corresponde A Ningun Trabajador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
+					 		  return;
+					 		}
+					 	}else{
+						  JOptionPane.showMessageDialog(null, "La Clave No Corresponde A Ningun Trabajador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
+						  return;
+					 	}
+					}	 	
+				}
+				public void keyTyped(KeyEvent arg0) {}
+				public void keyPressed(KeyEvent arg0) {}		
+			};		
+			
+			
+			 KeyListener busqueda_datos_por_gafete= new KeyListener(){
+					public void keyReleased(KeyEvent evento) {
+						if(evento.getKeyCode()==KeyEvent.VK_ENTER){
+						   Obj_Cuadrantes cuadrante = new Obj_Cuadrantes();
+						   @SuppressWarnings("deprecation")
+						String clave_checador=txtFolio.getText().toString().toUpperCase().trim();
+						   int posicionC = clave_checador.indexOf('C');
+						   panelLimpiar();
+						 	if(posicionC>0){
+						 		if(isNumeric(clave_checador.substring(0, posicionC))){
+						 			if(cuadrante.Validacion_captura_existe_cuadrante(clave_checador)){
+
+						 				 tablacompleta= cuadrante.refrescar_tabla_captura_cuadrante(clave_checador);
+						 				 cargar_datos_tablas();
+						 				 panelEnabledTrue();
+										  return;
+									}else{
+									   JOptionPane.showMessageDialog(null, "El Colaborador No tiene Ningun Cuadrante Asignado En Su Puesto \n Solicita A Mejora Continua Se Asigne Su Cuadrante", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
+									   return;
+									}	
+						 		}else{
+								  JOptionPane.showMessageDialog(null, "La Clave No Corresponde A Ningun Trabajador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
+						 		  return;
+						 		}
+						 	}else{
+							  JOptionPane.showMessageDialog(null, "La Clave No Corresponde A Ningun Trabajador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
+							  return;
+						 	}
+						}	 	
+					}
+					public void keyTyped(KeyEvent arg0) {}
+					public void keyPressed(KeyEvent arg0) {}		
+				};		
+				
+				
 		private class CargaDatosDelCombo extends DefaultCellEditor{
 	        @SuppressWarnings("rawtypes")
 			public CargaDatosDelCombo(){
@@ -549,8 +683,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			if(Dia==1){
 				for(int j=0;j<5;j++){
 				vector[j] = tablacompleta[i][j].toString();
-				vector[5] = "Respuestas";
-				vector[6] = "";
+				vector[5] = tablacompleta[i][27].toString();
+				vector[6] = tablacompleta[i][28].toString();
 				vector[7] = "";
 				vector[8] = tablacompleta[i][26].toString();
 				}
@@ -560,8 +694,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	        if(Dia==2){
 	        	for(int j=0;j<5;j++){
 	    			vector[j] = tablacompleta[i][j].toString();
-	    			vector[5] = "Respuestas";
-	    			vector[6] = "";
+	    			vector[5] = tablacompleta[i][27].toString();
+	    			vector[6] = tablacompleta[i][28].toString();
 	    			vector[7] = "";
 	    			vector[8] = tablacompleta[i][26].toString();
 	    			}
@@ -571,8 +705,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	        if(Dia==3){
 	        	for(int j=0;j<5;j++){
 	    			vector[j] = tablacompleta[i][j].toString();
-	    			vector[5] = "Respuestas";
-	    			vector[6] = "";
+	    			vector[5] = tablacompleta[i][27].toString();
+	    			vector[6] = tablacompleta[i][28].toString();
 	    			vector[7] = "";
 	    			vector[8] = tablacompleta[i][26].toString();
 	    			}
@@ -582,8 +716,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	        if(Dia==4){
 	        	for(int j=0;j<5;j++){
 	    			vector[j] = tablacompleta[i][j].toString();
-	    			vector[5] = "Respuestas";
-	    			vector[6] = "";
+	    			vector[5] = tablacompleta[i][27].toString();
+	    			vector[6] = tablacompleta[i][28].toString();
 	    			vector[7] = "";
 	    			vector[8] = tablacompleta[i][26].toString();
 	    			}
@@ -593,8 +727,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	        if(Dia==5){
 	        	for(int j=0;j<5;j++){
 	    			vector[j] = tablacompleta[i][j].toString();
-	    			vector[5] = "Respuestas";
-	    			vector[6] = "";
+	    			vector[5] = tablacompleta[i][27].toString();
+	    			vector[6] = tablacompleta[i][28].toString();
 	    			vector[7] = "";
 	    			vector[8] = tablacompleta[i][26].toString();
 	    			}
@@ -604,8 +738,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	        if(Dia==6){
 	        	for(int j=0;j<5;j++){
 	    			vector[j] = tablacompleta[i][j].toString();
-	    			vector[5] = "Respuestas";
-	    			vector[6] = "";
+	    			vector[5] = tablacompleta[i][27].toString();
+	    			vector[6] = tablacompleta[i][28].toString();
 	    			vector[7] = "";
 	    			vector[8] = tablacompleta[i][26].toString();
 	    			}
@@ -615,8 +749,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	        if(Dia==7){
 	        	for(int j=0;j<5;j++){
 	    			vector[j] = tablacompleta[i][j].toString();
-	    			vector[5] = "Respuestas";
-	    			vector[6] = "";
+	    			vector[5] = tablacompleta[i][27].toString();
+	    			vector[6] = tablacompleta[i][28].toString();
 	    			vector[7] = "";
 	    			vector[8] = tablacompleta[i][26].toString();
 	    			}
@@ -628,7 +762,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		dia_de_descanso=Integer.valueOf(tablacompleta[0][25].toString());
 		inabilitarPestanas();
 		}
-		
+	
 		public void inabilitarPestanas(){
 	       if(dia_de_la_semana==1){
 				pestanas.setEnabledAt(0, true);
@@ -772,39 +906,6 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	     	}
 	     }
 	 
-	  KeyListener busqueda_datos = new KeyListener(){
-			public void keyReleased(KeyEvent evento) {
-				if(evento.getKeyCode()==KeyEvent.VK_ENTER){
-				   Obj_Cuadrantes cuadrante = new Obj_Cuadrantes();
-				   @SuppressWarnings("deprecation")
-				String clave_checador=txtFolio.getText().toString().toUpperCase().trim();
-				   int posicionC = clave_checador.indexOf('C');
-				   panelLimpiar();
-				 	if(posicionC>0){
-				 		if(isNumeric(clave_checador.substring(0, posicionC))){
-				 			if(cuadrante.Validacion_captura_existe_cuadrante(clave_checador)){
-				 				 tablacompleta= cuadrante.refrescar_tabla_captura_cuadrante(clave_checador);
-								 cargar_datos_tablas();
-								 panelEnabledTrue();
-								  return;
-							}else{
-							   JOptionPane.showMessageDialog(null, "El Colaborador No tiene Ningun Cuadrante Asignado En Su Puesto \n Solicita A Mejora Continua Se Asigne Su Cuadrante", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
-							   return;
-							}	
-				 		}else{
-						  JOptionPane.showMessageDialog(null, "La Clave No Corresponde A Ningun Trabajador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
-				 		  return;
-				 		}
-				 	}else{
-					  JOptionPane.showMessageDialog(null, "La Clave No Corresponde A Ningun Trabajador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		    	
-					  return;
-				 	}
-				}	 	
-			}
-			public void keyTyped(KeyEvent arg0) {}
-			public void keyPressed(KeyEvent arg0) {}		
-		};		
-		 
 	KeyListener opFiltro_lunes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
 			ObjTab.Obj_Filtro(tablaLunes, txtBuscarLunes.getText(), columnas);
@@ -875,7 +976,29 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	    	tablaparametro = tblp;
 	    }
 	    public void actionPerformed(ActionEvent evt){
-	        new  Cat_Actividades_Extras().setVisible(true);
+	    	
+		    if(evt.getActionCommand().equals("Agregar Actividad Lunes")){
+		        new  Cat_Actividades_Extras(1).setVisible(true);	
+		    }
+		    if(evt.getActionCommand().equals("Agregar Actividad Martes")){
+		        new  Cat_Actividades_Extras(2).setVisible(true);
+		    }
+		    if(evt.getActionCommand().equals("Agregar Actividad Miercoles")){
+		        new  Cat_Actividades_Extras(3).setVisible(true);
+		    }
+		    if(evt.getActionCommand().equals("Agregar Actividad Jueves")){
+		        new  Cat_Actividades_Extras(4).setVisible(true);
+		    }
+		    if(evt.getActionCommand().equals("Agregar Actividad Viernes")){
+		        new  Cat_Actividades_Extras(5).setVisible(true);
+		    }
+		    if(evt.getActionCommand().equals("Agregar Actividad Sabado")){
+		        new  Cat_Actividades_Extras(6).setVisible(true);
+		    }
+		    if(evt.getActionCommand().equals("Agregar Actividad Domingo")){
+		        new  Cat_Actividades_Extras(7).setVisible(true);
+		    }
+	
 	    }
 	};
 	
@@ -935,7 +1058,6 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 				}
 		 }
 	 };
-	
 	
  	 public String[][] TablaGuardado(){
 			int rengloneslunes     = tablaLunes.getRowCount()    ;
@@ -1197,7 +1319,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		Border linea;
 		String fecha_extra ="";
 		
-		public Cat_Actividades_Extras(){
+		public Cat_Actividades_Extras(int dia){
 			this.setSize(395, 330);
 			this.setLocationRelativeTo(null);
 			this.setResizable(false);
@@ -1220,6 +1342,39 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			panel.add(chbSabado).setBounds                                         (x+=90 ,y     ,width   ,height     );
 			panel.add(chbDomingo).setBounds                                        (x+=90 ,y     ,width   ,height     );
 			panel.add(btnAprovar).setBounds                                        (x-=160,y+=35 ,width*2 ,height*2   );
+		
+				
+				switch(dia) {
+				case 1:				
+				chbLunes.setSelected(true);
+				break;
+				case 2:				
+				chbMartes.setSelected(true);
+				break;
+				case 3:				
+				chbMiercoles.setSelected(true);
+				break;
+				case 4:				
+				chbJueves.setSelected(true);
+				break;
+				case 5:				
+				chbViernes.setSelected(true);
+				break;
+				
+				case 6:				
+				chbSabado.setSelected(true);
+				break;
+				
+				case 7:				
+				chbDomingo.setSelected(true);
+				break;
+				
+				};
+			
+			
+			
+			
+			
 			
 			       if(dia_de_la_semana==1){
 				       chbLunes.setSelected   (true );

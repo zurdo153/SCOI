@@ -38,6 +38,7 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 	String operador[] = {"Selecciona Un Reporte"
 							,"Reporte Indicador De Nivel De Surtido"
 							,"Reporte Indicador De Nivel De Servicio"
+							,"Reporte De Productos Faltantes Por Establecimientos"
 							,"Reporte De Productos Negados Por Establecimientos"
 							,"Reporte De Total De Productos Negados Con Localizacion"
 							,"Reporte De Productos Con Ajuste Por Establecimientos"
@@ -156,6 +157,11 @@ public class Cat_Reportes_De_Pedidos extends JFrame {
 										reporte = "Obj_Reporte_Productos_Negados_Por_Establecimiento.jrxml";
 								   }
 								  
+								  if(concepto.equals("Reporte De Productos Faltantes Por Establecimientos")){
+									    comando="exec sp_reporte_productos_faltantes_por_establecimiento_con_clasificadores '"+fecha_inicio+"','"+fecha_final+"'";
+										reporte = "Obj_Reporte_De_Faltantes_De_Pedidos_Por_Establecimiento_En_Un_Periodo.jrxml";
+								   }
+									
 								  if(concepto.equals("Reporte De Total De Productos Negados Con Localizacion")){
 								        comando="exec sp_select_total_de_productos_negados '"+fecha_inicio+"','"+fecha_final+"'";
 									    reporte = "Obj_Reporte_De_Total_De_Productos_Negados.jrxml";

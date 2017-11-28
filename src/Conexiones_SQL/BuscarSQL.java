@@ -67,7 +67,6 @@ import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Cuadrantes.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Directorios;
-import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
@@ -1439,7 +1438,6 @@ public class BuscarSQL {
 				usuario.setVista_previa_impresion(rs.getString("vista_previa_reportes"));
 				usuario.setStatus(rs.getInt("status"));
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -3248,55 +3246,6 @@ public class BuscarSQL {
 		return nivel_gerarquico;
 	}
 	
-	public Obj_Empleados_En_Cuadrantes buscar_empleado_cuadrante(int folio) throws SQLException{
-		Obj_Empleados_En_Cuadrantes empleado_cuadrante = new Obj_Empleados_En_Cuadrantes();
-		String query = "exec sp_select_buscar_empleado_cuadrante "+ folio;
-		
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				empleado_cuadrante.setFolio(rs.getInt("folio"));
-				empleado_cuadrante.setCuadrante(rs.getString("cuadrante"));
-				empleado_cuadrante.setStatus(rs.getInt("status")==1 ? true : false);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return empleado_cuadrante;
-	}
-	
-	public Obj_Empleados_En_Cuadrantes buscar_cuadrante_con_empleado(int folio) throws SQLException{
-		Obj_Empleados_En_Cuadrantes empleado_cuadrante = new Obj_Empleados_En_Cuadrantes();
-		String query = "exec sp_select_empleado_con_cuadrante "+ folio;
-		
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				empleado_cuadrante.setFolio(rs.getInt("folio"));
-				empleado_cuadrante.setCuadrante(rs.getString("cuadrante"));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return empleado_cuadrante;
-	}
-	
 	public Obj_Mensaje_Personal buscar_mensaje(int folio) throws SQLException{
 		Obj_Mensaje_Personal MsjPersonal = new Obj_Mensaje_Personal();
 		String query = "exec sp_select_mensaje "+ folio;
@@ -3386,27 +3335,6 @@ public class BuscarSQL {
 		return permisoChecador;
 	}
 	
-	public int NuevoEmpleadoCuadrante() throws SQLException{
-		int folio = 0;
-		String query = "exec sp_nuevo_empleado_cuadrante";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				folio =  rs.getInt("Maximo");
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 1;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return folio;
-	}
-	
 	public int NuevoMensajePersonal() throws SQLException{
 		int folio = 0;
 		String query = "exec sp_nuevo_mensaje";
@@ -3447,28 +3375,6 @@ public class BuscarSQL {
 			if(stmt!=null){stmt.close();}
 		}
 		return folio;
-	}
-	
-	public boolean existeEmpleadoCuadrante(int folio) throws SQLException{
-		boolean existe = false;
-		String query = "exec sp_existe_empleado_cuadrante "+folio;
-		
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				existe = rs.getBoolean("existe");
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return existe;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "resource", "unchecked" })
@@ -9764,9 +9670,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	   
 	   public String[][] TablaActividades_Cuadrante_captura(String Clave_Gafete){
 			String[][] Matriz = null;
-			String query = "exec cuadrantes_actividades_por_colaborador_captura '"+Clave_Gafete+"'";
+			String query = "exec cuadrantes_captura_consulta_actividades_por_colaborador '"+Clave_Gafete+"'";
 			
-			Matriz = new String[getFilas(query)][27];
+			Matriz = new String[getFilas(query)][29];
 			Statement s;
 			ResultSet rs;
 			try {			
@@ -9802,6 +9708,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					Matriz[i][24] = rs.getString(25);
 					Matriz[i][25] = rs.getString(26);
 					Matriz[i][26] = rs.getString(27);
+					Matriz[i][27] = rs.getString(28);
+					Matriz[i][28] = rs.getString(29);
 					i++;
 				}
 			} catch (SQLException e1) {
@@ -9820,6 +9728,31 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				ResultSet rs = stmt.executeQuery(query);
 				while(rs.next()){
 					valor=(rs.getBoolean(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Valida_Clave_Checador_Si_Existe_Cuadrante ] SQLException: "+query+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+			finally{
+				if(stmt!=null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return valor;
+		}
+	   
+	   public String clave_checador(){
+		   String valor = "";
+		   Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+			String query = "cuadrantes_actividades_por_colaborador_regresa_clave_checador '"+usuario.getFolio()+"'";
+			Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					valor=(rs.getString(1));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -441,7 +441,6 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 				}
 					modeloorden.addRow(vector);
 			 }	
-			
 			vector = new Object[3];
 			for(int i=0;i<Tabla_registros.length;i++){
 				for(int j=0;j<3;j++){
@@ -449,7 +448,6 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 				}
 					modelo.addRow(vector);
 			 }	
-			
 	}
 	
 	ActionListener opDerecha = new ActionListener(){

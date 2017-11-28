@@ -160,6 +160,10 @@ public class Obj_Cuadrantes {
 		return new BuscarSQL().Valida_Clave_Checador_Si_Existe_Cuadrante(clave_checador);
 	}
 	
+	public String devuelve_clave_checador(){
+		return new BuscarSQL().clave_checador();
+	}
+	
 	public boolean Guardar_Captura(){
 		return new GuardarSQL().Guardar_Captura_Cuadrante(this);
 	}

@@ -39,7 +39,6 @@ import Conexiones_SQL.Connexion;
 
 
 import Obj_Checador.Obj_Mensaje_Personal;
-import Obj_Evaluaciones.Obj_Empleados_En_Cuadrantes;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
@@ -363,7 +362,6 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 	ActionListener opNuevo = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			txaMensaje.setEnabled(true);
-			txtFolioMsj.setText(new Obj_Empleados_En_Cuadrantes().nuevoEmpleadoCuadrante()+"");
 			txtFolioMsj.setText(new Obj_Mensaje_Personal().nuevoMensaje()+"");
 			txtFolioMsj.setEnabled(false);
 			txtFechaFin.setEnabled(true);
