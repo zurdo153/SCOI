@@ -6774,8 +6774,8 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
-	public boolean Guardar_minimo_maximo_pedido_por_estab(Object[][] arreglo,String establecimiento,String Observacion){
-		String query = " exec sp_insert_permisos_submenus_usuario_nuevo ?,?,?,?,?,?,?,?,?,?,?,?,?";
+	public boolean Guardar_minimo_maximo_pedido_por_estab(Object[][] arreglo,String establecimiento_solicita,String establecimiento_surte,String Observacion){
+		String query = " exec ----------sp_insert_permisos_submenus_usuario_nuevo---------- ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -6794,10 +6794,11 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setString(8, (String) arreglo[i][8]);
 				pstmt.setString(9, (String) arreglo[i][9]);
 				
-				pstmt.setString(10, establecimiento);
-				pstmt.setString(11, Observacion);
-				pstmt.setInt(12, usuario.getFolio());
-				pstmt.setString(13, i==arreglo.length-1?"FIN":"EN PROCESO");//bandera para finalizar los movimientos y generar el ultimo registro en la BD
+				pstmt.setString(10, establecimiento_solicita);
+				pstmt.setString(11, establecimiento_surte);
+				pstmt.setString(12, Observacion);
+				pstmt.setInt(13, usuario.getFolio());
+				pstmt.setString(14, i==arreglo.length-1?"FIN":"EN PROCESO");//bandera para finalizar los movimientos y generar el ultimo registro en la BD
 				pstmt.execute();
 //				System.out.println(usuario.getFolio());
 			}

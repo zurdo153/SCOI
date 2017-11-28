@@ -33,6 +33,7 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.Obj_tabla;
+import Obj_Xml.CrearXmlString;
 
 @SuppressWarnings({ "serial", "unused" })
 public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
@@ -52,9 +53,13 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
     	this.tabla.getColumnModel().getColumn( 7).setMinWidth(80);
     	this.tabla.getColumnModel().getColumn( 8).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn( 9).setMinWidth(150);
-    	String comandof=" exec consulta_maximos_y_minimos '"+consulta_bd+"','"+lblEstabSolicita.getText().trim()+"','"+lblEstabSurte.getText().trim()+"'";
+    	String comandof=" exec consulta_maximos_y_minimos '"+consulta_bd+"','"+lblEstabSolicita.getText().trim()+"','"+lblEstabSurte.getText().trim()+"',"+lblFolioPedido.getText().toString().trim()+",'"+lblAreaTipoDistribucion.getText().trim()+"'";
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnasb, comandof, basedatos,pintar,checkbox);
+		
+//		CrearXmlString xml = new CrearXmlString();
+//		int[] ignorarColumnas ={1};
+//		System.out.println(xml.CadenaXML(tabla,ignorarColumnas));
     }
 	
 	
@@ -65,7 +70,7 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 		 return types;
 	}
 	
-	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Cod_Prod","Descripcion","Minimo","Maximo","Exist. Estab","Sugerido","Exist. Surte","Confirmacion","Estatus Prod.","Area Tipo Distribucion"}){
+	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Cod_Prod","Descripcion","Minimo","Maximo","Exist_Estab","Sugerido","Exist_Surte","Confirmacion","Estatus_Prod","Area_Tipo_Distribucion"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = base();
 			@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -84,13 +89,15 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 	
 	JLabel lblEstabSolicita = new JLabel("");
 	JLabel lblEstabSurte = new JLabel("");
+	JLabel lblFolioPedido = new JLabel("");
+	JLabel lblAreaTipoDistribucion = new JLabel("");
 	
 	JTextArea txaObservacion = new Componentes().textArea(new JTextArea(), "Ingrese una observacíon", 250);
 	JScrollPane scrollObservacion = new JScrollPane(txaObservacion);
 	
 	JCButton btnGuardar = new JCButton("Guardar", "guardar.png", "Azul");			
 			
-	public Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento(String consultar_bd,String estabSolicita,String estabSurte) {
+	public Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento(String consultar_bd,String estabSolicita,String estabSurte,int folio_pedido,String area) {
 		this.setModal(true);
 		setSize(1024,620);
 		this.setResizable(false);
@@ -105,6 +112,9 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 		
 		panel.add(new JLabel("Establecimiento Solicita:")).setBounds(x, y, 120, 20);
 		panel.add(lblEstabSolicita).setBounds(x+130, y, 180, 20);
+		panel.add(new JLabel("Folio Pedido:")).setBounds(x+850, y, 120, 20);
+		panel.add(lblFolioPedido).setBounds(x+930, y, 180, 20);
+		
 		panel.add(new JLabel("Establecimiento Surte:")).setBounds(x, y+=25, 120, 20);
 		panel.add(lblEstabSurte).setBounds(x+130, y, 180, 20);
 		panel.add(scroll_tabla).setBounds                  (x    ,y+=30       ,width   ,height   );
@@ -116,6 +126,8 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 		
 		lblEstabSolicita.setText(estabSolicita);
 		lblEstabSurte.setText(estabSurte);
+		lblFolioPedido.setText(folio_pedido+"");
+		lblAreaTipoDistribucion.setText(area);
 		
 		init_tablafp(consultar_bd,lblEstabSolicita.getText().toString().trim());
 		
@@ -136,7 +148,7 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 					}
 				}
 				
-				if(new GuardarSQL().Guardar_minimo_maximo_pedido_por_estab(arreglo, lblEstabSolicita.getText().toString().trim(), txaObservacion.getText().trim())){
+				if(new GuardarSQL().Guardar_minimo_maximo_pedido_por_estab(arreglo, lblEstabSolicita.getText().toString().trim(), lblEstabSurte.getText().toString().trim() , txaObservacion.getText().trim())){
 //					se guardo exitosamente el registro
 				}else{
 //					no se pudo guardar el registro
@@ -191,7 +203,7 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento("BUSCAR EN BMS","SUPER V","CEDIS").setVisible(true);
+			new Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento("BUSCAR EN SCOI","SUPER V","CEDIS",1,"De Linea Centro De Distribucion").setVisible(true);
 		}catch(Exception e){	}
 
 	}

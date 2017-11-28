@@ -272,7 +272,7 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
     		lblAviso.setHorizontalAlignment(0);
     		lblAviso2.setHorizontalAlignment(0);
     		
-    		llenarTabla();
+//    		llenarTabla();
     		
     		btnRegistrarLlegada.addActionListener(opPasarTransferencias);
     		
@@ -312,7 +312,7 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
     		}else{
     			
     			lblAviso.setText("El Chofer No Tiene Pedido Por Entregar En El Establecimeinto: ");
-    			lblAviso2.setText(establecimiento);
+    			lblAviso2.setText(establecimiento+" o la entrega no a sido validada por seguridad");
     			lblAviso.setVisible(true);
     			lblAviso2.setVisible(true);
     			Scroll.setVisible(false);
