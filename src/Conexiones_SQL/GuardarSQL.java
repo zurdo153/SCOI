@@ -6700,34 +6700,16 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
-	public boolean Guardar_minimo_maximo_pedido_por_estab(Object[][] arreglo,String establecimiento_solicita,String establecimiento_surte,String Observacion){
-		String query = " exec ----------sp_insert_permisos_submenus_usuario_nuevo---------- ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	public boolean Guardar_minimo_maximo_pedido_por_estab(String xml,String establecimiento_solicita,String establecimiento_surte,int folio_scoi,String Observacion){
+		
+		String query = "exec insert_pedido_maximos_y_minimos_xml '"+xml+"','"+establecimiento_solicita+"','"+establecimiento_surte+"',"+folio_scoi+",'"+Observacion+"',"+usuario.getFolio();
+		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			
-			for(int i=0; i<arreglo.length; i++){
-				
-				pstmt.setString(1, (String) arreglo[i][0]);
-				pstmt.setFloat(2, (float) arreglo[i][2]);
-				pstmt.setFloat(3, (float) arreglo[i][3]);
-				pstmt.setFloat(4, (float) arreglo[i][4]);
-				pstmt.setFloat(5, (float) arreglo[i][5]);
-				pstmt.setFloat(6, (float) arreglo[i][6]);
-				pstmt.setFloat(7, (float) arreglo[i][7]);
-				pstmt.setString(8, (String) arreglo[i][8]);
-				pstmt.setString(9, (String) arreglo[i][9]);
-				
-				pstmt.setString(10, establecimiento_solicita);
-				pstmt.setString(11, establecimiento_surte);
-				pstmt.setString(12, Observacion);
-				pstmt.setInt(13, usuario.getFolio());
-				pstmt.setString(14, i==arreglo.length-1?"FIN":"EN PROCESO");//bandera para finalizar los movimientos y generar el ultimo registro en la BD
-				pstmt.execute();
-//				System.out.println(usuario.getFolio());
-			}
+			pstmt.execute();
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+ e.getMessage());
@@ -6751,6 +6733,27 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
+	   public String Finalizar_minimo_maximo_pedido_por_estab(String establecimiento_solicita,String establecimiento_surte,int folio_scoi,String area) throws SQLException{
+		   String folio_pedido="";
+		   int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
+			 String query = "exec pedido_a_establecimiento_2 '"+establecimiento_solicita+"','"+establecimiento_surte+"',"+folio_scoi+",'"+area+"',"+folio_usuario;
+			 Statement stmt = null;
+			try {
+				Connexion con = new Connexion();
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					folio_pedido=(rs.getString("folio_pedido"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally{
+				if(stmt!=null){stmt.close();}
+			}
+			return folio_pedido;
+		}
+	   
 //	public boolean Guardar_Alimentacion_De_Productos_Proximos_A_Caducar(Obj_Alimentacion_De_Productos_Proximos_A_Caducar proximos_caducar){
 //		int folio_transaccion=busca_y_actualiza_proximo_folio(42);
 //		proximos_caducar.setFolio(folio_transaccion+"");

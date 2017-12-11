@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -54,7 +55,9 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
     	this.tabla.getColumnModel().getColumn( 8).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn( 9).setMinWidth(150);
     	String comandof=" exec consulta_maximos_y_minimos '"+consulta_bd+"','"+lblEstabSolicita.getText().trim()+"','"+lblEstabSurte.getText().trim()+"',"+lblFolioPedido.getText().toString().trim()+",'"+lblAreaTipoDistribucion.getText().trim()+"'";
-		String basedatos="26",pintar="si";
+		
+    	System.out.println(comandof);
+    	String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnasb, comandof, basedatos,pintar,checkbox);
 		
 //		CrearXmlString xml = new CrearXmlString();
@@ -95,7 +98,8 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 	JTextArea txaObservacion = new Componentes().textArea(new JTextArea(), "Ingrese una observacíon", 250);
 	JScrollPane scrollObservacion = new JScrollPane(txaObservacion);
 	
-	JCButton btnGuardar = new JCButton("Guardar", "guardar.png", "Azul");			
+	JCButton btnGuardar = new JCButton("Guardar", "guardar.png", "Azul");
+	JCButton btnFinalizar = new JCButton("Finalizar", "actualizar.png", "Azul");
 			
 	public Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento(String consultar_bd,String estabSolicita,String estabSurte,int folio_pedido,String area) {
 		this.setModal(true);
@@ -122,6 +126,7 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 		
 		panel.add(new JLabel("Observacion:")).setBounds(x, y+=460, 80, 20);
 		panel.add(scrollObservacion).setBounds(x+90, y, 650, 45);
+		panel.add(btnFinalizar).setBounds(x+width-210, y, 100, 40);
 		panel.add(btnGuardar).setBounds(x+width-100, y, 100, 40);
 		
 		lblEstabSolicita.setText(estabSolicita);
@@ -133,42 +138,87 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 		
 		this.tabla.addKeyListener(new op_validacelda_tabla());
 		btnGuardar.addActionListener(opGuardar);
+		btnFinalizar.addActionListener(opGuardar);
+		
+		btnFinalizar.setEnabled(consultar_bd.equals("BUSCAR EN BMS")?false:true);
 		
 		cont.add(panel);
 	}
 	
 	ActionListener opGuardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			
+			System.out.println(e.getActionCommand().toString().trim().toUpperCase());
 			if(modelo.getRowCount()>0){
-				Object[][] arreglo = new Object[modelo.getRowCount()][modelo.getColumnCount()];
-				for(int i=0; i<modelo.getRowCount(); i++){
-					for(int j=0; j<modelo.getColumnCount(); j++){
-						arreglo[i][j] = modelo.getValueAt(i, j);
-					}
-				}
+//				Object[][] arreglo = new Object[modelo.getRowCount()][modelo.getColumnCount()];
+//				for(int i=0; i<modelo.getRowCount(); i++){
+//					for(int j=0; j<modelo.getColumnCount(); j++){
+//						arreglo[i][j] = modelo.getValueAt(i, j);
+//					}
+//				}
+				int[] ignorarColumnas ={1};
+				String xml = new CrearXmlString().CadenaXML(tabla,ignorarColumnas);
 				
-				if(new GuardarSQL().Guardar_minimo_maximo_pedido_por_estab(arreglo, lblEstabSolicita.getText().toString().trim(), lblEstabSurte.getText().toString().trim() , txaObservacion.getText().trim())){
-//					se guardo exitosamente el registro
+				if(new GuardarSQL().Guardar_minimo_maximo_pedido_por_estab(xml, lblEstabSolicita.getText().toString().trim(), lblEstabSurte.getText().toString().trim(), Integer.valueOf(lblFolioPedido.getText().trim()) , txaObservacion.getText().trim() )){
+					
+					if(e.getActionCommand().toString().trim().toUpperCase().equals("FINALIZAR")){
+//						set @estab_solicita = 'SUPER V'
+//								set @estab_surte = 'CEDIS'
+//								set @folio_pedido_scoi = 1
+//								set @area = 'sdasdasd'
+//						lblAreaTipoDistribucion.getText().trim()
+						
+						String folioPedidoBMS="";
+						try {
+							folioPedidoBMS = new GuardarSQL().Finalizar_minimo_maximo_pedido_por_estab(lblEstabSolicita.getText().trim(), lblEstabSurte.getText().trim(), Integer.valueOf(lblFolioPedido.getText().trim()), lblAreaTipoDistribucion.getText().trim());
+						} catch (NumberFormatException e1) {
+							e1.printStackTrace();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
+						
+						//si esta en el rango siguiente es el folio del pedido-----------------------------------------------------------------
+						if(folioPedidoBMS.length() > 0 && folioPedidoBMS.length() <= 13){
+							
+							JOptionPane.showMessageDialog(null,"El Registro Se Finalizo Correctamente Con El Folio: "+folioPedidoBMS,"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							dispose();
+							return;
+							
+						}else{
+							//trae aviso en caso de no retornar el folio de pedido de BMS------------------------------------------------------
+							JOptionPane.showMessageDialog(null,folioPedidoBMS.length()==0?"No Se Pudo Realizar El Pedido":folioPedidoBMS,"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							dispose();
+							return;
+						}
+						
+					}else{
+						//solo guardado en la base de datos de SCOI----------------------------------------------------------------------------
+						JOptionPane.showMessageDialog(null,"El Registro Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						dispose();
+						return;
+					}
+					
 				}else{
-//					no se pudo guardar el registro
+					JOptionPane.showMessageDialog(null, "No Se Pudo Guardar El Registro", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
 				}
 				
 			}else{
 				JOptionPane.showMessageDialog(null, "La Tabla Esta Vacía", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
-			
-			
-			
 		}
 	};
+	
+//	public void avisoGuardado(String parametro){
+//		JOptionPane.showMessageDialog(null,"El Registro Se Guardó Correctamente"+(parametro.equals("")?"!":" Con El Folio: "+parametro),"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+//		dispose();
+//		return;
+//	}
 	
 	int filak=0,columnak=0;
 	class op_validacelda_tabla implements KeyListener{   
 		
-	    public op_validacelda_tabla (){
-	    }
+	    public op_validacelda_tabla (){}
 	    public void actionPerformed(ActionEvent evt){}
 		@Override
 		public void keyPressed(KeyEvent arg0) {}
@@ -203,7 +253,7 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento("BUSCAR EN SCOI","SUPER V","CEDIS",1,"De Linea Centro De Distribucion").setVisible(true);
+			new Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento("BUSCAR EN SCOI","SUPER V","CEDIS",32,"De Linea Alimentos").setVisible(true);
 		}catch(Exception e){	}
 
 	}

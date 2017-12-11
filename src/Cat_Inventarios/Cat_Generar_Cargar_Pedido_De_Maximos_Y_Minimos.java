@@ -92,8 +92,7 @@ public class Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos extends JFrame{
 				
 				if(validarEstablecimiento().equals("")){
 					if(!cmbEstablecimientoSolicita.getSelectedItem().toString().trim().equals(cmbEstablecimientoSurte.getSelectedItem().toString().trim())){
-						System.out.println("buscar");
-						System.out.println("buscar, si encuentra registros se habilita el boton [btnCargarPedido]");
+//						System.out.println("buscar, si encuentra registros se habilita el boton [btnCargarPedido]");
 						
 						Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos obj = new Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos().buscar(cmbEstablecimientoSolicita.getSelectedItem().toString().trim(),cmbEstablecimientoSurte.getSelectedItem().toString().trim(),cmbAreas.getSelectedItem().toString().trim());
 						lblFolio.setText(obj.getFolio_pedido()+"");
@@ -102,42 +101,41 @@ public class Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos extends JFrame{
 						lblCantPz.setText(obj.getCant_pz()+"");
 							
 						if(obj.getFolio_pedido() != 0){
-							System.out.println("buscar en SCOI(datos)-------------------------------------------------------");
+//							System.out.println("buscar en SCOI(datos)-------------------------------------------------------");
 							btnGenerarPedidoNuevo.setEnabled(false);
 							btnCargarPedido.setEnabled(true);
 						}else{
-							System.out.println("buscar en BMS(datos)");
+//							System.out.println("buscar en BMS(datos)");
 							btnGenerarPedidoNuevo.setEnabled(true);
 							btnCargarPedido.setEnabled(false);							
 						}
 						
 					}else{
-						System.out.println("No se puede solicitar y surtir del mismo establecimiento");
+						JOptionPane.showMessageDialog(null, "No Puede Solicitar y Surtir Del Mismo Establecimiento","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
 					}
 				}else{
-					System.out.println("Aviso de seleccion de establecimiento: \n"+validarEstablecimiento());
+					JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+validarEstablecimiento(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
 				}
-				
-				
-//				btnGenerarPedidoNuevo.setEnabled(false);
-//				btnCargarPedido.setEnabled(false);
 				
 			//Generar Pedido Nuevo --------------------------------------------------------------------------------------------------------------
 			}
 			if(e.getActionCommand().toString().trim().equals("Generar Pedido Nuevo")){
 				int folio = new Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos().folio_pedido(e.getActionCommand().toString().trim(), cmbEstablecimientoSolicita.getSelectedItem().toString().trim(), cmbEstablecimientoSurte.getSelectedItem().toString().trim(), cmbAreas.getSelectedItem().toString().trim());
+				btnGenerarPedidoNuevo.setEnabled(false);
 				if(folio>0){
 					new Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento("BUSCAR EN BMS",cmbEstablecimientoSolicita.getSelectedItem().toString().trim(),cmbEstablecimientoSurte.getSelectedItem().toString().trim(),folio,cmbAreas.getSelectedItem().toString().trim()).setVisible(true);
 				}else{
 					JOptionPane.showMessageDialog(null, "No Se Encontro Folio Consecutivo","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
-				
 			}
 			
 			//Cargar Pedido --------------------------------------------------------------------------------------------------------------
 			if(e.getActionCommand().toString().trim().equals("Cargar Pedido")){
 				int folio = new Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos().folio_pedido(e.getActionCommand().toString().trim(), cmbEstablecimientoSolicita.getSelectedItem().toString().trim(), cmbEstablecimientoSurte.getSelectedItem().toString().trim(), cmbAreas.getSelectedItem().toString().trim());
+				btnCargarPedido.setEnabled(false);
 				if(folio>0){
 					new Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento("BUSCAR EN SCOI",cmbEstablecimientoSolicita.getSelectedItem().toString().trim(),cmbEstablecimientoSurte.getSelectedItem().toString().trim(),folio,cmbAreas.getSelectedItem().toString().trim()).setVisible(true);
 				}else{
@@ -145,17 +143,14 @@ public class Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos extends JFrame{
 					return;
 				}
 			}
-			
 		}
 	};
 	
 	public String validarEstablecimiento(){
 		String lista = "";
-		
 			lista += cmbEstablecimientoSolicita.getSelectedIndex()==0 ? "Seleccionar Establecimiento Solicitante\n":"";
 			lista += cmbEstablecimientoSurte.getSelectedIndex()==0 	 ? "Seleccionar Establecimiento Surtidor\n":"";
 			lista += cmbAreas.getSelectedIndex()==0 	 ? "Seleccionar Area\n":"";
-		
 		return lista;
 	}
 
