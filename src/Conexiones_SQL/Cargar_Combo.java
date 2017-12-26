@@ -2353,6 +2353,44 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] Areas_tipo_distribucion(){
+		String query = "select LTRIM(RTRIM(nombre)) as nombre from Areas where status = 'V' order by nombre";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion_IZAGAR().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona un Area");
+				}
+				miVector.add(rs.getString("nombre"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
 			
 	}
 }

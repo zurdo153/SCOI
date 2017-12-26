@@ -72,6 +72,7 @@ import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
 import Obj_Evaluaciones.Obj_Temporada;
+import Obj_Inventarios.Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos;
 import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Asignacion_Mensajes;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
@@ -8658,7 +8659,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 //				+ " and hist_emb.status = 'V' "
 //				+ " and hist_emb.estab_recibe = (select ltrim(rtrim(estab.cod_estab)) from [192.168.2.201].BMSIZAGAR.dbo.establecimientos estab where ltrim(rtrim(estab.nombre)) = ltrim(rtrim('"+establecimiento+"')) ) "
 //				+ " and CONVERT(DATETIME,CONVERT(varchar(20),hist_emb.fecha_salida,103)) > CONVERT(DATETIME,CONVERT(varchar(20),GETDATE()-1,103))";
-		String query = "exec sp_cosultar_folios_de_transferencia_que_lleva_chofer "+chofer+",'"+establecimiento+"'";
+		String query = "exec sp_cosultar_folios_de_transferencia_que_lleva_chofer2 "+chofer+",'"+establecimiento+"'";
 		
 		Object[][] Matriz = new Object[getFilas(query)][4];
 		Statement s;
@@ -9950,19 +9951,76 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			return proveedores;
 		}
 	   
-		public boolean existe_pedido_de_maximos_y_minimos_vigente(){
-			String query = "exec existe_pedido_de_maximos_y_minimos_vigente";
-			boolean existe = false;
+		public Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos existe_pedido_de_maximos_y_minimos_vigente(String estab_solicita, String estab_surte,String area){
+			String query = "exec existe_pedido_de_maximos_y_minimos_vigente '"+estab_solicita+"','"+estab_surte+"','"+area+"'";
+			
+			Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos obj = new Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos();
+			
 			try {
 				Statement stmt = new Connexion().conexion().createStatement();
 				ResultSet rs = stmt.executeQuery(query);
 				
-				while(rs.next()){ existe = rs.getBoolean(1); }
+				while(rs.next()){ 
+					obj.setFolio_pedido(rs.getInt("folio"));
+					obj.setUsuario(rs.getString("usuario"));
+					obj.setCant_prod(rs.getInt("cant_prod"));
+					obj.setCant_pz(rs.getInt("cant_pz"));
+				}
 		
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-		    return existe; 
+		    return obj; 
+		}
+		public int folio_pedido_por_maximos_y_minimos(String boton, String estab_solicita, String estab_surte, String area){
+			int folio = 0;
+			String query = "exec consultar_folio_de_pedido_por_maximos_y_minimos '"+boton+"','"+estab_solicita+"','"+estab_surte+"','"+area+"'";
+			System.out.println(query);
+			Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					folio=(rs.getInt(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Folio_Siguiente_alta_Servicios ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+			finally{
+				if(stmt!=null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return folio;
+		}
+		
+		public String[][] getTransferenciasPendientesDeAutorizar(String estab){
+			
+			String query = "exec sp_select_transferencias_pendientes_de_autorizar_por_seguridad '"+estab+"'";
+			
+			String[][] Matriz = new String[getFilas(query)][6];
+			Statement s;
+			ResultSet rs;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					Matriz[i][0] = rs.getString(1);
+					Matriz[i][1] = rs.getString(2);
+					Matriz[i][2] = rs.getString(3);
+					Matriz[i][3] = rs.getString(4);
+					Matriz[i][4] = rs.getString(5);
+					Matriz[i][5] = "false";
+					i++;
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Matriz; 
 		}
 		
 		  public String[][] Tabla_Existencia_De_Un_Producto_En_Establecimiento(String Cod_prod){
