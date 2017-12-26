@@ -389,6 +389,7 @@ public class Cat_Dias_Inhabiles extends JFrame{
 		
 	};
 	
+	@SuppressWarnings("unlikely-arg-type")
 	private String validaCampos(){
 		String error="";
 		if(txtFecha.getDate().equals("")) 			error+= "Fecha\n";

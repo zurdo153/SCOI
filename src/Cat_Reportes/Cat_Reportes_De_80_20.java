@@ -38,6 +38,8 @@ public class Cat_Reportes_De_80_20 extends JFrame {
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
 	String operador[] = {"Selecciona Un Reporte"
+			                ,"Reporte De Productos 80/20 Canasta Basica Sin Existencia Por Establecimiento"
+			                ,"Reporte De Productos 80/20 Canasta Basica (Total)"
 			                ,"80/20 De Agotados Por Establecimiento En Una Fecha Por Clase De Producto" 
 			                ,"80/20 De Agotados Por Establecimiento En Una Fecha Por Categoria De Producto" 
 			                ,"80/20 De Agotados Por Establecimiento En Una Fecha Por Familia De Producto" 
@@ -107,15 +109,17 @@ public class Cat_Reportes_De_80_20 extends JFrame {
 					int vista_previa_de_ventana=0;
 					String comando= "";
 					String reporte = "";
-			
+				    String concepto=cmbConcepto.getSelectedItem().toString().trim();
 			 if(cmbConcepto.getSelectedIndex()==0){
 			       JOptionPane.showMessageDialog(null,"Debe de Seleccionar Un Tipo De Reporte","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 			        cmbConcepto.requestFocus();
 			        cmbConcepto.showPopup();
 				    return;		
+				
 			      }else{ 
-						if(validar_campos().equals("")){
-							 String concepto=cmbConcepto.getSelectedItem().toString().trim();
+			    	  
+						if(validar_campos().equals("")||concepto.equals("Reporte De Productos 80/20 Canasta Basica Sin Existencia Por Establecimiento")||concepto.equals("Reporte De Productos 80/20 Canasta Basica (Total)")){
+							
 							 String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 								
 								if(concepto.equals("80/20 De Agotados Por Establecimiento En Una Fecha Por Clase De Producto" )){
@@ -147,6 +151,19 @@ public class Cat_Reportes_De_80_20 extends JFrame {
 									comando="exec reporte_de_agotados_porcentaje_de_la_semana_del_anio_por_establecimiento '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+fecha_inicio.substring(0, 10)+"'";
 									reporte ="Obj_Reporte_De_Agotados_y_Proximos_Agotar_Por_Meta_y_Establecimiento_Promedios.jrxml";
 							     }
+								
+								if(concepto.equals("Reporte De Productos 80/20 Canasta Basica Sin Existencia Por Establecimiento")){
+									basedatos="2.26";
+									comando="exec sp_reporte_80_20_productos_canasta_basica_sin_existencia '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'";
+									reporte ="Obj_Reporte_Productos_80_20_Sin_Existencia_Por_Establecimiento.jrxml";
+							     }
+							
+								if(concepto.equals("Reporte De Productos 80/20 Canasta Basica (Total)")){
+									basedatos="2.26";
+									comando="exec sp_reporte_80_20_productos_canasta_basica_completa ";
+									reporte ="Obj_Reporte_Productos_80_20_Sin_Existencia_Por_Establecimiento.jrxml";
+							     }
+									
 						}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_campos(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			               return;

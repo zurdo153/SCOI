@@ -87,7 +87,7 @@ public class Obj_Opciones_De_Respuestas {
 	
 	public String[] Combo_Respuesta(){
 		try {
-			return new Cargar_Combo().Cuadrantes_Combos("opciones_respuesta");
+			return new Cargar_Combo().Combos("opciones_respuesta");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

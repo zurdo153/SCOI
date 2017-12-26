@@ -896,6 +896,7 @@ MouseListener opCuenta = new MouseListener() {
 			
 		}
 		
+		@SuppressWarnings("unlikely-arg-type")
 		private String validaCamposCuentas(){
 			String error="";
 			

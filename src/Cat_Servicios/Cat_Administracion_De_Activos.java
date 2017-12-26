@@ -46,6 +46,9 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 import Obj_Servicios.Obj_Administracion_De_Activos;
+import Obj_Servicios.Obj_Marcas_De_Activos;
+import Obj_Servicios.Obj_Modelos_De_Activos;
+import Obj_Servicios.Obj_Tipos_De_Equipos;
 
 @SuppressWarnings("serial")
 public class Cat_Administracion_De_Activos extends JFrame{
@@ -70,7 +73,7 @@ public class Cat_Administracion_De_Activos extends JFrame{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbStatus = new JComboBox(status);
 	
-	String tipo[] = new Cargar_Combo().Tipos_De_Equipo();
+	String tipo[] =  new Obj_Tipos_De_Equipos().Combo_Tipos_De_Equipo();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbTipo = new JComboBox(tipo);
 	
@@ -82,15 +85,14 @@ public class Cat_Administracion_De_Activos extends JFrame{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbDepartamento = new JComboBox(Departamentos);  
 	
-	String[] marca = new Cargar_Combo().Marca_De_Equipo();
+	String[] marca = new Obj_Marcas_De_Activos().Combo_Marcas();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbMarca = new JComboBox(marca);
 	
-	String[] modelo = new Cargar_Combo().Modelo_De_Equipo();
+	String[] modelo = new Obj_Modelos_De_Activos().Combo_Modelos();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbModelo = new JComboBox(modelo);
 	
-//	fchCompra.setDate(cargar_fecha());
 	String anio = cargar_fecha().toString().substring(5, 10);
 	
 	public int anioActual(){

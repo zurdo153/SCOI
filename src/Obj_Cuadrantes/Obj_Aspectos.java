@@ -65,7 +65,7 @@ public class Obj_Aspectos {
 	public boolean guardar(){ return new GuardarSQL().Guardar_Aspectos(this); }
 			
 	public String[] Combo_Aspecto() {
-	  try {return new Cargar_Combo().Cuadrantes_Combos("aspecto");
+	  try {return new Cargar_Combo().Combos("aspecto");
 		   } catch (SQLException e) {
 			e.printStackTrace();
 		   }

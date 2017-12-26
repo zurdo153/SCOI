@@ -1,4 +1,4 @@
-package Cat_Reportes;
+package Cat_Compras;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -90,7 +90,7 @@ public class Cat_Reporte_De_Tranferencia extends JDialog{
 								+ " LEFT OUTER JOIN tallas AS t WITH (nolock) ON productos.talla = t.talla "
 								+ " WHERE (entysal.folio = @Folio) "
 								+ " AND (entysal.transaccion = '35') "
-								+ " ORDER BY entysal.id";
+								+ " ORDER BY productos.descripcion_completa";
 				
 				String reporte = "Obj_Consulta_De_Tranferencia_De_Pedidos.jrxml";
 						 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);

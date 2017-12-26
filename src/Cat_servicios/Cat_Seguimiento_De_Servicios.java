@@ -74,7 +74,6 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
     	this.tabla.getColumnModel().getColumn(8).setMinWidth(300);
     	this.tabla.getColumnModel().getColumn(9).setMinWidth(80);
     	this.tabla.getColumnModel().getColumn(10).setMinWidth(120);
-    	
      	this.tabla.getColumnModel().getColumn(11).setMinWidth(120);
     	this.tabla.getColumnModel().getColumn(12).setMinWidth(250);
     	this.tabla.getColumnModel().getColumn(13).setMinWidth(400);
@@ -276,7 +275,6 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		btnActualizar.addActionListener(actualizartabla);
 		cmbEstatusFiltrado.addActionListener(actualizartabla);
 		txtFiltro.addKeyListener(opFiltroNombre);
-		
 		
 		try {
 			txtFcActual.setText(new BuscarSQL().fecha(0));

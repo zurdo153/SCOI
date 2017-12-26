@@ -50,6 +50,7 @@ import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
 import Obj_Compras.Obj_Horario_Base_De_Entrega_De_Pedidos;
+import Obj_Compras.Obj_Programacion_De_Proveedores;
 import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Registrar_Zona_Completada;
@@ -104,11 +105,15 @@ import Obj_Planeacion.Obj_Prioridad_Y_Ponderacion;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
+import Obj_Seguridad.Obj_Autorizacion_Acceso_Proveedores;
 import Obj_Seguridad.Obj_Registro_Proveedores;
 import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Registro_De_Desarrollo;
 import Obj_Servicios.Obj_Servicios;
+import Obj_Servicios.Obj_Tipos_De_Equipos;
 import Obj_Servicios.Obj_Catalogo_Servicios;
+import Obj_Servicios.Obj_Marcas_De_Activos;
+import Obj_Servicios.Obj_Modelos_De_Activos;
 import Obj_Servicios.Obj_Pc_Por_Establecimientos;
 
 
@@ -6604,7 +6609,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 					pstmt1.setInt   (1 ,  cuadrante.getFolio_colaborador());
 					pstmt1.setInt   (2 ,dia);
 					pstmt1.executeUpdate();
-					System.out.println( "SI"+dia);
 				}
 				pstmt.executeUpdate();
 			} 
@@ -6638,20 +6642,25 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		int folio_transaccion=0;
 		int cantidad_filasf= proveedores.getTabla_facturas().length;
 		int cantidad_filasm= proveedores.getTabla_registros().length;
+		int cantidad_filasdev= proveedores.getTabla_devolucion().length;
 		if(proveedores.getNuevoModifica().equals("N")){
 			 folio_transaccion=busca_y_actualiza_proximo_folio(76);
 			 proveedores.setFolio(folio_transaccion);	
 		}
-		String query = "exec  proveedores_registro_entradaysalida_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?";
-		String queryr = "exec  proveedores_registro_entradaysalida_insert_y_actualiza_movimientos ?,?,?,?,?";
+		String query    = "exec proveedores_registro_entradaysalida_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String queryr   = "exec proveedores_registro_entradaysalida_insert_y_actualiza_movimientos ?,?,?,?,?";
+		String querydpr = "exec proveedores_registro_productos_devoluciones_insert_y_actualiza ?,?,?,?,?,?";
 		
 		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		PreparedStatement pstmtr = null;
+		PreparedStatement pstmt    = null;
+		PreparedStatement pstmtr   = null;
+		PreparedStatement pstmtdpr = null;
 		try {
 			 con.setAutoCommit(false);
 			 pstmt = con.prepareStatement(query);
 			 pstmtr = con.prepareStatement(queryr);
+			 pstmtdpr = con.prepareStatement(querydpr);
+			 
 			 for(int i=0; i<cantidad_filasf ; i++){
 				pstmt.setInt   (1 ,  proveedores.getFolio());
 				pstmt.setInt   (2 ,  proveedores.getFolio_colaborador_recibe());
@@ -6665,6 +6674,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setString(10,  proveedores.getTabla_facturas()[i][2].toString().trim());
 				pstmt.setString(11,  proveedores.getTabla_facturas()[i][3].toString().trim());
 				pstmt.setString(12,  proveedores.getTabla_facturas()[i][5].toString().trim());
+				pstmt.setInt   (13,  proveedores.getFolio_solicitud());
 				pstmt.executeUpdate();
 			} 
 			 for(int i=0; i<cantidad_filasm ; i++){
@@ -6675,6 +6685,17 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				 pstmtr.setString(5,  proveedores.getNuevoModifica());
 				 pstmtr.executeUpdate();
 			 }
+			 
+			 for(int i=0; i<cantidad_filasdev ; i++){
+				 pstmtdpr.setInt   (1,  proveedores.getFolio());
+				 pstmtdpr.setString(2,  proveedores.getTabla_devolucion()[i][0].toString().trim());
+				 pstmtdpr.setString(3,  proveedores.getTabla_devolucion()[i][2].toString().trim());
+				 pstmtdpr.setString(4,  proveedores.getTabla_devolucion()[i][3].toString().trim());
+				 pstmtdpr.setString(5,  proveedores.getTabla_devolucion()[i][4].toString().trim());
+				 pstmtdpr.setString(6,  proveedores.getNuevoModifica());
+				 pstmtdpr.executeUpdate();
+			 }
+			 
 			con.commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Registro_De_Entradas_y_Salida ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
@@ -6738,6 +6759,229 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 					System.out.println(ex.getMessage());
 				}
 			}
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Marca_De_Activo(Obj_Marcas_De_Activos marca){
+		String query   = "exec servicios_marcas_de_equipo_guarda_actualiza ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt   (1, marca.getFolio()      );
+			pstmt.setString(2, marca.getMarca_De_Activo()  );
+			pstmt.setString(3, marca.getEstatus()    );
+			pstmt.setString(4, marca.getGuardaModifica());
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Marca_De_Activo ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Marca_De_Activo ] Insert  SQLException:  "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Marca_De_Activo ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Modelo_De_Activo(Obj_Modelos_De_Activos modelo){
+		String query   = "exec servicios_modelos_de_equipo_guarda_actualiza ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt   (1, modelo.getFolio()      );
+			pstmt.setString(2, modelo.getModelo_De_Activo() );
+			pstmt.setString(3, modelo.getEstatus()    );
+			pstmt.setString(4, modelo.getGuardaModifica());
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Modelo_De_Activo ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Modelo_De_Activo ] Insert  SQLException:  "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Modelo_De_Activo ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+	
+	
+	public boolean Guardar_Tipos_De_Activo(Obj_Tipos_De_Equipos modelo){
+		String query   = "exec servicios_tipos_de_equipo_guarda_actualiza ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt   (1, modelo.getFolio()          );
+			pstmt.setString(2, modelo.getTipos_De_Equipo());
+			pstmt.setString(3, modelo.getSerie()          );
+			pstmt.setString(4, modelo.getEstatus()        );
+			pstmt.setString(5, modelo.getGuardaModifica() );
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Tipos_De_Activo ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Tipos_De_Activo ] Insert  SQLException:  "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Modelo_De_Activo ] Insert  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
+
+	public boolean Guardar_Solicitud_De_Acceso_A_Proveedores (Obj_Autorizacion_Acceso_Proveedores proveedores){
+		int folio_transaccion=0;
+		if(proveedores.getNuevoModifica().equals("N")){
+			 folio_transaccion=busca_y_actualiza_proximo_folio(78);
+			 proveedores.setFolio(folio_transaccion);	
+		}
+		String query = "exec  proveedores_autorizacion_insert_y_actualiza ?,?,?,?,?,?,?,?,?,? ";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+				pstmt.setInt   (1 ,  proveedores.getFolio());
+				pstmt.setInt   (2 ,  proveedores.getUsuario_solicita());
+				pstmt.setString(3 ,  proveedores.getEstablecimiento());
+				pstmt.setString(4 ,  proveedores.getProveedor());
+				pstmt.setString(5 ,  proveedores.getChofer());
+				pstmt.setString(6 ,  proveedores.getEstatus());
+				pstmt.setInt   (7 ,  proveedores.getUsuario_autoriza());
+				pstmt.setString(8 ,  proveedores.getMotivo_negado_acceso());				
+				pstmt.setString(9 ,  proveedores.getObservaciones());
+				pstmt.setString(10,  proveedores.getNuevoModifica());
+				pstmt.executeUpdate();
+
+
+				
+			 con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud_De_Acceso_A_Proveedores ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Programacion (Obj_Programacion_De_Proveedores proveedor){
+		int folio_transaccion=0;
+		int cantidad_filas=proveedor.getTabla_programacion().length;	
+		if(proveedor.getNuevoModifica().equals("N")){
+			 folio_transaccion=busca_y_actualiza_proximo_folio(80);
+			 proveedor.setFolio(folio_transaccion);	
+		}
+		String query = "exec  proveedores_programacion_visita_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			for(int i=0; i<cantidad_filas ; i++){
+				pstmt.setInt   ( 1,  proveedor.getFolio());
+				pstmt.setString( 2,  proveedor.getEstablecimiento());
+				pstmt.setInt   ( 3,  proveedor.getAnio());
+				pstmt.setInt   ( 4,  proveedor.getSemana_de_anio());
+				pstmt.setString( 5,  proveedor.getTabla_programacion()[i][10].toString().trim());
+				pstmt.setString( 6,  proveedor.getTabla_programacion()[i][0].toString().trim());
+				pstmt.setString( 7,  proveedor.getTabla_programacion()[i][1].toString().trim());
+				pstmt.setString( 8,  proveedor.getTabla_programacion()[i][2].toString().trim());
+				pstmt.setString( 9,  proveedor.getTabla_programacion()[i][4].toString().trim());
+				pstmt.setString(10,  proveedor.getTabla_programacion()[i][5].toString().trim());
+				pstmt.setString(11,  proveedor.getTabla_programacion()[i][6].toString().trim());
+				pstmt.setString(12,  proveedor.getTabla_programacion()[i][7].toString().trim());				
+				pstmt.setInt   (13,  usuario.getFolio());
+				pstmt.setInt   (14,  usuario.getFolio());
+				pstmt.setString(15,  proveedor.getNuevoModifica());
+				pstmt.executeUpdate();
+			} 
+			con.commit();
+		} catch (Exception e) {
+			
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuadrante ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
 			return false;
 		}finally{
 			try {

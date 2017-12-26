@@ -160,7 +160,7 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 		String error = "";
 		@SuppressWarnings("unused")
 		String fechafinalNull = cfecha.getDate()+"";
-	    if(cfecha.equals("null"))error+= "Fecha\n";
+	    if(cfecha.equals(null))error+= "Fecha\n";
 		return error;
 	}
 	

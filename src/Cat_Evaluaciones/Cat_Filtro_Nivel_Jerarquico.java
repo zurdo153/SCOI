@@ -11,7 +11,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -97,7 +96,9 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
     }
 	
 	public void filtro() { 
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText().toUpperCase().trim(), 1));
+		ObjTabf.Obj_Filtro(tabla, txtBuscar.getText().toUpperCase(), 3);
+		
+//			trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText().toUpperCase().trim(), 1));
 	}  
 	
 	

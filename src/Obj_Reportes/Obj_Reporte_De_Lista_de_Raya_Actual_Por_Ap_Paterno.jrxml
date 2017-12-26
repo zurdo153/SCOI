@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-04-24T18:16:37 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Lista_de_Raya_Actual_Por_Ap_Paterno" language="groovy" pageWidth="950" pageHeight="9500" columnWidth="930" leftMargin="0" rightMargin="20" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="36490807-8e37-4399-b008-7c80bf7670a8">
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Lista_de_Raya_Actual_Por_Ap_Paterno" language="groovy" pageWidth="1370" pageHeight="9500" columnWidth="1350" leftMargin="0" rightMargin="20" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="36490807-8e37-4399-b008-7c80bf7670a8">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -18,23 +17,69 @@
 	<queryString language="SQL">
 		<![CDATA[exec  sp_Reporte_De_Lista_De_Raya_Por_Ap_Paterno]]>
 	</queryString>
-	<field name="establecimiento" class="java.lang.String"/>
-	<field name="sueldo" class="java.lang.Double"/>
-	<field name="bono_puntualidad" class="java.lang.Double"/>
-	<field name="bono_asistencia" class="java.lang.Double"/>
-	<field name="pension" class="java.math.BigDecimal"/>
-	<field name="puesto" class="java.lang.String"/>
-	<field name="departamento" class="java.lang.String"/>
-	<field name="folio" class="java.lang.Integer"/>
-	<field name="bono" class="java.lang.Double"/>
-	<field name="cantidad_prestamo" class="java.math.BigDecimal"/>
-	<field name="descuento" class="java.math.BigDecimal"/>
-	<field name="saldo" class="java.math.BigDecimal"/>
-	<field name="d_Cortes" class="java.math.BigDecimal"/>
-	<field name="infonavit" class="java.math.BigDecimal"/>
-	<field name="Infonacot" class="java.math.BigDecimal"/>
-	<field name="tipo_banco" class="java.lang.String"/>
-	<field name="nombre_completo" class="java.lang.String"/>
+	<field name="folio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+	</field>
+	<field name="nombre_completo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_completo"/>
+	</field>
+	<field name="establecimiento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="establecimiento"/>
+	</field>
+	<field name="departamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="departamento"/>
+	</field>
+	<field name="puesto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="puesto"/>
+	</field>
+	<field name="sueldo" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="sueldo"/>
+	</field>
+	<field name="bono" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="bono"/>
+	</field>
+	<field name="bono_asistencia" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="bono_asistencia"/>
+	</field>
+	<field name="bono_puntualidad" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="bono_puntualidad"/>
+	</field>
+	<field name="cantidad_prestamo" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="cantidad_prestamo"/>
+	</field>
+	<field name="descuento" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="descuento"/>
+	</field>
+	<field name="saldo" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="saldo"/>
+	</field>
+	<field name="d_Cortes" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="d_Cortes"/>
+	</field>
+	<field name="infonavit" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="infonavit"/>
+	</field>
+	<field name="Infonacot" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="Infonacot"/>
+	</field>
+	<field name="pension" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="pension"/>
+	</field>
+	<field name="tipo_banco" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_banco"/>
+	</field>
+	<field name="fecha_ingreso" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_ingreso"/>
+	</field>
+	<field name="fecha_ingreso_imss" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_ingreso_imss"/>
+	</field>
+	<field name="curp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="curp"/>
+	</field>
+	<field name="rfc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="rfc"/>
+	</field>
 	<columnHeader>
 		<band height="14">
 			<staticText>
@@ -43,7 +88,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Sueldo]]></text>
 			</staticText>
@@ -54,7 +99,7 @@
 					<property name="local_mesure_unitwidth" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Infonavit]]></text>
 			</staticText>
@@ -65,7 +110,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Infonacot]]></text>
 			</staticText>
@@ -75,7 +120,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Puesto]]></text>
 			</staticText>
@@ -85,7 +130,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Establecimiento]]></text>
 			</staticText>
@@ -95,7 +140,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Departamento]]></text>
 			</staticText>
@@ -105,7 +150,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Bono]]></text>
 			</staticText>
@@ -115,7 +160,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Bono Asis.]]></text>
 			</staticText>
@@ -125,9 +170,85 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
+					<font fontName="Times New Roman" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Bono Punt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="20" y="0" width="195" height="14" forecolor="#030303" uuid="4b669719-d0c6-44f2-95c2-67837a00d661">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre Completo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="930" y="0" width="90" height="14" forecolor="#030303" uuid="03d36622-3997-4a34-b2b7-ababbc3a5563">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Ingreso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="1020" y="0" width="90" height="14" forecolor="#030303" uuid="7a8e8d9e-6dfb-4a32-bbc7-490732f4e007">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Ingreso IMSS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1110" y="0" width="126" height="14" uuid="1e0cc37c-5646-4e06-afd6-9995a066c888">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7b439e4a-0643-49da-ac30-61f32bdf6903"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Curp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1236" y="0" width="126" height="14" uuid="c0a43bc7-4d1b-4da6-be9d-0e17f9809d47">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0116968f-12a7-46b6-a0e0-a351cdcf16e9"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#666666"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RFC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="930" y="0" width="90" height="14" forecolor="#030303" uuid="0e5f66b3-f9c8-49da-9198-07aaeae868c4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Ingreso]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -219,6 +340,37 @@
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bono_puntualidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="930" y="0" width="90" height="14" uuid="62d8bda4-7b87-47c0-b23e-fa4b5d76ad36">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1132e8ba-1f8d-4090-a000-d659bb1bd82e"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fecha_ingreso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="1020" y="0" width="90" height="14" uuid="00f753c0-5ae3-4977-ab99-535d7f5bc30d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="53c4ef27-f29e-4c6e-b857-149996a759b0"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fecha_ingreso_imss}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1110" y="0" width="126" height="14" uuid="7d3a784b-2911-46dd-8498-c48fab90de96">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7b439e4a-0643-49da-ac30-61f32bdf6903"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{curp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1236" y="0" width="126" height="14" uuid="38ba171e-6d9c-42af-b11c-da6d6830b67d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0116968f-12a7-46b6-a0e0-a351cdcf16e9"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

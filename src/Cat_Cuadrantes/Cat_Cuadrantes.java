@@ -224,9 +224,9 @@ public class Cat_Cuadrantes extends JFrame{
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
 			public boolean isCellEditable(int fila, int columnas2){
-				if(columnas2==0)return true; return false;
-				}
+				if(columnas2==0)return true; return false;}
 	};
+	
     JTable tablafa = new JTable(modeloa);
 	public JScrollPane scroll_tabla_a = new JScrollPane(tablafa);
 	
@@ -448,11 +448,11 @@ public class Cat_Cuadrantes extends JFrame{
 	  txaResponsabili.setText           (tablacompleta[0][12].toString());
 	  txaObjetivo.setText               (tablacompleta[0][13].toString()); 
 	  cmb_status.setSelectedItem        (tablacompleta[0][14].toString());
-	for(int i=0;i<tablacompleta.length;i++){
-		if(Integer.valueOf(tablacompleta[i][5].toString())==1){
+	  for(int i=0;i<tablacompleta.length;i++){
+		 if(Integer.valueOf(tablacompleta[i][5].toString())==1){
 			for(int j=0;j<5;j++){
 			vector[j] = tablacompleta[i][j].toString();
-			}
+		    }
 			modelLunes.addRow(vector);
 		}
 		
@@ -1528,6 +1528,7 @@ public class Cat_Cuadrantes extends JFrame{
 			this.panel.add(scroll_tabla_a).setBounds(10 ,35 ,995 ,530);
 			this.panel.add(btnAgregarActividad).setBounds(725, 15, 280, 20);;
 			this.cont.add(panel);
+			
 			if(FActividadesCargado.equals("S")){
 				datos_tabla_precargados();
 			}else{
@@ -1535,6 +1536,7 @@ public class Cat_Cuadrantes extends JFrame{
 			  tablaprecargadaactividades= ObjTab.tabla_guardar(tablafa);
 			  FActividadesCargado="S";
 			}
+			
 			txtFiltro_a.requestFocus();
 			this.btnAgregarActividad.addActionListener(opAgregar);
 			this.txtFiltro_a.addKeyListener(op_filtro_nombre_a);

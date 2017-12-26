@@ -18,8 +18,6 @@ import javax.swing.JComboBox;
 @SuppressWarnings("serial")
 public class FrameComboListener extends JFrame 
 {
-
-	
 	private JPanel contentPane;
 	@SuppressWarnings("rawtypes")
 	private JComboBox cbPesawat;
@@ -40,7 +38,6 @@ public class FrameComboListener extends JFrame
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
 		cbPesawat = new JComboBox();
 		cbPesawat.setModel(new DefaultComboBoxModel(vectorPesawat));
 		cbPesawat.setSelectedIndex(-1);
@@ -52,7 +49,6 @@ public class FrameComboListener extends JFrame
 		
 		cbPesawat.setBounds(144, 56, 165, 24);
 		contentPane.add(cbPesawat);
-		
 		
 		////para jtext field
 		txtbuscar.setBounds(144, 100, 165, 24);

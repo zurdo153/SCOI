@@ -1,0 +1,867 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-11-07T16:01:54 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Gafete_De_Empleados" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="479f4a9b-0156-454a-97f6-bf205e37a1c8">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="DSGafete2" uuid="be6ee4ae-8b48-4753-9509-4b894cda70c9">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+		<queryString>
+			<![CDATA[declare @anios int, @meses int, @dias int, @folio_empleado int
+
+set @folio_empleado =(select dos from tb_ids);
+
+set @dias =(select (day(getdate())-day(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @meses =(select (month(getdate())-month(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @anios =(select (year(getdate())-year(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+
+select tb_empleado.folio as folio
+,tb_empleado.nombre as nom_empleado
+,tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as ap_empleado
+,tb_empleado.no_checador as codigo
+,convert(varchar(20),tb_empleado.fecha_ingreso,103) as fecha_ingreso
+,tb_empleado.imss as imss
+,tb_empleado.foto as foto
+,tb_puesto.nombre as puesto
+,(select case when (@meses)<0 
+				then (@anios-1)
+			when (@meses)=0 
+					then (select case when (@dias)<0 
+										then (@anios-1)
+									  else @anios
+								 end)
+			else @anios
+		end) as edad
+,tb_empleado.curp as curp
+from tb_empleado
+inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+where tb_empleado.folio =@folio_empleado]]>
+		</queryString>
+		<field name="folio" class="java.lang.Integer"/>
+		<field name="nom_empleado" class="java.lang.String"/>
+		<field name="ap_empleado" class="java.lang.String"/>
+		<field name="codigo" class="java.lang.String"/>
+		<field name="foto" class="java.io.InputStream"/>
+		<field name="puesto" class="java.lang.String"/>
+		<field name="fecha_ingreso" class="java.lang.String"/>
+		<field name="imss" class="java.lang.String"/>
+		<field name="edad" class="java.lang.Integer"/>
+		<field name="curp" class="java.lang.String"/>
+		<group name="folio">
+			<groupExpression><![CDATA[$F{folio}]]></groupExpression>
+		</group>
+		<group name="nom_empleado">
+			<groupExpression><![CDATA[$F{nom_empleado}]]></groupExpression>
+		</group>
+		<group name="ap_empleado">
+			<groupExpression><![CDATA[$F{ap_empleado}]]></groupExpression>
+		</group>
+		<group name="codigo">
+			<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
+		</group>
+		<group name="foto">
+			<groupExpression><![CDATA[$F{foto}]]></groupExpression>
+		</group>
+		<group name="puesto">
+			<groupExpression><![CDATA[$F{puesto}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="DSGafete3" uuid="2cccd9f1-31aa-4c8f-9957-ae0372fcb837">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+		<queryString>
+			<![CDATA[declare @anios int, @meses int, @dias int, @folio_empleado int
+
+set @folio_empleado =(select tres from tb_ids);
+
+set @dias =(select (day(getdate())-day(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @meses =(select (month(getdate())-month(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @anios =(select (year(getdate())-year(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+
+select tb_empleado.folio as folio
+,tb_empleado.nombre as nom_empleado
+,tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as ap_empleado
+,tb_empleado.no_checador as codigo
+,convert(varchar(20),tb_empleado.fecha_ingreso,103) as fecha_ingreso
+,tb_empleado.imss as imss
+,tb_empleado.foto as foto
+,tb_puesto.nombre as puesto
+,(select case when (@meses)<0 
+				then (@anios-1)
+			when (@meses)=0 
+					then (select case when (@dias)<0 
+										then (@anios-1)
+									  else @anios
+								 end)
+			else @anios
+		end) as edad
+,tb_empleado.curp as curp
+from tb_empleado
+inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+where tb_empleado.folio =@folio_empleado]]>
+		</queryString>
+		<field name="folio" class="java.lang.Integer"/>
+		<field name="nom_empleado" class="java.lang.String"/>
+		<field name="ap_empleado" class="java.lang.String"/>
+		<field name="codigo" class="java.lang.String"/>
+		<field name="foto" class="java.io.InputStream"/>
+		<field name="puesto" class="java.lang.String"/>
+		<field name="fecha_ingreso" class="java.lang.String"/>
+		<field name="imss" class="java.lang.String"/>
+		<field name="edad" class="java.lang.Integer"/>
+		<field name="curp" class="java.lang.String"/>
+		<group name="folio">
+			<groupExpression><![CDATA[$F{folio}]]></groupExpression>
+		</group>
+		<group name="nom_empleado">
+			<groupExpression><![CDATA[$F{nom_empleado}]]></groupExpression>
+		</group>
+		<group name="ap_empleado">
+			<groupExpression><![CDATA[$F{ap_empleado}]]></groupExpression>
+		</group>
+		<group name="codigo">
+			<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
+		</group>
+		<group name="foto">
+			<groupExpression><![CDATA[$F{foto}]]></groupExpression>
+		</group>
+		<group name="puesto">
+			<groupExpression><![CDATA[$F{puesto}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="DSGafete4" uuid="3c31b993-e7d5-4f0d-9ba4-fa58e81a3eb0">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+		<queryString>
+			<![CDATA[declare @anios int, @meses int, @dias int, @folio_empleado int
+
+set @folio_empleado =(select cuatro from tb_ids);
+
+set @dias =(select (day(getdate())-day(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @meses =(select (month(getdate())-month(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @anios =(select (year(getdate())-year(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+
+select tb_empleado.folio as folio
+,tb_empleado.nombre as nom_empleado
+,tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as ap_empleado
+,tb_empleado.no_checador as codigo
+,convert(varchar(20),tb_empleado.fecha_ingreso,103) as fecha_ingreso
+,tb_empleado.imss as imss
+,tb_empleado.foto as foto
+,tb_puesto.nombre as puesto
+,(select case when (@meses)<0 
+				then (@anios-1)
+			when (@meses)=0 
+					then (select case when (@dias)<0 
+										then (@anios-1)
+									  else @anios
+								 end)
+			else @anios
+		end) as edad
+,tb_empleado.curp as curp
+from tb_empleado
+inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+where tb_empleado.folio =@folio_empleado]]>
+		</queryString>
+		<field name="folio" class="java.lang.Integer"/>
+		<field name="nom_empleado" class="java.lang.String"/>
+		<field name="ap_empleado" class="java.lang.String"/>
+		<field name="codigo" class="java.lang.String"/>
+		<field name="foto" class="java.io.InputStream"/>
+		<field name="puesto" class="java.lang.String"/>
+		<field name="fecha_ingreso" class="java.lang.String"/>
+		<field name="imss" class="java.lang.String"/>
+		<field name="edad" class="java.lang.Integer"/>
+		<field name="curp" class="java.lang.String"/>
+		<group name="folio">
+			<groupExpression><![CDATA[$F{folio}]]></groupExpression>
+		</group>
+		<group name="nom_empleado">
+			<groupExpression><![CDATA[$F{nom_empleado}]]></groupExpression>
+		</group>
+		<group name="ap_empleado">
+			<groupExpression><![CDATA[$F{ap_empleado}]]></groupExpression>
+		</group>
+		<group name="codigo">
+			<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
+		</group>
+		<group name="foto">
+			<groupExpression><![CDATA[$F{foto}]]></groupExpression>
+		</group>
+		<group name="puesto">
+			<groupExpression><![CDATA[$F{puesto}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="Parametro1" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Parametro2" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Parametro3" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Parametro4" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[declare @anios int, @meses int, @dias int, @folio_empleado int
+
+set @folio_empleado =(select uno from tb_ids);
+
+set @dias =(select (day(getdate())-day(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @meses =(select (month(getdate())-month(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+set @anios =(select (year(getdate())-year(tb_empleado.fecha_nacimiento)) from tb_empleado where folio = @folio_empleado)
+
+select tb_empleado.folio as folio
+,tb_empleado.nombre as nom_empleado
+,tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as ap_empleado
+,tb_empleado.no_checador as codigo
+,convert(varchar(20),tb_empleado.fecha_ingreso,103) as fecha_ingreso
+,tb_empleado.imss as imss
+,tb_empleado.foto as foto
+,tb_puesto.nombre as puesto
+,(select case when (@meses)<0 
+				then (@anios-1)
+			when (@meses)=0 
+					then (select case when (@dias)<0 
+										then (@anios-1)
+									  else @anios
+								 end)
+			else @anios
+		end) as edad
+,(select case when uno = 0 then 0
+			else 1	end
+			+case when dos = 0 then 0
+					else 1	end	
+			+case when tres = 0 then 0
+					else 1	end
+			+case when cuatro = 0 then 0
+					else 1 end  from tb_ids) AS CANTIDAD
+,tb_empleado.curp as curp
+from tb_empleado
+inner join tb_puesto on tb_puesto.folio = tb_empleado.puesto_id
+where tb_empleado.folio =@folio_empleado]]>
+	</queryString>
+	<field name="folio" class="java.lang.Integer"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="foto" class="java.io.InputStream"/>
+	<field name="puesto" class="java.lang.String"/>
+	<field name="nom_empleado" class="java.lang.String"/>
+	<field name="ap_empleado" class="java.lang.String"/>
+	<field name="CANTIDAD" class="java.lang.Integer"/>
+	<field name="fecha_ingreso" class="java.lang.String"/>
+	<field name="imss" class="java.lang.String"/>
+	<field name="edad" class="java.lang.Integer"/>
+	<field name="curp" class="java.lang.String"/>
+	<group name="folio">
+		<groupExpression><![CDATA[$F{folio}]]></groupExpression>
+	</group>
+	<group name="nom_empleado">
+		<groupExpression><![CDATA[$F{nom_empleado}]]></groupExpression>
+	</group>
+	<group name="ap_empleado">
+		<groupExpression><![CDATA[$F{ap_empleado}]]></groupExpression>
+	</group>
+	<group name="codigo">
+		<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
+	</group>
+	<group name="foto">
+		<groupExpression><![CDATA[$F{foto}]]></groupExpression>
+	</group>
+	<group name="puesto">
+		<groupExpression><![CDATA[$F{puesto}]]></groupExpression>
+	</group>
+	<detail>
+		<band height="574" splitType="Stretch">
+			<frame>
+				<reportElement x="-6" y="0" width="396" height="283" uuid="6277b3ab-07e6-412b-b3df-9a0362fac109"/>
+				<image>
+					<reportElement x="0" y="1" width="195" height="277" uuid="caad4513-f1a0-4fec-92af-cf28bcbcb64d"/>
+					<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Gafete_Frente.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="194" y="0" width="196" height="283" uuid="c36f2407-003b-406c-a9ef-e38a04b47eea"/>
+					<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Gafete_Abarrotes.png"]]></imageExpression>
+				</image>
+				<image scaleImage="FillFrame" hAlign="Left" vAlign="Top">
+					<reportElement mode="Transparent" x="43" y="65" width="109" height="113" forecolor="#004580" backcolor="#FFFFFF" uuid="9f34989a-c2c5-41f1-866c-fd7efb9dce99">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="2.0"/>
+						<leftPen lineWidth="2.0"/>
+						<bottomPen lineWidth="2.0"/>
+						<rightPen lineWidth="2.0"/>
+					</box>
+					<graphicElement fill="Solid"/>
+					<imageExpression><![CDATA[$F{foto}]]></imageExpression>
+				</image>
+				<componentElement>
+					<reportElement x="196" y="233" width="190" height="40" uuid="037c33ec-9073-463d-8dd0-32ce07991c50">
+						<property name="local_mesure_unitbarHeight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.barHeight" value="px"/>
+					</reportElement>
+					<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="50">
+						<jr:codeExpression><![CDATA[$F{codigo}]]></jr:codeExpression>
+					</jr:barbecue>
+				</componentElement>
+				<textField>
+					<reportElement x="1" y="180" width="188" height="17" uuid="7b6fbff5-e029-49ff-89a5-15fc462c8761"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial Black" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nom_empleado}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="1" y="194" width="188" height="17" uuid="e12287e5-f05c-48a3-9658-a786320e856f">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial Black" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ap_empleado}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="1" y="211" width="188" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="f0c362d9-bfaa-485a-8fb1-ca6d14ae672c">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Arial Black" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="200" y="2" width="52" height="17" uuid="f0cba90f-ad67-4ef5-9ca0-22c0889fa752"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="210" y="269" width="149" height="10" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="c9a63c4b-36da-415d-905c-fc2e722774c3">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Arial Black" size="6" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["INGRESO: "+$F{fecha_ingreso}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="274" y="1" width="106" height="10" forecolor="#FFFFFF" uuid="376bac8e-0c16-45a8-a005-3808f603fa7e">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineColor="#000000"/>
+						<leftPen lineColor="#000000"/>
+						<bottomPen lineColor="#000000"/>
+						<rightPen lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial Black" size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{imss}.equals("")?"":"No IMSS: "+$F{imss}]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement x="0" y="0" width="50" height="50" uuid="cde4c42c-29b6-4795-8381-37c27ab1bff9">
+						<printWhenExpression><![CDATA[$F{edad}<18]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/menor.png"]]></imageExpression>
+				</image>
+				<textField>
+					<reportElement x="28" y="267" width="140" height="10" forecolor="#FFFFFF" uuid="be278280-1a06-4c5a-9f2a-d135f1292e10">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineColor="#000000"/>
+						<leftPen lineColor="#000000"/>
+						<bottomPen lineColor="#000000"/>
+						<rightPen lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial Black" size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{curp}.equals("")?"":"CURP:"+$F{curp}]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement x="269" y="188" width="42" height="45" uuid="53f7625e-e8dc-479a-8535-201253ba18bb"/>
+					<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Izagar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="70" y="8" width="58" height="56" uuid="0bc3a1d8-bd9f-4f62-980c-0453b5f3db51"/>
+					<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Izagar.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="24" y="226" width="152" height="24" uuid="d012665d-a132-4c97-a21f-17892d06b0fb">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/cada_dia_mejor.png"]]></imageExpression>
+				</image>
+			</frame>
+			<componentElement>
+				<reportElement x="390" y="2" width="400" height="290" uuid="0fe72bc5-409e-4874-947c-2d54251fa6a1">
+					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="gafete2"/>
+					<printWhenExpression><![CDATA[$F{CANTIDAD}>=2]]></printWhenExpression>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="DSGafete2" uuid="3f250ccf-8f03-4240-9c3d-394e8ccc811e">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="290" width="400">
+						<frame>
+							<reportElement x="0" y="0" width="390" height="290" uuid="325717af-228c-49f7-9a46-6802f7df9046"/>
+							<image>
+								<reportElement x="0" y="1" width="195" height="277" uuid="a6d59111-3aba-439e-b4e0-55a0a353a57d"/>
+								<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Gafete_Frente.png"]]></imageExpression>
+							</image>
+							<image>
+								<reportElement x="70" y="8" width="58" height="56" uuid="93b715e2-3b08-499b-a634-eafd4434d576"/>
+								<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Izagar.png"]]></imageExpression>
+							</image>
+							<image>
+								<reportElement x="24" y="226" width="152" height="24" uuid="e2adcc6e-64af-43c7-bba0-460edcbdcfcb">
+									<property name="local_mesure_unitwidth" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/cada_dia_mejor.png"]]></imageExpression>
+							</image>
+							<image>
+								<reportElement x="194" y="0" width="196" height="283" uuid="ec8cb3c3-0154-4d95-8052-c47962474c4b"/>
+								<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Gafete_Abarrotes.png"]]></imageExpression>
+							</image>
+							<image>
+								<reportElement x="269" y="188" width="42" height="45" uuid="36874c5d-827d-496b-a4dd-670666751bae"/>
+								<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Izagar.png"]]></imageExpression>
+							</image>
+							<image scaleImage="FillFrame">
+								<reportElement x="43" y="66" width="109" height="113" forecolor="#00368A" uuid="05a2680d-7d3b-40d5-8e48-f3464d5596cc">
+									<property name="local_mesure_unitx" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.x" value="px"/>
+									<property name="local_mesure_unitwidth" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="local_mesure_unitheight" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<topPen lineWidth="2.0"/>
+									<leftPen lineWidth="2.0"/>
+									<bottomPen lineWidth="2.0"/>
+									<rightPen lineWidth="2.0"/>
+								</box>
+								<imageExpression><![CDATA[$F{foto}]]></imageExpression>
+							</image>
+							<componentElement>
+								<reportElement x="193" y="231" width="190" height="40" uuid="7a8b5871-73cc-406b-a81e-91693906a815">
+									<property name="local_mesure_unitbarHeight" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.barHeight" value="px"/>
+								</reportElement>
+								<jr:barbecue type="Code128" drawText="false" checksumRequired="false" barHeight="50">
+									<jr:codeExpression><![CDATA[$F{codigo}]]></jr:codeExpression>
+								</jr:barbecue>
+							</componentElement>
+							<textField>
+								<reportElement x="1" y="180" width="188" height="17" uuid="e1f18b5d-e932-4012-b1f8-a2e36cc3d49e"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial Black" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nom_empleado}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="1" y="194" width="188" height="17" uuid="3b10f866-10cf-4581-bc40-7c604ac3af7a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial Black" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{ap_empleado}]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="false">
+								<reportElement mode="Transparent" x="1" y="211" width="188" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="4307a66d-8d5f-4488-af83-c707c3ffeafd">
+									<property name="local_mesure_unitheight" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+									<font fontName="Arial Black" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="200" y="1" width="52" height="17" uuid="6b15e4ea-6982-4bcf-8905-d689edcdc51a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="false">
+								<reportElement mode="Transparent" x="220" y="269" width="140" height="10" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="f2daeb75-a65b-4680-960c-d32fb10fbf69">
+									<property name="local_mesure_unitheight" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<property name="local_mesure_unitwidth" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+									<font fontName="Arial Black" size="6" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA["INGRESO: "+$F{fecha_ingreso}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="274" y="1" width="106" height="10" forecolor="#FFFFFF" uuid="348163ef-694d-482d-851b-51f7c40d8b05">
+									<property name="local_mesure_unitheight" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<topPen lineColor="#000000"/>
+									<leftPen lineColor="#000000"/>
+									<bottomPen lineColor="#000000"/>
+									<rightPen lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial Black" size="7" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{imss}.equals("")?"":"No IMSS: "+$F{imss}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="31" y="266" width="130" height="10" forecolor="#FFFFFF" uuid="951ecc1e-9a07-445b-ae25-a13c2bcbb9c3">
+									<property name="local_mesure_unitheight" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<topPen lineColor="#000000"/>
+									<leftPen lineColor="#000000"/>
+									<bottomPen lineColor="#000000"/>
+									<rightPen lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Arial Black" size="7" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{curp}.equals("")?"":"CURP:"+$F{curp}]]></textFieldExpression>
+							</textField>
+						</frame>
+						<image>
+							<reportElement x="4" y="5" width="50" height="50" uuid="a8903437-4590-4c1f-9800-f1d4c83b7a38">
+								<printWhenExpression><![CDATA[$F{edad}<18]]></printWhenExpression>
+							</reportElement>
+							<imageExpression><![CDATA["C:/SCOI/imagen/menor.png"]]></imageExpression>
+						</image>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="0" y="291" width="390" height="283" uuid="e9b6a6d5-3180-4aff-a0b7-2ac1b4458363">
+					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="gafete3"/>
+					<printWhenExpression><![CDATA[$F{CANTIDAD}>=3]]></printWhenExpression>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="DSGafete3" uuid="c186dcb4-9f4b-4457-b854-97d78e85bbad">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="283" width="390">
+						<image>
+							<reportElement x="194" y="0" width="196" height="283" uuid="6e26191a-4f11-47c4-91e4-b554a4befa3d"/>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Gafete_Abarrotes.png"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="269" y="188" width="42" height="45" uuid="99029ab9-eed2-47a8-84bb-12745edb2afa"/>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Izagar.png"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="0" y="1" width="195" height="277" uuid="41e632d0-c026-4303-8d39-a8aca78aadb0"/>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Gafete_Frente.png"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="70" y="8" width="58" height="56" uuid="821f1fed-e84d-4340-b09a-bf28067df9d2"/>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Izagar.png"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="24" y="226" width="152" height="24" uuid="e4cbe62e-e40f-47f4-91d6-7135a912242f">
+								<property name="local_mesure_unitwidth" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/cada_dia_mejor.png"]]></imageExpression>
+						</image>
+						<image scaleImage="FillFrame">
+							<reportElement x="43" y="66" width="109" height="113" forecolor="#004B8F" uuid="61985849-2698-43bb-a0a9-da1003332f21">
+								<property name="local_mesure_unitx" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="local_mesure_unity" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="2.0"/>
+								<leftPen lineWidth="2.0"/>
+								<bottomPen lineWidth="2.0"/>
+								<rightPen lineWidth="2.0"/>
+							</box>
+							<imageExpression><![CDATA[$F{foto}]]></imageExpression>
+						</image>
+						<componentElement>
+							<reportElement x="195" y="230" width="190" height="40" uuid="d69a7eff-a034-424c-bbc0-1a8ec6cc35fd">
+								<property name="local_mesure_unitbarHeight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.barHeight" value="px"/>
+							</reportElement>
+							<jr:barbecue type="Code128" drawText="false" checksumRequired="false" barHeight="50">
+								<jr:codeExpression><![CDATA[$F{codigo}]]></jr:codeExpression>
+							</jr:barbecue>
+						</componentElement>
+						<textField>
+							<reportElement x="5" y="179" width="188" height="17" uuid="009f5bd5-4fce-49ee-b742-5557b354e577"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="12" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{nom_empleado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="193" width="188" height="17" uuid="316bbbaa-4a97-4dea-aebf-e90272747b96"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="12" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ap_empleado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="210" width="188" height="13" uuid="9ea1a280-a49d-4a1e-8391-b560811453c6">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="9" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement mode="Transparent" x="204" y="1" width="52" height="17" uuid="14f37313-3c75-4484-ba09-e29c45dd4e48"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="false">
+							<reportElement mode="Transparent" x="220" y="269" width="140" height="10" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="7d81d05f-b46c-4edc-be87-78acfe5e063c">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="local_mesure_unitwidth" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+								<font fontName="Arial Black" size="6" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+							</textElement>
+							<textFieldExpression><![CDATA["INGRESO: "+$F{fecha_ingreso}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="278" y="4" width="106" height="10" forecolor="#FFFFFF" uuid="88e60d62-bd8f-49ef-8859-0669b407bcc9">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineColor="#000000"/>
+								<leftPen lineColor="#000000"/>
+								<bottomPen lineColor="#000000"/>
+								<rightPen lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="7" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{imss}.equals("")?"":"No IMSS: "+$F{imss}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="4" y="3" width="50" height="50" uuid="c29fd8fa-d41c-43ee-a765-88590da6e9a4">
+								<printWhenExpression><![CDATA[$F{edad}<18]]></printWhenExpression>
+							</reportElement>
+							<imageExpression><![CDATA["C:/SCOI/imagen/menor.png"]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement x="26" y="265" width="130" height="10" forecolor="#FFFFFF" uuid="3b34a904-1470-49d2-8b7e-b956551c02ed">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineColor="#000000"/>
+								<leftPen lineColor="#000000"/>
+								<bottomPen lineColor="#000000"/>
+								<rightPen lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="7" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{curp}.equals("")?"":"CURP:"+$F{curp}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="384" y="291" width="390" height="283" uuid="33ef25b5-9c5b-472b-9dd1-63b0e52942c1">
+					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="gafete4"/>
+					<printWhenExpression><![CDATA[$F{CANTIDAD}==4]]></printWhenExpression>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="DSGafete4" uuid="d72b0533-50ec-4b38-86f4-5c760a9afca2">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="283" width="390">
+						<image>
+							<reportElement x="0" y="1" width="195" height="277" uuid="1f52f919-0349-4d45-a3d3-a86c9a668ca0"/>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Gafete_Frente.png"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="194" y="0" width="196" height="283" uuid="f7574ed0-77a2-4247-8036-a2412598cb12"/>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Gafete_Abarrotes.png"]]></imageExpression>
+						</image>
+						<image scaleImage="FillFrame">
+							<reportElement x="43" y="66" width="109" height="113" forecolor="#004580" uuid="0f21b614-ab2b-4b25-847d-4c3a8836df0e">
+								<property name="local_mesure_unitx" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="local_mesure_unity" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="2.0"/>
+								<leftPen lineWidth="2.0"/>
+								<bottomPen lineWidth="2.0"/>
+								<rightPen lineWidth="2.0"/>
+							</box>
+							<imageExpression><![CDATA[$F{foto}]]></imageExpression>
+						</image>
+						<componentElement>
+							<reportElement x="196" y="232" width="190" height="40" uuid="b978030b-36bf-4620-bef5-6872e35a71dd">
+								<property name="local_mesure_unitbarHeight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.barHeight" value="px"/>
+								<property name="local_mesure_unitheight" value="pixel"/>
+							</reportElement>
+							<jr:barbecue type="Code128" drawText="false" checksumRequired="false" barHeight="50">
+								<jr:codeExpression><![CDATA[$F{codigo}]]></jr:codeExpression>
+							</jr:barbecue>
+						</componentElement>
+						<textField>
+							<reportElement x="4" y="180" width="188" height="17" uuid="c005f3e8-8518-4134-a0f4-4601ba0c1c39">
+								<property name="local_mesure_unitheight" value="pixel"/>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="12" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{nom_empleado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="4" y="194" width="188" height="17" uuid="af2f44ba-a17b-42f6-87f8-9c260666cbb5"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="12" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ap_empleado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="4" y="211" width="188" height="13" uuid="7a461df0-3328-441d-8f37-41e1c2c73af0">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Top">
+								<font fontName="Arial Black" size="9" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="201" y="1" width="52" height="17" uuid="e4aba64a-1db7-47d5-8ab1-5ad9747ea752"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="226" y="269" width="122" height="10" forecolor="#FFFFFF" uuid="08877fc9-5099-4b32-8f2f-5d06c5805ba9">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="local_mesure_unitwidth" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="6" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["INGRESO: "+$F{fecha_ingreso}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="277" y="3" width="106" height="10" forecolor="#FFFFFF" uuid="432dc6ed-f92e-47c8-a26e-cf97ac2d49a3">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineColor="#000000"/>
+								<leftPen lineColor="#000000"/>
+								<bottomPen lineColor="#000000"/>
+								<rightPen lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="7" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{imss}.equals("")?"":"No IMSS: "+$F{imss}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="3" y="3" width="50" height="50" uuid="e0e75a55-07dc-415f-a431-0909d84c2662">
+								<printWhenExpression><![CDATA[$F{edad}<18]]></printWhenExpression>
+							</reportElement>
+							<imageExpression><![CDATA["C:/SCOI/imagen/menor.png"]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement x="31" y="266" width="130" height="10" forecolor="#FFFFFF" uuid="91fe0559-a3ff-4b5c-95f9-aeaed3bd6f09">
+								<property name="local_mesure_unitheight" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineColor="#000000"/>
+								<leftPen lineColor="#000000"/>
+								<bottomPen lineColor="#000000"/>
+								<rightPen lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Arial Black" size="7" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{curp}.equals("")?"":"CURP:"+$F{curp}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="269" y="188" width="42" height="45" uuid="066a52ad-84a1-466c-bacb-c20a4aa0d052"/>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Izagar.png"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="70" y="8" width="58" height="56" uuid="0e1a75c5-ad7a-45c5-b5ac-b462ad871f5d"/>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Izagar.png"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="24" y="226" width="152" height="24" uuid="1ce5c5e0-cd9c-49be-9b17-dbff90da6776">
+								<property name="local_mesure_unitwidth" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/cada_dia_mejor.png"]]></imageExpression>
+						</image>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>
