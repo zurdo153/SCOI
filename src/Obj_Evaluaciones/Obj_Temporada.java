@@ -87,7 +87,7 @@ public class Obj_Temporada {
 	
 	public String[] Combo_Temporada() {
 		try {
-			return new Cargar_Combo().Cuadrantes_Combos("temporada");
+			return new Cargar_Combo().Combos("temporada");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

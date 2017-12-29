@@ -104,6 +104,7 @@ import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
 import Obj_Reportes.Obj_Reportes_De_Ventas;
+import Obj_Seguridad.Obj_Autorizacion_Acceso_Proveedores;
 import Obj_Seguridad.Obj_Registro_Proveedores;
 import Obj_Servicios.Obj_Catalogo_Servicios;
 import Obj_Servicios.Obj_Administracion_De_Activos;
@@ -179,6 +180,28 @@ public class BuscarSQL {
 		}
 		return fecha;
 	}
+	
+	public String semana_anio() throws SQLException{
+		String semana="";
+		String query = "     select datepart(WEEK,getdate()) as Semana";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				semana=(rs.getString("Semana"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return semana;
+	}
+				
+				
 	
 	public String fecha_guardado() throws SQLException{
 		String fecha="";
@@ -2619,13 +2642,12 @@ public class BuscarSQL {
 		int resultado = 0;
 		Statement s;
 		ResultSet rs;
-		try {		
+		try{		
 			s = con.conexion().createStatement();
 			rs = s.executeQuery(query);
 			while(rs.next()){
 				resultado = rs.getInt(1);
-			}
-			
+		   }
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Devuelve_ultimo_folio_transaccion ] SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
@@ -3999,9 +4021,6 @@ public class BuscarSQL {
 //trae el nombre del empleado para el codigo
 	public void Gafetes_masivos(String listas) throws SQLException{
 		String insertIds = "exec sp_insert_ids "+listas.substring(0, listas.length()-1)+";";
-		System.out.println(listas.substring(0, listas.length()-1));
-//		String query =  "exec sp_genera_clave_checador "+listas.substring(0, listas.length()-1)+";";
-
 		Statement stmt = null;
 		
 		Connection con = new Connexion().conexion();
@@ -4012,25 +4031,6 @@ public class BuscarSQL {
 			pstmt = con.prepareStatement(insertIds);
 			pstmt.execute();
 			con.commit();
-			
-//			stmt = con.createStatement();
-//			ResultSet rs = stmt.executeQuery(query);
-//			int j = 1;
-//			while(rs.next()){
-//				new Obj_Gen_Code_Bar().Generar_Code(rs.getString("codigo"),j+"".trim());
-//				File photo = new File(System.getProperty("user.dir")+"/AssetGafete/Users_Images/"+j+".png");
-//				FileOutputStream fos = new FileOutputStream(photo);
-//
-//				byte[] buffer = new byte[1];
-//		            InputStream is = rs.getBinaryStream("foto");
-//		            while (is.read(buffer) > 0) {
-//		                fos.write(buffer);
-//		            }
-//		            fos.close();
-//		    	j++;
-//		           
-//			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -7424,7 +7424,6 @@ public class BuscarSQL {
 	
 	public Obj_Finiquitos finiquito_base(String folio_empleado_bms,int folio_empleado_scoi, String fecha_baja_scoi, String fecha_baja_bms){
 		Obj_Finiquitos finiquito = new Obj_Finiquitos();
-		
 		String query = "exec sp_select_calculo_de_finiquito '"+folio_empleado_bms+"',"+folio_empleado_scoi+",'"+fecha_baja_scoi+"','SCOI'";
 		System.out.println(query);
 		Statement stmt= null;
@@ -7472,6 +7471,7 @@ public class BuscarSQL {
 									   finiquito.setCuota_diario_BMS(rs.getDouble("cuota_diaria"));
 									   
 									   finiquito.setSDI_BMS(rs.getDouble("SDI"));
+									   System.out.println(rs.getDouble("SDI"));
 
 									   finiquito.setSueldo_BMS(rs.getDouble("sueldo"));
 									   finiquito.setAguinaldo_BMS(rs.getDouble("aguinaldo"));
@@ -8555,32 +8555,12 @@ public String folio_siguiente(String Transaccion) throws SQLException{
 }
 
 public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(String cod_prod, String Establecimiento) throws SQLException{
-	Obj_Alimentacion_De_Inventarios_Parciales datosproducto = new Obj_Alimentacion_De_Inventarios_Parciales();
-	
-	String query = " declare @exist_cedis real,@cod_prod varchar(35),@Producto varchar(35),@cod_estab char(3)  set @Producto='"+cod_prod+"' "
-			+ "               set @cod_estab=(select  cod_estab from establecimientos where RTRIM(LTRIM(nombre))='"+Establecimiento+"') "
-			+ "				  set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (cod_prod = @Producto)) "
-			+ "				  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_pieza = @Producto)) end "
-			+ "				  if @cod_prod is null begin set @cod_prod= (select top 1 cod_prod from productos with (nolock) where (codigo_barras_unidad = @Producto)) end "
-			+ "				  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_unidad=@Producto)) end "
-			+ "				  if @cod_prod is null begin set @cod_prod=(select top 1 cod_prod from codigos_barras_adicionales_productos A with (nolock) where (codigo_barras_pieza=@Producto))end "
-			+ "			 SELECT   productos.cod_prod"
-			+ "					 ,productos.descripcion"
-			+ " 		         ,convert(numeric(10,2),isnull(sum( ((productos.contenido*prodestab.exist_unidades)+exist_piezas) ),0)) as existencia"
-			+ "                  ,convert(varchar(10),getdate(),103) as fecha_actual "
-			+ "				     ,ISNULL(convert(numeric(10,2),prodestab.ultimo_costo),0) as ultimo_costo "
-			+ "				     ,ISNULL(convert(numeric(10,2),prodestab.costo_promedio),0) as costo_promedio "
-			+ "                  ,convert(numeric (10,2),case 1 WHEN 0 then dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '1', 1, 0, 0) "
-			+ "												  ELSE 	dbo.precio_venta_rpt(productos.cod_prod, 'P', 1, GETDATE(), '1', 1, 0, 0) "
-			+ "													* (1 + dbo.Ieps(productos.cod_prod)/100) * (1 + (CASE 'I' WHEN 'I' THEN productos.iva_interior ELSE productos.iva_fronterizo END/100))  END) as precio_venta"
-			+ "  		  from productos with (nolock)"
-			+ "  	  	    left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod and prodestab.cod_estab=@cod_estab"
-			+ "			  where productos.cod_prod=@cod_prod "
-			+ "						  group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio,productos.iva_interior,productos.iva_fronterizo ";	
+	Obj_Alimentacion_De_Inventarios_Parciales datosproducto = new Obj_Alimentacion_De_Inventarios_Parciales();	
+	String query = "exec sp_datos_productos_por_establecimiento_y_servidor '"+cod_prod+"','"+Establecimiento+"'";	
 	
 	Statement stmt2= null;
 					try {
-						stmt2= con.conexion_IZAGAR().createStatement();
+						stmt2= con.conexion().createStatement();
 						ResultSet rs2= stmt2.executeQuery(query);
 							   while(rs2.next()){
 								   datosproducto.setCod_Prod        (rs2.getString("cod_prod"));
@@ -8591,11 +8571,11 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 								   datosproducto.setPrecio_venta    (rs2.getDouble("precio_venta"));
 							   }
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_producto_existencia \n SQLException: "+e.getMessage(),"Avise Al Adiministrador",JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+						System.out.println(e.getMessage()+query );
+						JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_producto_existencia \n SQLException: "+e.getMessage() +"\nprocedure:"+ query,"Avise Al Adiministrador",JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 						e.printStackTrace();
 						return null;
 					}
-
 	finally{
 		if(stmt2!=null){stmt2.close();}
 	}
@@ -9484,7 +9464,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 
 	public String[][] TablaProveedores(){
 		String[][] Matriz = null;
-		String query = "select cod_prv as folio,case when rtrim(ltrim(razon_social))='' then 'Proveedor'else rtrim(ltrim(razon_social)) end as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio,convert(varchar(10),getdate(),103) as fecha_actual from proveedores where status_proveedor =1 order by proveedor asc ";
+		String query = "select cod_prv as folio,case when rtrim(ltrim(upper(razon_social)))='' then 'Proveedor'else rtrim(ltrim(upper(razon_social)))end as proveedor,calle+' No. EXTERIOR:'+num_exterior+' '+colonia+' C.P:'+cod_postal+' '+pobmunedo+' TELS:'+tel1+' FAX:'+fax as Domicilio,convert(varchar(10),getdate(),103) as fecha_actual from proveedores where status_proveedor =1 order by proveedor asc ";
 		Matriz = new String[getFilasExterno(query)][4];
 		Statement s;
 		ResultSet rs;
@@ -9508,7 +9488,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public String[][] TablaOrdenes_De_Compra(String Establecimiento){
 		String[][] Matriz = null;
 		String query = "exec proveedores_ordenes_de_compra '"+Establecimiento+"'";
-		Matriz = new String[getFilas(query)][11];
+		Matriz = new String[getFilas(query)][12];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -9527,6 +9507,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				Matriz[i][8]  = rs.getString( 9);
 				Matriz[i][9]  = rs.getString(10);
 				Matriz[i][10] = rs.getString(11);
+				Matriz[i][10] = rs.getString(12);
 				i++;
 			}
 		} catch (SQLException e1) {
@@ -9803,6 +9784,44 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			return Matriz;
 		}
 	   
+	   public String[][]  TablaProgramacion_De_Proveedores(int folio){
+			String[][] Matriz = null;
+			String query = "exec proveedores_programacion_visita_buscar_movimientos "+folio;
+			
+			Matriz = new String[getFilas(query)][18];
+			Statement s;
+			ResultSet rs;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					Matriz[i][0]  = rs.getString( 1);
+					Matriz[i][1]  = rs.getString( 2);
+					Matriz[i][2]  = rs.getString( 3);
+					Matriz[i][3]  = rs.getString( 4);
+					Matriz[i][4]  = rs.getString( 5);
+					Matriz[i][5]  = rs.getString( 6);
+					Matriz[i][6]  = rs.getString( 7);
+					Matriz[i][7]  = rs.getString( 8);
+					Matriz[i][8]  = rs.getString( 9);
+					Matriz[i][9]  = rs.getString(10);
+					Matriz[i][10] = rs.getString(11);
+					Matriz[i][11] = rs.getString(12);
+					Matriz[i][12] = rs.getString(13);
+					Matriz[i][13] = rs.getString(14);
+					Matriz[i][14] = rs.getString(15);
+					Matriz[i][15] = rs.getString(16);
+					Matriz[i][16] = rs.getString(17);
+					Matriz[i][17] = rs.getString(18);
+					i++;
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Matriz;
+		}
+	   
 	   public Obj_Registro_Proveedores buscar_Datos_Colaborador_por_clave_checador(String codigo_De_barras){
 		   Obj_Registro_Proveedores datos = new Obj_Registro_Proveedores();
 			String query = "exec proveedores_validacion_existe_colaborador '"+codigo_De_barras+"'";
@@ -9831,6 +9850,34 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			return datos;
 		}
 	   
+	   public Obj_Autorizacion_Acceso_Proveedores buscar_Datos_Autorizacion_Proveedor(String folio_solicitud){
+		   Obj_Autorizacion_Acceso_Proveedores datos = new Obj_Autorizacion_Acceso_Proveedores();
+			String query = "exec proveedores_autorizacion_validacion '"+folio_solicitud+"'";
+			Statement stmt2= null;
+							try {
+								stmt2= con.conexion().createStatement();
+								ResultSet rs2= stmt2.executeQuery(query);
+									   while(rs2.next()){
+										   datos.setFolio(rs2.getInt(1));
+										   datos.setEstatus(rs2.getString(2));
+										   datos.setMotivo_negado_acceso(rs2.getString(3));
+										   datos.setObservaciones(rs2.getString(4));
+									   }
+							} catch (Exception e) {
+								JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_Datos_Autorizacion_Proveedor \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+								e.printStackTrace();
+								return null;
+							}
+			finally{
+				if(stmt2!=null){try {
+					stmt2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return datos;
+		}
+	   
 	   public Obj_Registro_Proveedores Busqueda_de_Registro_Entrada_y_Salida_De_Proveedores(int folio){
 		   Obj_Registro_Proveedores proveedores = new Obj_Registro_Proveedores();
 			String query = "exec proveedores_registro_de_entradas_y_salidas_buscar "+folio;
@@ -9841,9 +9888,14 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			String[][] Matrizr = null;
 			Matrizr = new String[getFilas(queryr)][3];
 			
+			String queryrp = "exec proveedores_registro_de_entradas_y_salidas_buscar_devoluciones_productos "+folio;
+			String[][] Matrizrp = null;
+			Matrizrp = new String[getFilas(queryrp)][5];
+						
 			Statement s;
 			ResultSet rs;
 			ResultSet rsr;
+			ResultSet rsrp;
 			try {			
 				s = con.conexion().createStatement();
 				rs = s.executeQuery(query);
@@ -9864,6 +9916,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					Matriz[i][3]  = rs.getString( 13);
 					Matriz[i][4]  = rs.getString( 14);
 					Matriz[i][5]  = rs.getString( 15);
+					proveedores.setFolio_solicitud(Integer.valueOf(rs.getString(16)));
 					i++;
 				}
 				proveedores.setTabla_facturas(Matriz);
@@ -9877,6 +9930,21 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					i++;
 				}
 				proveedores.setTabla_registros(Matrizr);
+				
+				
+				rsrp = s.executeQuery(queryrp);
+				 i=0;
+				while(rsrp.next()){	
+					Matrizrp[i][0]  = rsrp.getString( 1);
+					Matrizrp[i][1]  = rsrp.getString( 2);
+					Matrizrp[i][2]  = rsrp.getString( 3);
+					Matrizrp[i][3]  = rsrp.getString( 4);
+					Matrizrp[i][4]  = rsrp.getString( 5);
+					i++;
+				}
+				proveedores.setTabla_devolucion(Matrizrp);
+				
+				
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -9980,4 +10048,62 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			}
 			return server;
 		}
+
+		public String[][] Tabla_Existencia_De_Un_Producto_En_Establecimiento(String Cod_prod){
+				String[][] Matriz = null;
+				String query = "exec sp_existencia_de_un_producto_en_establecimientos '"+Cod_prod+"'";
+				
+				Matriz = new String[getFilasExterno(query)][19];
+				Statement s;
+				ResultSet rs;
+				try {			
+					s = con.conexion_IZAGAR().createStatement();
+					rs = s.executeQuery(query);
+					int i=0;
+					while(rs.next()){
+						Matriz[i][0]  = rs.getString( 1);
+						Matriz[i][1]  = rs.getString( 2);
+						Matriz[i][2]  = rs.getString( 3);
+						Matriz[i][3]  = rs.getString( 4);
+						Matriz[i][4]  = rs.getString( 5);
+						Matriz[i][5]  = rs.getString( 6);
+						Matriz[i][6]  = rs.getString( 7);
+						Matriz[i][7]  = rs.getString( 8);
+						Matriz[i][8]  = rs.getString( 9);
+						Matriz[i][9]  = rs.getString(10);
+						Matriz[i][10] = rs.getString(11);
+						Matriz[i][11] = rs.getString(12);
+						Matriz[i][12] = rs.getString(13);
+						Matriz[i][13] = rs.getString(14);
+						Matriz[i][14] = rs.getString(15);
+						
+						Matriz[i][15] = rs.getString(16);
+						Matriz[i][16] = rs.getString(17);
+						Matriz[i][17] = rs.getString(18);
+						Matriz[i][18] = rs.getString(19);
+						i++;
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				return Matriz;
+			}
+		
+		  public boolean Validaciones(String Validacion){
+				String query = "exec validaciones '"+Validacion+"'";
+				boolean disponible = false;
+				try {				
+					Statement s = con.conexion().createStatement();
+					ResultSet rs = s.executeQuery(query);
+					
+					while(rs.next()){
+						disponible = rs.getBoolean(1);
+					}
+					
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				return disponible;
+			}
+		  
 }

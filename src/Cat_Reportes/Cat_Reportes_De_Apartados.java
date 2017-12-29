@@ -187,6 +187,7 @@ public class Cat_Reportes_De_Apartados extends JFrame {
 	};
 	
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public String validar_fechas(){
 		String error = "";
 		@SuppressWarnings("unused")

@@ -66,7 +66,7 @@ public class Obj_Nivel_Critico {
 			
 	public String[] Combo_Nivel_Critico() {
 				try {
-					return new Cargar_Combo().Cuadrantes_Combos("nivel_critico");
+					return new Cargar_Combo().Combos("nivel_critico");
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

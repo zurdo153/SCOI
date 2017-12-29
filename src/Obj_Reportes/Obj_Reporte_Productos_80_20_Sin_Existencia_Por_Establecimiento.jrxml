@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-11-07T11:01:47 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_Productos_80_20_Sin_Existencia_Por_Establecimiento.jrxml" language="groovy" pageWidth="1100" pageHeight="500" columnWidth="1100" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[exec  sp_reporte_80_20_productos_canasta_basica_sin_existencia 'Selecciona un Establecimiento']]>
+	</queryString>
+	<field name="cod_estab" class="java.lang.String"/>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="clase_producto" class="java.lang.String"/>
+	<field name="categoria" class="java.lang.String"/>
+	<field name="existencia" class="java.math.BigDecimal"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{establecimiento}]]></groupExpression>
+	</group>
+	<pageHeader>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="990" height="20" uuid="8edb66d8-5633-4865-aa34-1820fba6b99d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[" Reporte De Productos 80/20 Sin Existencia Por Establecimiento Del Dia "+$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="130" y="20" width="50" height="13" uuid="296613f0-e349-40ea-8961-ecdab493bd95">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="20" width="350" height="13" uuid="2ad37360-d92c-4eed-8084-f652391cee4a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Descripcion Del Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="20" width="40" height="13" uuid="c358ab75-2467-4477-94f8-38e3821639dd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="130" height="13" uuid="9dfcebce-c3f8-4188-b332-201b88fad466">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Establecimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="20" width="190" height="13" uuid="ec05cd15-ede3-46df-8abd-fb79f1c1fab8"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Clase De Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="770" y="20" width="220" height="13" uuid="4a12038b-e30c-4d27-8585-1366033c570e"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="130" y="0" width="50" height="13" uuid="5ddef106-2ff8-476d-a270-aeddceb10289">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="350" height="13" uuid="42c212b8-b535-4b2a-9a6c-9b75ac5267ae"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="530" y="0" width="40" height="13" uuid="2d31135e-5b9e-4361-a3d2-70cd17cb9fac"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{existencia}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="0" y="0" width="130" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="ccbb7b84-8635-4391-be05-e028106583e3"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="580" y="0" width="190" height="13" uuid="5dce1500-f632-4f4c-9e3b-474a59faf01b"/>
+				<textFieldExpression><![CDATA[$F{clase_producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="770" y="0" width="220" height="13" uuid="1ce0e28f-6c9e-4df3-bfec-cdd3701b5605"/>
+				<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

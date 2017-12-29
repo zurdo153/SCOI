@@ -33,7 +33,6 @@ import java.time.LocalDate;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 
-
 public class Obj_tabla {
 	  Obj_Usuario usuario = new Obj_Usuario().buscar_Colores();
 	 ///fuente 
@@ -133,6 +132,71 @@ public void tabla_mascara(JTable tabla,int columnamask1, int columnamask2 ){
 		      }
  }
 
+public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1, int columnamask2 ){
+	DefaultTableModel modelo= (DefaultTableModel) tabla.getModel();
+
+	if(columnamask1>-1){
+	JFormattedTextField ftext = new JFormattedTextField();
+	MaskFormatter mask;
+	try {
+	    mask = new MaskFormatter("##:##");
+	    mask.install(ftext);
+	} catch (java.text.ParseException e) {
+	    e.printStackTrace();
+	}
+	tabla.getColumnModel().getColumn(columnamask1).setCellEditor(new DefaultCellEditor(ftext));
+	}
+	
+	if(columnamask2>-1){
+	JFormattedTextField ftext = new JFormattedTextField();
+	MaskFormatter mask;
+	try {
+	    mask = new MaskFormatter("##:##");
+	    mask.install(ftext);
+	} catch (java.text.ParseException e) {
+	    e.printStackTrace();
+	}
+	tabla.getColumnModel().getColumn(columnamask2).setCellEditor(new DefaultCellEditor(ftext));
+	}
+	
+	
+	tabla.getTableHeader().setReorderingAllowed(false) ;
+	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	modelo.setRowCount(0);
+	
+	tabla.getColumnModel().getColumn(0).setMinWidth(55);
+	tabla.getColumnModel().getColumn(0).setMaxWidth(55);
+	tabla.getColumnModel().getColumn(1).setMinWidth(65);
+	tabla.getColumnModel().getColumn(1).setMaxWidth(65);	
+	tabla.getColumnModel().getColumn(2).setMinWidth(55);
+	tabla.getColumnModel().getColumn(3).setMinWidth(300);
+	tabla.getColumnModel().getColumn(4).setMinWidth(120);
+ 	tabla.getColumnModel().getColumn(4).setMaxWidth(50);
+	tabla.getColumnModel().getColumn(5).setMinWidth(50);
+ 	tabla.getColumnModel().getColumn(5).setMaxWidth(50);
+	tabla.getColumnModel().getColumn(6).setMinWidth(50);
+ 	tabla.getColumnModel().getColumn(7).setMinWidth(150);
+	tabla.getColumnModel().getColumn(8).setMinWidth(300);
+	tabla.getColumnModel().getColumn(9).setMinWidth(150);
+ 	
+	for(int i = 0; i<tabla.getColumnCount(); i++){
+		tabla.getColumnModel().getColumn(i).setMaxWidth(2000);
+       }
+		
+		for(int i = 0; i<tabla.getColumnCount(); i++){
+			 tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CabeceraTablaRendererizado(new java.awt.Color(RfilaS,GfilaS,BfilaS),Color.WHITE));
+			
+				if(tabla.getRowCount()>0){
+					if( validacampo(modelo.getValueAt(0,i).toString().trim()) ){
+					    tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","derecha","Arial","negrita",11));
+					}else{
+					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));	
+					}
+				}else{
+					  tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));
+			  	}
+		      }
+ }
   public void tabla_precargada(JTable tabla){
 	DefaultTableModel modelo= (DefaultTableModel) tabla.getModel();
 	tabla.getTableHeader().setReorderingAllowed(false) ;
@@ -158,6 +222,26 @@ public void tabla_mascara(JTable tabla,int columnamask1, int columnamask2 ){
 		      }
    }
 
+  public void tabla_precargada_derecha(JTable tabla){
+		DefaultTableModel modelo= (DefaultTableModel) tabla.getModel();
+		tabla.getTableHeader().setReorderingAllowed(false) ;
+		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		modelo.setRowCount(0);
+
+		for(int i = 0; i<tabla.getColumnCount(); i++){
+			tabla.getColumnModel().getColumn(i).setMaxWidth(2000);
+	       }
+			
+			for(int i = 0; i<tabla.getColumnCount(); i++){
+				 tabla.getColumnModel().getColumn(i).setHeaderRenderer(new CabeceraTablaRendererizado(new java.awt.Color(RfilaS,GfilaS,BfilaS),Color.WHITE));
+						if( i==0 ){	
+				            tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","izquierda","Arial","negrita",11));	
+						  }else{
+						    tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRendererizado("texto","derecha","Arial","negrita",11));
+			              }
+			      }
+	   }
+  
 
 	public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,String comando,String BasdeDatos, String pintar, Integer checkbox){
     	tabla.getTableHeader().setReorderingAllowed(false) ;

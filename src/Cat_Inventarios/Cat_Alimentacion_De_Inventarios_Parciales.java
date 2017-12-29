@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
@@ -52,8 +53,10 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	Connexion con = new Connexion();
-	 Obj_tabla  Objetotabla = new Obj_tabla();
+	JToolBar menu_toolbar       = new JToolBar();
 	
+	Obj_tabla  ObjTab = new Obj_tabla();
+
 	int columnas = 7,checkbox=-1;
 	public void init_tabla(){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(90);	
@@ -66,47 +69,87 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
     	
 		String comando="Select '' as Codigo_Producto, '' as Descripcion, 0 as  Existencia, 0 as Existencia_Fisica ,0 as Diferencia, 0 as Ultimo_Costo, 0 as Costo_Promedio " ;
 		String basedatos="26",pintar="si";
-		Objetotabla.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
-  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Existencia","Existencia Fisica","Diferencia","Ultimo_Costo","Costo_Promedio" }){
-	 @SuppressWarnings("rawtypes")
-		Class[] types = new Class[]{
-				java.lang.Object.class,
-				java.lang.Object.class,
-				java.lang.Object.class,
-				java.lang.Object.class,
-				java.lang.Object.class,
-				java.lang.Object.class,
-				java.lang.Object.class,
-		};
+	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Existencia","Existencia Fisica","Diferencia","Ultimo_Costo","Costo_Promedio" }){
+		 @SuppressWarnings("rawtypes")
+			Class[] types = new Class[]{
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+					java.lang.Object.class,
+			};
+			
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+	         return types[columnIndex];
+	     }
+			public boolean isCellEditable(int fila, int columna){
+				if(columna ==3)
+					return true; return false;
+			}
+	    };
+	    
+	    JTable tabla = new JTable(modelo);
+	    public JScrollPane scroll_tabla = new JScrollPane(tabla);
+		   
+		int columnas2 = 7;
+		public void init_tabla_filtro_productos(){
+	    	this.tabla2.getColumnModel().getColumn(0).setMinWidth(90);	
+	    	this.tabla2.getColumnModel().getColumn(1).setMinWidth(410);
+	    	this.tabla2.getColumnModel().getColumn(2).setMinWidth(150);
+	    	this.tabla2.getColumnModel().getColumn(3).setMinWidth(190);
+	    	this.tabla2.getColumnModel().getColumn(4).setMinWidth(100);
+	    	this.tabla2.getColumnModel().getColumn(5).setMinWidth(100);
+	    	
+			String comando="exec inventarios_filtro_catalogo_de_productos_con_80_20 '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'" ;
+			String basedatos="200",pintar="si";
 		
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Class getColumnClass(int columnIndex) {
-         return types[columnIndex];
-     }
-		public boolean isCellEditable(int fila, int columna){
-			if(columna ==3)
-				return true; return false;
+			ObjTab.Obj_Refrescar(tabla2, modelo2, columnas2, comando, basedatos,pintar,checkbox);
 		}
-    };
-    
-    JTable tabla = new JTable(modelo);
-	public JScrollPane scroll_tabla = new JScrollPane(tabla);
+			String establecimiento80="";
+			
+		 public DefaultTableModel modelo2 = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Clase Producto","Categoria","Familia","Marca","80/20 De "+establecimiento80}){
+				 @SuppressWarnings("rawtypes")
+		 		Class[] types = new Class[]{
+						java.lang.Object.class,
+						java.lang.Object.class,
+						java.lang.Object.class,
+		  			    java.lang.Object.class,
+						java.lang.Object.class,
+						java.lang.Object.class,
+				    	java.lang.Object.class,
+				    };
+						
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				public Class getColumnClass(int columnIndex) {
+				         return types[columnIndex];
+		        }
+				
+				public boolean isCellEditable(int fila, int columna2){
+							if(columna2 ==3)
+							return true; return false;
+						}
+			    };
+				    
+			   JTable tabla2 = new JTable(modelo2);
+				public JScrollPane scroll_tabla_filtro = new JScrollPane(tabla2);
 	
-	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio Del Inventario", 30, "String");
-	JTextField txtcod_prod =new Componentes().text(new JTextField(), "Codigo Del Producto", 25, "String");
-	JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
+	JTextField txtFolio    = new Componentes().text(new JCTextField(), "Folio Del Inventario", 30, "String");
+	JTextField txtcod_prod = new Componentes().text(new JTextField(), "Codigo Del Producto", 25, "String");
+	JTextField txtFiltro   = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
 	
-	JCButton btnQuitarfila= new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
-	JCButton btnProducto  = new JCButton("Productos"    ,"Filter-List-icon16.png","Azul");
-	JCButton btnReporte   = new JCButton("Reporte"      ,"Lista.png","Azul");
-	JCButton btnBuscar    = new JCButton("Inventarios"  ,"Filter-List-icon16.png","Azul"); 
-	JCButton btnNuevo     = new JCButton("Nuevo"        ,"Nuevo.png","Azul");
-	JCButton btnEditar    = new JCButton("Editar"       ,"editara.png","Azul");
-	JCButton btnGuardar   = new JCButton("Guardar"      ,"Guardar.png","Azul");
-	JCButton btnDeshacer  = new JCButton("Deshacer"     ,"deshacer16.png","Azul");
-	
+	JCButton btnQuitarfila = new JCButton("Eliminar Fila","boton-rojo-menos-icono-5393-16.png","Azul");
+	JCButton btnProducto   = new JCButton("Productos"    ,"Filter-List-icon16.png","Azul");
+	JCButton btnReporte    = new JCButton("Reporte"      ,"Lista.png","Azul");
+	JCButton btnBuscar     = new JCButton("Buscar"  ,"Filter-List-icon16.png","Azul"); 
+	JCButton btnNuevo      = new JCButton("Nuevo"        ,"Nuevo.png","Azul");
+	JCButton btnGuardar    = new JCButton("Guardar"      ,"Guardar.png","Azul");
+	JCButton btnDeshacer   = new JCButton("Deshacer"     ,"deshacer16.png","Azul");
 	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -115,6 +158,10 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	int fila=0;
     int columna=0;
+
+	String FActividadesCargado ="";
+	String[][] tablaprecargadaproductos;
+	
     Object[] vector = new Object[7];
     
     JTextArea txaNota 	= new Componentes().textArea(new JTextArea(), "Nota", 500);
@@ -122,7 +169,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
     
    public  Cat_Alimentacion_De_Inventarios_Parciales(){
 	   this.cont.add(panel);
-		this.setSize(1024,768);
+		this.setSize(1024,730);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -134,26 +181,35 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
         cont.setBackground(new java.awt.Color(255, 255, 255));
    	    tabla.getTableHeader().setReorderingAllowed(false) ;
    	
-		int x=20, y=20,width=122,height=20, sep=135;
-		panel.add(txtFolio).setBounds                      (x         ,y      ,width   ,height );
-		panel.add(btnBuscar).setBounds                     (x+=sep    ,y      ,width   ,height );
-		panel.add(cmbEstablecimiento).setBounds            (x+=sep+30 ,y      ,width+60,height );
-		panel.add(new JLabel("Nota:")).setBounds           (x+sep+60  ,y-15   ,50      ,height );
-		panel.add(Nota).setBounds                          (x+sep+60  ,y      ,480     ,50     );
+   	    this.menu_toolbar.add(btnNuevo    );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnDeshacer );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnReporte  );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnBuscar   );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnGuardar  );
 		
-		x=20;
-		panel.add(txtcod_prod).setBounds                   (x         ,y+=30  ,width   ,height );
+		this.menu_toolbar.setFloatable(false);
+   	 
+		int x=20, y=20,width=122,height=20, sep=130;
+		panel.add(menu_toolbar).setBounds                  (x         ,y      ,400     ,height );
+		panel.add(new JLabel("Nota:")).setBounds           (x+580     ,y-15   ,50      ,height );
+		panel.add(Nota).setBounds                          (x+580     ,y      ,390     ,50     );
+
+		panel.add(cmbEstablecimiento).setBounds            (x=20      ,y+=30  ,width+60,height );
+		panel.add(txtFolio).setBounds                      (x+=190    ,y      ,width   ,height );
+		panel.add(txtcod_prod).setBounds                   (x+=sep    ,y      ,width   ,height );
 		panel.add(btnProducto).setBounds                   (x+=sep    ,y      ,width   ,height );
-		
-		x=20;
-		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,800     ,height );
+
+		panel.add(txtFiltro).setBounds   		           (x=20      ,y+=27  ,840     ,height );
 		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
 		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
-		panel.add(btnNuevo  ).setBounds                    (x         ,y+=600 ,width   ,height );
-		panel.add(btnDeshacer).setBounds                   (x+=sep    ,y      ,width   ,height );
-		panel.add(btnGuardar).setBounds                    (x+=sep    ,y      ,width   ,height );
-		panel.add(btnReporte).setBounds                    (x+=sep    ,y      ,width   ,height );
-//		panel.add(btnEditar).setBounds                     (x+=sep    ,y    ,width   ,height );
 		
 		txaNota.setLineWrap(true); 
 		txaNota.setWrapStyleWord(true);
@@ -236,7 +292,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {
 			fila=tabla.getSelectedRow();
-			if(Objetotabla.validacelda(tabla,"decimal", fila, columna)){
+			if(ObjTab.validacelda(tabla,"decimal", fila, columna)){
 				  RecorridoFoco(fila,"x"); 
 				  calculo_diferencia(fila);
 			}
@@ -273,6 +329,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
                 	 break;
                   default:
                 	 cmbEstablecimiento.setEnabled(false);
+                	 establecimiento80=cmbEstablecimiento.getSelectedItem().toString();
                 	 btnProducto.setEnabled(true);
                 	 txtcod_prod.setEnabled(true);
                 	 txtcod_prod.requestFocus();
@@ -356,7 +413,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	
 	ActionListener guardar = new ActionListener(){
 	public void actionPerformed(ActionEvent e){
-			 String[][] tabla_guardado = Objetotabla.tabla_guardar(tabla);
+			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
 			 if(tabla_guardado.length==0){
 				 return;
 			 }else{		 
@@ -494,11 +551,10 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
     }
 	
 	public void RecorridoFoco(int filap,String parametrosacarfoco){
-			if(Objetotabla.RecorridoFocotabla(tabla, filap, 3, parametrosacarfoco).equals("si")){
+			if(ObjTab.RecorridoFocotabla(tabla, filap, 3, parametrosacarfoco).equals("si")){
 				txtcod_prod.requestFocus();
 			};
 		}
-	
 	
 	//TODO Filtro De productos
 	public class Cat_Filtro_De_Productos extends JDialog{
@@ -506,59 +562,6 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 		  JLayeredPane panel = new JLayeredPane();
 		  Connexion con = new Connexion();
 		  Runtime R = Runtime.getRuntime();
-		 Obj_tabla  Objetotabla = new Obj_tabla();
-			
-			int columnas = 6,checkbox=-1;
-			public void init_tabla(){
-		    	this.tabla2.getColumnModel().getColumn(0).setMinWidth(90);	
-		    	this.tabla2.getColumnModel().getColumn(1).setMinWidth(410);
-		    	this.tabla2.getColumnModel().getColumn(2).setMinWidth(150);
-		    	this.tabla2.getColumnModel().getColumn(3).setMinWidth(190);
-		    	this.tabla2.getColumnModel().getColumn(4).setMinWidth(100);
-		    	this.tabla2.getColumnModel().getColumn(5).setMinWidth(100);
-		    	
-				String comando="select productos.cod_prod "
-						+ "           ,productos.descripcion"
-						+ "           ,isnull(upper(clases_productos.nombre),'Sin Clasificacion') as clase_producto "
-						+ "           ,isnull(upper(categorias.nombre),'Sin Clasificacion') as categorias"
-						+ "	          ,isnull(upper(familias.nombre),'Sin Clasificacion') as familias   "
-						+ "           ,isnull(upper(marcas_productos.nombre),'')  as marca"
-						+ "       from productos with (nolock)"
-						+ "   left outer join clases_productos with (nolock) on clases_productos.clase_producto=productos.clase_producto"
-						+ "   left outer join categorias with (nolock) on categorias.categoria=productos.categoria"
-						+ "   left outer join familias with (nolock) on familias.familia=productos.familia"
-						+ "   left outer join marcas_productos with (nolock) on marcas_productos.marca=productos.marca"
-						+ "      order by  productos.descripcion " ;
-				String basedatos="200",pintar="si";
-				Objetotabla.Obj_Refrescar(tabla2,modelo2, columnas, comando, basedatos,pintar,checkbox);
-		    }
-			
-		  public DefaultTableModel modelo2 = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Clase Producto","Categoria","Familia","Marca"}){
-			 @SuppressWarnings("rawtypes")
-				Class[] types = new Class[]{
-						java.lang.Object.class,
-						java.lang.Object.class,
-						java.lang.Object.class,
-						java.lang.Object.class,
-						java.lang.Object.class,
-						java.lang.Object.class,
-						java.lang.Object.class,
-				};
-				
-				@SuppressWarnings({ "unchecked", "rawtypes" })
-				public Class getColumnClass(int columnIndex) {
-		         return types[columnIndex];
-		     }
-				public boolean isCellEditable(int fila, int columna){
-					if(columna ==3)
-						return true; return false;
-				}
-		    };
-		    
-		    JTable tabla2 = new JTable(modelo2);
-			public JScrollPane scroll_tabla = new JScrollPane(tabla2);
-	    JScrollPane scrollAsignado = new JScrollPane(tabla2,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	    
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
 		
@@ -567,7 +570,7 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 	    
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Cat_Filtro_De_Productos(String establecimiento){
-			int ancho = 1024;//Toolkit.getDefaultToolkit().getScreenSize().width;
+			int ancho = 1024;
 			int alto = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 			this.setSize(ancho, alto);
 			this.setResizable(false);
@@ -586,12 +589,32 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 
 			int y = 20;
 			panel.add(txtFiltrop).setBounds(15,y,500,20);
-			panel.add(scrollAsignado).setBounds(15,y+=20,ancho-30,alto-70);
+			panel.add(scroll_tabla_filtro).setBounds(15,y+=20,ancho-30,alto-70);
 	        
-			init_tabla();
+			if(FActividadesCargado.equals("S")){
+				datos_tabla_precargados();
+			}else{
+				init_tabla_filtro_productos();
+				tablaprecargadaproductos= ObjTab.tabla_guardar(tabla2);
+			  FActividadesCargado="S";
+			}
+			
 			agregar(tabla2);
 		}
 
+		public void datos_tabla_precargados(){
+			 modelo2.setRowCount(0);
+			 String[][] tablacompleta =tablaprecargadaproductos;
+			 Object[] vector = new Object[columnas2];
+			for(int i=0;i<tablacompleta.length;i++){
+				   for(int j=0;j<columnas2;j++){
+					vector[j] = tablacompleta[i][j].toString();
+					}
+					modelo2.addRow(vector);
+			}
+		}
+
+		
 		KeyListener opFiltro = new KeyListener(){
 			@SuppressWarnings("unchecked")
 			public void keyReleased(KeyEvent arg0) {

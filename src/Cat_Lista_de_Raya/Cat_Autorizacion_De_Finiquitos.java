@@ -179,7 +179,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 		        	model.setRowCount(0);
 		        	Actualizar_tabla("V");
 		        	
-		        	if(Status_Finiquito.equals('L')){
+		        	if(Status_Finiquito.equals("L")){
 		        		reporte(folio_finiquito,"finiquito".toUpperCase());
 		        	}else{
 						JOptionPane.showMessageDialog(null, "Se Actualizo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));

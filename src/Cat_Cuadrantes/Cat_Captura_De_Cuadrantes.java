@@ -40,6 +40,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
  
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Cuadrantes.Obj_Cuadrantes;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
@@ -201,7 +202,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	JCButton btnDeshacer        = new JCButton("Deshacer"                          ,"deshacer16.png"                                                   ,"Azul");
 	JCButton btnCapturaPersonal = new JCButton("Captura De Mi Cuadrante Personal"  ,"Usuario.png"                                                      ,"Azul");
 	JCButton btnCapturaNivelJera= new JCButton("Captura De Cuadrante Por Nivel Jerarquico","plan-de-organizacion-de-la-red-de-sitio-icono-5788-16.png" ,"Azul");
-	JCButton btnMenuPrincipal   = new JCButton("Volver Al Menu Principal","folder-home-home-icone-5663-16.png" ,"Azul");
+	JCButton btnMenuPrincipal   = new JCButton("Volver Al Menu Principal","folder-home-home-icone-5663-16.png"                                         ,"Azul");
+	JCButton btnGenerarRPersonal= new JCButton("Imprimir Cuadrante De Hoy"   ,"How-to.png"                                                             ,"Azul"); 
 	
 	JToolBar toolbarLunes         = new JToolBar();
 	JCButton btnAgregLunes        = new JCButton("Agregar Actividad Lunes","double-arrow-icone-3883-16.png"  ,"Azul" );
@@ -296,6 +298,9 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			this.menu_toolbar.addSeparator(       );
 			this.menu_toolbar.addSeparator(       );
 			this.menu_toolbar.add(btnMenuPrincipal);
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.add(btnGenerarRPersonal);
 			this.menu_toolbar.setFloatable(false);
 			
 			this.panel.add(new JLabel("Folio:")).setBounds              (x     ,y      ,width      ,height );
@@ -310,8 +315,11 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			this.menu_toolbar.addSeparator(       );
 			this.menu_toolbar.addSeparator(       );
 			this.menu_toolbar.add(btnMenuPrincipal);
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.add(btnGenerarRPersonal);
 			this.menu_toolbar.setFloatable(false);
-			this.panel.add(menu_toolbar).setBounds                      (x     ,y      ,width*3      ,height );
+			this.panel.add(menu_toolbar).setBounds                      (x     ,y      ,width*4      ,height );
 		   }
 			this.panel.add(pestanas).setBounds                          (x=15  ,y+=30  ,990        ,590    );
 			this.Principal.add(new JLabel("Colaborador:")).setBounds    (x     ,y      ,width=100  ,height );
@@ -355,7 +363,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		this.btnDeshacer.addActionListener  (deshacer                 );
 		this.txtFolio.addKeyListener        (busqueda_datos_por_gafete); 
 		this.btnMenuPrincipal.addActionListener(volver_al_menu_principal);
-
+        this.btnGenerarRPersonal.addActionListener(opGenerar);
 		cont.add(panel);
 		Seleccionar_Respuesta(tablaLunes);
 		Seleccionar_Respuesta(tablaMartes);
@@ -374,6 +382,18 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		 cargar_datos_tablas();
 		 panelEnabledTrue();
 	}
+	ActionListener opGenerar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String basedatos="2.26";
+			String vista_previa_reporte="si";
+			int vista_previa_de_ventana=0;
+			String comando="exec reporte_de_cuadrante_por_folio_de_colaborador "+txtfolioColaborado.getText()+","+0;
+			String reporte = "Obj_Reporte_De_Cuadrante_Por_Persona_Por_Dia.jrxml";
+			
+				     new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				     return;
+		     }
+	};		
 	
 	public void init_tablalunes(){
 		ObjTab.tabla_mascara(tablaLunes,-1,-1);
@@ -1371,11 +1391,6 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 				
 				};
 			
-			
-			
-			
-			
-			
 			       if(dia_de_la_semana==1){
 				       chbLunes.setSelected   (true );
 				       chbMartes.setEnabled   (false);
@@ -1472,19 +1487,29 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		   			   chbMiercoles.setEnabled(false);
 		   			   chbJueves.setEnabled   (false);
 		   			   chbViernes.setEnabled  (true );
-		   			   chbSabado.setSelected   (true );
+		   			   chbSabado.setSelected  (true );
 		   			   chbDomingo.setEnabled  (false);
 				       }
 				   
-		           if(dia_de_la_semana==7){ 
-		        	   chbLunes.setEnabled    (false );
+		           if(dia_de_la_semana==7 && (dia_de_descanso==6)){ 
+		        	   chbLunes.setEnabled    (false);
 		   			   chbMartes.setEnabled   (false);
 		   			   chbMiercoles.setEnabled(false);
 		   			   chbJueves.setEnabled   (false);
-		   			   chbViernes.setEnabled  (false);
-		   			   chbSabado.setEnabled   (false);
-		   			   chbDomingo.setSelected  (true);
+		   			   chbViernes.setEnabled  (true );
+		   			   chbSabado.setEnabled   (true );
+		   			   chbDomingo.setSelected (true );
 			           };
+			           
+			        if(dia_de_la_semana==7 && !(dia_de_descanso==6)){ 
+			           chbLunes.setEnabled    (false );
+			   		   chbMartes.setEnabled   (false);
+			   		   chbMiercoles.setEnabled(false);
+			   		   chbJueves.setEnabled   (false);
+			   		   chbViernes.setEnabled  (false);
+			   		   chbSabado.setEnabled   (true );
+			   		   chbDomingo.setSelected (true );
+				        };
 				
 				Grupodias.add(chbLunes);
 				Grupodias.add(chbMartes);
@@ -1493,7 +1518,6 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 				Grupodias.add(chbViernes);
 				Grupodias.add(chbSabado);
 				Grupodias.add(chbDomingo);
-
 			
 			txa_Resultado_Configuracion.setLineWrap(true); 
 			txa_Resultado_Configuracion.setWrapStyleWord(true);
@@ -1554,8 +1578,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	  };
 	
 	}
-///////////////termina filtro actividades	
-		
+	
+///////////////termina filtro actividades		
 	public static void main(String args[]){
 		try{UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			new Cat_Captura_De_Cuadrantes().setVisible(true);

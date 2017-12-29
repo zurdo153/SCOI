@@ -44,11 +44,12 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Finiquitos extends JFrame{
-
+	Obj_tabla ObjTab =new Obj_tabla();
 	Container cont_quitados = getContentPane();
 	JLayeredPane panel_quitados = new JLayeredPane();
 	
@@ -684,17 +685,6 @@ public class Cat_Finiquitos extends JFrame{
 			
 	}
 		
-//	ActionListener opReImprimir = new ActionListener() {
-//		public void actionPerformed(ActionEvent e) {
-//			
-//			reporte(Integer.valueOf(txtFolioEmpleado.getText().trim()));
-//			dispose();
-//			
-//			llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
-//			llenar_tabla_filtro(tabla_model_filtro_bnns,"BNNS");
-//		}
-//	};
-	
 		public Date cargar_fechas_de_baja(int dias){
 			Date date1 = null;
 					  try {
@@ -1062,7 +1052,7 @@ public class Cat_Finiquitos extends JFrame{
 		JTextField txtFolio 	= new Componentes().text(new JTextField(), "Folio De Empleado En Scoi", 120, "String");
 		JTextField txtEmpleado 	= new Componentes().text(new JTextField(), "Nombre De Empleado Scoi", 120, "String");
 		
-		JTextField txtFiltro = new Componentes().text(new JCTextField(), ">> Teclee El Nombre Del Empleado <<", 120, "String");
+		JTextField txtFiltro = new Componentes().text(new JCTextField(), ">> Teclee El Nombre Del Empleado Rechazado <<", 120, "String");
 		
 		 public DefaultTableModel tabla_model_filtro = new DefaultTableModel(null, new String[]{"Finiquito","Folio","Empleado", "Establecimiento", "Puesto", "Status","Observacion"} ){
 	         
@@ -1103,11 +1093,8 @@ public class Cat_Finiquitos extends JFrame{
 		public Cat_Finiquitos_Negados(){
 			this.setTitle("Filtro De Finiquitos No Autorizados");
 			this.panel.setBorder(BorderFactory.createTitledBorder( "Filtro De Finiquitos No Autorizados"));
-			
-			panel.add(txtFiltro).setBounds(70, 30, 300, 20);
+			panel.add(txtFiltro).setBounds(20, 30, 745, 20);
 			panel.add(scroll_filtro).setBounds(20, 50, 745, 260);
-			
-			
 			panel.add(new JLabel("Empleado:")).setBounds(20, 320, 120, 20);
 			panel.add(txtFolio 	    ).setBounds(120, 320, 50, 20);
 			panel.add(txtEmpleado   ).setBounds(170, 320, 300, 20);
@@ -1120,8 +1107,8 @@ public class Cat_Finiquitos extends JFrame{
 			
 			render_filtro(tabla_filtro);
 			
-			filtro(tabla_filtro);
-			
+			this.txtFiltro.addKeyListener(opFiltroproveedor);
+
 			seleccionEmpleado(tabla_filtro);
 			
 			btnGenerarNegado.addActionListener(opGenerarNegado);
@@ -1137,12 +1124,8 @@ public class Cat_Finiquitos extends JFrame{
 		public void seleccionEmpleado(final JTable tb){
 			tb.addMouseListener(new MouseListener() {
 				public void mouseReleased(MouseEvent e) {
-					
 					txtFolio.setText(tb.getValueAt(tb.getSelectedRow(), 1).toString());
 					txtEmpleado.setText(tb.getValueAt(tb.getSelectedRow(), 2).toString());
-//						txtFolioScoi.setText(tb.getValueAt(tb.getSelectedRow(), 0).toString());
-//						txtEmpleadoScoi.setText(tb.getValueAt(tb.getSelectedRow(), 1).toString());
-//						establecimiento = tabla_filtro_scoi.getValueAt(tabla_filtro_scoi.getSelectedRow(), 2).toString().trim();
 				}
 				public void mousePressed(MouseEvent e) {		}
 				public void mouseExited(MouseEvent e)  {		}
@@ -1209,15 +1192,13 @@ public class Cat_Finiquitos extends JFrame{
 	    	
 		}
 		
-		public void filtro(final JTable tb){
-			txtFiltroAsignacion.addKeyListener(new KeyListener() {
-				public void keyTyped(KeyEvent arg0) {}
-				public void keyReleased(KeyEvent arg0){
-					new Obj_Filtro_Dinamico(tb,"Empleado", txtFiltroAsignacion.getText().toUpperCase(),"","", "", "", "", "");
-				}
-				public void keyPressed(KeyEvent arg0) {}
-			});
-		}
+	    private KeyListener opFiltroproveedor = new KeyListener(){
+					public void keyReleased(KeyEvent arg0) {
+						ObjTab.Obj_Filtro(tabla_filtro, txtFiltro.getText().toUpperCase(), tabla_filtro.getColumnCount());
+					}
+					public void keyTyped(KeyEvent arg0) {}
+					public void keyPressed(KeyEvent arg0) {}		
+				};
 		
 		public void llenar_tabla_filtro(final DefaultTableModel modelo){
 			

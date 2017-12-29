@@ -71,6 +71,7 @@ public class Componentes {
 			public void keyReleased(KeyEvent e) {}
 			public void keyPressed(KeyEvent e) {}
 		});
+		
 		tmp.setToolTipText(caption);
 		return tmp;
 	}

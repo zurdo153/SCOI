@@ -193,7 +193,6 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Evaluaciones[20], false),
 		new Obj_CheckBoxNode(Sub_Evaluaciones[21], false),
 		new Obj_CheckBoxNode(Sub_Evaluaciones[22], false),
-		new Obj_CheckBoxNode(Sub_Evaluaciones[23], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector EvaluacionesVector = new Obj_NombreVector("Evaluaciones", Evaluaciones);
@@ -257,13 +256,15 @@ public class Cat_Usuarios extends JFrame{
 	@SuppressWarnings("rawtypes")
 	Vector Lista_de_RayaVector = new Obj_NombreVector("Lista De Raya", Lista_de_Raya);
 	
-	// MENU PRINCIPAL REPORTES ESPECIALES (7)
+	// MENU PRINCIPAL SEGURIDAD (7)
 		String[] Sub_Reportes_Especiales = new Obj_SubMenus().Relacion_de_SubMenus(7);
 		Obj_CheckBoxNode Reportes_Especiales[] = {
 			new Obj_CheckBoxNode(Sub_Reportes_Especiales[0], false),
+			new Obj_CheckBoxNode(Sub_Reportes_Especiales[1], false),
+			new Obj_CheckBoxNode(Sub_Reportes_Especiales[2], false),
 		};
 		@SuppressWarnings("rawtypes")
-		Vector ReportesEspecialesVector = new Obj_NombreVector("Reportes Especiales", Reportes_Especiales);
+		Vector ReportesEspecialesVector = new Obj_NombreVector("Seguridad", Reportes_Especiales);
 		
 	// MENU PRINCIPAL COMPRAS (8)
 			String[] Sub_Compras = new Obj_SubMenus().Relacion_de_SubMenus(8);
@@ -346,6 +347,10 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_servicios[6], false),
 		new Obj_CheckBoxNode(Sub_servicios[7], false),
 		new Obj_CheckBoxNode(Sub_servicios[8], false),
+		new Obj_CheckBoxNode(Sub_servicios[9], false),
+		new Obj_CheckBoxNode(Sub_servicios[10], false),
+		new Obj_CheckBoxNode(Sub_servicios[11], false),
+		
 	};
 	
 	@SuppressWarnings("rawtypes")

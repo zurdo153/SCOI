@@ -130,6 +130,10 @@ public class Obj_Ubicaciones_De_Productos {
 	return null; 
 	}
 	
+	public String[][] Buscar_Existencia_De_Producto_En_Establecimiento(String cod_prod){
+		return new BuscarSQL().Tabla_Existencia_De_Un_Producto_En_Establecimiento(cod_prod);
+	}
+	
 }
 
 

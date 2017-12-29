@@ -161,11 +161,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
          colModel.removeColumn(column);
          freezeTable.getColumnModel().addColumn(column);
       }
-      
-		
-		
-      
-      //  Add the fixed table to the scroll pane
       freezeTable.setPreferredScrollableViewportSize(freezeTable.getPreferredSize());
       scroll_tabla.setRowHeaderView(freezeTable);
       scroll_tabla.setCorner(JScrollPane.UPPER_LEFT_CORNER, freezeTable.getTableHeader());
@@ -177,11 +172,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	}
 	
 	public void renderEnFixed(){
-		
 		tabla.getTableHeader().setReorderingAllowed(false) ;
 		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-      
-		
 		tabla.getColumnModel().getColumn(0).setMinWidth(16);
 		tabla.getColumnModel().getColumn(1).setMinWidth(40);
 		tabla.getColumnModel().getColumn(2).setMinWidth(260);
@@ -190,7 +182,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		tabla.getColumnModel().getColumn(28).setMinWidth(230);
 		
 		for(int i=0; i<tabla.getColumnCount(); i++){
-			
 			if(i>0){
 				if(i==2 || i==3 || i==21 || i==27 || i==28){
 					tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
@@ -215,7 +206,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
-//		this.addWindowListener(op_cerrar);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		this.setTitle("Revisión lista raya");
@@ -254,9 +244,7 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 
 		this.btn_lista_raya_pasadas.addActionListener(op_consulta_lista);
 		
-//		this.txtFolio.addKeyListener(op_filtro_folio);
 		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
-//		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
 		
 //      asigna el foco al JTextField 
         this.addWindowListener(new WindowAdapter() {
@@ -277,32 +265,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			new Cat_Consulta_Lista_de_Raya_Pasadas().setVisible(true);	
 		}
 	};
-	
-	
-	
-//	WindowListener op_cerrar = new WindowListener() {
-//		public void windowOpened(WindowEvent e) {}
-//		public void windowIconified(WindowEvent e) {}
-//		public void windowDeiconified(WindowEvent e) {}
-//		public void windowDeactivated(WindowEvent e) {}
-//		public void windowClosing(WindowEvent e) {
-//			if(JOptionPane.showConfirmDialog(null, "¿Desea guardar antes de cerrar?", "Aviso!", JOptionPane.YES_NO_OPTION) == 0){
-//				
-//				txtNombre_Completo.setText("");
-//				int[] columnas = {1,2,3};
-//				new Obj_Filtro_Dinamico_Plus(tabla,txtNombre_Completo.getText().toUpperCase(), columnas);
-//				new Obj_Filtro_Dinamico_Plus(freezeTable,txtNombre_Completo.getText().toUpperCase(), columnas);
-//				
-//				if(tabla.isEditing()){
-//					tabla.getCellEditor().stopCellEditing();
-//				}
-//				
-//				new Obj_Revision_De_Lista_Raya().guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()));
-//			}
-//		}
-//		public void windowClosed(WindowEvent e) {}
-//		public void windowActivated(WindowEvent e) {}
-//	};
 	
 	public int  Checar_Cambios_De_Sueldo_Pendientes_De_Autorizar() {
 		Connexion con = new Connexion();
@@ -340,10 +302,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		}
 		return cantidad_sueldos_mod;
 			}
-	
-  
-		
-		
 		
 	public void cargar_autorizaciones(){
 		
@@ -378,8 +336,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			
-//			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-			
 			txtNombre_Completo.setText("");
 			int[] columnas2 = {1,2,3};
 			new Obj_Filtro_Dinamico_Plus(tabla,txtNombre_Completo.getText().toUpperCase(), columnas2);
@@ -410,7 +366,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 							return;
 						}
 						 }else{
-							 
 								JOptionPane.showMessageDialog(null, "Antes De Generar La Lista De Raya Tiene Que Guardar Los Totales De Cheque", "Mensaje", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
 						 }
@@ -431,178 +386,8 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 		Object[][] matriz = new Object[tabla_model.getRowCount()][tabla_model.getColumnCount()];
 		for(int i=0; i<tabla_model.getRowCount(); i++){
 			for(int j=1; j<=tabla_model.getColumnCount()-1; j++){
-				
 				matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim().equals("")?"0":tabla_model.getValueAt(i,j).toString().trim();
-				
-//				switch(j){
-///*folio*/				case 1 : matriz[i][j] = Integer.parseInt(tabla_model.getValueAt(i,j).toString().trim());		break;
-///*empleado*/			case 2 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();							break;
-///*establecimiento*/		case 3 : matriz[i][j] =tabla_model.getValueAt(i,j).toString().trim();							break;
-///*sueldo*/				case 4 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*bono*/					case 5 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*P.Saldo ini*/					case 6 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Desc.Prest*/					case 7 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*P.Saldo Fin*/				case 8 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*F.Sodas*/				case 9 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Imp.*/				case 10 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*B.Puntualidad*/case 11 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Omision*/		case 12 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Faltas*/   	 case 13 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Inasistencia*/  case 14 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*B. Asistencia*/ case 15 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Gafete*/	 	  case 16 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Dif Cortes*/    case 17 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Infonavit*/  	   case 18 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = (tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Infonacot*/ 	   case 19 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Pension*/	  	   case 20 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Banco*/	  	    case 21 :
-//	                      matriz[i][j] =tabla_model.getValueAt(i,j).toString().trim();	
-//						break;
-///*Deposito*/	    case 22 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Hrs Extras*/	 	case 23 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//						break;
-///*Extra */			case 24 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-///*Dia Ext*/			case 25 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-///*A Pagar*/			case 26 :
-//						if(tabla_model.getValueAt(i,j).toString().length() == 0){
-//							matriz[i][j] = Float.parseFloat("0");
-//						}else{
-//							matriz[i][j] = Float.parseFloat(tabla_model.getValueAt(i,j).toString().trim());
-//						}
-//											
-//						
-//						
-//						break;
-///*Obs D.H.*/			case 27 : matriz[i][j] = tabla_model.getValueAt(i,j).toString().trim();			break;
-///*Obs II*/
-//					
-//				}
-
 			}
-
 		}
 		return matriz;
 	}
@@ -647,7 +432,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 					for(Object[] fila : Tabla){
 						tabla_model.addRow(fila); 
 					}
-					
 					JOptionPane.showMessageDialog(null, "Las Observaciones Se Han Eliminado Correctamente!!!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 					return;
 				}
@@ -657,8 +441,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 	
 	ActionListener op_guardar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-//			trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-			
 			txtNombre_Completo.setText("");
 			int[] columnas2 = {1,2,3};
 			new Obj_Filtro_Dinamico_Plus(tabla,txtNombre_Completo.getText().toUpperCase(), columnas2);
@@ -680,17 +462,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 				
 					if(JOptionPane.showConfirmDialog(null, "¿Desea Guardar La  Pre Lista De Raya?") == 0){
 						Obj_Revision_De_Lista_Raya lista_raya = new Obj_Revision_De_Lista_Raya();
-						
-						
-//						for(int i=0; i<tabla_guardar().length; i++){
-//							System.out.println(tabla_guardar()[i][0]);
-//							System.out.println(tabla_guardar()[i][1]);
-//							System.out.println(tabla_guardar()[i][2]);
-//							System.out.println(tabla_guardar()[i][3]);
-//							System.out.println(tabla_guardar()[i][4]);
-//							System.out.println(tabla_guardar()[i][5]);
-//						}
-						
 						
 						if(lista_raya.guardar(tabla_guardar(),new SimpleDateFormat("dd/MM/yyyy").format(txtCalendario.getDate()))){
 							tabla_model.setRowCount(0);
@@ -817,25 +588,6 @@ public class Cat_Revision_De_Lista_Raya extends Cat_Root_Lista_Raya {
 			public void mouseExited(MouseEvent e) {}
 			public void mouseReleased(MouseEvent e) {}
 	};
-	
-//	KeyListener op_filtro_folio = new KeyListener(){
-//		@SuppressWarnings("unchecked")
-//		public void keyReleased(KeyEvent arg0) {
-//			new Obj_Filtro_Dinamico(freezeTable,"Nombre Completo", "","Establecimiento","", "", "", "", "");
-//			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", "","Establecimiento","", "", "", "", "");
-//		}
-//		
-//		public void keyTyped(KeyEvent arg0) {
-//			char caracter = arg0.getKeyChar();
-//			if(((caracter < '0') ||
-//				(caracter > '9')) &&
-//			    (caracter != KeyEvent.VK_BACK_SPACE)){
-//				arg0.consume(); 
-//			}	
-//		}
-//		
-//		public void keyPressed(KeyEvent arg0) {}
-//	};
 	
 	KeyListener op_filtro_nombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
