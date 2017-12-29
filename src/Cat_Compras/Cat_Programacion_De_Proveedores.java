@@ -1049,12 +1049,19 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			panel_boolean(true);
+			//TODO corregir todo estan mal las condiciones
+			int anio=Integer.valueOf(txtFecha.getText().toString().trim().substring(6,txtFecha.getText().toString().trim().length()));
 			
-			if(Integer.valueOf(cmbSemanas_del_anio.getSelectedItem().toString())<=Integer.valueOf(txtSemana.getText().trim())){
-			    JOptionPane.showMessageDialog(null, "Solo Se Puede Editar La Semana En  Transcurso "+txtSemana.getText().trim()+" o A Futuro" , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		
-				return;
+			if(Integer.valueOf(cmbSemanas_del_anio.getSelectedItem().toString())<=Integer.valueOf(txtSemana.getText().trim()) ){
+			      if(Integer.valueOf(cmbAnio.getSelectedItem().toString())<=anio ) {
+					    JOptionPane.showMessageDialog(null, "Solo Se Puede Editar Del Año en Trascurso O a Futuro" , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		
+					    return;
+			      }else {
+					    JOptionPane.showMessageDialog(null, "Solo Se Puede Editar La Semana En  Transcurso "+txtSemana.getText().trim()+" o A Futuro" , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		
+					    return;
+			      }
 			}else {
+				panel_boolean(true);
 				cmbEstablecimiento.setEnabled(false);
 	            cmbAnio.setEnabled(false);
 	            cmbSemanas_del_anio.setEnabled(false);

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-10-09T14:32:03 -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="ireport.zoom" value="2.593742460100005"/>
 	<property name="ireport.x" value="302"/>
@@ -15,6 +14,7 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMS"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -26,48 +26,134 @@
 		</conditionalStyle>
 	</style>
 	<queryString language="SQL">
-		<![CDATA[exec sp_consulta_orden_de_compra  'AG03453','MARCO ANTONIO BODART GUZMAN','ANTONIO DE LA ROSA','ROSA CECILIA ROJO','MARIBEL SALOMON TORRES']]>
+		<![CDATA[exec sp_consulta_orden_de_compra_autorizada  'AG05457','MARCO ANTONIO BODART GUZMAN']]>
 	</queryString>
-	<field name="folio_orden_de_compra" class="java.lang.String"/>
-	<field name="fecha_elaboracion" class="java.lang.String"/>
-	<field name="fecha_autorizacion" class="java.lang.String"/>
-	<field name="fecha_impresion" class="java.lang.String"/>
-	<field name="consulto" class="java.lang.String"/>
-	<field name="transaccion" class="java.lang.String"/>
-	<field name="consecutivo_captura" class="java.lang.Short"/>
-	<field name="cod_prod" class="java.lang.String"/>
-	<field name="descripcion_completa" class="java.lang.String"/>
-	<field name="cantidad_pedida" class="java.math.BigDecimal"/>
-	<field name="precio_orden_compra" class="java.math.BigDecimal"/>
-	<field name="iva_unidad" class="java.math.BigDecimal"/>
-	<field name="descuentos" class="java.lang.String"/>
-	<field name="descuento_unidad" class="java.math.BigDecimal"/>
-	<field name="precio_venta_pz" class="java.math.BigDecimal"/>
-	<field name="markup" class="java.math.BigDecimal"/>
-	<field name="cantidad_surtida" class="java.math.BigDecimal"/>
-	<field name="unidad_abreviatura" class="java.lang.String"/>
-	<field name="importe" class="java.math.BigDecimal"/>
-	<field name="iva_importe" class="java.math.BigDecimal"/>
-	<field name="total_fila" class="java.math.BigDecimal"/>
-	<field name="importe_total_OC" class="java.math.BigDecimal"/>
-	<field name="iva_total_OC" class="java.math.BigDecimal"/>
-	<field name="ieps_total_OC" class="java.math.BigDecimal"/>
-	<field name="total_OC" class="java.math.BigDecimal"/>
-	<field name="elaboro" class="java.lang.String"/>
-	<field name="fecha_expiracion_orden_de_compra" class="java.lang.String"/>
-	<field name="notas" class="java.lang.String"/>
-	<field name="cod_estab" class="java.lang.String"/>
-	<field name="establecimiento" class="java.lang.String"/>
-	<field name="cod_prv" class="java.lang.String"/>
-	<field name="razon_social" class="java.lang.String"/>
-	<field name="condicion_de_pago" class="java.lang.String"/>
-	<field name="plazo" class="java.lang.Short"/>
-	<field name="existencia_pz" class="java.math.BigDecimal"/>
-	<field name="venta_pzas_30_dias" class="java.math.BigDecimal"/>
-	<field name="ieps" class="java.math.BigDecimal"/>
-	<field name="encargado_compras" class="java.lang.String"/>
-	<field name="contabilidad_pagos" class="java.lang.String"/>
-	<field name="auditor" class="java.lang.String"/>
+	<field name="folio_orden_de_compra" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="folio_orden_de_compra"/>
+	</field>
+	<field name="fecha_elaboracion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_elaboracion"/>
+	</field>
+	<field name="fecha_autorizacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_autorizacion"/>
+	</field>
+	<field name="fecha_impresion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_impresion"/>
+	</field>
+	<field name="consulto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="consulto"/>
+	</field>
+	<field name="transaccion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="transaccion"/>
+	</field>
+	<field name="consecutivo_captura" class="java.lang.Short">
+		<property name="com.jaspersoft.studio.field.label" value="consecutivo_captura"/>
+	</field>
+	<field name="cod_prod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cod_prod"/>
+	</field>
+	<field name="descripcion_completa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion_completa"/>
+	</field>
+	<field name="cantidad_pedida" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="cantidad_pedida"/>
+	</field>
+	<field name="precio_orden_compra" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="precio_orden_compra"/>
+	</field>
+	<field name="iva_unidad" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="iva_unidad"/>
+	</field>
+	<field name="ieps" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ieps"/>
+	</field>
+	<field name="descuentos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descuentos"/>
+	</field>
+	<field name="descuento_unidad" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="descuento_unidad"/>
+	</field>
+	<field name="ultimo_costo" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ultimo_costo"/>
+	</field>
+	<field name="costo_promedio" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="costo_promedio"/>
+	</field>
+	<field name="precio_venta_pz" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="precio_venta_pz"/>
+	</field>
+	<field name="margen" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="margen"/>
+	</field>
+	<field name="markup" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="markup"/>
+	</field>
+	<field name="cantidad_surtida" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="cantidad_surtida"/>
+	</field>
+	<field name="unidad_abreviatura" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="unidad_abreviatura"/>
+	</field>
+	<field name="importe" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="importe"/>
+	</field>
+	<field name="iva_importe" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="iva_importe"/>
+	</field>
+	<field name="total_fila" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total_fila"/>
+	</field>
+	<field name="importe_total_OC" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="importe_total_OC"/>
+	</field>
+	<field name="iva_total_OC" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="iva_total_OC"/>
+	</field>
+	<field name="ieps_total_OC" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ieps_total_OC"/>
+	</field>
+	<field name="total_OC" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total_OC"/>
+	</field>
+	<field name="elaboro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="elaboro"/>
+	</field>
+	<field name="fecha_expiracion_orden_de_compra" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_expiracion_orden_de_compra"/>
+	</field>
+	<field name="notas" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="notas"/>
+	</field>
+	<field name="cod_estab" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cod_estab"/>
+	</field>
+	<field name="establecimiento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="establecimiento"/>
+	</field>
+	<field name="cod_prv" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cod_prv"/>
+	</field>
+	<field name="razon_social" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="razon_social"/>
+	</field>
+	<field name="condicion_de_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="condicion_de_pago"/>
+	</field>
+	<field name="plazo" class="java.lang.Short">
+		<property name="com.jaspersoft.studio.field.label" value="plazo"/>
+	</field>
+	<field name="autorizo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="autorizo"/>
+	</field>
+	<field name="existencia_pz" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="existencia_pz"/>
+	</field>
+	<field name="venta_total_en_pzas_90_dias" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="venta_total_en_pzas_90_dias"/>
+	</field>
+	<field name="status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="status"/>
+	</field>
 	<variable name="diferencia_total" class="java.lang.Double" resetType="None">
 		<initialValueExpression><![CDATA[$F{precio_venta_pz}]]></initialValueExpression>
 	</variable>
@@ -75,7 +161,7 @@
 		<band height="17" splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="83" splitType="Stretch">
+		<band height="88" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="1" y="1" width="689" height="60" forecolor="#000080" backcolor="#000066" uuid="f40033e7-3b11-4284-9dc5-639e231aceba"/>
 				<staticText>
@@ -240,7 +326,7 @@
 				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="1" y="75" width="36" height="8" forecolor="#000000" uuid="933ad0cd-8cfd-4195-b2cb-4564c388634a">
+				<reportElement x="0" y="75" width="36" height="8" forecolor="#000000" uuid="933ad0cd-8cfd-4195-b2cb-4564c388634a">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -252,7 +338,7 @@
 				<text><![CDATA[CODIGO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="389" y="75" width="29" height="8" forecolor="#000000" uuid="b3c543cb-7f2a-47f3-a198-3f155c17ac83">
+				<reportElement x="354" y="75" width="34" height="8" forecolor="#000000" uuid="b3c543cb-7f2a-47f3-a198-3f155c17ac83">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -261,10 +347,10 @@
 				<textElement textAlignment="Right">
 					<font size="6" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PRECIO]]></text>
+				<text><![CDATA[C.ORDEN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="75" width="34" height="8" forecolor="#000000" uuid="613ef20e-bb1c-4e71-ad09-0ab729851742">
+				<reportElement x="320" y="75" width="34" height="8" forecolor="#000000" uuid="613ef20e-bb1c-4e71-ad09-0ab729851742">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -276,7 +362,7 @@
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="37" y="75" width="192" height="8" forecolor="#000000" uuid="c3211045-7c60-435b-9a7b-58de99e7d3a8">
+				<reportElement x="36" y="75" width="284" height="8" forecolor="#000000" uuid="c3211045-7c60-435b-9a7b-58de99e7d3a8">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -288,7 +374,7 @@
 				<text><![CDATA[DECRIPCION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="421" y="75" width="22" height="8" forecolor="#000000" uuid="20cb03f3-28fc-404a-8a8a-8de100672edc">
+				<reportElement x="422" y="75" width="22" height="8" forecolor="#000000" uuid="20cb03f3-28fc-404a-8a8a-8de100672edc">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -345,7 +431,7 @@
 				<textElement textAlignment="Right">
 					<font size="6" isBold="true"/>
 				</textElement>
-				<text><![CDATA[MRKUP]]></text>
+				<text><![CDATA[MARGEN]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="526" y="75" width="29" height="8" forecolor="#000000" uuid="acdee4e3-2ddd-43a7-81d9-988058c942d9">
@@ -384,7 +470,7 @@
 				<text><![CDATA[EXISTENC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="697" y="75" width="36" height="8" forecolor="#000000" uuid="482ea2f4-a6b2-4a4f-856d-28309bde8390">
+				<reportElement x="710" y="75" width="36" height="8" forecolor="#000000" uuid="482ea2f4-a6b2-4a4f-856d-28309bde8390">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -394,6 +480,18 @@
 					<font size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="75" width="34" height="8" forecolor="#000000" uuid="6e345290-0df8-4d68-a442-921c96e95bbf">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C.PROM.]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -406,7 +504,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<frame>
-				<reportElement style="Title" mode="Opaque" x="1" y="1" width="750" height="14" backcolor="#F2F2F2" uuid="677d8f5a-892c-41a4-a81d-5648e093edbe">
+				<reportElement style="Title" mode="Opaque" x="0" y="1" width="754" height="14" backcolor="#F2F2F2" uuid="677d8f5a-892c-41a4-a81d-5648e093edbe">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -423,7 +521,7 @@
 					<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="696" y="1" width="44" height="12" forecolor="#000000" backcolor="#000000" uuid="d366c539-1707-478f-bab4-b948202252a2">
+					<reportElement mode="Transparent" x="706" y="1" width="44" height="12" forecolor="#000000" backcolor="#000000" uuid="d366c539-1707-478f-bab4-b948202252a2">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -449,24 +547,41 @@
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{venta_pzas_30_dias}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{venta_total_en_pzas_90_dias}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="354" y="1" width="34" height="12" forecolor="#000000" backcolor="#000000" uuid="5b43e2ea-d540-4f0f-90d9-235ace39726a">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{precio_orden_compra}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="388" y="1" width="34" height="12" forecolor="#000000" backcolor="#000000" uuid="966695d7-c475-4cf6-976e-0150342ad93c">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{costo_promedio}]]></textFieldExpression>
 				</textField>
 			</frame>
-			<ellipse>
-				<reportElement x="-10" y="4" width="8" height="8" uuid="d96e8827-517e-4b90-b3ba-580d52457e88"/>
-			</ellipse>
 			<textField isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="37" y="2" width="317" height="12" forecolor="#000000" backcolor="#000000" uuid="4674982b-cc08-44af-8945-0bfa29b021c2">
+				<reportElement mode="Transparent" x="36" y="2" width="284" height="12" forecolor="#000000" backcolor="#000000" uuid="4674982b-cc08-44af-8945-0bfa29b021c2">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripcion_completa}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="354" y="2" width="30" height="12" forecolor="#000000" backcolor="#000000" uuid="4e61986d-4c7e-4d62-a641-f397aee8b088">
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="320" y="2" width="34" height="12" forecolor="#000000" backcolor="#000000" uuid="4e61986d-4c7e-4d62-a641-f397aee8b088">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -476,17 +591,7 @@
 				<textFieldExpression><![CDATA[$F{cantidad_pedida}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="388" y="2" width="30" height="12" forecolor="#000000" backcolor="#000000" uuid="966695d7-c475-4cf6-976e-0150342ad93c">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{precio_orden_compra}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="421" y="2" width="22" height="12" forecolor="#000000" backcolor="#000000" uuid="abef2e7d-b8a3-4e0d-b854-19af1e803243">
+				<reportElement mode="Transparent" x="422" y="2" width="22" height="12" forecolor="#000000" backcolor="#000000" uuid="abef2e7d-b8a3-4e0d-b854-19af1e803243">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -549,7 +654,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{markup}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{margen}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -608,7 +713,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["COMPRAS:"+$F{encargado_compras}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["COMPRAS:"+$F{autorizo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="387" y="24" width="170" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="6ef69c2e-31ff-4c20-b2b3-2fa09a5920f8">
@@ -618,7 +723,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["PAGOS:"+$F{contabilidad_pagos}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["PAGOS:"]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="574" y="23" width="169" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="2c87fa7c-076f-4d93-ae93-f8c31fcd8c88">
@@ -628,7 +733,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["AUDITORIA:"+$F{auditor}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["AUDITORIA:"]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="198" y="23" width="170" height="1" uuid="0661f3cb-6681-4ebb-9a69-29a14b2ea0ad">
