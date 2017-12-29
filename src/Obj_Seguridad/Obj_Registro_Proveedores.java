@@ -181,5 +181,4 @@ public class Obj_Registro_Proveedores {
 	public Obj_Registro_Proveedores refrescar_tablas(int folio){
 		return new BuscarSQL().Busqueda_de_Registro_Entrada_y_Salida_De_Proveedores(folio);
 	}
-	
 }

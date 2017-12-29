@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2017-12-14T18:36:24 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Mermas_Limpio" pageWidth="3383" pageHeight="1162" orientation="Landscape" columnWidth="3343" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="be86b230-89de-4a9b-b0f5-66966f4649bb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[exec sp_select_reporte_de_mermas_limpio '01/01/1900 00:00:000','31/12/2078 23:59:000', 0]]>
+	</queryString>
+	<field name="folio" class="java.lang.Long"/>
+	<field name="fecha_guardado" class="java.lang.String"/>
+	<field name="fecha_valida_seguridad" class="java.lang.String"/>
+	<field name="fecha_valida_auditoria" class="java.lang.String"/>
+	<field name="ultimo_costo" class="java.math.BigDecimal"/>
+	<field name="costo_promedio" class="java.math.BigDecimal"/>
+	<field name="encargado" class="java.lang.String"/>
+	<field name="seguridad" class="java.lang.String"/>
+	<field name="auditor" class="java.lang.String"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="nota_guardado" class="java.lang.String"/>
+	<field name="nota_seguridad" class="java.lang.String"/>
+	<field name="nota_auditoria" class="java.lang.String"/>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="razon_de_merma" class="java.lang.String"/>
+	<field name="destino_de_merma" class="java.lang.String"/>
+	<field name="existencia" class="java.math.BigDecimal"/>
+	<field name="merma_encargado" class="java.math.BigDecimal"/>
+	<field name="merma_seguridad" class="java.math.BigDecimal"/>
+	<field name="merma_auditoria" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="459" height="36" uuid="3594e1cd-2e4b-4463-88e4-aa42b0819381"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte De Mermas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="30" uuid="5f249730-e879-420a-bb91-1f0afe0dc3e4"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Folio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1074" y="0" width="100" height="30" uuid="2b615d20-d094-4431-8a2a-6afdbf0b6ad1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[F. Guardado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1174" y="0" width="100" height="30" uuid="f7201a78-f538-465f-a361-f239966a5caa"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[F. Validó Seguridad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1274" y="0" width="100" height="30" uuid="6adb752e-2755-4a19-9e95-7d7955c07ebb"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[F. Validó Auditoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1450" y="0" width="176" height="30" uuid="e1e20bca-796b-45f6-976c-83117ab30776"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Encargado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1802" y="0" width="176" height="30" uuid="a3f77f4c-c16e-42d3-90aa-2210314c4ab7"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Auditor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1374" y="0" width="76" height="30" uuid="bee48000-d60f-4e15-b1f9-6924ba72b7b1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1978" y="0" width="440" height="30" uuid="1b110d13-0485-42a4-879c-b5ba0a74b9fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nota Capturista]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2437" y="0" width="440" height="30" uuid="8ab01ef8-edf4-4b66-a1b2-b88c34c97dc6"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nota Seguridad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2903" y="0" width="440" height="30" uuid="54aee891-e52b-4f8c-8b7b-15e58ed77979"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nota Auditor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="0" width="264" height="30" uuid="894ffeb8-47a6-4131-8726-f778ec0264b4"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="56" height="30" uuid="0cbf5108-fc22-4335-a9f7-4f359182555d"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Existencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="516" y="0" width="56" height="30" uuid="b9e29605-dcd6-4278-9b02-3785aa0f0e60"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ultimo Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="572" y="0" width="56" height="30" uuid="36bea580-4809-4e7b-8766-493d3307e7b3"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo Promedio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="684" y="0" width="56" height="30" uuid="4fdf33a8-86f9-4f08-8612-3ba5a971eb9d"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Merma Seguridad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="740" y="0" width="56" height="30" uuid="9d0d1fe9-b180-42c7-9833-03a2fb9f6256"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Merma Auditoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="628" y="0" width="56" height="30" uuid="857ab49c-457d-454a-a504-439aba0c749e"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Merma Encargado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="56" height="30" uuid="3ab8980c-a20f-4ea4-9357-e7da012bd140"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CodProd.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="796" y="0" width="139" height="30" uuid="431a095c-0622-447c-89fb-6cbc68a3c4c4"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Razon De Merma]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="935" y="0" width="139" height="30" uuid="87b239c4-35ba-4ea2-bfb1-e035784e38e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Destino De Merma]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="100" height="30" uuid="244bac99-8dff-4a0f-a8e3-85a1bd2d5b12"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[establecimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1626" y="0" width="176" height="30" uuid="15379907-2c38-4533-ace6-2cab830454fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Seguridad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="15" uuid="69c94c3e-6c6a-483a-9f8a-a99af5e6c1bb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{folio}+"     "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1074" y="0" width="100" height="15" uuid="97019f15-e9d9-4f01-a2a8-3311d9b60047">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_guardado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1174" y="0" width="100" height="15" uuid="23301ee1-25bb-414f-86fe-9f02a76c0412">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_valida_seguridad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1274" y="0" width="100" height="15" uuid="04d3d8a1-3c80-459b-a4fe-c1f4a22e1a3e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_valida_auditoria}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="516" y="0" width="56" height="15" uuid="26318e4b-6a9b-457c-8ebc-c3c0bd19c2b0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ultimo_costo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="572" y="0" width="56" height="15" uuid="f8242416-228f-468b-bb1d-01c8b21ebb8b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costo_promedio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1450" y="0" width="176" height="15" uuid="c2bea77c-1ed4-41d3-a617-eaf94c76c6a5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{encargado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1626" y="0" width="176" height="15" uuid="f4a4e583-7fa3-4c8a-a699-e771b30b4d2c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{seguridad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1802" y="0" width="176" height="15" uuid="dbb35def-50a9-4ec7-8d4e-dd79930761b8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{auditor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="0" width="100" height="15" uuid="c1aae9cc-b1b1-4c78-827f-36743b0a9594">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{establecimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1374" y="0" width="76" height="15" uuid="80f69b10-3c91-4228-a503-23a61b24c1ec">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="1978" y="0" width="440" height="15" uuid="c9d05df7-b58c-4398-a310-e7dbb2a1d3c7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nota_guardado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="2437" y="0" width="440" height="15" uuid="a5421226-5018-40b6-ba30-980227d44ccc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nota_seguridad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="2903" y="0" width="440" height="15" uuid="5b139b00-a990-4b59-9add-0b40bbd678fa">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nota_auditoria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="0" width="56" height="15" uuid="138d07f3-c23e-493c-a15f-731c928f4985">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="196" y="0" width="264" height="15" uuid="d017db0f-d7d6-4ef5-9e72-661dae43d57d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="796" y="0" width="139" height="15" uuid="2fefa48b-2c9e-4d85-8dff-417e21c237b0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{razon_de_merma}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="935" y="0" width="139" height="15" uuid="84482c42-b3a4-4aa9-9b04-857ac2fe5af0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{destino_de_merma}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="460" y="0" width="56" height="15" uuid="373de669-9d40-4182-8155-92e8b3432129">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{existencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="628" y="0" width="56" height="15" uuid="13c97706-38c9-4d3c-9ffc-a3f6b043c575">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{merma_encargado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="684" y="0" width="56" height="15" uuid="e6076f47-f494-405d-bcf3-10f090e5c342">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{merma_seguridad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="740" y="0" width="56" height="15" uuid="79749b8a-1f8f-4f21-9f12-264a14e114bd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{merma_auditoria}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
