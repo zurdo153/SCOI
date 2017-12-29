@@ -1,9 +1,8 @@
 package Cat_Inventarios;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Event;
-import java.awt.FileDialog;
-import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,12 +13,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.Vector;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -44,9 +41,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Camaras.Cat_Camara;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.GuardarSQL;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Compras.Obj_Alimentacion_De_Inventarios_Parciales;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
@@ -155,17 +152,18 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
     int columna=0;
     Object[] vector = new Object[14];
     
+    JLabel lblNota = new JLabel("");
     JTextArea txaNota 	= new Componentes().textArea(new JTextArea(), "Nota", 500);
 	JScrollPane Nota = new JScrollPane(txaNota);
 	
 	int folio_usuario = 0;
 	int folio_usuario_valida = 0;
 	
-	JCButton btnExaminar = new JCButton("Examinar", "", "Azul");
-	JCButton btnCamara = new JCButton("", "camara_icon&16.png", "Azul");
+//	JCButton btnExaminar = new JCButton("Examinar", "", "Azul");
+//	JCButton btnCamara = new JCButton("", "camara_icon&16.png", "Azul");
 	
-	boolean imagenCargada = false ;
-	String rutaFoto = "";
+//	boolean imagenCargada = false ;
+//	String rutaFoto = "";
 	
 	JLabel lblSinImag = new JLabel();
 	Icon iconoSinImag;
@@ -180,12 +178,17 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
    @SuppressWarnings("rawtypes")
    Vector productos_originales = new Vector();
    
+   DecimalFormat df = new DecimalFormat("#0.00");
+   JLabel lblTotalCostoMerma = new JLabel("Total Costo De Merma: $0.00");
+   
    public  Cat_Revision_De_Mermas_Por_Auditoria(){
 	   this.cont.add(panel);
 		this.setSize(1024,768);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		lblTotalCostoMerma.setFont(new java.awt.Font("Algerian",0,25));
 		
 		this.setTitle("Revisión De Mermas");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
@@ -201,8 +204,11 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	    tmpIconConImag = new ImageIcon(fileConImag);
 	    iconoConImag = new ImageIcon(tmpIconConImag.getImage().getScaledInstance(16,16, Image.SCALE_DEFAULT));
 	    lblConImag.setIcon(iconoConImag);
+	    
+	    lblNota.setForeground(Color.BLUE);
    	
 		int x=20, y=20,width=122,height=20, sep=135;
+		panel.add(lblNota).setBounds                       (x+490      ,y-20   ,480     ,50		);
 		panel.add(menu_toolbar).setBounds                  (x         ,y      ,250     ,height );
 		panel.add(txtFolio).setBounds                      (x         ,y+=30  ,width   ,height );
 //		panel.add(btnBuscar).setBounds                     (x+=sep    ,y      ,width   ,height );
@@ -214,11 +220,11 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		panel.add(txtcod_prod).setBounds                   (x         ,y+=30  ,width   ,height );
 		panel.add(btnProducto).setBounds                   (x+=sep    ,y      ,width   ,height );
 		
-		panel.add(new JLabel("Foto:")).setBounds		   (x+=160     ,y	   ,100     ,height );
-		panel.add(btnExaminar).setBounds				   (x+=30      ,y	   ,100     ,height );
-		panel.add(btnCamara).setBounds					   (x+=110     ,y	   ,30      ,height );
-		panel.add(lblSinImag).setBounds					   (x+32	   ,y	   ,30      ,height );
-		panel.add(lblConImag).setBounds					   (x+32	   ,y	   ,30      ,height );
+//		panel.add(new JLabel("Foto:")).setBounds		   (x+=160     ,y	   ,100     ,height );
+//		panel.add(btnExaminar).setBounds				   (x+=30      ,y	   ,100     ,height );
+//		panel.add(btnCamara).setBounds					   (x+=110     ,y	   ,30      ,height );
+//		panel.add(lblSinImag).setBounds					   (x+32	   ,y	   ,30      ,height );
+//		panel.add(lblConImag).setBounds					   (x+32	   ,y	   ,30      ,height );
 		
 		x=20;
 		panel.add(new JLabel("Razon De Merma:")).setBounds (x  		  ,y+=27  ,150     ,height );
@@ -229,10 +235,11 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,800     ,height );
 		
 		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
-		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
+		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,520    );
 //		panel.add(btnDeshacer).setBounds                   (x    	  ,y+=585 ,width   ,height );
 //		panel.add(btnGuardar).setBounds                    (x+=sep    ,y      ,width   ,height );
 //		panel.add(btnEditar).setBounds                     (x+=sep    ,y    ,width   ,height );
+		panel.add(lblTotalCostoMerma).setBounds	           (x+507     ,y+=535  ,width*4   ,30 );
 		
 		this.menu_toolbar.add(btnBuscar);
 	    this.menu_toolbar.addSeparator( );
@@ -267,7 +274,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		TableColumn destino = tabla.getColumnModel().getColumn(8);		
 		destino.setCellEditor(new javax.swing.DefaultCellEditor(cmbDestinoDeMermaTabla));
 		
-		imagMerma();
+//		imagMerma();
 		
 		init_tabla("");
 		modelo.setRowCount(0);
@@ -284,8 +291,8 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		btnBuscar.addActionListener(filtro_inventarios);
 		btnGuardar.addActionListener(guardar);
 		
-		btnExaminar.addActionListener(opExaminar);
-		btnCamara.addActionListener(opFoto);
+//		btnExaminar.addActionListener(opExaminar);
+//		btnCamara.addActionListener(opFoto);
 		
 		btnQuitarfila.addActionListener(opQuitarfila);
 		
@@ -328,47 +335,48 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	                 
     }
    
-   public void imagMerma(){
-	   
-	   if(rutaFoto.length()==0){
-		   lblConImag.setVisible(true);
-		   lblSinImag.setVisible(false);
-	   }else{
-		   lblConImag.setVisible(false);
-		   lblSinImag.setVisible(true);
-	   }
-   }
    
-	ActionListener opExaminar = new ActionListener(){
-		public void actionPerformed(ActionEvent e) {
-			FileDialog file = new FileDialog(new Frame());
-			
-			file.setTitle("Selecciona una Imagen");
-			file.setMode(FileDialog.LOAD);
-			file.setVisible(true);
-			
-			if(file.getDirectory() != null){
-						imagenCargada = true ;
-						rutaFoto = file.getDirectory()+file.getFile();
-						System.out.println(rutaFoto);
-				    	imagMerma();
-			}else{
-				JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna imagen","Aviso",JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-		}
-	};
+//   public void imagMerma(){
+//	   
+//	   if(rutaFoto.length()==0){
+//		   lblConImag.setVisible(true);
+//		   lblSinImag.setVisible(false);
+//	   }else{
+//		   lblConImag.setVisible(false);
+//		   lblSinImag.setVisible(true);
+//	   }
+//   }
+   
+//	ActionListener opExaminar = new ActionListener(){
+//		public void actionPerformed(ActionEvent e) {
+//			FileDialog file = new FileDialog(new Frame());
+//			
+//			file.setTitle("Selecciona una Imagen");
+//			file.setMode(FileDialog.LOAD);
+//			file.setVisible(true);
+//			
+//			if(file.getDirectory() != null){
+//						imagenCargada = true ;
+//						rutaFoto = file.getDirectory()+file.getFile();
+//						System.out.println(rutaFoto);
+//				    	imagMerma();
+//			}else{
+//				JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna imagen","Aviso",JOptionPane.WARNING_MESSAGE);
+//				return;
+//			}
+//		}
+//	};
 	
-	ActionListener opFoto = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-				try{
-					new Llamar_Camara().setVisible(true);
-//					new MainCamara("tmp.jpg").setVisible(true);
-				}catch(Exception ee){
-					JOptionPane.showMessageDialog(null, "Verifique si está conectada y configurada la camara", "Error!", JOptionPane.ERROR_MESSAGE);
-				}
-		}
-	};
+//	ActionListener opFoto = new ActionListener(){
+//		public void actionPerformed(ActionEvent e){
+//				try{
+//					new Llamar_Camara().setVisible(true);
+////					new MainCamara("tmp.jpg").setVisible(true);
+//				}catch(Exception ee){
+//					JOptionPane.showMessageDialog(null, "Verifique si está conectada y configurada la camara", "Error!", JOptionPane.ERROR_MESSAGE);
+//				}
+//		}
+//	};
 	
 	KeyListener Buscar_Datos_Producto = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
@@ -406,7 +414,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
   		  double existencia=Double.valueOf(tabla.getValueAt(fila,2).toString());
 		  double merma=Double.valueOf(tabla.getValueAt(fila,5).toString());
 		  double valor=existencia-merma;
-		  tabla.setValueAt(valor, fila, 6);
+		  tabla.setValueAt(df.format(valor), fila, 6);
 		  
 		  double ultimo_costo = Double.valueOf(tabla.getValueAt(fila, 9).toString().trim());
 		  double costo_promedio = Double.valueOf(tabla.getValueAt(fila, 10).toString().trim());
@@ -414,9 +422,24 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		  double total_ultimo_costo = merma*ultimo_costo;
 		  double total_costo_promedio = merma*costo_promedio;
 		  
-		  tabla.setValueAt(total_ultimo_costo, fila, 12);
-		  tabla.setValueAt(total_costo_promedio, fila, 13);
+		  tabla.setValueAt(df.format(total_ultimo_costo), fila, 12);
+		  tabla.setValueAt(df.format(total_costo_promedio), fila, 13);
+		  
+		  calcularTotalCostoDeMerma(13);
 	 }
+	
+	   public void calcularTotalCostoDeMerma(int columna){
+		   double total = 0;
+		   
+		   if(tabla.getRowCount()>0){
+			   for(int i = 0; i<tabla.getRowCount(); i++){
+				   total+=Double.valueOf(tabla.getValueAt(i, columna).toString());
+			   }
+		   }else{
+			   total = 0;
+		   }
+		   lblTotalCostoMerma.setText("Total Costo De Merma: $"+df.format(total));
+	   }
 	
 //	ActionListener Establecimiento = new ActionListener() {
 //        @Override
@@ -462,6 +485,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 					
 					if(!destinoOrigen){
 						modelo.removeRow(seleccion);
+						calcularTotalCostoDeMerma(13);
 						tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
 					}else{
 						JOptionPane.showMessageDialog(null, "Solo Puede Eliminar Los Registros Que Haya Agregado Despues De La Consulta","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -499,6 +523,10 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			if(tabla.isEditing()){
+				tabla.getCellEditor().stopCellEditing();
+			}
+			
 			if(tabla.getRowCount()>0){
 				if(JOptionPane.showConfirmDialog(null, "Hay Datos Capturados y No Han Sido Guardados, ¿Desea Borrar Todo?", "Aviso", JOptionPane.INFORMATION_MESSAGE,0, new ImageIcon("Imagen/usuario-icono-noes_usuario9131-64.png") )== 0){
 					deshacer();
@@ -521,39 +549,55 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	ActionListener guardar = new ActionListener(){
 	public void actionPerformed(ActionEvent e){
 		
+		if(tabla.isEditing()){
+			tabla.getCellEditor().stopCellEditing();
+		}
+		
 		 String[][] tabla_guardado = Objetotabla.tabla_guardar(tabla);
 		 if(tabla_guardado.length==0){
 			 return;
 		 }else{		 
 			 
-			 if(imagenCargada){
+			 calculo_diferencia(fila);
+			 
+//			 if(imagenCargada){
 				 
 				 Obj_Alimentacion_De_Mermas mermas = new Obj_Alimentacion_De_Mermas();
 				 mermas.setArreglo(tabla_guardado);
 				 mermas.setFolio(Integer.valueOf(txtFolio.getText().trim()));
 				 mermas.setEstablecimiento(txtEstablecimiento.getText().toString().trim());
 				 mermas.setNota(txaNota.getText().toString().trim());
-				 mermas.setRutaFoto(rutaFoto);
+//				 mermas.setRutaFoto(rutaFoto);
 				 
 //				 guardar con valiacion de cargar imagen por seguridad
 				  if(mermas.Guardar_Merma("TERMINADO",folio_usuario_valida)){
-		                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-		            	 deshacer();
+					  
+					  String folioMerma = new GuardarSQL().finalizar_merma(txtEstablecimiento.getText().trim(), txtFolio.getText().trim());
+					  
+					  if(!folioMerma.equals("")){
+						  JOptionPane.showMessageDialog(null, "La Merma Fue Finalizó Correctamente Con El Folio: ["+folioMerma+"].", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						  deshacer();
+					  }else{
+						  JOptionPane.showMessageDialog(null, "El Registro No Se Pudo Ser Finalizádo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+					      return;
+					  }
+		                
 			      }else{
 					JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 			    	return;
 			      }
 				  
-			 }else{
-				 JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese La Foto De La Merma", "Aviso",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-				 return;
-			 }
+//			 }else{
+//				 JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese La Foto De La Merma", "Aviso",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+//				 return;
+//			 }
 			 
 		 }
 	  }			
     };
     
 	public void deshacer(){
+		lblNota.setText("");
 		txaNota.setText("");
 		txtcod_prod.setText("");
 		txtcod_prod.setEnabled(false);
@@ -570,9 +614,9 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		
 		cmbRazonDeMerma.setSelectedIndex(0);
 		cmbDestinoDeMerma.setSelectedIndex(0);
-		
-		rutaFoto="";
-		imagMerma();
+		calcularTotalCostoDeMerma(13);
+//		rutaFoto="";
+//		imagMerma();
 	}
 	
 	public void buscar_producto(){
@@ -887,7 +931,8 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 				    			
 				    			txtFolio.setText(folio);
 				    			txtEstablecimiento.setText(estab);
-				    			txaNota.setText(nota);
+				    			lblNota.setText(nota);
+//				    			txaNota.setText(nota);
      			  				
      			  				validaGuardado();
 //     			  				cmbEstablecimiento.setEnabled(false);
@@ -901,6 +946,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
      		                	 btnProducto.setEnabled(true);
      		                	 txtcod_prod.setEnabled(true);
      		                	 txtcod_prod.requestFocus();
+     		                	calcularTotalCostoDeMerma(13);
 				    			dispose();
 							}
 					}
@@ -912,39 +958,39 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 			}
 		}
 		
-public class Llamar_Camara extends Cat_Camara{
-			
-			public Llamar_Camara(){
-				
-				btnCapturar.addActionListener(opFoto);
-			}
-			
-			ActionListener opFoto = new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if(e.getSource() == btnCapturar){
-						
-						rutaFoto = System.getProperty("user.dir")+"/tmp/tmp_mermas/merma.jpg";
-						File folder = new File(rutaFoto);
-		            	folder.mkdirs();
-		            	
-						BufferedImage image = webcam.getImage();
-						try {
-							ImageIO.write(image, "JPG", new File(rutaFoto));
-							imagenCargada = true ;
-							imagMerma();
-							System.out.println(rutaFoto);
-							
-							ImageIcon tmpIconDefault = new ImageIcon(rutaFoto);
-					        Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_DEFAULT));
-					        lblVistaPrevia.setIcon(iconoDefault);
-							
-						} catch (Exception ex) {
-							imagenCargada = false ;
-						}	
-					}	
-				}
-			};
-		}
+//public class Llamar_Camara extends Cat_Camara{
+//			
+//			public Llamar_Camara(){
+//				
+//				btnCapturar.addActionListener(opFoto);
+//			}
+//			
+//			ActionListener opFoto = new ActionListener() {
+//				public void actionPerformed(ActionEvent e) {
+//					if(e.getSource() == btnCapturar){
+//						
+//						rutaFoto = System.getProperty("user.dir")+"/tmp/tmp_mermas/merma.jpg";
+//						File folder = new File(rutaFoto);
+//		            	folder.mkdirs();
+//		            	
+//						BufferedImage image = webcam.getImage();
+//						try {
+//							ImageIO.write(image, "JPG", new File(rutaFoto));
+//							imagenCargada = true ;
+//							imagMerma();
+//							System.out.println(rutaFoto);
+//							
+//							ImageIcon tmpIconDefault = new ImageIcon(rutaFoto);
+//					        Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_DEFAULT));
+//					        lblVistaPrevia.setIcon(iconoDefault);
+//							
+//						} catch (Exception ex) {
+//							imagenCargada = false ;
+//						}	
+//					}	
+//				}
+//			};
+//		}
 		
 	public static void main(String args[]){
 		try{

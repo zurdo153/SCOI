@@ -101,9 +101,19 @@ public class Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos extends JFrame{
 						lblCantPz.setText(obj.getCant_pz()+"");
 							
 						if(obj.getFolio_pedido() != 0){
+							
+							if(obj.getStatus().equals("V")){
 //							System.out.println("buscar en SCOI(datos)-------------------------------------------------------");
 							btnGenerarPedidoNuevo.setEnabled(false);
 							btnCargarPedido.setEnabled(true);
+							}else{
+								btnGenerarPedidoNuevo.setEnabled(false);
+								btnCargarPedido.setEnabled(false);
+								JOptionPane.showMessageDialog(null, "Ya Se Creo Un Pedido Con Los Parametros Especificados","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}
+							
+
 						}else{
 //							System.out.println("buscar en BMS(datos)");
 							btnGenerarPedidoNuevo.setEnabled(true);

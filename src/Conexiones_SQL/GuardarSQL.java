@@ -6387,7 +6387,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt2.setInt(5, usuario_seguridad==0?usuario.getFolio():usuario_seguridad);
 				
 				String rutaFoto="";
-				if(movimiento.equals("TERMINADO") || (movimiento.equals("SEGURIDAD") && mermas.getArreglo().length>0) ){
+				if(/*movimiento.equals("TERMINADO") || */(movimiento.equals("SEGURIDAD") && mermas.getArreglo().length>0) ){
 					rutaFoto=mermas.getRutaFoto();
 				}else{
 					rutaFoto=System.getProperty("user.dir")+"/Imagen/merma_default.jpg";
@@ -6700,9 +6700,9 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
-	public boolean Guardar_minimo_maximo_pedido_por_estab(String xml,String establecimiento_solicita,String establecimiento_surte,int folio_scoi,String Observacion){
+	public boolean Guardar_minimo_maximo_pedido_por_estab(String xml,String establecimiento_solicita,String establecimiento_surte,int folio_scoi,String Observacion, String boton){
 		
-		String query = "exec insert_pedido_maximos_y_minimos_xml '"+xml+"','"+establecimiento_solicita+"','"+establecimiento_surte+"',"+folio_scoi+",'"+Observacion+"',"+usuario.getFolio();
+		String query = "exec insert_pedido_maximos_y_minimos_xml '"+xml+"','"+establecimiento_solicita+"','"+establecimiento_surte+"',"+folio_scoi+",'"+Observacion+"',"+usuario.getFolio()+",'"+boton+"'";
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -6733,26 +6733,63 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
-	   public String Finalizar_minimo_maximo_pedido_por_estab(String establecimiento_solicita,String establecimiento_surte,int folio_scoi,String area) throws SQLException{
-		   String folio_pedido="";
-		   int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
-			 String query = "exec pedido_a_establecimiento_2 '"+establecimiento_solicita+"','"+establecimiento_surte+"',"+folio_scoi+",'"+area+"',"+folio_usuario;
-			 Statement stmt = null;
-			try {
-				Connexion con = new Connexion();
-				stmt = con.conexion().createStatement();
-				ResultSet rs = stmt.executeQuery(query);
-				while(rs.next()){
-					folio_pedido=(rs.getString("folio_pedido"));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+   public String Finalizar_minimo_maximo_pedido_por_estab(String establecimiento_solicita,String establecimiento_surte,int folio_scoi,String area) throws SQLException{
+	   String folio_pedido="";
+	   int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
+		 String query = "exec pedido_a_establecimiento_2 '"+establecimiento_solicita+"','"+establecimiento_surte+"',"+folio_scoi+",'"+area+"',"+folio_usuario;
+		 Statement stmt = null;
+		try {
+			Connexion con = new Connexion();
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				folio_pedido=(rs.getString("folio_pedido"));
 			}
-			finally{
-				if(stmt!=null){stmt.close();}
-			}
-			return folio_pedido;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return folio_pedido;
+	}
+	   
+	public String finalizar_merma(String Establecimiento,String folio_merma_scoi){
+		
+		Obj_Conn conect = new Obj_Conn();
+		conect.llenarConn(Establecimiento);
+	
+//		System.out.println(conect.getDir());
+//		System.out.println(conect.getDb());
+//		System.out.println(conect.getUser());
+//		System.out.println(conect.getPass());
+		
+	   String folio_merma="";
+	   String query = "exec sp_finalizar_merma '"+Establecimiento.trim()+"','"+folio_merma_scoi+"'"; 
+	   Statement stmt = null;
+		try {
+			//TODO (Connexion Parametrizada)--------------------------------------------------------------------------------------------------------------------
+			Connexion con = new Connexion();
+			stmt = con.conexion_parametrizada(conect.getDir(), conect.getDb(), conect.getUser(), conect.getPass()).createStatement();
+			//--------------------------------------------------------------------------------------------------------------------------------------------------
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				folio_merma=(rs.getString("folio_de_merma"));
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en Buscar  en la funcion finalizar_merma \n"+query+"\n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+//			return  folio_merma="Error en GuardarSQL";
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return folio_merma;
+	}
 	   
 //	public boolean Guardar_Alimentacion_De_Productos_Proximos_A_Caducar(Obj_Alimentacion_De_Productos_Proximos_A_Caducar proximos_caducar){
 //		int folio_transaccion=busca_y_actualiza_proximo_folio(42);

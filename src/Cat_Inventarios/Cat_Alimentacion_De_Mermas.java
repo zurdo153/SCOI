@@ -1,5 +1,6 @@
 package Cat_Inventarios;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.FileDialog;
@@ -18,6 +19,7 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -93,7 +95,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 		Objetotabla.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
 	
-  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Existencia","Merma","Existencia Sin_Merma","Razon De Merma","Destino De Merma","Ultimo Costo","Costo Promedio", "Precio De Lista", "Total Ultimo Costo","Total Costo Promedio"}){
+  public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo_Producto","Descripcion","Existencia","Merma","Existencia_Sin_Merma","Razon_De_Merma","Destino_De_Merma","Ultimo_Costo","Costo_Promedio", "Precio_De_Lista", "Total_Ultimo_Costo","Total_Costo_Promedio"}){
 	 @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
 				java.lang.Object.class,
@@ -158,6 +160,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
     int columna=0;
     Object[] vector = new Object[12];
     
+    JLabel lblNota = new JLabel("");
     JTextArea txaNota 	= new Componentes().textArea(new JTextArea(), "Nota", 500);
 	JScrollPane Nota = new JScrollPane(txaNota);
 	
@@ -178,12 +181,17 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
     String fileConImag = "Imagen/cancelar-icono-4961-16.png";
     ImageIcon tmpIconConImag;
     
+    DecimalFormat df = new DecimalFormat("#0.00");
+    JLabel lblTotalCostoMerma = new JLabel("Total Costo De Merma: $0.00");
+    
 public  Cat_Alimentacion_De_Mermas(){
 	   this.cont.add(panel);
 		this.setSize(1024,768);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		lblTotalCostoMerma.setFont(new java.awt.Font("Algerian",0,25));
 		
 		this.setTitle("Alimentacion De Mermas");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
@@ -203,8 +211,12 @@ public  Cat_Alimentacion_De_Mermas(){
 //   	    this.lblConImag.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 //   	    this.lblSinImag.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
    	
+	    lblNota.setForeground(Color.BLUE);
+	    
 		int x=20, y=20,width=122,height=20, sep=135;
+		panel.add(lblNota).setBounds                       (x+490      ,y-20   ,480     ,50		);
 		panel.add(menu_toolbar).setBounds                  (x          ,y      ,400     ,height );
+		
 		panel.add(txtFolio).setBounds                      (x          ,y+=30  ,width   ,height );
 		panel.add(cmbEstablecimiento).setBounds            (x+=sep     ,y      ,width+60,height );
 		panel.add(new JLabel("Nota:")).setBounds           (x+=355     ,y-15   ,50      ,height );
@@ -228,7 +240,9 @@ public  Cat_Alimentacion_De_Mermas(){
 		panel.add(txtFiltro).setBounds   		           (x         ,y+=27  ,800     ,height );
 		
 		panel.add(btnQuitarfila).setBounds                 (x+847     ,y      ,width   ,height ); 
-		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,580    );
+		panel.add(scroll_tabla).setBounds                  (x         ,y+=23  ,972     ,520    );
+		
+		panel.add(lblTotalCostoMerma).setBounds	           (x+507     ,y+=535  ,width*4   ,30 );
 		
 		this.menu_toolbar.add(btnBuscar);
 	    this.menu_toolbar.addSeparator( );
@@ -368,6 +382,19 @@ public  Cat_Alimentacion_De_Mermas(){
 	   }
    }
    
+   public void calcularTotalCostoDeMerma(int columna){
+	   double total = 0;
+	   
+	   if(tabla.getRowCount()>0){
+		   for(int i = 0; i<tabla.getRowCount(); i++){
+			   total+=Double.valueOf(tabla.getValueAt(i, columna).toString());
+		   }
+	   }else{
+		   total = 0;
+	   }
+	   lblTotalCostoMerma.setText("Total Costo De Merma: $"+df.format(total));
+   }
+   
 	ActionListener opExaminar = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 			FileDialog file = new FileDialog(new Frame());
@@ -448,8 +475,10 @@ public  Cat_Alimentacion_De_Mermas(){
 		  double total_ultimo_costo = merma*ultimo_costo;
 		  double total_costo_promedio = merma*costo_promedio;
 		  
-		  tabla.setValueAt(total_ultimo_costo, fila, 10);
-		  tabla.setValueAt(total_costo_promedio, fila, 11);
+		  tabla.setValueAt(df.format(total_ultimo_costo), fila, 10);
+		  tabla.setValueAt(df.format(total_costo_promedio), fila, 11);
+		  
+		  calcularTotalCostoDeMerma(11);
 	 }
 	
 	ActionListener Establecimiento = new ActionListener() {
@@ -541,6 +570,11 @@ public  Cat_Alimentacion_De_Mermas(){
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			
+			if(tabla.isEditing()){
+				tabla.getCellEditor().stopCellEditing();
+			}
+			
 			if(tabla.getRowCount()>0){
 				if(JOptionPane.showConfirmDialog(null, "Hay Datos Capturados y No Han Sido Guardados, ¿Desea Borrar Todo?", "Aviso", JOptionPane.INFORMATION_MESSAGE,0, new ImageIcon("Imagen/usuario-icono-noes_usuario9131-64.png") )== 0){
 					deshacer();
@@ -559,9 +593,20 @@ public  Cat_Alimentacion_De_Mermas(){
 		}
 	};
 	
+//	ActionListener guardar = new ActionListener(){
+//		public void actionPerformed(ActionEvent e){
+//			int[] ignorarColumnas = {1};
+//			String xml = new CrearXmlString().CadenaXML(tabla,ignorarColumnas);
+//			System.out.println(xml);
+//		}
+//	};
 	
 	ActionListener guardar = new ActionListener(){
 	public void actionPerformed(ActionEvent e){
+		
+		if(tabla.isEditing()){
+			tabla.getCellEditor().stopCellEditing();
+		}
 		
 		 String[][] tabla_guardado = new String[tabla.getRowCount()][tabla.getColumnCount()];
 		 if(tabla.getRowCount()>0){
@@ -572,9 +617,11 @@ public  Cat_Alimentacion_De_Mermas(){
 			 }
 		 }
 		 
-//		 if(tabla_guardado.length==0){
-//			 return;
-//		 }else{	
+		 if(tabla_guardado.length==0){
+			 return;
+		 }else{	
+			 
+			 calcularTotalCostoDeMerma(11);
 			 
 			 Obj_Alimentacion_De_Mermas mermas = new Obj_Alimentacion_De_Mermas();
 			 mermas.setArreglo(tabla_guardado);
@@ -649,7 +696,7 @@ public  Cat_Alimentacion_De_Mermas(){
 
 			 
 
-//		 }
+		 }
 	  }			
     };
     
@@ -671,6 +718,7 @@ public  Cat_Alimentacion_De_Mermas(){
 	};
 	
 	public void deshacer(){
+		lblNota.setText("");
 		txaNota.setText("");
 		txtcod_prod.setText("");
 		txtcod_prod.setEnabled(false);
@@ -751,6 +799,7 @@ public  Cat_Alimentacion_De_Mermas(){
 						        	  RecorridoFoco(fila, "no");
 						          }
 							    });
+				       
 				}else{
 					fila=1;
 					JOptionPane.showMessageDialog(null, "El Codigo Esta Mal Escrito o El Producto No Existe" ,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -1065,7 +1114,8 @@ public  Cat_Alimentacion_De_Mermas(){
 				txtFolioDeMerma.setEditable(false);
 				
   				cmbEstablecimiento.setSelectedItem(estab);
-  				txaNota.setText(nta);
+  				lblNota.setText(nta);
+//  				txaNota.setText(nta);
 
 				
 //		       asigna el foco al JTextField deseado al arrancar la ventana
@@ -1088,7 +1138,13 @@ public  Cat_Alimentacion_De_Mermas(){
 				public void windowDeiconified(WindowEvent e){}
 				public void windowDeactivated(WindowEvent e){}
 				public void windowClosing(WindowEvent e){		
+					
+					if(tabla.isEditing()){
+						tabla.getCellEditor().stopCellEditing();
+					}
+					
 //					cmbEstablecimiento.setSelectedIndex(0);
+					lblNota.setText("");
 					txaNota.setText("");
 					btnProducto.setEnabled(false);
 					txtcod_prod.setEnabled(false);
@@ -1166,6 +1222,7 @@ public  Cat_Alimentacion_De_Mermas(){
 //							                             					init_tabla("");
 							                             					modelo.setRowCount(0);
 							                             					cmbEstablecimiento.setSelectedIndex(0);
+							                             					lblNota.setText("");
 					                             			  				txaNota.setText("");
 					                             			  				folio_usuario_valida = 0;
 					                             			  				tipo_de_usuario = "NORMAL";
@@ -1186,6 +1243,7 @@ public  Cat_Alimentacion_De_Mermas(){
 						                             				}else{
 						                             					modelo.setRowCount(0);
 						                             					cmbEstablecimiento.setSelectedIndex(0);
+						                             					lblNota.setText("");
 				                             			  				txaNota.setText("");
 				                             			  				folio_usuario_valida = 0;
 				                             			  				tipo_de_usuario = "NORMAL";

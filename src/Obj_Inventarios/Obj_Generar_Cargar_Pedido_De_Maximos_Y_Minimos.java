@@ -9,12 +9,14 @@ public class Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos {
 	String usuario;
 	int cant_prod;
 	int cant_pz;
+	String status;
 	
 	public Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos() {
 		folio_pedido=0;
 		usuario = "";
 		cant_prod=0;
 		cant_pz=0;
+		status="";
 	}
 
 	public int getFolio_pedido() {
@@ -47,6 +49,14 @@ public class Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos {
 
 	public void setCant_pz(int cant_pz) {
 		this.cant_pz = cant_pz;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String[] Areas_tipo_distrib(){

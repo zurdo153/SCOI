@@ -38,7 +38,9 @@ public class Cat_Reportes_De_Mermas extends JFrame {
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
-	JButton btn_generar_completo = new JButton  ("Generar Reportes De Compra De Cascos",new ImageIcon("imagen/proceso-para-los-usuarios-icono-5903-16.png"));
+	JButton btn_generar = new JButton  ("Generar Reportes De Mermas",new ImageIcon("imagen/proceso-para-los-usuarios-icono-5903-16.png"));
+	JButton btn_generar_limpio = new JButton  ("Generar Reportes De Mermas Limpio",new ImageIcon("imagen/proceso-para-los-usuarios-icono-5903-16.png"));
+	
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -59,17 +61,19 @@ public class Cat_Reportes_De_Mermas extends JFrame {
 		this.panel.add(JLBfin).setBounds(265,60,20,20);
 		this.panel.add(c_final).setBounds(285,60,100,20);
 	
-		this.panel.add(btn_generar_completo).setBounds(65,95,280,35);
+		this.panel.add(btn_generar).setBounds(65,95,280,35);
+		this.panel.add(btn_generar_limpio).setBounds(65,135,280,35);
 				
 		this.cont.add(panel);
-		this.setSize(400,190);
+		this.setSize(400,210);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 
 		c_inicio.setDate( cargar_fechas(7));
 		c_final.setDate( cargar_fechas(0));
 				 
-		this.btn_generar_completo.addActionListener(op_generar);
+		this.btn_generar.addActionListener(op_generar);
+		this.btn_generar_limpio.addActionListener(op_generar);
 	}
 	
 	public Date cargar_fechas(int dias){
@@ -98,7 +102,7 @@ public class Cat_Reportes_De_Mermas extends JFrame {
 				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:58";
 
 				if(c_inicio.getDate().before(c_final.getDate())){
-					Reporte_de_Asistencia_consideraciones(fecha_inicio,fecha_final);
+					Reporte_de_Asistencia_consideraciones(fecha_inicio,fecha_final,e.getActionCommand());
 				}else{
 					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
                       return;
@@ -110,9 +114,10 @@ public class Cat_Reportes_De_Mermas extends JFrame {
 		}
 	};
 	
-	public void Reporte_de_Asistencia_consideraciones(String fecha_inicio, String fecha_final){
-		 reporte = "Obj_Reporte_De_Mermas.jrxml";
-		 comando = "exec sp_select_reporte_de_mermas '"+fecha_inicio+"','"+fecha_final+"',"+Integer.valueOf(txtFolio.getText().equals("")?"0":txtFolio.getText().toUpperCase().trim());
+	public void Reporte_de_Asistencia_consideraciones(String fecha_inicio, String fecha_final,String boton){
+		System.out.println(boton);
+		 reporte = (boton.equals("Generar Reportes De Mermas") ? "Obj_Reporte_De_Mermas.jrxml" : "Obj_Reporte_De_Mermas_Limpio.jrxml");
+		 comando = (boton.equals("Generar Reportes De Mermas") ? "exec sp_select_reporte_de_mermas '" : "exec sp_select_reporte_de_mermas_limpio '")+fecha_inicio+"','"+fecha_final+"',"+Integer.valueOf(txtFolio.getText().equals("")?"0":txtFolio.getText().toUpperCase().trim());
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	

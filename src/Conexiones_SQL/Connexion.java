@@ -86,6 +86,21 @@ public Connection conexion_ventas(){
 		return conn;
 	}
 	
+	public Connection conexion_parametrizada(String ip,String base_de_datos,String usuario,String pass){
+		Connection conn = null;	
+		try{
+				
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			conn = DriverManager.getConnection("jdbc:sqlserver://"+ip+":1433;databaseName="+base_de_datos, usuario, pass);
+			System.out.println("Se ha establecido la conexion con la base de datos: <"+base_de_datos+"> exitosamente");	
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "Error al realizar la conexion con la Base de Datos \n" +
+												"Verifique el cable de red ó las asignaciones de IP`s.\n "+ e.toString().substring(0,48)+"\n"+
+												e.toString().substring(48,84)+"<"+base_de_datos+">","Error",JOptionPane.WARNING_MESSAGE);
+		}
+		return conn;
+	}
+	
 	public boolean init(){
 		if(conexion() != null){
 			return true;

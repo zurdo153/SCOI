@@ -9897,6 +9897,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					obj.setUsuario(rs.getString("usuario"));
 					obj.setCant_prod(rs.getInt("cant_prod"));
 					obj.setCant_pz(rs.getInt("cant_pz"));
+					obj.setStatus(rs.getString("estatus_pedido"));
 				}
 		
 			} catch (SQLException e1) {
@@ -9953,5 +9954,30 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				e1.printStackTrace();
 			}
 			return Matriz; 
+		}
+		
+		public String Server(String estab){
+			String server="";
+			String query = "exec sp_servidor_por_establecimiento '"+estab+"'";
+			System.out.println(query);
+			Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					server=(rs.getString(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Folio_Siguiente_alta_Servicios ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+			finally{
+				if(stmt!=null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return server;
 		}
 }
