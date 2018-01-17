@@ -110,8 +110,6 @@ import Obj_Servicios.Obj_Catalogo_Servicios;
 import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Servicios;
 
-
-
 public class BuscarSQL {
 	
 	Connexion con = new Connexion();
@@ -10106,4 +10104,56 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				return disponible;
 			}
 		  
+	public boolean existe_Insumo(String cod_prod){
+		
+		String query = "exec existe_producto_en_insumos '"+cod_prod+"'";
+		
+		boolean existe = false;
+		try { Statement s = con.conexion().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	existe = rs.getBoolean(1);
+			      }
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion existe_Producto \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+    return existe;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Vector getBuscarProductoDeInsumos(String folio_producto,String establecimiento){
+		
+		Vector vec = new Vector();
+		String datosif = "exec buscar_producto_de_insumos '"+folio_producto+"','"+establecimiento+"'";
+		
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(datosif);
+			int i=0;
+			while(rs.next()){
+				
+				vec.add(i, rs.getString(9).toString());
+				vec.add(i, rs.getString(8).toString());
+				vec.add(i, rs.getString(7).toString());
+				vec.add(i, rs.getString(6).toString());
+				
+				vec.add(i, rs.getString(5).toString());
+				vec.add(i, rs.getString(4).toString());
+				vec.add(i, rs.getString(3).toString());
+				
+				vec.add(i, rs.getString(2).toString());
+				vec.add(i, rs.getString(1).toString());
+				
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		return vec;
+	}
 }

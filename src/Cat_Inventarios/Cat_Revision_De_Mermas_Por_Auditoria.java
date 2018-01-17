@@ -109,7 +109,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
          return types[columnIndex];
 		}
 		public boolean isCellEditable(int fila, int columna){
-			if(columna ==5 || columna==7 || columna==8)
+			if(columna ==5 /*|| columna==7 */|| columna==8)
 				return true; return false;
 		}
     };
@@ -290,6 +290,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		btnProducto.addActionListener(filtro_productos);
 		btnBuscar.addActionListener(filtro_inventarios);
 		btnGuardar.addActionListener(guardar);
+		cmbRazonDeMerma.addActionListener(opRazonMerma);
 		
 //		btnExaminar.addActionListener(opExaminar);
 //		btnCamara.addActionListener(opFoto);
@@ -378,6 +379,16 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 //		}
 //	};
 	
+   ActionListener opRazonMerma = new ActionListener(){
+	 public void actionPerformed(ActionEvent e){
+		 if(tabla.getRowCount()>0){
+			 for(int i =0; i<tabla.getRowCount(); i++){
+				 tabla.setValueAt(cmbRazonDeMerma.getSelectedItem().toString().trim(), i, 7);
+			 }
+		 }
+	 }  
+   };
+   
 	KeyListener Buscar_Datos_Producto = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
 		public void keyReleased(KeyEvent e) {}
@@ -487,6 +498,8 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 						modelo.removeRow(seleccion);
 						calcularTotalCostoDeMerma(13);
 						tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
+						
+						cmbRazonDeMerma.setEnabled(tabla.getRowCount()>0?false:true);
 					}else{
 						JOptionPane.showMessageDialog(null, "Solo Puede Eliminar Los Registros Que Haya Agregado Despues De La Consulta","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 						return;
@@ -615,6 +628,9 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		cmbRazonDeMerma.setSelectedIndex(0);
 		cmbDestinoDeMerma.setSelectedIndex(0);
 		calcularTotalCostoDeMerma(13);
+		
+		cmbRazonDeMerma.setEnabled(tabla.getRowCount()>0?false:true);
+		
 //		rutaFoto="";
 //		imagMerma();
 	}
@@ -657,6 +673,8 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 				 		  modelo.addRow(vector);
 	 			 		  txtcod_prod.setText("");
 	 			 		  fila=tabla.getRowCount();
+	 			 		  
+	 			 		  cmbRazonDeMerma.setEnabled(tabla.getRowCount()>0?false:true);
 	 			 		  
 	 			 		 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 						  	       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "BUSCA");
@@ -947,6 +965,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
      		                	 txtcod_prod.setEnabled(true);
      		                	 txtcod_prod.requestFocus();
      		                	calcularTotalCostoDeMerma(13);
+     		                	cmbRazonDeMerma.setSelectedItem(tabla.getValueAt(0, 7).toString().trim());
 				    			dispose();
 							}
 					}

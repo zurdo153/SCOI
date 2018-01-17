@@ -147,7 +147,6 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 		}
 	};
 	
-	@SuppressWarnings("unlikely-arg-type")
 	public String validar_fechas(){
 		String error = "";
 		@SuppressWarnings("unused")

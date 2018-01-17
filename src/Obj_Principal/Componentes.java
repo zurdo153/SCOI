@@ -93,6 +93,57 @@ public class Componentes {
 		return tmp;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public final JComboBox comboBox(final JComboBox cmb, final Object[] list){
+		
+		Vector vector = new Vector();
+		
+		for(int i=0; i<list.length; i++){
+			vector.add(list[i]);
+		}
+		
+		JComboBox cbPesawat = new JComboBox();
+		cbPesawat.setModel(new DefaultComboBoxModel(vector));
+		cbPesawat.setSelectedIndex(0);
+		cbPesawat.setEditable(true);
+		JTextField text = (JTextField)cbPesawat.getEditor().getEditorComponent();
+		text.setFocusable(true);
+//		text.setText("");
+		text.addKeyListener(new ComboListener(cbPesawat,vector));
+		
+		text.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent arg0) {
+				String text = ((JTextField)arg0.getSource()).getText();
+				cbPesawat.setModel(new DefaultComboBoxModel(getFilteredList(text,vector)));
+//				cbListener.setSelectedIndex(-1);
+				((JTextField)cbPesawat.getEditor().getEditorComponent()).setText(text);
+				cbPesawat.showPopup();
+			}
+			public void keyReleased(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}
+		});
+		
+		
+		
+		return cbPesawat;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Vector getFilteredList(String text, Vector vector)
+	{
+		Vector v = new Vector();
+		for(int a = 0;a<vector.size();a++)
+		{
+			if(vector.get(a).toString().startsWith(text))
+			{
+				v.add(vector.get(a).toString());
+			}
+		}
+		return v;
+	}
+	
+	
+	
 	public final JTextField text(final JTextField tmp, final String caption, final int longitud, final String tipo){
 			tmp.addKeyListener(new KeyListener() {
 				public void keyTyped(KeyEvent e) {
