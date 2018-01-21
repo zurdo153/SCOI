@@ -38,6 +38,7 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
@@ -371,9 +372,24 @@ public class Cat_Disminucion_De_Inventario extends JFrame{
 		}
 	};
 	
+//	ActionListener Reporte = new ActionListener(){
+//		public void actionPerformed(ActionEvent e){
+// 			String basedatos="2.26";
+//			String vista_previa_reporte="no";
+//			int vista_previa_de_ventana=0;
+//			String comando="exec reporte_de_entysal_por_folio "+1+",69";
+//			String reporte = "Obj_Reporte_Entysal_De_Insumos_Por_Folio.jrxml";
+//			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana); 
+//		}
+//	};
 	
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			
+			if(tabla.isEditing()){
+				tabla.getCellEditor().stopCellEditing();
+			}
+			
 			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
 			 if(tabla_guardado.length==0){
 				 return;
@@ -391,9 +407,16 @@ public class Cat_Disminucion_De_Inventario extends JFrame{
 						 String xml = new CrearXmlString().CadenaXML(tabla, ignorarColumnas);
 //					 	 System.out.println(xml);
 						 
-						  if(new GuardarSQL().Entrada_De_Insumos(xml,txaNota.getText().toString().trim(),estabRecibe,folioEmpleadoRecibe,razon,estabSurte,"disminucion")){
-				                JOptionPane.showMessageDialog(null, "Los Insumos Se Guardaron Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						 int folio = new GuardarSQL().Entrada_De_Insumos(xml,txaNota.getText().toString().trim(),estabRecibe,folioEmpleadoRecibe,razon,estabSurte,"disminucion");
+						 if(folio > 0){
+							  //				                JOptionPane.showMessageDialog(null, "Los Insumos Se Guardaron Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 				            	 deshacer();
+				      			String basedatos="2.26";
+				    			String vista_previa_reporte="no";
+				    			int vista_previa_de_ventana=0;
+				    			String comando="exec reporte_de_entysal_por_folio "+folio+",69";
+				    			String reporte = "Obj_Reporte_Entysal_De_Insumos_Por_Folio.jrxml";
+				    			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 					      }else{
 							JOptionPane.showMessageDialog(null, "El Registro No Pudo Ser Guardado", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 					    	return;
@@ -442,13 +465,13 @@ public class Cat_Disminucion_De_Inventario extends JFrame{
 				if(new BuscarSQL().existe_Insumo(folio.trim()+"")){
 					vector=new BuscarSQL().getBuscarProductoDeInsumos(folio.toString().trim(),cmbEstablecimientoSurte.getSelectedItem().toString().trim());
 					
-					for(int i=0; i<tabla.getRowCount(); i++){
-						if(tabla.getValueAt(i, 0).toString().trim().equals(vector.get(0).toString().trim())){
-							testigo=1;
-				         	 JOptionPane.showMessageDialog(null, "El Producto Ya Existe En La Captura", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-				         	   fila=i+1;
-						 };							
-					  }
+//					for(int i=0; i<tabla.getRowCount(); i++){
+//						if(tabla.getValueAt(i, 0).toString().trim().equals(vector.get(0).toString().trim())){
+//							testigo=1;
+//				         	 JOptionPane.showMessageDialog(null, "El Producto Ya Existe En La Captura", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//				         	   fila=i+1;
+//						 };							
+//					  }
 					
 					  if(testigo==0){
 						  

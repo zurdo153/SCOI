@@ -68,6 +68,7 @@ import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
+import Obj_Evaluaciones.Obj_Preguntas;
 import Obj_Evaluaciones.Obj_Temporada;
 import Obj_Inventarios.Obj_Alimentacion_De_Mermas;
 import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
@@ -7030,7 +7031,9 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return folio_merma;
 	}
 	
-	public boolean Entrada_De_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
+	public int Entrada_De_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
+		
+		int folio=0;
 		
 		String query = "exec aumento_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+razon+"','"+estabRecibe+"'";
 		String query2 = "exec disminucion_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+estabRecibe+"',"+folioEmpleadoRecibe+",'"+razon+"','"+estabSurte+"'";
@@ -7042,38 +7045,116 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			case "disminucion":	queryF = query2	;break;
 			default:			queryF = "x"	; break;
 		}
-
+		System.out.print(queryF);
+		
+	   Statement stmt = null;
+		try {
+			//TODO (Connexion Parametrizada)--------------------------------------------------------------------------------------------------------------------
+			Connexion con = new Connexion();
+			stmt = con.conexion().createStatement();
+			//--------------------------------------------------------------------------------------------------------------------------------------------------
+			ResultSet rs = stmt.executeQuery(queryF);
+			while(rs.next()){
+				folio=(rs.getInt("folio"));
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en Buscar  en la funcion Entrada_De_Insumos \n"+queryF+"\n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return folio;
+	}
+	
+	public boolean Guardar_Pregunta(Obj_Preguntas pregunta,String movimeinto){
+		String query = "exec sp_guardar_pregunta ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
-			 con.setAutoCommit(false);
-			 pstmt = con.prepareStatement(queryF);
-			 pstmt.executeUpdate();
-
-				con.commit();
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pregunta.getFolio());
+			pstmt.setString(2, pregunta.getPregunta().toUpperCase().trim());
+			pstmt.setString(3, pregunta.getStatus());
+			pstmt.setString(4, movimeinto);
+			pstmt.executeUpdate();
+			con.commit();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Entrada_De_Insumos ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-			
-			System.out.println("SQLException: " + e.getMessage());
-			if (con != null){
-				try {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pregunta ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			if(con != null){
+				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-				} catch(SQLException ex) {
+				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pregunta ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 				}
-			} 
+			}
 			return false;
 		}finally{
 			try {
-				pstmt.close();
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pregunta ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
 			}
 		}		
 		return true;
 	}
+	
+//	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
+//		
+//		String query = "exec aumento_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+razon+"','"+estabRecibe+"'";
+//		String query2 = "exec disminucion_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+estabRecibe+"',"+folioEmpleadoRecibe+",'"+razon+"','"+estabSurte+"'";
+//		
+//		String queryF = "";
+//		
+//		switch(movimiento){
+//			case "aumento":		queryF = query	;break;
+//			case "disminucion":	queryF = query2	;break;
+//			default:			queryF = "x"	; break;
+//		}
+//
+//		Connection con = new Connexion().conexion();
+//		PreparedStatement pstmt = null;
+//		try {
+//			 con.setAutoCommit(false);
+//			 pstmt = con.prepareStatement(queryF);
+//			 pstmt.executeUpdate();
+//
+//				con.commit();
+//		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Entrada_De_Insumos ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+//			
+//			System.out.println("SQLException: " + e.getMessage());
+//			if (con != null){
+//				try {
+//					System.out.println("La transacción ha sido abortada");
+//					con.rollback();
+//				} catch(SQLException ex) {
+//					System.out.println(ex.getMessage());
+//				}
+//			} 
+//			return false;
+//		}finally{
+//			try {
+//				pstmt.close();
+//				con.close();
+//			} catch(SQLException e){
+//				e.printStackTrace();
+//			}
+//		}		
+//		return true;
+//	}
 	   
 //	public boolean Guardar_Alimentacion_De_Productos_Proximos_A_Caducar(Obj_Alimentacion_De_Productos_Proximos_A_Caducar proximos_caducar){
 //		int folio_transaccion=busca_y_actualiza_proximo_folio(42);

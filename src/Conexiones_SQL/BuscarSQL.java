@@ -71,6 +71,7 @@ import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
+import Obj_Evaluaciones.Obj_Preguntas;
 import Obj_Evaluaciones.Obj_Temporada;
 import Obj_Inventarios.Obj_Generar_Cargar_Pedido_De_Maximos_Y_Minimos;
 import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
@@ -10156,4 +10157,53 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		
 		return vec;
 	}
+	
+	public Obj_Preguntas Preguntas(int folio) throws SQLException{
+		Obj_Preguntas preguntas = new Obj_Preguntas();
+		String query = "select * from tb_preguntas where folio ="+ folio;
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				preguntas.setFolio(rs.getInt("folio"));
+				preguntas.setPregunta(rs.getString("nombre").trim());
+				preguntas.setStatus(rs.getString("estatus").trim());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return preguntas;
+	}
+	
+//	public Obj_Preguntas Pregunta_Nueva(){
+//		Obj_Preguntas pregunta = new Obj_Preguntas();
+//		String query = "-----------------------------------------";
+//		Statement stmt = null;
+//		try {
+//			stmt = con.conexion().createStatement();
+//			ResultSet rs = stmt.executeQuery(query);
+//			while(rs.next()){
+//				pregunta.setFolio(rs.getInt("Maximo"));
+//			}
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//		finally{
+//			if(stmt!=null){try {
+//				stmt.close();
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}}
+//		}
+//		return pregunta;
+//	}
 }

@@ -38,6 +38,7 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
@@ -358,6 +359,16 @@ public class Cat_Alimentacion_De_Inventarios_De_Insumos extends JFrame{
 		}
 	};
 	
+//	ActionListener Reporte = new ActionListener(){
+//		public void actionPerformed(ActionEvent e){
+// 			String basedatos="2.26";
+//			String vista_previa_reporte="no";
+//			int vista_previa_de_ventana=0;
+//			String comando="exec reporte_de_entysal_por_folio "+1+",81";
+//			String reporte = "Obj_Reporte_Entysal_De_Insumos_Por_Folio.jrxml";
+//			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+//		}
+//	};
 	
 	ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -380,9 +391,20 @@ public class Cat_Alimentacion_De_Inventarios_De_Insumos extends JFrame{
 					
 //					 System.out.println(xml);
 					 
-					  if(new GuardarSQL().Entrada_De_Insumos(xml,txaNota.getText().toString().trim(),estabRecibe,folioEmpleadoRecibe,razon,estabSurte,"aumento")){
-			                JOptionPane.showMessageDialog(null, "Los Insumos Se Guardaron Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-			            	 deshacer();
+					 int folio = new GuardarSQL().Entrada_De_Insumos(xml,txaNota.getText().toString().trim(),estabRecibe,folioEmpleadoRecibe,razon,estabSurte,"aumento");
+					  if(folio > 0){
+			                deshacer();
+			                
+				 			String basedatos="2.26";
+							String vista_previa_reporte="no";
+							int vista_previa_de_ventana=0;
+							String comando="exec reporte_de_entysal_por_folio "+folio+",81";
+							String reporte = "Obj_Reporte_Entysal_De_Insumos_Por_Folio.jrxml";
+			    			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+						  
+						  
+//						  JOptionPane.showMessageDialog(null, "Los Insumos Se Guardaron Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+			            	 
 				      }else{
 						JOptionPane.showMessageDialog(null, "El Registro No Pudo Ser Guardado", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 				    	return;
