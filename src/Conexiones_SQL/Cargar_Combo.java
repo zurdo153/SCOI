@@ -2358,4 +2358,46 @@ public class Cargar_Combo {
 		return pila;
 			
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] razonesDeMovimientoDeInventario(String movimiento){
+		
+		int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
+		System.out.println(folio_usuario);
+		String query = "SELECT nombre from razones_de_movimiento_de_inventario where status in ('T','"+movimiento+"')";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println(rs.getRow());
+			
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona una Razon");
+				}
+				miVector.add(rs.getString("nombre"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+	}
 }

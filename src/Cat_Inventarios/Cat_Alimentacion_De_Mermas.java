@@ -117,7 +117,7 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
          return types[columnIndex];
 		}
 		public boolean isCellEditable(int fila, int columna){
-			if(columna ==3 || columna==5 || columna==6)
+			if(columna ==3 /*|| columna==5*/ || columna==6)
 				return true; return false;
 		}
     };
@@ -298,6 +298,7 @@ public  Cat_Alimentacion_De_Mermas(){
 		btnGuardar.addActionListener(guardar);
 		btnQuitarfila.addActionListener(opQuitarfila);
 		btnReporte.addActionListener(opGenerar);
+		cmbRazonDeMerma.addActionListener(opRazonMerma);
 		
 		btnExaminar.addActionListener(opExaminar);
 		btnCamara.addActionListener(opFoto);
@@ -406,7 +407,7 @@ public  Cat_Alimentacion_De_Mermas(){
 			if(file.getDirectory() != null){
 						imagenCargada = true ;
 						rutaFoto = file.getDirectory()+file.getFile();
-//						System.out.println(rutaFoto);
+						System.out.println(rutaFoto);
 				    	imagMerma();
 			}else{
 				JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna imagen","Aviso",JOptionPane.WARNING_MESSAGE);
@@ -426,6 +427,16 @@ public  Cat_Alimentacion_De_Mermas(){
 		}
 	};
    
+   ActionListener opRazonMerma = new ActionListener(){
+		 public void actionPerformed(ActionEvent e){
+			 if(tabla.getRowCount()>0){
+				 for(int i =0; i<tabla.getRowCount(); i++){
+					 tabla.setValueAt(cmbRazonDeMerma.getSelectedItem().toString().trim(), i, 5);
+				 }
+			 }
+		 }  
+   };
+		   
 	KeyListener Buscar_Datos_Producto = new KeyListener() {
 		public void keyTyped(KeyEvent e){}
 		public void keyReleased(KeyEvent e) {}
@@ -514,6 +525,7 @@ public  Cat_Alimentacion_De_Mermas(){
 				if(seleccion < tabla.getRowCount()){
 					modelo.removeRow(seleccion);
 					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
+					cmbRazonDeMerma.setEnabled(tabla.getRowCount()>0?false:true);
 				}
 			}
 		}
@@ -539,6 +551,7 @@ public  Cat_Alimentacion_De_Mermas(){
 				cmbEstablecimiento.setSelectedIndex(1);
     		}
 			validaGuardado();
+			txtcod_prod.setEditable(true);
 			btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 		}
 	};
@@ -635,7 +648,7 @@ public  Cat_Alimentacion_De_Mermas(){
 				 
 				 if(imagenCargada){
 					 
-					 mermas.setRutaFoto(rutaFoto+"merma.jpg");
+					 mermas.setRutaFoto(rutaFoto);
 					 
 					 if(tabla.getRowCount()==0 && txaNota.getText().equals("")){
 						 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
@@ -723,7 +736,7 @@ public  Cat_Alimentacion_De_Mermas(){
 		txtcod_prod.setText("");
 		txtcod_prod.setEnabled(false);
 		
-		if(cmbEstablecimiento.getItemCount()>2){
+		if(cmbEstablecimiento.getItemCount()>2 && tabla.getSelectedRow()>0){
 			cmbEstablecimiento.removeActionListener(Establecimiento);
 //			cmbEstablecimiento.setSelectedIndex(0);
 			cmbEstablecimiento.setEnabled(false);
@@ -744,7 +757,7 @@ public  Cat_Alimentacion_De_Mermas(){
 		
 		folio_usuario_valida = 0;
 		tipo_de_usuario = "NORMAL";
-		btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
+		btnQuitarfila.setEnabled((tipo_de_usuario.equals("NORMAL"))?true:false);
 		
 		rutaFoto="";
 		imagenCargada = false;
@@ -752,6 +765,8 @@ public  Cat_Alimentacion_De_Mermas(){
 		
 		btnExaminar.setEnabled(false);
 		btnCamara.setEnabled(false);
+		
+		 cmbRazonDeMerma.setEnabled(tabla.getSelectedRow()>0?false:true);
 	}
 	
 	public void buscar_producto(){
@@ -789,6 +804,9 @@ public  Cat_Alimentacion_De_Mermas(){
 				 		  modelo.addRow(vector);
 	 			 		  txtcod_prod.setText("");
 	 			 		  fila=tabla.getRowCount();
+	 			 		  
+	 			 		  cmbRazonDeMerma.setEnabled(tabla.getRowCount()>0?false:true);
+	 			 		  
 					      }
 					  	 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 					  	       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "BUSCA");
@@ -1309,6 +1327,8 @@ public  Cat_Alimentacion_De_Mermas(){
 						rutaFoto = System.getProperty("user.dir")+"/tmp/tmp_mermas/";
 						File folder = new File(rutaFoto);
 		            	folder.mkdirs();
+		            	
+		            	rutaFoto = rutaFoto+"merma.jpg";
 		            	
 						BufferedImage image = webcam.getImage();
 						try {

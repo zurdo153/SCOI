@@ -68,6 +68,7 @@ import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
 import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Ponderacion;
+import Obj_Evaluaciones.Obj_Preguntas;
 import Obj_Evaluaciones.Obj_Temporada;
 import Obj_Inventarios.Obj_Alimentacion_De_Mermas;
 import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
@@ -4504,8 +4505,8 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 public boolean Guardar_Actividad_Planeacion(Obj_Actividades_De_Una_Planeacion Actividades_plan, Obj_Opciones_De_Respuesta opRespuesta, Obj_Prioridad_Y_Ponderacion opPonderacion, Obj_Seleccion_De_Usuarios usuarios, Obj_Frecuencia_De_Actividades frecuencia, int folio_empleado){
 		int folio_actividad=busca_y_actualiza_proximo_folio(20);
 		String query ="sp_insert_actividad_de_plan "+folio_actividad+",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
-		//TODO
-		 String querytabla = "INSERT INTO [tb_asignacion_de_empleados_a_una_actividad] ([folio_actividad]  ,[folio_empleado] ,[Estatus])"
+
+		String querytabla = "INSERT INTO [tb_asignacion_de_empleados_a_una_actividad] ([folio_actividad]  ,[folio_empleado] ,[Estatus])"
 		 		           + "                                                  VALUES ("+folio_actividad+",?                ,'V'      )";
 		Connection con = new Connexion().conexion();
 		try {
@@ -7002,11 +7003,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		Obj_Conn conect = new Obj_Conn();
 		conect.llenarConn(Establecimiento);
 	
-//		System.out.println(conect.getDir());
-//		System.out.println(conect.getDb());
-//		System.out.println(conect.getUser());
-//		System.out.println(conect.getPass());
-		
 	   String folio_merma="";
 	   String query = "exec sp_finalizar_merma '"+Establecimiento.trim()+"','"+folio_merma_scoi+"'"; 
 	   Statement stmt = null;
@@ -7022,7 +7018,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error en Buscar  en la funcion finalizar_merma \n"+query+"\n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
-//			return  folio_merma="Error en GuardarSQL";
 		}
 		finally{
 			if(stmt!=null){try {
@@ -7034,6 +7029,130 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return folio_merma;
 	}
 	
+	public int Entrada_De_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
+		
+		int folio=0;
+		
+		String query = "exec aumento_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+razon+"','"+estabRecibe+"'";
+		String query2 = "exec disminucion_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+estabRecibe+"',"+folioEmpleadoRecibe+",'"+razon+"','"+estabSurte+"'";
+		
+		String queryF = "";
+		
+		switch(movimiento){
+			case "aumento":		queryF = query	;break;
+			case "disminucion":	queryF = query2	;break;
+			default:			queryF = "x"	; break;
+		}
+		System.out.print(queryF);
+		
+	   Statement stmt = null;
+		try {
+			//TODO (Connexion Parametrizada)--------------------------------------------------------------------------------------------------------------------
+			Connexion con = new Connexion();
+			stmt = con.conexion().createStatement();
+			//--------------------------------------------------------------------------------------------------------------------------------------------------
+			ResultSet rs = stmt.executeQuery(queryF);
+			while(rs.next()){
+				folio=(rs.getInt("folio"));
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en Buscar  en la funcion Entrada_De_Insumos \n"+queryF+"\n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return folio;
+	}
+	
+	public boolean Guardar_Pregunta(Obj_Preguntas pregunta,String movimeinto){
+		String query = "exec sp_guardar_pregunta ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pregunta.getFolio());
+			pstmt.setString(2, pregunta.getPregunta().toUpperCase().trim());
+			pstmt.setString(3, pregunta.getStatus());
+			pstmt.setString(4, movimeinto);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pregunta ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pregunta ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pregunta ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			}
+		}		
+		return true;
+	}
+	
+//	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
+//		
+//		String query = "exec aumento_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+razon+"','"+estabRecibe+"'";
+//		String query2 = "exec disminucion_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+estabRecibe+"',"+folioEmpleadoRecibe+",'"+razon+"','"+estabSurte+"'";
+//		
+//		String queryF = "";
+//		
+//		switch(movimiento){
+//			case "aumento":		queryF = query	;break;
+//			case "disminucion":	queryF = query2	;break;
+//			default:			queryF = "x"	; break;
+//		}
+//
+//		Connection con = new Connexion().conexion();
+//		PreparedStatement pstmt = null;
+//		try {
+//			 con.setAutoCommit(false);
+//			 pstmt = con.prepareStatement(queryF);
+//			 pstmt.executeUpdate();
+//
+//				con.commit();
+//		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Entrada_De_Insumos ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+//			
+//			System.out.println("SQLException: " + e.getMessage());
+//			if (con != null){
+//				try {
+//					System.out.println("La transacción ha sido abortada");
+//					con.rollback();
+//				} catch(SQLException ex) {
+//					System.out.println(ex.getMessage());
+//				}
+//			} 
+//			return false;
+//		}finally{
+//			try {
+//				pstmt.close();
+//				con.close();
+//			} catch(SQLException e){
+//				e.printStackTrace();
+//			}
+//		}		
+//		return true;
+//	}
 	   
 //	public boolean Guardar_Alimentacion_De_Productos_Proximos_A_Caducar(Obj_Alimentacion_De_Productos_Proximos_A_Caducar proximos_caducar){
 //		int folio_transaccion=busca_y_actualiza_proximo_folio(42);
