@@ -213,8 +213,8 @@ public class Obj_Alimentacion_Cortes {
 
 	public boolean buscar_folio_corte(String folio_corte){ return new BuscarSQL().Folio_Corte(folio_corte); }
 	
-	public boolean guardar( Object[][] tb_asignaciones, Object[][] tb_vauchers, Object[][] tb_totales_por_fecha, Object[] lista_de_asignaciones_en_uso){
-			return new GuardarSQL().Guardar_Corte(this, tb_asignaciones, tb_vauchers, tb_totales_por_fecha, lista_de_asignaciones_en_uso); 
+	public boolean guardar( Object[][] tb_asignaciones, Object[][] tb_vauchers, Object[][] tb_totales_por_fecha, Object[] lista_de_asignaciones_en_uso,String turno_o_asignacion){
+			return new GuardarSQL().Guardar_Corte(this, tb_asignaciones, tb_vauchers, tb_totales_por_fecha, lista_de_asignaciones_en_uso,turno_o_asignacion); 
 	}
 	
 	public boolean eliminar(String folio_corte){ return new GuardarSQL().Borrar_Corte_completo(folio_corte); }

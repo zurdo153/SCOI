@@ -14,6 +14,7 @@ public class Obj_Ubicaciones_De_Productos {
 	String Familia;
 	String Area;
 	String Fecha_Ultima_Vez_Se_Agoto;
+	String Codigo_Barras;
 	
 	double Ultimo_Costo;
 	double Costo_Promedio;
@@ -24,6 +25,12 @@ public class Obj_Ubicaciones_De_Productos {
 	double Minimo;
 	double Maximo;
 		
+	public String getCodigo_Barras() {
+		return Codigo_Barras;
+	}
+	public void setCodigo_Barras(String codigo_Barras) {
+		Codigo_Barras = codigo_Barras;
+	}
 	public String getFecha_Ultima_Vez_Se_Agoto() {
 		return Fecha_Ultima_Vez_Se_Agoto;
 	}

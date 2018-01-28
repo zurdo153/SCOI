@@ -70,20 +70,18 @@ public class Obj_Programacion_De_Proveedores {
 		return new BuscarSQL().Devuelve_ultimo_folio_transaccion("80");
 	}
 	
-	public boolean validacion_existe (){
-		return new BuscarSQL().Validaciones("EPP");
+	public boolean validacion_existe (String semana, String Establecimiento){
+		return new BuscarSQL().Validaciones("EPP",semana, Establecimiento);
 	}
 	
-	public String[] Combo_Anio(int año) {
-		  try {return new Cargar_Combo().Combos_Tiempo(año,"An");
-			   } catch (SQLException e) {
-				e.printStackTrace();
-			   }
+	public String[] Combo_Anio(int año, String tipo_conc ) {
+		  try {return new Cargar_Combo().Combos_Tiempo(año, tipo_conc, "");
+		  }catch (SQLException e) {e.printStackTrace();}
 		  return null; 
 	}
 	
-	public String[] Combo_Semanas_Del_Año(int año,String Periodo) {
-		  try {return new Cargar_Combo().Combos_Tiempo(año,Periodo);
+	public String[] Combo_Semanas_Del_Año(int año,String Periodo, String Establecimiento) {
+		  try {return new Cargar_Combo().Combos_Tiempo(año,Periodo,Establecimiento);
 			   } catch (SQLException e) {
 				e.printStackTrace();
 			   }

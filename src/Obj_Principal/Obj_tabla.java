@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.MaskFormatter;
-
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 
 import Conexiones_SQL.Connexion;
@@ -279,7 +279,8 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 				}	
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en la funcion refrescar tabla SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				System.out.println("Comando:"+comando);
+				JOptionPane.showMessageDialog(null, "Error en la funcion refrescar tabla SQLException: "+e1.getMessage()+" \n  Comando:"+comando, "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 		
 	    }else{
@@ -294,7 +295,8 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 				}	
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en la funcion refrescar tabla SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				System.out.println("Comando:"+comando);
+				JOptionPane.showMessageDialog(null, "Error en la funcion refrescar tabla SQLException: "+e1.getMessage()+" \n Comando"+comando, "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 	     }	
 	}
@@ -470,12 +472,10 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 			if(tabla.isEditing()){
 				tabla.getCellEditor().stopCellEditing();
 			}
-			
 			if(tabla.getRowCount()==0){
 				 matriz = new String[0][0];
 				 return matriz;
 			}else{ 
-			
 				Vector vector = new Vector();
 				for(int i=0; i<tabla.getRowCount(); i++){
 					for(int c=0; c<columnas; c++){
@@ -492,7 +492,6 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 					  j++;
 				}
 			}	
-				
 			return matriz;
 		}
 		
@@ -575,7 +574,6 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 				   }
 			     }
 			   
-			   
 				if(tipo.equals("fecha")){
                  if(validarfecha(valorcelda).equals("Fecha Valida")){
                 	  return true;
@@ -605,7 +603,6 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 	            }  
 	            return valida;
 	        }    
-		 	 
 		 	 
 		 	public String validarfecha(String fecha){
 				String aviso = "";
@@ -691,6 +688,64 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 			
 			}
 			
+			tabla.getSelectionModel().setSelectionInterval(fila, fila);
+			tabla.editCellAt(fila, columna);
+			Component accion=tabla.getEditorComponent();
+			
+			final JTextComponent jtc = (JTextComponent)accion;
+			  jtc.requestFocus();
+			  jtc.selectAll();	
+			  scrollposicion(tabla,fila,columna);
+			
+			if(sacarFocoDeTabla.equals("si")){
+				tabla.lostFocus(null, null);
+				tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+				tabla.getSelectionModel().clearSelection();
+			}
+			return sacarFocoDeTabla;
+	    };
+	    
+	    @SuppressWarnings("deprecation")
+		public String RecorridoFocotabla_con_evento(JTable tabla,int fila,int columna, String parametrosacarfoco,KeyEvent evento_teclado){
+	    	 int cantidad_maxima_de_columnas=tabla.getColumnCount();
+			 String sacarFocoDeTabla = "";
+			 sacarFocoDeTabla=parametrosacarfoco;
+				
+			if(sacarFocoDeTabla.equals("ciclo")){
+				int Cantidad_filas =tabla.getRowCount();
+				sacarFocoDeTabla = "no";
+				if(Cantidad_filas==fila+1){
+					fila=0;
+				}else{
+					if(evento_teclado.getKeyCode()==38||evento_teclado.getKeyCode()==40) {
+					}else {
+				    fila=fila+1;
+					}
+				}
+			}else{	
+	            if(sacarFocoDeTabla.equals("no")){	
+					sacarFocoDeTabla = "no";
+					fila=fila-1;
+				}else{
+					int cantidadDeFilas = tabla.getRowCount();
+					if(fila == cantidadDeFilas-1){
+							sacarFocoDeTabla="si";
+					}else{
+						
+						sacarFocoDeTabla = "no";
+						if(evento_teclado.getKeyCode()==38||evento_teclado.getKeyCode()==40) {
+						}else{
+							if(evento_teclado.getKeyCode()==9) {
+								if(cantidad_maxima_de_columnas<columna) {
+								}else {
+								 columna=columna+1;
+								}
+							}else
+						     fila=fila+1;
+							}
+				 	   }
+						}
+					}
 			
 			tabla.getSelectionModel().setSelectionInterval(fila, fila);
 			tabla.editCellAt(fila, columna);

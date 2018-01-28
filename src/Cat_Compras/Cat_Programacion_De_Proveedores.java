@@ -213,7 +213,6 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
         @SuppressWarnings({ "rawtypes", "unused" })
        private TableRowSorter trsfiltroOrden;
         
-        
     int columnas2 = 11,checkbox2=1;
 	public void init_tabla(){
     	this.tablafa.getColumnModel().getColumn(0).setMinWidth(20);
@@ -279,11 +278,11 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimientoScoi);
 	
-	String anio[] = new Obj_Programacion_De_Proveedores().Combo_Anio(0);
+	String anio[] = new Obj_Programacion_De_Proveedores().Combo_Anio(0,"An");
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbAnio = new JComboBox(anio);
 	
-	String semana_del_anio[] =  new Obj_Programacion_De_Proveedores().Combo_Semanas_Del_Año(0,"St" );
+	String semana_del_anio[] =  new Obj_Programacion_De_Proveedores().Combo_Semanas_Del_Año(0,"St" ,cmbEstablecimiento.getSelectedItem().toString().trim());
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbSemanas_del_anio = new JComboBox(semana_del_anio);
 	
@@ -448,16 +447,27 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	  Obj_Programacion_De_Proveedores proveedores = new Obj_Programacion_De_Proveedores();
 	  String[][] tablacompleta= proveedores.refrescar_tablas(folioparametro);
 	  Object[]   vector = new Object[10];
-	  cmbAnio.setSelectedItem            (tablacompleta[0][13].toString());
+
+	  cmbAnio.removeActionListener(Op_Cambio_Anio);
+	  cmbAnio.removeAllItems();
+	  String anio_todos[] = new Obj_Programacion_De_Proveedores().Combo_Anio(0,"At");
+	  for(int i=0;i<anio_todos.length;i++){
+		  cmbAnio.addItem(anio_todos[i].toString().trim());
+	  }
+	  cmbAnio.addActionListener(Op_Cambio_Anio);
+	  cmbAnio.setSelectedItem            (tablacompleta[0][13].toString());	 
+	  
+	  
 	  cmbSemanas_del_anio.removeAllItems();
-		  String semana_del_aniop[] = new Obj_Programacion_De_Proveedores().Combo_Semanas_Del_Año(0,"St" );
-		for(int i=0;i<semana_del_aniop.length;i++){
+	  String semana_del_aniop[] = new Obj_Programacion_De_Proveedores().Combo_Semanas_Del_Año(0,"St" ,cmbEstablecimiento.getSelectedItem().toString().trim());
+	  for(int i=0;i<semana_del_aniop.length;i++){
 		  cmbSemanas_del_anio.addItem(semana_del_aniop[i].toString().trim());
-		}
+	  }
 	  cmbSemanas_del_anio.setSelectedItem(tablacompleta[0][14].toString());
+	  
+	  
 	  txtFolio.setText                   (tablacompleta[0][10].toString());
 	  cmbEstablecimiento.setSelectedItem (tablacompleta[0][12].toString());
-	  txtFecha.setText                   (tablacompleta[0][15].toString());
 	  cmb_status.setSelectedItem         (tablacompleta[0][16].toString());
 	  
 	for(int i=0;i<tablacompleta.length;i++){
@@ -767,9 +777,25 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 
 	
     ActionListener nuevo = new ActionListener(){
+	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e) {
 			panelLimpiar();
 			panel_boolean(true);
+			
+		    cmbAnio.removeActionListener(Op_Cambio_Anio);
+			cmbAnio.removeAllItems();
+			String anio_todos[] = new Obj_Programacion_De_Proveedores().Combo_Anio(0,"An");
+			for(int i=0;i<anio_todos.length;i++){
+				  cmbAnio.addItem(anio_todos[i].toString().trim());
+			}
+			cmbAnio.addActionListener(Op_Cambio_Anio);
+			  
+			cmbSemanas_del_anio.removeAllItems();
+			String semana_del_aniop[] = new Obj_Programacion_De_Proveedores().Combo_Semanas_Del_Año(Integer.valueOf(cmbAnio.getSelectedItem().toString().trim()),"Sr" ,cmbEstablecimiento.getSelectedItem().toString().trim());
+			for(int i=0;i<semana_del_aniop.length;i++){
+			  cmbSemanas_del_anio.addItem(semana_del_aniop[i].toString().trim());
+			}
+			
 			cmbAnio.setSelectedIndex(0);
 			txtFolio.setText(new Obj_Programacion_De_Proveedores().Nuevo()+"");
 			btnGuardar.setEnabled(true);
@@ -785,17 +811,11 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
     ActionListener Op_Cambio_Anio = new ActionListener(){
 	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e) {
-		 if(new Obj_Programacion_De_Proveedores().validacion_existe ()){
-		 }else {
-			JOptionPane.showMessageDialog(null, "La Semana Actual Ya Esta Guardada", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-		 }	
-		 
-  			cmbSemanas_del_anio.removeAllItems();
-  			String semana_del_aniop[] = new Obj_Programacion_De_Proveedores().Combo_Semanas_Del_Año(Integer.valueOf(cmbAnio.getSelectedItem().toString()),"Sa" );
-  			for(int i=0;i<semana_del_aniop.length;i++) {
-  			cmbSemanas_del_anio.addItem(semana_del_aniop[i].toString().trim());
-  			}
-
+			cmbSemanas_del_anio.removeAllItems();
+	  		String semana_del_aniop[] = new Obj_Programacion_De_Proveedores().Combo_Semanas_Del_Año(Integer.valueOf(cmbAnio.getSelectedItem().toString()),"Sr" ,cmbEstablecimiento.getSelectedItem().toString().trim());
+	  		for(int i=0;i<semana_del_aniop.length;i++) {
+	  			cmbSemanas_del_anio.addItem(semana_del_aniop[i].toString().trim());
+	  		}
   	   }
       }; 
       
@@ -1049,37 +1069,36 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			//TODO corregir todo estan mal las condiciones
-			int anio=Integer.valueOf(txtFecha.getText().toString().trim().substring(6,txtFecha.getText().toString().trim().length()));
-			
-			if(Integer.valueOf(cmbSemanas_del_anio.getSelectedItem().toString())<=Integer.valueOf(txtSemana.getText().trim()) ){
-			      if(Integer.valueOf(cmbAnio.getSelectedItem().toString())<=anio ) {
-					    JOptionPane.showMessageDialog(null, "Solo Se Puede Editar Del Año en Trascurso O a Futuro" , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		
-					    return;
-			      }else {
-					    JOptionPane.showMessageDialog(null, "Solo Se Puede Editar La Semana En  Transcurso "+txtSemana.getText().trim()+" o A Futuro" , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		
-					    return;
-			      }
-			}else {
-				panel_boolean(true);
-				cmbEstablecimiento.setEnabled(false);
-	            cmbAnio.setEnabled(false);
-	            cmbSemanas_del_anio.setEnabled(false);
-	            btnEljDomingo.setEnabled(false);
-	            btnEljLunes.setEnabled(false);
-	            btnEljMartes.setEnabled(false);
-	            btnEljMiercoles.setEnabled(false);
-	            btnEljJueves.setEnabled(false);
-	            btnEljViernes.setEnabled(false);
-	            btnEljSabado.setEnabled(false);
-				cmb_status.setEnabled(true);
-				txtFolio.setEditable(false);
-				btnModificar.setEnabled(false);
-				btnGuardar.setEnabled(true);
-				NuevoModifica="M";
-			}
+			int AnioActual =Integer.valueOf(txtFecha.getText().toString().trim().substring(6,txtFecha.getText().toString().trim().length()));
+			int SemanaActual =Integer.valueOf(txtSemana.getText().toString().trim());
+		   if(Integer.valueOf(cmbAnio.getSelectedItem().toString())<AnioActual ) {
+			    JOptionPane.showMessageDialog(null, "Solo Se Puede Editar El Año En Trascurso "+AnioActual+" o a Futuro" , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		
+			    return;	  
+		   }else {   
+		   		   if(Integer.valueOf(cmbSemanas_del_anio.getSelectedItem().toString())<SemanaActual){
+					 JOptionPane.showMessageDialog(null, "Solo Se Puede Editar La Semana En Transcurso "+txtSemana.getText().trim()+" o a Futuro" , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));		
+					 return;
+				   }else {
+						panel_boolean(true);
+						cmbEstablecimiento.setEnabled(false);
+			            cmbAnio.setEnabled(false);
+			            cmbSemanas_del_anio.setEnabled(false);
+			            btnEljDomingo.setEnabled(false);
+			            btnEljLunes.setEnabled(false);
+			            btnEljMartes.setEnabled(false);
+			            btnEljMiercoles.setEnabled(false);
+			            btnEljJueves.setEnabled(false);
+			            btnEljViernes.setEnabled(false);
+			            btnEljSabado.setEnabled(false);
+						cmb_status.setEnabled(true);
+						txtFolio.setEditable(false);
+						btnModificar.setEnabled(false);
+						btnGuardar.setEnabled(true);
+						NuevoModifica="M";
+				   }
+		   }   
 		}		
-		};
+	};
 	
     ActionListener guardar = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -1087,28 +1106,29 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 					if(!Mensaje.equals("Para Poder Guardar Es Requerido Alimente:")){
 						JOptionPane.showMessageDialog(null, Mensaje, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					}else{
-						Obj_Programacion_De_Proveedores proveedores = new Obj_Programacion_De_Proveedores();
-						proveedores.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));
-						proveedores.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString());
-						proveedores.setAnio(Integer.valueOf(cmbAnio.getSelectedItem().toString().trim()));
-						proveedores.setSemana_de_anio(Integer.valueOf(cmbSemanas_del_anio.getSelectedItem().toString().trim()));
-						proveedores.setNuevoModifica(NuevoModifica);  
-						proveedores.setTabla_programacion(TablaGuardado());
-        			if(proveedores.Guardar()){
-    					JOptionPane.showMessageDialog(null,"El Registro Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
-    					btnDeshacer.doClick();
-    					return;
-    				}else{
-    					JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-    					return;
-    				}		
+					    if(new Obj_Programacion_De_Proveedores().validacion_existe (cmbSemanas_del_anio.getSelectedItem().toString().trim(),cmbEstablecimiento.getSelectedItem().toString().trim())||NuevoModifica.equals("M")){	
+									Obj_Programacion_De_Proveedores proveedores = new Obj_Programacion_De_Proveedores();
+									proveedores.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));
+									proveedores.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString());
+									proveedores.setAnio(Integer.valueOf(cmbAnio.getSelectedItem().toString().trim()));
+									proveedores.setSemana_de_anio(Integer.valueOf(cmbSemanas_del_anio.getSelectedItem().toString().trim()));
+									proveedores.setNuevoModifica(NuevoModifica);  
+									proveedores.setTabla_programacion(TablaGuardado());
+			        			if(proveedores.Guardar()){
+			    					JOptionPane.showMessageDialog(null,"El Registro Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+			    					btnDeshacer.doClick();
+			    					return;
+			    				}else{
+			    					JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+			    					return;
+			    				}	
+			        			
+					     }else {
+							JOptionPane.showMessageDialog(null, "La Semana Actual Ya Esta Guardada", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						 }	
 				}
 		 }
 	 };
-	 
-	
-	 
-	 
 	
  	 public String[][] TablaGuardado(){
 			int rengloneslunes     = tablaLunes.getRowCount()    ;
@@ -1364,7 +1384,6 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	    	this.tablafilordenes.getColumnModel().getColumn(11).setMinWidth(300);
 
 			String comandof="exec proveedores_programacion_filtro_ordenes_de_compra '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+parametrop+"','"+cadena+"'";
-	    	System.out.println(comandof);
 	    	
 			String basedatos="26",pintar="si";
 			ObjTab.Obj_Refrescar(tablafilordenes,modeloor_filtro, columnaspo, comandof, basedatos,pintar,checkbox2);

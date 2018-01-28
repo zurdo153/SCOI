@@ -820,15 +820,21 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte, Object[][] tb_asignaciones,Object[][] tb_vauchers,Object[][] tb_totales_por_fecha,  Object[] lista_de_asignaciones_en_uso){
-		String query_asignacion = 		 "exec sp_insert_asignacion_para_cortes  ?,?,?,?,?,?,?,?,?";		// <-9		11 ->  tb_tabla_de_asignaciones_para_cortes 
-		String Parametros_asignacion ="";
+	public boolean Guardar_Corte(Obj_Alimentacion_Cortes corte, Object[][] tb_asignaciones,Object[][] tb_vauchers,Object[][] tb_totales_por_fecha,  Object[] lista_de_asignaciones_en_uso,String turno_o_asignacion){
+			
+		String query_asignacion = 		 "exec cortes_asignacion_insert ?,?,?,?,?,?,?,?,?";		// <-9		11 ->  tb_tabla_de_asignaciones_para_cortes 
+		String query_vauchers =   		 "exec cortes_vouchers_insert ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
+		String query_totales_por_fecha = "exec cortes_totales_de_asignaciones_por_fecha_insert ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
+		String query_corte =      		 "exec cortes_corte_de_caja_insert ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-16
 		
-		String query_vauchers =   		 "exec sp_insert_vauchers ?,?,?,?,?,?,?,?,?,?,?,?,?";					// <-11		13 ->  tb_vauchers
-		String query_totales_por_fecha = "exec sp_insert_totales_de_asignaciones_por_fecha ?,?,?,?";		// <-4		 6 ->  tb_totales_de_asignaciones_por_fecha
-		String query_corte =      		 "exec sp_insert_corte_caja ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";				// <-16
-		String query_status_corte_para_filtro="update IZAGAR_Relacion_de_Asignaciones_Liquidadas set status_corte=1 where Asignacion = ?";
-
+		String Parametros_asignacion ="";	
+		String query_status_corte_para_filtro="";
+		
+		if(turno_o_asignacion.equals("A")) {
+		  query_status_corte_para_filtro="update IZAGAR_Relacion_de_Asignaciones_Liquidadas set status_corte=1 where Asignacion = ?";
+		}else {
+		  query_status_corte_para_filtro="update IZAGAR_Relacion_de_Turnos_Liquidados set status_corte=1 where turno = ?";	
+		} 
 		
 		Connection con = new Connexion().conexion();
 		Connection con_IZAGAR = new Connexion().conexion_IZAGAR();
@@ -849,7 +855,6 @@ public class GuardarSQL {
 			int i=1;
 			
 			for(int x= 0; x<tb_asignaciones.length; x++){
-				
 				pstmt_asignacion.setString(i, 		corte.getFolio_corte().toUpperCase().trim());
 				pstmt_asignacion.setString(i+=1,	tb_asignaciones[x][0].toString().trim());
 				pstmt_asignacion.setString(i+=1,	tb_asignaciones[x][1].toString().trim());
@@ -869,10 +874,10 @@ public class GuardarSQL {
 								 	    tb_asignaciones[x][5].toString().trim()+","+
 									 	tb_asignaciones[x][6].toString().trim()+","+
 										tb_asignaciones[x][7].toString().trim() ;
-				
 				pstmt_asignacion.executeUpdate();
 				
 				i=1;
+				System.out.println(	"paso asignacion");
 			}
 			
 			i=1;
@@ -889,13 +894,13 @@ public class GuardarSQL {
 				pstmt_vauchers.setString(i+=1, tb_vauchers[x][7].toString().trim());
 				pstmt_vauchers.setString(i+=1, tb_vauchers[x][8].toString().trim());
 				pstmt_vauchers.setFloat(i+=1, Float.parseFloat(tb_vauchers[x][9].toString().trim()));
-				
 				pstmt_vauchers.setString(i+=1, tb_vauchers[x][10].toString().trim());
 				pstmt_vauchers.setFloat(i+=1, Float.parseFloat(tb_vauchers[x][11].toString().trim()));
 				
 				pstmt_vauchers.executeUpdate();
 				
 				i=1;
+				System.out.println(	"paso vauchers");
 			}
 			
 			i=1;
@@ -905,10 +910,9 @@ public class GuardarSQL {
 				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][0].toString().trim());
 				pstmt_total_por_fecha.setString(i+=1, tb_totales_por_fecha[x][1].toString().trim());
 				pstmt_total_por_fecha.setFloat(i+=1, Float.parseFloat(tb_totales_por_fecha[x][2].toString().trim()));
-				
 				pstmt_total_por_fecha.executeUpdate();
-				
 				i=1;
+				System.out.println(	"paso totales_por_fecha");
 			}
 			
 			i=1;
@@ -935,14 +939,14 @@ public class GuardarSQL {
 			pstmt_corte.executeUpdate();
 			
 			con.commit();
-			
+			System.out.println(	"paso guardado de corte");
 			pstmt_update_asignacion.setString(1,tb_asignaciones[0][0].toString().trim());
 		    pstmt_update_asignacion.executeUpdate();
 		    con_IZAGAR.commit();
 		    
 		
 		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage()+Parametros_asignacion);
+			System.out.println("SQLException: "+e.getMessage()+" "+Parametros_asignacion);
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Corte ] Insert  SQLException: "+e.getMessage()+"\n"+query_asignacion+Parametros_asignacion+"\n"+query_vauchers+"\n"+query_totales_por_fecha+"\n"+query_corte, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			
 			if(con != null){
@@ -1320,20 +1324,10 @@ public class GuardarSQL {
 			
 			for(int i=0; i<tabla.length; i++){
 				
-//				System.out.println(alim_denom.getFolio_corte().toUpperCase());
-//				System.out.println(alim_denom.getEmpleado().toUpperCase().trim());
-//				System.out.println(alim_denom.getEstablecimiento().toUpperCase());
-//				
-//				System.out.println(tabla[i][0].toString().trim());
-//				System.out.println(tabla[i][2].toString().trim());
-//				System.out.println(tabla[i][3].toString().trim());
-//				System.out.println(tabla[i][4].toString().trim());
-				
 				
 				pstmt.setString(1, alim_denom.getFolio_corte().toUpperCase());
 				pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
 				pstmt.setString(3, alim_denom.getEstablecimiento().toUpperCase());
-				
 				pstmt.setInt(4, Integer.parseInt(tabla[i][0].toString().trim()));
 				pstmt.setFloat(5, Float.parseFloat(tabla[i][2].toString().trim()));
 				pstmt.setFloat(6, Float.parseFloat(tabla[i][3].toString().trim()));
@@ -1378,20 +1372,18 @@ public class GuardarSQL {
 			con.setAutoCommit(false);
 			
 			for(int i=0; i<tabla.length; i++){
-				
 				pstmt.setString(1, alim_denom.getEstablecimiento().toUpperCase().trim());
 				pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
-				
 				pstmt.setString(3, tabla[i][0].toString().trim());
 				pstmt.setFloat (4, Float.parseFloat(tabla[i][1].toString().trim()));
 				pstmt.setInt (5, folio_usuario);
-				
 				pstmt.execute();
 			}
 					
 			con.commit();
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Alimentacion_deposito ] SQLException: "+query+" \n"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
@@ -3282,64 +3274,70 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 		return true;
 	}
 	
-	public String Guardar_Retiro_Cajero(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro,String Asignacion){
-		Connection con = new Connexion().conexion();
-	       String folio_retiro =""	;	
-		   String folio = " select serie +(select convert(varchar(20),folio+1) from tb_folios where transaccion='Retiros A Cajeros') as folio "+
-		                  " from tb_establecimiento where nombre='"+Establecimiento.trim()+"'";
-		              Statement stmtfolio = null;
-								try {
-									stmtfolio = con.createStatement();
-									ResultSet rs = stmtfolio.executeQuery(folio);
-									while(rs.next()){
-										folio_retiro=rs.getString("folio");
-									}
-							   	} catch (Exception e) {
-									JOptionPane.showMessageDialog(null, "Error en Buscar  en la funcion Guardar_Retiro_Cajero \n  en  select serie +(select convert(varchar(20),folio+1) from tb_folios where transaccion='Retiros A Cajeros') \n as folio  from tb_establecimiento where nombre='"+Establecimiento.trim()+"'  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-									e.printStackTrace();
-									return  folio_retiro="Error en GuardarSQL";
-							     	}
-								
+	public void Reporte_De_Retiros_Cajeros(String folio_retiro) {
+		String reporte = "Obj_Reporte_De_Retiro_A_Cajeros.jrxml";
+		String comando = "exec sp_Reporte_De_Retiros_A_Cajeros '"+folio_retiro+"';";
+   	    new Generacion_Reportes().Reporte_chico(reporte, comando, "2.26", "si",1);
+	 }
+	
+	public boolean Guardar_Retiro_Cajero(String Establecimiento,int Folio_empleado,int folio_supervisor,float importe_retiro,String Asignacion){
+		int folio=busca_y_actualiza_proximo_folio(1);
+		 Connection con = new Connexion().conexion();
+	  	 PreparedStatement pstmt = null;
+	  	 
+		    String folio_retiro =""	;	
+			String folio_qry = " select serie +(convert(varchar(20),"+folio+")) from tb_establecimiento where nombre='"+Establecimiento.trim()+"'";
+	        Statement stmtfolio = null;
+
+	  	 try {
+		 	stmtfolio = con.createStatement();
+			ResultSet rs = stmtfolio.executeQuery(folio_qry);
+			while(rs.next()){
+						folio_retiro=rs.getString(1);
+			}
+		 } catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Error en Buscar  en la funcion Guardar_Retiro_Cajero \n  en "+folio_qry+"\n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+				return false;
+		 }
 			Obj_Retiros_Cajeros Folio_Retiro_Devolver= new Obj_Retiros_Cajeros();
 			Folio_Retiro_Devolver.setFolio_retiro(folio_retiro);
-								
-		String query = "exec sp_insert_retiros_a_cajeros_2 ?,?,?,?,?,'"+Establecimiento.trim()+"','"+Asignacion+"'";
-	  	 PreparedStatement pstmt = null;	
-		try {
-			con.setAutoCommit(false);
+	 
+			String query = "exec retiros_a_cajeros_insert ?,?,?,?,?,'"+Establecimiento.trim()+"','"+Asignacion+"'";
 
-			pstmt = con.prepareStatement(query);
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+	  		 pstmt.setInt(1, Folio_empleado);
+			 pstmt.setInt(2, folio_supervisor);
+			 pstmt.setFloat(3, importe_retiro);
+			 pstmt.setInt(4,0 );
+			 pstmt.setString(5, folio_retiro);
+			 pstmt.executeUpdate();
 			 
-			pstmt.setInt(1, Folio_empleado);
-			pstmt.setInt(2, folio_supervisor);
-			pstmt.setFloat(3, importe_retiro);
-			pstmt.setInt(4,0 );
-			pstmt.setString(5, folio_retiro);
-									 
-			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
-			System.out.println("SQLException:Guardar_Retiro_Cajero " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Retiro_Cajero ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				} catch(SQLException ex) {
 					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Retiro_Cajero ] Insert  SQLException: sp_insert_retiros_a_cajeros "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			} 
-			return folio_retiro="Error en GuardarSQL";
+			return false;
 		}finally{
 			try {
 				pstmt.close();
 				con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Retiro_Cajero ] Insert  SQLException: sp_insert_retiros_a_cajeros "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
-		}		
-		return folio_retiro;
+		}	
+		Reporte_De_Retiros_Cajeros(folio_retiro);
+		return true;
 	}
 	
 public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){

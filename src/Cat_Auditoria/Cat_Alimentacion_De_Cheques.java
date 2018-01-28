@@ -32,7 +32,6 @@ public class Cat_Alimentacion_De_Cheques extends JDialog {
 	public JToolBar menu_toolbar = new JToolBar();
 	JButton btn_guardar= new JButton(new ImageIcon("Iconos/save_icon&16.png"));
 	
-//	JLabel lblEmpleado = new JLabel();
 	JTextField txtTotal = new JTextField();
 	String columnNames[] = { "Orden", "Cantidad"};
 	
@@ -61,10 +60,8 @@ public class Cat_Alimentacion_De_Cheques extends JDialog {
 	JScrollPane scroll_tabla_cheques = new JScrollPane(tabla_cheques);
 	
 	public Cat_Alimentacion_De_Cheques(){
-//		cont.setBackground(new Color(86,161,85));
 		Constructor();
 		
-//      asigna el foco al JTextField deseado al arrancar la ventana
         this.addWindowListener(new WindowAdapter() {
                 public void windowOpened( WindowEvent e ){
                 	tabla_cheques.setEnabled(true);
@@ -83,10 +80,7 @@ public class Cat_Alimentacion_De_Cheques extends JDialog {
 		
 		
 		this.panel.add(menu_toolbar).setBounds(0,0,150,25);
-//		this.panel.add(lblEmpleado).setBounds(30,35,350,20);
-		
 		this.panel.add(scroll_tabla_cheques).setBounds(20,60,315,420);
-		
 		this.panel.add(new JLabel("Total de Cantidades:")).setBounds(20,485,120,20);
 		this.panel.add(txtTotal).setBounds(140,485,180,20);
 		
@@ -146,17 +140,5 @@ public class Cat_Alimentacion_De_Cheques extends JDialog {
 		txtTotal.setText(suma+"");
     }
 	
-//    private boolean isNumeric(String cadena){
-//    	try {
-//    		if(cadena.equals("")){
-//        		return true;
-//    		}else{
-//    			Float.parseFloat(cadena);
-//        		return true;
-//    		}
-//    	} catch (NumberFormatException nfe){
-//    		return false;
-//    	}
-//    }
     
 }

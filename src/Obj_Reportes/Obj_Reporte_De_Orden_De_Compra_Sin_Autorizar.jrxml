@@ -160,7 +160,10 @@
 	<field name="status" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="status"/>
 	</field>
-	<variable name="Suma_Total_Compra" class="java.lang.Double" incrementType="Column" calculation="Sum">
+	<variable name="diferencia_total" class="java.lang.Double" resetType="None">
+		<initialValueExpression><![CDATA[$F{precio_venta_pz}]]></initialValueExpression>
+	</variable>
+	<variable name="Suma_Total_Compra" class="java.lang.Double" incrementType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{total_OC}]]></variableExpression>
 	</variable>
 	<background>
@@ -171,14 +174,14 @@
 			<frame>
 				<reportElement mode="Opaque" x="1" y="1" width="689" height="60" forecolor="#000080" backcolor="#000066" uuid="f40033e7-3b11-4284-9dc5-639e231aceba"/>
 				<staticText>
-					<reportElement style="Title" x="3" y="0" width="257" height="29" uuid="31bea70f-4e17-4539-aad9-9162208eeb59">
+					<reportElement style="Title" x="3" y="0" width="274" height="29" uuid="31bea70f-4e17-4539-aad9-9162208eeb59">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
 						<font size="22" isBold="true"/>
 					</textElement>
-					<text><![CDATA[ORDEN DE COMPRA]]></text>
+					<text><![CDATA[PRE ORDEN DE COMPRA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="3" y="30" width="87" height="12" forecolor="#FFFFFF" uuid="754018b0-9c22-4bff-9da8-6377031ae891">
@@ -325,15 +328,6 @@
 						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Notas:"+$F{notas}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="600" y="12" width="80" height="12" forecolor="#FFFFFF" uuid="7969fc61-f49c-40ca-8248-2787f44f81d5">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<textElement>
-						<font size="9" isBold="true" isUnderline="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<image>
@@ -524,7 +518,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="false">
+				<textField pattern="#,##0.00#" isBlankWhenNull="false">
 					<reportElement mode="Transparent" x="703" y="0" width="46" height="12" forecolor="#000000" backcolor="#000000" uuid="d366c539-1707-478f-bab4-b948202252a2">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -681,44 +675,18 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
-			<textField isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="198" y="24" width="170" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="ecbea50d-8d34-46c6-ba1e-add8ab81cd78">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["AUTORIZO:"+$F{autorizo}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="198" y="23" width="170" height="1" uuid="0661f3cb-6681-4ebb-9a69-29a14b2ea0ad">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="387" y="23" width="170" height="1" uuid="15ed485f-574f-42ab-a6a1-7a7edcd465e8">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="573" y="23" width="170" height="1" uuid="aec6cf88-26f6-421c-9d09-155a6a9ad080">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-			</line>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="20">
-			<textField pattern="#,##0.00#">
-				<reportElement key="" x="513" y="0" width="240" height="20" uuid="b9a70524-2854-4996-961d-e3748df5060e"/>
+		<band height="14">
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="false">
+				<reportElement x="480" y="0" width="271" height="14" backcolor="#000000" uuid="741ae8ad-532b-4ded-8689-97f1465a05f0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Right">
-					<font size="10" isBold="true"/>
+					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Total: "+$V{Suma_Total_Compra}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Total:  "+$V{Suma_Total_Compra}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

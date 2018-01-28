@@ -1,8 +1,6 @@
 package Cat_Auditoria;
 
-import java.awt.AWTException;
 import java.awt.Container;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -22,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -31,15 +28,16 @@ import Conexiones_SQL.Connexion;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Filtro_De_Asignacion extends JDialog{
-	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
-	
 	Object[][] MatrizFiltro ;
+	Obj_tabla ObjTab =new Obj_tabla();
+	int columnas = 9,checkbox=1;
 	
 	DefaultTableModel modeloFiltro = new DefaultTableModel(null,
             new String[]{"Asignacion", "F. Cajero(a)","Nombre Cajera(o)","Total","Cod Estab","Establecimiento","Fecha de Asignacion","Fecha de Liquidacion",""}
@@ -99,16 +97,13 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 
     @SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
-    
-	JTextField txtFolioAsignacion = new Componentes().text(new JCTextField(), "Asignacion", 10, "String");   
-	JTextField txtFolioCajero     = new Componentes().text(new JCTextField(), "Folio C.", 10, "String"); 
-	JTextField txtNombreCajero    = new Componentes().text(new JCTextField(), "Nombre Del Cajero", 300, "String"); 
+	JTextField txtFiltro_asignacion = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<"    , 300, "String");
 	
 	JButton btnCargar = new JCButton("Cargar"                  ,"la-flecha-verde-de-la-derecha-icono-8326-32.png","Azul");
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Cat_Filtro_De_Asignacion() {
-		setSize(1020,450);
+		setSize(1020,410);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setModal(true);
@@ -121,45 +116,23 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 		
 		tablaRender();
 		
-		campo.add(txtFolioAsignacion).setBounds(10,38,70,20);
-		campo.add(txtFolioCajero).setBounds(80,38,70,20);
-		campo.add(txtNombreCajero).setBounds(150,38,210,20);
-		campo.add(btnCargar).setBounds(880,18,125,30);
-		
-		campo.add(scroll).setBounds(10,60,995,320);
+		campo.add(txtFiltro_asignacion).setBounds(10  ,30 ,810 ,20 );
+		campo.add(btnCargar).setBounds           (880 ,18 ,125 ,30 );
+		campo.add(scroll).setBounds              (10  ,50 ,995 ,320);
 		cont.add(campo);
 		
-		txtFolioAsignacion.addKeyListener(opFiltroAsignacion);
-		txtFolioCajero.addKeyListener(opFiltroFolioCajero);
-		txtNombreCajero.addKeyListener(opFiltroNombreCajero);
+		txtFiltro_asignacion.addKeyListener(opFiltro_busqueda);
 		
         this.addWindowListener(new WindowAdapter() {
             public void windowOpened( WindowEvent e ){
-          	  txtNombreCajero.requestFocus();
-          	enterauto();	  
+            	txtFiltro_asignacion.requestFocus();
            }
         });
 	}
-	
-	public void enterauto(){
-			Robot robot;
-			try {
-	            robot = new Robot();
-	            robot.keyPress(KeyEvent.VK_ENTER);
-	            robot.keyRelease(KeyEvent.VK_ENTER);
-	        } catch (AWTException e) {
-	            e.printStackTrace();
-	        }
- 	     };
  	     
-	@SuppressWarnings("unchecked")
 	public void limpiar_filtro(){
-		trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-		trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-		trsfiltro.setRowFilter(RowFilter.regexFilter("", 2));
-		txtFolioAsignacion.setText("");
-		txtFolioCajero.setText("");
-		txtNombreCajero.setText("");
+		txtFiltro_asignacion.setText("");
+		ObjTab.Obj_Filtro(tablaFiltro, "", columnas);
 	}
 	
 	public void tablaRender(){
@@ -267,48 +240,12 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 		}
 		return filas;
 	}	
-   	
-//	public int getFilasSCOI(String qry){
-//		int filas=0;
-//		Statement stmt = null;
-//		try {
-//			stmt = new Connexion().conexion_IZAGAR().createStatement();
-//			ResultSet rs = stmt.executeQuery(qry);
-//			while(rs.next()){
-//				filas++;
-//			}
-//			
-//		} catch (SQLException e1) {
-//			e1.printStackTrace();
-//		}
-//		return filas;
-//	}
 	
-	KeyListener opFiltroAsignacion = new KeyListener(){
-		@SuppressWarnings("unchecked")
+   	KeyListener opFiltro_busqueda = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioAsignacion.getText().toUpperCase(), 0));
+			ObjTab.Obj_Filtro(tablaFiltro, txtFiltro_asignacion.getText().toUpperCase(), columnas);
 		}
 		public void keyTyped(KeyEvent arg0) {}
-		public void keyPressed(KeyEvent arg0) {}		
-	};
-	
-	KeyListener opFiltroFolioCajero = new KeyListener(){
-		@SuppressWarnings("unchecked")
-		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioCajero.getText().toUpperCase(), 1));
-		}
-		public void keyTyped(KeyEvent arg0) {}
-		public void keyPressed(KeyEvent arg0) {}		
-	};
-	
-	KeyListener opFiltroNombreCajero = new KeyListener(){
-		@SuppressWarnings("unchecked")
-		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombreCajero.getText().toUpperCase(), 2));
-		}
-		public void keyTyped(KeyEvent arg0) {
-		}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
 
