@@ -388,11 +388,11 @@ public class Cat_Alimentacion_De_Inventarios_De_Insumos extends JFrame{
 					 
 					 int[] ignorarColumnas = {1,2,4,5,6};
 					 String xml = new CrearXmlString().CadenaXML(tabla, ignorarColumnas);
-					
 //					 System.out.println(xml);
 					 
 					 int folio = new GuardarSQL().Entrada_De_Insumos(xml,txaNota.getText().toString().trim(),estabRecibe,folioEmpleadoRecibe,razon,estabSurte,"aumento");
 					  if(folio > 0){
+						  
 			                deshacer();
 			                
 				 			String basedatos="2.26";
@@ -402,9 +402,6 @@ public class Cat_Alimentacion_De_Inventarios_De_Insumos extends JFrame{
 							String reporte = "Obj_Reporte_Entysal_De_Insumos_Por_Folio.jrxml";
 			    			new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 						  
-						  
-//						  JOptionPane.showMessageDialog(null, "Los Insumos Se Guardaron Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-			            	 
 				      }else{
 						JOptionPane.showMessageDialog(null, "El Registro No Pudo Ser Guardado", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 				    	return;
@@ -414,7 +411,6 @@ public class Cat_Alimentacion_De_Inventarios_De_Insumos extends JFrame{
 					 JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+CamposVacios, "Aviso",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				    	return;
 				 }
-				 
 			 }
 		}			
     };

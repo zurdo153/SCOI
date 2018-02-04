@@ -66,6 +66,7 @@ import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Cuadrantes.Obj_Actividad;
+import Obj_Evaluaciones.Obj_Cuestionarios;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
@@ -10181,6 +10182,37 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return preguntas;
 	}
 	
+	public Obj_Cuestionarios cuestionario(int folio) throws SQLException{
+		Obj_Cuestionarios cuest = new Obj_Cuestionarios();
+		String query = "exec buscar_cuestionario_xml "+folio;
+
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				cuest.setFolio(rs.getInt("folio"));
+				cuest.setCuestionario(rs.getString("cuestionario").trim());
+				cuest.setClasificacion(rs.getString("clasificacion").trim());
+				cuest.setEscala(rs.getString("escala").trim());
+				cuest.setStatus(rs.getString("status").trim());
+				cuest.setArreglo(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas").trim()));
+				
+			}
+//			for(int i = 0; i<cuest.getArreglo().length; i++){
+//				System.out.println(cuest.getArreglo()[i][0]);
+//				System.out.println(cuest.getArreglo()[i][1]);
+//			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return cuest;
+	}
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";
