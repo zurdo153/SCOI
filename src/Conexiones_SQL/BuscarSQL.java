@@ -3750,9 +3750,6 @@ public class BuscarSQL {
 		return existe;
 	}
 	
-
-	
-	
 	public boolean obtener_checadas_dia_dobla(int folio)throws SQLException{
 		boolean descanso = false;
 		String query = "sp_valida_cantidad_de_checadas_en_dia_dobla "+folio;
@@ -4853,10 +4850,9 @@ public class BuscarSQL {
 
 	public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLException{
 		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
-		
-	   String pc_nombre="";
-//	 	pc_nombre ="SIV_CAJA1";
-	   
+	    String pc_nombre="";
+//	    pc_nombre="CAJA_REFA";
+//	    folio_empleado= 2071; 
 					try {
 	   pc_nombre = InetAddress.getLocalHost().getHostName();
 					    			InetAddress.getLocalHost().getHostName();
@@ -4866,16 +4862,8 @@ public class BuscarSQL {
 					}
 					
 		String query = "exec sp_select_datos_cajero '"+folio_empleado+"'";
+		String query_2="sp_IZAGAR_consulta_de_venta_por_turno_o_asignacion '"+pc_nombre+"','"+folio_empleado+"'";
 		
-		String query_2="SELECT   isnull(sum(liquidaciones_tickets.importe),0)as importe "
-				+ "						        ,asignaciones_cajeros.folio as folio_asignacion"
-				+ "						        ,(select nombre from establecimientos where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')))as establecimiento"
-				+ "					  FROM asignaciones_cajeros"
-				+ "				        LEFT OUTER JOIN  liquidaciones_tickets on asignaciones_cajeros.folio = liquidaciones_tickets.folio_asignacion AND liquidaciones_tickets.afectacion='+' AND liquidaciones_tickets.forma_pago=1"
-				+ "						          and (liquidaciones_tickets.folio_asignacion = (select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"'))"
-				+ "				      WHERE asignaciones_cajeros.status='V' and folio=(select folio_asignacion from cajeros where cod_estab=(select cod_estab from cajas where caja=(select caja from equipos_bms where nombre='"+pc_nombre+"')) and e_mail='"+folio_empleado+"')"
-				+ "						         		 group by asignaciones_cajeros.folio ";
-				
 		Statement stmt = null;
 		Statement stmt2= null;
 		
@@ -4900,13 +4888,16 @@ public class BuscarSQL {
 										        fos.close();
 							    	}
 								   while(rs2.next()){
-								 			datos_empleado.setEstablecimiento(rs2.getString("establecimiento"));
-											datos_empleado.setImporte_total(rs2.getFloat("importe"));
-											datos_empleado.setAsignacion(rs2.getString("folio_asignacion"));
+									        datos_empleado.setImporte_total(rs2.getFloat(1));
+									        datos_empleado.setAsignacion_turno(rs2.getString(2));
+								 			datos_empleado.setEstablecimiento(rs2.getString(3));
+								 			datos_empleado.setCantidad_asignaciones_nombreturno(rs2.getString(4));
 								    }
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage()+" \n"+query_2, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
+							System.out.println(query);
+							System.out.println(query_2);
 							return null;
 						}
 		finally{
@@ -4917,23 +4908,17 @@ public class BuscarSQL {
 
 	public Obj_Retiros_Cajeros datos_supervisor_retiro(String clave) throws SQLException{
 		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
-		
-		String query = "exec sp_select_datos_supervisor_retiro '"+clave+"'";
-		
+		String query = "exec retiros_a_cajeros_datos_supervisor '"+clave+"'";
 		Statement stmt = null;
-		
 						try {
-					
 							stmt = con.conexion().createStatement();
 							ResultSet rs = stmt.executeQuery(query);
 							
-									while(rs.next()){
-										
+									while(rs.next()){										
 										datos_empleado.setFolio_supervisor(rs.getInt("Folio_Empleado"));
 										datos_empleado.setNombre_Supervisor(rs.getString("Nombre"));
 										datos_empleado.setExiste_supervisor(rs.getString("Existe"));
-										datos_empleado.setClave(rs.getString("Clave"));
-										
+										datos_empleado.setClave(rs.getString("Clave"));										
 										
 										if(rs.getString("Existe").equals("EXISTE")){
 										File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_supervisor/supervisortmp.jpg");
@@ -4944,17 +4929,16 @@ public class BuscarSQL {
 										        	fos.write(buffer);
 										        }
 										        fos.close();
-										}
-										
+										}										
 							    	}
 							
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
+							System.out.println(query);
+;
 							return null;
 						}
-		
-		
 		finally{
 			if(stmt!=null){stmt.close();}
 		}
@@ -4965,7 +4949,7 @@ public class BuscarSQL {
 	public String[][] getRetiros_a_detalle(int folio_cajero,String establecimiento){
 		String[][] Matriz = null;
 		
-		String datosif = "exec sp_select_retiro_de_cajero_a_detalle "+folio_cajero+",'"+establecimiento+"';";
+		String datosif = "exec cortes_retiros_de_cajero_filtro "+folio_cajero+",'"+establecimiento+"';";
 		
 		Matriz = new String[getFilas(datosif)][5];
 		Statement s;
@@ -5492,7 +5476,7 @@ public class BuscarSQL {
 								   while(rs2.next()){
 								 			datos_empleado.setEstablecimiento(rs2.getString("establecimiento"));
 //											datos_empleado.setImporte_total(rs2.getFloat("importe"));
-											datos_empleado.setAsignacion(rs2.getString("folio_asignacion"));
+											datos_empleado.setAsignacion_turno(rs2.getString("folio_asignacion"));
 								    }
 							
 						} catch (Exception e) {
@@ -8543,7 +8527,7 @@ public String folio_siguiente(String Transaccion) throws SQLException{
 		}
 	} catch (Exception e) {
 		e.printStackTrace();
-		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Folio_Siguiente_alta_Servicios ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Folio_Siguiente_alta_Servicios ] SQLException: "+e.getMessage()+"\nqry:"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 	}
 	finally{
 		if(stmt!=null){try {
@@ -8706,7 +8690,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				+ "							,0 as cantidad_negada_los_ultimos_7_dias"
 				+ "    				        ,prodestab.inventario_minimo"
 				+ "   				        ,prodestab.inventario_maximo"
-				+ "                 		,isnull(convert(varchar(20),prodestab.fecha_agotado,103)+' '+convert(varchar(20),prodestab.fecha_agotado,108),'') as fecha_ultima_vez_se_agoto "				
+				+ "                 		,isnull(convert(varchar(20),prodestab.fecha_agotado,103)+' '+convert(varchar(20),prodestab.fecha_agotado,108),'') as fecha_ultima_vez_se_agoto "	
+				+"                          ,productos.codigo_barras_pieza "
 				+ "				 from productos with (nolock)"
 				+ "					     left outer join prodestab with (nolock) on prodestab.cod_prod=productos.cod_prod AND prodestab.cod_estab= @cod_estab"
 				+ "						 LEFT OUTER JOIN clases_productos with (nolock) on clases_productos.clase_producto=productos.clase_producto"
@@ -8715,7 +8700,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				+ "						 LEFT OUTER JOIN areas with (nolock) on areas.area=productos.area"
 				+ "					  where productos.cod_prod=@cod_prod"
 				+ "						  group by  productos.cod_prod,productos.descripcion,prodestab.ultimo_costo,prodestab.costo_promedio,productos.iva_interior,prodestab.cod_estab,clases_productos.nombre,categorias.nombre,familias.nombre,areas.nombre ,prodestab.inventario_minimo"
-				+ "								,prodestab.inventario_maximo ,prodestab.fecha_agotado ";
+				+ "								,prodestab.inventario_maximo ,prodestab.fecha_agotado ,productos.codigo_barras_pieza ";
 		
 		Statement stmt2= null;
 		
@@ -8739,8 +8724,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 									   datosproducto.setMaximo(rs2.getDouble("inventario_minimo"));
 									   datosproducto.setMinimo(rs2.getDouble("inventario_maximo"));
 									   datosproducto.setFecha_Ultima_Vez_Se_Agoto(rs2.getString("fecha_ultima_vez_se_agoto"));
-									   
-									   System.out.println(rs2.getString("descripcion"));
+									   datosproducto.setCodigo_Barras(rs2.getString("codigo_barras_pieza"));
 								   }
 							
 						} catch (Exception e) {
@@ -10028,7 +10012,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		public String Server(String estab){
 			String server="";
 			String query = "exec sp_servidor_por_establecimiento '"+estab+"'";
-			System.out.println(query);
 			Statement stmt = null;
 			try {
 				stmt = con.conexion().createStatement();
@@ -10050,6 +10033,30 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			return server;
 		}
 
+		public String Venta_Del_Turno(String establecimiento, String turno){
+			String server="";
+			String query = "exec sp_IZAGAR_Recopilacion_de_venta_por_turno '"+establecimiento+"','"+turno+"'";
+			Statement stmt = null;
+			try {
+				stmt = con.conexion_IZAGAR().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					server=(rs.getString(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL en la funcion Venta_Del_Turno SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+			finally{
+				if(stmt!=null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return server;
+		}
+		
 		public String[][] Tabla_Existencia_De_Un_Producto_En_Establecimiento(String Cod_prod){
 				String[][] Matriz = null;
 				String query = "exec sp_existencia_de_un_producto_en_establecimientos '"+Cod_prod+"'";
@@ -10090,13 +10097,12 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				return Matriz;
 			}
 		
-		  public boolean Validaciones(String Validacion){
-				String query = "exec validaciones '"+Validacion+"'";
+		  public boolean Validaciones(String Validacion, String parametro, String parametro2){
+				String query = "exec validaciones '"+Validacion+"','"+parametro+"','"+parametro2+"'";
 				boolean disponible = false;
 				try {				
 					Statement s = con.conexion().createStatement();
 					ResultSet rs = s.executeQuery(query);
-					
 					while(rs.next()){
 						disponible = rs.getBoolean(1);
 					}
@@ -10107,8 +10113,29 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				return disponible;
 			}
 		  
+			public boolean existeOrden_De_Compra(String folio)throws SQLException{
+				boolean existe = false;
+				String query = "exec sp_consulta_orden_de_compra_valida '"+folio+"'";
+				
+				Statement stmt = null;
+				try {
+					stmt = con.conexion_IZAGAR().createStatement();
+					ResultSet rs = stmt.executeQuery(query);
+					while(rs.next()){
+						existe = rs.getBoolean(1);
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion existeOrden_De_Compra proc "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					e.printStackTrace();
+					return false;
+				}
+				finally{
+					if(stmt!=null){stmt.close();}
+				}
+				return existe;
+			}
+		  
 	public boolean existe_Insumo(String cod_prod){
-		
 		String query = "exec existe_producto_en_insumos '"+cod_prod+"'";
 		
 		boolean existe = false;

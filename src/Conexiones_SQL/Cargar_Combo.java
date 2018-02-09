@@ -990,8 +990,8 @@ public class Cargar_Combo {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String[] Combos_Tiempo(int anio, String parametro) throws SQLException{
-		String query = "exec tiempo_por_parametros "+anio+",'"+parametro+"'" ;
+	public String[] Combos_Tiempo(int anio, String parametro, String parametro2) throws SQLException{
+		String query = "exec tiempo_por_parametros "+anio+",'"+parametro+"','"+parametro2+"'" ;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -1340,41 +1340,6 @@ public class Cargar_Combo {
 				}
 				miVector.add(rs.getString("escolaridad"));
 				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-			
-	}
-	@SuppressWarnings("unchecked")
-	public String[] Personal_Por_Departamento(int folio_departamento) throws SQLException{
-		String query =" select nombre+' '+ap_paterno+' '+ap_materno as Empleado"
-					+ "	from tb_empleado where status = 1 "
-					+ " and departamento = "+folio_departamento;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-//			int j=0;
-			while(rs.next()){
-//				if(j == 0){
-//					miVector.add("Selecciona un Empleado");
-//				}
-				miVector.add(rs.getString("Empleado"));
-//				j++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

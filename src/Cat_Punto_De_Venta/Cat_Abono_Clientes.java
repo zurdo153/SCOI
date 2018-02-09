@@ -246,7 +246,7 @@ public class Cat_Abono_Clientes extends JFrame{
 		int folio_empleado=new Obj_Usuario().LeerSession().getFolio();
 		Obj_Retiros_Cajeros datosEmpleado= new Obj_Retiros_Cajeros().buscarEmpleado_para_ahorro_cte(folio_empleado);
 		
-				if(datosEmpleado.getAsignacion()== null){
+				if(datosEmpleado.getAsignacion_turno()== null){
 					this.setTitle("Aviso !!!");
 					
 //					JOptionPane.showMessageDialog(null, "El usuario no esta asignado o no se pudo vincular con asignacion\nfavor de comunicarse con el departamento de sistemas", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -261,9 +261,9 @@ public class Cat_Abono_Clientes extends JFrame{
 					this.setLocationRelativeTo(null);
     		
 				}else{
-		            txtEstablecimiento.setText(/*"SUPER V"*/datosEmpleado.getEstablecimiento().trim());
+		            txtEstablecimiento.setText(datosEmpleado.getEstablecimiento().trim());
 		            txtEstablecimiento.setHorizontalAlignment(0);
-					this.setTitle("Abonos Clientes              Folio de asignacion( "+datosEmpleado.getAsignacion().trim()+" )");
+					this.setTitle("Abonos Clientes              Folio de asignacion( "+datosEmpleado.getAsignacion_turno().trim()+" )");
 				
 				this.fecha.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 				

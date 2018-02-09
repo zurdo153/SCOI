@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-12-04T12:31:56 -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Corte_De_Caja" language="groovy" pageWidth="210" pageHeight="760" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="310da8fc-7048-4194-90f6-839ee095fa06">
 	<property name="template.type" value="columnar"/>
 	<property name="ireport.zoom" value="2.3579476910000086"/>
@@ -61,7 +60,7 @@
 		<groupFooter>
 			<band height="303">
 				<frame>
-					<reportElement mode="Opaque" x="34" y="165" width="143" height="12" forecolor="#D0B48E" backcolor="#CCCCCC" uuid="dfe7325b-cef0-4207-ad77-54bdf3028f10"/>
+					<reportElement mode="Opaque" x="34" y="165" width="143" height="12" forecolor="#D0B48E" backcolor="#FFFFFF" uuid="dfe7325b-cef0-4207-ad77-54bdf3028f10"/>
 					<textField pattern="#,##0.00#">
 						<reportElement x="88" y="0" width="54" height="12" uuid="4584e3b7-1ccd-46f4-9826-0281209f52bb"/>
 						<textElement textAlignment="Right">
@@ -151,7 +150,7 @@
 					<textFieldExpression><![CDATA[$F{total_de_vauchers}]]></textFieldExpression>
 				</textField>
 				<frame>
-					<reportElement mode="Opaque" x="34" y="143" width="143" height="12" forecolor="#D0B48E" backcolor="#CCCCCC" uuid="211a9374-0867-45b0-bb8a-c512dac6541b"/>
+					<reportElement mode="Opaque" x="34" y="143" width="143" height="12" forecolor="#D0B48E" backcolor="#FFFFFF" uuid="211a9374-0867-45b0-bb8a-c512dac6541b"/>
 				</frame>
 				<staticText>
 					<reportElement x="37" y="119" width="70" height="11" uuid="d842af27-4cc9-4f1f-ab88-034ff6b2a842"/>

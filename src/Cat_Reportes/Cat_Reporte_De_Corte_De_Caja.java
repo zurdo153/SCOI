@@ -15,11 +15,11 @@ public class Cat_Reporte_De_Corte_De_Caja extends JFrame {
 		String comando="";
 		String reporte = "";
 		
-		 comando = "exec sp_select_reporte_corte_de_caja_2 '"+folio_corte+"';";
+		 comando = "exec cortes_reporte_corte_de_caja '"+folio_corte+"';";
 		 reporte="Obj_Reporte_De_Corte_De_Caja.jrxml";
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		 
-		 comando = "exec sp_Reporte_de_Corte_por_Dia_por_Asignacion '"+folio_corte+"';";
+		 comando = "exec cortes_reporte_de_corte_de_caja_por_dia '"+folio_corte+"';";
 		 reporte="Obj_Reporte_De_Corte_De_Caja_Por_Dia.jrxml";
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		 

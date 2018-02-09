@@ -2036,20 +2036,13 @@ public class ActualizarSQL {
 			}
 			
 			public boolean tabla_model_alimentacion_totales_De_Cheques(Obj_Alimentacion_De_Cheques cheques, int folio_usuario, Object[] tabla){
-				
-				
-//				cambiar procedimientos borrado e insercion de datos 
 				String query_delete = "delete from tb_tabla_de_cheques_para_cortes where folio_corte = '"+cheques.getFolio_corte().toUpperCase().trim()+"'";
-				String query = "exec sp_insert_cheques_de_cortes ?,?,?,?";
+				String query = "exec cortes_cheques_insert ?,?,?,?";
 				
 				Connection con = new Connexion().conexion();
 				
 				try{
-					
-					
 					con.setAutoCommit(false);
-					System.out.println(query_delete+" borrado xxxxx");
-					
 					PreparedStatement pstmtDelete = con.prepareStatement(query_delete);
 					pstmtDelete.executeUpdate();
 					

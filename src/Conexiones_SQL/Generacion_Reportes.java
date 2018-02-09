@@ -118,6 +118,75 @@ public class Generacion_Reportes {
 						JOptionPane.showMessageDialog(null, "Error Al Intentar Generar El Reporte: \n En La Clase Generacion Reportes Reporte:"+reporte+"\n Comando: "+comando+"\n Mensaje Exception: "+ex.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
 					}
 		}
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void  Reporte_chico(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana){
+                String query =comando ;
+				Statement stmt = null;
+				
+				if (basedatos=="2.200"){
+					try {
+						stmt =  new Connexion().conexion_IZAGAR().createStatement();
+					}catch (SQLException e) {
+						e.printStackTrace();
+					 JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				    }
+				 }else{
+					  if (basedatos=="2.94"){
+								try {
+									stmt =  new Connexion().conexion_ventas().createStatement();
+								} catch (SQLException e) {
+									e.printStackTrace();
+									JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+								}
+							}else{
+								try {
+									stmt =  new Connexion().conexion().createStatement();
+								} catch (SQLException e) {
+									e.printStackTrace();
+									JOptionPane.showMessageDialog(null, "Error En La Coneccion Con el Servidor:"+basedatos+" 1 \n "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+								}
+							}
+				  }
+				try{
+					JDialog viewer = new JDialog(new JFrame(),reporte, true);// en caso que de que  se  dese modal se le pone true en el final de los parametros
+					viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
+					viewer.setSize(450, 450);
+					
+					ResultSet rs = stmt.executeQuery(query);
+					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+reporte);
+					JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
+					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+				
+					if (vista_previa_reporte.equals("si")){
+							JRViewer jrv = new JRViewer(print);
+							jrv.setZoomRatio(1);//zoom default del reporte
+							viewer.getContentPane().add(jrv);
+							viewer.show();
+						}else{
+							  if(vista_previa_reporte.equals("no")){
+								//imprimir con seleccion de impresora
+								 JasperPrintManager.printReport(print, true);
+						      }else{ 
+						    	 if(vista_previa_reporte.equals("id")){
+		  					   //imprimime directo en impresora determinada en la pc
+							      JasperPrintManager.printReport(print, true);
+				    	       }else{
+							  JOptionPane.showMessageDialog(null, "Error en La Clase Generacion Reportes En El Valor De La Variable Vista Previa \n Valor No Identificado De Los Siguientes: <<<si,no,id>>> \n Valor Recibido:"+vista_previa_reporte,"Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+		                      return;
+				    	       }
+				     	 }
+					 	 }
+					}
+					catch(Exception ex){
+						System.out.println(ex.getMessage());
+						System.out.println(comando);
+						
+						JOptionPane.showMessageDialog(null, "Error Al Intentar Generar El Reporte: \n En La Clase Generacion Reportes Reporte:"+reporte+"\n Comando: "+comando+"\n Mensaje Exception: "+ex.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+					}
+		}
+	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void  Reporte_Guardado(String reporte,String comando,String basedatos,String vista_previa_reporte, int vista_previa_de_ventana,String Guardar_reporte_formato, String nombre_reporte){

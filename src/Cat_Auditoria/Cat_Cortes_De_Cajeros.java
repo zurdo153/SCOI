@@ -156,11 +156,9 @@ public class Cat_Cortes_De_Cajeros extends JFrame{
 		        					Obj_Alimentacion_Cortes generarFolioCorteNuevo = new Obj_Alimentacion_Cortes();
 		        					if(generarFolioCorteNuevo.generar_folio_corte()){
 					        			String folio_corte = generarFolioCorteNuevo.buscar(estab);
-//		        					        String folio_corte="PRUEBA";//quitar
-						        			Object folio =  tabla.getValueAt(fila, 0);
-						        			dispose();
-						        			new Cat_Alimentacion_Cortes(Integer.parseInt(folio+""),estab,folio_corte).setVisible(true);
-						        			
+					        			Object folio =  tabla.getValueAt(fila, 0);
+					        			dispose();
+					        			new Cat_Alimentacion_Cortes(Integer.parseInt(folio+""),estab,folio_corte).setVisible(true);
 				        			}else{
 				        				JOptionPane.showMessageDialog(null, "No se genero el folio de corte correctamente", "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					    				return;
