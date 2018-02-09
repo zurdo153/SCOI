@@ -1008,7 +1008,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 										"						INNER JOIN entysal on entysal.folio=facremtick.folio WHERE ( (facremtick.status = 'C') AND (facremtick.numdpc = 'FAC' + @asignacion)  and entysal.cod_prod='52384' )" +
 										"						 group by convert(varchar(20),facremtick.fecha,103))rl " +
 										"	GROUP BY rl.fecha";
-				
+			System.out.println(consulta_ta_rluz);
 				String query_ta_rluz = "exec sp_insert_relacion_por_pagos_de_servicios ?,?,?,?,?";
 				
 				Statement s_IZAGAR;
@@ -1022,7 +1022,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							
 								con.setAutoCommit(false);
 								pstmt_ta_rluz =  con.prepareStatement(query_ta_rluz);
-								
+								System.out.println(rs_IZAGAR.getString(1));
+								System.out.println(rs_IZAGAR.getString(2));
+								System.out.println(rs_IZAGAR.getString(3));
+								System.out.println(rs_IZAGAR.getString(4));
+								System.out.println(rs_IZAGAR.getString(5));
 								pstmt_ta_rluz.setString(1, 	rs_IZAGAR.getString(1));
 								pstmt_ta_rluz.setString(2, 	rs_IZAGAR.getString(2));
 								pstmt_ta_rluz.setString(3,	rs_IZAGAR.getString(3));
