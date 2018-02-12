@@ -97,9 +97,6 @@ public class Obj_Establecimiento {
 		}
 	return null; }
 	
-	
-	
-	
 	public String[] Combo_Establecimiento201(){
 		try {
 			return new Cargar_Combo().Establecimiento("establecimientos");
@@ -124,9 +121,9 @@ public class Obj_Establecimiento {
 		}
 	return null; }
 	
-	public String[] Combo_Establecimiento_Estado_resultados(){
+	public String[] Combo_Establecimientos(String parametro){
 		try {
-			return new Cargar_Combo().Establecimientos_Edo_Resultados();
+			return new Cargar_Combo().Establecimientos(parametro);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

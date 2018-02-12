@@ -37,7 +37,7 @@ public class Cat_Validar_Encargado_Para_Tranferencia extends JDialog  {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	String[] establecimiento = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
+	String[] establecimiento = new Obj_Establecimiento().Combo_Establecimientos("R");
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	JPasswordField txtGafeteEncargado = new JPasswordField();

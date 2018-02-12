@@ -24,7 +24,7 @@ public class Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	String[] estab = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
+	String[] estab = new Obj_Establecimiento().Combo_Establecimientos("R");
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimientoSolicita = new JComboBox(estab);
 	@SuppressWarnings({ "rawtypes", "unchecked" })

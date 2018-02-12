@@ -12,18 +12,27 @@ import javax.swing.JOptionPane;
 
 public class EmailSenderService {
 
-		public boolean enviarcorreo(String para,int cantidad_de_correos,String mensaje,String asunto){
+		public boolean enviarcorreo(String para,int cantidad_de_correos,String mensaje,String asunto,String correo){
 		boolean enviado = false;
 
-		String de="scoi.izagar@gmail.com";
-		String clave="Ragazi/*-1";
+		String de="";
+		String clave="";
+		
+		if(correo.equals("Servicios")) {
+		 de="scoi.izagar@gmail.com";
+		 clave="Ragazi/*-1";
+		}
+		
+		if(correo.equals("Gastos")) {
+		 de="scoi.gastos@gmail.com";
+		 clave="Ragazi/*-1";
+		}
+		
 		
 		try{
-
 		String host="smtp.gmail.com";
 
 		Properties prop=System.getProperties();
-
 		prop.put("mail.smtp.starttls.enable","true");
 		prop.put("mail.smtp.host",host);
 		prop.put("mail.smtp.user",de);
@@ -52,7 +61,7 @@ public class EmailSenderService {
 		enviado=true;
 
 		}catch (Exception e){
-		JOptionPane.showMessageDialog(null," Posible Falla de Internet intente guardar de nuevo la informacion "+e+"\nNo Se envio el Correo a:"+para+" \n numero de correos:"+cantidad_de_correos+"  \n Mensaje:"+mensaje+" \nAsunto:"+asunto ,"Avise al Administrador Del Sistema",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+		JOptionPane.showMessageDialog(null," Posible Falla de Internet intente enviar de nuevo la informacion\n o Espera se reestablesca la coneccion de Red o Internet "+e+"\nNo Se envio el Correo a:"+para+" \n numero de correos:"+cantidad_de_correos+"  \n Mensaje:"+mensaje+" \nAsunto:"+asunto ,"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		  e.printStackTrace();
 
 		}

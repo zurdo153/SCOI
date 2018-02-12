@@ -34,7 +34,7 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	String[] estab = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
+	String[] estab = new Obj_Establecimiento().Combo_Establecimientos("R");
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(estab);
 	JPasswordField txtGafeteChofer = new JPasswordField();

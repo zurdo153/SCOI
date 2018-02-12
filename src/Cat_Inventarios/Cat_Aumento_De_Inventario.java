@@ -49,7 +49,7 @@ import Obj_Principal.Obj_tabla;
 import Obj_Xml.CrearXmlString;
 
 @SuppressWarnings("serial")
-public class Cat_Alimentacion_De_Inventarios_De_Insumos extends JFrame{
+public class Cat_Aumento_De_Inventario extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -169,7 +169,7 @@ public class Cat_Alimentacion_De_Inventarios_De_Insumos extends JFrame{
     JTextArea txaNota 	= new Componentes().textArea(new JTextArea(), "Nota", 500);
 	JScrollPane Nota = new JScrollPane(txaNota);
     
-   public  Cat_Alimentacion_De_Inventarios_De_Insumos(){
+   public  Cat_Aumento_De_Inventario(){
 	   this.cont.add(panel);
 		this.setSize(1024,730);
 		this.setResizable(false);
@@ -606,7 +606,7 @@ public class Cat_Alimentacion_De_Inventarios_De_Insumos extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Alimentacion_De_Inventarios_De_Insumos().setVisible(true);
+			new Cat_Aumento_De_Inventario().setVisible(true);
 		}catch(Exception e){}
 	}
 };

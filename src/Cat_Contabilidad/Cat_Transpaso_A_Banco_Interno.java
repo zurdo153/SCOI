@@ -49,8 +49,7 @@ import Obj_Principal.Obj_tabla;
 import Obj_Servicios.Obj_Correos;
 
 @SuppressWarnings("serial")
-public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
-	
+public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	Connexion con = new Connexion();
@@ -60,14 +59,15 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	Obj_tabla  ObjTab = new Obj_tabla();
 	Obj_Orden_De_Gasto gasto = new Obj_Orden_De_Gasto();
 
-	int columnas = 4,checkbox=-1;
+	int columnas = 5,checkbox=-1;
 	public void init_tabla(){
-    	this.tabla.getColumnModel().getColumn(0).setMinWidth(500);	
-    	this.tabla.getColumnModel().getColumn(1).setMinWidth(90);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(90);
-    	this.tabla.getColumnModel().getColumn(3).setMinWidth(98);
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(100);	
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(200);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(120);
+    	this.tabla.getColumnModel().getColumn(3).setMinWidth(120);
+    	this.tabla.getColumnModel().getColumn(4).setMinWidth(120);
     	
-		String comando="Select '' as Descripcion, 0 P_Unitario,0 as Cantidad,0 as Importe" ;
+		String comando="Select '' as FolioCorte,'' as Establecimiento, 0 Corte,0 as Efectivo,0 as Cheque" ;
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 		modelo.setRowCount(0);
@@ -79,27 +79,31 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		for(int i = 0; i<columnas; i++){types[i]= java.lang.Object.class;}
 		 return types;
 	}
-	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Descripcion","Cantidad","P.Unitario","Importe"}){
+	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio Corte","Establecimiento","Importe Corte","Efectivo B.I.","Importe Cheque"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = basemovimientos();
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
-			public boolean isCellEditable(int fila, int columna){if(columna>0&&columna<3){return true;}else{ return false;}}
+			public boolean isCellEditable(int fila, int columna){ return false;}
 	};
 	JTable tabla = new JTable(modelo);
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
-	JTextField txtFolio       = new Componentes().text(new JCTextField()  ,"Folio"                     ,30   ,"String");
-	JTextField txtDescripcion = new Componentes().text(new JCTextField()  ,"Descripcion Del Producto"  ,350  ,"String");
-	JTextField txtFolio_prv   = new Componentes().text(new JCTextField()  ,"Folio Prv"                 ,30   ,"String");
-	JTextField txtProveedor   = new Componentes().text(new JCTextField()  ,"Proveedor"                 ,250  ,"String");
-	JTextField txtFoliosolicit= new Componentes().text(new JCTextField()  ,"Folio Solicita"            ,30   ,"String");
-	JTextField txtSolicitante = new Componentes().text(new JCTextField()  ,"Solicitante"               ,300  ,"String");
-	JTextField txtFecha       = new Componentes().text(new JCTextField()  ,"Fecha"                     ,60   ,"String");
-	JTextField txtTotal       = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");
+	JTextField txtFolio          = new Componentes().text(new JCTextField()  ,"Folio"                     ,30   ,"String");
+	JTextField txtFolioCorte     = new Componentes().text(new JCTextField()  ,"Folio Corte"               ,50   ,"String");
+	JTextField txtImporte_Efectivo= new Componentes().text(new JCTextField() ,"Importe Efectivo "         ,15   ,"Double");
 	
-    JTextArea txaUso       = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia", 300);
-	JScrollPane Uso        = new JScrollPane(txaUso);
+	JTextField txtImporte_Corte  = new Componentes().text(new JCTextField()  ,"Importe Corte"             ,10   ,"Double");
+	JTextField txtImporte_Cheque = new Componentes().text(new JCTextField()  ,"Importe Cheque"            ,50   ,"String");
+	JTextField txtFolio_prv      = new Componentes().text(new JCTextField()  ,"Folio B"                   ,30   ,"String");
+	JTextField txtBeneficiario   = new Componentes().text(new JCTextField()  ,"Beneficiario"              ,250  ,"String");
+	JTextField txtFoliosolicit   = new Componentes().text(new JCTextField()  ,"Folio Solicita"            ,30   ,"String");
+	JTextField txtSolicitante    = new Componentes().text(new JCTextField()  ,"Solicitante"               ,300  ,"String");
+	JTextField txtFecha          = new Componentes().text(new JCTextField()  ,"Fecha"                     ,60   ,"String");
+	JTextField txtTotal          = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");
+	
+    JTextArea txaObservaciones       = new Componentes().textArea(new JTextArea(), "Observaciones", 160);
+	JScrollPane Observaciones        = new JScrollPane(txaObservaciones);
 
 	JCButton btnBuscar     = new JCButton("Buscar"       ,"Filter-List-icon16.png","Azul"); 
 	JCButton btnNuevo      = new JCButton("Nuevo"        ,"Nuevo.png"             ,"Azul");
@@ -109,22 +113,19 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	JCButton btnQuitarfila = new JCButton("Eliminar"     ,"boton-rojo-menos-icono-5393-16.png","Azul");
 	JCButton btnAgregar    = new JCButton("Agregar"      ,"double-arrow-icone-3883-16.png"    ,"Azul");
 	JCButton btnImprimir   = new JCButton("Imprimir"     ,"imprimir-16.png"       ,"Azul");
-	JCButton btnModificar = new JCButton("Modificar" ,"Modify.png"                ,"Azul");
+	JCButton btnModificar  = new JCButton("Modificar"    ,"Modify.png"            ,"Azul");
+	JCButton btnBuscarCorte= new JCButton("Buscar Corte" ,"Filter-List-icon16.png","Azul"); 
 	
-	String status[] = {"PENDIENTE","AUTORIZADO","CANCELADO","FINALIZADO","NEGADO"};
+	String status[] = {"PENDIENTE","RECIBIDO","CANCELADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
 	
-	String conceptos[] = {"GASTO","COMPRA"};
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	JComboBox cmb_concepto = new JComboBox(conceptos);
-	
-	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento_Todos();
+	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimientos("B");
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimientoScoi);
 
-	JRadioButton rbProveedorCont = new JRadioButton("Proveedor Contado");
-	JRadioButton rbProveedor     = new JRadioButton("Proveedor");
+	JRadioButton rbBanco = new JRadioButton("Banco");
+	JRadioButton rbBancoInterno     = new JRadioButton("Banco Interno");
 	ButtonGroup  grupo           = new ButtonGroup();
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
@@ -133,20 +134,20 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
     Object[] vector = new Object[7];
 
     String guardar_actualizar="";
-   public  Cat_Solicitud_De_Orden_De_Gasto(){
+   public  Cat_Transpaso_A_Banco_Interno(){
 	    this.cont.add(panel);
-		this.setSize(825,510);
+		this.setSize(855,510);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setTitle("Solicitud De Orden De Gasto");
+		this.setTitle("Transpaso De Efectivo A Banco Interno");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
 		this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
-		this.panel.setBorder(BorderFactory.createTitledBorder(blackline,"Solicitud De Orden De Gasto"));
+		this.panel.setBorder(BorderFactory.createTitledBorder(blackline,"Transpaso De Efectivo A Banco Interno"));
    	
-   		this.grupo.add(rbProveedor);
-   		this.grupo.add(rbProveedorCont);
-   		this.rbProveedor.setSelected(true);
+   		this.grupo.add(rbBancoInterno);
+   		this.grupo.add(rbBanco);
+   		this.rbBancoInterno.setSelected(true);
    		
    	    this.menu_toolbar.add(btnNuevo    );
 		this.menu_toolbar.addSeparator(   );
@@ -167,31 +168,35 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		
 		this.menu_toolbar.setFloatable(false);
    	 
-		int x=20, y=20,width=122,height=20, sep=130;
+		int x=20, y=20,width=100,height=20, sep=110;
 		this.panel.add(menu_toolbar).setBounds                        (x         ,y      ,500     ,height );
-		this.panel.add(new JLabel("Concepto:")).setBounds             (x+645     ,y      ,width   ,height );
-		this.panel.add(cmb_concepto).setBounds                        (x+702     ,y      ,77      ,height );
-		this.panel.add(txtFolio).setBounds                            (x         ,y+=30  ,width   ,height );
+		this.panel.add(new JLabel("Fecha Actual:")).setBounds         (x+630     ,y      ,width   ,height );
+		this.panel.add(txtFecha).setBounds                            (x+700     ,y      ,width   ,height );
+		this.panel.add(txtFolio).setBounds                            (x         ,y+=27  ,width   ,height );
 		this.panel.add(cmb_status).setBounds                          (x+=sep    ,y      ,width   ,height );
-		this.panel.add(new JLabel("Sucursal Solicitante:")).setBounds (x+=sep    ,y      ,width   ,height );
-		this.panel.add(cmbEstablecimiento).setBounds                  (x+=100    ,y      ,250     ,height );
-		this.panel.add(new JLabel("Fecha Actual:")).setBounds         (x+=270    ,y      ,width   ,height );
-		this.panel.add(txtFecha).setBounds                            (x+=72     ,y      ,77      ,height );
-		this.panel.add(txtFolio_prv).setBounds                        (x=20      ,y+=25  ,50      ,height );
-		this.panel.add(txtProveedor).setBounds                        (x+=50     ,y      ,450     ,height );
-		this.panel.add(btnSolicitante).setBounds                      (x+450     ,y      ,40      ,height );
-		this.panel.add(rbProveedor).setBounds                         (x+500     ,y      ,90      ,height );		
-		this.panel.add(rbProveedorCont).setBounds                     (x+600     ,y      ,130     ,height );  
+		this.panel.add(txtFolio_prv).setBounds                        (x+=sep    ,y      ,50      ,height );
+		this.panel.add(txtBeneficiario).setBounds                     (x+=50     ,y      ,480     ,height );
+		this.panel.add(btnSolicitante).setBounds                      (x+=480    ,y      ,50      ,height );
+		this.panel.add(new JLabel("Observaciones:")).setBounds        (x=20      ,y+=20  ,width   ,height );
+		this.panel.add(Observaciones).setBounds                       (x         ,y+=15  ,680     ,40     );
+		this.panel.add(rbBancoInterno).setBounds                      (x+690     ,y      ,width   ,height );		
+		this.panel.add(rbBanco).setBounds                             (x+690     ,y+=20  ,width   ,height );  
+		this.panel.add(cmbEstablecimiento).setBounds                  (x         ,y+=27  ,170     ,height );
+		this.panel.add(btnBuscarCorte).setBounds                      (x+=182    ,y      ,130     ,height );
+		this.panel.add(txtFolioCorte ).setBounds                      (x+=135    ,y      ,70      ,height );
+		this.panel.add(txtImporte_Corte).setBounds                    (x+=70     ,y      ,width   ,height );
+		this.panel.add(new JLabel("Efectivo:")).setBounds             (x+=sep    ,y      ,width   ,height );
+		this.panel.add(txtImporte_Efectivo).setBounds                 (x+=45     ,y      ,width   ,height );
+		this.panel.add(new JLabel("Cheque:")).setBounds               (x+=sep    ,y      ,width   ,height );
+		this.panel.add(txtImporte_Cheque).setBounds                   (x+=45     ,y      ,width   ,height );
 		
-		this.panel.add(new JLabel("Descripcion Del Gasto:")).setBounds(x=20      ,y+=20  ,width   ,height );
-		this.panel.add(Uso).setBounds                                 (x         ,y+=15  ,780     ,50     );
-		this.panel.add(txtDescripcion).setBounds                      (x         ,y+=55  ,560     ,height );
-		this.panel.add(btnAgregar).setBounds                          (x+=565    ,y      ,102     ,height ); 
-		this.panel.add(btnQuitarfila).setBounds                       (x+115     ,y      ,99      ,height ); 
-		this.panel.add(scroll_tabla).setBounds                        (x=20      ,y+=20  ,780     ,270    );
+		this.panel.add(btnAgregar).setBounds                          (x=580     ,y+=27  ,120     ,height ); 
+		this.panel.add(btnQuitarfila).setBounds                       (x+130     ,y      ,width   ,height ); 
+		
+		this.panel.add(scroll_tabla).setBounds                        (x=20      ,y+=27  ,797     ,270    );
 		this.panel.add(txtFoliosolicit).setBounds                     (x         ,y+=270 ,60      ,height );		
 		this.panel.add(txtSolicitante).setBounds                      (x+60      ,y      ,320     ,height );
-		this.panel.add(txtTotal).setBounds                            (x+682     ,y      ,98      ,height );
+		this.panel.add(txtTotal).setBounds                            (x+682     ,y      ,width   ,height );
 
 		panel_booleano(false);
 		init_tabla();
@@ -201,14 +206,15 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		btnGuardar.addActionListener(guardar);
 		btnModificar.addActionListener(opEditar);
 		
-		cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento);
-		btnSolicitante.addActionListener    (opFiltroBuscarSolicitante );
-		btnAgregar.addActionListener        (opAgregarProducto         );
-		btnQuitarfila.addActionListener     (opQuitarfila              );
-		btnBuscar.addActionListener         (opFiltroBuscar_orden_pago );
-		btnImprimir.addActionListener       (opImprimir_Reporte        );   
-        txtDescripcion.addKeyListener       (opAgregarConEnter         );
-		tabla.addKeyListener                (op_validanumero_en_celda  );
+		cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento );
+		btnSolicitante.addActionListener    (opFiltroBuscarSolicitante  );
+		btnAgregar.addActionListener        (opAgregarProducto          );
+		btnQuitarfila.addActionListener     (opQuitarfila               );
+		btnBuscar.addActionListener         (opFiltroBuscar_orden_pago  );
+		btnImprimir.addActionListener       (opImprimir_Reporte         );   
+		btnBuscarCorte.addActionListener    (opFiltroBuscarcortecajaverd);
+		
+        txtImporte_Efectivo.addKeyListener  (opAgregarConEnter         );
 		
 		btnDeshacer.setToolTipText("<ESC> Tecla Directa");
 		btnGuardar.setToolTipText("<CTRL+G> Tecla Directa");
@@ -219,6 +225,10 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		txtSolicitante.setEditable(false);
 		txtFolio_prv.setEditable(false);
 		txtTotal.setEditable(false);
+		txtImporte_Corte.setEditable(false);
+		txtFolioCorte.setEditable(false);
+		txtImporte_Cheque.setEditable(false);
+		
 		txtSolicitante.setText(usuario.getNombre_completo());
 		txtFoliosolicit.setText(usuario.getFolio()+"");
 		
@@ -237,59 +247,46 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
     public void panel_booleano(boolean boleano){
 		cmb_status.setEnabled(boleano);
 		cmbEstablecimiento.setEnabled(boleano);
-	    txtDescripcion.setEditable(boleano); 
-	    cmb_concepto.setEnabled(boleano);
-		txaUso.setLineWrap(true); 
-		txaUso.setWrapStyleWord(true);
-		txaUso.setEditable(boleano);
+	    txtImporte_Efectivo.setEditable(boleano); 
+		txaObservaciones.setLineWrap(true); 
+		txaObservaciones.setWrapStyleWord(true);
+		txaObservaciones.setEditable(boleano);
 		btnModificar.setEnabled(false);
 		txtFolio.setEditable(false);
-		txtProveedor.setEditable(boleano);
+		txtBeneficiario.setEditable(boleano);
 		btnSolicitante.setEnabled(boleano);
 		btnGuardar.setEnabled(boleano);
+		btnBuscarCorte.setEnabled(boleano);
 		btnAgregar.setEnabled(boleano);
 		btnQuitarfila.setEnabled(boleano);
-		rbProveedorCont.setEnabled(boleano);
-		rbProveedor.setEnabled(boleano);
+		rbBanco.setEnabled(boleano);
+		rbBancoInterno.setEnabled(boleano);
     }
    
     public void panel_limpiar(){
 		btnBuscar.setEnabled(true);
 		cmb_status.setSelectedIndex(0);
 		cmbEstablecimiento.setSelectedIndex(0);;
-		txtFolio.setText("");
-	    txtDescripcion.setText(""); 
-	    txtProveedor.setText("");
-	    txtFolio_prv.setText("");
-		txaUso.setText("");
+		txtImporte_Corte.setText("");
+		txtFolioCorte.setText("");
+		txtImporte_Cheque.setText("");
+	    txtImporte_Efectivo.setText(""); 
 		txtTotal.setText("");
-		rbProveedorCont.setSelected(true);
+		
+		txtFolio.setText("");
+	    txtBeneficiario.setText("");
+	    txtFolio_prv.setText("");
+		txaObservaciones.setText("");
+		rbBancoInterno.setSelected(true);
 		modelo.setRowCount(0);
     }
     
 	
-	KeyListener op_validanumero_en_celda = new KeyListener() {
-		public void keyTyped(KeyEvent e) {}
-		public void keyReleased(KeyEvent e) {
-			int fila=tabla.getSelectedRow();
-			int columna=tabla.getSelectedColumn();
-			
-			if(fila==-1)fila=fila+1;
-			if(columna<1 )columna=1;
-
-			if(e.getKeyCode()==9&&columna>1) {
-				columna=1;
-			};
-			
-			if(ObjTab.validacelda(tabla,"decimal", fila,columna)){
-				calculo();
-						  if(ObjTab.RecorridoFocotabla_con_evento(tabla, fila,columna, "x",e).equals("si")){
-								txtDescripcion.requestFocus();
-						  };
-			}	
+	public void calculo_cheque(){
+		if(!txtFolioCorte.getText().toString().equals("")) {
+		txtImporte_Cheque.setText( (Float.valueOf(txtImporte_Corte.getText().toString())-Float.valueOf(txtImporte_Efectivo.getText().toString())+"")   );
 		}
-		public void keyPressed(KeyEvent e) {}
-	};
+	}
 	
 	public void calculo() {
 		float importe=0;
@@ -302,15 +299,85 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	};
    
 	KeyListener opAgregarConEnter = new KeyListener() {
-	public void keyTyped(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {
+		calculo_cheque();
+	}
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_ENTER){
-			btnAgregar.doClick();
+		if(!txtFolioCorte.getText().toString().equals("")) {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				calculo_cheque();
+				btnAgregar.doClick();
+			}
 		}
 	}
 	public void keyPressed(KeyEvent e) {}
     };
     
+    ActionListener opFiltroBuscarcortecajaverd = new ActionListener(){
+ 		public void actionPerformed(ActionEvent e){
+ 			if(cmbEstablecimiento.getSelectedIndex()==0) {
+					JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Un Establecimiento","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+					cmbEstablecimiento.requestFocus();
+					cmbEstablecimiento.showPopup();
+ 			}else {
+ 			new Cat_Filtro_Buscar_Corte_Caja_Verde().setVisible(true);
+ 			}
+ 		}
+ 	};	
+ 	
+ 	 ActionListener opAgregarProducto = new ActionListener(){
+ 		public void actionPerformed(ActionEvent e){
+ 				if(txtImporte_Efectivo.getText().equals("")){
+ 					JOptionPane.showMessageDialog(null, "Es Requerido Que Este Seleccionado Un Corte","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+ 					btnBuscarCorte.doClick(); 
+ 					return;
+ 				}else {
+ 					Object[] Vector_Producto = new Object[5];
+ 					Vector_Producto[0]=txtFolioCorte.getText().toUpperCase().trim();		
+ 					Vector_Producto[1]=cmbEstablecimiento.getSelectedItem().toString();		
+ 					Vector_Producto[2]=txtImporte_Corte.getText().toUpperCase().trim();		
+ 					Vector_Producto[3]=txtImporte_Efectivo.getText().toUpperCase().trim();		
+ 					Vector_Producto[4]=txtImporte_Cheque.getText().toUpperCase().trim();		
+ 					modelo.addRow(Vector_Producto);
+
+ 					txtFolioCorte.setText("");
+ 					txtImporte_Corte.setText("");
+ 					txtImporte_Efectivo.setText("");
+ 					txtImporte_Cheque.setText("");
+ 					cmbEstablecimiento.requestFocus();
+ 					cmbEstablecimiento.showPopup();
+ 				   return;	
+ 				  }
+ 		  }
+    };
+ 	
+ 	ActionListener opQuitarfila = new ActionListener() {
+ 		public void actionPerformed(ActionEvent e) {
+ 			int seleccion = tabla.getSelectedRow();
+ 			if(seleccion<0){
+ 				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+ 				return;
+ 			}else{
+ 				if(seleccion < tabla.getRowCount()){
+ 					modelo.removeRow(seleccion);
+ 					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
+ 					
+ 					if(tabla.getRowCount()>0) {
+ 						calculo();
+ 					}else {
+ 						txtTotal.setText("");
+ 					}
+ 				}
+ 			}
+ 		}
+ 	};
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
     ActionListener opEditar = new ActionListener(){
  		public void actionPerformed(ActionEvent e){
  			guardar_actualizar="A";
@@ -324,8 +391,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			btnImprimir.setEnabled(false);
 			btnAgregar.setEnabled(true);
 			btnQuitarfila.setEnabled(true);
-			txtDescripcion.setEditable(true);
-			txaUso.setEditable(true);
+			txtImporte_Efectivo.setEditable(true);
 			cmbEstablecimiento.setEnabled(true);
 			cmbEstablecimiento.requestFocus();
 			cmbEstablecimiento.showPopup();
@@ -350,47 +416,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
   		}
   	};
   	
-    ActionListener opAgregarProducto = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-				if(txtDescripcion.getText().equals("")){
-					JOptionPane.showMessageDialog(null, "Es Requerido Teclee La Descripcion Del Producto Para Poder Agregar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-					txtDescripcion.requestFocus();
-					return;
-				}else {
-					Object[] Vector_Producto = new Object[4];
-					Vector_Producto[0]=txtDescripcion.getText().toUpperCase().trim();		
-					Vector_Producto[1]="0";		
-					Vector_Producto[2]="0";		
-					Vector_Producto[3]="0";		
-					modelo.addRow(Vector_Producto);
-					txtDescripcion.setText("");
-					ObjTab.RecorridoFocotabla(tabla, modelo.getRowCount()-1, 1, "x");
-					tabla.setRowSelectionInterval(modelo.getRowCount()-1, modelo.getRowCount()-1);
-				   return;	
-				  }
-		  }
-   };
-	
-	ActionListener opQuitarfila = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			int seleccion = tabla.getSelectedRow();
-			if(seleccion<0){
-				JOptionPane.showMessageDialog(null, "Debe seleccionar la fila que desea quitar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-				return;
-			}else{
-				if(seleccion < tabla.getRowCount()){
-					modelo.removeRow(seleccion);
-					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
-					
-					if(tabla.getRowCount()>0) {
-						calculo();
-					}else {
-						txtTotal.setText("");
-					}
-				}
-			}
-		}
-	};
+   
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -411,10 +437,8 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			btnBuscar.setEnabled(false);
 			btnNuevo.setEnabled(false);
 			btnImprimir.setEnabled(false);
-			cmbEstablecimiento.setEnabled(true);
-			cmb_concepto.setEnabled(true);
-			cmb_concepto.requestFocus();
-			cmb_concepto.showPopup();
+			btnSolicitante.setEnabled(true);
+			btnSolicitante.doClick();
     		tabla.setEnabled(true );
 		}
 	};
@@ -422,9 +446,13 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
     ActionListener opSeleccionEstablecimiento = new ActionListener(){
  	  public void actionPerformed(ActionEvent e){
 				   if(cmbEstablecimiento.getSelectedIndex()!=0) {
-					   btnSolicitante.setEnabled(true);
-					   rbProveedorCont.setEnabled(true);
-					   rbProveedor.setEnabled(true);
+					   btnBuscarCorte.setEnabled(true);
+					   txtFolioCorte.setText("");
+					   txtImporte_Corte.setText("");
+					   txtImporte_Efectivo.setText("");
+					   txtImporte_Cheque.setText("");
+					   
+					   btnBuscarCorte.doClick();
 				   }
 				return;
 			}
@@ -432,7 +460,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		
    ActionListener opFiltroBuscarSolicitante = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Filtro_Buscar_Proveedor().setVisible(true);
+			new Cat_Filtro_Buscar_Colaborador().setVisible(true);
 		}
 	};	
 	
@@ -446,8 +474,8 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 					btnModificar.setEnabled(false);
 					txtFolio.requestFocus();
 					btnNuevo.setEnabled(true);
-	    			rbProveedor.setEnabled(true);
-	    			rbProveedorCont.setEnabled(true);
+	    			rbBancoInterno.setEnabled(false);
+	    			rbBanco.setEnabled(false);
 					return;
 			     }else{
               				return;
@@ -458,68 +486,66 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			panel_booleano(false);;
 			txtFolio.requestFocus();
 			btnNuevo.setEnabled(true);
-			rbProveedor.setEnabled(true);
-			rbProveedorCont.setEnabled(true);
+			rbBancoInterno.setEnabled(false);
+			rbBanco.setEnabled(false);
 			return;
 		}
 		}
 	};
 	
-	//TODO GUARDAR
 	ActionListener guardar = new ActionListener(){
 	@SuppressWarnings("unlikely-arg-type")
 	public void actionPerformed(ActionEvent e){
 			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
 				if(tabla.isEditing()){	tabla.getCellEditor().stopCellEditing();}
 				calculo();
-			 if(txtTotal.getText().equals("")||Float.valueOf(txtTotal.getText())==0){
-					JOptionPane.showMessageDialog(null, "Es Requerido Alimente Productos Con Cantidad y Precio","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-				 return;
-			 }else{		 
-				   String productos="Descripcion / Cantidad / Importe\n";
-				   for(int i=0;i<tabla.getRowCount();i++) {
-					   productos=productos+tabla.getValueAt(i, 0)+"  / "+tabla.getValueAt(i, 1)+"  /$"+tabla.getValueAt(i, 3)+" \n";
-				   }
-
-				   if(gasto.validacion_existe(txtFolio.getText().toString())||guardar_actualizar.equals('N')){
-						   
-				   gasto.setFolio(Integer.valueOf(txtFolio.getText().toString()));
-                   gasto.setFolio_usuario_solicito(Integer.valueOf(txtFoliosolicit.getText()));
-                   gasto.setTotal_gasto(Float.valueOf(txtTotal.getText()));
-                   gasto.setEstablecimiento_solicito(cmbEstablecimiento.getSelectedItem().toString());
-                   gasto.setCod_prv(txtFolio_prv.getText().toString());
-                   gasto.setTipo_proveedor(rbProveedor.isSelected()?"P":"C"); 
-                   gasto.setDescripcion_gasto(txaUso.getText().trim());
-                   gasto.setGuardar_actualizar(guardar_actualizar);
-                   gasto.setTabla_obj(tabla_guardado);
-                   gasto.setConcepto_gasto(cmb_concepto.getSelectedItem().toString());
-                   
-					if(gasto.GuardarActualizar().getFolio()>0){
-		                Obj_Correos correos = new Obj_Correos().buscar_correos(84, "");
-						String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+"\nSolicita los siguientes productos\n"+productos+ "Con un valor total de:$"+txtTotal.getText().toString()+"\n "
-						                  +"\nPara El Establecimiento:"+cmbEstablecimiento.getSelectedItem().toString().trim()+"\nBeneficiario:"+txtProveedor.getText()+"\nMotivo del(a) Gasto/Compra:"+txaUso.getText();
-//						                  +"\nResponda Si Para Autorizar el Gasto \nResponda No Para Negar el Gasto";
-						new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje, "Gasto Folio:§"+gasto.getFolio(),"Gastos");
-						guardar_actualizar="G";
-						btnDeshacer.doClick();
-						JOptionPane.showMessageDialog(null, "Se Guardo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-						btnImprimir.doClick();
-					}else{
-						JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-						return;
-					}
-					
-				   }else {
-						JOptionPane.showMessageDialog(null, "El Estatus De La Orden De Gasto Es Requerido Sea PENDIENTE Para Poder Guardar", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-				      return;
-				   }
-					
-			 }
+//			 if(txtTotal.getText().equals("")||Float.valueOf(txtTotal.getText())==0){
+//					JOptionPane.showMessageDialog(null, "Es Requerido Alimente Productos Con Cantidad y Precio","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+//				 return;
+//			 }else{		 
+//				   String productos="Descripcion / Cantidad / Importe\n";
+//				   for(int i=0;i<tabla.getRowCount();i++) {
+//					   productos=productos+tabla.getValueAt(i, 0)+"  / "+tabla.getValueAt(i, 1)+"  /$"+tabla.getValueAt(i, 3)+" \n";
+//				   }
+//
+//				   if(gasto.validacion_existe(txtFolio.getText().toString())||guardar_actualizar.equals('N')){
+//						   
+//				   gasto.setFolio(Integer.valueOf(txtFolio.getText().toString()));
+//                   gasto.setFolio_usuario_solicito(Integer.valueOf(txtFoliosolicit.getText()));
+//                   gasto.setTotal_gasto(Float.valueOf(txtTotal.getText()));
+//                   gasto.setEstablecimiento_solicito(cmbEstablecimiento.getSelectedItem().toString());
+//                   gasto.setCod_prv(txtFolio_prv.getText().toString());
+//                   gasto.setTipo_proveedor(rbBancoInterno.isSelected()?"P":"C"); 
+//                   gasto.setDescripcion_gasto(txaObservaciones.getText().trim());
+//                   gasto.setGuardar_actualizar(guardar_actualizar);
+//                   gasto.setTabla_obj(tabla_guardado);
+//                   
+//					if(gasto.GuardarActualizar().getFolio()>0){
+//		                Obj_Correos correos = new Obj_Correos().buscar_correos(84, "");
+//						String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+"\nSolicita los siguientes productos\n"+productos+ "Con un valor total de:$"+txtTotal.getText().toString()+"\n "
+//						                  +"\nPara El Establecimiento:"+cmbEstablecimiento.getSelectedItem().toString().trim()+"\nBeneficiario:"+txtBeneficiario.getText()+"\nMotivo del(a) Gasto/Compra:"+txaObservaciones.getText();
+////						                  +"\nResponda Si Para Autorizar el Gasto \nResponda No Para Negar el Gasto";
+//						new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje, "Gasto Folio:§"+gasto.getFolio(),"Gastos");
+//						guardar_actualizar="G";
+//						btnDeshacer.doClick();
+//						JOptionPane.showMessageDialog(null, "Se Guardo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+//						btnImprimir.doClick();
+//					}else{
+//						JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+//						return;
+//					}
+//					
+//				   }else {
+//						JOptionPane.showMessageDialog(null, "El Estatus De La Orden De Gasto Es Requerido Sea PENDIENTE Para Poder Guardar", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+//				      return;
+//				   }
+//					
+//			 }
 	  }			
     };
 	
-	//TODO inicia filtro_Buscar PROVEEDOR	
-	public class Cat_Filtro_Buscar_Proveedor extends JDialog{
+	//TODO inicia filtro_Buscar BENEFICIARIO empleado	
+	public class Cat_Filtro_Buscar_Colaborador extends JDialog{
 		Container contfb = getContentPane();
 		JLayeredPane panelfb = new JLayeredPane();
 		Connexion con = new Connexion();
@@ -528,13 +554,8 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		public void init_tablafp(){
 	    	this.tablab.getColumnModel().getColumn( 0).setMinWidth(55);
 	    	this.tablab.getColumnModel().getColumn( 1).setMinWidth(350);
-			 String ref =rbProveedor.isSelected()?"Proveedor":"Proveedor Contado";
-			 String comandob=" " ;
-			switch(ref){
-			    case "Proveedor Contado":comandob = "select folio_proveedor,nombre+' '+ap_paterno+' '+ap_materno as nombre from tb_proveedores where status=1  order by nombre"; break;
-		    	case "Proveedor": 		 comandob = " SELECT cod_prv,rtrim(ltrim(upper(razon_social))) from bmsizagar.dbo.proveedores order by razon_social "; break;
-		        }
-			String basedatos="201",pintar="si";
+			 String comandob="select folio,dbo.nombre_empleado(folio)as nombre from tb_empleado where status in(1,2,3,6)  and folio=88 union all select folio,dbo.nombre_empleado(folio)as nombre from tb_empleado where status in(1,2,3,6) " ;
+			String basedatos="98",pintar="si";
 			ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
 	    }
 		
@@ -560,7 +581,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		     
 		JTextField txtBuscarb  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String");
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public Cat_Filtro_Buscar_Proveedor(){
+		public Cat_Filtro_Buscar_Colaborador(){
 			this.setSize(475,450);
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
@@ -568,7 +589,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			this.setModal(true);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 			this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Un Registro Con Doble Click"));
-			this.setTitle("Filtro De Solicitante");
+			this.setTitle("Filtro De Colaborador");
 			trsfiltro = new TableRowSorter(modelob); 
 			tablab.setRowSorter(trsfiltro);
 			this.panelfb.add(txtBuscarb).setBounds      (10 ,20 ,450 , 20 );
@@ -583,16 +604,16 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
 		        	if(e.getClickCount()==1){
-		    			rbProveedor.setEnabled(false);
-		    			rbProveedorCont.setEnabled(false);
+		    			rbBancoInterno.setEnabled(false);
+		    			rbBanco.setEnabled(false);
 		        		int fila = tablab.getSelectedRow();
 		        		txtFolio_prv.setText (tablab.getValueAt(fila,0)+"");
-		        		txtProveedor.setText (tablab.getValueAt(fila,1)+"");
-						txtDescripcion.setEditable(true);
+		        		txtBeneficiario.setText (tablab.getValueAt(fila,1)+"");
 						btnAgregar.setEnabled(true);
 						btnQuitarfila.setEnabled(true);
-						txaUso.setEditable(true);
-						txaUso.requestFocus();
+						cmbEstablecimiento.setEnabled(true);
+						txaObservaciones.setEditable(true);
+						txaObservaciones.requestFocus();
 						dispose();
 		        	}
 		        }
@@ -608,7 +629,94 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		};
 	}
 	
-	//TODO inicia filtro_Buscar ORDEN DE GASTO
+
+	//TODO inicia filtro_Buscar cortes de caja Verde
+	public class Cat_Filtro_Buscar_Corte_Caja_Verde extends JDialog{
+			Container contfb = getContentPane();
+			JLayeredPane panelfb = new JLayeredPane();
+			Connexion con = new Connexion();
+			Obj_tabla ObjTab =new Obj_tabla();
+			int columnasb = 6,checkbox=-1;
+		public void init_tablafp(){
+	    	this.tablab.getColumnModel().getColumn( 0).setMinWidth(100);
+	    	this.tablab.getColumnModel().getColumn( 1).setMinWidth(100);
+	    	this.tablab.getColumnModel().getColumn( 2).setMinWidth(100);
+	    	this.tablab.getColumnModel().getColumn( 3).setMinWidth(100);
+	    	this.tablab.getColumnModel().getColumn( 4).setMinWidth(103);
+	    	
+			 String comandob="banco_interno_filtro_cortes_cajas_verdes_de_trabajos '"+cmbEstablecimiento.getSelectedItem().toString()+"'" ;
+			String basedatos="98",pintar="si";
+			ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
+	    }
+		
+		@SuppressWarnings("rawtypes")
+		public Class[] base (){
+			Class[] types = new Class[columnasb];
+			for(int i = 0; i<columnasb; i++){types[i]= java.lang.Object.class;}
+			 return types;
+		}
+		
+		public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{"Folio Trabajo","Folio Corte", "Folio Asignacion","Establecimiento", "Corte Sistema", "Fecha"}){
+			 @SuppressWarnings("rawtypes")
+				Class[] types = base();
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+				public boolean isCellEditable(int fila, int columna){return false;}
+		};
+		
+		JTable tablab = new JTable(modelob);
+		public JScrollPane scroll_tablab = new JScrollPane(tablab);
+	     @SuppressWarnings({ "rawtypes" })
+	    private TableRowSorter trsfiltro;
+		     
+		JTextField txtBuscarb  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String");
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Cat_Filtro_Buscar_Corte_Caja_Verde(){
+			this.setSize(625,450);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			this.setModal(true);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+			this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Un Registro Con Doble Click"));
+			this.setTitle("Filtro De Cajas Verdes De Concentrados");
+			trsfiltro = new TableRowSorter(modelob); 
+			tablab.setRowSorter(trsfiltro);
+			this.panelfb.add(txtBuscarb).setBounds      (10 ,20 ,600 , 20 );
+			this.panelfb.add(scroll_tablab).setBounds   (10 ,40 ,600 ,370 );
+			this.init_tablafp();
+			this.agregar(tablab);
+			this.txtBuscarb.addKeyListener  (opFiltro );
+			contfb.add(panelfb);
+		}
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+		        	if(e.getClickCount()==1){
+		        		int fila = tablab.getSelectedRow();
+		        		txtFolioCorte.setText (tablab.getValueAt(fila,1)+"");
+		        		txtImporte_Corte.setText (tablab.getValueAt(fila,4)+"");
+		        		txtImporte_Efectivo.setText (tablab.getValueAt(fila,4)+"");
+		        		txtImporte_Efectivo.setEditable(true);
+		        		calculo_cheque();
+		        		dispose();
+		        		txtImporte_Efectivo.requestFocus();
+		        	}
+		        }
+	        });
+	    }
+		
+        private KeyListener opFiltro = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+	}
+	
+	//TODO inicia filtro_Buscar transpaso
 		public class Cat_Filtro_Buscar_Orden_De_Gasto extends JDialog{
 			Container contfb = getContentPane();
 			JLayeredPane panelfb = new JLayeredPane();
@@ -703,14 +811,14 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			        			}
 			        			 
 			        		txtFolio.setText(tablacompleta[0][3].toString());
-			        		txaUso.setText(tablacompleta[0][4].toString());
+			        		txaObservaciones.setText(tablacompleta[0][4].toString());
 			        		cmbEstablecimiento.setSelectedItem(tablacompleta[0][6].toString());
 			        		txtFolio_prv.setText (tablacompleta[0][7].toString());
-			        		txtProveedor.setText (tablacompleta[0][8].toString());
+			        		txtBeneficiario.setText (tablacompleta[0][8].toString());
 			         		txtFoliosolicit.setText (tablacompleta[0][11].toString());
 			        		txtSolicitante.setText (tablacompleta[0][14].toString());
 			        		cmb_status.setSelectedItem(tablacompleta[0][15].toString());
-			        		if(tablacompleta[0][9].toString().equals("PROVEEDOR")) {rbProveedor.setSelected(true); }else {rbProveedorCont.setSelected(true); };
+			        		if(tablacompleta[0][9].toString().equals("PROVEEDOR")) {rbBancoInterno.setSelected(true); }else {rbBanco.setSelected(true); };
 			        		tabla.setEnabled(false );
 			        		panel_booleano(false);
 			        		
@@ -741,14 +849,14 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		        			}
 		        			 
 		        		txtFolio.setText(tablacompleta[0][3].toString());
-		        		txaUso.setText(tablacompleta[0][4].toString());
+		        		txaObservaciones.setText(tablacompleta[0][4].toString());
 		        		cmbEstablecimiento.setSelectedItem(tablacompleta[0][6].toString());
 		        		txtFolio_prv.setText (tablacompleta[0][7].toString());
-		        		txtProveedor.setText (tablacompleta[0][8].toString());
+		        		txtBeneficiario.setText (tablacompleta[0][8].toString());
 		         		txtFoliosolicit.setText (tablacompleta[0][11].toString());
 		        		txtSolicitante.setText (tablacompleta[0][14].toString());
 		        		cmb_status.setSelectedItem(tablacompleta[0][15].toString());
-		        		if(tablacompleta[0][9].toString().equals("PROVEEDOR")) {rbProveedor.setSelected(true); }else {rbProveedorCont.setSelected(true); };
+		        		if(tablacompleta[0][9].toString().equals("PROVEEDOR")) {rbBancoInterno.setSelected(true); }else {rbBanco.setSelected(true); };
 		        		tabla.setEnabled(false );
 		        		panel_booleano(false);
 		        		
@@ -774,7 +882,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Solicitud_De_Orden_De_Gasto().setVisible(true);
+			new Cat_Transpaso_A_Banco_Interno().setVisible(true);
 		}catch(Exception e){	}
 	}
 };

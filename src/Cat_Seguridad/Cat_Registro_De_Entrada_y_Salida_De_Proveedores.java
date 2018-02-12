@@ -362,8 +362,8 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 			int fila;
 			fila=tablaDevolucion.getSelectedRow();
 			if(fila==-1)fila=fila+1;
-			if(ObjTab.validacelda(tablaDevolucion,"decimal", fila, 1)){
-				  if(ObjTab.RecorridoFocotabla(tablaDevolucion, fila, 1, "x").equals("si")){
+			if(ObjTab.validacelda(tablaDevolucion,"decimal", fila, 2)){
+				  if(ObjTab.RecorridoFocotabla(tablaDevolucion, fila, 2, "x").equals("si")){
 						btnFiltroProducto.requestFocus();
 					};
 			}

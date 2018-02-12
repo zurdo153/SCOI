@@ -208,8 +208,8 @@ public class Cargar_Combo {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String[] Establecimientos_Edo_Resultados() throws SQLException{
-		String query = "exec sp_select_establecimientos 'R'";
+	public String[] Establecimientos(String parametro) throws SQLException{
+		String query = "exec sp_select_establecimientos '"+parametro+"'";
 		
 		Statement stmt = null;
 		try {

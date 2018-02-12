@@ -4240,4 +4240,46 @@ public boolean Borrar_Observacion_DH(){
 		}		
 		return true;
 	}
+	
+	
+public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String[][] tabla,String Accion){
+		String query ="update orden_de_gasto set fecha_autorizacion=getdate(), usuario_autorizo="+usuario.getFolio()+",estatus='"+Accion+"' where folio=?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			con.setAutoCommit(false);
+			PreparedStatement pstmt = con.prepareStatement(query);
+			
+			for(int i=0; i<tabla.length; i++){
+
+				if(tabla[i][0].toString().equals("true")){
+					pstmt.setString (1, tabla[i][1].toString());
+			        pstmt.executeUpdate();	
+				}
+			}
+			con.commit();
+		} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+					if(con != null){
+						try{
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Guardar_Autorizacion_De_Orden_De_Gasto ] update \n update tb_retiros_a_cajeros set status_recibido=0 where folio_retiro= SQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						}catch(SQLException ex){
+							System.out.println(ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Guardar_Autorizacion_De_Orden_De_Gasto ] update \n update tb_retiros_a_cajeros set status_recibido=0 where folio_retiro= SQLException:"+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+					return false;
+					}	
+		}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+		}		
+		return true;
+	
+	}	
+
 }

@@ -58,6 +58,7 @@ import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Importar_Voucher;
+import Obj_Contabilidad.Obj_Orden_De_Gasto;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Cuadrantes.Obj_Actividad;
 import Obj_Cuadrantes.Obj_Aspectos;
@@ -7108,6 +7109,165 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		}		
 		return true;
 	}
+
+	
+	public Obj_Orden_De_Gasto Guardar_Solicitud_Orden_De_Gasto(Obj_Orden_De_Gasto orden){
+		int folio_transaccion=orden.getFolio();
+		String querymod ="";
+				
+		if(orden.getGuardar_actualizar().equals("N")){
+		  folio_transaccion=busca_y_actualiza_proximo_folio(84);
+		  orden.setFolio(folio_transaccion);
+		}else {
+		  querymod = "delete from orden_de_gasto_datos where folio_orden_de_gasto="+folio_transaccion;
+		}
+		
+		String query = "exec orden_de_gasto_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			con.setAutoCommit(false);
+
+			PreparedStatement pstmtdel = con.prepareStatement(querymod);
+			pstmtdel.executeUpdate();
+			 con.commit();
+			 
+			PreparedStatement pstmt = con.prepareStatement(query);
+			for(int i=0; i<orden.getTabla_obj().length; i++){
+				pstmt.setInt   (1 ,  folio_transaccion);
+				pstmt.setString(2 ,  orden.getDescripcion_gasto().toString());
+				pstmt.setString(3 ,  orden.getEstablecimiento_solicito().toString());
+				pstmt.setInt   (4 ,  orden.getFolio_usuario_solicito());
+				pstmt.setString(5 ,  orden.getCod_prv().toString());
+				pstmt.setString(6 ,  orden.getTipo_proveedor().toString());
+				pstmt.setFloat (7 ,  orden.getTotal_gasto());
+				pstmt.setString(8 ,  orden.getGuardar_actualizar());
+				pstmt.setString(9 ,  orden.getTabla_obj()[i][0].toString().trim());
+				pstmt.setFloat (10 , Float.valueOf(orden.getTabla_obj()[i][1].toString().trim()));
+				pstmt.setFloat (11 , Float.valueOf(orden.getTabla_obj()[i][2].toString().trim()));
+				pstmt.setString(12 , orden.getConcepto_gasto());				
+								
+				pstmt.executeUpdate();
+			 con.commit();
+			}
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud_Orden_De_Gasto ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud_Orden_De_Gasto ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return null;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return orden;
+	}
+	
+//	@folio int,@folio_orden_de_gasto int,@cantidad money, @fecha datetime, @observaciones varchar(150), @tipo_beneficiario char(1), @folio_beneficiario int, @usuario int, @concepto varchar(200)
+	
+	public boolean Guardar_Orden_De_Gasto_Pago_En_Efectivo(int folio_orden_de_gasto,float cantidad, String fecha, String observaciones, String tipoBeneficiario, int folioBeneficiario, String Concepto,String Guardar_actualizar){
+		int folio_transaccion=0;
+
+		if(Guardar_actualizar.equals("N")){
+		  folio_transaccion=busca_y_actualiza_proximo_folio(85);
+		}
+		
+		String query = "exec orden_de_gasto_pago_en_efectivo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+				con.setAutoCommit(false);
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt   ( 1, folio_transaccion);
+				pstmt.setInt   ( 2, folio_orden_de_gasto);
+				pstmt.setFloat ( 3, cantidad);
+				pstmt.setString( 4, fecha.toUpperCase().trim());
+				pstmt.setString( 5, observaciones.toUpperCase().trim());
+				pstmt.setString( 6, tipoBeneficiario.toUpperCase().trim());
+				pstmt.setInt   ( 7, folioBeneficiario);
+				pstmt.setInt   ( 8, usuario.getFolio());		
+				pstmt.setString( 9, Concepto.toUpperCase().trim());
+				pstmt.setString(10, Guardar_actualizar);
+
+				pstmt.executeUpdate();
+			
+			con.commit();
+		} catch (SQLException e) {
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Gasto_Pago_En_Efectivo ] Insert   \nSQLException: "+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Gasto_Pago_En_Efectivo ] Insert  \nSQLException: "+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Gasto_Pago_En_Efectivo ] Insert  SQLException: :"+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Cancelar_Corte_Del_Pago_De_Ordenes_De_Gasto(Object[][] tabla,String tipo_movimiento){
+		int folio_transaccion=0;
+		if(tipo_movimiento.equals("T")){
+		  folio_transaccion=busca_y_actualiza_proximo_folio(86);
+		}
+		
+		String query =  "exec orden_de_gasto_corte_de_pagos_en_efectivo ?,"+folio_transaccion+","+usuario.getFolio()+",'"+tipo_movimiento+"'";
+		Connection con = new Connexion().conexion();
+		try {
+			PreparedStatement pstmt = con.prepareStatement(query);
+			con.setAutoCommit(false);
+			for(int i=0; i<tabla.length; i++){
+				if(tabla[i][8].toString().trim().equals("true")) {
+				pstmt.setString(1, tabla[i][0].toString().trim());
+				pstmt.executeUpdate();
+				}
+			}
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Corte_Del_Pago_De_Ordenes_De_Gasto \n SQLException:\n"+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Corte_Del_Pago_De_Ordenes_De_Gasto \n SQLException:\n"+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la  funcion Guardar_Corte_Del_Pago_De_Ordenes_De_Gasto \n SQLException:\n"+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+		}
 	
 //	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
 //		

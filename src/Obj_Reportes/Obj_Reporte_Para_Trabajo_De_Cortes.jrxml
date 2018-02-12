@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2016-02-11T15:30:41 -->
+<!-- 2018-01-29T17:44:54 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_Para_Trabajo_De_Cortes" language="groovy" printOrder="Horizontal" pageWidth="791" pageHeight="612" orientation="Landscape" columnWidth="751" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="527b8c71-0150-4c5e-ab8d-96445c8baa40">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -112,13 +112,13 @@ where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
 	</subDataset>
 	<parameter name="folio_trabajo" class="java.lang.Integer" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA[89]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[3355]]></defaultValueExpression>
 	</parameter>
 	<parameter name="slFactory" class="java.lang.Object"/>
 	<parameter name="slSchema" class="java.lang.Object"/>
 	<parameter name="LoggedInUser" class="java.lang.Object"/>
 	<parameter name="LoggedInUsername" class="java.lang.Object"/>
-	<queryString>
+	<queryString language="SQL">
 		<![CDATA[--declare @folio_trabajo datetime
 --set @folio_trabajo = 10'
 
@@ -226,7 +226,7 @@ select tb_establecimiento.nombre as ESTABLECIMIENTO
 		    		left outer join tb_retiros_a_cajeros on  tb_retiros_a_cajeros.folio_corte=ma.folio_corte 
 					inner join tb_alimentacion_efectivo_cortes on tb_alimentacion_efectivo_cortes.folio_corte = ma.folio_corte and tb_alimentacion_efectivo_cortes.folio_denominacion = 13
 				where ma.folio_corte=tb_alimentacion_de_cortes.folio_corte 
-				group by ma.folio_corte,ma.efectivo_para_trabajo,ma.efectivo,ma.total_retiros_programados_para_trabajo,tb_retiros_a_cajeros.importe_retiro,total_de_vauchers_para_trabajo,ma.total_cheques_para_trabajo,ma.total_dolares_para_trabajo,ma.cheques,ma.corte_del_sistema,ma.apartados,ma.abonos,ma.total_fuente_de_sodas_para_trabajo, ma.total_vales_para_trabajo --,tb_alimentacion_efectivo_cortes.cantidad,tb_alimentacion_efectivo_cortes.valor,tb_alimentacion_efectivo_cortes.valor_denominacion 
+				group by ma.folio_corte,ma.efectivo_para_trabajo,ma.efectivo,ma.total_retiros_programados_para_trabajo,total_de_vauchers_para_trabajo,ma.total_cheques_para_trabajo,ma.total_dolares_para_trabajo,ma.cheques,ma.corte_del_sistema,ma.apartados,ma.abonos,ma.total_fuente_de_sodas_para_trabajo, ma.total_vales_para_trabajo --,tb_alimentacion_efectivo_cortes.cantidad,tb_alimentacion_efectivo_cortes.valor,tb_alimentacion_efectivo_cortes.valor_denominacion 
 		)a
 left outer join tb_captura_fuente_sodas ft on ft.folio_corte=a.folio_corte
 group by a.folio_corte,a.efectivo,a.Retiro_Cajero,a.voucher_sin_retiro,a.cheques,a.dolares,a.corte_del_sistema,a.apartados,a.abonos,a.total_fuente_de_sodas_para_trabajo,a.vales) as DIFERENCIA
