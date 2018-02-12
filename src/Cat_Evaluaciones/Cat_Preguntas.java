@@ -21,14 +21,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Preguntas;
 import Obj_Principal.Componentes;
-import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Principal.JCButton;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
@@ -58,8 +58,8 @@ public class Cat_Preguntas extends JFrame{
 			};
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
-	         return types[columnIndex];
-	     }
+		         return types[columnIndex];
+		     }
 			public boolean isCellEditable(int fila, int columna){
 					return false;
 			}
@@ -68,7 +68,6 @@ public class Cat_Preguntas extends JFrame{
 	    JTable tabla = new JTable(modelo);
 		public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
-	JTextField txtFolioFiltro = new JTextField();
 	JTextField txtPreguntaFiltro = new JTextField();
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
@@ -80,12 +79,12 @@ public class Cat_Preguntas extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbStatus = new JComboBox(status);
 	
-	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
-	JButton btnNuevo = new JButton("Nuevo",new ImageIcon("imagen/Nuevo.png"));
-	JButton btnEditar = new JButton("Editar",new ImageIcon("imagen/editara.png"));
-	JButton btnSalir = new JButton("Salir",new ImageIcon("imagen/salir16.png"));
-	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
-	JButton btnDeshacer = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
+	JButton btnBuscar = new JCButton("","buscar.png","Azul");
+	JButton btnNuevo = new JCButton("Nuevo","Nuevo.png","Azul");
+	JButton btnEditar = new JCButton("Editar","editara.png","Azul");
+	JButton btnSalir = new JCButton("Salir","salir16.png","Azul");
+	JButton btnGuardar = new JCButton("Guardar","Guardar.png","Azul");
+	JButton btnDeshacer = new JCButton("Deshacer","deshacer16.png","Azul");
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -99,7 +98,6 @@ public class Cat_Preguntas extends JFrame{
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
 		
-		txtFolioFiltro.setToolTipText("Filtro Por Folio");
 		txtPreguntaFiltro.setToolTipText("Filtro Por Nombre");
 		
 		int x = 15, y=30, w=100,l=20;
@@ -108,19 +106,18 @@ public class Cat_Preguntas extends JFrame{
 		panel.add(txtFolio).setBounds                  	(x+=45 ,y    ,w  ,l);
 		panel.add(btnBuscar).setBounds                 	(x+=100,y    ,32 ,l);
 		
-		panel.add(btnNuevo).setBounds                  	(x+=100,y    ,w  ,l);
-		panel.add(btnEditar).setBounds                 	(x+=120,y    ,w  ,l);
-		panel.add(btnDeshacer).setBounds               	(x+=120,y    ,w  ,l);
-		panel.add(btnSalir).setBounds                  	(x+=120,y    ,w  ,l);
+		panel.add(btnNuevo).setBounds                  	(x+=70,y    ,w  ,l);
+		panel.add(btnEditar).setBounds                 	(x+=120,y    ,w+10  ,l);
+		panel.add(btnDeshacer).setBounds               	(x+=130,y    ,w+10  ,l);
+		panel.add(btnSalir).setBounds                  	(x+=130,y    ,w  ,l);
 		x = 15;
 		panel.add(new JLabel("Pregunta:")).setBounds   	(x     ,y+=30,w  ,l);
 		panel.add(txtPregunta).setBounds				(x+=45 ,y    ,w*3,l);
 		panel.add(new JLabel("Status:")).setBounds		(x+=320,y    ,w  ,l);
 		panel.add(cmbStatus).setBounds                  (x+=50 ,y    ,80 ,l);
-		panel.add(btnGuardar).setBounds                	(x+=190,y    ,w  ,l);
+		panel.add(btnGuardar).setBounds                	(x+=180,y    ,w  ,l);
 		x = 15;
-		panel.add(txtFolioFiltro).setBounds            	(x     ,y+=35,60 ,l);
-		panel.add(txtPreguntaFiltro).setBounds          (x+60  ,y    ,350,l);
+		panel.add(txtPreguntaFiltro).setBounds          (x	   ,y+=25,410,l);
 		
 		panel.add(scroll_tabla).setBounds           	(x     ,y+20 ,w*7,w*4);
 		init_tabla();
@@ -139,7 +136,6 @@ public class Cat_Preguntas extends JFrame{
 		btnEditar.addActionListener(editar);
 		btnEditar.setEnabled(false);
 		
-		txtFolioFiltro.addKeyListener(opFiltroFolio);
 		txtPreguntaFiltro.addKeyListener(opFiltroNombre);
 		cont.add(panel);
 		this.setSize(740,570);
@@ -220,25 +216,10 @@ ActionListener guardar = new ActionListener(){
 		}
 	};
 	
-	KeyListener opFiltroFolio = new KeyListener(){
-		@SuppressWarnings("unchecked")
-		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolioFiltro.getText(), 0));
-		}
-		public void keyTyped(KeyEvent arg0) {
-			char caracter = arg0.getKeyChar();
-			if(((caracter < '0') ||
-				(caracter > '9')) &&
-			    (caracter != KeyEvent.VK_BACK_SPACE)){
-				arg0.consume(); 
-			}	
-		}
-		public void keyPressed(KeyEvent arg0) {}		
-	};
-	
 	KeyListener opFiltroNombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			new Obj_Filtro_Dinamico(tabla,"Pregunta", txtPreguntaFiltro.getText().toUpperCase(), "", "", "", "", "", "");
+			int[] columnas = {1,2,3};
+			new Obj_Filtro_Dinamico_Plus(tabla, txtPreguntaFiltro.getText().toUpperCase(),columnas);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

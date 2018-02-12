@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -40,8 +41,8 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	
 	Obj_tabla ObjTab =new Obj_tabla();	
-	int columnaspo = 16,checkbox=-1;
-	public void init_tablaordenes(){
+	int columnaspo = 17,checkbox=-1;
+	public void init_tablaordenes(String status_tiempo){
 	 	this.tablafilordenes.getColumnModel().getColumn(0).setMinWidth (70 );	
 	 	this.tablafilordenes.getColumnModel().getColumn(0).setMaxWidth (70 );	
     	this.tablafilordenes.getColumnModel().getColumn(1).setMinWidth (120);		
@@ -50,21 +51,24 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 
     	this.tablafilordenes.getColumnModel().getColumn(3).setMinWidth (150);
     	this.tablafilordenes.getColumnModel().getColumn(3).setMaxWidth (150);
-    	this.tablafilordenes.getColumnModel().getColumn(4).setMinWidth (320);
-    	this.tablafilordenes.getColumnModel().getColumn(5).setMinWidth (120);
-    	this.tablafilordenes.getColumnModel().getColumn(6).setMinWidth (200);
-    	this.tablafilordenes.getColumnModel().getColumn(7).setMinWidth (120);
-    	this.tablafilordenes.getColumnModel().getColumn(8).setMinWidth (200);
-    	this.tablafilordenes.getColumnModel().getColumn(9).setMinWidth (80 );
-    	this.tablafilordenes.getColumnModel().getColumn(10).setMinWidth(80 );
+    	this.tablafilordenes.getColumnModel().getColumn(4).setMinWidth (150);
+    	this.tablafilordenes.getColumnModel().getColumn(4).setMaxWidth (150);
+    	this.tablafilordenes.getColumnModel().getColumn(5).setMinWidth (320);
+    	this.tablafilordenes.getColumnModel().getColumn(6).setMinWidth (120);
+    	this.tablafilordenes.getColumnModel().getColumn(7).setMinWidth (200);
+    	this.tablafilordenes.getColumnModel().getColumn(8).setMinWidth (120);
+    	this.tablafilordenes.getColumnModel().getColumn(9).setMinWidth (200);
+    	this.tablafilordenes.getColumnModel().getColumn(10).setMinWidth (80 );
     	this.tablafilordenes.getColumnModel().getColumn(11).setMinWidth(80 );
     	this.tablafilordenes.getColumnModel().getColumn(12).setMinWidth(80 );
     	this.tablafilordenes.getColumnModel().getColumn(13).setMinWidth(80 );
-    	this.tablafilordenes.getColumnModel().getColumn(14).setMinWidth(120);
+    	this.tablafilordenes.getColumnModel().getColumn(14).setMinWidth(80 );
+    	this.tablafilordenes.getColumnModel().getColumn(15).setMinWidth(120);
     	
-		String comandof="exec orden_de_compra_filtro ";
+		String comandof="exec orden_de_compra_filtro_ventana '"+status_tiempo+"'";
     	
 		String basedatos="26",pintar="si";
+		modeloor_filtro.setRowCount(0);
 		ObjTab.Obj_Refrescar(tablafilordenes,modeloor_filtro, columnaspo, comandof, basedatos,pintar,checkbox);
     }
 	
@@ -81,7 +85,7 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 		 return types;
 	}
 	
-	public DefaultTableModel modeloor_filtro = new DefaultTableModel(null, new String[]{"Folio Orden","Establecimiento","Estatus Orden","Estatus Surtido","Proveedor","Fecha Elaboracion","Elaboro","Fecha Autorizacion","Autorizo","Total","Condicion Pago","Plazo", "Fecha Expiracion", "Cantidad  Prod.","Notas","Cod. Proveedor"}){
+	public DefaultTableModel modeloor_filtro = new DefaultTableModel(null, new String[]{"Folio Orden","Establecimiento","Estatus Orden","Estatus Surtido","Estatus Tiempo","Proveedor","Fecha Elaboracion","Elaboro","Fecha Autorizacion","Autorizo","Total","Condicion Pago","Plazo", "Fecha Expiracion", "Cantidad  Prod.","Notas","Cod. Proveedor"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = baseOr();
 			@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -104,6 +108,11 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	String nombre_usuario=usuario.getNombre_completo();
 	
+	String[] estatus ={"ACTIVAS","INACTIVAS"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbStatus = new JComboBox(estatus);
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Reporte_De_Orden_De_Compra(){
 		this.setTitle("Consulta De Orden De Compra");
@@ -117,23 +126,24 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 		
 		int x=15,y=20,width=220,height=20;
 		this.panel.add(new JLabel("Folio Orden: ")).setBounds(x     ,y     ,width,height );
-		this.panel.add(txtFolio).setBounds                   (x+=60 ,y     ,150  ,height );
+		this.panel.add(txtFolio).setBounds                   (x+=60 ,y     ,100  ,height );
 		this.panel.add(btngenerar).setBounds                 (x+=160,y     ,width,height );
 		this.panel.add(btngenerarSAut).setBounds             (x+=230,y     ,250  ,height );
 		this.panel.add(btngenerarOrdP).setBounds             (x+=260,y     ,250  ,height );
 		
-		this.panel.add(txtBuscar).setBounds                  (x=10  ,y+=35 ,995  ,height );
-		this.panel.add(scroll_tablafp).setBounds             (x     ,y+=25 ,995  ,520    );
+		this.panel.add(txtBuscar).setBounds                  (x=10  ,y+=35 ,900  ,height );
+		this.panel.add(cmbStatus).setBounds                  (x+=900,y     ,80   ,height );
+		this.panel.add(scroll_tablafp).setBounds             (x=10  ,y+=25 ,995  ,520    );
 		
 		this.txtBuscar.addKeyListener(opFiltro);
 		this.btngenerar.addActionListener(new opGenerar("OC"));
 		this.btngenerarSAut.addActionListener(new opGenerar("POC"));
 		this.btngenerarOrdP.addActionListener(new opGenerar("OCP"));
 		
-		
+		cmbStatus.addActionListener(opCmb);
 		this.agregar(tablafilordenes);
 		
-		init_tablaordenes();
+		init_tablaordenes(cmbStatus.getSelectedItem().toString().trim());
 		cont.add(panel);
         this.addWindowListener(new WindowAdapter(){public void windowOpened( WindowEvent e ){txtFolio.requestFocus();}});
 	}
@@ -196,6 +206,12 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 	          return;
 			}
 	    }
+	};
+	
+	ActionListener opCmb = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			init_tablaordenes(cmbStatus.getSelectedItem().toString().trim());
+		}
 	};
 	
 	private void agregar(final JTable tbl) {

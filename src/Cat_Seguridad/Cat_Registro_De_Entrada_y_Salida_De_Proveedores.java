@@ -459,7 +459,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 	
 	ActionListener buscar_producto = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			new Cat_Filtro_De_Productos(cmbEstablecimiento.getSelectedItem().toString()).setVisible(true);
+			new Cat_Filtro_De_Productos().setVisible(true);
 		}
 	};
 	
@@ -1325,7 +1325,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 			String[] vector_producto = new String[5];
 			
 			@SuppressWarnings({ "unchecked", "rawtypes" })
-			public Cat_Filtro_De_Productos(String establecimiento){
+			public Cat_Filtro_De_Productos(){
 				int ancho = 1024;
 				int alto = Toolkit.getDefaultToolkit().getScreenSize().height-50;
 				this.setSize(ancho, alto);

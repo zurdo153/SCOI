@@ -66,6 +66,8 @@ import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Cuadrantes.Obj_Actividad;
+import Obj_Evaluaciones.Obj_Asignacion_De_Cuestionarios;
+import Obj_Evaluaciones.Obj_Cuestionarios;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
@@ -10205,15 +10207,16 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return preguntas;
 	}
 	
+
 	
 	public Obj_Correos correos_por_transaccion_y_departamento(int transaccion, String departamento) throws SQLException{
 		Obj_Correos correo = new Obj_Correos();
 		String query = "correos_para_envio_automatico_scoi "+transaccion+",'"+departamento+"'";
-		
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
+
 			while(rs.next()){				
 				correo.setCorreos(rs.getString(1));
 				correo.setCantidad_de_correos(rs.getInt(2));
@@ -10226,13 +10229,42 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		finally{
 			if(stmt!=null){stmt.close();}
 		}
+
 		return correo;
 	}
+	
+			
+		public Obj_Cuestionarios cuestionario(int folio) throws SQLException{
+				Obj_Cuestionarios cuest = new Obj_Cuestionarios();
+				String query = "exec buscar_cuestionario_xml "+folio;
+				Statement stmt = null;
+				
+				try {
+					stmt = con.conexion().createStatement();
+					ResultSet rs = stmt.executeQuery(query);
+
+					while(rs.next()){
+						cuest.setFolio(rs.getInt("folio"));
+						cuest.setCuestionario(rs.getString("cuestionario").trim());
+						cuest.setClasificacion(rs.getString("clasificacion").trim());
+						cuest.setEscala(rs.getString("escala").trim());
+						cuest.setStatus(rs.getString("status").trim());
+						cuest.setArreglo(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas").trim()));
+					}		
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				finally{
+					if(stmt!=null){stmt.close();}
+				}
+			return cuest;
+		}
+
 	
 	 public String[][] Tabla_Orden_Gasto(int folio_gasto){
 			String[][] Matriz = null;
 			String query = "exec orden_de_gasto_consulta "+folio_gasto;
-			
 			Matriz = new String[getFilas(query)][17];
 			Statement s;
 			ResultSet rs;
@@ -10281,6 +10313,34 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			}
 		    return folio; 
 		}
+	
+	public Obj_Asignacion_De_Cuestionarios asig_cuest(int folio) throws SQLException{
+		Obj_Asignacion_De_Cuestionarios asignacion = new Obj_Asignacion_De_Cuestionarios();
+		String query = "exec buscar_cuestionario_xml "+folio;
+
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				asignacion.setFolio(rs.getInt("folio"));
+				asignacion.setCuestionario(rs.getString("cuestionario").trim());
+				asignacion.setCuestionario(rs.getString("fecha_in").trim());
+				asignacion.setCuestionario(rs.getString("fecha_fin").trim());
+				asignacion.setArreglo(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas").trim()));
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return asignacion;
+	}
+	
+
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";

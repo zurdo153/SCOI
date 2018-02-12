@@ -64,6 +64,7 @@ import Obj_Cuadrantes.Obj_Actividad;
 import Obj_Cuadrantes.Obj_Aspectos;
 import Obj_Cuadrantes.Obj_Cuadrantes;
 import Obj_Cuadrantes.Obj_Nivel_Critico;
+import Obj_Evaluaciones.Obj_Cuestionarios;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
@@ -3722,7 +3723,21 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	public boolean Guardar_captura_de_competencia(Obj_Cotizaciones_De_Un_Producto Cotizacion_Producto, String[][] comp){
 //			String query = "exec sp_insert_cotizacion_de_un_productos_en_proveedores ?,?,?,?,?,?,?,?,?,?,?,? ";
 		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?,?,?";
+		
+		System.out.print(query);
 			
+		
+		System.out.println(Cotizacion_Producto.getCod_Prod().toUpperCase().trim());
+		System.out.println(Cotizacion_Producto.getUltimo_Costo());
+		System.out.println(Cotizacion_Producto.getCosto_Promedio());
+		System.out.println(Cotizacion_Producto.getPrecio_de_venta());
+		System.out.println("1");
+		System.out.println("22.1");
+		System.out.println(usuario.getFolio());
+		System.out.println(Cotizacion_Producto.getFecha().toString().trim());
+		System.out.println(Cotizacion_Producto.getPrecio_de_venta_normal());
+		
+		
 			Connection con = new Connexion().conexion_IZAGAR();
 			PreparedStatement pstmt = null;
 			try {
@@ -3731,6 +3746,8 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				
 				for(int i=0; i<comp.length; i++){
 					if(!comp[i][1].toString().trim().equals("")){
+						
+						
 						pstmt.setString(1, Cotizacion_Producto.getCod_Prod().toUpperCase().trim());
 					    pstmt.setDouble(2,  Cotizacion_Producto.getUltimo_Costo());  
 				        pstmt.setDouble(3,  Cotizacion_Producto.getCosto_Promedio());
@@ -3747,7 +3764,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				}
 				
 				con.commit();
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				System.out.println("SQLException: " + e.getMessage());
 				if (con != null){
 					try {
@@ -7268,6 +7285,58 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		}		
 		return true;
 		}
+	
+	public boolean Guardar_Cuestionario(Obj_Cuestionarios cuestionarios,String movimiento){
+		String query = "exec sp_guardar_cuestionario ?,?,?,?,?,?,'"+cuestionarios.getCadena_xml()+"'";
+		System.out.println(query);
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			System.out.println(cuestionarios.getFolio());
+			System.out.println(cuestionarios.getCuestionario().toUpperCase().trim());
+			System.out.println(cuestionarios.getClasificacion());
+			System.out.println(cuestionarios.getEscala());
+			System.out.println(cuestionarios.getStatus());
+			System.out.println(movimiento);
+			
+			
+			pstmt.setInt(1, cuestionarios.getFolio());
+			pstmt.setString(2, cuestionarios.getCuestionario().toUpperCase().trim());
+			pstmt.setString(3, cuestionarios.getClasificacion());
+			pstmt.setString(4, cuestionarios.getEscala());
+			pstmt.setString(5, cuestionarios.getStatus());
+			pstmt.setString(6, movimiento);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuestionario ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuestionario ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuestionario ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}		
+		return true;
+	}
 	
 //	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
 //		
