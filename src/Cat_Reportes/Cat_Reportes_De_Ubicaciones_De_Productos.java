@@ -41,7 +41,7 @@ public class Cat_Reportes_De_Ubicaciones_De_Productos extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
 	
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimientos("R");
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);	
 	

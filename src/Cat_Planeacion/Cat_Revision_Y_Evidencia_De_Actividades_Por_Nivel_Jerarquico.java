@@ -442,28 +442,6 @@ public class Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico extend
 		public void keyTyped(KeyEvent arg0)   {}
 		public void keyPressed(KeyEvent arg0) {}		
 	};
-//	private void refrestabla(){
-//		model.setRowCount(0);
-//		Statement s;
-//		ResultSet rs;
-//		try {
-//			Connexion con = new Connexion();
-//			s = con.conexion().createStatement();
-//			rs = s.executeQuery("exec sp_select_empleados_por_nivel_jerarquico_para_revision_y_asignacion_de_actividades "+usuario.getFolio());
-//			while (rs.next())
-//			{  String [] fila = new String[5];
-//			   fila[0] = rs.getString(1).trim();
-//			   fila[1] = rs.getString(2).trim();
-//			   fila[2] = rs.getString(3).trim(); 
-//			   fila[3] = rs.getString(4).trim(); 
-//			   fila[4] = rs.getString(5).trim(); 
-//			   model.addRow(fila); 
-//			}	
-//		} catch (SQLException e1) {
-//			e1.printStackTrace();
-//			JOptionPane.showMessageDialog(null, "Error en la Clase Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-//		}
-//	}
 	
 	public static void main(String [] arg){
 		try{

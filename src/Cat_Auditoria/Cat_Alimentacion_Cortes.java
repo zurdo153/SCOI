@@ -2566,19 +2566,15 @@ public class Cat_Alimentacion_Cortes extends JFrame{
                                  fila[5] = cargar_tabla_asignaciones_de_filtro()[i][5].toString().trim();
                                  fila[6] = cargar_tabla_asignaciones_de_filtro()[i][6].toString().trim();
                                  fila[7] = cargar_tabla_asignaciones_de_filtro()[i][7].toString().trim();
-                                 modelo_asignaciones.addRow(fila);
                                  
+                                 modelo_asignaciones.addRow(fila);
                                  suma_total += (Double.valueOf(cargar_tabla_asignaciones_de_filtro()[i][3].toString().trim()));
 	    				}
 	    			}
 	    			
-	    			if(tabla_vauchers.getRowCount()>0){
-	    				while(tabla_vauchers.getRowCount()>0){
-							 modelo_vauchers.removeRow(0);
-	    				}
-	    				txtTotalVaucher.setText("");
-	    			}
-	    			
+	    			modelo_vauchers.setRowCount(0);
+	    			txtTotalVaucher.setText("");
+
 	    			if(tabla_retiro_de_clientes.getRowCount()>0){
 	    				while(tabla_retiro_de_clientes.getRowCount()>0){
 							 modelo_retiro_de_clientes.removeRow(0);

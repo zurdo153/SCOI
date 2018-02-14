@@ -47,7 +47,7 @@ public class Cat_Horario_Base_De_Entrega_De_Pedidos extends JFrame{
 	
 	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio", 10, "Int");
 	
-	String[] establecimiento = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
+	String[] establecimiento = new Obj_Establecimiento().Combo_Establecimientos("R");
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimientoOrigen = new JComboBox(establecimiento);
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -130,7 +130,7 @@ import Obj_Principal.Obj_tabla;
                }else{
 	    				
 				 String Mensaje=txaNota.getText().toString().trim();
-			     new EmailSenderService().enviarcorreo(txtemail.getText().toString().trim() ,0,Mensaje,txtasunto.getText().toString());
+			     new EmailSenderService().enviarcorreo(txtemail.getText().toString().trim() ,0,Mensaje,txtasunto.getText().toString(),"Servicios");
 			     txtasunto.setText("");
 			     txaNota.setText("");
 			     

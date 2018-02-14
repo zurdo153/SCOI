@@ -496,7 +496,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 										e1.printStackTrace();
 									}
 									
-									new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Solicitud De: "+txtServicio.getText().toString().toLowerCase()+" "+servicios_solicitud.getFecha_guardado());
+									new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Solicitud De: "+txtServicio.getText().toString().toLowerCase()+" "+servicios_solicitud.getFecha_guardado(),"Servicios");
 									JOptionPane.showMessageDialog(null,"La Solicitud De Servicio Se Guardó y se ha Enviado un Correo al Departamento Que Solicito el Servicio!\nCon el Folio:"+folio_servicio_solicitado+"","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 									lblFolio.setText("<html> <FONT FACE= arial SIZE=5 COLOR=GREEN><CENTER><b><p>"+"ULTIMO FOLIO GUARDADO:"+folio_servicio_solicitado+""+"</p></b></CENTER></FONT></html>");
 									cmbDepartamento.requestFocus();

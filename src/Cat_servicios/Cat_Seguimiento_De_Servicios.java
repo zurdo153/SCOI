@@ -581,23 +581,23 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 				folio_servicio_solicitado=servicios_solicitud.GuardarActualizar();
 				if(folio_servicio_solicitado>0){
 					   if(cmbEstatusCo.getSelectedItem().toString().trim().equals("TERMINADO")){
-						   try {servicios_solicitud = new BuscarSQL().correo_informa_servicio_terminado(Integer.valueOf(txtFolio.getText().toString().trim()));
+						   try {servicios_solicitud = new BuscarSQL().correo_informa_estatus_solicitud(Integer.valueOf(txtFolio.getText().toString().trim()),40);
 							} catch (SQLException e1) {e1.printStackTrace();}
 						   
 						   if(!servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
 							String Mensaje= " Hola "+txtUsuario.getText()+" Tu Servicio solicitado el dia "+txtFcSolicito.getText().toString()+" Detalle:"+txaDetalle.getText().toString().trim()+" fue atendido  y marcado como terminado el dia de hoy por "
 									+txtAtendio.getText().toString().trim()+ " >>>"+txaNotas.getText().toString().trim()+"      Tienes el dia de hoy para Evaluar, despues de ese tiempo el servicio se cierra y se evaluara con la maxima calificacion  Saludos: SCOI";
-							new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Informe De Servicio Terminado "+servicios_solicitud.getFecha_guardado());
+							new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Informe De Servicio Terminado "+servicios_solicitud.getFecha_guardado(),"Servicios");
 						   }
 					   }
 					   
 					   if(cmbEstatusCo.getSelectedItem().toString().trim().equals("CANCELADO") || cmbEstatusCo.getSelectedItem().toString().trim().equals("NEGADO")){
-						   try {servicios_solicitud = new BuscarSQL().correo_informa_servicio_terminado(Integer.valueOf(txtFolio.getText().toString().trim()));
+						   try {servicios_solicitud = new BuscarSQL().correo_informa_estatus_solicitud(Integer.valueOf(txtFolio.getText().toString().trim()),40);
 							} catch (SQLException e1) {e1.printStackTrace();}
 						   if(!servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
 							String Mensaje= " Hola "+txtUsuario.getText()+" Tu Servicio solicitado el dia "+txtFcSolicito.getText().toString()+" con Detalle:"+txaDetalle.getText().toString().trim()+" fue atendido  y marcado como  "+cmbEstatusCo.getSelectedItem().toString().trim()+" el dia de hoy por "
 									+txtAtendio.getText().toString().trim()+ " >>>informa que "+txaNotas.getText().toString().trim()+" Saludos: SCOI";
-							new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Informe De Servicio Terminado "+servicios_solicitud.getFecha_guardado());
+							new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Informe De Servicio Terminado "+servicios_solicitud.getFecha_guardado(),"Servicios");
 						   }
 					   }
 					init_tabla(cmbEstatusFiltrado.getSelectedItem().toString().trim());
@@ -775,7 +775,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 						}else{
 						String Mensaje= " HOLA "+txtselecionado.getText()+"  "+lblUsuario.getText()+"  TE HA ASIGNADO EL SERVICIO "+txtFolio.getText().toString()+"  "+txaDetalle.getText().toString().trim()+" SOLICITADO EL DIA"+txtFcSolicito.getText().toString()
 									+" SALUDOS: SCOI";
-						new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Te An Asignado Una solicitud de Servicio "+servicios_solicitud.getFecha_guardado());
+						new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "Te An Asignado Una solicitud de Servicio "+servicios_solicitud.getFecha_guardado(),"Servicios");
 						}
 	    				
 						JOptionPane.showMessageDialog(null,"El Registró Se Guardó Correctamente!","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));

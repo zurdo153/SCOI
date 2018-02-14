@@ -110,6 +110,7 @@ import Obj_Reportes.Obj_Reportes_De_Ventas;
 import Obj_Seguridad.Obj_Autorizacion_Acceso_Proveedores;
 import Obj_Seguridad.Obj_Registro_Proveedores;
 import Obj_Servicios.Obj_Catalogo_Servicios;
+import Obj_Servicios.Obj_Correos;
 import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Servicios;
 
@@ -4851,10 +4852,10 @@ public class BuscarSQL {
 	public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLException{
 		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
 	    String pc_nombre="";
-//	    pc_nombre="CAJA_REFA";
-//	    folio_empleado= 2071; 
+//	    pc_nombre="HOGARY_CAJA1                  ";
+//	    folio_empleado= 2517; 
 					try {
-	   pc_nombre = InetAddress.getLocalHost().getHostName();
+	                 pc_nombre = InetAddress.getLocalHost().getHostName();
 					    			InetAddress.getLocalHost().getHostName();
 					} catch (UnknownHostException e1) {
 						e1.printStackTrace();
@@ -9122,13 +9123,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return servicios;
 	}
 	
-	public Obj_Servicios correo_informa_servicio_terminado(int folio) throws SQLException{
+	public Obj_Servicios correo_informa_estatus_solicitud(int folio, int transaccion) throws SQLException{
 		Obj_Servicios servicios = new Obj_Servicios();
-		String query = "declare @email varchar(150)"
-				+ " select @email=email from tb_empleado with (nolock) where folio=(select folio_usuario_solicito from tb_servicios where folio="+folio+")"
-				+ " if @email='' set @email='NO TIENE'"
-				+ " if @email is null  set @email='NO TIENE'"
-				+ " select @email,convert(varchar(20),getdate(),103)+' '+convert(varchar(20),getdate(),108)";
+		String query = "exec correos_busca_por_transaccion_y_folio "+folio+","+transaccion;
 		
 		Statement stmt = null;
 		try {
@@ -10210,28 +10207,21 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return preguntas;
 	}
 	
-	public Obj_Cuestionarios cuestionario(int folio) throws SQLException{
-		Obj_Cuestionarios cuest = new Obj_Cuestionarios();
-		String query = "exec buscar_cuestionario_xml "+folio;
 
+	
+	public Obj_Correos correos_por_transaccion_y_departamento(int transaccion, String departamento) throws SQLException{
+		Obj_Correos correo = new Obj_Correos();
+		String query = "correos_para_envio_automatico_scoi "+transaccion+",'"+departamento+"'";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				cuest.setFolio(rs.getInt("folio"));
-				cuest.setCuestionario(rs.getString("cuestionario").trim());
-				cuest.setClasificacion(rs.getString("clasificacion").trim());
-				cuest.setEscala(rs.getString("escala").trim());
-				cuest.setStatus(rs.getString("status").trim());
-				cuest.setArreglo(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas").trim()));
-				
+
+			while(rs.next()){				
+				correo.setCorreos(rs.getString(1));
+				correo.setCantidad_de_correos(rs.getInt(2));
+				correo.setFecha_guardado(rs.getString(3));
 			}
-//			for(int i = 0; i<cuest.getArreglo().length; i++){
-//				System.out.println(cuest.getArreglo()[i][0]);
-//				System.out.println(cuest.getArreglo()[i][1]);
-//			}
-		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -10239,8 +10229,90 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		finally{
 			if(stmt!=null){stmt.close();}
 		}
-		return cuest;
+
+		return correo;
 	}
+	
+			
+		public Obj_Cuestionarios cuestionario(int folio) throws SQLException{
+				Obj_Cuestionarios cuest = new Obj_Cuestionarios();
+				String query = "exec buscar_cuestionario_xml "+folio;
+				Statement stmt = null;
+				
+				try {
+					stmt = con.conexion().createStatement();
+					ResultSet rs = stmt.executeQuery(query);
+
+					while(rs.next()){
+						cuest.setFolio(rs.getInt("folio"));
+						cuest.setCuestionario(rs.getString("cuestionario").trim());
+						cuest.setClasificacion(rs.getString("clasificacion").trim());
+						cuest.setEscala(rs.getString("escala").trim());
+						cuest.setStatus(rs.getString("status").trim());
+						cuest.setArreglo(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas").trim()));
+					}		
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				finally{
+					if(stmt!=null){stmt.close();}
+				}
+			return cuest;
+		}
+
+	
+	 public String[][] Tabla_Orden_Gasto(int folio_gasto){
+			String[][] Matriz = null;
+			String query = "exec orden_de_gasto_consulta "+folio_gasto;
+			Matriz = new String[getFilas(query)][17];
+			Statement s;
+			ResultSet rs;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					Matriz[i][0]  = rs.getString( 1);
+					Matriz[i][1]  = rs.getString( 2);
+					Matriz[i][2]  = rs.getString( 3);
+					Matriz[i][3]  = rs.getString( 4);
+					Matriz[i][4]  = rs.getString( 5);
+					Matriz[i][5]  = rs.getString( 6);
+					Matriz[i][6]  = rs.getString( 7);
+					Matriz[i][7]  = rs.getString( 8);
+					Matriz[i][8]  = rs.getString( 9);
+					Matriz[i][9]  = rs.getString(10);
+					Matriz[i][10] = rs.getString(11);
+					Matriz[i][11] = rs.getString(12);
+					Matriz[i][12] = rs.getString(13);
+					Matriz[i][13] = rs.getString(14);
+					Matriz[i][14] = rs.getString(15);
+					Matriz[i][15] = rs.getString(16);
+					Matriz[i][16] = rs.getString(17);
+					i++;
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Matriz;
+		}
+
+	 public float saldo_actual_para_pagos_en_efectivo(){
+			String query = "select top 1 saldo from orden_de_gasto_pago_en_efectivo order by fecha_mov desc"; 
+			float folio =0;
+			try {
+				Statement stmt = new Connexion().conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while(rs.next()){
+					folio =  rs.getFloat(1);
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion [saldo_actual_para_pagos_en_efectivo] SQLException: "+e1.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
+			}
+		    return folio; 
+		}
 	
 	public Obj_Asignacion_De_Cuestionarios asig_cuest(int folio) throws SQLException{
 		Obj_Asignacion_De_Cuestionarios asignacion = new Obj_Asignacion_De_Cuestionarios();
@@ -10253,17 +10325,10 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			while(rs.next()){
 				asignacion.setFolio(rs.getInt("folio"));
 				asignacion.setCuestionario(rs.getString("cuestionario").trim());
-				
 				asignacion.setCuestionario(rs.getString("fecha_in").trim());
 				asignacion.setCuestionario(rs.getString("fecha_fin").trim());
-				
 				asignacion.setArreglo(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas").trim()));
-				
 			}
-//			for(int i = 0; i<cuest.getArreglo().length; i++){
-//				System.out.println(cuest.getArreglo()[i][0]);
-//				System.out.println(cuest.getArreglo()[i][1]);
-//			}
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -10275,6 +10340,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return asignacion;
 	}
 	
+
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";

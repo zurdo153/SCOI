@@ -56,7 +56,7 @@ public class Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento extends JFr
 	JCButton btnGuardar    = new JCButton("Guardar"    ,"Guardar.png","Azul"); 
 	JCButton btnDeshacer = new JCButton("Deshacer","deshacer16.png","Azul");
 
-	    String Establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
+	    String Establecimiento[] = new Obj_Establecimiento().Combo_Establecimientos("R");
 	      @SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbEstablecimiento= new JComboBox(Establecimiento);
 		

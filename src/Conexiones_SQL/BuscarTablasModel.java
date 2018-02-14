@@ -1262,6 +1262,8 @@ public class BuscarTablasModel {
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			System.out.println(e1);
+			System.out.println(query_lista);
 			JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_model_trabajo_de_cortes store procedure sp_select_trabajo_de_cortes  "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 
 		}

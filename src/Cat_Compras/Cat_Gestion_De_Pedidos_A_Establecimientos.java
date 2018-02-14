@@ -91,7 +91,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbClasificador = new JComboBox(clasificacion);
 	
-	String[] establecimientos = new Obj_Establecimiento().Combo_Establecimiento_Estado_resultados();
+	String[] establecimientos = new Obj_Establecimiento().Combo_Establecimientos("R");
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
 	
