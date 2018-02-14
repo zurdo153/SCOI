@@ -130,7 +130,7 @@ public class Cat_Reporte_De_Ventas_Administrativo extends JFrame {
     String semaforoV = System.getProperty("user.dir")+"/Imagen/semaforo_verde_chica.png";
     ImageIcon tmpIconSemV = new ImageIcon(semaforoV);
 	
-	public Cat_Reporte_De_Ventas_Administrativo(String parametro, String operador){
+	public Cat_Reporte_De_Ventas_Administrativo(){
 		
 		setSize(760, 260);
 		cont.add(panel);
@@ -208,11 +208,9 @@ public class Cat_Reporte_De_Ventas_Administrativo extends JFrame {
         txtFiltroCategoria.setEditable(false);
         txtFiltroFamilia.setEditable(false);
 
-        if(!parametro.equals("")){
         	
         	panelEnableFalse();
         	btnLimpiarFiltroClase.setEnabled(true);
-        }
         
         btnFiltroEstablecimiento.addActionListener(op_filtro_establecimientos);
         btnFiltroClase.addActionListener(op_filtro_clases);
@@ -803,7 +801,7 @@ public class Cat_Reporte_De_Ventas_Administrativo extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Ventas_Administrativo("","Todos").setVisible(true);
+			new Cat_Reporte_De_Ventas_Administrativo().setVisible(true);
 		}catch(Exception e){	}
 	}
 

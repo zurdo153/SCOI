@@ -2,11 +2,8 @@ package Obj_Evaluaciones;
 
 import java.sql.SQLException;
 
-import Biblioteca.ParsingXMLmodificado;
 import Conexiones_SQL.BuscarSQL;
-import Conexiones_SQL.Cargar_Combo;
-import Conexiones_SQL.GuardarSQL;
-import Obj_Xml.LeerXml;
+
 
 public class Obj_Asignacion_De_Cuestionarios {
 	private int folio;
