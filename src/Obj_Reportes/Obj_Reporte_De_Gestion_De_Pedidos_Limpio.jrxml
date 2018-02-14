@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2018-02-13T16:43:53 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Gestion_De_Pedidos_Limpio" pageWidth="892" pageHeight="612" orientation="Landscape" columnWidth="852" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="e10a8b6c-58e7-4384-ad71-8045e2abde49">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[exec sp_reporte_gestion_de_pedido_limpio  '', '01/02/2018', '05/02/2018', 'CEDIS']]>
+	</queryString>
+	<field name="folio_pedido_original" class="java.lang.String"/>
+	<field name="folio_estab_origen" class="java.lang.Integer"/>
+	<field name="estab_solicita" class="java.lang.String"/>
+	<field name="folio_estab_surte" class="java.lang.Integer"/>
+	<field name="estab_surte" class="java.lang.String"/>
+	<field name="cod_prod" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="disponible" class="java.lang.Double"/>
+	<field name="pedido" class="java.lang.Double"/>
+	<field name="surtido" class="java.lang.Double"/>
+	<field name="pendiente" class="java.lang.Double"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/15)]]></groupExpression>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="117" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="0" width="892" height="117" backcolor="#FFFFFF" uuid="1f90c149-62b8-4846-beef-c946b5356bee"/>
+				<staticText>
+					<reportElement x="0" y="40" width="892" height="77" uuid="5f60de32-58da-46ac-8d9f-80b4663d88be"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[ NUEVO     = Pedido Tomado De BMS(Aun No Existe En Scoi).
+ VIGENTE   = Pedido Tomado De SCOI(Cuando Se Guarda Un Pedido Con Status = [NUEVO] Por Primera Vez, Se Guarda En SCOI Con Status = [VIGENTE]).
+ ASIGNADO  = El Pedido Ya Fue Asignado A Quienes Lo Surtirán.
+ RECIBIDO  = El Surtidor Ya Recolecto La Mercancia Que Se Le Asigno(se marca en un modulo agregado en el checador).
+ SURTIDO   = El Departamento De Almacen General Marcar El Pedido Como Surtido.
+ CANCELADO = Cancelación Manual.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="892" height="39" uuid="36343db7-2cbf-4871-ab94-0066e16a0cdf"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="26" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Reporte De Gestion De Pedido]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="-20" y="0" width="40" height="29" forecolor="#000000" uuid="3f66bbed-6ea0-454e-9d09-12ff83d8030d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Folio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="20" y="0" width="79" height="29" forecolor="#000000" uuid="860723b1-a0ff-4624-b278-b2301a8ba265"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estab. Solicita]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="99" y="0" width="79" height="29" forecolor="#000000" uuid="5255a643-005d-4787-afed-97aee175b527">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estab. Surte]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="178" y="0" width="38" height="29" forecolor="#000000" uuid="179ade74-5c71-49b5-89b1-8c33f42bf543"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cod.Prod]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="216" y="0" width="260" height="29" forecolor="#000000" uuid="f9184053-f9b6-4dc3-8dee-904e8b33b867"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="476" y="0" width="56" height="29" forecolor="#000000" uuid="5194e5f7-cb1f-4877-b30f-985ccf78c0e1">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Disponible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="532" y="0" width="55" height="29" forecolor="#000000" uuid="a163f0e6-5ce1-4df1-9373-85b1f23fe4c1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad Pedido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="587" y="0" width="55" height="29" forecolor="#000000" uuid="80999e89-be9f-4672-8d5c-12f9322ca3b9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad Surtida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="642" y="0" width="55" height="29" forecolor="#000000" uuid="ef7f429b-f8bb-4c23-a051-6ab5ad59855b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pendiente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="697" y="0" width="93" height="29" forecolor="#000000" uuid="473373df-c01a-4df1-84cd-526aee81585d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="790" y="0" width="82" height="29" forecolor="#000000" uuid="3b4b353d-4075-43f7-8580-f3f57553a398"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estatus]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="-20" y="0" width="892" height="18" uuid="5f5c8e46-50c5-4107-8855-4d791a784a08"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="40" height="18" uuid="a10493a8-0e31-4cd1-9896-e75fadc78a76"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{folio_pedido_original}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="40" y="0" width="79" height="18" uuid="cf3b90bf-3e52-4536-9ef6-8e047554d293"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{estab_solicita}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="119" y="0" width="79" height="18" uuid="8d6fa92a-137d-42a0-8f3d-cf6c1c511eb5">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{estab_surte}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="198" y="0" width="38" height="18" uuid="fb7373a1-d936-4c9d-b425-7b945ae8d5eb"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cod_prod}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Detail" positionType="Float" x="236" y="0" width="260" height="18" uuid="e6eb553c-84ab-4039-bef2-b57db1a7b974"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="496" y="0" width="56" height="18" uuid="e09fc6c2-cae7-4b5d-9f89-9ed373f6056d">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{disponible}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="552" y="0" width="55" height="18" uuid="e1b3a3b0-4ac0-4ee7-8634-ff484ba50d10">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{pedido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="607" y="0" width="55" height="18" uuid="50040566-4f29-4769-9fe3-5c7f6986ba79">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{surtido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="662" y="0" width="55" height="18" uuid="ffb1fa62-2043-40b2-83d6-518cb4717715">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{pendiente}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="717" y="0" width="93" height="18" uuid="5a14c571-590c-4608-ac88-19f6c3c969a0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="810" y="0" width="82" height="18" uuid="f2db9518-1122-4b7a-8ab0-b5bceea3ac46"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

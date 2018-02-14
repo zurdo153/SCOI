@@ -575,6 +575,18 @@ ActionListener guardar = new ActionListener(){
 		ActionListener opAgregar = new ActionListener(){
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public void actionPerformed(ActionEvent e){
+				
+				txtColaboradorFiltro.setText("");
+				cmbEstablecimiento.setSelectedIndex(0);
+				cmbDepartamento.setSelectedIndex(0);
+				cmbPuesto.setSelectedIndex(0);
+				
+				new Obj_Filtro_Dinamico(tablaFiltro, 
+						"Colaborador", txtColaboradorFiltro.getText().toString().trim().toUpperCase(), 
+						"Establecimiento", cmbEstablecimiento.getSelectedIndex()==0?"":cmbEstablecimiento.getSelectedItem().toString().trim(), 
+						"Departamento", cmbDepartamento.getSelectedIndex()==0?"":cmbDepartamento.getSelectedItem().toString().trim(),
+						"Puesto", cmbPuesto.getSelectedIndex()==0?"":cmbPuesto.getSelectedItem().toString().trim());
+			
 				int registrosAgregados=0;
 				
 				for(int i=0; i<tablaFiltro.getRowCount(); i++){
