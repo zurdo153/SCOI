@@ -42,7 +42,6 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 
-
 import Obj_Checador.Obj_Mensaje_Personal;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
@@ -196,13 +195,7 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 		this.menu_toolbar.add(btnSalir);
 		this.menu_toolbar.setFloatable(false);
 		
-		txtAsunto.setEnabled(false);
-		cmb_status.setEnabled(false);
-		cmb_fondo.setEnabled(false);
-		cmb_color.setEnabled(false);
-		txtFechaFin.setEnabled(false);
-		txtFechaInicio.setEnabled(false);
-		txaMensaje.setEnabled(false);
+		camposActivos(false);
 		
 		btnFiltro.addActionListener(opBuscarMensaje);
 		btnSalir.addActionListener(opSalir);
@@ -215,6 +208,7 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 		btnGuardar.addActionListener(guardar);
 		btnVista_Previa.addActionListener(opVistaPrevia);
 		cmb_color.addActionListener(opCambioColor);
+		btnEditar.addActionListener(opEditar);
 		
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
           getRootPane().getActionMap().put("escape", new AbstractAction(){
@@ -224,6 +218,32 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 		
 		cont.add(panel);
 	}
+	
+	public void camposActivos(boolean valor){
+		
+		txtAsunto.setEditable(valor);
+		txtFechaInicio.setEnabled(valor);
+		txtFechaFin.setEnabled(valor);
+		cmb_status.setEnabled(valor);
+		txaMensaje.setEditable(valor);
+		cmb_color.setEnabled(valor);
+		cmb_fondo.setEnabled(valor);
+		
+		btnFiltroMSJ.setEnabled(valor);
+		btnBuscar.setEnabled(!valor);
+		btnEmpleado.setEnabled(valor);
+		btnGuardar.setEnabled(valor);
+		btnVista_Previa.setEnabled(valor);
+		btnEditar.setEnabled(valor);
+		btnRemover.setEnabled(valor);
+	}
+	
+	ActionListener opEditar = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			camposActivos(true);
+			txtAsunto.setEnabled(true);
+		}
+	};
 	
 	private JScrollPane getPanelTabla()	{	
 		tabla.getTableHeader().setReorderingAllowed(false) ;
@@ -312,6 +332,7 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 					refrestabla(Integer.parseInt(txtFolioMsj.getText()));	
 					txtFolioMsj.setEnabled(false);
 					txtAsunto.setEnabled(false);
+					btnEditar.setEnabled(true);
 				}
 			}
 		}
@@ -381,43 +402,30 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 	
 	ActionListener opNuevo = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			txaMensaje.setEnabled(true);
+			
 			txtFolioMsj.setText(new Obj_Mensaje_Personal().nuevoMensaje()+"");
-			txtFolioMsj.setEnabled(false);
-			txtFechaFin.setEnabled(true);
-			txtFechaInicio.setEnabled(true);
-		    cmb_status.setSelectedIndex(0);
-		    cmb_status.setEnabled(true);
-		    cmb_fondo.setSelectedIndex(0);
-		    cmb_fondo.setEnabled(true);
-			cmb_color.setEnabled(true);
-			txtAsunto.setEnabled(true);
-			txtAsunto.requestFocus();
 			txtFechaInicio.setDate(cargar_fecha_Sugerida(0));
 			txtFechaFin.setDate(cargar_fecha_Sugerida(-7));
+			
 			modelo.setRowCount(0);
+			camposActivos(true);
+			txtAsunto.requestFocus();
 		}
 	};
 	
 	ActionListener opLimpiar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) 
 		{
-			txtAsunto.setEnabled(false);
+			camposActivos(false );
+			txtFolioMsj.setEnabled(true);
+			
 			txtFolioMsj.setText("");
 			txtAsunto.setText("");
-			cmb_status.setEnabled(false);
 			txtFechaInicio.setDate(null);
 			txtFechaFin.setDate(null);
-			txtFechaFin.setEnabled(false);
-			txtFechaInicio.setEnabled(false);
 			cmb_status.setSelectedIndex(0);
-			cmb_status.setEnabled(false);
-			cmb_fondo.setEnabled(false);
-			cmb_color.setEnabled(false);
 			modelo.setRowCount(0);
 			txtFolioMsj.requestFocus();
-			txtFolioMsj.setEnabled(true);
-			txaMensaje.setEnabled(false);
 			txaMensaje.setText("");
 		}
 	};
@@ -478,77 +486,6 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 			}
 		}
 	};
-	
-//	ActionListener opMover = new ActionListener() {
-//		public void actionPerformed(ActionEvent arg0) {
-//				if(arg0.getSource().equals(btnSubir)){
-//					if(txtFolioMsj.getText().equals("")){
-//						JOptionPane.showMessageDialog(null, "Ingrese el folio para poder realizar la busqueda","Error",JOptionPane.WARNING_MESSAGE);
-//						return;
-//					}else {
-//						Obj_Mensaje_Personal MsjPresonal = new Obj_Mensaje_Personal().buscar(Integer.parseInt(txtFolioMsj.getText())+1);
-//						if(MsjPresonal.getAsunto().equals("")){
-//							JOptionPane.showMessageDialog(null, "No existe el registro con el folio: "+(Integer.parseInt(txtFolioMsj.getText())+1)+"","Error",JOptionPane.WARNING_MESSAGE);
-//							return;
-//						}else{
-//							txtFolioMsj.setText((Integer.parseInt(txtFolioMsj.getText())+1)+"");
-//							txtAsunto.setText(MsjPresonal.getAsunto());
-//							txaMensaje.setText(MsjPresonal.getMensaje());
-//							
-//								try {
-//									Date date_inicial = new SimpleDateFormat("dd/MM/yyyy").parse(MsjPresonal.getFechaInicial());
-//									Date date_fin = new SimpleDateFormat("dd/MM/yyyy").parse(MsjPresonal.getFechaFin());
-//									txtFechaInicio.setDate(date_inicial);
-//									txtFechaFin.setDate(date_fin);
-//								} catch (ParseException e1) {
-//									e1.printStackTrace();
-//								}
-//							
-////								cmb_status.setSelected(MsjPresonal.getStatus());
-//							
-//							////////////////  limpia la tabla antes de acer otra busqueda   ////////////////
-//						                  modelo.setRowCount(0);		
-//								   		 refrestabla(Integer.parseInt(txtFolioMsj.getText()));			
-//						}
-//					}
-//							
-//				}
-//				if(arg0.getSource().equals(btnBajar)){
-//					if(txtFolioMsj.getText().equals("")){
-//						JOptionPane.showMessageDialog(null, "Ingrese el folio para poder realizar la busqueda","Error",JOptionPane.WARNING_MESSAGE);
-//						return;
-//					}else {
-//						Obj_Mensaje_Personal MsjPresonal = new Obj_Mensaje_Personal().buscar(Integer.parseInt(txtFolioMsj.getText())-1);
-//						if(MsjPresonal.getAsunto().equals("")){
-//							JOptionPane.showMessageDialog(null, "No existe el registro con el folio: "+(Integer.parseInt(txtFolioMsj.getText())-1)+"","Error",JOptionPane.WARNING_MESSAGE);
-//							return;
-//						}else{
-//							txtFolioMsj.setText((Integer.parseInt(txtFolioMsj.getText())-1)+"");
-//							txtAsunto.setText(MsjPresonal.getAsunto());
-//							txaMensaje.setText(MsjPresonal.getMensaje());
-//							
-//								try {
-//									Date date_inicial = new SimpleDateFormat("dd/MM/yyyy").parse(MsjPresonal.getFechaInicial());
-//									Date date_fin = new SimpleDateFormat("dd/MM/yyyy").parse(MsjPresonal.getFechaFin());
-//									txtFechaInicio.setDate(date_inicial);
-//									txtFechaFin.setDate(date_fin);
-//								} catch (ParseException e1) {
-//									e1.printStackTrace();
-//								}
-//							
-////							chStatus.setSelected(MsjPresonal.getStatus());
-//							
-//							////////////////  limpia la tabla antes de acer otra busqueda   ////////////////
-//								 modelo.setRowCount(0);
-//							     refrestabla(Integer.parseInt(txtFolioMsj.getText()));			
-//							
-//						}
-//					}
-//				}
-//			txtFolioMsj.setEnabled(false);
-//			txtAsunto.setEditable(true);
-//		}
-//	};
 	
 	public  String[] listadatos()
 	{
