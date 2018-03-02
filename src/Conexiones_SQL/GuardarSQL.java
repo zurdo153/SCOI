@@ -64,6 +64,8 @@ import Obj_Cuadrantes.Obj_Actividad;
 import Obj_Cuadrantes.Obj_Aspectos;
 import Obj_Cuadrantes.Obj_Cuadrantes;
 import Obj_Cuadrantes.Obj_Nivel_Critico;
+import Obj_Evaluaciones.Obj_Asignacion_De_Cuestionarios;
+import Obj_Evaluaciones.Obj_Contestacion_De_Cuestionario;
 import Obj_Evaluaciones.Obj_Cuestionarios;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
@@ -7332,6 +7334,112 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			} catch(SQLException e){
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuestionario ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Asignacion_De_Cuestionario(Obj_Asignacion_De_Cuestionarios programacion,String movimiento){
+		
+		System.out.println(programacion.getCadena_xml());
+		
+		System.out.println(programacion.getFolio());
+		System.out.println(programacion.getNombre_asignacion().toUpperCase().trim());
+		System.out.println(programacion.getFecha_in());
+		System.out.println(programacion.getFecha_fin());
+		System.out.println(programacion.getFolio_cuestionario());
+		System.out.println(movimiento);
+		
+		String query = "exec sp_guardar_programacion_de_cuestionarios ?,?,?,?,?,?,?,'"+programacion.getCadena_xml()+"'";
+		System.out.println(query);
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, programacion.getFolio());
+			pstmt.setString(2, programacion.getNombre_asignacion().toUpperCase().trim());
+			pstmt.setString(3, programacion.getFecha_in());
+			pstmt.setString(4, programacion.getFecha_fin());
+			pstmt.setInt(5, programacion.getFolio_cuestionario());
+			pstmt.setString(6, "VIGENTE");
+			pstmt.setString(7, movimiento);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Asignacion_De_Cuestionario ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Asignacion_De_Cuestionario ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Asignacion_De_Cuestionario ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Contestacion_De_Cuestionario(Obj_Contestacion_De_Cuestionario programacion){
+		
+		String query = "exec sp_insert_respuesta_de_colaboradores_en_cuestionario ?,?,?,?,?,?,?,?,?,'"+programacion.getCuestionario_xml()+"'";
+		System.out.println(query);
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, programacion.getFolio_programacion());
+			pstmt.setString(2, programacion.getProgramacion().toUpperCase().trim());
+			pstmt.setInt(3, programacion.getFolio_cuestionario());
+			pstmt.setString(4, programacion.getCuestionario().toUpperCase().trim());
+			pstmt.setInt(5, programacion.getFolio_colaborador());
+			
+			pstmt.setString(6, programacion.getEstablecimiento());
+			pstmt.setString(7, programacion.getDepartamento());
+			pstmt.setString(8, programacion.getPuesto());
+			pstmt.setInt(9, programacion.getValor_de_escala());
+			
+			pstmt.executeUpdate();
+			con.commit();
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Contestacion_De_Cuestionario ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Contestacion_De_Cuestionario ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Contestacion_De_Cuestionario ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
 		}		

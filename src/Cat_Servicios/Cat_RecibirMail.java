@@ -72,8 +72,7 @@ public class Cat_RecibirMail{
     }
 
     static String mensaje="";
-    @SuppressWarnings("unused")
-	private static void analizaParteDeMensaje(Part unaParte){
+    private static void analizaParteDeMensaje(Part unaParte){
     	try{
 //           Si es multipart, se analiza cada una de sus partes recursivamente.
             if (unaParte.isMimeType("multipart/*")){

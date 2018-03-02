@@ -2600,6 +2600,29 @@ public String[] tipos_de_falta(){
     return matriz; 
 }
 
+public Object[][] preguntas(int folio_cuestionario,int cantidad_de_columnas){
+	String query_lista = "exec sp_preguntas_en_cuestionario "+folio_cuestionario;
+	Object[][] matriz = new Object[get_filas(query_lista)][cantidad_de_columnas];
+	try {
+		Statement stmt = new Connexion().conexion().createStatement();
+		ResultSet rs = stmt.executeQuery(query_lista);
+		
+		int i = 0;
+		while(rs.next()){
+			matriz[i][0] = rs.getString(1);
+			matriz[i][1] = rs.getString(2);
+			for(int j=2; j<cantidad_de_columnas; j++){
+				matriz[i][j] = false;//rs.getBoolean(j+1);
+			}
+			i++;
+		}
+
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+	}
+    return matriz; 
+}
+
 }
 
 

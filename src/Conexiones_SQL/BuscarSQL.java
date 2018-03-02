@@ -67,6 +67,7 @@ import Obj_Contabilidad.Obj_Indicadores;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Cuadrantes.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Asignacion_De_Cuestionarios;
+import Obj_Evaluaciones.Obj_Contestacion_De_Cuestionario;
 import Obj_Evaluaciones.Obj_Cuestionarios;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
@@ -10324,9 +10325,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				asignacion.setFolio(rs.getInt("folio"));
-				asignacion.setCuestionario(rs.getString("cuestionario").trim());
-				asignacion.setCuestionario(rs.getString("fecha_in").trim());
-				asignacion.setCuestionario(rs.getString("fecha_fin").trim());
+				asignacion.setNombre_asignacion(rs.getString("cuestionario").trim());
+				asignacion.setFecha_in(rs.getString("fecha_in").trim());
+				asignacion.setFecha_fin(rs.getString("fecha_fin").trim());
 				asignacion.setArreglo(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas").trim()));
 			}
 		
@@ -10340,6 +10341,88 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return asignacion;
 	}
 	
+	public Obj_Asignacion_De_Cuestionarios prog_cuest(int folio) throws SQLException{
+		Obj_Asignacion_De_Cuestionarios asignacion = new Obj_Asignacion_De_Cuestionarios();
+		String query = "exec buscar_programacion_de_cuestionario_xml "+folio;
+
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				asignacion.setFolio(rs.getInt("folio_programacion"));
+				asignacion.setNombre_asignacion(rs.getString("nombre").trim());
+				asignacion.setFolio_cuestionario(rs.getInt("folio_cuestionario"));
+				asignacion.setCuestionario(rs.getString("cuestionario"));
+				asignacion.setFecha_in(rs.getString("fecha_inicio").trim());
+				asignacion.setFecha_fin(rs.getString("fecha_final").trim());
+				asignacion.setArreglo(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas").trim()));
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return asignacion;
+	}
+	
+	public Obj_Contestacion_De_Cuestionario colaborador_para_cuestionario(int folio) throws SQLException{
+		Obj_Contestacion_De_Cuestionario datos = new Obj_Contestacion_De_Cuestionario();
+		String query = "select emp.folio,"
+						+ "		 emp.nombre+' '+emp.ap_paterno+' '+emp.ap_materno as colaborador,"
+						+ "		 estab.nombre as establecimiento,"
+						+ "		 d.departamento,"
+						+ "		 p.nombre as puesto,"
+						+ "		 s.nombre as status"
+						+ " from tb_empleado emp"
+						+ " inner join tb_establecimiento estab on estab.folio = emp.establecimiento_id"
+						+ " inner join tb_departamento d on d.folio = emp.departamento"
+						+ " inner join tb_puesto p on p.folio = emp.puesto_id"
+						+ " inner join tb_status_de_colaboradores s on s.folio = emp.status"
+						+ " where emp.folio = '"+folio+"'";
+
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				datos.setFolio_colaborador(rs.getInt("folio"));
+				datos.setColaborador(rs.getString("colaborador").trim());
+				datos.setEstablecimiento(rs.getString("establecimiento").trim());
+				datos.setDepartamento(rs.getString("departamento").trim());
+				datos.setPuesto(rs.getString("puesto").trim());
+				datos.setStatus(rs.getString("status").trim());
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return datos;
+	}
+	
+	public int folio_colaborador_para_custionario(String parametro){
+		String query = "exec buscar_colaborador_por_folio_o_gafete '"+parametro+"'";
+		
+		int existe = 0;
+		try { Statement s = con.conexion().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	existe = rs.getInt(1);
+			      }
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [folio_colaborador_para_custionario] \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		return existe;
+	}
 
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();

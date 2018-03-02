@@ -434,9 +434,9 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			String colaboradoresUsadas = "";
 			for(int i = 0; i<tabla.getRowCount(); i++){
-				colaboradoresUsadas+="'"+tabla.getValueAt(i, 0).toString()+"',";
+				colaboradoresUsadas+=tabla.getValueAt(i, 0).toString()+",";
 			}
-			colaboradoresUsadas=colaboradoresUsadas.length()>2?colaboradoresUsadas.substring(0, colaboradoresUsadas.length()-1):"''";
+			colaboradoresUsadas=colaboradoresUsadas.length()>2?colaboradoresUsadas.substring(0, colaboradoresUsadas.length()-1):"0";
 			System.out.println(colaboradoresUsadas);
 			new Cat_Filtro_De_Colaboradores(colaboradoresUsadas).setVisible(true);
 		}
@@ -545,7 +545,9 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 	    	this.tablaFiltro.getColumnModel().getColumn(5).setMinWidth(30);	    	
 	    	this.tablaFiltro.getColumnModel().getColumn(5).setMaxWidth(30);
 	    	
-			String comando="exec filtro_asignacion_de_cuestionario_a_colaboradores";
+			String comando="exec filtro_asignacion_de_cuestionario_a_colaboradores '"+condicion+"'";
+
+			
 			System.out.println(comando);
 			String basedatos="26",pintar="si";
 			new Obj_tabla().Obj_Refrescar(tablaFiltro,modeloFitlro, columnasFiltro, comando, basedatos,pintar,checkboxFiltro);
