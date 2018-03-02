@@ -60,6 +60,7 @@ import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Importar_Voucher;
 import Obj_Contabilidad.Obj_Orden_De_Gasto;
 import Obj_Contabilidad.Obj_Proveedores;
+import Obj_Contabilidad.Obj_Transpaso_A_Banco_Interno;
 import Obj_Cuadrantes.Obj_Actividad;
 import Obj_Cuadrantes.Obj_Aspectos;
 import Obj_Cuadrantes.Obj_Cuadrantes;
@@ -7338,6 +7339,78 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			}
 		}		
 		return true;
+	}
+
+	public Obj_Transpaso_A_Banco_Interno Guardar_Transpaso_A_Banco_Interno(Obj_Transpaso_A_Banco_Interno Banco_Interno){
+		int folio_transaccion=Banco_Interno.getFolio();
+		String querymod ="";
+				
+		if(Banco_Interno.getGuardar_actualizar().equals("N")){
+		   folio_transaccion=busca_y_actualiza_proximo_folio(87);
+		  Banco_Interno.setFolio(folio_transaccion);
+		}else {
+		  querymod = "delete from banco_interno_datos where folio_movimiento_banco_interno="+folio_transaccion;
+		}
+		
+		String query = "exec banco_interno_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			con.setAutoCommit(false);
+			PreparedStatement pstmtdel = con.prepareStatement(querymod);
+			pstmtdel.executeUpdate();
+			 con.commit();
+			   
+			PreparedStatement pstmt = con.prepareStatement(query);
+			for(int i=0; i<Banco_Interno.getDatos().length; i++){				
+				pstmt.setInt   (1 ,  folio_transaccion);
+				pstmt.setInt   (2 ,  Banco_Interno.getFolio_empleado_destinatario());
+				pstmt.setString(3 ,  Banco_Interno.getObservaciones().toString());
+				pstmt.setInt   (4 ,  Banco_Interno.getUsuario_realiza_transpaso());
+				pstmt.setString(5 ,  Banco_Interno.getEstatus());
+				pstmt.setString(6 ,  Banco_Interno.getGuardar_actualizar());
+				pstmt.setString(7 ,  Banco_Interno.getDatos()[i][0].toString().trim() );
+				pstmt.setString(8 ,  Banco_Interno.getDatos()[i][1].toString().trim() );
+				pstmt.setString(9 ,  Banco_Interno.getDatos()[i][2].toString().trim() );
+				pstmt.setString(10 , Banco_Interno.getDatos()[i][3].toString().trim() );
+				pstmt.setString(11 , Banco_Interno.getDatos()[i][4].toString().trim() );
+				pstmt.setString(12 , Banco_Interno.getDatos()[i][5].toString().trim() );			
+				pstmt.setString(13 , Banco_Interno.getDatos()[i][6].toString().trim() );
+				
+				System.out.println(folio_transaccion);
+				System.out.println(Banco_Interno.getFolio_empleado_destinatario());
+				System.out.println(Banco_Interno.getObservaciones().toString());
+				System.out.println(Banco_Interno.getUsuario_realiza_transpaso());
+				System.out.println(Banco_Interno.getEstatus());
+				System.out.println(Banco_Interno.getGuardar_actualizar());
+				System.out.println(Banco_Interno.getDatos()[i][0].toString().trim());
+				
+				
+				pstmt.executeUpdate();
+			 con.commit();
+			}
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Transpaso_A_Banco_Interno ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Transpaso_A_Banco_Interno ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return null;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return Banco_Interno;
 	}
 	
 	public boolean Guardar_Asignacion_De_Cuestionario(Obj_Asignacion_De_Cuestionarios programacion,String movimiento){

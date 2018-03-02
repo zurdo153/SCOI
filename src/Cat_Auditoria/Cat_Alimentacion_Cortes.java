@@ -519,12 +519,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		btnFS.setEnabled(false);
 		
 		if(lblEstablecimineto.getText().equals("REFACCIONARIA") || lblEstablecimineto.getText().equals("FERRETERIA")|| lblEstablecimineto.getText().equals("HOGARY")){
-			btnAsignacion.setEnabled(false);
-			btnQuitarAsignacion.setEnabled(false);
+//			btnAsignacion.setEnabled(false);
+//			btnQuitarAsignacion.setEnabled(false);
 			Bandera_Asignacion_o_Turno="T";
 		}else {
 			btnTurno.setEnabled(false);
-//			btnQuitarTurno.setEnabled(false);
 			Bandera_Asignacion_o_Turno="A";
 		}
 	
@@ -881,6 +880,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				JOptionPane.showMessageDialog(null, "Ya se a seleccionado una asignacion, para cambiarla es necesario quitar la asignacion seleccionada","Aviso",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
+				Bandera_Asignacion_o_Turno="A";
 				new Cat_Filtrar_Asignaciones(cadenaAsignacionParametro()/*,lblNombre_Completo.getText()*/).setVisible(true);
 			}
 			
@@ -890,6 +890,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	ActionListener opTurno = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(tabla_asignaciones.getRowCount()>0){
+				Bandera_Asignacion_o_Turno="T";
 				JOptionPane.showMessageDialog(null, "Ya se a seleccionado una asignacion, para cambiarla es necesario quitar la asignacion seleccionada","Aviso",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else{
