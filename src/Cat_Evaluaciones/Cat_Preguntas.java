@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -75,17 +76,17 @@ public class Cat_Preguntas extends JFrame{
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 9, "Int");
 	JTextField txtPregunta = new Componentes().text(new JTextField(), "Pregunta", 150, "String");
 	
-	String[] status = {"Vigente","Cancelado"};
+	String[] status = {"VIGENTE","CANCELADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbStatus = new JComboBox(status);
 	
+	JToolBar menu_toolbar  = new JToolBar();
 	JButton btnBuscar = new JCButton("","buscar.png","Azul");
 	JButton btnNuevo = new JCButton("Nuevo","Nuevo.png","Azul");
 	JButton btnEditar = new JCButton("Editar","editara.png","Azul");
 	JButton btnSalir = new JCButton("Salir","salir16.png","Azul");
 	JButton btnGuardar = new JCButton("Guardar","Guardar.png","Azul");
 	JButton btnDeshacer = new JCButton("Deshacer","deshacer16.png","Azul");
-	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Preguntas(){
@@ -100,41 +101,52 @@ public class Cat_Preguntas extends JFrame{
 		
 		txtPreguntaFiltro.setToolTipText("Filtro Por Nombre");
 		
-		int x = 15, y=30, w=100,l=20;
+		int x = 15, y=15, w=100,l=20;
 		
-		panel.add(new JLabel("Folio:")).setBounds      	(x     ,y    ,w  ,l);
+		this.panel.add(menu_toolbar).setBounds     (x,y     , w*4+50,l);
+		
+		panel.add(new JLabel("Folio:")).setBounds      	(x     ,y+=25,w  ,l);
 		panel.add(txtFolio).setBounds                  	(x+=45 ,y    ,w  ,l);
 		panel.add(btnBuscar).setBounds                 	(x+=100,y    ,32 ,l);
 		
-		panel.add(btnNuevo).setBounds                  	(x+=70,y    ,w  ,l);
-		panel.add(btnEditar).setBounds                 	(x+=120,y    ,w+10  ,l);
-		panel.add(btnDeshacer).setBounds               	(x+=130,y    ,w+10  ,l);
-		panel.add(btnSalir).setBounds                  	(x+=130,y    ,w  ,l);
 		x = 15;
 		panel.add(new JLabel("Pregunta:")).setBounds   	(x     ,y+=30,w  ,l);
 		panel.add(txtPregunta).setBounds				(x+=45 ,y    ,w*3,l);
 		panel.add(new JLabel("Status:")).setBounds		(x+=320,y    ,w  ,l);
 		panel.add(cmbStatus).setBounds                  (x+=50 ,y    ,80 ,l);
-		panel.add(btnGuardar).setBounds                	(x+=180,y    ,w  ,l);
+		
 		x = 15;
 		panel.add(txtPreguntaFiltro).setBounds          (x	   ,y+=25,410,l);
 		
 		panel.add(scroll_tabla).setBounds           	(x     ,y+20 ,w*7,w*4);
+		
+	    this.menu_toolbar.add(btnNuevo);
+	    this.menu_toolbar.addSeparator();
+	    this.menu_toolbar.addSeparator( );
+	    this.menu_toolbar.add(btnEditar);
+	    this.menu_toolbar.addSeparator();
+	    this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnDeshacer);
+		this.menu_toolbar.addSeparator();
+		this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnGuardar);
+		this.menu_toolbar.addSeparator();
+		this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnSalir);
+		this.menu_toolbar.setFloatable(false);
+		
 		init_tabla();
 		agregar(tabla);
-		cmbStatus.setEnabled(false);
-		txtPregunta.setEditable(false);
 		
-		txtFolio.requestFocus();
 		txtFolio.addKeyListener(buscar_action);
-//	----------------------------------------------------------------------------------------------------------------	
+
 		btnGuardar.addActionListener(guardar);
 		btnSalir.addActionListener(cerrar);
 		btnBuscar.addActionListener(buscar);
 		btnDeshacer.addActionListener(deshacer);
 		btnNuevo.addActionListener(nuevo);
 		btnEditar.addActionListener(editar);
-		btnEditar.setEnabled(false);
+		camposActivos();
 		
 		txtPreguntaFiltro.addKeyListener(opFiltroNombre);
 		cont.add(panel);
@@ -144,7 +156,7 @@ public class Cat_Preguntas extends JFrame{
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowOpened( WindowEvent e ){
-            	txtPreguntaFiltro.requestFocus();
+            	txtFolio.requestFocus();
            }
         });
 	}
@@ -152,12 +164,14 @@ public class Cat_Preguntas extends JFrame{
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				
 	        	if(e.getClickCount()==1){
 	        		int fila = tabla.getSelectedRow();
 	        		Object id = tabla.getValueAt(fila,0);
 						txtFolio.setText(id+"");
 						txtPregunta.setText(tabla.getValueAt(fila,1)+"");
 						btnEditar.setEnabled(true);
+						txtFolio.setEditable(false);
 						cmbStatus.setSelectedItem(tabla.getValueAt(fila,2).toString().trim());
 	        	}
 	        }
@@ -183,8 +197,7 @@ ActionListener guardar = new ActionListener(){
 							preguntas.guardar("actualizar");
 							init_tabla();
 							panelLimpiar();
-							panelEnabledFalse();
-							txtFolio.setEditable(true);
+							camposActivos();
 							txtFolio.requestFocus();
 						}
 						JOptionPane.showMessageDialog(null,"El Registró se Guardó de Forma Segura","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
@@ -203,8 +216,7 @@ ActionListener guardar = new ActionListener(){
 						
 						init_tabla();
 						panelLimpiar();
-						panelEnabledFalse();
-						txtFolio.setEditable(true);
+						camposActivos();
 						txtFolio.requestFocus();
 						JOptionPane.showMessageDialog(null,"El Registró se Guardó de Forma Segura","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						}else{
@@ -226,13 +238,8 @@ ActionListener guardar = new ActionListener(){
 	};
 	
 	KeyListener buscar_action = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e){
-		}
-		@Override
-		public void keyReleased(KeyEvent e) {	
-		}
-		@Override
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
 				btnBuscar.doClick();
@@ -248,26 +255,20 @@ ActionListener guardar = new ActionListener(){
 				JOptionPane.showMessageDialog(null, "Ingrese el No. de Folio","Error",JOptionPane.WARNING_MESSAGE);
 				return;
 			}else{
-			Obj_Preguntas preguntas = new Obj_Preguntas();
-//			preguntas = 
-			preguntas.buscar(Integer.parseInt(txtFolio.getText()));
-			
-			if(preguntas.getFolio() != 0){
-			
-			txtFolio.setText(preguntas.getFolio()+"");
-			txtPregunta.setText(preguntas.getPregunta()+"");
-			cmbStatus.setSelectedItem(preguntas.getStatus().toString().trim());
-			
-			btnNuevo.setEnabled(false);
-			btnEditar.setEnabled(true);
-			panelEnabledFalse();
-			txtFolio.setEditable(true);
-			txtFolio.requestFocus();
-			
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
-				return;
+				Obj_Preguntas preguntas = new Obj_Preguntas().buscar(Integer.parseInt(txtFolio.getText()));
+				
+				if(preguntas.getFolio() != 0){
+				
+					txtFolio.setText(preguntas.getFolio()+"");
+					txtPregunta.setText(preguntas.getPregunta()+"");
+					cmbStatus.setSelectedItem(preguntas.getStatus().toString().trim());
+					
+					btnEditar.setEnabled(true);
+					txtFolio.setEditable(false);
+					btnBuscar.setEnabled(false);
+				}else{
+					JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
+					return;
 				}
 			}
 		}
@@ -277,7 +278,6 @@ ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			dispose();
 		}
-		
 	};
 	
 	private String validaCampos(){
@@ -286,54 +286,59 @@ ActionListener guardar = new ActionListener(){
 		return error;
 	}
 	
+	public void panelLimpiar(){	
+		txtFolio.setText("");
+		txtPregunta.setText("");
+		cmbStatus.setSelectedItem("VIGENTE");
+	}
+	
+	public void camposActivos(){
+		
+		btnNuevo.setEnabled(true);
+		btnEditar.setEnabled(false);
+		btnGuardar.setEnabled(false);
+		txtFolio.setEditable(true);
+		btnBuscar.setEnabled(true);
+		txtPregunta.setEditable(false);
+		cmbStatus.setEnabled(false);
+	}
+	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
-				panelLimpiar();
-				panelEnabledTrue();
-				txtFolio.setText(new Obj_Preguntas().buscar_nuevo()+"");
-				txtFolio.setEditable(false);
-				txtPregunta.requestFocus();
+				
+			panelLimpiar();
+			txtFolio.setText(new Obj_Preguntas().buscar_nuevo()+"");
+			
+			btnNuevo.setEnabled(false);
+			btnEditar.setEnabled(false);
+			btnGuardar.setEnabled(true);
+			txtFolio.setEditable(false);
+			btnBuscar.setEnabled(false);
+			txtPregunta.setEditable(true);
+			cmbStatus.setEnabled(true);
+			txtPregunta.requestFocus();
 		}
 	};
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			panelLimpiar();
-			panelEnabledFalse();
-			txtFolio.setEditable(true);
+			camposActivos();
 			txtFolio.requestFocus();
-			btnNuevo.setEnabled(true);
-			btnEditar.setEnabled(false);
-			cmbStatus.setSelectedItem("VIGENTE");
 		}
 	};
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			panelEnabledTrue();
-			txtFolio.setEditable(false);
+			btnNuevo.setEnabled(false);
 			btnEditar.setEnabled(false);
-			btnNuevo.setEnabled(true);
+			btnGuardar.setEnabled(true);
+			txtFolio.setEditable(false);
+			btnBuscar.setEnabled(false);
+			txtPregunta.setEditable(true);
+			cmbStatus.setEnabled(true);
 		}		
 	};
-	
-	public void panelEnabledFalse(){	
-		txtFolio.setEditable(false);
-		txtPregunta.setEditable(false);
-		cmbStatus.setEnabled(false);
-	}		
-	
-	public void panelEnabledTrue(){	
-		txtFolio.setEditable(true);
-		txtPregunta.setEditable(true);
-		cmbStatus.setEnabled(true);	
-	}
-	
-	public void panelLimpiar(){	
-		txtFolio.setText("");
-		txtPregunta.setText("");
-		cmbStatus.setSelectedItem("VIGENTE");
-	}
 	
 	public static void main(String args[]){
 		try{

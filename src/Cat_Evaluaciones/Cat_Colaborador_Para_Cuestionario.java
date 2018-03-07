@@ -284,7 +284,6 @@ public class Cat_Colaborador_Para_Cuestionario extends JFrame {
 					new Obj_Filtro_Dinamico(tablaf,"Nombre Completo", txtFolioFiltroEmpleado.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
 				}
 			};
-			
 		}
 	
 	public static void main(String args[]){

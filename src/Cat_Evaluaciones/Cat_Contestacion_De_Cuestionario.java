@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import Conexiones_SQL.BuscarTablasModel;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Evaluaciones.Obj_Contestacion_De_Cuestionario;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
@@ -348,8 +349,9 @@ public class Cat_Contestacion_De_Cuestionario extends JFrame{
 	
 	public static void main(String[] args) {
 		try{
+			
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Contestacion_De_Cuestionario(491).setVisible(true);
+			new Cat_Contestacion_De_Cuestionario(new Obj_Usuario().LeerSession().getFolio()).setVisible(true);
 		}catch(Exception e){	}
 	}
 

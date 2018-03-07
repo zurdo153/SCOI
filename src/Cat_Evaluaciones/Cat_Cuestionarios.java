@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -80,7 +81,7 @@ public class Cat_Cuestionarios extends JFrame{
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 9, "Int");
 	JTextField txtNombre = new Componentes().text(new JTextField(), "Nombre De Cuestionario", 150, "String");
 	
-	String[] status = {"Vigente","Cancelado"};
+	String[] status = {"VIGENTE","CANCELADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbStatus = new JComboBox(status);
 	
@@ -92,6 +93,7 @@ public class Cat_Cuestionarios extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEscalas = new JComboBox(escalas);
 	
+	JToolBar menu_toolbar  = new JToolBar();
 	JButton btnBuscar = new JCButton("","buscar.png","Azul");
 	JButton btnNuevo = new JCButton("Nuevo","Nuevo.png","Azul");
 	JButton btnEditar = new JCButton("Editar","editara.png","Azul");
@@ -107,7 +109,6 @@ public class Cat_Cuestionarios extends JFrame{
 		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/encuesta.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Cuestionario"));
-		
 		this.setTitle("Elaboración De Cuestionario");
 		
 		trsfiltro = new TableRowSorter(modelo); 
@@ -115,16 +116,14 @@ public class Cat_Cuestionarios extends JFrame{
 		
 		txtPreguntaFiltro.setToolTipText("Filtro Por Nombre");
 		
-		int x = 15, y=30, w=100,l=20;
+		int x = 15, y=15, w=100,l=20;
 		
-		panel.add(new JLabel("Folio:")).setBounds      	(x     ,y    ,w  ,l);
+		this.panel.add(menu_toolbar).setBounds     (x,y     , w*4+50,l);
+		
+		panel.add(new JLabel("Folio:")).setBounds      	(x     ,y+=25,w  ,l);
 		panel.add(txtFolio).setBounds                  	(x+=45 ,y    ,w  ,l);
 		panel.add(btnBuscar).setBounds                 	(x+=100,y    ,32 ,l);
 		
-		panel.add(btnNuevo).setBounds                  	(x+=70,y    ,w  ,l);
-		panel.add(btnEditar).setBounds                 	(x+=130,y   ,w+10,l);
-		panel.add(btnDeshacer).setBounds               	(x+=130,y   ,w+10,l);
-		panel.add(btnSalir).setBounds                  	(x+=130,y   ,w  ,l);
 		x = 15;
 		panel.add(new JLabel("Nombre:")).setBounds   	(x     ,y+=30,w  ,l);
 		panel.add(txtNombre).setBounds					(x+=45 ,y    ,w*3,l);
@@ -136,21 +135,33 @@ public class Cat_Cuestionarios extends JFrame{
 		panel.add(new JLabel("Escala:")).setBounds		(x+=295,y    ,w  ,l);
 		panel.add(cmbEscalas).setBounds                 (x+=50 ,y    ,170,l);
 		
-		panel.add(btnGuardar).setBounds                	(x+=190,y    ,w  ,l);
 		x = 15;
 		panel.add(txtPreguntaFiltro).setBounds          (x	   ,y+=25,410,l);
 		panel.add(btnPreguntas).setBounds          		(x+=435 ,y   ,130,l);
 		panel.add(btnQuitarPreguntas).setBounds    		(x+140 ,y    ,130,l);
 		x = 15;
 		panel.add(scroll_tabla).setBounds           	(x     ,y+20 ,w*7,w*4);
+		
+	    this.menu_toolbar.add(btnNuevo);
+	    this.menu_toolbar.addSeparator();
+	    this.menu_toolbar.addSeparator( );
+	    this.menu_toolbar.add(btnEditar);
+	    this.menu_toolbar.addSeparator();
+	    this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnDeshacer);
+		this.menu_toolbar.addSeparator();
+		this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnGuardar);
+		this.menu_toolbar.addSeparator();
+		this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnSalir);
+		this.menu_toolbar.setFloatable(false);
+		
 		init_tabla();
-		agregar(tabla);
 		cmbStatus.setEnabled(false);
 		txtNombre.setEditable(false);
 		
-		txtFolio.requestFocus();
 		txtFolio.addKeyListener(buscar_action);
-//	----------------------------------------------------------------------------------------------------------------	
 		btnGuardar.addActionListener(guardar);
 		btnSalir.addActionListener(cerrar);
 		btnBuscar.addActionListener(buscar);
@@ -159,23 +170,38 @@ public class Cat_Cuestionarios extends JFrame{
 		btnEditar.addActionListener(editar);
 		btnPreguntas.addActionListener(opPregunta);
 		btnQuitarPreguntas.addActionListener(opQuitarPregunta);
-		btnEditar.setEnabled(false);
-		btnQuitarPreguntas.setEnabled(false);
+		camposActivos();
 		
 		cmbClasificacion.setSelectedIndex(-1);
 		cmbEscalas.setSelectedIndex(-1);
 		
 		txtPreguntaFiltro.addKeyListener(opFiltroNombre);
 		cont.add(panel);
-		this.setSize(740,570);
+		this.setSize(740,600);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowOpened( WindowEvent e ){
-            	txtPreguntaFiltro.requestFocus();
+            	txtFolio.requestFocus();
            }
         });
+	}
+	
+	public void camposActivos(){
+		btnNuevo.setEnabled(true);
+		btnEditar.setEnabled(false);
+		btnGuardar.setEnabled(false);
+		
+		txtFolio.setEditable(true);
+		btnBuscar.setEnabled(true);
+		txtNombre.setEditable(false);
+		cmbStatus.setEnabled(false);
+		
+		cmbClasificacion.setEnabled(false);
+		cmbEscalas.setEnabled(false);
+		btnPreguntas.setEnabled(false);
+		btnQuitarPreguntas.setEnabled(false);
 	}
 	
 	ActionListener opPregunta = new ActionListener(){
@@ -202,21 +228,8 @@ public class Cat_Cuestionarios extends JFrame{
 				JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar La Pregunta Que Se Requiere Eliminar", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
-			
-			
-			
 		}		
 	};
-	
-	private void agregar(final JTable tbl) {
-        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-	        	if(e.getClickCount()==1){
-						btnQuitarPreguntas.setEnabled(true);
-	        	}
-	        }
-        });
-    }
 	
 ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -224,16 +237,42 @@ ActionListener guardar = new ActionListener(){
 				JOptionPane.showMessageDialog(null, "El Folio Es Requerido \n", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			}else{			
 				Obj_Cuestionarios cuestionario = new Obj_Cuestionarios().buscar(Integer.parseInt(txtFolio.getText()));
-				
-				if(cuestionario.getFolio() == Integer.parseInt(txtFolio.getText())){
-					if(JOptionPane.showConfirmDialog(null, "El Registro Ya Existe, ¿Desea Cambiarlo?") == 0){
+				if(tabla.getRowCount()>0){
+					if(cuestionario.getFolio() == Integer.parseInt(txtFolio.getText())){
+						if(JOptionPane.showConfirmDialog(null, "El Registro Ya Existe, ¿Desea Cambiarlo?") == 0){
+							if(validaCampos()!="") {
+								JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+validaCampos(), "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}else{
+								
+								cuestionario.setFolio(Integer.parseInt(txtFolio.getText()));
+								cuestionario.setCuestionario(txtNombre.getText());
+								cuestionario.setStatus(cmbStatus.getSelectedItem().toString().trim());
+								cuestionario.setClasificacion(cmbClasificacion.getSelectedItem().toString().trim());
+								cuestionario.setEscala(cmbEscalas.getSelectedItem().toString().trim());
+								
+								int[] ignorarColumnas = {2};
+								cuestionario.setCadena_xml(new CrearXmlString().CadenaXML(tabla, ignorarColumnas));
+								
+								if(cuestionario.guardar("actualizar")){
+									
+									init_tabla();
+									panelLimpiar();
+									camposActivos();
+									txtFolio.requestFocus();
+									JOptionPane.showMessageDialog(null,"El Registró se Actualizó de Forma Segura","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+								}else{
+									JOptionPane.showMessageDialog(null,"Error Al Guarda El Cuestionario Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+								}
+							}
+						}else{
+							return;
+						}
+					}else{
 						if(validaCampos()!="") {
-							JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+validaCampos(), "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+							JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							return;
 						}else{
-							
-							
-							
 							cuestionario.setFolio(Integer.parseInt(txtFolio.getText()));
 							cuestionario.setCuestionario(txtNombre.getText());
 							cuestionario.setStatus(cmbStatus.getSelectedItem().toString().trim());
@@ -243,48 +282,23 @@ ActionListener guardar = new ActionListener(){
 							int[] ignorarColumnas = {2};
 							cuestionario.setCadena_xml(new CrearXmlString().CadenaXML(tabla, ignorarColumnas));
 							
-							if(cuestionario.guardar("actualizar")){
-								
-								init_tabla();
-								panelLimpiar();
-								panelEnabledFalse();
-								txtFolio.setEditable(true);
-								txtFolio.requestFocus();
-								JOptionPane.showMessageDialog(null,"El Registró se Actualizó de Forma Segura","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
-								}else{
-									JOptionPane.showMessageDialog(null,"Error Al Guarda El Cuestionario Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-								}
+							if(cuestionario.guardar("guardar")){
+							
+							init_tabla();
+							panelLimpiar();
+							camposActivos();
+							txtFolio.requestFocus();
+							JOptionPane.showMessageDialog(null,"El Registró se Guardó de Forma Segura","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							}else{
+								JOptionPane.showMessageDialog(null,"Error Al Guarda El Cuestionario Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+							}
 						}
-					}else{
-						return;
 					}
+					
 				}else{
-					if(validaCampos()!="") {
-						JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-						return;
-					}else{
-						cuestionario.setFolio(Integer.parseInt(txtFolio.getText()));
-						cuestionario.setCuestionario(txtNombre.getText());
-						cuestionario.setStatus(cmbStatus.getSelectedItem().toString().trim());
-						cuestionario.setClasificacion(cmbClasificacion.getSelectedItem().toString().trim());
-						cuestionario.setEscala(cmbEscalas.getSelectedItem().toString().trim());
-						
-						int[] ignorarColumnas = {2};
-						cuestionario.setCadena_xml(new CrearXmlString().CadenaXML(tabla, ignorarColumnas));
-						
-						if(cuestionario.guardar("guardar")){
-						
-						init_tabla();
-						panelLimpiar();
-						panelEnabledFalse();
-						txtFolio.setEditable(true);
-						txtFolio.requestFocus();
-						JOptionPane.showMessageDialog(null,"El Registró se Guardó de Forma Segura","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
-						}else{
-							JOptionPane.showMessageDialog(null,"Error Al Guarda El Cuestionario Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-						}
-					}
-				}
+					JOptionPane.showMessageDialog(null, "Para Poder Guardar, Es Necesario Seleccionar Las Preguntas Que Conformaran El Cuestionario.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}	
 			}			
 		}
 	};
@@ -300,13 +314,8 @@ ActionListener guardar = new ActionListener(){
 	};
 	
 	KeyListener buscar_action = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e){
-		}
-		@Override
-		public void keyReleased(KeyEvent e) {	
-		}
-		@Override
+		public void keyTyped(KeyEvent e){}
+		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
 				btnBuscar.doClick();
@@ -318,35 +327,32 @@ ActionListener guardar = new ActionListener(){
 	{
 		public void actionPerformed(ActionEvent e)
 		{
+			modelo.setRowCount(0);
 			if(txtFolio.getText().equals("")){
 				new Cat_Filtro_De_Cuestionarios().setVisible(true);
 			}else{
-			Obj_Cuestionarios cuestionario = new Obj_Cuestionarios().buscar(Integer.parseInt(txtFolio.getText()));
-//			preguntas = 
-//			cuestionario.buscar(Integer.parseInt(txtFolio.getText()));
-			
-			if(cuestionario.getFolio() != 0){
-			
-			txtFolio.setText(cuestionario.getFolio()+"");
-			txtNombre.setText(cuestionario.getCuestionario()+"");
-			cmbClasificacion.setSelectedItem(cuestionario.getClasificacion());
-			cmbEscalas.setSelectedItem(cuestionario.getEscala());
-			cmbStatus.setSelectedItem(cuestionario.getStatus().toString().trim());
-			
-			for(Object[] fila: cuestionario.getArreglo()){
-				modelo.addRow(fila);
-			}
-			
-			btnNuevo.setEnabled(false);
-			btnEditar.setEnabled(true);
-			panelEnabledFalse();
-			txtFolio.setEditable(true);
-			txtFolio.requestFocus();
-			
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
-				return;
+				Obj_Cuestionarios cuestionario = new Obj_Cuestionarios().buscar(Integer.parseInt(txtFolio.getText()));
+				
+				if(cuestionario.getFolio() != 0){
+				
+					txtFolio.setText(cuestionario.getFolio()+"");
+					txtNombre.setText(cuestionario.getCuestionario()+"");
+					cmbClasificacion.setSelectedItem(cuestionario.getClasificacion());
+					cmbEscalas.setSelectedItem(cuestionario.getEscala());
+					cmbStatus.setSelectedItem(cuestionario.getStatus().toString().trim());
+					
+					for(Object[] fila: cuestionario.getArreglo()){
+						modelo.addRow(fila);
+					}
+					
+					btnBuscar.setEnabled(false);
+					btnEditar.setEnabled(true);
+					txtFolio.setEditable(false);
+					txtFolio.requestFocus();
+				
+				}else{
+					JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
+					return;
 				}
 			}
 		}
@@ -356,21 +362,32 @@ ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			dispose();
 		}
-		
 	};
 	
 	private String validaCampos(){
 		String error="";
-		if(txtNombre.getText().equals("")) 			error+= "Pregunta\n";
+		if(txtNombre.getText().equals("")) 			error+= "- Nombre\n";
+		if(cmbClasificacion.getSelectedIndex()==-1) error+= "- Clasificación\n";
+		if(cmbEscalas.getSelectedIndex()==-1) 		error+= "- Escala\n";
 		return error;
 	}
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 				panelLimpiar();
-				panelEnabledTrue();
 				txtFolio.setText(new Obj_Cuestionarios().buscar_nuevo()+"");
+
+				btnNuevo.setEnabled(true);
+				btnEditar.setEnabled(false);
+				btnGuardar.setEnabled(true);
 				txtFolio.setEditable(false);
+				btnBuscar.setEnabled(false);
+				txtNombre.setEditable(true);
+				cmbStatus.setEnabled(true);
+				cmbClasificacion.setEnabled(true);
+				cmbEscalas.setEnabled(true);
+				btnPreguntas.setEnabled(true);
+				btnQuitarPreguntas.setEnabled(true);
 				txtNombre.requestFocus();
 		}
 	};
@@ -378,35 +395,25 @@ ActionListener guardar = new ActionListener(){
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			panelLimpiar();
-			panelEnabledFalse();
-			txtFolio.setEditable(true);
-			txtFolio.requestFocus();
-			btnNuevo.setEnabled(true);
-			btnEditar.setEnabled(false);
-			cmbStatus.setSelectedItem("VIGENTE");
+			camposActivos();
 		}
 	};
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			panelEnabledTrue();
-			txtFolio.setEditable(false);
-			btnEditar.setEnabled(false);
 			btnNuevo.setEnabled(true);
+			btnEditar.setEnabled(false);
+			btnGuardar.setEnabled(true);
+			txtFolio.setEditable(false);
+			btnBuscar.setEnabled(false);
+			txtNombre.setEditable(true);
+			cmbStatus.setEnabled(true);
+			cmbClasificacion.setEnabled(true);
+			cmbEscalas.setEnabled(true);
+			btnPreguntas.setEnabled(true);
+			btnQuitarPreguntas.setEnabled(true);
 		}		
 	};
-	
-	public void panelEnabledFalse(){	
-		txtFolio.setEditable(false);
-		txtNombre.setEditable(false);
-		cmbStatus.setEnabled(false);
-	}		
-	
-	public void panelEnabledTrue(){	
-		txtFolio.setEditable(true);
-		txtNombre.setEditable(true);
-		cmbStatus.setEnabled(true);	
-	}
 	
 	public void panelLimpiar(){	
 		txtFolio.setText("");
@@ -563,7 +570,7 @@ ActionListener guardar = new ActionListener(){
 		    	this.tabla2.getColumnModel().getColumn(3).setMinWidth(190);
 		    	this.tabla2.getColumnModel().getColumn(4).setMinWidth(100);
 		    	
-				String comando="exec filtro_cuestionarios" ;
+				String comando="exec filtro_cuestionarios ''" ;
 				String basedatos="26",pintar="si";
 				Objetotabla.Obj_Refrescar(tabla2,modelo2, columnas, comando, basedatos,pintar,checkbox);
 		    }

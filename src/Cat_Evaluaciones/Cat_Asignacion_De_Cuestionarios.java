@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -65,14 +66,10 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(60);	
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(450);
     	this.tabla.getColumnModel().getColumn(2).setMinWidth(190);
-//    	this.tabla.getColumnModel().getColumn(3).setMinWidth(190);
-//    	this.tabla.getColumnModel().getColumn(4).setMinWidth(190);
     	
     	tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
 		tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-//		tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
-//		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",12));
     }
 	
 	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Colaborador","Establecimiento"/*,"Departameto","Puesto"*/}){
@@ -81,8 +78,6 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 					java.lang.Object.class,
 					java.lang.Object.class,
 					java.lang.Object.class,
-					/*java.lang.Object.class,
-					java.lang.Object.class,*/
 			};
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
@@ -96,7 +91,6 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 	    JTable tabla = new JTable(modelo);
 		public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
-//	JTextField txtPreguntaFiltro = new JTextField();
 	@SuppressWarnings("rawtypes")
 	private TableRowSorter trsfiltro;
 	
@@ -112,6 +106,7 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 	
 	JTextField txtCuestionarioFiltro = new Componentes().text(new JTextField(), "Busqueda De Cuestionario",	120, "String");
 	
+	JToolBar menu_toolbar  = new JToolBar();
 	JButton btnBuscar = new JCButton("","buscar.png","Azul");
 	JButton btnNuevo = new JCButton("Nuevo","Nuevo.png","Azul");
 	JButton btnEditar = new JCButton("Editar","editara.png","Azul");
@@ -126,9 +121,9 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 	public Cat_Asignacion_De_Cuestionarios(){
 		
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/encuesta.png"));
-		panel.setBorder(BorderFactory.createTitledBorder("Cuestionario"));
+		panel.setBorder(BorderFactory.createTitledBorder("Asignar Cuestionario"));
 		
-		this.setTitle("Elaboración De Cuestionario");
+		this.setTitle("Asignacion De Cuestionario A Colaboradores");
 		
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);
@@ -136,16 +131,13 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 		this.fchInicial.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		this.fchFinal.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
 		
-		int x = 15, y=30, w=100,l=20;
+		int x = 15, y=15, w=100,l=20;
 		
-		panel.add(new JLabel("Folio:")).setBounds  (x     ,y    ,w  ,l);
+		this.panel.add(menu_toolbar).setBounds     (x,y     , w*4+50,l);
+		panel.add(new JLabel("Folio:")).setBounds  (x     ,y+=25 , w,l);
 		panel.add(txtFolio).setBounds              (x+=45 ,y    ,w  ,l);
-		panel.add(btnBuscar).setBounds             (x+=100,y    ,32 ,l);
+		panel.add(btnBuscar).setBounds             (x+=100,y    ,30 ,l);
 		
-		panel.add(btnNuevo).setBounds              (x+=70 ,y    ,w  ,l);
-		panel.add(btnEditar).setBounds             (x+=130,y   ,w+10,l);
-		panel.add(btnDeshacer).setBounds           (x+=130,y   ,w+10,l);
-		panel.add(btnSalir).setBounds              (x+=130,y   ,w   ,l);
 		x = 15;
 		panel.add(new JLabel("Nombre:")).setBounds (x     ,y+=30,w  ,l);
 		panel.add(txtNombre).setBounds			   (x+=45 ,y    ,w*3,l);
@@ -160,15 +152,30 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 		panel.add(new JLabel("Cuestionario:")).setBounds (x		,y+=30,w  ,l);
 		panel.add(txtFolioCuestionario).setBounds		 (x+=65 ,y    ,45  ,l);
 		panel.add(txtCuestionario).setBounds			 (x+=45 ,y    ,w*3,l);
-		panel.add(btnCuestionarios).setBounds 			 (x+=(w*3),y	  ,50  ,l);
+		panel.add(btnCuestionarios).setBounds 			 (x+=(w*3),y	  ,30  ,l);
 		
-		panel.add(btnGuardar).setBounds            (x+=190,y    ,w  ,l);
 		x = 15;
 		panel.add(txtCuestionarioFiltro).setBounds (x	  ,y+=25,410,l);
 		panel.add(btnColaboradores).setBounds      (x+=435,y    ,130,l);
 		panel.add(btnQuitarColaborador).setBounds  (x+135 ,y    ,130,l);
 		x = 15;
 		panel.add(scroll_tabla).setBounds          (x   ,y+20 ,w*7,w*4);
+		
+	    this.menu_toolbar.add(btnNuevo);
+	    this.menu_toolbar.addSeparator();
+	    this.menu_toolbar.addSeparator( );
+	    this.menu_toolbar.add(btnEditar);
+	    this.menu_toolbar.addSeparator();
+	    this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnDeshacer);
+		this.menu_toolbar.addSeparator();
+		this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnGuardar);
+		this.menu_toolbar.addSeparator();
+		this.menu_toolbar.addSeparator( );
+		this.menu_toolbar.add(btnSalir);
+		this.menu_toolbar.setFloatable(false);
+		
 		init_tabla();
 		agregar(tabla);
 		txtNombre.setEditable(false);
@@ -185,20 +192,25 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 		btnEditar.addActionListener(editar);
 		btnColaboradores.addActionListener(opColaboradores);
 		btnQuitarColaborador.addActionListener(opQuitarColaborador);
-		btnEditar.setEnabled(false);
-		btnQuitarColaborador.setEnabled(false);
+		
 		txtFolioCuestionario.setEditable(false);
 		txtCuestionario.setEditable(false);
+		camposActivos(false);
 		
 		fchInicial.setDate(cargar_fechas(0));
 		fchFinal.setDate(cargar_fechas(-7));
 		
 		cont.add(panel);
-		this.setSize(740,570);
+		this.setSize(740,600);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
+		this.addWindowListener(new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+            	txtFolio.requestFocus();
+           }
+        });		
 	}
 	
 	public Date cargar_fechas(int dias){
@@ -237,9 +249,6 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 				JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El Colaborador Que Se Requiere Eliminar", "Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
-			
-			
-			
 		}		
 	};
 	
@@ -292,8 +301,7 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 									
 										init_tabla();
 										panelLimpiar();
-										panelEnabledFalse();
-										txtFolio.setEditable(true);
+										camposActivos(false);
 										txtFolio.requestFocus();
 										JOptionPane.showMessageDialog(null,"El Registró se Actualizó de Forma Segura","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 									}else{
@@ -303,14 +311,13 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 								JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
 								return;
 							}
-							
 						}
 					}else{
 						return;
 					}
 				}else{
 					if(!validaCampos().equals("")) {
-						JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n -"+validaCampos()+"-", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}else{
 						
@@ -335,8 +342,7 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 							
 								init_tabla();
 								panelLimpiar();
-								panelEnabledFalse();
-								txtFolio.setEditable(true);
+								camposActivos(false);
 								txtFolio.requestFocus();
 								JOptionPane.showMessageDialog(null,"El Registró se Guardó de Forma Segura","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							}else{
@@ -346,7 +352,6 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 							JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
 							return;
 						}
-						
 					}
 				}
 			}			
@@ -395,16 +400,11 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 				}	
 				
 			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
-
-			
-			btnNuevo.setEnabled(false);
+			txtFolio.setEditable(false);
 			btnEditar.setEnabled(true);
-			panelEnabledFalse();
-			txtFolio.setEditable(true);
 			txtFolio.requestFocus();
 			
 			}
@@ -416,10 +416,8 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 		}
 	};
 	
-	ActionListener buscarCuestionario = new ActionListener()
-	{
-		public void actionPerformed(ActionEvent e)
-		{
+	ActionListener buscarCuestionario = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
 				new Cat_Filtro_De_Cuestionarios().setVisible(true);
 		}
 	};
@@ -428,32 +426,13 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			dispose();
 		}
-		
 	};
-	
-	private String validaCampos(){
-		
-		String error="";
-		
-		String F1 = fchInicial.getDate()+"";
-		String F2 = fchFinal.getDate()+"";
-		
-		error += txtNombre.getText().equals("")?"Pregunta\n":"";
-		error += F1.equals("null")?"Fecha Inicial\n":"";
-		error += F2.equals("null")?"Fecha Final\n":"";
-		error += txtFolioCuestionario.getText().equals("")?"Seleccionar Cuestionario\n":"";
-		
-		error += tabla.getRowCount()==0?"Seleccionar Colaboradores":"";
-		
-		return error;
-	}
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 				panelLimpiar();
-				panelEnabledTrue();
 				txtFolio.setText(new Obj_Asignacion_De_Cuestionarios().buscar_nuevo()+"");
-				txtFolio.setEditable(false);
+				camposActivos(true);
 				txtNombre.requestFocus();
 		}
 	};
@@ -461,31 +440,31 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			panelLimpiar();
-			panelEnabledFalse();
-			txtFolio.setEditable(true);
+			camposActivos(false);
 			txtFolio.requestFocus();
-			btnNuevo.setEnabled(true);
-			btnEditar.setEnabled(false);
 		}
 	};
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			panelEnabledTrue();
-			txtFolio.setEditable(false);
-			btnEditar.setEnabled(false);
-			btnNuevo.setEnabled(true);
+			camposActivos(true);
 		}		
 	};
 	
-	public void panelEnabledFalse(){	
-		txtFolio.setEditable(false);
-		txtNombre.setEditable(false);
-	}		
-	
-	public void panelEnabledTrue(){	
-		txtFolio.setEditable(true);
-		txtNombre.setEditable(true);
+	private String validaCampos(){
+		String error="";
+		
+		String F1 = fchInicial.getDate()+"";
+		String F2 = fchFinal.getDate()+"";
+		
+		error += txtNombre.getText().equals("")?"- Nombre\n":"";
+		error += F1.equals("null")?"- Fecha Inicial\n":"";
+		error += F2.equals("null")?"- Fecha Final\n":"";
+		error += txtFolioCuestionario.getText().equals("")?"- Seleccionar Cuestionario\n":"";
+		
+		error += tabla.getRowCount()==0?"- Seleccionar Colaboradores":"";
+		
+		return error;
 	}
 	
 	public void panelLimpiar(){	
@@ -496,6 +475,25 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 		fchInicial.setDate(cargar_fechas(0));
 		fchFinal.setDate(cargar_fechas(-7));
 		modelo.setRowCount(0);
+	}
+	
+	public void camposActivos(boolean valor){
+		
+		btnEditar.setEnabled(valor);
+		btnGuardar.setEnabled(valor);
+		btnColaboradores.setEnabled(valor);
+		btnQuitarColaborador.setEnabled(valor);
+		btnCuestionarios.setEnabled(valor);
+		fchInicial.setEnabled(valor);
+		fchFinal.setEnabled(valor);
+		
+		btnEditar.setEnabled(valor);
+		txtNombre.setEditable(valor);
+		
+		txtFolio.setEditable(!valor);
+		btnNuevo.setEnabled(!valor);
+		btnBuscar.setEnabled(!valor);
+		
 	}
 	
 	public class Cat_Filtro_De_Colaboradores extends JFrame{
@@ -697,8 +695,6 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 		        		vec.add(tablaFiltro.getValueAt(fila, 0).toString());
 		        		vec.add(tablaFiltro.getValueAt(fila, 1).toString());
 		        		vec.add(tablaFiltro.getValueAt(fila, 2).toString());
-//		        		vec.add(tablaFiltro.getValueAt(fila, 3).toString());
-//		        		vec.add(tablaFiltro.getValueAt(fila, 4).toString());
 		        		
 		        		modelo.addRow(vec);
 		        		dispose();
@@ -857,7 +853,7 @@ public class Cat_Asignacion_De_Cuestionarios extends JFrame{
 		    	this.tabla2.getColumnModel().getColumn(3).setMinWidth(190);
 		    	this.tabla2.getColumnModel().getColumn(4).setMinWidth(100);
 		    	
-				String comando="exec filtro_cuestionarios" ;
+				String comando="exec filtro_cuestionarios 'V'" ;
 				String basedatos="26",pintar="si";
 				Objetotabla.Obj_Refrescar(tabla2,modelo2, columnas, comando, basedatos,pintar,checkbox);
 		    }
