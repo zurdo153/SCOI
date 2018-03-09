@@ -1,6 +1,7 @@
 package Cat_Contabilidad;
 
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -79,7 +80,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 	    	this.tabla.getColumnModel().getColumn( 1).setMaxWidth(50);
 	    	this.tabla.getColumnModel().getColumn( 2).setMinWidth(350);
 	    	this.tabla.getColumnModel().getColumn( 3).setMinWidth(140);
-	    	this.tabla.getColumnModel().getColumn( 4).setMinWidth(280);
+	    	this.tabla.getColumnModel().getColumn( 4).setMinWidth(370);
 	    	this.tabla.getColumnModel().getColumn( 5).setMinWidth(110);
 	    	this.tabla.getColumnModel().getColumn( 6).setMinWidth(80);
 	    	this.tabla.getColumnModel().getColumn( 7).setMinWidth(230);
@@ -157,9 +158,10 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 		JToolBar menu_toolbar       = new JToolBar();
 		
 		public Cat_Autorizacion_De_Ordenes_De_Gasto()	{
-			this.setSize(1024,540);
-			
-			this.setResizable(false);
+//			this.setSize(1024,540);
+			this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+//			this.setResizable(false);
+			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia.png"));
@@ -182,8 +184,8 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 			this.campo.add(menu_toolbar).setBounds           (x      ,y      ,460    ,height   );
 			this.campo.add(new JLabel("Busqueda Por Estatus:")).setBounds(760,y,110  ,height   );
 			this.campo.add(cmb_status).setBounds             (x+860  ,y      ,120    ,height   );
-			this.campo.add(txtFiltro).setBounds              (x      ,y+=25  ,980    ,height   );
-			this.campo.add(scroll_tabla).setBounds           (x      ,y+=20  ,980    ,250      );
+			this.campo.add(txtFiltro).setBounds              (x      ,y+=25  ,ancho-40,height   );
+			this.campo.add(scroll_tabla).setBounds           (x      ,y+=20  ,ancho-40,250      );
 			this.campo.add(detalle).setBounds                (x      ,y+=260 ,400    ,height   );
 			this.campo.add(scroll_tabla_detalle).setBounds   (x      ,y+=22  ,780    ,150      );
 			this.campo.add(new JLabel("Total De La Orden")).setBounds(800,y+=110,110 ,height   );

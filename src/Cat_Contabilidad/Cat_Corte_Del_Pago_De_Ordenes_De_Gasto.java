@@ -13,6 +13,7 @@ import java.sql.Statement;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -40,12 +41,13 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	Obj_tabla ObjTab= new Obj_tabla();
 	
-    private DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Fecha", "Importe", "Beneficiario", "Concepto", "Detalle", "Establecimiento", "Usuario Elaboro","" }){
+    private DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Fecha", "Importe", "Beneficiario", "Descripcion", "Detalle", "Establecimiento", "Elaboro","Concepto","" }){
 	     @SuppressWarnings("rawtypes")
 		Class[] types = new Class[]{
 	    	java.lang.Object.class,
 	    	java.lang.Object.class, 
 	    	java.lang.Object.class, 
+	    	java.lang.Object.class,
 	    	java.lang.Object.class,
 	    	java.lang.Object.class,
 	    	java.lang.Object.class,
@@ -65,7 +67,8 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
         	 	case 5 : return false;
         	 	case 6 : return false;
         	 	case 7 : return false;
-        	 	case 8 :return  true;
+        	 	case 8 : return false;
+        	 	case 9 :return  true;
         	 }
  			return false;
  		}
@@ -82,6 +85,10 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
 	JButton btnReporte = new JButton("Reporte",new ImageIcon("imagen/Print.png"));
 
+	String conceptos[] = {"GASTO","COMPRA"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmb_concepto = new JComboBox(conceptos);
+	
 	public Cat_Corte_Del_Pago_De_Ordenes_De_Gasto(){
 		this.setSize(1024, 768);
 		this.setLocationRelativeTo(null);
@@ -89,7 +96,8 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/ok-lista-de-verificacion-icono-7906-64.png"));
 		this.setTitle("Corte De Ordenes De Pago En Efectivo");
 		panel.setBorder(BorderFactory.createTitledBorder("Selecciona Las Ordenes De Pago Que Quieres Incluir En El Corte"));
-		this.panel.add(txtFiltro).setBounds                    ( 10 ,20 ,658 ,20 );
+		this.panel.add(txtFiltro).setBounds                    (10  ,20 ,600 ,20 );
+		this.panel.add(cmb_concepto).setBounds                 (620 ,20 ,70 ,20 );
 		panel.add(new JLabel("Folio Corte Ordenes De Pago:")).setBounds(700 ,20 ,190 ,20 );
 		this.panel.add(txtfoliocorte).setBounds                (845 ,20 ,45  ,20 );
 		this.panel.add(btnGuardar).setBounds                   (900 ,20 ,95  ,20 );
@@ -107,6 +115,7 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 		txtFiltro.addKeyListener(opFiltroGeneral);
 		btnGuardar.addActionListener(op_guardar);
 		btnReporte.addActionListener(opReporte_De_Corte_De_Ordenes_De_Compra);
+		cmb_concepto.addActionListener(opCambiar_Concepto);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -122,7 +131,8 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9));
 		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9));
 		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9));
-		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
+		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9));
+		tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("CHB","centro","Arial","negrita",12));
 		
 		this.tabla.getColumnModel().getColumn(0).setMaxWidth(40);
 		this.tabla.getColumnModel().getColumn(0).setMinWidth(40);
@@ -130,18 +140,16 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 		this.tabla.getColumnModel().getColumn(1).setMaxWidth(200);
 		this.tabla.getColumnModel().getColumn(2).setMinWidth(60);
 		this.tabla.getColumnModel().getColumn(2).setMaxWidth(60);
-		this.tabla.getColumnModel().getColumn(3).setMinWidth(220);
+		this.tabla.getColumnModel().getColumn(3).setMinWidth(200);
 		this.tabla.getColumnModel().getColumn(3).setMaxWidth(500);
 		this.tabla.getColumnModel().getColumn(4).setMinWidth(220);
-		this.tabla.getColumnModel().getColumn(4).setMaxWidth(500);
 		this.tabla.getColumnModel().getColumn(5).setMinWidth(60);
-		this.tabla.getColumnModel().getColumn(5).setMaxWidth(1000);
-		this.tabla.getColumnModel().getColumn(6).setMinWidth(100);
-		this.tabla.getColumnModel().getColumn(6).setMaxWidth(150);
-		this.tabla.getColumnModel().getColumn(7).setMinWidth(100);
-		this.tabla.getColumnModel().getColumn(7).setMaxWidth(500);
-		this.tabla.getColumnModel().getColumn(8).setMaxWidth(20);
-		this.tabla.getColumnModel().getColumn(8).setMinWidth(20);
+		this.tabla.getColumnModel().getColumn(6).setMinWidth(105);
+		this.tabla.getColumnModel().getColumn(7).setMinWidth(80);
+		this.tabla.getColumnModel().getColumn(8).setMinWidth(57);
+		this.tabla.getColumnModel().getColumn(8).setMaxWidth(57);
+		this.tabla.getColumnModel().getColumn(9).setMaxWidth(20);
+		this.tabla.getColumnModel().getColumn(9).setMinWidth(20);
 		this.tabla.setRowSorter(trsfiltro);  
 		refrestabla();
 	}
@@ -153,9 +161,9 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 		try {
 			Connexion con = new Connexion();
 			s = con.conexion().createStatement();
-			rs = s.executeQuery("exec orden_de_gasto_corte_de_caja_chica");
+			rs = s.executeQuery("exec orden_de_gasto_corte_de_caja_chica '"+cmb_concepto.getSelectedItem().toString().trim()+"'");
 			while (rs.next())
-			{  String [] fila = new String[9];
+			{  String [] fila = new String[10];
 			   fila[0] = rs.getString(1).trim();
 			   fila[1] = rs.getString(2).trim();
 			   fila[2] = rs.getString(3).trim(); 
@@ -164,7 +172,8 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 			   fila[5] = rs.getString(6).trim(); 
 			   fila[6] = rs.getString(7).trim(); 
 			   fila[7] = rs.getString(8).trim(); 
-			   fila[8] = "true";
+			   fila[8] = rs.getString(9).trim(); 
+			   fila[9] = "true";
 			   modelo.addRow(fila); 
 			}	
 		} catch (SQLException e1) {
@@ -197,7 +206,7 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 	int foliosiguiente=0;
 
 	 
-	   ActionListener opReporte_De_Corte_De_Ordenes_De_Compra = new ActionListener(){
+	ActionListener opReporte_De_Corte_De_Ordenes_De_Compra = new ActionListener(){
 		   public void actionPerformed(ActionEvent arg0) {
 			    Integer folio=(Integer.valueOf(txtfoliocorte.getText().toString().trim())-1);
 			   if(!txtfolio_corte_consulta.getText().toString().trim().equals("")){
@@ -206,9 +215,15 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 				String basedatos="2.26";
 				String vista_previa_reporte="no";
 				int vista_previa_de_ventana=0;
-				String reporte = "Obj_Reporte_De_Corte_Caja_Chica.jrxml";
+				String reporte = "Obj_Reporte_De_Corte_Caja_Chica_Ordenes_de_Gasto.jrxml";
 			    String comando = "exec ordenes_de_pago_reporte_de_corte "+folio;
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		   }
+	};
+	
+	ActionListener opCambiar_Concepto = new ActionListener(){
+		   public void actionPerformed(ActionEvent arg0) {
+			   refrestabla();
 		   }
 	};
 	

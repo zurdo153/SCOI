@@ -221,7 +221,7 @@ public class Cargar_Combo {
 				if(j == 0){
 					miVector.add("Selecciona un Establecimiento");
 				}
-				miVector.add(rs.getString("nombre"));
+				miVector.add(rs.getString(1));
 				j++;
 			}
 		} catch (Exception e) {
@@ -2362,8 +2362,8 @@ public class Cargar_Combo {
 	@SuppressWarnings("unchecked")
 	public String[] razonesDeMovimientoDeInventario(String movimiento){
 		
+		@SuppressWarnings("unused")
 		int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
-		System.out.println(folio_usuario);
 		String query = "SELECT nombre from razones_de_movimiento_de_inventario where status in ('T','"+movimiento+"')";
 		
 		Statement stmt = null;
