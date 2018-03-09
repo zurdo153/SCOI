@@ -3,6 +3,7 @@ package Obj_Evaluaciones;
 import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.GuardarSQL;
 
 
 public class Obj_Asignacion_De_Cuestionarios {
@@ -18,10 +19,8 @@ public class Obj_Asignacion_De_Cuestionarios {
 	private String[][] preguntas;
 	
 	public Obj_Asignacion_De_Cuestionarios(){
-		this.folio=0; this.nombre_asignacion=""; 
-		this.folio_cuestionario=0; this.cuestionario="";	
-		this.fecha_in=""; this.fecha_fin=""; 
-		this.cadena_xml="";	this.arreglo = null;
+		this.folio=0; this.nombre_asignacion=""; this.folio_cuestionario=0;	
+		this.fecha_in=""; this.fecha_fin=""; this.cadena_xml="";	this.arreglo = null;
 	}
 
 	public int getFolio() {
@@ -98,7 +97,7 @@ public class Obj_Asignacion_De_Cuestionarios {
 
 	public Obj_Asignacion_De_Cuestionarios buscar(int folio){
 		try {
-			return new BuscarSQL().asig_cuest(folio);
+			return new BuscarSQL().prog_cuest(folio);
 					
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -107,11 +106,11 @@ public class Obj_Asignacion_De_Cuestionarios {
 	}
 	
 	public boolean guardar(String movimiento){ 
-		return false;//new GuardarSQL().Guardar_Cuestionario(this, movimiento);  
+		return new GuardarSQL().Guardar_Asignacion_De_Cuestionario(this, movimiento);  
 	}
 	
 	public int buscar_nuevo(){
-			return new BuscarSQL().Devuelve_ultimo_folio_transaccion("83");
+			return new BuscarSQL().Devuelve_ultimo_folio_transaccion("88");
 	}
 	
 }

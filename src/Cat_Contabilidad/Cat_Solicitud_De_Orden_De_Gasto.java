@@ -467,7 +467,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	
 	//TODO GUARDAR
 	ActionListener guardar = new ActionListener(){
-	@SuppressWarnings("unlikely-arg-type")
 	public void actionPerformed(ActionEvent e){
 			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
 				if(tabla.isEditing()){	tabla.getCellEditor().stopCellEditing();}
