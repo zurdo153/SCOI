@@ -15,7 +15,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -32,20 +31,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import Obj_Checador.Obj_Entosal;
-import Obj_Checador.Obj_Traer_Checador;
+import Obj_Checador.Obj_Checador;
 
-
-import Obj_Lista_de_Raya.Obj_Empleados;
-import Obj_Lista_de_Raya.Obj_Establecimiento;
-import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Checador extends JFrame {
@@ -54,11 +48,62 @@ public class Cat_Checador extends JFrame {
         Container cont = getContentPane();
         JLayeredPane panel = new JLayeredPane();
         
+        static Obj_Checador checador ;
         Cat_Reloj_Sincronizado_Servidor trae_hora = new Cat_Reloj_Sincronizado_Servidor();
         
-        public static DefaultTableModel tabla_model = new DefaultTableModel(
-        		new Obj_Traer_Checador().get_tabla_model(),	new String[]{	"Folio",	"Nombre", "EntoSal", "H Evento", "T Retardo", 
-        																	"Alerta",	"PC",		"IP",	  "Tipo Entrada"}){
+        static Obj_tabla  ObjTab = new Obj_tabla();
+        static int columnas = 9;
+		static int checkbox=-1;
+        public static void init_tabla(){
+        	
+            tabla.getTableHeader().setReorderingAllowed(false) ;
+            
+            int x,y,z,decremento,incremento1,incremento2;
+            if(anchoMon <= 1380){
+            	x=45;
+                y=245;
+                z=60;
+                decremento=-10;
+                incremento1=10;
+                incremento2=30;
+            }else{
+            	x=50;
+                y=280;
+                z=80;
+                decremento=-40;
+                incremento1=30;
+                incremento2=10;
+            }
+            
+            tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            
+            tabla.getColumnModel().getColumn(0).setMaxWidth(x);
+            tabla.getColumnModel().getColumn(0).setMinWidth(x);
+            tabla.getColumnModel().getColumn(1).setMaxWidth(y);
+            tabla.getColumnModel().getColumn(1).setMinWidth(y);
+            tabla.getColumnModel().getColumn(2).setMaxWidth(z);
+            tabla.getColumnModel().getColumn(2).setMinWidth(z);
+            tabla.getColumnModel().getColumn(3).setMaxWidth(z);
+            tabla.getColumnModel().getColumn(3).setMinWidth(z);
+            tabla.getColumnModel().getColumn(4).setMaxWidth(z);
+            tabla.getColumnModel().getColumn(4).setMinWidth(z);
+            
+            tabla.getColumnModel().getColumn(5).setMaxWidth(z+decremento);
+            tabla.getColumnModel().getColumn(5).setMinWidth(z+decremento);
+            tabla.getColumnModel().getColumn(6).setMaxWidth(z+incremento1);
+            tabla.getColumnModel().getColumn(6).setMinWidth(z+incremento1);
+            tabla.getColumnModel().getColumn(7).setMaxWidth(z+incremento2);
+            tabla.getColumnModel().getColumn(7).setMinWidth(z+incremento2);
+            tabla.getColumnModel().getColumn(8).setMaxWidth(z+incremento2);
+            tabla.getColumnModel().getColumn(8).setMinWidth(z+incremento2);
+            
+			String comando="exec sp_select_tabla_checador" ;
+			String basedatos="26",pintar="si";
+			ObjTab.Obj_Refrescar(tabla,tabla_model, columnas, comando, basedatos,pintar,checkbox);
+	    }
+        
+        public static DefaultTableModel tabla_model = new DefaultTableModel(null,	new String[]{	"Folio",	"Nombre", "EntoSal", "H Evento", 
+        																			"T Retardo","Alerta",	"PC",		"IP",	  "Tipo Entrada"}){
                         @SuppressWarnings("rawtypes")
                         Class[] types = new Class[]{
                                    java.lang.Object.class,
@@ -92,8 +137,22 @@ public class Cat_Checador extends JFrame {
                          }
                 };
         
-                static JTable tabla = new JTable(tabla_model);
-                JScrollPane panelScroll = new JScrollPane(tabla);
+                static JTable tabla = new JTable(tabla_model){
+                	 public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
+                	        Component componente = super.prepareRenderer(renderer, row, col);
+                	        if(col==5){
+                	        	 int retardo = Integer.parseInt(tabla_model.getValueAt(row,4).toString().trim());
+                	        	 Color c = Color.green;
+		                            if(retardo>=4 && retardo<7){ c = Color.yellow; }
+		                            if(retardo>=7 && retardo<=10){ c = new java.awt.Color(243,97,0); }
+		                            if(retardo>10){	c = new java.awt.Color(255,0,0); }
+		                         componente.setBackground(c);
+                	        }
+                	     return componente;
+                	 }
+                };
+                
+                static JScrollPane panelScroll = new JScrollPane(tabla);
                 
                 JLabel lblClave = new JLabel("Clave:");
                 
@@ -118,15 +177,14 @@ public class Cat_Checador extends JFrame {
                 JLabel lblHorario = new JLabel("Horario: ");
                 
                 JLabel btnMensaje = new JLabel("");
-                JButton btnChecar = new JButton("Checar sin gafete");
+//                JButton btnChecar = new JButton("Checar sin gafete");
 //                JButton btnExaminar = new JButton("Examinar");
                 
                 JScrollPane barra_mensaje= new JScrollPane();
                 JTextArea txaAvisos = new JTextArea("");
                 ImageIcon img = new ImageIcon("imagen/txa.jpg");
                 
-                
-                int anchoMon = Toolkit.getDefaultToolkit().getScreenSize().width;
+                static int anchoMon = Toolkit.getDefaultToolkit().getScreenSize().width;
         		int altoMon  = Toolkit.getDefaultToolkit().getScreenSize().height;
                 
                 static JLabel fondo = new JLabel();
@@ -135,7 +193,6 @@ public class Cat_Checador extends JFrame {
                 
 //                String semaforoR = System.getProperty("user.dir")+"/Imagen/semaforo_rojo_chica.png";
                 String semaforoR = System.getProperty("user.dir")+"/Imagen/circulo-rojo-icono-9411-128.png";
-                
                 
                 ImageIcon tmpIconSemR = new ImageIcon(semaforoR);
                 
@@ -167,10 +224,13 @@ public class Cat_Checador extends JFrame {
                 
                 JCButton btnMenu = new JCButton("Menu", "", "");
                 
-        public Cat_Checador(){
+        @SuppressWarnings("static-access")
+		public Cat_Checador(){
                 
                 this.init_tabla();
                 Resolucion(anchoMon, altoMon);
+                
+                
                 
                 Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
                 btnFoto.setIcon(iconoFoto);
@@ -180,7 +240,7 @@ public class Cat_Checador extends JFrame {
                 this.setTitle("Checador");
                 
                 txtClaveReal.addKeyListener(action_registrar_entrada);
-                btnChecar.addActionListener(opChecar);
+//                btnChecar.addActionListener(opChecar);
                 btnMenu.addActionListener(opMenu);
                 
                 lblSemaforoRojo.setEnabled(false);
@@ -243,7 +303,6 @@ public class Cat_Checador extends JFrame {
         
         KeyListener action_registrar_entrada = new KeyListener() {
 			public void keyPressed(KeyEvent e) {	
-				
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 						checar();
 				}
@@ -252,23 +311,12 @@ public class Cat_Checador extends JFrame {
 			public void keyTyped(KeyEvent e) {}
         }; 
         
-        
         ActionListener opMenu = new ActionListener(){
             public void actionPerformed(ActionEvent e) {
 	          	  
 	          	  new Cat_Menu_Checador().setVisible(true);
 	            }
 	      };
-        
-        ActionListener opChecar = new ActionListener(){
-            @SuppressWarnings("deprecation")
-      	public void actionPerformed(ActionEvent e) {
-          	  Obj_Entosal entosalClave = new Obj_Entosal().buscar();
-          	  
-          	  txtClaveReal.setText(txtClaveReal.getText()+"C"+entosalClave.getClave());
-          	  checar();
-            }
-      };
         
         int folio_empleado;
         String claveMaster;
@@ -287,8 +335,7 @@ public class Cat_Checador extends JFrame {
 			 }else{   
 				 	
 				 String codigoBarrar = txtClaveReal.getText().toUpperCase().trim();
-				 
-				 	int posicionC = codigoBarrar.indexOf('C');
+				 int posicionC = codigoBarrar.indexOf('C');
 				 	
 				 	if(posicionC>0){
 				 		
@@ -297,16 +344,20 @@ public class Cat_Checador extends JFrame {
 								folio_empleado = Integer.parseInt(codigoBarrar.substring(0, posicionC));
 								claveMaster = codigoBarrar.substring(posicionC+1,codigoBarrar.length());
 								
-								Obj_Empleados re = new Obj_Empleados().buscar(folio_empleado);  //busca a empleado 
-		                        Obj_Entosal entosalClave = new Obj_Entosal().buscar(); //busca clave maestra
-		                 
-			                        if(re.getFolio()==folio_empleado){
+								System.out.println(folio_empleado+"  <-");
+								checador = new Obj_Checador().buscar(folio_empleado);
+								
+//								Obj_Empleados re = new Obj_Empleados().buscar(folio_empleado);  //busca a empleado 
+//		                        Obj_Entosal entosalClave = new Obj_Entosal().buscar(); //busca clave maestra
+								
+			                        if(checador.getFolio_empleado()==folio_empleado){
 			                        	
-		                           		switch (re.getStatus()){
-		                                         case 1: if(re.getNo_checador().equals(codigoBarrar)){
+			                        	System.out.println("Status: "+checador.getStatus());
+		                           		switch (checador.getStatus()){
+		                                         case 1: if(checador.getNo_checador().equals(codigoBarrar)){
 		                                            		 		registrarEntrada("-");
 		                                            	 }else{
-		                                            		 if(entosalClave.getClave().equals(claveMaster)){
+		                                            		 if(checador.getMaster_key().equals(claveMaster)){
 		                                            			 	registrarEntrada("MASTER");
 		                                            		 }else{
 		                                            			 
@@ -343,10 +394,10 @@ public class Cat_Checador extends JFrame {
 		                                                                         txtClaveReal.setText("");
 		                                                                         txtClaveReal.requestFocus();
 		                                          break;
-		                                          case 6: if(re.getNo_checador().equals(codigoBarrar)){
+		                                          case 6: if(checador.getNo_checador().equals(codigoBarrar)){
 				                                          		 		registrarEntrada("-");
 				                                          	 }else{
-				                                          		 if(entosalClave.getClave().equals(claveMaster)){
+				                                          		 if(checador.getMaster_key().equals(claveMaster)){
 				                                          			 	registrarEntrada("MASTER");
 				                                          		 }else{
 				                                          			 
@@ -358,7 +409,8 @@ public class Cat_Checador extends JFrame {
 				                                                         return;
 				                                          		 }
 				                                          	 }
-				                                  break;  
+				                                  break;
+		                                          case 8: pantallaDeAvisos(); break;
 		                                };
                                
 								}else{
@@ -405,66 +457,68 @@ public class Cat_Checador extends JFrame {
 //                if(txtClaveReal.getText().toUpperCase().equals(numero_de_checador)){
         	
 //-----------------------------------------
-        	Obj_Entosal entosal=new Obj_Entosal().checar_dia_descanso(folio_empleado);
+//        	Obj_Entosal entosal=new Obj_Entosal().checar_dia_descanso(folio_empleado);
            
-        	if (entosal.getValor_Descanso().equals("true")){
-        		
-        		lblSemaforoRojo.setEnabled(true);
+//        	if (checador.getValor_Descanso().equals("true")){
+    		if (checador.isValida_descanso()){
+        			lblSemaforoRojo.setEnabled(true);
 		            lblSemaforoVerde.setEnabled(false);
-                         JOptionPane.showMessageDialog(null, "El Dia De Hoy Lo Tienes Registrado Como Tu Dia De Descanso,\nAvisa A Desarrollo Humano Para Que Puedas Registrar Tu Entrada \nA Trabajar, De Lo Contrario No Te Sera Valido El Pago De Este Dia","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-                         JOptionPane.showMessageDialog(null, "El Dia De Hoy Lo Tienes Registrado Como Tu Dia De Descanso,\nAvisa A Desarrollo Humano Para Que Puedas Registrar Tu Entrada \nA Trabajar, De Lo Contrario No Te Sera Valido El Pago De Este Dia","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/red-de-usuario-icono-6758-64.png"));
-                                                txtClaveReal.setText("");
-                                                txtClaveReal.requestFocus();
-                         return;
-        	
+		            JOptionPane.showMessageDialog(null, "El Dia De Hoy Lo Tienes Registrado Como Tu Dia De Descanso,\nAvisa A Desarrollo Humano Para Que Puedas Registrar Tu Entrada \nA Trabajar, De Lo Contrario No Te Sera Valido El Pago De Este Dia","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                    JOptionPane.showMessageDialog(null, "El Dia De Hoy Lo Tienes Registrado Como Tu Dia De Descanso,\nAvisa A Desarrollo Humano Para Que Puedas Registrar Tu Entrada \nA Trabajar, De Lo Contrario No Te Sera Valido El Pago De Este Dia","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/red-de-usuario-icono-6758-64.png"));
+                    txtClaveReal.setText("");
+                    txtClaveReal.requestFocus();
+                    return;
          }else{
          	
-                if(new Obj_Entosal().buscar_colicion(folio_empleado)){
+//                if(new Obj_Entosal().buscar_colicion(folio_empleado)){
+                	if (checador.isValida_chequeo_duplicado()){
                 	lblSemaforoRojo.setEnabled(true);
                     lblSemaforoVerde.setEnabled(false);
-                    
-                        JOptionPane.showMessageDialog(null, "Estas Intentando Checar 2 Veces En Menos\n De 1 Minuto Espere Un Momento y Reintente","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-                                        txtClaveReal.setText("");
-                                        txtClaveReal.requestFocus();
-                        return;
+                    JOptionPane.showMessageDialog(null, "Estas Intentando Checar 2 Veces En Menos\n De 1 Minuto Espere Un Momento y Reintente","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                    txtClaveReal.setText("");
+                    txtClaveReal.requestFocus();
+                    return;
                 }else{
-                        if(new Obj_Entosal().checadas_dia_dobla(folio_empleado)){
+//                        if(new Obj_Entosal().checadas_dia_dobla(folio_empleado)){
+                        	if (checador.isValida_checar_dia_dobla()){
                         	lblSemaforoRojo.setEnabled(true);
                             lblSemaforoVerde.setEnabled(false);
-                                JOptionPane.showMessageDialog(null, "A excedido el numero de checadas son 4 para turno normal\ny 6 para el dia que tienen 15 minutos extras ","Aviso",JOptionPane.INFORMATION_MESSAGE);
-                                txtClaveReal.setText("");
-                                txtClaveReal.requestFocus();
-                                return;
+                            JOptionPane.showMessageDialog(null, "A excedido el numero de checadas son 4 para turno normal\ny 6 para el dia que tienen 15 minutos extras ","Aviso",JOptionPane.INFORMATION_MESSAGE);
+                            txtClaveReal.setText("");
+                            txtClaveReal.requestFocus();
+                            return;
                         }else{
-                              if(new Obj_Entosal().checa_salida_comer(folio_empleado)){
+//                              if(new Obj_Entosal().checa_salida_comer(folio_empleado)){
+                        	  if (checador.isValida_checar_salida_a_comer()){
                                         new Cat_Checador_Selecion_Comida((folio_empleado),checada).setVisible(true);
                                }else{
-	                                    Obj_Empleados re = new Obj_Empleados().buscar(folio_empleado);
-	                                    Obj_Entosal entosalClave = new Obj_Entosal().buscar();
+//	                                    Obj_Empleados re = new Obj_Empleados().buscar(folio_empleado);
+//	                                    Obj_Entosal entosalClave = new Obj_Entosal().buscar();
 	                                    
-	                                    if(re.getNo_checador().equals(txtClaveReal.getText().toUpperCase())||entosalClave.getClave().equals(claveMaster)){
+//	                                    if(re.getNo_checador().equals(txtClaveReal.getText().toUpperCase())||entosalClave.getClave().equals(claveMaster)){
+                                    	if(checador.getNo_checador().equals(txtClaveReal.getText().toUpperCase())||checador.getMaster_key().equals(claveMaster)){
 	                                    	
 	                                    	ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 	         		                        Icon icono = new ImageIcon(tmpIconAux.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
 	         		                        btnFoto.setIcon(icono);  
 	                                    	
-	                                    	Object[] registro = intentar_checar(folio_empleado,checada,0);
+	                                    	Object[][] registro = intentar_checar(folio_empleado,checada,0);
 			
-			                                    String tipo=registro[2].toString();
-			                                    String hora=registro[3].toString();
+			                                    String tipo=registro[0][0].toString();
+			                                    String hora=registro[0][1].toString();
 			                                    
-			                                    String Fecha=registro[9].toString();
+			                                    String Fecha=registro[0][7].toString();
 			                                    lblFecha.setText(Fecha);
 			                                    
 			                                    txtClaveReal.setText("");
 			                                    txtClaveReal.requestFocus();
 	            
-		                                            if(Integer.parseInt(registro[3].toString().trim().substring(0,2))<2){
-		                                                            lblNota.setText("EL EMPLEADO "+re.getNombre()+" "+re.getAp_paterno()+" "+re.getAp_materno());
-		                                                            lblNota2.setText("A CHECADO "+tipo+" A LA "+hora.substring(0,9)+" Hr");
+		                                            if(Integer.parseInt(registro[0][1].toString().trim().substring(0,2))<2){
+		                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
+		                                                            lblNota2.setText("A CHECADO "+tipo+" A LA "+hora+" Hr");
 		
 		                                            }else{
-		                                                            lblNota.setText("EL EMPLEADO "+re.getNombre()+" "+re.getAp_paterno()+" "+re.getAp_materno());
+		                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
 		                                                            lblNota2.setText("A  CHECADO "+tipo+" A LAS "+hora.substring(0,9)+" Hrs");
 		                                            }
 	                                            
@@ -473,22 +527,22 @@ public class Cat_Checador extends JFrame {
 		                                        lblPuesto.setText("Puesto: ");
 		                                        lblHorario.setText("Horario: ");
                                                             
-	                                            lblNombre.setText(lblNombre.getText() + re.getNombre() + " "+re.getAp_paterno() + " "+re.getAp_materno());
+	                                            lblNombre.setText(lblNombre.getText() + checador.getNombre_empleado());
 	                                            
-	                                            Obj_Establecimiento comboNombreEsta = new Obj_Establecimiento().buscar_estab(re.getEstablecimiento());
-	                                            lblEstablecimiento.setText(lblEstablecimiento.getText() + comboNombreEsta.getEstablecimiento());
+//	                                            Obj_Establecimiento comboNombreEsta = new Obj_Establecimiento().buscar_estab(re.getEstablecimiento());
+	                                            lblEstablecimiento.setText(lblEstablecimiento.getText() + checador.getEstablecimiento());
 	
-	                                            Obj_Puestos comboNombrePues = new Obj_Puestos().buscar_pues(re.getPuesto());
-	                                            lblPuesto.setText(lblPuesto.getText() + comboNombrePues.getPuesto());
+//	                                            Obj_Puestos comboNombrePues = new Obj_Puestos().buscar_pues(re.getPuesto());
+	                                            lblPuesto.setText(lblPuesto.getText() + checador.getPuesto());
 	                                            
 	                                            txtClaveReal.requestFocus(); 		
                                  }else{
 	                                	 lblSemaforoRojo.setEnabled(true);
 	                                     lblSemaforoVerde.setEnabled(false);
-                                                JOptionPane.showMessageDialog(null, "La clave no corresponde","Error",JOptionPane.WARNING_MESSAGE);
-                                                panelLimpiar();
-                                                txtClaveReal.requestFocus();
-                                                return;
+                                         JOptionPane.showMessageDialog(null, "La clave no corresponde","Error",JOptionPane.WARNING_MESSAGE);
+                                         panelLimpiar();
+                                         txtClaveReal.requestFocus();
+                                         return;
                                     }
                                }
                         }
@@ -502,215 +556,57 @@ public class Cat_Checador extends JFrame {
                 txtClaveReal.setText("");
         }
         
-        int x;                        int y;                        int z;
-        
-        @SuppressWarnings("static-access")
-		public void init_tabla(){
-                this.tabla.getTableHeader().setReorderingAllowed(false) ;
-                
-                if(anchoMon <= 1380){
-                        x=45;
-                        y=245;
-                        z=60;
-                        this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                        
-                        this.tabla.getColumnModel().getColumn(0).setMaxWidth(x);
-                        this.tabla.getColumnModel().getColumn(0).setMinWidth(x);
-                        this.tabla.getColumnModel().getColumn(1).setMaxWidth(y);
-                        this.tabla.getColumnModel().getColumn(1).setMinWidth(y);
-                        this.tabla.getColumnModel().getColumn(2).setMaxWidth(z);
-                        this.tabla.getColumnModel().getColumn(2).setMinWidth(z);
-                        this.tabla.getColumnModel().getColumn(3).setMaxWidth(z);
-                        this.tabla.getColumnModel().getColumn(3).setMinWidth(z);
-                        this.tabla.getColumnModel().getColumn(4).setMaxWidth(z);
-                        this.tabla.getColumnModel().getColumn(4).setMinWidth(z);
-                        
-                        this.tabla.getColumnModel().getColumn(5).setMaxWidth(z-10);
-                        this.tabla.getColumnModel().getColumn(5).setMinWidth(z-10);
-                        this.tabla.getColumnModel().getColumn(6).setMaxWidth(z+10);
-                        this.tabla.getColumnModel().getColumn(6).setMinWidth(z+10);
-                        this.tabla.getColumnModel().getColumn(7).setMaxWidth(z+30);
-                        this.tabla.getColumnModel().getColumn(7).setMinWidth(z+30);
-                        this.tabla.getColumnModel().getColumn(8).setMaxWidth(z+30);
-                        this.tabla.getColumnModel().getColumn(8).setMinWidth(z+30);
-                        
-                }else{
-                        x=50;
-                        y=280;
-                        z=80;
-                        this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                        
-                        this.tabla.getColumnModel().getColumn(0).setMaxWidth(x);
-                        this.tabla.getColumnModel().getColumn(0).setMinWidth(x);
-                        this.tabla.getColumnModel().getColumn(1).setMaxWidth(y);
-                        this.tabla.getColumnModel().getColumn(1).setMinWidth(y);
-                        this.tabla.getColumnModel().getColumn(2).setMaxWidth(z);
-                        this.tabla.getColumnModel().getColumn(2).setMinWidth(z);
-                        this.tabla.getColumnModel().getColumn(3).setMaxWidth(z);
-                        this.tabla.getColumnModel().getColumn(3).setMinWidth(z);
-                        this.tabla.getColumnModel().getColumn(4).setMaxWidth(z);
-                        this.tabla.getColumnModel().getColumn(4).setMinWidth(z);
-                        
-                        this.tabla.getColumnModel().getColumn(5).setMaxWidth(z-40);
-                        this.tabla.getColumnModel().getColumn(5).setMinWidth(z-40);
-                        this.tabla.getColumnModel().getColumn(6).setMaxWidth(z+30);
-                        this.tabla.getColumnModel().getColumn(6).setMinWidth(z+30);
-                        this.tabla.getColumnModel().getColumn(7).setMaxWidth(z+10);
-                        this.tabla.getColumnModel().getColumn(7).setMinWidth(z+10);
-                        this.tabla.getColumnModel().getColumn(8).setMaxWidth(z+10);
-                        this.tabla.getColumnModel().getColumn(8).setMinWidth(z+10);
-                }
-                
-                TableCellRenderer render = new TableCellRenderer() { 
-                        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
-                        boolean hasFocus, int row, int column) { 
-                                
-                                Component componente = null;
-                        
-                                switch(column){
-                                        case 0: 
-                                                componente = new JLabel(value == null? "": value.toString());
-                                                if(row%2==0){
-                                                        ((JComponent) componente).setOpaque(true); 
-                                                        componente.setBackground(new java.awt.Color(177,177,177));
-                                                }
-                                                ((JLabel) componente).setHorizontalAlignment(SwingConstants.RIGHT);
-                                                break;
-                                        case 1:
-                                                componente = new JLabel(value == null? "": value.toString());
-                                                if(row%2==0){
-                                                        ((JComponent) componente).setOpaque(true); 
-                                                        componente.setBackground(new java.awt.Color(177,177,177));        
-                                                }
-                                                ((JLabel) componente).setHorizontalAlignment(SwingConstants.LEFT);
-                                                break;
-                                        case 2: 
-                                                componente = new JLabel(value == null? "": value.toString());
-                                                if(row%2==0){
-                                                        ((JComponent) componente).setOpaque(true); 
-                                                        componente.setBackground(new java.awt.Color(177,177,177));        
-                                                }
-                                                ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                                break;
-                                        case 3: 
-                                                componente = new JLabel(value == null? "": value.toString());
-                                                if(row%2==0){
-                                                        ((JComponent) componente).setOpaque(true); 
-                                                        componente.setBackground(new java.awt.Color(177,177,177));        
-                                                }
-                                                ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                                break;
-                                        case 4: 
-                                                componente = new JLabel(value == null? "": value.toString());
-                                                if(row%2==0){
-                                                        ((JComponent) componente).setOpaque(true); 
-                                                        componente.setBackground(new java.awt.Color(177,177,177));        
-                                                }
-                                                ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                                break;
-                                        case 5: 
-                                                componente = new JLabel(value == null? "": value.toString());
-                                                        ((JComponent) componente).setOpaque(true); 
-                                                        
-                                                        int retardo = Integer.parseInt(tabla_model.getValueAt(row,4).toString().trim());
-                                                        
-                                                        if(retardo<4){
-                                                                componente.setBackground(Color.green);
-                                                                }
-                                                        if(retardo>=4 && retardo<7){
-                                                                componente.setBackground(Color.yellow);
-                                                                }
-                                                        if(retardo>=7 && retardo<=10){
-                                                                componente.setBackground(new java.awt.Color(243,97,0));
-                                                        }
-                                                        if(retardo>10){
-                                                                componente.setBackground(new java.awt.Color(255,0,0));
-                                                        }
-                                                ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                                break;
-                                        case 6: 
-                                                componente = new JLabel(value == null? "": value.toString());
-                                                if(row%2==0){
-                                                        ((JComponent) componente).setOpaque(true); 
-                                                        componente.setBackground(new java.awt.Color(177,177,177));        
-                                                }
-                                                ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                                break;
-                                        case 7: 
-                                                componente = new JLabel(value == null? "": value.toString());
-                                                if(row%2==0){
-                                                        ((JComponent) componente).setOpaque(true); 
-                                                        componente.setBackground(new java.awt.Color(177,177,177));        
-                                                }
-                                                ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                                break;
-                                        case 8: 
-                                                componente = new JLabel(value == null? "": value.toString());
-                                                if(row%2==0){
-                                                        ((JComponent) componente).setOpaque(true); 
-                                                        componente.setBackground(new java.awt.Color(177,177,177));        
-                                                }
-                                                ((JLabel) componente).setHorizontalAlignment(SwingConstants.CENTER);
-                                                break;
-                                }
-                                return componente;
-                        } 
-                }; 
-                for(int i=0; i<tabla.getColumnCount(); i++){
-                        this.tabla.getColumnModel().getColumn(i).setCellRenderer(render); 
-                }
-    }
-
-        @SuppressWarnings({ "rawtypes", "unused" })
-        public static Object[] intentar_checar(int folio_empleado,String tipo_entrada,int tipo_salida_comer){
+        @SuppressWarnings("unused")
+		public static Object[][] intentar_checar(int folio_empleado,String tipo_entrada,int tipo_salida_comer){
                 
 //metodo para llenar vector para checador2--------------------------------------
-                Object [] vector = new Object[10];
+                Object[][] vector = new Object[1][8];
                 
-                if(new Obj_Empleados().insertar_checada(folio_empleado,tipo_entrada,tipo_salida_comer)){
+                if(new Obj_Checador().insertar_checada(folio_empleado,tipo_entrada,tipo_salida_comer)){
+//                if(new Obj_Empleados().insertar_checada(folio_empleado,tipo_entrada,tipo_salida_comer)){
+//            	 if(true){
                 	lblSemaforoRojo.setEnabled(false);
                     lblSemaforoVerde.setEnabled(true);
-                 Vector fila_sql=new Obj_Entosal().buscar_hora_entosal(folio_empleado);
-                 for(int i=0 ; i<fila_sql.size(); i++ ){
-                         vector[i]= "   "+ fila_sql.get(i);
-                 }
+                    
+//                    Vector fila_sql=new Obj_Entosal().buscar_hora_entosal(folio_empleado);
+	                 for(int i=0 ; i<8; i++ ){
+	                         vector[0][i]= "   "+checador.getHora_checador()[0][i];
+	                 }
+	                 
+//	                 for(int i=0; i<vector.length; i++){
+//	                	 System.out.println(vector[][]);
+//	                 }
+                    
                  
-                        while(tabla.getRowCount()>0){
-                                tabla_model.removeRow(0);
-                        }
-                        
-                        Object [][] lista_tabla = new Obj_Traer_Checador().get_tabla_model();
-                        String[] fila = new String[9];
-                                for(int i=0; i<lista_tabla.length; i++){
-                                        fila[0] = lista_tabla[i][0]+"";
-                                        fila[1] = lista_tabla[i][1]+"";
-                                        fila[2] = lista_tabla[i][2]+"";
-                                        fila[3] = lista_tabla[i][3]+"";
-                                        fila[4] = lista_tabla[i][4]+"";
-                                        fila[5] = lista_tabla[i][5]+"";
-                                        fila[6] = lista_tabla[i][6]+"";
-                                        fila[7] = lista_tabla[i][7]+"";
-                                        fila[8] = lista_tabla[i][8]+"";
-                                        tabla_model.addRow(fila);
-                                }
-                                
+                 	tabla_model.setRowCount(0);
+                 	init_tabla();                                
                             	
-                           //TODO   apartado para configurar el uso de la pantalla de avisos--------------------------------
-                                
-                                Object [] vectormensaje = new Object[5];
-                                Vector fila_mensaje=new Obj_Entosal().Obj_Mensaje_respuesta(folio_empleado);
-                                
-                                if(fila_mensaje.get(0).toString().trim().equals("true")){
-		                                    JDialog frame = new JDialog();
-			                                String ruta=fila_mensaje.get(3).toString().trim();
-			                                String mensaje=fila_mensaje.get(2).toString().trim();
-			                                String color_fuente=fila_mensaje.get(4).toString().trim();
-			                        	           frame.setUndecorated(true);
-			                        	           
-			                        		    new Cat_Avisos_Checador(frame,ruta,mensaje,color_fuente);
-			                        		    frame.setVisible(true);
-                                }
-// -------------------------------------------------------------------------------------------
+                 	pantallaDeAvisos();
+//                           //TODO   apartado para configurar el uso de la pantalla de avisos--------------------------------
+////                                Object [] vectormensaje = new Object[5];
+////                                for(Object[] rg: checador.getArreglo_mensaje()){
+////                                	
+////                                }
+////                                Vector fila_mensaje=new Obj_Entosal().Obj_Mensaje_respuesta(folio_empleado);
+//                 	
+////                 			Object[][] fila_mensaje = checador.getArreglo_mensaje();
+////                                if(fila_mensaje.get(0).toString().trim().equals("true")){
+//                                	 if(checador.getArreglo_mensaje()[0][0].toString().trim().equals("true")){
+//		                                    JDialog frame = new JDialog();
+////			                                String ruta=fila_mensaje.get(3).toString().trim();
+////			                                String mensaje=fila_mensaje.get(2).toString().trim();
+////			                                String color_fuente=fila_mensaje.get(4).toString().trim();
+//		                                    
+//		                                    String ruta=checador.getArreglo_mensaje()[0][3].toString().trim();
+//			                                String mensaje=checador.getArreglo_mensaje()[0][2].toString().trim();
+//			                                String color_fuente=checador.getArreglo_mensaje()[0][4].toString().trim();
+//			                                
+//			                        	           frame.setUndecorated(true);
+//			                        	           
+//			                        		    new Cat_Avisos_Checador(frame,ruta,mensaje,color_fuente);
+//			                        		    frame.setVisible(true);
+//                                }
+//// -------------------------------------------------------------------------------------------
                 }else{
                 	lblSemaforoRojo.setEnabled(true);
                     lblSemaforoVerde.setEnabled(false);
@@ -718,6 +614,36 @@ public class Cat_Checador extends JFrame {
                 }
                 return vector;
         }
+        
+        
+        public static void pantallaDeAvisos(){
+            //TODO   apartado para configurar el uso de la pantalla de avisos--------------------------------
+//          Object [] vectormensaje = new Object[5];
+//          for(Object[] rg: checador.getArreglo_mensaje()){
+//          	
+//          }
+//          Vector fila_mensaje=new Obj_Entosal().Obj_Mensaje_respuesta(folio_empleado);
+
+//		Object[][] fila_mensaje = checador.getArreglo_mensaje();
+//          if(fila_mensaje.get(0).toString().trim().equals("true")){
+          	 if(checador.getArreglo_mensaje()[0][0].toString().trim().equals("true")){
+                      JDialog frame = new JDialog();
+//                      String ruta=fila_mensaje.get(3).toString().trim();
+//                      String mensaje=fila_mensaje.get(2).toString().trim();
+//                      String color_fuente=fila_mensaje.get(4).toString().trim();
+                      
+                      String ruta=checador.getArreglo_mensaje()[0][3].toString().trim();
+                      String mensaje=checador.getArreglo_mensaje()[0][2].toString().trim();
+                      String color_fuente=checador.getArreglo_mensaje()[0][4].toString().trim();
+                      
+              	           frame.setUndecorated(true);
+              	           
+              		    new Cat_Avisos_Checador(frame,ruta,mensaje,color_fuente);
+              		    frame.setVisible(true);
+          }
+//-------------------------------------------------------------------------------------------
+        }
+        
         
         private static boolean isNumeric(String cadena){
         	try {
@@ -775,7 +701,6 @@ public class Cat_Checador extends JFrame {
                panel.add(lblHorario).setBounds(550,76,190,10);
                
                panel.add(btnMenu).setBounds(15,103,180,20);
-               
 
                panel.add(panelScroll).setBounds(15,y+63,773,altoMon-250);
                
@@ -869,9 +794,6 @@ public class Cat_Checador extends JFrame {
     		}
     		if(ancho == 1152){
     			switch(alto){
-//    			case 720: 
-//    				
-//    			break;
     			case 864:
     				tmpIconAuxFondo = new ImageIcon(fileFondo2);
                     iconoFondo = new ImageIcon(tmpIconAuxFondo.getImage().getScaledInstance(anchoMon,altoMon, Image.SCALE_DEFAULT));
@@ -1121,8 +1043,6 @@ public class Cat_Checador extends JFrame {
                    panel.add(lblSemaforoRojo).setBounds(35,80, 70, 70);
                    panel.add(lblSemaforoVerde).setBounds(115,80, 70, 70);
                    
-//                   panel.add(btnChecar).setBounds(45,180,130,20);
-                   
                    panel.add(lblLogo).setBounds((1280/2)-60, 38, 127, 127);
                    panel.add(lblCerrar).setBounds(1280-89,38, 90, 130);
                    panel.add(btnFoto).setBounds(1280-505,38,118,128);
@@ -1159,7 +1079,6 @@ public class Cat_Checador extends JFrame {
     			new Cat_Checador().setVisible(true);
     		}catch(Exception e){
     			System.err.println("Error :"+ e.getMessage());
-    			
     		}
     	}
 }

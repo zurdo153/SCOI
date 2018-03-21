@@ -687,9 +687,7 @@ public class Obj_Empleados {
 	public boolean insertar(int folio,String t_entrada){return new GuardarSQL().Insert_Empleado(folio,t_entrada);}
 	
 	public boolean insertar_checada(int folio,String t_entrada,int tipo_salida_comer){
-		
 		return new GuardarSQL().Insert_Checada(folio,t_entrada,tipo_salida_comer);
-		
 	}
 	
 	public int Generar_Archivos(int folio_empleado){ 
