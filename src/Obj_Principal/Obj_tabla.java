@@ -291,14 +291,15 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 						for(int i=0;i<columnas;i++){
 						   fila[i] = rs.getString(i+1).trim();
 						 }
-				   modelo.addRow(fila); 
-				}	
+				   modelo.addRow(fila);
+				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 				System.out.println("Comando:"+comando);
 				JOptionPane.showMessageDialog(null, "Error en la funcion refrescar tabla SQLException: "+e1.getMessage()+" \n Comando"+comando, "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			}
 	     }	
+		scrollposicion(tabla, 0, 0);
 	}
 		
 		for(int i = 0; i<tabla.getColumnCount(); i++){

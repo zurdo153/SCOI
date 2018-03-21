@@ -232,7 +232,7 @@ public class Cat_Empleados extends JFrame{
 	JCheckBox chbFuente_Sodas = new JCheckBox("Fnt de Sodas");
 	JCheckBox chbGafete = new JCheckBox("Gafete");
 	
-	String status[] = {"Vigente","Vacaciones","Incapacidad","Baja","No Contratable","Provicional Checador","Renuncia"};
+	String status[] = {"Vigente","Vacaciones","Incapacidad","Baja","No Contratable","Provicional Checador","Renuncia","Checador Bloqueado"};
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbStatus = new JComboBox(status);
 	
@@ -1329,6 +1329,9 @@ public class Cat_Empleados extends JFrame{
 							   btnEditar.setVisible(true);
 							   break;
 						case 7:btnStatus.setIcon(new ImageIcon("Imagen/baja.png")); 
+							   btnEditar.setVisible(true);
+							   break;
+						case 8:btnStatus.setIcon(new ImageIcon("Imagen/vigente.png")); 
 							   btnEditar.setVisible(true);
 							   break;
 							   

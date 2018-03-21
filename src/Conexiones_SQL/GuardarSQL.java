@@ -2,6 +2,7 @@ package Conexiones_SQL;
 
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -2490,7 +2491,7 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 }
 
 	public boolean Insert_Checada(int folio, String t_entrada, int tipo_salida_comer) {
-		String insert ="exec sp_insert_entosal "+folio+",?,?,?,?";
+		String insert ="exec checador_insert_entosal "+folio+",?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		
@@ -7517,6 +7518,47 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			}
 		}		
 		return true;
+	}
+	
+	public boolean Guardar_Huella(int folio_emp, ByteArrayInputStream datosHuella,int tamañoHuella){
+		
+//		String query = "update huelas_digitales set img=? WHERE folio_emp=?";
+		String query = "insert into huelas_digitales(folio_emp,img) values (?,?)";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+	     try {
+	    	 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			 
+	    	 pstmt.setInt(1,folio_emp);
+	    	 pstmt.setBinaryStream(2, datosHuella,tamañoHuella);
+	    	 pstmt.executeUpdate();
+				con.commit();
+				
+			} catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Huella ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Huella ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				return false;
+			}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Huella ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			}		
+			return true;
 	}
 	
 //	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){

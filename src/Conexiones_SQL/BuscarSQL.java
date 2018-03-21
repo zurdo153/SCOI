@@ -46,6 +46,7 @@ import Obj_Checador.Obj_Entosal;
 import Obj_Checador.Obj_Gen_Code_Bar;
 import Obj_Checador.Obj_Horarios;
 import Obj_Checador.Obj_Base_De_Solicitud_De_Empleado;
+import Obj_Checador.Obj_Checador;
 import Obj_Checador.Obj_Encargado_De_Solicitudes;
 import Obj_Checador.Obj_Horario_Empleado;
 import Obj_Checador.Obj_Mensaje_Personal;
@@ -10422,6 +10423,117 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [folio_colaborador_para_custionario] \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		return existe;
+	}
+	
+	public Obj_Checador buscar_datos_para_checador(int folio) throws SQLException{
+		
+		String pc_nombre ="";
+		
+		try {
+			pc_nombre = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+		
+		Obj_Checador checador = new Obj_Checador();
+		String query = "exec checador_select_principal "+folio+",'"+pc_nombre+"'";
+//		System.out.println(query);
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				
+//				System.out.println(rs.getInt("folio"));
+//				System.out.println(rs.getString("empleado").trim());
+//				System.out.println(rs.getString("no_checador").trim());
+//				System.out.println(rs.getInt("status"));
+//				System.out.println(rs.getInt("folio_estab"));
+//				System.out.println(rs.getString("establecimiento").trim());
+//				System.out.println(rs.getInt("folio_puesto"));
+//				System.out.println(rs.getString("puesto").trim());
+//				System.out.println(rs.getString("master_key").trim());
+//				System.out.println(rs.getBoolean("valor_descanso"));
+//				System.out.println(rs.getBoolean("valor_pc"));
+//				System.out.println(rs.getBoolean("checado_duplicado"));
+//				System.out.println(rs.getBoolean("checar_dia_dobla"));
+//				System.out.println(rs.getBoolean("checa_salida_comer"));
+//				
+//				System.out.println(rs.getString("filas").trim());
+//				System.out.println(rs.getString("filas2").trim());
+				
+				checador.setFolio_empleado(rs.getInt("folio"));
+				checador.setNombre_empleado(rs.getString("empleado").trim());
+				checador.setNo_checador(rs.getString("no_checador").trim());
+				checador.setStatus(rs.getInt("status"));
+				checador.setFolio_estab(rs.getInt("folio_estab"));
+				
+				checador.setEstablecimiento(rs.getString("establecimiento").trim());
+				checador.setFolio_puesto(rs.getInt("folio_puesto"));
+				checador.setPuesto(rs.getString("puesto").trim());
+				checador.setMaster_key(rs.getString("master_key").trim());
+				checador.setValida_descanso(rs.getBoolean("valor_descanso"));
+				
+				checador.setValida_pc(rs.getBoolean("valor_pc"));
+				checador.setValida_chequeo_duplicado(rs.getBoolean("checado_duplicado"));
+				checador.setValida_checar_dia_dobla(rs.getBoolean("checar_dia_dobla"));
+				checador.setValida_checar_salida_a_comer(rs.getBoolean("checa_salida_comer"));
+				
+				checador.setArreglo_mensaje(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas")));
+				checador.setHora_checador(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas2")));
+				
+			}
+			
+			System.out.println(checador.getArreglo_mensaje().length+"-----------------------------------------------------");
+			System.out.println(checador.getArreglo_mensaje()[0][0]+"-----------------------------------------------------");
+//			for(int i =0; i<5; i++){
+//				System.out.println(checador.getArreglo_mensaje()[0][i]);
+//			}
+//			System.out.println("-----------------------------------------------------");
+//			for(int i =0; i<8; i++){
+//				System.out.println(checador.getHora_checador()[0][i]);
+//			}
+//			System.out.println("-----------------------------------------------------");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return checador;
+	}
+	
+	public Object[][] Buscar_Huella(int folio) throws SQLException{
+		
+		Object[][] dato = new Object[1][2];
+		
+		String query = "SELECT folio_emp,img FROM huelas_digitales WHERE folio_emp="+folio;
+		Statement stmt = null;
+
+		try {
+	        //Establece los valores para la sentencia SQL
+//	        Connection c=con.conectar();
+	        //Obtiene la plantilla correspondiente a la persona indicada
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				dato[0][0] = rs.getInt("folio_emp");
+				dato[0][1] =rs.getBytes("img");
+		      }
+			
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return dato;
 	}
 
 //	public Obj_Preguntas Pregunta_Nueva(){
