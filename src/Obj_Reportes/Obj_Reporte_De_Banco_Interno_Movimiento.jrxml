@@ -344,7 +344,23 @@
 				</reportElement>
 			</line>
 			<textField>
-				<reportElement x="340" y="0" width="204" height="13" uuid="8459bc8c-44cb-4e29-baae-1324d7411289">
+				<reportElement x="340" y="0" width="130" height="13" uuid="8459bc8c-44cb-4e29-baae-1324d7411289">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Double"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL "+$F{tipo_movimiento}+":  $ "]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="470" y="0" width="74" height="13" uuid="66848827-3b34-49cc-92fd-b8c3174c1321">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -357,7 +373,7 @@
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["TOTAL "+$F{tipo_movimiento}+":  $ "+$V{Importe}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{Importe}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

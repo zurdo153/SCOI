@@ -15,8 +15,15 @@ public class Obj_Transpaso_A_Banco_Interno {
 	String cuenta="";
     String estatus="";	  
 	String guardar_actualizar="";
+	String transaccion="";
 	String[][] datos=null;
 	
+	public String getTransaccion() {
+		return transaccion;
+	}
+	public void setTransaccion(String transaccion) {
+		this.transaccion = transaccion;
+	}
 	public String getCuenta() {
 		return cuenta;
 	}

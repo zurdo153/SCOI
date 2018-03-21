@@ -45,7 +45,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Transpaso_A_Banco_Interno extends JFrame{
+public class Cat_Traspaso_A_Banco_Interno extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	Connexion con = new Connexion();
@@ -88,21 +88,22 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	JTable tabla = new JTable(modelo);
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
-	JTextField txtFolio             = new Componentes().text(new JCTextField() ,"Folio"                     ,30   ,"String");
-	JTextField txtFolio_impresion   = new Componentes().text(new JCTextField() ,"Teclee El Folio Para Imprimir",30   ,"String");
-	JTextField txtFolioTrabajo      = new Componentes().text(new JCTextField() ,"Folio Trabajo"             ,50   ,"String");
-	JTextField txtConcentrado       = new Componentes().text(new JCTextField() ,"Concentrado"               ,50   ,"String");
-	JTextField txtFechaConcentrado  = new Componentes().text(new JCTextField() ,"Fecha Concentrado"         ,60   ,"String");
-	JTextField txtImporte_Concentrado  = new Componentes().text(new JCTextField(),"Importe Concentrado"     ,10   ,"Double");	
-	JTextField txtImporte_Banco_Interno= new Componentes().text(new JCTextField(),"Importe Banco Interno"   ,15   ,"Double");
-	JTextField txtImporte_Cheque    = new Componentes().text(new JCTextField()  ,"Importe Cheque"           ,50   ,"String");
-	JTextField txtFolio_Beneficiario= new Componentes().text(new JCTextField()  ,"Folio B"                  ,30   ,"String");
-	JTextField txtBeneficiario      = new Componentes().text(new JCTextField()  ,"Beneficiario"             ,250  ,"String");
-	JTextField txtFoliosolicit      = new Componentes().text(new JCTextField()  ,"Folio Solicita"           ,30   ,"String");
-	JTextField txtSolicitante       = new Componentes().text(new JCTextField()  ,"Solicitante"              ,300  ,"String");
-	JTextField txtFecha             = new Componentes().text(new JCTextField()  ,"Fecha"                    ,60   ,"String");
-	JTextField txtTotal             = new Componentes().text(new JCTextField()  ,"Total"                    ,30   ,"String");
-    JTextArea txaObservaciones      = new Componentes().textArea(new JTextArea(), "Observaciones", 160);
+	JTextField txtFolio                = new Componentes().text(new JCTextField()  ,"Folio"                        ,30   ,"String");
+	JTextField txtFolio_impresion      = new Componentes().text(new JCTextField()  ,"Teclee El Folio Para Imprimir",30   ,"String");
+	JTextField txtFolioTrabajo         = new Componentes().text(new JCTextField()  ,"Folio Trabajo"                ,50   ,"String");
+	JTextField txtConcentrado          = new Componentes().text(new JCTextField()  ,"Concentrado"                  ,50   ,"String");
+	JTextField txtFechaConcentrado     = new Componentes().text(new JCTextField()  ,"Fecha Concentrado"            ,60   ,"String");
+	JTextField txtImporte_Concentrado  = new Componentes().text(new JCTextField()  ,"Importe Concentrado"          ,10   ,"Double");	
+	JTextField txtImporte_Banco_Interno= new Componentes().text(new JCTextField()  ,"Importe Banco Interno"        ,15   ,"Double");
+	JTextField txtImporte_Cheque       = new Componentes().text(new JCTextField()  ,"Importe Cheque"               ,50   ,"String");
+	JTextField txtFolio_Beneficiario   = new Componentes().text(new JCTextField()  ,"Folio B"                      ,30   ,"String");
+	JTextField txtBeneficiario         = new Componentes().text(new JCTextField()  ,"Beneficiario"                 ,250  ,"String");
+	JTextField txtFoliosolicit         = new Componentes().text(new JCTextField()  ,"Folio Solicita"               ,30   ,"String");
+	JTextField txtSolicitante          = new Componentes().text(new JCTextField()  ,"Solicitante"                  ,300  ,"String");
+	JTextField txtFecha                = new Componentes().text(new JCTextField()  ,"Fecha"                        ,60   ,"String");
+	JTextField txtTotal                = new Componentes().text(new JCTextField()  ,"Total"                        ,30   ,"String");
+	JTextField txtTipoCambio           = new Componentes().text(new JCTextField()  ,"T.Cambio"                     ,30   ,"String");
+    JTextArea txaObservaciones         = new Componentes().textArea(new JTextArea(), "Observaciones"               ,160           );
 	
     JScrollPane Observaciones        = new JScrollPane(txaObservaciones);
 
@@ -137,7 +138,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
     String guardar_actualizar="";
    	String grupoestablecimientos ="";
    	
-   public  Cat_Transpaso_A_Banco_Interno(){
+   public  Cat_Traspaso_A_Banco_Interno(){
 	    this.cont.add(panel);
 		this.setSize(745,540);
 		this.setResizable(false);
@@ -178,8 +179,11 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 		
 		this.panel.add(new JLabel("Cuenta:")).setBounds               (x=20      ,y+=27  ,width   ,height );
 		this.panel.add(cmbcuenta_bancaria).setBounds                  (x+=45     ,y      ,130     ,height );
-		this.panel.add(new JLabel("Fecha:")).setBounds                (x+=178    ,y      ,width   ,height );
-		this.panel.add(txtFecha).setBounds                            (x+=40     ,y      ,130     ,height );
+		this.panel.add(new JLabel("Fecha:")).setBounds                (x+=150    ,y      ,width   ,height );
+		this.panel.add(txtFecha).setBounds                            (x+=40     ,y      ,width   ,height );
+		
+		this.panel.add(new JLabel("Tipo De Cambio:")).setBounds       (x+=130    ,y      ,width   ,height );
+		this.panel.add(txtTipoCambio).setBounds                       (x+=85     ,y      ,50      ,height );
 		
 		this.panel.add(new JLabel("Observaciones:")).setBounds        (x=20      ,y+=20  ,width   ,height );
 		this.panel.add(Observaciones).setBounds                       (x         ,y+=15  ,700     ,40     );
@@ -218,13 +222,14 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 		btnImprimir.addActionListener       (opImprimir_Reporte          );   
 		btnBuscarCorte.addActionListener    (opFiltroBuscarcortecajaverd );
 		cmbcuenta_bancaria.addActionListener(opFiltroTipoDeCuenta        );
-		
         txtImporte_Banco_Interno.addKeyListener(opAgregarConEnter        );
 		
 		btnDeshacer.setToolTipText("<ESC> Tecla Directa");
 		btnGuardar.setToolTipText("<CTRL+G> Tecla Directa");
 
 		try { txtFecha.setText(new BuscarSQL().fecha(0).toString());} catch (SQLException e1) {e1.printStackTrace();}
+		try { txtTipoCambio.setText(new BuscarSQL().tipo_de_cambio().toString());} catch (SQLException e1) {e1.printStackTrace();}
+		
 		txtSolicitante.setText(usuario.getNombre_completo());
 		txtFoliosolicit.setText(usuario.getFolio()+"");
 		
@@ -238,6 +243,8 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 		txtFolioTrabajo.setEditable(false);
 		txtImporte_Cheque.setEditable(false);
 		txtFechaConcentrado.setEditable(false);
+		txtTipoCambio.setEditable(false);
+		
 		
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
           getRootPane().getActionMap().put("escape", new AbstractAction(){public void actionPerformed(ActionEvent e){  btnDeshacer.doClick(); } });
@@ -563,6 +570,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 				   banco_interno.setGuardar_actualizar(guardar_actualizar);
 				   banco_interno.setCuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
 				   banco_interno.setDatos(tabla_guardado);
+				   banco_interno.setTransaccion("87");
 				if(banco_interno.GuardarActualizar().getFolio()>0){
 					guardar_actualizar="";
 					txtFolio.setText(banco_interno.getFolio()+"" );
@@ -740,25 +748,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 			}
 		};
 		
-		KeyListener agregarcon_enter = new KeyListener() {
-			public void keyTyped(KeyEvent e){}
-			public void keyReleased(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER){
-					int fila = tablab.getSelectedRow();
-	        		txtFolioTrabajo.setText (tablab.getValueAt(fila,0)+"");
-	        		txtConcentrado.setText (tablab.getValueAt(fila,1)+"");
-	        		txtImporte_Concentrado.setText (tablab.getValueAt(fila,2)+"");
-	        		txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,2)+"");
-	        		txtFechaConcentrado.setText (tablab.getValueAt(fila,3)+"");
-	        		txtImporte_Banco_Interno.setEditable(true);
-	        		btnAgregar.setEnabled(true);
-	        		calculo_cheque();
-	        		dispose();
-	        		txtImporte_Banco_Interno.requestFocus();	
-				}
-			}
-		};
+
 			
 		public String parametro_cadena_de_concentrados(){
 			 int rengloneslunes     = tabla.getRowCount()    ;
@@ -778,47 +768,62 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 			return lista;
 		};
 		
+		KeyListener agregarcon_enter = new KeyListener() {
+			public void keyTyped(KeyEvent e){}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					agregar_datos();
+				}
+			}
+		};
+		
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
 		        	if(e.getClickCount()==1){
-		        		int fila = tablab.getSelectedRow();
-		        		txtFolioTrabajo.setText (tablab.getValueAt(fila,0)+"");
-		        		txtConcentrado.setText (tablab.getValueAt(fila,1)+"");
-		        		txtFechaConcentrado.setText (tablab.getValueAt(fila,3)+"");
-		        		
-		        		if(grupoestablecimientos.equals("S")||grupoestablecimientos.equals("F")) {
-		        			txtImporte_Banco_Interno.setEditable(true);
-		        			txtImporte_Concentrado.setText (tablab.getValueAt(fila,2)+"");
-			        		txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,2)+"");
-			        		txtImporte_Banco_Interno.setEditable(true);
-			        		btnAgregar.setEnabled(true);
-			        		calculo_cheque();
-		        		}else {
-		        			if(grupoestablecimientos.equals("V")) {
-			        			    txtImporte_Concentrado.setText (tablab.getValueAt(fila,6)+"");
-				        		    txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,6)+"");
-			        				txtImporte_Banco_Interno.setEditable(false);
-					        		btnAgregar.setEnabled(true);
-					        		calculo_cheque();
-					        		btnAgregar.doClick();
-		        			}else {
-		        				if(grupoestablecimientos.equals("D")) {
-				        			txtImporte_Concentrado.setText (tablab.getValueAt(fila,5)+"");
-					        		txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,5)+"");
-			        				txtImporte_Banco_Interno.setEditable(false);
-					        		btnAgregar.setEnabled(true);
-					        		calculo_cheque();
-					        		btnAgregar.doClick();
-		        				}
-		        			}	
-		        		}
-		        		dispose();
-		        		txtImporte_Banco_Interno.requestFocus();
-		        	}
+		        		agregar_datos();
+		        	}	
 		        }
 	        });
 	    }
+		
+	  public void agregar_datos() {
+		  int fila = tablab.getSelectedRow();
+	  		txtFolioTrabajo.setText (tablab.getValueAt(fila,0)+"");
+	  		txtConcentrado.setText (tablab.getValueAt(fila,1)+"");
+	  		txtFechaConcentrado.setText (tablab.getValueAt(fila,3)+"");
+  		
+  		if(grupoestablecimientos.equals("S")||grupoestablecimientos.equals("F")) {
+  			txtImporte_Banco_Interno.setEditable(true);
+  			txtImporte_Concentrado.setText (tablab.getValueAt(fila,2)+"");
+      		txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,2)+"");
+      		txtImporte_Banco_Interno.setEditable(true);
+      		btnAgregar.setEnabled(true);
+      		calculo_cheque();
+  		}else {
+  			if(grupoestablecimientos.equals("V")) {
+      			    txtImporte_Concentrado.setText (tablab.getValueAt(fila,6)+"");
+	        		    txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,6)+"");
+      				txtImporte_Banco_Interno.setEditable(false);
+		        		btnAgregar.setEnabled(true);
+		        		calculo_cheque();
+		        		btnAgregar.doClick();
+  			}else {
+  				if(grupoestablecimientos.equals("D")) {
+	        			txtImporte_Concentrado.setText (Float.valueOf(tablab.getValueAt(fila,5).toString())/Float.valueOf(txtTipoCambio.getText().toString()) +"");
+		        		txtImporte_Banco_Interno.setText (Float.valueOf(tablab.getValueAt(fila,5).toString())/Float.valueOf(txtTipoCambio.getText().toString()) +"");
+      				txtImporte_Banco_Interno.setEditable(false);
+		        		btnAgregar.setEnabled(true);
+		        		calculo_cheque();
+		        		btnAgregar.doClick();
+  				}
+  			}	
+  		}
+  		dispose();
+  		txtImporte_Banco_Interno.requestFocus();
+	  }	
+	  
 		
         private KeyListener opFiltro = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
@@ -851,7 +856,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 		    	this.tablab.getColumnModel().getColumn(10).setMinWidth(150);
 		    	this.tablab.getColumnModel().getColumn(11).setMinWidth(350);
 		    	
-				String comandob = "banco_interno_traspasos_filtro";
+				String comandob = "banco_interno_traspasos_filtro 87";
 		    	String basedatos="26",pintar="si";
 				ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
 		    }
@@ -998,7 +1003,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Transpaso_A_Banco_Interno().setVisible(true);
+			new Cat_Traspaso_A_Banco_Interno().setVisible(true);
 		}catch(Exception e){	}
 	}
 };

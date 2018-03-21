@@ -1046,6 +1046,7 @@ public class BuscarTablasModel {
 	public String[][] filtro_impuntualidad_a_considerar(String fecha_inicio,String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
 		String[][] Matriz = null;
 		String query = "sp_select_consideracion_checador '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
+	
 		Matriz = new String[get_filas(query)][17];
 		
 		try {	

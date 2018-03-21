@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2018-01-29T17:44:54 -->
+<!-- 2018-03-16T17:30:23 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_Para_Trabajo_De_Cortes" language="groovy" printOrder="Horizontal" pageWidth="791" pageHeight="612" orientation="Landscape" columnWidth="751" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="527b8c71-0150-4c5e-ab8d-96445c8baa40">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -66,31 +66,10 @@ where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
 		<field name="plan_diferencia" class="java.math.BigDecimal"/>
 	</subDataset>
 	<subDataset name="reposicion_de_efectivo" uuid="6f9b1718-0929-4fab-97d9-74916b360901">
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRUEBAS"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 		<parameter name="FOLIO_TRABAJO_PARAMETRO" class="java.lang.Integer"/>
-		<queryString>
-			<![CDATA[select top 1 rep_efec.folio_trabajo
-,rep_efec.gastos
-,rep_efec.dolares
-,rep_efec.vales
-,rep_efec.diferencia_de_cortes
-,rep_efec.otros_faltantes
-,rep_efec.otros_sobrantes
-,rep_efec.caja_verde_rep
-,rep_efec.total
-,rep_efec.sobrante_finanzas
-,rep_efec.total_final
-,rep_efec.deposito2
-,rep_efec.banco_interno
-,rep_efec.comentario
-,tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as realizo_trabajo
-,convert(varchar(20),alim_cort.fecha_de_trabajo,103)+' '+convert(varchar(20),alim_cort.fecha_de_trabajo,108) as fecha_trabajo
-,grupo.grupo_para_cortes
-from tb_reposicion_de_efectivo_trabajo_de_corte as rep_efec
-inner join tb_alimentacion_de_cortes as alim_cort on alim_cort.folio_trabajo_de_cortes = rep_efec.folio_trabajo
-inner join tb_empleado on tb_empleado.folio = alim_cort.folio_usuario_trabajo_de_corte
-inner join tb_grupos_para_cortes as grupo on grupo.folio_grupo_para_cortes = alim_cort.folio_grupo_para_cortes
-where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
+		<queryString language="SQL">
+			<![CDATA[exec concentrado_reporte_de_cortes_totales $P{FOLIO_TRABAJO_PARAMETRO}]]>
 		</queryString>
 		<field name="folio_trabajo" class="java.lang.Integer"/>
 		<field name="gastos" class="java.math.BigDecimal"/>
@@ -112,181 +91,14 @@ where folio_trabajo = $P{FOLIO_TRABAJO_PARAMETRO}]]>
 	</subDataset>
 	<parameter name="folio_trabajo" class="java.lang.Integer" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA[3355]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[3400]]></defaultValueExpression>
 	</parameter>
 	<parameter name="slFactory" class="java.lang.Object"/>
 	<parameter name="slSchema" class="java.lang.Object"/>
 	<parameter name="LoggedInUser" class="java.lang.Object"/>
 	<parameter name="LoggedInUsername" class="java.lang.Object"/>
 	<queryString language="SQL">
-		<![CDATA[--declare @folio_trabajo datetime
---set @folio_trabajo = 10'
-
-select tb_establecimiento.nombre as ESTABLECIMIENTO
-		,tb_alimentacion_de_cortes.folio_corte as FOLIO_CORTE
-		,tb_alimentacion_de_cortes.asignaciones_en_corte as ASIGNACION
-,cajero.nombre+' '+cajero.ap_paterno+' '+cajero.ap_materno as CAJERA
-
-,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
-		then tb_alimentacion_de_cortes.efectivo_para_trabajo
-	  else
-		tb_alimentacion_de_cortes.efectivo -(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) 
-													from tb_alimentacion_efectivo_cortes 
-													where tb_alimentacion_efectivo_cortes.folio_denominacion = 13 
-													and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte) 
-
- end as TOTAL_EFECTIVO
-
----------------------,((select sum(tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion not in (12,13) and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte)) as TOTAL_EFECTIVO
-,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
-		then tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo
-	  else
-		(select isnull(sum(tb_retiros_a_cajeros.importe_retiro),0) from tb_retiros_a_cajeros where tb_retiros_a_cajeros.folio_corte = tb_alimentacion_de_cortes.folio_corte) 
- end as RETIROS_PROGRAMADOS
-,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
-		then tb_alimentacion_de_cortes.total_cheques_para_trabajo
-	  else
-		tb_alimentacion_de_cortes.cheques 
- end as CHEQUES
-
-,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
-		then tb_alimentacion_de_cortes.total_vales_para_trabajo
-	  else
-		(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 13 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte) 
- end as VALES
-,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
-		then tb_alimentacion_de_cortes.total_dolares_para_trabajo
-	  else
-		(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 12 and tb_alimentacion_efectivo_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte)
- end as DOLARES
-
-,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
-		then tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo
-	  --else
-		--(case when tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo > 0 
-		--		then tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo 
-			  else (select isnull(sum(tb_captura_fuente_sodas.importe),0) from tb_captura_fuente_sodas where tb_captura_fuente_sodas.folio_corte = tb_alimentacion_de_cortes.folio_corte) 
-		  --end)
- end AS FUENTE_DE_SODAS
---,(select isnull(sum(tb_captura_fuente_sodas.importe),0) from tb_captura_fuente_sodas where tb_captura_fuente_sodas.folio_corte = tb_alimentacion_de_cortes.folio_corte) AS FUENTE_DE_SODAS
-,case when (tb_alimentacion_de_cortes.efectivo_para_trabajo + tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo + tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo + tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo + tb_alimentacion_de_cortes.total_cheques_para_trabajo + tb_alimentacion_de_cortes.total_vales_para_trabajo + tb_alimentacion_de_cortes.total_dolares_para_trabajo) <> 0
-		then tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo
-	 -- else
-		--(case when tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo > 0 
-		--		then tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo 
-			  else (SUM(isnull(tb_vauchers.importe,0))-isnull(sum(tb_vauchers.retiro),0)) 
-		  --end)
- end as PIN_PAD
---,(SUM(isnull(tb_vauchers.importe,0))-isnull(sum(tb_vauchers.retiro),0)) as PIN_PAD
-,(tb_alimentacion_de_cortes.corte_del_sistema+tb_alimentacion_de_cortes.apartados) as TOTAL_CORTE
-
-,(select round( ((a.efectivo+a.Retiro_Cajero) + (a.voucher_sin_retiro) + a.cheques + a.dolares + a.vales
-				 + case when a.total_fuente_de_sodas_para_trabajo > 0 then a.total_fuente_de_sodas_para_trabajo else isnull(sum(ft.importe),0) end 
-			  ) - (a.corte_del_sistema+a.apartados-a.abonos)
-			,2) as diferencia_de_corte	
-		from(SELECT ma.folio_corte
-					,case when ma.efectivo_para_trabajo <> 0 
-							then ma.efectivo_para_trabajo 
-						  else ma.efectivo 
-					  end as efectivo
-					,case when ma.total_retiros_programados_para_trabajo <> 0 
-							then ma.total_retiros_programados_para_trabajo 
-						else
-							(isnull(sum(tb_retiros_a_cajeros.importe_retiro),0))
-					 end as Retiro_Cajero
-					,case when ma.total_de_vauchers_para_trabajo <> 0 
-								then ma.total_de_vauchers_para_trabajo
-							else 
-								(select isnull(sum(tb_vauchers.importe),0)
-										- isnull(sum(tb_vauchers.retiro),0) 
-									from tb_vauchers 
-									where tb_vauchers.folio_corte=ma.folio_corte) 
-					  end as voucher_sin_retiro
-					,case when ma.total_cheques_para_trabajo <> 0 
-							then ma.total_cheques_para_trabajo 
-						  else
-							ma.cheques
-					 end as cheques
-					,case when (ma.total_dolares_para_trabajo) <> 0
-							then ma.total_dolares_para_trabajo
-						  else
-							(select (tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion) from tb_alimentacion_efectivo_cortes where tb_alimentacion_efectivo_cortes.folio_denominacion = 12 and tb_alimentacion_efectivo_cortes.folio_corte = ma.folio_corte)
-					 end as dolares
-					,ma.corte_del_sistema
-					,ma.apartados
-					,ma.abonos
-					,ma.total_fuente_de_sodas_para_trabajo
-					,case when (ma.total_vales_para_trabajo) <> 0
-							then ma.total_vales_para_trabajo
-						  else
-							0 ------(  dejamos 0 para que no afecte el calculo ya que ya lo incluye en total efectivo   )
-							--(tb_alimentacion_efectivo_cortes.cantidad*tb_alimentacion_efectivo_cortes.valor*tb_alimentacion_efectivo_cortes.valor_denominacion)
- 					 end as vales
-				FROM  tb_alimentacion_de_cortes ma
-		    		left outer join tb_retiros_a_cajeros on  tb_retiros_a_cajeros.folio_corte=ma.folio_corte 
-					inner join tb_alimentacion_efectivo_cortes on tb_alimentacion_efectivo_cortes.folio_corte = ma.folio_corte and tb_alimentacion_efectivo_cortes.folio_denominacion = 13
-				where ma.folio_corte=tb_alimentacion_de_cortes.folio_corte 
-				group by ma.folio_corte,ma.efectivo_para_trabajo,ma.efectivo,ma.total_retiros_programados_para_trabajo,total_de_vauchers_para_trabajo,ma.total_cheques_para_trabajo,ma.total_dolares_para_trabajo,ma.cheques,ma.corte_del_sistema,ma.apartados,ma.abonos,ma.total_fuente_de_sodas_para_trabajo, ma.total_vales_para_trabajo --,tb_alimentacion_efectivo_cortes.cantidad,tb_alimentacion_efectivo_cortes.valor,tb_alimentacion_efectivo_cortes.valor_denominacion 
-		)a
-left outer join tb_captura_fuente_sodas ft on ft.folio_corte=a.folio_corte
-group by a.folio_corte,a.efectivo,a.Retiro_Cajero,a.voucher_sin_retiro,a.cheques,a.dolares,a.corte_del_sistema,a.apartados,a.abonos,a.total_fuente_de_sodas_para_trabajo,a.vales) as DIFERENCIA
-
-,isnull(sum(tb_vauchers.retiro),0) as RETIROS_CLIENTE
-,tb_alimentacion_de_cortes.tiempo_aire as TIEMPO_AIRE
-,tb_alimentacion_de_cortes.recibo_de_luz as RECIBOS_LUZ
-,tb_alimentacion_de_cortes.apartados as APARTADOS
-,convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,103)+' '+convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,108) as FECHA_DE_CORTE
-,tb_alimentacion_de_cortes.observacion as OBSERVACION
-,tb_alimentacion_de_cortes.folio_trabajo_de_cortes AS FOLIO_TRABAJO_DE_CORTE
-,CASE WHEN (tb_alimentacion_de_cortes.clasificador)='CV' THEN 'CAJA VERDE'
-ELSE 'NORMAL' END AS CLASIFICADOR_TRABAJO_DE_CORTE
-,convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_trabajo,103) as FECHA_TRABAJO_DE_CORTE
-,usuario.nombre+' '+usuario.ap_paterno+' '+usuario.ap_materno as REALIZO_TRABAJO
-,isnull(tb_grupos_para_cortes.grupo_para_cortes,'SIN GRUPO') as GRUPO_PARA_CORTES
-,isnull(modifico_corte.nombre+' '+modifico_corte.ap_paterno+' '+modifico_corte.ap_materno,'') as USUARIO_MODIFICO_TRABAJO
-
-from tb_alimentacion_de_cortes
-inner join tb_establecimiento on tb_establecimiento.folio = tb_alimentacion_de_cortes.folio_establecimiento_de_corte
---inner join tb_tabla_de_asignaciones_para_cortes on tb_tabla_de_asignaciones_para_cortes.folio_corte = tb_alimentacion_de_cortes.folio_corte
-inner join tb_empleado as cajero on cajero.folio = tb_alimentacion_de_cortes.folio_empleado
-inner join tb_empleado as usuario on usuario.folio = tb_alimentacion_de_cortes.folio_usuario_trabajo_de_corte
-left outer join tb_empleado as modifico_corte on modifico_corte.folio = tb_alimentacion_de_cortes.folio_usuario_modifico_para_trabajo
-left outer join tb_vauchers on tb_vauchers.folio_corte = tb_alimentacion_de_cortes.folio_corte
-inner join tb_grupos_para_cortes on tb_grupos_para_cortes.folio_grupo_para_cortes = tb_alimentacion_de_cortes.folio_grupo_para_cortes
-
---where convert(smalldatetime,convert(varchar(20),tb_alimentacion_de_cortes.fecha_de_corte,103)) = convert(smalldatetime,convert(varchar(20),getdate()-1,103))
-where tb_alimentacion_de_cortes.folio_trabajo_de_cortes = $P{folio_trabajo} --@folio_trabajo_de_cortes  
-group by tb_establecimiento.nombre
-		,tb_alimentacion_de_cortes.folio_corte
-		,tb_alimentacion_de_cortes.asignaciones_en_corte 
-		,tb_alimentacion_de_cortes.efectivo_para_trabajo
-		,tb_alimentacion_de_cortes.efectivo
-		,cajero.nombre+' '+cajero.ap_paterno+' '+cajero.ap_materno
-		,tb_alimentacion_de_cortes.cheques
-		,tb_alimentacion_de_cortes.tiempo_aire
-		,tb_alimentacion_de_cortes.recibo_de_luz
-		,tb_alimentacion_de_cortes.corte_del_sistema
-		,tb_alimentacion_de_cortes.apartados
-		,tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo
-		,tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo
-		,tb_alimentacion_de_cortes.diferiencia_de_corte
-		,tb_alimentacion_de_cortes.fecha_de_corte
-		,tb_alimentacion_de_cortes.observacion 
-		,tb_alimentacion_de_cortes.folio_trabajo_de_cortes
-		,tb_alimentacion_de_cortes.clasificador
-		,tb_alimentacion_de_cortes.fecha_de_trabajo
-		,usuario.nombre+' '+usuario.ap_paterno+' '+usuario.ap_materno
-		,tb_grupos_para_cortes.grupo_para_cortes
-		,modifico_corte.nombre+' '+modifico_corte.ap_paterno+' '+modifico_corte.ap_materno
-
-		--,tb_alimentacion_de_cortes.efectivo_para_trabajo 
-		--,tb_alimentacion_de_cortes.total_de_vauchers_para_trabajo 
-		--,tb_alimentacion_de_cortes.total_fuente_de_sodas_para_trabajo 
-		,tb_alimentacion_de_cortes.total_retiros_programados_para_trabajo 
-		,tb_alimentacion_de_cortes.total_cheques_para_trabajo 
-		,tb_alimentacion_de_cortes.total_vales_para_trabajo 
-		,tb_alimentacion_de_cortes.total_dolares_para_trabajo
-order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero.nombre+' '+cajero.ap_paterno+' '+cajero.ap_materno]]>
+		<![CDATA[exec concentrado_reporte_de_cortes $P{folio_trabajo}]]>
 	</queryString>
 	<field name="ESTABLECIMIENTO" class="java.lang.String"/>
 	<field name="FOLIO_CORTE" class="java.lang.String"/>
@@ -300,7 +112,7 @@ order by tb_alimentacion_de_cortes.clasificador,tb_establecimiento.nombre,cajero
 	<field name="FUENTE_DE_SODAS" class="java.math.BigDecimal"/>
 	<field name="PIN_PAD" class="java.math.BigDecimal"/>
 	<field name="TOTAL_CORTE" class="java.math.BigDecimal"/>
-	<field name="DIFERENCIA" class="java.lang.Double"/>
+	<field name="DIFERENCIA" class="java.math.BigDecimal"/>
 	<field name="RETIROS_CLIENTE" class="java.math.BigDecimal"/>
 	<field name="TIEMPO_AIRE" class="java.math.BigDecimal"/>
 	<field name="RECIBOS_LUZ" class="java.math.BigDecimal"/>

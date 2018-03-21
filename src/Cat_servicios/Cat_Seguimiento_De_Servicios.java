@@ -60,7 +60,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	JTextField txtFiltro = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
 	Connexion con = new Connexion();
 	Obj_tabla ObjTab =new Obj_tabla();
-	int columnas = 22,checkbox=-1;
+	int columnas = 23,checkbox=-1;
 	public void init_tabla(String status_pedidos){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(45);
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(45);
@@ -91,6 +91,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
+		
+		if(tabla.getRowCount()>0){txtPedientes.setText(tabla.getValueAt(0, 22).toString());}else {txtPedientes.setText("0");}
     }
 	
 	@SuppressWarnings("rawtypes")
@@ -100,7 +102,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		return types;
 	}
 	
-	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Detalle","Estatus","Prioridad","Fecha Solicitud","Establecimiento Solicito","Usuario Solicito","Departamento","Servicio Solicitado","Archivo","Fecha Atendio","Folio Atendio","Usuario Atendio","Notas ","Costo ","Evaluacion","Archivo Respuesta","Comentario Evaluacion","Folio Equipo","Descripcion Equipo","Folio Colaborador A.","Colaborador Asignado"}){
+	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio","Detalle","Estatus","Prioridad","Fecha Solicitud","Establecimiento Solicito","Usuario Solicito","Departamento","Servicio Solicitado","Archivo","Fecha Atendio","Folio Atendio","Usuario Atendio","Notas ","Costo ","Evaluacion","Archivo Respuesta","Comentario Evaluacion","Folio Equipo","Descripcion Equipo","Folio Colaborador A.","Colaborador Asignado","Cantidad de Pendientes"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = base();
 			@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -125,6 +127,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	JTextField txtEquipo        = new Componentes().text(new JCTextField(), "Equipo Del Servicio", 150, "String");
 	JTextField txtFolioasignado = new Componentes().text(new JCTextField(), "Folio Asignado", 9, "Int");
 	JTextField txtAsignado      = new Componentes().text(new JCTextField(), "Colaborador Asignado", 150, "String");
+	JTextField txtPedientes     = new Componentes().text(new JCTextField(), "Cant. Pendientes", 150, "String");
 	
 	JCButton btnActualizar      = new JCButton("Actualizar"           ,"Actualizar.png","Azul");
 	JCButton btnFiltro          = new JCButton(""              ,"Filter-List-icon16.png","Azul");
@@ -190,9 +193,10 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		this.panel.add(new JLabel("Usuario:")).setBounds     (x       ,y      ,width    ,height   );
 		this.panel.add(lblUsuario).setBounds                 (x+=45   ,y      ,width*2  ,height   );
 		this.panel.add(lblDepartamento).setBounds            (x+=250  ,y      ,width*2  ,height   );
-		this.panel.add(btnActualizar).setBounds              (x+=300  ,y      ,width+20 ,height   );
-		this.panel.add(cmbEstatusFiltrado).setBounds         (x+=140  ,y      ,width+75 ,height   );
-		this.panel.add(txtFcActual).setBounds                (x+=195  ,y      ,width-30 ,height   );
+		this.panel.add(btnActualizar).setBounds              (x+=250  ,y      ,width+20 ,height   );
+		this.panel.add(cmbEstatusFiltrado).setBounds         (x+=130  ,y      ,width+75 ,height   );
+		this.panel.add(txtPedientes).setBounds               (x+=180  ,y      ,width-30 ,height   );
+		this.panel.add(txtFcActual).setBounds                (x+=75  ,y      ,width-30 ,height   );
 
 		x=15;
 		this.panel.add(txtFiltro).setBounds                  (x       ,y+=19  ,width*10 ,height   );
@@ -649,6 +653,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		btnAsignado.setEnabled(false);
 		txtFolioasignado.setEditable(false);
 		txtAsignado.setEditable(false);
+		txtPedientes.setEditable(false);
 	}		
 	
 	public void panelLimpiar(){	

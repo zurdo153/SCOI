@@ -363,7 +363,26 @@ public class BuscarSQL {
 		return Cantidad_Letra;
 	}
 	
-	
+	public String tipo_de_cambio() throws SQLException{
+		String valor_dolar="";
+		String query = "select valor from tb_divisas_tipo_de_cambio where folio=1";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				valor_dolar=(rs.getString(1));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return valor_dolar;
+	}
 	
 	public Obj_Fue_Sodas_DH buscarautoizacionfs(){
 		Obj_Fue_Sodas_DH fs_autorizacion = new Obj_Fue_Sodas_DH();
@@ -10457,7 +10476,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			while(rs.next()){
 			    	existe = rs.getInt(1);
 			      }
-			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [folio_colaborador_para_custionario] \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
@@ -10465,6 +10483,21 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return existe;
 	}
 
+	public float saldo_banco_interno_por_cuenta (String cuenta){
+		String query = "exec banco_interno_saldo_por_cuenta '"+cuenta+"'";
+		float saldo = 0;
+		try { Statement s = con.conexion().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+				saldo = rs.getFloat(1);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [saldo_banco_interno_por_cuenta] \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		return saldo;
+	}
+	
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";

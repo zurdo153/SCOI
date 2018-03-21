@@ -367,7 +367,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 					ObjTab.RecorridoFocotabla(tabla, modelo.getRowCount()-1, 1, "x");
 					tabla.setRowSelectionInterval(modelo.getRowCount()-1, modelo.getRowCount()-1);
 				   return;	
-				  }
+				}
 		  }
    };
 	
@@ -498,11 +498,12 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 						String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+"\nSolicita los siguientes productos\n"+productos+ "Con un valor total de:$"+txtTotal.getText().toString()+"\n "
 						                  +"\nPara El Establecimiento:"+cmbEstablecimiento.getSelectedItem().toString().trim()+"\nBeneficiario:"+txtProveedor.getText()+"\nMotivo del(a) Gasto/Compra:"+txaUso.getText();
 //						                  +"\nResponda Si Para Autorizar el Gasto \nResponda No Para Negar el Gasto";
-						new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje, "Gasto Folio:§"+gasto.getFolio(),"Gastos");
-						guardar_actualizar="G";
+						new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje, "Gasto Folio:§"+gasto.getFolio()+" Por Un Total De:"+txtTotal.getText().toString(),"Gastos");
+						guardar_actualizar="";
+						btnImprimir.doClick();
 						btnDeshacer.doClick();
 						JOptionPane.showMessageDialog(null, "Se Guardo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-						btnImprimir.doClick();
+						
 					}else{
 						JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 						return;

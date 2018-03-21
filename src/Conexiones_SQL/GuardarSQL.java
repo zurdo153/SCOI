@@ -7344,8 +7344,8 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 
 	public Obj_Transpaso_A_Banco_Interno Guardar_Traspaso_A_Banco_Interno(Obj_Transpaso_A_Banco_Interno Banco_Interno){
 		int folio_transaccion=Banco_Interno.getFolio();
+		String foliomovinterno="";
 		String querymod ="";
-				
 		if(Banco_Interno.getGuardar_actualizar().equals("N")){
 		   folio_transaccion=busca_y_actualiza_proximo_folio(87);
 		  Banco_Interno.setFolio(folio_transaccion);
@@ -7353,7 +7353,11 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		  querymod = "delete from banco_interno_datos where folio_movimiento_banco_interno="+folio_transaccion;
 		}
 		
-		String query = "exec banco_interno_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,?,87";
+		if(Banco_Interno.getGuardar_actualizar().equals("N")&&Banco_Interno.getTransaccion().equals("46") ){
+			 foliomovinterno="Traspaso Manual Folio:"+busca_y_actualiza_proximo_folio(46);
+			}
+				
+		String query = "exec banco_interno_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -7363,14 +7367,32 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 con.commit();
 			   
 			PreparedStatement pstmt = con.prepareStatement(query);
-			for(int i=0; i<Banco_Interno.getDatos().length; i++){				
+			for(int i=0; i<Banco_Interno.getDatos().length; i++){		
+				
+//		 		  System.out.println(folio_transaccion);
+//		 		  System.out.println(Banco_Interno.getFolio());
+//		 		  System.out.println(Banco_Interno.getFolio_empleado_destinatario());
+//		 		  System.out.println(Banco_Interno.getObservaciones().toString()   );
+//		 		  System.out.println(Banco_Interno.getUsuario_realiza_transpaso()  );
+//		 		  System.out.println(Banco_Interno.getEstatus());
+//		 		  System.out.println( Banco_Interno.getGuardar_actualizar());
+//		 		  System.out.println("1-"+Banco_Interno.getDatos()[i][0].toString().trim()+foliomovinterno);
+//		 		  System.out.println("2-"+ Banco_Interno.getDatos()[i][1].toString().trim());
+//		 		  System.out.println("3-"+ Banco_Interno.getDatos()[i][2].toString().trim());
+//		 		  System.out.println("4-"+ Banco_Interno.getDatos()[i][3].toString().trim());
+//		 		  System.out.println("5-"+ Banco_Interno.getDatos()[i][4].toString().trim());
+//		 		  System.out.println("6-"+ Banco_Interno.getDatos()[i][5].toString().trim());
+//		 		  System.out.println("7-"+ Banco_Interno.getDatos()[i][6].toString().trim());
+//		 		  System.out.println( Banco_Interno.getCuenta().toString().trim());
+//		 		  System.out.println( Banco_Interno.getTransaccion().toString().trim());
+		 		  
 				pstmt.setInt   (1 ,  folio_transaccion);
 				pstmt.setInt   (2 ,  Banco_Interno.getFolio_empleado_destinatario());
-				pstmt.setString(3 ,  Banco_Interno.getObservaciones().toString());
+				pstmt.setString(3 ,  foliomovinterno+" "+Banco_Interno.getObservaciones().toString());
 				pstmt.setInt   (4 ,  Banco_Interno.getUsuario_realiza_transpaso());
 				pstmt.setString(5 ,  Banco_Interno.getEstatus());
 				pstmt.setString(6 ,  Banco_Interno.getGuardar_actualizar());
-				pstmt.setString(7 ,  Banco_Interno.getDatos()[i][0].toString().trim() );
+				pstmt.setString(7 ,  Banco_Interno.getDatos()[i][0].toString().trim()+foliomovinterno );
 				pstmt.setString(8 ,  Banco_Interno.getDatos()[i][1].toString().trim() );
 				pstmt.setString(9 ,  Banco_Interno.getDatos()[i][2].toString().trim() );
 				pstmt.setString(10 , Banco_Interno.getDatos()[i][3].toString().trim() );
@@ -7378,21 +7400,22 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setString(12 , Banco_Interno.getDatos()[i][5].toString().trim() );			
 				pstmt.setString(13 , Banco_Interno.getDatos()[i][6].toString().trim() );
 				pstmt.setString(14 , Banco_Interno.getCuenta().toString().trim() );
-				
+				pstmt.setString(15 , Banco_Interno.getTransaccion().toString().trim() );
+		 		  
 				pstmt.executeUpdate();
 			 con.commit();
 			}
 			
 		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Transpaso_A_Banco_Interno ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\nSQLException:"+e.getLocalizedMessage()+"\n"+querymod);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Traspaso_A_Banco_Interno ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Transpaso_A_Banco_Interno ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Traspaso_A_Banco_Interno ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return null;
@@ -7408,36 +7431,23 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 
 	public Obj_Saldo_Banco_Interno Guardar_Saldo_Banco_Interno(Obj_Saldo_Banco_Interno Banco_Interno){
 		int folio_transaccion=Banco_Interno.getFolio();
-						
 		if(Banco_Interno.getGuardar_actualizar().equals("N")){
 		   folio_transaccion=busca_y_actualiza_proximo_folio(45);
 		  Banco_Interno.setFolio(folio_transaccion);
 		}
 		
-		String query = "exec banco_interno_saldo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec banco_interno_saldo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 //		 @folio int, @usuario_recibe int, @observaciones varchar(160), @numero_de_cuenta int,@estatus char(1),@GuardarActualizar char(1), @importe_ingreso money, @importe_egreso money, @tipo_movimiento char(1),@folio_Banco_Interno int ,@folio_trabajo int
 		try {
 			con.setAutoCommit(false);		   
 			PreparedStatement pstmt = con.prepareStatement(query);
 			for(int i=0; i<Banco_Interno.getTabla().length; i++){	
-//				System.out.println(folio_transaccion);
-//				System.out.println(Banco_Interno.getFolio_usuario());
-//				System.out.println(Banco_Interno.getObservaciones().toString()  );
-//				System.out.println(Banco_Interno.getTabla()[i][0].toString().trim());
-//				System.out.println(Banco_Interno.getEstatus()  );
-//				System.out.println(Banco_Interno.getGuardar_actualizar()  );
-//				System.out.println(Banco_Interno.getTabla()[i][4].toString().trim());
-//				System.out.println(0);
-//				System.out.println("Ingreso"   );
-//				System.out.println(Banco_Interno.getTabla()[i][2].toString().trim()  );
-//				System.out.println(Banco_Interno.getTabla()[i][9].toString().trim()  );
-
 				if(Banco_Interno.getTabla()[i][8].toString().trim().equals("true")) {
 					pstmt.setInt   (1 ,  folio_transaccion);
 					pstmt.setInt   (2 ,  Banco_Interno.getFolio_usuario());
 					pstmt.setString(3 ,  Banco_Interno.getObservaciones().toString()      );
-					pstmt.setString(4 ,  Banco_Interno.getTabla()[i][0].toString().trim() );
+					pstmt.setString(4 ,  Banco_Interno.getTabla()[i][1].toString().trim() );
 					pstmt.setString(5 ,  Banco_Interno.getEstatus()                       );
 					pstmt.setString(6 ,  Banco_Interno.getGuardar_actualizar()            );
 					pstmt.setString(7 ,  Banco_Interno.getTabla()[i][4].toString().trim() );
@@ -7445,10 +7455,10 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 					pstmt.setString(9 ,  "Ingreso"                                        );
 					pstmt.setString(10 , Banco_Interno.getTabla()[i][2].toString().trim() );
 					pstmt.setString(11 , Banco_Interno.getTabla()[i][9].toString().trim() );
+					pstmt.setFloat (12 , Banco_Interno.getImporte());
 					pstmt.executeUpdate();
 				    con.commit();
 				}
-				
 			}
 		} catch (Exception e) {
 			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage());
@@ -7473,6 +7483,74 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return Banco_Interno;
 	}
 	
+	public Obj_Saldo_Banco_Interno Guardar_Saldo_Banco_Interno_Egreso(Obj_Saldo_Banco_Interno Banco_Interno){
+		int folio_transaccion=Banco_Interno.getFolio();
+						
+		if(Banco_Interno.getGuardar_actualizar().equals("N")){
+		   folio_transaccion=busca_y_actualiza_proximo_folio(45);
+		  Banco_Interno.setFolio(folio_transaccion);
+		}
+		
+		String query = "exec banco_interno_saldo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		try {
+			con.setAutoCommit(false);		   
+			PreparedStatement pstmt = con.prepareStatement(query);
+			for(int i=0; i<Banco_Interno.getTabla().length; i++){	
+				if(Banco_Interno.getTabla()[i][4].toString().trim().equals("true")) {
+					
+					System.out.println(folio_transaccion);
+					System.out.println(Banco_Interno.getFolio_usuario());
+					System.out.println(Banco_Interno.getObservaciones().toString() );
+					System.out.println(Banco_Interno.getCuenta().toString().trim());
+					System.out.println(Banco_Interno.getEstatus()     );
+					System.out.println(Banco_Interno.getGuardar_actualizar()   );
+					System.out.println(0);
+					System.out.println(Banco_Interno.getTabla()[i][3].toString().trim());
+					System.out.println("Egreso"   );
+					System.out.println(0);
+					System.out.println(Banco_Interno.getTabla()[i][0].toString().trim());
+					System.out.println(Banco_Interno.getImporte());
+					
+					pstmt.setInt   (1 ,  folio_transaccion);
+					pstmt.setInt   (2 ,  Banco_Interno.getFolio_usuario()                 );
+					pstmt.setString(3 ,  Banco_Interno.getObservaciones().toString()      );
+					pstmt.setString(4 ,  Banco_Interno.getCuenta().toString().trim()      );
+					pstmt.setString(5 ,  Banco_Interno.getEstatus()                       );
+					pstmt.setString(6 ,  Banco_Interno.getGuardar_actualizar()            );
+					pstmt.setInt   (7 ,  0                                                );
+					pstmt.setString(8 ,  Banco_Interno.getTabla()[i][3].toString().trim() );
+					pstmt.setString(9 ,  "Egreso"                                         );
+					pstmt.setString(10 , "0"                                              );
+					pstmt.setString(11 , Banco_Interno.getTabla()[i][0].toString().trim() );
+					pstmt.setFloat (12 , Banco_Interno.getImporte()                       );
+					pstmt.executeUpdate();
+				    con.commit();
+				}
+				
+			}
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Saldo_Banco_Interno_Egreso ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage()+"\n"+query+"\nSQLException:"+ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Saldo_Banco_Interno_Egreso ]\n"+query+"\nSQLException:"+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return null;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return Banco_Interno;
+	}
 	
 	public boolean Guardar_Asignacion_De_Cuestionario(Obj_Asignacion_De_Cuestionarios programacion,String movimiento){
 		

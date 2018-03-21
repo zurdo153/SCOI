@@ -45,8 +45,11 @@
 	<field name="estatus_movimiento" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="estatus_movimiento"/>
 	</field>
-	<field name="RunningTota" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="RunningTota"/>
+	<field name="RunningTotal" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="RunningTotal"/>
+	</field>
+	<field name="movimiento_consultado" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="movimiento_consultado"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -83,7 +86,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{movimiento_consultado}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement key="" x="0" y="0" width="82" height="77" uuid="5c6a70bf-e69e-4e67-8ea8-843c8a904759">
@@ -93,13 +96,14 @@
 				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="364" y="72" width="188" height="14" uuid="3d03dee7-e520-4b51-8c50-cecab2029ff8">
+				<reportElement x="364" y="72" width="101" height="14" uuid="3d03dee7-e520-4b51-8c50-cecab2029ff8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Fecha Movimiento:"+$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Fecha Movimiento:"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="6" y="86" width="334" height="17" forecolor="#000000" uuid="9b1460c0-c12c-4094-bb7f-34a6e7ebfc71">
@@ -172,9 +176,9 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="17" isBold="true" isUnderline="true"/>
+					<font size="14" isBold="true" isUnderline="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["SALDO POR " +$F{tipo_movimiento}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["SALDO POR  MOVIMIENTO EN BANCO INTERNO"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Transparent" x="82" y="58" width="282" height="18" forecolor="#000000" uuid="3d6c1e33-45cd-4734-9545-76c0fce6aa0a">
@@ -185,6 +189,15 @@
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CUENTA: " +$F{numero_de_cuenta}+" - "+$F{nombre_de_cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="465" y="72" width="87" height="14" uuid="17abfcee-33e6-402d-b460-29e534bec38a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -206,7 +219,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
-					<font size="10" isUnderline="false"/>
+					<font size="8" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tipo_movimiento}+" > "+$F{observaciones}]]></textFieldExpression>
 			</textField>
@@ -229,7 +242,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{RunningTota}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{RunningTotal}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

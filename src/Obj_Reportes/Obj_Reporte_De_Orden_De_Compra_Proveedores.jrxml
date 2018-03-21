@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2018-02-11T10:11:11 -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Prestamos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72b28e85-6b85-405a-a19e-a90c0b1b291a">
 	<property name="ireport.zoom" value="2.593742460100005"/>
 	<property name="ireport.x" value="302"/>
 	<property name="ireport.y" value="53"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_BMSIZA"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMS"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -48,16 +47,16 @@
 	<field name="descripcion_completa" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="descripcion_completa"/>
 	</field>
-	<field name="cantidad_pedida" class="java.math.BigDecimal">
+	<field name="cantidad_pedida" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="cantidad_pedida"/>
 	</field>
-	<field name="precio_orden_compra" class="java.math.BigDecimal">
+	<field name="precio_orden_compra" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="precio_orden_compra"/>
 	</field>
-	<field name="iva_unidad" class="java.math.BigDecimal">
+	<field name="iva_unidad" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="iva_unidad"/>
 	</field>
-	<field name="ieps" class="java.math.BigDecimal">
+	<field name="ieps" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="ieps"/>
 	</field>
 	<field name="descuentos" class="java.lang.String">
@@ -66,52 +65,52 @@
 	<field name="precios_por_volumen" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="precios_por_volumen"/>
 	</field>
-	<field name="descuento_unidad" class="java.math.BigDecimal">
+	<field name="descuento_unidad" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="descuento_unidad"/>
 	</field>
-	<field name="COLUMN_17" class="java.math.BigDecimal">
+	<field name="COLUMN_17" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="precio_orden_compra"/>
 	</field>
-	<field name="ultimo_costo" class="java.math.BigDecimal">
+	<field name="ultimo_costo" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="ultimo_costo"/>
 	</field>
-	<field name="costo_promedio" class="java.math.BigDecimal">
+	<field name="costo_promedio" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="costo_promedio"/>
 	</field>
-	<field name="precio_venta_pz" class="java.math.BigDecimal">
+	<field name="precio_venta_pz" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="precio_venta_pz"/>
 	</field>
-	<field name="margen" class="java.math.BigDecimal">
+	<field name="margen" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="margen"/>
 	</field>
-	<field name="markup" class="java.math.BigDecimal">
+	<field name="markup" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="markup"/>
 	</field>
-	<field name="cantidad_surtida" class="java.math.BigDecimal">
+	<field name="cantidad_surtida" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="cantidad_surtida"/>
 	</field>
 	<field name="unidad_abreviatura" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="unidad_abreviatura"/>
 	</field>
-	<field name="importe" class="java.math.BigDecimal">
+	<field name="importe" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="importe"/>
 	</field>
-	<field name="iva_importe" class="java.math.BigDecimal">
+	<field name="iva_importe" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="iva_importe"/>
 	</field>
-	<field name="total_fila" class="java.math.BigDecimal">
+	<field name="total_fila" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="total_fila"/>
 	</field>
-	<field name="importe_total_OC" class="java.math.BigDecimal">
+	<field name="importe_total_OC" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="importe_total_OC"/>
 	</field>
-	<field name="iva_total_OC" class="java.math.BigDecimal">
+	<field name="iva_total_OC" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="iva_total_OC"/>
 	</field>
-	<field name="ieps_total_OC" class="java.math.BigDecimal">
+	<field name="ieps_total_OC" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="ieps_total_OC"/>
 	</field>
-	<field name="total_OC" class="java.math.BigDecimal">
+	<field name="total_OC" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="total_OC"/>
 	</field>
 	<field name="elaboro" class="java.lang.String">
@@ -144,16 +143,21 @@
 	<field name="autorizo" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="autorizo"/>
 	</field>
-	<field name="existencia_pz" class="java.math.BigDecimal">
+	<field name="existencia_pz" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="existencia_pz"/>
 	</field>
-	<field name="venta_total_en_pzas_90_dias" class="java.math.BigDecimal">
+	<field name="venta_total_en_pzas_90_dias" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="venta_total_en_pzas_90_dias"/>
 	</field>
 	<field name="status" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="status"/>
 	</field>
-	<field name="rfc" class="java.lang.String"/>
+	<field name="rfc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="rfc"/>
+	</field>
+	<field name="margen_familia" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="margen_familia"/>
+	</field>
 	<variable name="Suma_Total_Compra" class="java.lang.Double" resetType="Column" incrementType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{total_OC}]]></variableExpression>
 	</variable>
