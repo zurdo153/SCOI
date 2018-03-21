@@ -10300,6 +10300,47 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			return Matriz;
 		}
 
+	 
+	 public String[][] Tabla_Movimiento_banco(int folio_gasto){
+			String[][] Matriz = null;
+			String query = "exec banco_interno_consulta_traspaso "+folio_gasto;
+			Matriz = new String[getFilas(query)][19];
+			Statement s;
+			ResultSet rs;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					Matriz[i][0]  = rs.getString( 1);
+					Matriz[i][1]  = rs.getString( 2);
+					Matriz[i][2]  = rs.getString( 3);
+					Matriz[i][3]  = rs.getString( 4);
+					Matriz[i][4]  = rs.getString( 5);
+					Matriz[i][5]  = rs.getString( 6);
+					Matriz[i][6]  = rs.getString( 7);
+					Matriz[i][7]  = rs.getString( 8);
+					Matriz[i][8]  = rs.getString( 9);
+					Matriz[i][9]  = rs.getString(10);
+					Matriz[i][10] = rs.getString(11);
+					Matriz[i][11] = rs.getString(12);
+					Matriz[i][12] = rs.getString(13);
+					Matriz[i][13] = rs.getString(14);
+					Matriz[i][14] = rs.getString(15);
+					Matriz[i][15] = rs.getString(16);
+					Matriz[i][16] = rs.getString(17);
+					Matriz[i][17] = rs.getString(18);
+					Matriz[i][18] = rs.getString(19);
+					i++;
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Matriz;
+		}
+
+	 
+	 
 	 public float saldo_actual_para_pagos_en_efectivo(){
 			String query = "select top 1 saldo from orden_de_gasto_pago_en_efectivo order by fecha_mov desc"; 
 			float folio =0;

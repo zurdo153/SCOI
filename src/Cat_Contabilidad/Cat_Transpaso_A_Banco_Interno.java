@@ -51,6 +51,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	Connexion con = new Connexion();
 	JToolBar menu_toolbar       = new JToolBar();
 	
+	Obj_Transpaso_A_Banco_Interno banco_interno= new Obj_Transpaso_A_Banco_Interno();	
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	Obj_tabla  ObjTab = new Obj_tabla();
 
@@ -59,8 +60,8 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(110);	
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(80);
     	this.tabla.getColumnModel().getColumn(2).setMinWidth(110);
-    	this.tabla.getColumnModel().getColumn(3).setMinWidth(65);
-    	this.tabla.getColumnModel().getColumn(3).setMaxWidth(65);
+    	this.tabla.getColumnModel().getColumn(3).setMinWidth(68);
+    	this.tabla.getColumnModel().getColumn(3).setMaxWidth(68);
     	this.tabla.getColumnModel().getColumn(4).setMinWidth(110);
     	this.tabla.getColumnModel().getColumn(5).setMinWidth(110);
     	this.tabla.getColumnModel().getColumn(6).setMinWidth(110);
@@ -88,6 +89,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
 	JTextField txtFolio             = new Componentes().text(new JCTextField() ,"Folio"                     ,30   ,"String");
+	JTextField txtFolio_impresion   = new Componentes().text(new JCTextField() ,"Teclee El Folio Para Imprimir",30   ,"String");
 	JTextField txtFolioTrabajo      = new Componentes().text(new JCTextField() ,"Folio Trabajo"             ,50   ,"String");
 	JTextField txtConcentrado       = new Componentes().text(new JCTextField() ,"Concentrado"               ,50   ,"String");
 	JTextField txtFechaConcentrado  = new Componentes().text(new JCTextField() ,"Fecha Concentrado"         ,60   ,"String");
@@ -115,11 +117,15 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	JCButton btnModificar  = new JCButton("Modificar"    ,"Modify.png"            ,"Azul");
 	JCButton btnBuscarCorte= new JCButton("Buscar Concentrado","Filter-List-icon16.png","Azul"); 
 	
-	String status[] = {"PENDIENTE","RECIBIDO","CANCELADO"};
+	String status[] = {"TRASFERIDO","RECIBIDO","CANCELADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
 	
-	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimientos("B");
+	String cuentas[] =  banco_interno.Combo_Cuentas();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbcuenta_bancaria = new JComboBox(cuentas);
+	
+	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimientos("S");
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimientoScoi);
 	
@@ -129,9 +135,11 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
     Object[] vector = new Object[7];
 
     String guardar_actualizar="";
+   	String grupoestablecimientos ="";
+   	
    public  Cat_Transpaso_A_Banco_Interno(){
 	    this.cont.add(panel);
-		this.setSize(745,520);
+		this.setSize(745,540);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -143,9 +151,9 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
    	    this.menu_toolbar.add(btnNuevo    );
 		this.menu_toolbar.addSeparator(   );
 		this.menu_toolbar.addSeparator(   );
-   	    this.menu_toolbar.add(btnModificar);
-		this.menu_toolbar.addSeparator(   );
-		this.menu_toolbar.addSeparator(   );
+//      this.menu_toolbar.add(btnModificar);
+//		this.menu_toolbar.addSeparator(   );
+//		this.menu_toolbar.addSeparator(   );
 		this.menu_toolbar.add(btnDeshacer );
 		this.menu_toolbar.addSeparator(   );
 		this.menu_toolbar.addSeparator(   );
@@ -161,13 +169,18 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
    	 
 		int x=20, y=20,width=100,height=20, sep=110;
 		this.panel.add(menu_toolbar).setBounds                        (x         ,y      ,500     ,height );
-		this.panel.add(new JLabel("Fecha Actual:")).setBounds         (x+530     ,y      ,width   ,height );
-		this.panel.add(txtFecha).setBounds                            (x+600     ,y      ,width   ,height );
+		this.panel.add(txtFolio_impresion).setBounds                  (x+530     ,y      ,170     ,height );
 		this.panel.add(txtFolio).setBounds                            (x         ,y+=27  ,width   ,height );
 		this.panel.add(cmb_status).setBounds                          (x+=sep    ,y      ,width   ,height );
 		this.panel.add(txtFolio_Beneficiario).setBounds               (x+=sep    ,y      ,50      ,height );
 		this.panel.add(txtBeneficiario).setBounds                     (x+=50     ,y      ,380     ,height );
 		this.panel.add(btnSolicitante).setBounds                      (x+=380    ,y      ,50      ,height );
+		
+		this.panel.add(new JLabel("Cuenta:")).setBounds               (x=20      ,y+=27  ,width   ,height );
+		this.panel.add(cmbcuenta_bancaria).setBounds                  (x+=45     ,y      ,130     ,height );
+		this.panel.add(new JLabel("Fecha:")).setBounds                (x+=178    ,y      ,width   ,height );
+		this.panel.add(txtFecha).setBounds                            (x+=40     ,y      ,130     ,height );
+		
 		this.panel.add(new JLabel("Observaciones:")).setBounds        (x=20      ,y+=20  ,width   ,height );
 		this.panel.add(Observaciones).setBounds                       (x         ,y+=15  ,700     ,40     );
 		this.panel.add(cmbEstablecimiento).setBounds                  (x         ,y+=47  ,170     ,height );
@@ -197,20 +210,24 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 		btnGuardar.addActionListener(guardar);
 		btnModificar.addActionListener(opEditar);
 		
-		cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento );
-		btnSolicitante.addActionListener    (opFiltroBuscarSolicitante  );
-		btnAgregar.addActionListener        (opAgregarProducto          );
-		btnQuitarfila.addActionListener     (opQuitarfila               );
-		btnBuscar.addActionListener         (opFiltroBuscar_orden_pago  );
-		btnImprimir.addActionListener       (opImprimir_Reporte         );   
-		btnBuscarCorte.addActionListener    (opFiltroBuscarcortecajaverd);
+		cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento  );
+		btnSolicitante.addActionListener    (opFiltroBuscarSolicitante   );
+		btnAgregar.addActionListener        (opAgregarProducto           );
+		btnQuitarfila.addActionListener     (opQuitarfila                );
+		btnBuscar.addActionListener         (opFiltroBuscar_orden_pago   );
+		btnImprimir.addActionListener       (opImprimir_Reporte          );   
+		btnBuscarCorte.addActionListener    (opFiltroBuscarcortecajaverd );
+		cmbcuenta_bancaria.addActionListener(opFiltroTipoDeCuenta        );
 		
-        txtImporte_Banco_Interno.addKeyListener  (opAgregarConEnter         );
+        txtImporte_Banco_Interno.addKeyListener(opAgregarConEnter        );
 		
 		btnDeshacer.setToolTipText("<ESC> Tecla Directa");
 		btnGuardar.setToolTipText("<CTRL+G> Tecla Directa");
 
 		try { txtFecha.setText(new BuscarSQL().fecha(0).toString());} catch (SQLException e1) {e1.printStackTrace();}
+		txtSolicitante.setText(usuario.getNombre_completo());
+		txtFoliosolicit.setText(usuario.getFolio()+"");
+		
 		txtFecha.setEditable(false);
 		txtFoliosolicit.setEditable(false);
 		txtSolicitante.setEditable(false);
@@ -221,9 +238,6 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 		txtFolioTrabajo.setEditable(false);
 		txtImporte_Cheque.setEditable(false);
 		txtFechaConcentrado.setEditable(false);
-		
-		txtSolicitante.setText(usuario.getNombre_completo());
-		txtFoliosolicit.setText(usuario.getFolio()+"");
 		
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
           getRootPane().getActionMap().put("escape", new AbstractAction(){public void actionPerformed(ActionEvent e){  btnDeshacer.doClick(); } });
@@ -238,6 +252,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
     }
 	
     public void panel_booleano(boolean boleano){
+    	cmbcuenta_bancaria.setEnabled(boleano);
 		cmb_status.setEnabled(boleano);
 		cmbEstablecimiento.setEnabled(boleano);
 	    txtImporte_Banco_Interno.setEditable(boleano); 
@@ -255,20 +270,30 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
     }
    
     public void panel_limpiar(){
+    	cmbEstablecimiento.removeActionListener(opSeleccionEstablecimiento);
+    	cmbcuenta_bancaria.removeActionListener(opFiltroTipoDeCuenta);
 		btnBuscar.setEnabled(true);
 		cmb_status.setSelectedIndex(0);
-		cmbEstablecimiento.setSelectedIndex(0);;
+		cmbEstablecimiento.setSelectedIndex(0);
+		cmbcuenta_bancaria.setSelectedIndex(0);
 		txtImporte_Concentrado.setText("");
 		txtFolioTrabajo.setText("");
 		txtImporte_Cheque.setText("");
 	    txtImporte_Banco_Interno.setText(""); 
+	    txtConcentrado.setText("");
+	    txtFechaConcentrado.setText("");
 		txtTotal.setText("");
-		
+		txtFolio_impresion.setText("");
 		txtFolio.setText("");
 	    txtBeneficiario.setText("");
 	    txtFolio_Beneficiario.setText("");
 		txaObservaciones.setText("");
 		modelo.setRowCount(0);
+		try { txtFecha.setText(new BuscarSQL().fecha(0).toString());} catch (SQLException e1) {e1.printStackTrace();}
+		txtSolicitante.setText(usuario.getNombre_completo());
+		txtFoliosolicit.setText(usuario.getFolio()+"");
+    	cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento);
+    	cmbcuenta_bancaria.addActionListener(opFiltroTipoDeCuenta);
     }
 	
 	public void calculo_cheque(){
@@ -284,25 +309,32 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	};
    
 	KeyListener opAgregarConEnter = new KeyListener() {
-	public void keyTyped(KeyEvent e) {}
-	public void keyReleased(KeyEvent e) {
-		if(!txtFolioTrabajo.getText().toString().equals("")) {
-			if(!txtImporte_Banco_Interno.getText().toString().equals("")) { 
-				if(e.getKeyCode()==KeyEvent.VK_ENTER){
-					calculo_cheque();
-					btnAgregar.doClick();
+		public void keyTyped(KeyEvent e) {
+			if(!txtImporte_Banco_Interno.getText().toString().equals("")) {
+			calculo_cheque();
+			}else {
+				return;
+			}
+		}
+		
+		public void keyReleased(KeyEvent e) {
+			if(!txtFolioTrabajo.getText().toString().equals("")) {
+				if(!txtImporte_Banco_Interno.getText().toString().equals("")) { 
+					if(e.getKeyCode()==KeyEvent.VK_ENTER){
+						calculo_cheque();
+						btnAgregar.doClick();
+					}
 				}
 			}
-			
 		}
-	}
-	public void keyPressed(KeyEvent e) {
-		if(!txtImporte_Banco_Interno.getText().toString().equals("")) {
-		calculo_cheque();
-		}else {
-			return;
+		
+		public void keyPressed(KeyEvent e) {
+			if(!txtImporte_Banco_Interno.getText().toString().equals("")) {
+			calculo_cheque();
+			}else {
+				return;
+			}
 		}
-	}
     };
     
     ActionListener opFiltroBuscarcortecajaverd = new ActionListener(){
@@ -316,13 +348,33 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
  			}
  		}
  	};	
- 	
- 	 ActionListener opAgregarProducto = new ActionListener(){
+
+    ActionListener opFiltroTipoDeCuenta = new ActionListener(){
+ 		@SuppressWarnings("unchecked")
+		public void actionPerformed(ActionEvent e){
+ 			cmbcuenta_bancaria.setEnabled(false);
+ 			cmbEstablecimiento.setEnabled(true);
+ 			cmbEstablecimiento.removeActionListener(opSeleccionEstablecimiento);
+ 			grupoestablecimientos=cmbcuenta_bancaria.getSelectedItem().toString().trim().substring(0,1);
+ 			cmbEstablecimiento.removeAllItems();
+	 		 String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimientos(grupoestablecimientos);
+	 		  for(int i=0;i<establecimientoScoi.length;i++){
+	 		 	 cmbEstablecimiento.addItem(establecimientoScoi[i].toString().trim());
+	 		  }
+ 			cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento);  
+ 			cmbEstablecimiento.requestFocus();
+ 			cmbEstablecimiento.showPopup();
+ 			btnSolicitante.setEnabled(false);
+ 		}
+ 	};	
+	
+ 	ActionListener opAgregarProducto = new ActionListener(){
  		public void actionPerformed(ActionEvent e){
  				if(txtImporte_Banco_Interno.getText().equals("")){
  					JOptionPane.showMessageDialog(null, "Es Requerido Que El Banco Interno Tenga Importe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
  					return;
  				}else {
+ 					calculo_cheque();
  					Object[] Vector_Producto = new Object[7];
  					Vector_Producto[0]=cmbEstablecimiento.getSelectedItem().toString();	
  					Vector_Producto[1]=txtFolioTrabajo.getText().toString();		
@@ -358,7 +410,6 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
  				if(seleccion < tabla.getRowCount()){
  					modelo.removeRow(seleccion);
  					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
- 					
  					if(tabla.getRowCount()>0) {
  						calculo();
  					}else {
@@ -369,23 +420,17 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
  		}
  	};
  	
- 	
- 	
- 	
- 	
- 	
- 	
     ActionListener opEditar = new ActionListener(){
  		public void actionPerformed(ActionEvent e){
  			guardar_actualizar="A";
-			
 			txtSolicitante.setText(usuario.getNombre_completo());
 			txtFoliosolicit.setText(usuario.getFolio()+"");
-			
 			btnGuardar.setEnabled(true);
 			btnBuscar.setEnabled(false);
 			btnNuevo.setEnabled(false);
 			btnImprimir.setEnabled(false);
+			txtFolio_impresion.setText("");
+			txtFolio_impresion.setEditable(false);
 			btnAgregar.setEnabled(true);
 			btnQuitarfila.setEnabled(true);
 			txtImporte_Banco_Interno.setEditable(true);
@@ -404,16 +449,25 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
  	
  	 ActionListener opImprimir_Reporte = new ActionListener(){
   		public void actionPerformed(ActionEvent e){
-  			String basedatos="2.26";
-  			String vista_previa_reporte="no";
-  			int vista_previa_de_ventana=0;
-  			String comando="orden_de_gasto_reporte '"+txtFolio.getText().toString()+"'";
-  			String reporte = "Obj_Reporte_De_Orden_De_Gasto.jrxml";
-  			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+  			String folio="";
+			if(txtFolio_impresion.getText().equals("")){
+				folio=txtFolio.getText().toString().trim();
+			}else {
+				folio=txtFolio_impresion.getText().toString().trim();
+			}
+			if(folio.equals("")){
+				JOptionPane.showMessageDialog(null, "Es Requerido Que teclee un folio para Generar su reporte","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+				txtFolio_impresion.requestFocus();
+			}else {
+	  			String basedatos="2.26";
+	  			String vista_previa_reporte="no";
+	  			int vista_previa_de_ventana=0;
+	  			String comando="banco_interno_reporte_de_transferencia "+folio;
+	  			String reporte = "Obj_Reporte_De_Banco_Interno_Movimiento.jrxml";
+	  			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			} 
   		}
   	};
-  	
-   
 	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -425,9 +479,12 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
+			
 			txtSolicitante.setText(usuario.getNombre_completo());
 			txtFoliosolicit.setText(usuario.getFolio()+"");
 			
+			txtFolio_impresion.setText("");
+			txtFolio_impresion.setEditable(false);
 			txtFolio.setText(folio_inventario);
 			txtFolio.setEditable(false);
 			btnGuardar.setEnabled(true);
@@ -448,7 +505,6 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 					   txtImporte_Concentrado.setText("");
 					   txtImporte_Banco_Interno.setText("");
 					   txtImporte_Cheque.setText("");
-					   
 					   btnBuscarCorte.doClick();
 				   }
 				return;
@@ -463,14 +519,16 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			guardar_actualizar="";
+			
 			if(guardar_actualizar.equals("N")){
 				if(JOptionPane.showConfirmDialog(null, "Hay Datos Capturados y No Han Sido Guardados, ¿Desea Borrar Todo?", "Aviso", JOptionPane.INFORMATION_MESSAGE,0, new ImageIcon("Imagen/usuario-icono-noes_usuario9131-64.png") )== 0){
 					panel_limpiar();
 					panel_booleano(false);
 					btnModificar.setEnabled(false);
-					txtFolio.requestFocus();
 					btnNuevo.setEnabled(true);
+					txtFolio_impresion.setEditable(true);
+					btnImprimir.setEnabled(true);
+					guardar_actualizar="";
 					return;
 			     }else{
               		return;
@@ -479,8 +537,10 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 			btnModificar.setEnabled(false);
 			panel_limpiar();
 			panel_booleano(false);;
-			txtFolio.requestFocus();
 			btnNuevo.setEnabled(true);
+			btnImprimir.setEnabled(true);
+			txtFolio_impresion.setEditable(true);
+			guardar_actualizar="";
 			return;
 		}
 		}
@@ -489,7 +549,6 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	ActionListener guardar = new ActionListener(){
 	public void actionPerformed(ActionEvent e){
 				calculo();
-				Obj_Transpaso_A_Banco_Interno banco_interno= new Obj_Transpaso_A_Banco_Interno();	
 				
 			 if(txtTotal.getText().equals("")||Float.valueOf(txtTotal.getText())==0){
 					JOptionPane.showMessageDialog(null, "Es Requerido Alimente Importe al Banco Interno Para Poder Guardar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -502,15 +561,14 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 				   banco_interno.setUsuario_realiza_transpaso(Integer.valueOf(txtFoliosolicit.getText().toString().trim()));
 				   banco_interno.setEstatus(cmb_status.getSelectedItem().toString().trim());
 				   banco_interno.setGuardar_actualizar(guardar_actualizar);
+				   banco_interno.setCuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
 				   banco_interno.setDatos(tabla_guardado);
-				   
-				   
-				 //TODO GUARDAR
 				if(banco_interno.GuardarActualizar().getFolio()>0){
 					guardar_actualizar="";
-					btnDeshacer.doClick();
-					JOptionPane.showMessageDialog(null, "Se Guardo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					txtFolio.setText(banco_interno.getFolio()+"" );
+					btnImprimir.setEnabled(true);
 					btnImprimir.doClick();
+					btnDeshacer.doClick();
 				}else{
 				  	JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 					return;
@@ -584,9 +642,10 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 		        		txtBeneficiario.setText (tablab.getValueAt(fila,1)+"");
 						btnAgregar.setEnabled(true);
 						btnQuitarfila.setEnabled(true);
-						cmbEstablecimiento.setEnabled(true);
+						cmbcuenta_bancaria.setEnabled(true);
 						txaObservaciones.setEditable(true);
-						txaObservaciones.requestFocus();
+						cmbcuenta_bancaria.requestFocus();
+						cmbcuenta_bancaria.showPopup();
 						dispose();
 		        	}
 		        }
@@ -601,7 +660,6 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 	}
-	
 
 	//TODO inicia filtro_Buscar cortes de caja Verde
 	public class Cat_Filtro_Buscar_Corte_Caja_Verde extends JDialog{
@@ -623,7 +681,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 	    	this.tablab.getColumnModel().getColumn( 9).setMinWidth(130);
 	    	this.tablab.getColumnModel().getColumn(10).setMinWidth(90);
 	    	
-			 String comandob="banco_interno_filtro_cortes_cajas_verdes_de_trabajos '"+cadena+"'" ;
+			String comandob="banco_interno_filtro_cortes_cajas_verdes_de_trabajos '"+cadena+"','"+cmbEstablecimiento.getSelectedItem().toString()+"','"+cmbcuenta_bancaria.getSelectedItem().toString().trim()+"'"  ;
 			String basedatos="98",pintar="si";
 			ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
 	    }
@@ -666,9 +724,42 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 			this.init_tablafp(parametro_cadena_de_concentrados());
 			this.agregar(tablab);
 			this.txtBuscarb.addKeyListener  (opFiltro );
+			this.txtBuscarb.addKeyListener  (PasarATabla );
+			this.tablab.addKeyListener(agregarcon_enter);
 			contfb.add(panelfb);
 		}
 		
+		KeyListener PasarATabla = new KeyListener() {
+			public void keyTyped(KeyEvent e){}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_DOWN){
+					tablab.requestFocus();
+					tablab.getSelectionModel().setSelectionInterval(0,0);;
+				}
+			}
+		};
+		
+		KeyListener agregarcon_enter = new KeyListener() {
+			public void keyTyped(KeyEvent e){}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					int fila = tablab.getSelectedRow();
+	        		txtFolioTrabajo.setText (tablab.getValueAt(fila,0)+"");
+	        		txtConcentrado.setText (tablab.getValueAt(fila,1)+"");
+	        		txtImporte_Concentrado.setText (tablab.getValueAt(fila,2)+"");
+	        		txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,2)+"");
+	        		txtFechaConcentrado.setText (tablab.getValueAt(fila,3)+"");
+	        		txtImporte_Banco_Interno.setEditable(true);
+	        		btnAgregar.setEnabled(true);
+	        		calculo_cheque();
+	        		dispose();
+	        		txtImporte_Banco_Interno.requestFocus();	
+				}
+			}
+		};
+			
 		public String parametro_cadena_de_concentrados(){
 			 int rengloneslunes     = tabla.getRowCount()    ;
 			 int fila  = 0;
@@ -694,12 +785,34 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 		        		int fila = tablab.getSelectedRow();
 		        		txtFolioTrabajo.setText (tablab.getValueAt(fila,0)+"");
 		        		txtConcentrado.setText (tablab.getValueAt(fila,1)+"");
-		        		txtImporte_Concentrado.setText (tablab.getValueAt(fila,2)+"");
-		        		txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,2)+"");
 		        		txtFechaConcentrado.setText (tablab.getValueAt(fila,3)+"");
-		        		txtImporte_Banco_Interno.setEditable(true);
-		        		btnAgregar.setEnabled(true);
-		        		calculo_cheque();
+		        		
+		        		if(grupoestablecimientos.equals("S")||grupoestablecimientos.equals("F")) {
+		        			txtImporte_Banco_Interno.setEditable(true);
+		        			txtImporte_Concentrado.setText (tablab.getValueAt(fila,2)+"");
+			        		txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,2)+"");
+			        		txtImporte_Banco_Interno.setEditable(true);
+			        		btnAgregar.setEnabled(true);
+			        		calculo_cheque();
+		        		}else {
+		        			if(grupoestablecimientos.equals("V")) {
+			        			    txtImporte_Concentrado.setText (tablab.getValueAt(fila,6)+"");
+				        		    txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,6)+"");
+			        				txtImporte_Banco_Interno.setEditable(false);
+					        		btnAgregar.setEnabled(true);
+					        		calculo_cheque();
+					        		btnAgregar.doClick();
+		        			}else {
+		        				if(grupoestablecimientos.equals("D")) {
+				        			txtImporte_Concentrado.setText (tablab.getValueAt(fila,5)+"");
+					        		txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,5)+"");
+			        				txtImporte_Banco_Interno.setEditable(false);
+					        		btnAgregar.setEnabled(true);
+					        		calculo_cheque();
+					        		btnAgregar.doClick();
+		        				}
+		        			}	
+		        		}
 		        		dispose();
 		        		txtImporte_Banco_Interno.requestFocus();
 		        	}
@@ -722,22 +835,23 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 			JLayeredPane panelfb = new JLayeredPane();
 			Connexion con = new Connexion();
 			Obj_tabla ObjTab =new Obj_tabla();
-			int columnasb = 11,checkbox=-1;
+			int columnasb = 12,checkbox=-1;
 			public void init_tablafp(){
 		    	this.tablab.getColumnModel().getColumn( 0).setMinWidth(50);
 		    	this.tablab.getColumnModel().getColumn( 0).setMaxWidth(50);
-		    	this.tablab.getColumnModel().getColumn( 1).setMinWidth(350);
-		    	this.tablab.getColumnModel().getColumn( 2).setMinWidth(140);
+		    	this.tablab.getColumnModel().getColumn( 1).setMinWidth(100);
+		    	this.tablab.getColumnModel().getColumn( 2).setMinWidth(200);
 		    	this.tablab.getColumnModel().getColumn( 3).setMinWidth(200);
-		    	this.tablab.getColumnModel().getColumn( 4).setMinWidth(160);
-		    	this.tablab.getColumnModel().getColumn( 5).setMinWidth(100);
-		    	this.tablab.getColumnModel().getColumn( 6).setMinWidth(230);
-		    	this.tablab.getColumnModel().getColumn( 7).setMinWidth(130);
-		    	this.tablab.getColumnModel().getColumn( 8).setMinWidth(130);
-		    	this.tablab.getColumnModel().getColumn( 9).setMinWidth(130);
-		     	this.tablab.getColumnModel().getColumn(12).setMinWidth(180);
-		     	
-				String comandob = "orden_de_gasto_filtro";
+		    	this.tablab.getColumnModel().getColumn( 4).setMinWidth(120);
+		    	this.tablab.getColumnModel().getColumn( 5).setMinWidth(130);
+		    	this.tablab.getColumnModel().getColumn( 6).setMinWidth(120);
+		    	this.tablab.getColumnModel().getColumn( 7).setMinWidth(120);
+		    	this.tablab.getColumnModel().getColumn( 8).setMinWidth(200);
+		    	this.tablab.getColumnModel().getColumn( 9).setMinWidth(150);
+		    	this.tablab.getColumnModel().getColumn(10).setMinWidth(150);
+		    	this.tablab.getColumnModel().getColumn(11).setMinWidth(350);
+		    	
+				String comandob = "banco_interno_traspasos_filtro";
 		    	String basedatos="26",pintar="si";
 				ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
 		    }
@@ -749,7 +863,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 				 return types;
 			}
 			
-			public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{"Folio","Proveedor","Tipo Provedor","Descripcion Gasto","Establecimiento","Importe Total","Usuario Solicita", "Fecha","Estatus","Fecha Autorizacion","Usuario Autorizo"}){
+			public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{ "Folio","Fecha Traspaso","Destinatario","Usuario T.","Importe Concentrado","Importe Ingreso", "Importe Egreso", "Importe Cheque", "Recibe", "Fecha Recibe", "Estatus", "Observaciones"}){
 				 @SuppressWarnings("rawtypes")
 					Class[] types = base();
 					@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -772,7 +886,7 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 				this.setModal(true);
 				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 				this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Un Registro Con Doble Click"));
-				this.setTitle("Filtro De Ordenes De Pago");
+				this.setTitle("Filtro De Movimientos En Banco Interno");
 				trsfiltro = new TableRowSorter(modelob); 
 				tablab.setRowSorter(trsfiltro);
 				this.panelfb.add(txtBuscarb).setBounds      (10 ,20 ,800 , 20 );
@@ -800,33 +914,36 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
 			        	if(e.getClickCount()==1){
+			        		panel_limpiar();
 			        		modelo.setRowCount(0);
-			        		int fila = tablab.getSelectedRow();
-////			        		String[][] tablacompleta=gasto.consulta_orden_de_gasto(Integer.valueOf(tablab.getValueAt(fila,0)+""));
-//			        	    Object[]   vectortabla = new Object[3];
-//			        		for(int i=0;i<tablacompleta.length;i++){
-//			        				for(int j=0;j<3;j++){
-//			        				  vectortabla[j] = tablacompleta[i][j].toString();
-//			        				}
-//			        				modelo.addRow(vectortabla);
-//			        			}
-//			        			 
-//			        		txtFolio.setText(tablacompleta[0][3].toString());
-//			        		txaObservaciones.setText(tablacompleta[0][4].toString());
-//			        		cmbEstablecimiento.setSelectedItem(tablacompleta[0][6].toString());
-//			        		txtFolio_Beneficiario.setText (tablacompleta[0][7].toString());
-//			        		txtBeneficiario.setText (tablacompleta[0][8].toString());
-//			         		txtFoliosolicit.setText (tablacompleta[0][11].toString());
-//			        		txtSolicitante.setText (tablacompleta[0][14].toString());
-//			        		cmb_status.setSelectedItem(tablacompleta[0][15].toString());
-//			        		tabla.setEnabled(false );
-//			        		panel_booleano(false);
-//			        		
-//			        		if(tablacompleta[0][15].toString().equals("PENDIENTE")){btnModificar.setEnabled(true); }else{btnModificar.setEnabled(false);}
-//							btnImprimir.setEnabled(true);
-//							txtFolio.setEditable(false);
-//							calculo();
-//							dispose();
+			        		
+							int fila = tablab.getSelectedRow();
+			        		String[][] tablacompleta=banco_interno.consulta_movimiento_banco(Integer.valueOf(tablab.getValueAt(fila,0)+""));
+			        	    Object[]   vectortabla = new Object[7];
+			        		for(int i=0;i<tablacompleta.length;i++){
+			        				for(int j=0;j<7;j++){
+			        				  vectortabla[j] = tablacompleta[i][j].toString();
+			        				}
+			        				modelo.addRow(vectortabla);
+			        		}
+			        			 
+			        		txtFolio.setText             (tablacompleta[0][ 7].toString());
+			        		cmb_status.setSelectedItem   (tablacompleta[0][ 8].toString());
+			        		txtFolio_Beneficiario.setText(tablacompleta[0][ 9].toString());
+			        		txtBeneficiario.setText      (tablacompleta[0][10].toString());
+			        		txaObservaciones.setText     (tablacompleta[0][11].toString());
+			         		txtFoliosolicit.setText      (tablacompleta[0][12].toString());
+			        		txtSolicitante.setText       (tablacompleta[0][13].toString());
+			        		txtFecha.setText             (tablacompleta[0][14].toString());
+			        		
+			        		cmbEstablecimiento.removeActionListener(opSeleccionEstablecimiento);
+			        		cmbcuenta_bancaria.removeActionListener(opFiltroTipoDeCuenta);
+			        		
+			        		cmbcuenta_bancaria.setSelectedItem(tablacompleta[0][15].toString());
+			        		cmbEstablecimiento.setSelectedItem(tablacompleta[0][6].toString());
+			        		
+							calculo();
+							dispose();
 			        	}
 			        }
 		        });
@@ -837,33 +954,33 @@ public class Cat_Transpaso_A_Banco_Interno extends JFrame{
 				public void keyReleased(KeyEvent e) {}
 				public void keyPressed(KeyEvent e) {
 					if(e.getKeyCode()==KeyEvent.VK_ENTER){
-						modelo.setRowCount(0);
-		        		int fila = tablab.getSelectedRow();
-//		        		String[][] tablacompleta=gasto.consulta_orden_de_gasto(Integer.valueOf(tablab.getValueAt(fila,0)+""));
-//		        	    Object[]   vectortabla = new Object[3];
-//		        		for(int i=0;i<tablacompleta.length;i++){
-//		        				for(int j=0;j<3;j++){
-//		        				  vectortabla[j] = tablacompleta[i][j].toString();
-//		        				}
-//		        				modelo.addRow(vectortabla);
-//		        			}
-//		        			 
-//		        		txtFolio.setText(tablacompleta[0][3].toString());
-//		        		txaObservaciones.setText(tablacompleta[0][4].toString());
-//		        		cmbEstablecimiento.setSelectedItem(tablacompleta[0][6].toString());
-//		        		txtFolio_Beneficiario.setText (tablacompleta[0][7].toString());
-//		        		txtBeneficiario.setText (tablacompleta[0][8].toString());
-//		         		txtFoliosolicit.setText (tablacompleta[0][11].toString());
-//		        		txtSolicitante.setText (tablacompleta[0][14].toString());
-//		        		cmb_status.setSelectedItem(tablacompleta[0][15].toString());
-//		        		tabla.setEnabled(false );
-//		        		panel_booleano(false);
-//		        		
-//		        		if(tablacompleta[0][15].toString().equals("PENDIENTE")){btnModificar.setEnabled(true); }else{btnModificar.setEnabled(false);}
-//						btnImprimir.setEnabled(true);
-//						txtFolio.setEditable(false);
-//						calculo();
-//						dispose();
+						panel_limpiar();
+		        		modelo.setRowCount(0);
+		        		
+						int fila = tablab.getSelectedRow();
+		        		String[][] tablacompleta=banco_interno.consulta_movimiento_banco(Integer.valueOf(tablab.getValueAt(fila,0)+""));
+		        	    Object[]   vectortabla = new Object[7];
+		        		for(int i=0;i<tablacompleta.length;i++){
+		        				for(int j=0;j<7;j++){
+		        				  vectortabla[j] = tablacompleta[i][j].toString();
+		        				}
+		        				modelo.addRow(vectortabla);
+		        		}
+		        			 
+		        		txtFolio.setText             (tablacompleta[0][ 7].toString());
+		        		cmb_status.setSelectedItem   (tablacompleta[0][ 8].toString());
+		        		txtFolio_Beneficiario.setText(tablacompleta[0][ 9].toString());
+		        		txtBeneficiario.setText      (tablacompleta[0][10].toString());
+		        		txaObservaciones.setText     (tablacompleta[0][11].toString());
+		         		txtFoliosolicit.setText      (tablacompleta[0][12].toString());
+		        		txtSolicitante.setText       (tablacompleta[0][13].toString());
+		        		txtFecha.setText             (tablacompleta[0][14].toString());
+		        		
+		        		cmbEstablecimiento.removeActionListener(opSeleccionEstablecimiento);
+		        		cmbcuenta_bancaria.removeActionListener(opFiltroTipoDeCuenta);
+		        		cmbEstablecimiento.setSelectedItem(tablacompleta[0][6].toString());
+						calculo();
+						dispose();
 					}
 				}
 			};

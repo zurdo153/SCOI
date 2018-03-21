@@ -2880,10 +2880,8 @@ public void guardar_modificar_Empleado(){
 	}
 //TODO filtro Busqueda de Colaborador
 	public class Cat_Filtro_Empleado extends JDialog {
-		
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
-		
 		Connexion con = new Connexion();
 		Obj_tabla ObjTabf =new Obj_tabla();
 		int columnas = 9,checkbox=-1;
@@ -2967,6 +2965,7 @@ public void guardar_modificar_Empleado(){
               });
               
               tablaf.addKeyListener(seleccionEmpleadoconteclado);
+              txtFolioFiltroEmpleado.addKeyListener(PasarATabla);
               
 //            pone el foco en la tabla al presionar f4
               getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -2991,6 +2990,17 @@ public void guardar_modificar_Empleado(){
 	                 }
 	            });
 		}
+		
+		KeyListener PasarATabla = new KeyListener() {
+			public void keyTyped(KeyEvent e){}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_DOWN){
+					tablaf.requestFocus();
+					tablaf.getSelectionModel().setSelectionInterval(0,0);;
+				}
+			}
+		};
 		
 		private void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {

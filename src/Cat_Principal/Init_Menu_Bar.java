@@ -26,8 +26,8 @@ public class Init_Menu_Bar extends Init_Login{
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.254");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/IconoSCOI.png"));
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.258");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/LOGO SCOI 64 X 64  PIX-01.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
     	int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;

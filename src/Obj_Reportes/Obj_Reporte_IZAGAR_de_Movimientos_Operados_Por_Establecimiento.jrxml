@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2017-10-08T14:13:26 -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_IZAGAR_de_Movimientos_Operados" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d02be6cd-0290-4940-b7e4-035870743839">
 	<property name="ireport.zoom" value="1.6105100000000019"/>
 	<property name="ireport.x" value="69"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BMS"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -19,26 +19,66 @@
 	<queryString language="SQL">
 		<![CDATA[exec sp_Reporte_IZAGAR_de_Movimientos_Operados_Por_Establecimiento '02/10/2017 00:00:00','SUPER III']]>
 	</queryString>
-	<field name="Folio" class="java.lang.String"/>
-	<field name="Fecha" class="java.sql.Timestamp"/>
-	<field name="Importe" class="java.lang.Double"/>
-	<field name="Iva" class="java.math.BigDecimal"/>
-	<field name="Costo" class="java.lang.Double"/>
-	<field name="Transaccion" class="java.lang.String"/>
-	<field name="Razon_Social" class="java.lang.String"/>
-	<field name="Pedido" class="java.lang.String"/>
-	<field name="Razon_Movimiento" class="java.lang.String"/>
-	<field name="Establecimiento" class="java.lang.String"/>
-	<field name="Cod_Estab" class="java.lang.Integer"/>
-	<field name="Establecimiento_Destino" class="java.lang.String"/>
-	<field name="Cod_Dest" class="java.lang.String"/>
-	<field name="Factura_Proveedor" class="java.lang.String"/>
-	<field name="Remision_Proveedor" class="java.lang.String"/>
-	<field name="Notas" class="java.lang.String"/>
-	<field name="Cond_Pago" class="java.lang.String"/>
-	<field name="Total_Movimiento" class="java.lang.Double"/>
-	<field name="Cod_Usuario" class="java.lang.Integer"/>
-	<field name="Nombre_Usuario" class="java.lang.String"/>
+	<field name="Folio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Folio"/>
+	</field>
+	<field name="Fecha" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="Fecha"/>
+	</field>
+	<field name="Importe" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="Importe"/>
+	</field>
+	<field name="Iva" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="Iva"/>
+	</field>
+	<field name="Costo" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="Costo"/>
+	</field>
+	<field name="Transaccion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Transaccion"/>
+	</field>
+	<field name="Razon_Social" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Razon_Social"/>
+	</field>
+	<field name="Pedido" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Pedido"/>
+	</field>
+	<field name="Razon_Movimiento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Razon_Movimiento"/>
+	</field>
+	<field name="Establecimiento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Establecimiento"/>
+	</field>
+	<field name="Cod_Estab" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="Cod_Estab"/>
+	</field>
+	<field name="Establecimiento_Destino" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Establecimiento_Destino"/>
+	</field>
+	<field name="Cod_Dest" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Cod_Dest"/>
+	</field>
+	<field name="Factura_Proveedor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Factura_Proveedor"/>
+	</field>
+	<field name="Remision_Proveedor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Remision_Proveedor"/>
+	</field>
+	<field name="Notas" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Notas"/>
+	</field>
+	<field name="Cond_Pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Cond_Pago"/>
+	</field>
+	<field name="Total_Movimiento" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="Total_Movimiento"/>
+	</field>
+	<field name="Cod_Usuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Cod_Usuario"/>
+	</field>
+	<field name="Nombre_Usuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Nombre_Usuario"/>
+	</field>
 	<group name="Transaccion" keepTogether="true">
 		<groupExpression><![CDATA[$F{Transaccion}]]></groupExpression>
 		<groupHeader>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2018-02-08T19:02:56 -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Mermas" pageWidth="1050" pageHeight="595" orientation="Landscape" columnWidth="1010" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa25be24-42c0-4c58-97d3-472a5d206ee5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -429,9 +428,9 @@
 	<title>
 		<band height="60" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="1010" height="60" backcolor="#0000CC" uuid="79d3fddc-7c79-45bc-9072-db581e23fbd7"/>
+				<reportElement mode="Opaque" x="0" y="0" width="1010" height="60" backcolor="#FFFFFF" uuid="79d3fddc-7c79-45bc-9072-db581e23fbd7"/>
 				<staticText>
-					<reportElement style="Title" x="0" y="0" width="1010" height="60" uuid="9558bc4a-a9d8-4682-a9bb-383042f9265c"/>
+					<reportElement style="Title" x="0" y="0" width="826" height="60" forecolor="#000000" uuid="9558bc4a-a9d8-4682-a9bb-383042f9265c"/>
 					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="38" isBold="false"/>
