@@ -10503,25 +10503,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				
-//				System.out.println(rs.getInt("folio"));
-//				System.out.println(rs.getString("empleado").trim());
-//				System.out.println(rs.getString("no_checador").trim());
-//				System.out.println(rs.getInt("status"));
-//				System.out.println(rs.getInt("folio_estab"));
-//				System.out.println(rs.getString("establecimiento").trim());
-//				System.out.println(rs.getInt("folio_puesto"));
-//				System.out.println(rs.getString("puesto").trim());
-//				System.out.println(rs.getString("master_key").trim());
-//				System.out.println(rs.getBoolean("valor_descanso"));
-//				System.out.println(rs.getBoolean("valor_pc"));
-//				System.out.println(rs.getBoolean("checado_duplicado"));
-//				System.out.println(rs.getBoolean("checar_dia_dobla"));
-//				System.out.println(rs.getBoolean("checa_salida_comer"));
-//				
-//				System.out.println(rs.getString("filas").trim());
-//				System.out.println(rs.getString("filas2").trim());
-				
+						
 				checador.setFolio_empleado(rs.getInt("folio"));
 				checador.setNombre_empleado(rs.getString("empleado").trim());
 				checador.setNo_checador(rs.getString("no_checador").trim());
@@ -10541,6 +10523,16 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				
 				checador.setArreglo_mensaje(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas")));
 				checador.setHora_checador(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas2")));
+				
+				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+				FileOutputStream fos = new FileOutputStream(photo);
+				
+		            byte[] buffer = new byte[1];
+		            InputStream is = rs.getBinaryStream("foto");
+		            while (is.read(buffer) > 0) {
+		                fos.write(buffer);
+		            }
+		            fos.close();
 				
 			}
 			

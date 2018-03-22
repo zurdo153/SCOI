@@ -36,7 +36,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import Obj_Checador.Obj_Checador;
-
+import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.Obj_tabla;
@@ -515,7 +515,7 @@ public class Cat_Checador extends JFrame {
 	            
 		                                            if(Integer.parseInt(registro[0][1].toString().trim().substring(0,2))<2){
 		                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
-		                                                            lblNota2.setText("A CHECADO "+tipo+" A LA "+hora+" Hr");
+		                                                            lblNota2.setText("A CHECADO "+tipo+" A LA "+hora.substring(0,9)+" Hr");
 		
 		                                            }else{
 		                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
@@ -671,10 +671,10 @@ public class Cat_Checador extends JFrame {
                 lblFecha.setFont(new Font("Algerian",0,20));
                 
                 lblNota.setForeground(Color.BLUE);
-                lblNota.setFont(new Font("Arial",0,20));
+                lblNota.setFont(new Font("Arial",0,18));
                 
                 lblNota2.setForeground(Color.BLUE);
-                lblNota2.setFont(new Font("Arial",0,20));
+                lblNota2.setFont(new Font("Arial",0,18));
                 
                 lblNombre.setFont(new Font("Monospaced",0,9));
                 lblEstablecimiento.setFont(new Font("Monospaced",0,9));
