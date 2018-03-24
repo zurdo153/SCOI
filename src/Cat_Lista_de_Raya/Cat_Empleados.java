@@ -232,7 +232,7 @@ public class Cat_Empleados extends JFrame{
 	JCheckBox chbFuente_Sodas = new JCheckBox("Fnt de Sodas");
 	JCheckBox chbGafete = new JCheckBox("Gafete");
 	
-	String status[] = {"Vigente","Vacaciones","Incapacidad","Baja","No Contratable","Provicional Checador","Renuncia","Checador Bloqueado"};
+	String status[] = {"Vigente","Vacaciones","Incapacidad","Baja","No Contratable","Provicional Checador","Renuncia"};
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbStatus = new JComboBox(status);
 	
@@ -327,7 +327,7 @@ public class Cat_Empleados extends JFrame{
 	 @SuppressWarnings("rawtypes")
 	private JComboBox cmbHorarioRotativo = new JComboBox(horarioRotativo);
 	 
-	String statusChecador[] = {"NORMAL","LIBRE"};
+	String statusChecador[] = {"NORMAL","LIBRE","CHECADOR BLOQUEADO"};
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbStatusChecador = new JComboBox(statusChecador);
 	
@@ -1571,7 +1571,7 @@ public void guardar_modificar_Empleado(){
 								
 								empleado.setFecha_ingreso_imss(txtIngresoImss.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtIngresoImss.getDate()));
 								empleado.setFecha_vencimiento_licencia(txtVencimientoLicencia.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
-								empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString().equals("NORMAL")?"N":"L");
+								empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString()/*.equals("NORMAL")?"N":"L"*/);
 								
 		//				percepciones y deducciones
 						
@@ -1731,7 +1731,7 @@ public void guardar_modificar_Empleado(){
 							
 							empleado.setFecha_ingreso_imss(txtIngresoImss.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtIngresoImss.getDate()));
 							empleado.setFecha_vencimiento_licencia(txtVencimientoLicencia.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
-							empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString().equals("NORMAL")?"N":"L");
+							empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString()/*.equals("NORMAL")?"N":"L"*/);
 							
 	//				percepciones y deducciones
 					

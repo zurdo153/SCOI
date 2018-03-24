@@ -127,7 +127,7 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1, 	empleado.getNumero_infonavit().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getEstablecimiento());
 			pstmt.setInt(i+=1, 		empleado.getPuesto());
-			pstmt.setString(i+=1, 	empleado.getStatus_checador());
+			pstmt.setString(i+=1, 	empleado.getStatus_checador().equals("NORMAL")?"N":(empleado.getStatus_checador().equals("LIBRE")?"L":"B"));
 			
 //			percepciones y deducciones
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());

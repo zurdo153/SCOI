@@ -11,6 +11,7 @@ public class Obj_Checador {
 	private String nombre_empleado;
 	private String no_checador;
 	private int status;
+	private String status_checador;
 	private int folio_estab;
 	private String establecimiento;
 	private int folio_puesto;
@@ -24,13 +25,13 @@ public class Obj_Checador {
 	
 //	private String cadena_mensaje_xml;
 	private Object[][] arreglo_mensaje;
-	private Object[][] hora_checador;
+//	private Object[][] hora_checador;
 	
 	public Obj_Checador() {
 		folio_empleado = 0;		nombre_empleado="";		no_checador="";		status = 0;		folio_estab = 0;
 		establecimiento="";		folio_puesto = 0;		puesto="";		master_key="";		valida_descanso=false;
 		valida_pc=false;		valida_chequeo_duplicado=false;			valida_checar_dia_dobla=false;		
-		valida_checar_salida_a_comer=false;		arreglo_mensaje= null;		hora_checador=null;
+		valida_checar_salida_a_comer=false;		arreglo_mensaje= null;		/*hora_checador=null;*/
 	}
 
 	public int getFolio_empleado() {
@@ -63,6 +64,14 @@ public class Obj_Checador {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getStatus_checador() {
+		return status_checador;
+	}
+
+	public void setStatus_checador(String status_checador) {
+		this.status_checador = status_checador;
 	}
 
 	public int getFolio_estab() {
@@ -152,7 +161,7 @@ public class Obj_Checador {
 	public void setArreglo_mensaje(Object[][] arreglo_mensaje) {
 		this.arreglo_mensaje = arreglo_mensaje;
 	}
-
+/*
 	public Object[][] getHora_checador() {
 		return hora_checador;
 	}
@@ -160,7 +169,7 @@ public class Obj_Checador {
 	public void setHora_checador(Object[][] hora_checador) {
 		this.hora_checador = hora_checador;
 	}
-
+*/
 	public Obj_Checador buscar(int folio_empleado){
 		try {
 			return new BuscarSQL().buscar_datos_para_checador(folio_empleado);

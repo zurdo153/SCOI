@@ -10496,7 +10496,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		
 		Obj_Checador checador = new Obj_Checador();
 		String query = "exec checador_select_principal "+folio+",'"+pc_nombre+"'";
-//		System.out.println(query);
+		System.out.println(query);
 		
 		Statement stmt = null;
 		try {
@@ -10508,6 +10508,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				checador.setNombre_empleado(rs.getString("empleado").trim());
 				checador.setNo_checador(rs.getString("no_checador").trim());
 				checador.setStatus(rs.getInt("status"));
+				checador.setStatus_checador(rs.getString("status_checador"));
 				checador.setFolio_estab(rs.getInt("folio_estab"));
 				
 				checador.setEstablecimiento(rs.getString("establecimiento").trim());
@@ -10522,7 +10523,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				checador.setValida_checar_salida_a_comer(rs.getBoolean("checa_salida_comer"));
 				
 				checador.setArreglo_mensaje(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas")));
-				checador.setHora_checador(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas2")));
+//				checador.setHora_checador(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas2")));
 				
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);
@@ -10555,6 +10556,35 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			if(stmt!=null){stmt.close();}
 		}
 		return checador;
+	}
+	
+	public Object[][] buscar_registro_checador(int folio){
+		
+		Object[][] vector = null;
+		String query = "exec checador_select_registro_realizado_xml "+folio;
+		System.out.println(query);
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				vector = new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+		}
+		return vector;
 	}
 	
 	public Object[][] Buscar_Huella(int folio) throws SQLException{

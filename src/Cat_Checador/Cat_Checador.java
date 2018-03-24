@@ -35,8 +35,8 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import Conexiones_SQL.BuscarSQL;
 import Obj_Checador.Obj_Checador;
-import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.Obj_tabla;
@@ -350,77 +350,85 @@ public class Cat_Checador extends JFrame {
 //								Obj_Empleados re = new Obj_Empleados().buscar(folio_empleado);  //busca a empleado 
 //		                        Obj_Entosal entosalClave = new Obj_Entosal().buscar(); //busca clave maestra
 								
-			                        if(checador.getFolio_empleado()==folio_empleado){
-			                        	
-			                        	System.out.println("Status: "+checador.getStatus());
-		                           		switch (checador.getStatus()){
-		                                         case 1: if(checador.getNo_checador().equals(codigoBarrar)){
-		                                            		 		registrarEntrada("-");
-		                                            	 }else{
-		                                            		 if(checador.getMaster_key().equals(claveMaster)){
-		                                            			 	registrarEntrada("MASTER");
-		                                            		 }else{
-		                                            			 
-			                                            			 lblSemaforoRojo.setEnabled(true);
-			                                                         lblSemaforoVerde.setEnabled(false);
-				                    				     		     JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador <>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-		                                                			 txtClaveReal.setText("");
-		                                                			 txtClaveReal.requestFocus();
-		                                                           return;
-		                                            		 }
-		                                            	 }
-		                                          break;
-		                                          case 2:	lblSemaforoRojo.setEnabled(true);
-		                                          			lblSemaforoVerde.setEnabled(false);
-		                                          			JOptionPane.showMessageDialog(null, "No puedes checar, tu estatus es vacaciones\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
-		                                                                         txtClaveReal.setText("");
-		                                                                         txtClaveReal.requestFocus();
-		                                          break;
-		                                          case 3:	lblSemaforoRojo.setEnabled(true);
-		                                          			lblSemaforoVerde.setEnabled(false);
-		                                          			JOptionPane.showMessageDialog(null, "No puedes checar, tu estatus es de incapacidad\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
-		                                                                         txtClaveReal.setText("");
-		                                                                         txtClaveReal.requestFocus();
-		                                          break;
-		                                          case 4:	lblSemaforoRojo.setEnabled(true);
-		                                          			lblSemaforoVerde.setEnabled(false);
-		                                          			JOptionPane.showMessageDialog(null, "No puedes checar, tu estatus es de baja\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
-		                                                                         txtClaveReal.setText("");
-		                                                                         txtClaveReal.requestFocus();
-		                                          break;
-		                                          case 5:	lblSemaforoRojo.setEnabled(true);
-		                                          			lblSemaforoVerde.setEnabled(false);
-		                                          			JOptionPane.showMessageDialog(null, "No puedes checar, tu estatus es de baja\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
-		                                                                         txtClaveReal.setText("");
-		                                                                         txtClaveReal.requestFocus();
-		                                          break;
-		                                          case 6: if(checador.getNo_checador().equals(codigoBarrar)){
-				                                          		 		registrarEntrada("-");
-				                                          	 }else{
-				                                          		 if(checador.getMaster_key().equals(claveMaster)){
-				                                          			 	registrarEntrada("MASTER");
-				                                          		 }else{
-				                                          			 
+								if(checador.getStatus_checador().equals("CHECADOR BLOQUEADO")){
+										txtClaveReal.setText("");
+		                       			txtClaveReal.requestFocus();
+			                        	pantallaDeAvisos();
+	                        	}else{
+			                        		
+				                        if(checador.getFolio_empleado()==folio_empleado){
+				                        	
+				                        	System.out.println("Status: "+checador.getStatus());
+				                        	
+				                        		
+				                           		switch (checador.getStatus()){
+				                                         case 1: if(checador.getNo_checador().equals(codigoBarrar)){
+				                                            		 		registrarEntrada("-");
+				                                            	 }else{
+				                                            		 if(checador.getMaster_key().equals(claveMaster)){
+				                                            			 	registrarEntrada("MASTER");
+				                                            		 }else{
+				                                            			 
 					                                            			 lblSemaforoRojo.setEnabled(true);
 					                                                         lblSemaforoVerde.setEnabled(false);
-					                    				     		     JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-				                                              			 txtClaveReal.setText("");
-				                                              			 txtClaveReal.requestFocus();
-				                                                         return;
-				                                          		 }
-				                                          	 }
-				                                  break;
-		                                          case 8: pantallaDeAvisos(); break;
-		                                };
-                               
-								}else{
-									lblSemaforoRojo.setEnabled(true);
-									lblSemaforoVerde.setEnabled(false);
-				     		  		 JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador > ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-			                         txtClaveReal.setText("");
-			                         txtClaveReal.requestFocus();
-			                         return;
-								}
+						                    				     		     JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador <>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				                                                			 txtClaveReal.setText("");
+				                                                			 txtClaveReal.requestFocus();
+				                                                           return;
+				                                            		 }
+				                                            	 }
+				                                          break;
+				                                          case 2:	lblSemaforoRojo.setEnabled(true);
+				                                          			lblSemaforoVerde.setEnabled(false);
+				                                          			JOptionPane.showMessageDialog(null, "No puedes checar, tu estatus es vacaciones\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
+				                                                                         txtClaveReal.setText("");
+				                                                                         txtClaveReal.requestFocus();
+				                                          break;
+				                                          case 3:	lblSemaforoRojo.setEnabled(true);
+				                                          			lblSemaforoVerde.setEnabled(false);
+				                                          			JOptionPane.showMessageDialog(null, "No puedes checar, tu estatus es de incapacidad\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
+				                                                                         txtClaveReal.setText("");
+				                                                                         txtClaveReal.requestFocus();
+				                                          break;
+				                                          case 4:	lblSemaforoRojo.setEnabled(true);
+				                                          			lblSemaforoVerde.setEnabled(false);
+				                                          			JOptionPane.showMessageDialog(null, "No puedes checar, tu estatus es de baja\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
+				                                                                         txtClaveReal.setText("");
+				                                                                         txtClaveReal.requestFocus();
+				                                          break;
+				                                          case 5:	lblSemaforoRojo.setEnabled(true);
+				                                          			lblSemaforoVerde.setEnabled(false);
+				                                          			JOptionPane.showMessageDialog(null, "No puedes checar, tu estatus es de baja\nfavor de comunicarte a desarrollo humano,\npara que puedas registrar tu entrada a trabajar,\nde lo contrario no te sera valido el pago de este dia","Aviso",JOptionPane.WARNING_MESSAGE);
+				                                                                         txtClaveReal.setText("");
+				                                                                         txtClaveReal.requestFocus();
+				                                          break;
+				                                          case 6: if(checador.getNo_checador().equals(codigoBarrar)){
+						                                          		 		registrarEntrada("-");
+						                                          	 }else{
+						                                          		 if(checador.getMaster_key().equals(claveMaster)){
+						                                          			 	registrarEntrada("MASTER");
+						                                          		 }else{
+						                                          			 
+							                                            			 lblSemaforoRojo.setEnabled(true);
+							                                                         lblSemaforoVerde.setEnabled(false);
+							                    				     		     JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						                                              			 txtClaveReal.setText("");
+						                                              			 txtClaveReal.requestFocus();
+						                                                         return;
+						                                          		 }
+						                                          	 }
+						                                  break;
+				                                };
+		                        	
+									}else{
+										lblSemaforoRojo.setEnabled(true);
+										lblSemaforoVerde.setEnabled(false);
+					     		  		 JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador > ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				                         txtClaveReal.setText("");
+				                         txtClaveReal.requestFocus();
+				                         return;
+									}
+		                        }
 					 	}else{
 	                   		 lblSemaforoRojo.setEnabled(true);
                            lblSemaforoVerde.setEnabled(false);
@@ -515,11 +523,11 @@ public class Cat_Checador extends JFrame {
 	            
 		                                            if(Integer.parseInt(registro[0][1].toString().trim().substring(0,2))<2){
 		                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
-		                                                            lblNota2.setText("A CHECADO "+tipo+" A LA "+hora.substring(0,9)+" Hr");
+		                                                            lblNota2.setText("A CHECADO "+tipo+" A LA "+hora.substring(0,hora.length()-3)+" Hr");
 		
 		                                            }else{
 		                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
-		                                                            lblNota2.setText("A  CHECADO "+tipo+" A LAS "+hora.substring(0,9)+" Hrs");
+		                                                            lblNota2.setText("A  CHECADO "+tipo+" A LAS "+hora.substring(0,hora.length()-3)+" Hrs");
 		                                            }
 	                                            
 		                                        lblNombre.setText("Emp: ");
@@ -556,57 +564,22 @@ public class Cat_Checador extends JFrame {
                 txtClaveReal.setText("");
         }
         
-        @SuppressWarnings("unused")
-		public static Object[][] intentar_checar(int folio_empleado,String tipo_entrada,int tipo_salida_comer){
+        public static Object[][] intentar_checar(int folio_empleado,String tipo_entrada,int tipo_salida_comer){
                 
 //metodo para llenar vector para checador2--------------------------------------
-                Object[][] vector = new Object[1][8];
+                Object[][] vector = null;
                 
                 if(new Obj_Checador().insertar_checada(folio_empleado,tipo_entrada,tipo_salida_comer)){
-//                if(new Obj_Empleados().insertar_checada(folio_empleado,tipo_entrada,tipo_salida_comer)){
-//            	 if(true){
+                	
+                	vector = new BuscarSQL().buscar_registro_checador(folio_empleado);
+                	
                 	lblSemaforoRojo.setEnabled(false);
                     lblSemaforoVerde.setEnabled(true);
                     
-//                    Vector fila_sql=new Obj_Entosal().buscar_hora_entosal(folio_empleado);
-	                 for(int i=0 ; i<8; i++ ){
-	                         vector[0][i]= "   "+checador.getHora_checador()[0][i];
-	                 }
-	                 
-//	                 for(int i=0; i<vector.length; i++){
-//	                	 System.out.println(vector[][]);
-//	                 }
-                    
-                 
                  	tabla_model.setRowCount(0);
                  	init_tabla();                                
                             	
                  	pantallaDeAvisos();
-//                           //TODO   apartado para configurar el uso de la pantalla de avisos--------------------------------
-////                                Object [] vectormensaje = new Object[5];
-////                                for(Object[] rg: checador.getArreglo_mensaje()){
-////                                	
-////                                }
-////                                Vector fila_mensaje=new Obj_Entosal().Obj_Mensaje_respuesta(folio_empleado);
-//                 	
-////                 			Object[][] fila_mensaje = checador.getArreglo_mensaje();
-////                                if(fila_mensaje.get(0).toString().trim().equals("true")){
-//                                	 if(checador.getArreglo_mensaje()[0][0].toString().trim().equals("true")){
-//		                                    JDialog frame = new JDialog();
-////			                                String ruta=fila_mensaje.get(3).toString().trim();
-////			                                String mensaje=fila_mensaje.get(2).toString().trim();
-////			                                String color_fuente=fila_mensaje.get(4).toString().trim();
-//		                                    
-//		                                    String ruta=checador.getArreglo_mensaje()[0][3].toString().trim();
-//			                                String mensaje=checador.getArreglo_mensaje()[0][2].toString().trim();
-//			                                String color_fuente=checador.getArreglo_mensaje()[0][4].toString().trim();
-//			                                
-//			                        	           frame.setUndecorated(true);
-//			                        	           
-//			                        		    new Cat_Avisos_Checador(frame,ruta,mensaje,color_fuente);
-//			                        		    frame.setVisible(true);
-//                                }
-//// -------------------------------------------------------------------------------------------
                 }else{
                 	lblSemaforoRojo.setEnabled(true);
                     lblSemaforoVerde.setEnabled(false);
@@ -618,14 +591,6 @@ public class Cat_Checador extends JFrame {
         
         public static void pantallaDeAvisos(){
             //TODO   apartado para configurar el uso de la pantalla de avisos--------------------------------
-//          Object [] vectormensaje = new Object[5];
-//          for(Object[] rg: checador.getArreglo_mensaje()){
-//          	
-//          }
-//          Vector fila_mensaje=new Obj_Entosal().Obj_Mensaje_respuesta(folio_empleado);
-
-//		Object[][] fila_mensaje = checador.getArreglo_mensaje();
-//          if(fila_mensaje.get(0).toString().trim().equals("true")){
           	 if(checador.getArreglo_mensaje()[0][0].toString().trim().equals("true")){
                       JDialog frame = new JDialog();
 //                      String ruta=fila_mensaje.get(3).toString().trim();
@@ -643,7 +608,6 @@ public class Cat_Checador extends JFrame {
           }
 //-------------------------------------------------------------------------------------------
         }
-        
         
         private static boolean isNumeric(String cadena){
         	try {
