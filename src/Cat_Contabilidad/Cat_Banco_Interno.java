@@ -319,11 +319,10 @@ public void constructor_Ingreso(String tipo) {
 		 		this.panel.add(cmbcuenta_bancaria).setBounds                    (x=20      ,y+=27  ,130     ,height );
 		 		this.panel.add(new JLabel("Saldo Actual:")).setBounds           (x+=140    ,y      ,170     ,height );		 		
 		 		this.panel.add(txtSaldo_Actual).setBounds                       (x+=65     ,y      ,width   ,height );
-		 		this.panel.add(new JLabel("Importe Total A Transferir:")).setBounds(x+=110 ,y      ,170     ,height );
+		 		this.panel.add(new JLabel("Importe Total A Recibir:")).setBounds(x+=110    ,y      ,170     ,height );
 		 		this.panel.add(txttotalImporte_BI).setBounds                    (x+140     ,y      ,width   ,height );
-
-		 		this.panel.add(scroll_tabla).setBounds                          (x =20        ,y+=27  ,700     ,270    );
-		 		this.panel.add(new JLabel("Observaciones:")).setBounds          (x=20      ,y+=270  ,width   ,height );
+		 		this.panel.add(scroll_tabla).setBounds                          (x =20     ,y+=27  ,700     ,270    );
+		 		this.panel.add(new JLabel("Observaciones:")).setBounds          (x=20      ,y+=270 ,width   ,height );
 		 		this.panel.add(Observaciones).setBounds                         (x         ,y+=15  ,700     ,40     );
 				
 		 		init_tabla();

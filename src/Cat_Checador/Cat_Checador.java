@@ -36,7 +36,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import Obj_Checador.Obj_Checador;
-import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.Obj_tabla;

@@ -10318,7 +10318,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			}
 			return Matriz;
 		}
-
 	 
 	 public String[][] Tabla_Movimiento_banco(int folio_gasto){
 			String[][] Matriz = null;
