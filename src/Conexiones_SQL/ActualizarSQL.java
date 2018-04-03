@@ -3,6 +3,7 @@ package Conexiones_SQL;
 
 
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.InetAddress;
@@ -72,9 +73,21 @@ public class ActualizarSQL {
 	PreparedStatement pstmtb = null;
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
-	public boolean Empleado(Obj_Empleados empleado, int folio){
-		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	public boolean Empleado(Obj_Empleados empleado, int folio, ByteArrayInputStream datosHuella, ByteArrayInputStream datosHuella2, int tamañoHuella, int tamañoHuella2){
+		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,"
+												  + "?,?,?,?,?,?,?,?,?,?,"
+												  + "?,?,?,?,?,?,?,?,?,?,"
+												  + "?,?,?,?,?,?,?,?,?,?,"
+												  + "?,?,?,?,?,?,?,?,?,?,"
+												  + "?,?,?,?,?,?,?,?,?,?,"
+												  + "?,?,?,?,?";
 
+//		  System.out.println("ActualizaNdo-------------------");
+//		  System.out.println(datosHuella);
+//		  System.out.println(datosHuella2);
+//		  System.out.println(tamañoHuella);
+//		  System.out.println(tamañoHuella2);
+		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -94,6 +107,89 @@ public class ActualizarSQL {
 //			private String telefono_cuadrante;
 			int i=1;
 			pstmt = con.prepareStatement(query);
+			
+//			System.out.println(		folio);
+//			System.out.println(	empleado.getNo_checador());
+//			System.out.println( 	empleado.getNombre().toUpperCase());
+//			System.out.println(	empleado.getAp_paterno().toUpperCase());
+//			System.out.println(	empleado.getAp_materno().toUpperCase());
+//			System.out.println(	empleado.getFecha_nacimiento());
+//			System.out.println(	empleado.getCalle().toUpperCase());
+//			System.out.println( 	empleado.getColonia().toUpperCase());
+//			System.out.println( 	empleado.getPoblacion().toUpperCase());
+//			System.out.println( 	empleado.getTelefono_familiar().toUpperCase());
+//			System.out.println( 	empleado.getTelefono_propio().toUpperCase());
+//			System.out.println( 	empleado.getRfc().toUpperCase());
+//			System.out.println( 	empleado.getCurp().toUpperCase());
+//			System.out.println( 		empleado.getSexo());
+//			System.out.println( 	empleado.getEmailEmpresa());
+//			
+//			System.out.println( 	empleado.getFoto());
+////			FileInputStream stream_foto = new FileInputStream(empleado.getFoto());
+////			pstmt.setBinaryStream(i+=1, stream_foto, empleado.getFoto().length());
+//			
+////			laboral
+//			System.out.println( 		empleado.getHorario());
+//			System.out.println( 		empleado.getHorario2());
+//			System.out.println( 		empleado.getStatus_h1());
+//			System.out.println( 		empleado.getStatus_h2());
+//			System.out.println( 		empleado.getStatus_rotativo());
+//			System.out.println( 	empleado.getFecha_ingreso().toUpperCase());
+//			System.out.println( 		empleado.getStatus());	
+//			System.out.println( 		empleado.isCuadrante_parcial() ? 1 : 0);
+//			System.out.println( 		empleado.getDepartameto());	
+//			System.out.println( 	empleado.getImss().toUpperCase().trim());
+//			System.out.println( 		empleado.getStatus_imss());
+//			System.out.println( 	empleado.getNumero_infonavit().toUpperCase());
+//			System.out.println( 		empleado.getEstablecimiento());
+//			System.out.println( 		empleado.getPuesto());
+//			System.out.println( 	empleado.getStatus_checador().equals("NORMAL")?"N":(empleado.getStatus_checador().equals("LIBRE")?"L":"B"));
+//			
+////			percepciones y deducciones
+//			System.out.println( 	empleado.getSalario_diario());
+//			System.out.println( 	empleado.getSalario_diario_integrado());
+//			System.out.println(	empleado.getForma_pago().toUpperCase());
+//			System.out.println(	empleado.getStatus()==4||empleado.getStatus()==5?0:empleado.getSueldo());
+//			System.out.println( 		empleado.getStatus()==4||empleado.getStatus()==5?1:empleado.getBono());
+//			
+//			System.out.println(    empleado.getBono_asistencia());
+//			System.out.println( 	empleado.getBono_puntualidad());
+//			System.out.println( 	empleado.getInfonacot());
+//			
+//			System.out.println( 		empleado.getPrestamo());
+//			System.out.println( 	empleado.getPension_alimenticia());
+//			System.out.println(	empleado.getInfonavit());
+//			System.out.println( 	empleado.getTargeta_nomina().toUpperCase());
+//			System.out.println( 		empleado.getTipo_banco());
+//			System.out.println(empleado.isGafete());
+//			System.out.println(empleado.isFuente_sodas());
+//			System.out.println( 	empleado.getObservasiones().toUpperCase());
+//			System.out.println( 	empleado.getFecha_actualizacion().toUpperCase());
+//			
+////			cambios extras 
+//			System.out.println(		empleado.getHorario3());
+//			System.out.println( 		empleado.getStatus_h3());
+//			System.out.println( 	empleado.getFecha_ingreso_imss());
+//			System.out.println( 	empleado.getFecha_vencimiento_licencia());
+//			System.out.println( 		usuario.getFolio());
+//			
+////			TODO (Datos Adicionales)
+//			System.out.println( 	empleado.getEstado_civil().toUpperCase());
+//			System.out.println( 	empleado.getTipo_sangre().toUpperCase());
+//			System.out.println( 	empleado.getEscolaridad().toUpperCase());
+//			System.out.println( 		empleado.getContrato());
+//			System.out.println( 		empleado.getPresencia_fisica());
+//			System.out.println( 		ip);
+//			System.out.println( 		pc);
+//			
+//			System.out.println( 		empleado.getPerfil());
+//	    	System.out.println( 	empleado.getForma_de_checar());
+//	    	System.out.println( 	empleado.getEmailPersonal());
+			
+//-------------------------------------------------------------------------------------------------------------			
+			
+			
+			
 			pstmt.setInt   (i,		folio);
 			pstmt.setString(i+=1,	empleado.getNo_checador());
 			pstmt.setString(i+=1, 	empleado.getNombre().toUpperCase());
@@ -108,7 +204,7 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1, 	empleado.getRfc().toUpperCase());
 			pstmt.setString(i+=1, 	empleado.getCurp().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getSexo());
-			pstmt.setString(i+=1, 	empleado.getEmail());
+			pstmt.setString(i+=1, 	empleado.getEmailEmpresa());
 			FileInputStream stream_foto = new FileInputStream(empleado.getFoto());
 			pstmt.setBinaryStream(i+=1, stream_foto, empleado.getFoto().length());
 			
@@ -127,7 +223,8 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1, 	empleado.getNumero_infonavit().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getEstablecimiento());
 			pstmt.setInt(i+=1, 		empleado.getPuesto());
-			pstmt.setString(i+=1, 	empleado.getStatus_checador().equals("NORMAL")?"N":(empleado.getStatus_checador().equals("LIBRE")?"L":"B"));
+			pstmt.setString(i+=1, 	empleado.getStatus_checador().toString().trim());
+//			pstmt.setString(i+=1, 	empleado.getStatus_checador().equals("NORMAL")?"N":(empleado.getStatus_checador().equals("LIBRE")?"L":"B"));
 			
 //			percepciones y deducciones
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
@@ -167,7 +264,16 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1, 		pc);
 			
 			pstmt.setInt(i+=1, 		empleado.getPerfil());
+	    	pstmt.setString(i+=1, 	empleado.getForma_de_checar());
+	    	pstmt.setString(i+=1, 	empleado.getEmailPersonal());
 			
+//TODO(Huellas(inicio))-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			pstmt.setBinaryStream(i+=1, datosHuella,tamañoHuella);
+	    	pstmt.setBinaryStream(i+=1, datosHuella2,tamañoHuella2);
+//TODO(Huellas(fin))-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	    	
+	    	System.out.println(i+" cantidad de registros");
+	    	
 			pstmt.executeUpdate();
 			con.commit();
 			

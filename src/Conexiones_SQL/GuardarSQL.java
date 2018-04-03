@@ -131,8 +131,13 @@ public class GuardarSQL {
 	PreparedStatement pstmtb = null;
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
-	public boolean Guardar_Empleado(Obj_Empleados empleado){
-		String query = "exec sp_insert_empleado ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	public boolean Guardar_Empleado(Obj_Empleados empleado, ByteArrayInputStream datosHuella, ByteArrayInputStream datosHuella2, int tamañoHuella, int tamañoHuella2){
+		String query = "exec sp_insert_empleado ?,?,?,?,?,?,?,?,?,?,"
+											+  "?,?,?,?,?,?,?,?,?,?,"
+											+  "?,?,?,?,?,?,?,?,?,?,"
+											+  "?,?,?,?,?,?,?,?,?,?,"
+											+  "?,?,?,?,?,?,?,?,?,?,"
+											+  "?,?,?,?,?,?,?,?";
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -166,7 +171,7 @@ public class GuardarSQL {
 			pstmt.setString(i+=1, 	empleado.getRfc().toUpperCase());
 			pstmt.setString(i+=1, 	empleado.getCurp().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getSexo());
-			pstmt.setString(i+=1, 	empleado.getEmail());
+			pstmt.setString(i+=1, 	empleado.getEmailEmpresa());
 			
 			FileInputStream stream_foto = new FileInputStream(empleado.getFoto());
 			pstmt.setBinaryStream(i+=1, stream_foto, empleado.getFoto().length());
@@ -186,7 +191,8 @@ public class GuardarSQL {
 			pstmt.setString(i+=1, 	empleado.getNumero_infonavit().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getEstablecimiento());
 			pstmt.setInt(i+=1, 		empleado.getPuesto());
-			pstmt.setString(i+=1, 	empleado.getStatus_checador().equals("NORMAL")?"N":(empleado.getStatus_checador().equals("LIBRE")?"L":"B"));
+			pstmt.setString(i+=1, 	empleado.getStatus_checador().toString().trim());
+//			pstmt.setString(i+=1, 	empleado.getStatus_checador().equals("NORMAL")?"N":(empleado.getStatus_checador().equals("LIBRE")?"L":"B"));
 			
 //			percepciones y deducciones
 			pstmt.setFloat(i+=1, 	empleado.getSalario_diario());
@@ -220,6 +226,16 @@ public class GuardarSQL {
 			
 			pstmt.setInt(i+=1, 		empleado.getPerfil());
 			
+	    	pstmt.setString(i+=1, 	empleado.getEmailPersonal());
+	    	pstmt.setString(i+=1, 	empleado.getForma_de_checar());
+	    	System.out.println(empleado.getForma_de_checar()+" forma de checar");
+			
+//TODO(Huellas(inicio))-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			pstmt.setBinaryStream(i+=1, datosHuella,tamañoHuella);
+	    	pstmt.setBinaryStream(i+=1, datosHuella2,tamañoHuella2);
+//TODO(Huellas(fin))-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	    	
 			pstmt.executeUpdate();
 			con.commit();
 			
@@ -7658,10 +7674,9 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
-	public boolean Guardar_Huella(int folio_emp, ByteArrayInputStream datosHuella,int tamañoHuella){
+	public boolean Guardar_Huella(int folio_emp, ByteArrayInputStream datosHuella,int tamañoHuella, ByteArrayInputStream datosHuella2,int tamañoHuella2){
 		
-//		String query = "update huelas_digitales set img=? WHERE folio_emp=?";
-		String query = "insert into huelas_digitales(folio_emp,img) values (?,?)";
+		String query = "exec insert_huella_digital ?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 	     try {
@@ -7670,10 +7685,12 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 
 	    	 pstmt.setInt(1,folio_emp);
 	    	 pstmt.setBinaryStream(2, datosHuella,tamañoHuella);
+	    	 pstmt.setBinaryStream(3, datosHuella2,tamañoHuella2);
+	    	 
 	    	 pstmt.executeUpdate();
 				con.commit();
 				
-			} catch (Exception e) {
+			}catch (Exception e) {
 				System.out.println("SQLException: "+e.getMessage());
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Huella ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 

@@ -23,15 +23,19 @@ public class Obj_Checador {
 	private boolean valida_checar_dia_dobla;
 	private boolean valida_checar_salida_a_comer;
 	
-//	private String cadena_mensaje_xml;
+	private String forma_de_checar;
+	private byte[] huella_1;
+	private byte[] huella_2;
+	
 	private Object[][] arreglo_mensaje;
-//	private Object[][] hora_checador;
 	
 	public Obj_Checador() {
 		folio_empleado = 0;		nombre_empleado="";		no_checador="";		status = 0;		folio_estab = 0;
 		establecimiento="";		folio_puesto = 0;		puesto="";		master_key="";		valida_descanso=false;
 		valida_pc=false;		valida_chequeo_duplicado=false;			valida_checar_dia_dobla=false;		
-		valida_checar_salida_a_comer=false;		arreglo_mensaje= null;		/*hora_checador=null;*/
+		valida_checar_salida_a_comer=false;		arreglo_mensaje= null;
+		
+		forma_de_checar="";		huella_1=null;		huella_2=null;
 	}
 
 	public int getFolio_empleado() {
@@ -161,23 +165,37 @@ public class Obj_Checador {
 	public void setArreglo_mensaje(Object[][] arreglo_mensaje) {
 		this.arreglo_mensaje = arreglo_mensaje;
 	}
-/*
-	public Object[][] getHora_checador() {
-		return hora_checador;
+	
+	public String getForma_de_checar() {
+		return forma_de_checar;
 	}
 
-	public void setHora_checador(Object[][] hora_checador) {
-		this.hora_checador = hora_checador;
+	public void setForma_de_checar(String forma_de_checar) {
+		this.forma_de_checar = forma_de_checar;
 	}
-*/
+
+	public byte[] getHuella_1() {
+		return huella_1;
+	}
+
+	public void setHuella_1(byte[] huella_1) {
+		this.huella_1 = huella_1;
+	}
+
+	public byte[] getHuella_2() {
+		return huella_2;
+	}
+
+	public void setHuella_2(byte[] huella_2) {
+		this.huella_2 = huella_2;
+	}
+
 	public Obj_Checador buscar(int folio_empleado){
 		try {
 			return new BuscarSQL().buscar_datos_para_checador(folio_empleado);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		System.out.println(this.getArreglo_mensaje()[0][0]+"------------------<<<<<<<<<");
 		return null;
 	}
 	

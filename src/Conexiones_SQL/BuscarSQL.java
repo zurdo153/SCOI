@@ -1260,7 +1260,8 @@ public class BuscarSQL {
 				empleado.setRfc(rs.getString("rfc").trim());
 				empleado.setCurp(rs.getString("curp").trim());
 				empleado.setSexo(rs.getInt("sexo"));
-				empleado.setEmail(rs.getString("email").trim());
+				empleado.setEmailEmpresa(rs.getString("email").trim());
+				empleado.setEmailPersonal(rs.getString("email_personal").trim());
 				
 //				laboral
 				empleado.setHorario(rs.getInt("horario"));
@@ -1281,6 +1282,7 @@ public class BuscarSQL {
 				empleado.setDescanso(rs.getString("descanso"));
 				empleado.setDobla(rs.getString("dobla"));
 				empleado.setStatus_checador(rs.getString("status_checador"));
+				empleado.setTieneHuella(rs.getBoolean("tiene_huellas"));
 				
 //				percepciones y deducciones
 				empleado.setSalario_diario(rs.getFloat("salario_diario"));
@@ -1329,7 +1331,8 @@ public class BuscarSQL {
 		                fos.write(buffer);
 		            }
 		            fos.close();
-		            
+		        
+		        empleado.setForma_de_checar(rs.getString("forma_de_checar"));
 			}
 			
 		} catch (Exception e) {
@@ -10495,8 +10498,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		
 		Obj_Checador checador = new Obj_Checador();
 		String query = "exec checador_select_principal "+folio+",'"+pc_nombre+"'";
-		System.out.println(query);
-		
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -10522,7 +10523,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				checador.setValida_checar_salida_a_comer(rs.getBoolean("checa_salida_comer"));
 				
 				checador.setArreglo_mensaje(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas")));
-//				checador.setHora_checador(new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas2")));
 				
 				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 				FileOutputStream fos = new FileOutputStream(photo);
@@ -10533,20 +10533,13 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		                fos.write(buffer);
 		            }
 		            fos.close();
+		            
+	            checador.setForma_de_checar(rs.getString("forma_de_checar"));
+	            checador.setHuella_1(rs.getBytes("huella_1"));
+	            checador.setHuella_2(rs.getBytes("huella_2"));
 				
 			}
 			
-			System.out.println(checador.getArreglo_mensaje().length+"-----------------------------------------------------");
-			System.out.println(checador.getArreglo_mensaje()[0][0]+"-----------------------------------------------------");
-//			for(int i =0; i<5; i++){
-//				System.out.println(checador.getArreglo_mensaje()[0][i]);
-//			}
-//			System.out.println("-----------------------------------------------------");
-//			for(int i =0; i<8; i++){
-//				System.out.println(checador.getHora_checador()[0][i]);
-//			}
-//			System.out.println("-----------------------------------------------------");
-		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -10557,18 +10550,26 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return checador;
 	}
 	
-	public Object[][] buscar_registro_checador(int folio){
+	public Object[][] buscar_registro_checador(int folio, String t_entrada, int tipo_salida_comer){
 		
-		Object[][] vector = null;
-		String query = "exec checador_select_registro_realizado_xml "+folio;
-		System.out.println(query);
+		String pc_nombre="";
+		String pc_ip = "";
+		try {
+			pc_nombre = InetAddress.getLocalHost().getHostName();
+			pc_ip = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
 		
+		Object[][] vector = new Object[7][1];
+//		String query = "exec checador_select_registro_realizado_xml "+folio;
+		String query = "exec checador_insert_entosal "+folio+",'"+pc_nombre+"','"+pc_ip+"','"+t_entrada+"',"+tipo_salida_comer;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				vector = new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas"));
+					vector = rs.getString("filas").toString().equals("false") ? new Object[][]{{"false","00:00:00","","","","","",""}} : new Obj_Xml.LeerXml().arregloLleno(rs.getString("filas"));
 			}
 			
 		} catch (Exception e) {
@@ -10579,7 +10580,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			if(stmt!=null){try {
 				stmt.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}}
 		}
@@ -10588,9 +10588,16 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	
 	public Object[][] Buscar_Huella(int folio) throws SQLException{
 		
-		Object[][] dato = new Object[1][2];
+		Object[][] dato = new Object[1][4];
 		
-		String query = "SELECT folio_emp,img FROM huelas_digitales WHERE folio_emp="+folio;
+		String query = "select emp.folio as folio_emp, "
+					+ " isnull(hd.huella_1,'') as huella_1, "
+					+ "	isnull(hd.huella_2,'') as huella_2, "
+					+ " (select * from tb_key_check_master) as master_key "
+					+ " from tb_empleado emp "
+					+ " left outer join huellas_digitales hd on hd.folio_emp = emp.folio "
+					+ " where emp.folio = "+folio;
+		
 		Statement stmt = null;
 
 		try {
@@ -10602,7 +10609,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			
 			while(rs.next()){
 				dato[0][0] = rs.getInt("folio_emp");
-				dato[0][1] =rs.getBytes("img");
+				dato[0][1] =rs.getBytes("huella_1");
+				dato[0][2] =rs.getBytes("huella_2");
+				dato[0][3] =rs.getString("master_key");
 		      }
 			
 		
