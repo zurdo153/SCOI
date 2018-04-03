@@ -80,8 +80,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	JTextField txtCantidad       = new Componentes().text(new JCTextField()  ,"Cantidad"                  ,30   ,"Double");
 	
     JTextArea  txtaUso           = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia"      , 300);
-	JScrollPane txtUso              = new JScrollPane(txtaUso);
-	
+	JScrollPane txtUso           = new JScrollPane(txtaUso);
 	
 	JDateChooser fhFecha 	= new JDateChooser();
 	
@@ -105,10 +104,10 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		return null; 
 	}
 	
-	JLabel lblPersona 	= new JLabel("");
-	JRadioButton rbProveedor 			= new JRadioButton("Proveedor");
-	JRadioButton rbEmpleado 		= new JRadioButton("Empleado");
-	ButtonGroup grupo = new ButtonGroup();
+	JLabel lblPersona 	     = new JLabel("");
+	JRadioButton rbProveedor = new JRadioButton("Proveedor");
+	JRadioButton rbEmpleado  = new JRadioButton("Empleado");
+	ButtonGroup grupo        = new ButtonGroup();
 	
 	JButton btnBuscar       = new JCButton("Buscar"       ,"Filter-List-icon16.png","Azul"); 
 	JButton btnGuardar      = new JCButton("Guardar","Guardar.png"    ,"Azul");
