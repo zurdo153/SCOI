@@ -6,9 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
-import java.awt.FileDialog;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -22,12 +20,11 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -86,6 +83,7 @@ import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -129,6 +127,25 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 
+import com.digitalpersona.onetouch.DPFPDataPurpose;
+import com.digitalpersona.onetouch.DPFPFeatureSet;
+import com.digitalpersona.onetouch.DPFPGlobal;
+import com.digitalpersona.onetouch.DPFPSample;
+import com.digitalpersona.onetouch.DPFPTemplate;
+import com.digitalpersona.onetouch.capture.DPFPCapture;
+import com.digitalpersona.onetouch.capture.event.DPFPDataAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPDataEvent;
+import com.digitalpersona.onetouch.capture.event.DPFPErrorAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPErrorEvent;
+import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusEvent;
+import com.digitalpersona.onetouch.capture.event.DPFPSensorAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPSensorEvent;
+import com.digitalpersona.onetouch.processing.DPFPEnrollment;
+import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
+import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
+import com.digitalpersona.onetouch.verification.DPFPVerification;
+import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings({ "serial", "unchecked" })
@@ -170,7 +187,8 @@ public class Cat_Empleados extends JFrame{
 	JTextField txtColonia = new Componentes().text( new JTextField(), "Colonia", 30, "String");
 	JTextField txtCalle = new Componentes().text( new JTextField(), "Calle", 30, "String");
 	
-	JTextField txtemail                  = new Componentes().text(new JCTextField(),"@email", 150, "String");
+	JTextField txtemailEmpresa                  = new Componentes().text(new JCTextField(),"@email empresa", 150, "String");
+	JTextField txtemailPersonal                  = new Componentes().text(new JCTextField(),"@email personal", 150, "String");
 	JTextField txtDescanso               = new Componentes().text(new JCTextField(),"Dia De Descanso", 100, "String");
 	JTextField txtDobla                  = new Componentes().text(new JCTextField(),"Dia Dobla", 100, "String");
 	JTextField txtFechaUltimasVacaciones = new Componentes().text(new JCTextField(),"Ultimas Vaciones", 100, "String");
@@ -192,7 +210,8 @@ public class Cat_Empleados extends JFrame{
 	JTextField txtultimousuariomod       = new Componentes().text(new JCTextField(), "Último Usuario Actualizó",300, "String");
 	JTextField txtFormaDePago            = new Componentes().text(new JCTextField(), "Forma de Pago"           , 15, "String");
 	
-	JToggleButton btnTrueFoto = new JToggleButton("Para actualizar la foto Presiona aquí !!!");
+//	JToggleButton btnTrueFoto = new JToggleButton("Para actualizar la foto Presiona aquí !!!");
+	JToggleButton btnTrueFoto = new JToggleButton("Actualizar Foto !!!");
 	
 	String Departamentos[] = new Obj_Departamento().Combo_Departamento();
 	@SuppressWarnings("rawtypes")
@@ -250,10 +269,14 @@ public class Cat_Empleados extends JFrame{
 	JCButton btnGuardar   = new JCButton("Guardar","Guardar.png","Azul");
 	JCButton btnDeshacer  = new JCButton("Deshacer","deshacer16.png","Azul");
 	JCButton btnVerificar = new JCButton("Verificar Nombre Del Nuevo Colaborador","","AzulC");
-	JButton btnHorario    = new JButton(".");
-	JButton btnHorario2   = new JButton(".");
-	JButton btnHorario3   = new JButton(".");
-	JButton btnHorarioNew = new JButton("new");
+	
+	JCButton btnHorario    = new JCButton("","buscar.png","Azul");
+	JCButton btnHorario2   = new JCButton("","buscar.png","Azul");
+	JCButton btnHorario3   = new JCButton("","buscar.png","Azul");
+	JCButton btnHorarioNew = new JCButton("","Filter-List-icon16.png","AzulO");
+	
+	JCButton btnLimpiarH2   = new JCButton("","goma-de-borrar.png","AzulO");
+	JCButton btnLimpiarH3 = new JCButton("","goma-de-borrar.png","AzulO");
 	
 	JButton btnFechaUltimasVacaciones = new JButton();
 	JButton btnFechaIncapacidad = new JButton();
@@ -261,8 +284,8 @@ public class Cat_Empleados extends JFrame{
 	
 	JButton btnFoto = new JButton();
 	JButton btnStatus = new JButton();
-	JButton btnExaminar = new JButton("Examinar");
-	JButton btnCamara = new JButton(new ImageIcon("Iconos/camara_icon&16.png"));
+//	JButton btnExaminar = new JButton("Examinar");
+	JCButton btnCamara = new JCButton("320 x 240","camara_icon&16.png","Azul");
 
 	JCButton btnContratacion        = new JCButton("Contratacion","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png","AzulO");
 	JCButton btnDocumentacion       = new JCButton("Documentación","carpeta-de-correo-icono-4002-16.png","AzulO");
@@ -327,15 +350,27 @@ public class Cat_Empleados extends JFrame{
 	 @SuppressWarnings("rawtypes")
 	private JComboBox cmbHorarioRotativo = new JComboBox(horarioRotativo);
 	 
-	String statusChecador[] = {"NORMAL","LIBRE","CHECADOR BLOQUEADO"};
+	String statusChecador[] = {"NORMAL","LIBRE","CHECADOR BLOQUEADO","EXCLUSIVO RUTA"};
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbStatusChecador = new JComboBox(statusChecador);
+	
+	String checaCon[] = {"SELECCIONA UNA FORMA","GAFETE","GAFETE Y HUELLA"};
+	@SuppressWarnings("rawtypes")
+	JComboBox cmbChecaCon = new JComboBox(checaCon);
 	
 	//declaracion de Bordes
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 //	TitledBorder title4;
 	
 	int seleccion_de_asignacion_de_Horario1Horario2Horario3;
+	
+	JCButton btnHuella = new JCButton("Cargar Huella", "", "Rojo");
+	
+	ByteArrayInputStream datosHuella = null;
+	ByteArrayInputStream datosHuella2 = null;
+	int tamañoHuella = 0;
+	int tamañoHuella2 = 0;
+	
 	
 	Obj_Empleados re = new Obj_Empleados();
 	
@@ -434,81 +469,99 @@ public class Cat_Empleados extends JFrame{
 		
 		x=20; y=y+=38;sep=202;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
-		panel.add(lblDatosPersonales).setBounds(10,y-15,997,215);
+		panel.add(lblDatosPersonales).setBounds(10,y-15,997,190);
 		panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);
-		panel.add(txtFolioEmpleado).setBounds(x+ancho-40,y,ancho-15,20);
+		panel.add(txtFolioEmpleado).setBounds(ancho-60,y,ancho-15,20);
 		
-		panel.add(btnBuscar).setBounds(x+ancho+ancho-47,y,100,20);
-		panel.add(btnFiltro).setBounds(x+ancho+ancho+55,y,100,20);
+		panel.add(btnBuscar).setBounds(ancho*2-67,y,100,20);
+		panel.add(btnFiltro).setBounds(ancho*2+35,y,100,20);
 	
-		panel.add(btnFoto).setBounds(x*2+ancho*5,y-5,ancho+55,160);
+//		panel.add(btnFoto).setBounds(x*2+ancho*5,y-5,ancho+55,160);
+		panel.add(btnFoto).setBounds(ancho*6,y,ancho+15,120);
+//		panel.add(btnTrueFoto).setBounds(x*2+ancho*5-10, y+155,220,20);
+		panel.add(btnTrueFoto).setBounds(ancho*6, y+120,ancho+15,20);
 		
-		panel.add(btnTrueFoto).setBounds(x*2+ancho*5-10, y+155,220,20);
-		
-		panel.add(btnExaminar).setBounds(x*2+ancho*5-10, y+175,80,20);		
-		panel.add(new JLabel("320 x 240")).setBounds(x*2+ancho*5+76, y+175,60,20);
-		panel.add(btnCamara).setBounds(x*2+ancho*5+130, y+175,80,20);
+//		panel.add(btnExaminar).setBounds(x*2+ancho*5-10, y+175,80,20);		
+//		panel.add(new JLabel("320 x 240")).setBounds(x*2+ancho*5+76, y+175,60,20);
+//		panel.add(btnCamara).setBounds(x*2+ancho*5+130, y+175,80,20);
+		panel.add(btnCamara).setBounds(ancho*6, y+140,ancho+15,20);
 		
 //		panel.add(new JLabel("Clave Checador")).setBounds(x+450,y,ancho,20);
 //		panel.add(txtChecador).setBounds(x+(ancho*3)+110,y,ancho-15,20);
 		
 		panel.add(new JLabel("Nombre:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtNombre).setBounds(x+ancho-40,y,ancho-15,20);
-			panel.add(new JLabel("Ap. Paterno:")).setBounds(x+240,y,ancho,20);
-			panel.add(txtApPaterno).setBounds(x+(ancho*2)+30,y,ancho-15,20);
-				panel.add(new JLabel("Ap. Materno:")).setBounds(x+450,y,ancho,20);
-				panel.add(txtApMaterno).setBounds(x+(ancho*3)+110,y,ancho-15,20);
+		panel.add(txtNombre).setBounds(ancho-60,y,ancho-15,20);
+		panel.add(new JLabel("Ap. Paterno:")).setBounds(220,y,ancho,20);
+		panel.add(txtApPaterno).setBounds((ancho*2)+10,y,ancho-15,20);
+		panel.add(new JLabel("Ap. Materno:")).setBounds(430,y,ancho,20);
+		panel.add(txtApMaterno).setBounds((ancho*3)+90,y,ancho-15,20);
+				
+		panel.add(new JLabel("Sexo: ")).setBounds(670,y,ancho,20);
+		panel.add(cmbSexo).setBounds((ancho*5)+10,y,ancho-15,20);
 		
-		panel.add(btnVerificar).setBounds(x+ancho-40,y+=25, 335, 20);
-		panel.add(new JLabel("F. Nacimiento:")).setBounds(x+450,y,ancho,20);
-		panel.add(txtFechaNacimiento).setBounds(x+(ancho*3)+110,y,ancho-15,20);
+		panel.add(btnVerificar).setBounds(x,y+=25, 335, 20);
+		panel.add(new JLabel("F. Nacimiento:")).setBounds(430,y,ancho,20);
+		panel.add(txtFechaNacimiento).setBounds((ancho*3)+90,y,ancho-15,20);
 
+		panel.add(new JLabel("Estado Civil: ")).setBounds(650,y,ancho,20);
+		panel.add(cmbEstadoCivil).setBounds((ancho*5)+10,y,ancho-15,20);
+		
 		panel.add(new JLabel("Calle y N°:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtCalle).setBounds(x+ancho-40,y,ancho-15,20);
+		panel.add(txtCalle).setBounds(ancho-60,y,ancho-15,20);
 		
-		panel.add(new JLabel("Colonia:")).setBounds(x+240,y,ancho,20);
-		panel.add(txtColonia).setBounds(x+(ancho*2)+30,y,ancho-15,20);
+		panel.add(new JLabel("Colonia:")).setBounds(220,y,ancho,20);
+		panel.add(txtColonia).setBounds((ancho*2)+10,y,ancho-15,20);
 		
-		panel.add(new JLabel("Poblacion:")).setBounds(x+450,y,ancho,20);
-		panel.add(txtPoblacion).setBounds(x+(ancho*3)+110,y,ancho-15,20);
+		panel.add(new JLabel("Poblacion:")).setBounds(430,y,ancho,20);
+		panel.add(txtPoblacion).setBounds((ancho*3)+90,y,ancho-15,20);
+		
+		panel.add(new JLabel("T. Sangre: ")).setBounds(650,y,ancho,20);
+		panel.add(cmbTipoDeSangre).setBounds((ancho*5)+10,y,ancho-15,20);
 
 		panel.add(new JLabel("Tel. Familiar:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtTelefono_Familiar).setBounds(x+ancho-40,y,ancho-15,20);
-			panel.add(new JLabel("Tel. Propio:")).setBounds(x+240,y,ancho,20);
-			panel.add(txtTelefono_Propio).setBounds(x+(ancho*2)+30,y,ancho-15,20);
-				panel.add(new JLabel("Tel. Cuadrante:")).setBounds(x+450,y,ancho,20);
-				panel.add(txtTelefono_Cuadrante).setBounds(x+(ancho*3)+110,y,ancho-15,20);
+		panel.add(txtTelefono_Familiar).setBounds(ancho-60,y,ancho-15,20);
+		panel.add(new JLabel("Tel. Propio:")).setBounds(220,y,ancho,20);
+		panel.add(txtTelefono_Propio).setBounds((ancho*2)+10,y,ancho-15,20);
+		panel.add(new JLabel("Tel. Cuadrante:")).setBounds(430,y,ancho,20);
+		panel.add(txtTelefono_Cuadrante).setBounds((ancho*3)+90,y,ancho-15,20);
 				
+		panel.add(new JLabel("Escolaridad: ")).setBounds(650,y,ancho,20);
+		panel.add(cmbEscolaridad).setBounds((ancho*5)+10,y,ancho-15,20);
+		
 		panel.add(new JLabel("RFC:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtRFC).setBounds(x+ancho-40,y,ancho-15,20);
+		panel.add(txtRFC).setBounds(ancho-60,y,ancho-15,20);
 		
-		panel.add(new JLabel("Sexo: ")).setBounds(x+240,y,ancho,20);
-		panel.add(cmbSexo).setBounds(x+(ancho*2)+30,y,ancho-15,20);
+//		panel.add(new JLabel("Sexo: ")).setBounds(240,y,ancho,20);
+//		panel.add(cmbSexo).setBounds((ancho*2)+30,y,ancho-15,20);
 		
-		panel.add(new JLabel("Estado Civil: ")).setBounds(x+450,y,ancho,20);
-		panel.add(cmbEstadoCivil).setBounds(x+(ancho*3)+110,y,ancho-15,20);
+//		panel.add(new JLabel("Estado Civil: ")).setBounds(450,y,ancho,20);
+//		panel.add(cmbEstadoCivil).setBounds((ancho*3)+110,y,ancho-15,20);
 		
-		panel.add(new JLabel("Curp:")).setBounds(x,y+=25,ancho,20);
-		panel.add(txtCurp).setBounds(x+ancho-40,y,ancho-15,20);
+		panel.add(new JLabel("Curp:")).setBounds(220,y,ancho,20);
+		panel.add(txtCurp).setBounds((ancho*2)+10,y,ancho-15,20);
 		
-		panel.add(new JLabel("T. De Sangre: ")).setBounds(x+240,y,ancho,20);
-		panel.add(cmbTipoDeSangre).setBounds(x+(ancho*2)+30,y,ancho-15,20);
+		panel.add(new JLabel("Email Personal:")).setBounds          (x+=410         	,y     ,width   ,height );
+		panel.add(txtemailPersonal).setBounds                      (x+=80         	,y     ,width+25,height );		
 		
-		panel.add(new JLabel("Escolaridad: ")).setBounds(x+450,y,ancho,20);
-		panel.add(cmbEscolaridad).setBounds(x+(ancho*3)+110,y,ancho-15,20);
+		panel.add(btnHuella).setBounds                     ((ancho*5)+10,y,ancho-15,20);
 		
-		panel.add(new JLabel("Perfil:")).setBounds         (x           	,y+=25 ,width   ,height );
-		panel.add(btnLimpiarPerfil).setBounds              (x+=50        	,y     ,height  ,height );
+//		panel.add(new JLabel("T. De Sangre: ")).setBounds(240,y,ancho,20);
+//		panel.add(cmbTipoDeSangre).setBounds((ancho*2)+30,y,ancho-15,20);
+		
+//		panel.add(new JLabel("Escolaridad: ")).setBounds(450,y,ancho,20);
+//		panel.add(cmbEscolaridad).setBounds((ancho*3)+110,y,ancho-15,20);
+		
+		panel.add(new JLabel("Perfil:")).setBounds         (x=20           	,y+=25 ,width   ,height );
+		panel.add(btnLimpiarPerfil).setBounds              (x+=30        	,y     ,height  ,height );
 		panel.add(btnAgregarPerfil).setBounds              (x+=20        	,y     ,height  ,height );
 		panel.add(lblFolioPerfil).setBounds                (x+=20           ,y     ,height  ,height );
-		panel.add(txtPerfil).setBounds                     (x+=25           ,y     ,320		,height );
-		panel.add(new JLabel("Email:")).setBounds          (x+=335         	,y     ,width   ,height );
-		panel.add(txtemail).setBounds                      (x+=40         	,y     ,width+30,height );		
+		panel.add(txtPerfil).setBounds                     (x+=25           ,y     ,300		,height );
 		
-		
+		panel.add(new JLabel("Email Empresa:")).setBounds (x=430         	,y     ,width   ,height );
+		panel.add(txtemailEmpresa).setBounds               (x+=80         	,y     ,width+25,height );
 //TODO Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
-		x=17 ;y=255;width=340;sep=120;
-		panel.add(lblLaboral).setBounds                      (x-7         ,y     ,997     ,220    );
+		x=17 ;y=230;width=340;sep=120;
+		panel.add(lblLaboral).setBounds                      (x-7         ,y     ,997     ,245    );
 		panel.add(new JLabel("Horario:")).setBounds          (x           ,y+=15 ,width   ,height );
 		panel.add(btnHorarioNew).setBounds                   (x+50        ,y     ,height  ,height );
 		panel.add(btnHorario).setBounds                      (x+70        ,y     ,height  ,height );
@@ -516,11 +569,14 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtHorario).setBounds                      (x+sep       ,y     ,width   ,height );
 		panel.add(rbHorario).setBounds                       (x+460       ,y     ,height  ,height );
 	    panel.add(new JLabel("Horario 2:")).setBounds        (x           ,y+=25 ,width   ,height );
+	    
+	    panel.add(btnLimpiarH2).setBounds                    (x+sep-70    ,y     ,height  ,height );
 		panel.add(btnHorario2).setBounds                     (x+sep-50    ,y     ,height  ,height );
 		panel.add(lblFolioHorario2).setBounds                (x+sep-30    ,y     ,height  ,height );
 		panel.add(txtHorario2).setBounds                     (x+sep       ,y     ,width   ,height );
 		panel.add(rbHorario2).setBounds                      (x+460       ,y     ,height  ,height );
 	    panel.add(new JLabel("Horario 3:")).setBounds        (x           ,y+=25 ,width   ,height );
+	    panel.add(btnLimpiarH3).setBounds                    (x+50    ,y     ,height  ,height );
 		panel.add(btnHorario3).setBounds                     (x+70        ,y     ,height  ,height );
 		panel.add(lblFolioHorario3).setBounds                (x+sep-30    ,y     ,height  ,height );
 		panel.add(txtHorario3).setBounds                     (x+sep       ,y     ,width   ,height );
@@ -540,7 +596,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtFechaUltimasVacaciones).setBounds       (x+365       ,y     ,95      ,height );
 		panel.add(btnFechaUltimasVacaciones).setBounds       (x+462       ,y     ,height  ,height );
 		
-		x=515 ;y=270;width=150;sep=100;
+		x=515 ;y=245;width=150;sep=100;
 		panel.add(new JLabel("Tipo de horario:")).setBounds  (x           ,y     ,width   ,height );
 		panel.add(cmbHorarioRotativo).setBounds              (x+sep       ,y     ,width   ,height );
 		panel.add(new JLabel("Descanso:")).setBounds         (x           ,y+=25 ,width   ,height );
@@ -560,10 +616,13 @@ public class Cat_Empleados extends JFrame{
 		panel.add(txtFechaIncapacidad).setBounds             (x+sep       ,y     ,width-20,height );
 		panel.add(btnFechaIncapacidad).setBounds             (x+sep+130   ,y     ,height  ,height );
 		
-		x=800;y=270;sep=45;
+		x=800;y=245;sep=45;
 		
 		panel.add(new JLabel("Checador:")).setBounds         (x        	  ,y     ,130   ,20     );
 		panel.add(cmbStatusChecador).setBounds               (x+sep+15    ,y     ,130   ,20     );
+		
+		panel.add(new JLabel("Checa con:")).setBounds        (x        	  ,y+=25 ,130   ,20     );
+		panel.add(cmbChecaCon).setBounds               		 (x+sep+15    ,y     ,130   ,20     );
 		
 		panel.add(btnStatus).setBounds                       (x+60        ,y+=22 ,130   ,125    );
 		panel.add(new JLabel("Estatus:")).setBounds          (x           ,y+=128,130   ,height );
@@ -622,6 +681,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(btnDeshacer).setBounds                       (x+=sep,y    ,width,height );
 		panel.add(btnSalir).setBounds                          (x+=sep,y    ,width,height );
 		
+		btnHuella.setEnabled(false);
 		btnEditar.setEnabled(false);
 		txaObservaciones.setLineWrap(true); 
 		txaObservaciones.setWrapStyleWord(true);
@@ -659,13 +719,16 @@ public class Cat_Empleados extends JFrame{
 		btnBeneficiario.addActionListener(opBeneficiario);
 		btnReporteSalida.addActionListener(opReporteDeEncuesta);
 
-		btnExaminar.addActionListener(opExaminar);
+//		btnExaminar.addActionListener(opExaminar);
 		btnLimpiarPerfil.addActionListener(opLimpiarPerfil);
 		btnAgregarPerfil.addActionListener(opPerfil);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
 		btnHorario.addActionListener(opFiltroHorairo);
 		btnHorario2.addActionListener(opFiltroHorairo2);
 		btnHorario3.addActionListener(opFiltroHorairo3);
+		
+		btnLimpiarH2.addActionListener(opLimpiarH2);
+		btnLimpiarH3.addActionListener(opLimpiarH3);
 		
 		txtTarjetaNomina.addKeyListener(txtlogns);
 		
@@ -680,9 +743,11 @@ public class Cat_Empleados extends JFrame{
 		txtSalarioDiario.addKeyListener(validaNumericoSD);
 		txtSalarioDiarioIntegrado.addKeyListener(validaNumericoSDI);
 		
+		btnHuella.addActionListener(opCapturarHuella);
+		
 		cont.add(pestanas);
 		
-		btnExaminar.setEnabled(false);
+//		btnExaminar.setEnabled(false);
 		btnCamara.setEnabled(false);
 		
 		txtPerfil.setEnabled(false);
@@ -690,6 +755,9 @@ public class Cat_Empleados extends JFrame{
 		btnHorario.setEnabled(false);
 		btnHorario2.setEnabled(false);
 		btnHorario3.setEnabled(false);
+		
+		btnLimpiarH2.setEnabled(false);
+		btnLimpiarH3.setEnabled(false);
 		
 		btnHorarioNew.setEnabled(false);
 		txtHorario.setEditable(false);
@@ -703,7 +771,8 @@ public class Cat_Empleados extends JFrame{
 		cmbPuesto.setEnabled(false);
 		
 		txtDescanso.setEnabled(false);
-		txtemail.setEditable(false);
+		txtemailEmpresa.setEditable(false);
+		txtemailPersonal.setEditable(false);
 		txtDobla.setEnabled(false);
 		txtChecador.setEnabled(false);
 		txtChecador.setVisible(false);
@@ -807,6 +876,12 @@ public class Cat_Empleados extends JFrame{
                   btnFoto.addMouseWheelListener(buscarConRueda);//añadimos el MouseWheelListener al spinner
                   
 	  	}
+	
+	ActionListener opCapturarHuella = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			new Cat_Huellas_Personalizado().setVisible(true);
+		}
+	};
 	
 	 int valor = 0;
 	MouseWheelListener buscarConRueda = new MouseWheelListener() {
@@ -954,6 +1029,9 @@ public class Cat_Empleados extends JFrame{
 						btnHorario2.setEnabled(false);
 						btnHorario3.setEnabled(false);
 						
+						btnLimpiarH2.setEnabled(false);
+						btnLimpiarH3.setEnabled(false);
+						
 						rbHorario.setEnabled(true);
 						rbHorario2.setEnabled(false);
 						rbHorario3.setEnabled(false);
@@ -966,6 +1044,9 @@ public class Cat_Empleados extends JFrame{
 						btnHorario2.setEnabled(true);
 						btnHorario3.setEnabled(false);
 						
+						btnLimpiarH2.setEnabled(true);
+						btnLimpiarH3.setEnabled(false);
+						
 						rbHorario.setEnabled(true);
 						rbHorario2.setEnabled(true);
 						rbHorario3.setEnabled(false);
@@ -975,6 +1056,9 @@ public class Cat_Empleados extends JFrame{
 					btnHorario.setEnabled(true);
 						btnHorario2.setEnabled(true);
 						btnHorario3.setEnabled(true);
+						
+						btnLimpiarH2.setEnabled(true);
+						btnLimpiarH3.setEnabled(true);
 						
 						rbHorario.setEnabled(true);
 						rbHorario2.setEnabled(true);
@@ -987,10 +1071,10 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opPresionFoto = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			if(btnTrueFoto.isSelected()){
-				btnExaminar.setEnabled(true);
+//				btnExaminar.setEnabled(true);
 				btnCamara.setEnabled(true);
 			}else{
-				btnExaminar.setEnabled(false);
+//				btnExaminar.setEnabled(false);
 				btnCamara.setEnabled(false);
 			}
 	
@@ -1021,69 +1105,70 @@ public class Cat_Empleados extends JFrame{
 		}
 	};
 	
-	ActionListener opExaminar = new ActionListener(){
-		public void actionPerformed(ActionEvent e) {
-			FileDialog file = new FileDialog(new Frame());
-			
-			file.setTitle("Selecciona una Imagen");
-			file.setMode(FileDialog.LOAD);
-			file.setVisible(true);
-			
-			if(file.getDirectory() != null){
-
-					try {
-						String rootPicture = file.getDirectory()+file.getFile();
-						
-						File foto = new File(rootPicture);
-						File destino = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-				    	
-				    	InputStream in = new FileInputStream(foto);
-						OutputStream out = new FileOutputStream(destino);
-						
-					    byte[] buf = new byte[1024];
-					    int len;
-	
-					    while ((len = in.read(buf)) > 0) {
-					    	out.write(buf, 0, len);
-					    }
-					    
-					    in.close();
-					    out.close();
-						
-						File foto1 = new File(rootPicture);
-						File destino1 = new File(System.getProperty("user.dir")+"/tmp/tmp_update/tmp.jpg");
-				    	
-				    	InputStream in1 = new FileInputStream(foto1);
-						OutputStream out1 = new FileOutputStream(destino1);
-						
-					    byte[] buf1 = new byte[1024];
-					    int len1;
-	
-					    while ((len1 = in1.read(buf1)) > 0) {
-					    	out1.write(buf1, 0, len1);
-					    }
-					    
-					    in1.close();
-					    out1.close();
-						
-					    ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-				         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-				         btnFoto.setIcon(iconoDefault);
-				         
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				
-			}else{
-				JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna imagen","Aviso",JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-		}
-	};
+//	ActionListener opExaminar = new ActionListener(){
+//		public void actionPerformed(ActionEvent e) {
+//			FileDialog file = new FileDialog(new Frame());
+//			
+//			file.setTitle("Selecciona una Imagen");
+//			file.setMode(FileDialog.LOAD);
+//			file.setVisible(true);
+//			
+//			if(file.getDirectory() != null){
+//
+//					try {
+//						String rootPicture = file.getDirectory()+file.getFile();
+//						
+//						File foto = new File(rootPicture);
+//						File destino = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+//				    	
+//				    	InputStream in = new FileInputStream(foto);
+//						OutputStream out = new FileOutputStream(destino);
+//						
+//					    byte[] buf = new byte[1024];
+//					    int len;
+//	
+//					    while ((len = in.read(buf)) > 0) {
+//					    	out.write(buf, 0, len);
+//					    }
+//					    
+//					    in.close();
+//					    out.close();
+//						
+//						File foto1 = new File(rootPicture);
+//						File destino1 = new File(System.getProperty("user.dir")+"/tmp/tmp_update/tmp.jpg");
+//				    	
+//				    	InputStream in1 = new FileInputStream(foto1);
+//						OutputStream out1 = new FileOutputStream(destino1);
+//						
+//					    byte[] buf1 = new byte[1024];
+//					    int len1;
+//	
+//					    while ((len1 = in1.read(buf1)) > 0) {
+//					    	out1.write(buf1, 0, len1);
+//					    }
+//					    
+//					    in1.close();
+//					    out1.close();
+//						
+//					    ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+//				         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+//				         btnFoto.setIcon(iconoDefault);
+//				         
+//					} catch (IOException e1) {
+//						e1.printStackTrace();
+//					}
+//				
+//			}else{
+//				JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna imagen","Aviso",JOptionPane.WARNING_MESSAGE);
+//				return;
+//			}
+//		}
+//	};
 	
 	ActionListener opVerificar = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 			if(txtNombre.getText().length() == 0 || txtApPaterno.getText().length() == 0 || txtApMaterno.getText().length() == 0){
+				btnHuella.setEnabled(false);
 				JOptionPane.showMessageDialog(null,"Los campos nombre y apellidos deben tener texto","Aviso!", JOptionPane.WARNING_MESSAGE);
 				return;
 			}else{
@@ -1210,7 +1295,8 @@ public class Cat_Empleados extends JFrame{
 					txtRFC.setText(re.getRfc()+"");
 					txtCurp.setText(re.getCurp()+"");
 					cmbSexo.setSelectedItem(re.getSexo()==0 ? "MASCULINO" : "FEMENINO");
-					txtemail.setText(re.getEmail()+"");
+					txtemailEmpresa.setText(re.getEmailEmpresa()+"");
+					txtemailPersonal.setText(re.getEmailPersonal()+"");
 					if(re.getEstado_civil().equals("0")){	cmbEstadoCivil.setSelectedIndex(0);		}else{	cmbEstadoCivil.setSelectedItem(re.getEstado_civil());	}
 					if(re.getTipo_sangre().equals("0")){	cmbTipoDeSangre.setSelectedIndex(0);	}else{	cmbTipoDeSangre.setSelectedItem(re.getTipo_sangre());	}
 					if(re.getEscolaridad().equals("0")){	cmbEscolaridad.setSelectedIndex(0);		}else{	cmbEscolaridad.setSelectedItem(re.getEscolaridad());	}
@@ -1253,11 +1339,12 @@ public class Cat_Empleados extends JFrame{
 					txtDescanso.setText(re.getDescanso()+"");
 					txtDobla.setText(re.getDobla()+"");
 					
-					switch(re.getStatus_rotativo()){
-						case 0: cmbHorarioRotativo.setSelectedIndex(0); break;
-						case 1: cmbHorarioRotativo.setSelectedIndex(1); break;
-						case 2: cmbHorarioRotativo.setSelectedIndex(2); break;
-					}
+//					switch(re.getStatus_rotativo()){
+//						case 0: cmbHorarioRotativo.setSelectedIndex(0); break;
+//						case 1: cmbHorarioRotativo.setSelectedIndex(1); break;
+//						case 2: cmbHorarioRotativo.setSelectedIndex(2); break;
+//					}
+					cmbHorarioRotativo.setSelectedIndex(re.getStatus_rotativo());
 					
 					cmbStatus.setSelectedIndex(re.getStatus()-1);
 					txtBaja.setText(re.getFecha_baja()+"");
@@ -1277,6 +1364,7 @@ public class Cat_Empleados extends JFrame{
 					cmbPuesto.setSelectedItem(comboNombrePues.getPuesto());
 					
 					cmbStatusChecador.setSelectedItem(re.getStatus_checador());
+					cmbChecaCon.setSelectedItem(re.getForma_de_checar());
 					
 					txtSalarioDiario.setText(re.getSalario_diario()+"");
 					txtSalarioDiarioIntegrado.setText(re.getSalario_diario_integrado()+"");
@@ -1336,7 +1424,18 @@ public class Cat_Empleados extends JFrame{
 							   break;
 							   
 					}
-						
+					
+					if(re.isTieneHuella()){
+						btnHuella.setBackground(Color.GREEN);
+						btnHuella.setForeground(Color.BLACK);
+						btnHuella.setOpaque(true);
+					}else{
+						btnHuella.setBackground(Color.RED);
+						btnHuella.setForeground(Color.WHITE);
+						btnHuella.setOpaque(true);
+					}
+					
+					
 				    btnNuevo.setEnabled(false);
 					panelEnabledFalse();
 					txtFolioEmpleado.setEditable(true);
@@ -1416,6 +1515,13 @@ public class Cat_Empleados extends JFrame{
 	
    ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+//			  System.out.println("Actualizado-------------------");
+//			  System.out.println(datosHuella);
+//			  System.out.println(datosHuella2);
+//			  System.out.println(tamañoHuella);
+//			  System.out.println(tamañoHuella2);
+			
+			
 			int horario=0,horario2=0,horario3=0;
 			 horario=lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText());
 			 horario2=lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText());
@@ -1512,14 +1618,10 @@ public void guardar_modificar_Empleado(){
 								empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
 								empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
 								empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
-								empleado.setEmail(txtemail.getText().toString().toLowerCase().trim());
+								empleado.setEmailEmpresa(txtemailEmpresa.getText().toString().toLowerCase().trim());
+								empleado.setEmailPersonal(txtemailPersonal.getText().toString().toLowerCase().trim());
 								
-//								if(btnTrueFoto.isSelected()){
-									empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
-//								}else{
-//									empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp.jpg"));
-//								}
-		
+								empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
 								empleado.setPerfil(lblFolioPerfil.getText().trim().equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
 		//				laboral
 								empleado.setHorario(lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText()));
@@ -1542,12 +1644,12 @@ public void guardar_modificar_Empleado(){
 									empleado.setStatus_h3(1);
 								}
 								
-								switch(cmbHorarioRotativo.getSelectedIndex()){
-									case 0: empleado.setStatus_rotativo(0); break;
-									case 1: empleado.setStatus_rotativo(1); break;
-									case 2: empleado.setStatus_rotativo(2); break;
-								}
-		
+//								switch(cmbHorarioRotativo.getSelectedIndex()){
+//									case 0: empleado.setStatus_rotativo(0); break;
+//									case 1: empleado.setStatus_rotativo(1); break;
+//									case 2: empleado.setStatus_rotativo(2); break;
+//								}
+								empleado.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
 								empleado.setContrato(cmbContratacion.getSelectedItem().toString().contains(" ")?Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))):0);
 								
 								empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
@@ -1561,10 +1663,8 @@ public void guardar_modificar_Empleado(){
 								empleado.setStatus_imss(cmbActivo_Inactivo.getSelectedIndex());
 								empleado.setNumero_infonavit(txtNumeroInfonavit.getText()+"");
 								
-								
 								Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
 								empleado.setEstablecimiento(comboFolioEsta.getFolio());
-		
 								
 								Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
 								empleado.setPuesto(comboFolioPues.getFolio());
@@ -1572,7 +1672,7 @@ public void guardar_modificar_Empleado(){
 								empleado.setFecha_ingreso_imss(txtIngresoImss.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtIngresoImss.getDate()));
 								empleado.setFecha_vencimiento_licencia(txtVencimientoLicencia.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
 								empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString()/*.equals("NORMAL")?"N":"L"*/);
-								
+								empleado.setForma_de_checar(cmbChecaCon.getSelectedItem().toString());
 		//				percepciones y deducciones
 						
 								empleado.setSalario_diario(txtSalarioDiario.getText().equals("")?Float.parseFloat(0.0+""):Float.parseFloat(txtSalarioDiario.getText()));	
@@ -1616,9 +1716,9 @@ public void guardar_modificar_Empleado(){
 									 }
 									}
 								}
-								
+							  
 							//TODO (Actualizar)
-								if(empleado.actualizar(Integer.parseInt(txtFolioEmpleado.getText()))){
+								if(empleado.actualizar(Integer.parseInt(txtFolioEmpleado.getText()) , datosHuella, datosHuella2, tamañoHuella, tamañoHuella2 )){
 									panelLimpiar();
 									panelEnabledFalse();
 									rbHorario2.setEnabled(false);
@@ -1627,7 +1727,7 @@ public void guardar_modificar_Empleado(){
 									txtFolioEmpleado.setEditable(true);
 									txtFolioEmpleado.requestFocus();
 									btnTrueFoto.setSelected(false);
-									btnExaminar.setEnabled(false);
+//									btnExaminar.setEnabled(false);
 									btnCamara.setEnabled(false);
 //									txtHorario.setEnabled(false);
 									btnBuscar.setEnabled(true);
@@ -1668,14 +1768,10 @@ public void guardar_modificar_Empleado(){
 							empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
 							empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
 							empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
-							empleado.setEmail(txtemail.getText().toString().toLowerCase().trim());
+							empleado.setEmailEmpresa(txtemailEmpresa.getText().toString().toLowerCase().trim());
+							empleado.setEmailPersonal(txtemailPersonal.getText().toString().toLowerCase().trim());
 							
-//							if(btnTrueFoto.isSelected()){
-								empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
-//							}else{
-//								empleado.setFoto(new File(System.getProperty("user.dir")+"/tmp/tmp.jpg"));
-//							}
-	
+							empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
 							empleado.setPerfil(lblFolioPerfil.getText().trim().equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
 	//				laboral
 							empleado.setHorario(lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText()));
@@ -1698,17 +1794,13 @@ public void guardar_modificar_Empleado(){
 								empleado.setStatus_h3(1);
 							}
 							
-							switch(cmbHorarioRotativo.getSelectedIndex()){
-								case 0: empleado.setStatus_rotativo(0); break;
-								case 1: empleado.setStatus_rotativo(1); break;
-								case 2: empleado.setStatus_rotativo(2); break;
-							}
-	
-//							if(cmbContratacion.getSelectedItem().toString().contains(" ")){
-								empleado.setContrato(cmbContratacion.getSelectedItem().toString().contains(" ")?Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))):0);
-//							}else{
-//								empleado.setContrato(0);
+//							switch(cmbHorarioRotativo.getSelectedIndex()){
+//								case 0: empleado.setStatus_rotativo(0); break;
+//								case 1: empleado.setStatus_rotativo(1); break;
+//								case 2: empleado.setStatus_rotativo(2); break;
 //							}
+							empleado.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
+							empleado.setContrato(cmbContratacion.getSelectedItem().toString().contains(" ")?Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))):0);
 							
 							empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
 							empleado.setStatus(cmbStatus.getSelectedIndex()+1);
@@ -1721,18 +1813,16 @@ public void guardar_modificar_Empleado(){
 							empleado.setStatus_imss(cmbActivo_Inactivo.getSelectedIndex());
 							empleado.setNumero_infonavit(txtNumeroInfonavit.getText()+"");
 							
-							
 							Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
 							empleado.setEstablecimiento(comboFolioEsta.getFolio());
 	
-							
 							Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
 							empleado.setPuesto(comboFolioPues.getFolio());
 							
 							empleado.setFecha_ingreso_imss(txtIngresoImss.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtIngresoImss.getDate()));
 							empleado.setFecha_vencimiento_licencia(txtVencimientoLicencia.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
 							empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString()/*.equals("NORMAL")?"N":"L"*/);
-							
+							empleado.setForma_de_checar(cmbChecaCon.getSelectedItem().toString());
 	//				percepciones y deducciones
 					
 							empleado.setSalario_diario(txtSalarioDiario.getText().equals("")?Float.parseFloat(0.0+""):Float.parseFloat(txtSalarioDiario.getText()));	
@@ -1759,8 +1849,14 @@ public void guardar_modificar_Empleado(){
 							empleado.setObservasiones(txaObservaciones.getText()+"");
 							empleado.setFecha_actualizacion(txtFechaActualizacion.getText());
 							
+//							System.out.println("Guaradado-------------------");
+//							System.out.println(datosHuella);
+//							  System.out.println(datosHuella2);
+//							  System.out.println(tamañoHuella);
+//							  System.out.println(tamañoHuella2);
+							  
 							//TODO (Guardar)
-							if(empleado.guardar()){
+							if(empleado.guardar(datosHuella, datosHuella2, tamañoHuella, tamañoHuella2)){
 								panelLimpiar();
 								panelEnabledFalse();
 								rbHorario2.setEnabled(false);
@@ -1769,7 +1865,7 @@ public void guardar_modificar_Empleado(){
 								txtFolioEmpleado.setEditable(true);
 								txtFolioEmpleado.requestFocus();
 								btnTrueFoto.setSelected(false);
-								btnExaminar.setEnabled(false);
+//								btnExaminar.setEnabled(false);
 								btnCamara.setEnabled(false);
 //								txtHorario.setEnabled(false);
 								btnBuscar.setEnabled(true);
@@ -1883,10 +1979,12 @@ public void guardar_modificar_Empleado(){
 		txtTelefono_Familiar.setEnabled(true);
 		chb_cuadrante_parcial.setEnabled(true);
 		cmbStatusChecador.setEnabled(true);
+		cmbChecaCon.setEnabled(true);
 		
 		txtIngresoImss.setEnabled(true);
 		txtVencimientoLicencia.setEnabled(true);
-		txtemail.setEditable(true);
+		txtemailEmpresa.setEditable(true);
+		txtemailPersonal.setEditable(true);
 		
 		txtCalle.setEnabled(true);
 		txtColonia.setEnabled(true);
@@ -1913,6 +2011,7 @@ public void guardar_modificar_Empleado(){
 		cmbEscolaridad.setEnabled(true);
 		cmbContratacion.setEnabled(true);
 		cmbPresenciaFisica.setEnabled(true);
+		btnHuella.setEnabled(true);
 	}
 	
 	public void panelEnabledFalse(){	
@@ -1941,10 +2040,12 @@ public void guardar_modificar_Empleado(){
 		txtTelefono_Familiar.setEnabled(false);                                                            
 		chb_cuadrante_parcial.setEnabled(false);
 		cmbStatusChecador.setEnabled(false);
+		cmbChecaCon.setEnabled(false);
 		                                                                                                   
 		txtIngresoImss.setEnabled(false);                                                                  
 		txtVencimientoLicencia.setEnabled(false);   
-		txtemail.setEditable(false);
+		txtemailEmpresa.setEditable(false);
+		txtemailPersonal.setEditable(false);
 		                                                                                                   
 		txtCalle.setEnabled(false);                                                                        
 		txtColonia.setEnabled(false);                                                                      
@@ -1970,7 +2071,7 @@ public void guardar_modificar_Empleado(){
 		txtFormaDePago.setEnabled(false);
 		
 		btnTrueFoto.setSelected(false);
-		btnExaminar.setEnabled(false);
+//		btnExaminar.setEnabled(false);
 		btnCamara.setEnabled(false);
 		
 		cmbEstadoCivil.setEnabled(false);
@@ -1983,6 +2084,7 @@ public void guardar_modificar_Empleado(){
 		btnAgregarPerfil.setEnabled(false);
 		
 		cmbHorarioRotativo.setEnabled(false);
+		btnHuella.setEnabled(false);
 	}
 
 	///boton deshacer
@@ -2020,7 +2122,8 @@ public void guardar_modificar_Empleado(){
 	    txtFechaNacimiento.setDate(null);
 	    cmbStatusChecador.setSelectedIndex(0);
 	    
-	    txtemail.setText("");
+	    txtemailEmpresa.setText("");
+	    txtemailPersonal.setText("");
 	    lblFolioPerfil.setText("");
 		txtPerfil.setText("");
 	    
@@ -2071,6 +2174,17 @@ public void guardar_modificar_Empleado(){
 		 ImageIcon file_status = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Vigente.png");
          Icon iconoStatus = new ImageIcon(file_status.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));
          btnStatus.setIcon(iconoStatus);
+         
+         btnHuella.setBackground(Color.RED);
+         btnHuella.setForeground(Color.WHITE);
+         btnHuella.setOpaque(true);
+         
+         datosHuella = null;
+     	 datosHuella2 = null;
+     	 tamañoHuella = 0;
+     	 tamañoHuella2 = 0;
+     	 
+     	 cmbChecaCon.setSelectedIndex(0);
 	}
 	
 	ActionListener nuevo = new ActionListener(){
@@ -2150,6 +2264,9 @@ public void guardar_modificar_Empleado(){
 			btnHorario.setEnabled(false);
 			btnHorario2.setEnabled(false);
 			btnHorario3.setEnabled(false);
+			
+			btnLimpiarH2.setEnabled(false);
+			btnLimpiarH3.setEnabled(false);
 			
 			btnBuscar.setEnabled(true);
 			btnFiltro.setEnabled(true);
@@ -2317,6 +2434,20 @@ public void guardar_modificar_Empleado(){
 		}
 	};
 	
+	ActionListener opLimpiarH2 = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			lblFolioHorario2.setText("");
+			txtHorario2.setText("");
+		}
+	};
+	
+	ActionListener opLimpiarH3 = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			lblFolioHorario3.setText("");
+			txtHorario3.setText("");
+		}
+	};
+	
 	ActionListener opGenerarHorairo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			if(txtFolioEmpleado.getText().equals("")){
@@ -2454,20 +2585,22 @@ public void guardar_modificar_Empleado(){
 		}
 		
 		switch(cmbHorarioRotativo.getSelectedIndex()){
-		case 0:	if(txtHorario.getText().equals("")) 		error+= "Horario\n"; break;
-		case 1: if(txtHorario.getText().equals("")) 		error+= "Horario 2\n";
-				if(txtHorario2.getText().equals("")) 		error+= "Horario 3\n";break;
-		case 2: if(txtHorario.getText().equals("")) 		error+= "Horario\n";
-				if(txtHorario2.getText().equals("")) 		error+= "Horario 2\n";
-				if(txtHorario3.getText().equals("")) 		error+= "Horario 3\n";break;
+		case 0:	if(txtHorario.getText().equals("")) 		error+= "-Horario\n"; break;
+		case 1: if(txtHorario.getText().equals("")) 		error+= "-Horario 2\n";
+				if(txtHorario2.getText().equals("")) 		error+= "-Horario 3\n";break;
+		case 2: if(txtHorario.getText().equals("")) 		error+= "-Horario\n";
+				if(txtHorario2.getText().equals("")) 		error+= "-Horario 2\n";
+				if(txtHorario3.getText().equals("")) 		error+= "-Horario 3\n";break;
 		}
-		if(cmbContratacion.getSelectedIndex()==0)	error+= "Contrato\n";
-		if(cmbSueldo.getSelectedItem().equals("Selecciona un Sueldo")) error += "Sueldo\n";
-		if(cmbBono.getSelectedItem().equals("Selecciona un Bono")) error += "Bono\n";
-		if(cmbPrestamos.getSelectedItem().equals("Selecciona un Rango de Prestamo")) error += "Rango de Prestamo\n";
-		if(fechaNull.equals("null"))error+= "Fecha de Nacimiento\n";	
-		if(fechaIngresoNull.equals("null"))error += "Fecha de ingreso\n";
-		if(cmbPresenciaFisica.getSelectedIndex()==0)	error+= "Presencia Fisica\n";
+		if(cmbChecaCon.getSelectedIndex()==0)	error+= "-Checa Con: (SELECCIONA UNA FORMA)\n";
+		
+		if(cmbContratacion.getSelectedIndex()==0)	error+= "-Contrato\n";
+		if(cmbSueldo.getSelectedItem().equals("Selecciona un Sueldo")) error += "-Sueldo\n";
+		if(cmbBono.getSelectedItem().equals("Selecciona un Bono")) error += "-Bono\n";
+		if(cmbPrestamos.getSelectedItem().equals("Selecciona un Rango de Prestamo")) error += "-Rango de Prestamo\n";
+		if(fechaNull.equals("null"))error+= "-Fecha de Nacimiento\n";	
+		if(fechaIngresoNull.equals("null"))error += "-Fecha de ingreso\n";
+		if(cmbPresenciaFisica.getSelectedIndex()==0)	error+= "-Presencia Fisica\n";
 		return error;
 	}
 	
@@ -3538,6 +3671,430 @@ public void guardar_modificar_Empleado(){
 			}
 	}
 	
+	//--TODO(Captura De Huella Digital(inicio))	--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	public class Cat_Huellas_Personalizado extends JDialog{
+		
+		Container cont = getContentPane();
+		JLayeredPane panel = new JLayeredPane();
+		
+	    private JLabel lblMarcoHuella = new JLabel("");
+	    
+	    private JTextArea txtArea = new JTextArea();
+	    private JScrollPane jScrollPane1 = new JScrollPane();
+	    
+	    private JCButton btnGuardar = new JCButton("Guardar","guardar.png","Azul");
+	    private JCButton btnVerificar = new JCButton("Verificar","buscar.png","Azul");
+	    
+		//Varible que permite iniciar el dispositivo de lector de huella conectado
+		// con sus distintos metodos.
+		private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+	//------------------------------------------------------------------------------------------------------------------------	
+		//Varible que permite establecer las capturas de la huellas, para determina sus caracteristicas
+		// y poder estimar la creacion de un template de la huella para luego poder guardarla
+		private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+		
+		//Variable que para crear el template de la huella luego de que se hallan creado las caracteriticas
+		// necesarias de la huella si no ha ocurrido ningun problema
+		private DPFPTemplate template;
+	//------------------------------------------------------------------------------------------------------------------------	
+		//Varible que permite establecer las capturas de la huellas, para determina sus caracteristicas
+		// y poder estimar la creacion de un template de la huella para luego poder guardarla
+		private DPFPEnrollment Reclutador2 = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+		
+		//Variable que para crear el template de la huella luego de que se hallan creado las caracteriticas
+		// necesarias de la huella si no ha ocurrido ningun problema
+		private DPFPTemplate template2;
+	//------------------------------------------------------------------------------------------------------------------------	
+		public String TEMPLATE_PROPERTY = "template";
+			
+		//Esta variable tambien captura una huella del lector y crea sus caracteristcas para auntetificarla
+		// o verificarla con alguna guarda en la BD
+		private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
+		
+		
+		//declaracion de Bordes
+		Border blackline;
+		
+		int index_huella = 1;
+		
+		JLabel lblImageHuella1 = new JLabel("");
+		JLabel lblImageHuella2 = new JLabel("");
+		
+		JLabel lblHuella1 = new JLabel("Huella 1");
+		JLabel lblHuella2 = new JLabel("Huella 2");
+		
+		 ImageIcon tmphuellaRoja = new ImageIcon(System.getProperty("user.dir")+"/Imagen/huella_faltante.png");
+		 ImageIcon tmphuellaVerde = new ImageIcon(System.getProperty("user.dir")+"/Imagen/huella_cargada.png");
+		 
+		public Cat_Huellas_Personalizado() {
+			this.setModal(true);
+			lblMarcoHuella.setBorder(BorderFactory.createTitledBorder(blackline, ""));
+			lblMarcoHuella.setBackground(Color.WHITE);
+			lblMarcoHuella.setOpaque(true);
+			
+			lblHuella1.setFont(new java.awt.Font("Algerian",0,20));
+			lblHuella2.setFont(new java.awt.Font("Algerian",0,20));
+			
+			txtArea.setLineWrap(true); 
+			txtArea.setWrapStyleWord(true);
+			
+	        this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/encuesta.png"));
+			panel.setBorder(BorderFactory.createTitledBorder("huella"));
+			
+			this.setTitle("Captura de huella del personal");
+			this.setSize(800,415);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			
+			jScrollPane1.setViewportView(txtArea);
+			
+			panel.add(lblMarcoHuella).setBounds(15, 15, 350, 320);
+			panel.add(btnVerificar).setBounds(15, 345, 120, 30);
+			panel.add(btnGuardar).setBounds(240, 345, 120, 30);
+			
+			panel.add(lblImageHuella1).setBounds(470, 15, 50, 50);
+			panel.add(lblHuella1).setBounds(450, 65, 100, 30);
+			panel.add(lblImageHuella2).setBounds(620, 15, 50, 50);
+			panel.add(lblHuella2).setBounds(600, 65, 100, 30);
+			panel.add(jScrollPane1).setBounds(380, 100, 400, 230);
+			
+			cont.add(panel);
+			
+			banderaHuellas(tmphuellaRoja.getImage(), lblImageHuella1);
+			banderaHuellas(tmphuellaRoja.getImage(), lblImageHuella2);
+			
+			btnGuardar.addActionListener(opGuardar);
+			btnVerificar.addActionListener(opVerificar);
 
-	
+	        this.addWindowListener(new java.awt.event.WindowAdapter() {
+	            public void windowClosing(java.awt.event.WindowEvent evt) {
+	                formWindowClosing(evt);
+	            }
+	            public void windowOpened(java.awt.event.WindowEvent evt) {
+	                formWindowOpened(evt);
+	            }
+	        });
+		}
+
+		private void formWindowOpened(java.awt.event.WindowEvent evt){
+	        Iniciar();
+	        start();
+	        EstadoHuellas();
+	        btnGuardar.setEnabled(false);
+	        //btnIdentificar.setEnabled(false);
+	        btnVerificar.setEnabled(false);
+	        //btnSalir.grabFocus();
+
+	    }
+
+	    private void formWindowClosing(java.awt.event.WindowEvent evt) {
+	        stop();
+	    }
+	    
+	    public  void stop(){
+	        Lector.stopCapture();
+	        EnviarTexto("No se está usando el Lector de Huella Dactilar ");
+		}
+	    
+	    protected void Iniciar(){
+	    	
+	    	   Lector.addDataListener(new DPFPDataAdapter() {
+		    	    @Override 
+		    	    public void dataAcquired(final DPFPDataEvent e) {
+			    	    SwingUtilities.invokeLater(new Runnable() {	
+			    	    	public void run() {
+			    	    		EnviarTexto("La Huella Digital ha sido Capturada");
+			    	    		ProcesarCaptura(e.getSample());
+			    	    	}
+				    	});
+		    	    }
+	    	   });
+
+	    	   Lector.addReaderStatusListener(new DPFPReaderStatusAdapter() {
+		    	    @Override 
+		    	    public void readerConnected(final DPFPReaderStatusEvent e) {
+			    	    SwingUtilities.invokeLater(new Runnable() {	
+				    	    	public void run() {
+				    	    		EnviarTexto("El Sensor de Huella Digital esta Activado o Conectado");
+				    	    	}
+			    	    	});
+		    	    }
+	    	    
+		    	    @Override 
+		    	    public void readerDisconnected(final DPFPReaderStatusEvent e) {
+			    	    SwingUtilities.invokeLater(new Runnable() {	
+			    	    	public void run() {
+			    	    		EnviarTexto("El Sensor de Huella Digital esta Desactivado o no Conectado");
+			    	    	}
+			    	    });
+		    	    }
+	    	   });
+
+	    	   Lector.addSensorListener(new DPFPSensorAdapter() {
+	    		   @Override 
+		    	    public void fingerTouched(final DPFPSensorEvent e) {
+			    	    SwingUtilities.invokeLater(new Runnable() {	
+			    	    	public void run() {
+			    	    			EnviarTexto("El dedo ha sido colocado sobre el Lector de Huella");
+			    	    	}
+			    	    });
+		    	    }
+	    		   
+		    	    @Override 
+		    	    public void fingerGone(final DPFPSensorEvent e) {
+			    	    SwingUtilities.invokeLater(new Runnable() {	
+			    	    	public void run() {
+			    	    		EnviarTexto("El dedo ha sido quitado del Lector de Huella");
+				    	    }
+		    	    	});
+		    	    }
+	    	   });
+
+	    	   Lector.addErrorListener(new DPFPErrorAdapter(){
+	    		   @SuppressWarnings("unused")
+					public void errorReader(final DPFPErrorEvent e){
+			    	    SwingUtilities.invokeLater(new Runnable() {  
+			    	    	public void run() {
+			    	    		EnviarTexto("Error: "+e.getError());
+				    	    }
+				    	});
+		    	    }
+	    	   });
+	    	}
+	    
+	    public  void start(){
+	    	Lector.startCapture();
+	    	EnviarTexto("Utilizando el Lector de Huella Dactilar ");
+	    }
+	    
+	    public void EnviarTexto(String string) {
+	        txtArea.append("* "+string + "\n");
+	    }
+	    
+	    public DPFPFeatureSet featuresinscripcion;
+	    public DPFPFeatureSet featuresverificacion;
+	    @SuppressWarnings("incomplete-switch")
+		public  void ProcesarCaptura(DPFPSample sample){
+	     // Procesar la muestra de la huella y crear un conjunto de características con el propósito de inscripción.
+	     featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
+
+	     // Procesar la muestra de la huella y crear un conjunto de características con el propósito de verificacion.
+	     featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
+
+	     // Comprobar la calidad de la muestra de la huella y lo añade a su reclutador si es bueno
+	     if (featuresinscripcion != null)
+		         try{
+			         System.out.println("Las Caracteristicas de la Huella han sido creada");
+			         
+			         
+			         if(index_huella==1){
+			        	 Reclutador.addFeatures(featuresinscripcion);// Agregar las caracteristicas de la huella a la plantilla a crear
+			         }else{
+			        	 Reclutador2.addFeatures(featuresinscripcion);// Agregar las caracteristicas de la huella a la plantilla a crear
+			         }
+			
+			         // Dibuja la huella dactilar capturada.
+			         Image image=CrearImagenHuella(sample);
+			         DibujarHuella(image);
+			
+			         btnVerificar.setEnabled(true);
+			         //btnIdentificar.setEnabled(true);
+		
+		         }catch (DPFPImageQualityException ex) {
+		        	 System.err.println("Error: "+ex.getMessage());
+		         }finally {
+		        	 
+		        	 DPFPEnrollment Reclutador_testigo = (index_huella == 1)?Reclutador:Reclutador2;
+		        	 
+		        	 if(index_huella == 1){
+		        		 EstadoHuellas();
+		        	 }else{
+		        		 EstadoHuellas2();
+		        	 }
+
+		        	 
+	         // Comprueba si la plantilla se ha creado.
+		        	 switch(Reclutador_testigo.getTemplateStatus()){
+		        	 	case TEMPLATE_STATUS_READY:	// informe de éxito y detiene  la captura de huellas
+		        	 				
+	                	
+					                if(index_huella == 1){
+					                	setTemplate(Reclutador_testigo.getTemplate());
+					                	index_huella=2;
+					                	
+					                	 EnviarTexto("Huella Capturada Correctamente, Favor De Ingresar La Siguiente Huella");
+								    	    //btnIdentificar.setEnabled(false);
+								                btnVerificar.setEnabled(true);
+//								                btnGuardar.setEnabled(true);
+								                btnGuardar.grabFocus();
+								        		banderaHuellas(tmphuellaVerde.getImage(), lblImageHuella1);
+									        	JOptionPane.showMessageDialog(null, "Huella Capturada Correctamente, Favor De Ingresar La Siguiente Huella", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					                }else{
+					                	stop();
+					                	setTemplate2(Reclutador_testigo.getTemplate());
+					                	
+					                	 EnviarTexto("Listo, Las Huellas Han Sido Capturada Correctamente Ahora Puede Guardarla");
+								    	    //btnIdentificar.setEnabled(false);
+//								                btnVerificar.setEnabled(true);
+								                btnGuardar.setEnabled(true);
+								                btnGuardar.grabFocus();
+								        		banderaHuellas(tmphuellaVerde.getImage(), lblImageHuella2);
+								        		guardarHuella();
+												Reclutador.clear();
+												Reclutador2.clear();
+												banderaHuellas(tmphuellaRoja.getImage(), lblImageHuella1);
+												banderaHuellas(tmphuellaRoja.getImage(), lblImageHuella2);
+												lblMarcoHuella.setIcon(null);
+									        	JOptionPane.showMessageDialog(null, "Huellas Capturadas Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+												dispose();
+//												System.exit(0);	
+					                }
+		                break;
+
+			    	    case TEMPLATE_STATUS_FAILED: // informe de fallas y reiniciar la captura de huellas
+				    	    	Reclutador.clear();
+				    	    	Reclutador2.clear();
+				    	    	index_huella = 1;
+				    			banderaHuellas(tmphuellaRoja.getImage(), lblImageHuella1);
+				    			banderaHuellas(tmphuellaRoja.getImage(), lblImageHuella2);
+				                stop();
+					    	    EstadoHuellas();
+					    	    setTemplate(null);//"CapturaHuella.this"
+					    	    JOptionPane.showMessageDialog(null, "La Plantilla de la Huella no pudo ser creada, Repita el Proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
+					    	    start();
+			    	    break;
+		        	 }
+	    	     }
+	    }
+	    
+	    public DPFPTemplate getTemplate() {
+	        return template;
+	    }
+
+	    public void setTemplate(DPFPTemplate template) {
+	        DPFPTemplate old = this.template;
+	        this.template = template;
+	        firePropertyChange(TEMPLATE_PROPERTY, old, template);
+	    }
+	    
+	    public DPFPTemplate getTemplate2() {
+	        return template2;
+	    }
+	    
+	    public void setTemplate2(DPFPTemplate template) {
+	        DPFPTemplate old = this.template;
+	        this.template2 = template;
+	        firePropertyChange(TEMPLATE_PROPERTY, old, template);
+	    }
+
+	    
+	    public  DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose){
+	        DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
+	        try {
+	         return extractor.createFeatureSet(sample, purpose);
+	        } catch (DPFPImageQualityException e) {
+	         return null;
+	        }
+	   }
+	    
+	    public  Image CrearImagenHuella(DPFPSample sample) {
+	    	return DPFPGlobal.getSampleConversionFactory().createImage(sample);
+	    }
+
+	      public void DibujarHuella(Image image) {
+	    	  	lblMarcoHuella.setIcon(new ImageIcon(
+	            image.getScaledInstance(lblMarcoHuella.getWidth(), lblMarcoHuella.getHeight(), Image.SCALE_DEFAULT)));
+	            repaint();
+	     }
+	      
+	      public void banderaHuellas(Image image,JLabel lbl) {
+	    	  lbl.setIcon(new ImageIcon(
+	          image.getScaledInstance(lbl.getWidth(), lbl.getHeight(), Image.SCALE_DEFAULT)));
+	          repaint();
+	      }
+
+	    public  void EstadoHuellas(){
+	    	EnviarTexto("Huella 1:Muestra Restantes para Guardar "+ Reclutador.getFeaturesNeeded());
+	    	System.out.println(Reclutador.getTemplateStatus());
+	    	System.out.println(Reclutador.getTemplate());
+	    }
+	    
+	    public  void EstadoHuellas2(){
+	    	EnviarTexto("Huella 2:Muestra Restantes para Guardar "+ Reclutador2.getFeaturesNeeded());
+	    	System.out.println(Reclutador2.getTemplateStatus());
+	    	System.out.println(Reclutador2.getTemplate());
+	    }
+	    
+	    ActionListener opGuardar = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				guardarHuella();
+				Reclutador.clear();
+				Reclutador2.clear();
+				banderaHuellas(tmphuellaRoja.getImage(), lblImageHuella1);
+				banderaHuellas(tmphuellaRoja.getImage(), lblImageHuella2);
+				lblMarcoHuella.setIcon(null);
+				System.exit(0);			
+			}
+		};
+		
+		 ActionListener opVerificar = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int folio = Integer.valueOf(JOptionPane.showInputDialog("Folio del personal a verificar") );
+				  try {
+					verificarHuella(folio);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				  Reclutador.clear();
+				  Reclutador2.clear();
+				}
+			};
+		
+	    public void guardarHuella(){
+	        datosHuella = new ByteArrayInputStream(template.serialize());
+	        datosHuella2 = new ByteArrayInputStream(template2.serialize());
+	        tamañoHuella=template.serialize().length;
+	        tamañoHuella2=template2.serialize().length;
+	    }
+	    
+	     public void verificarHuella(int folio) throws SQLException {
+	    	 Object[][] datos = new BuscarSQL().Buscar_Huella(folio);
+	    	 
+	        //Lee la plantilla de la base de datos
+	        byte[] templateBuffer1 = (byte[]) datos[0][1];
+	        //Crea una nueva plantilla a partir de la guardada en la base de datos
+	        DPFPTemplate referenceTemplate1 = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer1);
+	        //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
+	        setTemplate(referenceTemplate1);
+	        
+	        //Lee la plantilla de la base de datos
+	        byte[] templateBuffer2 = (byte[]) datos[0][2];
+	        //Crea una nueva plantilla a partir de la guardada en la base de datos
+	        DPFPTemplate referenceTemplate2 = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer2);
+	        //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
+	        setTemplate2(referenceTemplate2);
+
+	        // Compara las caracteriticas de la huella recientemente capturda con la
+	        // plantilla guardada al usuario especifico en la base de datos
+	        DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
+	        DPFPVerificationResult result2 = Verificador.verify(featuresverificacion, getTemplate2());
+
+	        //compara las plantilas (actual vs bd)
+	        if (result.isVerified() || result2.isVerified()){
+	        	JOptionPane.showMessageDialog(null, "Las huella capturada coinciden con la de: ["+folio+"]","Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+	        }else{
+	        	JOptionPane.showMessageDialog(null, "No corresponde la huella con: ["+folio+"]", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+	        }
+	     }
+	    
+//		public static void main(String [] arg){
+//			try{
+//				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//				new Cat_Huellas_Personalizado().setVisible(true);
+//			}catch(Exception e){	}
+//		}
+	}
+//--TODO(Captura De Huella Digital(fin))	--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 }

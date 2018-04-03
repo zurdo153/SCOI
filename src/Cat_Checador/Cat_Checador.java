@@ -15,8 +15,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,15 +33,31 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+
+import com.digitalpersona.onetouch.DPFPDataPurpose;
+import com.digitalpersona.onetouch.DPFPFeatureSet;
+import com.digitalpersona.onetouch.DPFPGlobal;
+import com.digitalpersona.onetouch.DPFPSample;
+import com.digitalpersona.onetouch.DPFPTemplate;
+import com.digitalpersona.onetouch.capture.DPFPCapture;
+import com.digitalpersona.onetouch.capture.event.DPFPDataAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPDataEvent;
+import com.digitalpersona.onetouch.processing.DPFPEnrollment;
+import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
+import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
+import com.digitalpersona.onetouch.verification.DPFPVerification;
+import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 
 import Conexiones_SQL.BuscarSQL;
 import Obj_Checador.Obj_Checador;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.Obj_tabla;
+import rojerusan.componentes.RSProgressCircleAnimatedUno;
 
 @SuppressWarnings("serial")
 public class Cat_Checador extends JFrame {
@@ -49,6 +67,7 @@ public class Cat_Checador extends JFrame {
         JLayeredPane panel = new JLayeredPane();
         
         static Obj_Checador checador ;
+        boolean huellaAceptada=false;
         Cat_Reloj_Sincronizado_Servidor trae_hora = new Cat_Reloj_Sincronizado_Servidor();
         
         static Obj_tabla  ObjTab = new Obj_tabla();
@@ -157,7 +176,8 @@ public class Cat_Checador extends JFrame {
                 JLabel lblClave = new JLabel("Clave:");
                 
                 JPasswordField txtClaveReal = new Componentes().textPassword(new JPasswordField(), "Clave", 30);
-                
+                JCButton btnMaster = new JCButton("", "clave.png", "Azul");
+
                 JButton btnEmplorar = new JButton("");
                 
                 static JLabel lblSemaforoRojo = new JLabel("");
@@ -177,8 +197,6 @@ public class Cat_Checador extends JFrame {
                 JLabel lblHorario = new JLabel("Horario: ");
                 
                 JLabel btnMensaje = new JLabel("");
-//                JButton btnChecar = new JButton("Checar sin gafete");
-//                JButton btnExaminar = new JButton("Examinar");
                 
                 JScrollPane barra_mensaje= new JScrollPane();
                 JTextArea txaAvisos = new JTextArea("");
@@ -223,7 +241,8 @@ public class Cat_Checador extends JFrame {
                 Icon iconoCerrar;
                 
                 JCButton btnMenu = new JCButton("Menu", "", "");
-                
+                boolean btn_salir_huella = false;
+                String checoCon = "GAFETE";
         @SuppressWarnings("static-access")
 		public Cat_Checador(){
                 
@@ -242,6 +261,7 @@ public class Cat_Checador extends JFrame {
                 txtClaveReal.addKeyListener(action_registrar_entrada);
 //                btnChecar.addActionListener(opChecar);
                 btnMenu.addActionListener(opMenu);
+                btnMaster.addActionListener(opKeyMaster);
                 
                 lblSemaforoRojo.setEnabled(false);
                 lblSemaforoVerde.setEnabled(false);
@@ -301,9 +321,18 @@ public class Cat_Checador extends JFrame {
                  });  
         }
         
+        ActionListener opKeyMaster = new ActionListener(){
+        	public void actionPerformed(ActionEvent e){
+        		txtClaveReal.setText("");
+        		txtClaveReal.requestFocus();
+        		new Cat_Huellas_Personalizado("CLAVE MASTER").setVisible(true);
+        	}
+        };
+        
         KeyListener action_registrar_entrada = new KeyListener() {
 			public void keyPressed(KeyEvent e) {	
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+						checoCon = "GAFETE";
 						checar();
 				}
 			}
@@ -344,7 +373,6 @@ public class Cat_Checador extends JFrame {
 								folio_empleado = Integer.parseInt(codigoBarrar.substring(0, posicionC));
 								claveMaster = codigoBarrar.substring(posicionC+1,codigoBarrar.length());
 								
-								System.out.println(folio_empleado+"  <-");
 								checador = new Obj_Checador().buscar(folio_empleado);
 								
 //								Obj_Empleados re = new Obj_Empleados().buscar(folio_empleado);  //busca a empleado 
@@ -358,9 +386,43 @@ public class Cat_Checador extends JFrame {
 			                        		
 				                        if(checador.getFolio_empleado()==folio_empleado){
 				                        	
-				                        	System.out.println("Status: "+checador.getStatus());
-				                        	
+				                        	if(!checoCon.equals("CLAVE MASTER")){
 				                        		
+				                        		int contador_de_intentos_de_huella=0;
+					                        	//TODO(LLAMAR VERIFICADOR DE HUELLA)
+					                        	if(checador.getForma_de_checar().equals("GH")){
+													new Cat_Huellas_Personalizado("GAFETE").setVisible(true);
+													
+														while(!huellaAceptada){
+																if(!btn_salir_huella){
+																		if(contador_de_intentos_de_huella == 3){
+																			txtClaveReal.setText("");
+																			txtClaveReal.requestFocus();
+																			JOptionPane.showMessageDialog(null, "1.-Se Detectaron Problemas Con La Huella O No Se Ha Registrado, Comuniquese AL Departamente De Desarrollo Humano.", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+																			return;
+																		}else{
+																			contador_de_intentos_de_huella++;
+																			JOptionPane.showMessageDialog(null, "No Se Puedo Identificar La Huella, Vuelva A Intentarlo", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+																			new Cat_Huellas_Personalizado("GAFETE").setVisible(true);
+																		}
+																}else{
+																	txtClaveReal.setText("");
+																	txtClaveReal.requestFocus();
+																	btn_salir_huella = false;
+																	return;
+																}
+														}
+												}
+	        			    	    		}
+				                        	
+				                        	if((!huellaAceptada) && (checoCon.equals("CLAVE MASTER"))){
+				                        		txtClaveReal.setText("");
+												txtClaveReal.requestFocus();
+												btn_salir_huella = false;
+				                        		JOptionPane.showMessageDialog(null, "2.-Se Detectaron Problemas Con La Huella O No Se Ha Registrado, Comuniquese AL Departamente De Desarrollo Humano.", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+												return;
+				                        	}
+				                        	
 				                           		switch (checador.getStatus()){
 				                                         case 1: if(checador.getNo_checador().equals(codigoBarrar)){
 				                                            		 		registrarEntrada("-");
@@ -368,13 +430,12 @@ public class Cat_Checador extends JFrame {
 				                                            		 if(checador.getMaster_key().equals(claveMaster)){
 				                                            			 	registrarEntrada("MASTER");
 				                                            		 }else{
-				                                            			 
 					                                            			 lblSemaforoRojo.setEnabled(true);
 					                                                         lblSemaforoVerde.setEnabled(false);
 						                    				     		     JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador <>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				                                                			 txtClaveReal.setText("");
 				                                                			 txtClaveReal.requestFocus();
-				                                                           return;
+				                                                			 return;
 				                                            		 }
 				                                            	 }
 				                                          break;
@@ -409,8 +470,8 @@ public class Cat_Checador extends JFrame {
 						                                          			 	registrarEntrada("MASTER");
 						                                          		 }else{
 						                                          			 
-							                                            			 lblSemaforoRojo.setEnabled(true);
-							                                                         lblSemaforoVerde.setEnabled(false);
+						                                            			 lblSemaforoRojo.setEnabled(true);
+						                                                         lblSemaforoVerde.setEnabled(false);
 							                    				     		     JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador ","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						                                              			 txtClaveReal.setText("");
 						                                              			 txtClaveReal.requestFocus();
@@ -431,21 +492,21 @@ public class Cat_Checador extends JFrame {
 		                        }
 					 	}else{
 	                   		 lblSemaforoRojo.setEnabled(true);
-                           lblSemaforoVerde.setEnabled(false);
-      		  			  JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador >>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-              			 txtClaveReal.setText("");
-              			 txtClaveReal.requestFocus();
-                         return;
-	                        }
+	                   		 lblSemaforoVerde.setEnabled(false);
+	      		  			 JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador >>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	              			 txtClaveReal.setText("");
+	              			 txtClaveReal.requestFocus();
+	                         return;
+                        }
 				 }else{
 				 		lblSemaforoRojo.setEnabled(true);
-						 lblSemaforoVerde.setEnabled(false);
+						lblSemaforoVerde.setEnabled(false);
 			                
-     		  		 JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador >>>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+     		  		 	JOptionPane.showMessageDialog(null, "La Clave Ingresada No Corresponde A Ningun Trabajador >>>","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
      		  		    txtClaveReal.setText("");
                         txtClaveReal.requestFocus();
                         return;
-			 		}
+		 		}
 			 }
         }
         
@@ -500,54 +561,58 @@ public class Cat_Checador extends JFrame {
                         	  if (checador.isValida_checar_salida_a_comer()){
                                         new Cat_Checador_Selecion_Comida((folio_empleado),checada).setVisible(true);
                                }else{
-//	                                    Obj_Empleados re = new Obj_Empleados().buscar(folio_empleado);
-//	                                    Obj_Entosal entosalClave = new Obj_Entosal().buscar();
-	                                    
 //	                                    if(re.getNo_checador().equals(txtClaveReal.getText().toUpperCase())||entosalClave.getClave().equals(claveMaster)){
                                     	if(checador.getNo_checador().equals(txtClaveReal.getText().toUpperCase())||checador.getMaster_key().equals(claveMaster)){
 	                                    	
-	                                    	ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-	         		                        Icon icono = new ImageIcon(tmpIconAux.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-	         		                        btnFoto.setIcon(icono);  
-	                                    	
-	                                    	Object[][] registro = intentar_checar(folio_empleado,checada,0);
+                                    		Object[][] registro = intentar_checar(folio_empleado,checada,0);
+                                    		
+                                    		
+                                    		if(!registro[0][0].toString().trim().equals("false")){
+	                                    			ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+			         		                        Icon icono = new ImageIcon(tmpIconAux.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+			         		                        btnFoto.setIcon(icono);  
+		                                    	
+				                                    String tipo=registro[0][0].toString();
+				                                    String hora=registro[0][1].toString();
+				                                    String Fecha=registro[0][7].toString();
+				                                    lblFecha.setText(Fecha+"");
+				                                    
+				                                    txtClaveReal.setText("");
+				                                    txtClaveReal.requestFocus();
+		            
+			                                            if(Integer.parseInt(registro[0][1].toString().trim().substring(0,2))<2){
+			                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
+			                                                            lblNota2.setText("A CHECADO "+tipo+" A LA "+hora.substring(0,hora.length()-3)+" Hr");
 			
-			                                    String tipo=registro[0][0].toString();
-			                                    String hora=registro[0][1].toString();
-			                                    
-			                                    String Fecha=registro[0][7].toString();
-			                                    lblFecha.setText(Fecha);
-			                                    
-			                                    txtClaveReal.setText("");
-			                                    txtClaveReal.requestFocus();
-	            
-		                                            if(Integer.parseInt(registro[0][1].toString().trim().substring(0,2))<2){
-		                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
-		                                                            lblNota2.setText("A CHECADO "+tipo+" A LA "+hora.substring(0,hora.length()-3)+" Hr");
-		
-		                                            }else{
-		                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
-		                                                            lblNota2.setText("A  CHECADO "+tipo+" A LAS "+hora.substring(0,hora.length()-3)+" Hrs");
-		                                            }
-	                                            
-		                                        lblNombre.setText("Emp: ");
-		                                        lblEstablecimiento.setText("Estab: ");
-		                                        lblPuesto.setText("Puesto: ");
-		                                        lblHorario.setText("Horario: ");
-                                                            
-	                                            lblNombre.setText(lblNombre.getText() + checador.getNombre_empleado());
-	                                            
-//	                                            Obj_Establecimiento comboNombreEsta = new Obj_Establecimiento().buscar_estab(re.getEstablecimiento());
-	                                            lblEstablecimiento.setText(lblEstablecimiento.getText() + checador.getEstablecimiento());
-	
-//	                                            Obj_Puestos comboNombrePues = new Obj_Puestos().buscar_pues(re.getPuesto());
-	                                            lblPuesto.setText(lblPuesto.getText() + checador.getPuesto());
-	                                            
-	                                            txtClaveReal.requestFocus(); 		
+			                                            }else{
+			                                                            lblNota.setText("EL EMPLEADO "+checador.getNombre_empleado());
+			                                                            lblNota2.setText("A  CHECADO "+tipo+" A LAS "+hora.substring(0,hora.length()-3)+" Hrs");
+			                                            }
+		                                            
+			                                        lblNombre.setText("Emp: ");
+			                                        lblEstablecimiento.setText("Estab: ");
+			                                        lblPuesto.setText("Puesto: ");
+			                                        lblHorario.setText("Horario: ");
+	                                                            
+		                                            lblNombre.setText(lblNombre.getText() + checador.getNombre_empleado());
+		                                            lblEstablecimiento.setText(lblEstablecimiento.getText() + checador.getEstablecimiento());
+		                                            lblPuesto.setText(lblPuesto.getText() + checador.getPuesto());
+		                                            
+		                                            txtClaveReal.requestFocus(); 	
+                                    		}else{
+                                    			txtClaveReal.setText("");
+                                    			txtClaveReal.requestFocus(); 	
+                                    			JOptionPane.showMessageDialog(null, "Error Al Momento De Checar, Comuniquese Al Departamento De Desarrollo Humano Para Que Revisen Su Horario.","Error",JOptionPane.ERROR_MESSAGE);
+                                    			return;
+                                    		}
+                                    		
+                                    		
+                                    		
+	                                    		
                                  }else{
 	                                	 lblSemaforoRojo.setEnabled(true);
 	                                     lblSemaforoVerde.setEnabled(false);
-                                         JOptionPane.showMessageDialog(null, "La clave no corresponde","Error",JOptionPane.WARNING_MESSAGE);
+                                         JOptionPane.showMessageDialog(null, "La Clave No Corresponde","Error",JOptionPane.WARNING_MESSAGE);
                                          panelLimpiar();
                                          txtClaveReal.requestFocus();
                                          return;
@@ -567,15 +632,15 @@ public class Cat_Checador extends JFrame {
         public static Object[][] intentar_checar(int folio_empleado,String tipo_entrada,int tipo_salida_comer){
                 
 //metodo para llenar vector para checador2--------------------------------------
-                Object[][] vector = null;
-                
-                if(new Obj_Checador().insertar_checada(folio_empleado,tipo_entrada,tipo_salida_comer)){
-                	
-                	vector = new BuscarSQL().buscar_registro_checador(folio_empleado);
-                	
+        	
+        	
+//        	new Obj_Checador().insertar_checada(folio_empleado,tipo_entrada,tipo_salida_comer);
+        	
+                Object[][] vector = new BuscarSQL().buscar_registro_checador(folio_empleado,tipo_entrada,tipo_salida_comer);
+                if(!vector[0][0].toString().trim().equals("false")){
+                	                	
                 	lblSemaforoRojo.setEnabled(false);
                     lblSemaforoVerde.setEnabled(true);
-                    
                  	tabla_model.setRowCount(0);
                  	init_tabla();                                
                             	
@@ -583,7 +648,6 @@ public class Cat_Checador extends JFrame {
                 }else{
                 	lblSemaforoRojo.setEnabled(true);
                     lblSemaforoVerde.setEnabled(false);
-                        JOptionPane.showMessageDialog(null, "Error al momento de checar","Error",JOptionPane.ERROR_MESSAGE);
                 }
                 return vector;
         }
@@ -647,6 +711,7 @@ public class Cat_Checador extends JFrame {
                 
                panel.add(lblClave).setBounds(5,y,z,20);
                panel.add(txtClaveReal).setBounds(x*4,y,z-18,20);
+               panel.add(btnMaster).setBounds(x*4+(z-18),y,30,20);
                
                panel.add(trae_hora.lblHora).setBounds(x*13,y-20, z*5, 100);
                panel.add(lblNota).setBounds(x*6,y+=115, 800, 30);
@@ -720,6 +785,7 @@ public class Cat_Checador extends JFrame {
                
                panel.add(lblClave).setBounds(5,y,z,20);
                panel.add(txtClaveReal).setBounds(x*4,y,z-18,20);
+               panel.add(btnMaster).setBounds(x*4+(z-18),y,30,20);
                
                panel.add(trae_hora.lblHora).setBounds(x*18,y-5, z*5, 100);
                panel.add(lblNota).setBounds(x*6,y+=165, 800, 30);
@@ -794,6 +860,7 @@ public class Cat_Checador extends JFrame {
                    
                    panel.add(lblClave).setBounds(5,y,z,20);
                    panel.add(txtClaveReal).setBounds(x*4,y,z-18,20);
+                   panel.add(btnMaster).setBounds(x*4+(z-18),y,30,20);
                    
                    panel.add(trae_hora.lblHora).setBounds(x*20,y+5, z*5, 100);
                    panel.add(lblNota).setBounds(x*6,y+=185, 800, 40);
@@ -870,6 +937,7 @@ public class Cat_Checador extends JFrame {
                    
                    panel.add(lblClave).setBounds(45,y,z,20);
                    panel.add(txtClaveReal).setBounds(x*8,y,z-18,20);
+                   panel.add(btnMaster).setBounds(x*8+(z-18),y,30,20);
                    
                    panel.add(trae_hora.lblHora).setBounds(x*24,y, z*5, 100);
                    panel.add(lblNota).setBounds(x*12,y+=145, 800, 40);
@@ -934,6 +1002,7 @@ public class Cat_Checador extends JFrame {
                    
                    panel.add(lblClave).setBounds(45,y+15,z,20);
                    panel.add(txtClaveReal).setBounds(x*8,y+15,z-18,20);
+                   panel.add(btnMaster).setBounds(x*8+(z-18),y+15,30,20);
                    
                    panel.add(trae_hora.lblHora).setBounds(x*24,y+10, z*5, 100);
                    panel.add(lblNota).setBounds(x*10,y+=185, 800, 40);
@@ -998,6 +1067,7 @@ public class Cat_Checador extends JFrame {
                    
                    panel.add(lblClave).setBounds(45,y+25,z,20);
                    panel.add(txtClaveReal).setBounds(x*8,y+25,z-18,20);
+                   panel.add(btnMaster).setBounds(x*8+(z-18),y+25,30,20);
                    
                    panel.add(trae_hora.lblHora).setBounds(x*24,y+20, z*5, 100);
                    panel.add(lblNota).setBounds(x*10,y+=205, 800, 40);
@@ -1037,6 +1107,243 @@ public class Cat_Checador extends JFrame {
     		}
     	}
     	
+    	//--TODO(Captura De Huella Digital(inicio))	--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    	public class Cat_Huellas_Personalizado extends JDialog{
+    		
+    		Container cont = getContentPane();
+    		JLayeredPane panel = new JLayeredPane();
+    		
+    		RSProgressCircleAnimatedUno pca1 =new RSProgressCircleAnimatedUno();
+    		
+    		//Varible que permite iniciar el dispositivo de lector de huella conectado
+    		// con sus distintos metodos.
+    		private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+    	//------------------------------------------------------------------------------------------------------------------------	
+    		//Varible que permite establecer las capturas de la huellas, para determina sus caracteristicas
+    		// y poder estimar la creacion de un template de la huella para luego poder guardarla
+    		private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+    		
+    		//Variable que para crear el template de la huella luego de que se hallan creado las caracteriticas
+    		// necesarias de la huella si no ha ocurrido ningun problema
+    		private DPFPTemplate template;
+    	//------------------------------------------------------------------------------------------------------------------------	
+    		//Varible que permite establecer las capturas de la huellas, para determina sus caracteristicas
+    		// y poder estimar la creacion de un template de la huella para luego poder guardarla
+    		private DPFPEnrollment Reclutador2 = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+    		
+    		//Variable que para crear el template de la huella luego de que se hallan creado las caracteriticas
+    		// necesarias de la huella si no ha ocurrido ningun problema
+    		private DPFPTemplate template2;
+    	//------------------------------------------------------------------------------------------------------------------------	
+    		public String TEMPLATE_PROPERTY = "template";
+    			
+    		//Esta variable tambien captura una huella del lector y crea sus caracteristcas para auntetificarla
+    		// o verificarla con alguna guarda en la BD
+    		private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
+    		
+    		public Cat_Huellas_Personalizado(String formaDeChecar) {
+    			this.setModal(true);
+    			
+    			checoCon = formaDeChecar;
+    			
+    	        this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/encuesta.png"));
+    			panel.setBorder(BorderFactory.createTitledBorder("huella"));
+    			
+    			this.setTitle("Verificar Huella");
+    			this.setSize(270,270);
+    			this.setResizable(false);
+    			this.setLocationRelativeTo(null);
+    			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    			
+    			panel.add(pca1).setBounds(0, 20, 270, 200);
+    			
+    			pca1.setString("Ingresar Huella");
+    			pca1.setIndeterminate(true);
+    			 
+    			cont.add(panel);
+    			
+    	        this.addWindowListener(new java.awt.event.WindowAdapter() {
+    	            public void windowClosing(java.awt.event.WindowEvent evt) {
+    	                formWindowClosing(evt);
+    	            }
+    	            public void windowOpened(java.awt.event.WindowEvent evt) {
+    	                formWindowOpened(evt);
+    	            }
+    	        });
+    		}
+
+    		private void formWindowOpened(java.awt.event.WindowEvent evt){
+    	        Iniciar();
+    	        start();
+    	    }
+
+    	    private void formWindowClosing(java.awt.event.WindowEvent evt) {
+    	    	btn_salir_huella = true;
+    	    	System.out.println("cerar con btn Cerrar");
+    	        stop();
+    	    }
+    	    
+    	    public  void stop(){
+    	        Lector.stopCapture();
+    		}
+    	    
+    	    protected void Iniciar(){
+    	    	   Lector.addDataListener(new DPFPDataAdapter() {
+    		    	    @Override 
+    		    	    public void dataAcquired(final DPFPDataEvent e) {
+    			    	    SwingUtilities.invokeLater(new Runnable() {	
+    			    	    	public void run() {
+    			    	    		ProcesarCaptura(e.getSample());
+    			    	    		
+    			    	    		
+    			    	    		
+    			    	    		int folio = 0;
+    			    	    		
+    			    	    			
+    			    	    			if(checoCon.equals("CLAVE MASTER")){
+    			    	    				
+    			    	    					String DatoCapturado = JOptionPane.showInputDialog("Folio Del Personal A Verificar");
+    			    	    					
+	    			    	    				if(validaDatoCapturado(DatoCapturado)){
+	    			    	    					folio = Integer.valueOf(DatoCapturado);
+	    			    	    				}else{
+	    	    			    	    			System.out.println("error con el folio");
+	    	    			    	    		}
+	    			    	    				
+        			    	    		}else{
+        			    	    			folio = folio_empleado;
+        			    	    		}
+    			    	    			
+    			    	    			
+    			    	    			
+    			    	    		
+    			    	    		
+    			    				  try {
+    			    					verificarHuella(folio);
+    			    				} catch (SQLException e1) {
+    			    					e1.printStackTrace();
+    			    				}
+    			    				  Reclutador.clear();
+    			    				  Reclutador2.clear();
+    			    				  stop();
+    			    				  dispose();
+    			    	    	}
+    				    	});
+    		    	    }
+    	    	   });
+    	    	}
+    	    public boolean validaDatoCapturado(String datoCapturado){
+				try {
+					Integer.valueOf(datoCapturado);
+					return true;
+				} catch (Exception e) {
+					return false;
+				}
+    	    }
+    	    
+    	    public  void start(){
+    	    	Lector.startCapture();
+    	    }
+    	    
+    	    public DPFPFeatureSet featuresverificacion;
+    	    public  void ProcesarCaptura(DPFPSample sample){
+	    	     // Procesar la muestra de la huella y crear un conjunto de características con el propósito de verificacion.
+	    	     featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
+    	    }
+    	    
+      	    public  DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose){
+    	        DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
+    	        try {
+    	         return extractor.createFeatureSet(sample, purpose);
+    	        } catch (DPFPImageQualityException e) {
+    	         return null;
+    	        }
+    	   }
+    	    
+    	    public DPFPTemplate getTemplate() {
+    	        return template;
+    	    }
+
+    	    public void setTemplate(DPFPTemplate template) {
+    	        DPFPTemplate old = this.template;
+    	        this.template = template;
+    	        firePropertyChange(TEMPLATE_PROPERTY, old, template);
+    	    }
+    	    
+    	    public DPFPTemplate getTemplate2() {
+    	        return template2;
+    	    }
+    	    
+    	    public void setTemplate2(DPFPTemplate template) {
+    	        DPFPTemplate old = this.template2;
+    	        this.template2 = template;
+    	        firePropertyChange(TEMPLATE_PROPERTY, old, template);
+    	    }
+
+    	    public  Image CrearImagenHuella(DPFPSample sample) {
+    	    	return DPFPGlobal.getSampleConversionFactory().createImage(sample);
+    	    }
+
+    	     public void verificarHuella(int folio) throws SQLException {
+    	    	 
+    	    	 int folio_emp=0;
+    	    	 byte[] muestra1 = null;
+    	    	 byte[] muestra2 = null;
+    	    	 String masterKey = "";
+    	    	 if(checoCon.equals("CLAVE MASTER")){
+    	    		 
+    	    		 Object[][] datos = new BuscarSQL().Buscar_Huella(folio);
+    	    		 	folio_emp = Integer.valueOf(datos[0][0].toString().trim());
+	    	    		muestra1 = (byte[]) datos[0][1];
+	    	    		muestra2 = (byte[]) datos[0][2];
+	    	    		masterKey = datos[0][3].toString().trim();
+	    	    		 
+ 	    		}else{
+	 	    			muestra1 = checador.getHuella_1();
+	 	    			muestra2 = checador.getHuella_2();
+ 	    		}
+    	    	 
+    	        //Lee la plantilla de la base de datos
+    	        byte[] templateBuffer1 = muestra1;
+    	        //Crea una nueva plantilla a partir de la guardada en la base de datos
+    	        DPFPTemplate referenceTemplate1 = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer1);
+    	        //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
+    	        setTemplate(referenceTemplate1);
+    	        
+    	        //Lee la plantilla de la base de datos
+    	        byte[] templateBuffer2 = muestra2;
+    	        //Crea una nueva plantilla a partir de la guardada en la base de datos
+    	        DPFPTemplate referenceTemplate2 = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer2);
+    	        //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
+    	        setTemplate2(referenceTemplate2);
+
+    	        // Compara las caracteriticas de la huella recientemente capturda con la
+    	        // plantilla guardada al usuario especifico en la base de datos
+    	        DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
+    	        DPFPVerificationResult result2 = Verificador.verify(featuresverificacion, getTemplate2());
+
+    	        //compara las plantilas (actual vs bd)
+    	        if (result.isVerified() || result2.isVerified()){
+    	        	huellaAceptada=true;
+    	        	 if(checoCon.equals("CLAVE MASTER")){
+    	        		 txtClaveReal.setText(folio_emp+"C"+masterKey);
+    	   	    		 	checar();
+     	    		}
+    	        	
+    	        }
+    	        else{
+    	        	huellaAceptada=false;
+    	        	if(checoCon.equals("CLAVE MASTER")){
+    	        		JOptionPane.showMessageDialog(null, "La Huella No Fue Detectada O No Ha Sido Registrada","Error",JOptionPane.WARNING_MESSAGE);
+                        return;
+    	    		}
+    	        	
+    	        }
+    	        System.out.println(huellaAceptada);
+    	     }
+
+    	}
+    //--TODO(Captura De Huella Digital(fin))	--------------------------------------------------------------------------------------------------------------------------------------------------------------------
     	public static void main(String args[]){
     		try{
     			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

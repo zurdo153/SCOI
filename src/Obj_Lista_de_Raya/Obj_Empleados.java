@@ -1,5 +1,6 @@
 package Obj_Lista_de_Raya;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.sql.SQLException;
 
@@ -30,7 +31,8 @@ public class Obj_Empleados {
 	private String tipo_sangre;
 	private String escolaridad;	
 	private File foto;
-	private String email;
+	private String emailEmpresa;
+	private String emailPersonal;
 	
 	private int perfil;
 //	laboral
@@ -42,6 +44,7 @@ public class Obj_Empleados {
 	private int status_h3;
 	private int status_rotativo;
 	private int contrato;
+	
 //	dependen del horario activo
 	private String descanso;
 	private String dobla;
@@ -59,6 +62,8 @@ public class Obj_Empleados {
 	private String fecha_vencimiento_licencia;
 	private String ultimo_usuario_modifico;
 	private String status_checador;
+	private String forma_de_checar;
+	private boolean tieneHuella;
 
 	//	percepciones y deducciones
 	private float salario_diario;
@@ -66,6 +71,7 @@ public class Obj_Empleados {
 	private String forma_pago;
 	private float sueldo;
 	private int bono;
+	
 	public float getBonocomplemento() {
 		return bonocomplemento;
 	}
@@ -98,7 +104,10 @@ public class Obj_Empleados {
 	
 	public Obj_Empleados(){
 		folio=0; no_checador=""; nombre=""; ap_paterno=""; ap_materno=""; fecha_nacimiento=""; calle=""; colonia=""; poblacion=""; telefono_familiar="";
-		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; foto=null; email="";
+		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; foto=null; emailEmpresa="";
+		emailPersonal="";
+		
+		status_checador = "";	forma_de_checar=""; 	tieneHuella=false;
 		
 		perfil = 0;
 		
@@ -141,12 +150,20 @@ public class Obj_Empleados {
 		this.fecha_nacimiento_beneficiario = fecha_nacimiento_beneficiario;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getEmailEmpresa() {
+		return emailEmpresa;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setEmailEmpresa(String emailEmpresa) {
+		this.emailEmpresa = emailEmpresa;
+	}
+
+	public String getEmailPersonal() {
+		return emailPersonal;
+	}
+
+	public void setEmailPersonal(String emailPersonal) {
+		this.emailPersonal = emailPersonal;
 	}
 
 	public float getBono_asistencia() {
@@ -187,6 +204,22 @@ public class Obj_Empleados {
 
 	public void setStatus_checador(String status_checador) {
 		this.status_checador = status_checador;
+	}
+
+	public String getForma_de_checar() {
+		return forma_de_checar;
+	}
+
+	public void setForma_de_checar(String forma_de_checar) {
+		this.forma_de_checar = forma_de_checar;
+	}
+
+	public boolean isTieneHuella() {
+		return tieneHuella;
+	}
+
+	public void setTieneHuella(boolean tieneHuella) {
+		this.tieneHuella = tieneHuella;
 	}
 
 	public int getFolio() {
@@ -645,7 +678,9 @@ public class Obj_Empleados {
 		this.fecha_actualizacion = fecha_actualizacion;
 	}
 
-	public boolean guardar(){ return new GuardarSQL().Guardar_Empleado(this); }
+	public boolean guardar(ByteArrayInputStream datosHuella, ByteArrayInputStream datosHuella2, int tamañoHuella, int tamañoHuella2){ 
+			return new GuardarSQL().Guardar_Empleado(this, datosHuella, datosHuella2, tamañoHuella, tamañoHuella2); 
+		}
 	
 	
 	public Obj_Empleados buscar(int folio){ 
@@ -658,7 +693,9 @@ public class Obj_Empleados {
 	}
 	
 	
-	public boolean actualizar(int folio){ return new ActualizarSQL().Empleado(this,folio); }
+	public boolean actualizar(int folio, ByteArrayInputStream datosHuella, ByteArrayInputStream datosHuella2, int tamañoHuella, int tamañoHuella2){
+		return new ActualizarSQL().Empleado(this,folio, datosHuella, datosHuella2, tamañoHuella, tamañoHuella2); 
+	}
 	
 	public boolean actualizarbeneficiario(){ return new ActualizarSQL().BeneficiarioColaborador(this); }
 	
