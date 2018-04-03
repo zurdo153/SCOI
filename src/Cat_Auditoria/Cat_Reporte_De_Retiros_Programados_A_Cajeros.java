@@ -32,8 +32,8 @@ public class Cat_Reporte_De_Retiros_Programados_A_Cajeros extends JFrame{
 	JTextField txtFolioAsignacion = new Componentes().text(new JCTextField(), "Folio De Asignacion", 12, "String");
 	JTextField txtFolioCajero = new Componentes().text(new JCTextField(), "Folio De Cajero(a)", 12, "Int");
 	
-	JDateChooser fhIn = new JDateChooser();
-	JDateChooser fhFin = new JDateChooser();
+	JDateChooser fhIn  = new Componentes().jchooser(new JDateChooser()  ,"Fecha Inicial" ,1);
+	JDateChooser fhFin = new Componentes().jchooser(new JDateChooser()  ,"Fecha Final"   ,0);
 	
 	JCButton btnDeshacer = new JCButton("Deshacer", "Deshacer16.png", "Azul");
 	JCButton btnGenerar = new JCButton("Buscar", "buscar.png", "Azul");

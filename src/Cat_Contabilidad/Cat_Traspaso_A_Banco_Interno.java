@@ -557,8 +557,8 @@ public class Cat_Traspaso_A_Banco_Interno extends JFrame{
 	public void actionPerformed(ActionEvent e){
 				calculo();
 				
-			 if(txtTotal.getText().equals("")||Float.valueOf(txtTotal.getText())==0){
-					JOptionPane.showMessageDialog(null, "Es Requerido Alimente Importe al Banco Interno Para Poder Guardar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+			 if(tabla.getRowCount()<1){
+					JOptionPane.showMessageDialog(null, "Es Requerido Alimente Por Lo Menos Un Concentrado Al Banco Interno Para Poder Guardar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 				 return;
 			 }else{	
 				   String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);

@@ -15,7 +15,16 @@ public class Obj_Saldo_Banco_Interno {
     String estatus="";	  
 	String guardar_actualizar="";
 	String[][] tabla=null;
+	String  tipo_movimiento="";
 	
+	public String getTipo_movimiento() {
+		return tipo_movimiento;
+	}
+
+	public void setTipo_movimiento(String tipo_movimiento) {
+		this.tipo_movimiento = tipo_movimiento;
+	}
+
 	public float getImporte() {
 		return importe;
 	}

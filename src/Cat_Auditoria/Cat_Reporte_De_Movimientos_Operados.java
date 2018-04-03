@@ -4,62 +4,41 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
+import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
 public class Cat_Reporte_De_Movimientos_Operados extends JFrame {
-	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	
-	JDateChooser c_inicio = new JDateChooser();
-	JButton btn_generar = new JButton("Generar Reporte",new ImageIcon("imagen/buscar.png"));
+	JDateChooser c_inicio = new Componentes().jchooser(new JDateChooser()  ,"Fecha"  ,1);
+	JCButton btn_generar = new JCButton("Generar Reporte En Pantalla","hoja-de-calculo-icono-8865-32.png","Azul");
 	
 	public Cat_Reporte_De_Movimientos_Operados(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/reporte_icon&16.png"));
-		this.setTitle("Reportes IZAGAR de Movimientos Operados");
+		this.setTitle("Reportes de Movimientos Operados");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Movimientos Operados"));
 		this.panel.add(new JLabel("Fecha:")).setBounds(110,40,100,20);
 		this.panel.add(c_inicio).setBounds(150,40,140,20);
-
-	   
 		this.btn_generar.addActionListener(op_generar);
-		this.panel.add(btn_generar).setBounds(110,100,180,20);
-		c_inicio.setDate(cargar_fecha_Sugerida(1));;
-
+		this.panel.add(btn_generar).setBounds(75,80,250,40);
 		this.cont.add(panel);
 		this.setSize(400,200);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 	}
-	
-	public Date cargar_fecha_Sugerida(Integer dias){
-		Date date1 = null;
-				  try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		return date1;
-	};
 	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -78,9 +57,7 @@ public class Cat_Reporte_De_Movimientos_Operados extends JFrame {
 				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-
 		}
-		
 	};
 	public String validar_fechas(){
 		String error = "";
@@ -90,7 +67,9 @@ public class Cat_Reporte_De_Movimientos_Operados extends JFrame {
 	}
 	
 	public static  void main(String []arg){
-	new Cat_Reporte_De_Movimientos_Operados().setVisible(true);	
-		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new Cat_Reporte_De_Movimientos_Operados().setVisible(true);	
+		}catch(Exception e){	}
 	}
 }

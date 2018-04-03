@@ -21,7 +21,9 @@ public class Obj_Revision_De_Lista_Raya {
 	}
 	
 	public Object[][] get_tabla_model(){
+		//llena datos lista de raya
 		new GuardarTablasModel().tabla_model_lista_raya_update();
+		//carga lista de raya llenada
 		return new BuscarTablasModel().tabla_model_lista_raya();
 	}
 	

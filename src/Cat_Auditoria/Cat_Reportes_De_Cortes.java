@@ -1,4 +1,4 @@
-package Cat_Reportes;
+package Cat_Auditoria;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -18,9 +17,11 @@ import javax.swing.UIManager;
 
 import com.toedter.calendar.JDateChooser;
 
+import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
 public class Cat_Reportes_De_Cortes extends JFrame{
@@ -28,14 +29,14 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio del Corte", 10, "String");
 	
-	JButton btncortedelfolio = new JButton("",new ImageIcon("imagen/bolsa-de-dinero-en-efectivo-icono-6673-16.png"));
-	JButton btnlistadocortesdia = new JButton("",new ImageIcon("imagen/Calendar.png"));
-	JButton btnlistadocortesExportar = new JButton("",new ImageIcon("imagen/hoja-de-calculo-excel-icono-5223-16.png"));
-	JButton btncortes_LiquidadosSCorteSCOI = new JButton("",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
-	JButton btncortes_Ventas_Por_Redondeo = new JButton("",new ImageIcon("imagen/diferiencia_de_sueldos_entre_listas_de_raya2_16.png"));
-	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
+	JCButton btncortedelfolio = new JCButton("","bolsa-de-dinero-en-efectivo-icono-6673-16.png","Azul");
+	JCButton btnlistadocortesdia = new JCButton("","Calendar.png","Azul");
+	JCButton btnlistadocortesExportar = new JCButton("","hoja-de-calculo-excel-icono-5223-16.png","Azul");
+	JCButton btncortes_LiquidadosSCorteSCOI = new JCButton("","diferiencia_de_sueldos_entre_listas_de_raya2_16.png","Azul");
+	JCButton btncortes_Ventas_Por_Redondeo = new JCButton("","diferiencia_de_sueldos_entre_listas_de_raya2_16.png","Azul");
+	JCButton btngenerar = new JCButton("Generar","buscar.png","Azul");
 	
-	JDateChooser cfecha = new JDateChooser();
+	JDateChooser cfecha = new Componentes().jchooser(new JDateChooser()  ,"Fecha Final"  ,0);
 	
 	int tipo_Reporte = 0;
 	
@@ -48,25 +49,25 @@ public class Cat_Reportes_De_Cortes extends JFrame{
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bolsa-de-dinero-en-efectivo-icono-6673-32.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione el Tipo de Reporte Folio-Fecha"));
 	
-		btncortedelfolio.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btncortedelfolio.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE>" +
 				"		<CENTER><p>Reporte De Corte Por Folio</p></CENTER></FONT>" +
 				"</html>");
 		
-		btnlistadocortesdia.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btnlistadocortesdia.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE>" +
 				"		<CENTER><p>Reporte De Cortes Por Fecha     </p></CENTER></FONT>" +
 				"</html>");	
 		
-		btnlistadocortesExportar.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btnlistadocortesExportar.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE>" +
 				"		<CENTER><p>Reporte De Cortes Por Fecha</p></CENTER>" +
 				"		<CENTER><p>Para Exportar</p></CENTER></FONT>" +
 				"</html>");	
 		
-		btncortes_LiquidadosSCorteSCOI.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btncortes_LiquidadosSCorteSCOI.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE>" +
 				"		<CENTER><p>Reporte De Cortes Liquidados</p></CENTER>" +
 				"		<CENTER><p>Sin Corte En SCOI</p></CENTER></FONT>" +
 				"</html>");	
 		
-		btncortes_Ventas_Por_Redondeo.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
+		btncortes_Ventas_Por_Redondeo.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=WHITE>" +
 				"		<CENTER><p>Reporte De Venta De La</p></CENTER>" +
 				"		<CENTER><p>Asignacion Por Redondeo</p></CENTER></FONT>" +
 				"</html>");	

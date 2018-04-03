@@ -4,10 +4,7 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -17,9 +14,9 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 
 import com.toedter.calendar.JDateChooser;
@@ -30,7 +27,7 @@ public class Cat_Reportes_De_Movimientos_Operados_Por_Establecimiento extends JF
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JDateChooser c_inicio = new JDateChooser();
+	JDateChooser c_inicio = new Componentes().jchooser(new JDateChooser()  ,"Fecha"  ,0);
 	JCButton btn_generar    = new JCButton("Generar Reporte"    ,"buscar.png"     ,"Azul"); 
 	
 	String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento201();
@@ -49,23 +46,8 @@ public class Cat_Reportes_De_Movimientos_Operados_Por_Establecimiento extends JF
 		this.panel.add(c_inicio).setBounds            (80 ,60 ,140 ,20);
 		this.panel.add(btn_generar).setBounds         (40 ,100,180 ,20);
 		this.btn_generar.addActionListener(op_generar);
-		c_inicio.setDate(cargar_fecha_Sugerida(1));;
-
 		this.cont.add(panel);
-
 	}
-	
-	public Date cargar_fecha_Sugerida(Integer dias){
-		Date date1 = null;
-				  try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		return date1;
-	};
 	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -84,9 +66,7 @@ public class Cat_Reportes_De_Movimientos_Operados_Por_Establecimiento extends JF
 				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-
 		}
-		
 	};
 	public String validar_fechas(){
 		String error = "";
