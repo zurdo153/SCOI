@@ -72,15 +72,15 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 			return tip;
 		}
 		
-		int Cantidad_Real_De_Columnas=12,checkboxindex=1;
+		int Cantidad_Real_De_Columnas=13,checkboxindex=1;
 		public void init_tabla(){
 			this.tabla.getColumnModel().getColumn( 0).setMinWidth(20);
 			this.tabla.getColumnModel().getColumn( 0).setMaxWidth(20);
 			this.tabla.getColumnModel().getColumn( 1).setMinWidth(50);
 	    	this.tabla.getColumnModel().getColumn( 1).setMaxWidth(50);
-	    	this.tabla.getColumnModel().getColumn( 2).setMinWidth(350);
-	    	this.tabla.getColumnModel().getColumn( 3).setMinWidth(140);
-	    	this.tabla.getColumnModel().getColumn( 4).setMinWidth(370);
+	    	this.tabla.getColumnModel().getColumn( 2).setMinWidth(330);
+	    	this.tabla.getColumnModel().getColumn( 3).setMinWidth(60);
+	    	this.tabla.getColumnModel().getColumn( 4).setMinWidth(400);
 	    	this.tabla.getColumnModel().getColumn( 5).setMinWidth(110);
 	    	this.tabla.getColumnModel().getColumn( 6).setMinWidth(80);
 	    	this.tabla.getColumnModel().getColumn( 7).setMinWidth(230);
@@ -88,7 +88,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 	    	this.tabla.getColumnModel().getColumn( 9).setMinWidth(80);
 	    	this.tabla.getColumnModel().getColumn(10).setMinWidth(120);
 	    	this.tabla.getColumnModel().getColumn(11).setMinWidth(200);
-	    	
+	    	this.tabla.getColumnModel().getColumn(12).setMinWidth(140);
 			String comando = "orden_de_gasto_autorizacion_filtro '"+cmb_status.getSelectedItem().toString().trim()+"'";
 			if(cmb_status.getSelectedItem().equals("PENDIENTE")||cmb_status.getSelectedItem().equals("AUTORIZADO")){
 				  btnAceptar.setEnabled(true);btnCancelar.setEnabled(true);btnNegar.setEnabled(true);	
@@ -100,7 +100,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 			ObjTab.Obj_Refrescar(tabla,modelo, Cantidad_Real_De_Columnas, comando, basedatos,pintar,checkboxindex);
 	    }
 		
-	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"S","Folio","Proveedor","Tipo Provedor","Descripcion Gasto","Establecimiento","Importe Total","Usuario Solicita", "Fecha","Estatus","Fecha Autorizacion","Usuario Autorizo"}){
+	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"S","Folio","Proveedor","Concepto","Descripcion Gasto","Establecimiento","Importe Total","Usuario Solicita", "Fecha","Estatus","Fecha Autorizacion","Usuario Autorizo","Tipo Provedor"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = tipos();
 		

@@ -4,9 +4,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.swing.*;
+
+import com.toedter.calendar.JDateChooser;
+
+import Conexiones_SQL.BuscarSQL;
 
 public class Componentes {
 	
@@ -208,16 +215,6 @@ public class Componentes {
 						    	e.consume();
 						    }
 						    	
-//						    if (caracter==KeyEvent.VK_PERIOD)
-//								if (tmp.getText().indexOf(".")>-1){
-//									e.consume();
-//								}
-//							
-//						    if (caracter==KeyEvent.VK_MINUS){
-//						    	if(tmp.getText().indexOf("-")>=-1 && !tmp.getText().equals("")){
-//						    			e.consume();
-//						    	}
-//						    }
 							break;	
 					}
 								
@@ -236,8 +233,27 @@ public class Componentes {
 		return tmp;
 	}
 	
+	public final  JDateChooser jchooser(JDateChooser tmp, final String caption ,int dias){
+	tmp = new JDateChooser("dd/MM/yyyy", "####/##/##", '_');
+	tmp.setToolTipText(caption);
+	tmp.setFont( new Font("SansSerif",Font.PLAIN, 12) );
+	tmp.setDate( cargar_fechas(dias));
+	return tmp;
+   }
 	
+	public Date cargar_fechas(Integer dias){
+		Date date1 = null;
+				  try {
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		return date1;
+	};
 	
+////////////
 	public JCheckBox check(final JCheckBox tmp, final String nombre, final boolean select, final String caption){
 		tmp.setText(nombre);
 			tmp.setSelected(select);

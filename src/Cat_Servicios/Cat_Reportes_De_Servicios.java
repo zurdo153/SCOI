@@ -1,11 +1,9 @@
-package Cat_Reportes;
+package Cat_Servicios;
 
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,9 +17,9 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Departamento;
+import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 
 import com.toedter.calendar.JDateChooser;
@@ -31,8 +29,8 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JDateChooser c_inicio = new JDateChooser();
-	JDateChooser c_final = new JDateChooser();
+	JDateChooser c_inicio = new Componentes().jchooser(new JDateChooser()  ,"Fecha Inicial"  ,7);
+	JDateChooser c_final  = new Componentes().jchooser(new JDateChooser()  ,"Fecha Final"  ,0);
 	
 	String operador[] = {"Selecciona Un Reporte"
 							,"Reporte De Servicios Atendidos Por Establecimiento Totales"
@@ -79,23 +77,8 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 		this.panel.add(btngenerar_reporte).setBounds          (x    ,y+=50   ,width   ,height*2 );
 
 		this.cont.add(panel);
-		
-		c_inicio.setDate( cargar_fechas(7));
-		c_final.setDate( cargar_fechas(0));
 		btngenerar_reporte.addActionListener(opGenerar_reporte);
 	}
-	
-	public Date cargar_fechas(Integer dias){
-		Date date1 = null;
-				  try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		return date1;
-	};
 	
 	public String validar_fechas(){
 		String error = "";

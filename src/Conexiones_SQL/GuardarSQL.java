@@ -7523,7 +7523,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 					System.out.println(Banco_Interno.getGuardar_actualizar()   );
 					System.out.println(0);
 					System.out.println(Banco_Interno.getTabla()[i][3].toString().trim());
-					System.out.println("Egreso"   );
+					System.out.println(Banco_Interno.getTipo_movimiento().toString().trim());
 					System.out.println(0);
 					System.out.println(Banco_Interno.getTabla()[i][0].toString().trim());
 					System.out.println(Banco_Interno.getImporte());

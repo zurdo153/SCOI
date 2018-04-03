@@ -34,6 +34,7 @@ import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
 import Obj_Renders.tablaRenderer;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -51,7 +52,7 @@ public class Cat_Reporte_De_Concentrado_De_Cortes extends JDialog{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcentrado = new JComboBox(vector);
 
-	JDateChooser fchTrabajo = new JDateChooser();
+	JDateChooser fchTrabajo = new Componentes().jchooser(new JDateChooser()  ,"Fecha Trabajo"  ,0);
 	JButton btnGenerar = new JButton("Generar", new ImageIcon("imagen/buscar.png"));
 	
 	DefaultTableModel modelo_establecimiento_para_concentrado = new DefaultTableModel(new BuscarTablasModel().tabla_establecimientos_para_concentrado(), new String[]{"Establecimiento", "Grupo"}){

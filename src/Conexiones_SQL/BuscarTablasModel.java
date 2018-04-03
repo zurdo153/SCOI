@@ -170,6 +170,9 @@ public class BuscarTablasModel {
 				matriz[i][25] = Float.parseFloat(rs.getString(26)) == 0 ? "" : Float.parseFloat(rs.getString(26));
 				matriz[i][26] = Float.parseFloat(rs.getString(27)) == 0 ? "" : Decimal(Float.parseFloat(rs.getString(27)));
 				
+				System.out.println( rs.getInt(2)+" a pagar"+rs.getString(27));
+				System.out.println( Decimal(Float.parseFloat(rs.getString(27))));
+				
 				matriz[i][27] = "   "+rs.getString(28);
 				matriz[i][28] = "   "+rs.getString(29);
 				

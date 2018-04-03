@@ -52,7 +52,6 @@ import javax.swing.table.TableCellRenderer;
 import Cat_Reportes.Cat_Reporte_De_Corte_De_Caja;
 import Cat_Reportes.Cat_Reporte_De_Depositos_Cortes;
 import Cat_Reportes.Cat_Reporte_De_Efectivo_Cortes;
-import Cat_Reportes.Cat_Reportes_De_Cortes;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.BuscarTablasModel;

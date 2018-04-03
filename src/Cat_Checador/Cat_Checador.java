@@ -59,6 +59,7 @@ import Obj_Principal.JCButton;
 import Obj_Principal.Obj_tabla;
 import rojerusan.componentes.RSProgressCircleAnimatedUno;
 
+
 @SuppressWarnings("serial")
 public class Cat_Checador extends JFrame {
 	// DECLARAMOS EL OBJETO RUNTIME PARA EJECUTAR APLICACIONES

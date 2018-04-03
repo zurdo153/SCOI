@@ -147,23 +147,24 @@ public class Cat_Banco_Interno extends JFrame{
 	JTable tablaegresos = new JTable(modelo_egresos);
 	public JScrollPane scroll_tablaegresos = new JScrollPane(tablaegresos);
 	
-	JTextField txtFolio             = new Componentes().text(new JCTextField()  ,"Folio"                        ,30    ,"String");
-	JTextField txtFolio_impresion   = new Componentes().text(new JCTextField()  ,"Teclee El Folio Para Imprimir",30    ,"String");
-	JTextField txtFoliosolicit      = new Componentes().text(new JCTextField()  ,"Folio Solicita"               ,30    ,"String");
+	JTextField txtFolio             = new Componentes().text(new JCTextField()  ,"Folio"                        ,30    ,"Int");
+	JTextField txtFolio_impresion   = new Componentes().text(new JCTextField()  ,"Teclee El Folio Para Imprimir",30    ,"Int");
+	JTextField txtFoliosolicit      = new Componentes().text(new JCTextField()  ,"Folio Solicita"               ,30    ,"Int");
 	JTextField txtSolicitante       = new Componentes().text(new JCTextField()  ,"Solicitante"                  ,300   ,"String");
 	JTextField txtFecha             = new Componentes().text(new JCTextField()  ,"Fecha"                        ,60    ,"String");
-	JTextField txtSaldo_Actual      = new Componentes().text(new JCTextField()  ,"Saldo"                        ,60    ,"String");
-	JTextField txttotalImporte_BI   = new Componentes().text(new JCTextField()  ,"Importe Total"                ,30    ,"String");
-	JTextField txtSaldoNuevo        = new Componentes().text(new JCTextField()  ,"Saldo Nuevo"                  ,30    ,"String");
+	JTextField txtSaldo_Actual      = new Componentes().text(new JCTextField()  ,"Saldo"                        ,60    ,"Double");
+	JTextField txttotalImporte_BI   = new Componentes().text(new JCTextField()  ,"Importe Total"                ,30    ,"Double");
+	JTextField txtSaldoNuevo        = new Componentes().text(new JCTextField()  ,"Saldo Nuevo"                  ,30    ,"Double");
+	JTextField txtFolio_Beneficiario= new Componentes().text(new JCTextField()  ,"Folio B"                      ,30   ,"String");
+	JTextField txtBeneficiario      = new Componentes().text(new JCTextField()  ,"Beneficiario"                 ,250  ,"String");
 	
     JTextArea txaObservaciones      = new Componentes().textArea(new JTextArea(), "Observaciones", 160);
     JScrollPane Observaciones       = new JScrollPane(txaObservaciones);
 
 	JCButton btnIngreso    = new JCButton("Recibir"      ,"ingresos_32.png"                   ,"Azul");
-	JCButton btnEgreso     = new JCButton("Transferir"    ,"Egreso32.png"                     ,"Azul"); 
+	JCButton btnEgreso     = new JCButton("Transferir"   ,"Egreso32.png"                      ,"Azul"); 
 	JCButton btnEgresoDlsVa= new JCButton("Egreso Dls y Vales" ,"Egreso32.png"                ,"Azul"); 
-	
-	
+	JCButton btnSolicitante= new JCButton(""             ,"Usuario.png"                       ,"Azul");	
 	JCButton btnBuscar     = new JCButton("Buscar"       ,"Filter-List-icon16.png"            ,"Azul"); 
 	JCButton btnNuevo      = new JCButton("Nuevo"        ,"Nuevo.png"                         ,"Azul");
 	JCButton btnGuardar    = new JCButton("Guardar"      ,"Guardar.png"                       ,"Azul");
@@ -181,7 +182,7 @@ public class Cat_Banco_Interno extends JFrame{
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 
-    String guardar_actualizar="";
+    String guardar_actualizar="", tipo_movimiento="";
    public  Cat_Banco_Interno(){
 	    this.cont.add(panel);
 		this.setSize(250,250);
@@ -199,6 +200,7 @@ public class Cat_Banco_Interno extends JFrame{
 		
 		btnIngreso.addActionListener(opSeleccion);
 		btnEgreso.addActionListener (opSeleccion);
+		btnEgresoDlsVa.addActionListener(opSeleccion);
     }
    
    @SuppressWarnings("unchecked")
@@ -298,6 +300,7 @@ public void constructor_Ingreso(String tipo) {
 		 		btnGuardar.addActionListener(guardar_egreso);
 		 		btnDeshacer.addActionListener(deshacer_egreso);
 		 		cmbcuenta_bancaria.addActionListener(opSeleccionCuenta_egreso);
+		 		tipo_movimiento="E";
 	 		}
 	 		
 	 		if(tipo.equals("Recibir")){
@@ -333,9 +336,85 @@ public void constructor_Ingreso(String tipo) {
 		 		btnDeshacer.addActionListener       (deshacer                   );
 		 		btnGuardar.addActionListener        (guardar                    );
 		 		cmbcuenta_bancaria.addActionListener(opSeleccionCuenta          );
+		 		tipo_movimiento="T";
 	 		}
+	 		
+	 		
+	 		if(tipo.equals("Egreso Dls y Vales")){
+	 			this.setSize(745,230);
+	 			this.cmb_status.setSelectedItem("RECIBIDO");
+		 		this.setTitle("Transferencia De Dolares y Vales");
+		 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Egreso32.png"));
+		 		this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+		 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline,"Transferencia De Dolares y Vales"));
+		 		
+	 			int x=20, y=20,width=100,height=20, sep=110;
+		 		this.panel.add(menu_toolbar).setBounds                          (x         ,y      ,500     ,height );
+		 		this.panel.add(txtFolio_impresion).setBounds                    (x+530     ,y      ,170     ,height );
+		 		this.panel.add(txtFolio).setBounds                              (x         ,y+=27  ,width   ,height );
+		 		this.panel.add(cmb_status).setBounds                            (x+=sep    ,y      ,width   ,height );
+		 		this.panel.add(txtFoliosolicit).setBounds                       (x+=sep    ,y      ,60      ,height );		
+		 		this.panel.add(txtSolicitante).setBounds                        (x+=60     ,y      ,290     ,height );
+		 		this.panel.add(txtFecha).setBounds                              (x+290     ,y      ,130     ,height );
+		 		
+		 		this.panel.add(new JLabel("Persona A La Que Se Trasfiere:")).setBounds(x=20,y+=27  ,170     ,height );
+				this.panel.add(txtFolio_Beneficiario).setBounds                 (x+=155    ,y      ,80      ,height );
+				this.panel.add(txtBeneficiario).setBounds                       (x+=80     ,y      ,420     ,height );
+				this.panel.add(btnSolicitante).setBounds                        (x+=420    ,y      ,45      ,height );
+        		
+		 		this.panel.add(cmbcuenta_bancaria).setBounds                    (x=20      ,y+=27  ,130     ,height );
+		 		this.panel.add(new JLabel("Saldo Actual:")).setBounds           (x+=135    ,y      ,170     ,height );		 		
+		 		this.panel.add(txtSaldo_Actual).setBounds                       (x+=65     ,y      ,97      ,height );
+		 		this.panel.add(new JLabel("Importe Total A Transferir:")).setBounds(x+=105 ,y      ,170     ,height );
+		 		this.panel.add(txttotalImporte_BI).setBounds                    (x+=130    ,y      ,95      ,height );
+		 		this.panel.add(new JLabel("Saldo Nuevo:")).setBounds            (x+=100    ,y      ,170     ,height );
+		 		this.panel.add(txtSaldoNuevo).setBounds                         (x+65      ,y      ,97      ,height );
+		 		
+		 		this.panel.add(new JLabel("Observaciones:")).setBounds          (x=20      ,y+=27  ,width   ,height );
+		 		this.panel.add(Observaciones).setBounds                         (x         ,y+=15  ,700     ,40     );
+		 		
+		 		txtFolio_Beneficiario.setEditable(false);
+		 		txtBeneficiario.setEditable(false);
+		 		btnSolicitante.setEnabled(false);
+		 		
+		 		cmbcuenta_bancaria.removeAllItems();
+		 		String cuentas[] =  banco_interno.Combo_Cuentas("valedola");
+		 	    for(int i=0;i<cuentas.length;i++){
+		 	    	cmbcuenta_bancaria.addItem(cuentas[i].toString().trim());
+		 		  }
+		 	    
+		 		btnNuevo.addActionListener(nuevo_egresovaledolares);
+		 		btnGuardar.addActionListener(guardar_valedolares);
+		 		btnDeshacer.addActionListener(deshacer_egreso);
+		 		cmbcuenta_bancaria.addActionListener(opSeleccionCuenta_ValeDolares);
+		 		btnSolicitante.addActionListener(opFiltroBuscarSolicitante);
+		 		
+		 		txttotalImporte_BI.addKeyListener(valorEgreso);
+		 		tipo_movimiento="D";
+	 		}
+	 		
+	 		
+	 		
    }
    
+   KeyListener valorEgreso = new KeyListener() {
+		public void keyTyped(KeyEvent e){
+		 txtSaldoNuevo.setText( (Double.valueOf(txtSaldo_Actual.getText().toString())-Double.valueOf(txttotalImporte_BI.getText().toString().equals("")?"0":txttotalImporte_BI.getText().toString() ) )+"");
+		}
+		public void keyReleased(KeyEvent e) {
+		 txtSaldoNuevo.setText( (Double.valueOf(txtSaldo_Actual.getText().toString())-Double.valueOf(txttotalImporte_BI.getText().toString().equals("")?"0":txttotalImporte_BI.getText().toString() ) )+"");
+		}
+		public void keyPressed(KeyEvent e) {
+		 txtSaldoNuevo.setText( (Double.valueOf(txtSaldo_Actual.getText().toString())-Double.valueOf(txttotalImporte_BI.getText().toString().equals("")?"0":txttotalImporte_BI.getText().toString() ) )+"");
+		}
+	};
+	
+   ActionListener opFiltroBuscarSolicitante = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				new Cat_Filtro_Buscar_Colaborador().setVisible(true);
+			}
+   };	
+		
    ActionListener opSeleccion = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			constructor_Ingreso(e.getActionCommand());
@@ -390,7 +469,32 @@ public void constructor_Ingreso(String tipo) {
 		 		txtSaldo_Actual.setText(saldo+"");
 			}
 	};
-		
+	
+	ActionListener nuevo_egresovaledolares = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			guardar_actualizar="N";
+			panel_limpiar();
+			String folio="";
+			try {folio= new BuscarSQL().folio_siguiente(45+"");
+			} catch (SQLException e1) {	e1.printStackTrace();}
+
+			txtFolio_impresion.setEditable(false);
+			txtFolio.setText(folio);
+			txtFolio.setEditable(false);
+			btnBuscar.setEnabled(false);
+			btnNuevo.setEnabled(false);
+			btnImprimir.setEnabled(false);
+            txaObservaciones.setEditable(true);		
+			btnGuardar.setEnabled(true);
+			cmbcuenta_bancaria.setEnabled(true);
+	 		float saldo=new BuscarSQL().saldo_banco_interno_por_cuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
+	 		txtSaldo_Actual.setText(saldo+"");
+	 		
+	 		btnSolicitante.setEnabled(true);
+	 		btnSolicitante.doClick();
+		}
+   };
+
 	ActionListener opSeleccionCuenta = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			refrescar();
@@ -405,6 +509,15 @@ public void constructor_Ingreso(String tipo) {
 			float saldo=new BuscarSQL().saldo_banco_interno_por_cuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
 	 		txtSaldo_Actual.setText(saldo+"");
 			tablaegresos.setEnabled(true);
+		}
+	};
+	
+	ActionListener opSeleccionCuenta_ValeDolares = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			float saldo=new BuscarSQL().saldo_banco_interno_por_cuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
+	 		txtSaldo_Actual.setText(saldo+"");
+	 		txttotalImporte_BI.setEditable(true); 
+	 		txttotalImporte_BI.requestFocus();
 		}
 	};
 	
@@ -496,12 +609,14 @@ public void constructor_Ingreso(String tipo) {
 		txaObservaciones.setLineWrap(true); 
 		txaObservaciones.setWrapStyleWord(true);
 		txaObservaciones.setEditable(boleano);
+		txttotalImporte_BI.setEditable(false);
 		txtFolio.setEditable(false);
 		btnGuardar.setEnabled(boleano);
     }
    
     public void panel_limpiar(){
 		btnBuscar.setEnabled(true);
+		btnSolicitante.setEnabled(false);
 		cmbcuenta_bancaria.setSelectedIndex(0);;
 	    txttotalImporte_BI.setText(""); 
 		txtFolio_impresion.setText("");
@@ -512,6 +627,8 @@ public void constructor_Ingreso(String tipo) {
 		try { txtFecha.setText(new BuscarSQL().fecha(0).toString());} catch (SQLException e1) {e1.printStackTrace();}
 		txtSolicitante.setText(usuario.getNombre_completo());
 		txtFoliosolicit.setText(usuario.getFolio()+"");
+		txtBeneficiario.setText("");
+		txtFolio_Beneficiario.setText("");
     }
 	
 	public void calculo() {
@@ -571,7 +688,7 @@ public void constructor_Ingreso(String tipo) {
 	  			String basedatos="2.26";
 	  			String vista_previa_reporte="no";
 	  			int vista_previa_de_ventana=0;
-	  			String comando="banco_interno_reporte_de_movimiento_de_saldo "+folio;
+	  			String comando="banco_interno_reporte_de_movimiento_de_saldo "+folio+",'"+tipo_movimiento+"'"     ;
 	  			String reporte = "Obj_Reporte_De_Banco_Interno_Movimiento_De_Saldo.jrxml";
 	  		    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			} 
@@ -616,14 +733,18 @@ public void constructor_Ingreso(String tipo) {
 			 }else{	
 				   calculoegreso();
 				   String[][] tabla_guardado = ObjTab.tabla_guardar(tablaegresos);
+				   
 				   banco_interno.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));
-				   banco_interno.setObservaciones(txaObservaciones.getText().toString().trim());				   
 				   banco_interno.setFolio_usuario(Integer.valueOf(txtFoliosolicit.getText().toString().trim()));
-				   banco_interno.setImporte(Float.valueOf(txttotalImporte_BI.getText().toString().trim()));
-				   banco_interno.setCuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
-				   banco_interno.setEstatus(cmb_status.getSelectedItem().toString().trim());
-				   banco_interno.setGuardar_actualizar(guardar_actualizar);
+				   banco_interno.setObservaciones(txaObservaciones.getText().toString().trim());				   
+	               banco_interno.setCuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
+	               banco_interno.setEstatus(cmb_status.getSelectedItem().toString().trim());
+	               banco_interno.setGuardar_actualizar(guardar_actualizar);
+	               banco_interno.setTipo_movimiento("Egreso");
+				   banco_interno.setImporte(Float.valueOf(txttotalImporte_BI.getText().toString().trim()));			   
+				   
 				   banco_interno.setTabla(tabla_guardado);
+				   
 				if(banco_interno.GuardarActualizar_Egreso().getFolio()>0){
 					guardar_actualizar="";
 					txtFolio.setText(banco_interno.getFolio()+"" );
@@ -637,6 +758,131 @@ public void constructor_Ingreso(String tipo) {
 			 }
 	  }			
     };
+
+//  pstmt.setInt   (1 ,  folio_transaccion);                              @folio int,
+//	pstmt.setInt   (2 ,  Banco_Interno.getFolio_usuario()                 );@usuario_recibe int,
+//	pstmt.setString(3 ,  Banco_Interno.getObservaciones().toString()      );@observaciones varchar(160) ,
+//	pstmt.setString(4 ,  Banco_Interno.getCuenta().toString().trim()      );@nombre_de_cuenta varchar(70),
+//	pstmt.setString(5 ,  Banco_Interno.getEstatus()                       );@estatus char(1),
+//	pstmt.setString(6 ,  Banco_Interno.getGuardar_actualizar()            );@GuardarActualizar char(1),    
+//	pstmt.setInt   (7 ,  0                                                );@importe_ingreso numeric(16,2),
+
+//	pstmt.setString(8 ,  Banco_Interno.getTabla()[i][3].toString().trim() );@importe_egreso numeric(16,2),
+//	pstmt.setString(9 ,  "Egreso"                                         );@tipo_movimiento char(1),
+//	pstmt.setString(10 , "0"                                              );@folio_Banco_Interno int ,
+//	pstmt.setString(11 , Banco_Interno.getTabla()[i][0].toString().trim() );@folio_trabajo int,
+//	pstmt.setFloat (12 , Banco_Interno.getImporte()                       );@total_movimiento numeric(16,2)
+	
+	ActionListener guardar_valedolares = new ActionListener(){
+	@SuppressWarnings("null")
+	public void actionPerformed(ActionEvent e){
+			 if(txttotalImporte_BI.getText().equals("")||Float.valueOf(txttotalImporte_BI.getText())==0){
+				 JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Registros Para Poder Guardar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+				 return;
+			 }else{	
+				   String[][] tabla_guardado = {{ "0","","",txttotalImporte_BI.getText().toString().trim(),"true"}};
+				   banco_interno.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));
+				   banco_interno.setFolio_usuario(Integer.valueOf(txtFoliosolicit.getText().toString().trim()));				   
+				   banco_interno.setObservaciones(txaObservaciones.getText().toString().trim());				
+				   banco_interno.setCuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());			   
+                   banco_interno.setEstatus(cmb_status.getSelectedItem().toString().trim());
+				   banco_interno.setGuardar_actualizar(guardar_actualizar);
+				   banco_interno.setImporte(Float.valueOf(txttotalImporte_BI.getText().toString().trim()));
+ 				   banco_interno.setTabla(tabla_guardado);
+ 				   banco_interno.setTipo_movimiento("DolaresVale");
+				if(banco_interno.GuardarActualizar_Egreso().getFolio()>0){
+					guardar_actualizar="";
+					txtFolio.setText(banco_interno.getFolio()+"");
+					btnImprimir.setEnabled(true);
+					btnImprimir.doClick();
+					btnDeshacer.doClick();
+				}else{
+				  	JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+					return;
+				}
+			 }
+	  }			
+    };
+	   
+	//TODO inicia filtro_Buscar BENEFICIARIO empleado	
+	public class Cat_Filtro_Buscar_Colaborador extends JDialog{
+		Container contfb = getContentPane();
+		JLayeredPane panelfb = new JLayeredPane();
+		Connexion con = new Connexion();
+		Obj_tabla ObjTab =new Obj_tabla();
+		int columnasb = 2,checkbox=-1;
+		public void init_tablafp(){
+	    	this.tablab.getColumnModel().getColumn( 0).setMinWidth(55);
+	    	this.tablab.getColumnModel().getColumn( 1).setMinWidth(350);
+			 String comandob="select folio,dbo.nombre_empleado(folio)as nombre from tb_empleado where status in(1,2,3,6)  and folio=88 union all select folio,dbo.nombre_empleado(folio)as nombre from tb_empleado where status in(1,2,3,6) " ;
+			String basedatos="98",pintar="si";
+			ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
+	    }
+		
+		@SuppressWarnings("rawtypes")
+		public Class[] base (){
+			Class[] types = new Class[columnasb];
+			for(int i = 0; i<columnasb; i++){types[i]= java.lang.Object.class;}
+			 return types;
+		}
+		
+		public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{"Folio","Solicitante"}){
+			 @SuppressWarnings("rawtypes")
+				Class[] types = base();
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+				public boolean isCellEditable(int fila, int columna){return false;}
+		};
+		
+		JTable tablab = new JTable(modelob);
+		public JScrollPane scroll_tablab = new JScrollPane(tablab);
+	     @SuppressWarnings({ "rawtypes" })
+	    private TableRowSorter trsfiltro;
+		     
+		JTextField txtBuscarb  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String");
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Cat_Filtro_Buscar_Colaborador(){
+			this.setSize(475,450);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			this.setModal(true);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+			this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Un Registro Con Doble Click"));
+			this.setTitle("Filtro De Colaborador");
+			trsfiltro = new TableRowSorter(modelob); 
+			tablab.setRowSorter(trsfiltro);
+			this.panelfb.add(txtBuscarb).setBounds      (10 ,20 ,450 , 20 );
+			this.panelfb.add(scroll_tablab).setBounds   (10 ,40 ,450 ,370 );
+			this.init_tablafp();
+			this.agregar(tablab);
+			this.txtBuscarb.addKeyListener  (opFiltropuestos );
+			contfb.add(panelfb);
+		}
+		
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+		        	if(e.getClickCount()==1){
+		        		int fila = tablab.getSelectedRow();
+		        		txtFolio_Beneficiario.setText (tablab.getValueAt(fila,0)+"");
+		        		txtBeneficiario.setText (tablab.getValueAt(fila,1)+"");
+		        		cmbcuenta_bancaria.requestFocus();
+		    			cmbcuenta_bancaria.showPopup();
+						dispose();
+		        	}
+		        }
+	        });
+	    }
+		
+        private KeyListener opFiltropuestos = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+	}
 	
 	//TODO inicia filtro_Buscar traspaso
 		public class Cat_Filtro_Buscar_Orden_De_Gasto extends JDialog{

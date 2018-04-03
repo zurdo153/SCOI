@@ -19,7 +19,7 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
-public class Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos extends JFrame{
+public class Cat_Generar_Pedido_Sugerido_De_Maximos_Y_Minimos extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -42,7 +42,7 @@ public class Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos extends JFrame{
 	JCButton btnGenerarPedidoNuevo = new JCButton("Generar Pedido Nuevo", "mas-icono-4156-32.png", "Azul");		
 	JCButton btnCargarPedido = new JCButton("Cargar Pedido", "mas-icono-4156-32.png", "Azul");		
 
-	public Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos() {
+	public Cat_Generar_Pedido_Sugerido_De_Maximos_Y_Minimos() {
 		setSize(460,335);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -167,7 +167,7 @@ public class Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Generar_Cargar_Pedido_De_Maximos_Y_Minimos().setVisible(true);
+			new Cat_Generar_Pedido_Sugerido_De_Maximos_Y_Minimos().setVisible(true);
 		}catch(Exception e){	}
 	}
 

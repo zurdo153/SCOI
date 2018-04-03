@@ -23,6 +23,7 @@ import com.toedter.calendar.JDateChooser;
 import Cat_Lista_de_Raya.Cat_Filtro_De_Listas_De_Raya_Pasadas;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
 public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
@@ -36,8 +37,9 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 	JButton btnReporte_porfecha = new JButton("",new ImageIcon("imagen/Calendar.png"));
 	JButton btnReporte_por_deunafecha = new JButton("",new ImageIcon("imagen/Calendar.png"));
     JButton btnSeleccionLR =new JButton("",new ImageIcon ("imagen/Filter-List-icon16.png"));
-	JButton btngenerar = new JButton("Generar",new ImageIcon("imagen/buscar.png"));
-	JDateChooser cfecha = new JDateChooser();
+    
+	JCButton btngenerar = new JCButton("Generar","hoja-de-calculo-icono-8865-32.png","Azul");
+	JDateChooser cfecha = new Componentes().jchooser(new JDateChooser()  ,"Fecha"  ,0);
 	
 	int tipo_Reporte = 0;
 	
@@ -65,8 +67,6 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 				"		<CENTER><p>Reporte De Fuente De Sodas De Una Fecha</p></CENTER></FONT>" +
 				"</html>");	
 		
-
-		
 		int x=20,y=25;
 		
 		panel.add(btnReporte_actual).setBounds(x,y,260,40);
@@ -79,7 +79,7 @@ public class Cat_Reportes_De_Fuente_De_Sodas extends JFrame{
 		panel.add(btnSeleccionLR).setBounds(x+235,y,20,20);
 		panel.add(new JLabel("Fecha:")).setBounds(x+10,y+=25,200,20);
 		panel.add(cfecha).setBounds(x+60,y,195,20);
-		panel.add(btngenerar).setBounds(x+80,y+=50,120,30);
+		panel.add(btngenerar).setBounds(x+80,y+=40,120,40);
 	    
 	    txtFolio.setEditable(false);
 	    cfecha.setEnabled(false);
