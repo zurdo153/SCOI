@@ -10488,13 +10488,13 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	
 	public Obj_Checador buscar_datos_para_checador(int folio) throws SQLException{
 		
-		String pc_nombre ="REFA_6";
+		String pc_nombre ="";
 		
-//		try {
-//			pc_nombre = InetAddress.getLocalHost().getHostName();
-//		} catch (UnknownHostException e1) {
-//			e1.printStackTrace();
-//		}
+		try {
+			pc_nombre = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
 		
 		Obj_Checador checador = new Obj_Checador();
 		String query = "exec checador_select_principal2 "+folio+",'"+pc_nombre+"'";
