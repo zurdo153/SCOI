@@ -35,6 +35,7 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -46,6 +47,8 @@ import com.digitalpersona.onetouch.DPFPTemplate;
 import com.digitalpersona.onetouch.capture.DPFPCapture;
 import com.digitalpersona.onetouch.capture.event.DPFPDataAdapter;
 import com.digitalpersona.onetouch.capture.event.DPFPDataEvent;
+import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusEvent;
 import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
@@ -62,6 +65,11 @@ import rojerusan.componentes.RSProgressCircleAnimatedUno;
 
 @SuppressWarnings("serial")
 public class Cat_Checador extends JFrame {
+	
+	//Varible que permite iniciar el dispositivo de lector de huella conectado
+	// con sus distintos metodos.
+	private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+	
 	// DECLARAMOS EL OBJETO RUNTIME PARA EJECUTAR APLICACIONES
 	Runtime R = Runtime.getRuntime();
         Container cont = getContentPane();
@@ -244,13 +252,11 @@ public class Cat_Checador extends JFrame {
                 JCButton btnMenu = new JCButton("Menu", "", "");
                 boolean btn_salir_huella = false;
                 String checoCon = "GAFETE";
+                boolean lectorDeHuellaConectado = false;
         @SuppressWarnings("static-access")
 		public Cat_Checador(){
-                
                 this.init_tabla();
                 Resolucion(anchoMon, altoMon);
-                
-                
                 
                 Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
                 btnFoto.setIcon(iconoFoto);
@@ -326,7 +332,18 @@ public class Cat_Checador extends JFrame {
         	public void actionPerformed(ActionEvent e){
         		txtClaveReal.setText("");
         		txtClaveReal.requestFocus();
-        		new Cat_Huellas_Personalizado("CLAVE MASTER").setVisible(true);
+        		
+        		ComprobarConeccionDeLector();
+        		System.out.println(lectorDeHuellaConectado);
+        		
+        		if(lectorDeHuellaConectado){
+        			new Cat_Huellas_Personalizado("CLAVE MASTER").setVisible(true);
+        		}else{
+        			lectorDeHuellaConectado = true;
+        			JOptionPane.showMessageDialog(null, "El Sensor de Huella Digital esta Desactivado o no Conectado","Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+	    	        return;
+        		}
+        		
         	}
         };
         
@@ -387,42 +404,59 @@ public class Cat_Checador extends JFrame {
 			                        		
 				                        if(checador.getFolio_empleado()==folio_empleado){
 				                        	
-				                        	if(!checoCon.equals("CLAVE MASTER")){
+				                        	if(checador.isAutorizacion_de_huella_en_pc()){
 				                        		
-				                        		int contador_de_intentos_de_huella=0;
-					                        	//TODO(LLAMAR VERIFICADOR DE HUELLA)
-					                        	if(checador.getForma_de_checar().equals("GH")){
-													new Cat_Huellas_Personalizado("GAFETE").setVisible(true);
-													
-														while(!huellaAceptada){
-																if(!btn_salir_huella){
-																		if(contador_de_intentos_de_huella == 3){
+						                        	if(!checoCon.equals("CLAVE MASTER")){
+						                        		
+						                        		int contador_de_intentos_de_huella=0;
+							                        	//TODO(LLAMAR VERIFICADOR DE HUELLA)
+							                        	if(checador.getForma_de_checar().equals("GH")){
+							                        		
+							                        		ComprobarConeccionDeLector();
+		//					                        		System.out.println(lectorDeHuellaConectado);
+							                        		
+							                        		if(lectorDeHuellaConectado){
+							                        			new Cat_Huellas_Personalizado("GAFETE").setVisible(true);
+							                        		}else{
+							                        			lectorDeHuellaConectado = true;
+							                        			txtClaveReal.setText("");
+							                        			txtClaveReal.requestFocus();
+							                        			JOptionPane.showMessageDialog(null, "El Sensor de Huella Digital esta Desactivado o no Conectado","Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							                	    	        return;
+							                        		}
+							                        		
+															
+															
+																while(!huellaAceptada){
+																		if(!btn_salir_huella){
+																				if(contador_de_intentos_de_huella == 3){
+																					txtClaveReal.setText("");
+																					txtClaveReal.requestFocus();
+																					JOptionPane.showMessageDialog(null, "1.-Se Detectaron Problemas Con La Huella O No Se Ha Registrado, Comuniquese AL Departamente De Desarrollo Humano.", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+																					return;
+																				}else{
+																					contador_de_intentos_de_huella++;
+																					JOptionPane.showMessageDialog(null, "No Se Puedo Identificar La Huella, Vuelva A Intentarlo", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+																					new Cat_Huellas_Personalizado("GAFETE").setVisible(true);
+																				}
+																		}else{
 																			txtClaveReal.setText("");
 																			txtClaveReal.requestFocus();
-																			JOptionPane.showMessageDialog(null, "1.-Se Detectaron Problemas Con La Huella O No Se Ha Registrado, Comuniquese AL Departamente De Desarrollo Humano.", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+																			btn_salir_huella = false;
 																			return;
-																		}else{
-																			contador_de_intentos_de_huella++;
-																			JOptionPane.showMessageDialog(null, "No Se Puedo Identificar La Huella, Vuelva A Intentarlo", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-																			new Cat_Huellas_Personalizado("GAFETE").setVisible(true);
 																		}
-																}else{
-																	txtClaveReal.setText("");
-																	txtClaveReal.requestFocus();
-																	btn_salir_huella = false;
-																	return;
 																}
 														}
-												}
-	        			    	    		}
+			        			    	    		}
 				                        	
-				                        	if((!huellaAceptada) && (checoCon.equals("CLAVE MASTER"))){
-				                        		txtClaveReal.setText("");
-												txtClaveReal.requestFocus();
-												btn_salir_huella = false;
-				                        		JOptionPane.showMessageDialog(null, "2.-Se Detectaron Problemas Con La Huella O No Se Ha Registrado, Comuniquese AL Departamente De Desarrollo Humano.", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-												return;
-				                        	}
+						                        	if((!huellaAceptada) && (checoCon.equals("CLAVE MASTER"))){
+						                        		txtClaveReal.setText("");
+														txtClaveReal.requestFocus();
+														btn_salir_huella = false;
+						                        		JOptionPane.showMessageDialog(null, "2.-Se Detectaron Problemas Con La Huella O No Se Ha Registrado, Comuniquese AL Departamente De Desarrollo Humano.", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+														return;
+						                        	}
+			                        		}
 				                        	
 				                           		switch (checador.getStatus()){
 				                                         case 1: if(checador.getNo_checador().equals(codigoBarrar)){
@@ -540,6 +574,15 @@ public class Cat_Checador extends JFrame {
                     return;
          }else{
          	
+        	 if (!checador.isValida_pc()){
+          		lblSemaforoRojo.setEnabled(true);
+  		            lblSemaforoVerde.setEnabled(false);
+  		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+  		  			  JOptionPane.showMessageDialog(null, "Estas Intentando Checar En Una Computadora Que No Esta Asignada A Tu Establecimiento \nAvisa A Desarrollo Humano Para Que Puedas Checar En Esta Computadora","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/red-de-usuario-icono-6758-64.png"));
+  		  			  txtClaveReal.setText("");
+                                                  txtClaveReal.requestFocus();
+                           return;
+             	}
 //                if(new Obj_Entosal().buscar_colicion(folio_empleado)){
                 	if (checador.isValida_chequeo_duplicado()){
                 	lblSemaforoRojo.setEnabled(true);
@@ -625,6 +668,21 @@ public class Cat_Checador extends JFrame {
                 txtClaveReal.setText("");
                 txtClaveReal.requestFocus();
    }
+        public void ComprobarConeccionDeLector(){
+        	Lector.startCapture();
+	    	   Lector.addReaderStatusListener(new DPFPReaderStatusAdapter() {
+		    	    @Override 
+		    	    public void readerConnected(final DPFPReaderStatusEvent e) {
+		    	    	lectorDeHuellaConectado = true;
+		    	    }
+		    	    @Override 
+		    	    public void readerDisconnected(final DPFPReaderStatusEvent e) {
+		    	    	lectorDeHuellaConectado = false;
+		    	    }
+	    	   });
+	    	   Lector.stopCapture();
+//	    	   return lectorConectado;
+	    	}
         
         public void panelLimpiar(){        
                 txtClaveReal.setText("");
@@ -1116,9 +1174,9 @@ public class Cat_Checador extends JFrame {
     		
     		RSProgressCircleAnimatedUno pca1 =new RSProgressCircleAnimatedUno();
     		
-    		//Varible que permite iniciar el dispositivo de lector de huella conectado
-    		// con sus distintos metodos.
-    		private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+//    		//Varible que permite iniciar el dispositivo de lector de huella conectado
+//    		// con sus distintos metodos.
+//    		private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
     	//------------------------------------------------------------------------------------------------------------------------	
     		//Varible que permite establecer las capturas de la huellas, para determina sus caracteristicas
     		// y poder estimar la creacion de un template de la huella para luego poder guardarla
@@ -1195,11 +1253,7 @@ public class Cat_Checador extends JFrame {
     			    	    SwingUtilities.invokeLater(new Runnable() {	
     			    	    	public void run() {
     			    	    		ProcesarCaptura(e.getSample());
-    			    	    		
-    			    	    		
-    			    	    		
     			    	    		int folio = 0;
-    			    	    		
     			    	    			
     			    	    			if(checoCon.equals("CLAVE MASTER")){
     			    	    				
@@ -1215,10 +1269,6 @@ public class Cat_Checador extends JFrame {
         			    	    			folio = folio_empleado;
         			    	    		}
     			    	    			
-    			    	    			
-    			    	    			
-    			    	    		
-    			    	    		
     			    				  try {
     			    					verificarHuella(folio);
     			    				} catch (SQLException e1) {
@@ -1346,11 +1396,22 @@ public class Cat_Checador extends JFrame {
     	}
     //--TODO(Captura De Huella Digital(fin))	--------------------------------------------------------------------------------------------------------------------------------------------------------------------
     	public static void main(String args[]){
-    		try{
+    		try {
     			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    			new Cat_Checador().setVisible(true);
-    		}catch(Exception e){
-    			System.err.println("Error :"+ e.getMessage());
-    		}
+    			if(new BuscarSQL().equipoAutorizadoComoChecador()){
+    				DPFPGlobal.getEnrollmentFactory().createEnrollment();
+    				new Cat_Checador().setVisible(true);	
+    			}else{
+    				JOptionPane.showMessageDialog(null, "Este Equipo No Esta Autorizado Como Checador, Favor De Comunicarse Al Departamente De Sistemas", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+		        	return;
+    			}
+    			
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | Error e) {
+				System.out.println(e.getMessage());
+				if(e.getMessage().equals("com.digitalpersona.onetouch.jni.MatchingLibrary.init()V")){
+		        	JOptionPane.showMessageDialog(null, "No Se Encontro EL Driver Del Lector De Huella, Favor De Comunicarse Al Departamente De Sistemas", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		        	return;
+				}
+			}
     	}
 }

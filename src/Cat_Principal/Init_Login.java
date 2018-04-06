@@ -29,7 +29,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+
+import com.digitalpersona.onetouch.DPFPGlobal;
 
 import Cat_Auditoria.Cat_Cortes_De_Cajeros;
 import Cat_Auditoria.Cat_Retiros_A_Cajeros;
@@ -47,6 +51,7 @@ import Cat_Planeacion.Cat_Programacion_Y_Revision_Del_Plan_Semanal;
 import Cat_Planeacion.Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico;
 import Cat_Servicios.Cat_Seguimiento_De_Servicios;
 import Cat_Servicios.Cat_Solicitud_De_Servicios;
+import Conexiones_SQL.BuscarSQL;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.CLabel;
@@ -881,8 +886,25 @@ ActionListener Opciones = new ActionListener(){
 			if(click.getSource().equals(btnRevision_Jerarquias))
 				new Cat_Revision_Y_Evidencia_De_Actividades_Por_Nivel_Jerarquico().setVisible(true);
 	
-			if(click.getSource().equals(btnChecador))
-				new Cat_Checador().setVisible(true);
+			if(click.getSource().equals(btnChecador)){
+				try {
+	    			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    			if(new BuscarSQL().equipoAutorizadoComoChecador()){
+	    				DPFPGlobal.getEnrollmentFactory().createEnrollment();
+	    				new Cat_Checador().setVisible(true);	
+	    			}else{
+	    				JOptionPane.showMessageDialog(null, "Este Equipo No Esta Autorizado Como Checador, Favor De Comunicarse Al Departamente De Sistemas", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+			        	return;
+	    			}
+					
+				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | Error e) {
+					System.out.println(e.getMessage());
+					if(e.getMessage().equals("com.digitalpersona.onetouch.jni.MatchingLibrary.init()V")){
+			        	JOptionPane.showMessageDialog(null, "No Se Encontro EL Driver Del Lector De Huella", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			        	return;
+					}
+				}
+			}
 			
 			if(click.getSource().equals(btnChat))
 				new Cat_Chat().setVisible(true);

@@ -201,6 +201,9 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	public void Reporte_de_Asistencia_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados,String solo_consideraciones){
 		 reporte = "Obj_Reporte_De_Asistencia_General.jrxml";
 		 comando = "exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"','"+solo_consideraciones+"'";
+		 System.out.println(reporte);
+		 System.out.println(comando);
+		 		 
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	

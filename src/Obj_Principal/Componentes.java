@@ -233,11 +233,10 @@ public class Componentes {
 		return tmp;
 	}
 	
-	public final  JDateChooser jchooser(JDateChooser tmp, final String caption ,int dias){
+	public final  JDateChooser jchooser(JDateChooser tmp, final String parametro ,int dias){
 	tmp = new JDateChooser("dd/MM/yyyy", "####/##/##", '_');
-	tmp.setToolTipText(caption);
 	tmp.setFont( new Font("SansSerif",Font.PLAIN, 12) );
-	tmp.setDate( cargar_fechas(dias));
+	tmp.setDate( parametro.equals("")?null:cargar_fechas(dias));
 	return tmp;
    }
 	

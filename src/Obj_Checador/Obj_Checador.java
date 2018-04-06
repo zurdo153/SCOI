@@ -26,6 +26,7 @@ public class Obj_Checador {
 	private String forma_de_checar;
 	private byte[] huella_1;
 	private byte[] huella_2;
+	private boolean autorizacion_de_huella_en_pc;
 	
 	private Object[][] arreglo_mensaje;
 	
@@ -36,6 +37,8 @@ public class Obj_Checador {
 		valida_checar_salida_a_comer=false;		arreglo_mensaje= null;
 		
 		forma_de_checar="";		huella_1=null;		huella_2=null;
+		
+		autorizacion_de_huella_en_pc=false;
 	}
 
 	public int getFolio_empleado() {
@@ -188,6 +191,14 @@ public class Obj_Checador {
 
 	public void setHuella_2(byte[] huella_2) {
 		this.huella_2 = huella_2;
+	}
+
+	public boolean isAutorizacion_de_huella_en_pc() {
+		return autorizacion_de_huella_en_pc;
+	}
+
+	public void setAutorizacion_de_huella_en_pc(boolean autorizacion_de_huella_en_pc) {
+		this.autorizacion_de_huella_en_pc = autorizacion_de_huella_en_pc;
 	}
 
 	public Obj_Checador buscar(int folio_empleado){
