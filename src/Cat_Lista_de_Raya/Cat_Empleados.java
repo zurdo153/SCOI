@@ -290,10 +290,16 @@ public class Cat_Empleados extends JFrame{
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
 	
-	JDateChooser txtFechaNacimiento = new JDateChooser();
-	JDateChooser txtIngreso = new JDateChooser();
-	JDateChooser txtIngresoImss = new JDateChooser();
-	JDateChooser txtVencimientoLicencia = new JDateChooser();
+//	JDateChooser txtFechaNacimiento = new JDateChooser();
+//	JDateChooser txtIngreso = new JDateChooser();
+//	JDateChooser txtIngresoImss = new JDateChooser();
+//	JDateChooser txtVencimientoLicencia = new JDateChooser();
+	
+	JDateChooser txtFechaNacimiento = new Componentes().jchooser(new JDateChooser()  ,"",0);
+	JDateChooser txtIngreso = new Componentes().jchooser(new JDateChooser()  ,"",0);
+	JDateChooser txtIngresoImss = new Componentes().jchooser(new JDateChooser()  ,"",0);
+	JDateChooser txtVencimientoLicencia = new Componentes().jchooser(new JDateChooser()  ,"",0);
+	
 
 	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO"};
 	@SuppressWarnings("rawtypes")

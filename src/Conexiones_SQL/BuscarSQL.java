@@ -10488,16 +10488,16 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	
 	public Obj_Checador buscar_datos_para_checador(int folio) throws SQLException{
 		
-		String pc_nombre ="";
+		String pc_nombre ="REFA_6";
 		
-		try {
-			pc_nombre = InetAddress.getLocalHost().getHostName();
-		} catch (UnknownHostException e1) {
-			e1.printStackTrace();
-		}
+//		try {
+//			pc_nombre = InetAddress.getLocalHost().getHostName();
+//		} catch (UnknownHostException e1) {
+//			e1.printStackTrace();
+//		}
 		
 		Obj_Checador checador = new Obj_Checador();
-		String query = "exec checador_select_principal "+folio+",'"+pc_nombre+"'";
+		String query = "exec checador_select_principal2 "+folio+",'"+pc_nombre+"'";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -10537,6 +10537,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	            checador.setForma_de_checar(rs.getString("forma_de_checar"));
 	            checador.setHuella_1(rs.getBytes("huella_1"));
 	            checador.setHuella_2(rs.getBytes("huella_2"));
+	            checador.setAutorizacion_de_huella_en_pc(rs.getBoolean("autorizacion_pc"));
 				
 			}
 			
@@ -10564,6 +10565,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		Object[][] vector = new Object[7][1];
 //		String query = "exec checador_select_registro_realizado_xml "+folio;
 		String query = "exec checador_insert_entosal "+folio+",'"+pc_nombre+"','"+pc_ip+"','"+t_entrada+"',"+tipo_salida_comer;
+		System.out.println(query);
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -10640,6 +10642,27 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return saldo;
 	}
 	
+	public boolean equipoAutorizadoComoChecador(){
+		String nombrepc="";
+		try { nombrepc = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+		String query = "exec valida_nombre_pc_checador '"+nombrepc+"'";
+		
+		boolean existe = false;
+		try { Statement s = con.conexion().createStatement();
+			  ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+			    	existe = rs.getBoolean(1);
+			      }
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion equipoAutorizadoComoChecador \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+    return existe;
+	}
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";
