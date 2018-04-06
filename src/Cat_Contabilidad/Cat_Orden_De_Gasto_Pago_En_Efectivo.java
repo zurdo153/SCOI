@@ -45,6 +45,7 @@ import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
+import Cat_Principal.EmailSenderService;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Connexion;
@@ -58,6 +59,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
+import Obj_Servicios.Obj_Correos;
 
 @SuppressWarnings("serial")
 public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
@@ -371,12 +373,24 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 				return;
 			}else{
                                                                        //				int folio_orden_de_gasto                               ,float cantidad                                         , String fecha                                               , String observaciones                     , String tipoBeneficiario        , int folioBeneficiario, String Concepto,String Guardar_actualizar){
-							if(new GuardarSQL().Guardar_Orden_De_Gasto_Pago_En_Efectivo(Integer.valueOf(txtFolioSolicitud.getText().toString()), Float.valueOf(txtCantidad.getText().toString().trim()),new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbConcepto.getSelectedItem().toString(),Guardar_actualizar )){
-								btnDeshacer.doClick();
+			if(new GuardarSQL().Guardar_Orden_De_Gasto_Pago_En_Efectivo(Integer.valueOf(txtFolioSolicitud.getText().toString()), Float.valueOf(txtCantidad.getText().toString().trim()),new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbConcepto.getSelectedItem().toString(),Guardar_actualizar )){
+				          Obj_Correos correos = new Obj_Correos().buscar_correos(85, "");	
+								String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFechaSolicito.getText().toString()+" con folio:"+txtFolioSolicitud.getText().toString()
+											   +"\nUn pago con un valor total de:$ "+txtCantidad.getText().toString()
+										       +"\nDescripcion del gasto/compra: "+txtaUso.getText().toString()
+										       +"\nPara el establecimiento: "+cmbEstablecimiento.getSelectedItem().toString().trim()
+										       +"\nBeneficiario: "+txtProveedor.getText().trim()
+										       +"\nAutorizó pago: "+txtautorizo.getText().toString().trim()+" el dia "+txtFechaAutorizo.getText().toString().trim()
+										       +"\nRecibio efectivo: "+txtBeneficiario.getText().trim();
+
+						  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago Folio:"+txtFolio.getText().toString()+" Por Un Total De $"+txtCantidad.getText().toString()+" A "+txtProveedor.getText().trim(),"Gastos");
+
+						        btnDeshacer.doClick();
 								Guardar_actualizar="";
 								JOptionPane.showMessageDialog(null, "Se Guardo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 								imprimir_ultimo_guardado(Integer.valueOf(txtFolio.getText())-1);
-							}else{
+							}else
+								{
 								JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 								return;
 							}

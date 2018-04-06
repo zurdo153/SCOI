@@ -516,6 +516,8 @@ public void constructor_Ingreso(String tipo) {
 		public void actionPerformed(ActionEvent e){
 			float saldo=new BuscarSQL().saldo_banco_interno_por_cuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
 	 		txtSaldo_Actual.setText(saldo+"");
+	 		txttotalImporte_BI.setText("");
+	 		txtSaldoNuevo.setText("");	 		
 	 		txttotalImporte_BI.setEditable(true); 
 	 		txttotalImporte_BI.requestFocus();
 		}
@@ -758,20 +760,6 @@ public void constructor_Ingreso(String tipo) {
 			 }
 	  }			
     };
-
-//  pstmt.setInt   (1 ,  folio_transaccion);                              @folio int,
-//	pstmt.setInt   (2 ,  Banco_Interno.getFolio_usuario()                 );@usuario_recibe int,
-//	pstmt.setString(3 ,  Banco_Interno.getObservaciones().toString()      );@observaciones varchar(160) ,
-//	pstmt.setString(4 ,  Banco_Interno.getCuenta().toString().trim()      );@nombre_de_cuenta varchar(70),
-//	pstmt.setString(5 ,  Banco_Interno.getEstatus()                       );@estatus char(1),
-//	pstmt.setString(6 ,  Banco_Interno.getGuardar_actualizar()            );@GuardarActualizar char(1),    
-//	pstmt.setInt   (7 ,  0                                                );@importe_ingreso numeric(16,2),
-
-//	pstmt.setString(8 ,  Banco_Interno.getTabla()[i][3].toString().trim() );@importe_egreso numeric(16,2),
-//	pstmt.setString(9 ,  "Egreso"                                         );@tipo_movimiento char(1),
-//	pstmt.setString(10 , "0"                                              );@folio_Banco_Interno int ,
-//	pstmt.setString(11 , Banco_Interno.getTabla()[i][0].toString().trim() );@folio_trabajo int,
-//	pstmt.setFloat (12 , Banco_Interno.getImporte()                       );@total_movimiento numeric(16,2)
 	
 	ActionListener guardar_valedolares = new ActionListener(){
 	@SuppressWarnings("null")
@@ -782,7 +770,7 @@ public void constructor_Ingreso(String tipo) {
 			 }else{	
 				   String[][] tabla_guardado = {{ "0","","",txttotalImporte_BI.getText().toString().trim(),"true"}};
 				   banco_interno.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));
-				   banco_interno.setFolio_usuario(Integer.valueOf(txtFoliosolicit.getText().toString().trim()));				   
+				   banco_interno.setFolio_usuario(Integer.valueOf(txtFolio_Beneficiario.getText().toString().trim()));				   
 				   banco_interno.setObservaciones(txaObservaciones.getText().toString().trim());				
 				   banco_interno.setCuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());			   
                    banco_interno.setEstatus(cmb_status.getSelectedItem().toString().trim());

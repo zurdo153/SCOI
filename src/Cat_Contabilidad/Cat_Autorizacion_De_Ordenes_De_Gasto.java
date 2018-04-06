@@ -53,6 +53,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 		
 		JLabel detalle     = new JLabel("Detalle De La Orden De Gasto");
 		JTextField txtFolio= new Componentes().text(new JCTextField()  ,"Folio"   ,30   ,"String");
+		JTextField txtPedientes     = new Componentes().text(new JCTextField(), "Cant. Pendientes", 150, "String");
 		
 	    JTextField txtFiltro = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla <<<", 300, "String");
 		JTextField txtTotal  = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");
@@ -98,6 +99,8 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 			
 			String basedatos="26",pintar="si";
 			ObjTab.Obj_Refrescar(tabla,modelo, Cantidad_Real_De_Columnas, comando, basedatos,pintar,checkboxindex);
+			
+//			if(tabla.getRowCount()>0){txtPedientes.setText(tabla.getValueAt(0, 22).toString());}else {txtPedientes.setText("0");}
 	    }
 		
 	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"S","Folio","Proveedor","Concepto","Descripcion Gasto","Establecimiento","Importe Total","Usuario Solicita", "Fecha","Estatus","Fecha Autorizacion","Usuario Autorizo","Tipo Provedor"}){
@@ -158,7 +161,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 		JToolBar menu_toolbar       = new JToolBar();
 		
 		public Cat_Autorizacion_De_Ordenes_De_Gasto()	{
-//			this.setSize(1024,540);
+//			this.setSize(1024,768);
 			this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 //			this.setResizable(false);
 			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -181,22 +184,27 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 			this.menu_toolbar.setFloatable(false);
 			
 			int x=15,y=15,height=20;	
-			this.campo.add(menu_toolbar).setBounds           (x      ,y      ,460    ,height   );
+			this.campo.add(menu_toolbar).setBounds           (x      ,y      ,350    ,height   );
+			this.campo.add(new JLabel("Cantidad De Registros:")).setBounds(x+400,y,150,height  );
+			this.campo.add(txtPedientes).setBounds           (x+510  ,y      ,100    ,height   );
+			
 			this.campo.add(new JLabel("Busqueda Por Estatus:")).setBounds(760,y,110  ,height   );
 			this.campo.add(cmb_status).setBounds             (x+860  ,y      ,120    ,height   );
-			this.campo.add(txtFiltro).setBounds              (x      ,y+=25  ,ancho-40,height   );
-			this.campo.add(scroll_tabla).setBounds           (x      ,y+=20  ,ancho-40,250      );
-			this.campo.add(detalle).setBounds                (x      ,y+=260 ,400    ,height   );
-			this.campo.add(scroll_tabla_detalle).setBounds   (x      ,y+=22  ,780    ,150      );
+			this.campo.add(txtFiltro).setBounds              (x      ,y+=25  ,ancho-40,height  );
+			this.campo.add(scroll_tabla).setBounds           (x      ,y+=20  ,ancho-40,430     );
+			this.campo.add(detalle).setBounds                (x      ,y+=430 ,400    ,height   );
+			this.campo.add(scroll_tabla_detalle).setBounds   (x      ,y+=18  ,780    ,150      );
 			this.campo.add(new JLabel("Total De La Orden")).setBounds(800,y+=110,110 ,height   );
 			this.campo.add(txtTotal).setBounds               (795    ,y+=20  ,110    ,height   );
 			
 			agregar(tabla);
 			init_tabla();
 			init_tabla2();
+			cantidad();
 			
 			txtTotal.setEditable(false);
-
+			txtPedientes.setEditable(false);
+			
 			cont.add(campo);
 			txtFiltro.addKeyListener(op_filtro);
 			btnAceptar.addActionListener(opaceptar);
@@ -206,6 +214,9 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 			cmb_status.addActionListener(buscar_con_combo);
 		}
 		
+		public void cantidad() {
+			txtPedientes.setText(tabla.getRowCount()+"");
+		}
 		 private KeyListener op_filtro = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
 					ObjTab.Obj_Filtro(tabla, txtFiltro.getText().toUpperCase(), Cantidad_Real_De_Columnas);
@@ -249,6 +260,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 		ActionListener buscar_con_combo = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				init_tabla();
+				cantidad();
 			}
 		};
 		

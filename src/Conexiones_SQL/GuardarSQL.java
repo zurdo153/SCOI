@@ -7529,17 +7529,17 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 					System.out.println(Banco_Interno.getImporte());
 					
 					pstmt.setInt   (1 ,  folio_transaccion);
-					pstmt.setInt   (2 ,  Banco_Interno.getFolio_usuario()                 );
-					pstmt.setString(3 ,  Banco_Interno.getObservaciones().toString()      );
-					pstmt.setString(4 ,  Banco_Interno.getCuenta().toString().trim()      );
-					pstmt.setString(5 ,  Banco_Interno.getEstatus()                       );
-					pstmt.setString(6 ,  Banco_Interno.getGuardar_actualizar()            );
-					pstmt.setInt   (7 ,  0                                                );
-					pstmt.setString(8 ,  Banco_Interno.getTabla()[i][3].toString().trim() );
-					pstmt.setString(9 ,  "Egreso"                                         );
-					pstmt.setString(10 , "0"                                              );
-					pstmt.setString(11 , Banco_Interno.getTabla()[i][0].toString().trim() );
-					pstmt.setFloat (12 , Banco_Interno.getImporte()                       );
+					pstmt.setInt   (2 ,  Banco_Interno.getFolio_usuario()                    );
+					pstmt.setString(3 ,  Banco_Interno.getObservaciones().toString()         );
+					pstmt.setString(4 ,  Banco_Interno.getCuenta().toString().trim()         );
+					pstmt.setString(5 ,  Banco_Interno.getEstatus()                          );
+					pstmt.setString(6 ,  Banco_Interno.getGuardar_actualizar()               );
+					pstmt.setInt   (7 ,  0                                                   );
+					pstmt.setString(8 ,  Banco_Interno.getTabla()[i][3].toString().trim()    );
+					pstmt.setString(9 ,  Banco_Interno.getTipo_movimiento().toString().trim());
+					pstmt.setString(10 , "0"                                                 );
+					pstmt.setString(11 , Banco_Interno.getTabla()[i][0].toString().trim()    );
+					pstmt.setFloat (12 , Banco_Interno.getImporte()                          );
 					pstmt.executeUpdate();
 				    con.commit();
 				}
