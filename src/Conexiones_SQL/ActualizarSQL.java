@@ -4388,4 +4388,37 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String[][] tabla,String Ac
 	
 	}	
 
+	public boolean Autorizar_Equipos_Para_Usar_Lector_De_Huella(int folio_establecimiento, int status){
+		String query = "exec asignar_establecimiento_para_checador ?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, folio_establecimiento);
+			pstmt.setInt(2, status);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizar_Equipos_Para_Usar_Lector_De_Huella ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizar_Equipos_Para_Usar_Lector_De_Huella ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 }

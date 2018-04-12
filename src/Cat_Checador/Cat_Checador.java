@@ -212,18 +212,18 @@ public class Cat_Checador extends JFrame {
                 ImageIcon img = new ImageIcon("imagen/txa.jpg");
                 
                 static int anchoMon = Toolkit.getDefaultToolkit().getScreenSize().width;
-        		int altoMon  = Toolkit.getDefaultToolkit().getScreenSize().height;
+        		int altoMon = Toolkit.getDefaultToolkit().getScreenSize().height;
                 
                 static JLabel fondo = new JLabel();
               
                 Font font;
                 
-//                String semaforoR = System.getProperty("user.dir")+"/Imagen/semaforo_rojo_chica.png";
+//              String semaforoR = System.getProperty("user.dir")+"/Imagen/semaforo_rojo_chica.png";
                 String semaforoR = System.getProperty("user.dir")+"/Imagen/circulo-rojo-icono-9411-128.png";
                 
                 ImageIcon tmpIconSemR = new ImageIcon(semaforoR);
                 
-//                String semaforoV = System.getProperty("user.dir")+"/Imagen/semaforo_verde_chica.png";
+//              String semaforoV = System.getProperty("user.dir")+"/Imagen/semaforo_verde_chica.png";
                 String semaforoV = System.getProperty("user.dir")+"/Imagen/circulo-verde-icono-4055-128.png";
                 
                 ImageIcon tmpIconSemV = new ImageIcon(semaforoV);
@@ -339,7 +339,6 @@ public class Cat_Checador extends JFrame {
         		if(lectorDeHuellaConectado){
         			new Cat_Huellas_Personalizado("CLAVE MASTER").setVisible(true);
         		}else{
-        			lectorDeHuellaConectado = true;
         			JOptionPane.showMessageDialog(null, "El Sensor de Huella Digital esta Desactivado o no Conectado","Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 	    	        return;
         		}
@@ -1398,13 +1397,13 @@ public class Cat_Checador extends JFrame {
     	public static void main(String args[]){
     		try {
     			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    			if(new BuscarSQL().equipoAutorizadoComoChecador()){
+//    			if(new BuscarSQL().equipoAutorizadoComoChecador()){
     				DPFPGlobal.getEnrollmentFactory().createEnrollment();
     				new Cat_Checador().setVisible(true);	
-    			}else{
-    				JOptionPane.showMessageDialog(null, "Este Equipo No Esta Autorizado Como Checador, Favor De Comunicarse Al Departamente De Sistemas", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-		        	return;
-    			}
+//    			}else{
+//    				JOptionPane.showMessageDialog(null, "Este Equipo No Esta Autorizado Como Checador, Favor De Comunicarse Al Departamente De Sistemas", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//		        	return;
+//    			}
     			
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | Error e) {
 				System.out.println(e.getMessage());
