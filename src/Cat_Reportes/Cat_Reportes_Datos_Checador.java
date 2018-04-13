@@ -33,6 +33,14 @@ public class Cat_Reportes_Datos_Checador extends JFrame {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
+	String tipoDeReprote[] = {"Selecciona Un Tipo De Reporte","Tiempo En Ruta","Detalles De Huellas","Status Checador"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbTipoDeReporte = new JComboBox(tipoDeReprote);
+	
+	String statusChecador[] = {"Selecciona Un Status","Normal","Libre","Checador Bloqueado","Exclusivo Ruta"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbStatusChecador = new JComboBox(statusChecador);
+	
 	JDateChooser c_inicio = new JDateChooser();
 	JDateChooser c_final = new JDateChooser();
 	
@@ -41,9 +49,7 @@ public class Cat_Reportes_Datos_Checador extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
-	JCButton btn_tiempo_en_ruta = new JCButton  ("Tiempo En Ruta","reloj.png","Azul");
-	JCButton btn_detalles_huella = new JCButton  ("Detalles De Huellas","huella_cargada_16.png","Azul");
-	JCButton btn_status_checador = new JCButton  ("Status Checador","asistencia-comunitaria-icono-9465-16.png","Azul");
+	JCButton btnGenerarReporte = new JCButton  ("Generar Reporte","Report.png","Azul");
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
@@ -61,29 +67,90 @@ public class Cat_Reportes_Datos_Checador extends JFrame {
 		
 		int x=15,y=25,width=100,height=20;
 		
-		this.panel.add(new JLabel("Fecha Inicio:")).setBounds   (x      ,y    ,width  ,height);
+		this.panel.add(cmbTipoDeReporte).setBounds            (x+40  ,y    ,width*4 ,30);
+		
+		this.panel.add(new JLabel("Fecha Inicio:")).setBounds   (x      ,y+=45,width  ,height);
 		this.panel.add(JLBlinicio).setBounds                    (x+=60  ,y    ,height ,height);
 		this.panel.add(c_inicio).setBounds                      (x+=20  ,y    ,width  ,height);
+		
 	    this.panel.add(new JLabel("Establecimiento:")).setBounds(x+=120 ,y    ,width  ,height);
 	    this.panel.add(JLBestablecimiento).setBounds            (x+=75  ,y    ,height ,height);
 		this.panel.add(cmbEstablecimiento).setBounds            (x+=25  ,y    ,170    ,height);
+		
 		 x=15;
 		this.panel.add(new JLabel("Fecha Final:")).setBounds    (x      ,y+=25,width  ,height);
 		this.panel.add(JLBfin).setBounds                        (x+=60  ,y    ,height ,height);
 		this.panel.add(c_final).setBounds                       (x+=20  ,y    ,width  ,height);
+		
+		this.panel.add(new JLabel("Status Checador:")).setBounds(x+=120 ,y    ,width  ,height);
+//	    this.panel.add(JLBestablecimiento).setBounds            (x+=75  ,y    ,height ,height);
+		this.panel.add(cmbStatusChecador).setBounds            (x+=100  ,y    ,170    ,height);
 
 		x=15;width=200;height=25;
-		this.panel.add(btn_tiempo_en_ruta).setBounds             (x      ,y+=40,width  ,height);
-		this.panel.add(btn_detalles_huella).setBounds       (x+=270 ,y,width  ,height);
-		this.panel.add(btn_status_checador).setBounds             (x   ,y+=40, width ,height);
+		this.panel.add(btnGenerarReporte).setBounds             (x+150      ,y+=40,width  ,30);
 		x=15;width=320;
 		
+		cmb();
 		
 		this.cont.add(panel);
-		btn_tiempo_en_ruta.addActionListener       (op_generar); 
-		btn_status_checador.addActionListener       (op_generar);
-		btn_detalles_huella.addActionListener (op_generar); 
+		btnGenerarReporte.addActionListener       (op_generar); 
+		cmbTipoDeReporte.addActionListener(opCmb);
 		
+	}
+	
+	ActionListener opCmb = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			cmb();
+		}
+	};
+	
+	public void cmb(){
+		switch(cmbTipoDeReporte.getSelectedItem().toString().trim()){
+			case "Selecciona Un Tipo De Reporte":
+					c_inicio.setEnabled(false);
+					c_final.setEnabled(false);
+					cmbEstablecimiento.setEnabled(false);
+					cmbStatusChecador.setEnabled(false);
+					
+					cargar_fechas();
+					cmbEstablecimiento.setSelectedIndex(0);
+					cmbStatusChecador.setSelectedIndex(0);
+					btnGenerarReporte.setEnabled(false);
+				break;
+			case "Tiempo En Ruta":
+					c_inicio.setEnabled(true);
+					c_final.setEnabled(true);
+					cmbEstablecimiento.setEnabled(true);
+					cmbStatusChecador.setEnabled(false);
+					btnGenerarReporte.setEnabled(true);
+					
+					cargar_fechas();
+					cmbEstablecimiento.setSelectedIndex(0);
+					cmbStatusChecador.setSelectedIndex(0);
+				break;
+			case "Detalles De Huellas":
+					c_inicio.setEnabled(false);
+					c_final.setEnabled(false);
+					cmbEstablecimiento.setEnabled(true);
+					cmbStatusChecador.setEnabled(false);
+					btnGenerarReporte.setEnabled(true);
+					
+					cargar_fechas();
+					cmbEstablecimiento.setSelectedIndex(0);
+					cmbStatusChecador.setSelectedIndex(0);
+				break;
+			case "Status Checador":
+					c_inicio.setEnabled(false);
+					c_final.setEnabled(false);
+					cmbEstablecimiento.setEnabled(true);
+					cmbStatusChecador.setEnabled(true);
+					btnGenerarReporte.setEnabled(true);
+					
+					cargar_fechas();
+					cmbEstablecimiento.setSelectedIndex(0);
+					cmbStatusChecador.setSelectedIndex(0);
+				break;
+		}
 	}
 	
 	public void cargar_fechas(){
@@ -122,21 +189,22 @@ public class Cat_Reportes_Datos_Checador extends JFrame {
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:58";
 				String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+				String StatusChecador = cmbStatusChecador.getSelectedItem().toString();
 			
 				if(c_inicio.getDate().before(c_final.getDate())){
-				   if( e.getActionCommand().equals("Tiempo En Ruta")){
+				   if( cmbTipoDeReporte.getSelectedItem().toString().trim().equals("Tiempo En Ruta")){
 					   reporte = "Obj_Reporte_De_Tiempo_En_Recorrido.jrxml";
 					   comando = "exec reporte_de_entradas_y_salidas_ruta '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"'";
 				   }	
 				   
-				   if( e.getActionCommand().equals("Detalles De Huellas")){
+				   if( cmbTipoDeReporte.getSelectedItem().toString().trim().equals("Detalles De Huellas")){
 					   reporte ="Obj_Reporte_De_Colaboradores_Con_Opciones_De_Huella.jrxml";
 					   comando="exec reporte_de_colaboradores_con_opciones_de_huella '"+Establecimiento+"','','',0";/*estab,depto,puesto,folio_emp*/
 				   }
 				   
-				   if( e.getActionCommand().equals("Status Checador")){
+				   if( cmbTipoDeReporte.getSelectedItem().toString().trim().equals("Status Checador")){
 					   reporte ="Obj_Status_Checador.jrxml";
-					   comando="exec reporte_de_colaboradores_con_status_checador '"+Establecimiento+"'";
+					   comando="exec reporte_de_colaboradores_con_status_checador '"+Establecimiento+"','"+StatusChecador+"'";
 				   }	
 			
 				   new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
