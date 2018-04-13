@@ -495,7 +495,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
                    
 					if(gasto.GuardarActualizar().getFolio()>0){
 		                Obj_Correos correos = new Obj_Correos().buscar_correos(84, "");
-						String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+"\nSolicita los siguientes productos\n"+productos+ "Con un valor total de:$"+txtTotal.getText().toString()+"\n "
+						String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+"\nSolicita los siguientes productos\n"+productos+"Con un valor total de:$"+txtTotal.getText().toString()+"\n "
 						                  +"\nPara El Establecimiento:"+cmbEstablecimiento.getSelectedItem().toString().trim()+"\nBeneficiario:"+txtProveedor.getText()+"\nMotivo del(a) Gasto/Compra:"+txaUso.getText();
 //						                  +"\nResponda Si Para Autorizar el Gasto \nResponda No Para Negar el Gasto";
 						new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I. Solicitud De "+cmb_concepto.getSelectedItem().toString()+" Folio:§"+gasto.getFolio()+" Por Un Total De:"+txtTotal.getText().toString(),"Gastos");
@@ -692,6 +692,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
 			        	if(e.getClickCount()==1){
+			        		
 			        		modelo.setRowCount(0);
 			        		int fila = tablab.getSelectedRow();
 			        		String[][] tablacompleta=gasto.consulta_orden_de_gasto(Integer.valueOf(tablab.getValueAt(fila,0)+""));

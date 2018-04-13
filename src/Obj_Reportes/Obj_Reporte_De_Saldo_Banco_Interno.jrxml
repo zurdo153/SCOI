@@ -4,7 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<queryString>
-		<![CDATA[exec banco_interno_reporte_estado_de_cuenta  '20/03/2018 00:00:00', '27/03/2018 23:59:59','E']]>
+		<![CDATA[exec banco_interno_reporte_estado_de_cuenta  '01/04/2018 00:00:00', '09/04/2018 23:59:59','V']]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
@@ -256,17 +256,17 @@
 				<textFieldExpression><![CDATA[$F{saldo_inicial}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="67" y="97" width="74" height="14" uuid="2fbab19a-bfa9-48cd-8c2a-af01aefc894f"/>
+				<reportElement x="71" y="97" width="70" height="14" uuid="2fbab19a-bfa9-48cd-8c2a-af01aefc894f"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{total_ingreso}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="67" y="111" width="74" height="14" uuid="9d1e5469-6228-4007-864f-521bbcc7b80c"/>
+				<reportElement x="71" y="111" width="70" height="14" uuid="9d1e5469-6228-4007-864f-521bbcc7b80c"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{total_egreso}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="67" y="125" width="74" height="14" uuid="de95dfd1-d3a6-4c44-857c-926261569026"/>
+				<reportElement x="71" y="125" width="70" height="14" uuid="de95dfd1-d3a6-4c44-857c-926261569026"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{saldo_final}]]></textFieldExpression>
 			</textField>
@@ -322,14 +322,7 @@
 				<text><![CDATA[Total Pendiente De Reponer Caja Chica:]]></text>
 			</staticText>
 			<image>
-				<reportElement x="49" y="114" width="9" height="9" uuid="40773b9f-6013-4820-b17e-04d0c942cb3b">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<imageExpression><![CDATA["C:/SCOI/imagen/menos-rojo-eliminar-icono-5237-16.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="49" y="100" width="9" height="9" uuid="9617b05f-54d7-472e-920d-3b4d091f93e8">
+				<reportElement x="62" y="100" width="9" height="9" uuid="9617b05f-54d7-472e-920d-3b4d091f93e8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<imageExpression><![CDATA["C:/SCOI/imagen/anadir-mas-icono-6934-16.png"]]></imageExpression>
@@ -426,6 +419,13 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{total_ingreso_transferido_pendiente_de_recepcionar}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="62" y="112" width="9" height="9" uuid="8aa77a1a-0334-4374-b560-9cf7c6277582">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/menos-rojo-eliminar-icono-5237-16.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -440,6 +440,13 @@
 				<reportElement mode="Opaque" x="0" y="0" width="555" height="12" uuid="7356eebf-62bf-4fa5-9d04-577c55377577">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
+				<image>
+					<reportElement x="20" y="1" width="9" height="9" uuid="e03f7c70-184e-4471-b1d9-f901f4430cf3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{tipo_movimiento}.equals("INGRESO")]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/anadir-mas-icono-6934-16.png"]]></imageExpression>
+				</image>
 				<textField>
 					<reportElement x="30" y="0" width="304" height="12" uuid="c92f3367-7626-4bcc-b51f-779db7ff2faf">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -476,6 +483,14 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{RunningTotal_de_saldo}]]></textFieldExpression>
 				</textField>
+				<image>
+					<reportElement x="20" y="1" width="9" height="9" uuid="40773b9f-6013-4820-b17e-04d0c942cb3b">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{tipo_movimiento}.equals("EGRESO")]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA["C:/SCOI/imagen/menos-rojo-eliminar-icono-5237-16.png"]]></imageExpression>
+				</image>
 				<textField>
 					<reportElement x="0" y="0" width="30" height="12" uuid="39ee082d-6311-44db-8c4e-52cfeeb5358b"/>
 					<textElement>

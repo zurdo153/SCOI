@@ -67,9 +67,40 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	Obj_Orden_De_Gasto gasto = new Obj_Orden_De_Gasto();
-
-	JTextField txtBeneficiario= new Componentes().text(new JCTextField()  ,"Beneficiario"   ,250   ,"String");
+	Obj_tabla  ObjTab = new Obj_tabla();
 	
+	int columnasog = 4,checkbox=-1;
+	public void init_tabla(){
+    	this.tablaog.getColumnModel().getColumn(0).setMinWidth(277);	
+    	this.tablaog.getColumnModel().getColumn(1).setMinWidth(80);
+    	this.tablaog.getColumnModel().getColumn(2).setMinWidth(80);
+    	this.tablaog.getColumnModel().getColumn(3).setMinWidth(80);
+    	
+		String comando="Select '' as Descripcion, 0 P_Unitario,0 as Cantidad,0 as Importe" ;
+		String basedatos="26",pintar="si";
+		ObjTab.Obj_Refrescar(tablaog,modelog, columnasog, comando, basedatos,pintar,checkbox);
+		modelog.setRowCount(0);
+    }
+	
+	@SuppressWarnings("rawtypes")
+	public Class[] basemovimientos (){
+		Class[] types = new Class[columnasog];
+		for(int i = 0; i<columnasog; i++){types[i]= java.lang.Object.class;}
+		 return types;
+	}
+	
+	public DefaultTableModel modelog = new DefaultTableModel(null, new String[]{"Descripcion","Cantidad","P.Unitario","Importe"}){
+		 @SuppressWarnings("rawtypes")
+			Class[] types = basemovimientos();
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+			public boolean isCellEditable(int fila, int columna){ return false;}
+	};
+	
+	JTable tablaog = new JTable(modelog);
+	public JScrollPane scroll_tabla = new JScrollPane(tablaog);
+	
+	JTextField txtBeneficiario= new Componentes().text(new JCTextField()  ,"Beneficiario"   ,250   ,"String");
 	JTextField txtSaldo          = new Componentes().text(new JCTextField()  ,"Saldo"                     ,30   ,"String");
 	JTextField txtSaldo_Nuevo    = new Componentes().text(new JCTextField()  ,"Nuevo Saldo"               ,30   ,"String");
 	JTextField txtFolio          = new Componentes().text(new JCTextField()  ,"Folio"                     ,30   ,"String");
@@ -122,7 +153,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	JToolBar menu_toolbar       = new JToolBar();
 	int folioBeneficiario = 0;
 	public Cat_Orden_De_Gasto_Pago_En_Efectivo(){
-		this.setSize(565, 450);
+		this.setSize(565, 570);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Pay-Per-Click-icon64px.png"));
@@ -170,9 +201,11 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		this.panel.add(txtFechaAutorizo).setBounds                   (x+=310 ,y     ,150     ,height);
 		
 		this.panel.add(new JLabel("Descripcion Del Gasto:")).setBounds(x=15  ,y+=25 ,300     ,height);
-		this.panel.add(txtUso).setBounds                             (x      ,y+=15 ,520     ,80    );
+		this.panel.add(txtUso).setBounds                             (x      ,y+=15 ,520     ,60    );
 		
-		this.panel.add(new JLabel("Cantidad:$")).setBounds           (x=15   ,y+=85 ,70      ,height);
+		this.panel.add(scroll_tabla).setBounds                       (x      ,y+=65 ,520     ,100    );
+		
+		this.panel.add(new JLabel("Cantidad:$")).setBounds           (x=15   ,y+=120,70      ,height);
 		this.panel.add(txtCantidad).setBounds                        (x+=sep ,y     ,width   ,height);
 		this.panel.add(new JLabel("Saldo:$")).setBounds              (x+=125 ,y     ,width   ,height);
 		this.panel.add(txtSaldo).setBounds                           (x+=40  ,y     ,width   ,height);
@@ -180,7 +213,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		this.panel.add(txtSaldo_Nuevo).setBounds                     (x+=80  ,y     ,width   ,height);
 		
 		this.panel.add(new JLabel("Concepto:")).setBounds            (x=15   ,y+=25 ,150     ,height);
-		this.panel.add(cmbConcepto).setBounds                        (x+=sep ,y     ,250     ,height);
+		this.panel.add(cmbConcepto).setBounds                        (x+=sep ,y     ,300     ,height);
 		
 		this.panel.add(new JLabel("Beneficiario:")).setBounds        (x=15   ,y+=25 ,70      ,height);
 		this.panel.add(txtBeneficiario).setBounds                    (x+=sep ,y     ,300     ,height);
@@ -190,13 +223,15 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		this.panel.add(rbProveedor).setBounds                        (x=430  ,y     ,90      ,height);
 		this.panel.add(rbEmpleado).setBounds                         (x      ,y+=20 ,90      ,height);
 		
-		this.panel.add(new JLabel("Detalle:")).setBounds             (x=15   ,y+=5 ,70      ,height);
-		this.panel.add(Concepto  ).setBounds                         (x      ,y+=18 ,520     ,60    );
-		
+		this.panel.add(new JLabel("Detalle:")).setBounds             (x=15   ,y+=5 ,70       ,height);
+		this.panel.add(Concepto  ).setBounds                         (x      ,y+=18 ,520     ,80    );
+
 		txaConcepto.setLineWrap(true); 
 		txaConcepto.setWrapStyleWord(true);
 		txtaUso.setLineWrap(true); 
 		txtaUso.setWrapStyleWord(true);
+		
+		init_tabla();
 		
 		txtFolio.setEditable(false);
 		txtBeneficiario.setEditable(false);
@@ -303,6 +338,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			modelog.setRowCount(0);
 			txtFolio.setText("");
 			txtBeneficiario.setText("");
 			txtFolioSolicitud.setText("");
@@ -372,18 +408,25 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 				JOptionPane.showMessageDialog(null, "Los Siguiente Campos Son Requeridos:\n"+validaCampos(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-                                                                       //				int folio_orden_de_gasto                               ,float cantidad                                         , String fecha                                               , String observaciones                     , String tipoBeneficiario        , int folioBeneficiario, String Concepto,String Guardar_actualizar){
+               //		int folio_orden_de_gasto                               ,float cantidad                                         , String fecha                                               , String observaciones                     , String tipoBeneficiario        , int folioBeneficiario, String Concepto,String Guardar_actualizar){
 			if(new GuardarSQL().Guardar_Orden_De_Gasto_Pago_En_Efectivo(Integer.valueOf(txtFolioSolicitud.getText().toString()), Float.valueOf(txtCantidad.getText().toString().trim()),new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbConcepto.getSelectedItem().toString(),Guardar_actualizar )){
-				          Obj_Correos correos = new Obj_Correos().buscar_correos(85, "");	
-								String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFechaSolicito.getText().toString()+" con folio:"+txtFolioSolicitud.getText().toString()
-											   +"\nUn pago con un valor total de:$ "+txtCantidad.getText().toString()
-										       +"\nDescripcion del gasto/compra: "+txtaUso.getText().toString()
-										       +"\nPara el establecimiento: "+cmbEstablecimiento.getSelectedItem().toString().trim()
-										       +"\nBeneficiario: "+txtProveedor.getText().trim()
-										       +"\nAutorizó pago: "+txtautorizo.getText().toString().trim()+" el dia "+txtFechaAutorizo.getText().toString().trim()
-										       +"\nRecibio efectivo: "+txtBeneficiario.getText().trim();
+				           Obj_Correos correos = new Obj_Correos().buscar_correos(85, "");	
+				           
+				           String productos="\nDescripcion / Cantidad / Importe\n";
+						   for(int i=0;i<tablaog.getRowCount();i++) {
+							   productos=productos+tablaog.getValueAt(i, 0)+"  / "+tablaog.getValueAt(i, 1)+"  /$"+tablaog.getValueAt(i, 3)+" \n";
+						   }
+						   
+				           String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFechaSolicito.getText().toString()+" con folio:"+txtFolioSolicitud.getText().toString()
+							  		      +"\nUn pago con un valor total de:$ "+txtCantidad.getText().toString()
+										  +"\nDescripcion del gasto/compra: "+txtaUso.getText().toString()
+										  +"\n"+productos
+										  +"\nPara el establecimiento: "+cmbEstablecimiento.getSelectedItem().toString().trim()
+										  +"\nBeneficiario: "+txtProveedor.getText().trim()
+										  +"\nAutorizó pago: "+txtautorizo.getText().toString().trim()+" el dia "+txtFechaAutorizo.getText().toString().trim()
+										  +"\nRecibio efectivo: "+txtBeneficiario.getText().trim();
 
-						  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago Folio:"+txtFolio.getText().toString()+" Por Un Total De $"+txtCantidad.getText().toString()+" A "+txtProveedor.getText().trim(),"Gastos");
+						  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago por un total de $:"+txtCantidad.getText().toString()+" Folio:"+txtFolio.getText().toString()+ " A "+txtProveedor.getText().trim(),"Gastos");
 
 						        btnDeshacer.doClick();
 								Guardar_actualizar="";
@@ -394,7 +437,6 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 								JOptionPane.showMessageDialog(null, "Ocurrió Un Error Al Intentar Guardar","Error",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 								return;
 							}
-					
 			}
 			
 		}
@@ -529,7 +571,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 					this.agregar(tablab);
 					this.txtBuscarb.addKeyListener  (opFiltropuestos );
 					this.txtBuscarb.addKeyListener(PasarATabla);
-					this.tablab.addKeyListener(agregarcon_enter);
+//					this.tablab.addKeyListener(agregarcon_enter);
 					contfb.add(panelfb);
 				}
 				
@@ -548,7 +590,23 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 						public void mouseClicked(MouseEvent e) {
 				        	if(e.getClickCount()==1){
+
+				        		modelog.setRowCount(0);
 				        		int fila = tablab.getSelectedRow();
+				        		String[][] tablacompleta=gasto.consulta_orden_de_gasto(Integer.valueOf(tablab.getValueAt(fila,0)+""));
+				        	    Object[]   vectortabla = new Object[3];
+				        		for(int i=0;i<tablacompleta.length;i++){
+				        				for(int j=0;j<3;j++){
+				        				  vectortabla[j] = tablacompleta[i][j].toString();
+				        				}
+				        				modelog.addRow(vectortabla);
+				        		}
+				        		
+				        			for(int i=0;i<tablaog.getRowCount();i++) {
+				        				tablaog.setValueAt(Float.valueOf(tablaog.getValueAt(i, 1)+"") * Float.valueOf(tablaog.getValueAt(i, 2)+"")   , i, 3);
+				        			}
+				        		
+				        		
 				        		if(tablab.getValueAt(fila,  8).toString().equals("AUTORIZADO")){
 				        			txtFolioSolicitud.setText         (tablab.getValueAt(fila,  0).toString());
 					        		txtProveedor.setText              (tablab.getValueAt(fila,  1).toString());
@@ -573,34 +631,34 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			        });
 			    }
 				
-				KeyListener agregarcon_enter = new KeyListener() {
-					public void keyTyped(KeyEvent e){}
-					public void keyReleased(KeyEvent e) {}
-					public void keyPressed(KeyEvent e) {
-						if(e.getKeyCode()==KeyEvent.VK_ENTER){
-			        		int fila = tablab.getSelectedRow();
-			        		if(tablab.getValueAt(fila,  8).toString().equals("AUTORIZADO")){
-			        			txtFolioSolicitud.setText         (tablab.getValueAt(fila,  0).toString());
-				        		txtProveedor.setText              (tablab.getValueAt(fila,  1).toString());
-				        		txtaUso.setText                   (tablab.getValueAt(fila,  3).toString());
-				        		cmbEstablecimiento.setSelectedItem(tablab.getValueAt(fila,  4).toString());
-				        		txtCantidad.setText               (tablab.getValueAt(fila,  5).toString());
-				        		txtSolicitante.setText            (tablab.getValueAt(fila,  6).toString());
-				        		txtFechaSolicito.setText          (tablab.getValueAt(fila,  7).toString());
-				        		txtFechaAutorizo.setText          (tablab.getValueAt(fila,  9).toString());
-				        		txtautorizo.setText               (tablab.getValueAt(fila, 10).toString());	
-				        		cargar_datos_iniciales();
-				        		Guardar_actualizar="N";
-				        		cmbConcepto.requestFocus();
-				        		cmbConcepto.showPopup();
-				        		dispose();
-			        		}else{
-								JOptionPane.showMessageDialog(null, "Para Que Un Registro Sea Agregado Para Pago Es Requerido Que Este Haya Sido Autorizado\nEl Que Esta Seleccionando Tiene Estatus De "+tablab.getValueAt(fila,  8).toString(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-			        		 return;
-			        		}
-						}
-					}
-				};
+//				KeyListener agregarcon_enter = new KeyListener() {
+//					public void keyTyped(KeyEvent e){}
+//					public void keyReleased(KeyEvent e) {}
+//					public void keyPressed(KeyEvent e) {
+//						if(e.getKeyCode()==KeyEvent.VK_ENTER){
+//			        		int fila = tablab.getSelectedRow();
+//			        		if(tablab.getValueAt(fila,  8).toString().equals("AUTORIZADO")){
+//			        			txtFolioSolicitud.setText         (tablab.getValueAt(fila,  0).toString());
+//				        		txtProveedor.setText              (tablab.getValueAt(fila,  1).toString());
+//				        		txtaUso.setText                   (tablab.getValueAt(fila,  3).toString());
+//				        		cmbEstablecimiento.setSelectedItem(tablab.getValueAt(fila,  4).toString());
+//				        		txtCantidad.setText               (tablab.getValueAt(fila,  5).toString());
+//				        		txtSolicitante.setText            (tablab.getValueAt(fila,  6).toString());
+//				        		txtFechaSolicito.setText          (tablab.getValueAt(fila,  7).toString());
+//				        		txtFechaAutorizo.setText          (tablab.getValueAt(fila,  9).toString());
+//				        		txtautorizo.setText               (tablab.getValueAt(fila, 10).toString());	
+//				        		cargar_datos_iniciales();
+//				        		Guardar_actualizar="N";
+//				        		cmbConcepto.requestFocus();
+//				        		cmbConcepto.showPopup();
+//				        		dispose();
+//			        		}else{
+//								JOptionPane.showMessageDialog(null, "Para Que Un Registro Sea Agregado Para Pago Es Requerido Que Este Haya Sido Autorizado\nEl Que Esta Seleccionando Tiene Estatus De "+tablab.getValueAt(fila,  8).toString(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+//			        		 return;
+//			        		}
+//						}
+//					}
+//				};
 				
 				
 		        private KeyListener opFiltropuestos = new KeyListener(){

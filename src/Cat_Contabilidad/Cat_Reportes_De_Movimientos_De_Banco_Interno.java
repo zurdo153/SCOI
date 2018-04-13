@@ -29,7 +29,7 @@ import Conexiones_SQL.Generacion_Reportes;
 public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	JDateChooser c_inicio = new Componentes().jchooser(new JDateChooser()  ,"Fecha Inicial",7);
+	JDateChooser c_inicio = new Componentes().jchooser(new JDateChooser()  ,"Fecha Inicial",1);
 	JDateChooser c_final  = new Componentes().jchooser(new JDateChooser()  ,"Fecha Final"  ,0);
 	
 	Obj_Saldo_Banco_Interno banco_interno= new Obj_Saldo_Banco_Interno();	

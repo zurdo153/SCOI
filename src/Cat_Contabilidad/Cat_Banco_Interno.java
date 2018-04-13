@@ -161,16 +161,17 @@ public class Cat_Banco_Interno extends JFrame{
     JTextArea txaObservaciones      = new Componentes().textArea(new JTextArea(), "Observaciones", 160);
     JScrollPane Observaciones       = new JScrollPane(txaObservaciones);
 
-	JCButton btnIngreso    = new JCButton("Recibir"      ,"ingresos_32.png"                   ,"Azul");
-	JCButton btnEgreso     = new JCButton("Transferir"   ,"Egreso32.png"                      ,"Azul"); 
-	JCButton btnEgresoDlsVa= new JCButton("Egreso Dls y Vales" ,"Egreso32.png"                ,"Azul"); 
-	JCButton btnSolicitante= new JCButton(""             ,"Usuario.png"                       ,"Azul");	
-	JCButton btnBuscar     = new JCButton("Buscar"       ,"Filter-List-icon16.png"            ,"Azul"); 
-	JCButton btnNuevo      = new JCButton("Nuevo"        ,"Nuevo.png"                         ,"Azul");
-	JCButton btnGuardar    = new JCButton("Guardar"      ,"Guardar.png"                       ,"Azul");
-	JCButton btnDeshacer   = new JCButton("Deshacer"     ,"deshacer16.png"                    ,"Azul");
-	JCButton btnImprimir   = new JCButton("Imprimir"     ,"imprimir-16.png"                   ,"Azul");
-	JCButton btnMenuPrincip= new JCButton("Menu"         ,"folder-home-home-icone-5663-16.png","Azul");
+	JCButton btnIngreso    = new JCButton("Recibir"      ,"ingresos_32.png"                               ,"Azul");
+	JCButton btnEgreso     = new JCButton("Transferir"   ,"Egreso32.png"                                  ,"Azul"); 
+	JCButton btnEgresoDlsVa= new JCButton("Egreso Dls y Vales" ,"Egreso32.png"                            ,"Azul"); 
+	JCButton btnReporte    = new JCButton("Reportes"     ,"comprobar-la-lista-de-tareas-icono-7647-32.png","Azul");
+	JCButton btnSolicitante= new JCButton(""             ,"Usuario.png"                                   ,"Azul");	
+	JCButton btnBuscar     = new JCButton("Buscar"       ,"Filter-List-icon16.png"                        ,"Azul"); 
+	JCButton btnNuevo      = new JCButton("Nuevo"        ,"Nuevo.png"                                     ,"Azul");
+	JCButton btnGuardar    = new JCButton("Guardar"      ,"Guardar.png"                                   ,"Azul");
+	JCButton btnDeshacer   = new JCButton("Deshacer"     ,"deshacer16.png"                                ,"Azul");
+	JCButton btnImprimir   = new JCButton("Imprimir"     ,"imprimir-16.png"                               ,"Azul");
+	JCButton btnMenuPrincip= new JCButton("Menu"         ,"folder-home-home-icone-5663-16.png"            ,"Azul");
 	
 	String status[] = {"TRASFERIDO","RECIBIDO","CANCELADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -185,7 +186,7 @@ public class Cat_Banco_Interno extends JFrame{
     String guardar_actualizar="", tipo_movimiento="";
    public  Cat_Banco_Interno(){
 	    this.cont.add(panel);
-		this.setSize(250,250);
+		this.setSize(250,310);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -193,14 +194,17 @@ public class Cat_Banco_Interno extends JFrame{
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/bank128.png"));
 		this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline,"Seleccione La Opcion Deseada"));
-		
-		this.panel.add(btnIngreso).setBounds    (20, 35 , 180, 34 );
-		this.panel.add(btnEgreso).setBounds     (20, 95 , 180, 34 );
-		this.panel.add(btnEgresoDlsVa).setBounds(20, 155, 180, 34 );
+		int x=30,y=35;
+		this.panel.add(btnIngreso).setBounds    (x, y     , 180, 34 );
+		this.panel.add(btnEgreso).setBounds     (x, y+=60 , 180, 34 );
+		this.panel.add(btnEgresoDlsVa).setBounds(x, y+=60 , 180, 34 );
+		this.panel.add(btnReporte).setBounds    (x, y+=60 , 180, 34 );
 		
 		btnIngreso.addActionListener(opSeleccion);
 		btnEgreso.addActionListener (opSeleccion);
 		btnEgresoDlsVa.addActionListener(opSeleccion);
+		btnReporte.addActionListener(opReportes);
+		
     }
    
    @SuppressWarnings("unchecked")
@@ -408,7 +412,13 @@ public void constructor_Ingreso(String tipo) {
 		 txtSaldoNuevo.setText( (Double.valueOf(txtSaldo_Actual.getText().toString())-Double.valueOf(txttotalImporte_BI.getText().toString().equals("")?"0":txttotalImporte_BI.getText().toString() ) )+"");
 		}
 	};
-	
+		
+    ActionListener opReportes = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+					new Cat_Reportes_De_Movimientos_De_Banco_Interno().setVisible(true);
+			}
+	};	
+	   
    ActionListener opFiltroBuscarSolicitante = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				new Cat_Filtro_Buscar_Colaborador().setVisible(true);
