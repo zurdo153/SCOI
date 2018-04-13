@@ -10663,6 +10663,37 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		}
     return existe;
 	}
+	
+	public Object[][] Buscar_Establecimientos_Para_Checador(){
+		
+		String query = "exec seleccion_de_establecimientos_para_checador";
+		Object[][] dato = new Object[get_filas(query)][3];
+		
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int i =0;
+			while(rs.next()){
+				dato[i][0] = rs.getInt("folio_establecimiento");
+				dato[i][1] =rs.getString("establecimiento");
+				dato[i][2] =rs.getInt("lector_de_huella");
+				i++;
+		      }
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return dato;
+	}
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";

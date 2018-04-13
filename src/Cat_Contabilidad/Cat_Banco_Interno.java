@@ -772,7 +772,6 @@ public void constructor_Ingreso(String tipo) {
     };
 	
 	ActionListener guardar_valedolares = new ActionListener(){
-	@SuppressWarnings("null")
 	public void actionPerformed(ActionEvent e){
 			 if(txttotalImporte_BI.getText().equals("")||Float.valueOf(txttotalImporte_BI.getText())==0){
 				 JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Registros Para Poder Guardar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));

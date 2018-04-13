@@ -71,6 +71,7 @@ import Cat_Reportes.Cat_Reporte_De_Ausentismo_En_Lista_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Altas_y_Bajas_En_Un_Rango_De_Fechas;
 import Cat_Reportes.Cat_Reportes_De_Cortes_De_Lista_De_Raya_Actual;
 import Cat_Reportes.Cat_Reporte_De_Cumpleanios_Del_Mes;
+import Cat_Reportes.Cat_Reportes_Datos_Checador;
 import Cat_Reportes.Cat_Personal_Con_Horario;
 import Cat_Reportes.Cat_Reporte_De_Asistencia_Por_Empleado;
 import Cat_Reportes.Cat_Reportes_De_Contratacion_Por_Empleado;
@@ -284,6 +285,7 @@ public class Cat_Empleados extends JFrame{
 	JCButton btnCortes              = new JCButton("Cortes","dinero-icono-8797-32.png","Azul"); 
 	JCButton btn_plantilla          = new JCButton("Plantilla","plan-icono-5073-16.png","Azul");
 	JCButton btn_R_horarios         = new JCButton("Horarios","reloj-icono-9211-32.png","Azul");
+	JCButton btn_Huellas         	= new JCButton("Datos Checador","huella_cargada_32.png","Azul");
 	
 	JCButton btn_movimientos        = new JCButton("Percepcion y Deducciones","percepciones_y_deducciones32.png","Azul");
 	
@@ -444,6 +446,7 @@ public class Cat_Empleados extends JFrame{
 		panelReporte.add(btnReporteSalida).setBounds   		(x+=sep,y    ,width,height);
 		panelReporte.add(btnReporteRenuncia).setBounds      (x+=sep,y    ,width,height);
 		panelReporte.add(btnAltasBajas).setBounds       	(x+=sep,y    ,width,height);
+		panelReporte.add(btn_Huellas).setBounds	(x+=sep,y    ,width,height);
 		
 		x = 10;y = 20;height=20;width=170;sep=190;
 		panel.add(btnContratacion).setBounds                (x	   ,y    ,width,height);
@@ -690,6 +693,7 @@ public class Cat_Empleados extends JFrame{
 		btn_R_horarios.addActionListener(opHorarioProvisional);
 		btn_plantilla.addActionListener(opPlantilla);
 		btn_movimientos.addActionListener(opGenerarInformacionDeColaboradores);
+		btn_Huellas.addActionListener(Reporte_Datos_Checador);
 		
 		btnLicencias.addActionListener(Reporte_de_Vigencia_Licencias);
 		btnCumpleaños_del_Mes.addActionListener(Reporte_De_Cumpleanios_Del_Mes);
@@ -2393,7 +2397,12 @@ public void guardar_modificar_Empleado(){
 			}
 		};
 	   
-	
+	ActionListener Reporte_Datos_Checador = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+				new Cat_Reportes_Datos_Checador().setVisible(true);
+		}
+	};
+		
 	ActionListener salir = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			dispose();
