@@ -250,15 +250,15 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="38" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<line>
-				<reportElement x="312" y="18" width="150" height="1" uuid="c3a366ef-ecee-497b-89fe-02bbce8a84c3">
+				<reportElement x="399" y="18" width="150" height="1" uuid="c3a366ef-ecee-497b-89fe-02bbce8a84c3">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
 			<textField>
-				<reportElement x="312" y="19" width="150" height="12" uuid="81d4a306-2561-43cf-9251-3669610184e8">
+				<reportElement x="399" y="19" width="150" height="12" uuid="81d4a306-2561-43cf-9251-3669610184e8">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -268,7 +268,7 @@
 				<textFieldExpression><![CDATA[$F{usuario_recibe}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="312" y="26" width="150" height="12" uuid="91cc856b-070f-49ad-8207-91324453c24d">
+				<reportElement x="399" y="26" width="150" height="12" uuid="91cc856b-070f-49ad-8207-91324453c24d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -278,7 +278,7 @@
 				<text><![CDATA[FIRMA RECIBE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="118" y="23" width="150" height="12" uuid="10a4fcb0-d221-48de-a9e8-b79fd1936461">
+				<reportElement x="205" y="23" width="150" height="12" uuid="10a4fcb0-d221-48de-a9e8-b79fd1936461">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -288,7 +288,23 @@
 				<text><![CDATA[FIRMA AUDITO]]></text>
 			</staticText>
 			<line>
-				<reportElement x="118" y="18" width="150" height="1" uuid="a5a8541f-e147-402f-afdf-95d1a418f906">
+				<reportElement x="205" y="18" width="150" height="1" uuid="a5a8541f-e147-402f-afdf-95d1a418f906">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="2" y="23" width="150" height="12" uuid="ea9fb191-a67c-4fdc-a786-20c4b59aa83e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIRMA  ENTREGA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="18" width="150" height="1" uuid="c90889a6-30c9-4c29-ab90-40af511525bb">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>

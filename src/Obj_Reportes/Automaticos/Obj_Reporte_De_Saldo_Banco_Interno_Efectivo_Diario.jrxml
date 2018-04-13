@@ -484,6 +484,21 @@
 					<textFieldExpression><![CDATA[$F{dia_de_mes}]]></textFieldExpression>
 				</textField>
 			</frame>
+			<image>
+				<reportElement x="20" y="1" width="9" height="9" uuid="5daad9da-4174-4791-90ad-c69b9a9b07b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{tipo_movimiento}.equals("INGRESO")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/anadir-mas-icono-6934-16.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="20" y="1" width="9" height="9" uuid="da73420e-18f6-4dd3-a1a0-65dd537c7d9e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{tipo_movimiento}.equals("EGRESO")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/menos-rojo-eliminar-icono-5237-16.png"]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 	<pageFooter>

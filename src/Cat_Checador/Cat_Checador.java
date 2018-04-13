@@ -339,7 +339,6 @@ public class Cat_Checador extends JFrame {
         		if(lectorDeHuellaConectado){
         			new Cat_Huellas_Personalizado("CLAVE MASTER").setVisible(true);
         		}else{
-        			lectorDeHuellaConectado = true;
         			JOptionPane.showMessageDialog(null, "El Sensor de Huella Digital esta Desactivado o no Conectado","Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 	    	        return;
         		}
