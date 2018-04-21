@@ -81,6 +81,7 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[2], false),
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[3], false),
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[4], false),
+		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[5], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Administracion_del_sistemaVector = new Obj_NombreVector("Administración Del Sistema", Administracion_del_sistema);

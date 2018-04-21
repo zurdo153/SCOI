@@ -3,6 +3,7 @@ package Cat_Checador;
 import java.awt.Container;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -13,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
+import Conexiones_SQL.BuscarSQL;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCSpinner;
@@ -159,4 +161,16 @@ public class Cat_Horario_base  extends JFrame{
 	JTextField txtSalidaExtra2  = new JTextField("");
 	JTextField txtComida1       = new JTextField("");
 	JTextField txtComida2       = new JTextField("");
+	
+	Object[][] turnosCuadrante = new BuscarSQL().BuscarTurnos();
+	public Object[] listaTurnoC(){
+		Object[] lista = new Object[turnosCuadrante.length];
+		
+		for(int i=0; i<turnosCuadrante.length; i++){
+			lista[i]=turnosCuadrante[i][1];
+		}
+		return lista;
+	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbTurnoCuadrante = new JComboBox(listaTurnoC());
 }

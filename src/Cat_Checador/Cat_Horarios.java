@@ -100,10 +100,11 @@ public class Cat_Horarios extends Cat_Horario_base{
 		horario1.add(lblSintaxis2).setBounds(205,50,60,20);
 		horario1.add(lblSintaxis3).setBounds(260,50,250,20);
 		
-		x=40;
-		horario1.add(lblLimi).setBounds         (130,80,100,height);
-		horario1.add(lblTrabajo).setBounds      (285+x,80,60,height);
-		horario1.add(lblComida).setBounds       (410+x,80,90,20);
+		x=20;
+		horario1.add(lblLimi).setBounds          (x,80,100,height);
+		horario1.add(cmbTurnoCuadrante).setBounds(130,80,150,height);
+		horario1.add(lblTrabajo).setBounds       (285+(x+=20),80,60,height);
+		horario1.add(lblComida).setBounds        (410+x,80,90,20);
 	
 
 		
@@ -125,8 +126,8 @@ public class Cat_Horarios extends Cat_Horario_base{
 		horario1.add(btnSabado).setBounds		(x     ,y+=sepv ,width    ,height);
 		horario1.add(btnSD).setBounds			(x     ,y+=sepv ,width    ,height);
 
-		horario1.add(lblInicio).setBounds       (x=130 ,y=90    ,width=70 ,height);
-		horario1.add(spDomingo1).setBounds      (x     ,y+=sepv ,width    ,height);
+		horario1.add(lblInicio).setBounds       (x=130 ,y=100    ,width=70 ,height);
+		horario1.add(spDomingo1).setBounds      (x     ,y+=(sepv-10) ,width    ,height);
 		horario1.add(spLunes1).setBounds        (x     ,y+=sepv ,width    ,height);
 		horario1.add(spMartes1).setBounds       (x     ,y+=sepv ,width    ,height);
 		horario1.add(spMiercoles1).setBounds    (x     ,y+=sepv ,width    ,height);
@@ -135,8 +136,8 @@ public class Cat_Horarios extends Cat_Horario_base{
 		horario1.add(spSabado1).setBounds       (x     ,y+=sepv ,width    ,height);
 		horario1.add(btnIgual).setBounds        (x     ,y+=sepv ,390      ,height);
 		
-		horario1.add(lblFin).setBounds          (x=210 ,y=90    ,width=70 ,height);
-		horario1.add(spDomingo2).setBounds      (x     ,y+=sepv ,width    ,height);
+		horario1.add(lblFin).setBounds          (x=210 ,y=100    ,width=70 ,height);
+		horario1.add(spDomingo2).setBounds      (x     ,y+=(sepv-10) ,width    ,height);
 		horario1.add(spLunes2).setBounds        (x     ,y+=sepv ,width    ,height);	
 		horario1.add(spMartes2).setBounds       (x     ,y+=sepv ,width    ,height);
 		horario1.add(spMiercoles2).setBounds    (x     ,y+=sepv ,width    ,height);	
@@ -323,6 +324,7 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		txtNombre.addKeyListener(valida);
 		
 		txtFolio.addActionListener(buscarDirecto);
+		cmbTurnoCuadrante.addActionListener(opHoraTurno);
 		
 		this.addWindowListener(new WindowAdapter() {
 			public void windowOpened( WindowEvent e ){
@@ -943,6 +945,51 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		spSabado5.setValue(new Time(Integer.parseInt(recesoDefault[0]),Integer.parseInt(recesoDefault[1]),Integer.parseInt(recesoDefault[2])));
 	}
 	
+	ActionListener opHoraTurno = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+				Object[] tiempo = new Object[2];
+				
+				for(int i=0; i<turnosCuadrante.length; i++){
+					if(turnosCuadrante[i][1].toString().trim().equals(cmbTurnoCuadrante.getSelectedItem().toString().trim())){
+						tiempo[0]=turnosCuadrante[i][2].toString().trim();
+						tiempo[1]=turnosCuadrante[i][3].toString().trim();
+						i=turnosCuadrante.length;
+					}
+				}
+				horasTurno(tiempo);
+		}
+	};
+	
+	@SuppressWarnings("deprecation")
+	public void horasTurno(Object[] tiempo){
+		System.out.println(tiempo[0].toString());
+		System.out.println(tiempo[1].toString());
+		String[] inicio =tiempo[0].toString().trim().split (":");
+		String[] fin =tiempo[1].toString().trim().split (":");
+		
+		spDomingo1.setValue(new Time(Integer.parseInt(inicio[0]),Integer.parseInt(inicio[1]),Integer.parseInt(inicio[2])));
+		spDomingo2.setValue(new Time(Integer.parseInt(fin[0]),Integer.parseInt(fin[1]),Integer.parseInt(fin[2])));
+		
+		spLunes1.setValue(new Time(Integer.parseInt(inicioDefault[0]),Integer.parseInt(inicioDefault[1]),Integer.parseInt(inicioDefault[2])));
+		spLunes2.setValue(new Time(Integer.parseInt(fin[0]),Integer.parseInt(fin[1]),Integer.parseInt(fin[2])));
+		
+		spMartes1.setValue(new Time(Integer.parseInt(inicio[0]),Integer.parseInt(inicio[1]),Integer.parseInt(inicio[2])));
+		spMartes2.setValue(new Time(Integer.parseInt(fin[0]),Integer.parseInt(fin[1]),Integer.parseInt(fin[2])));
+		
+		spMiercoles1.setValue(new Time(Integer.parseInt(inicio[0]),Integer.parseInt(inicio[1]),Integer.parseInt(inicio[2])));
+		spMiercoles2.setValue(new Time(Integer.parseInt(fin[0]),Integer.parseInt(fin[1]),Integer.parseInt(fin[2])));
+		
+		spJueves1.setValue(new Time(Integer.parseInt(inicio[0]),Integer.parseInt(inicio[1]),Integer.parseInt(inicio[2])));
+		spJueves2.setValue(new Time(Integer.parseInt(fin[0]),Integer.parseInt(fin[1]),Integer.parseInt(fin[2])));
+		
+		spViernes1.setValue(new Time(Integer.parseInt(inicio[0]),Integer.parseInt(inicio[1]),Integer.parseInt(inicio[2])));
+		spViernes2.setValue(new Time(Integer.parseInt(fin[0]),Integer.parseInt(fin[1]),Integer.parseInt(fin[2])));
+		
+		spSabado1.setValue(new Time(Integer.parseInt(inicio[0]),Integer.parseInt(inicio[1]),Integer.parseInt(inicio[2])));
+		spSabado2.setValue(new Time(Integer.parseInt(fin[0]),Integer.parseInt(fin[1]),Integer.parseInt(fin[2])));
+	}
+	
 	public void camposbooleano(boolean booleano ){
 		txtNombre.setEditable(booleano);
 		txtFolio.setEditable(false);
@@ -990,44 +1037,47 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		chbHorarioDeposito.setEnabled(booleano);
 		chbRecesoExtraDiario.setEnabled(booleano);
 		
-		spDomingo1.setEnabled(booleano);
-		spDomingo2.setEnabled(booleano);
+		
+		cmbTurnoCuadrante.setEnabled(booleano);
+		
+		spDomingo1.setEnabled(false);
+		spDomingo2.setEnabled(false);
 		spDomingo3.setEnabled(booleano);
 		spDomingo4.setEnabled(booleano);
 		spDomingo5.setEnabled(booleano);
 		
-		spLunes1.setEnabled(booleano);
-		spLunes2.setEnabled(booleano);
+		spLunes1.setEnabled(false);
+		spLunes2.setEnabled(false);
 		spLunes3.setEnabled(booleano);
 		spLunes4.setEnabled(booleano);
 		spLunes5.setEnabled(booleano);
 		
-		spMartes1.setEnabled(booleano);
-		spMartes2.setEnabled(booleano);
+		spMartes1.setEnabled(false);
+		spMartes2.setEnabled(false);
 		spMartes3.setEnabled(booleano);
 		spMartes4.setEnabled(booleano);
 		spMartes5.setEnabled(booleano);
 		
-		spMiercoles1.setEnabled(booleano);
-		spMiercoles2.setEnabled(booleano);
+		spMiercoles1.setEnabled(false);
+		spMiercoles2.setEnabled(false);
 		spMiercoles3.setEnabled(booleano);
 		spMiercoles4.setEnabled(booleano);
 		spMiercoles5.setEnabled(booleano);
 		
-		spJueves1.setEnabled(booleano);
-		spJueves2.setEnabled(booleano);
+		spJueves1.setEnabled(false);
+		spJueves2.setEnabled(false);
 		spJueves3.setEnabled(booleano);
 		spJueves4.setEnabled(booleano);
 		spJueves5.setEnabled(booleano);
 		
-		spViernes1.setEnabled(booleano);
-		spViernes2.setEnabled(booleano);
+		spViernes1.setEnabled(false);
+		spViernes2.setEnabled(false);
 		spViernes3.setEnabled(booleano);
 		spViernes4.setEnabled(booleano);
 		spViernes5.setEnabled(booleano);
 		
-		spSabado1.setEnabled(booleano);
-		spSabado2.setEnabled(booleano);
+		spSabado1.setEnabled(false);
+		spSabado2.setEnabled(false);
 		spSabado3.setEnabled(booleano);
 		spSabado4.setEnabled(booleano);
 		spSabado5.setEnabled(booleano);
